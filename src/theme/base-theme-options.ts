@@ -158,8 +158,11 @@ export const baseThemeOptions: ThemeOptions = {
       },
     },
     MuiLink: {
-      defaultProps: {
-        underline: "hover",
+      styleOverrides: {
+        root: {
+          color: "inherit",
+          textDecoration: "none",
+        },
       },
     },
     MuiListItemIcon: {

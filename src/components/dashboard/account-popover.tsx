@@ -2,13 +2,13 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import {
   Box,
   Divider,
+  Link,
   ListItemIcon,
   ListItemText,
   MenuItem,
   Popover,
   Typography,
 } from "@mui/material";
-import NextLink from "next/link";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import type { FC } from "react";
@@ -93,8 +93,8 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
       </Box>
       <Divider />
       <Box sx={{ my: 1 }}>
-        <NextLink href='/profile' passHref>
-          <MenuItem component='a'>
+        <Link href='/profile'>
+          <MenuItem>
             <ListItemIcon>
               <UserCircleIcon fontSize='small' />
             </ListItemIcon>
@@ -102,9 +102,9 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
               primary={<Typography variant='body1'>Profile</Typography>}
             />
           </MenuItem>
-        </NextLink>
-        <NextLink href='/account' passHref>
-          <MenuItem component='a'>
+        </Link>
+        <Link href='/account'>
+          <MenuItem>
             <ListItemIcon>
               <CogIcon fontSize='small' />
             </ListItemIcon>
@@ -112,9 +112,9 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
               primary={<Typography variant='body1'>Settings</Typography>}
             />
           </MenuItem>
-        </NextLink>
-        <NextLink href='/' passHref>
-          <MenuItem component='a'>
+        </Link>
+        <Link href='/'>
+          <MenuItem>
             <ListItemIcon>
               <SwitchHorizontalOutlinedIcon fontSize='small' />
             </ListItemIcon>
@@ -124,7 +124,7 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
               }
             />
           </MenuItem>
-        </NextLink>
+        </Link>
         <Divider />
         <MenuItem onClick={handleLogout}>
           <ListItemIcon>

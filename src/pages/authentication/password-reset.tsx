@@ -1,9 +1,8 @@
-import { useEffect } from "react";
+import { Box, Card, Container, Divider, Link, Typography } from "@mui/material";
 import type { NextPage } from "next";
 import Head from "next/head";
-import NextLink from "next/link";
 import { useRouter } from "next/router";
-import { Box, Card, Container, Divider, Link, Typography } from "@mui/material";
+import { useEffect } from "react";
 import { GuestGuard } from "../../components/authentication/guest-guard";
 
 import { Logo } from "../../components/logo";
@@ -84,16 +83,14 @@ const PasswordReset: NextPage = () => {
                 justifyContent: "center",
               }}
             >
-              <NextLink href='/' passHref>
-                <a>
-                  <Logo
-                    sx={{
-                      height: 40,
-                      width: 40,
-                    }}
-                  />
-                </a>
-              </NextLink>
+              <Link href='/'>
+                <Logo
+                  sx={{
+                    height: 40,
+                    width: 40,
+                  }}
+                />
+              </Link>
               <Typography variant='h4'>Password Reset</Typography>
               <Typography color='textSecondary' sx={{ mt: 2 }} variant='body2'>
                 Reset your account password using your code

@@ -1,32 +1,32 @@
-import { useEffect } from "react";
-import type { FC } from "react";
+import type { EmotionCache } from "@emotion/cache";
+import { CacheProvider } from "@emotion/react";
+import CssBaseline from "@mui/material/CssBaseline";
+import { ThemeProvider } from "@mui/material/styles";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import type { NextPage } from "next";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import Router from "next/router";
-import { Provider as ReduxProvider } from "react-redux";
 import nProgress from "nprogress";
-import { CacheProvider } from "@emotion/react";
-import type { EmotionCache } from "@emotion/cache";
-import { ThemeProvider } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import { LocalizationProvider } from "@mui/lab";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import type { FC } from "react";
+import { useEffect } from "react";
+import { Provider as ReduxProvider } from "react-redux";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { RTL } from "../components/rtl";
 import { SplashScreen } from "../components/splash-screen";
+import { gtmConfig } from "../config";
+import { AuthConsumer, AuthProvider } from "../contexts/jwt-context";
 import {
   SettingsConsumer,
   SettingsProvider,
 } from "../contexts/settings-context";
-import { AuthConsumer, AuthProvider } from "../contexts/jwt-context";
-import { gtmConfig } from "../config";
+import "../i18n";
 import { gtm } from "../lib/gtm";
 import { store } from "../store";
 import { createTheme } from "../theme";
 import { createEmotionCache } from "../utils/create-emotion-cache";
-import "../i18n";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 type EnhancedAppProps = AppProps & {
   Component: NextPage;

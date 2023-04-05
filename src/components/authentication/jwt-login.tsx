@@ -1,8 +1,8 @@
-import type { FC } from "react";
-import { useRouter } from "next/router";
-import * as Yup from "yup";
+import { Box, Button, FormHelperText, TextField } from "@mui/material";
 import { useFormik } from "formik";
-import { Alert, Box, Button, FormHelperText, TextField } from "@mui/material";
+import { useRouter } from "next/router";
+import type { FC } from "react";
+import * as Yup from "yup";
 import { useAuth } from "../../hooks/use-auth";
 import { useMounted } from "../../hooks/use-mounted";
 
@@ -51,7 +51,7 @@ export const JWTLogin: FC = (props) => {
         error={Boolean(formik.touched.email && formik.errors.email)}
         fullWidth
         helperText={formik.touched.email && formik.errors.email}
-        label='Email Address'
+        placeholder='Email Address'
         margin='normal'
         name='email'
         onBlur={formik.handleBlur}
@@ -63,7 +63,7 @@ export const JWTLogin: FC = (props) => {
         error={Boolean(formik.touched.password && formik.errors.password)}
         fullWidth
         helperText={formik.touched.password && formik.errors.password}
-        label='Password'
+        placeholder='Password'
         margin='normal'
         name='password'
         onBlur={formik.handleBlur}

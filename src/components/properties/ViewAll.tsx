@@ -1,48 +1,26 @@
-import {
-  Card,
-  CardContent,
-  Container,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Typography,
-} from "@mui/material";
+import { Card, CardContent, Container, Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import Image from "next/image";
+import { GridColDef, GridRowsProp } from "@mui/x-data-grid";
 import { FC } from "react";
 import { useAllPropertiesQuery } from "src/services/properties";
+import DataGridTable from "../DataGrid";
+
+const rows: GridRowsProp = [
+  { id: 1, col1: "Hello", col2: "World" },
+  { id: 2, col1: "DataGridPro", col2: "is Awesome" },
+  { id: 3, col1: "MUI", col2: "is Amazing" },
+];
+
+const columns: GridColDef[] = [
+  { field: "col1", headerName: "Column 1", width: 150 },
+  { field: "col2", headerName: "Column 2", width: 150 },
+];
 
 const ViewAll: FC = () => {
   const { data } = useAllPropertiesQuery();
   if (!data) {
     return null;
   }
-
-  const tableHeads = [
-    {
-      id: "id",
-      label: "#",
-    },
-    {
-      id: "thumbnail",
-      label: "Thumbnail",
-    },
-    {
-      id: "type",
-      label: "Type",
-    },
-    {
-      id: "dateCreated",
-      label: "Date Created",
-    },
-    {
-      id: "website",
-      label: "Website",
-    },
-  ];
 
   return (
     <Container maxWidth='xl'>
@@ -63,11 +41,11 @@ const ViewAll: FC = () => {
           <Paper
             sx={{
               overflow: "auto",
-              padding: "0px 24px",
               maxHeight: "720px",
             }}
           >
-            <Table stickyHeader>
+            <DataGridTable data={data} />
+            {/* <Table stickyHeader>
               <TableHead>
                 <TableRow>
                   {tableHeads.map((head) => (
@@ -78,9 +56,9 @@ const ViewAll: FC = () => {
               <TableBody>
                 {data &&
                   data.length > 0 &&
-                  data.map((row) => {
+                  data.map((row, index) => {
                     return (
-                      <TableRow>
+                      <TableRow key={index}>
                         <TableCell>
                           <Image
                             height={30}
@@ -96,7 +74,7 @@ const ViewAll: FC = () => {
                     );
                   })}
               </TableBody>
-            </Table>
+            </Table> */}
           </Paper>
         </Card>
       </Box>

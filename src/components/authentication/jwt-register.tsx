@@ -1,17 +1,16 @@
-import type { FC } from "react";
-import { useRouter } from "next/router";
-import * as Yup from "yup";
-import { useFormik } from "formik";
 import {
   Box,
   Button,
   Checkbox,
   FormHelperText,
+  Link,
   TextField,
   Typography,
-  Link,
-  MenuItem,
 } from "@mui/material";
+import { useFormik } from "formik";
+import { useRouter } from "next/router";
+import type { FC } from "react";
+import * as Yup from "yup";
 import { useAuth } from "../../hooks/use-auth";
 import { useMounted } from "../../hooks/use-mounted";
 
@@ -57,9 +56,7 @@ export const JWTRegister: FC = (props) => {
   });
 
   return (
-    <form noValidate
-onSubmit={formik.handleSubmit}
-{...props}>
+    <form noValidate onSubmit={formik.handleSubmit} {...props}>
       <TextField
         error={Boolean(formik.touched.username && formik.errors.username)}
         fullWidth
@@ -97,13 +94,8 @@ onSubmit={formik.handleSubmit}
           name='policy'
           onChange={formik.handleChange}
         />
-        <Typography color='textSecondary'
-variant='body2'>
-          I have read the{" "}
-          <Link component='a'
-href='#'>
-            Terms and Conditions
-          </Link>
+        <Typography color='textSecondary' variant='body2'>
+          I have read the <Link href='#'>Terms and Conditions</Link>
         </Typography>
       </Box>
       {Boolean(formik.touched.policy && formik.errors.policy) && (

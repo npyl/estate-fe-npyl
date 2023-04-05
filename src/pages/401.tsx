@@ -1,15 +1,15 @@
-import { useEffect } from "react";
-import type { NextPage } from "next";
-import NextLink from "next/link";
-import Head from "next/head";
 import {
   Box,
   Button,
   Container,
+  Link,
   Typography,
   useMediaQuery,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
+import type { NextPage } from "next";
+import Head from "next/head";
+import { useEffect } from "react";
 import { gtm } from "../lib/gtm";
 
 const AuthorizationRequired: NextPage = () => {
@@ -36,8 +36,7 @@ const AuthorizationRequired: NextPage = () => {
         }}
       >
         <Container maxWidth='lg'>
-          <Typography align='center'
-variant={mobileDevice ? "h4" : "h1"}>
+          <Typography align='center' variant={mobileDevice ? "h4" : "h1"}>
             401: Authorization required
           </Typography>
           <Typography
@@ -74,13 +73,9 @@ variant={mobileDevice ? "h4" : "h1"}>
               mt: 6,
             }}
           >
-            <NextLink href='/'
-passHref>
-              <Button component='a'
-variant='outlined'>
-                Back to Dashboard
-              </Button>
-            </NextLink>
+            <Link href='/'>
+              <Button variant='outlined'>Back to Dashboard</Button>
+            </Link>
           </Box>
         </Container>
       </Box>

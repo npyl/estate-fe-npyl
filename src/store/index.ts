@@ -9,6 +9,8 @@ import type { ThunkAction } from "redux-thunk";
 import { auth } from "../services/auth";
 import { document } from "../services/document";
 import { rtkQueryErrorLogger } from "../services/error";
+import { properties } from "../services/properties";
+import { user } from "../services/user";
 import { rootReducer } from "./root-reducer";
 export const createStore = (
   options?: ConfigureStoreOptions["preloadedState"] | undefined
@@ -28,7 +30,13 @@ export const createStore = (
           ],
           ignoredActionPaths: ["payload", "meta", "document"],
         },
-      }).concat(document.middleware, auth.middleware, rtkQueryErrorLogger),
+      }).concat(
+        document.middleware,
+        auth.middleware,
+        user.middleware,
+        properties.middleware,
+        rtkQueryErrorLogger
+      ),
     ...options,
   });
 export const store = createStore();

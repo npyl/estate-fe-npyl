@@ -1,8 +1,7 @@
-import { useEffect } from "react";
+import { Box, Card, Container, Link, Typography } from "@mui/material";
 import type { NextPage } from "next";
 import Head from "next/head";
-import NextLink from "next/link";
-import { Box, Card, Container, Typography } from "@mui/material";
+import { useEffect } from "react";
 import { GuestGuard } from "../../components/authentication/guest-guard";
 
 import { Logo } from "../../components/logo";
@@ -81,16 +80,14 @@ const PasswordRecovery: NextPage = () => {
                 justifyContent: "center",
               }}
             >
-              <NextLink href='/' passHref>
-                <a>
-                  <Logo
-                    sx={{
-                      height: 40,
-                      width: 40,
-                    }}
-                  />
-                </a>
-              </NextLink>
+              <Link href='/'>
+                <Logo
+                  sx={{
+                    height: 40,
+                    width: 40,
+                  }}
+                />
+              </Link>
               <Typography variant='h4'>Password Recovery</Typography>
               <Typography color='textSecondary' sx={{ mt: 2 }} variant='body2'>
                 Tell us your email so we can send you a reset link

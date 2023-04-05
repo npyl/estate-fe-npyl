@@ -1,15 +1,19 @@
-import type { Theme } from "@mui/material";
-import { Box, Divider, Drawer, useMediaQuery } from "@mui/material";
-import NextLink from "next/link";
+import {
+  Box,
+  Divider,
+  Drawer,
+  Link,
+  Theme,
+  useMediaQuery,
+} from "@mui/material";
+import { TFunction } from "i18next";
 import { useRouter } from "next/router";
-import PropTypes from "prop-types";
-import type { FC } from "react";
-import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
-import type { TFunction } from "react-i18next";
+import { FC, ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "src/hooks/use-auth";
 import { Home as HomeIcon } from "../../icons/home";
 import { Users as UsersIcon } from "../../icons/users";
+import { Logo } from "../logo";
 import { Scrollbar } from "../scrollbar";
 import { DashboardSidebarSection } from "./dashboard-sidebar-section";
 import { OrganizationPopover } from "./organization-popover";
@@ -106,17 +110,14 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
         >
           <div>
             <Box p={3} height={"64px"}>
-              <NextLink href='/' passHref>
-                {/* <a>
-                  <Logo
-                    sx={{
-                      height: 42,
-                      width: 42,
-                    }}
-                  />
-                </a> */}
-                Estate
-              </NextLink>
+              <Link href='/'>
+                <Logo
+                  sx={{
+                    height: 42,
+                    width: 42,
+                  }}
+                />
+              </Link>
             </Box>
           </div>
           <Divider
@@ -190,9 +191,4 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
       {content}
     </Drawer>
   );
-};
-
-DashboardSidebar.propTypes = {
-  onClose: PropTypes.func,
-  open: PropTypes.bool,
 };

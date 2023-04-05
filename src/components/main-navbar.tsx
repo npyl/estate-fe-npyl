@@ -1,6 +1,3 @@
-import type { FC } from "react";
-import PropTypes from "prop-types";
-import NextLink from "next/link";
 import {
   AppBar,
   Box,
@@ -9,7 +6,10 @@ import {
   IconButton,
   Link,
   Toolbar,
+  Typography,
 } from "@mui/material";
+import PropTypes from "prop-types";
+import type { FC } from "react";
 import { Menu as MenuIcon } from "../icons/menu";
 import { Logo } from "./logo";
 
@@ -32,23 +32,19 @@ export const MainNavbar: FC<MainNavbarProps> = (props) => {
       }}
     >
       <Container maxWidth='lg'>
-        <Toolbar disableGutters
-sx={{ minHeight: 64 }}>
-          <NextLink href='/'
-passHref>
-            <a>
-              <Logo
-                sx={{
-                  display: {
-                    md: "inline",
-                    xs: "none",
-                  },
-                  height: 40,
-                  width: 40,
-                }}
-              />
-            </a>
-          </NextLink>
+        <Toolbar disableGutters sx={{ minHeight: 64 }}>
+          <Link href='/'>
+            <Logo
+              sx={{
+                display: {
+                  md: "inline",
+                  xs: "none",
+                },
+                height: 40,
+                width: 40,
+              }}
+            />
+          </Link>
           <Box sx={{ flexGrow: 1 }} />
           <IconButton
             color='inherit'
@@ -70,37 +66,29 @@ passHref>
               },
             }}
           >
-            <NextLink href='/'
-passHref>
-              <Link color='textSecondary'
-underline='none'
-variant='subtitle2'>
+            <Link href='/'>
+              <Typography color='textSecondary' variant='subtitle2'>
                 Live Demo
-              </Link>
-            </NextLink>
-            <NextLink href='/browse'
-passHref>
-              <Link
+              </Typography>
+            </Link>
+            <Link href='/browse'>
+              <Typography
                 color='textSecondary'
                 sx={{ ml: 2 }}
-                underline='none'
                 variant='subtitle2'
               >
                 Components
-              </Link>
-            </NextLink>
-            <NextLink href='/docs/welcome'
-passHref>
-              <Link
+              </Typography>
+            </Link>
+            <Link href='/docs/welcome'>
+              <Typography
                 color='textSecondary'
-                component='a'
                 sx={{ ml: 2 }}
-                underline='none'
                 variant='subtitle2'
               >
                 Documentation
-              </Link>
-            </NextLink>
+              </Typography>
+            </Link>
             <Button
               component='a'
               href='https://material-ui.com/store/items/devias-kit-pro'

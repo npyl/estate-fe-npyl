@@ -1,11 +1,10 @@
-import { useEffect } from "react";
-import type { FC } from "react";
-import NextLink from "next/link";
+import type { Theme } from "@mui/material";
+import { Box, Button, Drawer, Link, useMediaQuery } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
-import { Box, Button, Drawer, Link, useMediaQuery } from "@mui/material";
-import type { Theme } from "@mui/material";
-import { styled } from "@mui/material/styles";
+import type { FC } from "react";
+import { useEffect } from "react";
 
 interface MainSidebarProps {
   onClose?: () => void;
@@ -50,8 +49,7 @@ export const MainSidebar: FC<MainSidebarProps> = (props) => {
       variant='temporary'
     >
       <Box sx={{ p: 2 }}>
-        <NextLink href='/'
-passHref>
+        <Link href='/' passHref>
           <MainSidebarLink
             color='textSecondary'
             underline='none'
@@ -59,9 +57,8 @@ passHref>
           >
             Live Demo
           </MainSidebarLink>
-        </NextLink>
-        <NextLink href='/browse'
-passHref>
+        </Link>
+        <Link href='/browse' passHref>
           <MainSidebarLink
             color='textSecondary'
             underline='none'
@@ -69,9 +66,8 @@ passHref>
           >
             Components
           </MainSidebarLink>
-        </NextLink>
-        <NextLink href='/docs/welcome'
-passHref>
+        </Link>
+        <Link href='/docs/welcome' passHref>
           <MainSidebarLink
             color='textSecondary'
             underline='none'
@@ -79,7 +75,7 @@ passHref>
           >
             Documentation
           </MainSidebarLink>
-        </NextLink>
+        </Link>
         <Button
           component='a'
           fullWidth

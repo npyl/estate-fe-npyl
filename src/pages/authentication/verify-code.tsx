@@ -1,9 +1,8 @@
-import { useEffect } from "react";
+import { Box, Card, Container, Divider, Link, Typography } from "@mui/material";
 import type { NextPage } from "next";
 import Head from "next/head";
-import NextLink from "next/link";
 import { useRouter } from "next/router";
-import { Box, Card, Container, Divider, Link, Typography } from "@mui/material";
+import { useEffect } from "react";
 import { GuestGuard } from "../../components/authentication/guest-guard";
 import { Logo } from "../../components/logo";
 import { useAuth } from "../../hooks/use-auth";
@@ -83,16 +82,14 @@ const VerifyCode: NextPage = () => {
                 justifyContent: "center",
               }}
             >
-              <NextLink href='/' passHref>
-                <a>
-                  <Logo
-                    sx={{
-                      height: 40,
-                      width: 40,
-                    }}
-                  />
-                </a>
-              </NextLink>
+              <Link href='/'>
+                <Logo
+                  sx={{
+                    height: 40,
+                    width: 40,
+                  }}
+                />
+              </Link>
               <Typography variant='h4'>Verify Code</Typography>
               <Typography color='textSecondary' sx={{ mt: 2 }} variant='body2'>
                 Confirm registration using your verification code

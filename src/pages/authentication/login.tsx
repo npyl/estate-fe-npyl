@@ -1,7 +1,6 @@
 import { Box, Card, Container, Divider, Link, Typography } from "@mui/material";
 import type { NextPage } from "next";
 import Head from "next/head";
-import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { GuestGuard } from "../../components/authentication/guest-guard";
@@ -48,6 +47,7 @@ const Login: NextPage = () => {
             left: 0,
             width: "100vw",
             height: "100vh",
+            objectFit: "cover",
           }}
           autoPlay
           loop
@@ -64,7 +64,10 @@ const Login: NextPage = () => {
             },
           }}
         >
-          <Card elevation={16} sx={{ p: 4 }}>
+          <Card
+            elevation={16}
+            sx={{ p: 4, backgroundColor: "rgba(255, 255, 255, 0.9)" }}
+          >
             <Box
               sx={{
                 alignItems: "center",
@@ -73,16 +76,14 @@ const Login: NextPage = () => {
                 justifyContent: "center",
               }}
             >
-              <NextLink href='/' passHref>
-                <a>
-                  <Logo
-                    sx={{
-                      height: 40,
-                      width: 40,
-                    }}
-                  />
-                </a>
-              </NextLink>
+              <Link href='/'>
+                <Logo
+                  sx={{
+                    height: 40,
+                    width: 40,
+                  }}
+                />
+              </Link>
               <Typography variant='h4'>Log in</Typography>
               <Typography color='textSecondary' sx={{ mt: 2 }} variant='body2'>
                 Sign in on the internal platform
@@ -97,20 +98,6 @@ const Login: NextPage = () => {
               {platform === "JWT" && <JWTLogin />}
             </Box>
             <Divider sx={{ my: 3 }} />
-            <div>
-              <NextLink
-                href={
-                  disableGuard
-                    ? `/authentication/register?disableGuard=${disableGuard}`
-                    : "/authentication/register"
-                }
-                passHref
-              >
-                <Link color='textSecondary' variant='body2'>
-                  Create new account
-                </Link>
-              </NextLink>
-            </div>
           </Card>
         </Container>
       </Box>

@@ -1,6 +1,7 @@
-import type { AppBarProps } from "@mui/material";
 import {
   AppBar,
+  AppBarProps,
+  Avatar,
   Box,
   ButtonBase,
   IconButton,
@@ -16,10 +17,8 @@ import { useAuth } from "src/hooks/use-auth";
 import { Menu as MenuIcon } from "../../icons/menu";
 import { Search as SearchIcon } from "../../icons/search";
 import { UserCircle as UserCircleIcon } from "../../icons/user-circle";
-import { Users as UsersIcon } from "../../icons/users";
 import { SettingsButton } from "../settings-button";
 import { AccountPopover } from "./account-popover";
-import { ContactsPopover } from "./contacts-popover";
 import { ContentSearchDialog } from "./content-search-dialog";
 import { LanguagePopover } from "./language-popover";
 
@@ -119,34 +118,6 @@ const ContentSearchButton = () => {
   );
 };
 
-const ContactsButton = () => {
-  const anchorRef = useRef<HTMLButtonElement | null>(null);
-  const [openPopover, setOpenPopover] = useState<boolean>(false);
-
-  const handleOpenPopover = (): void => {
-    setOpenPopover(true);
-  };
-
-  const handleClosePopover = (): void => {
-    setOpenPopover(false);
-  };
-
-  return (
-    <>
-      <Tooltip title='Contacts'>
-        <IconButton onClick={handleOpenPopover} sx={{ ml: 1 }} ref={anchorRef}>
-          <UsersIcon fontSize='small' />
-        </IconButton>
-      </Tooltip>
-      <ContactsPopover
-        anchorEl={anchorRef.current}
-        onClose={handleClosePopover}
-        open={openPopover}
-      />
-    </>
-  );
-};
-
 const AccountButton = () => {
   const anchorRef = useRef<HTMLButtonElement | null>(null);
   const [openPopover, setOpenPopover] = useState<boolean>(false);
@@ -172,20 +143,16 @@ const AccountButton = () => {
           ml: 2,
         }}
       >
-        {/* <Avatar
+        <Avatar
           sx={{
             height: 40,
             width: 40,
           }}
-          alt={user?.imageResponse[0]?.name}
-          src={
-            user?.imageResponse[0]
-              ? `data:image/jpeg;base64,${user?.imageResponse[0]?.imageBinary}`
-              : ""
-          }
-        > */}
-        <UserCircleIcon fontSize='small' />
-        {/* </Avatar> */}
+          // alt={}
+          src={""}
+        >
+          <UserCircleIcon fontSize='small' />
+        </Avatar>
       </Box>
       <AccountPopover
         anchorEl={anchorRef.current}
@@ -235,7 +202,6 @@ export const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
           <LanguageButton />
           <ContentSearchButton />
           <SettingsButton />
-          <ContactsButton />
           <AccountButton />
         </Toolbar>
       </DashboardNavbarRoot>

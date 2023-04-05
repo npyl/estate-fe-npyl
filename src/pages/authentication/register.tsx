@@ -1,9 +1,8 @@
-import { useEffect } from "react";
+import { Box, Card, Container, Divider, Link, Typography } from "@mui/material";
 import type { NextPage } from "next";
 import Head from "next/head";
-import NextLink from "next/link";
 import { useRouter } from "next/router";
-import { Box, Card, Container, Divider, Link, Typography } from "@mui/material";
+import { useEffect } from "react";
 import { GuestGuard } from "../../components/authentication/guest-guard";
 import { JWTRegister } from "../../components/authentication/jwt-register";
 import { Logo } from "../../components/logo";
@@ -57,16 +56,14 @@ const Register: NextPage = () => {
                 justifyContent: "center",
               }}
             >
-              <NextLink href='/' passHref>
-                <a>
-                  <Logo
-                    sx={{
-                      height: 40,
-                      width: 40,
-                    }}
-                  />
-                </a>
-              </NextLink>
+              <Link href='/'>
+                <Logo
+                  sx={{
+                    height: 40,
+                    width: 40,
+                  }}
+                />
+              </Link>
               <Typography variant='h4'>Register</Typography>
               <Typography color='textSecondary' sx={{ mt: 2 }} variant='body2'>
                 Register on the internal platform
@@ -82,18 +79,17 @@ const Register: NextPage = () => {
             </Box>
             <Divider sx={{ my: 3 }} />
             <div>
-              <NextLink
+              <Link
                 href={
                   disableGuard
                     ? `/authentication/login?disableGuard=${disableGuard}`
                     : "/authentication/login"
                 }
-                passHref
               >
-                <Link color='textSecondary' variant='body2'>
+                <Typography color='textSecondary' variant='body2'>
                   Having an account
-                </Link>
-              </NextLink>
+                </Typography>
+              </Link>
             </div>
           </Card>
         </Container>
