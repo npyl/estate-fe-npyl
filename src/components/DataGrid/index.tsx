@@ -1,5 +1,5 @@
 import { GridCellParams, GridColDef, GridRowsProp } from "@mui/x-data-grid";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import { useRouter } from "next/navigation";
 import { FC } from "react";
 import { IProperties } from "src/types/properties";

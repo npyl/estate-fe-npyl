@@ -118,7 +118,6 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
   const { children } = props;
   const [state, dispatch] = useReducer(reducer, initialState);
   const [login, { isLoading }] = useLoginMutation();
-  console.log(globalThis?.localStorage?.getItem("accessToken"));
   const {
     data: profileData,
     isLoading: userLoading,

@@ -17,7 +17,7 @@ import LightThemeIcon from "../components/light-theme.svg";
 // @ts-ignore
 import DarkThemeIcon from "../components/dark-theme.svg";
 import PropTypes from "prop-types";
-import Image from "next/image";
+import Image from "next/legacy/image";
 
 interface SettingsDrawerProps {
   onClose?: () => void;

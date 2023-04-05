@@ -9,7 +9,7 @@ import {
   Tooltip,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import type { FC } from "react";
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
