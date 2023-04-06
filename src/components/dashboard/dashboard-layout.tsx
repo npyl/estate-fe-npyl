@@ -1,26 +1,24 @@
-import { useState } from 'react';
-import type { FC, ReactNode } from 'react';
-import PropTypes from 'prop-types';
-import { styled } from '@mui/material/styles';
-import { DashboardNavbar } from './dashboard-navbar';
-import { DashboardSidebar } from './dashboard-sidebar';
-import { Box } from '@mui/material';
+import { useState } from "react";
+import type { FC, ReactNode } from "react";
+import PropTypes from "prop-types";
+import { styled } from "@mui/material/styles";
+import { DashboardNavbar } from "./dashboard-navbar";
+import { DashboardSidebar } from "./dashboard-sidebar";
+import { Box } from "@mui/material";
 
 interface DashboardLayoutProps {
   children?: ReactNode;
 }
 
-const DashboardLayoutRoot = styled('div')(
-  ({ theme }) => ({
-    display: 'flex',
-    flex: '1 1 auto',
-    maxWidth: '100%',
-    paddingTop: 64,
-    [theme.breakpoints.up('lg')]: {
-      paddingLeft: 280
-    }
-  })
-);
+const DashboardLayoutRoot = styled("div")(({ theme }) => ({
+  display: "flex",
+  flex: "1 1 auto",
+  maxWidth: "100%",
+  paddingTop: 64,
+  [theme.breakpoints.up("lg")]: {
+    paddingLeft: 200,
+  },
+}));
 
 export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
   const { children } = props;
@@ -31,10 +29,10 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
       <DashboardLayoutRoot>
         <Box
           sx={{
-            display: 'flex',
-            flex: '1 1 auto',
-            flexDirection: 'column',
-            width: '100%'
+            display: "flex",
+            flex: "1 1 auto",
+            flexDirection: "column",
+            width: "100%",
           }}
         >
           {children}
@@ -50,5 +48,5 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
 };
 
 DashboardLayout.propTypes = {
-  children: PropTypes.node
+  children: PropTypes.node,
 };

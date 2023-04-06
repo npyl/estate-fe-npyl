@@ -107,12 +107,13 @@ export const DashboardSidebarItem: FC<DashboardSidebarItemProps> = (props) => {
         px: 2,
       }}
     >
-      <Link href={path as string}>
+      <Link width={"inherit"} href={path as string}>
         <Button
           startIcon={icon}
           endIcon={chip}
           disableRipple
           sx={{
+            width: "100%",
             textDecoration: "none",
             borderRadius: 1,
             color: "neutral.300",
@@ -121,7 +122,7 @@ export const DashboardSidebarItem: FC<DashboardSidebarItemProps> = (props) => {
             pr: 3,
             textAlign: "left",
             textTransform: "none",
-            width: "100%",
+
             ...(active && {
               backgroundColor: "rgba(255,255,255, 0.08)",
               color: "secondary.main",
