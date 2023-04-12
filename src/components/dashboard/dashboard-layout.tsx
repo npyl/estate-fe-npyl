@@ -1,10 +1,10 @@
-import { useState } from "react";
-import type { FC, ReactNode } from "react";
-import PropTypes from "prop-types";
+import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import PropTypes from "prop-types";
+import type { FC, ReactNode } from "react";
+import { useState } from "react";
 import { DashboardNavbar } from "./dashboard-navbar";
 import { DashboardSidebar } from "./dashboard-sidebar";
-import { Box } from "@mui/material";
 
 interface DashboardLayoutProps {
   children?: ReactNode;
@@ -15,7 +15,7 @@ const DashboardLayoutRoot = styled("div")(({ theme }) => ({
   flex: "1 1 auto",
   maxWidth: "100%",
   paddingTop: 64,
-  [theme.breakpoints.up("lg")]: {
+  [theme.breakpoints.up("md")]: {
     paddingLeft: 200,
   },
 }));

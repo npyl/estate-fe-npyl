@@ -116,7 +116,7 @@ export const DashboardSidebarItem: FC<DashboardSidebarItemProps> = (props) => {
             width: "100%",
             textDecoration: "none",
             borderRadius: 1,
-            color: "neutral.300",
+            color: "neutral.700",
             justifyContent: "flex-start",
             pl: `${paddingLeft}px`,
             pr: 3,
@@ -132,7 +132,7 @@ export const DashboardSidebarItem: FC<DashboardSidebarItemProps> = (props) => {
               color: active ? "secondary.main" : "neutral.400",
             },
             "&:hover": {
-              backgroundColor: "rgba(255,255,255, 0.08)",
+              backgroundColor: "neutral.200",
             },
           }}
         >

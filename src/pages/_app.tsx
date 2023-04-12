@@ -14,7 +14,6 @@ import { useEffect } from "react";
 import { Provider as ReduxProvider } from "react-redux";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { RTL } from "../components/rtl";
 import { SplashScreen } from "../components/splash-screen";
 import { gtmConfig } from "../config";
 import { AuthConsumer, AuthProvider } from "../contexts/jwt-context";
@@ -67,19 +66,17 @@ const App: FC<EnhancedAppProps> = (props) => {
                       mode: settings.theme,
                     })}
                   >
-                    <RTL direction={settings.direction}>
-                      <CssBaseline />
-                      <ToastContainer position='top-center' />
-                      <AuthConsumer>
-                        {(auth) =>
-                          !auth.isInitialized ? (
-                            <SplashScreen />
-                          ) : (
-                            getLayout(<Component {...pageProps} />)
-                          )
-                        }
-                      </AuthConsumer>
-                    </RTL>
+                    <CssBaseline />
+                    <ToastContainer position='top-center' />
+                    <AuthConsumer>
+                      {(auth) =>
+                        !auth.isInitialized ? (
+                          <SplashScreen />
+                        ) : (
+                          getLayout(<Component {...pageProps} />)
+                        )
+                      }
+                    </AuthConsumer>
                   </ThemeProvider>
                 )}
               </SettingsConsumer>

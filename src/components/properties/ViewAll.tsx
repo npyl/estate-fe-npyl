@@ -40,6 +40,7 @@ const ViewAll: FC = () => {
           </CardContent>
           <Paper
             sx={{
+              padding: 1,
               overflow: "auto",
               maxHeight: "720px",
             }}

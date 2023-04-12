@@ -1,9 +1,9 @@
 import {
   Box,
-  Divider,
   Drawer,
   Link,
   Theme,
+  Typography,
   useMediaQuery,
 } from "@mui/material";
 import { TFunction } from "i18next";
@@ -13,7 +13,6 @@ import { useTranslation } from "react-i18next";
 import { useAuth } from "src/hooks/use-auth";
 import { Home as HomeIcon } from "../../icons/home";
 import { Users as UsersIcon } from "../../icons/users";
-import { Logo } from "../logo";
 import { Scrollbar } from "../scrollbar";
 import { DashboardSidebarSection } from "./dashboard-sidebar-section";
 import { OrganizationPopover } from "./organization-popover";
@@ -59,7 +58,7 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
   const { onClose, open } = props;
   const router = useRouter();
   const { t } = useTranslation();
-  const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up("lg"), {
+  const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up("md"), {
     noSsr: true,
   });
   const sections = useMemo(() => getSections(t), [t]);
@@ -108,24 +107,7 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
             height: "100%",
           }}
         >
-          <div>
-            <Box p={3} height={"64px"}>
-              <Link href='/'>
-                <Logo
-                  sx={{
-                    height: 42,
-                    width: 42,
-                  }}
-                />
-              </Link>
-            </Box>
-          </div>
-          <Divider
-            sx={{
-              borderColor: "#2D3748", // dark divider
-            }}
-          />
-          <Box sx={{ flexGrow: 1 }}>
+          <Box sx={{ flexGrow: 1, backgroundColor: "#F9FAFC" }}>
             {sections.map((section, index) => (
               <DashboardSidebarSection
                 key={section.title}
@@ -157,11 +139,10 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
         open
         PaperProps={{
           sx: {
-            backgroundColor: "neutral.900",
-            borderRightColor: "divider",
-            borderRightStyle: "solid",
-            borderRightWidth: (theme) =>
-              theme.palette.mode === "dark" ? 1 : 0,
+            display: "absolute",
+            top: "64px",
+            backgroundColor: "#FFF",
+            border: 0,
             color: "#FFFFFF",
             width: 200,
           },
@@ -180,7 +161,8 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
       open={open}
       PaperProps={{
         sx: {
-          backgroundColor: "neutral.900",
+          paddingTop: !open ? "64px" : 0,
+
           color: "#FFFFFF",
           width: 200,
         },
@@ -188,6 +170,15 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
       sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
       variant='temporary'
     >
+      {open && (
+        <Box p={2}>
+          <Link href='/'>
+            <Typography color='neutral.900' variant={"h5"}>
+              Estate
+            </Typography>
+          </Link>
+        </Box>
+      )}
       {content}
     </Drawer>
   );
