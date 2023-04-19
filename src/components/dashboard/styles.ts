@@ -13,6 +13,6 @@ export const StyledNavbarSearchPaper = styled(Paper)(({ theme }) => ({
   border: `0.5px solid ${theme.palette.neutral![100]}`,
 
   "&:hover": {
-    border: `0.5px solid ${theme.palette.warning.main}`,
+    border: `0.5px solid ${theme.palette.primary.main}`,
   },
 }));

@@ -1,26 +1,55 @@
-import { Card, CardContent, Container, Paper, Typography } from "@mui/material";
+import GridViewIcon from "@mui/icons-material/GridView";
+import MapIcon from "@mui/icons-material/Map";
+import {
+  Button,
+  Card,
+  CardContent,
+  Container,
+  Paper,
+  Stack,
+  SvgIconTypeMap,
+  Typography,
+} from "@mui/material";
+import { OverridableComponent } from "@mui/material/OverridableComponent";
 import { Box } from "@mui/system";
-import { GridColDef, GridRowsProp } from "@mui/x-data-grid";
-import { FC } from "react";
+import { FC, useState } from "react";
+import { Menu } from "src/icons/menu";
 import { useAllPropertiesQuery } from "src/services/properties";
 import DataGridTable from "../DataGrid";
-
-const rows: GridRowsProp = [
-  { id: 1, col1: "Hello", col2: "World" },
-  { id: 2, col1: "DataGridPro", col2: "is Awesome" },
-  { id: 3, col1: "MUI", col2: "is Amazing" },
-];
-
-const columns: GridColDef[] = [
-  { field: "col1", headerName: "Column 1", width: 150 },
-  { field: "col2", headerName: "Column 2", width: 150 },
-];
+import MediaCard from "./MediaCard";
 
 const ViewAll: FC = () => {
+  type optionType = "list" | "grid" | "map";
+  const [option, setOption] = useState<optionType>("list");
   const { data } = useAllPropertiesQuery();
   if (!data) {
     return null;
   }
+
+  type viewOptionsType = {
+    id: optionType;
+    icon: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
+      muiName: string;
+    };
+    variant: "contained" | "outlined";
+  };
+  const viewOptions: viewOptionsType[] = [
+    {
+      id: "list",
+      icon: Menu,
+      variant: option === "list" ? "contained" : "outlined",
+    },
+    {
+      id: "grid",
+      icon: GridViewIcon,
+      variant: option === "grid" ? "contained" : "outlined",
+    },
+    {
+      id: "map",
+      icon: MapIcon,
+      variant: option === "map" ? "contained" : "outlined",
+    },
+  ];
 
   return (
     <Container maxWidth='xl'>
@@ -35,7 +64,18 @@ const ViewAll: FC = () => {
               }}
             >
               <Typography variant='h6'>Properties</Typography>
-              <Typography variant='h6'>{data?.length} results</Typography>
+              <Stack direction={"row"} spacing={1}>
+                {viewOptions.map((option) => (
+                  <Button
+                    color={"secondary"}
+                    onClick={() => setOption(option.id)}
+                    key={option.id}
+                    variant={option.variant}
+                  >
+                    <option.icon />
+                  </Button>
+                ))}
+              </Stack>
             </Box>
           </CardContent>
           <Paper
@@ -45,37 +85,9 @@ const ViewAll: FC = () => {
               maxHeight: "720px",
             }}
           >
-            <DataGridTable data={data} />
-            {/* <Table stickyHeader>
-              <TableHead>
-                <TableRow>
-                  {tableHeads.map((head) => (
-                    <TableCell key={head.id}>{head.label}</TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {data &&
-                  data.length > 0 &&
-                  data.map((row, index) => {
-                    return (
-                      <TableRow key={index}>
-                        <TableCell>
-                          <Image
-                            height={30}
-                            width={30}
-                            alt={""}
-                            src={
-                              `data:image/jpeg;base64,${row.propertyImage}` ||
-                              ""
-                            }
-                          />
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-              </TableBody>
-            </Table> */}
+            {option === "list" && <DataGridTable data={data} />}
+            {option === "grid" && <MediaCard data={data} />}
+            {option === "map" && <DataGridTable data={data} />}
           </Paper>
         </Card>
       </Box>

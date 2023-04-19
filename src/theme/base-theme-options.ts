@@ -28,6 +28,7 @@ export const baseThemeOptions: ThemeOptions = {
         root: {
           textTransform: "none",
         },
+
         sizeSmall: {
           padding: "6px 16px",
         },
