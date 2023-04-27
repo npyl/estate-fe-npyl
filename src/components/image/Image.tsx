@@ -18,7 +18,7 @@ const Image = forwardRef<HTMLSpanElement, ImageProps>(
         placeholderSrc={
           disabledEffect ? "/assets/transparent.png" : "/assets/placeholder.svg"
         }
-        sx={{ width: "100%", height: "100%", objectFit: "cover" }}
+        sx={{ width: "100%", height: "100%" }}
         {...other}
       />
     );

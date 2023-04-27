@@ -1,0 +1,34 @@
+export interface IPropertyFeatures {
+  id: number;
+  modernDesign: boolean;
+  fireplace: boolean;
+  office: boolean;
+  internet: boolean;
+  painted: boolean;
+  entranceGate: boolean;
+  elevator: boolean;
+  thermalInsulation: boolean;
+  seaView: boolean;
+  guestroom: boolean;
+  satelliteTV: boolean;
+  quietArea: boolean;
+  bright: boolean;
+  soundInsulation: boolean;
+  has24HoursSecurity: boolean;
+  alarmSystem: boolean;
+  attic: boolean;
+  bar: boolean;
+  barbeque: boolean;
+  cctv: boolean;
+  ceramicTiles: boolean;
+  combinedKitchenAndDiningArea: boolean;
+  fireDetector: boolean;
+  homeCinema: boolean;
+  jacuzzi: boolean;
+  nearBusRoute: boolean;
+  panoramicView: boolean;
+  playRoom: boolean;
+  smartHome: boolean;
+  walkableDistanceToBeach: boolean;
+  doubleGlazing: boolean;
+}

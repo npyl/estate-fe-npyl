@@ -18,7 +18,7 @@ export const properties = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Properties"],
+  tagTypes: ["Properties", "PropertyById"],
   endpoints: (builder) => ({
     allProperties: builder.query<IProperties[], void>({
       query: () => ({
@@ -26,7 +26,22 @@ export const properties = createApi({
       }),
       providesTags: ["Properties"],
     }),
+    getPropertyById: builder.query<IProperties, number>({
+      query: (id: number) => `${id}`,
+      providesTags: ["PropertyById"],
+    }),
+    addProperty: builder.mutation<any, any>({
+      query: (dataToSend: any) => ({
+        url: "",
+        method: "POST",
+        body: dataToSend,
+      }),
+    }),
   }),
 });
 
-export const { useAllPropertiesQuery } = properties;
+export const {
+  useAllPropertiesQuery,
+  useGetPropertyByIdQuery,
+  useAddPropertyMutation,
+} = properties;

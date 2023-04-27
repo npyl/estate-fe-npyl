@@ -10,8 +10,10 @@ import { auth } from "../services/auth";
 import { document } from "../services/document";
 import { rtkQueryErrorLogger } from "../services/error";
 import { properties } from "../services/properties";
+import { customers } from "../services/customers";
 import { user } from "../services/user";
 import { rootReducer } from "./root-reducer";
+import { global } from "src/services/global";
 export const createStore = (
   options?: ConfigureStoreOptions["preloadedState"] | undefined
 ) =>
@@ -35,6 +37,8 @@ export const createStore = (
         auth.middleware,
         user.middleware,
         properties.middleware,
+        customers.middleware,
+        global.middleware,
         rtkQueryErrorLogger
       ),
     ...options,

@@ -29,6 +29,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
       <DashboardLayoutRoot>
         <Box
           sx={{
+            backgroundColor:'neutral.100',
             display: "flex",
             flex: "1 1 auto",
             flexDirection: "column",

@@ -4,7 +4,7 @@ import {
   Link,
   Theme,
   Typography,
-  useMediaQuery,
+  useMediaQuery
 } from "@mui/material";
 import { TFunction } from "i18next";
 import { useRouter } from "next/router";
@@ -107,7 +107,7 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
             height: "100%",
           }}
         >
-          <Box sx={{ flexGrow: 1, backgroundColor: "#F9FAFC" }}>
+          <Box sx={{ flexGrow: 1,   backgroundColor:'neutral.100', }}>
             {sections.map((section, index) => (
               <DashboardSidebarSection
                 key={section.title}
