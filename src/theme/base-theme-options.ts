@@ -20,6 +20,7 @@ export const baseThemeOptions: ThemeOptions = {
         },
       },
     },
+   
     MuiButton: {
       defaultProps: {
         disableElevation: true,
@@ -184,6 +185,9 @@ export const baseThemeOptions: ThemeOptions = {
       },
     },
     MuiPaper: {
+      defaultProps: {
+        elevation: 4,
+      },
       styleOverrides: {
         root: {
           backgroundImage: "none",

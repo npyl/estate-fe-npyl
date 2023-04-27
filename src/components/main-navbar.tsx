@@ -6,7 +6,7 @@ import {
   IconButton,
   Link,
   Toolbar,
-  Typography,
+  Typography
 } from "@mui/material";
 import PropTypes from "prop-types";
 import type { FC } from "react";

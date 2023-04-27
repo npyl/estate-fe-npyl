@@ -1,11 +1,23 @@
+import { IPropertyDetails } from "./propertyDetails";
+import { IPropertyFeatures } from "./features";
+import { ILocation } from "./location";
+import { IUser } from "./user";
+import { ICustomer } from "./customer";
+
 export interface IProperties {
+  id: number;
+  code: number;
   state: string;
-  category: string | null;
-  type: string | null;
+  category: string;
   price: number;
-  area: string | null;
-  available_after: Date | null;
-  has_key: boolean;
+  totalArea: number;
+  availableAfter: string;
+  keyId: string;
+  manager: IUser;
   description: string;
-  propertyImage: string | null;
+  owner: ICustomer;
+  location: ILocation;
+  propertyDetail: IPropertyDetails;
+  features: IPropertyFeatures;
+  propertyImage: string;
 }

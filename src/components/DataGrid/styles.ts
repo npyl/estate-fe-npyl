@@ -42,6 +42,7 @@ export const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
     }`,
   },
   "& .MuiDataGrid-cell": {
+    padding:0,
     backgroundColor:
       theme.palette.mode === "light"
         ? theme.palette.common.white

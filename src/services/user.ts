@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { IUser } from "src/types/user";
 
 export const user = createApi({
   reducerPath: "user",
@@ -33,7 +34,14 @@ export const user = createApi({
       }),
       invalidatesTags: ["Profile"],
     }),
+    allUsers: builder.query<IUser[], void>({
+      query: () => ({
+        url: "",
+      }),
+      // providesTags: ["Profile"],
+    }),
   }),
 });
 
-export const { useProfileQuery, useUpdateProfileMutation } = user;
+export const { useProfileQuery, useUpdateProfileMutation, useAllUsersQuery } =
+  user;
