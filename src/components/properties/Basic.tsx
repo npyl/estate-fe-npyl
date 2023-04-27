@@ -7,6 +7,10 @@ import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 import { useSelector } from "react-redux";
 import { Box } from "@mui/system";
 import { useDispatch } from "react-redux";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import {
   selectArea,
   selectCategory,
@@ -31,8 +35,6 @@ import { useAllCustomersQuery } from "src/services/customers";
 
 import { useAllUsersQuery } from "src/services/user";
 
-const ariaLabel = { "aria-label": "description" };
-
 const BasicSection: React.FC<any> = (props) => {
   const enums = props.enums as IGlobalProperty;
   const details = enums?.details as IGlobalPropertyDetails;
@@ -47,6 +49,7 @@ const BasicSection: React.FC<any> = (props) => {
   const keyId = useSelector(selectKeyId);
   const avgUtils = useSelector(selectAvgUtils);
   const area = useSelector(selectArea);
+  const [value, setValue] = React.useState<Date>(new Date());
 
   // get list of owners & managers
   const owners = useAllCustomersQuery().data;
@@ -252,19 +255,14 @@ const BasicSection: React.FC<any> = (props) => {
               }}
             />
           </Grid>
+
           <Grid item xs={6}>
-            {/*ONTWS EDW EXEI KAPOIO ERROR DEN KSERW TI FASH*/}
-
-            {/* <LocalizationProvider fullwidthdateAdapter={AdapterDayjs}>
-      <DemoContainer  components={['DatePicker']}>
-        <DatePicker label="Available after" />
-      </DemoContainer>
-    </LocalizationProvider> */}
+            <DatePicker
+              label="Available After"
+              value={value}
+              // onChange={(newValue) => setValue(newValue)}
+            />
           </Grid>
-
-          {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DateCalendar />
-    </LocalizationProvider> */}
 
           <Grid item xs={6}>
             <TextField
