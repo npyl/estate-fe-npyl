@@ -72,19 +72,19 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
         />
         <ListItem
           label="Store Rooms"
-          status={details?.storerooms.toString() || ""}
+          value={details?.storerooms.toString() || ""}
           align="horizontal"
           divider
         />
         <ListBooleanItem
           label="Attic"
-          value={features?.attic}
+          status={features?.attic}
           align="horizontal"
           divider
         />
         <ListBooleanItem
           label="Playroom"
-          value={features?.playRoom}
+          status={features?.playRoom}
           align="horizontal"
           divider
         />
