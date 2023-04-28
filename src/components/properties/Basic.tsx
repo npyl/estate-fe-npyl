@@ -20,6 +20,7 @@ import {
   selectOwner,
   selectPrice,
   selectState,
+  selectParentCategory,
   setArea,
   setCategory,
   setCode,
@@ -30,12 +31,17 @@ import {
   selectAvgUtils,
   setAvgUtils,
   setKeyId,
+  setParentCategory,
 } from "src/slices/property";
 import { useAllCustomersQuery } from "src/services/customers";
 
 import { useAllUsersQuery } from "src/services/user";
 
 const BasicSection: React.FC<any> = (props) => {
+  const [value, setValue] = React.useState<Date | null>(new Date());
+  const [valueRenovation, setValueRenovation] = React.useState<Date | null>(
+    new Date()
+  );
   const enums = props.enums as IGlobalProperty;
   const details = enums?.details as IGlobalPropertyDetails;
   const dispatch = useDispatch();
@@ -49,11 +55,14 @@ const BasicSection: React.FC<any> = (props) => {
   const keyId = useSelector(selectKeyId);
   const avgUtils = useSelector(selectAvgUtils);
   const area = useSelector(selectArea);
-  const [value, setValue] = React.useState<Date>(new Date());
+  const parentCategory = useSelector(selectParentCategory);
+
+  // const [value, setValue] = React.useState<Date>(new Date());
 
   // get list of owners & managers
   const owners = useAllCustomersQuery().data;
   const managers = useAllUsersQuery().data;
+
   if (!enums) return null;
   return (
     <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
@@ -145,6 +154,38 @@ const BasicSection: React.FC<any> = (props) => {
                   {option.email}
                 </MenuItem>
               ))}
+            </TextField>
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              id="outlined-select-currency"
+              select
+              label="Parent Category*"
+              value={parentCategory}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(setParentCategory(event.target.value));
+              }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="end"></InputAdornment>
+                ),
+              }}
+              inputProps={{
+                shrink: true,
+                style: {
+                  height: "8px",
+                },
+              }}
+              size="small"
+            >
+              {enums?.category &&
+                enums?.category.length > 0 &&
+                enums?.category.map((option) => (
+                  <MenuItem key={option} value={option}>
+                    {option}
+                  </MenuItem>
+                ))}
             </TextField>
           </Grid>
           <Grid item xs={6}>
@@ -257,14 +298,6 @@ const BasicSection: React.FC<any> = (props) => {
           </Grid>
 
           <Grid item xs={6}>
-            <DatePicker
-              label="Available After"
-              value={value}
-              // onChange={(newValue) => setValue(newValue)}
-            />
-          </Grid>
-
-          <Grid item xs={6}>
             <TextField
               fullWidth
               id="outlined-controlled"
@@ -335,6 +368,27 @@ const BasicSection: React.FC<any> = (props) => {
                 style: {
                   height: "8px",
                 },
+              }}
+            />
+          </Grid>
+          <Grid item xs={6} sx={{ py: 2, px: 1 }}>
+            <DatePicker
+              label="Available After"
+              value={value}
+              onChange={(newValue) => setValue(newValue)}
+              sx={{ width: "100%" }}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <DatePicker
+              label="Year of Renovation"
+              value={valueRenovation}
+              onChange={(valueRenovation) =>
+                setValueRenovation(valueRenovation)
+              }
+              sx={{
+                width: "100%",
+                size: "small",
               }}
             />
           </Grid>

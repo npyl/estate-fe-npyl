@@ -18,6 +18,7 @@ import { UploadProps } from "./types";
 import RejectionFiles from "./errors/RejectionFiles";
 import MultiFilePreview from "./preview/MultiFilePreview";
 import SingleFilePreview from "./preview/SingleFilePreview";
+import { useEffect } from "react";
 
 // ----------------------------------------------------------------------
 
@@ -135,7 +136,7 @@ export default function Upload({
           <Box sx={{ my: 3 }}>
             <MultiFilePreview
               files={files}
-              thumbnail={thumbnail}
+              thumbnail={false}
               onRemove={onRemove}
             />
           </Box>
