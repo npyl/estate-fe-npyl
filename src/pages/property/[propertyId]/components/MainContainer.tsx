@@ -9,6 +9,7 @@ interface MainContainerProps {
   DistanceSection: JSX.Element;
   ParkingsSection: JSX.Element;
   BalconiesSection: JSX.Element;
+  BlueprintsSection: JSX.Element;
 }
 
 const MainContainer: React.FC<MainContainerProps> = (props) => {
@@ -21,6 +22,7 @@ const MainContainer: React.FC<MainContainerProps> = (props) => {
     DistanceSection,
     ParkingsSection,
     BalconiesSection,
+    BlueprintsSection,
   } = props;
 
   return (
@@ -113,6 +115,19 @@ const MainContainer: React.FC<MainContainerProps> = (props) => {
           }}
         >
           {BalconiesSection}
+        </Box>
+      </Stack>
+
+      <Stack direction={{ md: "row", xs: "column" }} p={2}>
+        <Box
+          sx={{
+            border: 1,
+            borderColor: "divider",
+            borderRadius: 1,
+            width: { sm: "100%" },
+          }}
+        >
+          {BlueprintsSection}
         </Box>
       </Stack>
     </>

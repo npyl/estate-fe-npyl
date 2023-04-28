@@ -12,15 +12,20 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 
 import "photoswipe/dist/photoswipe.css";
-import AreaSection from "./components/AreaSection";
-import BalconiesSection from "./components/BalconiesSection";
-import BasicSection from "./components/BasicSection";
-import DetailsSection from "./components/DetailsSection";
-import DistanceSection from "./components/DistanceSection";
-import HeatingSection from "./components/HeatingSection";
-import ImageSection from "./components/ImageSection";
+
+import {
+  AreaSection,
+  BalconiesSection,
+  BasicSection,
+  DetailsSection,
+  DistanceSection,
+  BlueprintsSection,
+  HeatingSection,
+  ImageSection,
+  ParkingsSection,
+} from "./components/sections";
+
 import MainContainer from "./components/MainContainer";
-import ParkingsSection from "./components/ParkingsSection";
 
 function a11yProps(index: number) {
   return {
@@ -70,6 +75,7 @@ const SingleProperty: NextPage = () => {
           DistanceSection={<DistanceSection data={data} />}
           ParkingsSection={<ParkingsSection data={data} />}
           BalconiesSection={<BalconiesSection data={data} />}
+          BlueprintsSection={<BlueprintsSection data={data} />}
         />
       </TabPanel>
       <TabPanel value={value} index={1}></TabPanel>
