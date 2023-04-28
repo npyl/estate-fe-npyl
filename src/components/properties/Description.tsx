@@ -15,43 +15,41 @@ const DescriptionSection: React.FC<any> = (props) => {
   const description = useSelector(selectDescription);
 
   return (
-            <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
-              <Box
-                sx={{
-                  px: 3,
-                  py: 1.5,
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
-                <Typography variant="h6">Description</Typography>
-              </Box>
+    <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
+      <Box
+        sx={{
+          px: 3,
+          py: 1.5,
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Typography variant="h6">Description</Typography>
+      </Box>
 
-              <Grid item xs={12} padding={1}>
-                <Grid container item xs={12} spacing={3}>
-                  <Grid item xs={12}>
-                    <TextField
-                      fullWidth
-                      id="outlined-multiline-static"
-                      label="Description"
-                      multiline
-                      rows={20}
-                      value={description}
-                      onChange={(
-                        event: React.ChangeEvent<HTMLInputElement>
-                      ) => {
-                        dispatch(setDescription(event.target.value));
-                      }}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="end"></InputAdornment>
-                        ),
-                      }}
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Paper>
+      <Grid item xs={12} padding={1}>
+        <Grid container item xs={12} spacing={3}>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              id="outlined-multiline-static"
+              label="Description"
+              multiline
+              rows={23}
+              value={description}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(setDescription(event.target.value));
+              }}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="end"></InputAdornment>
+                ),
+              }}
+            />
+          </Grid>
+        </Grid>
+      </Grid>
+    </Paper>
   );
 };
 

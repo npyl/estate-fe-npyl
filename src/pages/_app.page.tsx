@@ -1,4 +1,3 @@
-
 import type { EmotionCache } from "@emotion/cache";
 import { CacheProvider } from "@emotion/react";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -18,7 +17,7 @@ import { SplashScreen } from "../components/splash-screen";
 import { AuthConsumer, AuthProvider } from "../contexts/jwt-context";
 import {
   SettingsConsumer,
-  SettingsProvider
+  SettingsProvider,
 } from "../contexts/settings-context";
 import "../i18n";
 import { store } from "../store";
@@ -41,12 +40,11 @@ const App: FC<EnhancedAppProps> = (props) => {
 
   const getLayout = Component.getLayout ?? ((page) => page);
 
-
   return (
     <CacheProvider value={emotionCache}>
       <Head>
-        <title>Estate</title>
-        <meta name='viewport' content='initial-scale=1, width=device-width' />
+        <title>EstateKop</title>
+        <meta name="viewport" content="initial-scale=1, width=device-width" />
       </Head>
       <ReduxProvider store={store}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -62,7 +60,7 @@ const App: FC<EnhancedAppProps> = (props) => {
                     })}
                   >
                     <CssBaseline />
-                    <ToastContainer position='top-center' />
+                    <ToastContainer position="top-center" />
                     <AuthConsumer>
                       {(auth) =>
                         !auth.isInitialized ? (
