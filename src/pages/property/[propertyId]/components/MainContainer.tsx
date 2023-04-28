@@ -100,12 +100,21 @@ const MainContainer: React.FC<MainContainerProps> = (props) => {
             border: 1,
             borderColor: "divider",
             borderRadius: 1,
+            width: { sm: "50%", xs: "100%" },
+          }}
+        >
+          {BlueprintsSection}
+        </Box>
+        <Box
+          sx={{
+            border: 1,
+            borderColor: "divider",
+            borderRadius: 1,
             width: { md: "25%", sm: "100%" },
           }}
         >
           {ParkingsSection}
         </Box>
-
         <Box
           sx={{
             border: 1,
@@ -115,19 +124,6 @@ const MainContainer: React.FC<MainContainerProps> = (props) => {
           }}
         >
           {BalconiesSection}
-        </Box>
-      </Stack>
-
-      <Stack direction={{ md: "row", xs: "column" }} p={2}>
-        <Box
-          sx={{
-            border: 1,
-            borderColor: "divider",
-            borderRadius: 1,
-            width: { sm: "100%" },
-          }}
-        >
-          {BlueprintsSection}
         </Box>
       </Stack>
     </>
