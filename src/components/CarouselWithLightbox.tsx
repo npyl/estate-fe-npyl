@@ -53,7 +53,7 @@ export default function CarouselWithLightbox({ data }: Props) {
   const carouselSettings1 = {
     dots: false,
     arrows: false,
-    slidesToShow: 1,
+    slidesToShow: data.length > 3 ? 1 : 3,
     draggable: false,
     slidesToScroll: 1,
     adaptiveHeight: true,
