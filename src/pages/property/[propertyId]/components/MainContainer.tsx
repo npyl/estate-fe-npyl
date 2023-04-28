@@ -33,7 +33,6 @@ const MainContainer: React.FC<MainContainerProps> = (props) => {
             borderRadius: 1,
             width: { md: "70%", sm: "100%" },
           }}
-
         >
           {ImageSection}
         </Box>
@@ -44,7 +43,6 @@ const MainContainer: React.FC<MainContainerProps> = (props) => {
             borderRadius: 1,
             width: { md: "30%", sm: "100%" },
           }}
-
         >
           {BasicSection}
         </Box>
@@ -57,7 +55,6 @@ const MainContainer: React.FC<MainContainerProps> = (props) => {
             borderRadius: 1,
             width: { md: "25%", sm: "100%" },
           }}
-
         >
           {DetailsSection}
         </Box>
@@ -69,7 +66,6 @@ const MainContainer: React.FC<MainContainerProps> = (props) => {
             borderRadius: 1,
             width: { md: "25%", sm: "100%" },
           }}
-
         >
           {HeatingSection}
         </Box>
@@ -81,8 +77,6 @@ const MainContainer: React.FC<MainContainerProps> = (props) => {
             borderRadius: 1,
             width: { md: "25%", sm: "100%" },
           }}
-
-         
         >
           {AreaSection}
         </Box>
@@ -94,8 +88,6 @@ const MainContainer: React.FC<MainContainerProps> = (props) => {
             borderRadius: 1,
             width: { md: "25%", sm: "100%" },
           }}
-
-         
         >
           {DistanceSection}
         </Box>
@@ -108,7 +100,6 @@ const MainContainer: React.FC<MainContainerProps> = (props) => {
             borderRadius: 1,
             width: { md: "25%", sm: "100%" },
           }}
-
         >
           {ParkingsSection}
         </Box>
@@ -120,7 +111,6 @@ const MainContainer: React.FC<MainContainerProps> = (props) => {
             borderRadius: 1,
             width: { md: "25%", sm: "100%" },
           }}
-
         >
           {BalconiesSection}
         </Box>
