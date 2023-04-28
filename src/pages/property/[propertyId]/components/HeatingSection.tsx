@@ -48,19 +48,19 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
         />
         <ListBooleanItem
           label="Air Conditioning"
-          value={heating?.airConditioning}
+          status={heating?.airConditioning}
           align="horizontal"
           divider
         />
         <ListBooleanItem
           label="Solar Boiler"
-          value={features?.solarBoiler || true}
+          status={features?.solarBoiler || true}
           align="horizontal"
           divider
         />
         <ListBooleanItem
           label="Floor Heating"
-          value={heating?.floorHeating}
+          status={heating?.floorHeating}
           align="horizontal"
           divider
         />
