@@ -8,7 +8,7 @@ type Direction = "horizontal" | "vertical";
 interface ListItemProps extends MuiListItemProps {
   align?: Direction;
   label: string;
-  status?: string;
+  value?: string;
 }
 
 const ListItem: FC<ListItemProps> = (props) => {
@@ -16,7 +16,7 @@ const ListItem: FC<ListItemProps> = (props) => {
     align = "vertical",
     children,
     disableGutters,
-    status,
+    value,
     label,
     ...other
   } = props;
@@ -54,7 +54,7 @@ const ListItem: FC<ListItemProps> = (props) => {
                   float: "right",
                 }}
               >
-                {status}
+                {value}
               </Typography>
             )}
           </Box>

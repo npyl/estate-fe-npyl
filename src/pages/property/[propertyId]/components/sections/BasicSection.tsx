@@ -48,68 +48,68 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
         />
         <ListItem
           label="Category"
-          status={data?.category}
+          value={data?.category}
           align="horizontal"
           divider
         />
         <ListItem
           label="Code"
-          status={data?.code.toString()}
+          value={data?.code.toString()}
           align="horizontal"
           divider
         />
-        <ListBooleanItem
-          label="Has Key"
-          status={data?.hasKey}
+        <ListItem
+          label="Key Id"
+          value={data?.keyId}
           align="horizontal"
           divider
         />
         <ListItem
           label="Price"
-          status={data?.price.toString() + " € / m^2" || ""}
+          value={data?.price.toString() + " € / m^2" || ""}
           align="horizontal"
           divider
         />
         <ListItem
           label="House Area"
-          status={areas?.covered.toString() || ""}
+          value={areas?.covered.toString() || ""}
           align="horizontal"
           divider
         />
         <ListItem
           label="Plot Area"
-          status={areas?.plot.toString() || ""}
+          value={areas?.plot.toString() || ""}
           align="horizontal"
           divider
         />
         <ListItem
           label="Renovation Year"
-          status={details?.renovationYear.toString() || ""}
+          value={details?.renovationYear.toString() || ""}
           align="horizontal"
           divider
         />
         <ListItem
           label="Monthly Utilities"
-          status={details?.avgUtils.toString() + " €" || ""}
+          value={details?.avgUtils.toString() + " €" || ""}
           align="horizontal"
           divider
         />
         <ListManagerItem manager={manager} />
         <ListItem
           label="Availability"
-          status={data?.state.toString() || ""}
+          value={data?.state.toString() || ""}
           align="horizontal"
           divider
         />
         <ListItem
           label="Misthomeno"
-          status="TODO: misthomeno"
+          value="TODO: misthomeno"
           align="horizontal"
           divider
         />
         <ListItem
           label="Available After"
-          status={data?.availableAfter?.toString() || ""}
+          value={data?.availableAfter?.toString() || ""}
           align="horizontal"
           divider
         />
