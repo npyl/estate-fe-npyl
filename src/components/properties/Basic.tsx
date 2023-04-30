@@ -1,39 +1,35 @@
-import * as React from "react";
-import Typography from "@mui/material/Typography";
-import { Grid, Paper, TextField, MenuItem, List } from "@mui/material";
+import { Grid, MenuItem, Paper, TextField } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
+import Typography from "@mui/material/Typography";
+import * as React from "react";
 
-import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
-import { useSelector } from "react-redux";
 import { Box } from "@mui/system";
-import { useDispatch } from "react-redux";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { useDispatch, useSelector } from "react-redux";
+import { useAllCustomersQuery } from "src/services/customers";
 import {
   selectArea,
+  selectAvgUtils,
   selectCategory,
   selectCode,
   selectKeyId,
   selectManager,
   selectOwner,
+  selectParentCategory,
   selectPrice,
   selectState,
-  selectParentCategory,
   setArea,
+  setAvgUtils,
   setCategory,
   setCode,
+  setKeyId,
   setManager,
   setOwner,
+  setParentCategory,
   setPrice,
   setState,
-  selectAvgUtils,
-  setAvgUtils,
-  setKeyId,
-  setParentCategory,
 } from "src/slices/property";
-import { useAllCustomersQuery } from "src/services/customers";
+import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 
 import { useAllUsersQuery } from "src/services/user";
 
@@ -371,7 +367,7 @@ const BasicSection: React.FC<any> = (props) => {
               }}
             />
           </Grid>
-          <Grid item xs={6} sx={{ py: 2, px: 1 }}>
+          <Grid item xs={6}>
             <DatePicker
               label="Available After"
               value={value}
@@ -379,7 +375,7 @@ const BasicSection: React.FC<any> = (props) => {
               sx={{ width: "100%" }}
             />
           </Grid>
-          <Grid item xs={6}>
+          <Grid item xs={6} >
             <DatePicker
               label="Year of Renovation"
               value={valueRenovation}
@@ -388,7 +384,7 @@ const BasicSection: React.FC<any> = (props) => {
               }
               sx={{
                 width: "100%",
-                size: "small",
+            
               }}
             />
           </Grid>
