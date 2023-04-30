@@ -1,13 +1,13 @@
-
 import GridViewIcon from "@mui/icons-material/GridView";
 import MapIcon from "@mui/icons-material/Map";
 import {
   Button,
   Card,
   CardContent,
-  Container, Stack,
+  Container,
+  Stack,
   SvgIconTypeMap,
-  Typography
+  Typography,
 } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import { Box } from "@mui/system";
@@ -20,8 +20,6 @@ import MediaCard from "./MediaCard";
 import { GridCellParams, GridColDef } from "@mui/x-data-grid";
 import Image from "src/components/image";
 import MapView from "./MapView";
-
-
 
 const ViewAll: FC = () => {
   type optionType = "list" | "grid" | "map";
@@ -63,14 +61,19 @@ const ViewAll: FC = () => {
           src={`data:image/jpeg;base64,${params.formattedValue}` || ""}
           alt=""
           ratio="16/9"
-        width={1}
+          width={1}
         />
       </>
     );
   }
 
   const columns: GridColDef[] = [
-    { field: "propertyImage", headerName: "Thumbnail",width:180, renderCell: renderImage },
+    {
+      field: "propertyImage",
+      headerName: "Thumbnail",
+      width: 180,
+      renderCell: renderImage,
+    },
     { field: "referenceId", headerName: "Reference ID" },
     { field: "type", headerName: "Type" },
     { field: "dateCreated", headerName: "Date Created" },
@@ -104,11 +107,13 @@ const ViewAll: FC = () => {
               </Stack>
             </Box>
           </CardContent>
-       <Box padding={2}>
-            {option === "list" && <DataGridTable rows={data} columns={columns} />}
+          <Box padding={2}>
+            {option === "list" && (
+              <DataGridTable rows={data} columns={columns} />
+            )}
             {option === "grid" && <MediaCard data={data} />}
-            {option === "map" && <MapView   />}
-            </Box>
+            {option === "map" && <MapView />}
+          </Box>
         </Card>
       </Box>
     </Container>

@@ -20,6 +20,7 @@ interface IPropertiesPostRequest {
   propertyDetail: IPropertyDetails;
   features: IPropertyFeatures;
   propertyImage: string;
+  parentCategory: string;
 }
 
 type propertyState = IPropertiesPostRequest;
@@ -142,6 +143,9 @@ const slice = createSlice({
     },
     setOwner(state: propertyState, action): void {
       state.ownerId = action.payload;
+    },
+    setParentCategory(state: propertyState, action): void {
+      state.parentCategory = action.payload;
     },
     setManager(state: propertyState, action): void {
       state.managerId = action.payload;
@@ -297,7 +301,7 @@ const slice = createSlice({
     },
 
     setAccessForDisable(state: propertyState, action): void {
-      // TODO: 
+      // TODO:
     },
 
     setPetAllowed(state: propertyState, action): void {
@@ -439,6 +443,7 @@ const slice = createSlice({
 
 export const {
   setCode,
+  setParentCategory,
   setOwner,
   setManager,
   setCategory,
@@ -538,6 +543,9 @@ export const selectCategory = ({ property }: RootState) => property.category;
 export const selectState = ({ property }: RootState) => property.state;
 export const selectPrice = ({ property }: RootState) => property.price;
 export const selectArea = ({ property }: RootState) => property.totalArea;
+export const selectParentCategory = ({ property }: RootState) =>
+  property.parentCategory;
+
 export const selectKeyId = ({ property }: RootState) => property.keyId;
 export const selectDescription = ({ property }: RootState) =>
   property.description;
