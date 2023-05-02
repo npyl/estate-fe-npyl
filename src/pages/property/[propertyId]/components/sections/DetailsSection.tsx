@@ -2,7 +2,7 @@ import { IProperties } from "src/types/properties";
 
 import { Box, Typography } from "@mui/material";
 
-import { List, ListItem, ListBooleanItem } from "src/components/List";
+import { List, ListBooleanItem, ListItem } from "src/components/List";
 
 interface DetailsSectionProps {
   data: IProperties;
@@ -12,8 +12,6 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
   const { data } = props;
   const details = data?.propertyDetail;
   const features = data?.features;
-
-  console.log(details);
 
   return (
     <>
@@ -25,85 +23,85 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant="h6">Basic Details</Typography>
+        <Typography variant='h6'>Basic Details</Typography>
       </Box>
       <List>
         <ListItem
-          label="Floor"
+          label='Floor'
           value={details?.floor.toString() || ""}
-          align="horizontal"
+          align='horizontal'
           divider
         />
         <ListItem
-          label="Layers"
+          label='Layers'
           value={details?.layers.toString() || ""}
-          align="horizontal"
+          align='horizontal'
           divider
         />
         <ListItem
-          label="Bedrooms"
+          label='Bedrooms'
           value={details?.bedrooms.toString() || ""}
-          align="horizontal"
+          align='horizontal'
           divider
         />
         <ListItem
-          label="Kitchens"
+          label='Kitchens'
           value={details?.kitchens.toString() || ""}
-          align="horizontal"
+          align='horizontal'
           divider
         />
         <ListItem
-          label="Bathrooms"
+          label='Bathrooms'
           value={details?.bathrooms.toString() || ""}
-          align="horizontal"
+          align='horizontal'
           divider
         />
         <ListItem
-          label="W/C"
+          label='W/C'
           value={details?.numOfWC.toString() || ""}
-          align="horizontal"
+          align='horizontal'
           divider
         />
         <ListItem
-          label="Living Rooms"
+          label='Living Rooms'
           value={details?.livingRooms.toString() || ""}
-          align="horizontal"
+          align='horizontal'
           divider
         />
         <ListItem
-          label="Store Rooms"
+          label='Store Rooms'
           value={details?.storerooms.toString() || ""}
-          align="horizontal"
+          align='horizontal'
           divider
         />
         <ListBooleanItem
-          label="Attic"
+          label='Attic'
           status={features?.attic}
-          align="horizontal"
+          align='horizontal'
           divider
         />
         <ListBooleanItem
-          label="Playroom"
+          label='Playroom'
           status={features?.playRoom}
-          align="horizontal"
+          align='horizontal'
           divider
         />
         <ListItem
-          label="Furnished"
+          label='Furnished'
           value={details?.furnished.toString() || ""}
-          align="horizontal"
+          align='horizontal'
           divider
         />
         <ListItem
-          label="Frame Type"
+          label='Frame Type'
           value={details?.frameType.toString() || ""}
-          align="horizontal"
+          align='horizontal'
           divider
         />
         <ListItem
-          label="Energy Class"
+          label='Energy Class'
           value={details?.energyClass.toString() || ""}
-          align="horizontal"
+          align='horizontal'
           divider
         />
       </List>

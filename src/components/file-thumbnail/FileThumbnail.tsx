@@ -24,13 +24,12 @@ export default function FileThumbnail({
   imgSx,
 }: FileIconProps) {
   const { name = "", path = "", preview = "" } = fileData(file);
-  console.log("2,", file);
   const format = fileFormat(path || preview);
 
   const renderContent =
     format === "image" && imageView ? (
       <Box
-        component="img"
+        component='img'
         src={preview}
         sx={{
           width: 1,
@@ -42,7 +41,7 @@ export default function FileThumbnail({
       />
     ) : (
       <Box
-        component="img"
+        component='img'
         src={fileThumb(format)}
         sx={{
           width: 32,
@@ -58,9 +57,9 @@ export default function FileThumbnail({
       <Tooltip title={name}>
         <Stack
           flexShrink={0}
-          component="span"
-          alignItems="center"
-          justifyContent="center"
+          component='span'
+          alignItems='center'
+          justifyContent='center'
           sx={{
             width: "fit-content",
             height: "inherit",

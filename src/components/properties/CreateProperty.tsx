@@ -39,7 +39,6 @@ export default function SimpleAccordion() {
       type: "application/json",
     });
     let dataToSend = new FormData();
-    console.log(files);
     dataToSend.append(
       "propertyImage ",
       files[0] || new File([""], "", { type: "null" })
@@ -51,7 +50,6 @@ export default function SimpleAccordion() {
       );
     }
     dataToSend.append("propertyForm ", blob);
-    console.log(fileData);
     dataToSend.append(
       "propertyFile ",
       files[0] || new File([""], "", { type: "null" })
@@ -66,7 +64,6 @@ export default function SimpleAccordion() {
 
     // perform POST
     create(dataToSend);
-    console.log("hi");
     isSuccess && router.push("/");
   };
 
@@ -103,17 +100,17 @@ export default function SimpleAccordion() {
 
       <Box padding={2}>
         <Stack
-          direction="row"
+          direction='row'
           spacing={2}
-          justifyContent="flex-end"
-          alignItems="center"
+          justifyContent='flex-end'
+          alignItems='center'
         >
-          <Button variant="outlined" startIcon={<DeleteIcon />}>
+          <Button variant='outlined' startIcon={<DeleteIcon />}>
             Delete
           </Button>
 
           <Button
-            variant="contained"
+            variant='contained'
             endIcon={<SendIcon />}
             onClick={() => performUpload()}
           >

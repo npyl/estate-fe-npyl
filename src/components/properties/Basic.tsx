@@ -1,4 +1,4 @@
-import { Grid, MenuItem, Paper, Checkbox, TextField } from "@mui/material";
+import { Checkbox, Grid, MenuItem, Paper, TextField } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
@@ -56,9 +56,8 @@ const BasicSection: React.FC<any> = (props) => {
   // const [value, setValue] = React.useState<Date>(new Date());
 
   // get list of owners & managers
-  const owners = useAllCustomersQuery().data;
-  const managers = useAllUsersQuery().data;
-
+  const { data: owners } = useAllCustomersQuery();
+  const { data: managers } = useAllUsersQuery();
   if (!enums) return null;
   return (
     <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
@@ -70,7 +69,7 @@ const BasicSection: React.FC<any> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant="h6">Basic Details</Typography>
+        <Typography variant='h6'>Basic Details</Typography>
       </Box>
 
       <Grid item xs={12}>
@@ -78,8 +77,8 @@ const BasicSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-start-adornment"
-              label="Code*"
+              id='outlined-start-adornment'
+              label='Code*'
               value={code}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setCode(event.target.value));
@@ -95,14 +94,14 @@ const BasicSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-start-adornment"
+              id='outlined-start-adornment'
               select
-              label="Owner*"
+              label='Owner*'
               value={owner}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setOwner(event.target.value));
               }}
-              size="small"
+              size='small'
             >
               {owners && owners.length > 0 ? (
                 owners?.map((option, index) => (
@@ -118,14 +117,14 @@ const BasicSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-start-adornment"
+              id='outlined-start-adornment'
               select
-              label="Manager*"
+              label='Manager*'
               value={manager}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setManager(event.target.value));
               }}
-              size="small"
+              size='small'
             >
               {managers && managers.length > 0 ? (
                 managers?.map((option, index) => (
@@ -141,9 +140,9 @@ const BasicSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-select-currency"
+              id='outlined-select-currency'
               select
-              label="Parent Category*"
+              label='Parent Category*'
               value={parentCategory}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setParentCategory(event.target.value));
@@ -153,7 +152,7 @@ const BasicSection: React.FC<any> = (props) => {
                   height: "8px",
                 },
               }}
-              size="small"
+              size='small'
             >
               {enums && enums.parentCategory ? (
                 enums?.parentCategory &&
@@ -171,9 +170,9 @@ const BasicSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-select-currency"
+              id='outlined-select-currency'
               select
-              label="Category*"
+              label='Category*'
               value={category}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setCategory(event.target.value));
@@ -183,7 +182,7 @@ const BasicSection: React.FC<any> = (props) => {
                   height: "8px",
                 },
               }}
-              size="small"
+              size='small'
             >
               {enums && enums.category ? (
                 enums?.category &&
@@ -201,10 +200,10 @@ const BasicSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-select-currency"
-              slot=""
+              id='outlined-select-currency'
+              slot=''
               select
-              label="State*"
+              label='State*'
               value={state}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setState(event.target.value));
@@ -214,7 +213,7 @@ const BasicSection: React.FC<any> = (props) => {
                   height: "8px",
                 },
               }}
-              size="small"
+              size='small'
             >
               {enums && enums.state ? (
                 enums?.state.map((option) => (
@@ -230,8 +229,8 @@ const BasicSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-select-currency"
-              label="Price*" /* < euro sticky to field> */
+              id='outlined-select-currency'
+              label='Price*' /* < euro sticky to field> */
               value={price}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setPrice(event.target.value));
@@ -247,15 +246,15 @@ const BasicSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-select-currency"
-              label="Area*"
+              id='outlined-select-currency'
+              label='Area*'
               value={area}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setArea(event.target.value));
               }}
               InputProps={{
                 endAdornment: (
-                  <InputAdornment position="end">m²</InputAdornment>
+                  <InputAdornment position='end'>m²</InputAdornment>
                 ),
               }}
               inputProps={{
@@ -269,14 +268,14 @@ const BasicSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Average Utils"
+              id='outlined-controlled'
+              label='Average Utils'
               value={avgUtils}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setAvgUtils(event.target.value));
               }}
               InputProps={{
-                endAdornment: <InputAdornment position="end">€</InputAdornment>,
+                endAdornment: <InputAdornment position='end'>€</InputAdornment>,
               }}
               inputProps={{
                 style: {
@@ -318,9 +317,9 @@ const BasicSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             {/* <> */}
             <Checkbox
-              id="outlined-controlled"
+              id='outlined-controlled'
               value={keyId}
-              placeholder="1,2,3..."
+              placeholder='1,2,3...'
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setKeyId(event.target.value));
               }}
@@ -333,7 +332,7 @@ const BasicSection: React.FC<any> = (props) => {
           </Grid>
           <Grid item xs={6}>
             <DatePicker
-              label="Available After"
+              label='Available After'
               value={value}
               onChange={(newValue) => setValue(newValue)}
               sx={{ width: "100%" }}
@@ -341,7 +340,7 @@ const BasicSection: React.FC<any> = (props) => {
           </Grid>
           <Grid item xs={6}>
             <DatePicker
-              label="Year of Renovation"
+              label='Year of Renovation'
               value={valueRenovation}
               onChange={(valueRenovation) =>
                 setValueRenovation(valueRenovation)

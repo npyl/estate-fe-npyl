@@ -1,15 +1,7 @@
 "use client";
-import {
-  Box,
-  BoxProps,
-  Divider,
-  Grid,
-  Paper,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { Box, BoxProps, Grid, Paper, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/router";
-import Iconify from "src/components/iconify";
+import Iconify from "src/components/iconify/Iconify";
 import { IProperties } from "src/types/properties";
 import Image from "../../components/image";
 import Label from "../../components/label";
@@ -36,9 +28,9 @@ interface Props extends BoxProps {
 
 export default function MediaCard({ data, sx, ...other }: Props) {
   return (
-    <Grid container sx={{ px: 1.5, pb: 2, ...sx }}>
+    <Grid container sx={{ pb: 2, ...sx }}>
       {data.map((item, index) => (
-        <Grid item key={index} xs={12} sm={4} md={3}>
+        <Grid item key={index} xs={12} sm={4}>
           <BookingItem item={item} />
         </Grid>
       ))}
@@ -55,28 +47,28 @@ type BookingItemProps = {
 
 export function BookingItem({ item, activeMarker }: BookingItemProps) {
   const { state, propertyDetail, price, location, propertyImage, id } = item;
-  console.log(item.id, activeMarker);
   const router = useRouter();
   return (
     <Paper
       onClick={() => router.push(`property/${id}`)}
       sx={{
         mx: 1.5,
+        border: 0,
         borderRadius: 1,
         boxShadow:
           item.id === activeMarker
-            ? `rgba(0, 0, 0, 0.35) 0px 5px 15px`
-            : `rgba(0, 0, 0, 0.10) 0px 5px 8px`,
-        bgcolor: "neutral.100",
+            ? `rgba(0, 0, 0, 0.65) 0px 5px 15px`
+            : `rgba(0, 0, 0, 0.25) 0px 5px 15px`,
+
         "&:hover": {
           cursor: "pointer",
-          boxShadow: `rgba(0, 0, 0, 0.24) 0px 5px 8px`,
+          boxShadow: `rgba(0, 0, 0, 0.65) 0px 5px 15px`,
         },
       }}
     >
       <Box sx={{ position: "relative" }}>
         <Label
-          variant="filled"
+          variant='filled'
           color={
             (state === "SOLD" && "error") ||
             (state === "SALE" && "info") ||
@@ -93,40 +85,34 @@ export function BookingItem({ item, activeMarker }: BookingItemProps) {
         </Label>
 
         <Image
-          alt="cover"
+          alt='cover'
           src={`data:image/jpeg;base64,${propertyImage!}`}
-          ratio="16/9"
-         
+          ratio='6/4'
         />
       </Box>
 
-      <Stack direction="column" spacing={0.5} sx={{ p: 1, background:"primary" }}>
-        <Stack direction="row" justifyContent="space-between">
-          <Typography variant="body1">Τιμή:</Typography>
-          <Typography variant="body1">{price}€</Typography>
-        </Stack>
-        <Divider />
-        <Stack direction="row" justifyContent="space-between">
-          <Typography variant="body1"> Εμβαδόν:</Typography>
-          <Typography variant="body1">
-            {" "}
-            {propertyDetail.propertyArea}τ.μ
-          </Typography>
-        </Stack>
-        <Divider />
+      <Stack direction='column' spacing={1} sx={{ p: 2, background: "white" }}>
+        <Typography variant='h6'>{price}€</Typography>
+
         <Stack
-          direction="row"
-          justifyContent="center"
-          alignItems="center"
+          direction='row'
+          justifyContent='flex-start'
+          alignItems={"center"}
           spacing={1}
         >
-          <Iconify icon="material-symbols:map" width={16} />
-          <Typography variant="body1">
-            {" "}
-            {location.street}({location.region}), {location.city}{" "}
-            {location.country}
+          <Iconify icon={"solar:ruler-angular-linear"} />
+          <Typography variant='body2'>
+            {propertyDetail.propertyArea}sqm -
           </Typography>
+          <Iconify icon={"ph:bed"} />
+          <Typography variant='body2'>{propertyDetail.bedrooms} -</Typography>
+          <Iconify icon={"mdi:bathroom"} />
+          <Typography variant='body2'>{propertyDetail.bathrooms}</Typography>
         </Stack>
+
+        <Typography color={"text.secondary"} variant='body1'>
+          {location.street} {location.number}, {location.zipCode}
+        </Typography>
       </Stack>
     </Paper>
   );
