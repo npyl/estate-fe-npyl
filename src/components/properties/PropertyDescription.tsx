@@ -65,6 +65,8 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
   const bedrooms = useSelector(selectBedrooms);
   const storerooms = useSelector(selectStorerooms);
 
+  if (!details) return null;
+
   return (
     <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
       <Box
@@ -91,11 +93,6 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setFurnished(event.target.value));
               }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="end"></InputAdornment>
-                ),
-              }}
               inputProps={{
                 style: {
                   height: "8px",
@@ -121,11 +118,6 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setFloorType(event.target.value));
               }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="end"></InputAdornment>
-                ),
-              }}
               inputProps={{
                 style: {
                   height: "8px",
@@ -149,11 +141,6 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               value={viewType}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setViewType(event.target.value));
-              }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="end"></InputAdornment>
-                ),
               }}
               inputProps={{
                 style: {
@@ -180,11 +167,6 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setFrameType(event.target.value));
               }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="end"></InputAdornment>
-                ),
-              }}
               inputProps={{
                 style: {
                   height: "8px",
@@ -209,11 +191,6 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               value={accessibility}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setAccessibility(event.target.value));
-              }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="end"></InputAdornment>
-                ),
               }}
               inputProps={{
                 style: {
@@ -240,11 +217,6 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setEnergyClass(event.target.value));
               }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="end"></InputAdornment>
-                ),
-              }}
               inputProps={{
                 style: {
                   height: "8px",
@@ -269,11 +241,6 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setZoneType(event.target.value));
               }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="end"></InputAdornment>
-                ),
-              }}
               inputProps={{
                 style: {
                   height: "8px",
@@ -297,11 +264,6 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               value={electricityType}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setElectricityType(event.target.value));
-              }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="end"></InputAdornment>
-                ),
               }}
               inputProps={{
                 style: {
@@ -329,11 +291,6 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setFloors(event.target.value));
               }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="end"></InputAdornment>
-                ),
-              }}
               inputProps={{
                 style: {
                   height: "8px",
@@ -351,11 +308,6 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               placeholder="1,2,3..."
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setKitchens(event.target.value));
-              }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="end"></InputAdornment>
-                ),
               }}
               inputProps={{
                 style: {
@@ -375,11 +327,6 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setLayers(event.target.value));
               }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="end"></InputAdornment>
-                ),
-              }}
               inputProps={{
                 style: {
                   height: "8px",
@@ -397,11 +344,6 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               placeholder="1,2,3..."
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setBathrooms(event.target.value));
-              }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="end"></InputAdornment>
-                ),
               }}
               inputProps={{
                 style: {
@@ -435,11 +377,6 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setNumOfWC(event.target.value));
               }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="end"></InputAdornment>
-                ),
-              }}
               inputProps={{
                 style: {
                   height: "8px",
@@ -458,11 +395,6 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setLivingRooms(event.target.value));
               }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="end"></InputAdornment>
-                ),
-              }}
               inputProps={{
                 style: {
                   height: "8px",
@@ -480,11 +412,6 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               placeholder="1,2,3..."
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setStorerooms(event.target.value));
-              }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="end"></InputAdornment>
-                ),
               }}
               inputProps={{
                 style: {
