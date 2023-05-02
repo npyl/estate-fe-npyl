@@ -27,7 +27,7 @@ const ViewAll: FC = () => {
     };
   });
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth='xl'>
       <Box sx={{ mb: 4 }}>
         <Card sx={{ mt: 4 }}>
           <CardContent>
@@ -38,8 +38,8 @@ const ViewAll: FC = () => {
                 justifyContent: "space-between",
               }}
             >
-              <Typography variant="h6">Customers</Typography>
-              <Typography variant="h6">{data?.length} results</Typography>
+              <Typography variant='h6'>Customers</Typography>
+              <Typography variant='h6'>{data?.length} results</Typography>
             </Box>
           </CardContent>
           <Paper

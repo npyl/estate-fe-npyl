@@ -70,7 +70,7 @@ const BasicSection: React.FC<any> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant="h6">Basic Details</Typography>
+        <Typography variant='h6'>Basic Details</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -78,15 +78,15 @@ const BasicSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-start-adornment"
-              label="Code*"
+              id='outlined-start-adornment'
+              label='Code*'
               value={code}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setCode(event.target.value));
               }}
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="end"></InputAdornment>
+                  <InputAdornment position='end'></InputAdornment>
                 ),
               }}
               inputProps={{
@@ -101,22 +101,22 @@ const BasicSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-start-adornment"
+              id='outlined-start-adornment'
               select
-              label="Owner*"
+              label='Owner*'
               value={owner}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setOwner(event.target.value));
               }}
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="end"></InputAdornment>
+                  <InputAdornment position='end'></InputAdornment>
                 ),
               }}
               inputProps={{
                 shrink: true,
               }}
-              size="small"
+              size='small'
             >
               {owners?.map((option, index) => (
                 <MenuItem key={index} value={option.id}>
@@ -128,22 +128,22 @@ const BasicSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-start-adornment"
+              id='outlined-start-adornment'
               select
-              label="Manager*"
+              label='Manager*'
               value={manager}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setManager(event.target.value));
               }}
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="end"></InputAdornment>
+                  <InputAdornment position='end'></InputAdornment>
                 ),
               }}
               inputProps={{
                 shrink: true,
               }}
-              size="small"
+              size='small'
             >
               {managers?.map((option, index) => (
                 <MenuItem key={index} value={option.id}>
@@ -155,16 +155,16 @@ const BasicSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-select-currency"
+              id='outlined-select-currency'
               select
-              label="Parent Category*"
+              label='Parent Category*'
               value={parentCategory}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setParentCategory(event.target.value));
               }}
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="end"></InputAdornment>
+                  <InputAdornment position='end'></InputAdornment>
                 ),
               }}
               inputProps={{
@@ -173,7 +173,7 @@ const BasicSection: React.FC<any> = (props) => {
                   height: "8px",
                 },
               }}
-              size="small"
+              size='small'
             >
               {enums?.category &&
                 enums?.category.length > 0 &&
@@ -187,16 +187,16 @@ const BasicSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-select-currency"
+              id='outlined-select-currency'
               select
-              label="Category*"
+              label='Category*'
               value={category}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setCategory(event.target.value));
               }}
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="end"></InputAdornment>
+                  <InputAdornment position='end'></InputAdornment>
                 ),
               }}
               inputProps={{
@@ -205,7 +205,7 @@ const BasicSection: React.FC<any> = (props) => {
                   height: "8px",
                 },
               }}
-              size="small"
+              size='small'
             >
               {enums?.category &&
                 enums?.category.length > 0 &&
@@ -219,17 +219,17 @@ const BasicSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-select-currency"
-              slot=""
+              id='outlined-select-currency'
+              slot=''
               select
-              label="State*"
+              label='State*'
               value={state}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setState(event.target.value));
               }}
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="end"></InputAdornment>
+                  <InputAdornment position='end'></InputAdornment>
                 ),
               }}
               inputProps={{
@@ -238,7 +238,7 @@ const BasicSection: React.FC<any> = (props) => {
                   height: "8px",
                 },
               }}
-              size="small"
+              size='small'
             >
               {enums?.state.map((option) => (
                 <MenuItem key={option} value={option}>
@@ -250,15 +250,15 @@ const BasicSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-select-currency"
-              label="Price*" /* < euro sticky to field> */
+              id='outlined-select-currency'
+              label='Price*' /* < euro sticky to field> */
               value={price}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setPrice(event.target.value));
               }}
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="end"></InputAdornment>
+                  <InputAdornment position='end'></InputAdornment>
                 ),
               }}
               inputProps={{
@@ -273,15 +273,15 @@ const BasicSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-select-currency"
-              label="Area*"
+              id='outlined-select-currency'
+              label='Area*'
               value={area}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setArea(event.target.value));
               }}
               InputProps={{
                 endAdornment: (
-                  <InputAdornment position="end">m²</InputAdornment>
+                  <InputAdornment position='end'>m²</InputAdornment>
                 ),
               }}
               inputProps={{
@@ -296,14 +296,14 @@ const BasicSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Average Utils"
+              id='outlined-controlled'
+              label='Average Utils'
               value={avgUtils}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setAvgUtils(event.target.value));
               }}
               InputProps={{
-                endAdornment: <InputAdornment position="end">€</InputAdornment>,
+                endAdornment: <InputAdornment position='end'>€</InputAdornment>,
               }}
               inputProps={{
                 shrink: true,
@@ -347,16 +347,16 @@ const BasicSection: React.FC<any> = (props) => {
             {/* <> */}
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Key Code"
+              id='outlined-controlled'
+              label='Key Code'
               value={keyId}
-              placeholder="1,2,3..."
+              placeholder='1,2,3...'
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setKeyId(event.target.value));
               }}
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="end"></InputAdornment>
+                  <InputAdornment position='end'></InputAdornment>
                 ),
               }}
               inputProps={{
@@ -369,22 +369,21 @@ const BasicSection: React.FC<any> = (props) => {
           </Grid>
           <Grid item xs={6}>
             <DatePicker
-              label="Available After"
+              label='Available After'
               value={value}
               onChange={(newValue) => setValue(newValue)}
               sx={{ width: "100%" }}
             />
           </Grid>
-          <Grid item xs={6} >
+          <Grid item xs={6}>
             <DatePicker
-              label="Year of Renovation"
+              label='Year of Renovation'
               value={valueRenovation}
               onChange={(valueRenovation) =>
                 setValueRenovation(valueRenovation)
               }
               sx={{
                 width: "100%",
-            
               }}
             />
           </Grid>
