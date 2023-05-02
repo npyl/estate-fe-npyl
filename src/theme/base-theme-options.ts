@@ -20,7 +20,7 @@ export const baseThemeOptions: ThemeOptions = {
         },
       },
     },
-   
+
     MuiButton: {
       defaultProps: {
         disableElevation: true,
@@ -212,6 +212,7 @@ export const baseThemeOptions: ThemeOptions = {
     MuiTab: {
       styleOverrides: {
         root: {
+          minHeight: 55,
           fontSize: 14,
           fontWeight: 500,
           lineHeight: 1.71,
