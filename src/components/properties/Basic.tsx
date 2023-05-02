@@ -1,4 +1,4 @@
-import { Grid, MenuItem, Paper, TextField } from "@mui/material";
+import { Grid, MenuItem, Paper, Checkbox, TextField } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
@@ -41,7 +41,7 @@ const BasicSection: React.FC<any> = (props) => {
   const enums = props.enums as IGlobalProperty;
   const details = enums?.details as IGlobalPropertyDetails;
   const dispatch = useDispatch();
-  console.log(enums);
+
   const code = useSelector(selectCode);
   const owner = useSelector(selectOwner);
   const manager = useSelector(selectManager);
@@ -84,11 +84,6 @@ const BasicSection: React.FC<any> = (props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setCode(event.target.value));
               }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="end"></InputAdornment>
-                ),
-              }}
               inputProps={{
                 style: {
                   height: "8px",
@@ -107,19 +102,17 @@ const BasicSection: React.FC<any> = (props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setOwner(event.target.value));
               }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="end"></InputAdornment>
-                ),
-              }}
-              inputProps={{}}
               size="small"
             >
-              {owners?.map((option, index) => (
-                <MenuItem key={index} value={option.id}>
-                  {option.email}
-                </MenuItem>
-              ))}
+              {owners && owners.length > 0 ? (
+                owners?.map((option, index) => (
+                  <MenuItem key={index} value={option.id}>
+                    {option.email}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem value={""}></MenuItem>
+              )}
             </TextField>
           </Grid>
           <Grid item xs={6}>
@@ -132,19 +125,17 @@ const BasicSection: React.FC<any> = (props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setManager(event.target.value));
               }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="end"></InputAdornment>
-                ),
-              }}
-              inputProps={{}}
               size="small"
             >
-              {managers?.map((option, index) => (
-                <MenuItem key={index} value={option.id}>
-                  {option.email}
-                </MenuItem>
-              ))}
+              {managers && managers.length > 0 ? (
+                managers?.map((option, index) => (
+                  <MenuItem key={index} value={option.id}>
+                    {option.email}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem value={""}></MenuItem>
+              )}
             </TextField>
           </Grid>
           <Grid item xs={6}>
@@ -157,11 +148,6 @@ const BasicSection: React.FC<any> = (props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setParentCategory(event.target.value));
               }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="end"></InputAdornment>
-                ),
-              }}
               inputProps={{
                 style: {
                   height: "8px",
@@ -169,13 +155,17 @@ const BasicSection: React.FC<any> = (props) => {
               }}
               size="small"
             >
-              {enums?.parentCategory &&
+              {enums && enums.parentCategory ? (
+                enums?.parentCategory &&
                 enums?.parentCategory.length > 0 &&
                 enums?.parentCategory.map((option) => (
                   <MenuItem key={option} value={option}>
                     {option}
                   </MenuItem>
-                ))}
+                ))
+              ) : (
+                <MenuItem value={""}></MenuItem>
+              )}
             </TextField>
           </Grid>
           <Grid item xs={6}>
@@ -188,11 +178,6 @@ const BasicSection: React.FC<any> = (props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setCategory(event.target.value));
               }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="end"></InputAdornment>
-                ),
-              }}
               inputProps={{
                 style: {
                   height: "8px",
@@ -200,13 +185,17 @@ const BasicSection: React.FC<any> = (props) => {
               }}
               size="small"
             >
-              {enums?.category &&
+              {enums && enums.category ? (
+                enums?.category &&
                 enums?.category.length > 0 &&
                 enums?.category.map((option) => (
                   <MenuItem key={option} value={option}>
                     {option}
                   </MenuItem>
-                ))}
+                ))
+              ) : (
+                <MenuItem value={""}></MenuItem>
+              )}
             </TextField>
           </Grid>
           <Grid item xs={6}>
@@ -220,11 +209,6 @@ const BasicSection: React.FC<any> = (props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setState(event.target.value));
               }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="end"></InputAdornment>
-                ),
-              }}
               inputProps={{
                 style: {
                   height: "8px",
@@ -232,11 +216,15 @@ const BasicSection: React.FC<any> = (props) => {
               }}
               size="small"
             >
-              {enums?.state.map((option) => (
-                <MenuItem key={option} value={option}>
-                  {option}
-                </MenuItem>
-              ))}
+              {enums && enums.state ? (
+                enums?.state.map((option) => (
+                  <MenuItem key={option} value={option}>
+                    {option}
+                  </MenuItem>
+                ))
+              ) : (
+                <MenuItem value={""}></MenuItem>
+              )}
             </TextField>
           </Grid>
           <Grid item xs={6}>
@@ -247,11 +235,6 @@ const BasicSection: React.FC<any> = (props) => {
               value={price}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setPrice(event.target.value));
-              }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="end"></InputAdornment>
-                ),
               }}
               inputProps={{
                 style: {
@@ -334,19 +317,12 @@ const BasicSection: React.FC<any> = (props) => {
 
           <Grid item xs={6}>
             {/* <> */}
-            <TextField
-              fullWidth
+            <Checkbox
               id="outlined-controlled"
-              label="Key Code"
               value={keyId}
               placeholder="1,2,3..."
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setKeyId(event.target.value));
-              }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="end"></InputAdornment>
-                ),
               }}
               inputProps={{
                 style: {
