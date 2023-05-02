@@ -132,6 +132,8 @@ const DetailsSection: React.FC<any> = (props) => {
   const toPublicTransport = useSelector(selectToPublicTransport);
   const toSea = useSelector(selectToSea);
 
+  if (!details) return null;
+
   return (
     <div style={{ padding: 10, paddingTop: 0 }}>
       <Accordion>

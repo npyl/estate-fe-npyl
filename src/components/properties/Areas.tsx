@@ -58,7 +58,7 @@ const AreasSection: React.FC<any> = (props) => {
       </Box>
 
       <Grid item xs={12}>
-        <Grid container item spacing={2}>
+        <Grid container spacing={2}>
           <Grid item xs={6}>
             <TextField
               fullWidth

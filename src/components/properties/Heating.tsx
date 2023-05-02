@@ -30,6 +30,8 @@ const HeatingSection: React.FC<any> = (props) => {
   const floorHeating = useSelector(selectFloorHeating);
   const airConditioning = useSelector(selectAirConditioning);
 
+  if (!details || !details.heatingSystem || !details.heatingType) return null;
+
   return (
     <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
       <Box
@@ -55,9 +57,6 @@ const HeatingSection: React.FC<any> = (props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setHeatingType(event.target.value));
               }}
-              InputProps={{
-                endAdornment: <InputAdornment position="end"></InputAdornment>,
-              }}
               inputProps={{
                 style: {
                   height: "8px",
@@ -81,9 +80,6 @@ const HeatingSection: React.FC<any> = (props) => {
               value={heatingSystem}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setHeatingSystem(event.target.value));
-              }}
-              InputProps={{
-                endAdornment: <InputAdornment position="end"></InputAdornment>,
               }}
               inputProps={{
                 style: {

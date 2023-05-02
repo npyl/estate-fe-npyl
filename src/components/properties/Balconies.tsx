@@ -12,7 +12,7 @@ import {
   setBalconySide,
   setArea,
 } from "src/slices/property";
-const ariaLabel = { "aria-label": "description" };
+
 const BalconiesSection: React.FC<any> = (props) => {
   const enums = props.enums as IGlobalProperty;
   const details = enums?.details as IGlobalPropertyDetails;
@@ -21,6 +21,8 @@ const BalconiesSection: React.FC<any> = (props) => {
 
   const balconySide = useSelector(selectBalconySide);
   const area = useSelector(selectArea);
+
+  if (!details || !details.balconySide) return null;
 
   return (
     <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
