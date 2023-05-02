@@ -1,28 +1,11 @@
 import * as React from "react";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { Grid, Paper, TextField, MenuItem, List } from "@mui/material";
+import { Grid, Paper, TextField, MenuItem } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
-import Button from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
-import IconButton from "@mui/material/IconButton";
-import PhotoCamera from "@mui/icons-material/PhotoCamera";
-import AttachFileIcon from "@mui/icons-material/AttachFile";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 import { useSelector } from "react-redux";
-import { Box, spacing } from "@mui/system";
-import { PropertyListBooleanItem } from "src/components/property-list-boolean-item";
-import { PropertyListItem } from "src/components/property-list-item";
-import { PropertyListManagerItem } from "src/components/property-list-manager-item";
-import { PropertyListStatusItem } from "src/components/property-list-availability-item";
-import { IProperties } from "src/types/properties";
-import { styled } from "@mui/material/styles";
+import { Box } from "@mui/system";
 
 import { useDispatch } from "react-redux";
 import {
@@ -47,6 +30,8 @@ const HeatingSection: React.FC<any> = (props) => {
   const floorHeating = useSelector(selectFloorHeating);
   const airConditioning = useSelector(selectAirConditioning);
 
+  if (!details || !details.heatingSystem || !details.heatingType) return null;
+
   return (
     <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
       <Box
@@ -61,7 +46,7 @@ const HeatingSection: React.FC<any> = (props) => {
       </Box>
 
       <Grid item xs={12} padding={1}>
-        <Grid container item xs={12} spacing={2}>
+        <Grid container spacing={2}>
           <Grid item xs={6}>
             <TextField
               fullWidth
@@ -72,11 +57,7 @@ const HeatingSection: React.FC<any> = (props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setHeatingType(event.target.value));
               }}
-              InputProps={{
-                endAdornment: <InputAdornment position="end"></InputAdornment>,
-              }}
               inputProps={{
-                shrink: true,
                 style: {
                   height: "8px",
                 },
@@ -100,11 +81,7 @@ const HeatingSection: React.FC<any> = (props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setHeatingSystem(event.target.value));
               }}
-              InputProps={{
-                endAdornment: <InputAdornment position="end"></InputAdornment>,
-              }}
               inputProps={{
-                shrink: true,
                 style: {
                   height: "8px",
                 },
@@ -118,13 +95,7 @@ const HeatingSection: React.FC<any> = (props) => {
               ))}
             </TextField>
           </Grid>
-          <Grid
-            container
-            item
-            xs={12}
-            spacing={-11}
-            justifyContent={"space-around"}
-          >
+          <Grid container spacing={-11} justifyContent={"space-around"}>
             <Grid
               item
               xs={4}
@@ -149,7 +120,7 @@ const HeatingSection: React.FC<any> = (props) => {
               </Typography>
             </Grid>
 
-            <Grid item xs={1.8} direction="row"></Grid>
+            <Grid item xs={1.8}></Grid>
             <Grid
               item
               xs={4}

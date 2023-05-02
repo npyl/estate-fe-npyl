@@ -125,7 +125,7 @@ export default function CarouselThumbnail({ data }: Props) {
     focusOnSelect: true,
     variableWidth: true,
     centerPadding: "0px",
-    slidesToShow: data.length > 3 ? 3 : data.length,
+    slidesToShow: data.length,
   };
 
   useEffect(() => {
@@ -231,6 +231,7 @@ export default function CarouselThumbnail({ data }: Props) {
         close={() => setGalleryOpen(false)}
         slides={_images}
         plugins={plugins}
+        carousel={{ finite: true }}
         fullscreen={{ ref: fullscreenRef }}
         thumbnails={{ ref: thumbnailsRef }}
         on={{

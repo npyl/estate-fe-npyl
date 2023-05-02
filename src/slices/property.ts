@@ -724,9 +724,9 @@ export const selectPlayRoom = ({ property }: RootState) =>
   property.features.playRoom;
 
 // TODO:
-export const selectPetAllowed = ({ property }: RootState) => 0;
+export const selectPetAllowed = ({ property }: RootState) => false;
 // TODO:
-export const selectSolarBoiler = ({ property }: RootState) => 0;
+export const selectSolarBoiler = ({ property }: RootState) => false;
 
 // TODO:
 export const selectAccessForDisable = ({ property }: RootState) =>
