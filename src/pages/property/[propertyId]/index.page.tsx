@@ -51,7 +51,7 @@ const SingleProperty: NextPage = () => {
 
   return (
     <Box sx={{ width: "100%" }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+      <Box sx={{ borderBottom: 1, borderColor: "divider", paddingLeft: 6 }}>
         <Tabs
           value={value}
           onChange={handleChange}
