@@ -35,8 +35,8 @@ const BalconiesSection: React.FC<any> = (props) => {
         <Typography variant="h6">Balconies</Typography>
       </Box>
 
-      <Grid item xs={12} padding={1}>
-        <Grid container item xs={12} spacing={2}>
+      <Grid item xs={12}>
+        <Grid container spacing={2}>
           <Grid item xs={6}>
             <TextField
               fullWidth
@@ -48,7 +48,6 @@ const BalconiesSection: React.FC<any> = (props) => {
                 dispatch(setBalconySide(event.target.value));
               }}
               inputProps={{
-                shrink: true,
                 style: {
                   height: "8px",
                 },
@@ -78,7 +77,6 @@ const BalconiesSection: React.FC<any> = (props) => {
                 ),
               }}
               inputProps={{
-                shrink: true,
                 style: {
                   height: "8px",
                 },

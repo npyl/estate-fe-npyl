@@ -145,7 +145,7 @@ const FeaturesSection: React.FC<any> = (props) => {
       </Box>
 
       <Grid item xs={12} padding={1}>
-        <Grid container item xs={12} spacing={2}>
+        <Grid container spacing={2}>
           <Grid
             item
             xs={3}

@@ -41,82 +41,72 @@ const ParkingSection: React.FC<any> = (props) => {
   const spots = useSelector(selectSpots);
 
   return (
-            <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
-              <Box
-                sx={{
-                  px: 3,
-                  py: 1.5,
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
-                <Typography variant="h6">Parking</Typography>
-              </Box>
+    <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
+      <Box
+        sx={{
+          px: 3,
+          py: 1.5,
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Typography variant="h6">Parking</Typography>
+      </Box>
 
-              <Grid item xs={12} padding={1}>
-                <Grid container item xs={12} spacing={2}>
-                  <Grid item xs={6}>
-                    <TextField
-                      fullWidth
-                      id="outlined-select-currency"
-                      select
-                      label="Type"
-                      value={parkingType}
-                      onChange={(
-                        event: React.ChangeEvent<HTMLInputElement>
-                      ) => {
-                        dispatch(setParkingType(event.target.value));
-                      }}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end"></InputAdornment>
-                        ),
-                      }}
-                      inputProps={{
-                        shrink: true,
-                        style: {
-                          height: "8px",
-                        },
-                      }}
-                      size="small"
-                    >
-                      {details?.parkingType?.map((option) => (
-                        <MenuItem key={option} value={option}>
-                          {option}
-                        </MenuItem>
-                      ))}
-                    </TextField>
-                  </Grid>
+      <Grid item xs={12} padding={1}>
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              id="outlined-select-currency"
+              select
+              label="Type"
+              value={parkingType}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(setParkingType(event.target.value));
+              }}
+              InputProps={{
+                endAdornment: <InputAdornment position="end"></InputAdornment>,
+              }}
+              inputProps={{
+                style: {
+                  height: "8px",
+                },
+              }}
+              size="small"
+            >
+              {details?.parkingType?.map((option) => (
+                <MenuItem key={option} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
 
-                  <Grid item xs={6}>
-                    {/* <> */}
-                    <TextField
-                      fullWidth
-                      id="outlined-controlled"
-                      label="Number of Spans"
-                      value={spots}
-                      placeholder="1,2,3..."
-                      onChange={(
-                        event: React.ChangeEvent<HTMLInputElement>
-                      ) => {
-                        dispatch(setSpots(event.target.value));
-                      }}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end"></InputAdornment>
-                        ),
-                      }}
-                      inputProps={{
-                        shrink: true,
-                        style: {
-                          height: "8px",
-                        },
-                      }}
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Paper>
+          <Grid item xs={6}>
+            {/* <> */}
+            <TextField
+              fullWidth
+              id="outlined-controlled"
+              label="Number of Spans"
+              value={spots}
+              placeholder="1,2,3..."
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(setSpots(event.target.value));
+              }}
+              InputProps={{
+                endAdornment: <InputAdornment position="end"></InputAdornment>,
+              }}
+              inputProps={{
+                style: {
+                  height: "8px",
+                },
+              }}
+            />
+          </Grid>
+        </Grid>
+      </Grid>
+    </Paper>
   );
 };
 export default ParkingSection;

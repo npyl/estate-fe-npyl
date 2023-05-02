@@ -5,7 +5,7 @@ import SendIcon from "@mui/icons-material/Send";
 import Stack from "@mui/material/Stack";
 import { Box, ThemeProvider } from "@mui/system";
 import BasicSection from "./Basic";
-import FeaturesSection from "./Feautures";
+import FeaturesSection from "./Features";
 import { useAllPropertyGlobalQuery } from "src/services/global";
 import { IGlobalProperty } from "../../types/global";
 import { useAddPropertyMutation } from "src/services/properties";
@@ -72,7 +72,7 @@ export default function SimpleAccordion() {
 
   return (
     <Grid container paddingTop={1} paddingRight={1} spacing={1}>
-      <Grid item xs={6} spacing={1} order={"row"}>
+      <Grid item xs={6} order={"row"}>
         <Stack spacing={1}>
           <BasicSection enums={property} />
 
@@ -87,7 +87,7 @@ export default function SimpleAccordion() {
           />
         </Stack>
       </Grid>
-      <Grid item xs={6} spacing={1}>
+      <Grid item xs={6}>
         <Stack spacing={1}>
           <ImageSection files={files} setFiles={setFiles} enums={property} />
           <LocationSection enums={property} />
