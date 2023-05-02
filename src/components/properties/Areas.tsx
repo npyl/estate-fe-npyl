@@ -1,27 +1,10 @@
 import * as React from "react";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Grid, Paper, TextField, MenuItem, List } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
-import Button from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
-import IconButton from "@mui/material/IconButton";
-import PhotoCamera from "@mui/icons-material/PhotoCamera";
-import AttachFileIcon from "@mui/icons-material/AttachFile";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 import { useSelector } from "react-redux";
 import { Box } from "@mui/system";
-import { PropertyListBooleanItem } from "src/components/property-list-boolean-item";
-import { PropertyListItem } from "src/components/property-list-item";
-import { PropertyListManagerItem } from "src/components/property-list-manager-item";
-import { PropertyListStatusItem } from "src/components/property-list-availability-item";
-import { IProperties } from "src/types/properties";
 
 import { useDispatch } from "react-redux";
 import {
@@ -56,197 +39,176 @@ const AreasSection: React.FC<any> = (props) => {
   const storeRoom = useSelector(selectStoreRoom);
 
   return (
-            <Paper
-              elevation={10}
-              sx={{
-                overflow: "auto",
-                padding: 0.5,
-              }}
-            >
-              <Box
-                sx={{
-                  px: 3,
-                  py: 1.5,
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
-                <Typography variant="h6">Areas</Typography>
-              </Box>
+    <Paper
+      elevation={10}
+      sx={{
+        overflow: "auto",
+        padding: 0.5,
+      }}
+    >
+      <Box
+        sx={{
+          px: 3,
+          py: 1.5,
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Typography variant="h6">Areas</Typography>
+      </Box>
 
-              <Grid item xs={12} padding={1}>
-                <Grid container item xs={12} spacing={2}>
-                  <Grid item xs={6}>
-                    <TextField
-                      fullWidth
-                      id="outlined-controlled"
-                      label="Plot"
-                      value={plot}
-                      onChange={(
-                        event: React.ChangeEvent<HTMLInputElement>
-                      ) => {
-                        dispatch(setPlot(event.target.value));
-                      }}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">m²</InputAdornment>
-                        ),
-                      }}
-                      inputProps={{
-                        shrink: true,
-                        style: {
-                          height: "8px",
-                        },
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <TextField
-                      fullWidth
-                      id="outlined-controlled"
-                      label="Covered"
-                      value={covered}
-                      onChange={(
-                        event: React.ChangeEvent<HTMLInputElement>
-                      ) => {
-                        dispatch(setCovered(event.target.value));
-                      }}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">m²</InputAdornment>
-                        ),
-                      }}
-                      inputProps={{
-                        shrink: true,
-                        style: {
-                          height: "8px",
-                        },
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <TextField
-                      fullWidth
-                      id="outlined-controlled"
-                      label="Basement"
-                      value={basement}
-                      onChange={(
-                        event: React.ChangeEvent<HTMLInputElement>
-                      ) => {
-                        dispatch(setBasement(event.target.value));
-                      }}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">m²</InputAdornment>
-                        ),
-                      }}
-                      inputProps={{
-                        shrink: true,
-                        style: {
-                          height: "8px",
-                        },
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <TextField
-                      fullWidth
-                      id="outlined-controlled"
-                      label="Attic"
-                      value={attic}
-                      onChange={(
-                        event: React.ChangeEvent<HTMLInputElement>
-                      ) => {
-                        dispatch(setAttic(event.target.value));
-                      }}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">m²</InputAdornment>
-                        ),
-                      }}
-                      inputProps={{
-                        shrink: true,
-                        style: {
-                          height: "8px",
-                        },
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <TextField
-                      fullWidth
-                      id="outlined-controlled"
-                      label="Garden"
-                      value={garden}
-                      onChange={(
-                        event: React.ChangeEvent<HTMLInputElement>
-                      ) => {
-                        dispatch(setGarden(event.target.value));
-                      }}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">m²</InputAdornment>
-                        ),
-                      }}
-                      inputProps={{
-                        shrink: true,
-                        style: {
-                          height: "8px",
-                        },
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <TextField
-                      fullWidth
-                      id="outlined-controlled"
-                      label="Balconies"
-                      value={balconies}
-                      onChange={(
-                        event: React.ChangeEvent<HTMLInputElement>
-                      ) => {
-                        dispatch(setBalconies(event.target.value));
-                      }}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">m²</InputAdornment>
-                        ),
-                      }}
-                      inputProps={{
-                        shrink: true,
-                        style: {
-                          height: "8px",
-                        },
-                      }}
-                    />
-                  </Grid>
-                  <Grid item xs={6}>
-                    <TextField
-                      fullWidth
-                      id="outlined-controlled"
-                      label="Storeroom"
-                      value={storeRoom}
-                      onChange={(
-                        event: React.ChangeEvent<HTMLInputElement>
-                      ) => {
-                        dispatch(setStoreRoom(event.target.value));
-                      }}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">m²</InputAdornment>
-                        ),
-                      }}
-                      inputProps={{
-                        shrink: true,
-                        style: {
-                          height: "8px",
-                        },
-                      }}
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Paper>
+      <Grid item xs={12}>
+        <Grid container spacing={2}>
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              id="outlined-controlled"
+              label="Plot"
+              value={plot}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(setPlot(event.target.value));
+              }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">m²</InputAdornment>
+                ),
+              }}
+              inputProps={{
+                style: {
+                  height: "8px",
+                },
+              }}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              id="outlined-controlled"
+              label="Covered"
+              value={covered}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(setCovered(event.target.value));
+              }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">m²</InputAdornment>
+                ),
+              }}
+              inputProps={{
+                style: {
+                  height: "8px",
+                },
+              }}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              id="outlined-controlled"
+              label="Basement"
+              value={basement}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(setBasement(event.target.value));
+              }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">m²</InputAdornment>
+                ),
+              }}
+              inputProps={{
+                style: {
+                  height: "8px",
+                },
+              }}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              id="outlined-controlled"
+              label="Attic"
+              value={attic}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(setAttic(event.target.value));
+              }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">m²</InputAdornment>
+                ),
+              }}
+              inputProps={{
+                style: {
+                  height: "8px",
+                },
+              }}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              id="outlined-controlled"
+              label="Garden"
+              value={garden}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(setGarden(event.target.value));
+              }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">m²</InputAdornment>
+                ),
+              }}
+              inputProps={{
+                style: {
+                  height: "8px",
+                },
+              }}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              id="outlined-controlled"
+              label="Balconies"
+              value={balconies}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(setBalconies(event.target.value));
+              }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">m²</InputAdornment>
+                ),
+              }}
+              inputProps={{
+                style: {
+                  height: "8px",
+                },
+              }}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              id="outlined-controlled"
+              label="Storeroom"
+              value={storeRoom}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(setStoreRoom(event.target.value));
+              }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">m²</InputAdornment>
+                ),
+              }}
+              inputProps={{
+                style: {
+                  height: "8px",
+                },
+              }}
+            />
+          </Grid>
+        </Grid>
+      </Grid>
+    </Paper>
   );
 };
 export default AreasSection;

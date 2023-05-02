@@ -3,9 +3,9 @@ import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
 import Stack from "@mui/material/Stack";
-import { Box, ThemeProvider } from "@mui/system";
+import { Box } from "@mui/system";
 import BasicSection from "./Basic";
-import FeaturesSection from "./Feautures";
+import FeaturesSection from "./Features";
 import { useAllPropertyGlobalQuery } from "src/services/global";
 import { IGlobalProperty } from "../../types/global";
 import { useAddPropertyMutation } from "src/services/properties";
@@ -14,7 +14,7 @@ import { selectAll } from "src/slices/property";
 import DescriptionSection from "./Description";
 import LocationSection from "./Location";
 import AreasSection from "./Areas";
-import { Grid, createMuiTheme } from "@mui/material";
+import { Grid } from "@mui/material";
 import HeatingSection from "./Heating";
 import ParkingSection from "./Parking";
 import BalconiesSection from "./Balconies";
@@ -72,12 +72,10 @@ export default function SimpleAccordion() {
 
   return (
     <Grid container paddingTop={1} paddingRight={1} spacing={1}>
-      <Grid item xs={6} spacing={1} order={"row"}>
+      <Grid item xs={6} order={"row"}>
         <Stack spacing={1}>
           <BasicSection enums={property} />
-
           <PropertyDescriptionSection enums={property} />
-
           <AreasSection enums={property} />
           <DistancesSection enums={property} />
           <FileSection
@@ -87,16 +85,13 @@ export default function SimpleAccordion() {
           />
         </Stack>
       </Grid>
-      <Grid item xs={6} spacing={1}>
+      <Grid item xs={6}>
         <Stack spacing={1}>
           <ImageSection files={files} setFiles={setFiles} enums={property} />
           <LocationSection enums={property} />
           <HeatingSection enums={property} />
-
           <ParkingSection enums={property} />
-
           <BalconiesSection enums={property} />
-
           <DescriptionSection enums={property} />
         </Stack>
       </Grid>

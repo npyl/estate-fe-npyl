@@ -27,8 +27,8 @@ const DescriptionSection: React.FC<any> = (props) => {
         <Typography variant="h6">Description</Typography>
       </Box>
 
-      <Grid item xs={12} padding={1}>
-        <Grid container item xs={12} spacing={3}>
+      <Grid item xs={12}>
+        <Grid container spacing={3}>
           <Grid item xs={12}>
             <TextField
               fullWidth
