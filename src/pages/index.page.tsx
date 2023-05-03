@@ -20,16 +20,6 @@ const Home: NextPage = () => {
           pb: 8,
         }}
       >
-        <Container maxWidth="xl">
-          <Box sx={{ mb: 4 }}>
-            <Grid container justifyContent="space-between" spacing={3}>
-              <Grid item>
-                <Typography variant="h4">Tabs</Typography>
-              </Grid>
-              <Grid item></Grid>
-            </Grid>
-          </Box>
-        </Container>
         <ViewAll />
       </Box>
     </>

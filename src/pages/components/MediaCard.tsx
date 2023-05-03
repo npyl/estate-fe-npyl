@@ -47,7 +47,12 @@ type BookingItemProps = {
 
 export function BookingItem({ item, activeMarker }: BookingItemProps) {
   const { state, propertyDetail, price, location, propertyImage, id } = item;
+
+  if (!state || !propertyDetail || !price || !location || !propertyImage || !id)
+    return null;
+
   const router = useRouter();
+
   return (
     <Paper
       onClick={() => router.push(`property/${id}`)}
@@ -68,7 +73,7 @@ export function BookingItem({ item, activeMarker }: BookingItemProps) {
     >
       <Box sx={{ position: "relative" }}>
         <Label
-          variant='filled'
+          variant="filled"
           color={
             (state === "SOLD" && "error") ||
             (state === "SALE" && "info") ||
@@ -85,32 +90,32 @@ export function BookingItem({ item, activeMarker }: BookingItemProps) {
         </Label>
 
         <Image
-          alt='cover'
+          alt="cover"
           src={`data:image/jpeg;base64,${propertyImage!}`}
-          ratio='6/4'
+          ratio="6/4"
         />
       </Box>
 
-      <Stack direction='column' spacing={1} sx={{ p: 2, background: "white" }}>
-        <Typography variant='h6'>{price}€</Typography>
+      <Stack direction="column" spacing={1} sx={{ p: 2, background: "white" }}>
+        <Typography variant="h6">{price}€</Typography>
 
         <Stack
-          direction='row'
-          justifyContent='flex-start'
+          direction="row"
+          justifyContent="flex-start"
           alignItems={"center"}
           spacing={1}
         >
           <Iconify icon={"solar:ruler-angular-linear"} />
-          <Typography variant='body2'>
+          <Typography variant="body2">
             {propertyDetail.propertyArea}sqm -
           </Typography>
           <Iconify icon={"ph:bed"} />
-          <Typography variant='body2'>{propertyDetail.bedrooms} -</Typography>
+          <Typography variant="body2">{propertyDetail.bedrooms} -</Typography>
           <Iconify icon={"mdi:bathroom"} />
-          <Typography variant='body2'>{propertyDetail.bathrooms}</Typography>
+          <Typography variant="body2">{propertyDetail.bathrooms}</Typography>
         </Stack>
 
-        <Typography color={"text.secondary"} variant='body1'>
+        <Typography color={"text.secondary"} variant="body1">
           {location.street} {location.number}, {location.zipCode}
         </Typography>
       </Stack>
