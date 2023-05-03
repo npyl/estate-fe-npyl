@@ -20,7 +20,6 @@ import {
   AreaSection,
   BalconiesSection,
   BasicSection,
-  BlueprintsSection,
   DetailsSection,
   DistanceSection,
   BlueprintsSection,
@@ -57,14 +56,14 @@ const SingleProperty: NextPage = () => {
         <Tabs
           value={value}
           onChange={handleChange}
-          aria-label='View Property Tabs'
+          aria-label="View Property Tabs"
         >
-          <Tab label='Overview' {...a11yProps(0)} />
-          <Tab label='Deals' {...a11yProps(1)} />
-          <Tab label='Tickets' {...a11yProps(2)} />
-          <Tab label='Activities' {...a11yProps(3)} />
-          <Tab label='Storage' {...a11yProps(4)} />
-          <Tab label='Logs' {...a11yProps(5)} />
+          <Tab label="Overview" {...a11yProps(0)} />
+          <Tab label="Deals" {...a11yProps(1)} />
+          <Tab label="Tickets" {...a11yProps(2)} />
+          <Tab label="Activities" {...a11yProps(3)} />
+          <Tab label="Storage" {...a11yProps(4)} />
+          <Tab label="Logs" {...a11yProps(5)} />
         </Tabs>
       </Paper>
       <TabPanel value={value} index={0}>
