@@ -20,7 +20,7 @@ export const baseThemeOptions: ThemeOptions = {
         },
       },
     },
-   
+
     MuiButton: {
       defaultProps: {
         disableElevation: true,
@@ -58,16 +58,16 @@ export const baseThemeOptions: ThemeOptions = {
     MuiCardActions: {
       styleOverrides: {
         root: {
-          padding: "16px 24px",
+          padding: "12px 12px",
         },
       },
     },
     MuiCardContent: {
       styleOverrides: {
         root: {
-          padding: "32px 24px",
+          padding: "12px",
           "&:last-child": {
-            paddingBottom: "32px",
+            paddingBottom: "12px",
           },
         },
       },
@@ -83,7 +83,12 @@ export const baseThemeOptions: ThemeOptions = {
       },
       styleOverrides: {
         root: {
-          padding: "32px 24px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "26px 14px",
+          height: "25px",
         },
       },
     },

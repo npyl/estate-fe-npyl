@@ -17,11 +17,6 @@ import Checkbox from "@mui/material/Checkbox";
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 import { useSelector } from "react-redux";
 import { Box, spacing } from "@mui/system";
-import { PropertyListBooleanItem } from "src/components/property-list-boolean-item";
-import { PropertyListItem } from "src/components/property-list-item";
-import { PropertyListManagerItem } from "src/components/property-list-manager-item";
-import { PropertyListStatusItem } from "src/components/property-list-availability-item";
-import { IProperties } from "src/types/properties";
 import FeaturesSection from "./Feautures";
 
 import { useDispatch } from "react-redux";
@@ -44,72 +39,68 @@ const DistancesSection: React.FC<any> = (props) => {
   const toSea = useSelector(selectToSea);
 
   return (
-            <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
-              <Box
-                sx={{
-                  px: 3,
-                  py: 1.5,
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
-                <Typography variant="h6">Distances</Typography>
-              </Box>
+    <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
+      <Box
+        sx={{
+          px: 3,
+          py: 1.5,
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Typography variant="h6">Distances</Typography>
+      </Box>
 
-              <Grid item xs={12} padding={1}>
-                <Grid container item xs={12} spacing={2}>
-                  <Grid item xs={6}>
-                    <TextField
-                      fullWidth
-                      id="outlined-controlled"
-                      label="Public Transportation"
-                      value={toPublicTransport}
-                      onChange={(
-                        event: React.ChangeEvent<HTMLInputElement>
-                      ) => {
-                        dispatch(setToPublicTransport(event.target.value));
-                      }}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">km</InputAdornment>
-                        ),
-                      }}
-                      inputProps={{
-                        shrink: true,
-                        style: {
-                          height: "8px",
-                        },
-                      }}
-                    />
-                  </Grid>
+      <Grid item xs={12} padding={1}>
+        <Grid container item xs={12} spacing={2}>
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              id="outlined-controlled"
+              label="Public Transportation"
+              value={toPublicTransport}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(setToPublicTransport(event.target.value));
+              }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">km</InputAdornment>
+                ),
+              }}
+              inputProps={{
+                shrink: true,
+                style: {
+                  height: "8px",
+                },
+              }}
+            />
+          </Grid>
 
-                  <Grid item xs={6}>
-                    <TextField
-                      fullWidth
-                      id="outlined-controlled"
-                      label="Sea"
-                      value={toSea}
-                      onChange={(
-                        event: React.ChangeEvent<HTMLInputElement>
-                      ) => {
-                        dispatch(setToSea(event.target.value));
-                      }}
-                      InputProps={{
-                        endAdornment: (
-                          <InputAdornment position="end">km</InputAdornment>
-                        ),
-                      }}
-                      inputProps={{
-                        shrink: true,
-                        style: {
-                          height: "8px",
-                        },
-                      }}
-                    />
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Paper>
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              id="outlined-controlled"
+              label="Sea"
+              value={toSea}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(setToSea(event.target.value));
+              }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">km</InputAdornment>
+                ),
+              }}
+              inputProps={{
+                shrink: true,
+                style: {
+                  height: "8px",
+                },
+              }}
+            />
+          </Grid>
+        </Grid>
+      </Grid>
+    </Paper>
   );
 };
 export default DistancesSection;
