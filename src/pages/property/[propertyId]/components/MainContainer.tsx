@@ -26,14 +26,14 @@ const MainContainer: React.FC<MainContainerProps> = (props) => {
   } = props;
 
   return (
-    <>
-      <Stack direction={{ md: "row", xs: "column" }} p={2} spacing={2}>
+    <Box>
+      <Stack direction={{ md: "row", xs: "column" }} spacing={2}>
         <Box
           sx={{
             border: 1,
             borderColor: "divider",
             borderRadius: 1,
-            width: { md: "70%", sm: "100%" },
+            width: { md: "60%", sm: "100%" },
           }}
         >
           {ImageSection}
@@ -43,7 +43,7 @@ const MainContainer: React.FC<MainContainerProps> = (props) => {
             border: 1,
             borderColor: "divider",
             borderRadius: 1,
-            width: { md: "30%", sm: "100%" },
+            width: { md: "40%", sm: "100%" },
           }}
         >
           {BasicSection}
@@ -126,7 +126,7 @@ const MainContainer: React.FC<MainContainerProps> = (props) => {
           {BalconiesSection}
         </Box>
       </Stack>
-    </>
+    </Box>
   );
 };
 export default MainContainer;

@@ -100,7 +100,6 @@ export const lightThemeOptions: ThemeOptions = {
     MuiInputBase: {
       styleOverrides: {
         input: {
-          height: "8px",
           "&::placeholder": {
             opacity: 1,
             color: text.secondary,

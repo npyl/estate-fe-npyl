@@ -1,4 +1,5 @@
 import { Box, Container, Grid, Typography } from "@mui/material";
+
 import type { NextPage } from "next";
 import Head from "next/head";
 import { AuthGuard } from "../components/authentication/auth-guard";
@@ -9,13 +10,14 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Estate Kop</title>
+        <title>Estate</title>
       </Head>
       <Box
         component="main"
         sx={{
           flexGrow: 1,
-          py: 8,
+          pt: 2,
+          pb: 8,
         }}
       >
         <Container maxWidth="xl">
@@ -24,6 +26,7 @@ const Home: NextPage = () => {
               <Grid item>
                 <Typography variant="h4">Tabs</Typography>
               </Grid>
+              <Grid item></Grid>
             </Grid>
           </Box>
         </Container>

@@ -1,23 +1,10 @@
 import * as React from "react";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Grid, Paper, TextField, MenuItem, List } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
-import Button from "@mui/material/Button";
-import Stack from "@mui/material/Stack";
-import IconButton from "@mui/material/IconButton";
-import PhotoCamera from "@mui/icons-material/PhotoCamera";
-import AttachFileIcon from "@mui/icons-material/AttachFile";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 import { useSelector } from "react-redux";
-import { Box, spacing } from "@mui/system";
-import FeaturesSection from "./Feautures";
+import { Box } from "@mui/system";
 
 import { useDispatch } from "react-redux";
 import {
@@ -26,9 +13,7 @@ import {
   setToPublicTransport,
   setToSea,
 } from "src/slices/property";
-import LocationSection from "./Location";
-import { property } from "lodash";
-const ariaLabel = { "aria-label": "description" };
+
 const DistancesSection: React.FC<any> = (props) => {
   const enums = props.enums as IGlobalProperty;
   const details = enums?.details as IGlobalPropertyDetails;
@@ -52,7 +37,7 @@ const DistancesSection: React.FC<any> = (props) => {
       </Box>
 
       <Grid item xs={12} padding={1}>
-        <Grid container item xs={12} spacing={2}>
+        <Grid container spacing={2}>
           <Grid item xs={6}>
             <TextField
               fullWidth
@@ -68,7 +53,6 @@ const DistancesSection: React.FC<any> = (props) => {
                 ),
               }}
               inputProps={{
-                shrink: true,
                 style: {
                   height: "8px",
                 },
@@ -91,7 +75,6 @@ const DistancesSection: React.FC<any> = (props) => {
                 ),
               }}
               inputProps={{
-                shrink: true,
                 style: {
                   height: "8px",
                 },

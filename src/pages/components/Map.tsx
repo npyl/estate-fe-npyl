@@ -24,7 +24,6 @@ interface IMapProps {
 }
 
 const Map = ({ data, activeMarker, setActiveMarker }: IMapProps) => {
-  console.log(data);
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: "AIzaSyC6BN1ePFMAmJJfF71uN7vsNXIOCpQ5DbQ",

@@ -21,8 +21,6 @@ const BlueprintsSection: React.FC<BlueprintsSectionProps> = (props) => {
   const { data } = props;
   const blueprints: IFileModel[] = data?.blueprints;
 
-  // console.log(data);
-
   const _carouselData = blueprints.map((blueprint, index) => {
     return {
       id: (index + 1).toString(),
@@ -33,7 +31,6 @@ const BlueprintsSection: React.FC<BlueprintsSectionProps> = (props) => {
   });
 
   // add all images
-  console.log(_carouselData);
 
   return (
     <>
@@ -45,7 +42,7 @@ const BlueprintsSection: React.FC<BlueprintsSectionProps> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant="h6">Blueprints</Typography>
+        <Typography variant='h6'>Blueprints</Typography>
       </Box>
       {_carouselData && _carouselData.length > 0 && (
         <CarouselWithLightbox data={_carouselData} />

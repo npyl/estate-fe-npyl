@@ -132,6 +132,8 @@ const DetailsSection: React.FC<any> = (props) => {
   const toPublicTransport = useSelector(selectToPublicTransport);
   const toSea = useSelector(selectToSea);
 
+  if (!details) return null;
+
   return (
     <div style={{ padding: 10, paddingTop: 0 }}>
       <Accordion>
@@ -156,7 +158,7 @@ const DetailsSection: React.FC<any> = (props) => {
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <Paper elevation={6} sx={{ padding: 2 }}>
-                      <Grid container item xs={12} spacing={2}>
+                      <Grid container spacing={2}>
                         <Grid item xs={3}>
                           <TextField
                             fullWidth
@@ -540,7 +542,7 @@ const DetailsSection: React.FC<any> = (props) => {
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <Paper elevation={6} sx={{ padding: 2 }}>
-                      <Grid container item xs={12} spacing={2}>
+                      <Grid container spacing={2}>
                         <Grid item xs={3}>
                           <TextField
                             fullWidth
@@ -582,7 +584,7 @@ const DetailsSection: React.FC<any> = (props) => {
                           </TextField>
                         </Grid>
 
-                        <Grid item xs={1.5} direction="row" left={2}>
+                        <Grid item xs={1.5} left={2}>
                           <FormGroup>
                             <FormControlLabel
                               control={<Checkbox />}
@@ -598,7 +600,7 @@ const DetailsSection: React.FC<any> = (props) => {
                           </FormGroup>
                         </Grid>
 
-                        <Grid item xs={1} direction="row" left={2}>
+                        <Grid item xs={1} left={2}>
                           <FormGroup>
                             <FormControlLabel
                               control={<Checkbox />}
@@ -632,9 +634,7 @@ const DetailsSection: React.FC<any> = (props) => {
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <Paper elevation={6} sx={{ padding: 2 }}>
-                      <Grid container item xs={12} spacing={2}>
-                        
-                      </Grid>
+                      <Grid container spacing={2}></Grid>
                     </Paper>
                   </Grid>
                 </Grid>
@@ -653,9 +653,7 @@ const DetailsSection: React.FC<any> = (props) => {
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <Paper elevation={6} sx={{ padding: 2 }}>
-                      <Grid container item xs={12} spacing={2}>
-                        
-                      </Grid>
+                      <Grid container spacing={2}></Grid>
                     </Paper>
                   </Grid>
                 </Grid>
@@ -674,9 +672,7 @@ const DetailsSection: React.FC<any> = (props) => {
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <Paper elevation={6} sx={{ padding: 2 }}>
-                      <Grid container item xs={12} spacing={2}>
-                        
-                      </Grid>
+                      <Grid container spacing={2}></Grid>
                     </Paper>
                   </Grid>
                 </Grid>
@@ -695,9 +691,7 @@ const DetailsSection: React.FC<any> = (props) => {
                 <Grid container spacing={2}>
                   <Grid item xs={12}>
                     <Paper elevation={6} sx={{ padding: 2 }}>
-                      <Grid container item xs={12} spacing={2}>
-                        
-                      </Grid>
+                      <Grid container spacing={2}></Grid>
                     </Paper>
                   </Grid>
                 </Grid>

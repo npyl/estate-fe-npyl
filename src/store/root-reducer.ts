@@ -1,12 +1,13 @@
 import { combineReducers } from "@reduxjs/toolkit";
 
 import { auth } from "../services/auth";
-import { document } from "../services/document";
-import { properties } from "../services/properties";
 import { customers } from "../services/customers";
-import { user } from "../services/user";
+import { document } from "../services/document";
 import { global } from "../services/global";
+import { properties } from "../services/properties";
+import { user } from "../services/user";
 import { reducer as propertyReducer } from "../slices/property";
+import { reducer as tabsReducer } from "../slices/tabs";
 
 export const rootReducer = combineReducers({
   [document.reducerPath]: document.reducer,
@@ -16,4 +17,5 @@ export const rootReducer = combineReducers({
   [customers.reducerPath]: customers.reducer,
   [global.reducerPath]: global.reducer,
   property: propertyReducer,
+  tabs: tabsReducer,
 });

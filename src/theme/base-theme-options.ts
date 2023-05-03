@@ -27,6 +27,7 @@ export const baseThemeOptions: ThemeOptions = {
       },
       styleOverrides: {
         root: {
+          maxHeight: "35px",
           textTransform: "none",
         },
 
@@ -217,6 +218,7 @@ export const baseThemeOptions: ThemeOptions = {
     MuiTab: {
       styleOverrides: {
         root: {
+          minHeight: 55,
           fontSize: 14,
           fontWeight: 500,
           lineHeight: 1.71,

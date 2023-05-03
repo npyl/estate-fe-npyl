@@ -3,9 +3,8 @@ import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
 import Stack from "@mui/material/Stack";
-import { Box, ThemeProvider, margin } from "@mui/system";
 import BasicSection from "./Basic";
-import FeaturesSection from "./Feautures";
+import FeaturesSection from "./Features";
 import { useAllPropertyGlobalQuery } from "src/services/global";
 import { IGlobalProperty } from "../../types/global";
 import { useAddPropertyMutation } from "src/services/properties";
@@ -16,11 +15,10 @@ import LocationSection from "./Location";
 import AreasSection from "./Areas";
 import {
   Grid,
-  InputAdornment,
   Paper,
   TextField,
   Typography,
-  createMuiTheme,
+  Box
 } from "@mui/material";
 import HeatingSection from "./Heating";
 import ParkingSection from "./Parking";
@@ -35,7 +33,6 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
-import { Refresh } from "src/icons/refresh";
 import { selectCode, setCode } from "src/slices/property";
 
 export default function SimpleAccordion() {
@@ -55,7 +52,6 @@ export default function SimpleAccordion() {
       type: "application/json",
     });
     let dataToSend = new FormData();
-    console.log(files);
     dataToSend.append(
       "propertyImage ",
       files[0] || new File([""], "", { type: "null" })
@@ -67,7 +63,6 @@ export default function SimpleAccordion() {
       );
     }
     dataToSend.append("propertyForm ", blob);
-    console.log(fileData);
     dataToSend.append(
       "propertyFile ",
       files[0] || new File([""], "", { type: "null" })
@@ -82,7 +77,6 @@ export default function SimpleAccordion() {
 
     // perform POST
     create(dataToSend);
-    console.log("hi");
     isSuccess && router.push("/");
   };
   const [category, setCategory] = React.useState("");
@@ -119,7 +113,7 @@ export default function SimpleAccordion() {
             </Grid>
             <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
               <Grid item xs={12} padding={1}>
-                <Grid container item xs={12} spacing={2}>
+                <Grid container spacing={2}>
                   <Grid item xs={6}>
                     <TextField
                       fullWidth
@@ -130,11 +124,6 @@ export default function SimpleAccordion() {
                         event: React.ChangeEvent<HTMLInputElement>
                       ) => {
                         dispatch(setCode(event.target.value));
-                      }}
-                      InputProps={{
-                        startAdornment: (
-                          <InputAdornment position="end"></InputAdornment>
-                        ),
                       }}
                       inputProps={{
                         shrink: true,
