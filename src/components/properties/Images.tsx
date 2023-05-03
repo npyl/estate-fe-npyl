@@ -5,9 +5,7 @@ import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 import { Box } from "@mui/system";
 
 import { useState, useEffect, useCallback } from "react";
-
 import { Upload } from "../upload";
-
 import { useDispatch } from "react-redux";
 
 interface IImageSectionProps {
@@ -50,7 +48,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 
   return (
     <Card>
-      <CardHeader title="Images" />
+      <CardHeader title="Upload Images" />
       <CardContent>
         <Upload
           multiple

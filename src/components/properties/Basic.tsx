@@ -69,7 +69,7 @@ const BasicSection: React.FC<any> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant='h6'>Basic Details</Typography>
+        <Typography variant="h6">Basic Details</Typography>
       </Box>
 
       <Grid item xs={12}>
@@ -332,7 +332,7 @@ const BasicSection: React.FC<any> = (props) => {
           </Grid>
           <Grid item xs={6}>
             <DatePicker
-              label='Available After'
+              label="Available After"
               value={value}
               onChange={(newValue) => setValue(newValue)}
               sx={{ width: "100%" }}
@@ -340,7 +340,7 @@ const BasicSection: React.FC<any> = (props) => {
           </Grid>
           <Grid item xs={6}>
             <DatePicker
-              label='Year of Renovation'
+              label="Year of Renovation"
               value={valueRenovation}
               onChange={(valueRenovation) =>
                 setValueRenovation(valueRenovation)

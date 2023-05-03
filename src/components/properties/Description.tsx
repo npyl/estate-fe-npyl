@@ -35,7 +35,7 @@ const DescriptionSection: React.FC<any> = (props) => {
               id="outlined-multiline-static"
               label="Description"
               multiline
-              rows={23}
+              rows={22}
               value={description}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setDescription(event.target.value));
