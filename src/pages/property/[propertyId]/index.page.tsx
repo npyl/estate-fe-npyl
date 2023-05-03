@@ -13,10 +13,14 @@ import Tab from "@mui/material/Tab";
 
 import "photoswipe/dist/photoswipe.css";
 
+import { Paper } from "@mui/material";
+import MainContainer from "./components/MainContainer";
+
 import {
   AreaSection,
   BalconiesSection,
   BasicSection,
+  BlueprintsSection,
   DetailsSection,
   DistanceSection,
   BlueprintsSection,
@@ -24,8 +28,6 @@ import {
   ImageSection,
   ParkingsSection,
 } from "./components/sections";
-
-import MainContainer from "./components/MainContainer";
 
 function a11yProps(index: number) {
   return {
@@ -50,21 +52,21 @@ const SingleProperty: NextPage = () => {
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider", paddingLeft: 6 }}>
+    <Box sx={{ width: "100%", padding: 3 }}>
+      <Paper sx={{ borderBottom: 1, borderColor: "divider", paddingX: 3 }}>
         <Tabs
           value={value}
           onChange={handleChange}
-          aria-label="View Property Tabs"
+          aria-label='View Property Tabs'
         >
-          <Tab label="Overview" {...a11yProps(0)} />
-          <Tab label="Deals" {...a11yProps(1)} />
-          <Tab label="Tickets" {...a11yProps(2)} />
-          <Tab label="Activities" {...a11yProps(3)} />
-          <Tab label="Storage" {...a11yProps(4)} />
-          <Tab label="Logs" {...a11yProps(5)} />
+          <Tab label='Overview' {...a11yProps(0)} />
+          <Tab label='Deals' {...a11yProps(1)} />
+          <Tab label='Tickets' {...a11yProps(2)} />
+          <Tab label='Activities' {...a11yProps(3)} />
+          <Tab label='Storage' {...a11yProps(4)} />
+          <Tab label='Logs' {...a11yProps(5)} />
         </Tabs>
-      </Box>
+      </Paper>
       <TabPanel value={value} index={0}>
         <MainContainer
           ImageSection={<ImageSection data={data} />}

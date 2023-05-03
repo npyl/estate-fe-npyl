@@ -1,12 +1,7 @@
 import { List, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 
-import {
-  ListStatusItem,
-  ListBooleanItem,
-  ListItem,
-  ListManagerItem,
-} from "src/components/List";
+import { ListItem, ListManagerItem, ListStatusItem } from "src/components/List";
 
 import { IProperties } from "src/types/properties";
 import { IUser } from "src/types/user";
@@ -37,80 +32,80 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant="h6">{data?.description}</Typography>
+        <Typography variant='h6'>{data?.description}</Typography>
       </Box>
       <List>
         <ListStatusItem
-          label="Availability"
+          label='Availability'
           status={isAvailable(data?.state)}
-          align="horizontal"
+          align='horizontal'
           divider
         />
         <ListItem
-          label="Category"
+          label='Category'
           value={data?.category}
-          align="horizontal"
+          align='horizontal'
           divider
         />
         <ListItem
-          label="Code"
+          label='Code'
           value={data?.code.toString()}
-          align="horizontal"
+          align='horizontal'
           divider
         />
         <ListItem
-          label="Key Id"
+          label='Key Id'
           value={data?.keyId}
-          align="horizontal"
+          align='horizontal'
           divider
         />
         <ListItem
-          label="Price"
+          label='Price'
           value={data?.price.toString() + " € / m^2" || ""}
-          align="horizontal"
+          align='horizontal'
           divider
         />
         <ListItem
-          label="House Area"
+          label='House Area'
           value={areas?.covered.toString() || ""}
-          align="horizontal"
+          align='horizontal'
           divider
         />
         <ListItem
-          label="Plot Area"
+          label='Plot Area'
           value={areas?.plot.toString() || ""}
-          align="horizontal"
+          align='horizontal'
           divider
         />
         <ListItem
-          label="Renovation Year"
+          label='Renovation Year'
           value={details?.renovationYear.toString() || ""}
-          align="horizontal"
+          align='horizontal'
           divider
         />
         <ListItem
-          label="Monthly Utilities"
+          label='Monthly Utilities'
           value={details?.avgUtils.toString() + " €" || ""}
-          align="horizontal"
+          align='horizontal'
           divider
         />
         <ListManagerItem manager={manager} />
         <ListItem
-          label="Availability"
+          label='Availability'
           value={data?.state.toString() || ""}
-          align="horizontal"
+          align='horizontal'
           divider
         />
         <ListItem
-          label="Misthomeno"
-          value="TODO: misthomeno"
-          align="horizontal"
+          label='Misthomeno'
+          value='TODO: misthomeno'
+          align='horizontal'
           divider
         />
         <ListItem
-          label="Available After"
+          label='Available After'
           value={data?.availableAfter?.toString() || ""}
-          align="horizontal"
+          align='horizontal'
           divider
         />
       </List>

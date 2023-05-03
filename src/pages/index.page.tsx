@@ -21,6 +21,8 @@ import ViewAll from "./components/ViewAll";
 
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
+import { selectTabs } from "src/slices/tabs";
 
 const Home: NextPage = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -39,13 +41,14 @@ const Home: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Estate Kop</title>
+        <title>Estate</title>
       </Head>
       <Box
-        component="main"
+        component='main'
         sx={{
           flexGrow: 1,
-          py: 8,
+          pt: 2,
+          pb: 8,
         }}
       >
         <Container maxWidth="xl">

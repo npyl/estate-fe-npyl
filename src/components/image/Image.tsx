@@ -29,6 +29,7 @@ const Image = forwardRef<HTMLSpanElement, ImageProps>(
           ref={ref}
           component='span'
           sx={{
+            borderRadius: 1,
             width: 1,
             lineHeight: 1,
             display: "block",

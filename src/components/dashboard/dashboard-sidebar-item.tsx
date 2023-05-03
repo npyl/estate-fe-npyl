@@ -1,5 +1,6 @@
 import type { ListItemProps } from "@mui/material";
-import { Box, Button, Collapse, Link, ListItem } from "@mui/material";
+import { Box, Button, Collapse, ListItem } from "@mui/material";
+import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import type { FC, ReactNode } from "react";
 import { useState } from "react";
@@ -32,7 +33,7 @@ export const DashboardSidebarItem: FC<DashboardSidebarItemProps> = (props) => {
     ...other
   } = props;
   const [open, setOpen] = useState<boolean>(!!openProp);
-
+  const router = useRouter();
   const handleToggle = (): void => {
     setOpen((prevOpen) => !prevOpen);
   };
@@ -107,39 +108,38 @@ export const DashboardSidebarItem: FC<DashboardSidebarItemProps> = (props) => {
         px: 2,
       }}
     >
-      <Link width={"inherit"} href={path as string}>
-        <Button
-          startIcon={icon}
-          endIcon={chip}
-          disableRipple
-          sx={{
-            width: "100%",
-            textDecoration: "none",
-            borderRadius: 1,
-            color: "neutral.700",
-            justifyContent: "flex-start",
-            pl: `${paddingLeft}px`,
-            pr: 3,
-            textAlign: "left",
-            textTransform: "none",
+      <Button
+        onClick={() => router.push(path as string)}
+        startIcon={icon}
+        endIcon={chip}
+        disableRipple
+        sx={{
+          width: "100%",
+          textDecoration: "none",
+          borderRadius: 1,
+          color: "neutral.700",
+          justifyContent: "flex-start",
+          pl: `${paddingLeft}px`,
+          pr: 3,
+          textAlign: "left",
+          textTransform: "none",
 
-            ...(active && {
-              backgroundColor: "rgba(255,255,255, 0.08)",
-              color: "secondary.main",
-              fontWeight: "fontWeightBold",
-            }),
-            "& .MuiButton-startIcon": {
-              color: active ? "secondary.main" : "neutral.400",
-            },
-            "&:hover": {
-              backgroundColor: "neutral.200",
-            },
-          }}
-        >
-          <Box sx={{ flexGrow: 1 }}>{title}</Box>
-          {info}
-        </Button>
-      </Link>
+          ...(active && {
+            backgroundColor: "rgba(255,255,255, 0.08)",
+            color: "secondary.main",
+            fontWeight: "fontWeightBold",
+          }),
+          "& .MuiButton-startIcon": {
+            color: active ? "secondary.main" : "neutral.400",
+          },
+          "&:hover": {
+            backgroundColor: "neutral.200",
+          },
+        }}
+      >
+        <Box sx={{ flexGrow: 1 }}>{title}</Box>
+        {info}
+      </Button>
     </ListItem>
   );
 };
