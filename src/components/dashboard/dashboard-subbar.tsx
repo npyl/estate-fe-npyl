@@ -32,7 +32,7 @@ const Subbar = () => {
                   background: "transparent",
                 },
               }}
-              variant='text'
+              variant="text"
               id={tab.title}
               onClick={() => router.push(tab.path)}
             >
@@ -46,13 +46,13 @@ const Subbar = () => {
                   background: "transparent",
                 },
               }}
-              onClick={() => dispatch(deleteTab(tab.title))}
+              onClick={() => dispatch(deleteTab(tab.uuid))}
             >
-              <ClearIcon />
+              <ClearIcon sx={{ fontSize: 13 }} />
             </IconButton>
           </Stack>
           {index !== tabs.length - 1 && (
-            <Divider orientation='vertical' flexItem />
+            <Divider orientation="vertical" flexItem />
           )}
         </Fragment>
       ))}

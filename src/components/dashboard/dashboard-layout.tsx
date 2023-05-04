@@ -4,12 +4,15 @@ import { Box, Button, Divider, MenuItem, Paper, Stack } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
-import type { FC, ReactNode } from "react";
+import { FC, ReactNode, Ref, RefObject, useRef } from "react";
 import { useState } from "react";
 import StyledMenu from "../StyledMenu";
 import { DashboardNavbar } from "./dashboard-navbar";
 import { DashboardSidebar } from "./dashboard-sidebar";
 import Subbar from "./dashboard-subbar";
+
+import { addTab } from "src/slices/tabs";
+import { useDispatch } from "src/store";
 
 interface DashboardLayoutProps {
   children?: ReactNode;
@@ -27,19 +30,60 @@ const DashboardLayoutRoot = styled("div")(({ theme }) => ({
 
 export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
   const { children } = props;
+
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  const propertyItemType = "property-menu-item";
+  const managerItemType = "manager-menu-item";
+  const ownerItemType = "owner-menu-item";
+
+  interface tabConfigProp {
+    title: string;
+    path: string;
+  }
+
+  const showDropdown = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const hideDropdown = () => {
     setAnchorEl(null);
   };
 
-  const router = useRouter();
+  const startCreate = (
+    event: React.MouseEvent<HTMLElement>,
+    itemType: string
+  ) => {
+    var tabConfig: tabConfigProp;
+
+    var title: string = "";
+    var path: string = "";
+
+    if (itemType === propertyItemType) {
+      title = "Create Property";
+      path = "/property/create";
+    } else if (itemType === managerItemType) {
+      title = "Create Manager";
+      path = "/user/create";
+    } else if (itemType === ownerItemType) {
+      title = "Create Owner";
+      path = "/customer/create";
+    }
+
+    tabConfig = {
+      title: title,
+      path: path,
+    };
+
+    router.push(path);
+
+    dispatch(addTab(tabConfig));
+  };
 
   return (
     <>
@@ -68,7 +112,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
                 aria-expanded={open ? "true" : undefined}
                 variant='contained'
                 disableElevation
-                onClick={handleClick}
+                onClick={showDropdown}
               >
                 <AddIcon />
                 Create
@@ -81,30 +125,24 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
                 }}
                 anchorEl={anchorEl}
                 open={open}
-                onClose={handleClose}
+                onClose={hideDropdown}
               >
                 <MenuItem
-                  onClick={() => {
-                    router.push("/property/create");
-                  }}
+                  onClick={(e) => startCreate(e, propertyItemType)}
                   disableRipple
                 >
                   <HomeIcon />
                   Property
                 </MenuItem>
                 <MenuItem
-                  onClick={() => {
-                    router.push("/user/create");
-                  }}
+                  onClick={(e) => startCreate(e, managerItemType)}
                   disableRipple
                 >
                   Manager
                 </MenuItem>
                 <Divider sx={{ my: 0.5 }} />
                 <MenuItem
-                  onClick={() => {
-                    router.push("/customer/create");
-                  }}
+                  onClick={(e) => startCreate(e, ownerItemType)}
                   disableRipple
                 >
                   Owner

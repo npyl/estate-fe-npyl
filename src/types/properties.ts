@@ -4,6 +4,7 @@ import { ILocation } from "./location";
 import { IUser } from "./user";
 import { ICustomer } from "./customer";
 import { INote } from "./note";
+import { IVideo } from "./video";
 import { IFileModel } from "./fileModel";
 
 export interface IProperties {
@@ -23,6 +24,7 @@ export interface IProperties {
   propertyDetail: IPropertyDetails;
   features: IPropertyFeatures;
   notes: INote[];
+  video: IVideo;
   propertyImage: string;
   images: IFileModel[];
   documents: IFileModel[];

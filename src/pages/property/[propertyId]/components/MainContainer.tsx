@@ -10,6 +10,8 @@ interface MainContainerProps {
   ParkingsSection: JSX.Element;
   BalconiesSection: JSX.Element;
   BlueprintsSection: JSX.Element;
+  NotesSection: JSX.Element;
+  VideoSection: JSX.Element;
 }
 
 const MainContainer: React.FC<MainContainerProps> = (props) => {
@@ -23,6 +25,8 @@ const MainContainer: React.FC<MainContainerProps> = (props) => {
     ParkingsSection,
     BalconiesSection,
     BlueprintsSection,
+    NotesSection,
+    VideoSection,
   } = props;
 
   return (
@@ -105,6 +109,12 @@ const MainContainer: React.FC<MainContainerProps> = (props) => {
         >
           {BlueprintsSection}
         </Box>
+
+        {ParkingsSection}
+        {BalconiesSection}
+      </Stack>
+
+      <Stack spacing={2} direction={{ md: "row", xs: "column" }} p={2}>
         <Box
           sx={{
             border: 1,
@@ -113,19 +123,11 @@ const MainContainer: React.FC<MainContainerProps> = (props) => {
             width: { md: "25%", sm: "100%" },
           }}
         >
-          {ParkingsSection}
-        </Box>
-        <Box
-          sx={{
-            border: 1,
-            borderColor: "divider",
-            borderRadius: 1,
-            width: { md: "25%", sm: "100%" },
-          }}
-        >
-          {BalconiesSection}
+          {NotesSection}
         </Box>
       </Stack>
+
+      {VideoSection}
     </Box>
   );
 };

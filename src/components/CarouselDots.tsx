@@ -45,7 +45,7 @@ export default function CarouselDots({ data }: Props) {
     <>
       <CarouselArrows
         filled
-        shape='rounded'
+        shape="rounded"
         onNext={handleNext}
         onPrevious={handlePrev}
       >
@@ -69,5 +69,5 @@ type CarouselItemProps = {
 function CarouselItem({ item }: { item: CarouselItemProps }) {
   const { image, title } = item;
 
-  return <Image alt={title} src={image} ratio='6/4' />;
+  return <Image alt={title} src={image} ratio="6/4" />;
 }

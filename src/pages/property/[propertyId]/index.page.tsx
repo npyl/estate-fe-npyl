@@ -26,6 +26,8 @@ import {
   HeatingSection,
   ImageSection,
   ParkingsSection,
+  NotesSection,
+  VideoSection,
 } from "./components/sections";
 
 function a11yProps(index: number) {
@@ -77,6 +79,8 @@ const SingleProperty: NextPage = () => {
           ParkingsSection={<ParkingsSection data={data} />}
           BalconiesSection={<BalconiesSection data={data} />}
           BlueprintsSection={<BlueprintsSection data={data} />}
+          NotesSection={<NotesSection data={data} />}
+          VideoSection={<VideoSection data={data} />}
         />
       </TabPanel>
       <TabPanel value={value} index={1}></TabPanel>
