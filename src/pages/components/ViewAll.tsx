@@ -161,7 +161,7 @@ const ViewAll: FC = () => {
   return (
     <Container maxWidth={false}>
       <FormProvider methods={methods}>
-        <Box sx={{ mb: 4 }}>
+        <Box>
           <Paper sx={{ padding: "12px 24px" }}>
             <Box
               sx={{
@@ -218,13 +218,22 @@ const ViewAll: FC = () => {
               </Stack>
             </Box>
           </Paper>
-          <Paper sx={{ marginTop: 2, paddingX: 4, paddingY: 2 }}>
-            {option === "list" && (
+
+          {option === "list" && (
+            <Paper sx={{ mt: 2 }}>
               <DataGridTable rows={data} columns={columns} />
-            )}
-            {option === "grid" && <MediaCard data={data} />}
-            {option === "map" && <MapView />}
-          </Paper>
+            </Paper>
+          )}
+          {option === "grid" && (
+            <Paper sx={{ marginTop: 2 }}>
+              <MediaCard data={data} />
+            </Paper>
+          )}
+          {option === "map" && (
+            <Paper sx={{ marginTop: 2 }}>
+              <MapView />
+            </Paper>
+          )}
         </Box>
       </FormProvider>
     </Container>

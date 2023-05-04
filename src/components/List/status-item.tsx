@@ -44,15 +44,15 @@ const ListStatusItem: FC<ListStatusItemProps> = (props) => {
         />
 
         <Typography
-          color="textSecondary"
-          variant="body2"
+          color='textSecondary'
+          variant='body2'
           sx={{
             float: "right",
             paddingRight: 1,
             color: status ? "success.main" : "error.main",
           }}
         >
-          {status ? "Available" : "Unavailable"}
+          {status ? "On Market" : "Private"}
         </Typography>
       </Box>
     </ListItem>

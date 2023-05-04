@@ -1,6 +1,7 @@
-import { Box, Stack } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { useState } from "react";
 import { useAllPropertiesQuery } from "src/services/properties";
+import Map from "./Map";
 import { BookingItem } from "./MediaCard";
 
 const MapView = () => {
@@ -10,28 +11,28 @@ const MapView = () => {
   }
   const [activeMarker, setActiveMarker] = useState(null);
   return (
-    <Box display={"flex"} gap={2}>
-      {/* <Box>
+    <Box display={"flex"}>
+      <Box height={`calc(100vh - 266px)`} width={"50%"}>
         <Map
           activeMarker={activeMarker}
           setActiveMarker={setActiveMarker}
           data={data}
         />
-      </Box> */}
-      <Stack
-        flexWrap='wrap'
-        direction={"row"}
+      </Box>
+      <Grid
+        height={`calc(100vh - 282px)`}
+        sx={{ overflowY: "auto" }}
+        marginY={1}
+        container
+        spacing={1}
         width={"50%"}
-        justifyContent={"space-between"}
       >
         {data.map((item, index) => (
-          <>
-            <Box sx={{ width: `calc(50% - 10px)` }}>
-              <BookingItem activeMarker={activeMarker || -1} item={item} />
-            </Box>
-          </>
+          <Grid mb={1} key={index} item xs={12} sm={6}>
+            <BookingItem activeMarker={activeMarker || -1} item={item} />
+          </Grid>
         ))}
-      </Stack>
+      </Grid>
     </Box>
   );
 };

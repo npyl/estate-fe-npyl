@@ -36,7 +36,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
       </Box>
       <List>
         <ListStatusItem
-          label='Availability'
+          label='Publiced'
           status={isAvailable(data?.state)}
           align='horizontal'
           divider
@@ -91,7 +91,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
         />
         <ListManagerItem manager={manager} />
         <ListItem
-          label='Availability'
+          label='State'
           value={data?.state.toString() || ""}
           align='horizontal'
           divider

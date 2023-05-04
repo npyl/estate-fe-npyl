@@ -46,6 +46,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
       <DashboardLayoutRoot>
         <Box
           sx={{
+            marginBottom: 0,
             backgroundColor: "neutral.100",
             display: "flex",
             flex: "1 1 auto",
@@ -61,11 +62,11 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
             >
               <Subbar />
               <Button
-                id="create-menu-button"
+                id='create-menu-button'
                 aria-controls={open ? "create-menu" : undefined}
-                aria-haspopup="true"
+                aria-haspopup='true'
                 aria-expanded={open ? "true" : undefined}
-                variant="contained"
+                variant='contained'
                 disableElevation
                 onClick={handleClick}
               >
@@ -74,7 +75,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
               </Button>
 
               <StyledMenu
-                id="create-menu"
+                id='create-menu'
                 MenuListProps={{
                   "aria-labelledby": "create-menu-button",
                 }}

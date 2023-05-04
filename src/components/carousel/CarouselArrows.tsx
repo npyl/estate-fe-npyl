@@ -1,47 +1,54 @@
 // @mui
-import { IconButton, IconButtonProps, Stack, StackProps, styled } from '@mui/material';
-import { alpha, useTheme } from '@mui/material/styles';
+import {
+  IconButton,
+  IconButtonProps,
+  Stack,
+  StackProps,
+  styled,
+} from "@mui/material";
+import { alpha, useTheme } from "@mui/material/styles";
 //
-import { IconifyProps } from '../iconify';
+import { IconifyProps } from "../iconify";
 //
-import { LeftIcon, RightIcon } from './Icon';
+import { LeftIcon, RightIcon } from "./Icon";
 
 // ----------------------------------------------------------------------
 
 interface StyledIconButtonProps extends IconButtonProps {
   filled?: boolean;
-  shape?: 'circular' | 'rounded';
+  shape?: "circular" | "rounded";
   hasChildren?: boolean;
 }
 
 const StyledIconButton = styled(IconButton, {
-  shouldForwardProp: (prop) => prop !== 'filled' && prop !== 'hasChildren' && prop !== 'shape',
+  shouldForwardProp: (prop) =>
+    prop !== "filled" && prop !== "hasChildren" && prop !== "shape",
 })<StyledIconButtonProps>(({ filled, shape, hasChildren, theme }) => ({
-  color: 'inherit',
-  transition: theme.transitions.create('all', {
+  color: "inherit",
+  transition: theme.transitions.create("all", {
     duration: theme.transitions.duration.shorter,
   }),
-  ...(shape === 'rounded' && {
+  ...(shape === "rounded" && {
     borderRadius: Number(theme.shape.borderRadius) * 1.5,
   }),
   ...(!filled && {
     opacity: 0.48,
-    '&:hover': {
+    "&:hover": {
       opacity: 1,
     },
   }),
   ...(filled && {
-    color:theme.palette.common.white,
+    color: theme.palette.common.white,
     backgroundColor: alpha(theme.palette.grey[900], 0.48),
-    '&:hover': {
+    "&:hover": {
       color: theme.palette.common.white,
       backgroundColor: theme.palette.grey[900],
     },
   }),
   ...(hasChildren && {
     zIndex: 9,
-    top: '50%',
-    position: 'absolute',
+    top: "50%",
+    position: "absolute",
     marginTop: theme.spacing(-2.5),
   }),
 }));
@@ -49,7 +56,7 @@ const StyledIconButton = styled(IconButton, {
 // ----------------------------------------------------------------------
 
 interface Props extends StackProps {
-  shape?: 'circular' | 'rounded';
+  shape?: "circular" | "rounded";
   filled?: boolean;
   children?: React.ReactNode;
   icon?: IconifyProps; // Right icon
@@ -60,7 +67,7 @@ interface Props extends StackProps {
 }
 
 export default function CarouselArrows({
-  shape = 'circular',
+  shape = "circular",
   filled = false,
   icon,
   onNext,
@@ -73,7 +80,7 @@ export default function CarouselArrows({
 }: Props) {
   const theme = useTheme();
 
-  const isRTL = theme.direction === 'rtl';
+  const isRTL = theme.direction === "rtl";
 
   const hasChildren = !!children;
 
@@ -87,6 +94,7 @@ export default function CarouselArrows({
           onClick={onPrevious}
           {...leftButtonProps}
           sx={{
+            zIndex: 100,
             left: 16,
             ...leftButtonProps?.sx,
           }}
@@ -114,12 +122,28 @@ export default function CarouselArrows({
   }
 
   return (
-    <Stack direction="row" alignItems="center" display="inline-flex" sx={sx} {...other}>
-      <StyledIconButton filled={filled} shape={shape} onClick={onPrevious} {...leftButtonProps}>
+    <Stack
+      direction='row'
+      alignItems='center'
+      display='inline-flex'
+      sx={sx}
+      {...other}
+    >
+      <StyledIconButton
+        filled={filled}
+        shape={shape}
+        onClick={onPrevious}
+        {...leftButtonProps}
+      >
         <LeftIcon icon={icon} isRTL={isRTL} />
       </StyledIconButton>
 
-      <StyledIconButton filled={filled} shape={shape} onClick={onNext} {...rightButtonProps}>
+      <StyledIconButton
+        filled={filled}
+        shape={shape}
+        onClick={onNext}
+        {...rightButtonProps}
+      >
         <RightIcon icon={icon} isRTL={isRTL} />
       </StyledIconButton>
     </Stack>

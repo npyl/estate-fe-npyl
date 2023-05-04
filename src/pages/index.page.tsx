@@ -1,4 +1,4 @@
-import { Box, Container, Grid, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 
 import type { NextPage } from "next";
 import Head from "next/head";
@@ -13,11 +13,10 @@ const Home: NextPage = () => {
         <title>Estate</title>
       </Head>
       <Box
-        component="main"
+        component='main'
         sx={{
           flexGrow: 1,
           pt: 2,
-          pb: 8,
         }}
       >
         <ViewAll />

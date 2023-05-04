@@ -85,7 +85,7 @@ const Map = ({ data, activeMarker, setActiveMarker }: IMapProps) => {
 
       {markers.map(({ address, lat, lng }, ind) => (
         <Marker
-          icon={{ url: "/static/img/house.png" }}
+          // icon={{ url: "/static/img/house.png" }}
           key={ind}
           position={{ lat, lng }}
           onMouseUp={() => handleMarkerMouseOver(3)}

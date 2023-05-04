@@ -89,7 +89,7 @@ export default function CarouselWithLightbox({ data }: Props) {
             key={item.id}
             alt={item.title}
             src={item.image}
-            ratio="16/9"
+            ratio='16/9'
             onClick={() => setGalleryOpen(true)}
           />
         ))}
