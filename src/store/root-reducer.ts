@@ -6,6 +6,7 @@ import { document } from "../services/document";
 import { global } from "../services/global";
 import { properties } from "../services/properties";
 import { user } from "../services/user";
+import { note } from "src/services/note";
 import { reducer as propertyReducer } from "../slices/property";
 import { reducer as tabsReducer } from "../slices/tabs";
 
@@ -16,6 +17,7 @@ export const rootReducer = combineReducers({
   [properties.reducerPath]: properties.reducer,
   [customers.reducerPath]: customers.reducer,
   [global.reducerPath]: global.reducer,
+  [note.reducerPath]: note.reducer,
   property: propertyReducer,
   tabs: tabsReducer,
 });

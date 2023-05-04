@@ -14,6 +14,7 @@ import { customers } from "../services/customers";
 import { user } from "../services/user";
 import { rootReducer } from "./root-reducer";
 import { global } from "src/services/global";
+import { note } from "src/services/note";
 export const createStore = (
   options?: ConfigureStoreOptions["preloadedState"] | undefined
 ) =>
@@ -39,6 +40,7 @@ export const createStore = (
         properties.middleware,
         customers.middleware,
         global.middleware,
+        note.middleware,
         rtkQueryErrorLogger
       ),
     ...options,
