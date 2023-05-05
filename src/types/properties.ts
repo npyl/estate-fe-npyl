@@ -7,6 +7,27 @@ import { INote } from "./note";
 import { IVideo } from "./video";
 import { IFileModel } from "./fileModel";
 
+export interface IPropertyFilter {
+  code?: number | undefined;
+  minPrice?: number | undefined;
+  maxPrice?: number | undefined;
+  minArea?: number | undefined;
+  maxArea?: number | undefined;
+  state?: string | undefined;
+  category?: string | undefined;
+  minBedrooms?: number | undefined;
+  maxBedrooms?: number | undefined;
+  minFloor?: number | undefined;
+  maxFloor?: number | undefined;
+  minConstructionYear?: number | undefined;
+  maxConstructionYear?: number | undefined;
+  heatingType?: string | undefined;
+  frameType?: string | undefined;
+  furnished?: string | undefined;
+  city?: string | undefined;
+  managerId?: number | undefined;
+}
+
 export interface IProperties {
   id: number;
   code: number;
