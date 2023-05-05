@@ -21,26 +21,24 @@ import {
   useGetNotesByPropertyIdQuery,
   useAddNoteToPropertyWithIdMutation,
 } from "src/services/note";
+import { INote } from "src/types/note";
+
+interface NoteProps {
+  note: INote;
+}
 
 interface NotesSectionProps {
   data: IProperties;
 }
 
-interface NoteProps {
-  note: {
-    author: {
-      name: string;
-      profileImage: string;
-    };
-    createdAt: string;
-    message: string;
-  };
-}
+const Note: React.FC<NoteProps> = (props) => {
+  const { note } = props;
 
-const Note: React.FC<NoteProps> = ({ note }) => {
+  const username = note.creator.firstName + " " + note.creator.lastName;
+
   return (
     <Stack direction="row" spacing={2}>
-      <CustomAvatar alt={note.author.name} src={note.author.profileImage} />
+      <CustomAvatar alt={username} src={note.creator.profilePhoto || ""} />
 
       <Paper
         sx={{
@@ -55,15 +53,15 @@ const Note: React.FC<NoteProps> = ({ note }) => {
           alignItems={{ sm: "center" }}
           sx={{ mb: 0.5 }}
         >
-          <Typography variant="subtitle2">{note.author.name}</Typography>
+          <Typography variant="subtitle2">{username}</Typography>
 
           <Typography variant="caption" sx={{ color: "text.disabled" }}>
-            {note.createdAt}
+            {note.createdAt.toString()}
           </Typography>
         </Stack>
 
         <Typography variant="body2" sx={{ color: "text.secondary" }}>
-          {note.message}
+          {note.content.toString()}
         </Typography>
       </Paper>
     </Stack>
@@ -87,19 +85,13 @@ const NotesSection: React.FC<NotesSectionProps> = (props) => {
 
   const handleSendNote = () => {
     // perform POST
-    addNote({ id: data.id, dataToSend: { content: message } });
-  };
+    addNote({
+      id: data.id,
+      dataToSend: { id: null, creatorId: 1, content: message },
+    });
 
-  const _notesFormat = notes.map((note, index) => {
-    return {
-      author: {
-        name: "Nick",
-        profileImage: "",
-      },
-      createdAt: "12312312",
-      message: note.content,
-    };
-  });
+    isSuccess && setMessage("");
+  };
 
   return (
     <>
@@ -114,7 +106,7 @@ const NotesSection: React.FC<NotesSectionProps> = (props) => {
         <Typography variant="h6">Notes</Typography>
       </Box>
       <Stack spacing={1.5} sx={{ px: 3, pb: 2 }}>
-        {_notesFormat.map((note, index) => (
+        {notes.map((note, index) => (
           <Note note={note} key={index} />
         ))}
       </Stack>
@@ -127,12 +119,6 @@ const NotesSection: React.FC<NotesSectionProps> = (props) => {
           p: (theme) => theme.spacing(0, 3, 3, 3),
         }}
       >
-        {/* <CustomAvatar
-          src={user?.photoURL}
-          alt={user?.displayName}
-          name={user?.displayName}
-        /> */}
-
         <InputBase
           fullWidth
           value={message}
@@ -154,8 +140,6 @@ const NotesSection: React.FC<NotesSectionProps> = (props) => {
               `solid 1px ${alpha(theme.palette.grey[500], 0.32)}`,
           }}
         />
-
-        {/* <input type="file" ref={fileInputRef} style={{ display: "none" }} /> */}
       </Stack>
     </>
   );
