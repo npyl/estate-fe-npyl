@@ -20,4 +20,5 @@ export type ImageRatio =
 export interface ImageProps extends IProps {
   ratio?: ImageRatio;
   disabledEffect?: boolean;
+  size?: { width: string; height: string };
 }

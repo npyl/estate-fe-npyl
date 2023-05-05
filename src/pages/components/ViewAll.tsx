@@ -3,18 +3,18 @@ import MapIcon from "@mui/icons-material/Map";
 import {
   Button,
   Container,
+  FormControl,
+  MenuItem,
   Paper,
+  Select,
   Stack,
   SvgIconTypeMap,
   Tab,
   Tabs,
-  FormControl,
-  Select,
-  MenuItem,
 } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import { Box } from "@mui/system";
-import { FC, ReactNode, useState, useMemo } from "react";
+import { FC, ReactNode, useMemo, useState } from "react";
 import { Menu } from "src/icons/menu";
 import { useFilterPropertiesMutation } from "src/services/properties";
 import DataGridTable from "../../components/DataGrid";
@@ -30,7 +30,7 @@ import FilterDrawer from "./FilterDrawer";
 import MapView from "./MapView";
 import ShopTagFiltered from "./TagFiltered";
 
-import { IProperties, IPropertyFilter } from "src/types/properties";
+import { IPropertyFilter } from "src/types/properties";
 
 const defaultValues = {
   gender: [],
@@ -176,8 +176,8 @@ const ViewAll: FC = () => {
       <>
         <Image
           src={`data:image/jpeg;base64,${params.formattedValue}` || ""}
-          alt=""
-          ratio="16/9"
+          alt=''
+          ratio='16/9'
           width={1}
         />
       </>
@@ -187,7 +187,7 @@ const ViewAll: FC = () => {
     return (
       <>
         <Label
-          variant="filled"
+          variant='filled'
           color={
             (params.formattedValue === "SOLD" && "error") ||
             (params.formattedValue === "SALE" && "info") ||
@@ -240,7 +240,7 @@ const ViewAll: FC = () => {
     <Container maxWidth={false}>
       <FormProvider methods={methods}>
         <Box>
-          <Paper sx={{ padding: "12px 24px" }}>
+          <Paper sx={{ padding: "12px 24px", overflow: "scroll" }}>
             <Box
               sx={{
                 alignItems: "center",
@@ -318,8 +318,8 @@ const ViewAll: FC = () => {
 
                 <Button
                   disableRipple
-                  color="inherit"
-                  endIcon={<Iconify icon="ic:round-filter-list" />}
+                  color='inherit'
+                  endIcon={<Iconify icon='ic:round-filter-list' />}
                   onClick={handleOpenFilter}
                 >
                   Filters
@@ -335,11 +335,11 @@ const ViewAll: FC = () => {
                 />
                 <Tabs
                   value={ITabEnum[option]}
-                  aria-label="icon label tabs example"
+                  aria-label='icon label tabs example'
                 >
                   {viewOptions.map((option) => (
                     <Tab
-                      iconPosition="start"
+                      iconPosition='start'
                       onClick={() => setOption(option.id)}
                       id={option.id}
                       key={option.id}

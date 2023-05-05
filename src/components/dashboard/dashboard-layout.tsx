@@ -4,8 +4,7 @@ import { Box, Button, Divider, MenuItem, Paper, Stack } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
-import { FC, ReactNode, Ref, RefObject, useRef } from "react";
-import { useState } from "react";
+import { FC, ReactNode, useState } from "react";
 import StyledMenu from "../StyledMenu";
 import { DashboardNavbar } from "./dashboard-navbar";
 import { DashboardSidebar } from "./dashboard-sidebar";
@@ -98,14 +97,18 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
             width: "100%",
           }}
         >
-          <Paper sx={{ margin: 3, padding: 2, marginBottom: 0 }}>
+          <Paper
+            sx={{ margin: 3, padding: 2, marginBottom: 0, overflowX: "auto" }}
+          >
             <Stack
               alignItems={"center"}
               direction={"row"}
               justifyContent={"space-between"}
+              spacing={1}
             >
               <Subbar />
               <Button
+                sx={{ minWidth: "90px", marginRight: "15px" }}
                 id='create-menu-button'
                 aria-controls={open ? "create-menu" : undefined}
                 aria-haspopup='true'

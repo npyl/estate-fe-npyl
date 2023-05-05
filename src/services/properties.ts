@@ -45,10 +45,19 @@ export const properties = createApi({
       }),
       invalidatesTags: ["Properties"],
     }),
+    getSearchResults: builder.query<IProperties[], string>({
+      query: (text: string) => {
+        return {
+          url: "/search",
+          params: { searchString: text },
+        };
+      },
+    }),
   }),
 });
 
 export const {
+  useGetSearchResultsQuery,
   useAllPropertiesQuery,
   useGetPropertyByIdQuery,
   useAddPropertyMutation,

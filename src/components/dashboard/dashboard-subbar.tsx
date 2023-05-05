@@ -26,13 +26,14 @@ const Subbar = () => {
           >
             <Button
               sx={{
+                minWidth: "90px",
                 padding: 0,
                 borderRadius: 0,
                 "&:hover": {
                   background: "transparent",
                 },
               }}
-              variant="text"
+              variant='text'
               id={tab.title}
               onClick={() => router.push(tab.path)}
             >
@@ -52,7 +53,7 @@ const Subbar = () => {
             </IconButton>
           </Stack>
           {index !== tabs.length - 1 && (
-            <Divider orientation="vertical" flexItem />
+            <Divider orientation='vertical' flexItem />
           )}
         </Fragment>
       ))}
