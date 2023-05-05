@@ -13,4 +13,5 @@ export interface IUser {
   afm: string;
   doy: string;
   gemh: string;
+  profilePhoto: string;
 }

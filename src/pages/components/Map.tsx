@@ -32,11 +32,15 @@ const Map = ({ data, activeMarker, setActiveMarker }: IMapProps) => {
   const [mapRef, setMapRef] = useState<any>();
   const [isOpen, setIsOpen] = useState(false);
   const [infoWindowData, setInfoWindowData] = useState<any>();
-  const markers = [
-    { address: "Address1", lat: 38.246639, lng: 21.734573 },
-    { address: "Address2", lat: 38.236639, lng: 21.724573 },
-    { address: "Address3", lat: 38.256639, lng: 21.744573 },
-  ];
+
+  const markers = data.map((property) => {
+    const location = property.location;
+    return {
+      address: location.street + " " + location.number,
+      lat: location.lat,
+      lng: location.lng,
+    };
+  });
 
   const onMapLoad = (map: any) => {
     setMapRef(map);
@@ -50,10 +54,10 @@ const Map = ({ data, activeMarker, setActiveMarker }: IMapProps) => {
     setInfoWindowData({ id, address });
     setIsOpen(true);
   };
+
   const [map, setMap] = React.useState(null);
 
   const onLoad = React.useCallback(function callback(map: any) {
-    // This is just an example of getting and using the map instance!!! don't just blindly copy!
     const bounds = new window.google.maps.LatLngBounds(center);
     if (map.current) {
       map.current.fitBounds(bounds);
@@ -88,7 +92,7 @@ const Map = ({ data, activeMarker, setActiveMarker }: IMapProps) => {
           // icon={{ url: "/static/img/house.png" }}
           key={ind}
           position={{ lat, lng }}
-          onMouseUp={() => handleMarkerMouseOver(3)}
+          onMouseUp={() => handleMarkerMouseOver(ind)}
           animation={
             activeMarker === ind ? google.maps.Animation.BOUNCE : undefined
           }

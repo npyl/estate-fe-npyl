@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 // @mui
-import { Box } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 
 import CarouselArrowIndex from "./carousel/CarouselArrowIndex";
 import Carousel from "./carousel";
@@ -11,6 +11,7 @@ import Captions from "yet-another-react-lightbox/plugins/captions";
 import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
 import Video from "yet-another-react-lightbox/plugins/video";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
+import Counter from "yet-another-react-lightbox/plugins/counter";
 
 // INFO: This is a custom implementation of yet-another-react-lightbox/plugins/fullscreen that triggers the events: fullscreen and fullscreenExited
 import Fullscreen from "./lightbox-plugins/fullscreen";
@@ -18,6 +19,7 @@ import HideGallery from "./lightbox-plugins/hideGallery";
 
 import "yet-another-react-lightbox/plugins/captions.css";
 import "yet-another-react-lightbox/plugins/thumbnails.css";
+import "yet-another-react-lightbox/plugins/counter.css";
 import "yet-another-react-lightbox/styles.css";
 
 import { FullscreenRef } from "yet-another-react-lightbox";
@@ -35,10 +37,6 @@ type Props = {
   }[];
 };
 
-type StyledThumbnailsContainerProps = {
-  length: number;
-};
-
 // ----------------------------------------------------------------------
 
 export default function CarouselWithLightbox({ data }: Props) {
@@ -53,7 +51,7 @@ export default function CarouselWithLightbox({ data }: Props) {
   const carouselSettings1 = {
     dots: false,
     arrows: false,
-    slidesToShow: data.length > 3 ? 1 : 3,
+    slidesToShow: data.length > 3 ? 3 : data.length,
     draggable: false,
     slidesToScroll: 1,
     adaptiveHeight: true,
@@ -84,12 +82,15 @@ export default function CarouselWithLightbox({ data }: Props) {
       }}
     >
       <Carousel {...carouselSettings1} asNavFor={nav1} ref={carousel1}>
-        {data.map((item) => (
+        {data.map((item, index) => (
           <Image
             key={item.id}
             alt={item.title}
             src={item.image}
-            ratio='16/9'
+            ratio="16/9"
+            borderRadius={2}
+            padding={1}
+            paddingRight={index !== data.length - 1 ? 0 : 1}
             onClick={() => setGalleryOpen(true)}
           />
         ))}
@@ -111,13 +112,26 @@ export default function CarouselWithLightbox({ data }: Props) {
   const fullscreenRef = useRef<FullscreenRef>(null);
   const thumbnailsRef = useRef<ThumbnailsRef>(null);
 
-  const [plugins, setPlugins] = useState([
+  const initialPluginList = [
     Captions,
     Fullscreen,
     Thumbnails,
     Video,
     Zoom,
-  ]);
+    Counter,
+  ];
+
+  const pluginListWithHideGallery = [
+    Captions,
+    Fullscreen,
+    Thumbnails,
+    Video,
+    Zoom,
+    Counter,
+    HideGallery,
+  ];
+
+  const [plugins, setPlugins] = useState(initialPluginList);
 
   return (
     <Box
@@ -134,23 +148,17 @@ export default function CarouselWithLightbox({ data }: Props) {
         close={() => setGalleryOpen(false)}
         slides={_images}
         plugins={plugins}
+        carousel={{ finite: true }}
         fullscreen={{ ref: fullscreenRef }}
         thumbnails={{ ref: thumbnailsRef }}
         on={{
           fullscreen() {
             // add HideGallery to the plugins
-            setPlugins([
-              Captions,
-              Fullscreen,
-              Thumbnails,
-              Video,
-              Zoom,
-              HideGallery,
-            ]);
+            setPlugins(pluginListWithHideGallery);
           },
           fullscreenExit() {
             // remove HideGallery
-            setPlugins([Captions, Fullscreen, Thumbnails, Video, Zoom]);
+            setPlugins(initialPluginList);
           },
 
           hideGalleryEntered() {
