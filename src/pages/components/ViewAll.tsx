@@ -8,12 +8,15 @@ import {
   SvgIconTypeMap,
   Tab,
   Tabs,
+  FormControl,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import { Box } from "@mui/system";
-import { FC, ReactNode, useState } from "react";
+import { FC, ReactNode, useState, useMemo } from "react";
 import { Menu } from "src/icons/menu";
-import { useAllPropertiesQuery } from "src/services/properties";
+import { useFilterPropertiesMutation } from "src/services/properties";
 import DataGridTable from "../../components/DataGrid";
 import MediaCard from "./MediaCard";
 
@@ -26,6 +29,8 @@ import Label from "src/components/label/Label";
 import FilterDrawer from "./FilterDrawer";
 import MapView from "./MapView";
 import ShopTagFiltered from "./TagFiltered";
+
+import { IProperties, IPropertyFilter } from "src/types/properties";
 
 const defaultValues = {
   gender: [],
@@ -57,16 +62,89 @@ const ViewAll: FC = () => {
   } = methods;
   const [option, setOption] = useState<optionType>("list");
 
+  // Filters
+  const stateFilterOptions = [
+    { value: "ALL", label: "All Properties" },
+    { value: "SALE", label: "Sale" },
+    { value: "RENT", label: "Rent" },
+  ];
+
+  const categoryFilterOptions = [
+    { value: "ALL", label: "All Categories" },
+    { value: "APARTMENT", label: "Apartment" },
+    { value: "STUDIO", label: "Studio" },
+    { value: "MAISONETTE", label: "Maisonette" },
+    { value: "DETACHED_HOUSE", label: "Detached House" },
+    { value: "VILLA", label: "Villa" },
+    { value: "LOFT", label: "Loft" },
+    { value: "BUNGALOW", label: "Bungalow" },
+    { value: "BUILDING", label: "Building" },
+    { value: "APARTMENT_COMPLEX", label: "Apartment complex" },
+    { value: "FARM", label: "Farm" },
+    { value: "HOUSEBOAT", label: "Houseboat" },
+    { value: "OTHER_CATEGORIES", label: "Other categories" },
+    { value: "OFFICE", label: "Office" },
+    { value: "STORE", label: "Store" },
+    { value: "WAREHOUSE", label: "Warehouse" },
+    { value: "INDUSTRIAL_SPACE", label: "Industrial space" },
+    { value: "CRAFT_SPACE", label: "Craft space" },
+    { value: "HOTEL", label: "Hotel" },
+    { value: "BUSINESS_BUILDING", label: "Business building" },
+    { value: "HALL", label: "Hall" },
+    { value: "SHOWROOM", label: "Showroom" },
+    { value: "LAND_PLOT", label: "Land Plot" },
+    { value: "PARCELS", label: "Parcels" },
+    { value: "ISLAND", label: "Island" },
+    { value: "PARKING", label: "Parking" },
+    { value: "BUSINESS", label: "Business" },
+    { value: "PREFABRICATED", label: "Prefabricated" },
+    { value: "DETACHABLE", label: "Detachable" },
+    { value: "AIR", label: "Air" },
+    { value: "OTHER", label: "Other" },
+  ];
+
+  const subCategoryFilterOptions = [
+    { value: "ALL", label: "All Subcategories" },
+  ];
+
+  const [stateFilter, setStateFilter] = useState(stateFilterOptions[0].value);
+  const [categoryFilter, setCategoryFilter] = useState(
+    categoryFilterOptions[0].value
+  );
+  const [subCategoryFilter, setSubCategoryFilter] = useState(
+    subCategoryFilterOptions[0].value
+  );
+
   enum ITabEnum {
     "list",
     "grid",
     "map",
   }
 
-  const { data } = useAllPropertiesQuery();
-  if (!data) {
-    return null;
-  }
+  const standardFilter = () => {
+    return {
+      state:
+        stateFilter === stateFilterOptions[0].value ? undefined : stateFilter,
+      category:
+        categoryFilter === categoryFilterOptions[0].value
+          ? undefined
+          : categoryFilter,
+    };
+  };
+
+  const [filter, setFilter] = useState<IPropertyFilter>(standardFilter);
+  const [filterProperties, { isLoading, data }] = useFilterPropertiesMutation();
+
+  useMemo(() => {
+    setFilter(standardFilter);
+  }, [stateFilter, categoryFilter, subCategoryFilter]);
+
+  useMemo(() => {
+    filterProperties(filter);
+  }, [filter, filterProperties]);
+
+  if (!data) return null;
+  if (!filterProperties) return null;
 
   type viewOptionsType = {
     id: optionType;
@@ -98,8 +176,8 @@ const ViewAll: FC = () => {
       <>
         <Image
           src={`data:image/jpeg;base64,${params.formattedValue}` || ""}
-          alt=''
-          ratio='16/9'
+          alt=""
+          ratio="16/9"
           width={1}
         />
       </>
@@ -109,7 +187,7 @@ const ViewAll: FC = () => {
     return (
       <>
         <Label
-          variant='filled'
+          variant="filled"
           color={
             (params.formattedValue === "SOLD" && "error") ||
             (params.formattedValue === "SALE" && "info") ||
@@ -175,14 +253,6 @@ const ViewAll: FC = () => {
                 justifyContent={"center"}
                 alignItems={"center"}
               >
-                <Button
-                  disableRipple
-                  color='inherit'
-                  endIcon={<Iconify icon='ic:round-filter-list' />}
-                  onClick={handleOpenFilter}
-                >
-                  Filters
-                </Button>
                 {!isDefault && (
                   <>
                     <ShopTagFiltered
@@ -191,6 +261,69 @@ const ViewAll: FC = () => {
                     />
                   </>
                 )}
+
+                <FormControl sx={{ m: 1, minWidth: 120 }}>
+                  <Select
+                    value={stateFilter}
+                    displayEmpty
+                    IconComponent={() => null}
+                  >
+                    {stateFilterOptions.map((option) => (
+                      <MenuItem
+                        key={option.value}
+                        value={option.value}
+                        onClick={() => setStateFilter(option.value)}
+                      >
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+
+                <FormControl sx={{ m: 1, minWidth: 120 }}>
+                  <Select
+                    value={categoryFilter}
+                    displayEmpty
+                    IconComponent={() => null}
+                  >
+                    {categoryFilterOptions.map((option) => (
+                      <MenuItem
+                        key={option.value}
+                        value={option.value}
+                        onClick={() => setCategoryFilter(option.value)}
+                      >
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+
+                <FormControl sx={{ m: 1, minWidth: 120 }}>
+                  <Select
+                    value={subCategoryFilter}
+                    displayEmpty
+                    IconComponent={() => null}
+                  >
+                    {subCategoryFilterOptions.map((option) => (
+                      <MenuItem
+                        key={option.value}
+                        value={option.value}
+                        onClick={() => setSubCategoryFilter(option.value)}
+                      >
+                        {option.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+
+                <Button
+                  disableRipple
+                  color="inherit"
+                  endIcon={<Iconify icon="ic:round-filter-list" />}
+                  onClick={handleOpenFilter}
+                >
+                  Filters
+                </Button>
               </Stack>
               <Stack direction={"row"} spacing={1}>
                 <FilterDrawer
@@ -202,11 +335,11 @@ const ViewAll: FC = () => {
                 />
                 <Tabs
                   value={ITabEnum[option]}
-                  aria-label='icon label tabs example'
+                  aria-label="icon label tabs example"
                 >
                   {viewOptions.map((option) => (
                     <Tab
-                      iconPosition='start'
+                      iconPosition="start"
                       onClick={() => setOption(option.id)}
                       id={option.id}
                       key={option.id}

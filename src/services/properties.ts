@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { IProperties } from "src/types/properties";
+import { IProperties, IPropertyFilter } from "src/types/properties";
 
 export const properties = createApi({
   reducerPath: "properties",
@@ -18,7 +18,7 @@ export const properties = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Properties", "PropertyById"],
+  tagTypes: ["Properties", "PropertyById", "FilterProperties"],
   endpoints: (builder) => ({
     allProperties: builder.query<IProperties[], void>({
       query: () => ({
@@ -37,6 +37,14 @@ export const properties = createApi({
         body: dataToSend,
       }),
     }),
+    filterProperties: builder.mutation<IProperties[], IPropertyFilter>({
+      query: (filter: IPropertyFilter) => ({
+        url: "/filter",
+        method: "POST",
+        body: filter,
+      }),
+      invalidatesTags: ["Properties"],
+    }),
   }),
 });
 
@@ -44,4 +52,5 @@ export const {
   useAllPropertiesQuery,
   useGetPropertyByIdQuery,
   useAddPropertyMutation,
+  useFilterPropertiesMutation,
 } = properties;
