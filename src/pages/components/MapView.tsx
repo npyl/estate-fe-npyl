@@ -5,11 +5,12 @@ import Map from "./Map";
 import { BookingItem } from "./MediaCard";
 
 const MapView = () => {
+  const [activeMarker, setActiveMarker] = useState(null);
   const { data } = useAllPropertiesQuery();
   if (!data) {
     return null;
   }
-  const [activeMarker, setActiveMarker] = useState(null);
+
   return (
     <Box display={"flex"}>
       <Box height={`calc(100vh - 266px)`} width={"50%"}>

@@ -28,9 +28,12 @@ import Image from "src/components/image";
 import Label from "src/components/label/Label";
 import FilterDrawer from "./FilterDrawer";
 import MapView from "./MapView";
-import ShopTagFiltered from "./TagFiltered";
 
 import { IPropertyFilter } from "src/types/properties";
+import CategorySelect from "./Filters/FilterCategory";
+import CountrySelect from "./Filters/FilterCities";
+import PriceSelect from "./Filters/FilterPrice";
+import SaleSelect from "./Filters/FilterSale";
 
 const defaultValues = {
   gender: [],
@@ -252,51 +255,21 @@ const ViewAll: FC = () => {
                 direction={"row"}
                 justifyContent={"center"}
                 alignItems={"center"}
+                spacing={0.5}
               >
-                {!isDefault && (
+                {/* {!isDefault && (
                   <>
                     <ShopTagFiltered
                       isFiltered={!isDefault}
                       onResetFilter={handleResetFilter}
                     />
                   </>
-                )}
-
-                <FormControl sx={{ m: 1, minWidth: 120 }}>
-                  <Select
-                    value={stateFilter}
-                    displayEmpty
-                    IconComponent={() => null}
-                  >
-                    {stateFilterOptions.map((option) => (
-                      <MenuItem
-                        key={option.value}
-                        value={option.value}
-                        onClick={() => setStateFilter(option.value)}
-                      >
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-
-                <FormControl sx={{ m: 1, minWidth: 120 }}>
-                  <Select
-                    value={categoryFilter}
-                    displayEmpty
-                    IconComponent={() => null}
-                  >
-                    {categoryFilterOptions.map((option) => (
-                      <MenuItem
-                        key={option.value}
-                        value={option.value}
-                        onClick={() => setCategoryFilter(option.value)}
-                      >
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
+                )} */}
+                <CountrySelect />
+                <SaleSelect />
+                <CategorySelect />
+                <PriceSelect type={"price"} />
+                <PriceSelect type={"area"} />
 
                 <FormControl sx={{ m: 1, minWidth: 120 }}>
                   <Select

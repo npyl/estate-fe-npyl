@@ -46,9 +46,7 @@ export const DashboardNavbarSearch: FC = () => {
     setSearchText("");
   };
 
-  const open = Boolean(
-    `<input placeholder="Search with a keyword" type="text" class="MuiInputBase-input MuiInputBase-inputAdornedEnd css-1ci8zif-MuiInputBase-input" value="1">`
-  );
+  const open = Boolean(anchorEl);
 
   return (
     <div>
@@ -98,7 +96,7 @@ export const DashboardNavbarSearch: FC = () => {
         }
       />
 
-      <StyledPopper open={true} anchorEl={anchorEl} placement='bottom-start'>
+      <StyledPopper open={open} anchorEl={anchorEl} placement='bottom-start'>
         <Paper>
           {(!results || results?.length === 0) && (
             <SearchNotFound query={searchText} />

@@ -80,6 +80,22 @@ export const lightThemeOptions: ThemeOptions = {
         },
       },
     },
+    MuiAutocomplete: {
+      styleOverrides: {
+        root: {
+          fontSize: 16,
+          fontWeight: 500,
+          letterSpacing: 0,
+          "& .MuiOutlinedInput-root": {
+            paddingRight: "25px!important",
+          },
+          ".MuiOutlinedInput-notchedOutline": { borderColor: divider },
+          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            border: `.5px solid ${primary.main}`,
+          },
+        },
+      },
+    },
     MuiChip: {
       styleOverrides: {
         root: {

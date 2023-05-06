@@ -1,0 +1,520 @@
+{
+  "type": "FeatureCollection",
+  "totalFeatures": 51,
+  "features": [
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.0",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [475807.49976592464, 4202811.999283533]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Αθήνα", "NAME": "Athens" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.1",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [275261.0928286533, 4249611.999552619]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Μεσολόγγι", "NAME": "Mesologgi" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.2",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [465093.3126828787, 4257236.000793643]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Χαλκίδα", "NAME": "Halkida" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.3",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [308647.31276499387, 4309619.000847071]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Καρπενήσι", "NAME": "Karpenisi" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.4",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [363667.81228692946, 4307010.9997647535]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Λαμία", "NAME": "Lamia" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.5",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [358454.1868482244, 4265458.000808805]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "¶μφισσα", "NAME": "Amfissa" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.6",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [356061.5005292003, 4152383.0000632987]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Τρίπολη", "NAME": "Tripoli" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.7",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [301757.2818544649, 4235573.999658011]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Πάτρα", "NAME": "Patra" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.8",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [274312.18759586406, 4172272.99945115]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Πύργος", "NAME": "Pyrgos" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.9",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [405799.59278674563, 4199310.000526762]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Κόρινθος", "NAME": "Korinthos" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.10",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [360538.500761895, 4103975.0004385607]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Σπάρτη", "NAME": "Sparti" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.11",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [332032.5938047173, 4100830.0004466465]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Καλαμάτα", "NAME": "Kalamata" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.12",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [226643.20235752524, 4186559.0008367505]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Ζάκυνθος", "NAME": "Zakynthos" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.13",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [149581.40530196764, 4393178.999077906]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Κέρκυρα", "NAME": "Kerkyra" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.14",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [192015.90595848486, 4231131.000098443]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Αργοστόλι", "NAME": "Argostoli" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.15",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [214052.29643525253, 4303175.999909916]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Λευκάδα", "NAME": "Leykada" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.16",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [239427.70246655913, 4338656.999656991]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "¶ρτα", "NAME": "Arta" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.17",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [218530.20376771246, 4317143.999517597]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Πρέβεζα", "NAME": "Prebeza" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.18",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [320739.5006332132, 4359256.000260744]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Καρδίτσα", "NAME": "Karditsa" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.19",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [364335.18654929847, 4388498.999466146]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Λάρισα", "NAME": "Larissa" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.20",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [408032.50085099274, 4357424.499410735]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Βόλος", "NAME": "Bolos" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.21",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [308754.49999081274, 4380495.00022594]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Τρίκαλα", "NAME": "Trikala" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.22",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [280424.5932212863, 4439924.000455956]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Γρεβενά", "NAME": "Grebena" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.23",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [512647.5010209372, 4555184.999545808]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Δράμα", "NAME": "Drama" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.24",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [347527.8131468424, 4487219.999555542]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Βέροια", "NAME": "Beroia" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.25",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [411064.40605202597, 4498811.999743544]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Θεσσαλονίκη", "NAME": "Thessaloniki" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.26",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [534851.8751652334, 4531767.999074702]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Καβάλα", "NAME": "Kabala" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.27",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [268442.09384940565, 4488689.000921294]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Καστοριά", "NAME": "Kastoria" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.28",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [405354.40607330645, 4538388.999140181]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Κιλκίς", "NAME": "Kilkis" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.29",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [311931.8130766561, 4463304.99923752]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Κοζάνη", "NAME": "Kozani" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.30",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [335019.40556112304, 4518064.999218835]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Έδεσσα", "NAME": "Edessa" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.31",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [372633.281233334, 4458724.500374619]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Κατερίνη", "NAME": "Katerini" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.32",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [462039.31327154255, 4548586.000282189]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Σέρρες", "NAME": "Serres" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.33",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [280914.81318280124, 4517304.00063652]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Φλώρινα", "NAME": "Florina" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.34",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [452331.0936010326, 4469467.999026971]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Πολύγυρος", "NAME": "Polygyros" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.35",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [657687.375248732, 4523329.9993]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Αλεξανδρούπολη", "NAME": "Aleksandroypoli" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.36",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [574065.3745694053, 4553938.999420309]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Ξάνθη", "NAME": "Ksanthi" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.37",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [617869.0001333007, 4552621.000067211]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Κομοτηνή", "NAME": "Komotini" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.38",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [878802.9377544574, 4041133.001015936]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Ρόδος", "NAME": "Rodos" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.39",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [583013.3117889948, 4144081.0009063603]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Ερμούπολη", "NAME": "Ermoypoli" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.40",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [720826.8120616903, 4331572.000417722]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Μυτιλήνη", "NAME": "Mytilini" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.41",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [761944.6252347929, 4182957.999509481]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Σάμος", "NAME": "Samos" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.42",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [686585.8114666096, 4248063.999553299]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Χίος", "NAME": "Xios" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.43",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [602659.6874281983, 3910900.9990671137]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Ηράκλειο", "NAME": "Hrakleio" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.44",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [656096.3741539, 3895170.0002097813]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "¶γιος Νικόλαος", "NAME": "Agios Nikolaos" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.45",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [542964.8114827508, 3913675.9999146974]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Ρέθυμνο", "NAME": "Rethimno" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.46",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [501576.5933226198, 3930003.999113702]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Χανιά", "NAME": "Hania" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.47",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [230271.59311592462, 4395426.999870744]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Ιωάννινα", "NAME": "Ioannina" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.48",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [178946.70314346626, 4379071.000972116]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Ηγουμενίτσα", "NAME": "Hgoymenitsa" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.49",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [401901.90548817045, 4254385.000761373]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Λειβαδιά", "NAME": "Leivadia" }
+    },
+    {
+      "type": "Feature",
+      "id": "9a55cca2-751a-4725-a22a-1643ea739dc2.50",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [394661.9063549021, 4158283.999549817]
+      },
+      "geometry_name": "the_geom",
+      "properties": { "ONOMA": "Ναύπλιον", "NAME": "Nayplion" }
+    }
+  ],
+  "crs": {
+    "type": "name",
+    "properties": { "name": "urn:ogc:def:crs:EPSG::2100" }
+  }
+}

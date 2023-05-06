@@ -24,14 +24,35 @@ interface IMapProps {
 }
 
 const Map = ({ data, activeMarker, setActiveMarker }: IMapProps) => {
+  const apiKey = "AIzaSyC6BN1ePFMAmJJfF71uN7vsNXIOCpQ5DbQ";
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
-    googleMapsApiKey: "AIzaSyC6BN1ePFMAmJJfF71uN7vsNXIOCpQ5DbQ",
+    googleMapsApiKey: apiKey,
     libraries: ["drawing"],
   });
+  const [map, setMap] = React.useState(null);
   const [mapRef, setMapRef] = useState<any>();
   const [isOpen, setIsOpen] = useState(false);
   const [infoWindowData, setInfoWindowData] = useState<any>();
+  const [center, setCenter] = useState({ lat: 37.98381, lng: 23.727539 }); // Athens
+  const [bounds, setBounds] = useState<any>(null);
+  const [cities, setCities] = useState([]);
+  // fetch(
+  //   `https://maps.googleapis.com/maps/api/geocode/json?address=Greece&components=country:GR&key=${apiKey}`
+  // )
+  //   .then((response) => response.json())
+  //   .then((data) => {
+  //     const countries = data.results.flatMap(
+  //       (result: { address_components: any[] }) => {
+  //         const countryComponent = result.address_components.find((component) =>
+  //           component.types.includes("country")
+  //         );
+  //         return countryComponent ? [countryComponent.long_name] : [];
+  //       }
+  //     );
+
+  //     console.log(countries);
+  //   });
 
   const markers = data.map((property) => {
     const location = property.location;
@@ -55,8 +76,6 @@ const Map = ({ data, activeMarker, setActiveMarker }: IMapProps) => {
     setIsOpen(true);
   };
 
-  const [map, setMap] = React.useState(null);
-
   const onLoad = React.useCallback(function callback(map: any) {
     const bounds = new window.google.maps.LatLngBounds(center);
     if (map.current) {
@@ -77,6 +96,7 @@ const Map = ({ data, activeMarker, setActiveMarker }: IMapProps) => {
   const onPolygonComplete = (polygon: any) => {
     console.log(polygon);
   };
+
   return isLoaded ? (
     <GoogleMap
       mapContainerStyle={containerStyle}
