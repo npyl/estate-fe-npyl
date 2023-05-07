@@ -1,18 +1,29 @@
-import { Button, styled } from "@mui/material";
-
-export const StyledPriceButton = styled(Button)(({ theme }) => ({
+import { Box, Button, ButtonProps, styled } from "@mui/material";
+interface PriceButtonProps extends ButtonProps {
+  open: boolean;
+}
+export const StyledPriceButton = styled(Button, {
+  shouldForwardProp: (prop) => prop !== "open",
+})<PriceButtonProps>(({ theme, open }) => ({
   backgroundColor: theme.palette.background.paper,
-  minHeight: "56px",
 
   fontWeight: 500,
   color: theme.palette.neutral?.[500],
   fontSize: "16px",
-  border: `1px solid ${theme.palette.divider}`,
+  border: open
+    ? `1px solid ${theme.palette.primary.main}`
+    : `1px solid ${theme.palette.divider}`,
   "&:hover": {
-    borderColor: theme.palette.common.black,
+    borderColor: theme.palette.primary.main,
     background: theme.palette.common.white,
   },
-  "&:focus": {
-    borderColor: theme.palette.common.black,
-  },
+}));
+
+export const StyledBox = styled(Box)(({ theme }) => ({
+  marginTop: 35,
+  border: 0,
+  boxShadow: `rgba(99, 99, 99, 0.2) 0px 2px 8px 0px`,
+  borderRadius: 4,
+  background: theme.palette.common.white,
+  p: 1,
 }));

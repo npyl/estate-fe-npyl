@@ -1,6 +1,8 @@
 import Autocomplete from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+import { setCategory } from "src/slices/filters";
+import { useDispatch } from "src/store";
 
 export default function CategorySelect() {
   const categoryFilterOptions = [
@@ -36,13 +38,15 @@ export default function CategorySelect() {
     { value: "AIR", label: "Air" },
     { value: "OTHER", label: "Other" },
   ];
+  const dispatch = useDispatch();
   return (
     <Autocomplete
+      sx={{ width: 180 }}
       id='select-demo'
-      sx={{ width: 200 }}
       options={categoryFilterOptions}
       autoHighlight
       clearIcon={false}
+      onChange={(_e, newValue) => dispatch(setCategory(newValue || ""))}
       getOptionLabel={(option) => option.label}
       renderOption={(props, option) => (
         <Box

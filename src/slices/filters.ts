@@ -1,0 +1,205 @@
+import { createSlice } from "@reduxjs/toolkit";
+import { RootState } from "src/store";
+
+interface IFilterProps {
+  category: string;
+  city: string;
+  code: number;
+  frameType: string;
+  furnished: string;
+  heatingType: string;
+  managerId: number;
+  maxArea: number;
+  maxBedrooms: number;
+  maxConstructionYear: number;
+  maxFloor: number;
+  maxPrice: number;
+  minArea: number;
+  minBedrooms: number;
+  minConstructionYear: number;
+  minFloor: number;
+  minPrice: number;
+  state: string;
+  [key: string]: any;
+}
+
+const initialState: IFilterProps = {
+  category: "",
+  city: "",
+  code: 0,
+  frameType: "",
+  furnished: "",
+  heatingType: "",
+  managerId: 0,
+  maxArea: 0,
+  maxBedrooms: 0,
+  maxConstructionYear: 0,
+  maxFloor: 0,
+  maxPrice: 0,
+  minArea: 0,
+  minBedrooms: 0,
+  minConstructionYear: 0,
+  minFloor: 0,
+  minPrice: 0,
+  state: "",
+};
+
+const slice = createSlice({
+  name: "filters",
+  initialState,
+  reducers: {
+    setCategory(state, { payload }) {
+      state.category = payload;
+    },
+
+    setCity(state, { payload }) {
+      state.city = payload;
+    },
+
+    setCode(state, { payload }) {
+      state.code = payload;
+    },
+
+    setFrameType(state, { payload }) {
+      state.frameType = payload;
+    },
+
+    setFurnished(state, { payload }) {
+      state.furnished = payload;
+    },
+
+    setHeatingType(state, { payload }) {
+      state.heatingType = payload;
+    },
+
+    setManagerId(state, { payload }) {
+      state.managerId = payload;
+    },
+
+    setMaxArea(state, { payload }) {
+      state.maxArea = payload;
+    },
+
+    setMaxBedrooms(state, { payload }) {
+      state.maxBedrooms = payload;
+    },
+
+    setMaxConstructionYear(state, { payload }) {
+      state.maxConstructionYear = payload;
+    },
+
+    setMaxFloor(state, { payload }) {
+      state.maxFloor = payload;
+    },
+
+    setMaxPrice(state, { payload }) {
+      state.maxPrice = payload;
+    },
+
+    setMinArea(state, { payload }) {
+      state.minArea = payload;
+    },
+
+    setMinBedrooms(state, { payload }) {
+      state.minBedrooms = payload;
+    },
+
+    setMinConstructionYear(state, { payload }) {
+      state.minConstructionYear = payload;
+    },
+
+    setMinFloor(state, { payload }) {
+      state.minFloor = payload;
+    },
+
+    setMinPrice(state, { payload }) {
+      state.minPrice = payload;
+    },
+
+    setState(state, { payload }) {
+      state.state = payload;
+    },
+  },
+});
+
+export const {
+  setCategory,
+  setCity,
+  setCode,
+  setFrameType,
+  setFurnished,
+  setHeatingType,
+  setManagerId,
+  setMaxArea,
+  setMaxBedrooms,
+  setMaxConstructionYear,
+  setMaxFloor,
+  setMaxPrice,
+  setMinArea,
+  setMinBedrooms,
+  setMinConstructionYear,
+  setMinFloor,
+  setMinPrice,
+  setState,
+} = slice.actions;
+
+export const selectCategory = ({ filters }: RootState) => filters.category;
+export const selectCity = ({ filters }: RootState) => filters.city;
+export const selectCode = ({ filters }: RootState) => filters.code;
+export const selectFrameType = ({ filters }: RootState) => filters.frameType;
+export const selectFurnished = ({ filters }: RootState) => filters.furnished;
+export const selectHeatingType = ({ filters }: RootState) =>
+  filters.heatingType;
+export const selectManagerId = ({ filters }: RootState) => filters.managerId;
+export const selectMaxArea = ({ filters }: RootState) => filters.maxArea;
+export const selectMaxBedrooms = ({ filters }: RootState) =>
+  filters.maxBedrooms;
+export const selectMaxConstructionYear = ({ filters }: RootState) =>
+  filters.maxConstructionYear;
+export const selectMaxFloor = ({ filters }: RootState) => filters.maxFloor;
+export const selectMaxPrice = ({ filters }: RootState) => filters.maxPrice;
+export const selectMinArea = ({ filters }: RootState) => filters.minArea;
+export const selectMinBedrooms = ({ filters }: RootState) =>
+  filters.minBedrooms;
+export const selectMinConstructionYear = ({ filters }: RootState) =>
+  filters.minConstructionYear;
+export const selectMinFloor = ({ filters }: RootState) => filters.minFloor;
+export const selectMinPrice = ({ filters }: RootState) => filters.minPrice;
+export const selectState = ({ filters }: RootState) => filters.state;
+
+import { createSelector } from "@reduxjs/toolkit";
+
+const sumOfChangedProperties = createSelector(
+  (state: RootState) => state.filters,
+  (filter) => {
+    const propertiesToInclude = [
+      "category",
+      "city",
+      "code",
+      "frameType",
+      "furnished",
+      "heatingType",
+      "managerId",
+      "maxArea",
+      "maxBedrooms",
+      "maxConstructionYear",
+      "maxFloor",
+      "maxPrice",
+      "minArea",
+      "minBedrooms",
+      "minConstructionYear",
+      "minFloor",
+      "minPrice",
+      "state",
+    ];
+
+    return propertiesToInclude.reduce(
+      (acc, curr) => (filter[curr] ? acc + 1 : acc),
+      0
+    );
+  }
+);
+
+export default sumOfChangedProperties;
+
+export const { reducer } = slice;

@@ -1,6 +1,8 @@
 import Autocomplete from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+import { setState } from "src/slices/filters";
+import { useDispatch } from "src/store";
 
 export default function SaleSelect() {
   const stateFilterOptions = [
@@ -8,6 +10,8 @@ export default function SaleSelect() {
     { value: "SALE", label: "Πώληση" },
     { value: "RENT", label: "Ενοίκιο" },
   ];
+  const dispatch = useDispatch();
+
   return (
     <Autocomplete
       id='select-demo-sale'
@@ -15,6 +19,7 @@ export default function SaleSelect() {
       options={stateFilterOptions}
       autoHighlight
       clearIcon={false}
+      onChange={(_e, newValue) => dispatch(setState(newValue || ""))}
       getOptionLabel={(option) => option.label}
       renderOption={(props, option) => (
         <Box
@@ -28,13 +33,13 @@ export default function SaleSelect() {
       renderInput={(params) => (
         <TextField
           {...params}
-          InputLabelProps={{
-            shrink: true,
-          }}
           placeholder='Πώληση'
           inputProps={{
             ...params.inputProps,
             autoComplete: "new-password", // disable autocomplete and autofill
+          }}
+          InputLabelProps={{
+            shrink: true,
           }}
         />
       )}

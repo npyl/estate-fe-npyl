@@ -27,7 +27,7 @@ export const baseThemeOptions: ThemeOptions = {
       },
       styleOverrides: {
         root: {
-          maxHeight: "35px",
+          height: "38px",
           textTransform: "none",
         },
 

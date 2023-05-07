@@ -1,12 +1,11 @@
+// import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import GridViewIcon from "@mui/icons-material/GridView";
 import MapIcon from "@mui/icons-material/Map";
+import TuneIcon from "@mui/icons-material/Tune";
 import {
-  Button,
+  Badge,
   Container,
-  FormControl,
-  MenuItem,
   Paper,
-  Select,
   Stack,
   SvgIconTypeMap,
   Tab,
@@ -14,26 +13,27 @@ import {
 } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import { Box } from "@mui/system";
+import { GridCellParams, GridColDef } from "@mui/x-data-grid";
 import { FC, ReactNode, useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
+import FormProvider from "src/components/hook-form/FormProvider";
+import Image from "src/components/image";
+import Label from "src/components/label/Label";
 import { Menu } from "src/icons/menu";
 import { useFilterPropertiesMutation } from "src/services/properties";
 import DataGridTable from "../../components/DataGrid";
+import MapView from "./MapView";
 import MediaCard from "./MediaCard";
 
-import { GridCellParams, GridColDef } from "@mui/x-data-grid";
-import { useForm } from "react-hook-form";
-import FormProvider from "src/components/hook-form/FormProvider";
-import Iconify from "src/components/iconify";
-import Image from "src/components/image";
-import Label from "src/components/label/Label";
-import FilterDrawer from "./FilterDrawer";
-import MapView from "./MapView";
-
+import sumOfChangedProperties from "src/slices/filters";
+import { useSelector } from "src/store";
 import { IPropertyFilter } from "src/types/properties";
 import CategorySelect from "./Filters/FilterCategory";
 import CountrySelect from "./Filters/FilterCities";
+import FilterMore from "./Filters/FilterMore";
 import PriceSelect from "./Filters/FilterPrice";
 import SaleSelect from "./Filters/FilterSale";
+import { StyledPriceButton } from "./Filters/styles";
 
 const defaultValues = {
   gender: [],
@@ -54,6 +54,7 @@ export interface IProductFilter {
 }
 const ViewAll: FC = () => {
   type optionType = "list" | "grid" | "map";
+  const changedPropsCount = useSelector(sumOfChangedProperties);
   const [openFilter, setOpenFilter] = useState(false);
   const methods = useForm<IProductFilter>({
     defaultValues,
@@ -257,55 +258,37 @@ const ViewAll: FC = () => {
                 alignItems={"center"}
                 spacing={0.5}
               >
-                {/* {!isDefault && (
-                  <>
-                    <ShopTagFiltered
-                      isFiltered={!isDefault}
-                      onResetFilter={handleResetFilter}
-                    />
-                  </>
-                )} */}
                 <CountrySelect />
                 <SaleSelect />
+
                 <CategorySelect />
+
                 <PriceSelect type={"price"} />
                 <PriceSelect type={"area"} />
 
-                <FormControl sx={{ m: 1, minWidth: 120 }}>
-                  <Select
-                    value={subCategoryFilter}
-                    displayEmpty
-                    IconComponent={() => null}
-                  >
-                    {subCategoryFilterOptions.map((option) => (
-                      <MenuItem
-                        key={option.value}
-                        value={option.value}
-                        onClick={() => setSubCategoryFilter(option.value)}
-                      >
-                        {option.label}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-
-                <Button
+                <StyledPriceButton
+                  open={false}
                   disableRipple
                   color='inherit'
-                  endIcon={<Iconify icon='ic:round-filter-list' />}
+                  sx={{ width: 120 }}
+                  endIcon={
+                    <Badge badgeContent={changedPropsCount} color='error'>
+                      <TuneIcon />
+                    </Badge>
+                  }
                   onClick={handleOpenFilter}
                 >
-                  Filters
-                </Button>
+                  More
+                </StyledPriceButton>
               </Stack>
               <Stack direction={"row"} spacing={1}>
-                <FilterDrawer
+                {/* <FilterDrawer
                   isDefault={isDefault}
                   open={openFilter}
                   onOpen={handleOpenFilter}
                   onClose={handleCloseFilter}
                   onResetFilter={handleResetFilter}
-                />
+                /> */}
                 <Tabs
                   value={ITabEnum[option]}
                   aria-label='icon label tabs example'
@@ -342,6 +325,15 @@ const ViewAll: FC = () => {
           )}
         </Box>
       </FormProvider>
+      {openFilter && (
+        <FilterMore
+          isDefault={isDefault}
+          open={openFilter}
+          onOpen={handleOpenFilter}
+          onClose={handleCloseFilter}
+          onResetFilter={handleResetFilter}
+        />
+      )}
     </Container>
   );
 };

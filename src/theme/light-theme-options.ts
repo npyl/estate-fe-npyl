@@ -23,9 +23,9 @@ const background = {
 const divider = "#E6E8F0";
 
 const primary = {
-  main: "#5048E5",
-  light: "#828DF8",
-  dark: "#3832A0",
+  light: "#84A9FF",
+  main: "#3366FF",
+  dark: "#1939B7",
   contrastText: "#FFFFFF",
 };
 
@@ -90,8 +90,11 @@ export const lightThemeOptions: ThemeOptions = {
             paddingRight: "25px!important",
           },
           ".MuiOutlinedInput-notchedOutline": { borderColor: divider },
+          "&:hover .MuiOutlinedInput-notchedOutline": {
+            border: `1px solid ${primary.main}!important`,
+          },
           "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-            border: `.5px solid ${primary.main}`,
+            border: `1px solid ${primary.main}!important`,
           },
         },
       },
@@ -125,6 +128,9 @@ export const lightThemeOptions: ThemeOptions = {
     },
     MuiOutlinedInput: {
       styleOverrides: {
+        root: {
+          padding: "0 5px!important",
+        },
         notchedOutline: {
           borderColor: divider,
         },

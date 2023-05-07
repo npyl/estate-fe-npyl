@@ -90,7 +90,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
         <Box
           sx={{
             marginBottom: 0,
-            backgroundColor: "neutral.100",
+
             display: "flex",
             flex: "1 1 auto",
             flexDirection: "column",

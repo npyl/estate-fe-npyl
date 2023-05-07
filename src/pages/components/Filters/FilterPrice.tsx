@@ -11,21 +11,50 @@ import {
   TextField,
 } from "@mui/material";
 import { useMemo, useState } from "react";
-import { StyledPriceButton } from "./styles";
+import {
+  selectMaxArea,
+  selectMaxPrice,
+  selectMinArea,
+  selectMinPrice,
+  setMaxArea,
+  setMaxPrice,
+  setMinArea,
+  setMinPrice,
+} from "src/slices/filters";
+import { useDispatch, useSelector } from "src/store";
+import { StyledBox, StyledPriceButton } from "./styles";
 
 const RangeSelect = ({ type }: { type: string }) => {
-  const marksLabel = [...Array(21)].map((_, index) => {
-    const value = index * 10;
+  const dispatch = useDispatch();
 
-    const firstValue = index === 0 ? `$${value}` : `${value}`;
+  const setMinValue = useMemo(() => {
+    if (type === "price") {
+      return setMinPrice;
+    }
+    return setMinArea;
+  }, [type]);
+  const setMaxValue = useMemo(() => {
+    if (type === "price") {
+      return setMaxPrice;
+    }
+    return setMaxArea;
+  }, [type]);
 
-    return {
-      value,
-      label: index % 4 ? "" : firstValue,
-    };
-  });
-  const [valueMin, setValueMin] = useState("");
-  const [valueMax, setValueMax] = useState("");
+  const selectMinValue = useMemo(() => {
+    if (type === "price") {
+      return selectMinPrice;
+    }
+    return selectMinArea;
+  }, [type]);
+  const selectMaxValue = useMemo(() => {
+    if (type === "price") {
+      return selectMaxPrice;
+    }
+    return selectMaxArea;
+  }, [type]);
+
+  const valueMin = useSelector(selectMinValue);
+  const valueMax = useSelector(selectMaxValue);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
@@ -36,11 +65,11 @@ const RangeSelect = ({ type }: { type: string }) => {
 
   const handleInputChangeMin = (event: any) => {
     const newValue = event.target.value;
-    setValueMin(isNaN(newValue) ? "" : newValue);
+    dispatch(setMinValue(isNaN(newValue) ? "" : newValue));
   };
   const handleInputChangeMax = (event: any) => {
     const newValue = event.target.value;
-    setValueMax(isNaN(newValue) ? "" : newValue);
+    dispatch(setMaxValue(isNaN(newValue) ? "" : newValue));
   };
   const symbol = useMemo(() => {
     if (type === "price") {
@@ -59,6 +88,24 @@ const RangeSelect = ({ type }: { type: string }) => {
   const values = useMemo(() => {
     return generateNumbers(type);
   }, [type]);
+
+  const customWidth = useMemo(() => {
+    return (valueMin.toString().length + valueMax.toString().length) * 10 + 130;
+  }, [valueMin, valueMax, type]);
+
+  const renderLabel = useMemo(() => {
+    if (valueMin === 0 && valueMax === 0) {
+      return label;
+    }
+    if (valueMin && valueMax === 0) {
+      return "Από " + formatNumber(+valueMin) + symbol;
+    }
+    if (valueMin === 0 && valueMax) {
+      return "Εώς " + formatNumber(+valueMax) + symbol;
+    }
+    return formatNumber(+valueMin) + "-" + formatNumber(+valueMax) + symbol;
+  }, [valueMax, valueMin]);
+
   return (
     <ClickAwayListener
       mouseEvent='onMouseDown'
@@ -67,33 +114,19 @@ const RangeSelect = ({ type }: { type: string }) => {
     >
       <Box>
         <StyledPriceButton
+          sx={{ width: customWidth }}
+          open={open}
           variant='outlined'
           endIcon={open ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
           onClick={handleClick}
         >
-          {label}
+          {renderLabel}
         </StyledPriceButton>
         {open && (
           <Popper open={open} anchorEl={anchorEl} placement='bottom-start'>
-            <Box
-              sx={{
-                top: 28,
-                right: 0,
-                left: 0,
-                zIndex: 1,
-                border: "1px solid",
-                p: 1,
-                bgcolor: "background.paper",
-              }}
-            >
-              <Grid container padding={1}>
-                <Grid
-                  item
-                  xs={12}
-                  sm={6}
-                  paddingRight={1}
-                  borderRight={"0.5px solid grey"}
-                >
+            <StyledBox>
+              <Grid container padding={1} spacing={3}>
+                <Grid item xs={12} sm={6}>
                   <TextField
                     label={`${symbol} Από`}
                     value={valueMin}
@@ -108,7 +141,7 @@ const RangeSelect = ({ type }: { type: string }) => {
                           backgroundColor: "neutral.200",
                         },
                       }}
-                      onClick={() => setValueMin("")}
+                      onClick={() => dispatch(setMinValue(0))}
                     >
                       <ListItemText primary={"Αδιάφορο"} />
                     </ListItem>
@@ -121,7 +154,11 @@ const RangeSelect = ({ type }: { type: string }) => {
                           },
                         }}
                         key={option}
-                        onClick={() => setValueMin(option.toString())}
+                        onClick={() =>
+                          option > valueMax && valueMax !== 0
+                            ? dispatch(setMaxValue(option))
+                            : dispatch(setMinValue(option))
+                        }
                       >
                         <ListItemText primary={formatNumber(option)} />
                       </ListItem>
@@ -129,7 +166,7 @@ const RangeSelect = ({ type }: { type: string }) => {
                   </List>
                 </Grid>
 
-                <Grid paddingLeft={1} item xs={12} sm={6}>
+                <Grid item xs={12} sm={6}>
                   <TextField
                     label={`${symbol} Εώς`}
                     value={valueMax}
@@ -143,7 +180,7 @@ const RangeSelect = ({ type }: { type: string }) => {
                           backgroundColor: "neutral.200",
                         },
                       }}
-                      onClick={() => setValueMax("")}
+                      onClick={() => dispatch(setMaxValue(0))}
                     >
                       <ListItemText primary={"Αδιάφορο"} />
                     </ListItem>
@@ -156,7 +193,11 @@ const RangeSelect = ({ type }: { type: string }) => {
                           },
                         }}
                         key={option}
-                        onClick={() => setValueMax(option.toString())}
+                        onClick={() =>
+                          option < valueMin
+                            ? dispatch(setMinValue(option))
+                            : dispatch(setMaxValue(option))
+                        }
                       >
                         <ListItemText primary={formatNumber(option)} />
                       </ListItem>
@@ -164,7 +205,7 @@ const RangeSelect = ({ type }: { type: string }) => {
                   </List>
                 </Grid>
               </Grid>
-            </Box>
+            </StyledBox>
           </Popper>
         )}
       </Box>

@@ -2,10 +2,14 @@ import Autocomplete from "@mui/material/Autocomplete";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import citiesJson from "src/json/countries.json";
+import { setCity } from "src/slices/filters";
+import { useDispatch } from "src/store";
 import { Feature } from "src/types/cities";
 
 export default function CountrySelect() {
   const cities: readonly Feature[] = citiesJson.features;
+  const dispatch = useDispatch();
+
   return (
     <Autocomplete
       id='country-select-demo'
@@ -13,6 +17,7 @@ export default function CountrySelect() {
       options={cities}
       autoHighlight
       clearIcon={false}
+      onChange={(_e, newValue) => dispatch(setCity(newValue || ""))}
       getOptionLabel={(option) =>
         option.properties.NAME || option.properties.ONOMA
       }

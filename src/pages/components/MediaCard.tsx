@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import CarouselSimple from "src/components/CarouselSimple";
 import Iconify from "src/components/iconify/Iconify";
 import { IProperties } from "src/types/properties";
-import Label from "../../components/label";
 
 // ----------------------------------------------------------------------
 
@@ -109,7 +108,7 @@ export function BookingItem({ item, activeMarker }: BookingItemProps) {
       }}
     >
       <Box sx={{ position: "relative" }}>
-        <Label
+        {/* <Label
           variant='filled'
           color={
             (state === "SOLD" && "error") ||
@@ -118,13 +117,13 @@ export function BookingItem({ item, activeMarker }: BookingItemProps) {
           }
           sx={{
             left: 16,
-            zIndex: 9,
+            zIndex: 1,
             bottom: 16,
             position: "absolute",
           }}
         >
           {state}
-        </Label>
+        </Label> */}
 
         <CarouselSimple
           onImageClick={() => router.push(`property/${id}`)}
