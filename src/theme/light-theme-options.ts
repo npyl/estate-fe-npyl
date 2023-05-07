@@ -116,8 +116,22 @@ export const lightThemeOptions: ThemeOptions = {
         },
       },
     },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          top: "-8px",
+        },
+        shrink: {
+          top: 0,
+        },
+      },
+    },
     MuiInputBase: {
       styleOverrides: {
+        root: {
+          color: text.secondary,
+          height: "38px",
+        },
         input: {
           "&::placeholder": {
             opacity: 1,

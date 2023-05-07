@@ -2,15 +2,7 @@
 import GridViewIcon from "@mui/icons-material/GridView";
 import MapIcon from "@mui/icons-material/Map";
 import TuneIcon from "@mui/icons-material/Tune";
-import {
-  Badge,
-  Container,
-  Paper,
-  Stack,
-  SvgIconTypeMap,
-  Tab,
-  Tabs,
-} from "@mui/material";
+import { Badge, Paper, Stack, SvgIconTypeMap, Tab, Tabs } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import { Box } from "@mui/system";
 import { GridCellParams, GridColDef } from "@mui/x-data-grid";
@@ -241,90 +233,88 @@ const ViewAll: FC = () => {
   };
 
   return (
-    <Container maxWidth={false}>
-      <FormProvider methods={methods}>
-        <Box>
-          <Paper sx={{ padding: "12px 24px", overflow: "scroll" }}>
-            <Box
-              sx={{
-                alignItems: "center",
-                display: "flex",
-                justifyContent: "space-between",
-              }}
+    <FormProvider methods={methods}>
+      <Box>
+        <Paper sx={{ paddingX: 2, paddingY: 1, overflow: "scroll" }}>
+          <Box
+            sx={{
+              alignItems: "center",
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+          >
+            <Stack
+              direction={"row"}
+              justifyContent={"center"}
+              alignItems={"center"}
+              spacing={0.5}
             >
-              <Stack
-                direction={"row"}
-                justifyContent={"center"}
-                alignItems={"center"}
-                spacing={0.5}
+              <CountrySelect />
+              <SaleSelect />
+
+              <CategorySelect />
+
+              <PriceSelect type={"price"} />
+              <PriceSelect type={"area"} />
+
+              <StyledPriceButton
+                open={false}
+                disableRipple
+                color='inherit'
+                sx={{ width: 120 }}
+                endIcon={
+                  <Badge badgeContent={changedPropsCount} color='error'>
+                    <TuneIcon />
+                  </Badge>
+                }
+                onClick={handleOpenFilter}
               >
-                <CountrySelect />
-                <SaleSelect />
-
-                <CategorySelect />
-
-                <PriceSelect type={"price"} />
-                <PriceSelect type={"area"} />
-
-                <StyledPriceButton
-                  open={false}
-                  disableRipple
-                  color='inherit'
-                  sx={{ width: 120 }}
-                  endIcon={
-                    <Badge badgeContent={changedPropsCount} color='error'>
-                      <TuneIcon />
-                    </Badge>
-                  }
-                  onClick={handleOpenFilter}
-                >
-                  More
-                </StyledPriceButton>
-              </Stack>
-              <Stack direction={"row"} spacing={1}>
-                {/* <FilterDrawer
+                Φίλτρα
+              </StyledPriceButton>
+            </Stack>
+            <Stack direction={"row"} spacing={1}>
+              {/* <FilterDrawer
                   isDefault={isDefault}
                   open={openFilter}
                   onOpen={handleOpenFilter}
                   onClose={handleCloseFilter}
                   onResetFilter={handleResetFilter}
                 /> */}
-                <Tabs
-                  value={ITabEnum[option]}
-                  aria-label='icon label tabs example'
-                >
-                  {viewOptions.map((option) => (
-                    <Tab
-                      iconPosition='start'
-                      onClick={() => setOption(option.id)}
-                      id={option.id}
-                      key={option.id}
-                      icon={<option.icon />}
-                      label={option.label}
-                    />
-                  ))}
-                </Tabs>
-              </Stack>
-            </Box>
-          </Paper>
+              <Tabs
+                value={ITabEnum[option]}
+                aria-label='icon label tabs example'
+              >
+                {viewOptions.map((option) => (
+                  <Tab
+                    iconPosition='start'
+                    onClick={() => setOption(option.id)}
+                    id={option.id}
+                    key={option.id}
+                    icon={<option.icon />}
+                    label={option.label}
+                  />
+                ))}
+              </Tabs>
+            </Stack>
+          </Box>
+        </Paper>
 
-          {option === "list" && (
-            <Paper sx={{ mt: 2 }}>
-              <DataGridTable rows={data} columns={columns} />
-            </Paper>
-          )}
-          {option === "grid" && (
-            <Paper sx={{ marginTop: 2 }}>
-              <MediaCard data={data} />
-            </Paper>
-          )}
-          {option === "map" && (
-            <Paper sx={{ marginTop: 2 }}>
-              <MapView />
-            </Paper>
-          )}
-        </Box>
-      </FormProvider>
+        {option === "list" && (
+          <Paper sx={{ mt: 2 }}>
+            <DataGridTable rows={data} columns={columns} />
+          </Paper>
+        )}
+        {option === "grid" && (
+          <Paper sx={{ marginTop: 2 }}>
+            <MediaCard data={data} />
+          </Paper>
+        )}
+        {option === "map" && (
+          <Paper sx={{ marginTop: 2 }}>
+            <MapView />
+          </Paper>
+        )}
+      </Box>
       {openFilter && (
         <FilterMore
           isDefault={isDefault}
@@ -334,7 +324,7 @@ const ViewAll: FC = () => {
           onResetFilter={handleResetFilter}
         />
       )}
-    </Container>
+    </FormProvider>
   );
 };
 

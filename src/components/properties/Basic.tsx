@@ -60,7 +60,7 @@ const BasicSection: React.FC<any> = (props) => {
   const { data: managers } = useAllUsersQuery();
   if (!enums) return null;
   return (
-    <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
+    <Paper elevation={10} sx={{ padding: 2, overflow: "auto" }}>
       <Box
         sx={{
           px: 3,
@@ -69,7 +69,7 @@ const BasicSection: React.FC<any> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant="h6">Basic Details</Typography>
+        <Typography variant='h6'>Basic Details</Typography>
       </Box>
 
       <Grid item xs={12}>
@@ -101,7 +101,6 @@ const BasicSection: React.FC<any> = (props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setOwner(event.target.value));
               }}
-              size='small'
             >
               {owners && owners.length > 0 ? (
                 owners?.map((option, index) => (
@@ -124,7 +123,6 @@ const BasicSection: React.FC<any> = (props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setManager(event.target.value));
               }}
-              size='small'
             >
               {managers && managers.length > 0 ? (
                 managers?.map((option, index) => (
@@ -147,12 +145,6 @@ const BasicSection: React.FC<any> = (props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setParentCategory(event.target.value));
               }}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
-              size='small'
             >
               {enums && enums.parentCategory ? (
                 enums?.parentCategory &&
@@ -177,12 +169,6 @@ const BasicSection: React.FC<any> = (props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setCategory(event.target.value));
               }}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
-              size='small'
             >
               {enums && enums.category ? (
                 enums?.category &&
@@ -208,12 +194,6 @@ const BasicSection: React.FC<any> = (props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setState(event.target.value));
               }}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
-              size='small'
             >
               {enums && enums.state ? (
                 enums?.state.map((option) => (
@@ -332,7 +312,7 @@ const BasicSection: React.FC<any> = (props) => {
           </Grid>
           <Grid item xs={6}>
             <DatePicker
-              label="Available After"
+              label='Available After'
               value={value}
               onChange={(newValue) => setValue(newValue)}
               sx={{ width: "100%" }}
@@ -340,7 +320,7 @@ const BasicSection: React.FC<any> = (props) => {
           </Grid>
           <Grid item xs={6}>
             <DatePicker
-              label="Year of Renovation"
+              label='Year of Renovation'
               value={valueRenovation}
               onChange={(valueRenovation) =>
                 setValueRenovation(valueRenovation)

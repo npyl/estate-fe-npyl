@@ -22,6 +22,7 @@ const DashboardLayoutRoot = styled("div")(({ theme }) => ({
   flex: "1 1 auto",
   maxWidth: "100%",
   paddingTop: 64,
+  marginRight: "16px",
   [theme.breakpoints.up("md")]: {
     paddingLeft: 200,
   },
@@ -98,7 +99,11 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
           }}
         >
           <Paper
-            sx={{ margin: 3, padding: 2, marginBottom: 0, overflowX: "auto" }}
+            sx={{
+              marginTop: "24px",
+              padding: 2,
+              overflowX: "auto",
+            }}
           >
             <Stack
               alignItems={"center"}
