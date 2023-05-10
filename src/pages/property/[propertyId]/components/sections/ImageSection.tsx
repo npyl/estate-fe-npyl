@@ -1,10 +1,8 @@
 import { m } from "framer-motion";
-import { MotionViewport, varFade } from "src/components/animate";
+import { varFade } from "src/components/animate";
 import CarouselThumbnail from "src/components/CarouselThumbnail";
 import { IFileModel } from "src/types/fileModel";
 import { IProperties } from "src/types/properties";
-
-import { Box } from "@mui/material";
 
 interface ImageSectionProps {
   data: IProperties;
@@ -37,11 +35,9 @@ const ImageSection: React.FC<ImageSectionProps> = (props) => {
   });
 
   return (
-    // <Box component={MotionViewport}>
     <m.div variants={varFade().in}>
       <CarouselThumbnail data={_carouselsExample} />
     </m.div>
-    // </Box>
   );
 };
 

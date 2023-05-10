@@ -68,7 +68,7 @@ const ParkingSection: React.FC<any> = (props) => {
             <TextField
               fullWidth
               id="outlined-controlled"
-              label="Number of Spans"
+              label="Number of Spots"
               value={spots}
               placeholder="1,2,3..."
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {

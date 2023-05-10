@@ -12,6 +12,8 @@ interface MainContainerProps {
   BlueprintsSection: JSX.Element;
   NotesSection: JSX.Element;
   VideoSection: JSX.Element;
+  SuitableFor: JSX.Element;
+  TechnicalFeatures: JSX.Element;
 }
 
 const MainContainer: React.FC<MainContainerProps> = (props) => {
@@ -27,6 +29,8 @@ const MainContainer: React.FC<MainContainerProps> = (props) => {
     BlueprintsSection,
     NotesSection,
     VideoSection,
+    SuitableFor,
+    TechnicalFeatures,
   } = props;
 
   return (
@@ -120,10 +124,30 @@ const MainContainer: React.FC<MainContainerProps> = (props) => {
             border: 1,
             borderColor: "divider",
             borderRadius: 1,
-            width: { md: "25%", sm: "100%" },
+            width: { md: "40%", sm: "100%" },
           }}
         >
           {NotesSection}
+        </Box>
+        <Box
+          sx={{
+            border: 1,
+            borderColor: "divider",
+            borderRadius: 1,
+            width: { md: "25%", sm: "100%" },
+          }}
+        >
+          {SuitableFor}
+        </Box>
+        <Box
+          sx={{
+            border: 1,
+            borderColor: "divider",
+            borderRadius: 1,
+            width: { md: "35%", sm: "100%" },
+          }}
+        >
+          {TechnicalFeatures}
         </Box>
       </Stack>
 

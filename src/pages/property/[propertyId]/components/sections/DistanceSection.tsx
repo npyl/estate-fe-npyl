@@ -11,8 +11,9 @@ interface DistanceSectionProps {
 
 const DistanceSection: React.FC<DistanceSectionProps> = (props) => {
   const { data } = props;
-  const details = data?.propertyDetail;
-  const distance = details.distance;
+  if (!data) return null;
+  const distances = data?.distances;
+  if (!distances) return null;
 
   return (
     <>
@@ -28,14 +29,50 @@ const DistanceSection: React.FC<DistanceSectionProps> = (props) => {
       </Box>
       <List>
         <ListItem
-          label="From Public Transport"
-          value={distance?.toPublicTransport.toString() || ""}
+          label="Schools"
+          value={distances?.schools}
+          align="horizontal"
+          divider
+        />
+        <ListItem
+          label="Supermarket"
+          value={distances?.supermarket}
+          align="horizontal"
+          divider
+        />
+        <ListItem
+          label="Cafe Restaurant"
+          value={distances?.cafeRestaurant}
+          align="horizontal"
+          divider
+        />
+        <ListItem
+          label="Hospital"
+          value={distances?.hospital}
+          align="horizontal"
+          divider
+        />
+        <ListItem
+          label="Airport"
+          value={distances?.airport}
           align="horizontal"
           divider
         />
         <ListItem
           label="From Sea"
-          value={distance?.toSea.toString() || ""}
+          value={distances?.sea}
+          align="horizontal"
+          divider
+        />
+        <ListItem
+          label="From Public Transport"
+          value={distances?.publicTransport}
+          align="horizontal"
+          divider
+        />
+        <ListItem
+          label="Entertainment"
+          value={distances?.entertainment}
           align="horizontal"
           divider
         />

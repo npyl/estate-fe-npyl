@@ -1,7 +1,12 @@
 import { List, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 
-import { ListItem, ListManagerItem, ListStatusItem } from "src/components/List";
+import {
+  ListItem,
+  ListManagerItem,
+  ListBooleanItem,
+  ListStatusItem,
+} from "src/components/List";
 
 import { IProperties } from "src/types/properties";
 import { IUser } from "src/types/user";
@@ -13,8 +18,8 @@ interface BasicSectionProps {
 const BasicSection: React.FC<BasicSectionProps> = (props) => {
   const { data } = props;
 
-  const details = data?.propertyDetail;
-  const areas = details?.areas;
+  const details = data?.details;
+  const areas = data?.areas;
 
   const manager: IUser = data?.manager;
 
@@ -32,80 +37,75 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant='h6'>{data?.description}</Typography>
+        <Typography variant="h6">{data?.description}</Typography>
       </Box>
       <List>
         <ListStatusItem
-          label='Publiced'
+          label="Publiced"
           status={isAvailable(data?.state)}
-          align='horizontal'
+          align="horizontal"
           divider
         />
         <ListItem
-          label='Category'
+          label="Category"
           value={data?.category}
-          align='horizontal'
+          align="horizontal"
+          divider
+        />
+        <ListItem label="Code" value={data?.code} align="horizontal" divider />
+        <ListItem
+          label="Key Code"
+          value={data?.keyCode}
+          align="horizontal"
           divider
         />
         <ListItem
-          label='Code'
-          value={data?.code.toString()}
-          align='horizontal'
+          label="Price"
+          value={data?.price + " € / m^2"}
+          align="horizontal"
           divider
         />
         <ListItem
-          label='Key Id'
-          value={data?.keyId}
-          align='horizontal'
+          label="House Area"
+          value={areas?.covered}
+          align="horizontal"
           divider
         />
         <ListItem
-          label='Price'
-          value={data?.price.toString() + " € / m^2" || ""}
-          align='horizontal'
+          label="Plot Area"
+          value={areas?.plot}
+          align="horizontal"
           divider
         />
         <ListItem
-          label='House Area'
-          value={areas?.covered.toString() || ""}
-          align='horizontal'
+          label="Renovation Year"
+          value={data.construction.yearOfConstruction}
+          align="horizontal"
           divider
         />
         <ListItem
-          label='Plot Area'
-          value={areas?.plot.toString() || ""}
-          align='horizontal'
-          divider
-        />
-        <ListItem
-          label='Renovation Year'
-          value={details?.renovationYear.toString() || ""}
-          align='horizontal'
-          divider
-        />
-        <ListItem
-          label='Monthly Utilities'
-          value={details?.avgUtils.toString() + " €" || ""}
-          align='horizontal'
+          label="Monthly Utilities"
+          value={data?.averageUtils + " €"}
+          align="horizontal"
           divider
         />
         <ListManagerItem manager={manager} />
         <ListItem
-          label='State'
-          value={data?.state.toString() || ""}
-          align='horizontal'
+          label="State"
+          value={data?.state}
+          align="horizontal"
+          divider
+        />
+        <ListBooleanItem
+          label="Rented"
+          status={data?.rented}
+          align="horizontal"
           divider
         />
         <ListItem
-          label='Misthomeno'
-          value='TODO: misthomeno'
-          align='horizontal'
-          divider
-        />
-        <ListItem
-          label='Available After'
-          value={data?.availableAfter?.toString() || ""}
-          align='horizontal'
+          label="Available After"
+          value={data?.availableAfter}
+          align="horizontal"
           divider
         />
       </List>

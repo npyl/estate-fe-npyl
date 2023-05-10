@@ -170,7 +170,7 @@ const LocationSection: React.FC<any> = (props) => {
               }}
             />
           </Grid>
-          <Grid item xs={6}>
+          {/* <Grid item xs={6}>
             <TextField
               fullWidth
               id="outlined-select-currency"
@@ -193,7 +193,7 @@ const LocationSection: React.FC<any> = (props) => {
                 </MenuItem>
               ))}
             </TextField>
-          </Grid>
+          </Grid> */}
         </Grid>
       </Grid>
     </Paper>

@@ -11,9 +11,9 @@ interface HeatingSectionProps {
 
 const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
   const { data } = props;
-  const details = data?.propertyDetail;
-  const features = data?.features;
-  const heating = details.heating;
+  if (!data) return null;
+  const heating = data?.heatingAndEnergy;
+  if (!heating) return null;
 
   return (
     <>
@@ -30,19 +30,31 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
       <List>
         <ListItem
           label="Energy Class"
-          value={details?.energyClass.toString() || ""}
-          align="horizontal"
-          divider
-        />
-        <ListItem
-          label="Heating System"
-          value={heating?.heatingSystem.toString() || ""}
+          value={heating?.energyClass}
           align="horizontal"
           divider
         />
         <ListItem
           label="Heating Type"
-          value={heating?.heatingType.toString() || ""}
+          value={heating?.heatingType}
+          align="horizontal"
+          divider
+        />
+        <ListItem
+          label="Heating System"
+          value={heating?.heatingSystem}
+          align="horizontal"
+          divider
+        />
+        <ListItem
+          label="Electricity Type"
+          value={heating?.electricityType}
+          align="horizontal"
+          divider
+        />
+        <ListBooleanItem
+          label="Floor Heating"
+          status={heating?.floorHeating}
           align="horizontal"
           divider
         />
@@ -54,19 +66,13 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
         />
         <ListBooleanItem
           label="Solar Boiler"
-          status={features?.solarBoiler || true}
-          align="horizontal"
-          divider
-        />
-        <ListBooleanItem
-          label="Floor Heating"
-          status={heating?.floorHeating}
+          status={heating?.solarBoiler}
           align="horizontal"
           divider
         />
         <ListItem
-          label="TODO: Nyxterino Reuma"
-          // value={details?..toString() || ""}
+          label="Economy Electricity"
+          value={heating?.offPeakElectricity}
           align="horizontal"
           divider
         />

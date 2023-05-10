@@ -8,22 +8,22 @@ export default function SaleSelect() {
   const stateFilterOptions = [
     { value: "ALL", label: "'Ολα" },
     { value: "SALE", label: "Πώληση" },
-    { value: "RENT", label: "Ενοίκιο" },
+    { value: "RENT", label: "Ενοικίαση" },
   ];
   const dispatch = useDispatch();
 
   return (
     <Autocomplete
-      id='select-demo-sale'
+      id="select-demo-sale"
       sx={{ width: 120 }}
       options={stateFilterOptions}
       autoHighlight
       clearIcon={false}
-      onChange={(_e, newValue) => dispatch(setState(newValue || ""))}
+      onChange={(_e, newValue) => dispatch(setState(newValue?.value || ""))}
       getOptionLabel={(option) => option.label}
       renderOption={(props, option) => (
         <Box
-          component='li'
+          component="li"
           sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
           {...props}
         >
@@ -33,7 +33,7 @@ export default function SaleSelect() {
       renderInput={(params) => (
         <TextField
           {...params}
-          placeholder='Πώληση'
+          placeholder="Πώληση"
           inputProps={{
             ...params.inputProps,
             autoComplete: "new-password", // disable autocomplete and autofill

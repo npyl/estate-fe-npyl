@@ -48,7 +48,7 @@ import {
   selectHasAttic,
   selectGarden,
   selectBalconies,
-  selectStoreRoom,
+  selectStoreroom,
   selectToPublicTransport,
   selectToSea,
   setFurnished,
@@ -83,7 +83,7 @@ import {
   setHasAttic,
   setGarden,
   setBalconies,
-  setStoreRoom,
+  setStoreroom,
   setToPublicTransport,
   setToSea,
 } from "src/slices/property";
@@ -112,7 +112,7 @@ const DetailsSection: React.FC<any> = (props) => {
   const numOfWC = useSelector(selectNumOfWC);
   const livingRooms = useSelector(selectLivingRooms);
   const bedrooms = useSelector(selectBedrooms);
-  const storerooms = useSelector(selectStorerooms);
+  const Storerooms = useSelector(selectStorerooms);
   const covered = useSelector(selectCovered);
   const avgUtils = useSelector(selectAvgUtils);
   const heatingType = useSelector(selectHeatingType);
@@ -128,7 +128,7 @@ const DetailsSection: React.FC<any> = (props) => {
   const hasAttic = useSelector(selectHasAttic);
   const garden = useSelector(selectGarden);
   const balconies = useSelector(selectBalconies);
-  const storeRoom = useSelector(selectStoreRoom);
+  const Storeroom = useSelector(selectStoreroom);
   const toPublicTransport = useSelector(selectToPublicTransport);
   const toSea = useSelector(selectToSea);
 
@@ -463,7 +463,7 @@ const DetailsSection: React.FC<any> = (props) => {
                             fullWidth
                             id="outlined-controlled"
                             label="Store Rooms"
-                            value={storerooms}
+                            value={Storerooms}
                             placeholder="1,2,3..."
                             inputProps={ariaLabel}
                             onChange={(

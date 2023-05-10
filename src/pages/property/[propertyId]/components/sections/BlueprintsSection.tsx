@@ -30,8 +30,6 @@ const BlueprintsSection: React.FC<BlueprintsSectionProps> = (props) => {
     };
   });
 
-  // add all images
-
   return (
     <>
       <Box
@@ -42,7 +40,7 @@ const BlueprintsSection: React.FC<BlueprintsSectionProps> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant='h6'>Blueprints</Typography>
+        <Typography variant="h6">Blueprints</Typography>
       </Box>
       {_carouselData && _carouselData.length > 0 && (
         <CarouselWithLightbox data={_carouselData} />

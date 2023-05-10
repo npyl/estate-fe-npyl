@@ -28,6 +28,8 @@ import {
   ParkingsSection,
   NotesSection,
   VideoSection,
+  SuitableFor,
+  TechnicalFeatures,
 } from "./components/sections";
 
 function a11yProps(index: number) {
@@ -81,6 +83,8 @@ const SingleProperty: NextPage = () => {
           BlueprintsSection={<BlueprintsSection data={data} />}
           NotesSection={<NotesSection data={data} />}
           VideoSection={<VideoSection data={data} />}
+          SuitableFor={<SuitableFor data={data} />}
+          TechnicalFeatures={<TechnicalFeatures data={data} />}
         />
       </TabPanel>
       <TabPanel value={value} index={1}></TabPanel>

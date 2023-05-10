@@ -11,8 +11,7 @@ interface ParkingsSectionProps {
 
 const ParkingsSection: React.FC<ParkingsSectionProps> = (props) => {
   const { data } = props;
-  const details = data?.propertyDetail;
-  const parkings = details.parkings;
+  const parkings = data.details?.parkings;
 
   return (
     parkings &&
@@ -45,13 +44,13 @@ const ParkingsSection: React.FC<ParkingsSectionProps> = (props) => {
               <List>
                 <ListItem
                   label="Parking Type"
-                  value={parking?.parkingType.toString() || ""}
+                  value={parking?.parkingType}
                   align="horizontal"
                   divider
                 />
                 <ListItem
                   label="Spots"
-                  value={parking?.spots.toString() || ""}
+                  value={parking?.spots}
                   align="horizontal"
                   divider
                 />
