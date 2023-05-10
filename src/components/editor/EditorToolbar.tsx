@@ -14,7 +14,7 @@ const HEADINGS = [
   "Heading 6",
 ];
 
-export const formats = [
+const formats = [
   "align",
   "background",
   "blockquote",

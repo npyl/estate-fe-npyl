@@ -36,6 +36,7 @@ interface IPropertiesPostRequest {
   debatablePrice: boolean;
   buildable: boolean;
   video: string;
+  bar: boolean;
   description: string;
   propertyImage: string;
   suitableFor: IPropertySuitableFor;
@@ -92,7 +93,6 @@ const initialState: propertyState = {
     renovation: true,
   },
   heatingAndEnergy: {
-    id: 0,
     energyClass: "A+",
     heatingType: "Central",
     heatingSystem: "Oil",
@@ -129,19 +129,19 @@ const initialState: propertyState = {
   },
   construction: {
     yearOfConstruction: 1,
-    underConstruction: true,
+    underConstruction: false,
     newlyBuilt: false,
     incomplete: true,
     totalFloorNumber: 1,
     internalStairs: true,
     neoclassical: false,
-    yearOfRenovation: 1,
+    yearOfRenovation: 2016,
     renovated: true,
     needsRenovation: false,
     preserved: false,
+    elevator: true,
   },
   technicalFeatures: {
-    id: 0,
     entrances: 1,
     displayWindowsLength: 1,
     safetyDoor: true,
@@ -171,7 +171,6 @@ const initialState: propertyState = {
     inclination: "Inclined",
   },
   details: {
-    id: 0,
     floor: "1",
     bedrooms: 1,
     kitchens: 1,
@@ -202,6 +201,59 @@ const initialState: propertyState = {
         spots: 1,
       },
     ],
+  },
+  location: {
+    street: "Street 1",
+    number: 10,
+    complex: "complex1",
+    zipCode: 26441,
+    city: "Patras",
+    region: "Achaia",
+    country: "Greece",
+    // lat: 38.24741203168578,
+    // lng: 21.735938799204945,
+  },
+  features: {
+    panoramicView: true,
+    seaView: true,
+    mountainView: true,
+    facade_sea: true,
+    walkableDistanceToBeach: true,
+    quietArea: true,
+    bright: true,
+    nearBusRoute: true,
+    smartHome: true,
+    guestroom: true,
+    office: true,
+    homeCinema: true,
+    combinedKitchenAndDiningArea: true,
+    soundInsulation: true,
+    thermalInsulation: true,
+    heatedPool: true,
+    indoorPool: true,
+    organizedGarden: true,
+    jacuzzi: true,
+    well: true,
+    drilling: true,
+    masonryFence: true,
+    accessForDisabled: true,
+    alarmSystem: true,
+    has24HoursSecurity: true,
+    cctv: true,
+    internet: true,
+    fireDetector: true,
+    independentHeatingPerRoom: true,
+    adaptingToTheGround: true,
+    barbeque: true,
+    pool: true,
+    view: true,
+    facade: true,
+    corner: true,
+    veranda: true,
+    tents: true,
+    withinResidentialZone: true,
+    withinCityPlan: true,
+    loadingDock: true,
   },
   location: {
     street: "Street 1",
@@ -319,6 +371,10 @@ const slice = createSlice({
     setKeyCode(state: propertyState, action): void {
       state.keyCode = action.payload;
     },
+
+    setBuildable(state: propertyState, action): void {
+      state.buildable = action.payload;
+    },
     setDescription(state: propertyState, action): void {
       state.description = action.payload;
     },
@@ -344,23 +400,15 @@ const slice = createSlice({
     setCountry(state: propertyState, action): void {
       state.location.country = action.payload;
     },
-    setFurnished(state: propertyState, action): void {
-      // state.details.furnished = action.payload;
-    },
+
     setOrientation(state: propertyState, action): void {
       state.details.orientation = action.payload;
-    },
-    setFloorType(state: propertyState, action): void {
-      // state.details.floorType = action.payload;
     },
     setLandUse(state: propertyState, action): void {
       state.details.landUse = action.payload;
     },
     setViewType(state: propertyState, action): void {
-      // state.details.view = action.payload;
-    },
-    setFrameType(state: propertyState, action): void {
-      // state.details.frameType = action.payload;
+      state.details.viewType = action.payload;
     },
     setAccessibility(state: propertyState, action): void {
       state.details.accessibility = action.payload;
@@ -380,7 +428,7 @@ const slice = createSlice({
     setElectricityType(state: propertyState, action): void {
       state.heatingAndEnergy.electricityType = action.payload;
     },
-    setFloors(state: propertyState, action): void {
+    setFloor(state: propertyState, action): void {
       state.details.floor = action.payload;
     },
     setKitchens(state: propertyState, action): void {
@@ -448,6 +496,46 @@ const slice = createSlice({
     setBalconies(state: propertyState, action): void {},
     // END TODO
 
+    setYearOfConstruction(state: propertyState, action): void {
+      state.construction.yearOfConstruction = action.payload;
+    },
+    setUnderConstruction(state: propertyState, action): void {
+      state.construction.underConstruction = action.payload;
+    },
+    setNewlyBuilt(state: propertyState, action): void {
+      state.construction.newlyBuilt = action.payload;
+    },
+    setIncomplete(state: propertyState, action): void {
+      state.construction.incomplete = action.payload;
+    },
+    setTotalFloorNumber(state: propertyState, action): void {
+      state.construction.totalFloorNumber = action.payload;
+    },
+    setElevator(state: propertyState, action): void {
+      state.construction.elevator = action.payload;
+    },
+    setInternalStairs(state: propertyState, action): void {
+      state.construction.internalStairs = action.payload;
+    },
+    setAvailableAfter(state: propertyState, action): void {
+      state.availableAfter = action.payload;
+    },
+
+    setNeoclassical(state: propertyState, action): void {
+      state.construction.neoclassical = action.payload;
+    },
+    setYearOfRenovation(state: propertyState, action): void {
+      state.construction.yearOfRenovation = action.payload;
+    },
+    setRenovated(state: propertyState, action): void {
+      state.construction.renovated = action.payload;
+    },
+    setNeedsRenovation(state: propertyState, action): void {
+      state.construction.needsRenovation = action.payload;
+    },
+    setPreserved(state: propertyState, action): void {
+      state.construction.preserved = action.payload;
+    },
     setPublicTransportation(state: propertyState, action): void {
       state.distances.publicTransport = action.payload;
     },
@@ -469,11 +557,6 @@ const slice = createSlice({
     setAirport(state: propertyState, action): void {
       state.distances.airport = action.payload;
     },
-
-    setFireplace(state: propertyState, action): void {
-      // state.features.fireplace = action.payload;
-    },
-
     setPool(state: propertyState, action): void {
       // TODO:
     },
@@ -489,11 +572,6 @@ const slice = createSlice({
     setSolarBoiler(state: propertyState, action): void {
       // TODO:
     },
-
-    setWindowScreens(state: propertyState, action): void {
-      // TODO:
-    },
-
     setModernDesign(state: propertyState, action): void {
       // state.d = action.payload;
     },
@@ -505,11 +583,6 @@ const slice = createSlice({
     setInternet(state: propertyState, action): void {
       state.features.internet = action.payload;
     },
-
-    setPainted(state: propertyState, action): void {
-      state.technicalFeatures.painted = action.payload;
-    },
-
     setEntranceGate(state: propertyState, action): void {
       // state.entranceGate = action.payload;
     },
@@ -526,16 +599,8 @@ const slice = createSlice({
       state.features.guestroom = action.payload;
     },
 
-    setSatelliteTV(state: propertyState, action): void {
-      state.technicalFeatures.satelliteTV = action.payload;
-    },
-
     setQuietArea(state: propertyState, action): void {
       state.features.quietArea = action.payload;
-    },
-
-    setBright(state: propertyState, action): void {
-      state.features.bright = action.payload;
     },
 
     setSoundInsulation(state: propertyState, action): void {
@@ -544,10 +609,6 @@ const slice = createSlice({
 
     setHas24HoursSecurity(state: propertyState, action): void {
       state.features.has24HoursSecurity = action.payload;
-    },
-
-    setAlarmSystem(state: propertyState, action): void {
-      state.features.alarmSystem = action.payload;
     },
 
     setHasAttic(state: propertyState, action): void {
@@ -601,6 +662,81 @@ const slice = createSlice({
       state.features.smartHome = action.payload;
     },
 
+    setMountainView(state: propertyState, action): void {
+      state.features.mountainView = action.payload;
+    },
+
+    setSeaFront(state: propertyState, action): void {
+      state.features.seaFront = action.payload;
+    },
+
+    setHeatedPool(state: propertyState, action): void {
+      state.features.heatedPool = action.payload;
+    },
+
+    setIndoorPool(state: propertyState, action): void {
+      state.features.indoorPool = action.payload;
+    },
+
+    setOrganizedGarden(state: propertyState, action): void {
+      state.features.organizedGarden = action.payload;
+    },
+
+    setWell(state: propertyState, action): void {
+      state.features.well = action.payload;
+    },
+
+    setDrilling(state: propertyState, action): void {
+      state.features.drilling = action.payload;
+    },
+
+    setMasonryFence(state: propertyState, action): void {
+      state.features.masonryFence = action.payload;
+    },
+
+    setAccessForDisabled(state: propertyState, action): void {
+      state.features.accessForDisabled = action.payload;
+    },
+
+    setIndependentHeatingPerRoom(state: propertyState, action): void {
+      state.features.independentHeatingPerRoom = action.payload;
+    },
+
+    setAdaptingToTheGround(state: propertyState, action): void {
+      state.features.adaptingToTheGround = action.payload;
+    },
+
+    setView(state: propertyState, action): void {
+      state.features.view = action.payload;
+    },
+
+    setFacade(state: propertyState, action): void {
+      state.features.facade = action.payload;
+    },
+    setLoadingDock(state: propertyState, action): void {
+      state.features.loadingDock = action.payload;
+    },
+
+    setCorner(state: propertyState, action): void {
+      state.features.corner = action.payload;
+    },
+
+    setVeranda(state: propertyState, action): void {
+      state.features.veranda = action.payload;
+    },
+
+    setTents(state: propertyState, action): void {
+      state.features.tents = action.payload;
+    },
+
+    setWithinResidentialZone(state: propertyState, action): void {
+      state.features.withinResidentialZone = action.payload;
+    },
+
+    setWithinCityPlan(state: propertyState, action): void {
+      state.features.withinCityPlan = action.payload;
+    },
+
     setWalkableDistanceToBeach(state: propertyState, action): void {
       state.features.walkableDistanceToBeach = action.payload;
     },
@@ -609,14 +745,138 @@ const slice = createSlice({
       // state.details.doubleGlazing = action.payload;
     },
 
-    setElevator(state: propertyState, action): void {
-      // state.features.elevator = action.payload;
-    },
     setFloorApartment(state: propertyState, action): void {
       // state.features.floorApartment = action.payload;
     },
     setPenthouse(state: propertyState, action): void {
       // state.features.penthouse = action.payload;
+    },
+    setEntrances(state: propertyState, action): void {
+      state.technicalFeatures.entrances = action.payload;
+    },
+
+    setDisplayWindowsLength(state: propertyState, action): void {
+      state.technicalFeatures.displayWindowsLength = action.payload;
+    },
+
+    setSafetyDoor(state: propertyState, action): void {
+      state.technicalFeatures.safetyDoor = action.payload;
+    },
+
+    setAlarmSystem(state: propertyState, action): void {
+      state.technicalFeatures.alarmSystem = action.payload;
+    },
+
+    setPainted(state: propertyState, action): void {
+      state.technicalFeatures.painted = action.payload;
+    },
+
+    setFurnished(state: propertyState, action): void {
+      state.technicalFeatures.furnished = action.payload;
+    },
+
+    setFrameType(state: propertyState, action): void {
+      state.technicalFeatures.frameType = action.payload;
+    },
+
+    setPaneGlassType(state: propertyState, action): void {
+      state.technicalFeatures.paneGlassType = action.payload;
+    },
+
+    setWindowScreens(state: propertyState, action): void {
+      state.technicalFeatures.windowScreens = action.payload;
+    },
+
+    setFireplace(state: propertyState, action): void {
+      state.technicalFeatures.fireplace = action.payload;
+    },
+
+    setBright(state: propertyState, action): void {
+      state.technicalFeatures.bright = action.payload;
+    },
+
+    setLuxurious(state: propertyState, action): void {
+      state.technicalFeatures.luxurious = action.payload;
+    },
+
+    setElectricCarChargingFacilities(state: propertyState, action): void {
+      state.technicalFeatures.electricCarChargingFacilities = action.payload;
+    },
+
+    setReception(state: propertyState, action): void {
+      state.technicalFeatures.reception = action.payload;
+    },
+
+    setPetsAllowed(state: propertyState, action): void {
+      state.technicalFeatures.petsAllowed = action.payload;
+    },
+
+    setFloorType(state: propertyState, action): void {
+      state.technicalFeatures.floorType = action.payload;
+    },
+
+    setSatelliteTV(state: propertyState, action): void {
+      state.technicalFeatures.satelliteTV = action.payload;
+    },
+
+    setWiring(state: propertyState, action): void {
+      state.technicalFeatures.wiring = action.payload;
+    },
+
+    setLoadingUnloadingElevator(state: propertyState, action): void {
+      state.technicalFeatures.loadingUnloadingElevator = action.payload;
+    },
+
+    setFalseCeiling(state: propertyState, action): void {
+      state.technicalFeatures.falseCeiling = action.payload;
+    },
+
+    setWithEquipment(state: propertyState, action): void {
+      state.technicalFeatures.withEquipment = action.payload;
+    },
+
+    setDoubleFrontage(state: propertyState, action): void {
+      state.technicalFeatures.doubleFrontage = action.payload;
+    },
+
+    setConsideration(state: propertyState, action): void {
+      state.technicalFeatures.consideration = action.payload;
+    },
+
+    setFloorToAreaRatio(state: propertyState, action): void {
+      state.technicalFeatures.floorToAreaRatio = action.payload;
+    },
+    setFacadeLength(state: propertyState, action): void {
+      state.technicalFeatures.facadeLength = action.payload;
+    },
+
+    setInclination(state: propertyState, action): void {
+      state.technicalFeatures.inclination = action.payload;
+    },
+    setStudent(state: propertyState, action): void {
+      state.suitableFor.student = action.payload;
+    },
+    setAgriculturalUse(state: propertyState, action): void {
+      state.suitableFor.agriculturalUse = action.payload;
+    },
+
+    setCottage(state: propertyState, action): void {
+      state.suitableFor.cottage = action.payload;
+    },
+    setTouristRental(state: propertyState, action): void {
+      state.suitableFor.touristRental = action.payload;
+    },
+    setInvestment(state: propertyState, action): void {
+      state.suitableFor.investment = action.payload;
+    },
+    setDoctorsOffice(state: propertyState, action): void {
+      state.suitableFor.doctorsOffice = action.payload;
+    },
+    setProfessionalUse(state: propertyState, action): void {
+      state.suitableFor.professionalUse = action.payload;
+    },
+    setRenovation(state: propertyState, action): void {
+      state.suitableFor.renovation = action.payload;
     },
 
     resetState: () => {
@@ -626,7 +886,72 @@ const slice = createSlice({
 });
 
 export const {
+  setSeaFront,
+  setAgriculturalUse,
+  setHeatedPool,
+  setIndoorPool,
+  setOrganizedGarden,
+  setWell,
+  setDrilling,
+  setMasonryFence,
+  setAccessForDisabled,
+  setIndependentHeatingPerRoom,
+  setAdaptingToTheGround,
+  setView,
+  setFacade,
+  setCorner,
+  setVeranda,
+  setTents,
+  setWithinResidentialZone,
+  setWithinCityPlan,
+  setMountainView,
+  setStudent,
+  setCottage,
+  setTouristRental,
+  setInvestment,
+  setDoctorsOffice,
+  setProfessionalUse,
+  setRenovation,
+  setDisplayWindowsLength,
+  setSafetyDoor,
+  setAlarmSystem,
+  setPainted,
+  setFurnished,
+  setFrameType,
+  setPaneGlassType,
+  setWindowScreens,
+  setFireplace,
+  setBright,
+  setLuxurious,
+  setElectricCarChargingFacilities,
+  setReception,
+  setPetsAllowed,
+  setFloorType,
+  setSatelliteTV,
+  setWiring,
+  setLoadingUnloadingElevator,
+  setFalseCeiling,
+  setWithEquipment,
+  setDoubleFrontage,
+  setConsideration,
+  setFloorToAreaRatio,
+  setFacadeLength,
+  setInclination,
+  setYearOfConstruction,
+  setUnderConstruction,
+  setNewlyBuilt,
+  setIncomplete,
+  setTotalFloorNumber,
+  setAvailableAfter,
+  setInternalStairs,
+  setNeoclassical,
+  setYearOfRenovation,
+  setRenovated,
+  setNeedsRenovation,
+  setPreserved,
   setSea,
+  setLoadingDock,
+
   setSchools,
   setSupermarket,
   setCafeRestaurant,
@@ -662,16 +987,14 @@ export const {
   setRegion,
   setCountry,
   setDescription,
-  setFurnished,
+
   setOrientation,
-  setFloorType,
   setViewType,
-  setFrameType,
   setAccessibility,
   setEnergyClass,
   setZoneType,
   setElectricityType,
-  setFloors,
+  setFloor,
   setKitchens,
   setLayers,
   setBathrooms,
@@ -696,26 +1019,22 @@ export const {
   setPublicTransportation,
   setRooms,
   setHasAttic,
-  setFireplace,
   setPool,
   setAccessForDisable,
   setPetAllowed,
   setSolarBoiler,
-  setWindowScreens,
   setModernDesign,
   setOffice,
   setInternet,
-  setPainted,
+  setEntrances,
   setEntranceGate,
   setThermalInsulation,
   setSeaView,
   setGuestroom,
-  setSatelliteTV,
   setQuietArea,
-  setBright,
   setSoundInsulation,
   setHas24HoursSecurity,
-  setAlarmSystem,
+  setBuildable,
   setBar,
   setBarbeque,
   setCctv,
@@ -764,8 +1083,11 @@ export const selectParentCategory = ({ property }: RootState) =>
   property.parentCategory;
 
 export const selectKeyCode = ({ property }: RootState) => property.keyCode;
+export const selectBuildable = ({ property }: RootState) => property.buildable;
 export const selectDescription = ({ property }: RootState) =>
   property.description;
+export const selectAvailableAfter = ({ property }: RootState) =>
+  property.availableAfter;
 
 export const selectStreet = ({ property }: RootState) =>
   property.location.street;
@@ -780,18 +1102,17 @@ export const selectRegion = ({ property }: RootState) =>
   property.location.region;
 export const selectCountry = ({ property }: RootState) =>
   property.location.country;
-export const selectFurnished = ({ property }: RootState) => -1;
+
 // property.details.furnished;
 export const selectOrientation = ({ property }: RootState) =>
   property.details.orientation;
-export const selectFloorType = ({ property }: RootState) => -1;
+
 // property.details.floorType;
 export const selectLandUse = ({ property }: RootState) =>
   property.details.landUse;
-export const selectViewType = ({ property }: RootState) => -1;
-// property.details.view; // TODO: is this correct? Why is it named view and not viewType?
-export const selectFrameType = ({ property }: RootState) => -1;
-// property.details.frameType;
+export const selectViewType = ({ property }: RootState) =>
+  property.details.viewType;
+
 export const selectAccessibility = ({ property }: RootState) =>
   property.details.accessibility;
 export const selectEnergyClass = ({ property }: RootState) =>
@@ -802,7 +1123,7 @@ export const selectZoneType = ({ property }: RootState) =>
   property.details.zoneType;
 export const selectElectricityType = ({ property }: RootState) =>
   property.heatingAndEnergy.electricityType;
-export const selectFloors = ({ property }: RootState) => property.details.floor;
+export const selectFloor = ({ property }: RootState) => property.details.floor;
 export const selectKitchens = ({ property }: RootState) =>
   property.details.kitchens;
 export const selectLayers = ({ property }: RootState) =>
@@ -831,6 +1152,106 @@ export const selectFloorHeating = ({ property }: RootState) =>
   property.heatingAndEnergy.floorHeating;
 export const selectAirConditioning = ({ property }: RootState) =>
   property.heatingAndEnergy.airConditioning;
+
+export const selectEntrances = ({ property }: RootState) =>
+  property.technicalFeatures.entrances;
+
+export const selectStudent = ({ property }: RootState) =>
+  property.suitableFor.student;
+
+export const selectCottage = ({ property }: RootState) =>
+  property.suitableFor.cottage;
+export const selectTouristRental = ({ property }: RootState) =>
+  property.suitableFor.touristRental;
+export const selectInvestment = ({ property }: RootState) =>
+  property.suitableFor.investment;
+export const selectDoctorsOffice = ({ property }: RootState) =>
+  property.suitableFor.doctorsOffice;
+export const selectProfessionalUse = ({ property }: RootState) =>
+  property.suitableFor.professionalUse;
+export const selectRenovation = ({ property }: RootState) =>
+  property.suitableFor.renovation;
+
+export const selectAgriculturalUse = ({ property }: RootState) =>
+  property.suitableFor.agriculturalUse;
+
+export const selectDisplayWindowsLength = ({ property }: RootState) =>
+  property.technicalFeatures.displayWindowsLength;
+
+export const selectSafetyDoor = ({ property }: RootState) =>
+  property.technicalFeatures.safetyDoor;
+
+export const selectAlarmSystem = ({ property }: RootState) =>
+  property.technicalFeatures.alarmSystem;
+
+export const selectPainted = ({ property }: RootState) =>
+  property.technicalFeatures.painted;
+
+export const selectFurnished = ({ property }: RootState) =>
+  property.technicalFeatures.furnished;
+
+export const selectFrameType = ({ property }: RootState) =>
+  property.technicalFeatures.frameType;
+
+export const selectPaneGlassType = ({ property }: RootState) =>
+  property.technicalFeatures.paneGlassType;
+
+export const selectWindowScreens = ({ property }: RootState) =>
+  property.technicalFeatures.windowScreens;
+
+export const selectFireplace = ({ property }: RootState) =>
+  property.technicalFeatures.fireplace;
+
+export const selectBright = ({ property }: RootState) =>
+  property.technicalFeatures.bright;
+
+export const selectLuxurious = ({ property }: RootState) =>
+  property.technicalFeatures.luxurious;
+
+export const selectElectricCarChargingFacilities = ({ property }: RootState) =>
+  property.technicalFeatures.electricCarChargingFacilities;
+
+export const selectReception = ({ property }: RootState) =>
+  property.technicalFeatures.reception;
+
+export const selectPetsAllowed = ({ property }: RootState) =>
+  property.technicalFeatures.petsAllowed;
+
+export const selectFloorType = ({ property }: RootState) =>
+  property.technicalFeatures.floorType;
+
+export const selectSatelliteTV = ({ property }: RootState) =>
+  property.technicalFeatures.satelliteTV;
+
+export const selectWiring = ({ property }: RootState) =>
+  property.technicalFeatures.wiring;
+
+export const selectLoadingUnloadingElevator = ({ property }: RootState) =>
+  property.technicalFeatures.loadingUnloadingElevator;
+
+export const selectFalseCeiling = ({ property }: RootState) =>
+  property.technicalFeatures.falseCeiling;
+
+export const selectWithEquipment = ({ property }: RootState) =>
+  property.technicalFeatures.withEquipment;
+
+export const selectDoubleFrontage = ({ property }: RootState) =>
+  property.technicalFeatures.doubleFrontage;
+
+export const selectConsideration = ({ property }: RootState) =>
+  property.technicalFeatures.consideration;
+
+export const selectFloorToAreaRatio = ({ property }: RootState) =>
+  property.technicalFeatures.floorToAreaRatio;
+
+export const selectCoverageFactor = ({ property }: RootState) =>
+  property.technicalFeatures.coverageFactor;
+
+export const selectFacadeLength = ({ property }: RootState) =>
+  property.technicalFeatures.facadeLength;
+
+export const selectInclination = ({ property }: RootState) =>
+  property.technicalFeatures.inclination;
 
 export const selectPlot = ({ property }: RootState) => property.areas.plot;
 export const selectCovered = ({ property }: RootState) =>
@@ -868,15 +1289,38 @@ export const selectHospital = ({ property }: RootState) =>
 export const selectAirport = ({ property }: RootState) =>
   property.distances.airport;
 
-export const selectFireplace = ({ property }: RootState) =>
-  property.technicalFeatures.fireplace;
+export const selectYearOfConstruction = ({ property }: RootState) =>
+  property.construction.yearOfConstruction;
 
-export const selectElevator = ({ property }: RootState) => -1;
-// property.details.elevator;
+export const selectNewlyBuilt = ({ property }: RootState) =>
+  property.construction.newlyBuilt;
+
+export const selectIncomplete = ({ property }: RootState) =>
+  property.construction.incomplete;
+export const selectUnderConstruction = ({ property }: RootState) =>
+  property.construction.underConstruction;
+
+export const selectTotalFloorNumber = ({ property }: RootState) =>
+  property.construction.totalFloorNumber;
+
+//TODO:
+export const selectElevator = ({ property }: RootState) =>
+  property.construction.elevator;
+
+export const selectInternalStairs = ({ property }: RootState) =>
+  property.construction.internalStairs;
+export const selectNeoclassical = ({ property }: RootState) =>
+  property.construction.neoclassical;
+export const selectYearOfRenovation = ({ property }: RootState) =>
+  property.construction.yearOfRenovation;
+export const selectRenovated = ({ property }: RootState) =>
+  property.construction.renovated;
+export const selectNeedsRenovation = ({ property }: RootState) =>
+  property.construction.needsRenovation;
+export const selectPreserved = ({ property }: RootState) =>
+  property.construction.preserved;
 
 export const selectPool = ({ property }: RootState) => property.features.pool;
-export const selectWindowScreens = ({ property }: RootState) =>
-  property.technicalFeatures.windowScreens;
 
 export const selectModernDesign = ({ property }: RootState) => -1;
 // property.features.modernDesign;
@@ -886,9 +1330,6 @@ export const selectOffice = ({ property }: RootState) =>
 
 export const selectInternet = ({ property }: RootState) =>
   property.features.internet;
-
-export const selectPainted = ({ property }: RootState) =>
-  property.technicalFeatures.painted;
 
 export const selectEntranceGate = ({ property }: RootState) => -1;
 // property.features.entranceGate;
@@ -902,14 +1343,8 @@ export const selectSeaView = ({ property }: RootState) =>
 export const selectGuestroom = ({ property }: RootState) =>
   property.features.guestroom;
 
-export const selectSatelliteTV = ({ property }: RootState) =>
-  property.technicalFeatures.satelliteTV;
-
 export const selectQuietArea = ({ property }: RootState) =>
   property.features.quietArea;
-
-export const selectBright = ({ property }: RootState) =>
-  property.features.bright;
 
 export const selectSoundInsulation = ({ property }: RootState) =>
   property.features.soundInsulation;
@@ -917,10 +1352,9 @@ export const selectSoundInsulation = ({ property }: RootState) =>
 export const selectHas24HoursSecurity = ({ property }: RootState) =>
   property.features.has24HoursSecurity;
 
-export const selectAlarmSystem = ({ property }: RootState) =>
-  property.features.alarmSystem;
+export const selectAttic = ({ property }: RootState) => property.features.attic;
 
-export const selectAttic = ({ property }: RootState) => property.areas.attic;
+export const selectBar = ({ property }: RootState) => property.features.bar;
 
 export const selectBarbeque = ({ property }: RootState) =>
   property.features.barbeque;
@@ -958,7 +1392,8 @@ export const selectPenthouse = ({ property }: RootState) =>
   property.details.penthouse;
 
 // TODO:
-export const selectPetAllowed = ({ property }: RootState) => false;
+export const selectPetAllowed = ({ property }: RootState) =>
+  property.features.petAllowed;
 // TODO:
 export const selectSolarBoiler = ({ property }: RootState) => false;
 
@@ -969,10 +1404,63 @@ export const selectAccessForDisable = ({ property }: RootState) =>
 export const selectSmartHome = ({ property }: RootState) =>
   property.features.smartHome;
 
+export const selectMountainView = ({ property }: RootState) =>
+  property.features.mountainView;
+
+export const selectSeaFront = ({ property }: RootState) =>
+  property.features.seaFront;
+
+export const selectHeatedPool = ({ property }: RootState) =>
+  property.features.heatedPool;
+
+export const selectIndoorPool = ({ property }: RootState) =>
+  property.features.indoorPool;
+
+export const selectOrganizedGarden = ({ property }: RootState) =>
+  property.features.organizedGarden;
+
+export const selectWell = ({ property }: RootState) => property.features.well;
+
+export const selectDrilling = ({ property }: RootState) =>
+  property.features.drilling;
+
+export const selectMasonryFence = ({ property }: RootState) =>
+  property.features.masonryFence;
+
+export const selectAccessForDisabled = ({ property }: RootState) =>
+  property.features.accessForDisabled;
+
+export const selectIndependentHeatingPerRoom = ({ property }: RootState) =>
+  property.features.independentHeatingPerRoom;
+
+export const selectAdaptingToTheGround = ({ property }: RootState) =>
+  property.features.adaptingToTheGround;
+
+export const selectView = ({ property }: RootState) => property.features.view;
+
+export const selectFacade = ({ property }: RootState) =>
+  property.features.facade;
+
+export const selectCorner = ({ property }: RootState) =>
+  property.features.corner;
+
+export const selectVeranda = ({ property }: RootState) =>
+  property.features.veranda;
+
+export const selectTents = ({ property }: RootState) => property.features.tents;
+
+export const selectWithinResidentialZone = ({ property }: RootState) =>
+  property.features.withinResidentialZone;
+
+export const selectWithinCityPlan = ({ property }: RootState) =>
+  property.features.withinCityPlan;
+
 export const selectWalkableDistanceToBeach = ({ property }: RootState) =>
   property.features.walkableDistanceToBeach;
 
 export const selectDoubleGlazing = ({ property }: RootState) => -1;
 // property.;
+export const selectLoadingDock = ({ property }: RootState) =>
+  property.features.loadingDock;
 
 export const { reducer } = slice;
