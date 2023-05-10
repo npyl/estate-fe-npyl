@@ -3,12 +3,12 @@ import type { FC, ReactNode } from "react";
 import { createContext, useEffect, useReducer } from "react";
 import { useLoginMutation, useRegisterMutation } from "../services/auth";
 import { useProfileQuery } from "../services/user";
-import type { User } from "../types/user";
+import type { IUser } from "../types/user";
 
 interface State {
   isInitialized: boolean;
   isAuthenticated: boolean;
-  user: User | null;
+  user: IUser | null;
 }
 
 export interface AuthContextValue extends State {
@@ -34,14 +34,14 @@ type InitializeAction = {
   type: ActionType.INITIALIZE;
   payload: {
     isAuthenticated: boolean;
-    user: User | null;
+    user: IUser | null;
   };
 };
 
 type LoginAction = {
   type: ActionType.LOGIN;
   payload: {
-    user: User;
+    user: IUser;
   };
 };
 
@@ -52,7 +52,7 @@ type LogoutAction = {
 type RegisterAction = {
   type: ActionType.REGISTER;
   payload: {
-    user: User;
+    user: IUser;
   };
 };
 

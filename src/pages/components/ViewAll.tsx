@@ -15,29 +15,28 @@ import DataGridTable from "../../components/DataGrid";
 import MapView from "./MapView";
 import MediaCard from "./MediaCard";
 
-import sumOfChangedProperties from "src/slices/filters";
-import {
+import sumOfChangedProperties, {
   getChangedFields,
   resetState,
   selectSortingBy,
   selectSortingOrder,
 } from "src/slices/filters";
 
-import { useSelector, useDispatch } from "src/store";
+import { useAllPropertyGlobalQuery } from "src/services/global";
+import { useDispatch, useSelector } from "src/store";
+import { IGlobal, IGlobalProperty } from "src/types/global";
 import { IPropertyFilter } from "src/types/properties";
 import {
   CategorySelect,
-  SubCategorySelect,
   CountrySelect,
   FilterMore,
+  FilterSortBy,
   PriceSelect,
   SaleSelect,
   StyledPriceButton,
-  FilterSortBy,
+  SubCategorySelect,
   TagFiltered,
 } from "./Filters";
-import { IGlobal, IGlobalProperty } from "src/types/global";
-import { useAllPropertyGlobalQuery } from "src/services/global";
 
 const ViewAll: FC = () => {
   const dispatch = useDispatch();
@@ -48,7 +47,7 @@ const ViewAll: FC = () => {
   const [openFilter, setOpenFilter] = useState(false);
   const [option, setOption] = useState<optionType>("list");
 
-  const [filter, setFilter] = useState<IPropertyFilter>({});
+  const [filter, setFilter] = useState<IPropertyFilter>({} as IPropertyFilter);
   const [filterProperties, { isLoading, data }] = useFilterPropertiesMutation();
 
   // get enums
@@ -97,8 +96,8 @@ const ViewAll: FC = () => {
       <>
         <Image
           src={`data:image/jpeg;base64,${params.formattedValue}` || ""}
-          alt=""
-          ratio="16/9"
+          alt=''
+          ratio='16/9'
           width={1}
         />
       </>
@@ -108,7 +107,7 @@ const ViewAll: FC = () => {
     return (
       <>
         <Label
-          variant="filled"
+          variant='filled'
           color={
             (params.formattedValue === "SOLD" && "error") ||
             (params.formattedValue === "SALE" && "info") ||
@@ -185,10 +184,10 @@ const ViewAll: FC = () => {
             <StyledPriceButton
               open={false}
               disableRipple
-              color="inherit"
+              color='inherit'
               sx={{ width: 120 }}
               endIcon={
-                <Badge badgeContent={changedPropsCount} color="error">
+                <Badge badgeContent={changedPropsCount} color='error'>
                   <TuneIcon />
                 </Badge>
               }
@@ -198,10 +197,10 @@ const ViewAll: FC = () => {
             </StyledPriceButton>
           </Stack>
           <Stack direction={"row"} spacing={1}>
-            <Tabs value={ITabEnum[option]} aria-label="icon label tabs example">
+            <Tabs value={ITabEnum[option]} aria-label='icon label tabs example'>
               {viewOptions.map((option) => (
                 <Tab
-                  iconPosition="start"
+                  iconPosition='start'
                   onClick={() => setOption(option.id)}
                   id={option.id}
                   key={option.id}

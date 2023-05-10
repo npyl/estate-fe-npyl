@@ -1,16 +1,15 @@
-import { m, AnimatePresence } from "framer-motion";
+import { m } from "framer-motion";
 // @mui
-import { alpha } from "@mui/material/styles";
 import { IconButton, Stack, Typography } from "@mui/material";
+import { alpha } from "@mui/material/styles";
 // utils
 import { fData } from "../../../utils/formatNumber";
 //
-import Iconify from "../../iconify";
 import { varFade } from "../../animate";
 import FileThumbnail, { fileData } from "../../file-thumbnail";
+import Iconify from "../../iconify";
 //
 import { UploadProps } from "../types";
-import { useEffect } from "react";
 
 // ----------------------------------------------------------------------
 
@@ -24,7 +23,7 @@ export default function MultiFilePreview({
     return null;
   }
   return (
-    <AnimatePresence initial={false}>
+    <>
       {files.map((file) => {
         const { key, name = "", size = 0 } = fileData(file);
 
@@ -122,6 +121,6 @@ export default function MultiFilePreview({
           </Stack>
         );
       })}
-    </AnimatePresence>
+    </>
   );
 }

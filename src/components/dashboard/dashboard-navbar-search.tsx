@@ -158,8 +158,8 @@ export const DashboardNavbarSearch: FC = () => {
                           </Stack>
                           <Stack direction={"row"} alignItems={"center"} mr={1}>
                             {parse(
-                              option.keyId,
-                              match(option.keyId, searchText)
+                              option.keyCode,
+                              match(option.keyCode, searchText)
                             ).map((part, index) => (
                               <Box
                                 key={index}
@@ -208,8 +208,8 @@ export const DashboardNavbarSearch: FC = () => {
                           </Stack>
                           <Stack direction={"row"} alignItems={"center"}>
                             {parse(
-                              option.totalArea.toString(),
-                              match(option.totalArea.toString(), searchText)
+                              option.area.toString(),
+                              match(option.area.toString(), searchText)
                             ).map((part, index) => (
                               <Box
                                 key={index}

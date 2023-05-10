@@ -1,15 +1,15 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
 
-import { ILocation } from "src/types/location";
 import { IPropertyDetails } from "src/types/details";
 import { IPropertyFeatures } from "src/types/features";
+import { ILocation } from "src/types/location";
 import {
   IPropertyAreas,
   IPropertyConstruction,
   IPropertyDistances,
-  IPropertySuitableFor,
   IPropertyHeatingAndEnergy,
+  IPropertySuitableFor,
   IPropertyTechnicalFeatures,
 } from "src/types/properties";
 
@@ -85,13 +85,14 @@ const initialState: propertyState = {
   suitableFor: {
     student: true,
     cottage: true,
-    tourist_rental: true,
+    touristRental: true,
     investment: false,
     doctorsOffice: false,
     professionalUse: true,
     renovation: true,
   },
   heatingAndEnergy: {
+    id: 0,
     energyClass: "A+",
     heatingType: "Central",
     heatingSystem: "Oil",
@@ -140,6 +141,7 @@ const initialState: propertyState = {
     preserved: false,
   },
   technicalFeatures: {
+    id: 0,
     entrances: 1,
     displayWindowsLength: 1,
     safetyDoor: true,
@@ -169,6 +171,7 @@ const initialState: propertyState = {
     inclination: "Inclined",
   },
   details: {
+    id: 0,
     floor: "1",
     bedrooms: 1,
     kitchens: 1,
@@ -208,10 +211,11 @@ const initialState: propertyState = {
     city: "Patras",
     region: "Achaia",
     country: "Greece",
-    // lat: 38.24741203168578,
-    // lng: 21.735938799204945,
+    lat: 38.24741203168578,
+    lng: 21.735938799204945,
   },
   features: {
+    id: 0,
     panoramicView: true,
     seaView: true,
     mountainView: true,
@@ -253,6 +257,7 @@ const initialState: propertyState = {
     withinCityPlan: true,
     loadingDock: true,
   },
+  propertyImage: "",
 };
 
 const slice = createSlice({
@@ -915,9 +920,7 @@ export const selectHas24HoursSecurity = ({ property }: RootState) =>
 export const selectAlarmSystem = ({ property }: RootState) =>
   property.features.alarmSystem;
 
-export const selectAttic = ({ property }: RootState) => property.features.attic;
-
-export const selectBar = ({ property }: RootState) => property.features.bar;
+export const selectAttic = ({ property }: RootState) => property.areas.attic;
 
 export const selectBarbeque = ({ property }: RootState) =>
   property.features.barbeque;

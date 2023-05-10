@@ -22,104 +22,104 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant="h6">Basic Details</Typography>
+        <Typography variant='h6'>Basic Details</Typography>
       </Box>
       <List>
         <ListItem
-          label="Floor"
+          label='Floor'
           value={details?.floor}
-          align="horizontal"
+          align='horizontal'
           divider
         />
         <ListItem
-          label="Layers"
+          label='Layers'
           value={details?.layers}
-          align="horizontal"
+          align='horizontal'
           divider
         />
         <ListItem
-          label="Bedrooms"
+          label='Bedrooms'
           value={details?.bedrooms}
-          align="horizontal"
+          align='horizontal'
           divider
         />
         <ListItem
-          label="Kitchens"
+          label='Kitchens'
           value={details?.kitchens}
-          align="horizontal"
+          align='horizontal'
           divider
         />
         <ListItem
-          label="Bathrooms"
+          label='Bathrooms'
           value={details?.bathrooms}
-          align="horizontal"
+          align='horizontal'
           divider
         />
-        <ListItem label="W/C" value={details?.wc} align="horizontal" divider />
+        <ListItem label='W/C' value={details?.wc} align='horizontal' divider />
         <ListItem
-          label="Living Rooms"
+          label='Living Rooms'
           value={details?.livingrooms}
-          align="horizontal"
+          align='horizontal'
           divider
         />
         <ListItem
-          label="Orientation"
+          label='Orientation'
           value={details?.orientation}
-          align="horizontal"
+          align='horizontal'
           divider
         />
         <ListBooleanItem
-          label="Floor Apartment"
+          label='Floor Apartment'
           status={details?.floorApartment}
-          align="horizontal"
+          align='horizontal'
           divider
         />
         <ListBooleanItem
-          label="Penthouse"
+          label='Penthouse'
           status={details?.penthouse}
-          align="horizontal"
+          align='horizontal'
           divider
         />
         <ListBooleanItem
-          label="Storeroom"
+          label='Storeroom'
           status={details?.storeroom}
-          align="horizontal"
+          align='horizontal'
           divider
         />
         <ListBooleanItem
-          label="Attic"
+          label='Attic'
           status={details?.attic}
-          align="horizontal"
+          align='horizontal'
           divider
         />
         <ListBooleanItem
-          label="Playroom"
+          label='Playroom'
           status={details.playroom}
-          align="horizontal"
+          align='horizontal'
           divider
         />
         <ListItem
-          label="View Type"
+          label='View Type'
           value={details.viewType}
-          align="horizontal"
+          align='horizontal'
           divider
         />
         <ListItem
-          label="Zone Type"
+          label='Zone Type'
           value={details.zoneType}
-          align="horizontal"
+          align='horizontal'
           divider
         />
         <ListItem
-          label="Land Use"
+          label='Land Use'
           value={details.landUse}
-          align="horizontal"
+          align='horizontal'
           divider
         />
         <ListItem
-          label="Accessibility"
+          label='Accessibility'
           value={details.accessibility}
-          align="horizontal"
+          align='horizontal'
           divider
         />
       </List>

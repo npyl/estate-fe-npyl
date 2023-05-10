@@ -44,14 +44,14 @@ type BookingItemProps = {
 };
 
 export function BookingItem({ item, activeMarker }: BookingItemProps) {
-  const { state, propertyDetail, price, location, propertyImage, images, id } =
+  const { state, details, price, location, propertyImage, images, id, area } =
     item;
 
   const router = useRouter();
 
   if (
     !state ||
-    !propertyDetail ||
+    !details ||
     !price ||
     !location ||
     !propertyImage ||
@@ -146,13 +146,11 @@ export function BookingItem({ item, activeMarker }: BookingItemProps) {
           spacing={1}
         >
           <Iconify icon={"solar:ruler-angular-linear"} />
-          <Typography variant='body2'>
-            {propertyDetail.propertyArea}sqm -
-          </Typography>
+          <Typography variant='body2'>{area}sqm -</Typography>
           <Iconify icon={"ph:bed"} />
-          <Typography variant='body2'>{propertyDetail.bedrooms} -</Typography>
+          <Typography variant='body2'>{details.bedrooms} -</Typography>
           <Iconify icon={"mdi:bathroom"} />
-          <Typography variant='body2'>{propertyDetail.bathrooms}</Typography>
+          <Typography variant='body2'>{details.bathrooms}</Typography>
         </Stack>
 
         <Typography color={"text.secondary"} variant='body1'>
