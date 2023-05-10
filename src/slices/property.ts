@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
 
 import { ILocation } from "src/types/location";
-import { IPropertyDetails } from "src/types/propertyDetails";
+import { IPropertyDetails } from "src/types/details";
 import { IPropertyFeatures } from "src/types/features";
 
 interface IPropertiesPostRequest {
