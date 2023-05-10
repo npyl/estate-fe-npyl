@@ -1,44 +1,63 @@
+import { useState } from "react";
+import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
-import { Box, Grid, Paper, TextField, Typography } from "@mui/material";
-import Button from "@mui/material/Button";
-import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
+import { useAllPropertyGlobalQuery } from "src/services/global";
+import { IGlobalProperty } from "../../types/global";
+import { useAddPropertyMutation } from "src/services/properties";
+import { useDispatch, useSelector } from "react-redux";
+import { resetState, selectAll } from "src/slices/property";
+import { Grid, Paper, TextField, Typography, Box } from "@mui/material";
 import { useRouter } from "next/router";
 import * as React from "react";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useAllPropertyGlobalQuery } from "src/services/global";
-import { useAddPropertyMutation } from "src/services/properties";
-import { selectAll, selectCode, setCode } from "src/slices/property";
-import { IGlobalProperty } from "../../types/global";
-import AreasSection from "./Areas";
-import BalconiesSection from "./Balconies";
-import BasicSection from "./Basic";
-import DescriptionSection from "./Description";
-import DistancesSection from "./Distances";
-import FeaturesSection from "./Features";
-import FileSection from "./Files";
-import HeatingSection from "./Heating";
-import ImageSection from "./Images";
-import LocationSection from "./Location";
-import ParkingSection from "./Parking";
-import PropertyDescriptionSection from "./PropertyDescription";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import {
+  selectCategory,
+  setCategory,
+  selectParentCategory,
+  setParentCategory,
+} from "src/slices/property";
+import ResidentialFormSection from "./ResidentialForm";
+import LandFormSection from "./LandForm";
+import CommercialFormSection from "./CommercialForm";
+import OtherFormSection from "./OtherForm";
 
-export default function SimpleAccordion() {
+import { List, Card, CardContent, CardHeader } from "@mui/material";
+import InputAdornment from "@mui/material/InputAdornment";
+
+import { selectDescription, setDescription } from "src/slices/property";
+import Editor from "../editor/Editor";
+
+// @mui
+import { Container } from "@mui/material";
+// routes
+import { PATH_PAGE } from "../extra/routes/paths";
+// components
+
+import Markdown from "../markdown";
+import CustomBreadcrumbs from "../custom-breadcrumbs";
+
+export default function SimpleAccordion(props: { enums: IGlobalProperty }) {
   const { data } = useAllPropertyGlobalQuery();
   const [files, setFiles] = useState<(File | string)[]>([]);
   const [fileData, setFileData] = useState<(File | string)[]>([]);
   const property: IGlobalProperty = data?.property as IGlobalProperty;
   const router = useRouter();
   const body = useSelector(selectAll);
-
   const [create, { isSuccess }] = useAddPropertyMutation();
-  const code = useSelector(selectCode);
+
+  //////
+  const [quillFull, setQuillFull] = useState("");
+
+  const category = useSelector(selectCategory);
+  const parentCategory = useSelector(selectParentCategory);
   const dispatch = useDispatch();
+
+  const enums = props.enums as IGlobalProperty;
 
   const performUpload = () => {
     const blob = new Blob([JSON.stringify(body)], {
@@ -72,151 +91,151 @@ export default function SimpleAccordion() {
     create(dataToSend);
     isSuccess && router.push("/");
   };
-  const [category, setCategory] = React.useState("");
+
   const handleChange = (event: SelectChangeEvent) => {
     setCategory(event.target.value as string);
   };
 
-  const [showPropertyDetails, setShowPropertyDetails] = useState(false);
-
-  const handleMenuItemClick = () => {
-    setShowPropertyDetails(true);
-  };
-  const handleCancelClick = () => {
-    window.location.reload();
-  };
+  const [selectedForm, setSelectedForm] = useState<string>("");
 
   return (
-    <Grid container paddingTop={1} spacing={1}>
-      <Grid container item paddingTop={0} spacing={1}>
-        <Grid item xs={12} spacing={1} order={"row"}>
-          <Grid
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              height: "50px",
-              paddingBottom: "9px",
-            }}
-          >
-            <Typography>
-              <h2> Create Property</h2>
-            </Typography>
-          </Grid>
-          <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
-            <Grid item xs={12} padding={1}>
-              <Grid container spacing={2}>
-                <Grid item xs={6}>
-                  <TextField
-                    fullWidth
-                    id='outlined-start-adornment'
-                    label='Code*'
-                    value={code}
-                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                      dispatch(setCode(event.target.value));
-                    }}
-                    inputProps={{
-                      shrink: true,
-                      style: {
-                        height: "23px",
-                      },
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <FormControl fullWidth>
-                    <InputLabel id='demo-simple-select-label'>
-                      Category
-                    </InputLabel>
-                    <Select
-                      labelId='demo-simple-select-label'
-                      id='demo-simple-select'
+    <>
+      <Grid paddingTop={1} paddingRight={0} spacing={1}>
+        <Grid container paddingTop={0} paddingRight={1} spacing={1}>
+          <Grid item xs={12} spacing={1} order={"row"}>
+            <Grid
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "50px",
+                paddingBottom: "9px",
+              }}
+            >
+              <Typography>
+                <h2> Create Property</h2>
+              </Typography>
+            </Grid>
+            <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
+              <Grid item xs={12} padding={1}>
+                <Grid container spacing={2}>
+                  <Grid item xs={6}>
+                    <FormControl fullWidth>
+                      <InputLabel id="demo-simple-select-label">
+                        Parent Category
+                      </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={parentCategory}
+                        label="Parent Category"
+                        onChange={handleChange}
+                      >
+                        <MenuItem
+                          value={10}
+                          onClick={() => setSelectedForm("residential")}
+                        >
+                          Residential
+                        </MenuItem>
+                        <MenuItem
+                          value={20}
+                          onClick={() => setSelectedForm("commercial")}
+                        >
+                          Commercial
+                        </MenuItem>
+                        <MenuItem
+                          value={30}
+                          onClick={() => setSelectedForm("land")}
+                        >
+                          Land
+                        </MenuItem>
+                        <MenuItem
+                          value={40}
+                          onClick={() => setSelectedForm("other")}
+                        >
+                          Other
+                        </MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <TextField
+                      fullWidth
+                      id="outlined-select-currency"
+                      select
+                      label="Category*"
                       value={category}
-                      label='Category'
-                      onChange={handleChange}
+                      onChange={(
+                        event: React.ChangeEvent<HTMLInputElement>
+                      ) => {
+                        dispatch(setCategory(event.target.value));
+                      }}
                     >
-                      <MenuItem value={10} onClick={handleMenuItemClick}>
-                        Property
-                      </MenuItem>
-                      <MenuItem value={20}>Business property</MenuItem>
-                      <MenuItem value={30}>Lan</MenuItem>
-                    </Select>
-                  </FormControl>
+                      {/* {enums && enums.parentCategory ? (
+                        enums?.parentCategory &&
+                        enums?.parentCategory.length > 0 &&
+                        enums?.parentCategory.map((option) => (
+                          <MenuItem key={option} value={option}>
+                            {option}
+                          </MenuItem>
+                        ))
+                      ) : (
+                        <MenuItem></MenuItem>
+                      )} */}
+                    </TextField>
+                  </Grid>
                 </Grid>
               </Grid>
-            </Grid>
-          </Paper>
+            </Paper>
+          </Grid>
         </Grid>
+
+        {selectedForm !== "" && (
+          <Grid
+            container
+            paddingTop={1}
+            paddingLeft={1}
+            paddingRight={0}
+            spacing={1}
+          >
+            {selectedForm === "residential" && (
+              <ResidentialFormSection enums={property} />
+            )}
+            {selectedForm === "land" && <LandFormSection enums={property} />}
+            {selectedForm === "commercial" && (
+              <CommercialFormSection enums={property} />
+            )}
+            {selectedForm === "other" && <OtherFormSection enums={property} />}
+
+            <Box padding={2}>
+              <Stack
+                direction="row"
+                spacing={2}
+                justifyContent="flex-end"
+                alignItems="center"
+              >
+                <Button
+                  style={{ left: "400%" }}
+                  variant="outlined"
+                  startIcon={<DeleteIcon />}
+                  onClick={() => dispatch(resetState())}
+                >
+                  Clear
+                </Button>
+
+                <Button
+                  style={{ left: "400%" }}
+                  variant="contained"
+                  endIcon={<SendIcon />}
+                  onClick={() => performUpload()}
+                >
+                  Upload
+                </Button>
+              </Stack>
+            </Box>
+          </Grid>
+        )}
       </Grid>
-
-      {showPropertyDetails && (
-        <Grid container item paddingTop={1} spacing={1}>
-          <Grid item xs={6} spacing={1} order={"row"}>
-            <Stack spacing={1}>
-              <BasicSection enums={property} />
-
-              <PropertyDescriptionSection enums={property} />
-
-              <AreasSection enums={property} />
-              <DistancesSection enums={property} />
-              <FileSection
-                fileData={fileData}
-                setFileData={setFileData}
-                enums={property}
-              />
-            </Stack>
-          </Grid>
-          <Grid item xs={6} spacing={1}>
-            <Stack spacing={1}>
-              <ImageSection
-                files={files}
-                setFiles={setFiles}
-                enums={property}
-              />
-              <LocationSection enums={property} />
-              <HeatingSection enums={property} />
-
-              <ParkingSection enums={property} />
-
-              <BalconiesSection enums={property} />
-
-              <DescriptionSection enums={property} />
-            </Stack>
-          </Grid>
-
-          {/* <DetailsSection enums={property} /> */}
-          <Grid item xs={12}>
-            <FeaturesSection enums={property} />
-          </Grid>
-
-          <Box padding={2}>
-            <Stack
-              direction='row'
-              spacing={2}
-              justifyContent='flex-end'
-              alignItems='center'
-            >
-              <Button
-                style={{ left: "400%" }}
-                variant='outlined'
-                startIcon={<DeleteIcon />}
-                onClick={() => handleCancelClick()}
-              >
-                Cancel
-              </Button>
-
-              <Button
-                style={{ left: "400%" }}
-                variant='contained'
-                endIcon={<SendIcon />}
-                onClick={() => performUpload()}
-              >
-                Upload
-              </Button>
-            </Stack>
-          </Box>
-        </Grid>
-      )}
-    </Grid>
+    </>
   );
 }

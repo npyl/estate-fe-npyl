@@ -12,7 +12,7 @@ export default function CountrySelect() {
 
   return (
     <Autocomplete
-      id='country-select-demo'
+      id="country-select-demo"
       sx={{ width: 185 }}
       options={cities}
       autoHighlight
@@ -23,7 +23,7 @@ export default function CountrySelect() {
       }
       renderOption={(props, option) => (
         <Box
-          component='li'
+          component="li"
           sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
           {...props}
         >
@@ -33,7 +33,7 @@ export default function CountrySelect() {
       renderInput={(params) => (
         <TextField
           {...params}
-          placeholder='Επιλέξτε περιοχή'
+          placeholder="Επιλέξτε περιοχή"
           InputLabelProps={{
             shrink: true,
           }}

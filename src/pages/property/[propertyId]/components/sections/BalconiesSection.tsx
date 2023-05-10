@@ -9,8 +9,7 @@ interface BalconiesSectionProps {
 
 const BalconiesSection: React.FC<BalconiesSectionProps> = (props) => {
   const { data } = props;
-  const details = data?.propertyDetail;
-  const balconies = details.balconies;
+  const balconies = data?.details.balconies;
 
   return (
     balconies &&
@@ -43,13 +42,13 @@ const BalconiesSection: React.FC<BalconiesSectionProps> = (props) => {
               <List>
                 <ListItem
                   label="Area"
-                  value={balcony?.area.toString() || ""}
+                  value={balcony?.area}
                   align="horizontal"
                   divider
                 />
                 <ListItem
                   label="Side"
-                  value={balcony?.side.toString() || ""}
+                  value={balcony?.side}
                   align="horizontal"
                   divider
                 />

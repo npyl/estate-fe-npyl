@@ -9,9 +9,8 @@ interface VideoSectionProps {
 
 const VideoSection: React.FC<VideoSectionProps> = (props) => {
   const { data } = props;
-  const video = data?.video;
 
-  if (!video || !video.url) return null;
+  if (!data || !data.video) return null;
 
   return (
     <Stack spacing={2} direction={{ md: "row", xs: "column" }} p={2}>
@@ -27,7 +26,7 @@ const VideoSection: React.FC<VideoSectionProps> = (props) => {
         <iframe
           width="100%"
           height="100%"
-          src={video.url}
+          src={data.video}
           title="YouTube video player"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen

@@ -10,8 +10,7 @@ interface DetailsSectionProps {
 
 const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
   const { data } = props;
-  const details = data?.propertyDetail;
-  const features = data?.features;
+  const details = data?.details;
 
   return (
     <>
@@ -23,85 +22,104 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant='h6'>Basic Details</Typography>
+        <Typography variant="h6">Basic Details</Typography>
       </Box>
       <List>
         <ListItem
-          label='Floor'
-          value={details?.floor.toString() || ""}
-          align='horizontal'
+          label="Floor"
+          value={details?.floor}
+          align="horizontal"
           divider
         />
         <ListItem
-          label='Layers'
-          value={details?.layers.toString() || ""}
-          align='horizontal'
+          label="Layers"
+          value={details?.layers}
+          align="horizontal"
           divider
         />
         <ListItem
-          label='Bedrooms'
-          value={details?.bedrooms.toString() || ""}
-          align='horizontal'
+          label="Bedrooms"
+          value={details?.bedrooms}
+          align="horizontal"
           divider
         />
         <ListItem
-          label='Kitchens'
-          value={details?.kitchens.toString() || ""}
-          align='horizontal'
+          label="Kitchens"
+          value={details?.kitchens}
+          align="horizontal"
           divider
         />
         <ListItem
-          label='Bathrooms'
-          value={details?.bathrooms.toString() || ""}
-          align='horizontal'
+          label="Bathrooms"
+          value={details?.bathrooms}
+          align="horizontal"
+          divider
+        />
+        <ListItem label="W/C" value={details?.wc} align="horizontal" divider />
+        <ListItem
+          label="Living Rooms"
+          value={details?.livingrooms}
+          align="horizontal"
           divider
         />
         <ListItem
-          label='W/C'
-          value={details?.numOfWC.toString() || ""}
-          align='horizontal'
-          divider
-        />
-        <ListItem
-          label='Living Rooms'
-          value={details?.livingRooms.toString() || ""}
-          align='horizontal'
-          divider
-        />
-        <ListItem
-          label='Store Rooms'
-          value={details?.storerooms.toString() || ""}
-          align='horizontal'
+          label="Orientation"
+          value={details?.orientation}
+          align="horizontal"
           divider
         />
         <ListBooleanItem
-          label='Attic'
-          status={features?.attic}
-          align='horizontal'
+          label="Floor Apartment"
+          status={details?.floorApartment}
+          align="horizontal"
           divider
         />
         <ListBooleanItem
-          label='Playroom'
-          status={features?.playRoom}
-          align='horizontal'
+          label="Penthouse"
+          status={details?.penthouse}
+          align="horizontal"
+          divider
+        />
+        <ListBooleanItem
+          label="Storeroom"
+          status={details?.storeroom}
+          align="horizontal"
+          divider
+        />
+        <ListBooleanItem
+          label="Attic"
+          status={details?.attic}
+          align="horizontal"
+          divider
+        />
+        <ListBooleanItem
+          label="Playroom"
+          status={details.playroom}
+          align="horizontal"
           divider
         />
         <ListItem
-          label='Furnished'
-          value={details?.furnished.toString() || ""}
-          align='horizontal'
+          label="View Type"
+          value={details.viewType}
+          align="horizontal"
           divider
         />
         <ListItem
-          label='Frame Type'
-          value={details?.frameType.toString() || ""}
-          align='horizontal'
+          label="Zone Type"
+          value={details.zoneType}
+          align="horizontal"
           divider
         />
         <ListItem
-          label='Energy Class'
-          value={details?.energyClass.toString() || ""}
-          align='horizontal'
+          label="Land Use"
+          value={details.landUse}
+          align="horizontal"
+          divider
+        />
+        <ListItem
+          label="Accessibility"
+          value={details.accessibility}
+          align="horizontal"
           divider
         />
       </List>

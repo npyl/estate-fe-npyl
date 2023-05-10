@@ -10,16 +10,23 @@ import { Box } from "@mui/system";
 import { useDispatch } from "react-redux";
 import {
   selectHeatingType,
-  selectHeatingSystem,
   selectFloorHeating,
+  selectEnergyClass,
   selectAirConditioning,
+  selectOffPeakElectricity,
+  selectSolarBoiler,
+  selectHeatingSystem,
+  selectElectricityType,
   setHeatingType,
-  setFloorHeating,
-  setHeatingSystem,
+  setOffPeakElectricity,
   setAirConditioning,
+  setFloorHeating,
+  setSolarBoiler,
+  setEnergyClass,
+  setHeatingSystem,
 } from "src/slices/property";
 
-const HeatingSection: React.FC<any> = (props) => {
+const HeatingAndEnergySection: React.FC<any> = (props) => {
   const enums = props.enums as IGlobalProperty;
   const details = enums?.details as IGlobalPropertyDetails;
 
@@ -29,6 +36,10 @@ const HeatingSection: React.FC<any> = (props) => {
   const heatingSystem = useSelector(selectHeatingSystem);
   const floorHeating = useSelector(selectFloorHeating);
   const airConditioning = useSelector(selectAirConditioning);
+  const energyClass = useSelector(selectEnergyClass);
+  const offPeakElectricity = useSelector(selectOffPeakElectricity);
+  const solarBoiler = useSelector(selectSolarBoiler);
+  const electricityType = useSelector(selectElectricityType);
 
   if (!details || !details.heatingSystem || !details.heatingType) return null;
 
@@ -42,7 +53,7 @@ const HeatingSection: React.FC<any> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant="h6">Heating</Typography>
+        <Typography variant="h6">Heating and Energy</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -52,7 +63,7 @@ const HeatingSection: React.FC<any> = (props) => {
               fullWidth
               id="outlined-select-currency"
               select
-              label="Type"
+              label="Heating Type"
               value={heatingType}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setHeatingType(event.target.value));
@@ -65,6 +76,31 @@ const HeatingSection: React.FC<any> = (props) => {
               size="small"
             >
               {details?.heatingType?.map((option) => (
+                <MenuItem key={option} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              id="outlined-select-currency"
+              select
+              label="Energy Class"
+              value={energyClass}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(setEnergyClass(event.target.value));
+              }}
+              inputProps={{
+                style: {
+                  height: "8px",
+                },
+              }}
+              size="small"
+            >
+              {details?.energyClass?.map((option) => (
                 <MenuItem key={option} value={option}>
                   {option}
                 </MenuItem>
@@ -95,6 +131,32 @@ const HeatingSection: React.FC<any> = (props) => {
               ))}
             </TextField>
           </Grid>
+
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              id="outlined-select-currency"
+              select
+              label="Electricity Type"
+              value={electricityType}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(setEnergyClass(event.target.value));
+              }}
+              inputProps={{
+                style: {
+                  height: "8px",
+                },
+              }}
+              size="small"
+            >
+              {details?.electricityType?.map((option) => (
+                <MenuItem key={option} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+
           <Grid container spacing={-11} justifyContent={"space-around"}>
             <Grid
               item
@@ -145,9 +207,59 @@ const HeatingSection: React.FC<any> = (props) => {
               </Typography>
             </Grid>
           </Grid>
+          <Grid container spacing={-11} justifyContent={"space-around"}>
+            <Grid
+              item
+              xs={4}
+              flexDirection="row"
+              sx={{ display: "inline-flex", alignItems: "center" }}
+            >
+              <Checkbox
+                value={solarBoiler}
+                checked={solarBoiler}
+                onChange={(
+                  event: React.ChangeEvent<unknown>,
+                  checked: boolean
+                ) => {
+                  dispatch(setSolarBoiler(checked));
+                }}
+                sx={{ cursor: "default" }}
+                color="primary"
+                inputProps={{ "aria-label": "Floor Heating Checkbox" }}
+              />
+              <Typography variant="body1" sx={{ ml: 0 }}>
+                Solar Boiler
+              </Typography>
+            </Grid>
+
+            <Grid item xs={1.8}></Grid>
+            <Grid
+              item
+              xs={4}
+              flexDirection="row"
+              sx={{ display: "inline-flex", alignItems: "center" }}
+            >
+              <Checkbox
+                value={offPeakElectricity}
+                checked={offPeakElectricity}
+                onChange={(
+                  event: React.ChangeEvent<unknown>,
+                  checked: boolean
+                ) => {
+                  dispatch(setOffPeakElectricity(checked));
+                }}
+                sx={{ cursor: "default" }}
+                color="primary"
+                inputProps={{ "aria-label": "Floor Heating Checkbox" }}
+              />
+              <Typography variant="body1" sx={{ ml: 0 }}>
+                Off Peak Electricity
+              </Typography>
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
     </Paper>
   );
 };
-export default HeatingSection;
+export default HeatingAndEnergySection;

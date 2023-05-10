@@ -8,11 +8,22 @@ import { StyledDataGrid } from "./styles";
 type GridProps = {
   rows: GridRowsProp;
   columns: GridColDef[];
+  sortingBy: string | null;
+  sortingOrder: string | null;
 };
 
-const DataGridTable: FC<GridProps> = ({ rows, columns }) => {
+const DataGridTable: FC<GridProps> = ({
+  rows,
+  columns,
+  sortingBy,
+  sortingOrder,
+}) => {
   const router = useRouter();
   const dispatch = useDispatch();
+
+  if (!sortingBy) sortingBy = "";
+  if (!sortingOrder) sortingOrder = null;
+
   return (
     <StyledDataGrid
       rowHeight={100}
@@ -29,6 +40,11 @@ const DataGridTable: FC<GridProps> = ({ rows, columns }) => {
       checkboxSelection
       autoHeight
       disableRowSelectionOnClick
+      initialState={{
+        sorting: {
+          sortModel: [{ field: sortingBy, sort: null }],
+        },
+      }}
       rows={rows}
       columns={columns}
     />

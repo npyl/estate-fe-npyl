@@ -108,22 +108,22 @@ const RangeSelect = ({ type }: { type: string }) => {
 
   return (
     <ClickAwayListener
-      mouseEvent='onMouseDown'
-      touchEvent='onTouchStart'
+      mouseEvent="onMouseDown"
+      touchEvent="onTouchStart"
       onClickAway={() => setOpen(false)}
     >
       <Box>
         <StyledPriceButton
           sx={{ width: customWidth }}
           open={open}
-          variant='outlined'
+          variant="outlined"
           endIcon={open ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
           onClick={handleClick}
         >
           {renderLabel}
         </StyledPriceButton>
         {open && (
-          <Popper open={open} anchorEl={anchorEl} placement='bottom-start'>
+          <Popper open={open} anchorEl={anchorEl} placement="bottom-start">
             <StyledBox>
               <Grid container padding={1} spacing={3}>
                 <Grid item xs={12} sm={6}>

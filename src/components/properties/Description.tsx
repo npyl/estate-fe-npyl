@@ -1,6 +1,15 @@
 import * as React from "react";
 import Typography from "@mui/material/Typography";
-import { Grid, Paper, TextField, MenuItem, List } from "@mui/material";
+import {
+  Grid,
+  Paper,
+  TextField,
+  MenuItem,
+  List,
+  Card,
+  CardContent,
+  CardHeader,
+} from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
 import Stack from "@mui/material/Stack";
 import { IGlobalProperty } from "src/types/global";
@@ -8,48 +17,40 @@ import { useSelector } from "react-redux";
 import { Box } from "@mui/system";
 import { useDispatch } from "react-redux";
 import { selectDescription, setDescription } from "src/slices/property";
+import Editor from "../editor/Editor";
+import { useState } from "react";
+
+// @mui
+import { Container } from "@mui/material";
+// routes
+import { PATH_PAGE } from "../extra/routes/paths";
+// components
+
+import Markdown from "../markdown";
+import CustomBreadcrumbs from "../custom-breadcrumbs";
 
 const DescriptionSection: React.FC<any> = (props) => {
-  const enums = props.enums as IGlobalProperty;
-  const dispatch = useDispatch();
-  const description = useSelector(selectDescription);
+  const [quillSimple, setQuillSimple] = useState("");
+
+  const [quillFull, setQuillFull] = useState("");
 
   return (
-    <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
-      <Box
-        sx={{
-          px: 3,
-          py: 1.5,
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <Typography variant="h6">Description</Typography>
-      </Box>
-
-      <Grid item xs={12}>
-        <Grid container spacing={3}>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              id="outlined-multiline-static"
-              label="Description"
-              multiline
-              rows={22}
-              value={description}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setDescription(event.target.value));
-              }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="end"></InputAdornment>
-                ),
-              }}
-            />
-          </Grid>
+    <Grid item xs={12} padding={0}>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Card>
+            <CardHeader title="Description" />
+            <CardContent>
+              <Editor
+                id="full-editor"
+                value={quillFull}
+                onChange={(value) => setQuillFull(value)}
+              />
+            </CardContent>
+          </Card>
         </Grid>
       </Grid>
-    </Paper>
+    </Grid>
   );
 };
 

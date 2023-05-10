@@ -7,6 +7,8 @@ import { Box } from "@mui/system";
 import { useState, useEffect, useCallback } from "react";
 import { Upload } from "../upload";
 import { useDispatch } from "react-redux";
+import { log } from "console";
+import { fileData } from "../file-thumbnail";
 
 interface IImageSectionProps {
   enums: IGlobalProperty;
@@ -45,7 +47,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
   const handleRemoveAllFiles = () => {
     setFiles([]);
   };
-
+  console.log("elaaaaaaaaaaaa");
   return (
     <Card>
       <CardHeader title="Upload Images" />

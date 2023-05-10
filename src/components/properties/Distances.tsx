@@ -8,10 +8,20 @@ import { Box } from "@mui/system";
 
 import { useDispatch } from "react-redux";
 import {
-  selectToPublicTransport,
-  selectToSea,
-  setToPublicTransport,
-  setToSea,
+  selectPublicTransportation,
+  selectSea,
+  selectSchools,
+  selectSupermarket,
+  selectCafeRestaurant,
+  selectHospital,
+  selectAirport,
+  setPublicTransportation,
+  setSea,
+  setSchools,
+  setSupermarket,
+  setCafeRestaurant,
+  setHospital,
+  setAirport,
 } from "src/slices/property";
 
 const DistancesSection: React.FC<any> = (props) => {
@@ -20,8 +30,13 @@ const DistancesSection: React.FC<any> = (props) => {
 
   const dispatch = useDispatch();
 
-  const toPublicTransport = useSelector(selectToPublicTransport);
-  const toSea = useSelector(selectToSea);
+  const publicTransportation = useSelector(selectPublicTransportation);
+  const schools = useSelector(selectSchools);
+  const supermarket = useSelector(selectSupermarket);
+  const cafeRestaurant = useSelector(selectCafeRestaurant);
+  const hospital = useSelector(selectHospital);
+  const airport = useSelector(selectAirport);
+  const sea = useSelector(selectSea);
 
   return (
     <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
@@ -43,9 +58,9 @@ const DistancesSection: React.FC<any> = (props) => {
               fullWidth
               id="outlined-controlled"
               label="Public Transportation"
-              value={toPublicTransport}
+              value={publicTransportation}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setToPublicTransport(event.target.value));
+                dispatch(setPublicTransportation(event.target.value));
               }}
               InputProps={{
                 endAdornment: (
@@ -65,9 +80,114 @@ const DistancesSection: React.FC<any> = (props) => {
               fullWidth
               id="outlined-controlled"
               label="Sea"
-              value={toSea}
+              value={sea}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setToSea(event.target.value));
+                dispatch(setSea(event.target.value));
+              }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">km</InputAdornment>
+                ),
+              }}
+              inputProps={{
+                style: {
+                  height: "8px",
+                },
+              }}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              id="outlined-controlled"
+              label="Schools"
+              value={schools}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(setSchools(event.target.value));
+              }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">km</InputAdornment>
+                ),
+              }}
+              inputProps={{
+                style: {
+                  height: "8px",
+                },
+              }}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              id="outlined-controlled"
+              label="Supermarket"
+              value={supermarket}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(setSupermarket(event.target.value));
+              }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">km</InputAdornment>
+                ),
+              }}
+              inputProps={{
+                style: {
+                  height: "8px",
+                },
+              }}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              id="outlined-controlled"
+              label="Cafe-Restaurant"
+              value={cafeRestaurant}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(setCafeRestaurant(event.target.value));
+              }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">km</InputAdornment>
+                ),
+              }}
+              inputProps={{
+                style: {
+                  height: "8px",
+                },
+              }}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              id="outlined-controlled"
+              label="Hospital"
+              value={hospital}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(setHospital(event.target.value));
+              }}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">km</InputAdornment>
+                ),
+              }}
+              inputProps={{
+                style: {
+                  height: "8px",
+                },
+              }}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              id="outlined-controlled"
+              label="Airport"
+              value={airport}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(setAirport(event.target.value));
               }}
               InputProps={{
                 endAdornment: (

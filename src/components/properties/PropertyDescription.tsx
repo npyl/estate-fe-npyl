@@ -1,6 +1,13 @@
 import * as React from "react";
 import Typography from "@mui/material/Typography";
-import { Grid, Paper, TextField, MenuItem, List } from "@mui/material";
+import {
+  Grid,
+  Paper,
+  TextField,
+  MenuItem,
+  List,
+  Checkbox,
+} from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
 import Stack from "@mui/material/Stack";
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
@@ -9,6 +16,14 @@ import { Box, spacing } from "@mui/system";
 import { useDispatch } from "react-redux";
 import {
   selectFurnished,
+  selectAttic,
+  selectPlayRoom,
+  selectRooms,
+  selectOrientation,
+  selectStoreroom,
+  selectFloorApartment,
+  selectPenthouse,
+  selectLandUse,
   selectFloorType,
   selectViewType,
   selectFrameType,
@@ -25,6 +40,13 @@ import {
   selectBedrooms,
   selectStorerooms,
   setFurnished,
+  setLandUse,
+  setAttic,
+  setPlayRoom,
+  setFloorApartment,
+  setPenthouse,
+  setRooms,
+  setOrientation,
   setFloorType,
   setViewType,
   setFrameType,
@@ -39,7 +61,7 @@ import {
   setBedrooms,
   setNumOfWC,
   setLivingRooms,
-  setStorerooms,
+  setStoreroom,
 } from "src/slices/property";
 const ariaLabel = { "aria-label": "description" };
 const PropertyDescriptionSection: React.FC<any> = (props) => {
@@ -47,8 +69,12 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
   const details = enums?.details as IGlobalPropertyDetails;
 
   const dispatch = useDispatch();
-
   const furnished = useSelector(selectFurnished);
+  const atttic = useSelector(selectAttic);
+  const playroom = useSelector(selectPlayRoom);
+  const floorApartment = useSelector(selectFloorApartment);
+  const penthouse = useSelector(selectPenthouse);
+  const landUse = useSelector(selectLandUse);
   const floorType = useSelector(selectFloorType);
   const viewType = useSelector(selectViewType);
   const frameType = useSelector(selectFrameType);
@@ -63,7 +89,9 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
   const numOfWC = useSelector(selectNumOfWC);
   const livingRooms = useSelector(selectLivingRooms);
   const bedrooms = useSelector(selectBedrooms);
-  const storerooms = useSelector(selectStorerooms);
+  const storeroom = useSelector(selectStorerooms);
+  const rooms = useSelector(selectRooms);
+  const orientation = useSelector(selectOrientation);
 
   if (!details) return null;
 
@@ -83,6 +111,407 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
       <Grid item xs={12} padding={1}>
         <Grid container spacing={2}>
           <Grid item xs={6}>
+            {/* <> */}
+            <TextField
+              fullWidth
+              id="outlined-controlled"
+              label="Floor"
+              value={floors}
+              placeholder="1,2,3..."
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(setFloors(event.target.value));
+              }}
+              inputProps={{
+                style: {
+                  height: "8px",
+                },
+              }}
+            />
+          </Grid>
+
+          <Grid item xs={6}></Grid>
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              id="outlined-controlled"
+              label="Bedrooms"
+              placeholder="1,2,3..."
+              inputProps={ariaLabel}
+              value={bedrooms}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(setBedrooms(event.target.value));
+              }}
+              inputProps={{
+                style: {
+                  height: "8px",
+                },
+              }}
+            />
+          </Grid>
+
+          <Grid item xs={6}>
+            {/* <> */}
+            <TextField
+              fullWidth
+              id="outlined-controlled"
+              label="Layers"
+              value={layers}
+              placeholder="1,2,3..."
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(setLayers(event.target.value));
+              }}
+              inputProps={{
+                style: {
+                  height: "8px",
+                },
+              }}
+            />
+          </Grid>
+
+          <Grid item xs={6}>
+            {/* <> */}
+            <TextField
+              fullWidth
+              id="outlined-controlled"
+              label="Kitchens"
+              value={kitchens}
+              placeholder="1,2,3..."
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(setKitchens(event.target.value));
+              }}
+              inputProps={{
+                style: {
+                  height: "8px",
+                },
+              }}
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              id="outlined-controlled"
+              label="Living Rooms"
+              value={livingRooms}
+              placeholder="1,2,3..."
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(setLivingRooms(event.target.value));
+              }}
+              inputProps={{
+                style: {
+                  height: "8px",
+                },
+              }}
+            />
+          </Grid>
+
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              id="outlined-controlled"
+              label="Number of WC"
+              value={numOfWC}
+              placeholder="1,2,3..."
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(setNumOfWC(event.target.value));
+              }}
+              inputProps={{
+                style: {
+                  height: "8px",
+                },
+              }}
+            />
+          </Grid>
+
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              id="outlined-controlled"
+              label="Bathrooms"
+              value={bathrooms}
+              placeholder="1,2,3..."
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(setBathrooms(event.target.value));
+              }}
+              inputProps={{
+                style: {
+                  height: "8px",
+                },
+              }}
+            />
+          </Grid>
+
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              id="outlined-select-currency"
+              select
+              label="View"
+              value={viewType}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(setViewType(event.target.value));
+              }}
+              inputProps={{
+                style: {
+                  height: "8px",
+                },
+              }}
+              size="small"
+            >
+              {details?.viewType?.map((option) => (
+                <MenuItem key={option} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              id="outlined-select-currency"
+              select
+              label="Accessibility"
+              value={accessibility}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(setAccessibility(event.target.value));
+              }}
+              inputProps={{
+                style: {
+                  height: "8px",
+                },
+              }}
+              size="small"
+            >
+              {details?.accessibility?.map((option) => (
+                <MenuItem key={option} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              id="outlined-select-currency"
+              select
+              label="Land Use"
+              value={landUse}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(setLandUse(event.target.value));
+              }}
+              inputProps={{
+                style: {
+                  height: "8px",
+                },
+              }}
+              size="small"
+            >
+              {details?.landUse?.map((option) => (
+                <MenuItem key={option} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              id="outlined-select-currency"
+              select
+              label="Zone"
+              value={zoneType}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(setZoneType(event.target.value));
+              }}
+              inputProps={{
+                style: {
+                  height: "8px",
+                },
+              }}
+              size="small"
+            >
+              {details?.zoneType?.map((option) => (
+                <MenuItem key={option} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              id="outlined-select-currency"
+              select
+              label="Rooms"
+              value={rooms}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(setRooms(event.target.value));
+              }}
+              inputProps={{
+                style: {
+                  height: "8px",
+                },
+              }}
+              size="small"
+            >
+              {details?.rooms?.map((option) => (
+                <MenuItem key={option} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+
+          <Grid item xs={6}>
+            <TextField
+              fullWidth
+              id="outlined-select-currency"
+              select
+              label="Orientation"
+              value={orientation}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(setOrientation(event.target.value));
+              }}
+              inputProps={{
+                style: {
+                  height: "8px",
+                },
+              }}
+              size="small"
+            >
+              {details?.orientation?.map((option) => (
+                <MenuItem key={option} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+
+          <Grid
+            item
+            xs={4}
+            flexDirection="row"
+            sx={{ display: "inline-flex", alignItems: "center" }}
+          >
+            <Checkbox
+              id="outlined-controlled"
+              value={atttic}
+              placeholder="Attic"
+              onChange={(
+                event: React.ChangeEvent<unknown>,
+                checked: boolean
+              ) => {
+                dispatch(setAttic(checked));
+              }}
+              sx={{ cursor: "default" }}
+              color="primary"
+              inputProps={{ "aria-label": "Elevator" }}
+            />
+            <Typography variant="body1" sx={{ ml: 0 }}>
+              Attic
+            </Typography>
+          </Grid>
+          <Grid
+            item
+            xs={4}
+            flexDirection="row"
+            sx={{ display: "inline-flex", alignItems: "center" }}
+          >
+            <Checkbox
+              id="outlined-controlled"
+              value={playroom}
+              placeholder="Play Room"
+              onChange={(
+                event: React.ChangeEvent<unknown>,
+                checked: boolean
+              ) => {
+                dispatch(setPlayRoom(checked));
+              }}
+              sx={{ cursor: "default" }}
+              color="primary"
+              inputProps={{ "aria-label": "Elevator" }}
+            />
+            <Typography variant="body1" sx={{ ml: 0 }}>
+              Playroom
+            </Typography>
+          </Grid>
+
+          <Grid
+            item
+            xs={4}
+            flexDirection="row"
+            sx={{ display: "inline-flex", alignItems: "center" }}
+          >
+            <Checkbox
+              id="outlined-controlled"
+              value={storeroom}
+              placeholder="Play Room"
+              onChange={(
+                event: React.ChangeEvent<unknown>,
+                checked: boolean
+              ) => {
+                dispatch(setPlayRoom(checked));
+              }}
+              sx={{ cursor: "default" }}
+              color="primary"
+              inputProps={{ "aria-label": "Elevator" }}
+            />
+            <Typography variant="body1" sx={{ ml: 0 }}>
+              Storeroom
+            </Typography>
+          </Grid>
+          <Grid item xs={2}></Grid>
+          <Grid
+            item
+            xs={4}
+            flexDirection="row"
+            sx={{ display: "inline-flex", alignItems: "center" }}
+          >
+            <Checkbox
+              id="outlined-controlled"
+              value={floorApartment}
+              placeholder="Floor Apartment"
+              onChange={(
+                event: React.ChangeEvent<unknown>,
+                checked: boolean
+              ) => {
+                dispatch(setFloorApartment(checked));
+              }}
+              sx={{ cursor: "default" }}
+              color="primary"
+              inputProps={{ "aria-label": "Elevator" }}
+            />
+            <Typography variant="body1" sx={{ ml: 0 }}>
+              Floor Apartment
+            </Typography>
+          </Grid>
+
+          <Grid
+            item
+            xs={4}
+            flexDirection="row"
+            sx={{ display: "inline-flex", alignItems: "center" }}
+          >
+            <Checkbox
+              id="outlined-controlled"
+              value={penthouse}
+              placeholder="Penthouse"
+              onChange={(
+                event: React.ChangeEvent<unknown>,
+                checked: boolean
+              ) => {
+                dispatch(setPenthouse(checked));
+              }}
+              sx={{ cursor: "default" }}
+              color="primary"
+              inputProps={{ "aria-label": "Elevator" }}
+            />
+            <Typography variant="body1" sx={{ ml: 0 }}>
+              Penthouse
+            </Typography>
+          </Grid>
+
+          {/* <Grid item xs={6}>
             <TextField
               fullWidth
               id="outlined-select-currency"
@@ -132,30 +561,6 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               ))}
             </TextField>
           </Grid>
-          <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id="outlined-select-currency"
-              select
-              label="View"
-              value={viewType}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setViewType(event.target.value));
-              }}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
-              size="small"
-            >
-              {details?.viewType?.map((option) => (
-                <MenuItem key={option} value={option}>
-                  {option}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
 
           <Grid item xs={6}>
             <TextField
@@ -187,31 +592,6 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               fullWidth
               id="outlined-select-currency"
               select
-              label="Accessibility"
-              value={accessibility}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setAccessibility(event.target.value));
-              }}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
-              size="small"
-            >
-              {details?.accessibility?.map((option) => (
-                <MenuItem key={option} value={option}>
-                  {option}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
-
-          <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id="outlined-select-currency"
-              select
               label="Energy Class"
               value={energyClass}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
@@ -231,30 +611,7 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               ))}
             </TextField>
           </Grid>
-          <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id="outlined-select-currency"
-              select
-              label="Zone"
-              value={zoneType}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setZoneType(event.target.value));
-              }}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
-              size="small"
-            >
-              {details?.zoneType?.map((option) => (
-                <MenuItem key={option} value={option}>
-                  {option}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
+          
           <Grid item xs={6}>
             <TextField
               fullWidth
@@ -278,137 +635,14 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
                 </MenuItem>
               ))}
             </TextField>
-          </Grid>
+          </Grid> */}
 
-          <Grid item xs={6}>
-            {/* <> */}
-            <TextField
-              fullWidth
-              id="outlined-controlled"
-              label="Floors"
-              value={floors}
-              placeholder="1,2,3..."
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setFloors(event.target.value));
-              }}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            {/* <> */}
-            <TextField
-              fullWidth
-              id="outlined-controlled"
-              label="Kitchens"
-              value={kitchens}
-              placeholder="1,2,3..."
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setKitchens(event.target.value));
-              }}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            {/* <> */}
-            <TextField
-              fullWidth
-              id="outlined-controlled"
-              label="Layers"
-              value={layers}
-              placeholder="1,2,3..."
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setLayers(event.target.value));
-              }}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            {/* <> */}
-            <TextField
-              fullWidth
-              id="outlined-controlled"
-              label="Bathrooms"
-              value={bathrooms}
-              placeholder="1,2,3..."
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setBathrooms(event.target.value));
-              }}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            {/* <> */}
-            <TextField
-              fullWidth
-              id="outlined-controlled"
-              label="Bedrooms"
-              placeholder="1,2,3..."
-              inputProps={ariaLabel}
-              value={bedrooms}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setBedrooms(event.target.value));
-              }}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            {/* <> */}
-            <TextField
-              fullWidth
-              id="outlined-controlled"
-              label="Number of WC"
-              value={numOfWC}
-              placeholder="1,2,3..."
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setNumOfWC(event.target.value));
-              }}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            {/* <> */}
-            <TextField
-              fullWidth
-              id="outlined-controlled"
-              label="Living Rooms"
-              value={livingRooms}
-              placeholder="1,2,3..."
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setLivingRooms(event.target.value));
-              }}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            {/* <> */}
+          {/* <Grid item xs={6}>
             <TextField
               fullWidth
               id="outlined-controlled"
               label="Store Rooms"
-              value={storerooms}
+              value={Storerooms}
               placeholder="1,2,3..."
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setStorerooms(event.target.value));
@@ -419,7 +653,7 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
                 },
               }}
             />
-          </Grid>
+          </Grid> */}
         </Grid>
       </Grid>
     </Paper>

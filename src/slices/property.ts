@@ -4,133 +4,254 @@ import type { RootState } from "../store";
 import { ILocation } from "src/types/location";
 import { IPropertyDetails } from "src/types/details";
 import { IPropertyFeatures } from "src/types/features";
+import {
+  IPropertyAreas,
+  IPropertyConstruction,
+  IPropertyDistances,
+  IPropertySuitableFor,
+  IPropertyHeatingAndEnergy,
+  IPropertyTechnicalFeatures,
+} from "src/types/properties";
 
 interface IPropertiesPostRequest {
   code: number;
+  title: string;
   managerId: number;
   ownerId: number;
   state: string;
-  category: string;
-  price: number;
-  totalArea: number;
-  availableAfter: string;
-  keyId: string;
-  description: string;
-  location: ILocation;
-  propertyDetail: IPropertyDetails;
-  features: IPropertyFeatures;
-  propertyImage: string;
   parentCategory: string;
+  category: string;
+  area: number;
+  plotArea: number;
+  price: number;
+  averageUtils: number;
+  rented: boolean;
+  currentRentPrice: number;
+  estimatedRentPrice: number;
+  rentalStart: string;
+  rentalEnd: string;
+  availableAfter: string;
+  keyCode: string;
+  auction: boolean;
+  debatablePrice: boolean;
+  buildable: boolean;
+  video: string;
+  description: string;
+  propertyImage: string;
+  suitableFor: IPropertySuitableFor;
+  heatingAndEnergy: IPropertyHeatingAndEnergy;
+  distances: IPropertyDistances;
+  areas: IPropertyAreas;
+  construction: IPropertyConstruction;
+  technicalFeatures: IPropertyTechnicalFeatures;
+  details: IPropertyDetails;
+  location: ILocation;
+  features: IPropertyFeatures;
+
+  // TODO:
+  // notes: INote[];
+  // images: IFileModel[];
+  // documents: IFileModel[];
+  // blueprints: IFileModel[];
+  // labels: ILabel[];
 }
 
 type propertyState = IPropertiesPostRequest;
 
 const initialState: propertyState = {
-  code: 104,
-  state: "Sale",
-  category: "Villa",
-  price: 20000,
-  totalArea: 155,
-  availableAfter: "2023-04-23T18:25:43.511Z",
-  keyId: "10",
+  code: 10,
+  title: "Default Property",
   managerId: 1,
   ownerId: 1,
-  description: "Apartment A",
-  location: {
-    street: "skataStreet",
-    number: 203,
-    complex: "skataComplex",
-    zipCode: 27134,
-    city: "Patra",
-    region: "Center",
-    country: "Greece",
+  state: "Rent",
+  parentCategory: "Residential",
+  category: "Apartment",
+  area: 1000,
+  plotArea: 2000,
+  price: 1000,
+  averageUtils: 10,
+  rented: false,
+  currentRentPrice: 1000,
+  estimatedRentPrice: 1000,
+  rentalStart: "2000-05-03",
+  rentalEnd: "2000-05-03",
+  availableAfter: "2000-05-03",
+  keyCode: "100X01",
+  auction: false,
+  debatablePrice: false,
+  buildable: false,
+  video: "dummy-url",
+  description: "my description",
+  suitableFor: {
+    student: true,
+    cottage: true,
+    tourist_rental: true,
+    investment: false,
+    doctorsOffice: false,
+    professionalUse: true,
+    renovation: true,
   },
-  features: {
-    elevator: false,
-    modernDesign: false,
-    fireplace: false,
-    office: false,
-    internet: false,
-    painted: false,
-    entranceGate: false,
-    thermalInsulation: false,
-    seaView: false,
-    guestroom: false,
-    satelliteTV: false,
-    quietArea: false,
-    bright: false,
-    soundInsulation: false,
-    has24HoursSecurity: false,
+  heatingAndEnergy: {
+    energyClass: "A+",
+    heatingType: "Central",
+    heatingSystem: "Oil",
+    electricityType: "Single Phase",
+    floorHeating: true,
+    airConditioning: false,
+    solarBoiler: false,
+    offPeakElectricity: true,
+  },
+  distances: {
+    schools: 1,
+    supermarket: 1,
+    cafeRestaurant: 1,
+    hospital: 1,
+    airport: 1,
+    sea: 1,
+    publicTransport: 1,
+    entertainment: 1,
+  },
+  areas: {
+    first: 1,
+    second: 1,
+    third: 1,
+    fourth: 1,
+    fifth: 1,
+    plot: 1,
+    covered: 1,
+    basement: 1,
+    attic: 1,
+    garden: 1,
+    balconies: 1,
+    storeroom: 1,
+    groundFloor: 1,
+  },
+  construction: {
+    yearOfConstruction: 1,
+    underConstruction: true,
+    newlyBuilt: false,
+    incomplete: true,
+    totalFloorNumber: 1,
+    internalStairs: true,
+    neoclassical: false,
+    yearOfRenovation: 1,
+    renovated: true,
+    needsRenovation: false,
+    preserved: false,
+  },
+  technicalFeatures: {
+    entrances: 1,
+    displayWindowsLength: 1,
+    safetyDoor: true,
     alarmSystem: false,
-    attic: false,
-    bar: false,
-    barbeque: false,
-    cctv: false,
-    ceramicTiles: false,
-    combinedKitchenAndDiningArea: false,
-    fireDetector: false,
-    homeCinema: false,
-    jacuzzi: false,
-    nearBusRoute: false,
-    panoramicView: false,
-    playRoom: false,
-    smartHome: false,
-    walkableDistanceToBeach: false,
-    doubleGlazing: false,
-    // solarBoiler: false
-  },
-  propertyDetail: {
-    floor: 1,
-    layers: 2,
-    bedrooms: 4,
-    kitchens: 1,
-    bathrooms: 3,
-    storerooms: 0,
-    livingRooms: 2,
-    numOfWC: 2,
-    floorType: "Mosaic",
-    frameType: "Wooden",
-    energyClass: "B+",
+    painted: true,
     furnished: "Partial",
-    parkings: [
-      {
-        parkingType: "Garage",
-        spots: 1,
-      },
-    ],
+    frameType: "Wooden",
+    paneGlassType: "Single",
+    windowScreens: true,
+    fireplace: false,
+    bright: false,
+    luxurious: false,
+    electricCarChargingFacilities: true,
+    reception: true,
+    petsAllowed: false,
+    floorType: "Mosaic",
+    satelliteTV: false,
+    wiring: false,
+    loadingUnloadingElevator: false,
+    falseCeiling: true,
+    withEquipment: true,
+    doubleFrontage: false,
+    consideration: false,
+    floorToAreaRatio: 1,
+    coverageFactor: 1,
+    facadeLength: 1,
+    inclination: "Inclined",
+  },
+  details: {
+    floor: "1",
+    bedrooms: 1,
+    kitchens: 1,
+    wc: 1,
+    layers: 1,
+    livingrooms: 1,
+    bathrooms: 1,
+    rooms: 1,
+    attic: true,
+    storeroom: false,
+    playroom: false,
+    floorApartment: true,
+    penthouse: true,
+    orientation: "East",
+    viewType: "Mountain",
+    accessibility: "Road",
+    landUse: "Residential",
+    zoneType: "Within City Plan",
     balconies: [
       {
         side: "Front",
-        area: 19,
+        area: 1,
       },
     ],
-    constructionYear: 1961,
-    renovationYear: 2020,
-    avgUtils: 33,
-    heating: {
-      heatingType: "Central",
-      heatingSystem: "Oil",
-      floorHeating: true,
-      airConditioning: false,
-    },
-    distance: {
-      toPublicTransport: 150,
-      toSea: 300,
-    },
-    areas: {
-      plot: 1,
-      covered: 1,
-      basement: 1,
-      attic: 1,
-      garden: 1,
-      balconies: 1,
-    },
-    orientation: "East",
-    view: "Forest",
-    accessibility: "Sidewalk",
-    zoneType: "Rural",
-    propertyArea: 153,
-    electricityType: "Unknown",
+    parkings: [
+      {
+        parkingType: "Uncovered",
+        spots: 1,
+      },
+    ],
+  },
+  location: {
+    street: "Street 1",
+    number: 10,
+    complex: "complex1",
+    zipCode: 26441,
+    city: "Patras",
+    region: "Achaia",
+    country: "Greece",
+    // lat: 38.24741203168578,
+    // lng: 21.735938799204945,
+  },
+  features: {
+    panoramicView: true,
+    seaView: true,
+    mountainView: true,
+    facade_sea: true,
+    walkableDistanceToBeach: true,
+    quietArea: true,
+    bright: true,
+    nearBusRoute: true,
+    smartHome: true,
+    guestroom: true,
+    office: true,
+    homeCinema: true,
+    combinedKitchenAndDiningArea: true,
+    soundInsulation: true,
+    thermalInsulation: true,
+    heatedPool: true,
+    indoorPool: true,
+    organizedGarden: true,
+    jacuzzi: true,
+    well: true,
+    drilling: true,
+    masonryFence: true,
+    accessForDisabled: true,
+    alarmSystem: true,
+    has24HoursSecurity: true,
+    cctv: true,
+    internet: true,
+    fireDetector: true,
+    independentHeatingPerRoom: true,
+    adaptingToTheGround: true,
+    barbeque: true,
+    pool: true,
+    view: true,
+    facade: true,
+    corner: true,
+    veranda: true,
+    tents: true,
+    withinResidentialZone: true,
+    withinCityPlan: true,
+    loadingDock: true,
   },
 };
 
@@ -144,6 +265,18 @@ const slice = createSlice({
     setOwner(state: propertyState, action): void {
       state.ownerId = action.payload;
     },
+    setRentalPeriodStart(state: propertyState, action): void {
+      state.rentalStart = action.payload;
+    },
+    setAuction(state: propertyState, action): void {
+      state.auction = action.payload;
+    },
+    setDebatablePrice(state: propertyState, action): void {
+      state.debatablePrice = action.payload;
+    },
+    setRentalPeriodEnd(state: propertyState, action): void {
+      state.rentalEnd = action.payload;
+    },
     setParentCategory(state: propertyState, action): void {
       state.parentCategory = action.payload;
     },
@@ -156,14 +289,30 @@ const slice = createSlice({
     setState(state: propertyState, action): void {
       state.state = action.payload;
     },
+    setValueOfRenovation(state: propertyState, action): void {
+      // TODO:
+    },
     setPrice(state: propertyState, action): void {
       state.price = action.payload;
     },
-    setArea(state: propertyState, action): void {
-      state.totalArea = action.payload;
+    setRented(state: propertyState, action): void {
+      state.rented = action.payload;
     },
-    setKeyId(state: propertyState, action): void {
-      state.keyId = action.payload;
+    setCurrentRentPrice(state: propertyState, action): void {
+      state.currentRentPrice = action.payload;
+    },
+    setEstimatedRentPrice(state: propertyState, action): void {
+      state.estimatedRentPrice = action.payload;
+    },
+
+    setArea(state: propertyState, action): void {
+      state.area = action.payload;
+    },
+    setPlotArea(state: propertyState, action): void {
+      state.plotArea = action.payload;
+    },
+    setKeyCode(state: propertyState, action): void {
+      state.keyCode = action.payload;
     },
     setDescription(state: propertyState, action): void {
       state.description = action.payload;
@@ -190,93 +339,101 @@ const slice = createSlice({
     setCountry(state: propertyState, action): void {
       state.location.country = action.payload;
     },
-
     setFurnished(state: propertyState, action): void {
-      state.propertyDetail.furnished = action.payload;
+      // state.details.furnished = action.payload;
     },
     setOrientation(state: propertyState, action): void {
-      state.propertyDetail.orientation = action.payload;
+      state.details.orientation = action.payload;
     },
     setFloorType(state: propertyState, action): void {
-      state.propertyDetail.floorType = action.payload;
+      // state.details.floorType = action.payload;
+    },
+    setLandUse(state: propertyState, action): void {
+      state.details.landUse = action.payload;
     },
     setViewType(state: propertyState, action): void {
-      state.propertyDetail.view = action.payload;
+      // state.details.view = action.payload;
     },
     setFrameType(state: propertyState, action): void {
-      state.propertyDetail.frameType = action.payload;
+      // state.details.frameType = action.payload;
     },
     setAccessibility(state: propertyState, action): void {
-      state.propertyDetail.accessibility = action.payload;
+      state.details.accessibility = action.payload;
+    },
+    setRooms(state: propertyState, action): void {
+      state.details.rooms = action.payload;
     },
     setEnergyClass(state: propertyState, action): void {
-      state.propertyDetail.energyClass = action.payload;
+      state.heatingAndEnergy.energyClass = action.payload;
+    },
+    setOffPeakElectricity(state: propertyState, action): void {
+      state.heatingAndEnergy.offPeakElectricity = action.payload;
     },
     setZoneType(state: propertyState, action): void {
-      state.propertyDetail.zoneType = action.payload;
+      state.details.zoneType = action.payload;
     },
     setElectricityType(state: propertyState, action): void {
-      state.propertyDetail.electricityType = action.payload;
+      state.heatingAndEnergy.electricityType = action.payload;
     },
     setFloors(state: propertyState, action): void {
-      state.propertyDetail.floor = action.payload;
+      state.details.floor = action.payload;
     },
     setKitchens(state: propertyState, action): void {
-      state.propertyDetail.kitchens = action.payload;
+      state.details.kitchens = action.payload;
     },
     setLayers(state: propertyState, action): void {
-      state.propertyDetail.layers = action.payload;
+      state.details.layers = action.payload;
     },
     setBathrooms(state: propertyState, action): void {
-      state.propertyDetail.bathrooms = action.payload;
+      state.details.bathrooms = action.payload;
     },
     setNumOfWC(state: propertyState, action): void {
-      state.propertyDetail.numOfWC = action.payload;
+      state.details.wc = action.payload;
     },
     setLivingRooms(state: propertyState, action): void {
-      state.propertyDetail.livingRooms = action.payload;
+      state.details.livingrooms = action.payload;
     },
     setBedrooms(state: propertyState, action): void {
-      state.propertyDetail.bedrooms = action.payload;
+      state.details.bedrooms = action.payload;
     },
     setStorerooms(state: propertyState, action): void {
-      state.propertyDetail.storerooms = action.payload;
+      // state.details.Storerooms = action.payload;
     },
     setAvgUtils(state: propertyState, action): void {
-      state.propertyDetail.avgUtils = action.payload;
+      state.averageUtils = action.payload;
     },
 
     setCovered(state: propertyState, action): void {
-      state.propertyDetail.areas.covered = action.payload;
+      state.areas.covered = action.payload;
     },
     // setArea,
     setPlot(state: propertyState, action): void {
-      state.propertyDetail.areas.plot = action.payload;
+      state.areas.plot = action.payload;
     },
     setBasement(state: propertyState, action): void {
-      state.propertyDetail.areas.basement = action.payload;
+      state.areas.basement = action.payload;
     },
     setAttic(state: propertyState, action): void {
-      state.propertyDetail.areas.attic = action.payload;
+      state.areas.attic = action.payload;
     },
     setGarden(state: propertyState, action): void {
-      state.propertyDetail.areas.garden = action.payload;
+      state.areas.garden = action.payload;
     },
     setStoreRooms(state: propertyState, action): void {
-      state.propertyDetail.storerooms = action.payload;
+      // state.details.Storerooms = action.payload;
     },
 
     setHeatingType(state: propertyState, action): void {
-      state.propertyDetail.heating.heatingType = action.payload;
+      state.heatingAndEnergy.heatingType = action.payload;
     },
     setHeatingSystem(state: propertyState, action): void {
-      state.propertyDetail.heating.heatingSystem = action.payload;
+      state.heatingAndEnergy.heatingSystem = action.payload;
     },
     setFloorHeating(state: propertyState, action): void {
-      state.propertyDetail.heating.floorHeating = action.payload;
+      state.heatingAndEnergy.floorHeating = action.payload;
     },
     setAirConditioning(state: propertyState, action): void {
-      state.propertyDetail.heating.airConditioning = action.payload;
+      state.heatingAndEnergy.airConditioning = action.payload;
     },
 
     // TODO:
@@ -286,14 +443,30 @@ const slice = createSlice({
     setBalconies(state: propertyState, action): void {},
     // END TODO
 
-    setToPublicTransport(state: propertyState, action): void {
-      state.propertyDetail.distance.toPublicTransport = action.payload;
+    setPublicTransportation(state: propertyState, action): void {
+      state.distances.publicTransport = action.payload;
     },
-    setToSea(state: propertyState, action): void {
-      state.propertyDetail.distance.toSea = action.payload;
+    setSea(state: propertyState, action): void {
+      state.distances.sea = action.payload;
     },
+    setSchools(state: propertyState, action): void {
+      state.distances.schools = action.payload;
+    },
+    setSupermarket(state: propertyState, action): void {
+      state.distances.supermarket = action.payload;
+    },
+    setCafeRestaurant(state: propertyState, action): void {
+      state.distances.cafeRestaurant = action.payload;
+    },
+    setHospital(state: propertyState, action): void {
+      state.distances.hospital = action.payload;
+    },
+    setAirport(state: propertyState, action): void {
+      state.distances.airport = action.payload;
+    },
+
     setFireplace(state: propertyState, action): void {
-      state.features.fireplace = action.payload;
+      // state.features.fireplace = action.payload;
     },
 
     setPool(state: propertyState, action): void {
@@ -317,7 +490,7 @@ const slice = createSlice({
     },
 
     setModernDesign(state: propertyState, action): void {
-      state.features.modernDesign = action.payload;
+      // state.d = action.payload;
     },
 
     setOffice(state: propertyState, action): void {
@@ -329,11 +502,11 @@ const slice = createSlice({
     },
 
     setPainted(state: propertyState, action): void {
-      state.features.painted = action.payload;
+      state.technicalFeatures.painted = action.payload;
     },
 
     setEntranceGate(state: propertyState, action): void {
-      state.features.entranceGate = action.payload;
+      // state.entranceGate = action.payload;
     },
 
     setThermalInsulation(state: propertyState, action): void {
@@ -349,7 +522,7 @@ const slice = createSlice({
     },
 
     setSatelliteTV(state: propertyState, action): void {
-      state.features.satelliteTV = action.payload;
+      state.technicalFeatures.satelliteTV = action.payload;
     },
 
     setQuietArea(state: propertyState, action): void {
@@ -373,11 +546,11 @@ const slice = createSlice({
     },
 
     setHasAttic(state: propertyState, action): void {
-      state.features.attic = action.payload;
+      state.details.attic = action.payload;
     },
 
     setBar(state: propertyState, action): void {
-      state.features.bar = action.payload;
+      // state.details. = action.payload;
     },
 
     setBarbeque(state: propertyState, action): void {
@@ -389,7 +562,7 @@ const slice = createSlice({
     },
 
     setCeramicTiles(state: propertyState, action): void {
-      state.features.ceramicTiles = action.payload;
+      // state.features.ceramicTiles = action.payload;
     },
 
     setCombinedKitchenAndDiningArea(state: propertyState, action): void {
@@ -416,7 +589,7 @@ const slice = createSlice({
     },
 
     setPlayRoom(state: propertyState, action): void {
-      state.features.playRoom = action.payload;
+      state.details.playroom = action.payload;
     },
 
     setSmartHome(state: propertyState, action): void {
@@ -428,11 +601,17 @@ const slice = createSlice({
     },
 
     setDoubleGlazing(state: propertyState, action): void {
-      state.features.doubleGlazing = action.payload;
+      // state.details.doubleGlazing = action.payload;
     },
 
     setElevator(state: propertyState, action): void {
-      state.features.elevator = action.payload;
+      // state.features.elevator = action.payload;
+    },
+    setFloorApartment(state: propertyState, action): void {
+      // state.features.floorApartment = action.payload;
+    },
+    setPenthouse(state: propertyState, action): void {
+      // state.features.penthouse = action.payload;
     },
 
     resetState: () => {
@@ -442,15 +621,34 @@ const slice = createSlice({
 });
 
 export const {
+  setSea,
+  setSchools,
+  setSupermarket,
+  setCafeRestaurant,
+  setHospital,
+  setAirport,
   setCode,
+  setOffPeakElectricity,
+  setAuction,
+  setDebatablePrice,
+  setFloorApartment,
+  setPenthouse,
+  setLandUse,
+  setCurrentRentPrice,
+  setEstimatedRentPrice,
+  setValueOfRenovation,
   setParentCategory,
   setOwner,
+  setRentalPeriodStart,
+  setRentalPeriodEnd,
   setManager,
   setCategory,
   setState,
   setPrice,
+  setRented,
   setArea,
-  setKeyId,
+  setPlotArea,
+  setKeyCode,
   setStreet,
   setNumber,
   setCity,
@@ -485,15 +683,13 @@ export const {
   setParkingType,
   setSpots,
   setBalconySide,
-  // setArea,
   setPlot,
   setBasement,
   setAttic,
   setGarden,
   setBalconies,
-  setStoreRoom,
-  setToPublicTransport,
-  setToSea,
+  setPublicTransportation,
+  setRooms,
   setHasAttic,
   setFireplace,
   setPool,
@@ -537,16 +733,32 @@ export const {
 export const selectAll = ({ property }: RootState) => property;
 
 export const selectCode = ({ property }: RootState) => property.code;
+export const selectRentalPeriodStart = ({ property }: RootState) =>
+  property.rentalStart;
+export const selectRentalPeriodEnd = ({ property }: RootState) =>
+  property.rentalEnd;
+
 export const selectOwner = ({ property }: RootState) => property.ownerId;
 export const selectManager = ({ property }: RootState) => property.managerId;
 export const selectCategory = ({ property }: RootState) => property.category;
 export const selectState = ({ property }: RootState) => property.state;
+export const selectCurrentRentPrice = ({ property }: RootState) =>
+  property.currentRentPrice;
+export const selectEstimatedRentPrice = ({ property }: RootState) =>
+  property.estimatedRentPrice;
+
+export const selectValueOfRenovation = ({ property }: RootState) => "TODO: ...";
+
+export const selectAuction = ({ property }: RootState) => property.auction;
+export const selectDebatablePrice = ({ property }: RootState) =>
+  property.debatablePrice;
 export const selectPrice = ({ property }: RootState) => property.price;
-export const selectArea = ({ property }: RootState) => property.totalArea;
+export const selectArea = ({ property }: RootState) => property.area;
+export const selectPlotArea = ({ property }: RootState) => property.plotArea;
 export const selectParentCategory = ({ property }: RootState) =>
   property.parentCategory;
 
-export const selectKeyId = ({ property }: RootState) => property.keyId;
+export const selectKeyCode = ({ property }: RootState) => property.keyCode;
 export const selectDescription = ({ property }: RootState) =>
   property.description;
 
@@ -563,65 +775,68 @@ export const selectRegion = ({ property }: RootState) =>
   property.location.region;
 export const selectCountry = ({ property }: RootState) =>
   property.location.country;
-
-export const selectFurnished = ({ property }: RootState) =>
-  property.propertyDetail.furnished;
+export const selectFurnished = ({ property }: RootState) => -1;
+// property.details.furnished;
 export const selectOrientation = ({ property }: RootState) =>
-  property.propertyDetail.orientation;
-export const selectFloorType = ({ property }: RootState) =>
-  property.propertyDetail.floorType;
-export const selectViewType = ({ property }: RootState) =>
-  property.propertyDetail.view; // TODO: is this correct? Why is it named view and not viewType?
-export const selectFrameType = ({ property }: RootState) =>
-  property.propertyDetail.frameType;
+  property.details.orientation;
+export const selectFloorType = ({ property }: RootState) => -1;
+// property.details.floorType;
+export const selectLandUse = ({ property }: RootState) =>
+  property.details.landUse;
+export const selectViewType = ({ property }: RootState) => -1;
+// property.details.view; // TODO: is this correct? Why is it named view and not viewType?
+export const selectFrameType = ({ property }: RootState) => -1;
+// property.details.frameType;
 export const selectAccessibility = ({ property }: RootState) =>
-  property.propertyDetail.accessibility;
+  property.details.accessibility;
 export const selectEnergyClass = ({ property }: RootState) =>
-  property.propertyDetail.energyClass;
+  property.heatingAndEnergy.energyClass;
+export const selectOffPeakElectricity = ({ property }: RootState) =>
+  property.heatingAndEnergy.offPeakElectricity;
 export const selectZoneType = ({ property }: RootState) =>
-  property.propertyDetail.zoneType;
+  property.details.zoneType;
 export const selectElectricityType = ({ property }: RootState) =>
-  property.propertyDetail.electricityType;
-export const selectFloors = ({ property }: RootState) =>
-  property.propertyDetail.floor;
+  property.heatingAndEnergy.electricityType;
+export const selectFloors = ({ property }: RootState) => property.details.floor;
 export const selectKitchens = ({ property }: RootState) =>
-  property.propertyDetail.kitchens;
+  property.details.kitchens;
 export const selectLayers = ({ property }: RootState) =>
-  property.propertyDetail.layers;
+  property.details.layers;
 export const selectBathrooms = ({ property }: RootState) =>
-  property.propertyDetail.bathrooms;
-export const selectNumOfWC = ({ property }: RootState) =>
-  property.propertyDetail.numOfWC;
-export const selectLivingRooms = ({ property }: RootState) =>
-  property.propertyDetail.livingRooms;
+  property.details.bathrooms;
+export const selectNumOfWC = ({ property }: RootState) => -1;
+// property.;
+export const selectLivingRooms = ({ property }: RootState) => -1;
+// property.details.livingRooms;
 export const selectBedrooms = ({ property }: RootState) =>
-  property.propertyDetail.bedrooms;
-export const selectStorerooms = ({ property }: RootState) =>
-  property.propertyDetail.storerooms;
+  property.details.bedrooms;
+export const selectStorerooms = ({ property }: RootState) => -1;
+// property.details.Storerooms;
 export const selectAvgUtils = ({ property }: RootState) =>
-  property.propertyDetail.avgUtils;
+  property.averageUtils;
+export const selectRooms = ({ property }: RootState) => property.details.rooms;
+
+export const selectRented = ({ property }: RootState) => property.rented;
 
 export const selectHeatingSystem = ({ property }: RootState) =>
-  property.propertyDetail.heating.heatingSystem;
+  property.heatingAndEnergy.heatingSystem;
 export const selectHeatingType = ({ property }: RootState) =>
-  property.propertyDetail.heating.heatingType;
+  property.heatingAndEnergy.heatingType;
 export const selectFloorHeating = ({ property }: RootState) =>
-  property.propertyDetail.heating.floorHeating;
+  property.heatingAndEnergy.floorHeating;
 export const selectAirConditioning = ({ property }: RootState) =>
-  property.propertyDetail.heating.airConditioning;
+  property.heatingAndEnergy.airConditioning;
 
-export const selectPlot = ({ property }: RootState) =>
-  property.propertyDetail.areas.plot;
+export const selectPlot = ({ property }: RootState) => property.areas.plot;
 export const selectCovered = ({ property }: RootState) =>
-  property.propertyDetail.areas.covered;
+  property.areas.covered;
 export const selectBasement = ({ property }: RootState) =>
-  property.propertyDetail.areas.basement;
+  property.areas.basement;
 export const selectHasAttic = ({ property }: RootState) =>
-  property.features.attic;
-export const selectGarden = ({ property }: RootState) =>
-  property.propertyDetail.areas.garden;
-// TODO:
-export const selectStoreRoom = ({ property }: RootState) => 666;
+  property.details.attic;
+export const selectGarden = ({ property }: RootState) => property.areas.garden;
+export const selectStoreroom = ({ property }: RootState) =>
+  property.details.storeroom;
 
 // TODO: these are needed foreach parking & each balcony; How should we do it?
 export const selectParkingType = ({ property }: RootState) => "Garage";
@@ -630,26 +845,36 @@ export const selectBalconySide = ({ property }: RootState) => "Front";
 export const selectBalconies = ({ property }: RootState) => 0;
 // END TODO
 
-export const selectToPublicTransport = ({ property }: RootState) =>
-  property.propertyDetail.distance.toPublicTransport;
-export const selectToSea = ({ property }: RootState) =>
-  property.propertyDetail.distance.toSea;
+export const selectPublicTransportation = ({ property }: RootState) =>
+  property.distances.publicTransport;
+export const selectSea = ({ property }: RootState) => property.distances.sea;
+export const selectSchools = ({ property }: RootState) =>
+  property.distances.schools;
+
+export const selectSupermarket = ({ property }: RootState) =>
+  property.distances.supermarket;
+
+export const selectCafeRestaurant = ({ property }: RootState) =>
+  property.distances.cafeRestaurant;
+
+export const selectHospital = ({ property }: RootState) =>
+  property.distances.hospital;
+
+export const selectAirport = ({ property }: RootState) =>
+  property.distances.airport;
 
 export const selectFireplace = ({ property }: RootState) =>
-  property.features.fireplace;
+  property.technicalFeatures.fireplace;
 
-export const selectElevator = ({ property }: RootState) =>
-  property.features.elevator;
+export const selectElevator = ({ property }: RootState) => -1;
+// property.details.elevator;
 
-// TODO:
-export const selectPool = ({ property }: RootState) =>
-  property.features.playRoom;
-// TODO:
+export const selectPool = ({ property }: RootState) => property.features.pool;
 export const selectWindowScreens = ({ property }: RootState) =>
-  property.features.playRoom;
+  property.technicalFeatures.windowScreens;
 
-export const selectModernDesign = ({ property }: RootState) =>
-  property.features.modernDesign;
+export const selectModernDesign = ({ property }: RootState) => -1;
+// property.features.modernDesign;
 
 export const selectOffice = ({ property }: RootState) =>
   property.features.office;
@@ -658,10 +883,10 @@ export const selectInternet = ({ property }: RootState) =>
   property.features.internet;
 
 export const selectPainted = ({ property }: RootState) =>
-  property.features.painted;
+  property.technicalFeatures.painted;
 
-export const selectEntranceGate = ({ property }: RootState) =>
-  property.features.entranceGate;
+export const selectEntranceGate = ({ property }: RootState) => -1;
+// property.features.entranceGate;
 
 export const selectThermalInsulation = ({ property }: RootState) =>
   property.features.thermalInsulation;
@@ -673,7 +898,7 @@ export const selectGuestroom = ({ property }: RootState) =>
   property.features.guestroom;
 
 export const selectSatelliteTV = ({ property }: RootState) =>
-  property.features.satelliteTV;
+  property.technicalFeatures.satelliteTV;
 
 export const selectQuietArea = ({ property }: RootState) =>
   property.features.quietArea;
@@ -699,8 +924,8 @@ export const selectBarbeque = ({ property }: RootState) =>
 
 export const selectCctv = ({ property }: RootState) => property.features.cctv;
 
-export const selectCeramicTiles = ({ property }: RootState) =>
-  property.features.ceramicTiles;
+export const selectCeramicTiles = ({ property }: RootState) => -1;
+// property.features.ceramicTiles;
 
 export const selectCombinedKitchenAndDiningArea = ({ property }: RootState) =>
   property.features.combinedKitchenAndDiningArea;
@@ -721,7 +946,13 @@ export const selectPanoramicView = ({ property }: RootState) =>
   property.features.panoramicView;
 
 export const selectPlayRoom = ({ property }: RootState) =>
-  property.features.playRoom;
+  property.details.playroom;
+
+//Property Description
+export const selectFloorApartment = ({ property }: RootState) =>
+  property.details.floorApartment;
+export const selectPenthouse = ({ property }: RootState) =>
+  property.details.penthouse;
 
 // TODO:
 export const selectPetAllowed = ({ property }: RootState) => false;
@@ -730,7 +961,7 @@ export const selectSolarBoiler = ({ property }: RootState) => false;
 
 // TODO:
 export const selectAccessForDisable = ({ property }: RootState) =>
-  property.features.playRoom;
+  property.features.accessForDisabled;
 
 export const selectSmartHome = ({ property }: RootState) =>
   property.features.smartHome;
@@ -738,7 +969,7 @@ export const selectSmartHome = ({ property }: RootState) =>
 export const selectWalkableDistanceToBeach = ({ property }: RootState) =>
   property.features.walkableDistanceToBeach;
 
-export const selectDoubleGlazing = ({ property }: RootState) =>
-  property.features.doubleGlazing;
+export const selectDoubleGlazing = ({ property }: RootState) => -1;
+// property.;
 
 export const { reducer } = slice;
