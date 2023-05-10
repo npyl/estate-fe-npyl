@@ -8,7 +8,6 @@ export interface IPropertyDetailsBalcony {
 }
 
 export interface IPropertyDetails {
-  id: number;
   floor: string;
   bedrooms: number;
   kitchens: number;

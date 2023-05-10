@@ -1,4 +1,6 @@
 export interface IPropertyFeatures {
+  attic: boolean;
+  bar: boolean;
   id: number;
   panoramicView: boolean;
   seaView: boolean;
@@ -40,4 +42,6 @@ export interface IPropertyFeatures {
   withinResidentialZone: boolean;
   withinCityPlan: boolean;
   loadingDock: boolean;
+  petAllowed: boolean;
+  seaFront: boolean;
 }
