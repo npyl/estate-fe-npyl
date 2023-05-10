@@ -1,16 +1,16 @@
-import * as React from "react";
+import { Grid, MenuItem, Paper, TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import { Grid, Paper, TextField, MenuItem, List } from "@mui/material";
-import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
-import { useSelector } from "react-redux";
 import { Box } from "@mui/system";
+import * as React from "react";
+import { useSelector } from "react-redux";
+import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 
 import { useDispatch } from "react-redux";
 import {
   selectParkingType,
   selectSpots,
-  setSpots,
   setParkingType,
+  setSpots,
 } from "src/slices/property";
 
 const ParkingSection: React.FC<any> = (props) => {
@@ -34,7 +34,7 @@ const ParkingSection: React.FC<any> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant="h6">Parking</Typography>
+        <Typography variant='h6'>Parking</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -42,9 +42,9 @@ const ParkingSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-select-currency"
+              id='outlined-select-currency'
               select
-              label="Type"
+              label='Type'
               value={parkingType}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setParkingType(event.target.value));
@@ -54,7 +54,7 @@ const ParkingSection: React.FC<any> = (props) => {
                   height: "8px",
                 },
               }}
-              size="small"
+              size='small'
             >
               {details?.parkingType?.map((option) => (
                 <MenuItem key={option} value={option}>
@@ -67,10 +67,10 @@ const ParkingSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Number of Spots"
+              id='outlined-controlled'
+              label='Number of Spots'
               value={spots}
-              placeholder="1,2,3..."
+              placeholder='1,2,3...'
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setSpots(event.target.value));
               }}

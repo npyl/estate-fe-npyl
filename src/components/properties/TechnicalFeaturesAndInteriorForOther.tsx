@@ -1,5 +1,4 @@
-import { Checkbox, Grid, MenuItem, Paper, TextField } from "@mui/material";
-import InputAdornment from "@mui/material/InputAdornment";
+import { Checkbox, Grid, Paper } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 
@@ -8,68 +7,47 @@ import { Box } from "@mui/system";
 import { useDispatch, useSelector } from "react-redux";
 import { useAllCustomersQuery } from "src/services/customers";
 import {
-  selectEntrances,
-  selectDisplayWindowsLength,
-  selectSafetyDoor,
   selectAlarmSystem,
-  selectPainted,
-  selectFurnished,
-  selectFrameType,
-  selectPaneGlassType,
-  selectWindowScreens,
-  selectFireplace,
   selectBright,
-  selectLuxurious,
-  selectElectricCarChargingFacilities,
-  selectReception,
-  selectPetsAllowed,
-  selectFloorType,
-  selectSatelliteTV,
-  selectWiring,
-  selectLoadingUnloadingElevator,
-  selectFalseCeiling,
-  selectWithEquipment,
-  selectDoubleFrontage,
   selectConsideration,
-  selectFloorToAreaRatio,
   selectCoverageFactor,
+  selectDisplayWindowsLength,
+  selectDoubleFrontage,
+  selectElectricCarChargingFacilities,
+  selectEntrances,
   selectFacadeLength,
+  selectFalseCeiling,
+  selectFireplace,
+  selectFloorToAreaRatio,
+  selectFloorType,
+  selectFrameType,
+  selectFurnished,
   selectInclination,
-  setDisplayWindowsLength,
-  setSafetyDoor,
-  setAlarmSystem,
-  setPainted,
-  setFurnished,
-  setFrameType,
-  setPaneGlassType,
-  setWindowScreens,
-  setFireplace,
-  setBright,
-  setLuxurious,
-  setElectricCarChargingFacilities,
-  setReception,
-  setPetsAllowed,
-  setFloorType,
-  setSatelliteTV,
-  setWiring,
-  setLoadingUnloadingElevator,
-  setFalseCeiling,
-  setWithEquipment,
+  selectLoadingUnloadingElevator,
+  selectLuxurious,
+  selectPainted,
+  selectPaneGlassType,
+  selectPetsAllowed,
+  selectReception,
+  selectSafetyDoor,
+  selectSatelliteTV,
+  selectWindowScreens,
+  selectWiring,
+  selectWithEquipment,
   setDoubleFrontage,
-  setConsideration,
-  setFloorToAreaRatio,
-  // setCoverageFactor,
-  setFacadeLength,
-  setInclination,
-  setEntrances,
+  setFalseCeiling,
+  setLoadingUnloadingElevator,
+  setPetsAllowed,
+  setReception,
+  setSafetyDoor,
+  setSatelliteTV,
+  setWithEquipment,
 } from "src/slices/property";
 
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 
-import { useAllUsersQuery } from "src/services/user";
-import { DatePicker } from "@mui/lab";
 import { useState } from "react";
-import { setEntranceGate } from "src/slices/property";
+import { useAllUsersQuery } from "src/services/user";
 
 const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = (props) => {
   const [rentalPeriodStart, setRentalPeriodStart] = useState<Date | null>(
@@ -124,7 +102,7 @@ const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant="h6">Technical Features And Interior</Typography>
+        <Typography variant='h6'>Technical Features And Interior</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -132,7 +110,7 @@ const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = (props) => {
           <Grid
             item
             xs={3}
-            flexDirection="row"
+            flexDirection='row'
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -145,10 +123,10 @@ const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = (props) => {
                 dispatch(setSafetyDoor(checked));
               }}
               sx={{ cursor: "default" }}
-              color="primary"
+              color='primary'
               inputProps={{ "aria-label": "Safety Door" }}
             />
-            <Typography variant="body1" sx={{ ml: 0 }}>
+            <Typography variant='body1' sx={{ ml: 0 }}>
               Safety Door
             </Typography>
           </Grid>
@@ -156,7 +134,7 @@ const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = (props) => {
           <Grid
             item
             xs={3}
-            flexDirection="row"
+            flexDirection='row'
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -169,10 +147,10 @@ const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = (props) => {
                 dispatch(setDoubleFrontage(checked));
               }}
               sx={{ cursor: "default" }}
-              color="primary"
+              color='primary'
               inputProps={{ "aria-label": "Double Frontage" }}
             />
-            <Typography variant="body1" sx={{ ml: 0 }}>
+            <Typography variant='body1' sx={{ ml: 0 }}>
               Double Frontage
             </Typography>
           </Grid>
@@ -180,7 +158,7 @@ const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = (props) => {
           <Grid
             item
             xs={3}
-            flexDirection="row"
+            flexDirection='row'
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -193,17 +171,17 @@ const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = (props) => {
                 dispatch(setSatelliteTV(checked));
               }}
               sx={{ cursor: "default" }}
-              color="primary"
+              color='primary'
               inputProps={{ "aria-label": "Satellite TV" }}
             />
-            <Typography variant="body1" sx={{ ml: 0 }}>
+            <Typography variant='body1' sx={{ ml: 0 }}>
               Satellite TV
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection="row"
+            flexDirection='row'
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -216,17 +194,17 @@ const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = (props) => {
                 dispatch(setReception(checked));
               }}
               sx={{ cursor: "default" }}
-              color="primary"
+              color='primary'
               inputProps={{ "aria-label": "Reception" }}
             />
-            <Typography variant="body1" sx={{ ml: 0 }}>
+            <Typography variant='body1' sx={{ ml: 0 }}>
               Reception
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection="row"
+            flexDirection='row'
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -239,10 +217,10 @@ const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = (props) => {
                 dispatch(setPetsAllowed(checked));
               }}
               sx={{ cursor: "default" }}
-              color="primary"
+              color='primary'
               inputProps={{ "aria-label": "Pets Allowed" }}
             />
-            <Typography variant="body1" sx={{ ml: 0 }}>
+            <Typography variant='body1' sx={{ ml: 0 }}>
               Pets Allowed
             </Typography>
           </Grid>
@@ -250,7 +228,7 @@ const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = (props) => {
           <Grid
             item
             xs={3}
-            flexDirection="row"
+            flexDirection='row'
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -263,17 +241,17 @@ const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = (props) => {
                 dispatch(setLoadingUnloadingElevator(checked));
               }}
               sx={{ cursor: "default" }}
-              color="primary"
+              color='primary'
               inputProps={{ "aria-label": "Loading-Unloading Elevator" }}
             />
-            <Typography variant="body1" sx={{ ml: 0 }}>
+            <Typography variant='body1' sx={{ ml: 0 }}>
               Loading-Unloading Elevator
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection="row"
+            flexDirection='row'
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -286,17 +264,17 @@ const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = (props) => {
                 dispatch(setFalseCeiling(checked));
               }}
               sx={{ cursor: "default" }}
-              color="primary"
+              color='primary'
               inputProps={{ "aria-label": "False Ceiling" }}
             />
-            <Typography variant="body1" sx={{ ml: 0 }}>
+            <Typography variant='body1' sx={{ ml: 0 }}>
               False Ceiling
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection="row"
+            flexDirection='row'
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -309,10 +287,10 @@ const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = (props) => {
                 dispatch(setWithEquipment(checked));
               }}
               sx={{ cursor: "default" }}
-              color="primary"
+              color='primary'
               inputProps={{ "aria-label": "With Equipment" }}
             />
-            <Typography variant="body1" sx={{ ml: 0 }}>
+            <Typography variant='body1' sx={{ ml: 0 }}>
               With Eqipment
             </Typography>
           </Grid>

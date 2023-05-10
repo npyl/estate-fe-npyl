@@ -1,17 +1,16 @@
-import * as React from "react";
-import Typography from "@mui/material/Typography";
-import { Grid, Paper, TextField, MenuItem } from "@mui/material";
+import { Grid, MenuItem, Paper, TextField } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
-import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
-import { useSelector } from "react-redux";
+import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
-import { useDispatch } from "react-redux";
+import * as React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
-  selectBalconySide,
   selectArea,
-  setBalconySide,
+  selectBalconySide,
   setArea,
+  setBalconySide,
 } from "src/slices/property";
+import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 
 const BalconiesSection: React.FC<any> = (props) => {
   const enums = props.enums as IGlobalProperty;
@@ -34,7 +33,7 @@ const BalconiesSection: React.FC<any> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant="h6">Balconies</Typography>
+        <Typography variant='h6'>Balconies</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -42,9 +41,9 @@ const BalconiesSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-select-currency"
+              id='outlined-select-currency'
               select
-              label="Side"
+              label='Side'
               value={balconySide}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setBalconySide(event.target.value));
@@ -54,7 +53,7 @@ const BalconiesSection: React.FC<any> = (props) => {
                   height: "8px",
                 },
               }}
-              size="small"
+              size='small'
             >
               {details?.balconySide?.map((option) => (
                 <MenuItem key={option} value={option}>
@@ -67,15 +66,15 @@ const BalconiesSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Area"
+              id='outlined-controlled'
+              label='Area'
               value={area}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setArea(event.target.value));
               }}
               InputProps={{
                 endAdornment: (
-                  <InputAdornment position="end">m²</InputAdornment>
+                  <InputAdornment position='end'>m²</InputAdornment>
                 ),
               }}
               inputProps={{

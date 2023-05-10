@@ -1,5 +1,4 @@
 import { Checkbox, Grid, MenuItem, Paper, TextField } from "@mui/material";
-import InputAdornment from "@mui/material/InputAdornment";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 
@@ -8,68 +7,56 @@ import { Box } from "@mui/system";
 import { useDispatch, useSelector } from "react-redux";
 import { useAllCustomersQuery } from "src/services/customers";
 import {
-  selectEntrances,
-  selectDisplayWindowsLength,
-  selectSafetyDoor,
   selectAlarmSystem,
-  selectPainted,
-  selectFurnished,
-  selectFrameType,
-  selectPaneGlassType,
-  selectWindowScreens,
-  selectFireplace,
   selectBright,
-  selectLuxurious,
-  selectElectricCarChargingFacilities,
-  selectReception,
-  selectPetsAllowed,
-  selectFloorType,
-  selectSatelliteTV,
-  selectWiring,
-  selectLoadingUnloadingElevator,
-  selectFalseCeiling,
-  selectWithEquipment,
-  selectDoubleFrontage,
   selectConsideration,
-  selectFloorToAreaRatio,
   selectCoverageFactor,
+  selectDisplayWindowsLength,
+  selectDoubleFrontage,
+  selectElectricCarChargingFacilities,
+  selectEntrances,
   selectFacadeLength,
+  selectFalseCeiling,
+  selectFireplace,
+  selectFloorToAreaRatio,
+  selectFloorType,
+  selectFrameType,
+  selectFurnished,
   selectInclination,
-  setDisplayWindowsLength,
-  setSafetyDoor,
+  selectLoadingUnloadingElevator,
+  selectLuxurious,
+  selectPainted,
+  selectPaneGlassType,
+  selectPetsAllowed,
+  selectReception,
+  selectSafetyDoor,
+  selectSatelliteTV,
+  selectWindowScreens,
+  selectWiring,
+  selectWithEquipment,
   setAlarmSystem,
-  setPainted,
-  setFurnished,
-  setFrameType,
-  setPaneGlassType,
-  setWindowScreens,
-  setFireplace,
   setBright,
-  setLuxurious,
-  setElectricCarChargingFacilities,
-  setReception,
-  setPetsAllowed,
-  setFloorType,
-  setSatelliteTV,
-  setWiring,
-  setLoadingUnloadingElevator,
-  setFalseCeiling,
-  setWithEquipment,
+  setDisplayWindowsLength,
   setDoubleFrontage,
-  setConsideration,
-  setFloorToAreaRatio,
-  // setCoverageFactor,
-  setFacadeLength,
-  setInclination,
+  setElectricCarChargingFacilities,
   setEntrances,
+  setFireplace,
+  setFloorType,
+  setLoadingUnloadingElevator,
+  setLuxurious,
+  setPainted,
+  setPetsAllowed,
+  setReception,
+  setSafetyDoor,
+  setSatelliteTV,
+  setWindowScreens,
+  setWiring,
 } from "src/slices/property";
 
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 
-import { useAllUsersQuery } from "src/services/user";
-import { DatePicker } from "@mui/lab";
 import { useState } from "react";
-import { setEntranceGate } from "src/slices/property";
+import { useAllUsersQuery } from "src/services/user";
 
 const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
   props
@@ -126,7 +113,7 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
           justifyContent: "center",
         }}
       >
-        <Typography variant="h6">Technical Features And Interior</Typography>
+        <Typography variant='h6'>Technical Features And Interior</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -134,8 +121,8 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Display Window Length"
+              id='outlined-controlled'
+              label='Display Window Length'
               value={displayWindowsLength}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setDisplayWindowsLength(event.target.value));
@@ -150,8 +137,8 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Entrances"
+              id='outlined-controlled'
+              label='Entrances'
               value={entrances}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setEntrances(event.target.value));
@@ -166,9 +153,9 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-select-currency"
+              id='outlined-select-currency'
               select
-              label="Floor Type"
+              label='Floor Type'
               value={floorType}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setFloorType(event.target.value));
@@ -178,7 +165,7 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                   height: "8px",
                 },
               }}
-              size="small"
+              size='small'
             >
               {details?.floorType?.map((option) => (
                 <MenuItem key={option} value={option}>
@@ -190,7 +177,7 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
           <Grid
             item
             xs={3}
-            flexDirection="row"
+            flexDirection='row'
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -203,17 +190,17 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                 dispatch(setSafetyDoor(checked));
               }}
               sx={{ cursor: "default" }}
-              color="primary"
+              color='primary'
               inputProps={{ "aria-label": "Safety Door" }}
             />
-            <Typography variant="body1" sx={{ ml: 0 }}>
+            <Typography variant='body1' sx={{ ml: 0 }}>
               Safety Door
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection="row"
+            flexDirection='row'
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -226,17 +213,17 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                 dispatch(setAlarmSystem(checked));
               }}
               sx={{ cursor: "default" }}
-              color="primary"
+              color='primary'
               inputProps={{ "aria-label": "Alarm System" }}
             />
-            <Typography variant="body1" sx={{ ml: 0 }}>
+            <Typography variant='body1' sx={{ ml: 0 }}>
               Alarm System
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection="row"
+            flexDirection='row'
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -249,10 +236,10 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                 dispatch(setPainted(checked));
               }}
               sx={{ cursor: "default" }}
-              color="primary"
+              color='primary'
               inputProps={{ "aria-label": "Painted" }}
             />
-            <Typography variant="body1" sx={{ ml: 0 }}>
+            <Typography variant='body1' sx={{ ml: 0 }}>
               Painted
             </Typography>
           </Grid>
@@ -260,7 +247,7 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
           <Grid
             item
             xs={3}
-            flexDirection="row"
+            flexDirection='row'
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -273,17 +260,17 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                 dispatch(setBright(checked));
               }}
               sx={{ cursor: "default" }}
-              color="primary"
+              color='primary'
               inputProps={{ "aria-label": "Bright" }}
             />
-            <Typography variant="body1" sx={{ ml: 0 }}>
+            <Typography variant='body1' sx={{ ml: 0 }}>
               Bright
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection="row"
+            flexDirection='row'
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -296,17 +283,17 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                 dispatch(setWindowScreens(checked));
               }}
               sx={{ cursor: "default" }}
-              color="primary"
+              color='primary'
               inputProps={{ "aria-label": "Window Screens" }}
             />
-            <Typography variant="body1" sx={{ ml: 0 }}>
+            <Typography variant='body1' sx={{ ml: 0 }}>
               Window Screens
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection="row"
+            flexDirection='row'
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -319,17 +306,17 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                 dispatch(setDoubleFrontage(checked));
               }}
               sx={{ cursor: "default" }}
-              color="primary"
+              color='primary'
               inputProps={{ "aria-label": "Double Frontage" }}
             />
-            <Typography variant="body1" sx={{ ml: 0 }}>
+            <Typography variant='body1' sx={{ ml: 0 }}>
               Double Frontage
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection="row"
+            flexDirection='row'
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -342,17 +329,17 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                 dispatch(setFireplace(checked));
               }}
               sx={{ cursor: "default" }}
-              color="primary"
+              color='primary'
               inputProps={{ "aria-label": "Fireplace" }}
             />
-            <Typography variant="body1" sx={{ ml: 0 }}>
+            <Typography variant='body1' sx={{ ml: 0 }}>
               Fireplace
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection="row"
+            flexDirection='row'
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -365,17 +352,17 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                 dispatch(setLuxurious(checked));
               }}
               sx={{ cursor: "default" }}
-              color="primary"
+              color='primary'
               inputProps={{ "aria-label": "Luxurious" }}
             />
-            <Typography variant="body1" sx={{ ml: 0 }}>
+            <Typography variant='body1' sx={{ ml: 0 }}>
               Luxurious
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection="row"
+            flexDirection='row'
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -388,17 +375,17 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                 dispatch(setSatelliteTV(checked));
               }}
               sx={{ cursor: "default" }}
-              color="primary"
+              color='primary'
               inputProps={{ "aria-label": "Satellite TV" }}
             />
-            <Typography variant="body1" sx={{ ml: 0 }}>
+            <Typography variant='body1' sx={{ ml: 0 }}>
               Satellite TV
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection="row"
+            flexDirection='row'
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -411,17 +398,17 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                 dispatch(setReception(checked));
               }}
               sx={{ cursor: "default" }}
-              color="primary"
+              color='primary'
               inputProps={{ "aria-label": "Reception" }}
             />
-            <Typography variant="body1" sx={{ ml: 0 }}>
+            <Typography variant='body1' sx={{ ml: 0 }}>
               Reception
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection="row"
+            flexDirection='row'
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -434,17 +421,17 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                 dispatch(setPetsAllowed(checked));
               }}
               sx={{ cursor: "default" }}
-              color="primary"
+              color='primary'
               inputProps={{ "aria-label": "Pets Allowed" }}
             />
-            <Typography variant="body1" sx={{ ml: 0 }}>
+            <Typography variant='body1' sx={{ ml: 0 }}>
               Pets Allowed
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection="row"
+            flexDirection='row'
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -457,17 +444,17 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                 dispatch(setElectricCarChargingFacilities(checked));
               }}
               sx={{ cursor: "default" }}
-              color="primary"
+              color='primary'
               inputProps={{ "aria-label": "Electric Car Charging Facilities" }}
             />
-            <Typography variant="body1" sx={{ ml: 0 }}>
+            <Typography variant='body1' sx={{ ml: 0 }}>
               Electric Car Charging Facilities
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection="row"
+            flexDirection='row'
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -480,17 +467,17 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                 dispatch(setWiring(checked));
               }}
               sx={{ cursor: "default" }}
-              color="primary"
+              color='primary'
               inputProps={{ "aria-label": "Wiring" }}
             />
-            <Typography variant="body1" sx={{ ml: 0 }}>
+            <Typography variant='body1' sx={{ ml: 0 }}>
               Wiring
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection="row"
+            flexDirection='row'
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -503,10 +490,10 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                 dispatch(setLoadingUnloadingElevator(checked));
               }}
               sx={{ cursor: "default" }}
-              color="primary"
+              color='primary'
               inputProps={{ "aria-label": "Loading-Unloading Elevator" }}
             />
-            <Typography variant="body1" sx={{ ml: 0 }}>
+            <Typography variant='body1' sx={{ ml: 0 }}>
               Loading-Unloading Elevator
             </Typography>
           </Grid>

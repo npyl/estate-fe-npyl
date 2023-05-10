@@ -1,29 +1,20 @@
-import { useState } from "react";
+import { Grid } from "@mui/material";
 import Stack from "@mui/material/Stack";
-import BasicSection from "./Basic";
-import FeaturesSection from "./Features";
+import * as React from "react";
+import { useState } from "react";
 import { useAllPropertyGlobalQuery } from "src/services/global";
 import { IGlobalProperty } from "../../types/global";
-import DescriptionSection from "./Description";
-import LocationSection from "./Location";
-import AreasSection from "./Areas";
-import { Grid, Paper, TextField, Typography, Box } from "@mui/material";
-import HeatingSection from "./HeatingAndEnergy";
-import ParkingSection from "./Parking";
-import BalconiesSection from "./Balconies";
-import DistancesSection from "./Distances";
-import PropertyDescriptionSection from "./PropertyDescription";
-import ImageSection from "./Images";
-import FileSection from "./Files";
-import * as React from "react";
-import HeatingAndEnergySection from "./HeatingAndEnergy";
-import PropertyDescriptionForOtherSection from "./PropertyDescriptionForOther";
-import HeatingAndEnergyForCommercialSection from "./HeatingAndEnergyForCommercial";
-import ConstructionForCommercialSection from "./ConstructionForCommercial";
+import BasicSection from "./Basic";
 import ConstructionForOtherSection from "./ConstructionForOther";
-import TechnicalFeaturesAndInteriorForOtherSection from "./TechnicalFeaturesAndInteriorForOther";
+import DescriptionSection from "./Description";
 import FeaturesForOtherSection from "./FeaturesForOther";
+// import FileSection from "./Files";
+import HeatingAndEnergyForCommercialSection from "./HeatingAndEnergyForCommercial";
+import ImageSection from "./Images";
+import LocationSection from "./Location";
+import PropertyDescriptionForOtherSection from "./PropertyDescriptionForOther";
 import SuitableForForOtherSection from "./SuitableForForOther";
+import TechnicalFeaturesAndInteriorForOtherSection from "./TechnicalFeaturesAndInteriorForOther";
 
 const OtherFormSection: React.FC<any> = (props) => {
   const { data } = useAllPropertyGlobalQuery();
@@ -41,11 +32,11 @@ const OtherFormSection: React.FC<any> = (props) => {
             <PropertyDescriptionForOtherSection enums={property} />
             <FeaturesForOtherSection enums={property} />
             <SuitableForForOtherSection enums={property} />
-            <FileSection
+            {/* <FileSection
               fileData={fileData}
               setFileData={setFileData}
               enums={property}
-            />
+            /> */}
           </Stack>
         </Grid>
         <Grid item xs={6} spacing={1}>

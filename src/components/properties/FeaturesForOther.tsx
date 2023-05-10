@@ -1,126 +1,75 @@
-import * as React from "react";
-import Typography from "@mui/material/Typography";
 import { Grid, Paper } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
-import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
-import { useSelector } from "react-redux";
+import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
+import * as React from "react";
+import { useSelector } from "react-redux";
+import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 
 import { useDispatch } from "react-redux";
 import {
-  selectMountainView,
-  selectSeaFront,
-  selectHeatedPool,
-  selectIndoorPool,
-  selectOrganizedGarden,
-  selectWell,
-  selectDrilling,
-  selectMasonryFence,
-  selectAccessForDisabled,
-  selectIndependentHeatingPerRoom,
-  selectAdaptingToTheGround,
-  selectView,
-  selectFacade,
-  selectCorner,
-  selectVeranda,
-  selectTents,
-  selectWithinResidentialZone,
-  selectWithinCityPlan,
-  selectFireplace,
-  selectAirConditioning,
   selectAccessForDisable,
-  selectPetAllowed,
-  selectSolarBoiler,
-  selectWindowScreens,
-  selectPool,
-  selectElevator,
-  selectModernDesign,
-  selectOffice,
-  selectInternet,
-  selectPainted,
-  selectEntranceGate,
-  selectThermalInsulation,
-  selectSeaView,
-  selectGuestroom,
-  selectSatelliteTV,
-  selectQuietArea,
-  selectBright,
-  selectSoundInsulation,
-  selectHas24HoursSecurity,
+  selectAccessForDisabled,
+  selectAdaptingToTheGround,
+  selectAirConditioning,
   selectAlarmSystem,
   selectAttic,
   selectBar,
   selectBarbeque,
+  selectBright,
   selectCctv,
   selectCeramicTiles,
   selectCombinedKitchenAndDiningArea,
-  selectFireDetector,
-  selectHomeCinema,
-  selectJacuzzi,
-  selectNearBusRoute,
-  selectPanoramicView,
-  selectPlayRoom,
-  selectSmartHome,
-  selectWalkableDistanceToBeach,
+  selectCorner,
   selectDoubleGlazing,
+  selectDrilling,
+  selectElevator,
+  selectEntranceGate,
+  selectFacade,
+  selectFireDetector,
+  selectFireplace,
+  selectGuestroom,
+  selectHas24HoursSecurity,
+  selectHeatedPool,
+  selectHomeCinema,
+  selectIndependentHeatingPerRoom,
+  selectIndoorPool,
+  selectInternet,
+  selectJacuzzi,
   selectLoadingDock,
-  setLoadingDock,
-  setFireplace,
-  setPool,
-  setAccessForDisable,
-  setPetAllowed,
-  setSolarBoiler,
-  setWindowScreens,
-  setModernDesign,
-  setSeaFront,
-  setHeatedPool,
-  setIndoorPool,
-  setOrganizedGarden,
-  setWell,
-  setDrilling,
-  setMasonryFence,
-  setAccessForDisabled,
-  setIndependentHeatingPerRoom,
-  setAdaptingToTheGround,
-  setView,
-  setFacade,
-  setCorner,
-  setVeranda,
-  setTents,
-  setWithinResidentialZone,
-  setWithinCityPlan,
-  setMountainView,
-  setOffice,
-  setInternet,
-  setPainted,
-  setEntranceGate,
-  setThermalInsulation,
-  setSeaView,
-  setGuestroom,
-  setSatelliteTV,
-  setQuietArea,
-  setBright,
-  setSoundInsulation,
-  setHas24HoursSecurity,
+  selectMasonryFence,
+  selectModernDesign,
+  selectMountainView,
+  selectNearBusRoute,
+  selectOffice,
+  selectOrganizedGarden,
+  selectPainted,
+  selectPanoramicView,
+  selectPetAllowed,
+  selectPlayRoom,
+  selectPool,
+  selectQuietArea,
+  selectSatelliteTV,
+  selectSeaFront,
+  selectSeaView,
+  selectSmartHome,
+  selectSolarBoiler,
+  selectSoundInsulation,
+  selectTents,
+  selectThermalInsulation,
+  selectVeranda,
+  selectView,
+  selectWalkableDistanceToBeach,
+  selectWell,
+  selectWindowScreens,
+  selectWithinCityPlan,
+  selectWithinResidentialZone,
   setAlarmSystem,
-  setAttic,
-  setHasAttic,
-  setBar,
-  setBarbeque,
-  setCctv,
-  setCeramicTiles,
-  setCombinedKitchenAndDiningArea,
-  setFireDetector,
-  setHomeCinema,
-  setJacuzzi,
-  setNearBusRoute,
+  setFacade,
+  setLoadingDock,
   setPanoramicView,
-  setPlayRoom,
-  setSmartHome,
-  setWalkableDistanceToBeach,
-  setDoubleGlazing,
-  setElevator,
-  setAirConditioning,
+  setVeranda,
+  setView,
 } from "src/slices/property";
 
 const FeaturesForOtherSection: React.FC<any> = (props) => {
@@ -202,7 +151,7 @@ const FeaturesForOtherSection: React.FC<any> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant="h6">Feautures</Typography>
+        <Typography variant='h6'>Feautures</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -210,7 +159,7 @@ const FeaturesForOtherSection: React.FC<any> = (props) => {
           <Grid
             item
             xs={3}
-            flexDirection="row"
+            flexDirection='row'
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -223,10 +172,10 @@ const FeaturesForOtherSection: React.FC<any> = (props) => {
                 dispatch(setPanoramicView(checked));
               }}
               sx={{ cursor: "default" }}
-              color="primary"
+              color='primary'
               inputProps={{ "aria-label": "Panoramic View" }}
             />
-            <Typography variant="body1" sx={{ ml: 0 }}>
+            <Typography variant='body1' sx={{ ml: 0 }}>
               Panoramic View
             </Typography>
           </Grid>
@@ -234,7 +183,7 @@ const FeaturesForOtherSection: React.FC<any> = (props) => {
           <Grid
             item
             xs={3}
-            flexDirection="row"
+            flexDirection='row'
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -247,17 +196,17 @@ const FeaturesForOtherSection: React.FC<any> = (props) => {
                 dispatch(setAlarmSystem(checked));
               }}
               sx={{ cursor: "default" }}
-              color="primary"
+              color='primary'
               inputProps={{ "aria-label": "Alarm System" }}
             />
-            <Typography variant="body1" sx={{ ml: 0 }}>
+            <Typography variant='body1' sx={{ ml: 0 }}>
               Alarm System
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection="row"
+            flexDirection='row'
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -270,17 +219,17 @@ const FeaturesForOtherSection: React.FC<any> = (props) => {
                 dispatch(setFacade(checked));
               }}
               sx={{ cursor: "default" }}
-              color="primary"
+              color='primary'
               inputProps={{ "aria-label": "Facade" }}
             />
-            <Typography variant="body1" sx={{ ml: 0 }}>
+            <Typography variant='body1' sx={{ ml: 0 }}>
               Facade
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection="row"
+            flexDirection='row'
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -293,10 +242,10 @@ const FeaturesForOtherSection: React.FC<any> = (props) => {
                 dispatch(setLoadingDock(checked));
               }}
               sx={{ cursor: "default" }}
-              color="primary"
+              color='primary'
               inputProps={{ "aria-label": "Loading Dock" }}
             />
-            <Typography variant="body1" sx={{ ml: 0 }}>
+            <Typography variant='body1' sx={{ ml: 0 }}>
               Loading Dock
             </Typography>
           </Grid>
@@ -304,7 +253,7 @@ const FeaturesForOtherSection: React.FC<any> = (props) => {
           <Grid
             item
             xs={3}
-            flexDirection="row"
+            flexDirection='row'
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -317,17 +266,17 @@ const FeaturesForOtherSection: React.FC<any> = (props) => {
                 dispatch(setVeranda(checked));
               }}
               sx={{ cursor: "default" }}
-              color="primary"
+              color='primary'
               inputProps={{ "aria-label": "Veranda" }}
             />
-            <Typography variant="body1" sx={{ ml: 0 }}>
+            <Typography variant='body1' sx={{ ml: 0 }}>
               Veranda
             </Typography>
           </Grid>
           <Grid
             item
             xs={6}
-            flexDirection="row"
+            flexDirection='row'
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -340,10 +289,10 @@ const FeaturesForOtherSection: React.FC<any> = (props) => {
                 dispatch(setView(checked));
               }}
               sx={{ cursor: "default" }}
-              color="primary"
+              color='primary'
               inputProps={{ "aria-label": "View" }}
             />
-            <Typography variant="body1" sx={{ ml: 0 }}>
+            <Typography variant='body1' sx={{ ml: 0 }}>
               View
             </Typography>
           </Grid>

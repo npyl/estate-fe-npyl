@@ -1,28 +1,27 @@
-import * as React from "react";
+import { Grid, Paper, TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import { Grid, Paper, TextField, MenuItem } from "@mui/material";
-import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
-import { useSelector } from "react-redux";
 import { Box } from "@mui/system";
+import * as React from "react";
+import { useSelector } from "react-redux";
+import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 
 import { useDispatch } from "react-redux";
 import {
-  selectStreet,
-  selectNumber,
   selectCity,
   selectComplex,
-  selectZipCode,
-  selectRegion,
   selectCountry,
+  selectNumber,
   selectOrientation,
-  setStreet,
-  setNumber,
+  selectRegion,
+  selectStreet,
+  selectZipCode,
   setCity,
   setComplex,
-  setZipCode,
-  setRegion,
   setCountry,
-  setOrientation,
+  setNumber,
+  setRegion,
+  setStreet,
+  setZipCode,
 } from "src/slices/property";
 
 const LocationSection: React.FC<any> = (props) => {
@@ -52,7 +51,7 @@ const LocationSection: React.FC<any> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant="h6">Location</Typography>
+        <Typography variant='h6'>Location</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -61,8 +60,8 @@ const LocationSection: React.FC<any> = (props) => {
             {/* <> */}
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Street*"
+              id='outlined-controlled'
+              label='Street*'
               value={street}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setStreet(event.target.value));
@@ -77,8 +76,8 @@ const LocationSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Number*"
+              id='outlined-controlled'
+              label='Number*'
               value={number}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setNumber(event.target.value));
@@ -93,8 +92,8 @@ const LocationSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="City*"
+              id='outlined-controlled'
+              label='City*'
               value={city}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setCity(event.target.value));
@@ -109,8 +108,8 @@ const LocationSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Complex"
+              id='outlined-controlled'
+              label='Complex'
               value={complex}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setComplex(event.target.value));
@@ -125,8 +124,8 @@ const LocationSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Zip Code*"
+              id='outlined-controlled'
+              label='Zip Code*'
               value={zipCode}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setZipCode(event.target.value));
@@ -141,8 +140,8 @@ const LocationSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Region*"
+              id='outlined-controlled'
+              label='Region*'
               value={region}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setRegion(event.target.value));
@@ -157,8 +156,8 @@ const LocationSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Country*"
+              id='outlined-controlled'
+              label='Country*'
               value={country}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setCountry(event.target.value));

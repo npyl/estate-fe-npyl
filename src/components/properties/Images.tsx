@@ -1,14 +1,10 @@
+import { Card, CardContent, CardHeader } from "@mui/material";
 import { Dispatch, SetStateAction } from "react";
-import Typography from "@mui/material/Typography";
-import { Card, CardHeader, CardContent } from "@mui/material";
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
-import { Box } from "@mui/system";
 
-import { useState, useEffect, useCallback } from "react";
-import { Upload } from "../upload";
+import { useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { log } from "console";
-import { fileData } from "../file-thumbnail";
+import { Upload } from "../upload";
 
 interface IImageSectionProps {
   enums: IGlobalProperty;
@@ -50,7 +46,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
   console.log("elaaaaaaaaaaaa");
   return (
     <Card>
-      <CardHeader title="Upload Images" />
+      <CardHeader title='Upload Images' />
       <CardContent>
         <Upload
           multiple

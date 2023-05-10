@@ -1,29 +1,22 @@
-import { useState } from "react";
+import { Grid } from "@mui/material";
 import Stack from "@mui/material/Stack";
-import BasicSection from "./Basic";
-import FeaturesSection from "./Features";
+import * as React from "react";
+import { useState } from "react";
 import { useAllPropertyGlobalQuery } from "src/services/global";
 import { IGlobalProperty } from "../../types/global";
-import DescriptionSection from "./Description";
-import LocationSection from "./Location";
 import AreasSection from "./Areas";
-import { Grid, Paper, TextField, Typography, Box } from "@mui/material";
-import HeatingSection from "./HeatingAndEnergy";
-import ParkingSection from "./Parking";
-import BalconiesSection from "./Balconies";
-import DistancesSection from "./Distances";
-import PropertyDescriptionSection from "./PropertyDescription";
-import ImageSection from "./Images";
-import FileSection from "./Files";
-import * as React from "react";
-import HeatingAndEnergySection from "./HeatingAndEnergy";
+import BasicSection from "./Basic";
 import ConstructionForCommercialSection from "./ConstructionForCommercial";
-import BackendConnectedDatePickerSection from "./test";
-import PropertyDescriptionForCommercialSection from "./PropertyDescriptionForCommercial";
-import HeatingAndEnergyForResidentialSection from "./HeatingAndEnergyForCommercial";
-import TechnicalFeaturesAndInteriorForCommercialSection from "./TechnicalFeaturesAndInteriorForCommercial";
-import SuitableForForCommercialSection from "./SuitableForForCommercial";
+import DescriptionSection from "./Description";
+import DistancesSection from "./Distances";
 import FeaturesForCommercialSection from "./FeaturesForCommercial";
+// import FileSection from "./Files";
+import HeatingAndEnergyForResidentialSection from "./HeatingAndEnergyForCommercial";
+import ImageSection from "./Images";
+import LocationSection from "./Location";
+import PropertyDescriptionForCommercialSection from "./PropertyDescriptionForCommercial";
+import SuitableForForCommercialSection from "./SuitableForForCommercial";
+import TechnicalFeaturesAndInteriorForCommercialSection from "./TechnicalFeaturesAndInteriorForCommercial";
 
 const CommercialFormSection: React.FC<any> = (props) => {
   const { data } = useAllPropertyGlobalQuery();
@@ -42,11 +35,11 @@ const CommercialFormSection: React.FC<any> = (props) => {
 
             <AreasSection enums={property} />
             <DistancesSection enums={property} />
-            <FileSection
+            {/* <FileSection
               fileData={fileData}
               setFileData={setFileData}
               enums={property}
-            />
+            /> */}
           </Stack>
         </Grid>
         <Grid item xs={6} spacing={1}>

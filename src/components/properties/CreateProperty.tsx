@@ -1,45 +1,34 @@
-import { useState } from "react";
-import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
-import Stack from "@mui/material/Stack";
-import { useAllPropertyGlobalQuery } from "src/services/global";
-import { IGlobalProperty } from "../../types/global";
-import { useAddPropertyMutation } from "src/services/properties";
-import { useDispatch, useSelector } from "react-redux";
-import { resetState, selectAll } from "src/slices/property";
-import { Grid, Paper, TextField, Typography, Box } from "@mui/material";
-import { useRouter } from "next/router";
-import * as React from "react";
+import { Box, Grid, Paper, TextField, Typography } from "@mui/material";
+import Button from "@mui/material/Button";
+import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Stack from "@mui/material/Stack";
+import { useRouter } from "next/router";
+import * as React from "react";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useAllPropertyGlobalQuery } from "src/services/global";
+import { useAddPropertyMutation } from "src/services/properties";
 import {
+  resetState,
+  selectAll,
   selectCategory,
-  setCategory,
   selectParentCategory,
-  setParentCategory,
+  setCategory,
 } from "src/slices/property";
-import ResidentialFormSection from "./ResidentialForm";
-import LandFormSection from "./LandForm";
+import { IGlobalProperty } from "../../types/global";
 import CommercialFormSection from "./CommercialForm";
+import LandFormSection from "./LandForm";
 import OtherFormSection from "./OtherForm";
-
-import { List, Card, CardContent, CardHeader } from "@mui/material";
-import InputAdornment from "@mui/material/InputAdornment";
-
-import { selectDescription, setDescription } from "src/slices/property";
-import Editor from "../editor/Editor";
+import ResidentialFormSection from "./ResidentialForm";
 
 // @mui
-import { Container } from "@mui/material";
 // routes
-import { PATH_PAGE } from "../extra/routes/paths";
 // components
-
-import Markdown from "../markdown";
-import CustomBreadcrumbs from "../custom-breadcrumbs";
 
 export default function SimpleAccordion(props: { enums: IGlobalProperty }) {
   const { data } = useAllPropertyGlobalQuery();
@@ -121,14 +110,14 @@ export default function SimpleAccordion(props: { enums: IGlobalProperty }) {
                 <Grid container spacing={2}>
                   <Grid item xs={6}>
                     <FormControl fullWidth>
-                      <InputLabel id="demo-simple-select-label">
+                      <InputLabel id='demo-simple-select-label'>
                         Parent Category
                       </InputLabel>
                       <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
+                        labelId='demo-simple-select-label'
+                        id='demo-simple-select'
                         value={parentCategory}
-                        label="Parent Category"
+                        label='Parent Category'
                         onChange={handleChange}
                       >
                         <MenuItem
@@ -162,9 +151,9 @@ export default function SimpleAccordion(props: { enums: IGlobalProperty }) {
                   <Grid item xs={6}>
                     <TextField
                       fullWidth
-                      id="outlined-select-currency"
+                      id='outlined-select-currency'
                       select
-                      label="Category*"
+                      label='Category*'
                       value={category}
                       onChange={(
                         event: React.ChangeEvent<HTMLInputElement>
@@ -198,14 +187,14 @@ export default function SimpleAccordion(props: { enums: IGlobalProperty }) {
 
             <Box padding={2}>
               <Stack
-                direction="row"
+                direction='row'
                 spacing={2}
-                justifyContent="flex-end"
-                alignItems="center"
+                justifyContent='flex-end'
+                alignItems='center'
               >
                 <Button
                   style={{ left: "400%" }}
-                  variant="outlined"
+                  variant='outlined'
                   startIcon={<DeleteIcon />}
                   onClick={() => dispatch(resetState())}
                 >
@@ -214,7 +203,7 @@ export default function SimpleAccordion(props: { enums: IGlobalProperty }) {
 
                 <Button
                   style={{ left: "400%" }}
-                  variant="contained"
+                  variant='contained'
                   endIcon={<SendIcon />}
                   onClick={() => performUpload()}
                 >

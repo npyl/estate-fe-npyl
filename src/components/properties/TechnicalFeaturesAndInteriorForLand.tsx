@@ -1,5 +1,4 @@
-import { Checkbox, Grid, MenuItem, Paper, TextField } from "@mui/material";
-import InputAdornment from "@mui/material/InputAdornment";
+import { Grid, Paper, TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 
@@ -8,68 +7,43 @@ import { Box } from "@mui/system";
 import { useDispatch, useSelector } from "react-redux";
 import { useAllCustomersQuery } from "src/services/customers";
 import {
-  selectEntrances,
-  selectDisplayWindowsLength,
-  selectSafetyDoor,
   selectAlarmSystem,
-  selectPainted,
-  selectFurnished,
-  selectFrameType,
-  selectPaneGlassType,
-  selectWindowScreens,
-  selectFireplace,
   selectBright,
-  selectLuxurious,
-  selectElectricCarChargingFacilities,
-  selectReception,
-  selectPetsAllowed,
-  selectFloorType,
-  selectSatelliteTV,
-  selectWiring,
-  selectLoadingUnloadingElevator,
-  selectFalseCeiling,
-  selectWithEquipment,
-  selectDoubleFrontage,
   selectConsideration,
-  selectFloorToAreaRatio,
   selectCoverageFactor,
+  selectDisplayWindowsLength,
+  selectDoubleFrontage,
+  selectElectricCarChargingFacilities,
+  selectEntrances,
   selectFacadeLength,
+  selectFalseCeiling,
+  selectFireplace,
+  selectFloorToAreaRatio,
+  selectFloorType,
+  selectFrameType,
+  selectFurnished,
   selectInclination,
-  setDisplayWindowsLength,
-  setSafetyDoor,
-  setAlarmSystem,
-  setPainted,
-  setFurnished,
-  setFrameType,
-  setPaneGlassType,
-  setWindowScreens,
-  setFireplace,
-  setBright,
-  setLuxurious,
-  setElectricCarChargingFacilities,
-  setReception,
-  setPetsAllowed,
-  setFloorType,
-  setSatelliteTV,
-  setWiring,
-  setLoadingUnloadingElevator,
-  setFalseCeiling,
-  setWithEquipment,
-  setDoubleFrontage,
-  setConsideration,
-  setFloorToAreaRatio,
+  selectLoadingUnloadingElevator,
+  selectLuxurious,
+  selectPainted,
+  selectPaneGlassType,
+  selectPetsAllowed,
+  selectReception,
+  selectSafetyDoor,
+  selectSatelliteTV,
+  selectWindowScreens,
+  selectWiring,
+  selectWithEquipment,
+  setEntrances,
   // setCoverageFactor,
   setFacadeLength,
-  setInclination,
-  setEntrances,
+  setFloorToAreaRatio,
 } from "src/slices/property";
 
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 
-import { useAllUsersQuery } from "src/services/user";
-import { DatePicker } from "@mui/lab";
 import { useState } from "react";
-import { setEntranceGate } from "src/slices/property";
+import { useAllUsersQuery } from "src/services/user";
 
 const TechnicalFeaturesAndInteriorForLandSection: React.FC<any> = (props) => {
   const [rentalPeriodStart, setRentalPeriodStart] = useState<Date | null>(
@@ -124,7 +98,7 @@ const TechnicalFeaturesAndInteriorForLandSection: React.FC<any> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant="h6">Technical Features And Interior</Typography>
+        <Typography variant='h6'>Technical Features And Interior</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -132,8 +106,8 @@ const TechnicalFeaturesAndInteriorForLandSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Floor To Area Ratio"
+              id='outlined-controlled'
+              label='Floor To Area Ratio'
               value={floorToAreaRatio}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setFloorToAreaRatio(event.target.value));
@@ -148,8 +122,8 @@ const TechnicalFeaturesAndInteriorForLandSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Coverage Factor"
+              id='outlined-controlled'
+              label='Coverage Factor'
               value={coverageFactor}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setEntrances(event.target.value));
@@ -164,8 +138,8 @@ const TechnicalFeaturesAndInteriorForLandSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Facade Length"
+              id='outlined-controlled'
+              label='Facade Length'
               value={facadeLength}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setFacadeLength(event.target.value));

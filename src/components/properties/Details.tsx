@@ -1,91 +1,78 @@
-import * as React from "react";
-import Accordion from "@mui/material/Accordion";
-import AccordionSummary from "@mui/material/AccordionSummary";
-import AccordionDetails from "@mui/material/AccordionDetails";
-import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { Grid, Paper, TextField } from "@mui/material";
+import Accordion from "@mui/material/Accordion";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import Checkbox from "@mui/material/Checkbox";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import FormGroup from "@mui/material/FormGroup";
 import InputAdornment from "@mui/material/InputAdornment";
 import MenuItem from "@mui/material/MenuItem";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import Typography from "@mui/material/Typography";
+import * as React from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 import { floor } from "lodash";
 import {
-  selectFurnished,
-  selectOrientation,
-  selectFloorType,
-  selectViewType,
-  selectFrameType,
   selectAccessibility,
-  selectEnergyClass,
-  selectZoneType,
+  selectAirConditioning,
+  selectArea,
+  selectAvgUtils,
+  selectBalconies,
+  selectBalconySide,
+  selectBasement,
+  selectBathrooms,
+  selectBedrooms,
+  selectCovered,
   selectElectricityType,
+  selectEnergyClass,
+  selectFloor,
+  selectFloorHeating,
+  selectFloorType,
+  selectFrameType,
+  selectFurnished,
+  selectGarden,
+  selectHasAttic,
+  selectHeatingSystem,
+  selectHeatingType,
   selectKitchens,
   selectLayers,
-  selectBathrooms,
-  selectNumOfWC,
   selectLivingRooms,
-  selectBedrooms,
-  selectStorerooms,
-  selectCovered,
-  selectAvgUtils,
-  selectHeatingType,
-  selectHeatingSystem,
-  selectFloorHeating,
-  selectAirConditioning,
+  selectNumOfWC,
+  selectOrientation,
   selectParkingType,
-  selectSpots,
-  selectBalconySide,
-  selectArea,
-  selectFloor,
   selectPlot,
-  selectBasement,
-  selectHasAttic,
-  selectGarden,
-  selectBalconies,
-  selectStoreroom,
   selectPublicTransportation,
   selectSea,
-  setFurnished,
-  setOrientation,
-  setFloorType,
-  setViewType,
-  setFrameType,
+  selectSpots,
+  selectStoreroom,
+  selectStorerooms,
+  selectViewType,
+  selectZoneType,
   setAccessibility,
-  setEnergyClass,
-  setZoneType,
-  setElectricityType,
-  setFloor,
-  setKitchens,
-  setLayers,
+  setAirConditioning,
+  setAvgUtils,
   setBathrooms,
   setBedrooms,
-  setNumOfWC,
-  setLivingRooms,
-  setStorerooms,
-  setAvgUtils,
-  setHeatingType,
-  setHeatingSystem,
+  setElectricityType,
+  setEnergyClass,
+  setFloor,
   setFloorHeating,
-  setAirConditioning,
-  setParkingType,
-  setSpots,
-  setBalconySide,
-  setArea,
-  setPlot,
-  setCovered,
-  setBasement,
-  setHasAttic,
-  setGarden,
-  setBalconies,
-  setPublicTransportation,
-  setSea,
+  setFloorType,
+  setFrameType,
+  setFurnished,
+  setHeatingSystem,
+  setHeatingType,
+  setKitchens,
+  setLayers,
+  setLivingRooms,
+  setNumOfWC,
+  setOrientation,
+  setStorerooms,
+  setViewType,
+  setZoneType,
 } from "src/slices/property";
+import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 
 const ariaLabel = { "aria-label": "description" };
 
@@ -138,8 +125,8 @@ const DetailsSection: React.FC<any> = (props) => {
       <Accordion>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel2a-content"
-          id="panel2a-header"
+          aria-controls='panel2a-content'
+          id='panel2a-header'
         >
           <Typography>Details</Typography>
         </AccordionSummary>
@@ -148,8 +135,8 @@ const DetailsSection: React.FC<any> = (props) => {
             <Accordion>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel2a-content"
-                id="panel2a-header"
+                aria-controls='panel2a-content'
+                id='panel2a-header'
               >
                 <Typography>Basic Details</Typography>
               </AccordionSummary>
@@ -161,9 +148,9 @@ const DetailsSection: React.FC<any> = (props) => {
                         <Grid item xs={3}>
                           <TextField
                             fullWidth
-                            id="outlined-select-currency"
+                            id='outlined-select-currency'
                             select
-                            label="Furnishing"
+                            label='Furnishing'
                             value={furnished}
                             onChange={(
                               event: React.ChangeEvent<HTMLInputElement>
@@ -182,9 +169,9 @@ const DetailsSection: React.FC<any> = (props) => {
                         <Grid item xs={3}>
                           <TextField
                             fullWidth
-                            id="outlined-select-currency"
+                            id='outlined-select-currency'
                             select
-                            label="Orientation"
+                            label='Orientation'
                             value={orientation}
                             onChange={(
                               event: React.ChangeEvent<HTMLInputElement>
@@ -203,9 +190,9 @@ const DetailsSection: React.FC<any> = (props) => {
                         <Grid item xs={3}>
                           <TextField
                             fullWidth
-                            id="outlined-select-currency"
+                            id='outlined-select-currency'
                             select
-                            label="Floor Type"
+                            label='Floor Type'
                             value={floorType}
                             onChange={(
                               event: React.ChangeEvent<HTMLInputElement>
@@ -223,9 +210,9 @@ const DetailsSection: React.FC<any> = (props) => {
                         <Grid item xs={3}>
                           <TextField
                             fullWidth
-                            id="outlined-select-currency"
+                            id='outlined-select-currency'
                             select
-                            label="View"
+                            label='View'
                             value={viewType}
                             onChange={(
                               event: React.ChangeEvent<HTMLInputElement>
@@ -244,9 +231,9 @@ const DetailsSection: React.FC<any> = (props) => {
                         <Grid item xs={3}>
                           <TextField
                             fullWidth
-                            id="outlined-select-currency"
+                            id='outlined-select-currency'
                             select
-                            label="Frame Type"
+                            label='Frame Type'
                             value={frameType}
                             onChange={(
                               event: React.ChangeEvent<HTMLInputElement>
@@ -265,9 +252,9 @@ const DetailsSection: React.FC<any> = (props) => {
                         <Grid item xs={3}>
                           <TextField
                             fullWidth
-                            id="outlined-select-currency"
+                            id='outlined-select-currency'
                             select
-                            label="Accessibility"
+                            label='Accessibility'
                             value={accessibility}
                             onChange={(
                               event: React.ChangeEvent<HTMLInputElement>
@@ -286,9 +273,9 @@ const DetailsSection: React.FC<any> = (props) => {
                         <Grid item xs={3}>
                           <TextField
                             fullWidth
-                            id="outlined-select-currency"
+                            id='outlined-select-currency'
                             select
-                            label="Energy Class"
+                            label='Energy Class'
                             value={energyClass}
                             onChange={(
                               event: React.ChangeEvent<HTMLInputElement>
@@ -306,9 +293,9 @@ const DetailsSection: React.FC<any> = (props) => {
                         <Grid item xs={3}>
                           <TextField
                             fullWidth
-                            id="outlined-select-currency"
+                            id='outlined-select-currency'
                             select
-                            label="Zone"
+                            label='Zone'
                             value={zoneType}
                             onChange={(
                               event: React.ChangeEvent<HTMLInputElement>
@@ -326,9 +313,9 @@ const DetailsSection: React.FC<any> = (props) => {
                         <Grid item xs={3}>
                           <TextField
                             fullWidth
-                            id="outlined-select-currency"
+                            id='outlined-select-currency'
                             select
-                            label="Electricity"
+                            label='Electricity'
                             value={electricityType}
                             onChange={(
                               event: React.ChangeEvent<HTMLInputElement>
@@ -348,10 +335,10 @@ const DetailsSection: React.FC<any> = (props) => {
                           {/* <> */}
                           <TextField
                             fullWidth
-                            id="outlined-controlled"
-                            label="Floors"
+                            id='outlined-controlled'
+                            label='Floors'
                             value={floor}
-                            placeholder="1,2,3..."
+                            placeholder='1,2,3...'
                             inputProps={ariaLabel}
                             onChange={(
                               event: React.ChangeEvent<HTMLInputElement>
@@ -364,10 +351,10 @@ const DetailsSection: React.FC<any> = (props) => {
                           {/* <> */}
                           <TextField
                             fullWidth
-                            id="outlined-controlled"
-                            label="Kitchens"
+                            id='outlined-controlled'
+                            label='Kitchens'
                             value={kitchens}
-                            placeholder="1,2,3..."
+                            placeholder='1,2,3...'
                             inputProps={ariaLabel}
                             onChange={(
                               event: React.ChangeEvent<HTMLInputElement>
@@ -380,10 +367,10 @@ const DetailsSection: React.FC<any> = (props) => {
                           {/* <> */}
                           <TextField
                             fullWidth
-                            id="outlined-controlled"
-                            label="Layers"
+                            id='outlined-controlled'
+                            label='Layers'
                             value={layers}
-                            placeholder="1,2,3..."
+                            placeholder='1,2,3...'
                             inputProps={ariaLabel}
                             onChange={(
                               event: React.ChangeEvent<HTMLInputElement>
@@ -396,10 +383,10 @@ const DetailsSection: React.FC<any> = (props) => {
                           {/* <> */}
                           <TextField
                             fullWidth
-                            id="outlined-controlled"
-                            label="Bathrooms"
+                            id='outlined-controlled'
+                            label='Bathrooms'
                             value={bathrooms}
-                            placeholder="1,2,3..."
+                            placeholder='1,2,3...'
                             inputProps={ariaLabel}
                             onChange={(
                               event: React.ChangeEvent<HTMLInputElement>
@@ -412,9 +399,9 @@ const DetailsSection: React.FC<any> = (props) => {
                           {/* <> */}
                           <TextField
                             fullWidth
-                            id="outlined-controlled"
-                            label="Bedrooms"
-                            placeholder="1,2,3..."
+                            id='outlined-controlled'
+                            label='Bedrooms'
+                            placeholder='1,2,3...'
                             inputProps={ariaLabel}
                             value={bedrooms}
                             onChange={(
@@ -428,10 +415,10 @@ const DetailsSection: React.FC<any> = (props) => {
                           {/* <> */}
                           <TextField
                             fullWidth
-                            id="outlined-controlled"
-                            label="Number of WC"
+                            id='outlined-controlled'
+                            label='Number of WC'
                             value={numOfWC}
-                            placeholder="1,2,3..."
+                            placeholder='1,2,3...'
                             inputProps={ariaLabel}
                             onChange={(
                               event: React.ChangeEvent<HTMLInputElement>
@@ -444,10 +431,10 @@ const DetailsSection: React.FC<any> = (props) => {
                           {/* <> */}
                           <TextField
                             fullWidth
-                            id="outlined-controlled"
-                            label="Living Rooms"
+                            id='outlined-controlled'
+                            label='Living Rooms'
                             value={livingRooms}
-                            placeholder="1,2,3..."
+                            placeholder='1,2,3...'
                             inputProps={ariaLabel}
                             onChange={(
                               event: React.ChangeEvent<HTMLInputElement>
@@ -460,10 +447,10 @@ const DetailsSection: React.FC<any> = (props) => {
                           {/* <> */}
                           <TextField
                             fullWidth
-                            id="outlined-controlled"
-                            label="Store Rooms"
+                            id='outlined-controlled'
+                            label='Store Rooms'
                             value={Storerooms}
-                            placeholder="1,2,3..."
+                            placeholder='1,2,3...'
                             inputProps={ariaLabel}
                             onChange={(
                               event: React.ChangeEvent<HTMLInputElement>
@@ -476,8 +463,8 @@ const DetailsSection: React.FC<any> = (props) => {
                           {/* <> */}
                           <TextField
                             fullWidth
-                            id="outlined-controlled"
-                            label="Average Utils"
+                            id='outlined-controlled'
+                            label='Average Utils'
                             value={avgUtils}
                             onChange={(
                               event: React.ChangeEvent<HTMLInputElement>
@@ -486,7 +473,7 @@ const DetailsSection: React.FC<any> = (props) => {
                             }}
                             InputProps={{
                               endAdornment: (
-                                <InputAdornment position="end">
+                                <InputAdornment position='end'>
                                   €
                                 </InputAdornment>
                               ),
@@ -503,8 +490,8 @@ const DetailsSection: React.FC<any> = (props) => {
             <Accordion>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel2a-content"
-                id="panel2a-header"
+                aria-controls='panel2a-content'
+                id='panel2a-header'
               >
                 <Typography>Heating</Typography>
               </AccordionSummary>
@@ -516,9 +503,9 @@ const DetailsSection: React.FC<any> = (props) => {
                         <Grid item xs={3}>
                           <TextField
                             fullWidth
-                            id="outlined-select-currency"
+                            id='outlined-select-currency'
                             select
-                            label="Type"
+                            label='Type'
                             value={heatingType}
                             onChange={(
                               event: React.ChangeEvent<HTMLInputElement>
@@ -536,9 +523,9 @@ const DetailsSection: React.FC<any> = (props) => {
                         <Grid item xs={3}>
                           <TextField
                             fullWidth
-                            id="outlined-select-currency"
+                            id='outlined-select-currency'
                             select
-                            label="Heating System"
+                            label='Heating System'
                             value={heatingSystem}
                             onChange={(
                               event: React.ChangeEvent<HTMLInputElement>
@@ -558,7 +545,7 @@ const DetailsSection: React.FC<any> = (props) => {
                           <FormGroup>
                             <FormControlLabel
                               control={<Checkbox />}
-                              label="Floor Heating"
+                              label='Floor Heating'
                               value={floorHeating}
                               onChange={(
                                 event: React.ChangeEvent<unknown>,
@@ -574,7 +561,7 @@ const DetailsSection: React.FC<any> = (props) => {
                           <FormGroup>
                             <FormControlLabel
                               control={<Checkbox />}
-                              label="Air-Coditioning"
+                              label='Air-Coditioning'
                               value={airConditioning}
                               onChange={(
                                 event: React.ChangeEvent<unknown>,
@@ -595,8 +582,8 @@ const DetailsSection: React.FC<any> = (props) => {
             <Accordion>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel2a-content"
-                id="panel2a-header"
+                aria-controls='panel2a-content'
+                id='panel2a-header'
               >
                 <Typography>Parking</Typography>
               </AccordionSummary>
@@ -614,8 +601,8 @@ const DetailsSection: React.FC<any> = (props) => {
             <Accordion>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel2a-content"
-                id="panel2a-header"
+                aria-controls='panel2a-content'
+                id='panel2a-header'
               >
                 <Typography>Balconies</Typography>
               </AccordionSummary>
@@ -633,8 +620,8 @@ const DetailsSection: React.FC<any> = (props) => {
             <Accordion>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel2a-content"
-                id="panel2a-header"
+                aria-controls='panel2a-content'
+                id='panel2a-header'
               >
                 <Typography>Areas</Typography>
               </AccordionSummary>
@@ -652,8 +639,8 @@ const DetailsSection: React.FC<any> = (props) => {
             <Accordion>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel2a-content"
-                id="panel2a-header"
+                aria-controls='panel2a-content'
+                id='panel2a-header'
               >
                 <Typography>Distances</Typography>
               </AccordionSummary>

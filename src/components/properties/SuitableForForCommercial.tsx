@@ -1,5 +1,4 @@
-import { Checkbox, Grid, MenuItem, Paper, TextField } from "@mui/material";
-import InputAdornment from "@mui/material/InputAdornment";
+import { Checkbox, Grid, Paper } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 
@@ -8,28 +7,22 @@ import { Box } from "@mui/system";
 import { useDispatch, useSelector } from "react-redux";
 import { useAllCustomersQuery } from "src/services/customers";
 import {
-  selectEntrances,
-  selectStudent,
   selectCottage,
-  selectTouristRental,
-  selectInvestment,
   selectDoctorsOffice,
+  selectInvestment,
   selectProfessionalUse,
   selectRenovation,
-  setStudent,
-  setCottage,
-  setTouristRental,
-  setInvestment,
+  selectStudent,
+  selectTouristRental,
   setDoctorsOffice,
-  setProfessionalUse,
+  setInvestment,
   setRenovation,
 } from "src/slices/property";
 
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 
-import { useAllUsersQuery } from "src/services/user";
-import { DatePicker } from "@mui/lab";
 import { useState } from "react";
+import { useAllUsersQuery } from "src/services/user";
 
 const SuitableForForCommercialSection: React.FC<any> = (props) => {
   const [rentalPeriodStart, setRentalPeriodStart] = useState<Date | null>(
@@ -63,7 +56,7 @@ const SuitableForForCommercialSection: React.FC<any> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant="h6">Suitable For</Typography>
+        <Typography variant='h6'>Suitable For</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -71,7 +64,7 @@ const SuitableForForCommercialSection: React.FC<any> = (props) => {
           <Grid
             item
             xs={3}
-            flexDirection="row"
+            flexDirection='row'
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -84,17 +77,17 @@ const SuitableForForCommercialSection: React.FC<any> = (props) => {
                 dispatch(setRenovation(checked));
               }}
               sx={{ cursor: "default" }}
-              color="primary"
+              color='primary'
               inputProps={{ "aria-label": "Renovation" }}
             />
-            <Typography variant="body1" sx={{ ml: 0 }}>
+            <Typography variant='body1' sx={{ ml: 0 }}>
               Renovation
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection="row"
+            flexDirection='row'
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -107,10 +100,10 @@ const SuitableForForCommercialSection: React.FC<any> = (props) => {
                 dispatch(setInvestment(checked));
               }}
               sx={{ cursor: "default" }}
-              color="primary"
+              color='primary'
               inputProps={{ "aria-label": "Investment" }}
             />
-            <Typography variant="body1" sx={{ ml: 0 }}>
+            <Typography variant='body1' sx={{ ml: 0 }}>
               Investment
             </Typography>
           </Grid>
@@ -118,7 +111,7 @@ const SuitableForForCommercialSection: React.FC<any> = (props) => {
           <Grid
             item
             xs={3}
-            flexDirection="row"
+            flexDirection='row'
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -131,10 +124,10 @@ const SuitableForForCommercialSection: React.FC<any> = (props) => {
                 dispatch(setDoctorsOffice(checked));
               }}
               sx={{ cursor: "default" }}
-              color="primary"
+              color='primary'
               inputProps={{ "aria-label": "Doctors Office" }}
             />
-            <Typography variant="body1" sx={{ ml: 0 }}>
+            <Typography variant='body1' sx={{ ml: 0 }}>
               Doctor's Office
             </Typography>
           </Grid>

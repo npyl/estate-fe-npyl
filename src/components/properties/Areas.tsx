@@ -1,27 +1,27 @@
-import * as React from "react";
-import Typography from "@mui/material/Typography";
-import { Grid, Paper, TextField, MenuItem, List } from "@mui/material";
+import { Grid, Paper, TextField } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
-import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
-import { useSelector } from "react-redux";
+import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
+import * as React from "react";
+import { useSelector } from "react-redux";
+import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 
 import { useDispatch } from "react-redux";
 import {
-  selectPlot,
-  selectCovered,
-  selectBasement,
   selectAttic,
-  selectGarden,
   selectBalconies,
+  selectBasement,
+  selectCovered,
+  selectGarden,
+  selectPlot,
   selectStoreroom,
-  setPlot,
-  setBasement,
   setAttic,
-  setGarden,
   setBalconies,
-  setStorerooms,
+  setBasement,
   setCovered,
+  setGarden,
+  setPlot,
+  setStorerooms,
 } from "src/slices/property";
 
 const AreasSection: React.FC<any> = (props) => {
@@ -54,7 +54,7 @@ const AreasSection: React.FC<any> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant="h6">Areas</Typography>
+        <Typography variant='h6'>Areas</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -62,15 +62,15 @@ const AreasSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Plot"
+              id='outlined-controlled'
+              label='Plot'
               value={plot}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setPlot(event.target.value));
               }}
               InputProps={{
                 endAdornment: (
-                  <InputAdornment position="end">m²</InputAdornment>
+                  <InputAdornment position='end'>m²</InputAdornment>
                 ),
               }}
               inputProps={{
@@ -83,15 +83,15 @@ const AreasSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Covered"
+              id='outlined-controlled'
+              label='Covered'
               value={covered}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setCovered(event.target.value));
               }}
               InputProps={{
                 endAdornment: (
-                  <InputAdornment position="end">m²</InputAdornment>
+                  <InputAdornment position='end'>m²</InputAdornment>
                 ),
               }}
               inputProps={{
@@ -104,15 +104,15 @@ const AreasSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Basement"
+              id='outlined-controlled'
+              label='Basement'
               value={basement}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setBasement(event.target.value));
               }}
               InputProps={{
                 endAdornment: (
-                  <InputAdornment position="end">m²</InputAdornment>
+                  <InputAdornment position='end'>m²</InputAdornment>
                 ),
               }}
               inputProps={{
@@ -125,15 +125,15 @@ const AreasSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Attic"
+              id='outlined-controlled'
+              label='Attic'
               value={attic}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setAttic(event.target.value));
               }}
               InputProps={{
                 endAdornment: (
-                  <InputAdornment position="end">m²</InputAdornment>
+                  <InputAdornment position='end'>m²</InputAdornment>
                 ),
               }}
               inputProps={{
@@ -146,15 +146,15 @@ const AreasSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Garden"
+              id='outlined-controlled'
+              label='Garden'
               value={garden}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setGarden(event.target.value));
               }}
               InputProps={{
                 endAdornment: (
-                  <InputAdornment position="end">m²</InputAdornment>
+                  <InputAdornment position='end'>m²</InputAdornment>
                 ),
               }}
               inputProps={{
@@ -167,15 +167,15 @@ const AreasSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Balconies"
+              id='outlined-controlled'
+              label='Balconies'
               value={balconies}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setBalconies(event.target.value));
               }}
               InputProps={{
                 endAdornment: (
-                  <InputAdornment position="end">m²</InputAdornment>
+                  <InputAdornment position='end'>m²</InputAdornment>
                 ),
               }}
               inputProps={{
@@ -188,15 +188,15 @@ const AreasSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Storeroom"
+              id='outlined-controlled'
+              label='Storeroom'
               value={Storeroom}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setStorerooms(event.target.value));
               }}
               InputProps={{
                 endAdornment: (
-                  <InputAdornment position="end">m²</InputAdornment>
+                  <InputAdornment position='end'>m²</InputAdornment>
                 ),
               }}
               inputProps={{

@@ -1,33 +1,11 @@
+import { Card, CardContent, CardHeader, Grid } from "@mui/material";
 import * as React from "react";
-import Typography from "@mui/material/Typography";
-import {
-  Grid,
-  Paper,
-  TextField,
-  MenuItem,
-  List,
-  Card,
-  CardContent,
-  CardHeader,
-} from "@mui/material";
-import InputAdornment from "@mui/material/InputAdornment";
-import Stack from "@mui/material/Stack";
-import { IGlobalProperty } from "src/types/global";
-import { useSelector } from "react-redux";
-import { Box } from "@mui/system";
-import { useDispatch } from "react-redux";
-import { selectDescription, setDescription } from "src/slices/property";
-import Editor from "../editor/Editor";
 import { useState } from "react";
+import Editor from "../editor/Editor";
 
 // @mui
-import { Container } from "@mui/material";
 // routes
-import { PATH_PAGE } from "../extra/routes/paths";
 // components
-
-import Markdown from "../markdown";
-import CustomBreadcrumbs from "../custom-breadcrumbs";
 
 const DescriptionSection: React.FC<any> = (props) => {
   const [quillSimple, setQuillSimple] = useState("");
@@ -39,10 +17,10 @@ const DescriptionSection: React.FC<any> = (props) => {
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Card>
-            <CardHeader title="Description" />
+            <CardHeader title='Description' />
             <CardContent>
               <Editor
-                id="full-editor"
+                id='full-editor'
                 value={quillFull}
                 onChange={(value) => setQuillFull(value)}
               />
