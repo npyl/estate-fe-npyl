@@ -48,13 +48,16 @@ import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 import { useAllUsersQuery } from "src/services/user";
 
 import { useState } from "react";
+import { useAllPropertyGlobalQuery } from "src/services/global";
 
 const BasicSection: React.FC<any> = (props) => {
   const [rentalPeriodStart, setRentalPeriodStart] = useState<Date | null>(
     new Date()
   );
 
-  const enums = props.enums as IGlobalProperty;
+  const { data } = useAllPropertyGlobalQuery();
+  const enums: IGlobalProperty = data?.property as IGlobalProperty;
+
   const details = enums?.details as IGlobalPropertyDetails;
   const dispatch = useDispatch();
 
@@ -96,7 +99,7 @@ const BasicSection: React.FC<any> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant='h6'>Basic Details</Typography>
+        <Typography variant="h6">Basic Details</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -104,8 +107,8 @@ const BasicSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-start-adornment'
-              label='Code'
+              id="outlined-start-adornment"
+              label="Code"
               value={code}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setCode(event.target.value));
@@ -121,14 +124,14 @@ const BasicSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-start-adornment'
+              id="outlined-start-adornment"
               select
-              label='Owner'
+              label="Owner"
               value={owner}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setOwner(event.target.value));
               }}
-              size='small'
+              size="small"
             >
               {owners && owners.length > 0 ? (
                 owners?.map((option, index) => (
@@ -144,14 +147,14 @@ const BasicSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-start-adornment'
+              id="outlined-start-adornment"
               select
-              label='Manager'
+              label="Manager"
               value={manager}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setManager(event.target.value));
               }}
-              size='small'
+              size="small"
             >
               {managers && managers.length > 0 ? (
                 managers?.map((option, index) => (
@@ -168,10 +171,10 @@ const BasicSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-select-currency'
-              slot=''
+              id="outlined-select-currency"
+              slot=""
               select
-              label='State'
+              label="State"
               value={state}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setState(event.target.value));
@@ -181,7 +184,7 @@ const BasicSection: React.FC<any> = (props) => {
                   height: "8px",
                 },
               }}
-              size='small'
+              size="small"
             >
               {enums && enums.state ? (
                 enums?.state.map((option) => (
@@ -197,15 +200,15 @@ const BasicSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-select-currency'
-              label='Area'
+              id="outlined-select-currency"
+              label="Area"
               value={area}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setArea(event.target.value));
               }}
               InputProps={{
                 endAdornment: (
-                  <InputAdornment position='end'>m²</InputAdornment>
+                  <InputAdornment position="end">m²</InputAdornment>
                 ),
               }}
               inputProps={{
@@ -218,15 +221,15 @@ const BasicSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-select-currency'
-              label='Plot Area'
+              id="outlined-select-currency"
+              label="Plot Area"
               value={plotArea}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setPlotArea(event.target.value));
               }}
               InputProps={{
                 endAdornment: (
-                  <InputAdornment position='end'>m²</InputAdornment>
+                  <InputAdornment position="end">m²</InputAdornment>
                 ),
               }}
               inputProps={{
@@ -239,14 +242,14 @@ const BasicSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-select-currency'
-              label='Price' /* < euro sticky to field> */
+              id="outlined-select-currency"
+              label="Price" /* < euro sticky to field> */
               value={price}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setPrice(event.target.value));
               }}
               InputProps={{
-                endAdornment: <InputAdornment position='end'>€</InputAdornment>,
+                endAdornment: <InputAdornment position="end">€</InputAdornment>,
               }}
               inputProps={{
                 style: {
@@ -259,15 +262,15 @@ const BasicSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='Average Utils'
+              id="outlined-controlled"
+              label="Average Utils"
               value={avgUtils}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setAvgUtils(event.target.value));
               }}
               InputProps={{
                 endAdornment: (
-                  <InputAdornment position='end'>€/Month</InputAdornment>
+                  <InputAdornment position="end">€/Month</InputAdornment>
                 ),
               }}
               inputProps={{
@@ -310,11 +313,11 @@ const BasicSection: React.FC<any> = (props) => {
           <Grid
             item
             xs={6}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
-              id='outlined-controlled'
+              id="outlined-controlled"
               value={rented}
               checked={rented}
               onChange={(
@@ -324,18 +327,18 @@ const BasicSection: React.FC<any> = (props) => {
                 dispatch(setRented(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Elevator" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Rented
             </Typography>
           </Grid>
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-start-adornment'
-              label='Key Code'
+              id="outlined-start-adornment"
+              label="Key Code"
               value={keyCode}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setKeyCode(event.target.value));
@@ -350,14 +353,14 @@ const BasicSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-select-currency'
-              label='Current Rent Price' /* < euro sticky to field> */
+              id="outlined-select-currency"
+              label="Current Rent Price" /* < euro sticky to field> */
               value={currentRentPrice}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setCurrentRentPrice(event.target.value));
               }}
               InputProps={{
-                endAdornment: <InputAdornment position='end'>€</InputAdornment>,
+                endAdornment: <InputAdornment position="end">€</InputAdornment>,
               }}
               inputProps={{
                 style: {
@@ -370,14 +373,14 @@ const BasicSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-select-currency'
-              label='Estimated Rent Price' /* < euro sticky to field> */
+              id="outlined-select-currency"
+              label="Estimated Rent Price" /* < euro sticky to field> */
               value={estimatedRentPrice}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setEstimatedRentPrice(event.target.value));
               }}
               InputProps={{
-                endAdornment: <InputAdornment position='end'>€</InputAdornment>,
+                endAdornment: <InputAdornment position="end">€</InputAdornment>,
               }}
               inputProps={{
                 style: {
@@ -392,7 +395,7 @@ const BasicSection: React.FC<any> = (props) => {
           <Grid
             item
             xs={6}
-            flexDirection='row'
+            flexDirection="row"
             sx={{
               display: "inline-flex",
               alignItems: "center",
@@ -400,7 +403,7 @@ const BasicSection: React.FC<any> = (props) => {
             }}
           >
             <DatePicker
-              label=' Rental Start'
+              label=" Rental Start"
               value={rentalPeriodStart}
               onChange={(newValue: Date) => setRentalPeriodStart(newValue)}
               sx={{ width: "100%", height: " 50px" }}
@@ -409,7 +412,7 @@ const BasicSection: React.FC<any> = (props) => {
           <Grid
             item
             xs={6}
-            flexDirection='row'
+            flexDirection="row"
             sx={{
               display: "inline-flex",
               alignItems: "center",
@@ -417,7 +420,7 @@ const BasicSection: React.FC<any> = (props) => {
             }}
           >
             <DatePicker
-              label='Rental End'
+              label="Rental End"
               value={rentalPeriodEnd}
               onChange={(newValue: Date) => setRentalPeriodEnd(newValue)}
               sx={{ width: "100%", height: " 50px" }}
@@ -427,7 +430,7 @@ const BasicSection: React.FC<any> = (props) => {
           <Grid
             item
             xs={6}
-            flexDirection='row'
+            flexDirection="row"
             sx={{
               display: "inline-flex",
               alignItems: "center",
@@ -435,7 +438,7 @@ const BasicSection: React.FC<any> = (props) => {
             }}
           >
             <DatePicker
-              label='Available After'
+              label="Available After"
               value={availableAfter}
               onChange={handleDateChange}
               sx={{ width: "100%", height: " 50px" }}
@@ -445,7 +448,7 @@ const BasicSection: React.FC<any> = (props) => {
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -458,10 +461,10 @@ const BasicSection: React.FC<any> = (props) => {
                 dispatch(setDebatablePrice(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Floor Heating Checkbox" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Debatable Price
             </Typography>
           </Grid>
@@ -471,7 +474,7 @@ const BasicSection: React.FC<any> = (props) => {
           <Grid
             item
             xs={2}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -484,10 +487,10 @@ const BasicSection: React.FC<any> = (props) => {
                 dispatch(setAuction(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Floor Heating Checkbox" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Auction
             </Typography>
           </Grid>

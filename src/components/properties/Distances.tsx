@@ -23,9 +23,11 @@ import {
   setSea,
   setSupermarket,
 } from "src/slices/property";
+import { useAllPropertyGlobalQuery } from "src/services/global";
 
 const DistancesSection: React.FC<any> = (props) => {
-  const enums = props.enums as IGlobalProperty;
+  const { data } = useAllPropertyGlobalQuery();
+  const enums: IGlobalProperty = data?.property as IGlobalProperty;
   const details = enums?.details as IGlobalPropertyDetails;
 
   const dispatch = useDispatch();
@@ -48,7 +50,7 @@ const DistancesSection: React.FC<any> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant='h6'>Distances</Typography>
+        <Typography variant="h6">Distances</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -56,15 +58,15 @@ const DistancesSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='Public Transportation'
+              id="outlined-controlled"
+              label="Public Transportation"
               value={publicTransportation}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setPublicTransportation(event.target.value));
               }}
               InputProps={{
                 endAdornment: (
-                  <InputAdornment position='end'>km</InputAdornment>
+                  <InputAdornment position="end">km</InputAdornment>
                 ),
               }}
               inputProps={{
@@ -78,15 +80,15 @@ const DistancesSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='Sea'
+              id="outlined-controlled"
+              label="Sea"
               value={sea}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setSea(event.target.value));
               }}
               InputProps={{
                 endAdornment: (
-                  <InputAdornment position='end'>km</InputAdornment>
+                  <InputAdornment position="end">km</InputAdornment>
                 ),
               }}
               inputProps={{
@@ -99,15 +101,15 @@ const DistancesSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='Schools'
+              id="outlined-controlled"
+              label="Schools"
               value={schools}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setSchools(event.target.value));
               }}
               InputProps={{
                 endAdornment: (
-                  <InputAdornment position='end'>km</InputAdornment>
+                  <InputAdornment position="end">km</InputAdornment>
                 ),
               }}
               inputProps={{
@@ -120,15 +122,15 @@ const DistancesSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='Supermarket'
+              id="outlined-controlled"
+              label="Supermarket"
               value={supermarket}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setSupermarket(event.target.value));
               }}
               InputProps={{
                 endAdornment: (
-                  <InputAdornment position='end'>km</InputAdornment>
+                  <InputAdornment position="end">km</InputAdornment>
                 ),
               }}
               inputProps={{
@@ -141,15 +143,15 @@ const DistancesSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='Cafe-Restaurant'
+              id="outlined-controlled"
+              label="Cafe-Restaurant"
               value={cafeRestaurant}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setCafeRestaurant(event.target.value));
               }}
               InputProps={{
                 endAdornment: (
-                  <InputAdornment position='end'>km</InputAdornment>
+                  <InputAdornment position="end">km</InputAdornment>
                 ),
               }}
               inputProps={{
@@ -162,15 +164,15 @@ const DistancesSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='Hospital'
+              id="outlined-controlled"
+              label="Hospital"
               value={hospital}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setHospital(event.target.value));
               }}
               InputProps={{
                 endAdornment: (
-                  <InputAdornment position='end'>km</InputAdornment>
+                  <InputAdornment position="end">km</InputAdornment>
                 ),
               }}
               inputProps={{
@@ -183,15 +185,15 @@ const DistancesSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='Airport'
+              id="outlined-controlled"
+              label="Airport"
               value={airport}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setAirport(event.target.value));
               }}
               InputProps={{
                 endAdornment: (
-                  <InputAdornment position='end'>km</InputAdornment>
+                  <InputAdornment position="end">km</InputAdornment>
                 ),
               }}
               inputProps={{

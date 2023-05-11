@@ -55,6 +55,7 @@ import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 
 import { useState } from "react";
 import { useAllUsersQuery } from "src/services/user";
+import { useAllPropertyGlobalQuery } from "src/services/global";
 
 const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
   props
@@ -63,7 +64,8 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
     new Date()
   );
 
-  const enums = props.enums as IGlobalProperty;
+  const { data } = useAllPropertyGlobalQuery();
+  const enums: IGlobalProperty = data?.property as IGlobalProperty;
   const details = enums?.details as IGlobalPropertyDetails;
   const dispatch = useDispatch();
 
@@ -111,7 +113,7 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
           justifyContent: "center",
         }}
       >
-        <Typography variant='h6'>Technical Features And Interior</Typography>
+        <Typography variant="h6">Technical Features And Interior</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -119,9 +121,9 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-select-currency'
+              id="outlined-select-currency"
               select
-              label='Furnished'
+              label="Furnished"
               value={furnished}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setFurnished(event.target.value));
@@ -131,7 +133,7 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
                   height: "8px",
                 },
               }}
-              size='small'
+              size="small"
             >
               {details?.furnished?.map((option) => (
                 <MenuItem key={option} value={option}>
@@ -143,9 +145,9 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-select-currency'
+              id="outlined-select-currency"
               select
-              label='Frame Type'
+              label="Frame Type"
               value={frameType}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setFrameType(event.target.value));
@@ -155,7 +157,7 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
                   height: "8px",
                 },
               }}
-              size='small'
+              size="small"
             >
               {details?.frameType?.map((option) => (
                 <MenuItem key={option} value={option}>
@@ -167,9 +169,9 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-select-currency'
+              id="outlined-select-currency"
               select
-              label='Pane Glass Type'
+              label="Pane Glass Type"
               value={paneGlassType}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setFurnished(event.target.value));
@@ -179,7 +181,7 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
                   height: "8px",
                 },
               }}
-              size='small'
+              size="small"
             >
               {details?.panelGlassType?.map((option) => (
                 <MenuItem key={option} value={option}>
@@ -191,9 +193,9 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-select-currency'
+              id="outlined-select-currency"
               select
-              label='Floor Type'
+              label="Floor Type"
               value={floorType}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setFloorType(event.target.value));
@@ -203,7 +205,7 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
                   height: "8px",
                 },
               }}
-              size='small'
+              size="small"
             >
               {details?.floorType?.map((option) => (
                 <MenuItem key={option} value={option}>
@@ -215,7 +217,7 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -228,17 +230,17 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
                 dispatch(setSafetyDoor(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Safety Door" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Safety Door
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -251,17 +253,17 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
                 dispatch(setAlarmSystem(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Alarm System" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Alarm System
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -274,10 +276,10 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
                 dispatch(setPainted(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Painted" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Painted
             </Typography>
           </Grid>
@@ -285,7 +287,7 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -298,17 +300,17 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
                 dispatch(setBright(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Bright" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Bright
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -321,17 +323,17 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
                 dispatch(setWindowScreens(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Window Screens" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Window Screens
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -344,17 +346,17 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
                 dispatch(setDoubleFrontage(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Double Frontage" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Double Frontage
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -367,17 +369,17 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
                 dispatch(setFireplace(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Fireplace" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Fireplace
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -390,17 +392,17 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
                 dispatch(setLuxurious(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Luxurious" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Luxurious
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -413,17 +415,17 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
                 dispatch(setSatelliteTV(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Satellite TV" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Satellite TV
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -436,17 +438,17 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
                 dispatch(setReception(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Reception" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Reception
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -459,17 +461,17 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
                 dispatch(setPetsAllowed(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Pets Allowed" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Pets Allowed
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -482,10 +484,10 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
                 dispatch(setElectricCarChargingFacilities(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Electric Car Charging Facilities" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Electric Car Charging Facilities
             </Typography>
           </Grid>

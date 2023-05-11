@@ -71,9 +71,6 @@ import {
 } from "src/slices/property";
 
 const FeaturesForLandSection: React.FC<any> = (props) => {
-  const enums = props.enums as IGlobalProperty;
-  const details = enums?.details as IGlobalPropertyDetails;
-
   const dispatch = useDispatch();
 
   const accessForDisable = useSelector(selectAccessForDisable);
@@ -148,7 +145,7 @@ const FeaturesForLandSection: React.FC<any> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant='h6'>Feautures</Typography>
+        <Typography variant="h6">Feautures</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -156,7 +153,7 @@ const FeaturesForLandSection: React.FC<any> = (props) => {
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -169,10 +166,10 @@ const FeaturesForLandSection: React.FC<any> = (props) => {
                 dispatch(setPanoramicView(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Panoramic View" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Panoramic View
             </Typography>
           </Grid>
@@ -180,7 +177,7 @@ const FeaturesForLandSection: React.FC<any> = (props) => {
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -193,17 +190,17 @@ const FeaturesForLandSection: React.FC<any> = (props) => {
                 dispatch(setCorner(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Corner" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Corner
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -216,17 +213,17 @@ const FeaturesForLandSection: React.FC<any> = (props) => {
                 dispatch(setFacade(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Facade" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Facade
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -239,10 +236,10 @@ const FeaturesForLandSection: React.FC<any> = (props) => {
                 dispatch(setWithinCityPlan(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Within City Plan" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Within City Plan
             </Typography>
           </Grid>
@@ -250,7 +247,7 @@ const FeaturesForLandSection: React.FC<any> = (props) => {
           <Grid
             item
             xs={6}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -263,10 +260,10 @@ const FeaturesForLandSection: React.FC<any> = (props) => {
                 dispatch(setWithinResidentialZone(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Within Residential Zone" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Within Residential Zone
             </Typography>
           </Grid>

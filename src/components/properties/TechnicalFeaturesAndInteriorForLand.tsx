@@ -44,13 +44,15 @@ import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 
 import { useState } from "react";
 import { useAllUsersQuery } from "src/services/user";
+import { useAllPropertyGlobalQuery } from "src/services/global";
 
 const TechnicalFeaturesAndInteriorForLandSection: React.FC<any> = (props) => {
   const [rentalPeriodStart, setRentalPeriodStart] = useState<Date | null>(
     new Date()
   );
 
-  const enums = props.enums as IGlobalProperty;
+  const { data } = useAllPropertyGlobalQuery();
+  const enums: IGlobalProperty = data?.property as IGlobalProperty;
   const details = enums?.details as IGlobalPropertyDetails;
   const dispatch = useDispatch();
 
@@ -98,7 +100,7 @@ const TechnicalFeaturesAndInteriorForLandSection: React.FC<any> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant='h6'>Technical Features And Interior</Typography>
+        <Typography variant="h6">Technical Features And Interior</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -106,8 +108,8 @@ const TechnicalFeaturesAndInteriorForLandSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='Floor To Area Ratio'
+              id="outlined-controlled"
+              label="Floor To Area Ratio"
               value={floorToAreaRatio}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setFloorToAreaRatio(event.target.value));
@@ -122,8 +124,8 @@ const TechnicalFeaturesAndInteriorForLandSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='Coverage Factor'
+              id="outlined-controlled"
+              label="Coverage Factor"
               value={coverageFactor}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setEntrances(event.target.value));
@@ -138,8 +140,8 @@ const TechnicalFeaturesAndInteriorForLandSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='Facade Length'
+              id="outlined-controlled"
+              label="Facade Length"
               value={facadeLength}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setFacadeLength(event.target.value));

@@ -7,18 +7,11 @@ import { useDispatch } from "react-redux";
 import { Upload } from "../upload";
 
 interface IImageSectionProps {
-  enums: IGlobalProperty;
   files: (File | string)[];
   setFiles: Dispatch<SetStateAction<(string | File)[]>>;
 }
 
-const ImagesSection: React.FC<IImageSectionProps> = ({
-  enums,
-  files,
-  setFiles,
-}) => {
-  const details = enums?.details as IGlobalPropertyDetails;
-
+const ImagesSection: React.FC<IImageSectionProps> = ({ files, setFiles }) => {
   const dispatch = useDispatch();
 
   const handleDropMultiFile = useCallback(
@@ -46,7 +39,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
   console.log("elaaaaaaaaaaaa");
   return (
     <Card>
-      <CardHeader title='Upload Images' />
+      <CardHeader title="Upload Images" />
       <CardContent>
         <Upload
           multiple

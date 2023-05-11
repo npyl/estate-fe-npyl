@@ -23,9 +23,11 @@ import {
   setStreet,
   setZipCode,
 } from "src/slices/property";
+import { useAllPropertyGlobalQuery } from "src/services/global";
 
 const LocationSection: React.FC<any> = (props) => {
-  const enums = props.enums as IGlobalProperty;
+  const { data } = useAllPropertyGlobalQuery();
+  const enums: IGlobalProperty = data?.property as IGlobalProperty;
   const details = enums?.details as IGlobalPropertyDetails;
 
   const dispatch = useDispatch();
@@ -51,7 +53,7 @@ const LocationSection: React.FC<any> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant='h6'>Location</Typography>
+        <Typography variant="h6">Location</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -60,8 +62,8 @@ const LocationSection: React.FC<any> = (props) => {
             {/* <> */}
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='Street*'
+              id="outlined-controlled"
+              label="Street*"
               value={street}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setStreet(event.target.value));
@@ -76,8 +78,8 @@ const LocationSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='Number*'
+              id="outlined-controlled"
+              label="Number*"
               value={number}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setNumber(event.target.value));
@@ -92,8 +94,8 @@ const LocationSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='City*'
+              id="outlined-controlled"
+              label="City*"
               value={city}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setCity(event.target.value));
@@ -108,8 +110,8 @@ const LocationSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='Complex'
+              id="outlined-controlled"
+              label="Complex"
               value={complex}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setComplex(event.target.value));
@@ -124,8 +126,8 @@ const LocationSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='Zip Code*'
+              id="outlined-controlled"
+              label="Zip Code*"
               value={zipCode}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setZipCode(event.target.value));
@@ -140,8 +142,8 @@ const LocationSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='Region*'
+              id="outlined-controlled"
+              label="Region*"
               value={region}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setRegion(event.target.value));
@@ -156,8 +158,8 @@ const LocationSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='Country*'
+              id="outlined-controlled"
+              label="Country*"
               value={country}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setCountry(event.target.value));

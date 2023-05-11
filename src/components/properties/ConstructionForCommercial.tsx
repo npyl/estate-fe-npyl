@@ -32,9 +32,11 @@ import {
   setYearOfConstruction,
   setYearOfRenovation,
 } from "src/slices/property";
+import { useAllPropertyGlobalQuery } from "src/services/global";
 
 const ConstructionForCommercialSection: React.FC<any> = (props) => {
-  const enums = props.enums as IGlobalProperty;
+  const { data } = useAllPropertyGlobalQuery();
+  const enums: IGlobalProperty = data?.property as IGlobalProperty;
   const details = enums?.details as IGlobalPropertyDetails;
 
   const dispatch = useDispatch();
@@ -66,7 +68,7 @@ const ConstructionForCommercialSection: React.FC<any> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant='h6'>Construction</Typography>
+        <Typography variant="h6">Construction</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -74,8 +76,8 @@ const ConstructionForCommercialSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='Year of Construction'
+              id="outlined-controlled"
+              label="Year of Construction"
               value={yearOfConstruction}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setYearOfConstruction(event.target.value));
@@ -90,8 +92,8 @@ const ConstructionForCommercialSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='Year of Renovation'
+              id="outlined-controlled"
+              label="Year of Renovation"
               value={yearOfRenovation}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setYearOfRenovation(event.target.value));
@@ -106,9 +108,9 @@ const ConstructionForCommercialSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-select-currency'
+              id="outlined-select-currency"
               select
-              label='Total Floor Number'
+              label="Total Floor Number"
               value={totalFloorNumber}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setTotalFloorNumber(event.target.value));
@@ -118,7 +120,7 @@ const ConstructionForCommercialSection: React.FC<any> = (props) => {
                   height: "8px",
                 },
               }}
-              size='small'
+              size="small"
             >
               {/* //TODO: 1,2,3,4,5,6,7,8,9,10 dropdown and sent to the be as string  */}
               {details?.viewType?.map((option) => (
@@ -131,7 +133,7 @@ const ConstructionForCommercialSection: React.FC<any> = (props) => {
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -144,17 +146,17 @@ const ConstructionForCommercialSection: React.FC<any> = (props) => {
                 dispatch(setUnderConstruction(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Under Construction" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Under Constraction
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -167,17 +169,17 @@ const ConstructionForCommercialSection: React.FC<any> = (props) => {
                 dispatch(setRenovated(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Rrenovated" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Renovated
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -190,10 +192,10 @@ const ConstructionForCommercialSection: React.FC<any> = (props) => {
                 dispatch(setNeedsRenovation(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Needs Renivation" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Needs Renovation
             </Typography>
           </Grid>
@@ -201,7 +203,7 @@ const ConstructionForCommercialSection: React.FC<any> = (props) => {
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -214,17 +216,17 @@ const ConstructionForCommercialSection: React.FC<any> = (props) => {
                 dispatch(setInternalStairs(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Internal stairs" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Internal Stairs
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -237,17 +239,17 @@ const ConstructionForCommercialSection: React.FC<any> = (props) => {
                 dispatch(setNewlyBuilt(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Newly Build" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Newly Build
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -260,17 +262,17 @@ const ConstructionForCommercialSection: React.FC<any> = (props) => {
                 dispatch(setIncomplete(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Incomplete" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Incomplete
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -283,17 +285,17 @@ const ConstructionForCommercialSection: React.FC<any> = (props) => {
                 dispatch(setNeoclassical(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Neoclassical" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Neoclassical
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -306,10 +308,10 @@ const ConstructionForCommercialSection: React.FC<any> = (props) => {
                 dispatch(setPreserved(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Preserved" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Preserved
             </Typography>
           </Grid>
