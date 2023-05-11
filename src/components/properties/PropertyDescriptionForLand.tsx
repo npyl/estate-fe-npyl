@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useAllPropertyGlobalQuery } from "src/services/global";
 import {
   selectAccessibility,
   selectAttic,
@@ -37,7 +38,8 @@ import {
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 const ariaLabel = { "aria-label": "description" };
 const PropertyDescriptionForLandSection: React.FC<any> = (props) => {
-  const enums = props.enums as IGlobalProperty;
+  const { data } = useAllPropertyGlobalQuery();
+  const enums: IGlobalProperty = data?.property as IGlobalProperty;
   const details = enums?.details as IGlobalPropertyDetails;
 
   const dispatch = useDispatch();
@@ -79,7 +81,7 @@ const PropertyDescriptionForLandSection: React.FC<any> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant='h6'>Property Description</Typography>
+        <Typography variant="h6">Property Description</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -87,9 +89,9 @@ const PropertyDescriptionForLandSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-select-currency'
+              id="outlined-select-currency"
               select
-              label='Orientation'
+              label="Orientation"
               value={orientation}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setOrientation(event.target.value));
@@ -99,7 +101,7 @@ const PropertyDescriptionForLandSection: React.FC<any> = (props) => {
                   height: "8px",
                 },
               }}
-              size='small'
+              size="small"
             >
               {details?.orientation?.map((option) => (
                 <MenuItem key={option} value={option}>
@@ -112,9 +114,9 @@ const PropertyDescriptionForLandSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-select-currency'
+              id="outlined-select-currency"
               select
-              label='Accessibility'
+              label="Accessibility"
               value={accessibility}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setAccessibility(event.target.value));
@@ -124,7 +126,7 @@ const PropertyDescriptionForLandSection: React.FC<any> = (props) => {
                   height: "8px",
                 },
               }}
-              size='small'
+              size="small"
             >
               {details?.accessibility?.map((option) => (
                 <MenuItem key={option} value={option}>
@@ -136,9 +138,9 @@ const PropertyDescriptionForLandSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-select-currency'
+              id="outlined-select-currency"
               select
-              label='Land Use'
+              label="Land Use"
               value={landUse}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setLandUse(event.target.value));
@@ -148,7 +150,7 @@ const PropertyDescriptionForLandSection: React.FC<any> = (props) => {
                   height: "8px",
                 },
               }}
-              size='small'
+              size="small"
             >
               {details?.landUse?.map((option) => (
                 <MenuItem key={option} value={option}>
@@ -160,15 +162,15 @@ const PropertyDescriptionForLandSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label=' Distance From Sea'
+              id="outlined-controlled"
+              label=" Distance From Sea"
               value={sea}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setSea(event.target.value));
               }}
               InputProps={{
                 endAdornment: (
-                  <InputAdornment position='end'>km</InputAdornment>
+                  <InputAdornment position="end">km</InputAdornment>
                 ),
               }}
               inputProps={{

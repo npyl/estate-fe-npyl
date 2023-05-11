@@ -82,11 +82,9 @@ import {
   setView,
   setWalkableDistanceToBeach,
 } from "src/slices/property";
+import { useAllPropertyGlobalQuery } from "src/services/global";
 
 const FeaturesForCommercialSection: React.FC<any> = (props) => {
-  const enums = props.enums as IGlobalProperty;
-  const details = enums?.details as IGlobalPropertyDetails;
-
   const dispatch = useDispatch();
 
   const accessForDisable = useSelector(selectAccessForDisable);
@@ -161,7 +159,7 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant='h6'>Feautures</Typography>
+        <Typography variant="h6">Feautures</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -169,7 +167,7 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -182,17 +180,17 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                 dispatch(setOrganizedGarden(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Organized Garden" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Organized Garden
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -205,10 +203,10 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                 dispatch(setAlarmSystem(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Alarm System" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Alarm System
             </Typography>
           </Grid>
@@ -216,7 +214,7 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -229,10 +227,10 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                 dispatch(setHas24HoursSecurity(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Has 24Hours Security" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Has 24 Hours Security
             </Typography>
           </Grid>
@@ -240,7 +238,7 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -253,10 +251,10 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                 dispatch(setCctv(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "CCTV" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               CCTV
             </Typography>
           </Grid>
@@ -264,7 +262,7 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -277,17 +275,17 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                 dispatch(setInternet(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Internet" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Internet
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -300,10 +298,10 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                 dispatch(setWalkableDistanceToBeach(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Walkable Distance to Beach" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Walkable Distance to Beach
             </Typography>
           </Grid>
@@ -311,7 +309,7 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -324,17 +322,17 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                 dispatch(setFireDetector(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Fire Detector" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Fire Detector
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -347,17 +345,17 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                 dispatch(setQuietArea(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Quiet Area" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Quiet Area
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -370,17 +368,17 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                 dispatch(setSoundInsulation(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Sound Insulation" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Sound Insulation
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -393,17 +391,17 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                 dispatch(setAccessForDisable(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Access for Disable" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Access for Disable
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -416,17 +414,17 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                 dispatch(setIndependentHeatingPerRoom(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Indepent Heating Per Room" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Indepent Heating Per Room
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -439,10 +437,10 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                 dispatch(setBright(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Bright" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Bright
             </Typography>
           </Grid>
@@ -450,7 +448,7 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -463,17 +461,17 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                 dispatch(setAdaptingToTheGround(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Adapting to the Ground" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Adapting to the Ground
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -486,17 +484,17 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                 dispatch(setPool(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Pool" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Pool
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -509,17 +507,17 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                 dispatch(setView(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "View" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               View
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -532,10 +530,10 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                 dispatch(setVeranda(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Veranda" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Veranda
             </Typography>
           </Grid>
@@ -543,7 +541,7 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -556,17 +554,17 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                 dispatch(setCorner(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Corner" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Corner
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -579,10 +577,10 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                 dispatch(setFacade(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Facade" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Facade
             </Typography>
           </Grid>

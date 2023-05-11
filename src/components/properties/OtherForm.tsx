@@ -8,7 +8,7 @@ import BasicSection from "./Basic";
 import ConstructionForOtherSection from "./ConstructionForOther";
 import DescriptionSection from "./Description";
 import FeaturesForOtherSection from "./FeaturesForOther";
-// import FileSection from "./Files";
+import FileSection from "./Files";
 import HeatingAndEnergyForCommercialSection from "./HeatingAndEnergyForCommercial";
 import ImageSection from "./Images";
 import LocationSection from "./Location";
@@ -17,36 +17,30 @@ import SuitableForForOtherSection from "./SuitableForForOther";
 import TechnicalFeaturesAndInteriorForOtherSection from "./TechnicalFeaturesAndInteriorForOther";
 
 const OtherFormSection: React.FC<any> = (props) => {
-  const { data } = useAllPropertyGlobalQuery();
   const [files, setFiles] = useState<(File | string)[]>([]);
   const [fileData, setFileData] = useState<(File | string)[]>([]);
-  const property: IGlobalProperty = data?.property as IGlobalProperty;
 
   return (
     <>
       <Grid container paddingTop={1} paddingRight={1} spacing={1}>
         <Grid item xs={6} spacing={1} order={"row"}>
           <Stack spacing={1}>
-            <BasicSection enums={property} />
+            <BasicSection />
 
-            <PropertyDescriptionForOtherSection enums={property} />
-            <FeaturesForOtherSection enums={property} />
-            <SuitableForForOtherSection enums={property} />
-            {/* <FileSection
-              fileData={fileData}
-              setFileData={setFileData}
-              enums={property}
-            /> */}
+            <PropertyDescriptionForOtherSection />
+            <FeaturesForOtherSection />
+            <SuitableForForOtherSection />
+            <FileSection fileData={fileData} setFileData={setFileData} />
           </Stack>
         </Grid>
         <Grid item xs={6} spacing={1}>
           <Stack spacing={1}>
-            <ImageSection files={files} setFiles={setFiles} enums={property} />
-            <LocationSection enums={property} />
-            <HeatingAndEnergyForCommercialSection enums={property} />
-            <ConstructionForOtherSection enums={property} />
-            <TechnicalFeaturesAndInteriorForOtherSection enums={property} />
-            <DescriptionSection enums={property} />
+            <ImageSection files={files} setFiles={setFiles} />
+            <LocationSection />
+            <HeatingAndEnergyForCommercialSection />
+            <ConstructionForOtherSection />
+            <TechnicalFeaturesAndInteriorForOtherSection />
+            <DescriptionSection />
           </Stack>
         </Grid>
       </Grid>

@@ -71,9 +71,11 @@ import {
   setVeranda,
   setView,
 } from "src/slices/property";
+import { useAllPropertyGlobalQuery } from "src/services/global";
 
 const FeaturesForOtherSection: React.FC<any> = (props) => {
-  const enums = props.enums as IGlobalProperty;
+  const { data } = useAllPropertyGlobalQuery();
+  const enums: IGlobalProperty = data?.property as IGlobalProperty;
   const details = enums?.details as IGlobalPropertyDetails;
 
   const dispatch = useDispatch();
@@ -151,7 +153,7 @@ const FeaturesForOtherSection: React.FC<any> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant='h6'>Feautures</Typography>
+        <Typography variant="h6">Feautures</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -159,7 +161,7 @@ const FeaturesForOtherSection: React.FC<any> = (props) => {
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -172,10 +174,10 @@ const FeaturesForOtherSection: React.FC<any> = (props) => {
                 dispatch(setPanoramicView(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Panoramic View" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Panoramic View
             </Typography>
           </Grid>
@@ -183,7 +185,7 @@ const FeaturesForOtherSection: React.FC<any> = (props) => {
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -196,17 +198,17 @@ const FeaturesForOtherSection: React.FC<any> = (props) => {
                 dispatch(setAlarmSystem(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Alarm System" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Alarm System
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -219,17 +221,17 @@ const FeaturesForOtherSection: React.FC<any> = (props) => {
                 dispatch(setFacade(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Facade" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Facade
             </Typography>
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -242,10 +244,10 @@ const FeaturesForOtherSection: React.FC<any> = (props) => {
                 dispatch(setLoadingDock(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Loading Dock" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Loading Dock
             </Typography>
           </Grid>
@@ -253,7 +255,7 @@ const FeaturesForOtherSection: React.FC<any> = (props) => {
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -266,17 +268,17 @@ const FeaturesForOtherSection: React.FC<any> = (props) => {
                 dispatch(setVeranda(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Veranda" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Veranda
             </Typography>
           </Grid>
           <Grid
             item
             xs={6}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -289,10 +291,10 @@ const FeaturesForOtherSection: React.FC<any> = (props) => {
                 dispatch(setView(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "View" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               View
             </Typography>
           </Grid>

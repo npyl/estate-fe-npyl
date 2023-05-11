@@ -19,34 +19,30 @@ import {
   selectCategory,
   selectParentCategory,
   setCategory,
+  setParentCategory,
 } from "src/slices/property";
-import { IGlobalProperty } from "../../types/global";
+import { IGlobal, IGlobalProperty } from "../../types/global";
 import CommercialFormSection from "./CommercialForm";
 import LandFormSection from "./LandForm";
 import OtherFormSection from "./OtherForm";
 import ResidentialFormSection from "./ResidentialForm";
 
-// @mui
-// routes
-// components
-
-export default function SimpleAccordion(props: { enums: IGlobalProperty }) {
-  const { data } = useAllPropertyGlobalQuery();
+export default function SimpleAccordion() {
   const [files, setFiles] = useState<(File | string)[]>([]);
   const [fileData, setFileData] = useState<(File | string)[]>([]);
-  const property: IGlobalProperty = data?.property as IGlobalProperty;
   const router = useRouter();
   const body = useSelector(selectAll);
   const [create, { isSuccess }] = useAddPropertyMutation();
 
-  //////
-  const [quillFull, setQuillFull] = useState("");
-
   const category = useSelector(selectCategory);
   const parentCategory = useSelector(selectParentCategory);
-  const dispatch = useDispatch();
 
-  const enums = props.enums as IGlobalProperty;
+  // enums
+  const { data } = useAllPropertyGlobalQuery();
+  const enums: IGlobalProperty = data?.property as IGlobalProperty;
+  const parentCategoryEnum = enums?.parentCategory;
+
+  const dispatch = useDispatch();
 
   const performUpload = () => {
     const blob = new Blob([JSON.stringify(body)], {
@@ -81,11 +77,16 @@ export default function SimpleAccordion(props: { enums: IGlobalProperty }) {
     isSuccess && router.push("/");
   };
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setCategory(event.target.value as string);
-  };
+  if (!enums || !parentCategoryEnum) return null;
 
-  const [selectedForm, setSelectedForm] = useState<string>("");
+  const subCategoriesMap: {
+    [key: string]: string[];
+  } = {
+    Residential: enums.residentialCategory,
+    Commercial: enums.commercialCategory,
+    Land: enums.landCategory,
+    Other: enums.otherCategory,
+  };
 
   return (
     <>
@@ -101,49 +102,32 @@ export default function SimpleAccordion(props: { enums: IGlobalProperty }) {
                 paddingBottom: "9px",
               }}
             >
-              <Typography>
-                <h2> Create Property</h2>
-              </Typography>
+              <Typography variant="h4">Create Property</Typography>
             </Grid>
             <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
               <Grid item xs={12} padding={1}>
                 <Grid container spacing={2}>
                   <Grid item xs={6}>
                     <FormControl fullWidth>
-                      <InputLabel id='demo-simple-select-label'>
+                      <InputLabel id="demo-simple-select-label">
                         Parent Category
                       </InputLabel>
                       <Select
-                        labelId='demo-simple-select-label'
-                        id='demo-simple-select'
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
                         value={parentCategory}
-                        label='Parent Category'
-                        onChange={handleChange}
+                        label="Parent Category"
+                        onChange={(e) => {
+                          dispatch(setParentCategory(e.target.value));
+                        }}
                       >
-                        <MenuItem
-                          value={10}
-                          onClick={() => setSelectedForm("residential")}
-                        >
-                          Residential
-                        </MenuItem>
-                        <MenuItem
-                          value={20}
-                          onClick={() => setSelectedForm("commercial")}
-                        >
-                          Commercial
-                        </MenuItem>
-                        <MenuItem
-                          value={30}
-                          onClick={() => setSelectedForm("land")}
-                        >
-                          Land
-                        </MenuItem>
-                        <MenuItem
-                          value={40}
-                          onClick={() => setSelectedForm("other")}
-                        >
-                          Other
-                        </MenuItem>
+                        {parentCategoryEnum.map((item, index) => {
+                          return (
+                            <MenuItem key={index} value={item}>
+                              {item}
+                            </MenuItem>
+                          );
+                        })}
                       </Select>
                     </FormControl>
                   </Grid>
@@ -151,16 +135,31 @@ export default function SimpleAccordion(props: { enums: IGlobalProperty }) {
                   <Grid item xs={6}>
                     <TextField
                       fullWidth
-                      id='outlined-select-currency'
+                      id="outlined-select-currency"
                       select
-                      label='Category*'
+                      label="Category"
                       value={category}
                       onChange={(
                         event: React.ChangeEvent<HTMLInputElement>
                       ) => {
                         dispatch(setCategory(event.target.value));
                       }}
-                    ></TextField>
+                      inputProps={{
+                        style: {
+                          height: "8px",
+                        },
+                      }}
+                      size="small"
+                    >
+                      {subCategoriesMap[parentCategory] &&
+                        subCategoriesMap[parentCategory].map((item, index) => {
+                          return (
+                            <MenuItem key={index} value={item}>
+                              {item}
+                            </MenuItem>
+                          );
+                        })}
+                    </TextField>
                   </Grid>
                 </Grid>
               </Grid>
@@ -168,7 +167,7 @@ export default function SimpleAccordion(props: { enums: IGlobalProperty }) {
           </Grid>
         </Grid>
 
-        {selectedForm !== "" && (
+        {parentCategory !== "" && (
           <Grid
             container
             paddingTop={1}
@@ -176,25 +175,21 @@ export default function SimpleAccordion(props: { enums: IGlobalProperty }) {
             paddingRight={0}
             spacing={1}
           >
-            {selectedForm === "residential" && (
-              <ResidentialFormSection enums={property} />
-            )}
-            {selectedForm === "land" && <LandFormSection enums={property} />}
-            {selectedForm === "commercial" && (
-              <CommercialFormSection enums={property} />
-            )}
-            {selectedForm === "other" && <OtherFormSection enums={property} />}
+            {parentCategory === "Residential" && <ResidentialFormSection />}
+            {parentCategory === "Land" && <LandFormSection />}
+            {parentCategory === "Commercial" && <CommercialFormSection />}
+            {parentCategory === "Other" && <OtherFormSection />}
 
             <Box padding={2}>
               <Stack
-                direction='row'
+                direction="row"
                 spacing={2}
-                justifyContent='flex-end'
-                alignItems='center'
+                justifyContent="flex-end"
+                alignItems="center"
               >
                 <Button
                   style={{ left: "400%" }}
-                  variant='outlined'
+                  variant="outlined"
                   startIcon={<DeleteIcon />}
                   onClick={() => dispatch(resetState())}
                 >
@@ -203,7 +198,7 @@ export default function SimpleAccordion(props: { enums: IGlobalProperty }) {
 
                 <Button
                   style={{ left: "400%" }}
-                  variant='contained'
+                  variant="contained"
                   endIcon={<SendIcon />}
                   onClick={() => performUpload()}
                 >

@@ -24,9 +24,11 @@ import {
   setOffPeakElectricity,
   setSolarBoiler,
 } from "src/slices/property";
+import { useAllPropertyGlobalQuery } from "src/services/global";
 
 const HeatingAndEnergySection: React.FC<any> = (props) => {
-  const enums = props.enums as IGlobalProperty;
+  const { data } = useAllPropertyGlobalQuery();
+  const enums: IGlobalProperty = data?.property as IGlobalProperty;
   const details = enums?.details as IGlobalPropertyDetails;
 
   const dispatch = useDispatch();
@@ -52,7 +54,7 @@ const HeatingAndEnergySection: React.FC<any> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant='h6'>Heating and Energy</Typography>
+        <Typography variant="h6">Heating and Energy</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -60,9 +62,9 @@ const HeatingAndEnergySection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-select-currency'
+              id="outlined-select-currency"
               select
-              label='Heating Type'
+              label="Heating Type"
               value={heatingType}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setHeatingType(event.target.value));
@@ -72,7 +74,7 @@ const HeatingAndEnergySection: React.FC<any> = (props) => {
                   height: "8px",
                 },
               }}
-              size='small'
+              size="small"
             >
               {details?.heatingType?.map((option) => (
                 <MenuItem key={option} value={option}>
@@ -85,9 +87,9 @@ const HeatingAndEnergySection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-select-currency'
+              id="outlined-select-currency"
               select
-              label='Energy Class'
+              label="Energy Class"
               value={energyClass}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setEnergyClass(event.target.value));
@@ -97,7 +99,7 @@ const HeatingAndEnergySection: React.FC<any> = (props) => {
                   height: "8px",
                 },
               }}
-              size='small'
+              size="small"
             >
               {details?.energyClass?.map((option) => (
                 <MenuItem key={option} value={option}>
@@ -109,9 +111,9 @@ const HeatingAndEnergySection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-select-currency'
+              id="outlined-select-currency"
               select
-              label='Heating System'
+              label="Heating System"
               value={heatingSystem}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setHeatingSystem(event.target.value));
@@ -121,7 +123,7 @@ const HeatingAndEnergySection: React.FC<any> = (props) => {
                   height: "8px",
                 },
               }}
-              size='small'
+              size="small"
             >
               {details?.heatingSystem?.map((option) => (
                 <MenuItem key={option} value={option}>
@@ -134,9 +136,9 @@ const HeatingAndEnergySection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-select-currency'
+              id="outlined-select-currency"
               select
-              label='Electricity Type'
+              label="Electricity Type"
               value={electricityType}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setEnergyClass(event.target.value));
@@ -146,7 +148,7 @@ const HeatingAndEnergySection: React.FC<any> = (props) => {
                   height: "8px",
                 },
               }}
-              size='small'
+              size="small"
             >
               {details?.electricityType?.map((option) => (
                 <MenuItem key={option} value={option}>
@@ -159,7 +161,7 @@ const HeatingAndEnergySection: React.FC<any> = (props) => {
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -172,10 +174,10 @@ const HeatingAndEnergySection: React.FC<any> = (props) => {
                 dispatch(setFloorHeating(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Floor Heating Checkbox" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Floor Heating
             </Typography>
           </Grid>
@@ -183,7 +185,7 @@ const HeatingAndEnergySection: React.FC<any> = (props) => {
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -196,10 +198,10 @@ const HeatingAndEnergySection: React.FC<any> = (props) => {
                 dispatch(setAirConditioning(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Floor Heating Checkbox" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Air-Coditioning
             </Typography>
           </Grid>
@@ -207,7 +209,7 @@ const HeatingAndEnergySection: React.FC<any> = (props) => {
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -220,10 +222,10 @@ const HeatingAndEnergySection: React.FC<any> = (props) => {
                 dispatch(setSolarBoiler(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Floor Heating Checkbox" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Solar Boiler
             </Typography>
           </Grid>
@@ -231,7 +233,7 @@ const HeatingAndEnergySection: React.FC<any> = (props) => {
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -244,10 +246,10 @@ const HeatingAndEnergySection: React.FC<any> = (props) => {
                 dispatch(setOffPeakElectricity(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Floor Heating Checkbox" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Off Peak Electricity
             </Typography>
           </Grid>

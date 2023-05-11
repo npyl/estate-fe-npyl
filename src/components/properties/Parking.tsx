@@ -12,9 +12,11 @@ import {
   setParkingType,
   setSpots,
 } from "src/slices/property";
+import { useAllPropertyGlobalQuery } from "src/services/global";
 
 const ParkingSection: React.FC<any> = (props) => {
-  const enums = props.enums as IGlobalProperty;
+  const { data } = useAllPropertyGlobalQuery();
+  const enums: IGlobalProperty = data?.property as IGlobalProperty;
   const details = enums?.details as IGlobalPropertyDetails;
 
   const dispatch = useDispatch();
@@ -34,7 +36,7 @@ const ParkingSection: React.FC<any> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant='h6'>Parking</Typography>
+        <Typography variant="h6">Parking</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -42,9 +44,9 @@ const ParkingSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-select-currency'
+              id="outlined-select-currency"
               select
-              label='Type'
+              label="Type"
               value={parkingType}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setParkingType(event.target.value));
@@ -54,7 +56,7 @@ const ParkingSection: React.FC<any> = (props) => {
                   height: "8px",
                 },
               }}
-              size='small'
+              size="small"
             >
               {details?.parkingType?.map((option) => (
                 <MenuItem key={option} value={option}>
@@ -67,10 +69,10 @@ const ParkingSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='Number of Spots'
+              id="outlined-controlled"
+              label="Number of Spots"
               value={spots}
-              placeholder='1,2,3...'
+              placeholder="1,2,3..."
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setSpots(event.target.value));
               }}

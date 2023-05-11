@@ -4,7 +4,8 @@ import dynamic from "next/dynamic";
 // @mui
 import { Box } from "@mui/material";
 //
-import EditorToolbar, { formats } from "./EditorToolbar";
+import EditorToolbar from "./EditorToolbar";
+
 import { StyledEditor } from "./styles";
 import { EditorProps } from "./types";
 
@@ -25,6 +26,32 @@ const ReactQuill = dynamic(() => import("react-quill"), {
     </Box>
   ),
 });
+
+export const formats = [
+  "align",
+  "background",
+  "blockquote",
+  "bold",
+  "bullet",
+  "code",
+  "code-block",
+  "color",
+  "direction",
+  "font",
+  "formula",
+  "header",
+  "image",
+  "indent",
+  "italic",
+  "link",
+  "list",
+  "script",
+  "size",
+  "strike",
+  "table",
+  "underline",
+  "emoji",
+];
 
 // ----------------------------------------------------------------------
 
@@ -70,7 +97,7 @@ export default function Editor({
           onChange={onChange}
           modules={modules}
           formats={formats}
-          placeholder='Write something awesome...'
+          placeholder="Write your Description"
           {...other}
         />
       </StyledEditor>

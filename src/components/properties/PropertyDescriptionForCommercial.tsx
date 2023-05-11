@@ -3,6 +3,7 @@ import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useAllPropertyGlobalQuery } from "src/services/global";
 import {
   selectAccessibility,
   selectAttic,
@@ -40,7 +41,8 @@ import {
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 const ariaLabel = { "aria-label": "description" };
 const PropertyDescriptionForCommercialSection: React.FC<any> = (props) => {
-  const enums = props.enums as IGlobalProperty;
+  const { data } = useAllPropertyGlobalQuery();
+  const enums: IGlobalProperty = data?.property as IGlobalProperty;
   const details = enums?.details as IGlobalPropertyDetails;
 
   const dispatch = useDispatch();
@@ -81,7 +83,7 @@ const PropertyDescriptionForCommercialSection: React.FC<any> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant='h6'>Property Description</Typography>
+        <Typography variant="h6">Property Description</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -89,9 +91,9 @@ const PropertyDescriptionForCommercialSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-select-currency'
+              id="outlined-select-currency"
               select
-              label='Floor'
+              label="Floor"
               value={floor}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setFloor(event.target.value));
@@ -101,7 +103,7 @@ const PropertyDescriptionForCommercialSection: React.FC<any> = (props) => {
                   height: "8px",
                 },
               }}
-              size='small'
+              size="small"
             >
               {details?.floors?.map((option) => (
                 <MenuItem key={option} value={option}>
@@ -115,10 +117,10 @@ const PropertyDescriptionForCommercialSection: React.FC<any> = (props) => {
             {/* <> */}
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='Layers'
+              id="outlined-controlled"
+              label="Layers"
               value={layers}
-              placeholder='1,2,3...'
+              placeholder="1,2,3..."
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setLayers(event.target.value));
               }}
@@ -133,10 +135,10 @@ const PropertyDescriptionForCommercialSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='Number of WC'
+              id="outlined-controlled"
+              label="Number of WC"
               value={numOfWC}
-              placeholder='1,2,3...'
+              placeholder="1,2,3..."
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setNumOfWC(event.target.value));
               }}
@@ -151,10 +153,10 @@ const PropertyDescriptionForCommercialSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='Bathrooms'
+              id="outlined-controlled"
+              label="Bathrooms"
               value={bathrooms}
-              placeholder='1,2,3...'
+              placeholder="1,2,3..."
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setBathrooms(event.target.value));
               }}
@@ -169,9 +171,9 @@ const PropertyDescriptionForCommercialSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-select-currency'
+              id="outlined-select-currency"
               select
-              label='Accessibility'
+              label="Accessibility"
               value={accessibility}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setAccessibility(event.target.value));
@@ -181,7 +183,7 @@ const PropertyDescriptionForCommercialSection: React.FC<any> = (props) => {
                   height: "8px",
                 },
               }}
-              size='small'
+              size="small"
             >
               {details?.accessibility?.map((option) => (
                 <MenuItem key={option} value={option}>
@@ -193,9 +195,9 @@ const PropertyDescriptionForCommercialSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-select-currency'
+              id="outlined-select-currency"
               select
-              label='Land Use'
+              label="Land Use"
               value={landUse}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setLandUse(event.target.value));
@@ -205,7 +207,7 @@ const PropertyDescriptionForCommercialSection: React.FC<any> = (props) => {
                   height: "8px",
                 },
               }}
-              size='small'
+              size="small"
             >
               {details?.landUse?.map((option) => (
                 <MenuItem key={option} value={option}>
@@ -218,9 +220,9 @@ const PropertyDescriptionForCommercialSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-select-currency'
+              id="outlined-select-currency"
               select
-              label='Zone'
+              label="Zone"
               value={zoneType}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setZoneType(event.target.value));
@@ -230,7 +232,7 @@ const PropertyDescriptionForCommercialSection: React.FC<any> = (props) => {
                   height: "8px",
                 },
               }}
-              size='small'
+              size="small"
             >
               {details?.zoneType?.map((option) => (
                 <MenuItem key={option} value={option}>
@@ -242,10 +244,10 @@ const PropertyDescriptionForCommercialSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='Rooms'
+              id="outlined-controlled"
+              label="Rooms"
               value={rooms}
-              placeholder='1,2,3...'
+              placeholder="1,2,3..."
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setRooms(event.target.value));
               }}
@@ -260,13 +262,13 @@ const PropertyDescriptionForCommercialSection: React.FC<any> = (props) => {
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
-              id='outlined-controlled'
+              id="outlined-controlled"
               value={storeroom}
-              placeholder='Play Room'
+              placeholder="Play Room"
               onChange={(
                 event: React.ChangeEvent<unknown>,
                 checked: boolean
@@ -274,10 +276,10 @@ const PropertyDescriptionForCommercialSection: React.FC<any> = (props) => {
                 dispatch(setPlayRoom(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Elevator" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Storeroom
             </Typography>
           </Grid>
