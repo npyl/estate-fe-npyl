@@ -1,4 +1,4 @@
-import { createSlice, createSelector } from "@reduxjs/toolkit";
+import { createSelector, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "src/store";
 import { IPropertyFilter } from "src/types/properties";
 
@@ -25,7 +25,7 @@ const initialState: IFilterProps = {
   heatingType: "",
   frameType: "",
   furnished: "",
-  city: "",
+  cities: [],
   managerId: 0,
 };
 
@@ -148,7 +148,7 @@ export const {
 export const selectCategory = ({ filters }: RootState) =>
   filters.parentCategory;
 export const selectSubCategory = ({ filters }: RootState) => filters.category;
-export const selectCity = ({ filters }: RootState) => filters.city;
+export const selectCities = ({ filters }: RootState) => filters.cities;
 export const selectCode = ({ filters }: RootState) => filters.code;
 export const selectFrameType = ({ filters }: RootState) => filters.frameType;
 export const selectFurnished = ({ filters }: RootState) => filters.furnished;

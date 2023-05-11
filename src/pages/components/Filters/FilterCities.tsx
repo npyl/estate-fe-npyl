@@ -1,39 +1,41 @@
+import { Checkbox } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
-import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import citiesJson from "src/json/countries.json";
-import { setCity } from "src/slices/filters";
-import { useDispatch } from "src/store";
+import { selectCities, setCity } from "src/slices/filters";
+import { useDispatch, useSelector } from "src/store";
 import { Feature } from "src/types/cities";
 
 export default function CountrySelect() {
   const cities: readonly Feature[] = citiesJson.features;
   const dispatch = useDispatch();
+  const selectedCities = useSelector(selectCities);
 
   return (
     <Autocomplete
-      id="country-select-demo"
-      sx={{ width: 185 }}
+      id='country-select-demo'
+      sx={{ width: 200 }}
       options={cities}
       autoHighlight
+      value={selectedCities}
+      isOptionEqualToValue={(option, value) =>
+        option.properties.NAME === value.properties.NAME
+      }
       clearIcon={false}
       onChange={(_e, newValue) => dispatch(setCity(newValue))}
       getOptionLabel={(option) =>
         option.properties.NAME || option.properties.ONOMA
       }
       renderOption={(props, option) => (
-        <Box
-          component="li"
-          sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
-          {...props}
-        >
+        <li {...props}>
+          <Checkbox checked={selectedCities.includes(option.properties.NAME)} />
           {option.properties.ONOMA}
-        </Box>
+        </li>
       )}
       renderInput={(params) => (
         <TextField
           {...params}
-          placeholder="Επιλέξτε περιοχή"
+          placeholder='Επιλέξτε περιοχή'
           InputLabelProps={{
             shrink: true,
           }}

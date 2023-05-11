@@ -1,15 +1,15 @@
 import {
   GridColDef,
   GridRowsProp,
-  GridSortModel,
   GridSortDirection,
+  GridSortModel,
+  GridToolbar,
 } from "@mui/x-data-grid";
 import { useRouter } from "next/navigation";
-import { FC, useMemo } from "react";
+import { FC, useMemo, useState } from "react";
 import { addTab } from "src/slices/tabs";
 import { useDispatch } from "src/store";
 import { StyledDataGrid } from "./styles";
-import { useState } from "react";
 
 type GridProps = {
   rows: GridRowsProp;
@@ -42,6 +42,19 @@ const DataGridTable: FC<GridProps> = ({
   return (
     <>
       <StyledDataGrid
+        slots={{
+          toolbar: GridToolbar,
+        }}
+        localeText={{
+          toolbarColumns: "Πεδία",
+          columnsPanelTextFieldLabel: "Αναζήτηση πεδίου",
+          columnsPanelTextFieldPlaceholder: "'Ονομα πεδίου",
+        }}
+        initialState={{
+          pagination: { paginationModel: { pageSize: 25 } },
+        }}
+        disableColumnFilter
+        disableDensitySelector
         rowHeight={100}
         getRowId={(e) => e.id}
         onRowClick={(e) => {

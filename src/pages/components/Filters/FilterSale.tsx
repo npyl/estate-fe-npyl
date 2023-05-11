@@ -1,7 +1,7 @@
 import {
+  Autocomplete,
   FormControlLabel,
   Radio,
-  Autocomplete,
   TextField,
 } from "@mui/material";
 import { useAllPropertyGlobalQuery } from "src/services/global";
@@ -29,15 +29,16 @@ export default function SaleSelect() {
 
   return (
     <Autocomplete
-      id="select-demo-sale"
+      id='select-demo-sale'
       sx={{ width: 135 }}
       options={stateFilterOptions}
       autoHighlight
       clearIcon={false}
       getOptionLabel={(option) => option.label}
+      componentsProps={{ popper: { style: { width: "200px" } } }}
       renderOption={(props, option) => (
         <FormControlLabel
-          control={<Radio checked={state === option.value} size="small" />}
+          control={<Radio checked={state === option.value} size='small' />}
           label={option.label}
           sx={{ p: 1, width: "100%" }}
           onClick={() => dispatch(setState(option?.value))}
@@ -46,7 +47,7 @@ export default function SaleSelect() {
       renderInput={(params) => (
         <TextField
           {...params}
-          placeholder="Πώληση"
+          placeholder='Πώληση'
           inputProps={{
             ...params.inputProps,
             autoComplete: "new-password", // disable autocomplete and autofill

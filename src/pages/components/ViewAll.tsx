@@ -1,7 +1,14 @@
 import GridViewIcon from "@mui/icons-material/GridView";
 import MapIcon from "@mui/icons-material/Map";
 import TuneIcon from "@mui/icons-material/Tune";
-import { Badge, Paper, Stack, SvgIconTypeMap, Tab, Tabs } from "@mui/material";
+import {
+  Badge,
+  IconButton,
+  Paper,
+  Skeleton,
+  Stack,
+  SvgIconTypeMap,
+} from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import { Box } from "@mui/system";
 import { GridCellParams, GridColDef } from "@mui/x-data-grid";
@@ -22,7 +29,7 @@ import sumOfChangedProperties, {
 
 import { useAllPropertyGlobalQuery } from "src/services/global";
 import { useDispatch, useSelector } from "src/store";
-import { IGlobal, IGlobalProperty } from "src/types/global";
+import { IGlobalProperty } from "src/types/global";
 import { IPropertyFilter } from "src/types/properties";
 import {
   CategorySelect,
@@ -35,6 +42,7 @@ import {
   SubCategorySelect,
   TagFiltered,
 } from "./Filters";
+import FilterRows from "./Filters/FilterRows";
 
 const ViewAll: FC = () => {
   const dispatch = useDispatch();
@@ -43,20 +51,18 @@ const ViewAll: FC = () => {
   const [sortingBy, setSortingBy] = useState("");
   const [sortingOrder, setSortingOrder] = useState("asc");
   const [openFilter, setOpenFilter] = useState(false);
-  const [option, setOption] = useState<optionType>("list");
+  const [optionView, setOptionView] = useState<optionType>("list");
 
   const [filter, setFilter] = useState<IPropertyFilter>({} as IPropertyFilter);
   const [filterProperties, { isLoading, data }] = useFilterPropertiesMutation();
 
   // get enums
-  const enums: IGlobal | undefined = useAllPropertyGlobalQuery().data;
+  const enums = useAllPropertyGlobalQuery().data;
   const propertyEnums: IGlobalProperty | undefined = enums?.property;
 
   useMemo(() => {
     filterProperties(filter);
   }, [filter, filterProperties]);
-
-  if (!data || !filterProperties || !enums || !propertyEnums) return null;
 
   type optionType = "list" | "grid" | "map";
   enum ITabEnum {
@@ -94,8 +100,8 @@ const ViewAll: FC = () => {
       <>
         <Image
           src={`data:image/jpeg;base64,${params.formattedValue}` || ""}
-          alt=""
-          ratio="16/9"
+          alt=''
+          ratio='16/9'
           width={1}
         />
       </>
@@ -105,7 +111,7 @@ const ViewAll: FC = () => {
     return (
       <>
         <Label
-          variant="filled"
+          variant='filled'
           color={
             (params.formattedValue === "SOLD" && "error") ||
             (params.formattedValue === "SALE" && "info") ||
@@ -153,6 +159,11 @@ const ViewAll: FC = () => {
     setOpenFilter(false);
   };
 
+  const renderSkeletonCell = () => <Skeleton width={150} animation='wave' />;
+  const skeletonRows = Array.from({ length: 5 }, (_, index) => ({
+    id: index + 1,
+  }));
+
   return (
     <Box>
       <Paper sx={{ paddingX: 2, paddingY: 1, overflow: "scroll" }}>
@@ -177,20 +188,13 @@ const ViewAll: FC = () => {
 
             <PriceSelect type={"price"} />
 
-            <FilterSortBy
-              onSorting={(sortingBy, sortingOrder) => {
-                setSortingBy(sortingBy);
-                setSortingOrder(sortingOrder);
-              }}
-            />
-
             <StyledPriceButton
               open={false}
               disableRipple
-              color="inherit"
+              color='inherit'
               sx={{ width: 120 }}
               endIcon={
-                <Badge badgeContent={changedPropsCount} color="error">
+                <Badge badgeContent={changedPropsCount} color='error'>
                   <TuneIcon />
                 </Badge>
               }
@@ -198,20 +202,6 @@ const ViewAll: FC = () => {
             >
               Φίλτρα
             </StyledPriceButton>
-          </Stack>
-          <Stack direction={"row"} spacing={1}>
-            <Tabs value={ITabEnum[option]} aria-label="icon label tabs example">
-              {viewOptions.map((option) => (
-                <Tab
-                  iconPosition="start"
-                  onClick={() => setOption(option.id)}
-                  id={option.id}
-                  key={option.id}
-                  icon={<option.icon />}
-                  label={option.label}
-                />
-              ))}
-            </Tabs>
           </Stack>
         </Box>
         <Box
@@ -226,25 +216,73 @@ const ViewAll: FC = () => {
           </Stack>
         </Box>
       </Paper>
-
-      {option === "list" && (
+      <Stack
+        direction={"row"}
+        justifyContent={"space-between"}
+        alignItems={"center"}
+        paddingTop={2}
+        paddingX={2}
+      >
+        <FilterRows />
+        <Stack direction={"row"} spacing={0.5}>
+          {viewOptions.map((option) => (
+            <IconButton
+              sx={{
+                color:
+                  optionView === option.id ? "primary.main" : "neutral.300",
+                border:
+                  optionView === option.id
+                    ? "1px solid blue"
+                    : "1px solid lightgrey",
+              }}
+              key={option.id}
+              onClick={() => setOptionView(option.id)}
+            >
+              <option.icon />
+            </IconButton>
+          ))}
+        </Stack>
+        <FilterSortBy
+          onSorting={(sortingBy, sortingOrder) => {
+            setSortingBy(sortingBy);
+            setSortingOrder(sortingOrder);
+          }}
+        />
+      </Stack>
+      {!isLoading && data ? (
+        <>
+          {optionView === "list" && (
+            <Paper sx={{ mt: 2 }}>
+              <DataGridTable
+                rows={data}
+                columns={columns}
+                sortingBy={sortingBy}
+                sortingOrder={sortingOrder}
+              />
+            </Paper>
+          )}
+          {optionView === "grid" && (
+            <Paper sx={{ marginTop: 2 }}>
+              <MediaCard data={data} />
+            </Paper>
+          )}
+          {optionView === "map" && (
+            <Paper sx={{ marginTop: 2 }}>
+              <MapView />
+            </Paper>
+          )}
+        </>
+      ) : (
         <Paper sx={{ mt: 2 }}>
           <DataGridTable
-            rows={data}
-            columns={columns}
+            rows={skeletonRows}
+            columns={columns.map((column) => ({
+              ...column,
+              renderCell: renderSkeletonCell,
+            }))}
             sortingBy={sortingBy}
             sortingOrder={sortingOrder}
           />
-        </Paper>
-      )}
-      {option === "grid" && (
-        <Paper sx={{ marginTop: 2 }}>
-          <MediaCard data={data} />
-        </Paper>
-      )}
-      {option === "map" && (
-        <Paper sx={{ marginTop: 2 }}>
-          <MapView />
         </Paper>
       )}
 

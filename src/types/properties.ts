@@ -26,7 +26,7 @@ export interface IPropertyFilter {
   heatingType: string;
   frameType: string;
   furnished: string;
-  city: string;
+  cities: string[];
   managerId: number;
 }
 

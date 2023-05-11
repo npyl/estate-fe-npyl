@@ -35,8 +35,14 @@ export default function FilterSortBy({ onSorting }: IFilterSortByProps) {
 
   return (
     <Autocomplete
-      sx={{ width: 180 }}
-      id="select-demo"
+      sx={{
+        width: 100,
+        "& .MuiAutocomplete-paper": {
+          width: 400,
+        },
+      }}
+      id='select-demo'
+      componentsProps={{ popper: { style: { width: "200px" } } }}
       options={sortByFilterOptions}
       autoHighlight
       clearIcon={false}
@@ -44,7 +50,7 @@ export default function FilterSortBy({ onSorting }: IFilterSortByProps) {
       renderOption={(props, option) => (
         <FormControlLabel
           control={
-            <Radio checked={selectedOption === option.value} size="small" />
+            <Radio checked={selectedOption === option.value} size='small' />
           }
           label={option.label}
           sx={{ p: 1, width: "100%" }}
@@ -68,7 +74,7 @@ export default function FilterSortBy({ onSorting }: IFilterSortByProps) {
       renderInput={(params) => (
         <TextField
           {...params}
-          placeholder="Sort By"
+          placeholder='Sort By'
           InputLabelProps={{
             shrink: true,
           }}
