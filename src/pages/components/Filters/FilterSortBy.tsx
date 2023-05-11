@@ -1,12 +1,18 @@
-import Autocomplete from "@mui/material/Autocomplete";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import { setSortingBy, setSortingOrder } from "src/slices/filters";
-import { useDispatch } from "src/store";
+import {
+  Autocomplete,
+  FormControlLabel,
+  Radio,
+  TextField,
+} from "@mui/material";
+import { useState } from "react";
 
-export default function FilterSortBy() {
+interface IFilterSortByProps {
+  onSorting: (sortingBy: string, sortingOrder: string) => void;
+}
+
+export default function FilterSortBy({ onSorting }: IFilterSortByProps) {
   const sortByFilterOptions = [
-    { value: "ALL", label: "Προεπιλογή" },
+    { value: "", label: "Προεπιλογή" },
     {
       value: "Ascending_Price",
       label: "Αύξουσα Τιμή",
@@ -25,7 +31,7 @@ export default function FilterSortBy() {
     },
   ];
 
-  const dispatch = useDispatch();
+  const [selectedOption, setSelectedOption] = useState("");
 
   return (
     <Autocomplete
@@ -34,32 +40,30 @@ export default function FilterSortBy() {
       options={sortByFilterOptions}
       autoHighlight
       clearIcon={false}
-      onChange={(_e, newValue) => {
-        if (newValue?.value === sortByFilterOptions[0].value) {
-          // ignore
-        } else if (newValue?.value === sortByFilterOptions[1].value) {
-          dispatch(setSortingBy("price"));
-          dispatch(setSortingOrder("asc"));
-        } else if (newValue?.value === sortByFilterOptions[2].value) {
-          dispatch(setSortingBy("price"));
-          dispatch(setSortingOrder("desc"));
-        } else if (newValue?.value === sortByFilterOptions[3].value) {
-          dispatch(setSortingBy("area"));
-          dispatch(setSortingOrder("asc"));
-        } else if (newValue?.value === sortByFilterOptions[4].value) {
-          dispatch(setSortingBy("area"));
-          dispatch(setSortingOrder("desc"));
-        }
-      }}
       getOptionLabel={(option) => option.label}
       renderOption={(props, option) => (
-        <Box
-          component="li"
-          sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
-          {...props}
-        >
-          {option.label}
-        </Box>
+        <FormControlLabel
+          control={
+            <Radio checked={selectedOption === option.value} size="small" />
+          }
+          label={option.label}
+          sx={{ p: 1, width: "100%" }}
+          onClick={() => {
+            setSelectedOption(option?.value || "");
+
+            if (option?.value === sortByFilterOptions[0].value) {
+              onSorting("", "");
+            } else if (option?.value === sortByFilterOptions[1].value) {
+              onSorting("price", "asc");
+            } else if (option?.value === sortByFilterOptions[2].value) {
+              onSorting("price", "desc");
+            } else if (option?.value === sortByFilterOptions[3].value) {
+              onSorting("area", "asc");
+            } else if (option?.value === sortByFilterOptions[4].value) {
+              onSorting("price", "desc");
+            }
+          }}
+        />
       )}
       renderInput={(params) => (
         <TextField

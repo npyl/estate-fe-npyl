@@ -1,26 +1,27 @@
-import Autocomplete from "@mui/material/Autocomplete";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import { setCategory } from "src/slices/filters";
-import { useDispatch } from "react-redux";
+import {
+  Autocomplete,
+  FormControlLabel,
+  Radio,
+  TextField,
+} from "@mui/material";
+import { selectCategory, setCategory } from "src/slices/filters";
+import { useDispatch, useSelector } from "react-redux";
 
-import { IGlobalProperty } from "src/types/global";
+import { useAllPropertyGlobalQuery } from "src/services/global";
 
-interface CategorySelectProps {
-  propertyEnums: IGlobalProperty;
-}
-
-export default function CategorySelect(props: CategorySelectProps) {
+export default function CategorySelect() {
   const dispatch = useDispatch();
+  const category = useSelector(selectCategory);
 
-  const { propertyEnums } = props;
+  const { data } = useAllPropertyGlobalQuery();
+  const propertyEnums = data?.property;
   const categoryEnums = propertyEnums?.parentCategory;
 
-  if (!propertyEnums || !categoryEnums) return null;
+  if (!data || !propertyEnums || !categoryEnums) return null;
 
   const categoryFilterOptions = [
-    { value: "ALL", label: "All Categories" },
-    ...categoryEnums.map((category) => ({ value: category, label: category })),
+    { value: "", label: "All Categories" },
+    ...categoryEnums.map((item) => ({ value: item, label: item })),
   ];
 
   return (
@@ -30,16 +31,15 @@ export default function CategorySelect(props: CategorySelectProps) {
       options={categoryFilterOptions}
       autoHighlight
       clearIcon={false}
-      onChange={(_e, newValue) => dispatch(setCategory(newValue?.value || ""))}
+      onChange={(_e, newValue) => dispatch(setCategory(newValue?.value))}
       getOptionLabel={(option) => option.label}
       renderOption={(props, option) => (
-        <Box
-          component="li"
-          sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
-          {...props}
-        >
-          {option.label}
-        </Box>
+        <FormControlLabel
+          control={<Radio checked={category === option.value} size="small" />}
+          label={option.label}
+          sx={{ p: 1, width: "100%" }}
+          onClick={() => dispatch(setCategory(option?.value))}
+        />
       )}
       renderInput={(params) => (
         <TextField

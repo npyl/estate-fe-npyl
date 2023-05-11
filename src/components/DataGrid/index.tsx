@@ -1,9 +1,15 @@
-import { GridColDef, GridRowsProp } from "@mui/x-data-grid";
+import {
+  GridColDef,
+  GridRowsProp,
+  GridSortModel,
+  GridSortDirection,
+} from "@mui/x-data-grid";
 import { useRouter } from "next/navigation";
-import { FC } from "react";
+import { FC, useMemo } from "react";
 import { addTab } from "src/slices/tabs";
 import { useDispatch } from "src/store";
 import { StyledDataGrid } from "./styles";
+import { useState } from "react";
 
 type GridProps = {
   rows: GridRowsProp;
@@ -21,33 +27,41 @@ const DataGridTable: FC<GridProps> = ({
   const router = useRouter();
   const dispatch = useDispatch();
 
-  if (!sortingBy) sortingBy = "";
-  if (!sortingOrder) sortingOrder = null;
+  const [sortModel, setSortModel] = useState<GridSortModel>([]);
+
+  const handleSortChange = (newSortModel: any) => {
+    setSortModel(newSortModel);
+  };
+
+  useMemo(() => {
+    setSortModel([
+      { field: sortingBy || "", sort: sortingOrder as GridSortDirection },
+    ]);
+  }, [sortingBy, sortingOrder]);
 
   return (
-    <StyledDataGrid
-      rowHeight={100}
-      getRowId={(e) => e.id}
-      onRowClick={(e) => {
-        router.push(`/property/${e.row.id}`);
-        dispatch(
-          addTab({
-            title: `Property ${e.row.id}`,
-            path: `/property/${e.row.id}`,
-          })
-        );
-      }}
-      checkboxSelection
-      autoHeight
-      disableRowSelectionOnClick
-      initialState={{
-        sorting: {
-          sortModel: [{ field: sortingBy, sort: null }],
-        },
-      }}
-      rows={rows}
-      columns={columns}
-    />
+    <>
+      <StyledDataGrid
+        rowHeight={100}
+        getRowId={(e) => e.id}
+        onRowClick={(e) => {
+          router.push(`/property/${e.row.id}`);
+          dispatch(
+            addTab({
+              title: `Property ${e.row.id}`,
+              path: `/property/${e.row.id}`,
+            })
+          );
+        }}
+        checkboxSelection
+        autoHeight
+        disableRowSelectionOnClick
+        sortModel={sortModel}
+        onSortModelChange={handleSortChange}
+        rows={rows}
+        columns={columns}
+      />
+    </>
   );
 };
 

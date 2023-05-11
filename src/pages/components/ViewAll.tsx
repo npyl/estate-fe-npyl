@@ -18,8 +18,6 @@ import MediaCard from "./MediaCard";
 import sumOfChangedProperties, {
   getChangedFields,
   resetState,
-  selectSortingBy,
-  selectSortingOrder,
 } from "src/slices/filters";
 
 import { useAllPropertyGlobalQuery } from "src/services/global";
@@ -42,8 +40,8 @@ const ViewAll: FC = () => {
   const dispatch = useDispatch();
   const changedPropsCount = useSelector(sumOfChangedProperties);
   const changedProps = useSelector(getChangedFields);
-  const sortingBy = useSelector(selectSortingBy);
-  const sortingOrder = useSelector(selectSortingOrder);
+  const [sortingBy, setSortingBy] = useState("");
+  const [sortingOrder, setSortingOrder] = useState("asc");
   const [openFilter, setOpenFilter] = useState(false);
   const [option, setOption] = useState<optionType>("list");
 
@@ -96,8 +94,8 @@ const ViewAll: FC = () => {
       <>
         <Image
           src={`data:image/jpeg;base64,${params.formattedValue}` || ""}
-          alt=''
-          ratio='16/9'
+          alt=""
+          ratio="16/9"
           width={1}
         />
       </>
@@ -107,7 +105,7 @@ const ViewAll: FC = () => {
     return (
       <>
         <Label
-          variant='filled'
+          variant="filled"
           color={
             (params.formattedValue === "SOLD" && "error") ||
             (params.formattedValue === "SALE" && "info") ||
@@ -174,20 +172,25 @@ const ViewAll: FC = () => {
             <CountrySelect />
             <SaleSelect />
 
-            <CategorySelect propertyEnums={propertyEnums} />
-            <SubCategorySelect propertyEnums={propertyEnums} />
+            <CategorySelect />
+            <SubCategorySelect />
 
             <PriceSelect type={"price"} />
 
-            <FilterSortBy />
+            <FilterSortBy
+              onSorting={(sortingBy, sortingOrder) => {
+                setSortingBy(sortingBy);
+                setSortingOrder(sortingOrder);
+              }}
+            />
 
             <StyledPriceButton
               open={false}
               disableRipple
-              color='inherit'
+              color="inherit"
               sx={{ width: 120 }}
               endIcon={
-                <Badge badgeContent={changedPropsCount} color='error'>
+                <Badge badgeContent={changedPropsCount} color="error">
                   <TuneIcon />
                 </Badge>
               }
@@ -197,10 +200,10 @@ const ViewAll: FC = () => {
             </StyledPriceButton>
           </Stack>
           <Stack direction={"row"} spacing={1}>
-            <Tabs value={ITabEnum[option]} aria-label='icon label tabs example'>
+            <Tabs value={ITabEnum[option]} aria-label="icon label tabs example">
               {viewOptions.map((option) => (
                 <Tab
-                  iconPosition='start'
+                  iconPosition="start"
                   onClick={() => setOption(option.id)}
                   id={option.id}
                   key={option.id}
