@@ -1,34 +1,47 @@
-import Autocomplete from "@mui/material/Autocomplete";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
-import { setState } from "src/slices/filters";
-import { useDispatch } from "src/store";
+import {
+  FormControlLabel,
+  Radio,
+  Autocomplete,
+  TextField,
+} from "@mui/material";
+import { useAllPropertyGlobalQuery } from "src/services/global";
+import { selectState, setState } from "src/slices/filters";
+import { useDispatch, useSelector } from "src/store";
 
 export default function SaleSelect() {
-  const stateFilterOptions = [
-    { value: "ALL", label: "'Ολα" },
-    { value: "SALE", label: "Πώληση" },
-    { value: "RENT", label: "Ενοικίαση" },
-  ];
   const dispatch = useDispatch();
+  const state = useSelector(selectState);
+
+  const { data } = useAllPropertyGlobalQuery();
+  const stateEnum = data?.property?.state;
+
+  if (!stateEnum) return null;
+
+  const stateFilterOptions = [
+    { value: "", label: "All" },
+    ...stateEnum.map((item) => {
+      return {
+        value: item,
+        label: item,
+      };
+    }),
+  ];
 
   return (
     <Autocomplete
       id="select-demo-sale"
-      sx={{ width: 120 }}
+      sx={{ width: 135 }}
       options={stateFilterOptions}
       autoHighlight
       clearIcon={false}
-      onChange={(_e, newValue) => dispatch(setState(newValue?.value || ""))}
       getOptionLabel={(option) => option.label}
       renderOption={(props, option) => (
-        <Box
-          component="li"
-          sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
-          {...props}
-        >
-          {option.label}
-        </Box>
+        <FormControlLabel
+          control={<Radio checked={state === option.value} size="small" />}
+          label={option.label}
+          sx={{ p: 1, width: "100%" }}
+          onClick={() => dispatch(setState(option?.value))}
+        />
       )}
       renderInput={(params) => (
         <TextField

@@ -17,7 +17,7 @@ export default function CountrySelect() {
       options={cities}
       autoHighlight
       clearIcon={false}
-      onChange={(_e, newValue) => dispatch(setCity(newValue || ""))}
+      onChange={(_e, newValue) => dispatch(setCity(newValue))}
       getOptionLabel={(option) =>
         option.properties.NAME || option.properties.ONOMA
       }

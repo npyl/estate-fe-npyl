@@ -16,6 +16,7 @@ import {
   selectMaxPrice,
   selectMinArea,
   selectMinPrice,
+  selectState,
   setMaxArea,
   setMaxPrice,
   setMinArea,
@@ -55,6 +56,7 @@ const RangeSelect = ({ type }: { type: string }) => {
 
   const valueMin = useSelector(selectMinValue);
   const valueMax = useSelector(selectMaxValue);
+  const state = useSelector(selectState);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
@@ -86,8 +88,8 @@ const RangeSelect = ({ type }: { type: string }) => {
   }, [type]);
 
   const values = useMemo(() => {
-    return generateNumbers(type);
-  }, [type]);
+    return generateNumbers(state, type);
+  }, [state, type]);
 
   const customWidth = useMemo(() => {
     return (valueMin.toString().length + valueMax.toString().length) * 10 + 130;
@@ -108,22 +110,22 @@ const RangeSelect = ({ type }: { type: string }) => {
 
   return (
     <ClickAwayListener
-      mouseEvent='onMouseDown'
-      touchEvent='onTouchStart'
+      mouseEvent="onMouseDown"
+      touchEvent="onTouchStart"
       onClickAway={() => setOpen(false)}
     >
       <Box>
         <StyledPriceButton
           sx={{ width: customWidth }}
           open={open}
-          variant='outlined'
+          variant="outlined"
           endIcon={open ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
           onClick={handleClick}
         >
           {renderLabel}
         </StyledPriceButton>
         {open && (
-          <Popper open={open} anchorEl={anchorEl} placement='bottom-start'>
+          <Popper open={open} anchorEl={anchorEl} placement="bottom-start">
             <StyledBox>
               <Grid container padding={1} spacing={3}>
                 <Grid item xs={12} sm={6}>
@@ -216,11 +218,23 @@ const RangeSelect = ({ type }: { type: string }) => {
 function formatNumber(num: number) {
   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
-function generateNumbers(type: string) {
+function generateNumbers(state: string, type: string) {
   const numbers = [];
+
+  const HUNDRED_K = 100 * 1000;
+  const HUNDRED = 100;
+  const TEN_M = 10 * 1000 * 1000;
+  const TEN_K = 10 * 1000;
+
   if (type === "price") {
-    for (let i = 100; i <= 10000; i += 100) {
-      numbers.push(i);
+    if (state === "Sale") {
+      for (let i = TEN_K; i <= TEN_M; i += HUNDRED_K - TEN_K) {
+        numbers.push(i);
+      }
+    } else {
+      for (let i = HUNDRED; i <= TEN_K; i += HUNDRED) {
+        numbers.push(i);
+      }
     }
   } else {
     for (let i = 10; i <= 1000; i += 10) {

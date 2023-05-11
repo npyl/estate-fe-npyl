@@ -3,10 +3,6 @@ import { RootState } from "src/store";
 import { IPropertyFilter } from "src/types/properties";
 
 interface IFilterProps extends IPropertyFilter {
-  // sorting
-  sortingBy: string | null;
-  sortingOrder: string | null;
-
   [key: string]: any;
 }
 
@@ -31,10 +27,6 @@ const initialState: IFilterProps = {
   furnished: "",
   city: "",
   managerId: 0,
-
-  // sorting
-  sortingBy: null,
-  sortingOrder: null,
 };
 
 const slice = createSlice({
@@ -116,14 +108,6 @@ const slice = createSlice({
       state.state = payload;
     },
 
-    // sorting
-    setSortingBy(state, { payload }) {
-      state.sortingBy = payload;
-    },
-    setSortingOrder(state, { payload }) {
-      state.sortingOrder = payload;
-    },
-
     deleteFilter(state, { payload }) {
       const key = payload;
       const initialValue = initialState[payload];
@@ -157,10 +141,6 @@ export const {
   setMinPrice,
   setState,
 
-  // sorting
-  setSortingBy,
-  setSortingOrder,
-
   deleteFilter,
   resetState,
 } = slice.actions;
@@ -191,11 +171,6 @@ export const selectMinFloor = ({ filters }: RootState) => filters.minFloor;
 export const selectMinPrice = ({ filters }: RootState) => filters.minPrice;
 export const selectState = ({ filters }: RootState) => filters.state;
 
-// sorting
-export const selectSortingBy = ({ filters }: RootState) => filters.sortingBy;
-export const selectSortingOrder = ({ filters }: RootState) =>
-  filters.sortingOrder;
-
 const sumOfChangedProperties = createSelector(
   (state: RootState) => state.filters,
   (filter) => {
@@ -220,9 +195,6 @@ const sumOfChangedProperties = createSelector(
       "furnished",
       "city",
       "managerId",
-      // sorting
-      "sortingBy",
-      "sortingOrder",
     ];
 
     return propertiesToInclude.reduce(

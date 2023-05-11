@@ -1,25 +1,33 @@
-import Autocomplete from "@mui/material/Autocomplete";
-import { Box, TextField } from "@mui/material";
-import { selectCategory, setSubCategory } from "src/slices/filters";
+import {
+  Autocomplete,
+  FormControlLabel,
+  Radio,
+  TextField,
+} from "@mui/material";
+import {
+  selectCategory,
+  selectSubCategory,
+  setSubCategory,
+} from "src/slices/filters";
 import { useDispatch, useSelector } from "src/store";
-import { IGlobalProperty } from "src/types/global";
 import { useState, useMemo } from "react";
+import { useAllPropertyGlobalQuery } from "src/services/global";
 
-interface SubCategorySelectProps {
-  propertyEnums: IGlobalProperty;
-}
-
-export default function SubCategorySelect(props: SubCategorySelectProps) {
-  const { propertyEnums } = props;
-
+export default function SubCategorySelect() {
   const dispatch = useDispatch();
   const selectedCategory: string | undefined = useSelector(selectCategory);
+  const subCategory = useSelector(selectSubCategory);
+
+  const { data } = useAllPropertyGlobalQuery();
+  const propertyEnums = data?.property;
+
   const [subCategoryFilterOptions, setSubCategoryFilterOptions] = useState([
-    { value: "ALL", label: "All Categories" },
+    { value: "", label: "All Categories" },
   ]);
 
   useMemo(() => {
-    if (!selectedCategory) return null;
+    if (!selectedCategory || !propertyEnums || selectedCategory === "")
+      return null;
 
     const subCategoriesMap: {
       [key: string]: string[];
@@ -31,7 +39,7 @@ export default function SubCategorySelect(props: SubCategorySelectProps) {
     };
 
     setSubCategoryFilterOptions([
-      { value: "ALL", label: "All Categories" },
+      { value: "", label: "All Categories" },
       ...subCategoriesMap[selectedCategory].map((subCategory: string) => {
         return {
           value: subCategory,
@@ -39,15 +47,9 @@ export default function SubCategorySelect(props: SubCategorySelectProps) {
         };
       }),
     ]);
-  }, [
-    propertyEnums.residentialCategory,
-    propertyEnums.commercialCategory,
-    propertyEnums.landCategory,
-    propertyEnums.otherCategory,
-    selectedCategory,
-  ]);
+  }, [propertyEnums, selectedCategory]);
 
-  if (!propertyEnums) return null;
+  if (!data || !propertyEnums) return null;
 
   return (
     <Autocomplete
@@ -56,18 +58,17 @@ export default function SubCategorySelect(props: SubCategorySelectProps) {
       options={subCategoryFilterOptions}
       autoHighlight
       clearIcon={false}
-      onChange={(_e, newValue) =>
-        dispatch(setSubCategory(newValue?.value || ""))
-      }
+      onChange={(_e, newValue) => dispatch(setSubCategory(newValue?.value))}
       getOptionLabel={(option) => option.label}
       renderOption={(props, option) => (
-        <Box
-          component="li"
-          sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
-          {...props}
-        >
-          {option.label}
-        </Box>
+        <FormControlLabel
+          control={
+            <Radio checked={subCategory === option.value} size="small" />
+          }
+          label={option.label}
+          sx={{ p: 1, width: "100%" }}
+          onClick={() => dispatch(setSubCategory(option?.value))}
+        />
       )}
       renderInput={(params) => (
         <TextField

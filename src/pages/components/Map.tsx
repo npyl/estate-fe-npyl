@@ -54,14 +54,16 @@ const Map = ({ data, activeMarker, setActiveMarker }: IMapProps) => {
   //     console.log(countries);
   //   });
 
-  const markers = data.map((property) => {
-    const location = property.location;
-    return {
-      address: location.street + " " + location.number,
-      lat: location.lat,
-      lng: location.lng,
-    };
-  });
+  const markers = data
+    .filter((property) => property.location !== null) // some properties are dummies
+    .map((property) => {
+      const location = property.location;
+      return {
+        address: location.street + " " + location.number,
+        lat: location.lat,
+        lng: location.lng,
+      };
+    });
 
   const onMapLoad = (map: any) => {
     setMapRef(map);
