@@ -26,8 +26,13 @@ export interface IPropertyFilter {
   heatingType: string;
   frameType: string;
   furnished: string;
-  cities: string[];
+  city: string;
   managerId: number;
+
+  cities: string[];
+  states: string[];
+  categories: string[];
+  parentCategories: string[];
 }
 
 export interface IPropertySuitableFor {

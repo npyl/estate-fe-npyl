@@ -25,8 +25,13 @@ const initialState: IFilterProps = {
   heatingType: "",
   frameType: "",
   furnished: "",
-  cities: [],
+  city: "",
   managerId: 0,
+
+  cities: [],
+  states: [],
+  categories: [],
+  parentCategories: [],
 };
 
 const slice = createSlice({
@@ -108,6 +113,26 @@ const slice = createSlice({
       state.state = payload;
     },
 
+    // multiple
+    setCities(state, { payload }) {
+      // make sure we do not have duplicates
+      if (!state.cities.includes(payload)) return;
+
+      state.cities = payload;
+    },
+    setStates(state, { payload }) {
+      // make sure we do not have duplicates
+      if (state.states.includes(payload)) return;
+
+      state.states = payload;
+    },
+    setSubCategories(state, { payload }) {
+      // make sure we do not have duplicates
+      if (state.categories.includes(payload)) return;
+
+      state.categories = payload;
+    },
+
     deleteFilter(state, { payload }) {
       const key = payload;
       const initialValue = initialState[payload];
@@ -141,6 +166,11 @@ export const {
   setMinPrice,
   setState,
 
+  // multiple
+  setCities,
+  setStates,
+  setSubCategories,
+
   deleteFilter,
   resetState,
 } = slice.actions;
@@ -148,7 +178,7 @@ export const {
 export const selectCategory = ({ filters }: RootState) =>
   filters.parentCategory;
 export const selectSubCategory = ({ filters }: RootState) => filters.category;
-export const selectCities = ({ filters }: RootState) => filters.cities;
+export const selectCity = ({ filters }: RootState) => filters.city;
 export const selectCode = ({ filters }: RootState) => filters.code;
 export const selectFrameType = ({ filters }: RootState) => filters.frameType;
 export const selectFurnished = ({ filters }: RootState) => filters.furnished;
@@ -171,6 +201,11 @@ export const selectMinFloor = ({ filters }: RootState) => filters.minFloor;
 export const selectMinPrice = ({ filters }: RootState) => filters.minPrice;
 export const selectState = ({ filters }: RootState) => filters.state;
 
+export const selectCities = ({ filters }: RootState) => filters.cities;
+export const selectStates = ({ filters }: RootState) => filters.states;
+export const selectSubCategories = ({ filters }: RootState) =>
+  filters.categories;
+
 const sumOfChangedProperties = createSelector(
   (state: RootState) => state.filters,
   (filter) => {
@@ -181,9 +216,7 @@ const sumOfChangedProperties = createSelector(
       "maxPrice",
       "minArea",
       "maxArea",
-      "state",
       "category",
-      "parentCategory",
       "minBedrooms",
       "maxBedrooms",
       "minFloor",
@@ -193,8 +226,12 @@ const sumOfChangedProperties = createSelector(
       "heatingType",
       "frameType",
       "furnished",
-      "city",
       "managerId",
+
+      // multiple
+      "cities",
+      "states",
+      "categories",
     ];
 
     return propertiesToInclude.reduce(
