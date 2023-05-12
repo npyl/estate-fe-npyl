@@ -71,7 +71,7 @@ export default function Editor({
     },
     history: {
       delay: 500,
-      maxStack: 100,
+      maxStack: 300,
       userOnly: true,
     },
     syntax: true,

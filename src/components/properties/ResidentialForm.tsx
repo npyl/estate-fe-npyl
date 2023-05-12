@@ -19,6 +19,7 @@ import ParkingSection from "./Parking";
 import PropertyDescriptionSection from "./PropertyDescription";
 import SuitableForForResidentialSection from "./SuitableForForResidential";
 import TechnicalFeaturesAndInteriorForResidentialSection from "./TechnicalFeaturesAndInteriorForResidential";
+import ROISection from "./ROI";
 
 const ResidentialFormSection: React.FC<any> = (props) => {
   const [files, setFiles] = useState<(File | string)[]>([]);
@@ -30,12 +31,13 @@ const ResidentialFormSection: React.FC<any> = (props) => {
         <Grid item xs={6} spacing={1} order={"row"}>
           <Stack spacing={1}>
             <BasicSection />
+            <ROISection />
 
             <PropertyDescriptionSection />
-
+            <ConstructionForResidentialSection />
             <AreasSection />
             <DistancesSection />
-            <SuitableForForResidentialSection />
+
             <FileSection fileData={fileData} setFileData={setFileData} />
           </Stack>
         </Grid>
@@ -48,8 +50,9 @@ const ResidentialFormSection: React.FC<any> = (props) => {
             <ParkingSection />
 
             <BalconiesSection />
-            <ConstructionForResidentialSection />
+
             <TechnicalFeaturesAndInteriorForResidentialSection />
+            <SuitableForForResidentialSection />
 
             <DescriptionSection />
           </Stack>

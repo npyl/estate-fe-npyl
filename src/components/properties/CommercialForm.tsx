@@ -31,7 +31,7 @@ const CommercialFormSection: React.FC<any> = (props) => {
             <BasicSection />
 
             <PropertyDescriptionForCommercialSection />
-
+            <HeatingAndEnergyForResidentialSection />
             <AreasSection />
             <DistancesSection />
             <FileSection fileData={fileData} setFileData={setFileData} />
@@ -41,7 +41,7 @@ const CommercialFormSection: React.FC<any> = (props) => {
           <Stack spacing={1}>
             <ImageSection files={files} setFiles={setFiles} />
             <LocationSection />
-            <HeatingAndEnergyForResidentialSection />
+
             <SuitableForForCommercialSection />
             <ConstructionForCommercialSection />
             <TechnicalFeaturesAndInteriorForCommercialSection />

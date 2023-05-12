@@ -82,7 +82,7 @@ const initialState: propertyState = {
   debatablePrice: false,
   buildable: false,
   video: "dummy-url",
-  description: "my description",
+  description: "LEPA PSOLOUTIONS ON FIRE ",
   suitableFor: {
     student: true,
     cottage: true,
@@ -175,7 +175,7 @@ const initialState: propertyState = {
     bedrooms: 1,
     kitchens: 1,
     wc: 1,
-    layers: 1,
+    layers: 5,
     livingrooms: 1,
     bathrooms: 1,
     rooms: 1,
