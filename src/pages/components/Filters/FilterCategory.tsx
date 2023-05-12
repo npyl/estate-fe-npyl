@@ -1,9 +1,4 @@
-import {
-  Autocomplete,
-  FormControlLabel,
-  Radio,
-  TextField,
-} from "@mui/material";
+import { Autocomplete, Box, Checkbox, TextField } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCategory, setCategory } from "src/slices/filters";
 
@@ -27,24 +22,22 @@ export default function CategorySelect() {
   return (
     <Autocomplete
       sx={{ width: 180 }}
-      id='select-demo'
+      id="select-demo"
       options={categoryFilterOptions}
       autoHighlight
       clearIcon={false}
       onChange={(_e, newValue) => dispatch(setCategory(newValue?.value))}
       getOptionLabel={(option) => option.label}
       renderOption={(props, option) => (
-        <FormControlLabel
-          control={<Radio checked={category === option.value} size='small' />}
-          label={option.label}
-          sx={{ p: 1, width: "100%" }}
-          onClick={() => dispatch(setCategory(option?.value))}
-        />
+        <Box {...props} component="li">
+          <Checkbox checked={category === option.value} />
+          {option.label}
+        </Box>
       )}
       renderInput={(params) => (
         <TextField
           {...params}
-          placeholder='Κατηγορία'
+          placeholder="Κατηγορία"
           InputLabelProps={{
             shrink: true,
           }}

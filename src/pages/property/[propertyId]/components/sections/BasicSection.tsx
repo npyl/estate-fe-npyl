@@ -7,6 +7,7 @@ import {
   ListBooleanItem,
   ListStatusItem,
 } from "src/components/List";
+import ListLabelsItem from "src/components/List/labels-item";
 
 import { IProperties } from "src/types/properties";
 import { IUser } from "src/types/user";
@@ -108,6 +109,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
           align="horizontal"
           divider
         />
+        <ListLabelsItem labels={data?.labels} />
       </List>
     </>
   );

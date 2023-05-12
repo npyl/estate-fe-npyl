@@ -7,12 +7,12 @@ import { Quill } from "react-quill";
 // import styled from "styled-components";
 
 const HEADINGS = [
-  "Heading 1",
-  "Heading 2",
-  "Heading 3",
-  "Heading 4",
-  "Heading 5",
-  "Heading 6",
+  “Heading 1",
+  “Heading 2”,
+  “Heading 3",
+  “Heading 4”,
+  “Heading 5",
+  “Heading 6”,
 ];
 
 const CustomUndo = () => (
@@ -100,36 +100,34 @@ export const formats = [
 ];
 
 // export const formats = [
-//   "align",
-//   "background",
-//   "blockquote",
-//   "bold",
-//   "bullet",
-//   "code",
-//   "code-block",
-//   "color",
-//   "direction",
-//   "font",
-//   "formula",
-//   "header",
-//   "image",
-//   "indent",
-//   "italic",
-//   "link",
-//   "list",
-//   "script",
-//   "size",
-//   "strike",
-//   "table",
-//   "underline",
-//   "emoji",
+//   “align”,
+//   “background”,
+//   “blockquote”,
+//   “bold”,
+//   “bullet”,
+//   “code”,
+//   “code-block”,
+//   “color”,
+//   “direction”,
+//   “font”,
+//   “formula”,
+//   “header”,
+//   “image”,
+//   “indent”,
+//   “italic”,
+//   “link”,
+//   “list”,
+//   “script”,
+//   “size”,
+//   “strike”,
+//   “table”,
+//   “underline”,
+//   “emoji”,
 // ];
-
 type EditorToolbarProps = {
   id: string;
   isSimple?: boolean;
 };
-
 export default function EditorToolbar({
   id,
   isSimple,
@@ -137,7 +135,6 @@ export default function EditorToolbar({
 }: EditorToolbarProps) {
   const [emoji, setEmoji] = useState(false);
   const editorRef = useRef(null);
-
   // const handleEmojiSelect = (selectedEmoji) => {
   //   if (editorRef.current) {
   //     const selection = window.getSelection();
@@ -152,7 +149,6 @@ export default function EditorToolbar({
   //     selection.addRange(range);
   //   }
   // };
-
   return (
     <StyledEditorToolbar ref={editorRef} {...other}>
       <div id={id}>
@@ -233,11 +229,11 @@ export default function EditorToolbar({
 
         {/* <div className='ql-formats'>
           <button
-            type='button'
-            className='ql-emoji'
+            type=‘button’
+            className=‘ql-emoji’
             onClick={() => setEmoji((emoji) => !emoji)}
           >
-            😀
+            :grinning:
           </button>
           {emoji && <Picker onEmojiSelect={handleEmojiSelect} />}
         </div> */}

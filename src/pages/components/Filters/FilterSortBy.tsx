@@ -1,9 +1,4 @@
-import {
-  Autocomplete,
-  FormControlLabel,
-  Radio,
-  TextField,
-} from "@mui/material";
+import { Autocomplete, Box, Checkbox, TextField } from "@mui/material";
 import { useState } from "react";
 
 interface IFilterSortByProps {
@@ -36,45 +31,42 @@ export default function FilterSortBy({ onSorting }: IFilterSortByProps) {
   return (
     <Autocomplete
       sx={{
-        width: 100,
+        width: 200,
         "& .MuiAutocomplete-paper": {
           width: 400,
         },
       }}
-      id='select-demo'
-      componentsProps={{ popper: { style: { width: "200px" } } }}
+      id="select-demo"
       options={sortByFilterOptions}
       autoHighlight
       clearIcon={false}
+      componentsProps={{ popper: { style: { width: "200px" } } }}
       getOptionLabel={(option) => option.label}
-      renderOption={(props, option) => (
-        <FormControlLabel
-          control={
-            <Radio checked={selectedOption === option.value} size='small' />
-          }
-          label={option.label}
-          sx={{ p: 1, width: "100%" }}
-          onClick={() => {
-            setSelectedOption(option?.value || "");
+      onChange={(_e, option) => {
+        setSelectedOption(option?.value || "");
 
-            if (option?.value === sortByFilterOptions[0].value) {
-              onSorting("", "");
-            } else if (option?.value === sortByFilterOptions[1].value) {
-              onSorting("price", "asc");
-            } else if (option?.value === sortByFilterOptions[2].value) {
-              onSorting("price", "desc");
-            } else if (option?.value === sortByFilterOptions[3].value) {
-              onSorting("area", "asc");
-            } else if (option?.value === sortByFilterOptions[4].value) {
-              onSorting("price", "desc");
-            }
-          }}
-        />
+        if (option?.value === sortByFilterOptions[0].value) {
+          onSorting("", "");
+        } else if (option?.value === sortByFilterOptions[1].value) {
+          onSorting("price", "asc");
+        } else if (option?.value === sortByFilterOptions[2].value) {
+          onSorting("price", "desc");
+        } else if (option?.value === sortByFilterOptions[3].value) {
+          onSorting("area", "asc");
+        } else if (option?.value === sortByFilterOptions[4].value) {
+          onSorting("price", "desc");
+        }
+      }}
+      renderOption={(props, option) => (
+        <Box {...props} component="li">
+          <Checkbox checked={selectedOption === option.value} />
+          {option.label}
+        </Box>
       )}
       renderInput={(params) => (
         <TextField
           {...params}
-          placeholder='Sort By'
+          placeholder="Sort By"
           InputLabelProps={{
             shrink: true,
           }}

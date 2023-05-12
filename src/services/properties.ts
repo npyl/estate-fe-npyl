@@ -45,6 +45,13 @@ export const properties = createApi({
       }),
       invalidatesTags: ["Properties"],
     }),
+    deleteProperty: builder.mutation<IProperties, number>({
+      query: (id: number) => ({
+        url: `${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Properties"],
+    }),
     getSearchResults: builder.query<IProperties[], string>({
       query: (text: string) => {
         return {
@@ -61,5 +68,6 @@ export const {
   useAllPropertiesQuery,
   useGetPropertyByIdQuery,
   useAddPropertyMutation,
+  useDeletePropertyMutation,
   useFilterPropertiesMutation,
 } = properties;
