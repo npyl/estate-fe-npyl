@@ -1,13 +1,8 @@
-import {
-  Autocomplete,
-  FormControlLabel,
-  Radio,
-  TextField,
-} from "@mui/material";
+import { Autocomplete, Box, Checkbox, TextField } from "@mui/material";
 import {
   selectCategory,
-  selectSubCategory,
-  setSubCategory,
+  selectSubCategories,
+  setSubCategories,
 } from "src/slices/filters";
 import { useDispatch, useSelector } from "src/store";
 import { useState, useMemo } from "react";
@@ -16,14 +11,26 @@ import { useAllPropertyGlobalQuery } from "src/services/global";
 export default function SubCategorySelect() {
   const dispatch = useDispatch();
   const selectedCategory: string | undefined = useSelector(selectCategory);
-  const subCategory = useSelector(selectSubCategory);
+  const subCategories = useSelector(selectSubCategories);
 
   const { data } = useAllPropertyGlobalQuery();
   const propertyEnums = data?.property;
 
-  const [subCategoryFilterOptions, setSubCategoryFilterOptions] = useState([
-    { value: "", label: "All Categories" },
-  ]);
+  interface IFilterOption {
+    label: string;
+    checked: boolean;
+  }
+
+  interface IFilterOptions {
+    [key: string]: IFilterOption;
+  }
+
+  const initialOptions: IFilterOptions = {
+    "": { label: "All Categories", checked: false },
+  };
+
+  const [subCategoryFilterOptions, setSubCategoryFilterOptions] =
+    useState<IFilterOptions>(initialOptions);
 
   useMemo(() => {
     if (!selectedCategory || !propertyEnums || selectedCategory === "")
@@ -38,15 +45,15 @@ export default function SubCategorySelect() {
       Other: propertyEnums.otherCategory,
     };
 
-    setSubCategoryFilterOptions([
-      { value: "", label: "All Categories" },
-      ...subCategoriesMap[selectedCategory].map((subCategory: string) => {
-        return {
-          value: subCategory,
-          label: subCategory,
-        };
-      }),
-    ]);
+    setSubCategoryFilterOptions({
+      "": { label: "All Categories", checked: false },
+      ...Object.fromEntries(
+        subCategoriesMap[selectedCategory].map((subCategory: string) => [
+          subCategory,
+          { label: subCategory, checked: false },
+        ])
+      ),
+    });
   }, [propertyEnums, selectedCategory]);
 
   if (!data || !propertyEnums) return null;
@@ -54,21 +61,24 @@ export default function SubCategorySelect() {
   return (
     <Autocomplete
       sx={{ width: 180 }}
-      id="select-demo"
-      options={subCategoryFilterOptions}
+      options={Object.keys(subCategoryFilterOptions)}
       autoHighlight
       clearIcon={false}
-      onChange={(_e, newValue) => dispatch(setSubCategory(newValue?.value))}
-      getOptionLabel={(option) => option.label}
+      onChange={(e, option) => {
+        if (!option) return;
+
+        // change checked status
+        const checked = subCategoryFilterOptions[option].checked;
+        subCategoryFilterOptions[option].checked = !checked; // toggle
+
+        dispatch(setSubCategories([...subCategories, option]));
+      }}
+      getOptionLabel={(option) => subCategoryFilterOptions[option].label}
       renderOption={(props, option) => (
-        <FormControlLabel
-          control={
-            <Radio checked={subCategory === option.value} size="small" />
-          }
-          label={option.label}
-          sx={{ p: 1, width: "100%" }}
-          onClick={() => dispatch(setSubCategory(option?.value))}
-        />
+        <Box {...props} component="li">
+          <Checkbox checked={subCategoryFilterOptions[option].checked} />
+          {subCategoryFilterOptions[option].label}
+        </Box>
       )}
       renderInput={(params) => (
         <TextField
