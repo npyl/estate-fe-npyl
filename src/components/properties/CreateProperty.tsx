@@ -180,32 +180,33 @@ export default function SimpleAccordion() {
             {parentCategory === "Commercial" && <CommercialFormSection />}
             {parentCategory === "Other" && <OtherFormSection />}
 
-            <Box padding={2}>
-              <Stack
-                direction="row"
-                spacing={2}
-                justifyContent="flex-end"
+            <Grid item xs={12} padding={2}>
+              <Grid
+                container
                 alignItems="center"
+                justifyContent="flex-end"
+                spacing={1}
               >
-                <Button
-                  style={{ left: "400%" }}
-                  variant="outlined"
-                  startIcon={<DeleteIcon />}
-                  onClick={() => dispatch(resetState())}
-                >
-                  Clear
-                </Button>
-
-                <Button
-                  style={{ left: "400%" }}
-                  variant="contained"
-                  endIcon={<SendIcon />}
-                  onClick={() => performUpload()}
-                >
-                  Upload
-                </Button>
-              </Stack>
-            </Box>
+                <Grid item>
+                  <Button
+                    variant="outlined"
+                    startIcon={<DeleteIcon />}
+                    onClick={() => dispatch(resetState())}
+                  >
+                    Clear
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button
+                    variant="contained"
+                    endIcon={<SendIcon />}
+                    onClick={() => performUpload()}
+                  >
+                    Create Property
+                  </Button>
+                </Grid>
+              </Grid>
+            </Grid>
           </Grid>
         )}
       </Grid>

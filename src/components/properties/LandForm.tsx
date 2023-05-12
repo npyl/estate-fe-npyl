@@ -24,6 +24,7 @@ const LandFormSection: React.FC<any> = (props) => {
         <Grid item xs={6} spacing={1} order={"row"}>
           <Stack spacing={1}>
             <BasicForLandSection />
+            <TechnicalFeaturesAndInteriorForLandSection />
             <PropertyDescriptionForLandSection />
             <FeaturesForLandSection />
             <FileSection fileData={fileData} setFileData={setFileData} />
@@ -34,7 +35,6 @@ const LandFormSection: React.FC<any> = (props) => {
             <ImageSection files={files} setFiles={setFiles} />
             <LocationSection />
 
-            <TechnicalFeaturesAndInteriorForLandSection />
             <SuitableForForLandSection />
             <DescriptionSection />
           </Stack>

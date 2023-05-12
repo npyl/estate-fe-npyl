@@ -1,28 +1,30 @@
+import { connect } from "react-redux";
+import { setDescription } from "src/slices/property";
 import { Card, CardContent, CardHeader, Grid } from "@mui/material";
 import * as React from "react";
 import { useState } from "react";
 import Editor from "../editor/Editor";
 
-// @mui
-// routes
-// components
+interface DescriptionSectionProps {
+  description: string;
+  setDescription: (description: string) => void;
+}
 
-const DescriptionSection: React.FC<any> = (props) => {
-  const [quillSimple, setQuillSimple] = useState("");
-
-  const [quillFull, setQuillFull] = useState("");
-
+const DescriptionSection: React.FC<DescriptionSectionProps> = ({
+  description,
+  setDescription,
+}) => {
   return (
     <Grid item xs={12} padding={0}>
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Card>
-            <CardHeader title='Description' />
+            <CardHeader title="Description" />
             <CardContent>
               <Editor
-                id='full-editor'
-                value={quillFull}
-                onChange={(value) => setQuillFull(value)}
+                id="full-editor"
+                value={description}
+                onChange={(value) => setDescription(value)}
               />
             </CardContent>
           </Card>
@@ -32,4 +34,13 @@ const DescriptionSection: React.FC<any> = (props) => {
   );
 };
 
-export default DescriptionSection;
+const mapStateToProps = (state: any) => ({
+  description: state.property.description,
+});
+
+const mapDispatchToProps = (dispatch: any) => ({
+  setDescription: (description: string) =>
+    dispatch(setDescription(description)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(DescriptionSection);

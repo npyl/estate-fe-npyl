@@ -16,35 +16,40 @@ export default function CountrySelect() {
   });
 
   return (
-    <Autocomplete
-      id="country-select-demo"
-      sx={{ width: 200 }}
-      options={cityNames}
-      autoHighlight
-      value={selectedCity}
-      isOptionEqualToValue={(option, value) => option === value}
-      clearIcon={false}
-      onChange={(_e, newValue) => dispatch(setCity(newValue))}
-      getOptionLabel={(option) => option || option}
-      renderOption={(props, option) => (
-        <Box {...props} component="li">
-          <Checkbox checked={selectedCity === option} />
-          {option}
-        </Box>
-      )}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          placeholder="Επιλέξτε περιοχή"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          inputProps={{
-            ...params.inputProps,
-            autoComplete: "new-password", // disable autocomplete and autofill
-          }}
-        />
-      )}
-    />
+    <></>
+    // <Autocomplete
+    //   id='country-select-demo'
+    //   sx={{ width: 200 }}
+    //   options={cities}
+    //   autoHighlight
+    //   value={selectedCities}
+    //   isOptionEqualToValue={(option, value) =>
+    //     option.properties.NAME === value.properties.NAME
+    //   }
+    //   clearIcon={false}
+    //   onChange={(_e, newValue) => dispatch(setCity(newValue))}
+    //   getOptionLabel={(option) =>
+    //     option.properties.NAME || option.properties.ONOMA
+    //   }
+    //   renderOption={(props, option) => (
+    //     <li {...props}>
+    //       <Checkbox checked={selectedCities.includes(option.properties.NAME)} />
+    //       {option.properties.ONOMA}
+    //     </li>
+    //   )}
+    //   renderInput={(params) => (
+    //     <TextField
+    //       {...params}
+    //       placeholder='Επιλέξτε περιοχή'
+    //       InputLabelProps={{
+    //         shrink: true,
+    //       }}
+    //       inputProps={{
+    //         ...params.inputProps,
+    //         autoComplete: "new-password", // disable autocomplete and autofill
+    //       }}
+    //     />
+    //   )}
+    // />
   );
 }

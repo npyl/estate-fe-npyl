@@ -28,6 +28,7 @@ const OtherFormSection: React.FC<any> = (props) => {
             <BasicSection />
 
             <PropertyDescriptionForOtherSection />
+            <ConstructionForOtherSection />
             <FeaturesForOtherSection />
             <SuitableForForOtherSection />
             <FileSection fileData={fileData} setFileData={setFileData} />
@@ -38,7 +39,7 @@ const OtherFormSection: React.FC<any> = (props) => {
             <ImageSection files={files} setFiles={setFiles} />
             <LocationSection />
             <HeatingAndEnergyForCommercialSection />
-            <ConstructionForOtherSection />
+
             <TechnicalFeaturesAndInteriorForOtherSection />
             <DescriptionSection />
           </Stack>
