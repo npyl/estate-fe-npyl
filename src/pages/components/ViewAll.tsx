@@ -27,13 +27,10 @@ import sumOfChangedProperties, {
   resetState,
 } from "src/slices/filters";
 
-import { useAllPropertyGlobalQuery } from "src/services/global";
 import { useDispatch, useSelector } from "src/store";
-import { IGlobalProperty } from "src/types/global";
 import { IPropertyFilter } from "src/types/properties";
 import {
   CategorySelect,
-  CountrySelect,
   FilterMore,
   FilterSortBy,
   PriceSelect,
@@ -56,20 +53,26 @@ const ViewAll: FC = () => {
   const [filter, setFilter] = useState<IPropertyFilter>({} as IPropertyFilter);
   const [filterProperties, { isLoading, data }] = useFilterPropertiesMutation();
 
-  // get enums
-  const enums = useAllPropertyGlobalQuery().data;
-  const propertyEnums: IGlobalProperty | undefined = enums?.property;
+  (async () => {
+    const response = await fetch(
+      "https://parseapi.back4app.com/classes/List_of_Greek_cities?limit=10&keys=name,latitude,longitude",
+      {
+        headers: {
+          "X-Parse-Application-Id": "H5YJKam2vJNOO3O0MPknQaBw6fPoRQcmg0pda7zA", // This is the fake app's application id
+          "X-Parse-Master-Key": "HJJRuY2YBL61mBqmSJS3WcA2kvmX1px1UBCWXbhU", // This is the fake app's readonly master key
+        },
+      }
+    );
+    const data = await response.json(); // Here you have the data that you need
+    console.log(JSON.stringify(data, null, 2));
+  })();
 
   useMemo(() => {
     filterProperties(filter);
   }, [filter, filterProperties]);
 
   type optionType = "list" | "grid" | "map";
-  enum ITabEnum {
-    "list",
-    "grid",
-    "map",
-  }
+
   type viewOptionsType = {
     id: optionType;
     icon: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
@@ -151,7 +154,6 @@ const ViewAll: FC = () => {
   };
 
   const handleApplyFilter = () => {
-    console.log(changedProps);
     setFilter(changedProps);
   };
 
@@ -180,7 +182,7 @@ const ViewAll: FC = () => {
             alignItems={"center"}
             spacing={0.5}
           >
-            <CountrySelect />
+            {/* <CountrySelect /> */}
             <SaleSelect />
 
             <CategorySelect />

@@ -1,29 +1,29 @@
+import DeleteIcon from "@mui/icons-material/Delete";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Grid,
+  Paper,
+  Tab,
+  Tabs,
+} from "@mui/material";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import {
-  useGetPropertyByIdQuery,
   useDeletePropertyMutation,
+  useGetPropertyByIdQuery,
 } from "src/services/properties";
 
-import {
-  Grid,
-  Box,
-  Tabs,
-  Tab,
-  Paper,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-} from "@mui/material";
-
 import TabPanel from "src/components/Tabs";
-import MainContainer from "./components/MainContainer";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
+import MainContainer from "./components/MainContainer";
 
 import { SoftButton } from "./styles";
 
@@ -31,20 +31,21 @@ import {
   AreaSection,
   BalconiesSection,
   BasicSection,
+  BlueprintsSection,
   DetailsSection,
   DistanceSection,
-  BlueprintsSection,
   HeatingSection,
   ImageSection,
-  ParkingsSection,
   NotesSection,
-  VideoSection,
+  ParkingsSection,
   SuitableFor,
   TechnicalFeatures,
+  VideoSection,
 } from "./components/sections";
 
 import "photoswipe/dist/photoswipe.css";
 import Iconify from "src/components/iconify/Iconify";
+import InitMap from "./components/Map";
 
 function a11yProps(index: number) {
   return {
@@ -77,41 +78,42 @@ const SingleProperty: NextPage = () => {
   if (isSuccess) router.push("/");
 
   return (
-    <Box sx={{ width: "100%", padding: 3 }}>
+    <Box sx={{ width: "100%", paddingY: 3 }}>
       <Paper sx={{ borderBottom: 1, borderColor: "divider", paddingX: 3 }}>
         <Grid container direction={"row"}>
           <Grid item flex={1}>
             <Tabs
               value={value}
               onChange={handleChange}
-              aria-label="View Property Tabs"
+              aria-label='View Property Tabs'
             >
-              <Tab label="Overview" {...a11yProps(0)} />
-              <Tab label="Deals" {...a11yProps(1)} />
-              <Tab label="Tickets" {...a11yProps(2)} />
-              <Tab label="Activities" {...a11yProps(3)} />
-              <Tab label="Storage" {...a11yProps(4)} />
-              <Tab label="Logs" {...a11yProps(5)} />
+              <Tab label='Overview' {...a11yProps(0)} />
+              <Tab label='Deals' {...a11yProps(1)} />
+              <Tab label='Tickets' {...a11yProps(2)} />
+              <Tab label='Activities' {...a11yProps(3)} />
+              <Tab label='Storage' {...a11yProps(4)} />
+              <Tab label='Logs' {...a11yProps(5)} />
+              <Tab label='Map' {...a11yProps(6)} />
             </Tabs>
           </Grid>
           <Grid item sx={{ mt: 1 }}>
-            <Button variant="outlined" color="secondary" sx={{ mr: 1 }}>
+            <Button variant='outlined' color='secondary' sx={{ mr: 1 }}>
               Edit
             </Button>
 
             <SoftButton
-              color="error"
+              color='error'
               onClick={() => {
                 setDeletePropertyDialogOpen(true);
               }}
-              startIcon={<Iconify icon={"eva:trash-2-outline"} />}
+              startIcon={<DeleteIcon />}
             >
               Delete
             </SoftButton>
 
             <Dialog
               fullWidth
-              maxWidth="xs"
+              maxWidth='xs'
               open={deletePropertyDialogOpen}
               closeAfterTransition={true}
             >
@@ -119,7 +121,7 @@ const SingleProperty: NextPage = () => {
               <DialogContentText ml={3}>Are you sure?</DialogContentText>
               <DialogContent>
                 <SoftButton
-                  color="error"
+                  color='error'
                   sx={{ mr: 1 }}
                   onClick={() => {
                     deleteProperty(parseInt(propertyId as string));
@@ -131,8 +133,8 @@ const SingleProperty: NextPage = () => {
                 </SoftButton>
 
                 <Button
-                  variant="outlined"
-                  color="secondary"
+                  variant='outlined'
+                  color='secondary'
                   onClick={() => {
                     setDeletePropertyDialogOpen(false);
                   }}
@@ -166,6 +168,11 @@ const SingleProperty: NextPage = () => {
       <TabPanel value={value} index={3}></TabPanel>
       <TabPanel value={value} index={4}></TabPanel>
       <TabPanel value={value} index={5}></TabPanel>
+      <TabPanel value={value} index={6}>
+        <Box height={"400px"} width={"100%"}>
+          <InitMap />
+        </Box>
+      </TabPanel>
     </Box>
   );
 };

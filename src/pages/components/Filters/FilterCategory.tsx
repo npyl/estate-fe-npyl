@@ -22,14 +22,14 @@ export default function CategorySelect() {
   return (
     <Autocomplete
       sx={{ width: 180 }}
-      id="select-demo"
+      id='select-demo'
       options={categoryFilterOptions}
       autoHighlight
       clearIcon={false}
       onChange={(_e, newValue) => dispatch(setCategory(newValue?.value))}
       getOptionLabel={(option) => option.label}
       renderOption={(props, option) => (
-        <Box {...props} component="li">
+        <Box {...props} component='li'>
           <Checkbox checked={category === option.value} />
           {option.label}
         </Box>
@@ -37,7 +37,7 @@ export default function CategorySelect() {
       renderInput={(params) => (
         <TextField
           {...params}
-          placeholder="Κατηγορία"
+          placeholder='Κατηγορία'
           InputLabelProps={{
             shrink: true,
           }}

@@ -1,8 +1,5 @@
-import { Checkbox, Box } from "@mui/material";
-import Autocomplete from "@mui/material/Autocomplete";
-import TextField from "@mui/material/TextField";
 import citiesJson from "src/json/countries.json";
-import { selectCity, setCity } from "src/slices/filters";
+import { selectCity } from "src/slices/filters";
 import { useDispatch, useSelector } from "src/store";
 import { Feature } from "src/types/cities";
 
