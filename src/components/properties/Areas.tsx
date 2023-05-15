@@ -21,7 +21,7 @@ import {
   setCovered,
   setGarden,
   setPlot,
-  setStorerooms,
+  setStoreroom,
 } from "src/slices/property";
 import { useAllPropertyGlobalQuery } from "src/services/global";
 
@@ -38,7 +38,58 @@ const AreasSection: React.FC<any> = (props) => {
   const attic = useSelector(selectAttic);
   const garden = useSelector(selectGarden);
   const balconies = useSelector(selectBalconies);
-  const Storeroom = useSelector(selectStoreroom);
+  const storeroom = useSelector(selectStoreroom);
+
+  //set the values for BE
+  const handlePlotChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setPlot(numericValue));
+  };
+  const handleCoveredChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setCovered(numericValue));
+  };
+  const handleBasementChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setBasement(numericValue));
+  };
+  const handleAtticChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setAttic(numericValue));
+  };
+  const handleGardenChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setGarden(numericValue));
+  };
+  const handleBalconiesChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setBalconies(numericValue));
+  };
+  const handleStoreroomChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setStoreroom(numericValue));
+  };
+
+  //handle onlynumbers
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const keyCode = event.keyCode || event.which;
+    const keyValue = String.fromCharCode(keyCode);
+    const regex = /[0-9]/;
+    if (!regex.test(keyValue)) {
+      event.preventDefault(); // Prevent entering non-numeric characters
+    }
+  };
 
   return (
     <Paper
@@ -67,9 +118,8 @@ const AreasSection: React.FC<any> = (props) => {
               id="outlined-controlled"
               label="Plot"
               value={plot}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setPlot(event.target.value));
-              }}
+              onChange={handlePlotChange}
+              onKeyPress={handleKeyPress}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">m²</InputAdornment>
@@ -88,9 +138,8 @@ const AreasSection: React.FC<any> = (props) => {
               id="outlined-controlled"
               label="Covered"
               value={covered}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setCovered(event.target.value));
-              }}
+              onChange={handleCoveredChange}
+              onKeyPress={handleKeyPress}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">m²</InputAdornment>
@@ -109,9 +158,8 @@ const AreasSection: React.FC<any> = (props) => {
               id="outlined-controlled"
               label="Basement"
               value={basement}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setBasement(event.target.value));
-              }}
+              onChange={handleBasementChange}
+              onKeyPress={handleKeyPress}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">m²</InputAdornment>
@@ -130,9 +178,8 @@ const AreasSection: React.FC<any> = (props) => {
               id="outlined-controlled"
               label="Attic"
               value={attic}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setAttic(event.target.value));
-              }}
+              onChange={handleAtticChange}
+              onKeyPress={handleKeyPress}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">m²</InputAdornment>
@@ -151,9 +198,8 @@ const AreasSection: React.FC<any> = (props) => {
               id="outlined-controlled"
               label="Garden"
               value={garden}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setGarden(event.target.value));
-              }}
+              onChange={handleGardenChange}
+              onKeyPress={handleKeyPress}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">m²</InputAdornment>
@@ -172,9 +218,8 @@ const AreasSection: React.FC<any> = (props) => {
               id="outlined-controlled"
               label="Balconies"
               value={balconies}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setBalconies(event.target.value));
-              }}
+              onChange={handleBalconiesChange}
+              onKeyPress={handleKeyPress}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">m²</InputAdornment>
@@ -192,10 +237,9 @@ const AreasSection: React.FC<any> = (props) => {
               fullWidth
               id="outlined-controlled"
               label="Storeroom"
-              value={Storeroom}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setStorerooms(event.target.value));
-              }}
+              value={storeroom}
+              onChange={handleStoreroomChange}
+              onKeyPress={handleKeyPress}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">m²</InputAdornment>

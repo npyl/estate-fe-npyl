@@ -27,7 +27,6 @@ import {
   selectPlayRoom,
   selectRooms,
   selectSea,
-  selectStorerooms,
   selectViewType,
   selectZoneType,
   setAccessibility,
@@ -64,7 +63,7 @@ const PropertyDescriptionForLandSection: React.FC<any> = (props) => {
   const numOfWC = useSelector(selectNumOfWC);
   const livingRooms = useSelector(selectLivingRooms);
   const bedrooms = useSelector(selectBedrooms);
-  const storeroom = useSelector(selectStorerooms);
+
   const rooms = useSelector(selectRooms);
   const orientation = useSelector(selectOrientation);
   const floor = useSelector(selectFloor);

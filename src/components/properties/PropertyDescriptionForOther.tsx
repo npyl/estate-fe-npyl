@@ -26,7 +26,7 @@ import {
   selectPlayRoom,
   selectRooms,
   selectSea,
-  selectStorerooms,
+  selectStoreroomBool,
   selectViewType,
   selectZoneType,
   setAccessibility,
@@ -37,6 +37,7 @@ import {
   setOrientation,
   setPlayRoom,
   setRooms,
+  setStoreroomBool,
   setViewType,
   setZoneType,
 } from "src/slices/property";
@@ -69,7 +70,7 @@ const PropertyDescriptionForOtherSection: React.FC<any> = (props) => {
   const numOfWC = useSelector(selectNumOfWC);
   const livingRooms = useSelector(selectLivingRooms);
   const bedrooms = useSelector(selectBedrooms);
-  const storeroom = useSelector(selectStorerooms);
+  const storeroomBool = useSelector(selectStoreroomBool);
   const rooms = useSelector(selectRooms);
   const orientation = useSelector(selectOrientation);
   const floor = useSelector(selectFloor);
@@ -296,13 +297,13 @@ const PropertyDescriptionForOtherSection: React.FC<any> = (props) => {
           >
             <Checkbox
               id="outlined-controlled"
-              value={storeroom}
+              value={storeroomBool}
               placeholder="Play Room"
               onChange={(
                 event: React.ChangeEvent<unknown>,
                 checked: boolean
               ) => {
-                dispatch(setPlayRoom(checked));
+                dispatch(setStoreroomBool(checked));
               }}
               sx={{ cursor: "default" }}
               color="primary"
