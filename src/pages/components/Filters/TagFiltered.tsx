@@ -85,7 +85,11 @@ const TagFiltered = () => {
                     textTransform: "lowercase",
                   }}
                 >
-                  {changedProps[key]}
+                  {Array.isArray(changedProps[key])
+                    ? changedProps[key]
+                        .map((element: string) => element)
+                        .join(", ")
+                    : changedProps[key]}
                 </Typography>
               </Stack>
             }

@@ -115,22 +115,22 @@ const slice = createSlice({
 
     // multiple
     setCities(state, { payload }) {
-      // make sure we do not have duplicates
-      if (!state.cities.includes(payload)) return;
-
       state.cities = payload;
     },
     setStates(state, { payload }) {
-      // make sure we do not have duplicates
-      if (state.states.includes(payload)) return;
-
       state.states = payload;
     },
     setSubCategories(state, { payload }) {
-      // make sure we do not have duplicates
-      if (state.categories.includes(payload)) return;
-
       state.categories = payload;
+    },
+
+    deleteSubCategory(state, { payload }) {
+      state.categories = state.categories.filter(
+        (category) => category !== payload
+      );
+    },
+    deleteState(state, { payload }) {
+      state.states = state.states.filter((state) => state !== payload);
     },
 
     deleteFilter(state, { payload }) {
@@ -170,6 +170,9 @@ export const {
   setCities,
   setStates,
   setSubCategories,
+
+  deleteSubCategory,
+  deleteState,
 
   deleteFilter,
   resetState,
@@ -216,7 +219,6 @@ const sumOfChangedProperties = createSelector(
       "maxPrice",
       "minArea",
       "maxArea",
-      "category",
       "minBedrooms",
       "maxBedrooms",
       "minFloor",
