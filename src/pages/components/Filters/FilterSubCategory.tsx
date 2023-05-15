@@ -3,10 +3,14 @@ import {
   selectCategory,
   selectSubCategories,
   setSubCategories,
+  deleteSubCategory,
+  deleteFilter,
 } from "src/slices/filters";
 import { useDispatch, useSelector } from "src/store";
 import { useState, useMemo } from "react";
 import { useAllPropertyGlobalQuery } from "src/services/global";
+
+import { IFilterOptions } from "./types";
 
 export default function SubCategorySelect() {
   const dispatch = useDispatch();
@@ -15,15 +19,6 @@ export default function SubCategorySelect() {
 
   const { data } = useAllPropertyGlobalQuery();
   const propertyEnums = data?.property;
-
-  interface IFilterOption {
-    label: string;
-    checked: boolean;
-  }
-
-  interface IFilterOptions {
-    [key: string]: IFilterOption;
-  }
 
   const initialOptions: IFilterOptions = {
     "": { label: "All Categories", checked: false },
@@ -65,18 +60,23 @@ export default function SubCategorySelect() {
       autoHighlight
       clearIcon={false}
       onChange={(e, option) => {
-        if (!option) return;
+        if (option === null) return;
 
-        // change checked status
-        const checked = subCategoryFilterOptions[option].checked;
-        subCategoryFilterOptions[option].checked = !checked; // toggle
+        const checked = subCategories.includes(option);
+        const newState = !checked;
 
-        dispatch(setSubCategories([...subCategories, option]));
+        if (option === "") {
+          dispatch(deleteFilter("categories"));
+          subCategoryFilterOptions[""].checked = true;
+        } else
+          newState
+            ? dispatch(setSubCategories([...subCategories, option])) // add
+            : dispatch(deleteSubCategory(option)); // delete
       }}
       getOptionLabel={(option) => subCategoryFilterOptions[option].label}
       renderOption={(props, option) => (
         <Box {...props} component="li">
-          <Checkbox checked={subCategoryFilterOptions[option].checked} />
+          <Checkbox checked={subCategories.includes(option)} />
           {subCategoryFilterOptions[option].label}
         </Box>
       )}
