@@ -1,16 +1,15 @@
-import citiesJson from "src/json/countries.json";
+// import citiesJson from "src/json/countries.json";
 import { selectCity } from "src/slices/filters";
 import { useDispatch, useSelector } from "src/store";
-import { Feature } from "src/types/cities";
 
 export default function CountrySelect() {
   const dispatch = useDispatch();
   const selectedCity = useSelector(selectCity);
 
-  const cities: readonly Feature[] = citiesJson.features;
-  const cityNames = cities.map((city) => {
-    return city.properties.NAME;
-  });
+  // const cities: readonly Feature[] = citiesJson.features;
+  // const cityNames = cities.map((city) => {
+  //   return city.properties.NAME;
+  // });
 
   return (
     <></>
