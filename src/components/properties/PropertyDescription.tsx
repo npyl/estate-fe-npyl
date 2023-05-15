@@ -25,7 +25,7 @@ import {
   selectPenthouse,
   selectPlayRoom,
   selectRooms,
-  selectStorerooms,
+  selectStoreroomBool,
   selectViewType,
   selectZoneType,
   setAccessibility,
@@ -42,6 +42,7 @@ import {
   setPenthouse,
   setPlayRoom,
   setRooms,
+  setStoreroomBool,
   setViewType,
   setZoneType,
 } from "src/slices/property";
@@ -73,13 +74,63 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
   const numOfWC = useSelector(selectNumOfWC);
   const livingRooms = useSelector(selectLivingRooms);
   const bedrooms = useSelector(selectBedrooms);
-  const storeroom = useSelector(selectStorerooms);
+  const storeroomBool = useSelector(selectStoreroomBool);
   const rooms = useSelector(selectRooms);
   const orientation = useSelector(selectOrientation);
   const floor = useSelector(selectFloor);
 
   if (!enums || !details) return null;
 
+  //set the values for BE
+  const handleBedroomsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setBedrooms(numericValue));
+  };
+  const handleLayersChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setLayers(numericValue));
+  };
+  const handleKitchensChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setKitchens(numericValue));
+  };
+  const handleLivingRoomsChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setLivingRooms(numericValue));
+  };
+  const handleNumOfWCChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setNumOfWC(numericValue));
+  };
+  const handleBathroomsChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setBathrooms(numericValue));
+  };
+  const handleRoomsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setRooms(numericValue));
+  };
+
+  //handle onlynumbers
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const keyCode = event.keyCode || event.which;
+    const keyValue = String.fromCharCode(keyCode);
+    const regex = /[0-9]/;
+    if (!regex.test(keyValue)) {
+      event.preventDefault(); // Prevent entering non-numeric characters
+    }
+  };
   return (
     <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
       <Box
@@ -127,9 +178,8 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               label="Bedrooms"
               placeholder=""
               value={bedrooms}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setBedrooms(event.target.value));
-              }}
+              onChange={handleBedroomsChange}
+              onKeyPress={handleKeyPress}
               InputProps={{
                 style: {
                   height: "38px",
@@ -145,9 +195,8 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               label="Layers"
               value={layers}
               placeholder=""
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setLayers(event.target.value));
-              }}
+              onChange={handleLayersChange}
+              onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
                   height: "8px",
@@ -164,9 +213,8 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               label="Kitchens"
               value={kitchens}
               placeholder="1,2,3..."
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setKitchens(event.target.value));
-              }}
+              onChange={handleKitchensChange}
+              onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
                   height: "8px",
@@ -181,9 +229,8 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               label="Living Rooms"
               value={livingRooms}
               placeholder="1,2,3..."
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setLivingRooms(event.target.value));
-              }}
+              onChange={handleLivingRoomsChange}
+              onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
                   height: "8px",
@@ -199,9 +246,8 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               label="Number of WC"
               value={numOfWC}
               placeholder="1,2,3..."
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setNumOfWC(event.target.value));
-              }}
+              onChange={handleNumOfWCChange}
+              onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
                   height: "8px",
@@ -217,9 +263,8 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               label="Bathrooms"
               value={bathrooms}
               placeholder="1,2,3..."
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setBathrooms(event.target.value));
-              }}
+              onChange={handleBathroomsChange}
+              onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
                   height: "8px",
@@ -333,9 +378,8 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               label="Rooms"
               value={rooms}
               placeholder=""
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setRooms(event.target.value));
-              }}
+              onChange={handleRoomsChange}
+              onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
                   height: "8px",
@@ -425,13 +469,13 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
           >
             <Checkbox
               id="outlined-controlled"
-              value={storeroom}
-              placeholder="Play Room"
+              value={setStoreroomBool}
+              placeholder="storer room"
               onChange={(
                 event: React.ChangeEvent<unknown>,
                 checked: boolean
               ) => {
-                dispatch(setPlayRoom(checked));
+                dispatch(setStoreroomBool(checked));
               }}
               sx={{ cursor: "default" }}
               color="primary"

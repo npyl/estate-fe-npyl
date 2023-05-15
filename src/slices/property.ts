@@ -449,8 +449,8 @@ const slice = createSlice({
     setBedrooms(state: propertyState, action): void {
       state.details.bedrooms = action.payload;
     },
-    setStorerooms(state: propertyState, action): void {
-      // state.details.Storerooms = action.payload;
+    setStoreroom(state: propertyState, action): void {
+      state.areas.storeroom = action.payload;
     },
     setAvgUtils(state: propertyState, action): void {
       state.averageUtils = action.payload;
@@ -472,8 +472,8 @@ const slice = createSlice({
     setGarden(state: propertyState, action): void {
       state.areas.garden = action.payload;
     },
-    setStoreRooms(state: propertyState, action): void {
-      // state.details.Storerooms = action.payload;
+    setStoreroomBool(state: propertyState, action): void {
+      state.details.storeroom = action.payload;
     },
 
     setHeatingType(state: propertyState, action): void {
@@ -493,7 +493,9 @@ const slice = createSlice({
     setParkingType(state: propertyState, action): void {},
     setSpots(state: propertyState, action): void {},
     setBalconySide(state: propertyState, action): void {},
-    setBalconies(state: propertyState, action): void {},
+    setBalconies(state: propertyState, action): void {
+      state.areas.balconies;
+    },
     // END TODO
 
     setYearOfConstruction(state: propertyState, action): void {
@@ -1001,7 +1003,8 @@ export const {
   setNumOfWC,
   setLivingRooms,
   setBedrooms,
-  setStorerooms,
+  setStoreroom,
+  setStoreroomBool,
   setCovered,
   setAvgUtils,
   setHeatingType,
@@ -1136,8 +1139,8 @@ export const selectLivingRooms = ({ property }: RootState) => -1;
 // property.details.livingRooms;
 export const selectBedrooms = ({ property }: RootState) =>
   property.details.bedrooms;
-export const selectStorerooms = ({ property }: RootState) => -1;
-// property.details.Storerooms;
+export const selectStoreroomBool = ({ property }: RootState) =>
+  property.details.storeroom;
 export const selectAvgUtils = ({ property }: RootState) =>
   property.averageUtils;
 export const selectRooms = ({ property }: RootState) => property.details.rooms;
@@ -1262,14 +1265,14 @@ export const selectHasAttic = ({ property }: RootState) =>
   property.details.attic;
 export const selectGarden = ({ property }: RootState) => property.areas.garden;
 export const selectStoreroom = ({ property }: RootState) =>
-  property.details.storeroom;
+  property.areas.storeroom;
 
 // TODO: these are needed foreach parking & each balcony; How should we do it?
 export const selectParkingType = ({ property }: RootState) => "Garage";
 export const selectSpots = ({ property }: RootState) => 0;
 export const selectBalconySide = ({ property }: RootState) => "Front";
-export const selectBalconies = ({ property }: RootState) => 0;
-// END TODO
+export const selectBalconies = ({ property }: RootState) =>
+  property.areas.balconies;
 
 export const selectPublicTransportation = ({ property }: RootState) =>
   property.distances.publicTransport;

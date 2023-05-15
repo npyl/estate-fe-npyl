@@ -42,7 +42,26 @@ const LocationSection: React.FC<any> = (props) => {
   const orientation = useSelector(selectOrientation);
 
   if (!details || !details.orientation) return null;
-
+  //set the values for BE
+  const handleNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setNumber(numericValue));
+  };
+  const handleZipCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setZipCode(numericValue));
+  };
+  //handle onlynumbers
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const keyCode = event.keyCode || event.which;
+    const keyValue = String.fromCharCode(keyCode);
+    const regex = /[0-9]/;
+    if (!regex.test(keyValue)) {
+      event.preventDefault(); // Prevent entering non-numeric characters
+    }
+  };
   return (
     <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
       <Box
@@ -81,9 +100,8 @@ const LocationSection: React.FC<any> = (props) => {
               id="outlined-controlled"
               label="Number*"
               value={number}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setNumber(event.target.value));
-              }}
+              onChange={handleNumberChange}
+              onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
                   height: "8px",
@@ -129,9 +147,8 @@ const LocationSection: React.FC<any> = (props) => {
               id="outlined-controlled"
               label="Zip Code*"
               value={zipCode}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setZipCode(event.target.value));
-              }}
+              onChange={handleZipCodeChange}
+              onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
                   height: "8px",

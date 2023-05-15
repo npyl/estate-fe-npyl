@@ -25,7 +25,7 @@ import {
   selectPenthouse,
   selectPlayRoom,
   selectRooms,
-  selectStorerooms,
+  selectStoreroomBool,
   selectViewType,
   selectZoneType,
   setAccessibility,
@@ -37,6 +37,7 @@ import {
   setPlayRoom,
   setRooms,
   setZoneType,
+  setStoreroomBool,
 } from "src/slices/property";
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 const ariaLabel = { "aria-label": "description" };
@@ -66,7 +67,7 @@ const PropertyDescriptionForCommercialSection: React.FC<any> = (props) => {
   const numOfWC = useSelector(selectNumOfWC);
   const livingRooms = useSelector(selectLivingRooms);
   const bedrooms = useSelector(selectBedrooms);
-  const storeroom = useSelector(selectStorerooms);
+  const storeroomBool = useSelector(selectStoreroomBool);
   const rooms = useSelector(selectRooms);
   const orientation = useSelector(selectOrientation);
   const floor = useSelector(selectFloor);
@@ -267,13 +268,13 @@ const PropertyDescriptionForCommercialSection: React.FC<any> = (props) => {
           >
             <Checkbox
               id="outlined-controlled"
-              value={storeroom}
+              value={storeroomBool}
               placeholder="Play Room"
               onChange={(
                 event: React.ChangeEvent<unknown>,
                 checked: boolean
               ) => {
-                dispatch(setPlayRoom(checked));
+                dispatch(setStoreroomBool(checked));
               }}
               sx={{ cursor: "default" }}
               color="primary"
