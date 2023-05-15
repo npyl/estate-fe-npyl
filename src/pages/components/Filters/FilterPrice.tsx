@@ -16,11 +16,11 @@ import {
   selectMaxPrice,
   selectMinArea,
   selectMinPrice,
-  selectState,
   setMaxArea,
   setMaxPrice,
   setMinArea,
   setMinPrice,
+  selectStates,
 } from "src/slices/filters";
 import { useDispatch, useSelector } from "src/store";
 import { StyledBox, StyledPriceButton } from "./styles";
@@ -56,7 +56,7 @@ const RangeSelect = ({ type }: { type: string }) => {
 
   const valueMin = useSelector(selectMinValue);
   const valueMax = useSelector(selectMaxValue);
-  const state = useSelector(selectState);
+  const states = useSelector(selectStates);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
@@ -88,8 +88,8 @@ const RangeSelect = ({ type }: { type: string }) => {
   }, [type]);
 
   const values = useMemo(() => {
-    return generateNumbers(state, type);
-  }, [state, type]);
+    return generateNumbers(states, type);
+  }, [states, type]);
 
   const customWidth = useMemo(() => {
     return (valueMin.toString().length + valueMax.toString().length) * 10 + 130;
@@ -218,7 +218,7 @@ const RangeSelect = ({ type }: { type: string }) => {
 function formatNumber(num: number) {
   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 }
-function generateNumbers(state: string, type: string) {
+function generateNumbers(states: string[], type: string) {
   const numbers = [];
 
   const HUNDRED_K = 100 * 1000;
@@ -227,7 +227,7 @@ function generateNumbers(state: string, type: string) {
   const TEN_K = 10 * 1000;
 
   if (type === "price") {
-    if (state === "Sale") {
+    if (states.includes("Sale")) {
       for (let i = TEN_K; i <= TEN_M; i += HUNDRED_K - TEN_K) {
         numbers.push(i);
       }
