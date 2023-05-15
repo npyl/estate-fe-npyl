@@ -1,5 +1,6 @@
 import { combineReducers } from "@reduxjs/toolkit";
 
+import { labels } from "src/services/labels";
 import { note } from "src/services/note";
 import { auth } from "../services/auth";
 import { customers } from "../services/customers";
@@ -19,6 +20,7 @@ export const rootReducer = combineReducers({
   [customers.reducerPath]: customers.reducer,
   [global.reducerPath]: global.reducer,
   [note.reducerPath]: note.reducer,
+  [labels.reducerPath]: labels.reducer,
   property: propertyReducer,
   tabs: tabsReducer,
   filters: filtersReducer,

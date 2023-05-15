@@ -1,3 +1,4 @@
+import LabelImportantIcon from "@mui/icons-material/LabelImportant";
 import {
   Box,
   Drawer,
@@ -42,19 +43,19 @@ const getSections = (t: TFunction): Section[] => [
       {
         title: t("Properties"),
         path: "/",
-        icon: <HomeIcon fontSize="small" />,
+        icon: <HomeIcon fontSize='small' />,
       },
 
       {
         title: t("Customers"),
         path: "/customers",
-        icon: <UsersIcon fontSize="small" />,
+        icon: <UsersIcon fontSize='small' />,
       },
 
       {
         title: t("Labels"),
         path: "/label",
-        icon: <UsersIcon fontSize="small" />,
+        icon: <LabelImportantIcon fontSize='small' />,
       },
     ],
   },
@@ -141,7 +142,7 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
   if (lgUp) {
     return (
       <Drawer
-        anchor="left"
+        anchor='left'
         open
         PaperProps={{
           sx: {
@@ -153,7 +154,7 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
             width: 200,
           },
         }}
-        variant="permanent"
+        variant='permanent'
       >
         {content}
       </Drawer>
@@ -162,7 +163,7 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
 
   return (
     <Drawer
-      anchor="left"
+      anchor='left'
       onClose={onClose}
       open={open}
       PaperProps={{
@@ -174,12 +175,12 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
         },
       }}
       sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
-      variant="temporary"
+      variant='temporary'
     >
       {open && (
         <Box p={2}>
-          <Link href="/">
-            <Typography color="neutral.900" variant={"h5"}>
+          <Link href='/'>
+            <Typography color='neutral.900' variant={"h5"}>
               Estate
             </Typography>
           </Link>

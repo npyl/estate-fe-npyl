@@ -6,15 +6,16 @@ import {
   useSelector as useReduxSelector,
 } from "react-redux";
 import type { ThunkAction } from "redux-thunk";
+import { global } from "src/services/global";
+import { labels } from "src/services/labels";
+import { note } from "src/services/note";
 import { auth } from "../services/auth";
+import { customers } from "../services/customers";
 import { document } from "../services/document";
 import { rtkQueryErrorLogger } from "../services/error";
 import { properties } from "../services/properties";
-import { customers } from "../services/customers";
 import { user } from "../services/user";
 import { rootReducer } from "./root-reducer";
-import { global } from "src/services/global";
-import { note } from "src/services/note";
 export const createStore = (
   options?: ConfigureStoreOptions["preloadedState"] | undefined
 ) =>
@@ -41,6 +42,7 @@ export const createStore = (
         customers.middleware,
         global.middleware,
         note.middleware,
+        labels.middleware,
         rtkQueryErrorLogger
       ),
     ...options,

@@ -1,127 +1,247 @@
+import ColorizeIcon from "@mui/icons-material/Colorize";
 import {
   Box,
-  Grid,
-  TextField,
-  Paper,
-  Typography,
   Button,
-  Chip,
-  ChipProps,
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Grid,
+  MenuItem,
+  Paper,
+  Radio,
+  RadioGroup,
+  Select,
+  Stack,
+  TextField,
+  Typography,
 } from "@mui/material";
 import type { NextPage } from "next";
-import { useRouter } from "next/router";
-import { useState, useRef } from "react";
-
+import React, { useRef, useState } from "react";
+import { BlockPicker } from "react-color";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-
-import { BlockPicker } from "react-color";
-import { Stack } from "@mui/material";
-
-import PropTypes from "prop-types";
-import { styled, alpha } from "@mui/system";
-
-import Label from "src/components/label/Label";
-
+import Label from "src/components/label";
+import { useGetLabelsQuery } from "src/services/labels";
 const SingleProperty: NextPage = () => {
   const [pickerColor, setPickerColor] = useState("#22194d");
-  const [labelName, setLabelName] = useState("Label");
+  const [labelName, setLabelName] = useState("Νέα Ετικέτα");
   const [openPicker, setOpenPicker] = useState(false);
-
+  const { data: labels } = useGetLabelsQuery();
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   const handleChangeComplete = (color: any) => {
     setPickerColor(color.hex);
+    setOpenPicker(false);
   };
 
-  return (
-    <Box sx={{ width: "100%", paddingY: 3 }}>
-      <Paper sx={{ borderBottom: 1, borderColor: "divider", paddingX: 3 }}>
-        <Grid container direction={"row"}>
-          <Grid item xs={6} p={2}>
-            <Typography variant="h5">New</Typography>
+  const [value, setValue] = React.useState("");
+  const [newTags, setNewTags] = React.useState<string[]>([]);
+  const [checked, setChecked] = React.useState(true);
 
-            <Grid container direction={"row"}>
-              <Grid item xs={6}>
-                <Stack
-                  p={2}
-                  spacing={1}
-                  sx={{
-                    border: 1,
-                    borderColor: "divider",
-                    borderRadius: 1,
-                    width: { md: "60%", sm: "100%" },
-                  }}
+  const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChecked(event.target.checked);
+  };
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setValue((event.target as HTMLInputElement).value);
+  };
+  return (
+    <Grid container direction={"row"} gap={1} paddingY={3}>
+      <Grid component={Paper} item xs={12} sm={4} p={2}>
+        <Typography variant='h5'>Δημιουργία νέας</Typography>
+        <Stack spacing={3} mt={2}>
+          <Stack spacing={1}>
+            <FormControl>
+              <FormLabel id='demo-controlled-radio-buttons-group'>
+                <Typography
+                  variant='subtitle2'
+                  sx={{ color: "text.secondary" }}
                 >
+                  Επιλέξτε ετικέτα για:
+                </Typography>
+              </FormLabel>
+              <RadioGroup
+                row
+                aria-labelledby='demo-controlled-radio-buttons-group'
+                name='controlled-radio-buttons-group'
+                value={value}
+                onChange={handleChange}
+              >
+                <FormControlLabel
+                  value='property'
+                  control={<Radio />}
+                  label='Ακίνητο'
+                />
+                <FormControlLabel
+                  value='customer'
+                  control={<Radio />}
+                  label='Πελάτης'
+                />
+              </RadioGroup>
+            </FormControl>
+            {value && (
+              <FormControl>
+                <FormLabel id='demo-controlled-radio-buttons-group'>
+                  <Typography
+                    variant='subtitle2'
+                    sx={{ color: "text.secondary" }}
+                  >
+                    Εισάγετε όνομα:
+                  </Typography>
+                </FormLabel>
+                <Stack direction={"row"} spacing={1}>
                   <TextField
-                    fullWidth
-                    id="outlined-select-currency"
-                    label="Label Name"
+                    id='outlined-select-currency'
                     value={labelName}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                       setLabelName(event.target.value);
                     }}
-                  ></TextField>
+                  />
 
-                  <Stack>
-                    <Button
-                      onClick={() => {
-                        setOpenPicker(!openPicker);
+                  <Button
+                    variant='outlined'
+                    onClick={() => {
+                      setOpenPicker(!openPicker);
+                    }}
+                    ref={buttonRef}
+                  >
+                    <ColorizeIcon />
+                  </Button>
+
+                  {openPicker && buttonRef.current && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        zIndex: "2",
+                        top: `${
+                          buttonRef.current.offsetTop +
+                          buttonRef.current.offsetHeight +
+                          10
+                        }px`,
+                        left: `${buttonRef.current.offsetLeft + 13}px`,
                       }}
-                      ref={buttonRef}
                     >
-                      Color
-                    </Button>
-
-                    {openPicker && buttonRef.current && (
                       <div
                         style={{
-                          position: "absolute",
-                          zIndex: "2",
-                          top: `${
-                            buttonRef.current.offsetTop +
-                            buttonRef.current.offsetHeight +
-                            10
-                          }px`,
-                          left: `${buttonRef.current.offsetLeft + 13}px`,
+                          position: "fixed",
                         }}
-                      >
-                        <div
-                          style={{
-                            position: "fixed",
-                          }}
-                          onClick={() => {
-                            setOpenPicker(false);
-                          }}
-                        />
-                        <BlockPicker
-                          color={pickerColor}
-                          onChangeComplete={handleChangeComplete}
-                        />
-                      </div>
-                    )}
-                  </Stack>
-                  <Stack>
-                    <Button>Create</Button>
-                  </Stack>
+                        onClick={() => {
+                          setOpenPicker(false);
+                        }}
+                      />
+                      <BlockPicker
+                        color={pickerColor}
+                        onChangeComplete={handleChangeComplete}
+                      />
+                    </div>
+                  )}
                 </Stack>
-              </Grid>
-              <Grid item>
+                <FormControl>
+                  <Stack direction={"row"} paddingTop={2} spacing={3}>
+                    <FormLabel id='demo-controlled-radio-buttons-group'>
+                      <Typography
+                        variant='subtitle2'
+                        sx={{ color: "text.secondary" }}
+                      >
+                        Προεπισκόπιση:
+                      </Typography>
+                    </FormLabel>
+                    <Label
+                      variant='soft'
+                      sx={{
+                        bgcolor: pickerColor,
+                        borderRadius: 7,
+                        color: "white",
+                      }}
+                    >
+                      {labelName}
+                    </Label>
+                  </Stack>
+                  <Stack paddingTop={1} direction={"row"} alignItems={"center"}>
+                    <FormLabel id='demo-controlled-radio-buttons-group'>
+                      <Typography
+                        variant='subtitle2'
+                        sx={{ color: "text.secondary" }}
+                      >
+                        Επιθυμείτε ανάθεση τώρα;
+                      </Typography>
+                    </FormLabel>
+                    <Checkbox
+                      checked={checked}
+                      onChange={handleCheck}
+                      inputProps={{ "aria-label": "controlled" }}
+                    />
+                  </Stack>
+                  {checked && (
+                    <Select
+                      sx={{ width: "50%", marginBottom: 2 }}
+                      labelId='demo-simple-select-label'
+                      id='demo-simple-select'
+                      value={0}
+
+                      // onChange={handleChange}
+                    >
+                      <MenuItem value={0}>Κανένας</MenuItem>
+                    </Select>
+                  )}
+                  <Button
+                    variant='outlined'
+                    onClick={() => {
+                      setOpenPicker(!openPicker);
+                    }}
+                    ref={buttonRef}
+                  >
+                    Δημιουργία
+                  </Button>
+                </FormControl>
+              </FormControl>
+            )}
+          </Stack>
+        </Stack>
+      </Grid>
+
+      <Grid component={Paper} item xs={12} sm p={2}>
+        <Stack direction={"column"} spacing={3}>
+          <Typography variant='h5'>Προβολή υπαρχόντων</Typography>
+          <Box gap={1} display={"flex"}>
+            <Typography variant='h6' color={"text.secondary"}>
+              Ακίμητα:
+            </Typography>
+            {labels &&
+              labels?.propertyLabels.map((label: any) => (
                 <Label
-                  variant="soft"
-                  sx={{ bgcolor: pickerColor, borderRadius: 7, color: "white" }}
+                  key={label.id}
+                  variant='soft'
+                  sx={{
+                    borderRadius: 7,
+                    color: "white",
+                  }}
                 >
-                  {labelName}
+                  {label.name}
                 </Label>
-              </Grid>
-            </Grid>
-          </Grid>
-          <Grid item xs={6}>
-            <Typography variant="h5">Labels</Typography>
-          </Grid>
-        </Grid>
-      </Paper>
-    </Box>
+              ))}
+          </Box>
+          <Box gap={1} display={"flex"}>
+            <Typography variant='h6' color={"text.secondary"}>
+              Πελάτες:
+            </Typography>
+            {labels &&
+              labels?.customerLabels.map((label: any) => (
+                <Label
+                  key={label.id}
+                  variant='soft'
+                  sx={{
+                    borderRadius: 7,
+                    color: "white",
+                  }}
+                >
+                  {label.name}
+                </Label>
+              ))}
+          </Box>
+        </Stack>
+      </Grid>
+    </Grid>
   );
 };
 
