@@ -7,6 +7,15 @@ interface ILabels {
   propertyLabels: ILabel[];
 }
 
+interface ILabelForPropertyProps {
+  propertyId: number;
+  labelBody: ILabel;
+}
+interface ILabelForCustomerProps {
+  customerId: number;
+  labelBody: ILabel;
+}
+
 export const labels = createApi({
   reducerPath: "labels",
   baseQuery: fetchBaseQuery({
@@ -32,15 +41,27 @@ export const labels = createApi({
       }),
       providesTags: ["Labels"],
     }),
-    createLabelForProperty: builder.mutation<ILabels, ILabel>({
-      query: (data: ILabel) => ({
-        url: "property",
+    createLabelForProperty: builder.mutation<ILabels, ILabelForPropertyProps>({
+      query: (data: ILabelForPropertyProps) => ({
+        url: `property/${data.propertyId}`,
         method: "POST",
-        body: data,
+        body: data.labelBody,
+      }),
+      invalidatesTags: ["Labels"],
+    }),
+    createLabelForCustomer: builder.mutation<ILabels, ILabelForCustomerProps>({
+      query: (data: ILabelForCustomerProps) => ({
+        url: `customer/${data.customerId}`,
+        method: "POST",
+        body: data.labelBody,
       }),
       invalidatesTags: ["Labels"],
     }),
   }),
 });
 
-export const { useGetLabelsQuery, useCreateLabelForPropertyMutation } = labels;
+export const {
+  useGetLabelsQuery,
+  useCreateLabelForPropertyMutation,
+  useCreateLabelForCustomerMutation,
+} = labels;

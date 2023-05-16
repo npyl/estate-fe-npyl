@@ -23,6 +23,7 @@ import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import Label from "src/components/label";
 import {
   useCreateLabelForPropertyMutation,
+  useCreateLabelForCustomerMutation,
   useGetLabelsQuery,
 } from "src/services/labels";
 import { useAllPropertiesQuery } from "src/services/properties";
@@ -91,7 +92,10 @@ const SingleProperty: NextPage = () => {
 
   const createLabel = () => {
     if (assigneeType === "property")
-      createLabelForProperty({ color: pickerColor, name: labelName });
+      createLabelForProperty({
+        propertyId: 1,
+        labelBody: { color: pickerColor, name: labelName },
+      });
     // else if (assigneeType === 'customer')
   };
 
