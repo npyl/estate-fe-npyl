@@ -15,10 +15,17 @@ import LocationSection from "./Location";
 import PropertyDescriptionForOtherSection from "./PropertyDescriptionForOther";
 import SuitableForForOtherSection from "./SuitableForForOther";
 import TechnicalFeaturesAndInteriorForOtherSection from "./TechnicalFeaturesAndInteriorForOther";
+import ROISection from "./ROI";
+import { useDispatch, useSelector } from "react-redux";
 
+import { selectState, setState } from "src/slices/property";
 const OtherFormSection: React.FC<any> = (props) => {
+  const { data } = useAllPropertyGlobalQuery();
+  const enums: IGlobalProperty = data?.property as IGlobalProperty;
   const [files, setFiles] = useState<(File | string)[]>([]);
   const [fileData, setFileData] = useState<(File | string)[]>([]);
+  const state = useSelector(selectState);
+  const stateEnum = enums?.state;
 
   return (
     <>
@@ -26,6 +33,7 @@ const OtherFormSection: React.FC<any> = (props) => {
         <Grid item xs={6} spacing={1} order={"row"}>
           <Stack spacing={1}>
             <BasicSection />
+            {state === "Sale" && <ROISection />}
 
             <PropertyDescriptionForOtherSection />
             <ConstructionForOtherSection />

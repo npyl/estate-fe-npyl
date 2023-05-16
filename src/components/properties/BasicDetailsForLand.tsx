@@ -1,5 +1,14 @@
 import { DatePicker } from "@mui/lab";
-import { Checkbox, Grid, MenuItem, Paper, TextField } from "@mui/material";
+import {
+  Checkbox,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+  TextField,
+} from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
@@ -80,7 +89,7 @@ const BasicForLandSection: React.FC<any> = (props) => {
   const rentalPeriodEnd = useSelector(selectRentalPeriodEnd);
   const auction = useSelector(selectAuction);
   const debatablePrice = useSelector(selectDebatablePrice);
-
+  const stateEnum = enums?.state;
   // const [value, setValue] = React.useState<Date>(new Date());
   const handleDateChange = (date: Date | null) => {
     setAvailableAfter(date);
@@ -90,6 +99,53 @@ const BasicForLandSection: React.FC<any> = (props) => {
   const { data: owners } = useAllCustomersQuery();
   const { data: managers } = useAllUsersQuery();
   if (!enums) return null;
+
+  //set the values for BE
+  const handleCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setCode(numericValue));
+  };
+  const handleAreaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setArea(numericValue));
+  };
+  const handlePlotAreaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setPlotArea(numericValue));
+  };
+  const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setPrice(numericValue));
+  };
+
+  const handleCurrentRentPriceChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setCurrentRentPrice(numericValue));
+  };
+  const handleEstimatedRentPriceChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setEstimatedRentPrice(numericValue));
+  };
+
+  //handle onlynumbers
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const keyCode = event.keyCode || event.which;
+    const keyValue = String.fromCharCode(keyCode);
+    const regex = /[0-9]/;
+    if (!regex.test(keyValue)) {
+      event.preventDefault(); // Prevent entering non-numeric characters
+    }
+  };
   return (
     <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
       <Box
@@ -111,9 +167,8 @@ const BasicForLandSection: React.FC<any> = (props) => {
               id="outlined-start-adornment"
               label="Code"
               value={code}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setCode(event.target.value));
-              }}
+              onChange={handleCodeChange}
+              onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
                   height: "8px",
@@ -170,33 +225,26 @@ const BasicForLandSection: React.FC<any> = (props) => {
           </Grid>
 
           <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id="outlined-select-currency"
-              slot=""
-              select
-              label="State"
-              value={state}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setState(event.target.value));
-              }}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
-              size="small"
-            >
-              {enums && enums.state ? (
-                enums?.state.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))
-              ) : (
-                <MenuItem value={""}></MenuItem>
-              )}
-            </TextField>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">State</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={state}
+                label="State"
+                onChange={(e) => {
+                  dispatch(setState(e.target.value));
+                }}
+              >
+                {stateEnum.map((item, index) => {
+                  return (
+                    <MenuItem key={index} value={item}>
+                      {item}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
           </Grid>
           <Grid item xs={6}>
             <TextField
@@ -204,9 +252,8 @@ const BasicForLandSection: React.FC<any> = (props) => {
               id="outlined-select-currency"
               label="Area"
               value={area}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setArea(event.target.value));
-              }}
+              onChange={handleAreaChange}
+              onKeyPress={handleKeyPress}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">m²</InputAdornment>
@@ -225,9 +272,8 @@ const BasicForLandSection: React.FC<any> = (props) => {
               id="outlined-select-currency"
               label="Plot Area"
               value={plotArea}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setPlotArea(event.target.value));
-              }}
+              onChange={handlePlotAreaChange}
+              onKeyPress={handleKeyPress}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">m²</InputAdornment>
@@ -246,9 +292,8 @@ const BasicForLandSection: React.FC<any> = (props) => {
               id="outlined-select-currency"
               label="Price" /* < euro sticky to field> */
               value={price}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setPrice(event.target.value));
-              }}
+              onChange={handlePriceChange}
+              onKeyPress={handleKeyPress}
               InputProps={{
                 endAdornment: <InputAdornment position="end">€</InputAdornment>,
               }}
@@ -306,9 +351,8 @@ const BasicForLandSection: React.FC<any> = (props) => {
               id="outlined-select-currency"
               label="Current Rent Price" /* < euro sticky to field> */
               value={currentRentPrice}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setCurrentRentPrice(event.target.value));
-              }}
+              onChange={handleCurrentRentPriceChange}
+              onKeyPress={handleKeyPress}
               InputProps={{
                 endAdornment: <InputAdornment position="end">€</InputAdornment>,
               }}
@@ -326,9 +370,8 @@ const BasicForLandSection: React.FC<any> = (props) => {
               id="outlined-select-currency"
               label="Estimated Rent Price" /* < euro sticky to field> */
               value={estimatedRentPrice}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setEstimatedRentPrice(event.target.value));
-              }}
+              onChange={handleEstimatedRentPriceChange}
+              onKeyPress={handleKeyPress}
               InputProps={{
                 endAdornment: <InputAdornment position="end">€</InputAdornment>,
               }}

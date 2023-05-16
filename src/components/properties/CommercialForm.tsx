@@ -19,9 +19,30 @@ import SuitableForForCommercialSection from "./SuitableForForCommercial";
 import TechnicalFeaturesAndInteriorForCommercialSection from "./TechnicalFeaturesAndInteriorForCommercial";
 import DetailsSection from "./Details";
 
+import BalconiesSection from "./Balconies";
+
+import ConstructionForResidentialSection from "./ConstructionForResidential";
+
+import FeaturesSection from "./Features";
+
+import HeatingAndEnergySection from "./HeatingAndEnergy";
+
+import ParkingSection from "./Parking";
+import PropertyDescriptionSection from "./PropertyDescription";
+import SuitableForForResidentialSection from "./SuitableForForResidential";
+import TechnicalFeaturesAndInteriorForResidentialSection from "./TechnicalFeaturesAndInteriorForResidential";
+import ROISection from "./ROI";
+import { useDispatch, useSelector } from "react-redux";
+
+import { selectState, setState } from "src/slices/property";
+
 const CommercialFormSection: React.FC<any> = (props) => {
+  const { data } = useAllPropertyGlobalQuery();
+  const enums: IGlobalProperty = data?.property as IGlobalProperty;
   const [files, setFiles] = useState<(File | string)[]>([]);
   const [fileData, setFileData] = useState<(File | string)[]>([]);
+  const state = useSelector(selectState);
+  const stateEnum = enums?.state;
 
   return (
     <>
@@ -29,7 +50,7 @@ const CommercialFormSection: React.FC<any> = (props) => {
         <Grid item xs={6} spacing={1} order={"row"}>
           <Stack spacing={1}>
             <BasicSection />
-
+            {state === "Sale" && <ROISection />}
             <PropertyDescriptionForCommercialSection />
             <HeatingAndEnergyForResidentialSection />
             <AreasSection />

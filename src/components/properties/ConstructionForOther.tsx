@@ -52,6 +52,23 @@ const ConstructionForOtherSection: React.FC<any> = (props) => {
 
   if (!details || !details.heatingSystem || !details.heatingType) return null;
 
+  //set the values for BE
+  const handleYearOfConstructionChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setYearOfConstruction(numericValue));
+  };
+  //handle onlynumbers
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const keyCode = event.keyCode || event.which;
+    const keyValue = String.fromCharCode(keyCode);
+    const regex = /[0-9]/;
+    if (!regex.test(keyValue)) {
+      event.preventDefault(); // Prevent entering non-numeric characters
+    }
+  };
   return (
     <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
       <Box
@@ -73,9 +90,8 @@ const ConstructionForOtherSection: React.FC<any> = (props) => {
               id="outlined-controlled"
               label="Year of Construction"
               value={yearOfConstruction}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setYearOfConstruction(event.target.value));
-              }}
+              onChange={handleYearOfConstructionChange}
+              onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
                   height: "8px",

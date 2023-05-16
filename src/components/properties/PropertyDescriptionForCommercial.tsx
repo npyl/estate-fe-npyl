@@ -74,6 +74,38 @@ const PropertyDescriptionForCommercialSection: React.FC<any> = (props) => {
 
   if (!details) return null;
 
+  //set the values for BE
+  const handleLayersChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setLayers(numericValue));
+  };
+  const handleNumOfWCChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setNumOfWC(numericValue));
+  };
+  const handleBathroomsChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setBathrooms(numericValue));
+  };
+  const handleRoomsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setRooms(numericValue));
+  };
+  //handle onlynumbers
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const keyCode = event.keyCode || event.which;
+    const keyValue = String.fromCharCode(keyCode);
+    const regex = /[0-9]/;
+    if (!regex.test(keyValue)) {
+      event.preventDefault(); // Prevent entering non-numeric characters
+    }
+  };
   return (
     <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
       <Box
@@ -122,9 +154,8 @@ const PropertyDescriptionForCommercialSection: React.FC<any> = (props) => {
               label="Layers"
               value={layers}
               placeholder="1,2,3..."
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setLayers(event.target.value));
-              }}
+              onChange={handleLayersChange}
+              onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
                   height: "8px",
@@ -140,9 +171,8 @@ const PropertyDescriptionForCommercialSection: React.FC<any> = (props) => {
               label="Number of WC"
               value={numOfWC}
               placeholder="1,2,3..."
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setNumOfWC(event.target.value));
-              }}
+              onChange={handleNumOfWCChange}
+              onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
                   height: "8px",
@@ -158,9 +188,8 @@ const PropertyDescriptionForCommercialSection: React.FC<any> = (props) => {
               label="Bathrooms"
               value={bathrooms}
               placeholder="1,2,3..."
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setBathrooms(event.target.value));
-              }}
+              onChange={handleBathroomsChange}
+              onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
                   height: "8px",
@@ -249,9 +278,8 @@ const PropertyDescriptionForCommercialSection: React.FC<any> = (props) => {
               label="Rooms"
               value={rooms}
               placeholder="1,2,3..."
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setRooms(event.target.value));
-              }}
+              onChange={handleRoomsChange}
+              onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
                   height: "8px",

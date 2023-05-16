@@ -82,7 +82,7 @@ const LocationSection: React.FC<any> = (props) => {
             <TextField
               fullWidth
               id="outlined-controlled"
-              label="Street*"
+              label="Street"
               value={street}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setStreet(event.target.value));
@@ -98,7 +98,7 @@ const LocationSection: React.FC<any> = (props) => {
             <TextField
               fullWidth
               id="outlined-controlled"
-              label="Number*"
+              label="Number"
               value={number}
               onChange={handleNumberChange}
               onKeyPress={handleKeyPress}
@@ -113,7 +113,7 @@ const LocationSection: React.FC<any> = (props) => {
             <TextField
               fullWidth
               id="outlined-controlled"
-              label="City*"
+              label="City"
               value={city}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setCity(event.target.value));
@@ -145,7 +145,7 @@ const LocationSection: React.FC<any> = (props) => {
             <TextField
               fullWidth
               id="outlined-controlled"
-              label="Zip Code*"
+              label="Zip Code"
               value={zipCode}
               onChange={handleZipCodeChange}
               onKeyPress={handleKeyPress}
@@ -160,7 +160,7 @@ const LocationSection: React.FC<any> = (props) => {
             <TextField
               fullWidth
               id="outlined-controlled"
-              label="Region*"
+              label="Region"
               value={region}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setRegion(event.target.value));
@@ -176,7 +176,7 @@ const LocationSection: React.FC<any> = (props) => {
             <TextField
               fullWidth
               id="outlined-controlled"
-              label="Country*"
+              label="Country"
               value={country}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setCountry(event.target.value));

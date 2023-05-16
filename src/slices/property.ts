@@ -362,6 +362,9 @@ const slice = createSlice({
       state.estimatedRentPrice = action.payload;
     },
 
+    setCoverageFactor(state: propertyState, action): void {
+      state.technicalFeatures.coverageFactor = action.payload;
+    },
     setArea(state: propertyState, action): void {
       state.area = action.payload;
     },
@@ -888,6 +891,7 @@ const slice = createSlice({
 });
 
 export const {
+  setCoverageFactor,
   setSeaFront,
   setAgriculturalUse,
   setHeatedPool,

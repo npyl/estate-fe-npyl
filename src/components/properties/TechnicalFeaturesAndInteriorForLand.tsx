@@ -35,7 +35,7 @@ import {
   selectWiring,
   selectWithEquipment,
   setEntrances,
-  // setCoverageFactor,
+  setCoverageFactor,
   setFacadeLength,
   setFloorToAreaRatio,
 } from "src/slices/property";
@@ -90,6 +90,38 @@ const TechnicalFeaturesAndInteriorForLandSection: React.FC<any> = (props) => {
   const { data: owners } = useAllCustomersQuery();
   const { data: managers } = useAllUsersQuery();
   if (!enums) return null;
+
+  //set the values for BE
+  const handleFloorToAreaRatioChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setFloorToAreaRatio(numericValue));
+  };
+  const handleCoverageFactorChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setCoverageFactor(numericValue));
+  };
+  const handleFacadeLengthChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setFacadeLength(numericValue));
+  };
+  //handle onlynumbers
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const keyCode = event.keyCode || event.which;
+    const keyValue = String.fromCharCode(keyCode);
+    const regex = /[0-9]/;
+    if (!regex.test(keyValue)) {
+      event.preventDefault(); // Prevent entering non-numeric characters
+    }
+  };
   return (
     <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
       <Box
@@ -111,9 +143,8 @@ const TechnicalFeaturesAndInteriorForLandSection: React.FC<any> = (props) => {
               id="outlined-controlled"
               label="Floor To Area Ratio"
               value={floorToAreaRatio}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setFloorToAreaRatio(event.target.value));
-              }}
+              onChange={handleFloorToAreaRatioChange}
+              onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
                   height: "8px",
@@ -127,9 +158,8 @@ const TechnicalFeaturesAndInteriorForLandSection: React.FC<any> = (props) => {
               id="outlined-controlled"
               label="Coverage Factor"
               value={coverageFactor}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setEntrances(event.target.value));
-              }}
+              onChange={handleCoverageFactorChange}
+              onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
                   height: "8px",
@@ -143,9 +173,8 @@ const TechnicalFeaturesAndInteriorForLandSection: React.FC<any> = (props) => {
               id="outlined-controlled"
               label="Facade Length"
               value={facadeLength}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setFacadeLength(event.target.value));
-              }}
+              onChange={handleFacadeLengthChange}
+              onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
                   height: "8px",
