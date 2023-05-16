@@ -32,7 +32,6 @@ const SingleProperty: NextPage = () => {
 
   const handleChangeComplete = (color: any) => {
     setPickerColor(color.hex);
-    setOpenPicker(false);
   };
 
   const [value, setValue] = React.useState("");
@@ -48,13 +47,13 @@ const SingleProperty: NextPage = () => {
   return (
     <Grid container direction={"row"} gap={1} paddingY={3}>
       <Grid component={Paper} item xs={12} sm={4} p={2}>
-        <Typography variant='h5'>Δημιουργία νέας</Typography>
+        <Typography variant="h5">Δημιουργία νέας</Typography>
         <Stack spacing={3} mt={2}>
           <Stack spacing={1}>
             <FormControl>
-              <FormLabel id='demo-controlled-radio-buttons-group'>
+              <FormLabel id="demo-controlled-radio-buttons-group">
                 <Typography
-                  variant='subtitle2'
+                  variant="subtitle2"
                   sx={{ color: "text.secondary" }}
                 >
                   Επιλέξτε ετικέτα για:
@@ -62,28 +61,28 @@ const SingleProperty: NextPage = () => {
               </FormLabel>
               <RadioGroup
                 row
-                aria-labelledby='demo-controlled-radio-buttons-group'
-                name='controlled-radio-buttons-group'
+                aria-labelledby="demo-controlled-radio-buttons-group"
+                name="controlled-radio-buttons-group"
                 value={value}
                 onChange={handleChange}
               >
                 <FormControlLabel
-                  value='property'
+                  value="property"
                   control={<Radio />}
-                  label='Ακίνητο'
+                  label="Ακίνητο"
                 />
                 <FormControlLabel
-                  value='customer'
+                  value="customer"
                   control={<Radio />}
-                  label='Πελάτης'
+                  label="Πελάτης"
                 />
               </RadioGroup>
             </FormControl>
             {value && (
               <FormControl>
-                <FormLabel id='demo-controlled-radio-buttons-group'>
+                <FormLabel id="demo-controlled-radio-buttons-group">
                   <Typography
-                    variant='subtitle2'
+                    variant="subtitle2"
                     sx={{ color: "text.secondary" }}
                   >
                     Εισάγετε όνομα:
@@ -91,7 +90,7 @@ const SingleProperty: NextPage = () => {
                 </FormLabel>
                 <Stack direction={"row"} spacing={1}>
                   <TextField
-                    id='outlined-select-currency'
+                    id="outlined-select-currency"
                     value={labelName}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                       setLabelName(event.target.value);
@@ -99,7 +98,7 @@ const SingleProperty: NextPage = () => {
                   />
 
                   <Button
-                    variant='outlined'
+                    variant="outlined"
                     onClick={() => {
                       setOpenPicker(!openPicker);
                     }}
@@ -109,45 +108,36 @@ const SingleProperty: NextPage = () => {
                   </Button>
 
                   {openPicker && buttonRef.current && (
-                    <div
+                    <Box
                       style={{
                         position: "absolute",
-                        zIndex: "2",
-                        top: `${
+                        left: buttonRef.current.offsetLeft - 60,
+                        top:
                           buttonRef.current.offsetTop +
                           buttonRef.current.offsetHeight +
-                          10
-                        }px`,
-                        left: `${buttonRef.current.offsetLeft + 13}px`,
+                          10,
+                        zIndex: 999,
                       }}
                     >
-                      <div
-                        style={{
-                          position: "fixed",
-                        }}
-                        onClick={() => {
-                          setOpenPicker(false);
-                        }}
-                      />
                       <BlockPicker
                         color={pickerColor}
                         onChangeComplete={handleChangeComplete}
                       />
-                    </div>
+                    </Box>
                   )}
                 </Stack>
                 <FormControl>
                   <Stack direction={"row"} paddingTop={2} spacing={3}>
-                    <FormLabel id='demo-controlled-radio-buttons-group'>
+                    <FormLabel id="demo-controlled-radio-buttons-group">
                       <Typography
-                        variant='subtitle2'
+                        variant="subtitle2"
                         sx={{ color: "text.secondary" }}
                       >
                         Προεπισκόπιση:
                       </Typography>
                     </FormLabel>
                     <Label
-                      variant='soft'
+                      variant="soft"
                       sx={{
                         bgcolor: pickerColor,
                         borderRadius: 7,
@@ -158,9 +148,9 @@ const SingleProperty: NextPage = () => {
                     </Label>
                   </Stack>
                   <Stack paddingTop={1} direction={"row"} alignItems={"center"}>
-                    <FormLabel id='demo-controlled-radio-buttons-group'>
+                    <FormLabel id="demo-controlled-radio-buttons-group">
                       <Typography
-                        variant='subtitle2'
+                        variant="subtitle2"
                         sx={{ color: "text.secondary" }}
                       >
                         Επιθυμείτε ανάθεση τώρα;
@@ -175,8 +165,8 @@ const SingleProperty: NextPage = () => {
                   {checked && (
                     <Select
                       sx={{ width: "50%", marginBottom: 2 }}
-                      labelId='demo-simple-select-label'
-                      id='demo-simple-select'
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
                       value={0}
 
                       // onChange={handleChange}
@@ -185,7 +175,7 @@ const SingleProperty: NextPage = () => {
                     </Select>
                   )}
                   <Button
-                    variant='outlined'
+                    variant="outlined"
                     onClick={() => {
                       setOpenPicker(!openPicker);
                     }}
@@ -202,16 +192,16 @@ const SingleProperty: NextPage = () => {
 
       <Grid component={Paper} item xs={12} sm p={2}>
         <Stack direction={"column"} spacing={3}>
-          <Typography variant='h5'>Προβολή υπαρχόντων</Typography>
+          <Typography variant="h5">Προβολή υπαρχόντων</Typography>
           <Box gap={1} display={"flex"}>
-            <Typography variant='h6' color={"text.secondary"}>
-              Ακίμητα:
+            <Typography variant="h6" color={"text.secondary"}>
+              Ακίνητα:
             </Typography>
             {labels &&
               labels?.propertyLabels.map((label: any) => (
                 <Label
                   key={label.id}
-                  variant='soft'
+                  variant="soft"
                   sx={{
                     borderRadius: 7,
                     color: "white",
@@ -222,14 +212,14 @@ const SingleProperty: NextPage = () => {
               ))}
           </Box>
           <Box gap={1} display={"flex"}>
-            <Typography variant='h6' color={"text.secondary"}>
+            <Typography variant="h6" color={"text.secondary"}>
               Πελάτες:
             </Typography>
             {labels &&
               labels?.customerLabels.map((label: any) => (
                 <Label
                   key={label.id}
-                  variant='soft'
+                  variant="soft"
                   sx={{
                     borderRadius: 7,
                     color: "white",
