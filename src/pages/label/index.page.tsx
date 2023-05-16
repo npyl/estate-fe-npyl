@@ -23,6 +23,7 @@ import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import Label from "src/components/label";
 import { useGetLabelsQuery } from "src/services/labels";
+
 const SingleProperty: NextPage = () => {
   const [pickerColor, setPickerColor] = useState("#22194d");
   const [labelName, setLabelName] = useState("Νέα Ετικέτα");
@@ -34,16 +35,26 @@ const SingleProperty: NextPage = () => {
     setPickerColor(color.hex);
   };
 
-  const [value, setValue] = React.useState("");
+  const [assigneeType, setAssigneeType] = React.useState("");
   const [newTags, setNewTags] = React.useState<string[]>([]);
   const [checked, setChecked] = React.useState(true);
 
   const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked);
   };
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue((event.target as HTMLInputElement).value);
+  const handleAssigneeTypeChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setAssigneeType((event.target as HTMLInputElement).value);
   };
+
+  const createLabel = () => {};
+
+  const assignToItems = [
+    assigneeType === "property" && <MenuItem value={0}>Κανένα</MenuItem>,
+    assigneeType === "customer" && <MenuItem value={0}>Κανένας</MenuItem>,
+  ];
+
   return (
     <Grid container direction={"row"} gap={1} paddingY={3}>
       <Grid component={Paper} item xs={12} sm={4} p={2}>
@@ -63,8 +74,8 @@ const SingleProperty: NextPage = () => {
                 row
                 aria-labelledby="demo-controlled-radio-buttons-group"
                 name="controlled-radio-buttons-group"
-                value={value}
-                onChange={handleChange}
+                value={assigneeType}
+                onChange={handleAssigneeTypeChange}
               >
                 <FormControlLabel
                   value="property"
@@ -78,7 +89,7 @@ const SingleProperty: NextPage = () => {
                 />
               </RadioGroup>
             </FormControl>
-            {value && (
+            {assigneeType && (
               <FormControl>
                 <FormLabel id="demo-controlled-radio-buttons-group">
                   <Typography
@@ -171,16 +182,12 @@ const SingleProperty: NextPage = () => {
 
                       // onChange={handleChange}
                     >
-                      <MenuItem value={0}>Κανένας</MenuItem>
+                      {assignToItems.map((item) => {
+                        return item;
+                      })}
                     </Select>
                   )}
-                  <Button
-                    variant="outlined"
-                    onClick={() => {
-                      setOpenPicker(!openPicker);
-                    }}
-                    ref={buttonRef}
-                  >
+                  <Button variant="outlined" onClick={createLabel}>
                     Δημιουργία
                   </Button>
                 </FormControl>
