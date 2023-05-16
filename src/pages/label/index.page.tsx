@@ -86,8 +86,9 @@ const SingleProperty: NextPage = () => {
     setAutocompleteValue(""); // clear
     setAssigneeType((event.target as HTMLInputElement).value);
   };
-  const autocompleteChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAutocompleteValue(event.target.value);
+  const autocompleteChange = (_event: any, value: string) => {
+    if (!value) return;
+    setAutocompleteValue(value);
   };
   const handleSearch = (value: string) => {
     if (!value) return;
