@@ -29,6 +29,8 @@ import {
 import { useAllPropertiesQuery } from "src/services/properties";
 import { useAllCustomersQuery } from "src/services/customers";
 import { ILabel } from "src/types/label";
+import { IProperties } from "src/types/properties";
+import { ICustomer } from "src/types/customer";
 
 const SingleProperty: NextPage = () => {
   const [pickerColor, setPickerColor] = useState("#22194d");
@@ -56,6 +58,7 @@ const SingleProperty: NextPage = () => {
           }),
       }),
     }).data || [];
+  const allProperties: IProperties[] = useAllPropertiesQuery().data || [];
 
   const customers: string[] =
     useAllCustomersQuery(undefined, {
@@ -69,6 +72,7 @@ const SingleProperty: NextPage = () => {
           }),
       }),
     }).data || [];
+  const allCustomers: ICustomer[] = useAllCustomersQuery().data || [];
 
   const handleChangeComplete = (color: any) => {
     setPickerColor(color.hex);
@@ -93,16 +97,38 @@ const SingleProperty: NextPage = () => {
   };
 
   const createLabel = () => {
-    if (assigneeType === "property")
+    const propertyIdForCode = (code: string) => {
+      const property = allProperties.find(
+        (property) => property.code.toString() === code
+      );
+      return property?.id;
+    };
+    const customerIdForFullname = (fullname: string) => {
+      const customer = allCustomers.find(
+        (customer) => customer.firstName + " " + customer.lastName === fullname
+      );
+      return customer?.id;
+    };
+
+    if (assigneeType === "property") {
+      const propertyId = propertyIdForCode(autocompleteValue);
+
+      if (!propertyId) return null;
+
       createLabelForProperty({
-        propertyId: 1,
+        propertyId: propertyId,
         labelBody: { color: pickerColor, name: labelName },
       });
-    else if (assigneeType === "customer")
+    } else if (assigneeType === "customer") {
+      const customerId = customerIdForFullname(autocompleteValue);
+
+      if (!customerId) return null;
+
       createLabelForCustomer({
-        customerId: 1,
+        customerId: customerId,
         labelBody: { color: pickerColor, name: labelName },
       });
+    }
   };
 
   return (
