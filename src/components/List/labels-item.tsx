@@ -1,5 +1,6 @@
-import { Chip, ListItemProps } from "@mui/material";
+import { ListItemProps } from "@mui/material";
 import { Typography } from "@mui/material";
+import Label from "../label/Label";
 import type { FC } from "react";
 
 import ListItem from "./item";
@@ -23,12 +24,9 @@ const ListLabelsItem: FC<ListLabelsItemProps> = (props) => {
       >
         {labels.map((label, index) => {
           return (
-            <Chip
-              key={index}
-              label={label.name}
-              color="info"
-              sx={{ mr: 1 }}
-            ></Chip>
+            <Label key={index} sx={{ bgcolor: label.color, mr: 1 }}>
+              {label.name}
+            </Label>
           );
         })}
       </Typography>
