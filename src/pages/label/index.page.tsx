@@ -41,8 +41,10 @@ const SingleProperty: NextPage = () => {
   const [searchText, setSearchText] = useState<string>("");
   const [autocompleteValue, setAutocompleteValue] = useState("");
 
-  const [createLabelForProperty, { isSuccess }] =
+  const [createLabelForProperty, { isSuccess: createForPropertySuccess }] =
     useCreateLabelForPropertyMutation();
+  const [createLabelForCustomer, { isSuccess: createForCustomerSuccess }] =
+    useCreateLabelForCustomerMutation();
 
   const properties: string[] =
     useAllPropertiesQuery(undefined, {
@@ -96,7 +98,11 @@ const SingleProperty: NextPage = () => {
         propertyId: 1,
         labelBody: { color: pickerColor, name: labelName },
       });
-    // else if (assigneeType === 'customer')
+    else if (assigneeType === "customer")
+      createLabelForCustomer({
+        customerId: 1,
+        labelBody: { color: pickerColor, name: labelName },
+      });
   };
 
   return (
