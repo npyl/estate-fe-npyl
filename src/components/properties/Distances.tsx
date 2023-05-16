@@ -40,6 +40,58 @@ const DistancesSection: React.FC<any> = (props) => {
   const airport = useSelector(selectAirport);
   const sea = useSelector(selectSea);
 
+  //set the values for BE
+  const handlePublicTransportationChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setPublicTransportation(numericValue));
+  };
+  const handleSeaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setSea(numericValue));
+  };
+  const handleSchoolsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setSchools(numericValue));
+  };
+  const handleSupermarketChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setSupermarket(numericValue));
+  };
+  const handleCafeRestaurantChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setCafeRestaurant(numericValue));
+  };
+  const handleHospitalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setHospital(numericValue));
+  };
+  const handleAirportChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setAirport(numericValue));
+  };
+
+  //handle onlynumbers
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const keyCode = event.keyCode || event.which;
+    const keyValue = String.fromCharCode(keyCode);
+    const regex = /[0-9]/;
+    if (!regex.test(keyValue)) {
+      event.preventDefault(); // Prevent entering non-numeric characters
+    }
+  };
   return (
     <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
       <Box
@@ -61,9 +113,8 @@ const DistancesSection: React.FC<any> = (props) => {
               id="outlined-controlled"
               label="Public Transportation"
               value={publicTransportation}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setPublicTransportation(event.target.value));
-              }}
+              onChange={handlePublicTransportationChange}
+              onKeyPress={handleKeyPress}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">km</InputAdornment>
@@ -83,9 +134,8 @@ const DistancesSection: React.FC<any> = (props) => {
               id="outlined-controlled"
               label="Sea"
               value={sea}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setSea(event.target.value));
-              }}
+              onChange={handleSeaChange}
+              onKeyPress={handleKeyPress}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">km</InputAdornment>
@@ -104,9 +154,8 @@ const DistancesSection: React.FC<any> = (props) => {
               id="outlined-controlled"
               label="Schools"
               value={schools}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setSchools(event.target.value));
-              }}
+              onChange={handleSchoolsChange}
+              onKeyPress={handleKeyPress}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">km</InputAdornment>
@@ -125,9 +174,8 @@ const DistancesSection: React.FC<any> = (props) => {
               id="outlined-controlled"
               label="Supermarket"
               value={supermarket}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setSupermarket(event.target.value));
-              }}
+              onChange={handleSupermarketChange}
+              onKeyPress={handleKeyPress}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">km</InputAdornment>
@@ -146,9 +194,8 @@ const DistancesSection: React.FC<any> = (props) => {
               id="outlined-controlled"
               label="Cafe-Restaurant"
               value={cafeRestaurant}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setCafeRestaurant(event.target.value));
-              }}
+              onChange={handleCafeRestaurantChange}
+              onKeyPress={handleKeyPress}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">km</InputAdornment>
@@ -167,9 +214,8 @@ const DistancesSection: React.FC<any> = (props) => {
               id="outlined-controlled"
               label="Hospital"
               value={hospital}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setHospital(event.target.value));
-              }}
+              onChange={handleHospitalChange}
+              onKeyPress={handleKeyPress}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">km</InputAdornment>
@@ -188,9 +234,8 @@ const DistancesSection: React.FC<any> = (props) => {
               id="outlined-controlled"
               label="Airport"
               value={airport}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setAirport(event.target.value));
-              }}
+              onChange={handleAirportChange}
+              onKeyPress={handleKeyPress}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">km</InputAdornment>

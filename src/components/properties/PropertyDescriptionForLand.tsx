@@ -70,6 +70,21 @@ const PropertyDescriptionForLandSection: React.FC<any> = (props) => {
 
   if (!details) return null;
 
+  //set the values for BE
+  const handleSeaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setSea(numericValue));
+  };
+  //handle onlynumbers
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const keyCode = event.keyCode || event.which;
+    const keyValue = String.fromCharCode(keyCode);
+    const regex = /[0-9]/;
+    if (!regex.test(keyValue)) {
+      event.preventDefault(); // Prevent entering non-numeric characters
+    }
+  };
   return (
     <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
       <Box
@@ -164,9 +179,8 @@ const PropertyDescriptionForLandSection: React.FC<any> = (props) => {
               id="outlined-controlled"
               label=" Distance From Sea"
               value={sea}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setSea(event.target.value));
-              }}
+              onChange={handleSeaChange}
+              onKeyPress={handleKeyPress}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">km</InputAdornment>

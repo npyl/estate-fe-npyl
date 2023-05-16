@@ -105,6 +105,31 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
   const { data: owners } = useAllCustomersQuery();
   const { data: managers } = useAllUsersQuery();
   if (!enums) return null;
+
+  //set the values for BE
+  const handleDisplayWindowsLengthChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setDisplayWindowsLength(numericValue));
+  };
+  const handleEntrancesChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const input = event.target.value;
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+    dispatch(setEntrances(numericValue));
+  };
+  //handle onlynumbers
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const keyCode = event.keyCode || event.which;
+    const keyValue = String.fromCharCode(keyCode);
+    const regex = /[0-9]/;
+    if (!regex.test(keyValue)) {
+      event.preventDefault(); // Prevent entering non-numeric characters
+    }
+  };
   return (
     <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
       <Box
@@ -126,9 +151,8 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
               id="outlined-controlled"
               label="Display Window Length"
               value={displayWindowsLength}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setDisplayWindowsLength(event.target.value));
-              }}
+              onChange={handleDisplayWindowsLengthChange}
+              onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
                   height: "8px",
@@ -142,9 +166,8 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
               id="outlined-controlled"
               label="Entrances"
               value={entrances}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setEntrances(event.target.value));
-              }}
+              onChange={handleEntrancesChange}
+              onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
                   height: "8px",

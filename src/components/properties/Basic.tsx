@@ -1,5 +1,14 @@
 import { DatePicker } from "@mui/lab";
-import { Checkbox, Grid, MenuItem, Paper, TextField } from "@mui/material";
+import {
+  Checkbox,
+  FormControl,
+  Grid,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Select,
+  TextField,
+} from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
@@ -49,6 +58,7 @@ import { useAllUsersQuery } from "src/services/user";
 
 import { useState } from "react";
 import { useAllPropertyGlobalQuery } from "src/services/global";
+import ROISection from "./ROI";
 
 const BasicSection: React.FC<any> = (props) => {
   const [rentalPeriodStart, setRentalPeriodStart] = useState<Date | null>(
@@ -67,7 +77,7 @@ const BasicSection: React.FC<any> = (props) => {
   const manager = useSelector(selectManager);
   const currentRentPrice = useSelector(selectCurrentRentPrice);
   const estimatedRentPrice = useSelector(selectEstimatedRentPrice);
-  const state = useSelector(selectState);
+
   const price = useSelector(selectPrice);
   const keyCode = useSelector(selectKeyCode);
   const avgUtils = useSelector(selectAvgUtils);
@@ -79,6 +89,8 @@ const BasicSection: React.FC<any> = (props) => {
   const rentalPeriodEnd = useSelector(selectRentalPeriodEnd);
   const auction = useSelector(selectAuction);
   const debatablePrice = useSelector(selectDebatablePrice);
+  const state = useSelector(selectState);
+  const stateEnum = enums?.state;
 
   // const [value, setValue] = React.useState<Date>(new Date());
   const handleDateChange = (date: Date | null) => {
@@ -116,11 +128,7 @@ const BasicSection: React.FC<any> = (props) => {
     const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
     dispatch(setAvgUtils(numericValue));
   };
-  const handleKeyCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const input = event.target.value;
-    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
-    dispatch(setKeyCode(numericValue));
-  };
+
   const handleCurrentRentPriceChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -224,7 +232,27 @@ const BasicSection: React.FC<any> = (props) => {
           </Grid>
 
           <Grid item xs={6}>
-            <TextField
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">State</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={state}
+                label="State"
+                onChange={(e) => {
+                  dispatch(setState(e.target.value));
+                }}
+              >
+                {stateEnum.map((item, index) => {
+                  return (
+                    <MenuItem key={index} value={item}>
+                      {item}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
+            {/* <TextField
               fullWidth
               id="outlined-select-currency"
               slot=""
@@ -250,7 +278,7 @@ const BasicSection: React.FC<any> = (props) => {
               ) : (
                 <MenuItem value={""}></MenuItem>
               )}
-            </TextField>
+            </TextField> */}
           </Grid>
           <Grid item xs={6}>
             <TextField
@@ -332,35 +360,6 @@ const BasicSection: React.FC<any> = (props) => {
             />
           </Grid>
 
-          {/*εδω πάλι μου βγάζει ερρορ οταν βάζω τις ημερομηνίες και κάνω refresh το page */}
-          {/* <LocalizationProvider fullwidthdateAdapter={AdapterDayjs}>
-      <DemoContainer  components={['DatePicker']}>
-        <DatePicker label="Year of Constrution" />
-      </DemoContainer>
-    </LocalizationProvider>
-
-    <LocalizationProvider fullwidthdateAdapter={AdapterDayjs}>
-      <DemoContainer  components={['DatePicker']}>
-        <DatePicker label="Year of Renovation" />
-      </DemoContainer>
-    </LocalizationProvider> */}
-
-          {/* <Grid item xs={1} direction="row" left={2}>
-                          <FormGroup>
-                            <FormControlLabel
-                              control={<Checkbox />}
-                              label="Basement"
-                              value={basement}
-                              onChange={(
-                                event: React.ChangeEvent<unknown>,
-                                checked: boolean
-                              ) => {
-                                setBasements(checked);
-                              }}
-                            />
-                          </FormGroup>
-                        </Grid> */}
-
           <Grid
             item
             xs={6}
@@ -391,8 +390,9 @@ const BasicSection: React.FC<any> = (props) => {
               id="outlined-start-adornment"
               label="Key Code"
               value={keyCode}
-              onChange={handleKeyCodeChange}
-              onKeyPress={handleKeyPress}
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                dispatch(setKeyCode(event.target.value));
+              }}
               inputProps={{
                 style: {
                   height: "8px",
@@ -437,9 +437,7 @@ const BasicSection: React.FC<any> = (props) => {
               }}
             />
           </Grid>
-          {/* <MuiPickersUtilsProvider
-            utils={DateFnsUtils}
-          ></MuiPickersUtilsProvider> */}
+
           <Grid
             item
             xs={6}
@@ -517,8 +515,6 @@ const BasicSection: React.FC<any> = (props) => {
             </Typography>
           </Grid>
 
-          {/* <Grid item xs={6}></Grid> */}
-
           <Grid
             item
             xs={2}
@@ -543,28 +539,10 @@ const BasicSection: React.FC<any> = (props) => {
             </Typography>
           </Grid>
         </Grid>
+        <Grid></Grid>
       </Grid>
     </Paper>
   );
 };
 
 export default BasicSection;
-
-{
-  /* <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id="outlined-start-adornment"
-              label="Year of Renovation"
-              value={valueOfRenovation}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setValueOfRenovation(event.target.value));
-              }}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
-            />
-          </Grid> */
-}

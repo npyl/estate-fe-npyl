@@ -13,10 +13,18 @@ import LocationSection from "./Location";
 import PropertyDescriptionForLandSection from "./PropertyDescriptionForLand";
 import SuitableForForLandSection from "./SuitableForForLand";
 import TechnicalFeaturesAndInteriorForLandSection from "./TechnicalFeaturesAndInteriorForLand";
+import ROISection from "./ROI";
+import { useSelector } from "react-redux";
+
+import { selectState, setState } from "src/slices/property";
 
 const LandFormSection: React.FC<any> = (props) => {
   const [files, setFiles] = useState<(File | string)[]>([]);
   const [fileData, setFileData] = useState<(File | string)[]>([]);
+  const { data } = useAllPropertyGlobalQuery();
+  const enums: IGlobalProperty = data?.property as IGlobalProperty;
+  const state = useSelector(selectState);
+  const stateEnum = enums?.state;
 
   return (
     <>
@@ -24,6 +32,7 @@ const LandFormSection: React.FC<any> = (props) => {
         <Grid item xs={6} spacing={1} order={"row"}>
           <Stack spacing={1}>
             <BasicForLandSection />
+            {state === "Sale" && <ROISection />}
             <TechnicalFeaturesAndInteriorForLandSection />
             <PropertyDescriptionForLandSection />
             <FeaturesForLandSection />
