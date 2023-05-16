@@ -15,6 +15,7 @@ import {
   Stack,
   TextField,
   Typography,
+  Autocomplete,
 } from "@mui/material";
 import type { NextPage } from "next";
 import React, { useRef, useState } from "react";
@@ -23,6 +24,10 @@ import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import Label from "src/components/label";
 import { useGetLabelsQuery } from "src/services/labels";
+import { useAllPropertiesQuery } from "src/services/properties";
+import { IProperties } from "src/types/properties";
+import { useMemo } from "react";
+import { useAllCustomersQuery } from "src/services/customers";
 
 const SingleProperty: NextPage = () => {
   const [pickerColor, setPickerColor] = useState("#22194d");
@@ -36,7 +41,6 @@ const SingleProperty: NextPage = () => {
   };
 
   const [assigneeType, setAssigneeType] = React.useState("");
-  const [newTags, setNewTags] = React.useState<string[]>([]);
   const [checked, setChecked] = React.useState(true);
 
   const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,12 +52,40 @@ const SingleProperty: NextPage = () => {
     setAssigneeType((event.target as HTMLInputElement).value);
   };
 
-  const createLabel = () => {};
+  const [autocompleteValue, setAutocompleteValue] = useState<string>("");
 
-  const assignToItems = [
-    assigneeType === "property" && <MenuItem value={0}>Κανένα</MenuItem>,
-    assigneeType === "customer" && <MenuItem value={0}>Κανένας</MenuItem>,
-  ];
+  const properties: string[] =
+    useAllPropertiesQuery(undefined, {
+      selectFromResult: ({ data }) => ({
+        data: data
+          ?.filter((property) => property.code !== null)
+          .map((property) => {
+            return property.code.toString();
+          }),
+      }),
+    }).data || [];
+
+  const customers: string[] =
+    useAllCustomersQuery(undefined, {
+      selectFromResult: ({ data }) => ({
+        data: data
+          ?.filter(
+            (customer) => customer.id && customer.firstName && customer.lastName
+          )
+          .map((customer) => {
+            return customer.firstName + " " + customer.lastName;
+          }),
+      }),
+    }).data || [];
+
+  const handleSearch = (value: string) => {
+    if (!value) return;
+    if (value.length < 3) return;
+
+    setAutocompleteValue(value);
+  };
+
+  const createLabel = () => {};
 
   return (
     <Grid container direction={"row"} gap={1} paddingY={3}>
@@ -174,18 +206,24 @@ const SingleProperty: NextPage = () => {
                     />
                   </Stack>
                   {checked && (
-                    <Select
+                    <Autocomplete
+                      disablePortal
+                      id="combo-box-demo"
+                      options={
+                        assigneeType === "property" ? properties : customers
+                      }
                       sx={{ width: "50%", marginBottom: 2 }}
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={0}
-
-                      // onChange={handleChange}
-                    >
-                      {assignToItems.map((item) => {
-                        return item;
-                      })}
-                    </Select>
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          onChange={(
+                            event: React.ChangeEvent<HTMLInputElement>
+                          ) => {
+                            handleSearch(event.target.value);
+                          }}
+                        />
+                      )}
+                    />
                   )}
                   <Button variant="outlined" onClick={createLabel}>
                     Δημιουργία
