@@ -7,11 +7,9 @@ import {
   FormControlLabel,
   FormLabel,
   Grid,
-  MenuItem,
   Paper,
   Radio,
   RadioGroup,
-  Select,
   Stack,
   TextField,
   Typography,
@@ -23,11 +21,13 @@ import { BlockPicker } from "react-color";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import Label from "src/components/label";
-import { useGetLabelsQuery } from "src/services/labels";
+import {
+  useCreateLabelForPropertyMutation,
+  useGetLabelsQuery,
+} from "src/services/labels";
 import { useAllPropertiesQuery } from "src/services/properties";
-import { IProperties } from "src/types/properties";
-import { useMemo } from "react";
 import { useAllCustomersQuery } from "src/services/customers";
+import { ILabel } from "src/types/label";
 
 const SingleProperty: NextPage = () => {
   const [pickerColor, setPickerColor] = useState("#22194d");
@@ -35,24 +35,13 @@ const SingleProperty: NextPage = () => {
   const [openPicker, setOpenPicker] = useState(false);
   const { data: labels } = useGetLabelsQuery();
   const buttonRef = useRef<HTMLButtonElement>(null);
-
-  const handleChangeComplete = (color: any) => {
-    setPickerColor(color.hex);
-  };
-
   const [assigneeType, setAssigneeType] = React.useState("");
   const [checked, setChecked] = React.useState(true);
+  const [searchText, setSearchText] = useState<string>("");
+  const [autocompleteValue, setAutocompleteValue] = useState("");
 
-  const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked(event.target.checked);
-  };
-  const handleAssigneeTypeChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setAssigneeType((event.target as HTMLInputElement).value);
-  };
-
-  const [autocompleteValue, setAutocompleteValue] = useState<string>("");
+  const [createLabelForProperty, { isSuccess }] =
+    useCreateLabelForPropertyMutation();
 
   const properties: string[] =
     useAllPropertiesQuery(undefined, {
@@ -78,14 +67,33 @@ const SingleProperty: NextPage = () => {
       }),
     }).data || [];
 
+  const handleChangeComplete = (color: any) => {
+    setPickerColor(color.hex);
+  };
+  const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChecked(event.target.checked);
+  };
+  const handleAssigneeTypeChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setAutocompleteValue(""); // clear
+    setAssigneeType((event.target as HTMLInputElement).value);
+  };
+  const autocompleteChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setAutocompleteValue(event.target.value);
+  };
   const handleSearch = (value: string) => {
     if (!value) return;
     if (value.length < 3) return;
 
-    setAutocompleteValue(value);
+    setSearchText(value);
   };
 
-  const createLabel = () => {};
+  const createLabel = () => {
+    if (assigneeType === "property")
+      createLabelForProperty({ color: pickerColor, name: labelName });
+    // else if (assigneeType === 'customer')
+  };
 
   return (
     <Grid container direction={"row"} gap={1} paddingY={3}>
@@ -209,6 +217,8 @@ const SingleProperty: NextPage = () => {
                     <Autocomplete
                       disablePortal
                       id="combo-box-demo"
+                      value={autocompleteValue}
+                      onChange={autocompleteChange}
                       options={
                         assigneeType === "property" ? properties : customers
                       }
@@ -243,13 +253,14 @@ const SingleProperty: NextPage = () => {
               Ακίνητα:
             </Typography>
             {labels &&
-              labels?.propertyLabels.map((label: any) => (
+              labels?.propertyLabels.map((label: ILabel) => (
                 <Label
                   key={label.id}
                   variant="soft"
                   sx={{
                     borderRadius: 7,
                     color: "white",
+                    bgcolor: label.color,
                   }}
                 >
                   {label.name}
@@ -261,13 +272,14 @@ const SingleProperty: NextPage = () => {
               Πελάτες:
             </Typography>
             {labels &&
-              labels?.customerLabels.map((label: any) => (
+              labels?.customerLabels.map((label: ILabel) => (
                 <Label
                   key={label.id}
                   variant="soft"
                   sx={{
                     borderRadius: 7,
                     color: "white",
+                    bgcolor: label.color,
                   }}
                 >
                   {label.name}
