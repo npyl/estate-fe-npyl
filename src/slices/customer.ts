@@ -84,6 +84,10 @@ const slice = createSlice({
       state.preferredLanguage = action.payload;
     },
 
+    addLabel(state: customerState, { payload }): void {
+      state.labels.push(payload);
+    },
+
     // TODO
     // setSuggestedBy(state: customerState, action): void {
     //   state.suggestedBy = action.payload;
@@ -131,6 +135,9 @@ export const {
   setDateOfBirth,
   setLeadSource,
   setPreferredLanguage,
+
+  // labels
+  addLabel,
 
   // location
   setStreet,

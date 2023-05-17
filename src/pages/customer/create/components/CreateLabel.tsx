@@ -18,19 +18,26 @@ import {
   DialogContentText,
 } from "@mui/material";
 
-import * as React from "react";
-import { useSelector } from "react-redux";
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import ColorizeIcon from "@mui/icons-material/Colorize";
 
+import * as React from "react";
 import { useState, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 import { useGetLabelsQuery } from "src/services/labels";
 
 import Label from "src/components/label/Label";
 
 import { BlockPicker } from "react-color";
+
+import { addLabel } from "src/slices/customer";
+
+import { ILabel } from "src/types/label";
+
+import { selectLabels } from "src/slices/customer";
 
 const CreateLabel: React.FC<any> = (props) => {
   const [addLabelDialog, setAddLabelDialog] = useState(false);
@@ -43,6 +50,10 @@ const CreateLabel: React.FC<any> = (props) => {
   const [assigneeType, setAssigneeType] = React.useState("");
   const [checked, setChecked] = React.useState(true);
 
+  const addedLabels = useSelector(selectLabels);
+
+  const dispatch = useDispatch();
+
   const handleChangeComplete = (color: any) => {
     setPickerColor(color.hex);
   };
@@ -51,6 +62,12 @@ const CreateLabel: React.FC<any> = (props) => {
   ) => {
     setAssigneeType((event.target as HTMLInputElement).value);
   };
+
+  const clickLabel = (e: any) => {
+    const newLabel: ILabel = { name: "test", color: "red" };
+    dispatch(addLabel(newLabel));
+  };
+
   const createLabel = () => {};
 
   return (
@@ -78,6 +95,25 @@ const CreateLabel: React.FC<any> = (props) => {
           <AddCircleIcon />
         </IconButton>
       </Box>
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+        {addedLabels &&
+          addedLabels.length > 0 &&
+          addedLabels.map((label, index) => {
+            return (
+              <Label
+                key={index}
+                variant="soft"
+                sx={{
+                  bgcolor: label.color,
+                  borderRadius: 7,
+                  color: "white",
+                }}
+              >
+                {label.name}
+              </Label>
+            );
+          })}
+      </Box>
 
       <Dialog
         fullWidth
@@ -88,9 +124,29 @@ const CreateLabel: React.FC<any> = (props) => {
         }}
         closeAfterTransition={true}
       >
-        <DialogTitle>Add Label</DialogTitle>
-        <DialogContentText ml={3}>Customer Labels</DialogContentText>
+        <DialogTitle variant="h5">Προσθήκη Υπάρχουσας</DialogTitle>
         <DialogContent>
+          <DialogContentText>Customer Labels</DialogContentText>
+          <Stack direction={"row"} spacing={1}>
+            {labels?.customerLabels.map((label, index) => {
+              return (
+                <Label
+                  key={index}
+                  variant="soft"
+                  onClick={clickLabel}
+                  sx={{
+                    bgcolor: label.color,
+                    borderRadius: 7,
+                    color: "white",
+                    "&:hover": { pointer: "cursor" },
+                  }}
+                >
+                  {label.name}
+                </Label>
+              );
+            })}
+          </Stack>
+
           <Typography variant="h5">Δημιουργία νέας</Typography>
           <Stack spacing={3} mt={2}>
             <Stack spacing={1}>
