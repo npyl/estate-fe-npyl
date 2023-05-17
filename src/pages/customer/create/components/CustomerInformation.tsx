@@ -8,6 +8,7 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Rating,
 } from "@mui/material";
 import * as React from "react";
 import { useAllPropertyGlobalQuery } from "src/services/global";
@@ -279,19 +280,33 @@ const CustomerInformation: React.FC<any> = (props) => {
             />
           </Grid>
           <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id="outlined-controlled"
-              label="Status STARS!!!"
-              //   value={storeroom}
-              //   onChange={handleStoreroomChange}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
+            <Box
+              sx={{
+                border: 1,
+                borderColor: "divider",
+                borderRadius: 1,
+                height: "100%",
+                px: 3,
+                py: 1.5,
+                display: "flex",
+                justifyContent: "center",
               }}
-            />
+              flexDirection={"column"}
+            >
+              <Box sx={{ display: "flex", justifyContent: "center" }}>
+                <Typography variant="h6">Status</Typography>
+              </Box>
+
+              <Box sx={{ display: "flex", justifyContent: "center", py: 1.5 }}>
+                <Rating
+                  name="simple-controlled"
+                  // value={}
+                  onChange={(event, newValue) => {
+                    // setValue(newValue);
+                  }}
+                />
+              </Box>
+            </Box>
           </Grid>
         </Grid>
       </Grid>
