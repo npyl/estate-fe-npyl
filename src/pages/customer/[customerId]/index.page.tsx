@@ -16,20 +16,39 @@ import TechnicalFeaturesAndInteriorForResidentialSection from "src/components/pr
 import { ImageSection } from "src/pages/property/[propertyId]/components/sections";
 import CustomerInformationSection from "./components/sections/customerInformationSection";
 import BasicSection from "src/components/properties/Basic";
+import CustomerLocationSection from "./components/sections/customerAdressSection";
+import CustomerAdressDetailsSection from "./components/sections/customerAdressSection";
+
+import { useGetCustomerByIdQuery } from "src/services/customers";
+import { useRouter } from "next/router";
+import NotesCustomerSection from "./components/sections/notesCustomerSection";
+import MatchingPropertiesSection from "./components/sections/matchingPropertiesSection";
+import OwnedCustomerPropertiesSection from "./components/sections/ownedCustomerPropertiesSection";
+import DemandCustomerSection from "./components/sections/demandCustomerSection";
 
 const CustomerView: NextPage = () => {
+  const router = useRouter();
+  const { customerId } = router.query;
+  const { data } = useGetCustomerByIdQuery(parseInt(customerId as string)); // basic details
   return (
     <>
       <Grid container paddingTop={1} paddingRight={1} spacing={1}>
         {/* customer info */}
         <Grid item xs={6} spacing={1} order={"row"}>
-          <Stack spacing={1}></Stack>
-          <CustomerInformationSection />
+          <Stack spacing={1}>
+            <CustomerInformationSection />
+            <DemandCustomerSection />
+            <CustomerAdressDetailsSection />
+            <NotesCustomerSection />
+          </Stack>
         </Grid>
 
         {/* propertiesview */}
         <Grid item xs={6} spacing={1}>
-          <Stack spacing={1}></Stack>
+          <Stack spacing={1}>
+            <MatchingPropertiesSection />
+            <OwnedCustomerPropertiesSection />
+          </Stack>
         </Grid>
       </Grid>
     </>
