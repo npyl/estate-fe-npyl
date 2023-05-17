@@ -140,7 +140,7 @@ const CreateLabel: React.FC<any> = (props) => {
                     bgcolor: label.color,
                     borderRadius: 7,
                     color: "white",
-                    "&:hover": { pointer: "cursor" },
+                    "&:hover": { cursor: "pointer" },
                   }}
                 >
                   {label.name}
