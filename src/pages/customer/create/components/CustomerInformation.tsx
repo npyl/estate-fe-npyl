@@ -9,10 +9,19 @@ import {
   Select,
   MenuItem,
   Rating,
+  IconButton,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogContentText,
 } from "@mui/material";
 import * as React from "react";
 import { useAllPropertyGlobalQuery } from "src/services/global";
 import { useAllUsersQuery } from "src/services/user";
+
+import { useState } from "react";
+
+import CreateLabel from "./CreateLabel";
 
 import {
   // getters
@@ -224,21 +233,6 @@ const CustomerInformation: React.FC<any> = (props) => {
             <TextField
               fullWidth
               id="outlined-controlled"
-              label="Labels"
-              value={labels}
-              //   onChange={handleStoreroomChange}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id="outlined-controlled"
               label="Nationality"
               value={nationality}
               onChange={(e) => {
@@ -385,6 +379,9 @@ const CustomerInformation: React.FC<any> = (props) => {
                 />
               </Box>
             </Box>
+          </Grid>
+          <Grid item xs={6}>
+            <CreateLabel />
           </Grid>
         </Grid>
       </Grid>
