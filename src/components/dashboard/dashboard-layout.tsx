@@ -1,5 +1,7 @@
 import AddIcon from "@mui/icons-material/Add";
 import HomeIcon from "@mui/icons-material/Home";
+import LabelImportantIcon from "@mui/icons-material/LabelImportant";
+
 import { Box, Button, Divider, MenuItem, Paper, Stack } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useRouter } from "next/router";
@@ -41,6 +43,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
   const propertyItemType = "property-menu-item";
   const managerItemType = "manager-menu-item";
   const ownerItemType = "owner-menu-item";
+  const labelItemType = "label-menu-item";
 
   interface tabConfigProp {
     title: string;
@@ -73,6 +76,9 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
     } else if (itemType === ownerItemType) {
       title = "Create Owner";
       path = "/customer/create";
+    } else if (itemType === labelItemType) {
+      title = "Create Label";
+      path = "/label";
     }
 
     tabConfig = {
@@ -114,11 +120,11 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
               <Subbar />
               <Button
                 sx={{ minWidth: "90px", marginRight: "15px" }}
-                id='create-menu-button'
+                id="create-menu-button"
                 aria-controls={open ? "create-menu" : undefined}
-                aria-haspopup='true'
+                aria-haspopup="true"
                 aria-expanded={open ? "true" : undefined}
-                variant='contained'
+                variant="contained"
                 disableElevation
                 onClick={showDropdown}
               >
@@ -127,7 +133,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
               </Button>
 
               <StyledMenu
-                id='create-menu'
+                id="create-menu"
                 MenuListProps={{
                   "aria-labelledby": "create-menu-button",
                 }}
@@ -154,6 +160,13 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
                   disableRipple
                 >
                   Owner
+                </MenuItem>
+                <MenuItem
+                  onClick={(e) => startCreate(e, labelItemType)}
+                  disableRipple
+                >
+                  <LabelImportantIcon fontSize="small" />
+                  Label
                 </MenuItem>
               </StyledMenu>
             </Stack>

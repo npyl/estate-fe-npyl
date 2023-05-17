@@ -1,13 +1,19 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-interface LabelProps {
-  id: number;
-  name: "string";
-}
+import { ILabel } from "src/types/label";
 
 interface ILabels {
-  customerLabels: LabelProps[];
-  propertyLabels: LabelProps[];
+  customerLabels: ILabel[];
+  propertyLabels: ILabel[];
+}
+
+interface ILabelForPropertyProps {
+  propertyId: number;
+  labelBody: ILabel;
+}
+interface ILabelForCustomerProps {
+  customerId: number;
+  labelBody: ILabel;
 }
 
 export const labels = createApi({
@@ -35,7 +41,27 @@ export const labels = createApi({
       }),
       providesTags: ["Labels"],
     }),
+    createLabelForProperty: builder.mutation<ILabels, ILabelForPropertyProps>({
+      query: (data: ILabelForPropertyProps) => ({
+        url: `property/${data.propertyId}`,
+        method: "POST",
+        body: data.labelBody,
+      }),
+      invalidatesTags: ["Labels"],
+    }),
+    createLabelForCustomer: builder.mutation<ILabels, ILabelForCustomerProps>({
+      query: (data: ILabelForCustomerProps) => ({
+        url: `customer/${data.customerId}`,
+        method: "POST",
+        body: data.labelBody,
+      }),
+      invalidatesTags: ["Labels"],
+    }),
   }),
 });
 
-export const { useGetLabelsQuery } = labels;
+export const {
+  useGetLabelsQuery,
+  useCreateLabelForPropertyMutation,
+  useCreateLabelForCustomerMutation,
+} = labels;
