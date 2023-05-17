@@ -11,8 +11,8 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import match from "autosuggest-highlight/match";
-import parse from "autosuggest-highlight/parse";
+// import match from "autosuggest-highlight/match";
+// import parse from "autosuggest-highlight/parse";
 import { useRouter } from "next/router";
 import { FC, useState } from "react";
 import { useGetSearchResultsQuery } from "src/services/properties";
@@ -54,11 +54,11 @@ export const DashboardNavbarSearch: FC = () => {
         onBlur={() => setAnchorEl(null)}
         value={searchText}
         onChange={handleInputChange}
-        placeholder='Search with a keyword'
+        placeholder="Search with a keyword"
         endAdornment={
           <InputAdornment
             sx={{ display: { xs: "none", md: "flex" } }}
-            position='end'
+            position="end"
           >
             <IconButton
               sx={{
@@ -87,16 +87,16 @@ export const DashboardNavbarSearch: FC = () => {
                 setSearchCategory(event.target.value as SearchCategory)
               }
             >
-              <MenuItem value='all'>Categories</MenuItem>
-              <MenuItem value='property'>Properties</MenuItem>
-              <MenuItem value='customers'>Customers</MenuItem>
-              <MenuItem value='labels'>Label Keys</MenuItem>
+              <MenuItem value="all">Categories</MenuItem>
+              <MenuItem value="property">Properties</MenuItem>
+              <MenuItem value="customers">Customers</MenuItem>
+              <MenuItem value="labels">Label Keys</MenuItem>
             </Select>
           </InputAdornment>
         }
       />
 
-      <StyledPopper open={open} anchorEl={anchorEl} placement='bottom-start'>
+      <StyledPopper open={open} anchorEl={anchorEl} placement="bottom-start">
         <Paper>
           {(!results || results?.length === 0) && (
             <SearchNotFound query={searchText} />
@@ -144,7 +144,7 @@ export const DashboardNavbarSearch: FC = () => {
                             {partsPath.map((part, index) => (
                               <Box
                                 key={index}
-                                component='span'
+                                component="span"
                                 sx={{
                                   typography: "body2",
                                   fontWeight: part.highlight
@@ -163,7 +163,7 @@ export const DashboardNavbarSearch: FC = () => {
                             ).map((part, index) => (
                               <Box
                                 key={index}
-                                component='span'
+                                component="span"
                                 sx={{
                                   typography: "body2",
                                   fontWeight: part.highlight
@@ -193,7 +193,7 @@ export const DashboardNavbarSearch: FC = () => {
                             ).map((part, index) => (
                               <Box
                                 key={index}
-                                component='span'
+                                component="span"
                                 sx={{
                                   typography: "body2",
                                   fontWeight: part.highlight
@@ -213,7 +213,7 @@ export const DashboardNavbarSearch: FC = () => {
                             ).map((part, index) => (
                               <Box
                                 key={index}
-                                component='span'
+                                component="span"
                                 sx={{
                                   typography: "body2",
                                   fontWeight: part.highlight
