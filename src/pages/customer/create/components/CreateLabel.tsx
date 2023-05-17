@@ -68,7 +68,9 @@ const CreateLabel: React.FC<any> = (props) => {
     dispatch(addLabel(newLabel));
   };
 
-  const createLabel = () => {};
+  const createLabel = () => {
+    dispatch(addLabel({ name: labelName, color: pickerColor }));
+  };
 
   return (
     <Box
@@ -225,7 +227,7 @@ const CreateLabel: React.FC<any> = (props) => {
                   </Stack>
 
                   <Button variant="outlined" onClick={createLabel}>
-                    Προσθήκη
+                    Δημιουργία & Προσθήκη
                   </Button>
                 </FormControl>
               </FormControl>
