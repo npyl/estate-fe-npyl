@@ -1,10 +1,39 @@
-import { Grid, Paper, TextField } from "@mui/material";
-import InputAdornment from "@mui/material/InputAdornment";
+import {
+  Grid,
+  Paper,
+  TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import * as React from "react";
 
+import { useAllPropertyGlobalQuery } from "src/services/global";
+
 const DemandForm: React.FC<any> = (props) => {
+  const enums = useAllPropertyGlobalQuery().data;
+  const propertyEnums = enums?.property;
+  const stateEnum = propertyEnums?.state;
+  const detailsEnum = propertyEnums?.details;
+  const parentCategoryEnum = propertyEnums?.parentCategory;
+  const furnishingEnum = detailsEnum?.furnished;
+
+  const timeframeEnum = ["1", "2"];
+
+  if (
+    !enums ||
+    !propertyEnums ||
+    !stateEnum ||
+    !detailsEnum ||
+    !furnishingEnum ||
+    !parentCategoryEnum ||
+    !timeframeEnum
+  )
+    return null;
+
   return (
     <Paper
       elevation={10}
@@ -42,49 +71,64 @@ const DemandForm: React.FC<any> = (props) => {
             />
           </Grid>
           <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id="outlined-controlled"
-              label="Parent Category"
-              //   value={covered}
-              //   onChange={handleCoveredChange}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
-            />
+            <FormControl fullWidth>
+              <InputLabel>Parent Category</InputLabel>
+              <Select
+                // value={parentCategory}
+                label="Parent Category"
+                onChange={(e) => {
+                  // dispatch(setParentCategory(e.target.value));
+                }}
+              >
+                {parentCategoryEnum.map((item, index) => {
+                  return (
+                    <MenuItem key={index} value={item}>
+                      {item}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
           </Grid>
           <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id="outlined-controlled"
-              label="Furnished"
-              //   value={basement}
-              //   onChange={handleBasementChange}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
-            />
+            <FormControl fullWidth>
+              <InputLabel>Furnishing</InputLabel>
+              <Select
+                // value={parentCategory}
+                label="Furnishing"
+                onChange={(e) => {
+                  // dispatch(setParentCategory(e.target.value));
+                }}
+              >
+                {furnishingEnum.map((item, index) => {
+                  return (
+                    <MenuItem key={index} value={item}>
+                      {item}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
           </Grid>
           <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id="outlined-controlled"
-              label="State"
-              //   value={attic}
-              //   onChange={handleAtticChange}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
-            />
+            <FormControl fullWidth>
+              <InputLabel>State</InputLabel>
+              <Select
+                // value={parentCategory}
+                label="State"
+                onChange={(e) => {
+                  // dispatch(setParentCategory(e.target.value));
+                }}
+              >
+                {stateEnum.map((item, index) => {
+                  return (
+                    <MenuItem key={index} value={item}>
+                      {item}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
           </Grid>
           <Grid item xs={6}>
             <TextField
@@ -102,19 +146,24 @@ const DemandForm: React.FC<any> = (props) => {
             />
           </Grid>
           <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id="outlined-controlled"
-              label="Time Frame"
-              //   value={balconies}
-              //   onChange={handleBalconiesChange}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
-            />
+            <FormControl fullWidth>
+              <InputLabel>Time Frame</InputLabel>
+              <Select
+                // value={parentCategory}
+                label="Time Frame"
+                onChange={(e) => {
+                  // dispatch(setParentCategory(e.target.value));
+                }}
+              >
+                {timeframeEnum.map((item, index) => {
+                  return (
+                    <MenuItem key={index} value={item}>
+                      {item}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>{" "}
           </Grid>
           <Grid item xs={6}>
             <Typography variant="h6">Bedrooms</Typography>

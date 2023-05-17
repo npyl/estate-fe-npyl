@@ -1,7 +1,27 @@
-import { Box, Grid, Paper, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Grid,
+  Paper,
+  TextField,
+  Typography,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
 import * as React from "react";
+import { useAllPropertyGlobalQuery } from "src/services/global";
+import { useAllUsersQuery } from "src/services/user";
 
 const CustomerInformation: React.FC<any> = (props) => {
+  const enums = useAllPropertyGlobalQuery().data;
+  const propertyEnums = enums?.property;
+  const managers = useAllUsersQuery().data;
+
+  const leadSourceEnum = ["1", "2"]; // TODO
+
+  if (!enums || !propertyEnums || !managers) return null;
+
   return (
     <Paper
       elevation={10}
@@ -69,19 +89,24 @@ const CustomerInformation: React.FC<any> = (props) => {
             />
           </Grid>
           <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id="outlined-controlled"
-              label="Managed By"
-              //   value={attic}
-              //   onChange={handleAtticChange}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
-            />
+            <FormControl fullWidth>
+              <InputLabel>Managed By</InputLabel>
+              <Select
+                // value={parentCategory}
+                label="Managed By"
+                onChange={(e) => {
+                  // dispatch(setParentCategory(e.target.value));
+                }}
+              >
+                {managers.map((manager, index) => {
+                  return (
+                    <MenuItem key={index} value={manager.id}>
+                      {manager.firstName + " " + manager.lastName}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
           </Grid>
           <Grid item xs={6}>
             <TextField
@@ -219,19 +244,24 @@ const CustomerInformation: React.FC<any> = (props) => {
             />
           </Grid>
           <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id="outlined-controlled"
-              label="Lead Source"
-              //   value={storeroom}
-              //   onChange={handleStoreroomChange}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
-            />
+            <FormControl fullWidth>
+              <InputLabel>Lead Source</InputLabel>
+              <Select
+                // value={parentCategory}
+                label="Lead Source"
+                onChange={(e) => {
+                  // dispatch(setParentCategory(e.target.value));
+                }}
+              >
+                {leadSourceEnum.map((leadSource, index) => {
+                  return (
+                    <MenuItem key={index} value={leadSource}>
+                      {leadSource}
+                    </MenuItem>
+                  );
+                })}
+              </Select>
+            </FormControl>
           </Grid>
           <Grid item xs={6}>
             <TextField
