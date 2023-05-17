@@ -85,24 +85,24 @@ const SingleProperty: NextPage = () => {
             <Tabs
               value={value}
               onChange={handleChange}
-              aria-label='View Property Tabs'
+              aria-label="View Property Tabs"
             >
-              <Tab label='Overview' {...a11yProps(0)} />
-              <Tab label='Deals' {...a11yProps(1)} />
-              <Tab label='Tickets' {...a11yProps(2)} />
-              <Tab label='Activities' {...a11yProps(3)} />
-              <Tab label='Storage' {...a11yProps(4)} />
-              <Tab label='Logs' {...a11yProps(5)} />
-              <Tab label='Map' {...a11yProps(6)} />
+              <Tab label="Overview" {...a11yProps(0)} />
+              <Tab label="Deals" {...a11yProps(1)} />
+              <Tab label="Tickets" {...a11yProps(2)} />
+              <Tab label="Activities" {...a11yProps(3)} />
+              <Tab label="Storage" {...a11yProps(4)} />
+              <Tab label="Logs" {...a11yProps(5)} />
+              <Tab label="Map" {...a11yProps(6)} />
             </Tabs>
           </Grid>
           <Grid item sx={{ mt: 1 }}>
-            <Button variant='outlined' color='secondary' sx={{ mr: 1 }}>
+            <Button variant="outlined" color="secondary" sx={{ mr: 1 }}>
               Edit
             </Button>
 
             <SoftButton
-              color='error'
+              color="error"
               onClick={() => {
                 setDeletePropertyDialogOpen(true);
               }}
@@ -113,15 +113,18 @@ const SingleProperty: NextPage = () => {
 
             <Dialog
               fullWidth
-              maxWidth='xs'
+              maxWidth="xs"
               open={deletePropertyDialogOpen}
+              onClose={() => {
+                setDeletePropertyDialogOpen(false);
+              }}
               closeAfterTransition={true}
             >
               <DialogTitle>Delete Property</DialogTitle>
               <DialogContentText ml={3}>Are you sure?</DialogContentText>
               <DialogContent>
                 <SoftButton
-                  color='error'
+                  color="error"
                   sx={{ mr: 1 }}
                   onClick={() => {
                     deleteProperty(parseInt(propertyId as string));
@@ -133,8 +136,8 @@ const SingleProperty: NextPage = () => {
                 </SoftButton>
 
                 <Button
-                  variant='outlined'
-                  color='secondary'
+                  variant="outlined"
+                  color="secondary"
                   onClick={() => {
                     setDeletePropertyDialogOpen(false);
                   }}
