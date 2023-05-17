@@ -13,6 +13,7 @@ import NotesSection from "./components/NotesSection";
 import DemandForm from "./components/DemandForm";
 import PriorityFeatures from "./components/PriorityFeatures";
 import NonPriorityFeatures from "./components/NonPriorityFeatures";
+import MatchingSystem from "./components/MatchingSystem";
 
 const CreateCustomer: NextPage = () => {
   return (
@@ -31,6 +32,7 @@ const CreateCustomer: NextPage = () => {
               <DemandForm />
               <PriorityFeatures />
               <NonPriorityFeatures />
+              <MatchingSystem />
             </Stack>
           </Grid>
         </Grid>
