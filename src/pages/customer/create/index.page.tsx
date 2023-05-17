@@ -15,7 +15,12 @@ import PriorityFeatures from "./components/PriorityFeatures";
 import NonPriorityFeatures from "./components/NonPriorityFeatures";
 import MatchingSystem from "./components/MatchingSystem";
 
+import { useDispatch } from "react-redux";
+import { resetState } from "src/slices/customer";
+
 const CreateCustomer: NextPage = () => {
+  const dispatch = useDispatch();
+
   return (
     <>
       <Grid paddingTop={1} paddingRight={0} spacing={1}>
@@ -48,7 +53,7 @@ const CreateCustomer: NextPage = () => {
               <Button
                 variant="outlined"
                 startIcon={<DeleteIcon />}
-                // onClick={() => dispatch(resetState())}
+                onClick={() => dispatch(resetState())}
               >
                 Clear
               </Button>

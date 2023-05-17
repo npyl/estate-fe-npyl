@@ -15,6 +15,7 @@ import { useAllPropertyGlobalQuery } from "src/services/global";
 import { useAllUsersQuery } from "src/services/user";
 
 import {
+  // getters
   selectFirstName,
   selectLastName,
   selectEmail,
@@ -31,9 +32,23 @@ import {
   selectLeadSource,
   selectSuggestedBy,
   selectStatus,
+  // setters
+  setFirstName,
+  setLastName,
+  setEmail,
+  setMobilePhone,
+  setHomePhone,
+  setStatus,
+  setFax,
+  setNationality,
+  setIdNumber,
+  setPassportNumber,
+  setDateOfBirth,
+  setLeadSource,
+  setPreferredLanguage,
 } from "src/slices/customer";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const CustomerInformation: React.FC<any> = (props) => {
   const enums = useAllPropertyGlobalQuery().data;
@@ -58,6 +73,8 @@ const CustomerInformation: React.FC<any> = (props) => {
   const leadSource = useSelector(selectLeadSource);
   const suggestedBy = useSelector(selectSuggestedBy);
   const status = useSelector(selectStatus);
+
+  const dispatch = useDispatch();
 
   if (!enums || !propertyEnums || !managers) return null;
 
@@ -88,7 +105,9 @@ const CustomerInformation: React.FC<any> = (props) => {
               id="outlined-controlled"
               label="First Name"
               value={firstName}
-              //   onChange={handlePlotChange}
+              onChange={(e) => {
+                dispatch(setFirstName(e.target.value));
+              }}
               //   onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
@@ -103,8 +122,9 @@ const CustomerInformation: React.FC<any> = (props) => {
               id="outlined-controlled"
               label="Last Name"
               value={lastName}
-              //   onChange={handleCoveredChange}
-              //   onKeyPress={handleKeyPress}
+              onChange={(e) => {
+                dispatch(setLastName(e.target.value));
+              }} //   onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
                   height: "8px",
@@ -118,7 +138,9 @@ const CustomerInformation: React.FC<any> = (props) => {
               id="outlined-controlled"
               label="Email"
               value={email}
-              //   onChange={handleBasementChange}
+              onChange={(e) => {
+                dispatch(setEmail(e.target.value));
+              }}
               //   onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
@@ -153,7 +175,9 @@ const CustomerInformation: React.FC<any> = (props) => {
               id="outlined-controlled"
               label="Mobile Phone"
               value={mobilePhone}
-              //   onChange={handleGardenChange}
+              onChange={(e) => {
+                dispatch(setMobilePhone(e.target.value));
+              }}
               //   onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
@@ -168,7 +192,9 @@ const CustomerInformation: React.FC<any> = (props) => {
               id="outlined-controlled"
               label="Home Phone"
               value={homePhone}
-              //   onChange={handleBalconiesChange}
+              onChange={(e) => {
+                dispatch(setHomePhone(e.target.value));
+              }}
               //   onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
@@ -183,7 +209,9 @@ const CustomerInformation: React.FC<any> = (props) => {
               id="outlined-controlled"
               label="Fax"
               value={fax}
-              //   onChange={handleStoreroomChange}
+              onChange={(e) => {
+                dispatch(setFax(e.target.value));
+              }}
               //   onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
@@ -213,7 +241,9 @@ const CustomerInformation: React.FC<any> = (props) => {
               id="outlined-controlled"
               label="Nationality"
               value={nationality}
-              //   onChange={handleStoreroomChange}
+              onChange={(e) => {
+                dispatch(setNationality(e.target.value));
+              }}
               //   onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
@@ -228,7 +258,9 @@ const CustomerInformation: React.FC<any> = (props) => {
               id="outlined-controlled"
               label="ID Number"
               value={idNumber}
-              //   onChange={handleStoreroomChange}
+              onChange={(e) => {
+                dispatch(setIdNumber(e.target.value));
+              }}
               //   onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
@@ -243,7 +275,9 @@ const CustomerInformation: React.FC<any> = (props) => {
               id="outlined-controlled"
               label="Date of birth"
               value={dateOfBirth}
-              //   onChange={handleStoreroomChange}
+              onChange={(e) => {
+                dispatch(setDateOfBirth(e.target.value));
+              }}
               //   onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
@@ -258,7 +292,9 @@ const CustomerInformation: React.FC<any> = (props) => {
               id="outlined-controlled"
               label="Passport number"
               value={passportNumber}
-              //   onChange={handleStoreroomChange}
+              onChange={(e) => {
+                dispatch(setPassportNumber(e.target.value));
+              }}
               //   onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
@@ -273,7 +309,9 @@ const CustomerInformation: React.FC<any> = (props) => {
               id="outlined-controlled"
               label="Preferred Language"
               value={preferredLanguage}
-              //   onChange={handleStoreroomChange}
+              onChange={(e) => {
+                dispatch(setPreferredLanguage(e.target.value));
+              }}
               //   onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
@@ -289,7 +327,7 @@ const CustomerInformation: React.FC<any> = (props) => {
                 value={leadSource}
                 label="Lead Source"
                 onChange={(e) => {
-                  // dispatch(setParentCategory(e.target.value));
+                  dispatch(setLeadSource(e.target.value));
                 }}
               >
                 {leadSourceEnum.map((leadSource, index) => {
@@ -308,7 +346,9 @@ const CustomerInformation: React.FC<any> = (props) => {
               id="outlined-controlled"
               label="Suggested by"
               value={suggestedBy}
-              //   onChange={handleStoreroomChange}
+              onChange={(e) => {
+                // dispatch(selectSuggestedBy(e.target.value));
+              }}
               //   onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
@@ -339,8 +379,8 @@ const CustomerInformation: React.FC<any> = (props) => {
                 <Rating
                   name="simple-controlled"
                   value={status}
-                  onChange={(event, newValue) => {
-                    // setValue(newValue);
+                  onChange={(_event, newValue) => {
+                    dispatch(setStatus(newValue));
                   }}
                 />
               </Box>

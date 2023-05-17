@@ -31,8 +31,57 @@ const slice = createSlice({
   name: "customer",
   initialState,
   reducers: {
-    // setCode(state: customerState, action): void {
-    //   state.code = action.payload;
+    setFirstName(state: customerState, action): void {
+      state.firstName = action.payload;
+    },
+    setLastName(state: customerState, action): void {
+      state.lastName = action.payload;
+    },
+    setEmail(state: customerState, action): void {
+      state.email = action.payload;
+    },
+    setMobilePhone(state: customerState, action): void {
+      state.mobilePhone = action.payload;
+    },
+    setHomePhone(state: customerState, action): void {
+      state.homePhone = action.payload;
+    },
+
+    // setManagedBy: TODO
+
+    setStatus(state: customerState, action): void {
+      state.status = action.payload;
+    },
+    setFax(state: customerState, action): void {
+      state.fax = action.payload;
+    },
+    setNationality(state: customerState, action): void {
+      state.nationality = action.payload;
+    },
+    setIdNumber(state: customerState, action): void {
+      state.idNumber = action.payload;
+    },
+    setPassportNumber(state: customerState, action): void {
+      state.passportNumber = action.payload;
+    },
+    setDateOfBirth(state: customerState, action): void {
+      state.dateOfBirth = action.payload;
+    },
+    setLeadSource(state: customerState, action): void {
+      state.leadSource = action.payload;
+    },
+    setPreferredLanguage(state: customerState, action): void {
+      state.preferredLanguage = action.payload;
+    },
+
+    // TODO
+    // setSuggestedBy(state: customerState, action): void {
+    //   state.suggestedBy = action.payload;
+    // },
+
+    // TODO
+    // setLocation(state: customerState, action): void {
+    //   state.status = action.payload;
     // },
 
     resetState: () => {
@@ -42,7 +91,19 @@ const slice = createSlice({
 });
 
 export const {
-  //   setCoverageFactor,
+  setFirstName,
+  setLastName,
+  setEmail,
+  setMobilePhone,
+  setHomePhone,
+  setStatus,
+  setFax,
+  setNationality,
+  setIdNumber,
+  setPassportNumber,
+  setDateOfBirth,
+  setLeadSource,
+  setPreferredLanguage,
 
   resetState,
 } = slice.actions;
