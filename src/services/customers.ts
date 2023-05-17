@@ -30,7 +30,19 @@ export const customers = createApi({
       query: (id: number) => `${id}`,
       providesTags: ["Customers"],
     }),
+    addCustomer: builder.mutation<any, any>({
+      query: (dataToSend: any) => ({
+        url: "",
+        method: "POST",
+        body: dataToSend,
+      }),
+      invalidatesTags: ["Customers"],
+    }),
   }),
 });
 
-export const { useAllCustomersQuery, useGetCustomerByIdQuery } = customers;
+export const {
+  useAllCustomersQuery,
+  useGetCustomerByIdQuery,
+  useAddCustomerMutation,
+} = customers;

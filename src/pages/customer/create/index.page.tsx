@@ -15,11 +15,22 @@ import PriorityFeatures from "./components/PriorityFeatures";
 import NonPriorityFeatures from "./components/NonPriorityFeatures";
 import MatchingSystem from "./components/MatchingSystem";
 
-import { useDispatch } from "react-redux";
-import { resetState } from "src/slices/customer";
+import { useDispatch, useSelector } from "react-redux";
+import { useRouter } from "next/router";
+
+import { resetState, selectAll } from "src/slices/customer";
+import { useAddCustomerMutation } from "src/services/customers";
 
 const CreateCustomer: NextPage = () => {
   const dispatch = useDispatch();
+  const router = useRouter();
+  const [create, { isSuccess }] = useAddCustomerMutation();
+  const body = useSelector(selectAll);
+
+  const performUpload = () => {
+    create(body);
+    isSuccess && router.push("/customer");
+  };
 
   return (
     <>
@@ -62,7 +73,7 @@ const CreateCustomer: NextPage = () => {
               <Button
                 variant="contained"
                 endIcon={<SendIcon />}
-                // onClick={() => performUpload()}
+                onClick={() => performUpload()}
               >
                 Create
               </Button>
