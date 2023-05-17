@@ -1,7 +1,38 @@
 import { Grid, Paper, TextField, Typography, Box } from "@mui/material";
 import * as React from "react";
 
+import {
+  // getters
+  selectStreet,
+  selectNumber,
+  selectCity,
+  selectComplex,
+  selectZipCode,
+  selectRegion,
+  selectCountry,
+  // setters
+  setStreet,
+  setNumber,
+  setCity,
+  setComplex,
+  setZipCode,
+  setRegion,
+  setCountry,
+} from "src/slices/customer";
+
+import { useSelector, useDispatch } from "react-redux";
+
 const AddressDetails: React.FC<any> = (props) => {
+  const street = useSelector(selectStreet);
+  const number = useSelector(selectNumber);
+  const city = useSelector(selectCity);
+  const complex = useSelector(selectComplex);
+  const zipCode = useSelector(selectZipCode);
+  const region = useSelector(selectRegion);
+  const country = useSelector(selectCountry);
+
+  const dispatch = useDispatch();
+
   return (
     <Paper
       elevation={10}
@@ -28,8 +59,10 @@ const AddressDetails: React.FC<any> = (props) => {
               fullWidth
               id="outlined-controlled"
               label="Street"
-              //   value={plot}
-              //   onChange={handlePlotChange}
+              value={street}
+              onChange={(e) => {
+                dispatch(setStreet(e.target.value));
+              }}
               //   onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
@@ -43,8 +76,10 @@ const AddressDetails: React.FC<any> = (props) => {
               fullWidth
               id="outlined-controlled"
               label="Number"
-              //   value={covered}
-              //   onChange={handleCoveredChange}
+              value={number}
+              onChange={(e) => {
+                dispatch(setNumber(e.target.value));
+              }}
               //   onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
@@ -58,8 +93,10 @@ const AddressDetails: React.FC<any> = (props) => {
               fullWidth
               id="outlined-controlled"
               label="City"
-              //   value={basement}
-              //   onChange={handleBasementChange}
+              value={city}
+              onChange={(e) => {
+                dispatch(setCity(e.target.value));
+              }}
               //   onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
@@ -73,8 +110,10 @@ const AddressDetails: React.FC<any> = (props) => {
               fullWidth
               id="outlined-controlled"
               label="Complex"
-              //   value={attic}
-              //   onChange={handleAtticChange}
+              value={complex}
+              onChange={(e) => {
+                dispatch(setComplex(e.target.value));
+              }}
               //   onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
@@ -88,8 +127,10 @@ const AddressDetails: React.FC<any> = (props) => {
               fullWidth
               id="outlined-controlled"
               label="Zip Code"
-              //   value={garden}
-              //   onChange={handleGardenChange}
+              value={zipCode}
+              onChange={(e) => {
+                dispatch(setZipCode(e.target.value));
+              }}
               //   onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
@@ -103,8 +144,10 @@ const AddressDetails: React.FC<any> = (props) => {
               fullWidth
               id="outlined-controlled"
               label="Region"
-              //   value={balconies}
-              //   onChange={handleBalconiesChange}
+              value={region}
+              onChange={(e) => {
+                dispatch(setRegion(e.target.value));
+              }}
               //   onKeyPress={handleKeyPress}
               inputProps={{
                 style: {
@@ -118,8 +161,10 @@ const AddressDetails: React.FC<any> = (props) => {
               fullWidth
               id="outlined-controlled"
               label="Country"
-              //   value={storeroom}
-              //   onChange={handleStoreroomChange}
+              value={country}
+              onChange={(e) => {
+                dispatch(setCountry(e.target.value));
+              }}
               //   onKeyPress={handleKeyPress}
               inputProps={{
                 style: {

@@ -20,7 +20,17 @@ const initialState: customerState = {
   leadSource: "",
   preferredLanguage: "",
   suggestedBy: "",
-  //   location: undefined,
+  location: {
+    street: "",
+    number: 0,
+    complex: "",
+    zipCode: 0,
+    city: "",
+    region: "",
+    country: "",
+    // lat: number;
+    // lng: number;
+  },
   notes: [],
   ownedProperties: [],
   labels: [],
@@ -79,10 +89,27 @@ const slice = createSlice({
     //   state.suggestedBy = action.payload;
     // },
 
-    // TODO
-    // setLocation(state: customerState, action): void {
-    //   state.status = action.payload;
-    // },
+    setStreet(state: customerState, action): void {
+      state.location.street = action.payload;
+    },
+    setNumber(state: customerState, action): void {
+      state.location.number = action.payload;
+    },
+    setCity(state: customerState, action): void {
+      state.location.city = action.payload;
+    },
+    setComplex(state: customerState, action): void {
+      state.location.complex = action.payload;
+    },
+    setZipCode(state: customerState, action): void {
+      state.location.zipCode = action.payload;
+    },
+    setRegion(state: customerState, action): void {
+      state.location.region = action.payload;
+    },
+    setCountry(state: customerState, action): void {
+      state.location.country = action.payload;
+    },
 
     resetState: () => {
       return initialState;
@@ -104,6 +131,15 @@ export const {
   setDateOfBirth,
   setLeadSource,
   setPreferredLanguage,
+
+  // location
+  setStreet,
+  setNumber,
+  setCity,
+  setComplex,
+  setZipCode,
+  setRegion,
+  setCountry,
 
   resetState,
 } = slice.actions;
@@ -138,5 +174,20 @@ export const selectOwnedProperties = ({ customer }: RootState) =>
   customer.ownedProperties;
 export const selectLabels = ({ customer }: RootState) => customer.labels;
 export const selectDemand = ({ customer }: RootState) => customer.demand;
+
+// Location
+export const selectStreet = ({ customer }: RootState) =>
+  customer.location.street;
+export const selectNumber = ({ customer }: RootState) =>
+  customer.location.number;
+export const selectCity = ({ customer }: RootState) => customer.location.city;
+export const selectComplex = ({ customer }: RootState) =>
+  customer.location.complex;
+export const selectZipCode = ({ customer }: RootState) =>
+  customer.location.zipCode;
+export const selectRegion = ({ customer }: RootState) =>
+  customer.location.region;
+export const selectCountry = ({ customer }: RootState) =>
+  customer.location.country;
 
 export const { reducer } = slice;
