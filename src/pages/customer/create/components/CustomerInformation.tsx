@@ -14,12 +14,50 @@ import * as React from "react";
 import { useAllPropertyGlobalQuery } from "src/services/global";
 import { useAllUsersQuery } from "src/services/user";
 
+import {
+  selectFirstName,
+  selectLastName,
+  selectEmail,
+  selectManagedBy,
+  selectMobilePhone,
+  selectHomePhone,
+  selectFax,
+  selectLabels,
+  selectNationality,
+  selectIdNumber,
+  selectDateOfBirth,
+  selectPassportNumber,
+  selectPreferredLanguage,
+  selectLeadSource,
+  selectSuggestedBy,
+  selectStatus,
+} from "src/slices/customer";
+
+import { useSelector } from "react-redux";
+
 const CustomerInformation: React.FC<any> = (props) => {
   const enums = useAllPropertyGlobalQuery().data;
   const propertyEnums = enums?.property;
   const managers = useAllUsersQuery().data;
 
   const leadSourceEnum = ["1", "2"]; // TODO
+
+  const firstName = useSelector(selectFirstName);
+  const lastName = useSelector(selectLastName);
+  const email = useSelector(selectEmail);
+  const managedBy = useSelector(selectManagedBy);
+  const mobilePhone = useSelector(selectMobilePhone);
+  const homePhone = useSelector(selectHomePhone);
+  const fax = useSelector(selectFax);
+  const labels = useSelector(selectLabels);
+  const nationality = useSelector(selectNationality);
+  const idNumber = useSelector(selectIdNumber);
+  const dateOfBirth = useSelector(selectDateOfBirth);
+  const passportNumber = useSelector(selectPassportNumber);
+  const preferredLanguage = useSelector(selectPreferredLanguage);
+  const leadSource = useSelector(selectLeadSource);
+  const suggestedBy = useSelector(selectSuggestedBy);
+  const status = useSelector(selectStatus);
 
   if (!enums || !propertyEnums || !managers) return null;
 
@@ -49,7 +87,7 @@ const CustomerInformation: React.FC<any> = (props) => {
               fullWidth
               id="outlined-controlled"
               label="First Name"
-              //   value={plot}
+              value={firstName}
               //   onChange={handlePlotChange}
               //   onKeyPress={handleKeyPress}
               inputProps={{
@@ -64,7 +102,7 @@ const CustomerInformation: React.FC<any> = (props) => {
               fullWidth
               id="outlined-controlled"
               label="Last Name"
-              //   value={covered}
+              value={lastName}
               //   onChange={handleCoveredChange}
               //   onKeyPress={handleKeyPress}
               inputProps={{
@@ -79,7 +117,7 @@ const CustomerInformation: React.FC<any> = (props) => {
               fullWidth
               id="outlined-controlled"
               label="Email"
-              //   value={basement}
+              value={email}
               //   onChange={handleBasementChange}
               //   onKeyPress={handleKeyPress}
               inputProps={{
@@ -93,7 +131,7 @@ const CustomerInformation: React.FC<any> = (props) => {
             <FormControl fullWidth>
               <InputLabel>Managed By</InputLabel>
               <Select
-                // value={parentCategory}
+                value={managedBy}
                 label="Managed By"
                 onChange={(e) => {
                   // dispatch(setParentCategory(e.target.value));
@@ -114,7 +152,7 @@ const CustomerInformation: React.FC<any> = (props) => {
               fullWidth
               id="outlined-controlled"
               label="Mobile Phone"
-              //   value={garden}
+              value={mobilePhone}
               //   onChange={handleGardenChange}
               //   onKeyPress={handleKeyPress}
               inputProps={{
@@ -129,7 +167,7 @@ const CustomerInformation: React.FC<any> = (props) => {
               fullWidth
               id="outlined-controlled"
               label="Home Phone"
-              //   value={balconies}
+              value={homePhone}
               //   onChange={handleBalconiesChange}
               //   onKeyPress={handleKeyPress}
               inputProps={{
@@ -144,7 +182,7 @@ const CustomerInformation: React.FC<any> = (props) => {
               fullWidth
               id="outlined-controlled"
               label="Fax"
-              //   value={storeroom}
+              value={fax}
               //   onChange={handleStoreroomChange}
               //   onKeyPress={handleKeyPress}
               inputProps={{
@@ -159,7 +197,7 @@ const CustomerInformation: React.FC<any> = (props) => {
               fullWidth
               id="outlined-controlled"
               label="Labels"
-              //   value={storeroom}
+              value={labels}
               //   onChange={handleStoreroomChange}
               //   onKeyPress={handleKeyPress}
               inputProps={{
@@ -174,7 +212,7 @@ const CustomerInformation: React.FC<any> = (props) => {
               fullWidth
               id="outlined-controlled"
               label="Nationality"
-              //   value={storeroom}
+              value={nationality}
               //   onChange={handleStoreroomChange}
               //   onKeyPress={handleKeyPress}
               inputProps={{
@@ -189,7 +227,7 @@ const CustomerInformation: React.FC<any> = (props) => {
               fullWidth
               id="outlined-controlled"
               label="ID Number"
-              //   value={storeroom}
+              value={idNumber}
               //   onChange={handleStoreroomChange}
               //   onKeyPress={handleKeyPress}
               inputProps={{
@@ -204,7 +242,7 @@ const CustomerInformation: React.FC<any> = (props) => {
               fullWidth
               id="outlined-controlled"
               label="Date of birth"
-              //   value={storeroom}
+              value={dateOfBirth}
               //   onChange={handleStoreroomChange}
               //   onKeyPress={handleKeyPress}
               inputProps={{
@@ -219,7 +257,7 @@ const CustomerInformation: React.FC<any> = (props) => {
               fullWidth
               id="outlined-controlled"
               label="Passport number"
-              //   value={storeroom}
+              value={passportNumber}
               //   onChange={handleStoreroomChange}
               //   onKeyPress={handleKeyPress}
               inputProps={{
@@ -234,7 +272,7 @@ const CustomerInformation: React.FC<any> = (props) => {
               fullWidth
               id="outlined-controlled"
               label="Preferred Language"
-              //   value={storeroom}
+              value={preferredLanguage}
               //   onChange={handleStoreroomChange}
               //   onKeyPress={handleKeyPress}
               inputProps={{
@@ -248,7 +286,7 @@ const CustomerInformation: React.FC<any> = (props) => {
             <FormControl fullWidth>
               <InputLabel>Lead Source</InputLabel>
               <Select
-                // value={parentCategory}
+                value={leadSource}
                 label="Lead Source"
                 onChange={(e) => {
                   // dispatch(setParentCategory(e.target.value));
@@ -269,7 +307,7 @@ const CustomerInformation: React.FC<any> = (props) => {
               fullWidth
               id="outlined-controlled"
               label="Suggested by"
-              //   value={storeroom}
+              value={suggestedBy}
               //   onChange={handleStoreroomChange}
               //   onKeyPress={handleKeyPress}
               inputProps={{
@@ -300,7 +338,7 @@ const CustomerInformation: React.FC<any> = (props) => {
               <Box sx={{ display: "flex", justifyContent: "center", py: 1.5 }}>
                 <Rating
                   name="simple-controlled"
-                  // value={}
+                  value={status}
                   onChange={(event, newValue) => {
                     // setValue(newValue);
                   }}
