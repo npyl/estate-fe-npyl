@@ -16,6 +16,7 @@ type GridProps = {
   columns: GridColDef[];
   sortingBy: string | null;
   sortingOrder: string | null;
+  resource: string;
 };
 
 const DataGridTable: FC<GridProps> = ({
@@ -23,6 +24,7 @@ const DataGridTable: FC<GridProps> = ({
   columns,
   sortingBy,
   sortingOrder,
+  resource = "property",
 }) => {
   const router = useRouter();
   const dispatch = useDispatch();
@@ -58,11 +60,11 @@ const DataGridTable: FC<GridProps> = ({
         rowHeight={100}
         getRowId={(e) => e.id}
         onRowClick={(e) => {
-          router.push(`/property/${e.row.id}`);
+          router.push(`/${resource}/${e.row.id}`);
           dispatch(
             addTab({
-              title: `Property ${e.row.id}`,
-              path: `/property/${e.row.id}`,
+              title: `${resource} ${e.row.id}`,
+              path: `/${resource}/${e.row.id}`,
             })
           );
         }}

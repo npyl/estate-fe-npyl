@@ -26,7 +26,11 @@ export const customers = createApi({
       }),
       providesTags: ["Customers"],
     }),
+    getCustomerById: builder.query<ICustomer, number>({
+      query: (id: number) => `${id}`,
+      providesTags: ["Customers"],
+    }),
   }),
 });
 
-export const { useAllCustomersQuery } = customers;
+export const { useAllCustomersQuery, useGetCustomerByIdQuery } = customers;
