@@ -6,9 +6,10 @@ import {
   InputLabel,
   Select,
   MenuItem,
+  Box,
+  Typography,
 } from "@mui/material";
-import Typography from "@mui/material/Typography";
-import { Box } from "@mui/system";
+
 import * as React from "react";
 
 import {
@@ -49,12 +50,12 @@ import {
   selectState,
   selectMinPrice,
   selectMaxPrice,
+  selectTimeFrame,
 } from "src/slices/customer";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import { useAllPropertyGlobalQuery } from "src/services/global";
-import { setBedrooms } from "src/slices/property";
 
 const DemandForm: React.FC<any> = (props) => {
   const enums = useAllPropertyGlobalQuery().data;
@@ -65,6 +66,25 @@ const DemandForm: React.FC<any> = (props) => {
   const furnishingEnum = detailsEnum?.furnished;
 
   const timeframeEnum = ["1", "2"];
+
+  const minBedrooms = useSelector(selectMinBedrooms);
+  const maxBedrooms = useSelector(selectMaxBedrooms);
+  const minBathrooms = useSelector(selectMinBathrooms);
+  const maxBathrooms = useSelector(selectMaxBathrooms);
+  const furnished = useSelector(selectFurnished);
+  const maxCovered = useSelector(selectMaxCovered);
+  const minCovered = useSelector(selectMinCovered);
+  const minPlot = useSelector(selectMinPlot);
+  const maxPlot = useSelector(selectMaxPlot);
+  const minYearOfConstruction = useSelector(selectMinYearOfConstruction);
+  const maxYearOfConstruction = useSelector(selectMaxYearOfConstruction);
+  const minFloor = useSelector(selectMinFloor);
+  const maxFloor = useSelector(selectMaxFloor);
+  const parentCategory = useSelector(selectParentCategory);
+  const state = useSelector(selectState);
+  const minPrice = useSelector(selectMinPrice);
+  const maxPrice = useSelector(selectMaxPrice);
+  const timeFrame = useSelector(selectTimeFrame);
 
   const dispatch = useDispatch();
 
@@ -119,7 +139,7 @@ const DemandForm: React.FC<any> = (props) => {
             <FormControl fullWidth>
               <InputLabel>Parent Category</InputLabel>
               <Select
-                // value={parentCategory}
+                value={parentCategory}
                 label="Parent Category"
                 onChange={(e) => {
                   dispatch(setParentCategory(e.target.value));
@@ -139,7 +159,7 @@ const DemandForm: React.FC<any> = (props) => {
             <FormControl fullWidth>
               <InputLabel>Furnishing</InputLabel>
               <Select
-                // value={parentCategory}
+                value={furnished}
                 label="Furnishing"
                 onChange={(e) => {
                   dispatch(setFurnished(e.target.value));
@@ -159,7 +179,7 @@ const DemandForm: React.FC<any> = (props) => {
             <FormControl fullWidth>
               <InputLabel>State</InputLabel>
               <Select
-                // value={parentCategory}
+                value={state}
                 label="State"
                 onChange={(e) => {
                   dispatch(setState(e.target.value));
@@ -193,7 +213,7 @@ const DemandForm: React.FC<any> = (props) => {
             <FormControl fullWidth>
               <InputLabel>Time Frame</InputLabel>
               <Select
-                // value={parentCategory}
+                value={timeFrame}
                 label="Time Frame"
                 onChange={(e) => {
                   dispatch(setTimeFrame(e.target.value));
@@ -217,7 +237,7 @@ const DemandForm: React.FC<any> = (props) => {
                   fullWidth
                   id="outlined-controlled"
                   label="min"
-                  value={selectMinBedrooms}
+                  value={minBedrooms}
                   onChange={(e) => {
                     dispatch(setMinBedrooms(e.target.value));
                   }}
@@ -234,7 +254,7 @@ const DemandForm: React.FC<any> = (props) => {
                   fullWidth
                   id="outlined-controlled"
                   label="max"
-                  value={selectMaxBedrooms}
+                  value={maxBedrooms}
                   onChange={(e) => {
                     dispatch(setMaxBedrooms(e.target.value));
                   }}
@@ -257,7 +277,7 @@ const DemandForm: React.FC<any> = (props) => {
                   fullWidth
                   id="outlined-controlled"
                   label="min"
-                  value={selectMinBathrooms}
+                  value={minBathrooms}
                   onChange={(e) => {
                     dispatch(setMinBathrooms(e.target.value));
                   }}
@@ -274,7 +294,7 @@ const DemandForm: React.FC<any> = (props) => {
                   fullWidth
                   id="outlined-controlled"
                   label="max"
-                  value={selectMaxBathrooms}
+                  value={maxBathrooms}
                   onChange={(e) => {
                     dispatch(setMaxBathrooms(e.target.value));
                   }}
@@ -297,7 +317,7 @@ const DemandForm: React.FC<any> = (props) => {
                   fullWidth
                   id="outlined-controlled"
                   label="min"
-                  value={selectMinCovered}
+                  value={minCovered}
                   onChange={(e) => {
                     dispatch(setMinCovered(e.target.value));
                   }}
@@ -314,7 +334,7 @@ const DemandForm: React.FC<any> = (props) => {
                   fullWidth
                   id="outlined-controlled"
                   label="max"
-                  value={selectMaxCovered}
+                  value={maxCovered}
                   onChange={(e) => {
                     dispatch(setMaxCovered(e.target.value));
                   }}
@@ -337,7 +357,7 @@ const DemandForm: React.FC<any> = (props) => {
                   fullWidth
                   id="outlined-controlled"
                   label="min"
-                  value={selectMinPlot}
+                  value={minPlot}
                   onChange={(e) => {
                     dispatch(setMinPlot(e.target.value));
                   }}
@@ -354,7 +374,7 @@ const DemandForm: React.FC<any> = (props) => {
                   fullWidth
                   id="outlined-controlled"
                   label="max"
-                  value={selectMaxPlot}
+                  value={maxPlot}
                   onChange={(e) => {
                     dispatch(setMaxPlot(e.target.value));
                   }}
@@ -377,7 +397,7 @@ const DemandForm: React.FC<any> = (props) => {
                   fullWidth
                   id="outlined-controlled"
                   label="min"
-                  value={selectMinPrice}
+                  value={minPrice}
                   onChange={(e) => {
                     dispatch(setMinPrice(e.target.value));
                   }}
@@ -394,7 +414,7 @@ const DemandForm: React.FC<any> = (props) => {
                   fullWidth
                   id="outlined-controlled"
                   label="max"
-                  value={selectMaxPrice}
+                  value={maxPrice}
                   onChange={(e) => {
                     dispatch(setMaxPrice(e.target.value));
                   }}
@@ -417,7 +437,7 @@ const DemandForm: React.FC<any> = (props) => {
                   fullWidth
                   id="outlined-controlled"
                   label="min"
-                  value={selectMinFloor}
+                  value={minFloor}
                   onChange={(e) => {
                     dispatch(setMinFloor(e.target.value));
                   }}
@@ -434,7 +454,7 @@ const DemandForm: React.FC<any> = (props) => {
                   fullWidth
                   id="outlined-controlled"
                   label="max"
-                  value={selectMaxFloor}
+                  value={maxFloor}
                   onChange={(e) => {
                     dispatch(setMaxFloor(e.target.value));
                   }}
@@ -457,7 +477,7 @@ const DemandForm: React.FC<any> = (props) => {
                   fullWidth
                   id="outlined-controlled"
                   label="min"
-                  value={selectMinYearOfConstruction}
+                  value={minYearOfConstruction}
                   onChange={(e) => {
                     dispatch(setMinYearOfConstruction(e.target.value));
                   }}
@@ -474,7 +494,7 @@ const DemandForm: React.FC<any> = (props) => {
                   fullWidth
                   id="outlined-controlled"
                   label="max"
-                  value={selectMaxYearOfConstruction}
+                  value={maxYearOfConstruction}
                   onChange={(e) => {
                     dispatch(setMaxYearOfConstruction(e.target.value));
                   }}

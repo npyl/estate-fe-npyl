@@ -462,4 +462,7 @@ export const selectMinPrice = ({ customer }: RootState) =>
 export const selectMaxPrice = ({ customer }: RootState) =>
   customer.demand.filters.maxPrice;
 
+export const selectTimeFrame = ({ customer }: RootState) =>
+  customer.demand.timeframe;
+
 export const { reducer } = slice;
