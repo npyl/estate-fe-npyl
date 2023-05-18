@@ -44,29 +44,28 @@ const CreateLabel: React.FC<any> = (props) => {
   const [labelName, setLabelName] = useState("Νέα Ετικέτα");
   const [openPicker, setOpenPicker] = useState(false);
   const { data: labels } = useGetLabelsQuery();
+  const customerLabels = labels?.customerLabels;
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  const addedLabels = useSelector(selectLabels);
+  // assigned-existing labels & newly-created labels
+  const assignedLabelIDs: number[] = useSelector(selectLabels);
+  const [newLabels, setNewLabels] = useState<ILabel[]>([]);
 
   const dispatch = useDispatch();
 
   const handleChangeComplete = (color: any) => {
     setPickerColor(color.hex);
   };
-  const handleAssigneeTypeChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setAssigneeType((event.target as HTMLInputElement).value);
-  };
-
-  const clickLabel = (e: any) => {
-    const newLabel: ILabel = { name: "test", color: "red" };
-    dispatch(addLabel(newLabel));
+  const clickLabel = (label: ILabel) => {
+    dispatch(addLabel(label.id));
   };
 
   const createLabel = () => {
-    dispatch(addLabel({ name: labelName, color: pickerColor }));
+    const newLabel = { color: pickerColor, name: labelName };
+    setNewLabels([...newLabels, newLabel]);
   };
+
+  if (!customerLabels) return null;
 
   return (
     <Box
@@ -94,9 +93,34 @@ const CreateLabel: React.FC<any> = (props) => {
         </IconButton>
       </Box>
       <Box sx={{ display: "flex", justifyContent: "center" }}>
-        {addedLabels &&
-          addedLabels.length > 0 &&
-          addedLabels.map((label, index) => {
+        {assignedLabelIDs &&
+          assignedLabelIDs.length > 0 &&
+          customerLabels &&
+          customerLabels.length > 0 &&
+          assignedLabelIDs.map((labelID, index) => {
+            // get label object with id
+            const label = labels.customerLabels.find(
+              (label) => label.id === labelID
+            );
+            if (!label) return <></>;
+
+            return (
+              <Label
+                key={index}
+                variant="soft"
+                sx={{
+                  bgcolor: label.color,
+                  borderRadius: 7,
+                  color: "white",
+                }}
+              >
+                {label.name}
+              </Label>
+            );
+          })}
+        {newLabels &&
+          newLabels.length > 0 &&
+          newLabels.map((label, index) => {
             return (
               <Label
                 key={index}
@@ -131,7 +155,7 @@ const CreateLabel: React.FC<any> = (props) => {
                 <Label
                   key={index}
                   variant="soft"
-                  onClick={clickLabel}
+                  onClick={() => clickLabel(label)}
                   sx={{
                     bgcolor: label.color,
                     borderRadius: 7,

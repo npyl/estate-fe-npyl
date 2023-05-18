@@ -33,7 +33,7 @@ const initialState: customerState = {
   },
   notes: [],
   ownedProperties: [],
-  labels: [],
+  labelIDs: [],
   demand: {
     filters: {
       minBedrooms: 0,
@@ -198,7 +198,7 @@ const slice = createSlice({
     },
 
     addLabel(state: customerState, { payload }): void {
-      state.labels.push(payload);
+      state.labelIDs.push(payload);
     },
 
     addNote(state: customerState, { payload }): void {
@@ -392,7 +392,7 @@ export const selectLocation = ({ customer }: RootState) => customer.location;
 export const selectNotes = ({ customer }: RootState) => customer.notes;
 export const selectOwnedProperties = ({ customer }: RootState) =>
   customer.ownedProperties;
-export const selectLabels = ({ customer }: RootState) => customer.labels;
+export const selectLabels = ({ customer }: RootState) => customer.labelIDs;
 export const selectDemand = ({ customer }: RootState) => customer.demand;
 
 // Location

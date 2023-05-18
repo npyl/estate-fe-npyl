@@ -127,10 +127,9 @@ const DemandForm: React.FC<any> = (props) => {
   // everytime the autocomplete's value is updated, fetch a property
   useMemo(() => {
     const propertyForCode = (code: string) => {
-      const property = allProperties.find(
-        (property) => property.code.toString() === code
+      return allProperties.find(
+        (property) => property.code && property.code.toString() === code
       );
-      return property;
     };
 
     // the autocomplete's value is code
