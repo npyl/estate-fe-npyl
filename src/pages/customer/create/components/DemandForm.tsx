@@ -11,7 +11,50 @@ import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import * as React from "react";
 
+import {
+  // setters
+  setMinBedrooms,
+  setMaxBedrooms,
+  setMinBathrooms,
+  setMaxBathrooms,
+  setFurnished,
+  setMaxCovered,
+  setMinCovered,
+  setMinPlot,
+  setMaxPlot,
+  setMinYearOfConstruction,
+  setMaxYearOfConstruction,
+  setMinFloor,
+  setMaxFloor,
+  setParentCategory,
+  setState,
+  setMinPrice,
+  setMaxPrice,
+  setTimeFrame,
+  // getters
+  selectMinBedrooms,
+  selectMaxBedrooms,
+  selectMinBathrooms,
+  selectMaxBathrooms,
+  selectFurnished,
+  selectMaxCovered,
+  selectMinCovered,
+  selectMinPlot,
+  selectMaxPlot,
+  selectMinYearOfConstruction,
+  selectMaxYearOfConstruction,
+  selectMinFloor,
+  selectMaxFloor,
+  selectParentCategory,
+  selectState,
+  selectMinPrice,
+  selectMaxPrice,
+} from "src/slices/customer";
+
+import { useDispatch } from "react-redux";
+
 import { useAllPropertyGlobalQuery } from "src/services/global";
+import { setBedrooms } from "src/slices/property";
 
 const DemandForm: React.FC<any> = (props) => {
   const enums = useAllPropertyGlobalQuery().data;
@@ -22,6 +65,8 @@ const DemandForm: React.FC<any> = (props) => {
   const furnishingEnum = detailsEnum?.furnished;
 
   const timeframeEnum = ["1", "2"];
+
+  const dispatch = useDispatch();
 
   if (
     !enums ||
@@ -77,7 +122,7 @@ const DemandForm: React.FC<any> = (props) => {
                 // value={parentCategory}
                 label="Parent Category"
                 onChange={(e) => {
-                  // dispatch(setParentCategory(e.target.value));
+                  dispatch(setParentCategory(e.target.value));
                 }}
               >
                 {parentCategoryEnum.map((item, index) => {
@@ -97,7 +142,7 @@ const DemandForm: React.FC<any> = (props) => {
                 // value={parentCategory}
                 label="Furnishing"
                 onChange={(e) => {
-                  // dispatch(setParentCategory(e.target.value));
+                  dispatch(setFurnished(e.target.value));
                 }}
               >
                 {furnishingEnum.map((item, index) => {
@@ -117,7 +162,7 @@ const DemandForm: React.FC<any> = (props) => {
                 // value={parentCategory}
                 label="State"
                 onChange={(e) => {
-                  // dispatch(setParentCategory(e.target.value));
+                  dispatch(setState(e.target.value));
                 }}
               >
                 {stateEnum.map((item, index) => {
@@ -134,8 +179,7 @@ const DemandForm: React.FC<any> = (props) => {
             <TextField
               fullWidth
               id="outlined-controlled"
-              label="Labels"
-              //   value={garden}
+              label="Labels: TODO: ..."
               //   onChange={handleGardenChange}
               //   onKeyPress={handleKeyPress}
               inputProps={{
@@ -152,7 +196,7 @@ const DemandForm: React.FC<any> = (props) => {
                 // value={parentCategory}
                 label="Time Frame"
                 onChange={(e) => {
-                  // dispatch(setParentCategory(e.target.value));
+                  dispatch(setTimeFrame(e.target.value));
                 }}
               >
                 {timeframeEnum.map((item, index) => {
@@ -173,8 +217,10 @@ const DemandForm: React.FC<any> = (props) => {
                   fullWidth
                   id="outlined-controlled"
                   label="min"
-                  //   value={storeroom}
-                  //   onChange={handleStoreroomChange}
+                  value={selectMinBedrooms}
+                  onChange={(e) => {
+                    dispatch(setMinBedrooms(e.target.value));
+                  }}
                   //   onKeyPress={handleKeyPress}
                   inputProps={{
                     style: {
@@ -188,8 +234,10 @@ const DemandForm: React.FC<any> = (props) => {
                   fullWidth
                   id="outlined-controlled"
                   label="max"
-                  //   value={storeroom}
-                  //   onChange={handleStoreroomChange}
+                  value={selectMaxBedrooms}
+                  onChange={(e) => {
+                    dispatch(setMaxBedrooms(e.target.value));
+                  }}
                   //   onKeyPress={handleKeyPress}
                   inputProps={{
                     style: {
@@ -209,8 +257,10 @@ const DemandForm: React.FC<any> = (props) => {
                   fullWidth
                   id="outlined-controlled"
                   label="min"
-                  //   value={storeroom}
-                  //   onChange={handleStoreroomChange}
+                  value={selectMinBathrooms}
+                  onChange={(e) => {
+                    dispatch(setMinBathrooms(e.target.value));
+                  }}
                   //   onKeyPress={handleKeyPress}
                   inputProps={{
                     style: {
@@ -224,8 +274,10 @@ const DemandForm: React.FC<any> = (props) => {
                   fullWidth
                   id="outlined-controlled"
                   label="max"
-                  //   value={storeroom}
-                  //   onChange={handleStoreroomChange}
+                  value={selectMaxBathrooms}
+                  onChange={(e) => {
+                    dispatch(setMaxBathrooms(e.target.value));
+                  }}
                   //   onKeyPress={handleKeyPress}
                   inputProps={{
                     style: {
@@ -245,8 +297,10 @@ const DemandForm: React.FC<any> = (props) => {
                   fullWidth
                   id="outlined-controlled"
                   label="min"
-                  //   value={storeroom}
-                  //   onChange={handleStoreroomChange}
+                  value={selectMinCovered}
+                  onChange={(e) => {
+                    dispatch(setMinCovered(e.target.value));
+                  }}
                   //   onKeyPress={handleKeyPress}
                   inputProps={{
                     style: {
@@ -260,8 +314,10 @@ const DemandForm: React.FC<any> = (props) => {
                   fullWidth
                   id="outlined-controlled"
                   label="max"
-                  //   value={storeroom}
-                  //   onChange={handleStoreroomChange}
+                  value={selectMaxCovered}
+                  onChange={(e) => {
+                    dispatch(setMaxCovered(e.target.value));
+                  }}
                   //   onKeyPress={handleKeyPress}
                   inputProps={{
                     style: {
@@ -281,8 +337,10 @@ const DemandForm: React.FC<any> = (props) => {
                   fullWidth
                   id="outlined-controlled"
                   label="min"
-                  //   value={storeroom}
-                  //   onChange={handleStoreroomChange}
+                  value={selectMinPlot}
+                  onChange={(e) => {
+                    dispatch(setMinPlot(e.target.value));
+                  }}
                   //   onKeyPress={handleKeyPress}
                   inputProps={{
                     style: {
@@ -296,8 +354,10 @@ const DemandForm: React.FC<any> = (props) => {
                   fullWidth
                   id="outlined-controlled"
                   label="max"
-                  //   value={storeroom}
-                  //   onChange={handleStoreroomChange}
+                  value={selectMaxPlot}
+                  onChange={(e) => {
+                    dispatch(setMaxPlot(e.target.value));
+                  }}
                   //   onKeyPress={handleKeyPress}
                   inputProps={{
                     style: {
@@ -317,8 +377,10 @@ const DemandForm: React.FC<any> = (props) => {
                   fullWidth
                   id="outlined-controlled"
                   label="min"
-                  //   value={storeroom}
-                  //   onChange={handleStoreroomChange}
+                  value={selectMinPrice}
+                  onChange={(e) => {
+                    dispatch(setMinPrice(e.target.value));
+                  }}
                   //   onKeyPress={handleKeyPress}
                   inputProps={{
                     style: {
@@ -332,8 +394,10 @@ const DemandForm: React.FC<any> = (props) => {
                   fullWidth
                   id="outlined-controlled"
                   label="max"
-                  //   value={storeroom}
-                  //   onChange={handleStoreroomChange}
+                  value={selectMaxPrice}
+                  onChange={(e) => {
+                    dispatch(setMaxPrice(e.target.value));
+                  }}
                   //   onKeyPress={handleKeyPress}
                   inputProps={{
                     style: {
@@ -353,8 +417,10 @@ const DemandForm: React.FC<any> = (props) => {
                   fullWidth
                   id="outlined-controlled"
                   label="min"
-                  //   value={storeroom}
-                  //   onChange={handleStoreroomChange}
+                  value={selectMinFloor}
+                  onChange={(e) => {
+                    dispatch(setMinFloor(e.target.value));
+                  }}
                   //   onKeyPress={handleKeyPress}
                   inputProps={{
                     style: {
@@ -368,8 +434,10 @@ const DemandForm: React.FC<any> = (props) => {
                   fullWidth
                   id="outlined-controlled"
                   label="max"
-                  //   value={storeroom}
-                  //   onChange={handleStoreroomChange}
+                  value={selectMaxFloor}
+                  onChange={(e) => {
+                    dispatch(setMaxFloor(e.target.value));
+                  }}
                   //   onKeyPress={handleKeyPress}
                   inputProps={{
                     style: {
@@ -389,8 +457,10 @@ const DemandForm: React.FC<any> = (props) => {
                   fullWidth
                   id="outlined-controlled"
                   label="min"
-                  //   value={storeroom}
-                  //   onChange={handleStoreroomChange}
+                  value={selectMinYearOfConstruction}
+                  onChange={(e) => {
+                    dispatch(setMinYearOfConstruction(e.target.value));
+                  }}
                   //   onKeyPress={handleKeyPress}
                   inputProps={{
                     style: {
@@ -404,8 +474,10 @@ const DemandForm: React.FC<any> = (props) => {
                   fullWidth
                   id="outlined-controlled"
                   label="max"
-                  //   value={storeroom}
-                  //   onChange={handleStoreroomChange}
+                  value={selectMaxYearOfConstruction}
+                  onChange={(e) => {
+                    dispatch(setMaxYearOfConstruction(e.target.value));
+                  }}
                   //   onKeyPress={handleKeyPress}
                   inputProps={{
                     style: {
