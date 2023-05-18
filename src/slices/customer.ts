@@ -88,6 +88,10 @@ const slice = createSlice({
       state.labels.push(payload);
     },
 
+    addNote(state: customerState, { payload }): void {
+      state.notes.push(payload);
+    },
+
     // TODO
     // setSuggestedBy(state: customerState, action): void {
     //   state.suggestedBy = action.payload;
@@ -135,6 +139,9 @@ export const {
   setDateOfBirth,
   setLeadSource,
   setPreferredLanguage,
+
+  // notes
+  addNote,
 
   // labels
   addLabel,
