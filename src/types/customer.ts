@@ -5,7 +5,7 @@ import { IProperties } from "./properties";
 import { IUser } from "./user";
 import { IPropertyFeatures } from "./features";
 
-interface IDemandFilters {
+export interface IDemandFilters {
   minBedrooms: number;
   maxBedrooms: number;
   minBathrooms: number;
@@ -20,12 +20,14 @@ interface IDemandFilters {
   minFloor: string;
   maxFloor: string;
   parentCategory: string;
+  category: string;
   state: string;
   minPrice: number;
   maxPrice: number;
+  labels: ILabel[];
 }
 
-interface IDemand {
+export interface IDemand {
   filters: IDemandFilters;
   priorityFeatures: IPropertyFeatures;
   nonPriorityFeatures: IPropertyFeatures;

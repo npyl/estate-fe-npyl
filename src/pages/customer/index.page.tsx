@@ -19,6 +19,16 @@ const columns: GridColDef[] = [
     headerName: "Last Name",
     width: 180,
   },
+  {
+    field: "phoneNumber",
+    headerName: "Phone Number",
+    width: 180,
+  },
+  {
+    field: "city",
+    headerName: "City",
+    width: 180,
+  },
 ];
 
 const Customers: NextPage = () => {

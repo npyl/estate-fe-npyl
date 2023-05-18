@@ -19,8 +19,8 @@ const DemandCustomerSection: React.FC = (props) => {
   const { customerId } = router.query;
 
   const { data } = useGetCustomerByIdQuery(parseInt(customerId as string)); // basic details
-  const demand = data?.demand;
-  if (!data || !demand) {
+  const demandFilters = data?.demand.filters;
+  if (!data || !demandFilters) {
     return null;
   }
 
@@ -54,29 +54,60 @@ const DemandCustomerSection: React.FC = (props) => {
         /> */}
 
             <ListItem
-              label="Street:"
-              value={data?.demand}
+              label="ParentCategory:"
+              value={data?.demand.filters.parentCategory}
               align="horizontal"
               divider
             />
 
             <ListItem
-              label="Number:"
-              value={data?.location.number}
+              label="Furnished:"
+              value={data?.demand.filters.furnished}
               align="horizontal"
               divider
             />
 
+            <ListLabelsItem label="Labels:" labels={data?.labels} />
+
             <ListItem
-              label="City:"
-              value={data?.location.city}
+              label="Minimum Bedrooms:"
+              value={data?.demand.filters.minBedrooms}
               align="horizontal"
               divider
             />
-
             <ListItem
-              label="Complex:"
-              value={data?.location.complex}
+              label="Minimum Covered:"
+              value={data?.demand.filters.minCovered}
+              align="horizontal"
+              divider
+            />
+            <ListItem
+              label="Minimum Price:"
+              value={data?.demand.filters.minPrice}
+              align="horizontal"
+              divider
+            />
+            <ListItem
+              label="Minimum Construction Year:"
+              value={data?.demand.filters.minYearOfConstruction}
+              align="horizontal"
+              divider
+            />
+            <ListItem
+              label="Minimum Bathrooms Number:"
+              value={data?.demand.filters.minBathrooms}
+              align="horizontal"
+              divider
+            />
+            <ListItem
+              label="Minimum Plot:"
+              value={data?.demand.filters.minPlot}
+              align="horizontal"
+              divider
+            />
+            <ListItem
+              label="Minimum Floor:"
+              value={data?.demand.filters.minFloor}
               align="horizontal"
               divider
             />
@@ -93,20 +124,64 @@ const DemandCustomerSection: React.FC = (props) => {
           divider
         /> */}
             <ListItem
-              label="Zip Code:"
-              value={data?.location.zipCode}
+              label="Category:"
+              value={data?.demand.filters.category}
+              align="horizontal"
+              divider
+            />
+
+            <ListItem
+              label="State:"
+              value={data?.demand.filters.state}
+              align="horizontal"
+              divider
+            />
+
+            <ListItem
+              label="Time Frame:"
+              value={data?.demand.timeframe}
               align="horizontal"
               divider
             />
             <ListItem
-              label="Region:"
-              value={data?.location.region}
+              label="Maximum Bedrooms:"
+              value={data?.demand.filters.maxBedrooms}
               align="horizontal"
               divider
             />
             <ListItem
-              label="Country:"
-              value={data?.location.country}
+              label="Maximum Covered:"
+              value={data?.demand.filters.maxCovered}
+              align="horizontal"
+              divider
+            />
+            <ListItem
+              label="Maximum Price:"
+              value={data?.demand.filters.maxPrice}
+              align="horizontal"
+              divider
+            />
+            <ListItem
+              label="Maximum Construction Year:"
+              value={data?.demand.filters.maxYearOfConstruction}
+              align="horizontal"
+              divider
+            />
+            <ListItem
+              label="Maximum Bathrooms Number:"
+              value={data?.demand.filters.maxBathrooms}
+              align="horizontal"
+              divider
+            />
+            <ListItem
+              label="Maximum Plot:"
+              value={data?.demand.filters.maxPlot}
+              align="horizontal"
+              divider
+            />
+            <ListItem
+              label="Maximum Floor:"
+              value={data?.demand.filters.maxFloor}
               align="horizontal"
               divider
             />

@@ -1,7 +1,7 @@
 export interface IPropertyFeatures {
   attic: boolean;
   bar: boolean;
-  id: number;
+  id?: number;
   panoramicView: boolean;
   seaView: boolean;
   mountainView: boolean;

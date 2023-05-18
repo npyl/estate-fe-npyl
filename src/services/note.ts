@@ -3,8 +3,12 @@ import { INote } from "src/types/note";
 
 interface NoteForPropertyProps {
   id: number;
-  dataToSend: any;
+  dataToSend: {
+    content: string;
+    creatorId: number;
+  };
 }
+type NoteForCustomerProps = NoteForPropertyProps;
 
 export const note = createApi({
   reducerPath: "note",
@@ -31,6 +35,12 @@ export const note = createApi({
       }),
       providesTags: ["Notes"],
     }),
+    getNotesByCustomerId: builder.query<INote[], number>({
+      query: (id: number) => ({
+        url: `/customer/${id}`,
+      }),
+      providesTags: ["Notes"],
+    }),
 
     addNoteToPropertyWithId: builder.mutation<any, NoteForPropertyProps>({
       query: (props: NoteForPropertyProps) => ({
@@ -40,10 +50,27 @@ export const note = createApi({
       }),
       invalidatesTags: ["Notes"],
     }),
+    addNoteToCustomerWithId: builder.mutation<any, NoteForCustomerProps>({
+      query: (props: NoteForCustomerProps) => ({
+        url: `/customer/${props.id}`,
+        method: "POST",
+        body: props.dataToSend,
+      }),
+    }),
+    deleteWithId: builder.mutation<any, number>({
+      query: (id: number) => ({
+        url: `/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Notes"],
+    }),
   }),
 });
 
 export const {
   useGetNotesByPropertyIdQuery,
   useAddNoteToPropertyWithIdMutation,
+  useGetNotesByCustomerIdQuery,
+  useAddNoteToCustomerWithIdMutation,
+  useDeleteWithIdMutation,
 } = note;

@@ -8,21 +8,49 @@ import {
   ListStatusItem,
 } from "src/components/List";
 import ListLabelsItem from "src/components/List/labels-item";
+
 import {
-  useAllCustomersQuery,
-  useGetCustomerByIdQuery,
-} from "src/services/customers";
+  useAllPropertiesQuery,
+  useCustomerPropertySuggestionsMutation,
+} from "src/services/properties";
+
 import { useRouter } from "next/router";
+import { useMemo } from "react";
+import DataGridTable from "src/components/DataGrid";
+import { GridColDef } from "@mui/x-data-grid";
+import { IProperties } from "src/types/properties";
+import { useGetCustomerByIdQuery } from "src/services/customers";
+
+const columns: GridColDef[] = [
+  {
+    field: "firstName",
+    headerName: "First Name",
+    width: 180,
+  },
+  {
+    field: "lastName",
+    headerName: "Last Name",
+    width: 180,
+  },
+];
 
 const MatchingPropertiesSection: React.FC = (props) => {
   const router = useRouter();
   const { customerId } = router.query;
 
-  const { data } = useGetCustomerByIdQuery(parseInt(customerId as string)); // basic details
-  const location = data?.location;
-  if (!data || !location) {
-    return null;
-  }
+  const customer = useGetCustomerByIdQuery(parseInt(customerId as string)).data;
+
+  if (!customer) return null;
+
+  // const [getSuggestions, { data: suggestions, isSuccess }] =
+  //   useCustomerPropertySuggestionsMutation(); // basic details
+
+  // React.useEffect(async () => {
+  //   const suggestionRes = await getSuggestions({
+  //     id: parseInt(customerId as string),
+  //     dataToSend: customer.demand,
+  //   }).unwrap();
+  // }, []);
 
   return (
     <Paper
@@ -42,7 +70,21 @@ const MatchingPropertiesSection: React.FC = (props) => {
       >
         <Typography variant="h6">Matching Properties</Typography>
       </Box>
-      <Grid container></Grid>
+      <Grid container>
+        <Grid item xs={12}>
+          <Paper>
+            {/* {suggestions && suggestions.length > 0 && (
+              <DataGridTable
+                rows={suggestions}
+                columns={columns}
+                resource={"customer"}
+                sortingBy={"firstName"}
+                sortingOrder={"asc"}
+              />
+            )} */}
+          </Paper>
+        </Grid>
+      </Grid>
     </Paper>
   );
 };

@@ -1,12 +1,29 @@
-import { Grid, Paper, TextField } from "@mui/material";
-import InputAdornment from "@mui/material/InputAdornment";
-import Typography from "@mui/material/Typography";
-import { Box } from "@mui/system";
+import { Stack, Paper, Box, Typography } from "@mui/material";
 import * as React from "react";
+import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
+import AddNote from "src/components/AddNote";
+import Note from "src/components/Note";
+import { addNote, selectNotes } from "src/slices/customer";
 
 const NotesSection: React.FC<any> = (props) => {
+  const dispatch = useDispatch();
+  const notes = useSelector(selectNotes);
+
+  const handleAddNote = (message: string) => {
+    dispatch(
+      addNote({
+        content: "hello",
+        creatorId: 1,
+        creator: {
+          firstName: "TODO:",
+          lastName: "TODO:",
+        },
+        createdAt: "dsdadasda",
+      })
+    );
+  };
+
   return (
     <Paper
       elevation={10}
@@ -26,9 +43,17 @@ const NotesSection: React.FC<any> = (props) => {
         <Typography variant="h6">Notes</Typography>
       </Box>
 
-      <Grid item xs={12} padding={1}>
-        <Grid container spacing={2}></Grid>
-      </Grid>
+      <Stack spacing={1.5} sx={{ px: 3, pb: 2 }}>
+        {notes &&
+          notes.length > 0 &&
+          notes.map((note, index) => <Note note={note} key={index} />)}
+      </Stack>
+
+      <AddNote
+        onAdd={(message) => {
+          handleAddNote(message);
+        }}
+      />
     </Paper>
   );
 };
