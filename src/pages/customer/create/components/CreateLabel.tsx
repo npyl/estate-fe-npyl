@@ -18,8 +18,6 @@ import {
   DialogContentText,
 } from "@mui/material";
 
-import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
-
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import ColorizeIcon from "@mui/icons-material/Colorize";
 
@@ -47,8 +45,6 @@ const CreateLabel: React.FC<any> = (props) => {
   const [openPicker, setOpenPicker] = useState(false);
   const { data: labels } = useGetLabelsQuery();
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const [assigneeType, setAssigneeType] = React.useState("");
-  const [checked, setChecked] = React.useState(true);
 
   const addedLabels = useSelector(selectLabels);
 
