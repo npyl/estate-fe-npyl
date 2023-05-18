@@ -40,10 +40,18 @@ export const note = createApi({
       }),
       invalidatesTags: ["Notes"],
     }),
+    deleteWithId: builder.mutation<any, number>({
+      query: (id: number) => ({
+        url: `/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Notes"],
+    }),
   }),
 });
 
 export const {
   useGetNotesByPropertyIdQuery,
   useAddNoteToPropertyWithIdMutation,
+  useDeleteWithIdMutation,
 } = note;
