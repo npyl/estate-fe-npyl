@@ -162,7 +162,7 @@ const CustomerInformationSection: React.FC = (props) => {
               align="horizontal"
               divider
             />
-            <ListLabelsItem labels={data?.labels} />
+            <ListLabelsItem label="Labels:" labels={data?.labels} />
           </List>
         </Grid>
       </Grid>

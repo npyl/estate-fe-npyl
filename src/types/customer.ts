@@ -20,9 +20,11 @@ interface IDemandFilters {
   minFloor: string;
   maxFloor: string;
   parentCategory: string;
+  category: string;
   state: string;
   minPrice: number;
   maxPrice: number;
+  labels: ILabel[];
 }
 
 interface IDemand {

@@ -27,9 +27,6 @@ import OwnedCustomerPropertiesSection from "./components/sections/ownedCustomerP
 import DemandCustomerSection from "./components/sections/demandCustomerSection";
 
 const CustomerView: NextPage = () => {
-  const router = useRouter();
-  const { customerId } = router.query;
-  const { data } = useGetCustomerByIdQuery(parseInt(customerId as string)); // basic details
   return (
     <>
       <Grid container paddingTop={1} paddingRight={1} spacing={1}>

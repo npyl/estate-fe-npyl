@@ -29,7 +29,6 @@ interface NotesSectionProps {
 
 const NotesSection: React.FC<NotesSectionProps> = (props) => {
   const { data } = props;
-
   const notes = useGetNotesByPropertyIdQuery(data.id).data;
   const [addNote, { isSuccess }] = useAddNoteToPropertyWithIdMutation();
 
@@ -46,7 +45,7 @@ const NotesSection: React.FC<NotesSectionProps> = (props) => {
     // perform POST
     addNote({
       id: data.id,
-      dataToSend: { id: null, creatorId: 1, content: message },
+      dataToSend: { creatorId: 1, content: message },
     });
 
     isSuccess && setMessage("");

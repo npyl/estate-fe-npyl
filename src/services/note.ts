@@ -3,8 +3,12 @@ import { INote } from "src/types/note";
 
 interface NoteForPropertyProps {
   id: number;
-  dataToSend: any;
+  dataToSend: {
+    content: string;
+    creatorId: number;
+  };
 }
+type NoteForCustomerProps = NoteForPropertyProps;
 
 export const note = createApi({
   reducerPath: "note",
@@ -31,10 +35,24 @@ export const note = createApi({
       }),
       providesTags: ["Notes"],
     }),
+    getNotesByCustomerId: builder.query<INote[], number>({
+      query: (id: number) => ({
+        url: `/customer/${id}`,
+      }),
+      providesTags: ["Notes"],
+    }),
 
     addNoteToPropertyWithId: builder.mutation<any, NoteForPropertyProps>({
       query: (props: NoteForPropertyProps) => ({
         url: `/property/${props.id}`,
+        method: "POST",
+        body: props.dataToSend,
+      }),
+      invalidatesTags: ["Notes"],
+    }),
+    addNoteToCustomerWithId: builder.mutation<any, NoteForCustomerProps>({
+      query: (props: NoteForCustomerProps) => ({
+        url: `/customer/${props.id}`,
         method: "POST",
         body: props.dataToSend,
       }),
@@ -46,4 +64,6 @@ export const note = createApi({
 export const {
   useGetNotesByPropertyIdQuery,
   useAddNoteToPropertyWithIdMutation,
+  useGetNotesByCustomerIdQuery,
+  useAddNoteToCustomerWithIdMutation,
 } = note;
