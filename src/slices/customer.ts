@@ -2,7 +2,11 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
 import { ICustomer } from "src/types/customer";
 
-type customerState = ICustomer;
+interface customerState extends ICustomer {
+  labelIDs: number[];
+}
+
+// TODO: make a custom POST type
 
 const initialState: customerState = {
   firstName: "",
@@ -198,7 +202,7 @@ const slice = createSlice({
     },
 
     addLabel(state: customerState, { payload }): void {
-      state.labelIDs.push(payload);
+      if (!state.labelIDs.includes(payload)) state.labelIDs.push(payload);
     },
 
     addNote(state: customerState, { payload }): void {
