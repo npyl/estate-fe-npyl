@@ -34,8 +34,9 @@ const CustomerView: NextPage = () => {
         <Grid item xs={6} spacing={1} order={"row"}>
           <Stack spacing={1}>
             <CustomerInformationSection />
-            <DemandCustomerSection />
             <CustomerAdressDetailsSection />
+            <DemandCustomerSection />
+
             <NotesCustomerSection />
           </Stack>
         </Grid>

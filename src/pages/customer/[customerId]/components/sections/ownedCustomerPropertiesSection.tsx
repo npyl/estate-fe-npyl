@@ -13,10 +13,25 @@ import {
   useGetCustomerByIdQuery,
 } from "src/services/customers";
 import { useRouter } from "next/router";
-
+import DataGridTable from "src/components/DataGrid";
+import { GridColDef } from "@mui/x-data-grid";
+const columns: GridColDef[] = [
+  {
+    field: "firstName",
+    headerName: "First Name",
+    width: 180,
+  },
+  {
+    field: "lastName",
+    headerName: "Last Name",
+    width: 180,
+  },
+];
 const OwnedCustomerPropertiesSection: React.FC = (props) => {
   const router = useRouter();
   const { customerId } = router.query;
+
+  const [filterProperties, { isLoading, data }] = useFilterPropertiesMutation();
 
   const { data } = useGetCustomerByIdQuery(parseInt(customerId as string)); // basic details
   const location = data?.location;
@@ -42,7 +57,21 @@ const OwnedCustomerPropertiesSection: React.FC = (props) => {
       >
         <Typography variant="h6">Owned Properties</Typography>
       </Box>
-      <Grid container></Grid>
+
+      <Grid container>
+        <Grid item xs={12}>
+          <Paper>
+            <DataGridTable
+              foullwidth
+              rows={data}
+              columns={columns}
+              resource={"customer"}
+              sortingBy={"firstName"}
+              sortingOrder={"asc"}
+            />
+          </Paper>
+        </Grid>
+      </Grid>
     </Paper>
   );
 };

@@ -1,5 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { IDemand } from "src/types/customer";
 import { IProperties, IPropertyFilter } from "src/types/properties";
+
+interface ISuggestPropertiesProps {
+  id: number;
+  dataToSend: IDemand;
+}
 
 export const properties = createApi({
   reducerPath: "properties",
@@ -60,10 +66,22 @@ export const properties = createApi({
         };
       },
     }),
+    CustomerPropertySuggestions: builder.mutation<
+      IProperties[],
+      ISuggestPropertiesProps
+    >({
+      query: (data: ISuggestPropertiesProps) => ({
+        url: `${data.id}/suggestProperties`,
+        method: "POST",
+        body: data.dataToSend,
+      }),
+      invalidatesTags: ["Properties"],
+    }),
   }),
 });
 
 export const {
+  useCustomerPropertySuggestionsMutation,
   useGetSearchResultsQuery,
   useAllPropertiesQuery,
   useGetPropertyByIdQuery,
