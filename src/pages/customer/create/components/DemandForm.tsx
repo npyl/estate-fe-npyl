@@ -8,6 +8,7 @@ import {
   MenuItem,
   Box,
   Typography,
+  Autocomplete,
 } from "@mui/material";
 
 import * as React from "react";
@@ -55,7 +56,16 @@ import {
 
 import { useDispatch, useSelector } from "react-redux";
 
+import { useState, useMemo } from "react";
+
+import {
+  useAllPropertiesQuery,
+  useGetPropertyByIdQuery,
+} from "src/services/properties";
 import { useAllPropertyGlobalQuery } from "src/services/global";
+
+import { IProperties } from "src/types/properties";
+import PropertyDescriptionForCommercialSection from "src/components/properties/PropertyDescriptionForCommercial";
 
 const DemandForm: React.FC<any> = (props) => {
   const enums = useAllPropertyGlobalQuery().data;
@@ -87,6 +97,69 @@ const DemandForm: React.FC<any> = (props) => {
   const timeFrame = useSelector(selectTimeFrame);
 
   const dispatch = useDispatch();
+
+  const [searchText, setSearchText] = useState<string>("");
+  const [autocompleteValue, setAutocompleteValue] = useState("");
+
+  const autocompleteChange = (_event: any, value: string) => {
+    if (!value) return;
+    setAutocompleteValue(value);
+  };
+  const handleSearch = (value: string) => {
+    if (!value) return;
+    if (value.length < 3) return;
+
+    setSearchText(value);
+  };
+
+  const propertyCodes: string[] =
+    useAllPropertiesQuery(undefined, {
+      selectFromResult: ({ data }) => ({
+        data: data
+          ?.filter((property) => property.code !== null)
+          .map((property) => {
+            return property.code.toString();
+          }),
+      }),
+    }).data || [];
+  const allProperties: IProperties[] = useAllPropertiesQuery().data || [];
+
+  // everytime the autocomplete's value is updated, fetch a property
+  useMemo(() => {
+    const propertyForCode = (code: string) => {
+      const property = allProperties.find(
+        (property) => property.code.toString() === code
+      );
+      return property;
+    };
+
+    // the autocomplete's value is code
+    const code = autocompleteValue;
+    const property = propertyForCode(code);
+
+    if (!property) return null;
+
+    dispatch(setParentCategory(property.parentCategory));
+    dispatch(setFurnished(property.technicalFeatures.furnished));
+    dispatch(setState(property.state));
+    // dispatch(setTimeFrame());
+    dispatch(setMinBedrooms(property.details.bedrooms));
+    // dispatch(setMaxBedrooms(property));
+    dispatch(setMinBathrooms(property.details.bathrooms));
+    // dispatch(setMaxBathrooms(property));
+    dispatch(setMinCovered(property.technicalFeatures.coverageFactor));
+    // dispatch(setMaxCovered(property));
+    dispatch(setMinPlot(property.plotArea));
+    // dispatch(setMaxPlot(property));
+    dispatch(setMinPrice(property.price));
+    // dispatch(setMaxPrice(property));
+    dispatch(setMinFloor(property.details.floor));
+    // dispatch(setMaxFloor(property));
+    dispatch(
+      setMinYearOfConstruction(property.construction.yearOfConstruction)
+    );
+    // dispatch(setMaxYearOfConstruction(property));
+  }, [autocompleteValue]);
 
   if (
     !enums ||
@@ -121,18 +194,21 @@ const DemandForm: React.FC<any> = (props) => {
       <Grid item xs={12} padding={1}>
         <Grid container spacing={2}>
           <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id="outlined-controlled"
-              label="Autocomplete based on Property Code"
-              //   value={plot}
-              //   onChange={handlePlotChange}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
+            <Autocomplete
+              disablePortal
+              id="combo-box-demo"
+              value={autocompleteValue}
+              onChange={autocompleteChange}
+              options={propertyCodes}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  placeholder="Property Code"
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    handleSearch(event.target.value);
+                  }}
+                />
+              )}
             />
           </Grid>
           <Grid item xs={6}>
