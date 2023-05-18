@@ -12,6 +12,9 @@ import {
   useAllCustomersQuery,
   useGetCustomerByIdQuery,
 } from "src/services/customers";
+
+import { useFilterPropertiesMutation } from "src/services/properties";
+
 import { useRouter } from "next/router";
 import DataGridTable from "src/components/DataGrid";
 import { GridColDef } from "@mui/x-data-grid";
@@ -31,7 +34,9 @@ const OwnedCustomerPropertiesSection: React.FC = (props) => {
   const router = useRouter();
   const { customerId } = router.query;
 
-  const [filterProperties, { isLoading, data }] = useFilterPropertiesMutation();
+  // TODO: check this out tomorrow...
+
+  const [filterProperties, { isLoading }] = useFilterPropertiesMutation();
 
   const { data } = useGetCustomerByIdQuery(parseInt(customerId as string)); // basic details
   const location = data?.location;
@@ -62,7 +67,6 @@ const OwnedCustomerPropertiesSection: React.FC = (props) => {
         <Grid item xs={12}>
           <Paper>
             <DataGridTable
-              foullwidth
               rows={data}
               columns={columns}
               resource={"customer"}
