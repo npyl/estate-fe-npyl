@@ -16,7 +16,7 @@ type GridProps = {
   columns: GridColDef[];
   sortingBy: string | null;
   sortingOrder: string | null;
-  resource: string;
+  resource?: string;
 };
 
 const DataGridTable: FC<GridProps> = ({
