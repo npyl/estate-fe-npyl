@@ -56,6 +56,12 @@ export const note = createApi({
         method: "POST",
         body: props.dataToSend,
       }),
+    }),
+    deleteWithId: builder.mutation<any, number>({
+      query: (id: number) => ({
+        url: `/${id}`,
+        method: "DELETE",
+      }),
       invalidatesTags: ["Notes"],
     }),
   }),
@@ -66,4 +72,5 @@ export const {
   useAddNoteToPropertyWithIdMutation,
   useGetNotesByCustomerIdQuery,
   useAddNoteToCustomerWithIdMutation,
+  useDeleteWithIdMutation,
 } = note;

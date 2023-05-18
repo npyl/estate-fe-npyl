@@ -68,7 +68,7 @@ const NotesCustomerSection: React.FC = (props) => {
         <Typography variant="h6">Notes</Typography>
       </Box>
       <Grid container>
-        <Stack spacing={1} sx={{ 15 }}>
+        <Stack spacing={1} sx={{ px: 10, pb: 2 }}>
           {notes.map((note, index) => (
             <Note note={note} key={index} />
           ))}

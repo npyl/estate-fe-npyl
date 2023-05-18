@@ -1,7 +1,11 @@
-import { Stack, Paper, Typography } from "@mui/material";
+import { Grid, Stack, Paper, Typography, IconButton } from "@mui/material";
 import { CustomAvatar } from "../custom-avatar";
 
 import { INote } from "src/types/note";
+
+import Iconify from "src/components/iconify/Iconify";
+
+import { useDeleteWithIdMutation } from "src/services/note";
 
 interface NoteProps {
   note: INote;
@@ -9,6 +13,8 @@ interface NoteProps {
 
 const Note: React.FC<NoteProps> = (props) => {
   const { note } = props;
+
+  const [deleteNote, { isSuccess }] = useDeleteWithIdMutation();
 
   const username = note.creator.firstName + " " + note.creator.lastName;
 
@@ -36,9 +42,20 @@ const Note: React.FC<NoteProps> = (props) => {
           </Typography>
         </Stack>
 
-        <Typography variant="body2" sx={{ color: "text.secondary" }}>
-          {note.content.toString()}
-        </Typography>
+        <Stack direction={"row"}>
+          <Typography variant="body2" sx={{ color: "text.secondary" }} flex={1}>
+            {note.content.toString()}
+          </Typography>
+          <Grid item>
+            <IconButton
+              onClick={() => {
+                note.id && deleteNote(note.id);
+              }}
+            >
+              <Iconify icon={"eva:trash-2-outline"} />
+            </IconButton>
+          </Grid>
+        </Stack>
       </Paper>
     </Stack>
   );
