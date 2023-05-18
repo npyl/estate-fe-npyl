@@ -14,7 +14,7 @@ const initialState: customerState = {
   email: "",
   mobilePhone: "",
   homePhone: "",
-  //   managedBy: null,
+  managedBy: 1, // TODO: Implement this!
   status: 0,
   fax: "",
   nationality: "",
@@ -59,12 +59,12 @@ const initialState: customerState = {
       maxPrice: 0,
     },
     priorityFeatures: {
-      attic: false,
-      bar: false,
+      // attic: false,  // TODO: this causes backend exception
+      // bar: false,    // TODO: same...
       panoramicView: false,
       seaView: false,
       mountainView: false,
-      facade_sea: false,
+      // facade_sea: false, // TODO: same
       walkableDistanceToBeach: false,
       quietArea: false,
       bright: false,
@@ -101,16 +101,16 @@ const initialState: customerState = {
       withinResidentialZone: false,
       withinCityPlan: false,
       loadingDock: false,
-      petAllowed: false,
+      // petAllowed: false, // TODO: same
       seaFront: false,
     },
     nonPriorityFeatures: {
-      attic: false,
-      bar: false,
+      // attic: false,  // TODO: this causes backend exception
+      // bar: false,    // TODO: same...
       panoramicView: false,
       seaView: false,
       mountainView: false,
-      facade_sea: false,
+      // facade_sea: false, // TODO: same
       walkableDistanceToBeach: false,
       quietArea: false,
       bright: false,
@@ -147,7 +147,7 @@ const initialState: customerState = {
       withinResidentialZone: false,
       withinCityPlan: false,
       loadingDock: false,
-      petAllowed: false,
+      // petAllowed: false, // TODO: same
       seaFront: false,
     },
     timeframe: "",
