@@ -74,7 +74,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
       title = "Create Manager";
       path = "/user/create";
     } else if (itemType === ownerItemType) {
-      title = "Create Owner";
+      title = "Create Customer";
       path = "/customer/create";
     } else if (itemType === labelItemType) {
       title = "Create Label";
@@ -159,7 +159,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
                   onClick={(e) => startCreate(e, ownerItemType)}
                   disableRipple
                 >
-                  Owner
+                  Customer
                 </MenuItem>
                 <MenuItem
                   onClick={(e) => startCreate(e, labelItemType)}
