@@ -1,10 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type { RootState } from "../store";
 import { ICustomerPOST } from "src/types/customer";
+import { ILabel } from "src/types/label";
+import type { RootState } from "../store";
 
 interface customerState extends ICustomerPOST {}
 
 const initialState: customerState = {
+  id: undefined,
   firstName: "",
   lastName: "",
   email: "",
@@ -152,6 +154,10 @@ const slice = createSlice({
   name: "customer",
   initialState,
   reducers: {
+    setId(state: customerState, action): void {
+      state.id = action.payload;
+    },
+
     setFirstName(state: customerState, action): void {
       state.firstName = action.payload;
     },
@@ -303,6 +309,32 @@ const slice = createSlice({
       state.demand.timeframe = action.payload;
     },
 
+    setInitialState: (state: customerState, action): void => {
+      state.id = action.payload.id;
+      state.suggestedBy = action.payload.suggestedBy;
+      state.managedBy = action.payload.id;
+      state.firstName = action.payload.firstName;
+      state.lastName = action.payload.lastName;
+      state.email = action.payload.email;
+      state.mobilePhone = action.payload.mobilePhone;
+      state.homePhone = action.payload.homePhone;
+      state.status = action.payload.status;
+      state.fax = action.payload.fax;
+      state.nationality = action.payload.nationality;
+      state.idNumber = action.payload.idNumber;
+      state.passportNumber = action.payload.passportNumber;
+      state.dateOfBirth = action.payload.dateOfBirth;
+      state.leadSource = action.payload.leadSource;
+      state.preferredLanguage = action.payload.preferredLanguage;
+      state.location = action.payload.location;
+      state.notes = action.payload.notes;
+      state.ownedProperties = action.payload.ownedProperties;
+      state.labelIDs = [
+        ...action.payload.labels.map((label: ILabel) => label.id),
+      ];
+      state.demand = action.payload.demand;
+    },
+
     resetState: () => {
       return initialState;
     },
@@ -310,6 +342,7 @@ const slice = createSlice({
 });
 
 export const {
+  setId,
   setFirstName,
   setLastName,
   setEmail,
@@ -359,6 +392,7 @@ export const {
   setMaxPrice,
   setTimeFrame,
 
+  setInitialState,
   resetState,
 } = slice.actions;
 

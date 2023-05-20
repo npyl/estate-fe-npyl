@@ -1,9 +1,9 @@
+import { IPropertyFeatures } from "./features";
+import { ILabel } from "./label";
 import { ILocation, ILocationPOST } from "./location";
 import { INote, INotePOST } from "./note";
-import { ILabel } from "./label";
 import { IProperties } from "./properties";
 import { IUser } from "./user";
-import { IPropertyFeatures } from "./features";
 
 export interface IDemandFilters {
   minBedrooms: number;
@@ -59,7 +59,7 @@ export interface ICustomer {
 }
 
 export interface ICustomerPOST {
-  id: number;
+  id?: number;
   firstName: string;
   lastName: string;
   email: string;

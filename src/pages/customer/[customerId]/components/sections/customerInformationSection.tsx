@@ -46,36 +46,25 @@ const CustomerInformationSection: React.FC = (props) => {
       </Box>
       <Grid container>
         <Grid item xs={6} padding={1}>
-          {/* <Grid container spacing={2}> */}
           <List>
-            {/* <ListStatusItem
-          label="Publiced"
-          status={isAvailable(data?.state)}
-          align="horizontal"
-          divider
-        /> */}
-
             <ListItem
               label="First Name:"
               value={data?.firstName}
               align="horizontal"
               divider
             />
-
             <ListItem
               label="Last Name:"
-              value={data?.lastName + " €"}
+              value={data?.lastName}
               align="horizontal"
               divider
             />
-
             <ListItem
               label="Email:"
               value={data?.email}
               align="horizontal"
               divider
             />
-
             <ListItem
               label="Managed By:"
               value={data?.managedBy}
@@ -100,7 +89,6 @@ const CustomerInformationSection: React.FC = (props) => {
               align="horizontal"
               divider
             />
-
             <ListItem
               label="Status:"
               value={data?.status}
@@ -111,15 +99,7 @@ const CustomerInformationSection: React.FC = (props) => {
         </Grid>
 
         <Grid item xs={6} padding={1}>
-          {/* <Grid container spacing={2}> */}
           <List>
-            {/* <ListStatusItem
-          label="Publiced"
-          status={isAvailable(data?.state)}
-          align="horizontal"
-          divider
-        /> */}
-
             <ListItem
               label="Nationality:"
               value={data?.nationality}

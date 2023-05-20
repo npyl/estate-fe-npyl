@@ -2,25 +2,25 @@ import type { NextPage } from "next";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 
-import { Grid, Button, Stack } from "@mui/material";
-
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
 
-import CustomerInformation from "./components/CustomerInformation";
 import AddressDetails from "./components/AddressDetails";
-import NotesSection from "./components/NotesSection";
+import CustomerInformation from "./components/CustomerInformation";
 import DemandForm from "./components/DemandForm";
-import PriorityFeatures from "./components/PriorityFeatures";
-import NonPriorityFeatures from "./components/NonPriorityFeatures";
 import MatchingSystem from "./components/MatchingSystem";
+import NonPriorityFeatures from "./components/NonPriorityFeatures";
+import NotesSection from "./components/NotesSection";
+import PriorityFeatures from "./components/PriorityFeatures";
 
-import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
+import { useDispatch, useSelector } from "react-redux";
 
 import { resetState, selectAll } from "src/slices/customer";
 import { selectAll as selectAllNewLabels } from "src/slices/labels";
 
+import { Button, Grid } from "@mui/material";
+import { Stack } from "@mui/system";
 import { useAddCustomerMutation } from "src/services/customers";
 import { useCreateLabelForCustomerMutation } from "src/services/labels";
 
@@ -79,13 +79,13 @@ const CreateCustomer: NextPage = () => {
         <Grid item xs={12} padding={2}>
           <Grid
             container
-            alignItems="center"
-            justifyContent="flex-end"
+            alignItems='center'
+            justifyContent='flex-end'
             spacing={1}
           >
             <Grid item>
               <Button
-                variant="outlined"
+                variant='outlined'
                 startIcon={<DeleteIcon />}
                 onClick={() => dispatch(resetState())}
               >
@@ -94,7 +94,7 @@ const CreateCustomer: NextPage = () => {
             </Grid>
             <Grid item>
               <Button
-                variant="contained"
+                variant='contained'
                 endIcon={<SendIcon />}
                 onClick={() => performUpload()}
               >

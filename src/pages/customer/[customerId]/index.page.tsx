@@ -1,46 +1,48 @@
-import { Box, Grid, Paper, Stack, Typography } from "@mui/material";
+import { Grid, Stack } from "@mui/material";
 
 import type { NextPage } from "next";
 
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 
-import { List, ListBooleanItem, ListItem } from "src/components/List";
-import BalconiesSection from "src/components/properties/Balconies";
-import FeaturesSection from "src/components/properties/Features";
-import HeatingAndEnergySection from "src/components/properties/HeatingAndEnergy";
-import LocationSection from "src/components/properties/Location";
-import ParkingSection from "src/components/properties/Parking";
-import SuitableForForResidentialSection from "src/components/properties/SuitableForForResidential";
-import TechnicalFeaturesAndInteriorForResidentialSection from "src/components/properties/TechnicalFeaturesAndInteriorForResidential";
-import { ImageSection } from "src/pages/property/[propertyId]/components/sections";
-import CustomerInformationSection from "./components/sections/customerInformationSection";
-import BasicSection from "src/components/properties/Basic";
-import CustomerLocationSection from "./components/sections/customerAdressSection";
 import CustomerAdressDetailsSection from "./components/sections/customerAdressSection";
+import CustomerInformationSection from "./components/sections/customerInformationSection";
 
-import { useGetCustomerByIdQuery } from "src/services/customers";
 import { useRouter } from "next/router";
-import NotesCustomerSection from "./components/sections/notesCustomerSection";
-import MatchingPropertiesSection from "./components/sections/matchingPropertiesSection";
-import OwnedCustomerPropertiesSection from "./components/sections/ownedCustomerPropertiesSection";
+import { useDeleteCustomerMutation } from "src/services/customers";
 import DemandCustomerSection from "./components/sections/demandCustomerSection";
+import MatchingPropertiesSection from "./components/sections/matchingPropertiesSection";
+import NotesCustomerSection from "./components/sections/notesCustomerSection";
+import OwnedCustomerPropertiesSection from "./components/sections/ownedCustomerPropertiesSection";
+
+import ViewHeader from "src/pages/components/ViewHeader";
 
 import ViewHeader from "src/pages/components/ViewHeader";
 
 const CustomerView: NextPage = () => {
   // customer
+  const router = useRouter();
+  const { customerId } = router.query;
+  const [deleteCustomer, { isSuccess }] = useDeleteCustomerMutation();
 
-  const handleEdit = () => {};
-  const handleDelete = () => {
-    // handle...
+  const handleEdit = () => {
+    router.push(`/customer/edit/${customerId}`);
   };
+  const handleDelete = () => {
+    deleteCustomer(parseInt(customerId as string));
+  };
+
+  isSuccess && router.push("/customer");
 
   return (
     <>
       <Grid container paddingTop={1} paddingRight={1} spacing={1}>
         <Grid item xs={12}>
-          <ViewHeader onEdit={handleEdit} onDelete={handleDelete}></ViewHeader>
+          <ViewHeader
+            resource='customer'
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          ></ViewHeader>
         </Grid>
 
         {/* customer info */}
