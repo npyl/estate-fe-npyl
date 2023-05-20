@@ -1,12 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
-import { ICustomer } from "src/types/customer";
+import { ICustomerPOST } from "src/types/customer";
 
-interface customerState extends ICustomer {
-  labelIDs: number[];
-}
-
-// TODO: make a custom POST type
+interface customerState extends ICustomerPOST {}
 
 const initialState: customerState = {
   firstName: "",
@@ -32,8 +28,6 @@ const initialState: customerState = {
     city: "",
     region: "",
     country: "",
-    // lat: number;
-    // lng: number;
   },
   notes: [],
   ownedProperties: [],

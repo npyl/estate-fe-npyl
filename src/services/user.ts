@@ -18,9 +18,9 @@ export const user = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Profile"],
+  tagTypes: ["Users", "Profile"],
   endpoints: (builder) => ({
-    profile: builder.query<any, any>({
+    profile: builder.query<IUser, void>({
       query: () => ({
         url: "profile/",
       }),
@@ -38,7 +38,7 @@ export const user = createApi({
       query: () => ({
         url: "",
       }),
-      // providesTags: ["Profile"],
+      providesTags: ["Users"],
     }),
   }),
 });

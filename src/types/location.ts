@@ -9,3 +9,13 @@ export interface ILocation {
   lat: number;
   lng: number;
 }
+
+export interface ILocationPOST {
+  street: string;
+  number: number;
+  complex: string;
+  zipCode: number;
+  city: string;
+  region: string;
+  country: string;
+}

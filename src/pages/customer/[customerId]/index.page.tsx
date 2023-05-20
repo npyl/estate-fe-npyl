@@ -26,10 +26,23 @@ import MatchingPropertiesSection from "./components/sections/matchingPropertiesS
 import OwnedCustomerPropertiesSection from "./components/sections/ownedCustomerPropertiesSection";
 import DemandCustomerSection from "./components/sections/demandCustomerSection";
 
+import ViewHeader from "src/pages/components/ViewHeader";
+
 const CustomerView: NextPage = () => {
+  // customer
+
+  const handleEdit = () => {};
+  const handleDelete = () => {
+    // handle...
+  };
+
   return (
     <>
       <Grid container paddingTop={1} paddingRight={1} spacing={1}>
+        <Grid item xs={12}>
+          <ViewHeader onEdit={handleEdit} onDelete={handleDelete}></ViewHeader>
+        </Grid>
+
         {/* customer info */}
         <Grid item xs={6} spacing={1} order={"row"}>
           <Stack spacing={1}>

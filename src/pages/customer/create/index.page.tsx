@@ -19,18 +19,41 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 
 import { resetState, selectAll } from "src/slices/customer";
+import { selectAll as selectAllNewLabels } from "src/slices/labels";
+
 import { useAddCustomerMutation } from "src/services/customers";
+import { useCreateLabelForCustomerMutation } from "src/services/labels";
 
 const CreateCustomer: NextPage = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const [create, { isSuccess }] = useAddCustomerMutation();
+  const [create, { isSuccess, data: createdCustomer }] =
+    useAddCustomerMutation();
+  const [createLabel, { isSuccess: isLabelSuccess }] =
+    useCreateLabelForCustomerMutation();
+
   const body = useSelector(selectAll);
+  const newLabels = useSelector(selectAllNewLabels);
+
+  const createAndAssignNewLabels = () => {
+    const createdCustomerId = createdCustomer!.id;
+
+    // foreach label; call create-for-customer-with-id
+    newLabels.forEach((newLabel) => {
+      createLabel({
+        customerId: createdCustomerId,
+        labelBody: newLabel,
+      });
+    });
+
+    router.push("/customer");
+  };
 
   const performUpload = () => {
     create(body);
-    isSuccess && router.push("/customer");
   };
+
+  isSuccess && createdCustomer && createAndAssignNewLabels();
 
   return (
     <>
