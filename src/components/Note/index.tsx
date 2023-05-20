@@ -24,23 +24,25 @@ const Note: React.FC<NoteProps> = (props) => {
 
       <Paper
         sx={{
-          p: 1.5,
+          p: 1,
           flexGrow: 1,
-          bgcolor: "neutral.300",
+          bgcolor: "#fce9a4",
         }}
       >
-        <Stack
-          justifyContent="space-between"
-          direction={{ xs: "column", sm: "row" }}
-          alignItems={{ sm: "center" }}
-          sx={{ mb: 0.5 }}
-        >
-          <Typography variant="subtitle2">{username}</Typography>
+        <div style={{ width: "100%" }}>
+          <Stack
+            justifyContent="space-between"
+            direction={{ xs: "column", sm: "row" }}
+            alignItems={{ sm: "center" }}
+            sx={{ mb: 1 }}
+          >
+            <Typography variant="subtitle2">{username}</Typography>
 
-          <Typography variant="caption" sx={{ color: "text.disabled" }}>
-            {note.createdAt.toString()}
-          </Typography>
-        </Stack>
+            <Typography variant="caption" sx={{ color: "text.disabled" }}>
+              {note.createdAt.toString().slice(0, 16).replace("T", " ")}
+            </Typography>
+          </Stack>
+        </div>
 
         <Stack direction={"row"}>
           <Typography variant="body2" sx={{ color: "text.secondary" }} flex={1}>

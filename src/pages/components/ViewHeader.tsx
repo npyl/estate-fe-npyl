@@ -1,32 +1,29 @@
 import {
-  Box,
-  Grid,
-  Paper,
-  Stack,
-  Typography,
   Button,
   Dialog,
-  DialogTitle,
-  DialogContentText,
   DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Grid,
+  Paper,
 } from "@mui/material";
 
-import Iconify from "src/components/iconify/Iconify";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Iconify from "src/components/iconify/Iconify";
 
 import { SoftButton } from "src/components/SoftButton";
 
-import { useState, ReactNode } from "react";
-import ViewAll from "./ViewAll";
+import { ReactNode, useState } from "react";
 
 interface IViewHeaderProps {
   onEdit: VoidFunction;
   onDelete: VoidFunction;
+  resource?: string;
   children?: ReactNode;
 }
 
 const ViewHeader = (props: IViewHeaderProps) => {
-  const { onDelete, onEdit, children } = props;
+  const { onDelete, onEdit, resource = "property", children } = props;
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
@@ -38,8 +35,8 @@ const ViewHeader = (props: IViewHeaderProps) => {
         </Grid>
         <Grid item sx={{ mt: 1, mb: 1 }}>
           <Button
-            variant="outlined"
-            color="secondary"
+            variant='outlined'
+            color='secondary'
             sx={{ mr: 1 }}
             onClick={onEdit}
           >
@@ -47,7 +44,7 @@ const ViewHeader = (props: IViewHeaderProps) => {
           </Button>
 
           <SoftButton
-            color="error"
+            color='error'
             onClick={() => {
               setDeleteDialogOpen(true);
             }}
@@ -58,18 +55,20 @@ const ViewHeader = (props: IViewHeaderProps) => {
 
           <Dialog
             fullWidth
-            maxWidth="xs"
+            maxWidth='xs'
             open={deleteDialogOpen}
             onClose={() => {
               setDeleteDialogOpen(false);
             }}
             closeAfterTransition={true}
           >
-            <DialogTitle>Delete Property</DialogTitle>
+            <DialogTitle>
+              Delete {resource === "property" ? "Property" : "Customer"}
+            </DialogTitle>
             <DialogContentText ml={3}>Are you sure?</DialogContentText>
             <DialogContent>
               <SoftButton
-                color="error"
+                color='error'
                 sx={{ mr: 1 }}
                 onClick={onDelete}
                 startIcon={<Iconify icon={"eva:trash-2-outline"} />}
@@ -78,8 +77,8 @@ const ViewHeader = (props: IViewHeaderProps) => {
               </SoftButton>
 
               <Button
-                variant="outlined"
-                color="secondary"
+                variant='outlined'
+                color='secondary'
                 onClick={() => {
                   setDeleteDialogOpen(false);
                 }}
