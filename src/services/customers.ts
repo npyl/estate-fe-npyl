@@ -30,7 +30,7 @@ export const customers = createApi({
       query: (id: number) => `${id}`,
       providesTags: ["Customers"],
     }),
-    addCustomer: builder.mutation<any, any>({
+    addCustomer: builder.mutation<ICustomer, any>({
       query: (dataToSend: any) => ({
         url: "",
         method: "POST",

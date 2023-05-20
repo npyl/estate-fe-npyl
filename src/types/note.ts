@@ -7,3 +7,7 @@ export interface INote {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export interface INotePOST {
+  content: string;
+}

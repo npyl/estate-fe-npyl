@@ -31,11 +31,15 @@ import Label from "src/components/label/Label";
 
 import { BlockPicker } from "react-color";
 
-import { addLabel } from "src/slices/customer";
+// Customer Slice
+import { addLabel, selectLabels } from "src/slices/customer";
+// Labels Slice
+import {
+  selectAll as selectAllNewLabels,
+  addLabel as addNewLabel,
+} from "src/slices/labels";
 
 import { ILabel } from "src/types/label";
-
-import { selectLabels } from "src/slices/customer";
 
 const CreateLabel: React.FC<any> = (props) => {
   const [addLabelDialog, setAddLabelDialog] = useState(false);
@@ -49,7 +53,7 @@ const CreateLabel: React.FC<any> = (props) => {
 
   // assigned-existing labels & newly-created labels
   const assignedLabelIDs: number[] = useSelector(selectLabels);
-  const [newLabels, setNewLabels] = useState<ILabel[]>([]);
+  const newLabels = useSelector(selectAllNewLabels);
 
   const dispatch = useDispatch();
 
@@ -61,8 +65,7 @@ const CreateLabel: React.FC<any> = (props) => {
   };
 
   const createLabel = () => {
-    const newLabel = { color: pickerColor, name: labelName };
-    setNewLabels([...newLabels, newLabel]);
+    dispatch(addNewLabel({ color: pickerColor, name: labelName }));
   };
 
   if (!customerLabels) return null;

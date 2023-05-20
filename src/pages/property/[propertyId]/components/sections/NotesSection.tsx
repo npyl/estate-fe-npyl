@@ -45,12 +45,16 @@ const NotesSection: React.FC<NotesSectionProps> = (props) => {
     // perform POST
     addNote({
       id: data.id,
-      dataToSend: { creatorId: 1, content: message },
+      dataToSend: { content: message },
     });
 
     isSuccess && setMessage("");
   };
-
+  const handleKeyPress = (event: { key: string }) => {
+    if (event.key === "Enter") {
+      handleSendNote();
+    }
+  };
   return (
     <>
       <Box
@@ -63,7 +67,7 @@ const NotesSection: React.FC<NotesSectionProps> = (props) => {
       >
         <Typography variant="h6">Notes</Typography>
       </Box>
-      <Stack spacing={1.5} sx={{ px: 3, pb: 2 }}>
+      <Stack spacing={1} sx={{ px: 3, pb: 2 }}>
         {notes.map((note, index) => (
           <Note note={note} key={index} />
         ))}
@@ -83,6 +87,7 @@ const NotesSection: React.FC<NotesSectionProps> = (props) => {
           inputRef={commentInputRef}
           placeholder="Write a comment…"
           onChange={(event) => handleChangeMessage(event.target.value)}
+          onKeyPress={handleKeyPress}
           endAdornment={
             <InputAdornment position="end" sx={{ mr: 1 }}>
               <IconButton size="small" onClick={handleSendNote}>

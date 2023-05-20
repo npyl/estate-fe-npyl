@@ -1,12 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { INote } from "src/types/note";
+import { INote, INotePOST } from "src/types/note";
 
 interface NoteForPropertyProps {
   id: number;
-  dataToSend: {
-    content: string;
-    creatorId: number;
-  };
+  dataToSend: INotePOST;
 }
 type NoteForCustomerProps = NoteForPropertyProps;
 
@@ -56,6 +53,7 @@ export const note = createApi({
         method: "POST",
         body: props.dataToSend,
       }),
+      invalidatesTags: ["Notes"],
     }),
     deleteWithId: builder.mutation<any, number>({
       query: (id: number) => ({
