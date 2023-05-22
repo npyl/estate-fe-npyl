@@ -17,8 +17,6 @@ import OwnedCustomerPropertiesSection from "./components/sections/ownedCustomerP
 
 import ViewHeader from "src/pages/components/ViewHeader";
 
-import ViewHeader from "src/pages/components/ViewHeader";
-
 const CustomerView: NextPage = () => {
   // customer
   const router = useRouter();

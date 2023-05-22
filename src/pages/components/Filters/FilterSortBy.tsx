@@ -1,4 +1,4 @@
-import { Autocomplete, Box, Checkbox, TextField } from "@mui/material";
+import { FormControl, MenuItem, Select } from "@mui/material";
 import { useState } from "react";
 
 interface IFilterSortByProps {
@@ -7,7 +7,7 @@ interface IFilterSortByProps {
 
 export default function FilterSortBy({ onSorting }: IFilterSortByProps) {
   const sortByFilterOptions = [
-    { value: "", label: "Προεπιλογή" },
+    { value: "default", label: "Αυτόματη ταξινόμηση" },
     {
       value: "Ascending_Price",
       label: "Αύξουσα Τιμή",
@@ -26,56 +26,42 @@ export default function FilterSortBy({ onSorting }: IFilterSortByProps) {
     },
   ];
 
-  const [selectedOption, setSelectedOption] = useState("");
+  const [selectedOption, setSelectedOption] = useState<string>("default");
 
   return (
-    <Autocomplete
-      sx={{
-        width: 200,
-        "& .MuiAutocomplete-paper": {
-          width: 400,
-        },
-      }}
-      id="select-demo"
-      options={sortByFilterOptions}
-      autoHighlight
-      clearIcon={false}
-      componentsProps={{ popper: { style: { width: "200px" } } }}
-      getOptionLabel={(option) => option.label}
-      onChange={(_e, option) => {
-        setSelectedOption(option?.value || "");
+    <FormControl variant='standard' sx={{ m: 1, minWidth: 120 }}>
+      <Select
+        disableUnderline
+        labelId='demo-simple-select-standard-label'
+        id='demo-simple-select-standard'
+        value={selectedOption}
+        sx={{
+          "&.Mui-focusVisible": {
+            background: "transparent",
+          },
+        }}
+        onChange={(e) => {
+          setSelectedOption(e.target.value || "");
 
-        if (option?.value === sortByFilterOptions[0].value) {
-          onSorting("", "");
-        } else if (option?.value === sortByFilterOptions[1].value) {
-          onSorting("price", "asc");
-        } else if (option?.value === sortByFilterOptions[2].value) {
-          onSorting("price", "desc");
-        } else if (option?.value === sortByFilterOptions[3].value) {
-          onSorting("area", "asc");
-        } else if (option?.value === sortByFilterOptions[4].value) {
-          onSorting("price", "desc");
-        }
-      }}
-      renderOption={(props, option) => (
-        <Box {...props} component="li">
-          <Checkbox checked={selectedOption === option.value} />
-          {option.label}
-        </Box>
-      )}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          placeholder="Sort By"
-          InputLabelProps={{
-            shrink: true,
-          }}
-          inputProps={{
-            ...params.inputProps,
-            autoComplete: "new-password", // disable autocomplete and autofill
-          }}
-        />
-      )}
-    />
+          if (e.target.value === sortByFilterOptions[0].value) {
+            onSorting("", "");
+          } else if (e.target.value === sortByFilterOptions[1].value) {
+            onSorting("price", "asc");
+          } else if (e.target.value === sortByFilterOptions[2].value) {
+            onSorting("price", "desc");
+          } else if (e.target.value === sortByFilterOptions[3].value) {
+            onSorting("area", "asc");
+          } else if (e.target.value === sortByFilterOptions[4].value) {
+            onSorting("price", "desc");
+          }
+        }}
+      >
+        {sortByFilterOptions.map((option) => (
+          <MenuItem key={option.value} value={option.value}>
+            {option.label}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   );
 }

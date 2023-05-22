@@ -1,60 +1,52 @@
 import {
   Box,
+  FormControl,
   Grid,
+  InputLabel,
+  MenuItem,
   Paper,
+  Rating,
+  Select,
   TextField,
   Typography,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Rating,
-  IconButton,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogContentText,
 } from "@mui/material";
 import * as React from "react";
 import { useAllPropertyGlobalQuery } from "src/services/global";
 import { useAllUsersQuery } from "src/services/user";
 
-import { useState } from "react";
-
 import CreateLabel from "./CreateLabel";
 
 import {
-  // getters
-  selectFirstName,
-  selectLastName,
+  selectDateOfBirth,
   selectEmail,
+  selectFax,
+  selectFirstName,
+  selectHomePhone,
+  selectIdNumber,
+  selectLabels,
+  selectLastName,
+  selectLeadSource,
   selectManagedBy,
   selectMobilePhone,
-  selectHomePhone,
-  selectFax,
-  selectLabels,
   selectNationality,
-  selectIdNumber,
-  selectDateOfBirth,
   selectPassportNumber,
   selectPreferredLanguage,
-  selectLeadSource,
-  selectSuggestedBy,
   selectStatus,
+  selectSuggestedBy,
+  setDateOfBirth,
+  setEmail,
+  setFax,
   // setters
   setFirstName,
-  setLastName,
-  setEmail,
-  setMobilePhone,
   setHomePhone,
-  setStatus,
-  setFax,
-  setNationality,
   setIdNumber,
-  setPassportNumber,
-  setDateOfBirth,
+  setLastName,
   setLeadSource,
+  setMobilePhone,
+  setNationality,
+  setPassportNumber,
   setPreferredLanguage,
+  setStatus,
 } from "src/slices/customer";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -103,7 +95,7 @@ const CustomerInformation: React.FC<any> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant="h6">Customer Information</Typography>
+        <Typography variant='h6'>Customer Information</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -111,8 +103,8 @@ const CustomerInformation: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="First Name"
+              id='outlined-controlled'
+              label='First Name'
               value={firstName}
               onChange={(e) => {
                 dispatch(setFirstName(e.target.value));
@@ -128,8 +120,8 @@ const CustomerInformation: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Last Name"
+              id='outlined-controlled'
+              label='Last Name'
               value={lastName}
               onChange={(e) => {
                 dispatch(setLastName(e.target.value));
@@ -144,8 +136,8 @@ const CustomerInformation: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Email"
+              id='outlined-controlled'
+              label='Email'
               value={email}
               onChange={(e) => {
                 dispatch(setEmail(e.target.value));
@@ -163,7 +155,7 @@ const CustomerInformation: React.FC<any> = (props) => {
               <InputLabel>Managed By</InputLabel>
               <Select
                 value={managedBy}
-                label="Managed By"
+                label='Managed By'
                 onChange={(e) => {
                   // dispatch(setParentCategory(e.target.value));
                 }}
@@ -181,8 +173,8 @@ const CustomerInformation: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Mobile Phone"
+              id='outlined-controlled'
+              label='Mobile Phone'
               value={mobilePhone}
               onChange={(e) => {
                 dispatch(setMobilePhone(e.target.value));
@@ -198,8 +190,8 @@ const CustomerInformation: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Home Phone"
+              id='outlined-controlled'
+              label='Home Phone'
               value={homePhone}
               onChange={(e) => {
                 dispatch(setHomePhone(e.target.value));
@@ -215,8 +207,8 @@ const CustomerInformation: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Fax"
+              id='outlined-controlled'
+              label='Fax'
               value={fax}
               onChange={(e) => {
                 dispatch(setFax(e.target.value));
@@ -232,8 +224,8 @@ const CustomerInformation: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Nationality"
+              id='outlined-controlled'
+              label='Nationality'
               value={nationality}
               onChange={(e) => {
                 dispatch(setNationality(e.target.value));
@@ -249,8 +241,8 @@ const CustomerInformation: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="ID Number"
+              id='outlined-controlled'
+              label='ID Number'
               value={idNumber}
               onChange={(e) => {
                 dispatch(setIdNumber(e.target.value));
@@ -266,8 +258,8 @@ const CustomerInformation: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Date of birth"
+              id='outlined-controlled'
+              label='Date of birth'
               value={dateOfBirth}
               onChange={(e) => {
                 dispatch(setDateOfBirth(e.target.value));
@@ -283,8 +275,8 @@ const CustomerInformation: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Passport number"
+              id='outlined-controlled'
+              label='Passport number'
               value={passportNumber}
               onChange={(e) => {
                 dispatch(setPassportNumber(e.target.value));
@@ -300,8 +292,8 @@ const CustomerInformation: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Preferred Language"
+              id='outlined-controlled'
+              label='Preferred Language'
               value={preferredLanguage}
               onChange={(e) => {
                 dispatch(setPreferredLanguage(e.target.value));
@@ -319,7 +311,7 @@ const CustomerInformation: React.FC<any> = (props) => {
               <InputLabel>Lead Source</InputLabel>
               <Select
                 value={leadSource}
-                label="Lead Source"
+                label='Lead Source'
                 onChange={(e) => {
                   dispatch(setLeadSource(e.target.value));
                 }}
@@ -337,8 +329,8 @@ const CustomerInformation: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Suggested by"
+              id='outlined-controlled'
+              label='Suggested by'
               value={suggestedBy}
               onChange={(e) => {
                 // dispatch(selectSuggestedBy(e.target.value));
@@ -366,12 +358,12 @@ const CustomerInformation: React.FC<any> = (props) => {
               flexDirection={"column"}
             >
               <Box sx={{ display: "flex", justifyContent: "center" }}>
-                <Typography variant="h6">Status</Typography>
+                <Typography variant='h6'>Status</Typography>
               </Box>
 
               <Box sx={{ display: "flex", justifyContent: "center", py: 1.5 }}>
                 <Rating
-                  name="simple-controlled"
+                  name='simple-controlled'
                   value={status}
                   onChange={(_event, newValue) => {
                     dispatch(setStatus(newValue));

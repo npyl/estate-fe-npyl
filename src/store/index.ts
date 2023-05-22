@@ -11,8 +11,8 @@ import { labels } from "src/services/labels";
 import { note } from "src/services/note";
 import { auth } from "../services/auth";
 import { customers } from "../services/customers";
-import { document } from "../services/document";
 import { rtkQueryErrorLogger } from "../services/error";
+import { location } from "../services/location";
 import { properties } from "../services/properties";
 import { user } from "../services/user";
 import { rootReducer } from "./root-reducer";
@@ -25,17 +25,10 @@ export const createStore = (
       getDefaultMiddleware({
         serializableCheck: {
           // Ignore these action types
-          ignoredActions: [
-            "document/executeQuery/fulfilled",
-            "document/executeQuery/pending",
-            "document/subscriptions/unsubscribeQueryResult",
-            "document/executeQuery/pending",
-            "document/executeQuery/fulfilled",
-          ],
-          ignoredActionPaths: ["payload", "meta", "document"],
+          ignoredActions: [],
+          ignoredActionPaths: ["payload", "meta"],
         },
       }).concat(
-        document.middleware,
         auth.middleware,
         user.middleware,
         properties.middleware,
@@ -43,6 +36,7 @@ export const createStore = (
         global.middleware,
         note.middleware,
         labels.middleware,
+        location.middleware,
         rtkQueryErrorLogger
       ),
     ...options,

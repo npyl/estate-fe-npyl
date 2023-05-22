@@ -1,6 +1,6 @@
-import { useSelector, useDispatch } from "react-redux";
-import { getChangedFields, deleteFilter } from "src/slices/filters";
-import { Stack, Chip, Typography, InputAdornment } from "@mui/material";
+import { Chip, Stack, Typography } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteFilter, getChangedFields } from "src/slices/filters";
 
 const TagFiltered = () => {
   const dispatch = useDispatch();
@@ -66,7 +66,9 @@ const TagFiltered = () => {
       {Object.keys(changedProps).map((key, index) => {
         // ignore minPrice and maxPrice; we create a chip that contains both as one
         if (key === "minPrice" || key === "maxPrice") return <></>;
-
+        if (changedProps[key].length === 0) {
+          return null;
+        }
         return (
           <Chip
             key={index}

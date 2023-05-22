@@ -16,7 +16,6 @@ import {
   useAddNoteToCustomerWithIdMutation,
   useGetNotesByCustomerIdQuery,
 } from "src/services/note";
-import { ICustomer } from "src/types/customer";
 
 const NotesCustomerSection: React.FC = () => {
   const router = useRouter();

@@ -1,18 +1,9 @@
 import { Grid, List, Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import * as React from "react";
-import {
-  ListItem,
-  ListManagerItem,
-  ListBooleanItem,
-  ListStatusItem,
-} from "src/components/List";
-import ListLabelsItem from "src/components/List/labels-item";
-import {
-  useAllCustomersQuery,
-  useGetCustomerByIdQuery,
-} from "src/services/customers";
 import { useRouter } from "next/router";
+import * as React from "react";
+import { ListItem } from "src/components/List";
+import { useGetCustomerByIdQuery } from "src/services/customers";
 
 const CustomerAdressDetailsSection: React.FC = (props) => {
   const router = useRouter();
@@ -40,7 +31,7 @@ const CustomerAdressDetailsSection: React.FC = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant="h6">Adress Details</Typography>
+        <Typography variant='h6'>Adress Details</Typography>
       </Box>
       <Grid container>
         <Grid item xs={6} padding={1}>
@@ -54,30 +45,30 @@ const CustomerAdressDetailsSection: React.FC = (props) => {
         /> */}
 
             <ListItem
-              label="Street:"
+              label='Street:'
               value={data?.location.street}
-              align="horizontal"
+              align='horizontal'
               divider
             />
 
             <ListItem
-              label="Number:"
+              label='Number:'
               value={data?.location.number}
-              align="horizontal"
+              align='horizontal'
               divider
             />
 
             <ListItem
-              label="City:"
+              label='City:'
               value={data?.location.city}
-              align="horizontal"
+              align='horizontal'
               divider
             />
 
             <ListItem
-              label="Complex:"
+              label='Complex:'
               value={data?.location.complex}
-              align="horizontal"
+              align='horizontal'
               divider
             />
           </List>
@@ -93,21 +84,21 @@ const CustomerAdressDetailsSection: React.FC = (props) => {
           divider
         /> */}
             <ListItem
-              label="Zip Code:"
+              label='Zip Code:'
               value={data?.location.zipCode}
-              align="horizontal"
+              align='horizontal'
               divider
             />
             <ListItem
-              label="Region:"
+              label='Region:'
               value={data?.location.region}
-              align="horizontal"
+              align='horizontal'
               divider
             />
             <ListItem
-              label="Country:"
+              label='Country:'
               value={data?.location.country}
-              align="horizontal"
+              align='horizontal'
               divider
             />
           </List>

@@ -1,51 +1,80 @@
-// import citiesJson from "src/json/countries.json";
-import { selectCity } from "src/slices/filters";
+import {
+  Checkbox,
+  FormControl,
+  InputLabel,
+  ListSubheader,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  SelectChangeEvent,
+} from "@mui/material";
+import nomoi from "src/json/nomoi.json";
+import { selectCities, setCities } from "src/slices/filters";
 import { useDispatch, useSelector } from "src/store";
 
 export default function CountrySelect() {
   const dispatch = useDispatch();
-  const selectedCity = useSelector(selectCity);
+  const cities = useSelector(selectCities);
 
-  // const cities: readonly Feature[] = citiesJson.features;
-  // const cityNames = cities.map((city) => {
-  //   return city.properties.NAME;
-  // });
+  const handleChange = (event: SelectChangeEvent<typeof cities>) => {
+    const {
+      target: { value },
+    } = event;
+    dispatch(
+      setCities(
+        // On autofill we get a stringified value.
+        typeof value === "string" ? value.split(",") : value
+      )
+    );
+  };
+  interface optionsType {
+    groupName: string;
+    options: { value: string; label: string }[];
+  }
+  const getGroupedOptions = () => {
+    const groupedOptions = nomoi.reduce((acc: any, option) => {
+      const groupName = option["Parent Name GR"];
+      const optionData = { value: option["Area ID"], label: option["Name GR"] };
+      if (acc[groupName]) {
+        acc[groupName].options.push(optionData);
+      } else {
+        acc[groupName] = {
+          groupName,
+          options: [optionData],
+        };
+      }
+      return acc;
+    }, {});
+
+    return Object.values(groupedOptions) as optionsType[];
+  };
+
+  const renderSelectGroup = (group: any) => {
+    const items = group.options.map((option: any) => {
+      return (
+        <MenuItem key={option.value} value={option.label}>
+          <Checkbox checked={cities.indexOf(option.label) > -1} />
+          {option.label}
+        </MenuItem>
+      );
+    });
+    return [<ListSubheader> {group.groupName}</ListSubheader>, items];
+  };
 
   return (
-    <></>
-    // <Autocomplete
-    //   id='country-select-demo'
-    //   sx={{ width: 200 }}
-    //   options={cities}
-    //   autoHighlight
-    //   value={selectedCities}
-    //   isOptionEqualToValue={(option, value) =>
-    //     option.properties.NAME === value.properties.NAME
-    //   }
-    //   clearIcon={false}
-    //   onChange={(_e, newValue) => dispatch(setCity(newValue))}
-    //   getOptionLabel={(option) =>
-    //     option.properties.NAME || option.properties.ONOMA
-    //   }
-    //   renderOption={(props, option) => (
-    //     <li {...props}>
-    //       <Checkbox checked={selectedCities.includes(option.properties.NAME)} />
-    //       {option.properties.ONOMA}
-    //     </li>
-    //   )}
-    //   renderInput={(params) => (
-    //     <TextField
-    //       {...params}
-    //       placeholder='Επιλέξτε περιοχή'
-    //       InputLabelProps={{
-    //         shrink: true,
-    //       }}
-    //       inputProps={{
-    //         ...params.inputProps,
-    //         autoComplete: "new-password", // disable autocomplete and autofill
-    //       }}
-    //     />
-    //   )}
-    // />
+    <FormControl sx={{ width: 110 }}>
+      <InputLabel id='demo-simple-select-label'>Περιοχή</InputLabel>
+      <Select
+        multiple
+        labelId='demo-simple-select-label'
+        value={cities}
+        onChange={handleChange}
+        renderValue={(selected) => selected.join(", ")}
+        input={<OutlinedInput label='Περιοχή' />}
+        MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
+      >
+        {getGroupedOptions().map((group, i) => renderSelectGroup(group))}
+      </Select>
+    </FormControl>
   );
 }

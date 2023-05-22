@@ -1,23 +1,13 @@
-import { Grid, List, Paper, Typography } from "@mui/material";
+import { Grid, Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import * as React from "react";
-import {
-  ListItem,
-  ListManagerItem,
-  ListBooleanItem,
-  ListStatusItem,
-} from "src/components/List";
-import ListLabelsItem from "src/components/List/labels-item";
-import {
-  useAllCustomersQuery,
-  useGetCustomerByIdQuery,
-} from "src/services/customers";
+import { useGetCustomerByIdQuery } from "src/services/customers";
 
 import { useFilterPropertiesMutation } from "src/services/properties";
 
+import { GridColDef } from "@mui/x-data-grid";
 import { useRouter } from "next/router";
 import DataGridTable from "src/components/DataGrid";
-import { GridColDef } from "@mui/x-data-grid";
 const columns: GridColDef[] = [
   {
     field: "firstName",
@@ -60,7 +50,7 @@ const OwnedCustomerPropertiesSection: React.FC = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant="h6">Owned Properties</Typography>
+        <Typography variant='h6'>Owned Properties</Typography>
       </Box>
 
       <Grid container>

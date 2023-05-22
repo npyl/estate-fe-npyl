@@ -8,11 +8,12 @@ import {
   Skeleton,
   Stack,
   SvgIconTypeMap,
+  Typography,
 } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import { Box } from "@mui/system";
 import { GridCellParams, GridColDef } from "@mui/x-data-grid";
-import { FC, ReactNode, useMemo, useState } from "react";
+import { FC, ReactNode, useEffect, useState } from "react";
 
 import Image from "src/components/image";
 import Label from "src/components/label/Label";
@@ -39,6 +40,8 @@ import {
   SubCategorySelect,
   TagFiltered,
 } from "./Filters";
+import CountrySelect from "./Filters/FilterCities";
+import FilterLabels from "./Filters/FilterLabels";
 import FilterRows from "./Filters/FilterRows";
 
 const ViewAll: FC = () => {
@@ -52,24 +55,6 @@ const ViewAll: FC = () => {
 
   const [filter, setFilter] = useState<IPropertyFilter>({} as IPropertyFilter);
   const [filterProperties, { isLoading, data }] = useFilterPropertiesMutation();
-
-  (async () => {
-    const response = await fetch(
-      "https://parseapi.back4app.com/classes/List_of_Greek_cities?limit=10&keys=name,latitude,longitude",
-      {
-        headers: {
-          "X-Parse-Application-Id": "H5YJKam2vJNOO3O0MPknQaBw6fPoRQcmg0pda7zA", // This is the fake app's application id
-          "X-Parse-Master-Key": "HJJRuY2YBL61mBqmSJS3WcA2kvmX1px1UBCWXbhU", // This is the fake app's readonly master key
-        },
-      }
-    );
-    const data = await response.json(); // Here you have the data that you need
-    console.log(JSON.stringify(data, null, 2));
-  })();
-
-  useMemo(() => {
-    filterProperties(filter);
-  }, [filter, filterProperties]);
 
   type optionType = "list" | "grid" | "map";
 
@@ -165,7 +150,9 @@ const ViewAll: FC = () => {
   const skeletonRows = Array.from({ length: 5 }, (_, index) => ({
     id: index + 1,
   }));
-
+  useEffect(() => {
+    filterProperties(filter);
+  }, [filter]);
   return (
     <Box>
       <Paper sx={{ paddingX: 2, paddingY: 1, overflow: "scroll" }}>
@@ -182,14 +169,14 @@ const ViewAll: FC = () => {
             alignItems={"center"}
             spacing={0.5}
           >
-            {/* <CountrySelect /> */}
+            <CountrySelect />
             <SaleSelect />
 
             <CategorySelect />
             <SubCategorySelect />
 
             <PriceSelect type={"price"} />
-
+            <FilterLabels />
             <StyledPriceButton
               open={false}
               disableRipple
@@ -225,7 +212,9 @@ const ViewAll: FC = () => {
         paddingTop={2}
         paddingX={2}
       >
-        <FilterRows />
+        <Typography variant={"body2"} fontWeight={600}>
+          {data?.length} Αποτελέσματα
+        </Typography>
         <Stack direction={"row"} spacing={0.5}>
           {viewOptions.map((option) => (
             <IconButton
@@ -244,12 +233,15 @@ const ViewAll: FC = () => {
             </IconButton>
           ))}
         </Stack>
-        <FilterSortBy
-          onSorting={(sortingBy, sortingOrder) => {
-            setSortingBy(sortingBy);
-            setSortingOrder(sortingOrder);
-          }}
-        />
+        <Stack direction={"row"} alignItems={"center"}>
+          <FilterSortBy
+            onSorting={(sortingBy, sortingOrder) => {
+              setSortingBy(sortingBy);
+              setSortingOrder(sortingOrder);
+            }}
+          />
+          <FilterRows />
+        </Stack>
       </Stack>
       {!isLoading && data ? (
         <>

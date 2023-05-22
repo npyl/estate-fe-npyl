@@ -1,10 +1,7 @@
-import { Grid, Paper, TextField } from "@mui/material";
-import InputAdornment from "@mui/material/InputAdornment";
+import { Grid, Paper } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import * as React from "react";
-import { useSelector } from "react-redux";
-import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 
 const PriorityFeatures: React.FC<any> = (props) => {
   return (
@@ -23,7 +20,7 @@ const PriorityFeatures: React.FC<any> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant="h6">Priority Features</Typography>
+        <Typography variant='h6'>Priority Features</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>

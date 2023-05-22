@@ -1,0 +1,498 @@
+[
+  {
+    "Area ID": "104",
+    "Name GR": "Αθήνα - Ανατολικά Προάστια",
+    "Name EN": "Athens - East",
+    "Level": "1",
+    "Parent Name GR": "Αττική",
+    "Parent Name EN": "Attica"
+  },
+  {
+    "Area ID": "101",
+    "Name GR": "Αθήνα - Βόρεια Προάστια",
+    "Name EN": "Athens - North",
+    "Level": "1",
+    "Parent Name GR": "Αττική",
+    "Parent Name EN": "Attica"
+  },
+  {
+    "Area ID": "103",
+    "Name GR": "Αθήνα - Δυτικά Προάστια",
+    "Name EN": "Athens - West",
+    "Level": "1",
+    "Parent Name GR": "Αττική",
+    "Parent Name EN": "Attica"
+  },
+  {
+    "Area ID": "102",
+    "Name GR": "Αθήνα - Νότια Προάστια",
+    "Name EN": "Athens - South",
+    "Level": "1",
+    "Parent Name GR": "Αττική",
+    "Parent Name EN": "Attica"
+  },
+  {
+    "Area ID": "100",
+    "Name GR": "Κέντρο Αθήνας",
+    "Name EN": "Athens - Center",
+    "Level": "1",
+    "Parent Name GR": "Αττική",
+    "Parent Name EN": "Attica"
+  },
+  {
+    "Area ID": "106001",
+    "Name GR": "Νησιά Αργοσαρωνικού",
+    "Name EN": "Argosaronikos islands",
+    "Level": "1",
+    "Parent Name GR": "Αττική",
+    "Parent Name EN": "Attica"
+  },
+  {
+    "Area ID": "105",
+    "Name GR": "Πειραιάς",
+    "Name EN": "Piraeus",
+    "Level": "1",
+    "Parent Name GR": "Αττική",
+    "Parent Name EN": "Attica"
+  },
+  {
+    "Area ID": "106",
+    "Name GR": "Προάστια Πειραιά",
+    "Name EN": "Piraeus suburbs",
+    "Level": "1",
+    "Parent Name GR": "Αττική",
+    "Parent Name EN": "Attica"
+  },
+  {
+    "Area ID": "107",
+    "Name GR": "Υπόλοιπο Αττικής",
+    "Name EN": "Rest of Attica",
+    "Level": "1",
+    "Parent Name GR": "Αττική",
+    "Parent Name EN": "Attica"
+  },
+  {
+    "Area ID": "166",
+    "Name GR": "Θεσπρωτία",
+    "Name EN": "Thesprotia",
+    "Level": "1",
+    "Parent Name GR": "Ήπειρος",
+    "Parent Name EN": "Ipiros"
+  },
+  {
+    "Area ID": "153",
+    "Name GR": "Ν. Άρτας",
+    "Name EN": "Arta Prefecture",
+    "Level": "1",
+    "Parent Name GR": "Ήπειρος",
+    "Parent Name EN": "Ipiros"
+  },
+  {
+    "Area ID": "167",
+    "Name GR": "Ν. Ιωαννίνων",
+    "Name EN": "Ioannina Prefecture",
+    "Level": "1",
+    "Parent Name GR": "Ήπειρος",
+    "Parent Name EN": "Ipiros"
+  },
+  {
+    "Area ID": "187",
+    "Name GR": "Ν. Πρέβεζας",
+    "Name EN": "Preveza Prefecture",
+    "Level": "1",
+    "Parent Name GR": "Ήπειρος",
+    "Parent Name EN": "Ipiros"
+  },
+  {
+    "Area ID": "182",
+    "Name GR": "Μαγνησία",
+    "Name EN": "Magnesia",
+    "Level": "1",
+    "Parent Name GR": "Θεσσαλία",
+    "Parent Name EN": "Thessalia"
+  },
+  {
+    "Area ID": "169",
+    "Name GR": "Ν. Καρδίτσας",
+    "Name EN": "Karditsa Prefecture",
+    "Level": "1",
+    "Parent Name GR": "Θεσσαλία",
+    "Parent Name EN": "Thessalia"
+  },
+  {
+    "Area ID": "178",
+    "Name GR": "Ν. Λάρισας",
+    "Name EN": "Larissa Prefecture",
+    "Level": "1",
+    "Parent Name GR": "Θεσσαλία",
+    "Parent Name EN": "Thessalia"
+  },
+  {
+    "Area ID": "192",
+    "Name GR": "Ν. Τρικάλων",
+    "Name EN": "Trikala Prefecture",
+    "Level": "1",
+    "Parent Name GR": "Θεσσαλία",
+    "Parent Name EN": "Thessalia"
+  },
+  {
+    "Area ID": "108",
+    "Name GR": "Θεσσαλονίκη - Δήμος",
+    "Name EN": "Thessaloniki - Municipality",
+    "Level": "1",
+    "Parent Name GR": "Θεσσαλονίκη",
+    "Parent Name EN": "Thessaloniki"
+  },
+  {
+    "Area ID": "109",
+    "Name GR": "Θεσσαλονίκη - Περιφ/κοί δήμοι",
+    "Name EN": "Thessaloniki - Suburbs",
+    "Level": "1",
+    "Parent Name GR": "Θεσσαλονίκη",
+    "Parent Name EN": "Thessaloniki"
+  },
+  {
+    "Area ID": "110",
+    "Name GR": "Θεσσαλονίκη - Υπόλ. Νομού",
+    "Name EN": "Thessaloniki - Rest of Prefecture",
+    "Level": "1",
+    "Parent Name GR": "Θεσσαλονίκη",
+    "Parent Name EN": "Thessaloniki"
+  },
+  {
+    "Area ID": "159",
+    "Name GR": "Έβρος",
+    "Name EN": "Evros",
+    "Level": "1",
+    "Parent Name GR": "Θράκη",
+    "Parent Name EN": "Thraki"
+  },
+  {
+    "Area ID": "184",
+    "Name GR": "Ν. Ξάνθης",
+    "Name EN": "Xanthi Prefecture",
+    "Level": "1",
+    "Parent Name GR": "Θράκη",
+    "Parent Name EN": "Thraki"
+  },
+  {
+    "Area ID": "189",
+    "Name GR": "Ν. Ροδόπης",
+    "Name EN": "Rodopi Prefecture",
+    "Level": "1",
+    "Parent Name GR": "Θράκη",
+    "Parent Name EN": "Thraki"
+  },
+  {
+    "Area ID": "165",
+    "Name GR": "Ν. Ηρακλείου",
+    "Name EN": "Heraklion Prefecture",
+    "Level": "1",
+    "Parent Name GR": "Κρήτη",
+    "Parent Name EN": "Crete"
+  },
+  {
+    "Area ID": "179",
+    "Name GR": "Ν. Λασιθίου",
+    "Name EN": "Lasithi Prefecture",
+    "Level": "1",
+    "Parent Name GR": "Κρήτη",
+    "Parent Name EN": "Crete"
+  },
+  {
+    "Area ID": "188",
+    "Name GR": "Ν. Ρεθύμνου",
+    "Name EN": "Rethymno Prefecture",
+    "Level": "1",
+    "Parent Name GR": "Κρήτη",
+    "Parent Name EN": "Crete"
+  },
+  {
+    "Area ID": "197",
+    "Name GR": "Ν. Χανίων",
+    "Name EN": "Chania Prefecture",
+    "Level": "1",
+    "Parent Name GR": "Κρήτη",
+    "Parent Name EN": "Crete"
+  },
+  {
+    "Area ID": "156",
+    "Name GR": "Γρεβενά",
+    "Name EN": "Grevena",
+    "Level": "1",
+    "Parent Name GR": "Μακεδονία",
+    "Parent Name EN": "Macedonia"
+  },
+  {
+    "Area ID": "164",
+    "Name GR": "Ημαθία",
+    "Name EN": "Imathia",
+    "Level": "1",
+    "Parent Name GR": "Μακεδονία",
+    "Parent Name EN": "Macedonia"
+  },
+  {
+    "Area ID": "157",
+    "Name GR": "Ν. Δράμας",
+    "Name EN": "Drama Prefecture",
+    "Level": "1",
+    "Parent Name GR": "Μακεδονία",
+    "Parent Name EN": "Macedonia"
+  },
+  {
+    "Area ID": "168",
+    "Name GR": "Ν. Καβάλας",
+    "Name EN": "Kavala Prefecture",
+    "Level": "1",
+    "Parent Name GR": "Μακεδονία",
+    "Parent Name EN": "Macedonia"
+  },
+  {
+    "Area ID": "170",
+    "Name GR": "Ν. Καστοριάς",
+    "Name EN": "Kastoria Prefecture",
+    "Level": "1",
+    "Parent Name GR": "Μακεδονία",
+    "Parent Name EN": "Macedonia"
+  },
+  {
+    "Area ID": "173",
+    "Name GR": "Ν. Κιλκίς",
+    "Name EN": "Kilkis Prefecture",
+    "Level": "1",
+    "Parent Name GR": "Μακεδονία",
+    "Parent Name EN": "Macedonia"
+  },
+  {
+    "Area ID": "174",
+    "Name GR": "Ν. Κοζάνης",
+    "Name EN": "Kozani Prefecture",
+    "Level": "1",
+    "Parent Name GR": "Μακεδονία",
+    "Parent Name EN": "Macedonia"
+  },
+  {
+    "Area ID": "186",
+    "Name GR": "Ν. Πιερίας",
+    "Name EN": "Pieria Prefecture",
+    "Level": "1",
+    "Parent Name GR": "Μακεδονία",
+    "Parent Name EN": "Macedonia"
+  },
+  {
+    "Area ID": "191",
+    "Name GR": "Ν. Σέρρες",
+    "Name EN": "Serres Prefecture",
+    "Level": "1",
+    "Parent Name GR": "Μακεδονία",
+    "Parent Name EN": "Macedonia"
+  },
+  {
+    "Area ID": "194",
+    "Name GR": "Ν. Φλώρινας",
+    "Name EN": "Florina Prefecture",
+    "Level": "1",
+    "Parent Name GR": "Μακεδονία",
+    "Parent Name EN": "Macedonia"
+  },
+  {
+    "Area ID": "185",
+    "Name GR": "Πέλλα",
+    "Name EN": "Pella",
+    "Level": "1",
+    "Parent Name GR": "Μακεδονία",
+    "Parent Name EN": "Macedonia"
+  },
+  {
+    "Area ID": "196",
+    "Name GR": "Χαλκιδική",
+    "Name EN": "Chalkidiki",
+    "Level": "1",
+    "Parent Name GR": "Μακεδονία",
+    "Parent Name EN": "Macedonia"
+  },
+  {
+    "Area ID": "158",
+    "Name GR": "Δωδεκάνησα",
+    "Name EN": "Dodecanese",
+    "Level": "1",
+    "Parent Name GR": "Νησιά Αιγαίου",
+    "Parent Name EN": "Aegean Islands"
+  },
+  {
+    "Area ID": "176",
+    "Name GR": "Κυκλάδες",
+    "Name EN": "Cyclades",
+    "Level": "1",
+    "Parent Name GR": "Νησιά Αιγαίου",
+    "Parent Name EN": "Aegean Islands"
+  },
+  {
+    "Area ID": "180",
+    "Name GR": "Ν. Λέσβου",
+    "Name EN": "Lesvos Prefecture",
+    "Level": "1",
+    "Parent Name GR": "Νησιά Αιγαίου",
+    "Parent Name EN": "Aegean Islands"
+  },
+  {
+    "Area ID": "190",
+    "Name GR": "Ν. Σάμου",
+    "Name EN": "Samos Prefecture",
+    "Level": "1",
+    "Parent Name GR": "Νησιά Αιγαίου",
+    "Parent Name EN": "Aegean Islands"
+  },
+  {
+    "Area ID": "198",
+    "Name GR": "Ν. Χίου",
+    "Name EN": "Chios Prefecture",
+    "Level": "1",
+    "Parent Name GR": "Νησιά Αιγαίου",
+    "Parent Name EN": "Aegean Islands"
+  },
+  {
+    "Area ID": "125000",
+    "Name GR": "Σποράδες",
+    "Name EN": "Sporades",
+    "Level": "1",
+    "Parent Name GR": "Νησιά Αιγαίου",
+    "Parent Name EN": "Aegean Islands"
+  },
+  {
+    "Area ID": "162",
+    "Name GR": "Ζάκυνθος",
+    "Name EN": "Zante",
+    "Level": "1",
+    "Parent Name GR": "Νησιά Ιονίου",
+    "Parent Name EN": "Ionian Islands"
+  },
+  {
+    "Area ID": "171",
+    "Name GR": "Ν. Κέρκυρας",
+    "Name EN": "Corfu Prefecture",
+    "Level": "1",
+    "Parent Name GR": "Νησιά Ιονίου",
+    "Parent Name EN": "Ionian Islands"
+  },
+  {
+    "Area ID": "172",
+    "Name GR": "Ν. Κεφαλονιάς",
+    "Name EN": "Kefallinia Prefecture",
+    "Level": "1",
+    "Parent Name GR": "Νησιά Ιονίου",
+    "Parent Name EN": "Ionian Islands"
+  },
+  {
+    "Area ID": "181",
+    "Name GR": "Ν. Λευκάδας",
+    "Name EN": "Lefkada Prefecture",
+    "Level": "1",
+    "Parent Name GR": "Νησιά Ιονίου",
+    "Parent Name EN": "Ionian Islands"
+  },
+  {
+    "Area ID": "151",
+    "Name GR": "Αργολίδα",
+    "Name EN": "Argolis",
+    "Level": "1",
+    "Parent Name GR": "Πελοπόννησος",
+    "Parent Name EN": "Peloponnisos"
+  },
+  {
+    "Area ID": "152",
+    "Name GR": "Αρκαδία",
+    "Name EN": "Arcadia",
+    "Level": "1",
+    "Parent Name GR": "Πελοπόννησος",
+    "Parent Name EN": "Peloponnisos"
+  },
+  {
+    "Area ID": "154",
+    "Name GR": "Αχαΐα",
+    "Name EN": "Achaia",
+    "Level": "1",
+    "Parent Name GR": "Πελοπόννησος",
+    "Parent Name EN": "Peloponnisos"
+  },
+  {
+    "Area ID": "163",
+    "Name GR": "Ηλεία",
+    "Name EN": "Ilia",
+    "Level": "1",
+    "Parent Name GR": "Πελοπόννησος",
+    "Parent Name EN": "Peloponnisos"
+  },
+  {
+    "Area ID": "175",
+    "Name GR": "Κορινθία",
+    "Name EN": "Corinthia",
+    "Level": "1",
+    "Parent Name GR": "Πελοπόννησος",
+    "Parent Name EN": "Peloponnisos"
+  },
+  {
+    "Area ID": "177",
+    "Name GR": "Λακωνία",
+    "Name EN": "Lakonia",
+    "Level": "1",
+    "Parent Name GR": "Πελοπόννησος",
+    "Parent Name EN": "Peloponnisos"
+  },
+  {
+    "Area ID": "183",
+    "Name GR": "Μεσσηνία",
+    "Name EN": "Messinia",
+    "Level": "1",
+    "Parent Name GR": "Πελοπόννησος",
+    "Parent Name EN": "Peloponnisos"
+  },
+  {
+    "Area ID": "150",
+    "Name GR": "Αιτωλοακαρνανία",
+    "Name EN": "Aetolia & Acarnania",
+    "Level": "1",
+    "Parent Name GR": "Στερεά Ελλάδα",
+    "Parent Name EN": "Sterea Ellada"
+  },
+  {
+    "Area ID": "155",
+    "Name GR": "Βοιωτία",
+    "Name EN": "Boeotia",
+    "Level": "1",
+    "Parent Name GR": "Στερεά Ελλάδα",
+    "Parent Name EN": "Sterea Ellada"
+  },
+  {
+    "Area ID": "160",
+    "Name GR": "Εύβοια",
+    "Name EN": "Evia",
+    "Level": "1",
+    "Parent Name GR": "Στερεά Ελλάδα",
+    "Parent Name EN": "Sterea Ellada"
+  },
+  {
+    "Area ID": "161",
+    "Name GR": "Ευρυτανία",
+    "Name EN": "Evrytania",
+    "Level": "1",
+    "Parent Name GR": "Στερεά Ελλάδα",
+    "Parent Name EN": "Sterea Ellada"
+  },
+  {
+    "Area ID": "193",
+    "Name GR": "Φθιώτιδα",
+    "Name EN": "Phthiotis",
+    "Level": "1",
+    "Parent Name GR": "Στερεά Ελλάδα",
+    "Parent Name EN": "Sterea Ellada"
+  },
+  {
+    "Area ID": "195",
+    "Name GR": "Φωκίδα",
+    "Name EN": "Fokida",
+    "Level": "1",
+    "Parent Name GR": "Στερεά Ελλάδα",
+    "Parent Name EN": "Sterea Ellada"
+  }
+]

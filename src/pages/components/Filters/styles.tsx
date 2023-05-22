@@ -11,10 +11,12 @@ export const StyledPriceButton = styled(Button, {
   color: theme.palette.neutral?.[500],
   fontSize: "16px",
   border: open
-    ? `1px solid ${theme.palette.primary.main}`
+    ? `2px solid ${theme.palette.primary.main}`
     : `1px solid ${theme.palette.divider}`,
   "&:hover": {
-    borderColor: theme.palette.primary.main,
+    border: open
+      ? `2px solid ${theme.palette.primary.main}`
+      : `1px solid ${theme.palette.common.black}`,
     background: theme.palette.common.white,
   },
 }));

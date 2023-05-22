@@ -20,7 +20,15 @@ export const baseThemeOptions: ThemeOptions = {
         },
       },
     },
-
+    MuiSelect: {
+      styleOverrides: {
+        select: {
+          "&:focus": {
+            background: "transparent",
+          },
+        },
+      },
+    },
     MuiButton: {
       defaultProps: {
         disableElevation: true,

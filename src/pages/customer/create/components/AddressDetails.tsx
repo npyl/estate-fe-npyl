@@ -1,26 +1,25 @@
-import { Grid, Paper, TextField, Typography, Box } from "@mui/material";
+import { Box, Grid, Paper, TextField, Typography } from "@mui/material";
 import * as React from "react";
 
 import {
-  // getters
-  selectStreet,
-  selectNumber,
   selectCity,
   selectComplex,
-  selectZipCode,
-  selectRegion,
   selectCountry,
-  // setters
-  setStreet,
-  setNumber,
+  selectNumber,
+  selectRegion,
+  selectStreet,
+  selectZipCode,
   setCity,
   setComplex,
-  setZipCode,
-  setRegion,
   setCountry,
+  setNumber,
+  setRegion,
+  // setters
+  setStreet,
+  setZipCode,
 } from "src/slices/customer";
 
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const AddressDetails: React.FC<any> = (props) => {
   const street = useSelector(selectStreet);
@@ -49,7 +48,7 @@ const AddressDetails: React.FC<any> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant="h6">Address Details</Typography>
+        <Typography variant='h6'>Address Details</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -57,8 +56,8 @@ const AddressDetails: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Street"
+              id='outlined-controlled'
+              label='Street'
               value={street}
               onChange={(e) => {
                 dispatch(setStreet(e.target.value));
@@ -74,8 +73,8 @@ const AddressDetails: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Number"
+              id='outlined-controlled'
+              label='Number'
               value={number}
               onChange={(e) => {
                 dispatch(setNumber(e.target.value));
@@ -91,8 +90,8 @@ const AddressDetails: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="City"
+              id='outlined-controlled'
+              label='City'
               value={city}
               onChange={(e) => {
                 dispatch(setCity(e.target.value));
@@ -108,8 +107,8 @@ const AddressDetails: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Complex"
+              id='outlined-controlled'
+              label='Complex'
               value={complex}
               onChange={(e) => {
                 dispatch(setComplex(e.target.value));
@@ -125,8 +124,8 @@ const AddressDetails: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Zip Code"
+              id='outlined-controlled'
+              label='Zip Code'
               value={zipCode}
               onChange={(e) => {
                 dispatch(setZipCode(e.target.value));
@@ -142,8 +141,8 @@ const AddressDetails: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Region"
+              id='outlined-controlled'
+              label='Region'
               value={region}
               onChange={(e) => {
                 dispatch(setRegion(e.target.value));
@@ -159,8 +158,8 @@ const AddressDetails: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id="outlined-controlled"
-              label="Country"
+              id='outlined-controlled'
+              label='Country'
               value={country}
               onChange={(e) => {
                 dispatch(setCountry(e.target.value));

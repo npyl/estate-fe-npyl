@@ -1,10 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { IGeoLocation } from "src/types/geolocation";
 
-export const document = createApi({
-  reducerPath: "document",
+export const location = createApi({
+  reducerPath: "location",
   baseQuery: fetchBaseQuery({
-    baseUrl:
-      "http://Learningpathbe-env.eba-qvdghecz.us-east-2.elasticbeanstalk.com/api",
+    baseUrl: "http://localhost:8080/api/geography/hierarchy/",
     prepareHeaders: (headers) => {
       // By default, if we have a token in the store, let's use that for authenticated requests
 
@@ -16,14 +16,14 @@ export const document = createApi({
       return headers;
     },
   }),
+
   endpoints: (builder) => ({
-    downloadDoc: builder.query<any, number>({
-      query: (id) => ({
-        url: `documents/download/file/${id}`,
-        responseHandler: (response) => response.blob(),
+    getLocation: builder.query<IGeoLocation, number>({
+      query: (parentID) => ({
+        url: `${{ parentID }}`,
       }),
     }),
   }),
 });
 
-export const { useDownloadDocQuery } = document;
+export const { useGetLocationQuery } = location;

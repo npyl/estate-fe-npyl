@@ -1,7 +1,6 @@
-import { Stack, Paper, Box, Typography } from "@mui/material";
+import { Box, Paper, Stack, Typography } from "@mui/material";
 import * as React from "react";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import AddNote from "src/components/AddNote";
 import Note from "src/components/Note";
 import { addNote, selectNotes } from "src/slices/customer";
@@ -39,7 +38,7 @@ const NotesSection: React.FC<any> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant="h6">Notes</Typography>
+        <Typography variant='h6'>Notes</Typography>
       </Box>
 
       <Stack spacing={1.5} sx={{ px: 3, pb: 2 }}>

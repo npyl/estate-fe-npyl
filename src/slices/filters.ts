@@ -27,7 +27,7 @@ const initialState: IFilterProps = {
   furnished: "",
   city: "",
   managerId: 0,
-
+  labels: [],
   cities: [],
   states: [],
   categories: [],
@@ -114,6 +114,9 @@ const slice = createSlice({
     },
 
     // multiple
+    setLabels(state, { payload }) {
+      state.labels = payload;
+    },
     setCities(state, { payload }) {
       state.cities = payload;
     },
@@ -123,7 +126,9 @@ const slice = createSlice({
     setSubCategories(state, { payload }) {
       state.categories = payload;
     },
-
+    setParentCategories(state, { payload }) {
+      state.parentCategories = payload;
+    },
     deleteSubCategory(state, { payload }) {
       state.categories = state.categories.filter(
         (category) => category !== payload
@@ -167,9 +172,11 @@ export const {
   setState,
 
   // multiple
+  setLabels,
   setCities,
   setStates,
   setSubCategories,
+  setParentCategories,
 
   deleteSubCategory,
   deleteState,
@@ -204,10 +211,14 @@ export const selectMinFloor = ({ filters }: RootState) => filters.minFloor;
 export const selectMinPrice = ({ filters }: RootState) => filters.minPrice;
 export const selectState = ({ filters }: RootState) => filters.state;
 
+export const selectLabels = ({ filters }: RootState) => filters.labels;
 export const selectCities = ({ filters }: RootState) => filters.cities;
 export const selectStates = ({ filters }: RootState) => filters.states;
 export const selectSubCategories = ({ filters }: RootState) =>
   filters.categories;
+
+export const selectParentCategories = ({ filters }: RootState) =>
+  filters.parentCategories;
 
 const sumOfChangedProperties = createSelector(
   (state: RootState) => state.filters,
@@ -231,6 +242,7 @@ const sumOfChangedProperties = createSelector(
       "managerId",
 
       // multiple
+      "labels",
       "cities",
       "states",
       "categories",

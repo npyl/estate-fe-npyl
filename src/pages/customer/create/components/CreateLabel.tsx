@@ -1,28 +1,23 @@
 import {
-  Stack,
-  Paper,
-  TextField,
-  IconButton,
-  Typography,
   Box,
   Button,
-  Checkbox,
-  FormControl,
-  FormLabel,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
   Dialog,
-  DialogTitle,
   DialogContent,
   DialogContentText,
+  DialogTitle,
+  FormControl,
+  FormLabel,
+  IconButton,
+  Stack,
+  TextField,
+  Typography,
 } from "@mui/material";
 
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import ColorizeIcon from "@mui/icons-material/Colorize";
 
 import * as React from "react";
-import { useState, useRef } from "react";
+import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useGetLabelsQuery } from "src/services/labels";
@@ -35,8 +30,8 @@ import { BlockPicker } from "react-color";
 import { addLabel, selectLabels } from "src/slices/customer";
 // Labels Slice
 import {
-  selectAll as selectAllNewLabels,
   addLabel as addNewLabel,
+  selectAll as selectAllNewLabels,
 } from "src/slices/labels";
 
 import { ILabel } from "src/types/label";
@@ -84,7 +79,7 @@ const CreateLabel: React.FC<any> = (props) => {
       flexDirection={"column"}
     >
       <Box sx={{ display: "flex", justifyContent: "center" }}>
-        <Typography variant="h6" flex={1}>
+        <Typography variant='h6' flex={1}>
           Labels
         </Typography>
         <IconButton
@@ -110,7 +105,7 @@ const CreateLabel: React.FC<any> = (props) => {
             return (
               <Label
                 key={index}
-                variant="soft"
+                variant='soft'
                 sx={{
                   bgcolor: label.color,
                   borderRadius: 7,
@@ -127,7 +122,7 @@ const CreateLabel: React.FC<any> = (props) => {
             return (
               <Label
                 key={index}
-                variant="soft"
+                variant='soft'
                 sx={{
                   bgcolor: label.color,
                   borderRadius: 7,
@@ -142,14 +137,14 @@ const CreateLabel: React.FC<any> = (props) => {
 
       <Dialog
         fullWidth
-        maxWidth="xs"
+        maxWidth='xs'
         open={addLabelDialog}
         onClose={() => {
           setAddLabelDialog(false);
         }}
         closeAfterTransition={true}
       >
-        <DialogTitle variant="h5">Προσθήκη Υπάρχουσας</DialogTitle>
+        <DialogTitle variant='h5'>Προσθήκη Υπάρχουσας</DialogTitle>
         <DialogContent>
           <DialogContentText>Customer Labels</DialogContentText>
           <Stack direction={"row"} spacing={1}>
@@ -157,7 +152,7 @@ const CreateLabel: React.FC<any> = (props) => {
               return (
                 <Label
                   key={index}
-                  variant="soft"
+                  variant='soft'
                   onClick={() => clickLabel(label)}
                   sx={{
                     bgcolor: label.color,
@@ -172,13 +167,13 @@ const CreateLabel: React.FC<any> = (props) => {
             })}
           </Stack>
 
-          <Typography variant="h5">Δημιουργία νέας</Typography>
+          <Typography variant='h5'>Δημιουργία νέας</Typography>
           <Stack spacing={3} mt={2}>
             <Stack spacing={1}>
               <FormControl>
-                <FormLabel id="demo-controlled-radio-buttons-group">
+                <FormLabel id='demo-controlled-radio-buttons-group'>
                   <Typography
-                    variant="subtitle2"
+                    variant='subtitle2'
                     sx={{ color: "text.secondary" }}
                   >
                     Εισάγετε όνομα:
@@ -186,7 +181,7 @@ const CreateLabel: React.FC<any> = (props) => {
                 </FormLabel>
                 <Stack direction={"row"} spacing={1}>
                   <TextField
-                    id="outlined-select-currency"
+                    id='outlined-select-currency'
                     value={labelName}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                       setLabelName(event.target.value);
@@ -194,7 +189,7 @@ const CreateLabel: React.FC<any> = (props) => {
                   />
 
                   <Button
-                    variant="outlined"
+                    variant='outlined'
                     onClick={() => {
                       setOpenPicker(!openPicker);
                     }}
@@ -229,16 +224,16 @@ const CreateLabel: React.FC<any> = (props) => {
                     paddingBottom={2}
                     spacing={3}
                   >
-                    <FormLabel id="demo-controlled-radio-buttons-group">
+                    <FormLabel id='demo-controlled-radio-buttons-group'>
                       <Typography
-                        variant="subtitle2"
+                        variant='subtitle2'
                         sx={{ color: "text.secondary" }}
                       >
                         Προεπισκόπιση:
                       </Typography>
                     </FormLabel>
                     <Label
-                      variant="soft"
+                      variant='soft'
                       sx={{
                         bgcolor: pickerColor,
                         borderRadius: 7,
@@ -249,7 +244,7 @@ const CreateLabel: React.FC<any> = (props) => {
                     </Label>
                   </Stack>
 
-                  <Button variant="outlined" onClick={createLabel}>
+                  <Button variant='outlined' onClick={createLabel}>
                     Δημιουργία & Προσθήκη
                   </Button>
                 </FormControl>

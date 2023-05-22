@@ -1,52 +1,64 @@
-import { Autocomplete, Box, Checkbox, TextField } from "@mui/material";
+import {
+  Checkbox,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  SelectChangeEvent,
+} from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { selectCategory, setCategory } from "src/slices/filters";
+import {
+  selectParentCategories,
+  setParentCategories,
+} from "src/slices/filters";
 
 import { useAllPropertyGlobalQuery } from "src/services/global";
 
 export default function CategorySelect() {
   const dispatch = useDispatch();
-  const category = useSelector(selectCategory);
+  const categories = useSelector(selectParentCategories);
 
   const { data } = useAllPropertyGlobalQuery();
   const propertyEnums = data?.property;
   const categoryEnums = propertyEnums?.parentCategory;
 
-  if (!data || !propertyEnums || !categoryEnums) return null;
+  if (!data) return null;
 
-  const categoryFilterOptions = [
-    { value: "", label: "All Categories" },
-    ...categoryEnums.map((item) => ({ value: item, label: item })),
-  ];
+  const handleChange = (event: SelectChangeEvent<typeof categories>) => {
+    const {
+      target: { value },
+    } = event;
+    dispatch(
+      setParentCategories(
+        // On autofill we get a stringified value.
+        typeof value === "string" ? value.split(",") : value
+      )
+    );
+  };
 
   return (
-    <Autocomplete
-      sx={{ width: 180 }}
-      id='select-demo'
-      options={categoryFilterOptions}
-      autoHighlight
-      clearIcon={false}
-      onChange={(_e, newValue) => dispatch(setCategory(newValue?.value))}
-      getOptionLabel={(option) => option.label}
-      renderOption={(props, option) => (
-        <Box {...props} component='li'>
-          <Checkbox checked={category === option.value} />
-          {option.label}
-        </Box>
-      )}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          placeholder='Κατηγορία'
-          InputLabelProps={{
-            shrink: true,
-          }}
-          inputProps={{
-            ...params.inputProps,
-            autoComplete: "new-password", // disable autocomplete and autofill
-          }}
-        />
-      )}
-    />
+    <FormControl sx={{ width: 135 }}>
+      <InputLabel id='demo-simple-select-label'>Κατηγορίες</InputLabel>
+      <Select
+        multiple
+        labelId='demo-simple-select-label'
+        value={categories}
+        onChange={handleChange}
+        renderValue={(selected) => selected.join(", ")}
+        input={<OutlinedInput label='Κατηγορίες' />}
+        MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
+      >
+        {categoryEnums!.map((option) => {
+          return (
+            <MenuItem key={option} value={option}>
+              <Checkbox checked={categories.indexOf(option) > -1} />
+
+              {option}
+            </MenuItem>
+          );
+        })}
+      </Select>
+    </FormControl>
   );
 }

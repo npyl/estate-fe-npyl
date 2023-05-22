@@ -36,10 +36,9 @@ const ImagesSection: React.FC<IImageSectionProps> = ({ files, setFiles }) => {
   const handleRemoveAllFiles = () => {
     setFiles([]);
   };
-  console.log("elaaaaaaaaaaaa");
   return (
     <Card>
-      <CardHeader title="Upload Images" />
+      <CardHeader title='Upload Images' />
       <CardContent>
         <Upload
           multiple
