@@ -5,7 +5,7 @@ import { INote } from "src/types/note";
 
 import Iconify from "src/components/iconify/Iconify";
 
-import { useDeleteWithIdMutation } from "src/services/note";
+import { note, useDeleteWithIdMutation } from "src/services/note";
 
 interface NoteProps {
   note: INote;
@@ -15,6 +15,10 @@ const Note: React.FC<NoteProps> = (props) => {
   const { note } = props;
 
   const [deleteNote, { isSuccess }] = useDeleteWithIdMutation();
+  const createdAt = new Date(note.createdAt);
+  const formattedDate = `${createdAt.getHours()}:${createdAt.getMinutes()} ${createdAt.getDate()}/${
+    createdAt.getMonth() + 1
+  }/${createdAt.getFullYear()}`;
 
   const username = note.creator.firstName + " " + note.creator.lastName;
 
@@ -39,7 +43,7 @@ const Note: React.FC<NoteProps> = (props) => {
             <Typography variant="subtitle2">{username}</Typography>
 
             <Typography variant="caption" sx={{ color: "text.disabled" }}>
-              {note.createdAt.toString().slice(0, 16).replace("T", " ")}
+              {formattedDate}
             </Typography>
           </Stack>
         </div>
