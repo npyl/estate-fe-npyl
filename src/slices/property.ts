@@ -3,7 +3,7 @@ import type { RootState } from "../store";
 
 import { IPropertyDetails } from "src/types/details";
 import { IPropertyFeatures } from "src/types/features";
-import { ILocation } from "src/types/location";
+import { ILocationPOST } from "src/types/location";
 import {
   IPropertyAreas,
   IPropertyConstruction,
@@ -47,7 +47,7 @@ interface IPropertiesPostRequest {
   construction: IPropertyConstruction;
   technicalFeatures: IPropertyTechnicalFeatures;
   details: IPropertyDetails;
-  location: ILocation;
+  location: ILocationPOST;
   features: IPropertyFeatures;
   labelIDs: number[];
   // TODO:
@@ -61,214 +61,158 @@ interface IPropertiesPostRequest {
 type propertyState = IPropertiesPostRequest;
 
 const initialState: propertyState = {
-  code: 10,
-  title: "Default Property",
-  managerId: 1,
-  ownerId: 1,
-  state: "Rent",
+  code: 0,
+  title: "",
+  managerId: 0,
+  ownerId: 0,
+  state: "",
   parentCategory: "",
   category: "",
-  area: 1000,
-  plotArea: 2000,
-  price: 1000,
-  averageUtils: 10,
+  area: 0,
+  plotArea: 0,
+  price: 0,
+  averageUtils: 0,
   rented: false,
-  currentRentPrice: 1000,
-  estimatedRentPrice: 1000,
-  rentalStart: "2000-05-03",
-  rentalEnd: "2000-05-03",
-  availableAfter: "2000-05-03",
-  keyCode: "100X01",
+  currentRentPrice: 0,
+  estimatedRentPrice: 0,
+  rentalStart: "",
+  rentalEnd: "",
+  availableAfter: "",
+  keyCode: "",
   auction: false,
   debatablePrice: false,
   buildable: false,
-  video: "dummy-url",
-  description: "LEPA PSOLOUTIONS ON FIRE ",
+  video: "",
+  description: "",
   suitableFor: {
-    student: true,
-    cottage: true,
-    touristRental: true,
+    student: false,
+    cottage: false,
+    touristRental: false,
     investment: false,
     doctorsOffice: false,
-    professionalUse: true,
-    renovation: true,
+    professionalUse: false,
+    renovation: false,
   },
   heatingAndEnergy: {
-    energyClass: "A+",
-    heatingType: "Central",
-    heatingSystem: "Oil",
-    electricityType: "Single Phase",
-    floorHeating: true,
+    energyClass: "",
+    heatingType: "",
+    heatingSystem: "",
+    electricityType: "",
+    floorHeating: false,
     airConditioning: false,
     solarBoiler: false,
-    offPeakElectricity: true,
+    offPeakElectricity: false,
   },
   distances: {
-    schools: 1,
-    supermarket: 1,
-    cafeRestaurant: 1,
-    hospital: 1,
-    airport: 1,
-    sea: 1,
-    publicTransport: 1,
-    entertainment: 1,
+    schools: 0,
+    supermarket: 0,
+    cafeRestaurant: 0,
+    hospital: 0,
+    airport: 0,
+    sea: 0,
+    publicTransport: 0,
+    entertainment: 0,
   },
   areas: {
-    first: 1,
-    second: 1,
-    third: 1,
-    fourth: 1,
-    fifth: 1,
-    plot: 1,
-    covered: 1,
-    basement: 1,
-    attic: 1,
-    garden: 1,
-    balconies: 1,
-    storeroom: 1,
-    groundFloor: 1,
+    first: 0,
+    second: 0,
+    third: 0,
+    fourth: 0,
+    fifth: 0,
+    plot: 0,
+    covered: 0,
+    basement: 0,
+    attic: 0,
+    garden: 0,
+    balconies: 0,
+    storeroom: 0,
+    groundFloor: 0,
   },
   construction: {
-    yearOfConstruction: 1,
+    yearOfConstruction: 0,
     underConstruction: false,
     newlyBuilt: false,
-    incomplete: true,
-    totalFloorNumber: 1,
-    internalStairs: true,
+    incomplete: false,
+    totalFloorNumber: 0,
+    internalStairs: false,
     neoclassical: false,
-    yearOfRenovation: 2016,
-    renovated: true,
+    yearOfRenovation: 0,
+    renovated: false,
     needsRenovation: false,
     preserved: false,
-    elevator: true,
+    // elevator: false, // TODO:...
   },
   technicalFeatures: {
-    entrances: 1,
-    displayWindowsLength: 1,
-    safetyDoor: true,
+    entrances: 0,
+    displayWindowsLength: 0,
+    safetyDoor: false,
     alarmSystem: false,
-    painted: true,
-    furnished: "Partial",
-    frameType: "Wooden",
-    paneGlassType: "Single",
-    windowScreens: true,
+    painted: false,
+    furnished: "",
+    frameType: "",
+    paneGlassType: "",
+    windowScreens: false,
     fireplace: false,
     bright: false,
     luxurious: false,
-    electricCarChargingFacilities: true,
+    electricCarChargingFacilities: false,
     reception: true,
     petsAllowed: false,
-    floorType: "Mosaic",
+    floorType: "",
     satelliteTV: false,
     wiring: false,
     loadingUnloadingElevator: false,
-    falseCeiling: true,
-    withEquipment: true,
+    falseCeiling: false,
+    withEquipment: false,
     doubleFrontage: false,
     consideration: false,
-    floorToAreaRatio: 1,
-    coverageFactor: 1,
-    facadeLength: 1,
-    inclination: "Inclined",
+    floorToAreaRatio: 0,
+    coverageFactor: 0,
+    facadeLength: 0,
+    inclination: "",
   },
   details: {
-    floor: "1",
-    bedrooms: 1,
-    kitchens: 1,
-    wc: 1,
+    floor: "",
+    bedrooms: 0,
+    kitchens: 0,
+    wc: 0,
     layers: 5,
-    livingrooms: 1,
-    bathrooms: 1,
-    rooms: 1,
+    livingrooms: 0,
+    bathrooms: 0,
+    rooms: 0,
     attic: true,
     storeroom: false,
     playroom: false,
     floorApartment: true,
     penthouse: true,
-    orientation: "East",
-    viewType: "Mountain",
-    accessibility: "Road",
-    landUse: "Residential",
-    zoneType: "Within City Plan",
+    orientation: "",
+    viewType: "",
+    accessibility: "",
+    landUse: "",
+    zoneType: "",
     balconies: [
       {
-        side: "Front",
-        area: 1,
+        side: "",
+        area: 0,
       },
     ],
     parkings: [
       {
-        parkingType: "Uncovered",
-        spots: 1,
+        parkingType: "",
+        spots: 0,
       },
     ],
   },
   location: {
-    street: "Street 1",
-    number: 10,
-    complex: "complex1",
-    zipCode: 26441,
-    city: "Patras",
-    region: "Achaia",
-    country: "Greece",
-    // lat: 38.24741203168578,
-    // lng: 21.735938799204945,
+    street: "0",
+    number: 0,
+    complex: "",
+    zipCode: 0,
+    city: "",
+    region: "",
+    country: "",
   },
   features: {
-    panoramicView: true,
-    seaView: true,
-    mountainView: true,
-    facade_sea: true,
-    walkableDistanceToBeach: true,
-    quietArea: true,
-    bright: true,
-    nearBusRoute: true,
-    smartHome: true,
-    guestroom: true,
-    office: true,
-    homeCinema: true,
-    combinedKitchenAndDiningArea: true,
-    soundInsulation: true,
-    thermalInsulation: true,
-    heatedPool: true,
-    indoorPool: true,
-    organizedGarden: true,
-    jacuzzi: true,
-    well: true,
-    drilling: true,
-    masonryFence: true,
-    accessForDisabled: true,
-    alarmSystem: true,
-    has24HoursSecurity: true,
-    cctv: true,
-    internet: true,
-    fireDetector: true,
-    independentHeatingPerRoom: true,
-    adaptingToTheGround: true,
-    barbeque: true,
-    pool: true,
-    view: true,
-    facade: true,
-    corner: true,
-    veranda: true,
-    tents: true,
-    withinResidentialZone: true,
-    withinCityPlan: true,
-    loadingDock: true,
-  },
-  location: {
-    street: "Street 1",
-    number: 10,
-    complex: "complex1",
-    zipCode: 26441,
-    city: "Patras",
-    region: "Achaia",
-    country: "Greece",
-    lat: 38.24741203168578,
-    lng: 21.735938799204945,
-  },
-  features: {
-    id: 0,
     panoramicView: true,
     seaView: true,
     mountainView: true,
@@ -518,7 +462,8 @@ const slice = createSlice({
       state.construction.totalFloorNumber = action.payload;
     },
     setElevator(state: propertyState, action): void {
-      state.construction.elevator = action.payload;
+      // TODO:...
+      // state.construction.elevator = action.payload;
     },
     setInternalStairs(state: propertyState, action): void {
       state.construction.internalStairs = action.payload;
@@ -863,7 +808,8 @@ const slice = createSlice({
       state.suitableFor.student = action.payload;
     },
     setAgriculturalUse(state: propertyState, action): void {
-      state.suitableFor.agriculturalUse = action.payload;
+      // TODO: ...
+      // state.suitableFor.agriculturalUse = action.payload;
     },
 
     setCottage(state: propertyState, action): void {
@@ -892,7 +838,7 @@ const slice = createSlice({
       state.state = action.payload.state;
       state.parentCategory = action.payload.parentCategory;
       state.category = action.payload.category;
-      state.area = action.payload.are;
+      state.area = action.payload.area;
       state.plotArea = action.payload.plotArea;
       state.price = action.payload.price;
       state.averageUtils = action.payload.averageUtils;
@@ -930,6 +876,8 @@ const slice = createSlice({
 });
 
 export const {
+  setInitialState,
+
   setCoverageFactor,
   setSeaFront,
   setAgriculturalUse,
@@ -1176,9 +1124,9 @@ export const selectLayers = ({ property }: RootState) =>
   property.details.layers;
 export const selectBathrooms = ({ property }: RootState) =>
   property.details.bathrooms;
-export const selectNumOfWC = ({ property }: RootState) => -1;
+export const selectNumOfWC = ({ property }: RootState) => 0;
 // property.;
-export const selectLivingRooms = ({ property }: RootState) => -1;
+export const selectLivingRooms = ({ property }: RootState) => 0;
 // property.details.livingRooms;
 export const selectBedrooms = ({ property }: RootState) =>
   property.details.bedrooms;

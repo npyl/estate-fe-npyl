@@ -20,11 +20,11 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = ({
           <Card>
             <CardHeader title="Description" />
             <CardContent>
-              <Editor
+              {/* <Editor
                 id="full-editor"
                 value={description}
                 onChange={(value) => setDescription(value)}
-              />
+              /> */}
             </CardContent>
           </Card>
         </Grid>

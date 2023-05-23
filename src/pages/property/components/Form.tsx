@@ -63,17 +63,6 @@ export default function Form({
       <Grid paddingTop={1} paddingRight={0} spacing={1}>
         <Grid container paddingTop={0} paddingRight={1} spacing={1}>
           <Grid item xs={12} spacing={1} order={"row"}>
-            <Grid
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "50px",
-                paddingBottom: "9px",
-              }}
-            >
-              <Typography variant="h4">Create Property</Typography>
-            </Grid>
             <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
               <Grid item xs={12} padding={1}>
                 <Grid container spacing={2}>
