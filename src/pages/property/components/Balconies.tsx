@@ -4,7 +4,7 @@ import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useAllPropertyGlobalQuery } from "src/services/global";
+import { useAllGlobalsQuery } from "src/services/global";
 import {
   selectArea,
   selectBalconySide,
@@ -14,7 +14,7 @@ import {
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 
 const BalconiesSection: React.FC<any> = (props) => {
-  const { data } = useAllPropertyGlobalQuery();
+  const { data } = useAllGlobalsQuery();
   const enums: IGlobalProperty = data?.property as IGlobalProperty;
   const details = enums?.details as IGlobalPropertyDetails;
 

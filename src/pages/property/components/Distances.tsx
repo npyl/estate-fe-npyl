@@ -23,10 +23,10 @@ import {
   setSea,
   setSupermarket,
 } from "src/slices/property";
-import { useAllPropertyGlobalQuery } from "src/services/global";
+import { useAllGlobalsQuery } from "src/services/global";
 
 const DistancesSection: React.FC<any> = (props) => {
-  const { data } = useAllPropertyGlobalQuery();
+  const { data } = useAllGlobalsQuery();
   const enums: IGlobalProperty = data?.property as IGlobalProperty;
   const details = enums?.details as IGlobalPropertyDetails;
 

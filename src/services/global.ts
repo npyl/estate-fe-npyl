@@ -20,7 +20,7 @@ export const global = createApi({
   }),
   tagTypes: ["Global"],
   endpoints: (builder) => ({
-    allPropertyGlobal: builder.query<IGlobal, void>({
+    allGlobals: builder.query<IGlobal, void>({
       query: () => ({
         url: "",
       }),
@@ -29,4 +29,4 @@ export const global = createApi({
   }),
 });
 
-export const { useAllPropertyGlobalQuery } = global;
+export const { useAllGlobalsQuery } = global;

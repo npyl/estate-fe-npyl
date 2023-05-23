@@ -58,7 +58,7 @@ import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 import { useAllUsersQuery } from "src/services/user";
 
 import { useState } from "react";
-import { useAllPropertyGlobalQuery } from "src/services/global";
+import { useAllGlobalsQuery } from "src/services/global";
 import ROISection from "./ROI";
 
 const BasicSection: React.FC<any> = (props) => {
@@ -66,7 +66,7 @@ const BasicSection: React.FC<any> = (props) => {
     new Date()
   );
 
-  const { data } = useAllPropertyGlobalQuery();
+  const { data } = useAllGlobalsQuery();
   const enums: IGlobalProperty = data?.property as IGlobalProperty;
 
   const details = enums?.details as IGlobalPropertyDetails;

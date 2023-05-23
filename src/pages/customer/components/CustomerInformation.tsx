@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import * as React from "react";
-import { useAllPropertyGlobalQuery } from "src/services/global";
+import { useAllGlobalsQuery } from "src/services/global";
 import { useAllUsersQuery } from "src/services/user";
 
 import CreateLabel from "./CreateLabel";
@@ -50,13 +50,14 @@ import {
 } from "src/slices/customer";
 
 import { useDispatch, useSelector } from "react-redux";
+import OnlyNumbersInput from "src/components/properties/OnlyNumbers";
 
 const CustomerInformation: React.FC<any> = (props) => {
-  const enums = useAllPropertyGlobalQuery().data;
+  const enums = useAllGlobalsQuery().data;
   const propertyEnums = enums?.property;
   const managers = useAllUsersQuery().data;
 
-  const leadSourceEnum = ["1", "2"]; // TODO
+  const leadSourceEnum = enums?.customer?.leadSource;
 
   const firstName = useSelector(selectFirstName);
   const lastName = useSelector(selectLastName);
@@ -77,7 +78,7 @@ const CustomerInformation: React.FC<any> = (props) => {
 
   const dispatch = useDispatch();
 
-  if (!enums || !propertyEnums || !managers) return null;
+  if (!enums || !propertyEnums || !leadSourceEnum || !managers) return null;
 
   return (
     <Paper
@@ -95,7 +96,7 @@ const CustomerInformation: React.FC<any> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant='h6'>Customer Information</Typography>
+        <Typography variant="h6">Customer Information</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -103,50 +104,33 @@ const CustomerInformation: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='First Name'
+              id="outlined-controlled"
+              label="First Name"
               value={firstName}
               onChange={(e) => {
                 dispatch(setFirstName(e.target.value));
               }}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
             />
           </Grid>
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='Last Name'
+              id="outlined-controlled"
+              label="Last Name"
               value={lastName}
               onChange={(e) => {
                 dispatch(setLastName(e.target.value));
-              }} //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
               }}
             />
           </Grid>
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='Email'
+              id="outlined-controlled"
+              label="Email"
               value={email}
               onChange={(e) => {
                 dispatch(setEmail(e.target.value));
-              }}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
               }}
             />
           </Grid>
@@ -155,7 +139,7 @@ const CustomerInformation: React.FC<any> = (props) => {
               <InputLabel>Managed By</InputLabel>
               <Select
                 value={managedBy}
-                label='Managed By'
+                label="Managed By"
                 onChange={(e) => {
                   // dispatch(setParentCategory(e.target.value));
                 }}
@@ -171,138 +155,84 @@ const CustomerInformation: React.FC<any> = (props) => {
             </FormControl>
           </Grid>
           <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id='outlined-controlled'
-              label='Mobile Phone'
+            <OnlyNumbersInput
+              label="Mobile Phone"
               value={mobilePhone}
-              onChange={(e) => {
-                dispatch(setMobilePhone(e.target.value));
-              }}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
+              onChange={(value) => {
+                dispatch(setMobilePhone(value));
               }}
             />
           </Grid>
           <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id='outlined-controlled'
-              label='Home Phone'
+            <OnlyNumbersInput
+              label="Home Phone"
               value={homePhone}
-              onChange={(e) => {
-                dispatch(setHomePhone(e.target.value));
-              }}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
+              onChange={(value) => {
+                dispatch(setHomePhone(value));
               }}
             />
           </Grid>
           <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id='outlined-controlled'
-              label='Fax'
+            <OnlyNumbersInput
+              label="Fax"
               value={fax}
-              onChange={(e) => {
-                dispatch(setFax(e.target.value));
-              }}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
+              onChange={(value) => {
+                dispatch(setFax(value));
               }}
             />
           </Grid>
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='Nationality'
+              id="outlined-controlled"
+              label="Nationality"
               value={nationality}
               onChange={(e) => {
                 dispatch(setNationality(e.target.value));
               }}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
             />
           </Grid>
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='ID Number'
+              id="outlined-controlled"
+              label="ID Number"
               value={idNumber}
               onChange={(e) => {
                 dispatch(setIdNumber(e.target.value));
               }}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
             />
           </Grid>
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='Date of birth'
+              id="outlined-controlled"
+              label="Date of birth"
               value={dateOfBirth}
               onChange={(e) => {
                 dispatch(setDateOfBirth(e.target.value));
               }}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
             />
           </Grid>
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='Passport number'
+              id="outlined-controlled"
+              label="Passport number"
               value={passportNumber}
               onChange={(e) => {
                 dispatch(setPassportNumber(e.target.value));
               }}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
             />
           </Grid>
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='Preferred Language'
+              id="outlined-controlled"
+              label="Preferred Language"
               value={preferredLanguage}
               onChange={(e) => {
                 dispatch(setPreferredLanguage(e.target.value));
-              }}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
               }}
             />
           </Grid>
@@ -311,7 +241,7 @@ const CustomerInformation: React.FC<any> = (props) => {
               <InputLabel>Lead Source</InputLabel>
               <Select
                 value={leadSource}
-                label='Lead Source'
+                label="Lead Source"
                 onChange={(e) => {
                   dispatch(setLeadSource(e.target.value));
                 }}
@@ -329,17 +259,11 @@ const CustomerInformation: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='Suggested by'
+              id="outlined-controlled"
+              label="Suggested by"
               value={suggestedBy}
               onChange={(e) => {
                 // dispatch(selectSuggestedBy(e.target.value));
-              }}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
               }}
             />
           </Grid>
@@ -358,12 +282,12 @@ const CustomerInformation: React.FC<any> = (props) => {
               flexDirection={"column"}
             >
               <Box sx={{ display: "flex", justifyContent: "center" }}>
-                <Typography variant='h6'>Status</Typography>
+                <Typography variant="h6">Status</Typography>
               </Box>
 
               <Box sx={{ display: "flex", justifyContent: "center", py: 1.5 }}>
                 <Rating
-                  name='simple-controlled'
+                  name="simple-controlled"
                   value={status}
                   onChange={(_event, newValue) => {
                     dispatch(setStatus(newValue));

@@ -22,6 +22,7 @@ const CreateCustomer: NextPage = () => {
   const [createLabel, { isSuccess: isLabelSuccess }] =
     useCreateLabelForCustomerMutation();
   const newLabels = useSelector(selectAllNewLabels);
+  const body = useSelector(selectAll);
 
   const createAndAssignNewLabels = () => {
     const createdCustomerId = createdCustomer!.id;
@@ -38,7 +39,6 @@ const CreateCustomer: NextPage = () => {
   };
   isSuccess && createdCustomer && createAndAssignNewLabels();
   const performUpload = () => {
-    const body = useSelector(selectAll);
     create(body);
   };
 

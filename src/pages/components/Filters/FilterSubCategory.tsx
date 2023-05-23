@@ -7,7 +7,7 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-import { useAllPropertyGlobalQuery } from "src/services/global";
+import { useAllGlobalsQuery } from "src/services/global";
 import {
   selectParentCategories,
   selectSubCategories,
@@ -21,7 +21,7 @@ export default function SubCategorySelect() {
   const parentCategories = useSelector(selectParentCategories);
   const subCategories = useSelector(selectSubCategories);
 
-  const { data } = useAllPropertyGlobalQuery();
+  const { data } = useAllGlobalsQuery();
   const propertyEnums = data?.property;
   if (!propertyEnums || parentCategories.length === 0) return null;
 
@@ -44,14 +44,14 @@ export default function SubCategorySelect() {
   };
   return (
     <FormControl sx={{ width: 165 }}>
-      <InputLabel id='demo-simple-select-label'>Υποκατηγορίες</InputLabel>
+      <InputLabel id="demo-simple-select-label">Υποκατηγορίες</InputLabel>
       <Select
         multiple
-        labelId='demo-simple-select-label'
+        labelId="demo-simple-select-label"
         value={subCategories}
         onChange={handleChange}
         renderValue={(selected) => selected.join(", ")}
-        input={<OutlinedInput label='Υποκατηγορίες' />}
+        input={<OutlinedInput label="Υποκατηγορίες" />}
         MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
       >
         {options.flat(1)!.map((option: any) => {
