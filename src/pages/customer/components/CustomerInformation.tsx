@@ -50,6 +50,7 @@ import {
 } from "src/slices/customer";
 
 import { useDispatch, useSelector } from "react-redux";
+import OnlyNumbersInput from "src/components/properties/OnlyNumbers";
 
 const CustomerInformation: React.FC<any> = (props) => {
   const enums = useAllGlobalsQuery().data;
@@ -109,12 +110,6 @@ const CustomerInformation: React.FC<any> = (props) => {
               onChange={(e) => {
                 dispatch(setFirstName(e.target.value));
               }}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
             />
           </Grid>
           <Grid item xs={6}>
@@ -125,11 +120,6 @@ const CustomerInformation: React.FC<any> = (props) => {
               value={lastName}
               onChange={(e) => {
                 dispatch(setLastName(e.target.value));
-              }} //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
               }}
             />
           </Grid>
@@ -141,12 +131,6 @@ const CustomerInformation: React.FC<any> = (props) => {
               value={email}
               onChange={(e) => {
                 dispatch(setEmail(e.target.value));
-              }}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
               }}
             />
           </Grid>
@@ -171,53 +155,29 @@ const CustomerInformation: React.FC<any> = (props) => {
             </FormControl>
           </Grid>
           <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id="outlined-controlled"
+            <OnlyNumbersInput
               label="Mobile Phone"
               value={mobilePhone}
-              onChange={(e) => {
-                dispatch(setMobilePhone(e.target.value));
-              }}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
+              onChange={(value) => {
+                dispatch(setMobilePhone(value));
               }}
             />
           </Grid>
           <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id="outlined-controlled"
+            <OnlyNumbersInput
               label="Home Phone"
               value={homePhone}
-              onChange={(e) => {
-                dispatch(setHomePhone(e.target.value));
-              }}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
+              onChange={(value) => {
+                dispatch(setHomePhone(value));
               }}
             />
           </Grid>
           <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id="outlined-controlled"
+            <OnlyNumbersInput
               label="Fax"
               value={fax}
-              onChange={(e) => {
-                dispatch(setFax(e.target.value));
-              }}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
+              onChange={(value) => {
+                dispatch(setFax(value));
               }}
             />
           </Grid>
@@ -230,12 +190,6 @@ const CustomerInformation: React.FC<any> = (props) => {
               onChange={(e) => {
                 dispatch(setNationality(e.target.value));
               }}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
             />
           </Grid>
           <Grid item xs={6}>
@@ -246,12 +200,6 @@ const CustomerInformation: React.FC<any> = (props) => {
               value={idNumber}
               onChange={(e) => {
                 dispatch(setIdNumber(e.target.value));
-              }}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
               }}
             />
           </Grid>
@@ -264,12 +212,6 @@ const CustomerInformation: React.FC<any> = (props) => {
               onChange={(e) => {
                 dispatch(setDateOfBirth(e.target.value));
               }}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
             />
           </Grid>
           <Grid item xs={6}>
@@ -281,12 +223,6 @@ const CustomerInformation: React.FC<any> = (props) => {
               onChange={(e) => {
                 dispatch(setPassportNumber(e.target.value));
               }}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
             />
           </Grid>
           <Grid item xs={6}>
@@ -297,12 +233,6 @@ const CustomerInformation: React.FC<any> = (props) => {
               value={preferredLanguage}
               onChange={(e) => {
                 dispatch(setPreferredLanguage(e.target.value));
-              }}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
               }}
             />
           </Grid>
@@ -334,12 +264,6 @@ const CustomerInformation: React.FC<any> = (props) => {
               value={suggestedBy}
               onChange={(e) => {
                 // dispatch(selectSuggestedBy(e.target.value));
-              }}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
               }}
             />
           </Grid>

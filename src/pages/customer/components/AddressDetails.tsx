@@ -21,6 +21,8 @@ import {
 
 import { useDispatch, useSelector } from "react-redux";
 
+import OnlyNumbersInput from "src/components/properties/OnlyNumbers";
+
 const AddressDetails: React.FC<any> = (props) => {
   const street = useSelector(selectStreet);
   const number = useSelector(selectNumber);
@@ -48,7 +50,7 @@ const AddressDetails: React.FC<any> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant='h6'>Address Details</Typography>
+        <Typography variant="h6">Address Details</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -56,119 +58,73 @@ const AddressDetails: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='Street'
+              id="outlined-controlled"
+              label="Street"
               value={street}
               onChange={(e) => {
                 dispatch(setStreet(e.target.value));
               }}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
             />
           </Grid>
           <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id='outlined-controlled'
-              label='Number'
+            <OnlyNumbersInput
+              label="Number"
               value={number}
-              onChange={(e) => {
-                dispatch(setNumber(e.target.value));
-              }}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
+              onChange={(value) => {
+                dispatch(setNumber(value));
               }}
             />
           </Grid>
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='City'
+              id="outlined-controlled"
+              label="City"
               value={city}
               onChange={(e) => {
                 dispatch(setCity(e.target.value));
               }}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
             />
           </Grid>
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='Complex'
+              id="outlined-controlled"
+              label="Complex"
               value={complex}
               onChange={(e) => {
                 dispatch(setComplex(e.target.value));
               }}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
             />
           </Grid>
           <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id='outlined-controlled'
-              label='Zip Code'
+            <OnlyNumbersInput
+              label="Zip Code"
               value={zipCode}
-              onChange={(e) => {
-                dispatch(setZipCode(e.target.value));
-              }}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
+              onChange={(value) => {
+                dispatch(setZipCode(value));
               }}
             />
           </Grid>
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='Region'
+              id="outlined-controlled"
+              label="Region"
               value={region}
               onChange={(e) => {
                 dispatch(setRegion(e.target.value));
               }}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
             />
           </Grid>
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='Country'
+              id="outlined-controlled"
+              label="Country"
               value={country}
               onChange={(e) => {
                 dispatch(setCountry(e.target.value));
-              }}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
               }}
             />
           </Grid>

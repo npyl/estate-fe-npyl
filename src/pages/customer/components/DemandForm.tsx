@@ -62,6 +62,8 @@ import { useAllPropertiesQuery } from "src/services/properties";
 
 import { IProperties } from "src/types/properties";
 
+import OnlyNumbersInput from "src/components/properties/OnlyNumbers";
+
 const DemandForm: React.FC<any> = (props) => {
   const enums = useAllGlobalsQuery().data;
   const propertyEnums = enums?.property;
@@ -302,36 +304,20 @@ const DemandForm: React.FC<any> = (props) => {
             <Typography variant="h6">Bedrooms</Typography>
             <Grid container direction={"row"} spacing={1}>
               <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  id="outlined-controlled"
+                <OnlyNumbersInput
                   label="min"
                   value={minBedrooms}
-                  onChange={(e) => {
-                    dispatch(setMinBedrooms(e.target.value));
-                  }}
-                  //   onKeyPress={handleKeyPress}
-                  inputProps={{
-                    style: {
-                      height: "8px",
-                    },
+                  onChange={(value) => {
+                    dispatch(setMinBedrooms(value));
                   }}
                 />
               </Grid>
               <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  id="outlined-controlled"
+                <OnlyNumbersInput
                   label="max"
                   value={maxBedrooms}
-                  onChange={(e) => {
-                    dispatch(setMaxBedrooms(e.target.value));
-                  }}
-                  //   onKeyPress={handleKeyPress}
-                  inputProps={{
-                    style: {
-                      height: "8px",
-                    },
+                  onChange={(value) => {
+                    dispatch(setMaxBedrooms(value));
                   }}
                 />
               </Grid>
@@ -342,36 +328,20 @@ const DemandForm: React.FC<any> = (props) => {
             <Typography variant="h6">Bathrooms</Typography>
             <Grid container direction={"row"} spacing={1}>
               <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  id="outlined-controlled"
+                <OnlyNumbersInput
                   label="min"
                   value={minBathrooms}
-                  onChange={(e) => {
-                    dispatch(setMinBathrooms(e.target.value));
-                  }}
-                  //   onKeyPress={handleKeyPress}
-                  inputProps={{
-                    style: {
-                      height: "8px",
-                    },
+                  onChange={(value) => {
+                    dispatch(setMinBathrooms(value));
                   }}
                 />
               </Grid>
               <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  id="outlined-controlled"
+                <OnlyNumbersInput
                   label="max"
                   value={maxBathrooms}
-                  onChange={(e) => {
-                    dispatch(setMaxBathrooms(e.target.value));
-                  }}
-                  //   onKeyPress={handleKeyPress}
-                  inputProps={{
-                    style: {
-                      height: "8px",
-                    },
+                  onChange={(value) => {
+                    dispatch(setMaxBathrooms(value));
                   }}
                 />
               </Grid>
@@ -382,36 +352,20 @@ const DemandForm: React.FC<any> = (props) => {
             <Typography variant="h6">Covered</Typography>
             <Grid container direction={"row"} spacing={1}>
               <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  id="outlined-controlled"
+                <OnlyNumbersInput
                   label="min"
                   value={minCovered}
-                  onChange={(e) => {
-                    dispatch(setMinCovered(e.target.value));
-                  }}
-                  //   onKeyPress={handleKeyPress}
-                  inputProps={{
-                    style: {
-                      height: "8px",
-                    },
+                  onChange={(value) => {
+                    dispatch(setMinCovered(value));
                   }}
                 />
               </Grid>
               <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  id="outlined-controlled"
+                <OnlyNumbersInput
                   label="max"
                   value={maxCovered}
-                  onChange={(e) => {
-                    dispatch(setMaxCovered(e.target.value));
-                  }}
-                  //   onKeyPress={handleKeyPress}
-                  inputProps={{
-                    style: {
-                      height: "8px",
-                    },
+                  onChange={(value) => {
+                    dispatch(setMaxCovered(value));
                   }}
                 />
               </Grid>
@@ -422,36 +376,20 @@ const DemandForm: React.FC<any> = (props) => {
             <Typography variant="h6">Plot</Typography>
             <Grid container direction={"row"} spacing={1}>
               <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  id="outlined-controlled"
+                <OnlyNumbersInput
                   label="min"
                   value={minPlot}
-                  onChange={(e) => {
-                    dispatch(setMinPlot(e.target.value));
-                  }}
-                  //   onKeyPress={handleKeyPress}
-                  inputProps={{
-                    style: {
-                      height: "8px",
-                    },
+                  onChange={(value) => {
+                    dispatch(setMinPlot(value));
                   }}
                 />
               </Grid>
               <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  id="outlined-controlled"
+                <OnlyNumbersInput
                   label="max"
                   value={maxPlot}
-                  onChange={(e) => {
-                    dispatch(setMaxPlot(e.target.value));
-                  }}
-                  //   onKeyPress={handleKeyPress}
-                  inputProps={{
-                    style: {
-                      height: "8px",
-                    },
+                  onChange={(value) => {
+                    dispatch(setMaxPlot(value));
                   }}
                 />
               </Grid>
@@ -462,36 +400,20 @@ const DemandForm: React.FC<any> = (props) => {
             <Typography variant="h6">Price</Typography>
             <Grid container direction={"row"} spacing={1}>
               <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  id="outlined-controlled"
+                <OnlyNumbersInput
                   label="min"
                   value={minPrice}
-                  onChange={(e) => {
-                    dispatch(setMinPrice(e.target.value));
-                  }}
-                  //   onKeyPress={handleKeyPress}
-                  inputProps={{
-                    style: {
-                      height: "8px",
-                    },
+                  onChange={(value) => {
+                    dispatch(setMinPrice(value));
                   }}
                 />
               </Grid>
               <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  id="outlined-controlled"
+                <OnlyNumbersInput
                   label="max"
                   value={maxPrice}
-                  onChange={(e) => {
-                    dispatch(setMaxPrice(e.target.value));
-                  }}
-                  //   onKeyPress={handleKeyPress}
-                  inputProps={{
-                    style: {
-                      height: "8px",
-                    },
+                  onChange={(value) => {
+                    dispatch(setMaxPrice(value));
                   }}
                 />
               </Grid>
@@ -502,36 +424,20 @@ const DemandForm: React.FC<any> = (props) => {
             <Typography variant="h6">Floor</Typography>
             <Grid container direction={"row"} spacing={1}>
               <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  id="outlined-controlled"
+                <OnlyNumbersInput
                   label="min"
                   value={minFloor}
-                  onChange={(e) => {
-                    dispatch(setMinFloor(e.target.value));
-                  }}
-                  //   onKeyPress={handleKeyPress}
-                  inputProps={{
-                    style: {
-                      height: "8px",
-                    },
+                  onChange={(value) => {
+                    dispatch(setMinFloor(value));
                   }}
                 />
               </Grid>
               <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  id="outlined-controlled"
+                <OnlyNumbersInput
                   label="max"
                   value={maxFloor}
-                  onChange={(e) => {
-                    dispatch(setMaxFloor(e.target.value));
-                  }}
-                  //   onKeyPress={handleKeyPress}
-                  inputProps={{
-                    style: {
-                      height: "8px",
-                    },
+                  onChange={(value) => {
+                    dispatch(setMaxFloor(value));
                   }}
                 />
               </Grid>
@@ -542,36 +448,20 @@ const DemandForm: React.FC<any> = (props) => {
             <Typography variant="h6">Year of Construction</Typography>
             <Grid container direction={"row"} spacing={1}>
               <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  id="outlined-controlled"
+                <OnlyNumbersInput
                   label="min"
                   value={minYearOfConstruction}
-                  onChange={(e) => {
-                    dispatch(setMinYearOfConstruction(e.target.value));
-                  }}
-                  //   onKeyPress={handleKeyPress}
-                  inputProps={{
-                    style: {
-                      height: "8px",
-                    },
+                  onChange={(value) => {
+                    dispatch(setMinYearOfConstruction(value));
                   }}
                 />
               </Grid>
               <Grid item xs={6}>
-                <TextField
-                  fullWidth
-                  id="outlined-controlled"
+                <OnlyNumbersInput
                   label="max"
                   value={maxYearOfConstruction}
-                  onChange={(e) => {
-                    dispatch(setMaxYearOfConstruction(e.target.value));
-                  }}
-                  //   onKeyPress={handleKeyPress}
-                  inputProps={{
-                    style: {
-                      height: "8px",
-                    },
+                  onChange={(value) => {
+                    dispatch(setMaxYearOfConstruction(value));
                   }}
                 />
               </Grid>

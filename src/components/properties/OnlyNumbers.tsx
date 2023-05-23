@@ -2,7 +2,7 @@ import { TextField, InputAdornment } from "@mui/material";
 
 interface OnlyNumbersInputProps {
   label: string;
-  value: number;
+  value: number | string;
   onChange: (value: string) => void;
   adornment?: string;
 }
