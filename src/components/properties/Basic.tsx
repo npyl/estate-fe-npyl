@@ -15,6 +15,8 @@ import { Box } from "@mui/system";
 import * as React from "react";
 // import { MuiPickersUtilsProvider } from "@mui/lab";
 
+import OnlyNumbersInput from "./OnlyNumbers";
+
 import { useDispatch, useSelector } from "react-redux";
 import { useAllCustomersQuery } from "src/services/customers";
 import {
@@ -103,55 +105,6 @@ const BasicSection: React.FC<any> = (props) => {
   if (!enums) return null;
 
   //set the values for BE
-  const handleCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const input = event.target.value;
-    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
-    dispatch(setCode(numericValue));
-  };
-  const handleAreaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const input = event.target.value;
-    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
-    dispatch(setArea(numericValue));
-  };
-  const handlePlotAreaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const input = event.target.value;
-    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
-    dispatch(setPlotArea(numericValue));
-  };
-  const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const input = event.target.value;
-    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
-    dispatch(setPrice(numericValue));
-  };
-  const handleAvgUtilsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const input = event.target.value;
-    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
-    dispatch(setAvgUtils(numericValue));
-  };
-
-  const handleCurrentRentPriceChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const input = event.target.value;
-    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
-    dispatch(setCurrentRentPrice(numericValue));
-  };
-  const handleEstimatedRentPriceChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const input = event.target.value;
-    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
-    dispatch(setEstimatedRentPrice(numericValue));
-  };
-  //handle onlynumbers
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    const keyCode = event.keyCode || event.which;
-    const keyValue = String.fromCharCode(keyCode);
-    const regex = /[0-9]/;
-    if (!regex.test(keyValue)) {
-      event.preventDefault(); // Prevent entering non-numeric characters
-    }
-  };
 
   return (
     <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
@@ -169,17 +122,11 @@ const BasicSection: React.FC<any> = (props) => {
       <Grid item xs={12} padding={1}>
         <Grid container spacing={2}>
           <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id="outlined-start-adornment"
+            <OnlyNumbersInput
               label="Code"
               value={code}
-              onChange={handleCodeChange}
-              onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
+              onChange={(value) => {
+                dispatch(setCode(value));
               }}
             />
           </Grid>
@@ -281,82 +228,44 @@ const BasicSection: React.FC<any> = (props) => {
             </TextField> */}
           </Grid>
           <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id="outlined-select-currency"
+            <OnlyNumbersInput
               label="Area"
               value={area}
-              onChange={handleAreaChange}
-              onKeyPress={handleKeyPress}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">m²</InputAdornment>
-                ),
+              onChange={(value) => {
+                dispatch(setArea(value));
               }}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
+              adornment="m²"
             />
           </Grid>
           <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id="outlined-select-currency"
+            <OnlyNumbersInput
               label="Plot Area"
               value={plotArea}
-              onChange={handlePlotAreaChange}
-              onKeyPress={handleKeyPress}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">m²</InputAdornment>
-                ),
+              onChange={(value) => {
+                dispatch(setPlotArea(value));
               }}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
+              adornment="m²"
             />
           </Grid>
           <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id="outlined-select-currency"
-              label="Price" /* < euro sticky to field> */
+            <OnlyNumbersInput
+              label="Price"
               value={price}
-              onChange={handlePriceChange}
-              onKeyPress={handleKeyPress}
-              InputProps={{
-                endAdornment: <InputAdornment position="end">€</InputAdornment>,
+              onChange={(value) => {
+                dispatch(setPrice(value));
               }}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
+              adornment="€"
             />
           </Grid>
 
           <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id="outlined-controlled"
+            <OnlyNumbersInput
               label="Average Utils"
               value={avgUtils}
-              onChange={handleAvgUtilsChange}
-              onKeyPress={handleKeyPress}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">€/Month</InputAdornment>
-                ),
+              onChange={(value) => {
+                dispatch(setAvgUtils(value));
               }}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
+              adornment="€/Month"
             />
           </Grid>
 
@@ -401,40 +310,24 @@ const BasicSection: React.FC<any> = (props) => {
             />
           </Grid>
           <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id="outlined-select-currency"
-              label="Current Rent Price" /* < euro sticky to field> */
+            <OnlyNumbersInput
+              label="Current Rent Price"
               value={currentRentPrice}
-              onChange={handleCurrentRentPriceChange}
-              onKeyPress={handleKeyPress}
-              InputProps={{
-                endAdornment: <InputAdornment position="end">€</InputAdornment>,
+              onChange={(value) => {
+                dispatch(setCurrentRentPrice(value));
               }}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
+              adornment="€"
             />
           </Grid>
 
           <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id="outlined-select-currency"
-              label="Estimated Rent Price" /* < euro sticky to field> */
+            <OnlyNumbersInput
+              label="Estimated Rent Price"
               value={estimatedRentPrice}
-              onChange={handleEstimatedRentPriceChange}
-              onKeyPress={handleKeyPress}
-              InputProps={{
-                endAdornment: <InputAdornment position="end">€</InputAdornment>,
+              onChange={(value) => {
+                dispatch(setEstimatedRentPrice(value));
               }}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
+              adornment="€"
             />
           </Grid>
 
