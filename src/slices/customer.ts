@@ -50,17 +50,17 @@ const initialState: customerState = {
       minFloor: "",
       maxFloor: "",
       parentCategory: "",
+      category: "",
       state: "",
       minPrice: 0,
       maxPrice: 0,
+      labels: [],
     },
     priorityFeatures: {
-      // attic: false,  // TODO: this causes backend exception
-      // bar: false,    // TODO: same...
       panoramicView: false,
       seaView: false,
       mountainView: false,
-      // facade_sea: false, // TODO: same
+      seaFront: false,
       walkableDistanceToBeach: false,
       quietArea: false,
       bright: false,
@@ -97,16 +97,12 @@ const initialState: customerState = {
       withinResidentialZone: false,
       withinCityPlan: false,
       loadingDock: false,
-      // petAllowed: false, // TODO: same
-      seaFront: false,
     },
     nonPriorityFeatures: {
-      // attic: false,  // TODO: this causes backend exception
-      // bar: false,    // TODO: same...
       panoramicView: false,
       seaView: false,
       mountainView: false,
-      // facade_sea: false, // TODO: same
+      seaFront: false,
       walkableDistanceToBeach: false,
       quietArea: false,
       bright: false,
@@ -143,8 +139,6 @@ const initialState: customerState = {
       withinResidentialZone: false,
       withinCityPlan: false,
       loadingDock: false,
-      // petAllowed: false, // TODO: same
-      seaFront: false,
     },
     timeframe: "",
   },

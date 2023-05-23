@@ -18,7 +18,7 @@ const EditCustomer: NextPage = () => {
   const { customerId } = router.query;
   const { data, isSuccess: fetchedCustomer } = useGetCustomerByIdQuery(
     parseInt(customerId as string)
-  ); // basic details
+  );
   const [edit, { isSuccess, data: editedCustomer }] = useAddCustomerMutation();
   const body = useSelector(selectAll);
 
