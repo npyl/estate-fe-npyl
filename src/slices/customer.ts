@@ -326,7 +326,15 @@ const slice = createSlice({
       state.dateOfBirth = action.payload.dateOfBirth;
       state.leadSource = action.payload.leadSource;
       state.preferredLanguage = action.payload.preferredLanguage;
-      state.location = action.payload.location;
+
+      state.location.street = action.payload.location.street;
+      state.location.number = action.payload.location.number;
+      state.location.complex = action.payload.location.complex;
+      state.location.zipCode = action.payload.location.zipCode;
+      state.location.city = action.payload.location.city;
+      state.location.region = action.payload.location.region;
+      state.location.country = action.payload.location.country;
+
       state.notes = action.payload.notes;
       state.ownedProperties = action.payload.ownedProperties;
       state.labelIDs = [
