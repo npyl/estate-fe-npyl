@@ -56,7 +56,7 @@ const CustomerInformation: React.FC<any> = (props) => {
   const propertyEnums = enums?.property;
   const managers = useAllUsersQuery().data;
 
-  const leadSourceEnum = ["1", "2"]; // TODO
+  const leadSourceEnum = enums?.customer?.leadSource;
 
   const firstName = useSelector(selectFirstName);
   const lastName = useSelector(selectLastName);
@@ -77,7 +77,7 @@ const CustomerInformation: React.FC<any> = (props) => {
 
   const dispatch = useDispatch();
 
-  if (!enums || !propertyEnums || !managers) return null;
+  if (!enums || !propertyEnums || !leadSourceEnum || !managers) return null;
 
   return (
     <Paper

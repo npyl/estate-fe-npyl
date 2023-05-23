@@ -69,8 +69,7 @@ const DemandForm: React.FC<any> = (props) => {
   const detailsEnum = propertyEnums?.details;
   const parentCategoryEnum = propertyEnums?.parentCategory;
   const furnishingEnum = detailsEnum?.furnished;
-
-  const timeframeEnum = ["1", "2"];
+  const timeframeEnum = enums?.customer?.timeframe;
 
   const minBedrooms = useSelector(selectMinBedrooms);
   const maxBedrooms = useSelector(selectMaxBedrooms);
