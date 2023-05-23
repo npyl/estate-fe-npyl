@@ -22,11 +22,9 @@ import { useAddCustomerMutation } from "src/services/customers";
 
 const Form = ({
   edit = false,
-  customerId,
   performUpload,
 }: {
   edit?: boolean;
-  customerId: string;
   performUpload: () => void;
 }) => {
   const [create, { isSuccess }] = useAddCustomerMutation();

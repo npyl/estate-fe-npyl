@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { ICustomerPOST } from "src/types/customer";
 import { ILabel } from "src/types/label";
 import type { RootState } from "../store";
+import { IDemand, IDemandFilters } from "src/types/demand";
 
 interface customerState extends ICustomerPOST {}
 
@@ -12,7 +13,7 @@ const initialState: customerState = {
   email: "",
   mobilePhone: "",
   homePhone: "",
-  managedBy: 1, // TODO: Implement this!
+  managedBy: 1,
   status: 0,
   fax: "",
   nationality: "",
@@ -50,17 +51,17 @@ const initialState: customerState = {
       minFloor: "",
       maxFloor: "",
       parentCategory: "",
+      category: "",
       state: "",
       minPrice: 0,
       maxPrice: 0,
+      labelIDs: [],
     },
     priorityFeatures: {
-      // attic: false,  // TODO: this causes backend exception
-      // bar: false,    // TODO: same...
       panoramicView: false,
       seaView: false,
       mountainView: false,
-      // facade_sea: false, // TODO: same
+      seaFront: false,
       walkableDistanceToBeach: false,
       quietArea: false,
       bright: false,
@@ -97,16 +98,12 @@ const initialState: customerState = {
       withinResidentialZone: false,
       withinCityPlan: false,
       loadingDock: false,
-      // petAllowed: false, // TODO: same
-      seaFront: false,
     },
     nonPriorityFeatures: {
-      // attic: false,  // TODO: this causes backend exception
-      // bar: false,    // TODO: same...
       panoramicView: false,
       seaView: false,
       mountainView: false,
-      // facade_sea: false, // TODO: same
+      seaFront: false,
       walkableDistanceToBeach: false,
       quietArea: false,
       bright: false,
@@ -143,8 +140,6 @@ const initialState: customerState = {
       withinResidentialZone: false,
       withinCityPlan: false,
       loadingDock: false,
-      // petAllowed: false, // TODO: same
-      seaFront: false,
     },
     timeframe: "",
   },
@@ -174,7 +169,9 @@ const slice = createSlice({
       state.homePhone = action.payload;
     },
 
-    // setManagedBy: TODO
+    setManagedBy(state: customerState, action): void {
+      state.managedBy = action.payload;
+    },
 
     setStatus(state: customerState, action): void {
       state.status = action.payload;
@@ -335,12 +332,46 @@ const slice = createSlice({
       state.location.region = action.payload.location.region;
       state.location.country = action.payload.location.country;
 
+      // TODO: check this... doesn't seem right
       state.notes = action.payload.notes;
-      state.ownedProperties = action.payload.ownedProperties;
-      state.labelIDs = [
-        ...action.payload.labels.map((label: ILabel) => label.id),
-      ];
-      state.demand = action.payload.demand;
+
+      // TODO:
+      // state.ownedProperties = action.payload.ownedProperties;
+
+      const demand: IDemand = action.payload.demand;
+      const demandFilters: IDemandFilters = demand.filters;
+
+      state.demand.filters.minBedrooms = demandFilters.minBedrooms;
+      state.demand.filters.maxBedrooms = demandFilters.maxBedrooms;
+      state.demand.filters.minBathrooms = demandFilters.minBathrooms;
+      state.demand.filters.maxBathrooms = demandFilters.maxBathrooms;
+      state.demand.filters.furnished = demandFilters.furnished;
+      state.demand.filters.maxCovered = demandFilters.maxCovered;
+      state.demand.filters.minCovered = demandFilters.minCovered;
+      state.demand.filters.minPlot = demandFilters.minPlot;
+      state.demand.filters.maxPlot = demandFilters.maxPlot;
+      state.demand.filters.minYearOfConstruction =
+        demandFilters.minYearOfConstruction;
+      state.demand.filters.maxYearOfConstruction =
+        demandFilters.maxYearOfConstruction;
+      state.demand.filters.minFloor = demandFilters.minFloor;
+      state.demand.filters.maxFloor = demandFilters.maxFloor;
+      state.demand.filters.parentCategory = demandFilters.parentCategory;
+      state.demand.filters.category = demandFilters.category;
+      state.demand.filters.state = demandFilters.state;
+      state.demand.filters.minPrice = demandFilters.minPrice;
+      state.demand.filters.maxPrice = demandFilters.maxPrice;
+      // map labels
+      state.demand.filters.labelIDs = demandFilters.labels
+        ? demandFilters.labels
+            .filter((label) => label.id) // where id not null
+            .map((label) => {
+              return label.id!;
+            })
+        : [];
+      state.demand.nonPriorityFeatures = demand.nonPriorityFeatures;
+      state.demand.priorityFeatures = demand.priorityFeatures;
+      state.demand.timeframe = demand.timeframe;
     },
 
     resetState: () => {
@@ -351,6 +382,7 @@ const slice = createSlice({
 
 export const {
   setId,
+  setManagedBy,
   setFirstName,
   setLastName,
   setEmail,

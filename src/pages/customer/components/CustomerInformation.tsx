@@ -37,6 +37,7 @@ import {
   setEmail,
   setFax,
   // setters
+  setManagedBy,
   setFirstName,
   setHomePhone,
   setIdNumber,
@@ -142,7 +143,7 @@ const CustomerInformation: React.FC<any> = (props) => {
                 value={managedBy}
                 label="Managed By"
                 onChange={(e) => {
-                  // dispatch(setParentCategory(e.target.value));
+                  dispatch(setManagedBy(e.target.value));
                 }}
               >
                 {managers.map((manager, index) => {

@@ -1,38 +1,9 @@
-import { IPropertyFeatures } from "./features";
+import { IDemand, IDemandPOST } from "./demand";
 import { ILabel } from "./label";
 import { ILocation, ILocationPOST } from "./location";
 import { INote, INotePOST } from "./note";
 import { IProperties } from "./properties";
 import { IUser } from "./user";
-
-export interface IDemandFilters {
-  minBedrooms: number;
-  maxBedrooms: number;
-  minBathrooms: number;
-  maxBathrooms: number;
-  furnished: string;
-  maxCovered: number;
-  minCovered: number;
-  minPlot: number;
-  maxPlot: number;
-  minYearOfConstruction: number;
-  maxYearOfConstruction: number;
-  minFloor: string;
-  maxFloor: string;
-  parentCategory: string;
-  category: string;
-  state: string;
-  minPrice: number;
-  maxPrice: number;
-  labels: ILabel[];
-}
-
-export interface IDemand {
-  filters: IDemandFilters;
-  priorityFeatures: IPropertyFeatures;
-  nonPriorityFeatures: IPropertyFeatures;
-  timeframe: string;
-}
 
 export interface ICustomer {
   id: number;
@@ -79,5 +50,5 @@ export interface ICustomerPOST {
   notes: INotePOST[];
   ownedProperties: IProperties[];
   labelIDs: number[];
-  demand: IDemand;
+  demand: IDemandPOST;
 }
