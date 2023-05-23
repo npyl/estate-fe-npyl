@@ -43,6 +43,7 @@ export interface IPropertySuitableFor {
   doctorsOffice: boolean;
   professionalUse: boolean;
   renovation: boolean;
+  agriculturalUse: boolean;
 }
 
 export interface IPropertyDistances {
@@ -82,6 +83,7 @@ export interface IPropertyConstruction {
   neoclassical: boolean;
   yearOfRenovation: number;
   renovated: boolean;
+  elevator: boolean;
   needsRenovation: boolean;
   preserved: boolean;
 }

@@ -35,7 +35,6 @@ import {
   selectRentalPeriodEnd,
   selectRented,
   selectState,
-  selectValueOfRenovation,
   setArea,
   setAuction,
   setAvailableAfter,
@@ -73,7 +72,6 @@ const BasicSection: React.FC<any> = (props) => {
   const details = enums?.details as IGlobalPropertyDetails;
   const dispatch = useDispatch();
 
-  const valueOfRenovation = useSelector(selectValueOfRenovation);
   const code = useSelector(selectCode);
   const owner = useSelector(selectOwner);
   const manager = useSelector(selectManager);
