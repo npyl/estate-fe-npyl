@@ -6,15 +6,13 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-import { useRouter } from "next/router";
+
 import * as React from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAllPropertyGlobalQuery } from "src/services/global";
-import { useAddPropertyMutation } from "src/services/properties";
 import {
   resetState,
-  selectAll,
   selectCategory,
   selectParentCategory,
   setCategory,
@@ -28,13 +26,13 @@ import LandFormSection from "./LandForm";
 import OtherFormSection from "./OtherForm";
 import ResidentialFormSection from "./ResidentialForm";
 
-export default function Form({ edit = false }: { edit?: boolean }) {
-  const [files, setFiles] = useState<(File | string)[]>([]);
-  const [fileData, setFileData] = useState<(File | string)[]>([]);
-  const router = useRouter();
-  const body = useSelector(selectAll);
-  const [create, { isSuccess }] = useAddPropertyMutation();
-
+export default function Form({
+  edit = false,
+  onUpload,
+}: {
+  edit?: boolean;
+  onUpload?: () => void;
+}) {
   const category = useSelector(selectCategory);
   const parentCategory = useSelector(selectParentCategory);
 
@@ -45,37 +43,8 @@ export default function Form({ edit = false }: { edit?: boolean }) {
 
   const dispatch = useDispatch();
 
-  const performUpload = () => {
-    const blob = new Blob([JSON.stringify(body)], {
-      type: "application/json",
-    });
-    let dataToSend = new FormData();
-    dataToSend.append(
-      "propertyImage ",
-      files[0] || new File([""], "", { type: "null" })
-    );
-    for (let i = 1; i < files.length; i++) {
-      dataToSend.append(
-        "propertyGallery ",
-        files[i] || new File([""], "", { type: "null" })
-      );
-    }
-    dataToSend.append("propertyForm ", blob);
-    dataToSend.append(
-      "propertyFile ",
-      files[0] || new File([""], "", { type: "null" })
-    );
-    for (let i = 1; i < fileData.length; i++) {
-      dataToSend.append(
-        "propertyGalleryFiles ",
-        files[i] || new File([""], "", { type: "null" })
-      );
-    }
-    dataToSend.append("propertyForm ", blob);
-
-    // perform POST
-    create(dataToSend);
-    isSuccess && router.push("/");
+  const handleUpload = () => {
+    onUpload && onUpload();
   };
 
   if (!enums || !parentCategoryEnum) return null;
@@ -201,9 +170,9 @@ export default function Form({ edit = false }: { edit?: boolean }) {
                   <Button
                     variant="contained"
                     endIcon={<SendIcon />}
-                    onClick={() => performUpload()}
+                    onClick={handleUpload}
                   >
-                    Create Property
+                    {edit ? "Edit" : "Create"}
                   </Button>
                 </Grid>
               </Grid>

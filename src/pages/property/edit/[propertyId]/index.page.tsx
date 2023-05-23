@@ -5,9 +5,11 @@ import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import Form from "../../components/Form";
 
 const EditPropertyPage: NextPage = () => {
+  const handleUpload = () => {};
+
   return (
     <div>
-      <Form edit={true} />
+      <Form edit={true} onUpload={handleUpload} />
     </div>
   );
 };
