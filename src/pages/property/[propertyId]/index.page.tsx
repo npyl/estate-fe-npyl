@@ -74,7 +74,9 @@ const SingleProperty: NextPage = () => {
     setValue(newValue);
   };
 
-  const handleEdit = () => {};
+  const handleEdit = () => {
+    router.push(`/property/edit/${propertyId}`);
+  };
 
   const handleDelete = () => {
     deleteProperty(parseInt(propertyId as string));
@@ -85,7 +87,11 @@ const SingleProperty: NextPage = () => {
 
   return (
     <Box sx={{ width: "100%", paddingY: 3 }}>
-      <ViewHeader onEdit={() => {}} onDelete={handleDelete}>
+      <ViewHeader
+        resource="customer"
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+      >
         <Tabs
           value={value}
           onChange={handleChange}

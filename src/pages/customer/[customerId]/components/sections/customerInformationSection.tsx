@@ -1,4 +1,4 @@
-import { Grid, List, Paper, Typography } from "@mui/material";
+import { Divider, Grid, List, Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 
 import * as React from "react";
@@ -34,107 +34,85 @@ const CustomerInformationSection: React.FC = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant='h6'>Customer Information</Typography>
+        <Typography variant="h6">Customer Information</Typography>
       </Box>
       <Grid container>
-        <Grid item xs={6} padding={1}>
+        <Grid
+          item
+          xs={6}
+          padding={0}
+          // style={{ borderRight: "1px solid #d9d9d9", paddingTop: "0" }}
+        >
           <List>
             <ListItem
-              label='First Name:'
+              label="First Name:"
               value={data?.firstName}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
             <ListItem
-              label='Last Name:'
+              label="Last Name:"
               value={data?.lastName}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
+            <ListItem label="Email:" value={data?.email} align="horizontal" />
             <ListItem
-              label='Email:'
-              value={data?.email}
-              align='horizontal'
-              divider
-            />
-            <ListItem
-              label='Managed By:'
+              label="Managed By:"
               value={data?.managedBy}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
             <ListItem
-              label='Mobile Phone:'
+              label="Mobile Phone:"
               value={data?.mobilePhone}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
             <ListItem
-              label='Home Phone:'
+              label="Home Phone:"
               value={data?.homePhone}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
-            <ListItem
-              label='Fax:'
-              value={data?.fax}
-              align='horizontal'
-              divider
-            />
-            <ListItem
-              label='Status:'
-              value={data?.status}
-              align='horizontal'
-              divider
-            />
+            <ListItem label="Fax:" value={data?.fax} align="horizontal" />
+            <ListItem label="Status:" value={data?.status} align="horizontal" />
           </List>
         </Grid>
 
-        <Grid item xs={6} padding={1}>
+        <Grid item xs={6} padding={0}>
           <List>
             <ListItem
-              label='Nationality:'
+              label="Nationality:"
               value={data?.nationality}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
             <ListItem
-              label='Id Number:'
+              label="Id Number:"
               value={data?.idNumber}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
             <ListItem
-              label='Date of Birth:'
+              label="Date of Birth:"
               value={data?.dateOfBirth}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
             <ListItem
-              label='Passport Number:'
+              label="Passport Number:"
               value={data?.passportNumber}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
             <ListItem
-              label='Preferred Language:'
+              label="Preferred Language:"
               value={data?.preferredLanguage}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
             <ListItem
-              label='Lead Source:'
+              label="Lead Source:"
               value={data?.leadSource}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
             <ListItem
-              label='Suggested By:'
+              label="Suggested By:"
               value={data?.suggestedBy}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
-            <ListLabelsItem label='Labels:' labels={data?.labels} />
+            <ListLabelsItem label="Labels:" labels={data?.labels} />
           </List>
         </Grid>
       </Grid>

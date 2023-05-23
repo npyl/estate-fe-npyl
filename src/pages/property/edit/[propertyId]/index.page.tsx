@@ -24,7 +24,7 @@ const EditPropertyPage: NextPage = () => {
 
   return (
     <div>
-      <Form edit={true} onUpload={handleUpload} />
+      <Form edit={false} onUpload={handleUpload} />
     </div>
   );
 };

@@ -32,7 +32,7 @@ const ListItem: FC<ListItemProps> = (props) => {
           backgroundColor: "white",
         },
         "&:nth-of-type(even)": {
-          backgroundColor: "#fafafa",
+          backgroundColor: "#fcfcfc",
         },
       }}
       {...other}

@@ -37,7 +37,7 @@ const CustomerView: NextPage = () => {
       <Grid container paddingTop={1} paddingRight={1} spacing={1}>
         <Grid item xs={12}>
           <ViewHeader
-            resource='customer'
+            resource="customer"
             onEdit={handleEdit}
             onDelete={handleDelete}
           ></ViewHeader>

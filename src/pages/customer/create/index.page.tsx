@@ -42,7 +42,7 @@ const CreateCustomer: NextPage = () => {
     create(body);
   };
 
-  return <Form edit={false} performUpload={performUpload} />;
+  return <Form edit={false} performUpload={performUpload} customerId={""} />;
 };
 
 CreateCustomer.getLayout = (page) => (
