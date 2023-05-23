@@ -58,14 +58,14 @@ import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 import { useAllUsersQuery } from "src/services/user";
 
 import { useState } from "react";
-import { useAllPropertyGlobalQuery } from "src/services/global";
+import { useAllGlobalsQuery } from "src/services/global";
 
 const BasicForLandSection: React.FC<any> = (props) => {
   const [rentalPeriodStart, setRentalPeriodStart] = useState<Date | null>(
     new Date()
   );
 
-  const { data } = useAllPropertyGlobalQuery();
+  const { data } = useAllGlobalsQuery();
   const enums: IGlobalProperty = data?.property as IGlobalProperty;
   const details = enums?.details as IGlobalPropertyDetails;
   const dispatch = useDispatch();

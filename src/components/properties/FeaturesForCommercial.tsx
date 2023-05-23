@@ -82,7 +82,7 @@ import {
   setView,
   setWalkableDistanceToBeach,
 } from "src/slices/property";
-import { useAllPropertyGlobalQuery } from "src/services/global";
+import { useAllGlobalsQuery } from "src/services/global";
 
 const FeaturesForCommercialSection: React.FC<any> = (props) => {
   const dispatch = useDispatch();

@@ -11,7 +11,7 @@ import { useRouter } from "next/router";
 import * as React from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useAllPropertyGlobalQuery } from "src/services/global";
+import { useAllGlobalsQuery } from "src/services/global";
 import { useAddPropertyMutation } from "src/services/properties";
 import {
   resetState,
@@ -38,7 +38,7 @@ export default function SimpleAccordion() {
   const parentCategory = useSelector(selectParentCategory);
 
   // enums
-  const { data } = useAllPropertyGlobalQuery();
+  const { data } = useAllGlobalsQuery();
   const enums: IGlobalProperty = data?.property as IGlobalProperty;
   const parentCategoryEnum = enums?.parentCategory;
 

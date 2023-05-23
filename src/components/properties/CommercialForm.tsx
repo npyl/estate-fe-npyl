@@ -2,7 +2,7 @@ import { Grid } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import * as React from "react";
 import { useState } from "react";
-import { useAllPropertyGlobalQuery } from "src/services/global";
+import { useAllGlobalsQuery } from "src/services/global";
 import { IGlobalProperty } from "../../types/global";
 import AreasSection from "./Areas";
 import BasicSection from "./Basic";
@@ -37,7 +37,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectState, setState } from "src/slices/property";
 
 const CommercialFormSection: React.FC<any> = (props) => {
-  const { data } = useAllPropertyGlobalQuery();
+  const { data } = useAllGlobalsQuery();
   const enums: IGlobalProperty = data?.property as IGlobalProperty;
   const [files, setFiles] = useState<(File | string)[]>([]);
   const [fileData, setFileData] = useState<(File | string)[]>([]);

@@ -57,13 +57,13 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { useMemo, useState } from "react";
 
-import { useAllPropertyGlobalQuery } from "src/services/global";
+import { useAllGlobalsQuery } from "src/services/global";
 import { useAllPropertiesQuery } from "src/services/properties";
 
 import { IProperties } from "src/types/properties";
 
 const DemandForm: React.FC<any> = (props) => {
-  const enums = useAllPropertyGlobalQuery().data;
+  const enums = useAllGlobalsQuery().data;
   const propertyEnums = enums?.property;
   const stateEnum = propertyEnums?.state;
   const detailsEnum = propertyEnums?.details;
@@ -182,7 +182,7 @@ const DemandForm: React.FC<any> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant='h6'>Demand Form</Typography>
+        <Typography variant="h6">Demand Form</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -190,14 +190,14 @@ const DemandForm: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <Autocomplete
               disablePortal
-              id='combo-box-demo'
+              id="combo-box-demo"
               value={autocompleteValue}
               onChange={autocompleteChange}
               options={propertyCodes}
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  placeholder='Property Code'
+                  placeholder="Property Code"
                   onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                     handleSearch(event.target.value);
                   }}
@@ -210,7 +210,7 @@ const DemandForm: React.FC<any> = (props) => {
               <InputLabel>Parent Category</InputLabel>
               <Select
                 value={parentCategory}
-                label='Parent Category'
+                label="Parent Category"
                 onChange={(e) => {
                   dispatch(setParentCategory(e.target.value));
                 }}
@@ -230,7 +230,7 @@ const DemandForm: React.FC<any> = (props) => {
               <InputLabel>Furnishing</InputLabel>
               <Select
                 value={furnished}
-                label='Furnishing'
+                label="Furnishing"
                 onChange={(e) => {
                   dispatch(setFurnished(e.target.value));
                 }}
@@ -250,7 +250,7 @@ const DemandForm: React.FC<any> = (props) => {
               <InputLabel>State</InputLabel>
               <Select
                 value={state}
-                label='State'
+                label="State"
                 onChange={(e) => {
                   dispatch(setState(e.target.value));
                 }}
@@ -268,8 +268,8 @@ const DemandForm: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-controlled'
-              label='Labels: TODO: ...'
+              id="outlined-controlled"
+              label="Labels: TODO: ..."
               //   onChange={handleGardenChange}
               //   onKeyPress={handleKeyPress}
               inputProps={{
@@ -284,7 +284,7 @@ const DemandForm: React.FC<any> = (props) => {
               <InputLabel>Time Frame</InputLabel>
               <Select
                 value={timeFrame}
-                label='Time Frame'
+                label="Time Frame"
                 onChange={(e) => {
                   dispatch(setTimeFrame(e.target.value));
                 }}
@@ -300,13 +300,13 @@ const DemandForm: React.FC<any> = (props) => {
             </FormControl>{" "}
           </Grid>
           <Grid item xs={6}>
-            <Typography variant='h6'>Bedrooms</Typography>
+            <Typography variant="h6">Bedrooms</Typography>
             <Grid container direction={"row"} spacing={1}>
               <Grid item xs={6}>
                 <TextField
                   fullWidth
-                  id='outlined-controlled'
-                  label='min'
+                  id="outlined-controlled"
+                  label="min"
                   value={minBedrooms}
                   onChange={(e) => {
                     dispatch(setMinBedrooms(e.target.value));
@@ -322,8 +322,8 @@ const DemandForm: React.FC<any> = (props) => {
               <Grid item xs={6}>
                 <TextField
                   fullWidth
-                  id='outlined-controlled'
-                  label='max'
+                  id="outlined-controlled"
+                  label="max"
                   value={maxBedrooms}
                   onChange={(e) => {
                     dispatch(setMaxBedrooms(e.target.value));
@@ -340,13 +340,13 @@ const DemandForm: React.FC<any> = (props) => {
           </Grid>
 
           <Grid item xs={6}>
-            <Typography variant='h6'>Bathrooms</Typography>
+            <Typography variant="h6">Bathrooms</Typography>
             <Grid container direction={"row"} spacing={1}>
               <Grid item xs={6}>
                 <TextField
                   fullWidth
-                  id='outlined-controlled'
-                  label='min'
+                  id="outlined-controlled"
+                  label="min"
                   value={minBathrooms}
                   onChange={(e) => {
                     dispatch(setMinBathrooms(e.target.value));
@@ -362,8 +362,8 @@ const DemandForm: React.FC<any> = (props) => {
               <Grid item xs={6}>
                 <TextField
                   fullWidth
-                  id='outlined-controlled'
-                  label='max'
+                  id="outlined-controlled"
+                  label="max"
                   value={maxBathrooms}
                   onChange={(e) => {
                     dispatch(setMaxBathrooms(e.target.value));
@@ -380,13 +380,13 @@ const DemandForm: React.FC<any> = (props) => {
           </Grid>
 
           <Grid item xs={6}>
-            <Typography variant='h6'>Covered</Typography>
+            <Typography variant="h6">Covered</Typography>
             <Grid container direction={"row"} spacing={1}>
               <Grid item xs={6}>
                 <TextField
                   fullWidth
-                  id='outlined-controlled'
-                  label='min'
+                  id="outlined-controlled"
+                  label="min"
                   value={minCovered}
                   onChange={(e) => {
                     dispatch(setMinCovered(e.target.value));
@@ -402,8 +402,8 @@ const DemandForm: React.FC<any> = (props) => {
               <Grid item xs={6}>
                 <TextField
                   fullWidth
-                  id='outlined-controlled'
-                  label='max'
+                  id="outlined-controlled"
+                  label="max"
                   value={maxCovered}
                   onChange={(e) => {
                     dispatch(setMaxCovered(e.target.value));
@@ -420,13 +420,13 @@ const DemandForm: React.FC<any> = (props) => {
           </Grid>
 
           <Grid item xs={6}>
-            <Typography variant='h6'>Plot</Typography>
+            <Typography variant="h6">Plot</Typography>
             <Grid container direction={"row"} spacing={1}>
               <Grid item xs={6}>
                 <TextField
                   fullWidth
-                  id='outlined-controlled'
-                  label='min'
+                  id="outlined-controlled"
+                  label="min"
                   value={minPlot}
                   onChange={(e) => {
                     dispatch(setMinPlot(e.target.value));
@@ -442,8 +442,8 @@ const DemandForm: React.FC<any> = (props) => {
               <Grid item xs={6}>
                 <TextField
                   fullWidth
-                  id='outlined-controlled'
-                  label='max'
+                  id="outlined-controlled"
+                  label="max"
                   value={maxPlot}
                   onChange={(e) => {
                     dispatch(setMaxPlot(e.target.value));
@@ -460,13 +460,13 @@ const DemandForm: React.FC<any> = (props) => {
           </Grid>
 
           <Grid item xs={6}>
-            <Typography variant='h6'>Price</Typography>
+            <Typography variant="h6">Price</Typography>
             <Grid container direction={"row"} spacing={1}>
               <Grid item xs={6}>
                 <TextField
                   fullWidth
-                  id='outlined-controlled'
-                  label='min'
+                  id="outlined-controlled"
+                  label="min"
                   value={minPrice}
                   onChange={(e) => {
                     dispatch(setMinPrice(e.target.value));
@@ -482,8 +482,8 @@ const DemandForm: React.FC<any> = (props) => {
               <Grid item xs={6}>
                 <TextField
                   fullWidth
-                  id='outlined-controlled'
-                  label='max'
+                  id="outlined-controlled"
+                  label="max"
                   value={maxPrice}
                   onChange={(e) => {
                     dispatch(setMaxPrice(e.target.value));
@@ -500,13 +500,13 @@ const DemandForm: React.FC<any> = (props) => {
           </Grid>
 
           <Grid item xs={6}>
-            <Typography variant='h6'>Floor</Typography>
+            <Typography variant="h6">Floor</Typography>
             <Grid container direction={"row"} spacing={1}>
               <Grid item xs={6}>
                 <TextField
                   fullWidth
-                  id='outlined-controlled'
-                  label='min'
+                  id="outlined-controlled"
+                  label="min"
                   value={minFloor}
                   onChange={(e) => {
                     dispatch(setMinFloor(e.target.value));
@@ -522,8 +522,8 @@ const DemandForm: React.FC<any> = (props) => {
               <Grid item xs={6}>
                 <TextField
                   fullWidth
-                  id='outlined-controlled'
-                  label='max'
+                  id="outlined-controlled"
+                  label="max"
                   value={maxFloor}
                   onChange={(e) => {
                     dispatch(setMaxFloor(e.target.value));
@@ -540,13 +540,13 @@ const DemandForm: React.FC<any> = (props) => {
           </Grid>
 
           <Grid item xs={6}>
-            <Typography variant='h6'>Year of Construction</Typography>
+            <Typography variant="h6">Year of Construction</Typography>
             <Grid container direction={"row"} spacing={1}>
               <Grid item xs={6}>
                 <TextField
                   fullWidth
-                  id='outlined-controlled'
-                  label='min'
+                  id="outlined-controlled"
+                  label="min"
                   value={minYearOfConstruction}
                   onChange={(e) => {
                     dispatch(setMinYearOfConstruction(e.target.value));
@@ -562,8 +562,8 @@ const DemandForm: React.FC<any> = (props) => {
               <Grid item xs={6}>
                 <TextField
                   fullWidth
-                  id='outlined-controlled'
-                  label='max'
+                  id="outlined-controlled"
+                  label="max"
                   value={maxYearOfConstruction}
                   onChange={(e) => {
                     dispatch(setMaxYearOfConstruction(e.target.value));
