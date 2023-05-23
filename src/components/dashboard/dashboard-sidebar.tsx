@@ -1,4 +1,14 @@
-import LabelImportantIcon from "@mui/icons-material/LabelImportant";
+import {
+  LabelImportant,
+  ManageAccounts,
+  Handshake,
+  ConfirmationNumber,
+  Email,
+  JoinRight,
+  EventNote,
+  AdminPanelSettings,
+} from "@mui/icons-material";
+
 import {
   Box,
   Drawer,
@@ -55,7 +65,65 @@ const getSections = (t: TFunction): Section[] => [
       {
         title: t("Labels"),
         path: "/label",
-        icon: <LabelImportantIcon fontSize="small" />,
+        icon: <LabelImportant fontSize="small" />,
+      },
+
+      // dummies
+      {
+        // ULTRA_DUMMY_DEVIDER
+        title: "",
+        path: "",
+      },
+
+      {
+        title: t("Developers"),
+        path: "/",
+        icon: <ManageAccounts fontSize="small" />,
+      },
+      {
+        title: t("Agents"),
+        path: "/",
+        icon: <LabelImportant fontSize="small" />,
+      },
+      {
+        title: t("Deals"),
+        path: "/",
+        icon: <Handshake fontSize="small" />,
+      },
+      {
+        title: t("Tickets"),
+        path: "/",
+        icon: <ConfirmationNumber fontSize="small" />,
+      },
+      {
+        title: t("Mail"),
+        path: "/",
+        icon: <Email fontSize="small" />,
+      },
+      {
+        title: t("Activities"),
+        path: "/",
+        icon: <LabelImportant fontSize="small" />,
+      },
+      {
+        title: t("Matches"),
+        path: "/",
+        icon: <JoinRight fontSize="small" />,
+      },
+      {
+        title: t("Reports"),
+        path: "/",
+        icon: <LabelImportant fontSize="small" />,
+      },
+      {
+        title: t("Audit Log"),
+        path: "/",
+        icon: <EventNote fontSize="small" />,
+      },
+      {
+        title: t("Admin"),
+        path: "/",
+        icon: <AdminPanelSettings fontSize="small" />,
       },
     ],
   },
