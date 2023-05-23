@@ -42,7 +42,7 @@ export interface IDemandFiltersPOST {
   state: string;
   minPrice: number;
   maxPrice: number;
-  labelIDs: [];
+  labelIDs: number[];
 }
 
 export interface IDemand {
