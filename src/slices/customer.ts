@@ -13,7 +13,7 @@ const initialState: customerState = {
   email: "",
   mobilePhone: "",
   homePhone: "",
-  managedBy: 1, // TODO: Implement this!
+  managedBy: 1,
   status: 0,
   fax: "",
   nationality: "",
@@ -169,7 +169,9 @@ const slice = createSlice({
       state.homePhone = action.payload;
     },
 
-    // setManagedBy: TODO
+    setManagedBy(state: customerState, action): void {
+      state.managedBy = action.payload;
+    },
 
     setStatus(state: customerState, action): void {
       state.status = action.payload;
@@ -380,6 +382,7 @@ const slice = createSlice({
 
 export const {
   setId,
+  setManagedBy,
   setFirstName,
   setLastName,
   setEmail,
