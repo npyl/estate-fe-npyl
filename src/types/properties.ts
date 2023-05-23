@@ -97,24 +97,7 @@ export interface IPropertyDistances {
   entertainment: number;
 }
 
-export interface IPropertyAreas {
-  first: number;
-  second: number;
-  third: number;
-  fourth: number;
-  fifth: number;
-  plot: number;
-  covered: number;
-  basement: number;
-  attic: number;
-  garden: number;
-  balconies: number;
-  storeroom: number;
-  groundFloor: number;
-}
-
 export interface IPropertyTechnicalFeatures {
-  id: number;
   entrances: number;
   displayWindowsLength: number;
   safetyDoor: boolean;
@@ -145,7 +128,6 @@ export interface IPropertyTechnicalFeatures {
 }
 
 export interface IPropertyHeatingAndEnergy {
-  id: number;
   energyClass: string;
   heatingType: string;
   heatingSystem: string;
@@ -165,22 +147,6 @@ export interface IPropertyDistances {
   sea: number;
   publicTransport: number;
   entertainment: number;
-}
-
-export interface IPropertyAreas {
-  first: number;
-  second: number;
-  third: number;
-  fourth: number;
-  fifth: number;
-  plot: number;
-  covered: number;
-  basement: number;
-  attic: number;
-  garden: number;
-  balconies: number;
-  storeroom: number;
-  groundFloor: number;
 }
 
 export interface IProperties {

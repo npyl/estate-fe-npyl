@@ -8,59 +8,9 @@ import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 
 import { useDispatch } from "react-redux";
 import {
-  selectAccessForDisable,
-  selectAccessForDisabled,
-  selectAdaptingToTheGround,
-  selectAirConditioning,
-  selectAlarmSystem,
-  selectAttic,
-  selectBar,
-  selectBarbeque,
-  selectBright,
-  selectCctv,
-  selectCeramicTiles,
-  selectCombinedKitchenAndDiningArea,
   selectCorner,
-  selectDoubleGlazing,
-  selectDrilling,
-  selectElevator,
-  selectEntranceGate,
   selectFacade,
-  selectFireDetector,
-  selectFireplace,
-  selectGuestroom,
-  selectHas24HoursSecurity,
-  selectHeatedPool,
-  selectHomeCinema,
-  selectIndependentHeatingPerRoom,
-  selectIndoorPool,
-  selectInternet,
-  selectJacuzzi,
-  selectMasonryFence,
-  selectModernDesign,
-  selectMountainView,
-  selectNearBusRoute,
-  selectOffice,
-  selectOrganizedGarden,
-  selectPainted,
   selectPanoramicView,
-  selectPetAllowed,
-  selectPlayRoom,
-  selectPool,
-  selectQuietArea,
-  selectSatelliteTV,
-  selectSeaFront,
-  selectSeaView,
-  selectSmartHome,
-  selectSolarBoiler,
-  selectSoundInsulation,
-  selectTents,
-  selectThermalInsulation,
-  selectVeranda,
-  selectView,
-  selectWalkableDistanceToBeach,
-  selectWell,
-  selectWindowScreens,
   selectWithinCityPlan,
   selectWithinResidentialZone,
   setCorner,
@@ -73,65 +23,9 @@ import {
 const FeaturesForLandSection: React.FC<any> = (props) => {
   const dispatch = useDispatch();
 
-  const accessForDisable = useSelector(selectAccessForDisable);
-  const petAllowed = useSelector(selectPetAllowed);
-  const fireplace = useSelector(selectFireplace);
-  const airConditioning = useSelector(selectAirConditioning);
-  const elevator = useSelector(selectElevator);
-  const solarBoiler = useSelector(selectSolarBoiler);
-  const pool = useSelector(selectPool);
-  const windowScreens = useSelector(selectWindowScreens);
-  const modernDesign = useSelector(selectModernDesign);
-  const office = useSelector(selectOffice);
-  const internet = useSelector(selectInternet);
-  const painted = useSelector(selectPainted);
-  const entranceGate = useSelector(selectEntranceGate);
-  const thermalInsulation = useSelector(selectThermalInsulation);
-  const seaView = useSelector(selectSeaView);
-  const guestroom = useSelector(selectGuestroom);
-  const satelliteTV = useSelector(selectSatelliteTV);
-  const quietArea = useSelector(selectQuietArea);
-  const bright = useSelector(selectBright);
-  const soundInsulation = useSelector(selectSoundInsulation);
-  const has24HoursSecurity = useSelector(selectHas24HoursSecurity);
-  const alarmSystem = useSelector(selectAlarmSystem);
-  const attic = useSelector(selectAttic);
-  const bar = useSelector(selectBar);
-  const barbeque = useSelector(selectBarbeque);
-  const cctv = useSelector(selectCctv);
-  const ceramicTiles = useSelector(selectCeramicTiles);
-  const combinedKitchenAndDiningArea = useSelector(
-    selectCombinedKitchenAndDiningArea
-  );
-  const fireDetector = useSelector(selectFireDetector);
-  const homeCinema = useSelector(selectHomeCinema);
-  const jacuzzi = useSelector(selectJacuzzi);
-  const nearBusRoute = useSelector(selectNearBusRoute);
   const panoramicView = useSelector(selectPanoramicView);
-  const playRoom = useSelector(selectPlayRoom);
-  const smartHome = useSelector(selectSmartHome);
-  const walkableDistanceToBeach = useSelector(selectWalkableDistanceToBeach);
-  const doubleGlazing = useSelector(selectDoubleGlazing);
-
-  const mountainView = useSelector(selectMountainView);
-  const seaFront = useSelector(selectSeaFront);
-  const heatedPool = useSelector(selectHeatedPool);
-  const indoorPool = useSelector(selectIndoorPool);
-  const organizedGarden = useSelector(selectOrganizedGarden);
-  const well = useSelector(selectWell);
-  const drilling = useSelector(selectDrilling);
-  const masonryFence = useSelector(selectMasonryFence);
-  const accessForDisabled = useSelector(selectAccessForDisabled);
-  const independentHeatingPerRoom = useSelector(
-    selectIndependentHeatingPerRoom
-  );
-  const adaptingToTheGround = useSelector(selectAdaptingToTheGround);
-
-  const view = useSelector(selectView);
   const facade = useSelector(selectFacade);
   const corner = useSelector(selectCorner);
-  const veranda = useSelector(selectVeranda);
-  const tents = useSelector(selectTents);
   const withinResidentialZone = useSelector(selectWithinResidentialZone);
   const withinCityPlan = useSelector(selectWithinCityPlan);
 
