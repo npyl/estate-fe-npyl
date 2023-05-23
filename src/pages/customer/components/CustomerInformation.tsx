@@ -50,7 +50,8 @@ import {
 } from "src/slices/customer";
 
 import { useDispatch, useSelector } from "react-redux";
-import OnlyNumbersInput from "src/components/properties/OnlyNumbers";
+
+import OnlyNumbersInput from "src/pages/property/components/OnlyNumbers";
 
 const CustomerInformation: React.FC<any> = (props) => {
   const enums = useAllGlobalsQuery().data;

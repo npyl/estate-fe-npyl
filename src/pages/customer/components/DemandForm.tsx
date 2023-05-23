@@ -62,7 +62,7 @@ import { useAllPropertiesQuery } from "src/services/properties";
 
 import { IProperties } from "src/types/properties";
 
-import OnlyNumbersInput from "src/components/properties/OnlyNumbers";
+import OnlyNumbersInput from "src/pages/property/components/OnlyNumbers";
 
 const DemandForm: React.FC<any> = (props) => {
   const enums = useAllGlobalsQuery().data;

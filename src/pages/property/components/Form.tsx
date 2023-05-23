@@ -10,7 +10,7 @@ import Select from "@mui/material/Select";
 import * as React from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useAllPropertyGlobalQuery } from "src/services/global";
+import { useAllGlobalsQuery } from "src/services/global";
 import {
   resetState,
   selectCategory,
@@ -37,7 +37,7 @@ export default function Form({
   const parentCategory = useSelector(selectParentCategory);
 
   // enums
-  const { data } = useAllPropertyGlobalQuery();
+  const { data } = useAllGlobalsQuery();
   const enums: IGlobalProperty = data?.property as IGlobalProperty;
   const parentCategoryEnum = enums?.parentCategory;
 
