@@ -2,12 +2,12 @@ import type { NextPage } from "next";
 import React from "react";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-import CreateProperty from "src/components/properties/CreateProperty";
+import Form from "../../components/Form";
 
 const EditPropertyPage: NextPage = () => {
   return (
     <div>
-      <CreateProperty edit={true} />
+      <Form edit={true} />
     </div>
   );
 };

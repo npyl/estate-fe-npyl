@@ -1,15 +1,7 @@
-import { Dispatch, SetStateAction } from "react";
-import Typography from "@mui/material/Typography";
 import { Card, CardHeader, CardContent } from "@mui/material";
-import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
-import { Box } from "@mui/system";
-
-import { useState, useEffect, useCallback } from "react";
-
-import { Upload } from "../upload";
-
+import { Upload } from "src/components/upload";
+import { Dispatch, SetStateAction, useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { any } from "prop-types";
 
 interface FileSectionProps {
   fileData: (File | string)[];

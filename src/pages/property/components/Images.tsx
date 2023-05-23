@@ -1,10 +1,7 @@
 import { Card, CardContent, CardHeader } from "@mui/material";
-import { Dispatch, SetStateAction } from "react";
-import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
-
-import { useCallback } from "react";
+import { Upload } from "src/components/upload";
+import { Dispatch, SetStateAction, useCallback } from "react";
 import { useDispatch } from "react-redux";
-import { Upload } from "../upload";
 
 interface IImageSectionProps {
   files: (File | string)[];
@@ -38,7 +35,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({ files, setFiles }) => {
   };
   return (
     <Card>
-      <CardHeader title='Upload Images' />
+      <CardHeader title="Upload Images" />
       <CardContent>
         <Upload
           multiple

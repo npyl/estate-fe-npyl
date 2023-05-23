@@ -5,8 +5,7 @@ import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
-import Stack from "@mui/material/Stack";
+import Select from "@mui/material/Select";
 import { useRouter } from "next/router";
 import * as React from "react";
 import { useState } from "react";
@@ -21,13 +20,15 @@ import {
   setCategory,
   setParentCategory,
 } from "src/slices/property";
-import { IGlobal, IGlobalProperty } from "../../types/global";
+
+import { IGlobalProperty } from "src/types/global";
+
 import CommercialFormSection from "./CommercialForm";
 import LandFormSection from "./LandForm";
 import OtherFormSection from "./OtherForm";
 import ResidentialFormSection from "./ResidentialForm";
 
-export default function SimpleAccordion() {
+export default function Form({ edit = false }: { edit?: boolean }) {
   const [files, setFiles] = useState<(File | string)[]>([]);
   const [fileData, setFileData] = useState<(File | string)[]>([]);
   const router = useRouter();

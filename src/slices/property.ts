@@ -12,6 +12,7 @@ import {
   IPropertySuitableFor,
   IPropertyTechnicalFeatures,
 } from "src/types/properties";
+import { ILabel } from "src/types/label";
 
 interface IPropertiesPostRequest {
   code: number;
@@ -48,7 +49,7 @@ interface IPropertiesPostRequest {
   details: IPropertyDetails;
   location: ILocation;
   features: IPropertyFeatures;
-
+  labelIDs: number[];
   // TODO:
   // notes: INote[];
   // images: IFileModel[];
@@ -883,7 +884,45 @@ const slice = createSlice({
     setRenovation(state: propertyState, action): void {
       state.suitableFor.renovation = action.payload;
     },
-
+    setInitialState: (state: propertyState, action): void => {
+      state.code = action.payload.code;
+      state.title = action.payload.title;
+      state.managerId = action.payload.managerId;
+      state.ownerId = action.payload.ownerId;
+      state.state = action.payload.state;
+      state.parentCategory = action.payload.parentCategory;
+      state.category = action.payload.category;
+      state.area = action.payload.are;
+      state.plotArea = action.payload.plotArea;
+      state.price = action.payload.price;
+      state.averageUtils = action.payload.averageUtils;
+      state.rented = action.payload.rented;
+      state.currentRentPrice = action.payload.currentRentPrice;
+      state.estimatedRentPrice = action.payload.estimatedRentPrice;
+      state.rentalStart = action.payload.rentalStart;
+      state.rentalEnd = action.payload.rentalEnd;
+      state.availableAfter = action.payload.availableAfter;
+      state.keyCode = action.payload.keyCode;
+      state.auction = action.payload.auction;
+      state.debatablePrice = action.payload.debatablePrice;
+      state.buildable = action.payload.buildable;
+      state.video = action.payload.video;
+      state.bar = action.payload.bar;
+      state.description = action.payload.description;
+      state.propertyImage = action.payload.propertyImage;
+      state.suitableFor = action.payload.suitableFor;
+      state.heatingAndEnergy = action.payload.heatingAndEnergy;
+      state.distances = action.payload.distances;
+      state.areas = action.payload.areas;
+      state.construction = action.payload.construction;
+      state.technicalFeatures = action.payload.technicalFeatures;
+      state.details = action.payload.details;
+      state.location = action.payload.location;
+      state.features = action.payload.features;
+      state.labelIDs = [
+        ...action.payload.labels.map((label: ILabel) => label.id),
+      ];
+    },
     resetState: () => {
       return initialState;
     },

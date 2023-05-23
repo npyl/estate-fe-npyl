@@ -1,20 +1,20 @@
 import type { NextPage } from "next";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-import SimpleAccordion from "src/components/properties/CreateProperty";
+import Form from "../components/Form";
 
-const CreateProperty: NextPage = () => {
+const CreatePropertyPage: NextPage = () => {
   return (
     <div>
-      <SimpleAccordion />
+      <Form />
     </div>
   );
 };
 
-CreateProperty.getLayout = (page) => (
+CreatePropertyPage.getLayout = (page) => (
   <AuthGuard>
     <DashboardLayout>{page}</DashboardLayout>
   </AuthGuard>
 );
 
-export default CreateProperty;
+export default CreatePropertyPage;
