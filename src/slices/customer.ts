@@ -54,7 +54,7 @@ const initialState: customerState = {
       state: "",
       minPrice: 0,
       maxPrice: 0,
-      labels: [],
+      labelIDs: [],
     },
     priorityFeatures: {
       panoramicView: false,
