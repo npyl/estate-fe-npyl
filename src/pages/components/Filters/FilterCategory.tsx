@@ -13,13 +13,13 @@ import {
   setParentCategories,
 } from "src/slices/filters";
 
-import { useAllPropertyGlobalQuery } from "src/services/global";
+import { useAllGlobalsQuery } from "src/services/global";
 
 export default function CategorySelect() {
   const dispatch = useDispatch();
   const categories = useSelector(selectParentCategories);
 
-  const { data } = useAllPropertyGlobalQuery();
+  const { data } = useAllGlobalsQuery();
   const propertyEnums = data?.property;
   const categoryEnums = propertyEnums?.parentCategory;
 
@@ -39,14 +39,14 @@ export default function CategorySelect() {
 
   return (
     <FormControl sx={{ width: 135 }}>
-      <InputLabel id='demo-simple-select-label'>Κατηγορίες</InputLabel>
+      <InputLabel id="demo-simple-select-label">Κατηγορίες</InputLabel>
       <Select
         multiple
-        labelId='demo-simple-select-label'
+        labelId="demo-simple-select-label"
         value={categories}
         onChange={handleChange}
         renderValue={(selected) => selected.join(", ")}
-        input={<OutlinedInput label='Κατηγορίες' />}
+        input={<OutlinedInput label="Κατηγορίες" />}
         MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
       >
         {categoryEnums!.map((option) => {

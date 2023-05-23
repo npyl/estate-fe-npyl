@@ -5,9 +5,9 @@ import { Stack } from "@mui/system";
 
 import AddressDetails from "./AddressDetails";
 
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
-import { resetState } from "src/slices/customer";
+import { resetState, selectAll } from "src/slices/customer";
 
 import CustomerInformation from "./CustomerInformation";
 import DemandForm from "./DemandForm";
@@ -15,15 +15,28 @@ import MatchingSystem from "./MatchingSystem";
 import NonPriorityFeatures from "./NonPriorityFeatures";
 import NotesSection from "./NotesSection";
 import PriorityFeatures from "./PriorityFeatures";
+import { create } from "lodash";
+import router from "next/router";
+import { fileData } from "src/components/file-thumbnail";
+import { useAddCustomerMutation } from "src/services/customers";
 
 const Form = ({
   edit = false,
+  customerId,
   performUpload,
 }: {
   edit?: boolean;
-  performUpload?: () => void;
+  customerId: string;
+  performUpload: () => void;
 }) => {
+  const [create, { isSuccess }] = useAddCustomerMutation();
   const dispatch = useDispatch();
+  const body = useSelector(selectAll);
+  const handleClick = () => {
+    performUpload && performUpload();
+  };
+  isSuccess && router.push("/");
+
   return (
     <Grid paddingTop={1} paddingRight={0} container spacing={1}>
       <Grid container item paddingTop={1} paddingRight={1} spacing={1}>
@@ -46,13 +59,13 @@ const Form = ({
       <Grid item xs={12} padding={2}>
         <Grid
           container
-          alignItems='center'
-          justifyContent='flex-end'
+          alignItems="center"
+          justifyContent="flex-end"
           spacing={1}
         >
           <Grid item>
             <Button
-              variant='outlined'
+              variant="outlined"
               startIcon={<DeleteIcon />}
               onClick={() => dispatch(resetState())}
             >
@@ -61,9 +74,9 @@ const Form = ({
           </Grid>
           <Grid item>
             <Button
-              variant='contained'
+              variant="contained"
               endIcon={<SendIcon />}
-              onClick={performUpload}
+              onClick={handleClick}
             >
               {edit ? "Edit" : "Create"}
             </Button>
@@ -73,4 +86,5 @@ const Form = ({
     </Grid>
   );
 };
+
 export default Form;

@@ -32,6 +32,12 @@ export interface IGlobalProperty {
   details: IGlobalPropertyDetails;
 }
 
+export interface IGlobalCustomer {
+  leadSource: string[];
+  timeframe: string[];
+}
+
 export interface IGlobal {
   property: IGlobalProperty;
+  customer: IGlobalCustomer;
 }

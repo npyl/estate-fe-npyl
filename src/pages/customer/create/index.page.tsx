@@ -22,6 +22,7 @@ const CreateCustomer: NextPage = () => {
   const [createLabel, { isSuccess: isLabelSuccess }] =
     useCreateLabelForCustomerMutation();
   const newLabels = useSelector(selectAllNewLabels);
+  const body = useSelector(selectAll);
 
   const createAndAssignNewLabels = () => {
     const createdCustomerId = createdCustomer!.id;
@@ -38,11 +39,10 @@ const CreateCustomer: NextPage = () => {
   };
   isSuccess && createdCustomer && createAndAssignNewLabels();
   const performUpload = () => {
-    const body = useSelector(selectAll);
     create(body);
   };
 
-  return <Form edit={false} performUpload={performUpload} />;
+  return <Form edit={false} performUpload={performUpload} customerId={""} />;
 };
 
 CreateCustomer.getLayout = (page) => (

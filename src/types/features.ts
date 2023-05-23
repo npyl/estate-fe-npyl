@@ -1,11 +1,8 @@
 export interface IPropertyFeatures {
-  attic: boolean;
-  bar: boolean;
-  id?: number;
   panoramicView: boolean;
   seaView: boolean;
   mountainView: boolean;
-  facade_sea: boolean;
+  seaFront: boolean;
   walkableDistanceToBeach: boolean;
   quietArea: boolean;
   bright: boolean;
@@ -42,6 +39,4 @@ export interface IPropertyFeatures {
   withinResidentialZone: boolean;
   withinCityPlan: boolean;
   loadingDock: boolean;
-  petAllowed: boolean;
-  seaFront: boolean;
 }

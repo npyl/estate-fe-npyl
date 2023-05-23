@@ -1,10 +1,14 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-import { useGetCustomerByIdQuery } from "src/services/customers";
-import { setInitialState } from "src/slices/customer";
+import {
+  useGetCustomerByIdQuery,
+  useAddCustomerMutation,
+} from "src/services/customers";
+import { setInitialState, selectAll } from "src/slices/customer";
 import { useDispatch } from "src/store";
 import Form from "../../components/Form";
 
@@ -15,11 +19,18 @@ const EditCustomer: NextPage = () => {
   const { data, isSuccess: fetchedCustomer } = useGetCustomerByIdQuery(
     parseInt(customerId as string)
   ); // basic details
+  const [edit, { isSuccess, data: editedCustomer }] = useAddCustomerMutation();
+  const body = useSelector(selectAll);
+
   useEffect(() => {
     fetchedCustomer && dispatch(setInitialState(data));
   }, [fetchedCustomer]);
 
-  return <Form edit={true} />;
+  const performUpload = () => {
+    edit(body);
+  };
+
+  return <Form edit={true} performUpload={performUpload} customerId={""} />;
 };
 
 EditCustomer.getLayout = (page) => (
