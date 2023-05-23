@@ -245,11 +245,19 @@ const sumOfChangedProperties = createSelector(
       "labels",
       "cities",
       "states",
+      "parentCategories",
       "categories",
     ];
 
     return propertiesToInclude.reduce(
-      (acc, curr) => (filter[curr] ? acc + 1 : acc),
+      (acc, curr) =>
+        Array.isArray(filter[curr])
+          ? filter[curr].length > 0
+            ? acc + 1
+            : acc
+          : filter[curr]
+          ? acc + 1
+          : acc,
       0
     );
   }
