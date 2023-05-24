@@ -13,7 +13,6 @@ import {
   IPropertySuitableFor,
   IPropertyTechnicalFeatures,
 } from "src/types/properties";
-import { ILabel } from "src/types/label";
 
 interface IPropertiesPostRequest {
   id?: number;
@@ -51,8 +50,6 @@ interface IPropertiesPostRequest {
   location: ILocationPOST;
   features: IPropertyFeatures;
   labelIDs: number[];
-  // TODO:
-  // notes: INote[];
 }
 
 type propertyState = IPropertiesPostRequest;
@@ -434,9 +431,9 @@ const slice = createSlice({
     },
 
     // TODO:
-    setParkingType(state: propertyState, action): void {},
-    setSpots(state: propertyState, action): void {},
-    setBalconySide(state: propertyState, action): void {},
+    setParkingType(state: propertyState, action): void { },
+    setSpots(state: propertyState, action): void { },
+    setBalconySide(state: propertyState, action): void { },
     setBalconies(state: propertyState, action): void {
       state.areas.balconies;
     },
@@ -859,10 +856,10 @@ const slice = createSlice({
       // map labels
       state.labelIDs = payload.labels
         ? payload.labels
-            .filter((label) => label.id) // where id not null
-            .map((label) => {
-              return label.id!;
-            })
+          .filter((label) => label.id) // where id not null
+          .map((label) => {
+            return label.id!;
+          })
         : [];
     },
     resetState: () => {

@@ -18,7 +18,6 @@ import ColorizeIcon from "@mui/icons-material/Colorize";
 
 import * as React from "react";
 import { useRef, useState } from "react";
-import { useSelector } from "react-redux";
 
 import { useGetLabelsQuery } from "src/services/labels";
 
@@ -29,6 +28,7 @@ import { BlockPicker } from "react-color";
 import { ILabel } from "src/types/label";
 
 interface ILabelCreateProps {
+  existingLabels: ILabel[];
   // assigned-existing labels & newly-created labels
   assignedLabels: ILabel[];
   newLabels: ILabel[];
@@ -39,7 +39,7 @@ interface ILabelCreateProps {
 }
 
 const LabelCreate = (props: ILabelCreateProps) => {
-  const { assignedLabels, newLabels, onLabelClick, onLabelCreate } = props;
+  const { existingLabels, assignedLabels, newLabels, onLabelClick, onLabelCreate } = props;
 
   const [addLabelDialog, setAddLabelDialog] = useState(false);
 
@@ -47,7 +47,6 @@ const LabelCreate = (props: ILabelCreateProps) => {
   const [labelName, setLabelName] = useState("Νέα Ετικέτα");
   const [openPicker, setOpenPicker] = useState(false);
   const { data: labels } = useGetLabelsQuery();
-  const customerLabels = labels?.customerLabels;
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   const handleChangeComplete = (color: any) => {
@@ -61,7 +60,7 @@ const LabelCreate = (props: ILabelCreateProps) => {
     onLabelCreate({ color: pickerColor, name: labelName });
   };
 
-  if (!customerLabels) return null;
+  if (!existingLabels) return null;
 
   return (
     <Box
@@ -138,7 +137,7 @@ const LabelCreate = (props: ILabelCreateProps) => {
         <DialogContent>
           <DialogContentText>Customer Labels</DialogContentText>
           <Stack direction={"row"} spacing={1}>
-            {labels?.customerLabels.map((label, index) => {
+            {existingLabels.map((label, index) => {
               return (
                 <Label
                   key={index}

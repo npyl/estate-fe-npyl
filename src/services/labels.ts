@@ -1,11 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-import { ILabel } from "src/types/label";
-
-interface ILabels {
-  customerLabels: ILabel[];
-  propertyLabels: ILabel[];
-}
+import { ILabels, ILabel } from "src/types/label";
 
 interface ILabelForPropertyProps {
   propertyId: number;

@@ -10,20 +10,42 @@ import { useRouter } from "next/router";
 import { selectAll } from "src/slices/property";
 import { selectAll as selectAllPropertyFiles } from "src/slices/property/files";
 
+import { selectAll as selectAllNewLabels } from "src/slices/labels";
+
 import Form from "../components/Form";
 
+import { useCreateLabelForPropertyMutation } from "src/services/labels";
+
 const CreatePropertyPage: NextPage = () => {
+  const router = useRouter();
+
   const body = useSelector(selectAll);
-  const [create, { isSuccess }] = useAddPropertyMutation();
+  const [create, { isSuccess, data: createdProperty }] = useAddPropertyMutation();
+  const [createLabel, { isSuccess: isLabelSuccess }] =
+    useCreateLabelForPropertyMutation();
 
   const { propertyImages, propertyBlueprints } = useSelector(
     selectAllPropertyFiles
   );
 
-  const router = useRouter();
+  const newLabels = useSelector(selectAllNewLabels);
+
+  const createAndAssignNewLabels = () => {
+    const createdPropertyId = createdProperty!.id;
+
+    // foreach label; call create-for-customer-with-id
+    newLabels.forEach((newLabel) => {
+      createLabel({
+        propertyId: createdPropertyId,
+        labelBody: newLabel,
+      });
+    });
+  };
+
   useEffect(() => {
     if (isSuccess) {
-      router.push("/"); // Navigate to the home page or any other desired page
+      createAndAssignNewLabels();
+      router.push("/");
     }
   }, [isSuccess, router]);
 
