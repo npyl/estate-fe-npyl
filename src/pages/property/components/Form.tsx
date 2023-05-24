@@ -6,9 +6,7 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-
 import * as React from "react";
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAllGlobalsQuery } from "src/services/global";
 import {
@@ -18,9 +16,7 @@ import {
   setCategory,
   setParentCategory,
 } from "src/slices/property";
-
 import { IGlobalProperty } from "src/types/global";
-
 import CommercialFormSection from "./CommercialForm";
 import LandFormSection from "./LandForm";
 import OtherFormSection from "./OtherForm";
@@ -28,10 +24,10 @@ import ResidentialFormSection from "./ResidentialForm";
 
 export default function Form({
   edit = false,
-  onUpload,
+  performUpload,
 }: {
   edit?: boolean;
-  onUpload?: () => void;
+  performUpload?: () => void;
 }) {
   const category = useSelector(selectCategory);
   const parentCategory = useSelector(selectParentCategory);
@@ -43,8 +39,8 @@ export default function Form({
 
   const dispatch = useDispatch();
 
-  const handleUpload = () => {
-    onUpload && onUpload();
+  const handleClick = () => {
+    performUpload && performUpload();
   };
 
   if (!enums || !parentCategoryEnum) return null;
@@ -159,7 +155,7 @@ export default function Form({
                   <Button
                     variant="contained"
                     endIcon={<SendIcon />}
-                    onClick={handleUpload}
+                    onClick={handleClick}
                   >
                     {edit ? "Edit" : "Create"}
                   </Button>
