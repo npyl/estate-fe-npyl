@@ -10,16 +10,18 @@ import {
   useGetPropertyByIdQuery,
 } from "src/services/properties";
 import { selectAll, setInitialState } from "src/slices/property";
-import { selectAll as selectAllPropertyFiles } from "src/slices/property/files";
+import {
+  selectAll as selectAllPropertyFiles,
+  setInitialState as setInitialFilesState,
+} from "src/slices/property/files";
 
 const EditPropertyPage: NextPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
   const { propertyId } = router.query;
-  const { data, isSuccess: fetchedProperty } = useGetPropertyByIdQuery(
-    parseInt(propertyId as string)
-  );
+  const { data: fetchedProperty, isSuccess: isPropertySuccess } =
+    useGetPropertyByIdQuery(parseInt(propertyId as string));
 
   const { propertyImages, propertyBlueprints } = useSelector(
     selectAllPropertyFiles
@@ -29,8 +31,18 @@ const EditPropertyPage: NextPage = () => {
   const body = useSelector(selectAll);
 
   useEffect(() => {
-    fetchedProperty && dispatch(setInitialState(data));
-  }, [fetchedProperty]);
+    isPropertySuccess &&
+      dispatch(
+        setInitialFilesState({
+          propertyImages: [
+            fetchedProperty.propertyImage,
+            ...fetchedProperty.images,
+          ],
+          propertyBlueprints: fetchedProperty.blueprints,
+        })
+      );
+    isPropertySuccess && dispatch(setInitialState(fetchedProperty));
+  }, [isPropertySuccess]);
 
   useEffect(() => {
     if (isSuccess) {

@@ -17,6 +17,11 @@ const slice = createSlice({
   name: "propertyFiles",
   initialState,
   reducers: {
+    setInitialState(state: propertyFilesState, { payload }): void {
+      state.propertyImages = payload.propertyImages;
+      state.propertyBlueprints = payload.propertyBlueprints;
+    },
+
     setPropertyBlueprints(state: propertyFilesState, { payload }): void {
       state.propertyBlueprints = payload;
     },
@@ -31,6 +36,8 @@ const slice = createSlice({
 });
 
 export const {
+  setInitialState,
+
   setPropertyImages,
   setPropertyBlueprints,
 
