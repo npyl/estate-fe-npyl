@@ -803,6 +803,11 @@ const slice = createSlice({
       state.suitableFor.renovation = action.payload;
     },
 
+    addLabel(state: propertyState, action): void {
+      if (!state.labelIDs.includes(action.payload))
+        state.labelIDs.push(action.payload);
+    },
+
     setInitialState: (state: propertyState, action): void => {
       const payload: IProperties = action.payload;
 
@@ -1028,6 +1033,8 @@ export const {
   setSmartHome,
   setWalkableDistanceToBeach,
   setElevator,
+
+  addLabel,
 
   resetState,
 } = slice.actions;
@@ -1416,5 +1423,7 @@ export const selectWalkableDistanceToBeach = ({ property }: RootState) =>
 
 export const selectLoadingDock = ({ property }: RootState) =>
   property.features.loadingDock;
+
+export const selectLabelIDs = ({ property }: RootState) => property.labelIDs;
 
 export const { reducer } = slice;
