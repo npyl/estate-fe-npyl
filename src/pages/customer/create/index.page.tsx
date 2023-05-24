@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 
 import { NextPage } from "next";
 import Form from "../components/Form";
+import { useEffect } from "react";
 
 const CreateCustomer: NextPage = () => {
   const router = useRouter();
@@ -34,8 +35,8 @@ const CreateCustomer: NextPage = () => {
     const createdCustomerId = createdCustomer!.id;
 
     // foreach label; call create-for-customer-with-id
-    newLabels.forEach((newLabel) => {
-      createLabel({
+    newLabels.forEach(async (newLabel) => {
+      await createLabel({
         customerId: createdCustomerId,
         labelBody: newLabel,
       });
@@ -45,8 +46,8 @@ const CreateCustomer: NextPage = () => {
     const createdCustomerId = createdCustomer!.id;
 
     // foreach note; call create-for-customer-with-id
-    newNotes.forEach((newNote) => {
-      createNote({ id: createdCustomerId, dataToSend: { content: newNote.content } })
+    newNotes.forEach(async (newNote) => {
+      await createNote({ id: createdCustomerId, dataToSend: { content: newNote.content } })
     })
   }
   const resetState = () => {
@@ -56,12 +57,16 @@ const CreateCustomer: NextPage = () => {
 
   const performUpload = () => {
     create(body);
-
-    isCreateCustomerSuccess && createdCustomer && createAndAssignNewLabels(); // create&assign labels
-    isCreateCustomerSuccess && createdCustomer && createAndAssignNewNotes();  // create&assign notes
-    isCreateCustomerSuccess && resetState();
-    isCreateCustomerSuccess && router.push("/customer");
   };
+
+  useEffect(() => {
+    if (isCreateCustomerSuccess && createdCustomer) {
+      createAndAssignNewLabels(); // create&assign labels
+      createAndAssignNewNotes();  // create&assign notes
+      resetState();
+      router.push("/customer");
+    }
+  }, [isCreateCustomerSuccess, createdCustomer]);
 
   return <Form edit={false} performUpload={performUpload} />;
 };
