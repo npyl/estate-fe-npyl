@@ -851,8 +851,14 @@ const slice = createSlice({
 
       state.features = payload.features;
 
-      // TODO: labels
-      // state.labelIDs = [...payload.labels.map((label: ILabel) => label.id)];
+      // map labels
+      state.labelIDs = payload.labels
+        ? payload.labels
+            .filter((label) => label.id) // where id not null
+            .map((label) => {
+              return label.id!;
+            })
+        : [];
     },
     resetState: () => {
       return initialState;
