@@ -3,7 +3,7 @@ import type { RootState } from "../store";
 
 import { IPropertyDetails } from "src/types/details";
 import { IPropertyFeatures } from "src/types/features";
-import { ILocationPOST } from "src/types/location";
+import { ILocation, ILocationPOST } from "src/types/location";
 import {
   IPropertyAreas,
   IPropertyConstruction,
@@ -15,10 +15,11 @@ import {
 import { ILabel } from "src/types/label";
 
 interface IPropertiesPostRequest {
+  id?: number;
   code: number;
   title: string;
-  managerId: number;
-  ownerId: number;
+  managerId?: number;
+  ownerId?: number;
   state: string;
   parentCategory: string;
   category: string;
@@ -805,6 +806,7 @@ const slice = createSlice({
     },
 
     setInitialState: (state: propertyState, action): void => {
+      state.id = action.payload.id;
       state.code = action.payload.code;
       state.title = action.payload.title;
       state.managerId = action.payload.managerId;
@@ -836,7 +838,17 @@ const slice = createSlice({
       state.construction = action.payload.construction;
       state.technicalFeatures = action.payload.technicalFeatures;
       state.details = action.payload.details;
-      state.location = action.payload.location;
+
+      // Location
+      const location: ILocation = action.payload.location;
+      state.location.city = location.city;
+      state.location.complex = location.complex;
+      state.location.country = location.country;
+      state.location.number = location.number;
+      state.location.region = location.region;
+      state.location.street = location.street;
+      state.location.zipCode = location.zipCode;
+
       state.features = action.payload.features;
       state.labelIDs = [
         ...action.payload.labels.map((label: ILabel) => label.id),

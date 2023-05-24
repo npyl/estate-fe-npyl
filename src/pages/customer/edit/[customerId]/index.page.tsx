@@ -30,7 +30,7 @@ const EditCustomer: NextPage = () => {
     edit(body);
   };
 
-  return <Form edit={true} performUpload={performUpload} customerId={""} />;
+  return <Form edit={true} performUpload={performUpload} />;
 };
 
 EditCustomer.getLayout = (page) => (

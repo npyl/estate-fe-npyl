@@ -45,7 +45,6 @@ const FileSection: React.FC<FileSectionProps> = ({ fileData, setFileData }) => {
           onDrop={handleDropMultiFile}
           onRemove={handleRemoveFile}
           onRemoveAll={handleRemoveAllFileData}
-          onUpload={() => console.log("ON UPLOAD")}
         />
       </CardContent>
     </Card>

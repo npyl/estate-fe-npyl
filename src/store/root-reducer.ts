@@ -12,6 +12,7 @@ import { reducer as customerReducer } from "../slices/customer";
 import { reducer as filtersReducer } from "../slices/filters";
 import { reducer as labelsReducer } from "../slices/labels";
 import { reducer as propertyReducer } from "../slices/property";
+import { reducer as propertyFilesReducer } from "../slices/property/files";
 import { reducer as tabsReducer } from "../slices/tabs";
 
 export const rootReducer = combineReducers({
@@ -24,6 +25,7 @@ export const rootReducer = combineReducers({
   [note.reducerPath]: note.reducer,
   [labels.reducerPath]: labels.reducer,
   property: propertyReducer,
+  propertyFiles: propertyFilesReducer,
   customer: customerReducer,
   labelsStore: labelsReducer,
   tabs: tabsReducer,

@@ -17,16 +17,18 @@ import {
   setParentCategory,
 } from "src/slices/property";
 import { IGlobalProperty } from "src/types/global";
-import CommercialFormSection from "./CommercialForm";
-import LandFormSection from "./LandForm";
-import OtherFormSection from "./OtherForm";
-import ResidentialFormSection from "./ResidentialForm";
+import CommercialFormSection from "./Forms/CommercialForm";
+import LandFormSection from "./Forms/LandForm";
+import OtherFormSection from "./Forms/OtherForm";
+import ResidentialFormSection from "./Forms/ResidentialForm";
 
 export default function Form({
   edit = false,
+  create = false,
   performUpload,
 }: {
   edit?: boolean;
+  create?: boolean;
   performUpload?: () => void;
 }) {
   const category = useSelector(selectCategory);
@@ -158,6 +160,7 @@ export default function Form({
                     onClick={handleClick}
                   >
                     {edit ? "Edit" : "Create"}
+                    {create ? "Edit" : "Create"}
                   </Button>
                 </Grid>
               </Grid>
