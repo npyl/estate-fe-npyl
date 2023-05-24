@@ -1,5 +1,6 @@
 import SendIcon from "@mui/icons-material/Send";
 import {
+  Divider,
   Grid,
   IconButton,
   InputAdornment,
@@ -86,7 +87,7 @@ const NotesCustomerSection: React.FC = () => {
       elevation={10}
       sx={{
         overflow: "auto",
-        padding: 0.5,
+        padding: 0,
       }}
     >
       <Box
@@ -94,13 +95,14 @@ const NotesCustomerSection: React.FC = () => {
           px: 3,
           py: 1.5,
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "left",
         }}
       >
-        <Typography variant='h6'>Notes</Typography>
+        <Typography variant="h6">Notes</Typography>
       </Box>
+      <Divider></Divider>
       <Grid container>
-        <Grid item xs={12}>
+        <Grid item xs={12} padding={1}>
           <Stack spacing={1} sx={{ px: 3, pb: 2 }}>
             {notes.map((note, index) => (
               <Note note={note} key={index} />
@@ -108,9 +110,9 @@ const NotesCustomerSection: React.FC = () => {
           </Stack>
 
           <Grid
-            spacing={2}
-            direction='row'
-            alignItems='center'
+            spacing={0}
+            direction="row"
+            alignItems="center"
             sx={{
               p: (theme) => theme.spacing(0, 3, 3, 3),
             }}
@@ -119,12 +121,12 @@ const NotesCustomerSection: React.FC = () => {
               fullWidth
               value={message}
               inputRef={commentInputRef}
-              placeholder='Write a note...'
+              placeholder="Write a note..."
               onChange={(event) => handleChangeMessage(event.target.value)}
               onKeyPress={handleKeyPress}
               endAdornment={
-                <InputAdornment position='end' sx={{ mr: 1 }}>
-                  <IconButton size='small' onClick={handleSendNote}>
+                <InputAdornment position="end" sx={{ mr: 1 }}>
+                  <IconButton size="small" onClick={handleSendNote}>
                     <SendIcon />
                   </IconButton>
                 </InputAdornment>

@@ -1,4 +1,4 @@
-import { Grid, Paper, Typography } from "@mui/material";
+import { Divider, Grid, Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import * as React from "react";
 import { useGetCustomerByIdQuery } from "src/services/customers";
@@ -39,7 +39,7 @@ const OwnedCustomerPropertiesSection: React.FC = (props) => {
       elevation={10}
       sx={{
         overflow: "auto",
-        padding: 0.5,
+        padding: 0,
       }}
     >
       <Box
@@ -47,12 +47,12 @@ const OwnedCustomerPropertiesSection: React.FC = (props) => {
           px: 3,
           py: 1.5,
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "left",
         }}
       >
-        <Typography variant='h6'>Owned Properties</Typography>
+        <Typography variant="h6">Owned Properties</Typography>
       </Box>
-
+      <Divider></Divider>
       <Grid container>
         <Grid item xs={12}>
           <Paper>

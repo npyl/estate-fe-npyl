@@ -35,8 +35,8 @@ const ViewHeader = (props: IViewHeaderProps) => {
         </Grid>
         <Grid item sx={{ mt: 1, mb: 1 }}>
           <Button
-            variant='outlined'
-            color='secondary'
+            variant="outlined"
+            color="secondary"
             sx={{ mr: 1 }}
             onClick={onEdit}
           >
@@ -44,7 +44,7 @@ const ViewHeader = (props: IViewHeaderProps) => {
           </Button>
 
           <SoftButton
-            color='error'
+            color="error"
             onClick={() => {
               setDeleteDialogOpen(true);
             }}
@@ -55,7 +55,7 @@ const ViewHeader = (props: IViewHeaderProps) => {
 
           <Dialog
             fullWidth
-            maxWidth='xs'
+            maxWidth="xs"
             open={deleteDialogOpen}
             onClose={() => {
               setDeleteDialogOpen(false);
@@ -68,7 +68,7 @@ const ViewHeader = (props: IViewHeaderProps) => {
             <DialogContentText ml={3}>Are you sure?</DialogContentText>
             <DialogContent>
               <SoftButton
-                color='error'
+                color="error"
                 sx={{ mr: 1 }}
                 onClick={onDelete}
                 startIcon={<Iconify icon={"eva:trash-2-outline"} />}
@@ -77,8 +77,8 @@ const ViewHeader = (props: IViewHeaderProps) => {
               </SoftButton>
 
               <Button
-                variant='outlined'
-                color='secondary'
+                variant="outlined"
+                color="secondary"
                 onClick={() => {
                   setDeleteDialogOpen(false);
                 }}

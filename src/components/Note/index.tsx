@@ -29,7 +29,7 @@ const Note: React.FC<NoteProps> = (props) => {
       <Paper
         sx={{
           p: 1,
-          flexGrow: 1,
+          flexGrow: 2,
           bgcolor: "#fce9a4",
         }}
       >

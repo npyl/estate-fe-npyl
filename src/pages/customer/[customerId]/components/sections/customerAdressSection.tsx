@@ -1,4 +1,4 @@
-import { Grid, List, Paper, Typography } from "@mui/material";
+import { Divider, Grid, List, Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useRouter } from "next/router";
 import * as React from "react";
@@ -20,7 +20,7 @@ const CustomerAdressDetailsSection: React.FC = (props) => {
       elevation={10}
       sx={{
         overflow: "auto",
-        padding: 0.5,
+        padding: 0,
       }}
     >
       <Box
@@ -28,78 +28,72 @@ const CustomerAdressDetailsSection: React.FC = (props) => {
           px: 3,
           py: 1.5,
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "left",
         }}
       >
-        <Typography variant='h6'>Adress Details</Typography>
+        <Typography variant="h6">Adress Details</Typography>
       </Box>
+      <Divider></Divider>
       <Grid container>
-        <Grid item xs={6} padding={1}>
+        <Grid item xs={6} padding={0}>
           {/* <Grid container spacing={2}> */}
           <List>
             {/* <ListStatusItem
           label="Publiced"
           status={isAvailable(data?.state)}
           align="horizontal"
-          divider
+          
         /> */}
 
             <ListItem
-              label='Street:'
+              label="Street:"
               value={data?.location.street}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
 
             <ListItem
-              label='Number:'
+              label="Number:"
               value={data?.location.number}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
 
             <ListItem
-              label='City:'
+              label="City:"
               value={data?.location.city}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
 
             <ListItem
-              label='Complex:'
+              label="Complex:"
               value={data?.location.complex}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
           </List>
         </Grid>
 
-        <Grid item xs={6} padding={1}>
+        <Grid item xs={6} padding={0}>
           {/* <Grid container spacing={2}> */}
           <List>
             {/* <ListStatusItem
           label="Publiced"
           status={isAvailable(data?.state)}
           align="horizontal"
-          divider
+          
         /> */}
             <ListItem
-              label='Zip Code:'
+              label="Zip Code:"
               value={data?.location.zipCode}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
             <ListItem
-              label='Region:'
+              label="Region:"
               value={data?.location.region}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
             <ListItem
-              label='Country:'
+              label="Country:"
               value={data?.location.country}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
           </List>
         </Grid>
