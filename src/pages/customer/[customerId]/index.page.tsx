@@ -1,4 +1,4 @@
-import { Grid, Stack } from "@mui/material";
+import { Box, Grid, Stack, Tab, Tabs } from "@mui/material";
 
 import type { NextPage } from "next";
 
@@ -14,15 +14,24 @@ import DemandCustomerSection from "./components/sections/demandCustomerSection";
 import MatchingPropertiesSection from "./components/sections/matchingPropertiesSection";
 import NotesCustomerSection from "./components/sections/notesCustomerSection";
 import OwnedCustomerPropertiesSection from "./components/sections/ownedCustomerPropertiesSection";
-
+import TabPanel from "src/components/Tabs";
 import ViewHeader from "src/pages/components/ViewHeader";
-
+import { useState } from "react";
+function a11yProps(index: number) {
+  return {
+    id: `simple-tab-${index}`,
+    "aria-controls": `simple-tabpanel-${index}`,
+  };
+}
 const CustomerView: NextPage = () => {
   // customer
   const router = useRouter();
   const { customerId } = router.query;
+  const [value, setValue] = useState(0);
   const [deleteCustomer, { isSuccess }] = useDeleteCustomerMutation();
-
+  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    setValue(newValue);
+  };
   const handleEdit = () => {
     router.push(`/customer/edit/${customerId}`);
   };
@@ -33,36 +42,49 @@ const CustomerView: NextPage = () => {
   isSuccess && router.push("/customer");
 
   return (
-    <>
-      <Grid container paddingTop={1} paddingRight={1} spacing={1}>
-        <Grid item xs={12}>
-          <ViewHeader
-            resource="customer"
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          ></ViewHeader>
-        </Grid>
+    <Box sx={{ width: "100%", paddingY: 1 }}>
+      <ViewHeader
+        resource="customer"
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+      >
+        <Tabs
+          value={value}
+          onChange={handleChange}
+          aria-label="View Property Tabs"
+        >
+          <Tab label="Customer Information" {...a11yProps(0)} />
+          <Tab label="Owned Properties" {...a11yProps(1)} />
+          <Tab label="Matching Properties" {...a11yProps(2)} />
+        </Tabs>
+      </ViewHeader>
 
-        {/* customer info */}
-        <Grid item xs={6} spacing={1} order={"row"}>
-          <Stack spacing={1}>
-            <CustomerInformationSection />
-            <CustomerAdressDetailsSection />
-            <DemandCustomerSection />
+      {/* customer info */}
+      <TabPanel value={value} index={0}>
+        <Grid container spacing={1}>
+          <Grid item xs={6} spacing={0} order={"row"}>
+            <Stack spacing={1}>
+              <CustomerInformationSection />
+              <CustomerAdressDetailsSection />
+              <DemandCustomerSection />
 
-            <NotesCustomerSection />
-          </Stack>
-        </Grid>
+              <NotesCustomerSection />
+            </Stack>
+          </Grid>
 
-        {/* propertiesview */}
-        <Grid item xs={6} spacing={1}>
-          <Stack spacing={1}>
-            <MatchingPropertiesSection />
-            <OwnedCustomerPropertiesSection />
-          </Stack>
+          {/* propertiesview */}
+          <Grid item xs={6} spacing={0}>
+            <Stack spacing={1}>
+              <MatchingPropertiesSection />
+              <OwnedCustomerPropertiesSection />
+            </Stack>
+          </Grid>
         </Grid>
-      </Grid>
-    </>
+      </TabPanel>
+
+      <TabPanel value={value} index={1}></TabPanel>
+      <TabPanel value={value} index={2}></TabPanel>
+    </Box>
   );
 };
 

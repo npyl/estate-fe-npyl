@@ -1,4 +1,4 @@
-import { Grid, List, Paper, Typography } from "@mui/material";
+import { Divider, Grid, List, Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useRouter } from "next/router";
 import * as React from "react";
@@ -21,7 +21,7 @@ const DemandCustomerSection: React.FC = (props) => {
       elevation={10}
       sx={{
         overflow: "auto",
-        padding: 0.5,
+        padding: 0,
       }}
     >
       <Box
@@ -29,153 +29,135 @@ const DemandCustomerSection: React.FC = (props) => {
           px: 3,
           py: 1.5,
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "left",
         }}
       >
-        <Typography variant='h6'>Demand</Typography>
+        <Typography variant="h6">Demand</Typography>
       </Box>
+      <Divider></Divider>
       <Grid container>
-        <Grid item xs={6} padding={1}>
+        <Grid item xs={6} padding={0}>
           {/* <Grid container spacing={2}> */}
           <List>
             {/* <ListStatusItem
           label="Publiced"
           status={isAvailable(data?.state)}
           align="horizontal"
-          divider
+          
         /> */}
 
             <ListItem
-              label='ParentCategory:'
+              label="ParentCategory:"
               value={data?.demand.filters.parentCategory}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
 
             <ListItem
-              label='Furnished:'
+              label="Furnished:"
               value={data?.demand.filters.furnished}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
 
-            <ListLabelsItem label='Labels:' labels={data?.labels} />
+            <ListLabelsItem label="Labels:" labels={data?.labels} />
 
             <ListItem
-              label='Minimum Bedrooms:'
+              label="Minimum Bedrooms:"
               value={data?.demand.filters.minBedrooms}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
             <ListItem
-              label='Minimum Covered:'
+              label="Minimum Covered:"
               value={data?.demand.filters.minCovered}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
             <ListItem
-              label='Minimum Price:'
+              label="Minimum Price:"
               value={data?.demand.filters.minPrice}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
             <ListItem
-              label='Minimum Construction Year:'
+              label="Minimum Construction Year:"
               value={data?.demand.filters.minYearOfConstruction}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
             <ListItem
-              label='Minimum Bathrooms Number:'
+              label="Minimum Bathrooms Number:"
               value={data?.demand.filters.minBathrooms}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
             <ListItem
-              label='Minimum Plot:'
+              label="Minimum Plot:"
               value={data?.demand.filters.minPlot}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
             <ListItem
-              label='Minimum Floor:'
+              label="Minimum Floor:"
               value={data?.demand.filters.minFloor}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
           </List>
         </Grid>
 
-        <Grid item xs={6} padding={1}>
+        <Grid item xs={6} padding={0}>
           {/* <Grid container spacing={2}> */}
           <List>
             {/* <ListStatusItem
           label="Publiced"
           status={isAvailable(data?.state)}
           align="horizontal"
-          divider
+          
         /> */}
             <ListItem
-              label='Category:'
+              label="Category:"
               value={data?.demand.filters.category}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
 
             <ListItem
-              label='State:'
+              label="State:"
               value={data?.demand.filters.state}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
 
             <ListItem
-              label='Time Frame:'
+              label="Time Frame:"
               value={data?.demand.timeframe}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
             <ListItem
-              label='Maximum Bedrooms:'
+              label="Maximum Bedrooms:"
               value={data?.demand.filters.maxBedrooms}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
             <ListItem
-              label='Maximum Covered:'
+              label="Maximum Covered:"
               value={data?.demand.filters.maxCovered}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
             <ListItem
-              label='Maximum Price:'
+              label="Maximum Price:"
               value={data?.demand.filters.maxPrice}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
             <ListItem
-              label='Maximum Construction Year:'
+              label="Maximum Construction Year:"
               value={data?.demand.filters.maxYearOfConstruction}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
             <ListItem
-              label='Maximum Bathrooms Number:'
+              label="Maximum Bathrooms Number:"
               value={data?.demand.filters.maxBathrooms}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
             <ListItem
-              label='Maximum Plot:'
+              label="Maximum Plot:"
               value={data?.demand.filters.maxPlot}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
             <ListItem
-              label='Maximum Floor:'
+              label="Maximum Floor:"
               value={data?.demand.filters.maxFloor}
-              align='horizontal'
-              divider
+              align="horizontal"
             />
           </List>
         </Grid>

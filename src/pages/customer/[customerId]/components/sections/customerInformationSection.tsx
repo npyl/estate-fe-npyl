@@ -23,7 +23,7 @@ const CustomerInformationSection: React.FC = (props) => {
       elevation={10}
       sx={{
         overflow: "auto",
-        padding: 0.5,
+        padding: 0,
       }}
     >
       <Box
@@ -31,11 +31,12 @@ const CustomerInformationSection: React.FC = (props) => {
           px: 3,
           py: 1.5,
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "left",
         }}
       >
         <Typography variant="h6">Customer Information</Typography>
       </Box>
+      <Divider></Divider>
       <Grid container>
         <Grid
           item
@@ -112,7 +113,7 @@ const CustomerInformationSection: React.FC = (props) => {
               value={data?.suggestedBy}
               align="horizontal"
             />
-            <ListLabelsItem label="Labels:" labels={data?.labels} />
+            <ListLabelsItem labels="Labels:" labels={data?.labels} />
           </List>
         </Grid>
       </Grid>
