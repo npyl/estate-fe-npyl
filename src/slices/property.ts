@@ -3,8 +3,9 @@ import type { RootState } from "../store";
 
 import { IPropertyDetails } from "src/types/details";
 import { IPropertyFeatures } from "src/types/features";
-import { ILocationPOST } from "src/types/location";
+import { ILocation, ILocationPOST } from "src/types/location";
 import {
+  IProperties,
   IPropertyAreas,
   IPropertyConstruction,
   IPropertyDistances,
@@ -12,9 +13,9 @@ import {
   IPropertySuitableFor,
   IPropertyTechnicalFeatures,
 } from "src/types/properties";
-import { ILabel } from "src/types/label";
 
 interface IPropertiesPostRequest {
+  id?: number;
   code: number;
   title: string;
   managerId: number;
@@ -49,11 +50,6 @@ interface IPropertiesPostRequest {
   location: ILocationPOST;
   features: IPropertyFeatures;
   labelIDs: number[];
-  // TODO:
-  // notes: INote[];
-  // images: IFileModel[];
-  // documents: IFileModel[];
-  // blueprints: IFileModel[];
 }
 
 type propertyState = IPropertiesPostRequest;
@@ -435,9 +431,9 @@ const slice = createSlice({
     },
 
     // TODO:
-    setParkingType(state: propertyState, action): void {},
-    setSpots(state: propertyState, action): void {},
-    setBalconySide(state: propertyState, action): void {},
+    setParkingType(state: propertyState, action): void { },
+    setSpots(state: propertyState, action): void { },
+    setBalconySide(state: propertyState, action): void { },
     setBalconies(state: propertyState, action): void {
       state.areas.balconies;
     },
@@ -804,43 +800,67 @@ const slice = createSlice({
       state.suitableFor.renovation = action.payload;
     },
 
+    addLabel(state: propertyState, action): void {
+      if (!state.labelIDs.includes(action.payload))
+        state.labelIDs.push(action.payload);
+    },
+
     setInitialState: (state: propertyState, action): void => {
-      state.code = action.payload.code;
-      state.title = action.payload.title;
-      state.managerId = action.payload.managerId;
-      state.ownerId = action.payload.ownerId;
-      state.state = action.payload.state;
-      state.parentCategory = action.payload.parentCategory;
-      state.category = action.payload.category;
-      state.area = action.payload.area;
-      state.plotArea = action.payload.plotArea;
-      state.price = action.payload.price;
-      state.averageUtils = action.payload.averageUtils;
-      state.rented = action.payload.rented;
-      state.currentRentPrice = action.payload.currentRentPrice;
-      state.estimatedRentPrice = action.payload.estimatedRentPrice;
-      state.rentalStart = action.payload.rentalStart;
-      state.rentalEnd = action.payload.rentalEnd;
-      state.availableAfter = action.payload.availableAfter;
-      state.keyCode = action.payload.keyCode;
-      state.auction = action.payload.auction;
-      state.debatablePrice = action.payload.debatablePrice;
-      state.buildable = action.payload.buildable;
-      state.video = action.payload.video;
-      state.description = action.payload.description;
-      state.propertyImage = action.payload.propertyImage;
-      state.suitableFor = action.payload.suitableFor;
-      state.heatingAndEnergy = action.payload.heatingAndEnergy;
-      state.distances = action.payload.distances;
-      state.areas = action.payload.areas;
-      state.construction = action.payload.construction;
-      state.technicalFeatures = action.payload.technicalFeatures;
-      state.details = action.payload.details;
-      state.location = action.payload.location;
-      state.features = action.payload.features;
-      state.labelIDs = [
-        ...action.payload.labels.map((label: ILabel) => label.id),
-      ];
+      const payload: IProperties = action.payload;
+
+      state.id = payload.id;
+      state.code = payload.code;
+      state.title = payload.title;
+      state.managerId = payload.manager.id;
+      state.ownerId = payload.owner.id;
+      state.state = payload.state;
+      state.parentCategory = payload.parentCategory;
+      state.category = payload.category;
+      state.area = payload.area;
+      state.plotArea = payload.plotArea;
+      state.price = payload.price;
+      state.averageUtils = payload.averageUtils;
+      state.rented = payload.rented;
+      state.currentRentPrice = payload.currentRentPrice;
+      state.estimatedRentPrice = payload.estimatedRentPrice;
+      state.rentalStart = payload.rentalStart;
+      state.rentalEnd = payload.rentalEnd;
+      state.availableAfter = payload.availableAfter;
+      state.keyCode = payload.keyCode;
+      state.auction = payload.auction;
+      state.debatablePrice = payload.debatablePrice;
+      state.buildable = payload.buildable;
+      state.video = payload.video;
+      state.description = payload.description;
+      state.propertyImage = payload.propertyImage;
+      state.suitableFor = payload.suitableFor;
+      state.heatingAndEnergy = payload.heatingAndEnergy;
+      state.distances = payload.distances;
+      state.areas = payload.areas;
+      state.construction = payload.construction;
+      state.technicalFeatures = payload.technicalFeatures;
+      state.details = payload.details;
+
+      // Location
+      const location: ILocation = payload.location;
+      state.location.city = location.city;
+      state.location.complex = location.complex;
+      state.location.country = location.country;
+      state.location.number = location.number;
+      state.location.region = location.region;
+      state.location.street = location.street;
+      state.location.zipCode = location.zipCode;
+
+      state.features = payload.features;
+
+      // map labels
+      state.labelIDs = payload.labels
+        ? payload.labels
+          .filter((label) => label.id) // where id not null
+          .map((label) => {
+            return label.id!;
+          })
+        : [];
     },
     resetState: () => {
       return initialState;
@@ -1010,6 +1030,8 @@ export const {
   setSmartHome,
   setWalkableDistanceToBeach,
   setElevator,
+
+  addLabel,
 
   resetState,
 } = slice.actions;
@@ -1398,5 +1420,7 @@ export const selectWalkableDistanceToBeach = ({ property }: RootState) =>
 
 export const selectLoadingDock = ({ property }: RootState) =>
   property.features.loadingDock;
+
+export const selectLabelIDs = ({ property }: RootState) => property.labelIDs;
 
 export const { reducer } = slice;

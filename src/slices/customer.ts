@@ -4,7 +4,7 @@ import { ILabel } from "src/types/label";
 import type { RootState } from "../store";
 import { IDemand, IDemandFilters } from "src/types/demand";
 
-interface customerState extends ICustomerPOST {}
+interface customerState extends ICustomerPOST { }
 
 const initialState: customerState = {
   id: undefined,
@@ -198,7 +198,7 @@ const slice = createSlice({
       state.preferredLanguage = action.payload;
     },
 
-    addLabel(state: customerState, { payload }): void {
+    addLabelID(state: customerState, { payload }): void {
       if (!state.labelIDs.includes(payload)) state.labelIDs.push(payload);
     },
 
@@ -364,10 +364,10 @@ const slice = createSlice({
       // map labels
       state.demand.filters.labelIDs = demandFilters.labels
         ? demandFilters.labels
-            .filter((label) => label.id) // where id not null
-            .map((label) => {
-              return label.id!;
-            })
+          .filter((label) => label.id) // where id not null
+          .map((label) => {
+            return label.id!;
+          })
         : [];
       state.demand.nonPriorityFeatures = demand.nonPriorityFeatures;
       state.demand.priorityFeatures = demand.priorityFeatures;
@@ -401,7 +401,7 @@ export const {
   addNote,
 
   // labels
-  addLabel,
+  addLabelID,
 
   // location
   setStreet,
@@ -464,7 +464,7 @@ export const selectLocation = ({ customer }: RootState) => customer.location;
 export const selectNotes = ({ customer }: RootState) => customer.notes;
 export const selectOwnedProperties = ({ customer }: RootState) =>
   customer.ownedProperties;
-export const selectLabels = ({ customer }: RootState) => customer.labelIDs;
+export const selectLabelIDs = ({ customer }: RootState) => customer.labelIDs;
 export const selectDemand = ({ customer }: RootState) => customer.demand;
 
 // Location

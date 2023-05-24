@@ -14,7 +14,7 @@ import * as React from "react";
 import { useAllGlobalsQuery } from "src/services/global";
 import { useAllUsersQuery } from "src/services/user";
 
-import CreateLabel from "./CreateLabel";
+import { LabelCreate } from "src/components/label";
 
 import {
   selectDateOfBirth,
@@ -23,7 +23,7 @@ import {
   selectFirstName,
   selectHomePhone,
   selectIdNumber,
-  selectLabels,
+  selectLabelIDs,
   selectLastName,
   selectLeadSource,
   selectManagedBy,
@@ -53,6 +53,10 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 import OnlyNumbersInput from "src/pages/property/components/OnlyNumbers";
+import { addLabelID } from "src/slices/customer";
+import { useGetLabelsQuery } from "src/services/labels";
+import { addLabel as addNewLabel, selectAll as selectAllNewLabels } from "src/slices/labels";
+import { ILabel } from "src/types/label";
 
 const CustomerInformation: React.FC<any> = (props) => {
   const enums = useAllGlobalsQuery().data;
@@ -68,7 +72,6 @@ const CustomerInformation: React.FC<any> = (props) => {
   const mobilePhone = useSelector(selectMobilePhone);
   const homePhone = useSelector(selectHomePhone);
   const fax = useSelector(selectFax);
-  const labels = useSelector(selectLabels);
   const nationality = useSelector(selectNationality);
   const idNumber = useSelector(selectIdNumber);
   const dateOfBirth = useSelector(selectDateOfBirth);
@@ -78,9 +81,29 @@ const CustomerInformation: React.FC<any> = (props) => {
   const suggestedBy = useSelector(selectSuggestedBy);
   const status = useSelector(selectStatus);
 
+  const { data: labels } = useGetLabelsQuery();
+  const customerLabels = labels?.customerLabels;
+
+  const labelIDs = useSelector(selectLabelIDs);
+  const assignedLabels = labelIDs &&
+    labelIDs.length > 0 &&
+    customerLabels &&
+    customerLabels.length > 0 &&
+    labelIDs.filter((labelID) => labelID).map((labelID, index) => {
+      // get label object with id
+      return customerLabels.find(
+        (label) => label.id === labelID
+      )!;
+    }) || [];
+
+  const newLabels = useSelector(selectAllNewLabels);
+
   const dispatch = useDispatch();
 
-  if (!enums || !propertyEnums || !leadSourceEnum || !managers) return null;
+  const handleLabelClick = (label: ILabel) => { dispatch(addLabelID(label.id)); }
+  const handleLabelCreate = (label: ILabel) => { dispatch(addNewLabel(label)); }
+
+  if (!enums || !customerLabels || !propertyEnums || !leadSourceEnum || !managers) return null;
 
   return (
     <Paper
@@ -299,7 +322,7 @@ const CustomerInformation: React.FC<any> = (props) => {
             </Box>
           </Grid>
           <Grid item xs={6}>
-            <CreateLabel />
+            <LabelCreate existingLabels={customerLabels} assignedLabels={assignedLabels} newLabels={newLabels} onLabelClick={handleLabelClick} onLabelCreate={handleLabelCreate} />
           </Grid>
         </Grid>
       </Grid>

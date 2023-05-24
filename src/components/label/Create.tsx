@@ -18,7 +18,6 @@ import ColorizeIcon from "@mui/icons-material/Colorize";
 
 import * as React from "react";
 import { useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 
 import { useGetLabelsQuery } from "src/services/labels";
 
@@ -26,44 +25,42 @@ import Label from "src/components/label/Label";
 
 import { BlockPicker } from "react-color";
 
-// Customer Slice
-import { addLabel, selectLabels } from "src/slices/customer";
-// Labels Slice
-import {
-  addLabel as addNewLabel,
-  selectAll as selectAllNewLabels,
-} from "src/slices/labels";
-
 import { ILabel } from "src/types/label";
 
-const CreateLabel: React.FC<any> = (props) => {
+interface ILabelCreateProps {
+  existingLabels: ILabel[];
+  // assigned-existing labels & newly-created labels
+  assignedLabels: ILabel[];
+  newLabels: ILabel[];
+
+  // handlers
+  onLabelClick: (label: ILabel) => void;
+  onLabelCreate: (label: ILabel) => void;
+}
+
+const LabelCreate = (props: ILabelCreateProps) => {
+  const { existingLabels, assignedLabels, newLabels, onLabelClick, onLabelCreate } = props;
+
   const [addLabelDialog, setAddLabelDialog] = useState(false);
 
   const [pickerColor, setPickerColor] = useState("#22194d");
   const [labelName, setLabelName] = useState("Νέα Ετικέτα");
   const [openPicker, setOpenPicker] = useState(false);
   const { data: labels } = useGetLabelsQuery();
-  const customerLabels = labels?.customerLabels;
   const buttonRef = useRef<HTMLButtonElement>(null);
-
-  // assigned-existing labels & newly-created labels
-  const assignedLabelIDs: number[] = useSelector(selectLabels);
-  const newLabels = useSelector(selectAllNewLabels);
-
-  const dispatch = useDispatch();
 
   const handleChangeComplete = (color: any) => {
     setPickerColor(color.hex);
   };
+
   const clickLabel = (label: ILabel) => {
-    dispatch(addLabel(label.id));
+    onLabelClick(label);
   };
-
   const createLabel = () => {
-    dispatch(addNewLabel({ color: pickerColor, name: labelName }));
+    onLabelCreate({ color: pickerColor, name: labelName });
   };
 
-  if (!customerLabels) return null;
+  if (!existingLabels) return null;
 
   return (
     <Box
@@ -79,7 +76,7 @@ const CreateLabel: React.FC<any> = (props) => {
       flexDirection={"column"}
     >
       <Box sx={{ display: "flex", justifyContent: "center" }}>
-        <Typography variant='h6' flex={1}>
+        <Typography variant="h6" flex={1}>
           Labels
         </Typography>
         <IconButton
@@ -91,38 +88,30 @@ const CreateLabel: React.FC<any> = (props) => {
         </IconButton>
       </Box>
       <Box sx={{ display: "flex", justifyContent: "center" }}>
-        {assignedLabelIDs &&
-          assignedLabelIDs.length > 0 &&
-          customerLabels &&
-          customerLabels.length > 0 &&
-          assignedLabelIDs.map((labelID, index) => {
-            // get label object with id
-            const label = labels.customerLabels.find(
-              (label) => label.id === labelID
-            );
-            if (!label) return <></>;
+        {assignedLabels.map((label, index) => {
+          if (!label) return <></>;
 
-            return (
-              <Label
-                key={index}
-                variant='soft'
-                sx={{
-                  bgcolor: label.color,
-                  borderRadius: 7,
-                  color: "white",
-                }}
-              >
-                {label.name}
-              </Label>
-            );
-          })}
+          return (
+            <Label
+              key={index}
+              variant="soft"
+              sx={{
+                bgcolor: label.color,
+                borderRadius: 7,
+                color: "white",
+              }}
+            >
+              {label.name}
+            </Label>
+          );
+        })}
         {newLabels &&
           newLabels.length > 0 &&
           newLabels.map((label, index) => {
             return (
               <Label
                 key={index}
-                variant='soft'
+                variant="soft"
                 sx={{
                   bgcolor: label.color,
                   borderRadius: 7,
@@ -137,22 +126,22 @@ const CreateLabel: React.FC<any> = (props) => {
 
       <Dialog
         fullWidth
-        maxWidth='xs'
+        maxWidth="xs"
         open={addLabelDialog}
         onClose={() => {
           setAddLabelDialog(false);
         }}
         closeAfterTransition={true}
       >
-        <DialogTitle variant='h5'>Προσθήκη Υπάρχουσας</DialogTitle>
+        <DialogTitle variant="h5">Προσθήκη Υπάρχουσας</DialogTitle>
         <DialogContent>
           <DialogContentText>Customer Labels</DialogContentText>
           <Stack direction={"row"} spacing={1}>
-            {labels?.customerLabels.map((label, index) => {
+            {existingLabels.map((label, index) => {
               return (
                 <Label
                   key={index}
-                  variant='soft'
+                  variant="soft"
                   onClick={() => clickLabel(label)}
                   sx={{
                     bgcolor: label.color,
@@ -167,13 +156,13 @@ const CreateLabel: React.FC<any> = (props) => {
             })}
           </Stack>
 
-          <Typography variant='h5'>Δημιουργία νέας</Typography>
+          <Typography variant="h5">Δημιουργία νέας</Typography>
           <Stack spacing={3} mt={2}>
             <Stack spacing={1}>
               <FormControl>
-                <FormLabel id='demo-controlled-radio-buttons-group'>
+                <FormLabel id="demo-controlled-radio-buttons-group">
                   <Typography
-                    variant='subtitle2'
+                    variant="subtitle2"
                     sx={{ color: "text.secondary" }}
                   >
                     Εισάγετε όνομα:
@@ -181,7 +170,7 @@ const CreateLabel: React.FC<any> = (props) => {
                 </FormLabel>
                 <Stack direction={"row"} spacing={1}>
                   <TextField
-                    id='outlined-select-currency'
+                    id="outlined-select-currency"
                     value={labelName}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                       setLabelName(event.target.value);
@@ -189,7 +178,7 @@ const CreateLabel: React.FC<any> = (props) => {
                   />
 
                   <Button
-                    variant='outlined'
+                    variant="outlined"
                     onClick={() => {
                       setOpenPicker(!openPicker);
                     }}
@@ -224,16 +213,16 @@ const CreateLabel: React.FC<any> = (props) => {
                     paddingBottom={2}
                     spacing={3}
                   >
-                    <FormLabel id='demo-controlled-radio-buttons-group'>
+                    <FormLabel id="demo-controlled-radio-buttons-group">
                       <Typography
-                        variant='subtitle2'
+                        variant="subtitle2"
                         sx={{ color: "text.secondary" }}
                       >
                         Προεπισκόπιση:
                       </Typography>
                     </FormLabel>
                     <Label
-                      variant='soft'
+                      variant="soft"
                       sx={{
                         bgcolor: pickerColor,
                         borderRadius: 7,
@@ -244,7 +233,7 @@ const CreateLabel: React.FC<any> = (props) => {
                     </Label>
                   </Stack>
 
-                  <Button variant='outlined' onClick={createLabel}>
+                  <Button variant="outlined" onClick={createLabel}>
                     Δημιουργία & Προσθήκη
                   </Button>
                 </FormControl>
@@ -256,4 +245,4 @@ const CreateLabel: React.FC<any> = (props) => {
     </Box>
   );
 };
-export default CreateLabel;
+export default LabelCreate;

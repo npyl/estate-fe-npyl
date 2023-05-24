@@ -3,3 +3,8 @@ export interface ILabel {
   color: string;
   name: string;
 }
+
+export interface ILabels {
+  customerLabels: ILabel[];
+  propertyLabels: ILabel[];
+}

@@ -15,10 +15,6 @@ import MatchingSystem from "./MatchingSystem";
 import NonPriorityFeatures from "./NonPriorityFeatures";
 import NotesSection from "./NotesSection";
 import PriorityFeatures from "./PriorityFeatures";
-import { create } from "lodash";
-import router from "next/router";
-import { fileData } from "src/components/file-thumbnail";
-import { useAddCustomerMutation } from "src/services/customers";
 
 const Form = ({
   edit = false,
@@ -27,13 +23,11 @@ const Form = ({
   edit?: boolean;
   performUpload: () => void;
 }) => {
-  const [create, { isSuccess }] = useAddCustomerMutation();
   const dispatch = useDispatch();
   const body = useSelector(selectAll);
   const handleClick = () => {
     performUpload && performUpload();
   };
-  isSuccess && router.push("/");
 
   return (
     <Grid paddingTop={1} paddingRight={0} container spacing={1}>

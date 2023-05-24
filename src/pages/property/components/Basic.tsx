@@ -8,12 +8,11 @@ import {
   Paper,
   Select,
   TextField,
+  Box,
+  Typography,
 } from "@mui/material";
-import InputAdornment from "@mui/material/InputAdornment";
-import Typography from "@mui/material/Typography";
-import { Box } from "@mui/system";
+
 import * as React from "react";
-// import { MuiPickersUtilsProvider } from "@mui/lab";
 
 import OnlyNumbersInput from "./OnlyNumbers";
 
@@ -28,6 +27,7 @@ import {
   selectDebatablePrice,
   selectEstimatedRentPrice,
   selectKeyCode,
+  selectLabelIDs,
   selectManager,
   selectOwner,
   selectPlotArea,
@@ -53,13 +53,24 @@ import {
   setState,
 } from "src/slices/property";
 
-import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
+import { useState } from "react";
+
+import { IGlobalCustomer, IGlobalProperty } from "src/types/global";
+import { ILabel, ILabels } from "src/types/label";
 
 import { useAllUsersQuery } from "src/services/user";
-
-import { useState } from "react";
 import { useAllGlobalsQuery } from "src/services/global";
-import ROISection from "./ROI";
+
+import { LabelCreate } from "src/components/label";
+
+// Property Slice
+import { addLabel as addLabelID } from "src/slices/property";
+// Labels Slice (for new labels)
+import {
+  addLabel as addNewLabel,
+  selectAll as selectAllNewLabels,
+} from "src/slices/labels";
+import { useGetLabelsQuery } from "src/services/labels";
 
 const BasicSection: React.FC<any> = (props) => {
   const [rentalPeriodStart, setRentalPeriodStart] = useState<Date | null>(
@@ -69,7 +80,9 @@ const BasicSection: React.FC<any> = (props) => {
   const { data } = useAllGlobalsQuery();
   const enums: IGlobalProperty = data?.property as IGlobalProperty;
 
-  const details = enums?.details as IGlobalPropertyDetails;
+  const { data: labels } = useGetLabelsQuery();
+  const propertyLabels = labels?.propertyLabels;
+
   const dispatch = useDispatch();
 
   const code = useSelector(selectCode);
@@ -92,15 +105,36 @@ const BasicSection: React.FC<any> = (props) => {
   const state = useSelector(selectState);
   const stateEnum = enums?.state;
 
+  const labelIDs = useSelector(selectLabelIDs);
+  const assignedLabels = labelIDs &&
+    labelIDs.length > 0 &&
+    propertyLabels &&
+    propertyLabels.length > 0 &&
+    labelIDs.filter((labelID) => labelID).map((labelID, index) => {
+      // get label object with id
+      return propertyLabels.find(
+        (label) => label.id === labelID
+      )!;
+    }) || [];
+  const newLabels = useSelector(selectAllNewLabels);
+
   // const [value, setValue] = React.useState<Date>(new Date());
   const handleDateChange = (date: Date | null) => {
     setAvailableAfter(date);
     // onChange(date?.toISOString().substring(0, 10) || "");
   };
+
+  const handleLabelClick = (label: ILabel) => {
+    dispatch(addLabelID(label.id));
+  };
+  const handleLabelCreate = (label: ILabel) => {
+    dispatch(addNewLabel(label));
+  };
+
   // get list of owners & managers
   const { data: owners } = useAllCustomersQuery();
   const { data: managers } = useAllUsersQuery();
-  if (!enums) return null;
+  if (!enums || !propertyLabels) return null;
 
   //set the values for BE
 
@@ -382,6 +416,16 @@ const BasicSection: React.FC<any> = (props) => {
             />
           </Grid>
 
+          <Grid item xs={6}>
+            <LabelCreate
+              existingLabels={propertyLabels}
+              assignedLabels={assignedLabels}
+              newLabels={newLabels}
+              onLabelClick={handleLabelClick}
+              onLabelCreate={handleLabelCreate}
+            />
+          </Grid>
+
           <Grid
             item
             xs={3}
@@ -430,7 +474,6 @@ const BasicSection: React.FC<any> = (props) => {
             </Typography>
           </Grid>
         </Grid>
-        <Grid></Grid>
       </Grid>
     </Paper>
   );

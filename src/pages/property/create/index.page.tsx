@@ -3,60 +3,81 @@ import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { useAddPropertyMutation } from "src/services/properties";
 
-import { useState } from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 
 import { selectAll } from "src/slices/property";
+import { selectAll as selectAllPropertyFiles } from "src/slices/property/files";
+
+import { selectAll as selectAllNewLabels } from "src/slices/labels";
 
 import Form from "../components/Form";
 
-const CreatePropertyPage: NextPage = () => {
-  const [files, setFiles] = useState<(File | string)[]>([]);
-  const [fileData, setFileData] = useState<(File | string)[]>([]);
-  const body = useSelector(selectAll);
-  const [create, { isSuccess }] = useAddPropertyMutation();
+import { useCreateLabelForPropertyMutation } from "src/services/labels";
 
+const CreatePropertyPage: NextPage = () => {
   const router = useRouter();
 
-  const handleUpload = () => {
+  const body = useSelector(selectAll);
+  const [create, { isSuccess, data: createdProperty }] = useAddPropertyMutation();
+  const [createLabel, { isSuccess: isLabelSuccess }] =
+    useCreateLabelForPropertyMutation();
+
+  const { propertyImages, propertyBlueprints } = useSelector(
+    selectAllPropertyFiles
+  );
+
+  const newLabels = useSelector(selectAllNewLabels);
+
+  const createAndAssignNewLabels = () => {
+    const createdPropertyId = createdProperty!.id;
+
+    // foreach label; call create-for-customer-with-id
+    newLabels.forEach((newLabel) => {
+      createLabel({
+        propertyId: createdPropertyId,
+        labelBody: newLabel,
+      });
+    });
+  };
+
+  useEffect(() => {
+    if (isSuccess) {
+      createAndAssignNewLabels();
+      router.push("/");
+    }
+  }, [isSuccess, router]);
+
+  const handleUpload = async () => {
+    if (!propertyImages || propertyImages.length === 0) return;
+    if (!propertyImages[0]) return;
+
     const blob = new Blob([JSON.stringify(body)], {
       type: "application/json",
     });
+
     let dataToSend = new FormData();
-    dataToSend.append(
-      "propertyImage ",
-      files[0] || new File([""], "", { type: "null" })
-    );
-    for (let i = 1; i < files.length; i++) {
-      dataToSend.append(
-        "propertyGallery ",
-        files[i] || new File([""], "", { type: "null" })
-      );
+    // main image
+    dataToSend.append("propertyImage ", propertyImages[0]);
+    // gallery
+    for (let i = 1; i < propertyImages.length; i++) {
+      if (!propertyImages[i]) continue;
+      dataToSend.append("propertyGallery ", propertyImages[i]);
     }
-    dataToSend.append("propertyForm ", blob);
-    dataToSend.append(
-      "propertyFile ",
-      files[0] || new File([""], "", { type: "null" })
-    );
-    for (let i = 1; i < fileData.length; i++) {
-      dataToSend.append(
-        "propertyGalleryFiles ",
-        files[i] || new File([""], "", { type: "null" })
-      );
+    // blueprints
+    for (let i = 0; i < propertyBlueprints.length; i++) {
+      if (!propertyBlueprints[i]) continue;
+      dataToSend.append("propertyBlueprints ", propertyBlueprints[i]);
     }
+
     dataToSend.append("propertyForm ", blob);
 
     // perform POST
-    create(dataToSend);
-    isSuccess && router.push("/");
+    await create(dataToSend);
   };
 
-  return (
-    <div>
-      <Form onUpload={handleUpload} />
-    </div>
-  );
+  return <Form create={true} performUpload={handleUpload} />;
 };
 
 CreatePropertyPage.getLayout = (page) => (
