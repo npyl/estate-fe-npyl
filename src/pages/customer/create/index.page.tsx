@@ -4,18 +4,21 @@ import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 
-import { selectAll, selectNotes } from "src/slices/customer";
-import { selectAll as selectAllNewLabels } from "src/slices/labels";
+import { selectAll, selectNotes, resetState as resetCustomerState } from "src/slices/customer";
+import { selectAll as selectAllNewLabels, resetState as resetLabelsState } from "src/slices/labels";
 
 import { useAddCustomerMutation } from "src/services/customers";
 import { useCreateLabelForCustomerMutation } from "src/services/labels";
+import { useAddNoteToCustomerWithIdMutation } from "src/services/note";
+
+import { useDispatch } from "react-redux";
 
 import { NextPage } from "next";
 import Form from "../components/Form";
-import { useAddNoteToCustomerWithIdMutation } from "src/services/note";
 
 const CreateCustomer: NextPage = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const [create, { isSuccess: isCreateCustomerSuccess, data: createdCustomer }] =
     useAddCustomerMutation();
@@ -46,14 +49,18 @@ const CreateCustomer: NextPage = () => {
       createNote({ id: createdCustomerId, dataToSend: { content: newNote.content } })
     })
   }
+  const resetState = () => {
+    dispatch(resetCustomerState());
+    dispatch(resetLabelsState());
+  }
 
   const performUpload = () => {
     create(body);
 
     isCreateCustomerSuccess && createdCustomer && createAndAssignNewLabels(); // create&assign labels
     isCreateCustomerSuccess && createdCustomer && createAndAssignNewNotes();  // create&assign notes
+    isCreateCustomerSuccess && resetState();
     isCreateCustomerSuccess && router.push("/customer");
-
   };
 
   return <Form edit={false} performUpload={performUpload} />;
