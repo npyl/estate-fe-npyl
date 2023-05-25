@@ -1,13 +1,13 @@
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NoteCreate } from "src/components/Note";
-import { addNote, selectNotes } from "src/slices/customer";
+import { addNote, selectAll } from "src/slices/customer/notes";
 
 import { useProfileQuery } from "src/services/user";
 
 const NotesSection: React.FC<any> = (props) => {
   const dispatch = useDispatch();
-  const notes = useSelector(selectNotes);
+  const notes = useSelector(selectAll);
   const profile = useProfileQuery().data; // current user
 
   if (!profile) return null;

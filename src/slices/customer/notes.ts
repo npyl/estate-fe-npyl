@@ -1,26 +1,26 @@
-// slice for property's notes
+// slice for customer's notes
 
 import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "src/store";
 import { INotePOST } from "src/types/note";
 
-interface propertyNotesState {
+interface customerNotesState {
     notes: INotePOST[]
 }
 
-const initialState: propertyNotesState = {
+const initialState: customerNotesState = {
     notes: [],
 };
 
 const slice = createSlice({
-    name: "propertyNotes",
+    name: "customerNotes",
     initialState,
     reducers: {
-        setInitialState(state: propertyNotesState, { payload }): void {
+        setInitialState(state: customerNotesState, { payload }): void {
             state.notes = payload;
         },
 
-        addNote(state: propertyNotesState, { payload }): void {
+        addNote(state: customerNotesState, { payload }): void {
             state.notes.push(payload)
         },
 
@@ -36,6 +36,6 @@ export const {
     resetState,
 } = slice.actions;
 
-export const selectAll = ({ propertyNotes }: RootState) => propertyNotes.notes;
+export const selectAll = ({ customerNotes }: RootState) => customerNotes.notes;
 
 export const { reducer } = slice;

@@ -1,7 +1,7 @@
 import { IDemand, IDemandPOST } from "./demand";
 import { ILabel } from "./label";
 import { ILocation, ILocationPOST } from "./location";
-import { INote, INotePOST } from "./note";
+import { INote } from "./note";
 import { IProperties } from "./properties";
 import { IUser } from "./user";
 
@@ -56,7 +56,6 @@ export interface ICustomerPOST {
   preferredLanguage: string;
   suggestedBy: string;
   location: ILocationPOST;
-  notes: INotePOST[];
   ownedProperties: IProperties[];
   labelIDs: number[];
   demand: IDemandPOST;

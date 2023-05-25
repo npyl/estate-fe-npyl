@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 
 import { resetState as resetCustomerState } from "src/slices/customer";
+import { resetState as resetNotesState } from 'src/slices/customer/notes';
 import { resetState as resetLabelsState } from "src/slices/labels";
 
 import CustomerInformation from "./CustomerInformation";
@@ -33,6 +34,7 @@ const Form = ({
   const resetState = () => {
     dispatch(resetCustomerState());
     dispatch(resetLabelsState());
+    dispatch(resetNotesState());
   }
 
   useEffect(() => {

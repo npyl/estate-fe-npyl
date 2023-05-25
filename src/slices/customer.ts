@@ -36,7 +36,6 @@ const initialState: customerState = {
     region: "",
     country: "",
   },
-  notes: [],
   ownedProperties: [],
   labelIDs: [],
   demand: {
@@ -219,10 +218,6 @@ const slice = createSlice({
       if (!state.labelIDs.includes(payload)) state.labelIDs.push(payload);
     },
 
-    addNote(state: customerState, { payload }): void {
-      state.notes.push(payload);
-    },
-
     // TODO
     // setSuggestedBy(state: customerState, action): void {
     //   state.suggestedBy = action.payload;
@@ -364,12 +359,6 @@ const slice = createSlice({
           })
         : [];
 
-      // TODO: check this... doesn't seem right
-      state.notes = action.payload.notes;
-
-      // TODO:
-      // state.ownedProperties = action.payload.ownedProperties;
-
       const demand: IDemand = action.payload.demand;
       const demandFilters: IDemandFilters = demand.filters;
 
@@ -433,9 +422,6 @@ export const {
   setDateOfBirth,
   setLeadSource,
   setPreferredLanguage,
-
-  // notes
-  addNote,
 
   // labels
   addLabelID,
@@ -503,7 +489,6 @@ export const selectPreferredLanguage = ({ customer }: RootState) =>
 export const selectSuggestedBy = ({ customer }: RootState) =>
   customer.suggestedBy;
 export const selectLocation = ({ customer }: RootState) => customer.location;
-export const selectNotes = ({ customer }: RootState) => customer.notes;
 export const selectOwnedProperties = ({ customer }: RootState) =>
   customer.ownedProperties;
 export const selectLabelIDs = ({ customer }: RootState) => customer.labelIDs;

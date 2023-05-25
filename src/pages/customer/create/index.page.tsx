@@ -6,7 +6,8 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
 
-import { selectAll, selectNotes } from "src/slices/customer";
+import { selectAll } from "src/slices/customer";
+import { selectAll as selectAllNewNotes } from 'src/slices/customer/notes';
 import { selectAll as selectAllNewLabels } from "src/slices/labels";
 
 import { useAddCustomerMutation } from "src/services/customers";
@@ -28,7 +29,7 @@ const CreateCustomer: NextPage = () => {
     useAddNoteToCustomerWithIdMutation();
 
   const newLabels = useSelector(selectAllNewLabels);
-  const newNotes = useSelector(selectNotes);
+  const newNotes = useSelector(selectAllNewNotes);
   const body = useSelector(selectAll);
 
   const createAndAssignNewLabels = () => {
