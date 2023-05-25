@@ -23,6 +23,10 @@ const initialState: customerState = {
   leadSource: "",
   preferredLanguage: "",
   suggestedBy: "",
+  leaser: false,
+  lessor: false,
+  seller: false,
+  buyer: false,
   location: {
     street: "",
     number: 0,
@@ -32,7 +36,6 @@ const initialState: customerState = {
     region: "",
     country: "",
   },
-  notes: [],
   ownedProperties: [],
   labelIDs: [],
   demand: {
@@ -149,6 +152,19 @@ const slice = createSlice({
   name: "customer",
   initialState,
   reducers: {
+    toggleLeaser(state: customerState, { payload }): void {
+      state.leaser = !state.leaser;
+    },
+    toggleLessor(state: customerState, { payload }): void {
+      state.lessor = !state.lessor;
+    },
+    toggleSeller(state: customerState, { payload }): void {
+      state.seller = !state.seller;
+    },
+    toggleBuyer(state: customerState, { payload }): void {
+      state.buyer = !state.buyer;
+    },
+
     setId(state: customerState, action): void {
       state.id = action.payload;
     },
@@ -200,10 +216,6 @@ const slice = createSlice({
 
     addLabelID(state: customerState, { payload }): void {
       if (!state.labelIDs.includes(payload)) state.labelIDs.push(payload);
-    },
-
-    addNote(state: customerState, { payload }): void {
-      state.notes.push(payload);
     },
 
     // TODO
@@ -307,6 +319,11 @@ const slice = createSlice({
     },
 
     setInitialState: (state: customerState, action): void => {
+      state.leaser = action.payload.leaser;
+      state.lessor = action.payload.lessor;
+      state.seller = action.payload.seller;
+      state.buyer = action.payload.buyer;
+
       state.id = action.payload.id;
       state.suggestedBy = action.payload.suggestedBy;
       state.managedBy = action.payload.id;
@@ -332,11 +349,15 @@ const slice = createSlice({
       state.location.region = action.payload.location.region;
       state.location.country = action.payload.location.country;
 
-      // TODO: check this... doesn't seem right
-      state.notes = action.payload.notes;
-
-      // TODO:
-      // state.ownedProperties = action.payload.ownedProperties;
+      // labels
+      const labels: ILabel[] = action.payload.labels;
+      state.labelIDs = labels
+        ? labels
+          .filter((label) => label.id) // where id not null
+          .map((label) => {
+            return label.id!;
+          })
+        : [];
 
       const demand: IDemand = action.payload.demand;
       const demandFilters: IDemandFilters = demand.filters;
@@ -381,6 +402,11 @@ const slice = createSlice({
 });
 
 export const {
+  toggleLeaser,
+  toggleLessor,
+  toggleSeller,
+  toggleBuyer,
+
   setId,
   setManagedBy,
   setFirstName,
@@ -396,9 +422,6 @@ export const {
   setDateOfBirth,
   setLeadSource,
   setPreferredLanguage,
-
-  // notes
-  addNote,
 
   // labels
   addLabelID,
@@ -438,6 +461,11 @@ export const {
 
 export const selectAll = ({ customer }: RootState) => customer;
 
+export const selectLeaser = ({ customer }: RootState) => customer.leaser;
+export const selectLessor = ({ customer }: RootState) => customer.lessor;
+export const selectSeller = ({ customer }: RootState) => customer.seller;
+export const selectBuyer = ({ customer }: RootState) => customer.buyer;
+
 export const selectFirstName = ({ customer }: RootState) => customer.firstName;
 export const selectLastName = ({ customer }: RootState) => customer.lastName;
 export const selectEmail = ({ customer }: RootState) => customer.email;
@@ -461,7 +489,6 @@ export const selectPreferredLanguage = ({ customer }: RootState) =>
 export const selectSuggestedBy = ({ customer }: RootState) =>
   customer.suggestedBy;
 export const selectLocation = ({ customer }: RootState) => customer.location;
-export const selectNotes = ({ customer }: RootState) => customer.notes;
 export const selectOwnedProperties = ({ customer }: RootState) =>
   customer.ownedProperties;
 export const selectLabelIDs = ({ customer }: RootState) => customer.labelIDs;

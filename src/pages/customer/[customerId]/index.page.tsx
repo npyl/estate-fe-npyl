@@ -82,8 +82,12 @@ const CustomerView: NextPage = () => {
         </Grid>
       </TabPanel>
 
-      <TabPanel value={value} index={1}></TabPanel>
-      <TabPanel value={value} index={2}></TabPanel>
+      <TabPanel value={value} index={1}>
+        <OwnedCustomerPropertiesSection />
+      </TabPanel>
+      <TabPanel value={value} index={2}>
+        <MatchingPropertiesSection />
+      </TabPanel>
     </Box>
   );
 };

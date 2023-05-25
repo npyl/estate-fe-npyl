@@ -1,77 +1,61 @@
-import { Divider, Grid, Paper, Typography } from "@mui/material";
-import { Box } from "@mui/system";
-import * as React from "react";
-
+import { Box, Paper } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
+import { useGetCustomerPropertySuggestionsQuery } from "src/services/customers";
+import type { NextPage } from "next";
+import DataGridTable from "src/components/DataGrid";
 import { useRouter } from "next/router";
-import { useGetCustomerByIdQuery } from "src/services/customers";
+import { AuthGuard } from "src/components/authentication/auth-guard";
+import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
+import { useAllCustomersQuery } from "src/services/customers";
 
 const columns: GridColDef[] = [
   {
-    field: "firstName",
-    headerName: "First Name",
+    field: "propertyImage",
+    headerName: "Photo",
+    width: 180,
+    //   renderCell: renderImage,
+  },
+  {
+    field: "code",
+    headerName: "Code",
     width: 180,
   },
   {
-    field: "lastName",
-    headerName: "Last Name",
+    field: "price",
+    headerName: "Price",
     width: 180,
   },
 ];
 
-const MatchingPropertiesSection: React.FC = (props) => {
+const MatchingPropertiesSection: NextPage = () => {
   const router = useRouter();
   const { customerId } = router.query;
+  const { data } = useGetCustomerPropertySuggestionsQuery(
+    parseInt(customerId as string)
+  ); // basic details
 
-  const customer = useGetCustomerByIdQuery(parseInt(customerId as string)).data;
-
-  if (!customer) return null;
-
-  // const [getSuggestions, { data: suggestions, isSuccess }] =
-  //   useCustomerPropertySuggestionsMutation(); // basic details
-
-  // React.useEffect(async () => {
-  //   const suggestionRes = await getSuggestions({
-  //     id: parseInt(customerId as string),
-  //     dataToSend: customer.demand,
-  //   }).unwrap();
-  // }, []);
+  if (!data) return null;
 
   return (
-    <Paper
-      elevation={10}
-      sx={{
-        overflow: "auto",
-        padding: 0,
-      }}
-    >
+    <>
       <Box
+        component="main"
         sx={{
-          px: 3,
-          py: 1.5,
-          display: "flex",
-          justifyContent: "left",
+          flexGrow: 1,
+          pt: 2,
         }}
       >
-        <Typography variant="h6">Matching Properties</Typography>
+        <Paper sx={{ mt: 2 }}>
+          <DataGridTable
+            rows={data}
+            columns={columns}
+            resource={"property"}
+            sortingBy={"firstName"}
+            sortingOrder={"asc"}
+          />
+        </Paper>
       </Box>
-      <Divider></Divider>
-      <Grid container>
-        <Grid item xs={12}>
-          <Paper>
-            {/* {suggestions && suggestions.length > 0 && (
-              <DataGridTable
-                rows={suggestions}
-                columns={columns}
-                resource={"customer"}
-                sortingBy={"firstName"}
-                sortingOrder={"asc"}
-              />
-            )} */}
-          </Paper>
-        </Grid>
-      </Grid>
-    </Paper>
+    </>
   );
 };
 

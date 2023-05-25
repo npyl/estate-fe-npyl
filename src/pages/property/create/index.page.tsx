@@ -9,26 +9,29 @@ import { useRouter } from "next/router";
 
 import { selectAll } from "src/slices/property";
 import { selectAll as selectAllPropertyFiles } from "src/slices/property/files";
-
+import { selectAll as selectAllNewNotes } from 'src/slices/property/notes';
 import { selectAll as selectAllNewLabels } from "src/slices/labels";
 
-import Form from "../components/Form";
-
 import { useCreateLabelForPropertyMutation } from "src/services/labels";
+import { useAddNoteToPropertyWithIdMutation } from "src/services/note";
+
+import Form from "../components/Form";
 
 const CreatePropertyPage: NextPage = () => {
   const router = useRouter();
 
-  const body = useSelector(selectAll);
   const [create, { isSuccess, data: createdProperty }] = useAddPropertyMutation();
   const [createLabel, { isSuccess: isLabelSuccess }] =
     useCreateLabelForPropertyMutation();
+  const [createNote, { isSuccess: isNoteSuccess }] = useAddNoteToPropertyWithIdMutation();
 
   const { propertyImages, propertyBlueprints } = useSelector(
     selectAllPropertyFiles
   );
 
   const newLabels = useSelector(selectAllNewLabels);
+  const newNotes = useSelector(selectAllNewNotes);
+  const body = useSelector(selectAll);
 
   const createAndAssignNewLabels = () => {
     const createdPropertyId = createdProperty!.id;
@@ -41,10 +44,19 @@ const CreatePropertyPage: NextPage = () => {
       });
     });
   };
+  const createAndAssignNewNotes = () => {
+    const createdPropertyId = createdProperty!.id;
+
+    // foreach note; call create-for-customer-with-id
+    newNotes.forEach(async (newNote) => {
+      await createNote({ id: createdPropertyId, dataToSend: { content: newNote.content } })
+    })
+  }
 
   useEffect(() => {
     if (isSuccess) {
-      createAndAssignNewLabels();
+      createAndAssignNewLabels(); // create&assign labels
+      createAndAssignNewNotes();  // create&assign notes
       router.push("/");
     }
   }, [isSuccess, router]);
@@ -77,7 +89,7 @@ const CreatePropertyPage: NextPage = () => {
     await create(dataToSend);
   };
 
-  return <Form create={true} performUpload={handleUpload} />;
+  return <Form performUpload={handleUpload} />;
 };
 
 CreatePropertyPage.getLayout = (page) => (

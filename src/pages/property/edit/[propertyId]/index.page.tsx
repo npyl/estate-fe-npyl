@@ -2,53 +2,79 @@ import type { NextPage } from "next";
 import React, { useEffect } from "react";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
+import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import { useDispatch, useSelector } from "react-redux";
 import Form from "../../components/Form";
 import {
   useAddPropertyMutation,
-  useGetPropertyByIdQuery,
 } from "src/services/properties";
-import { selectAll, setInitialState } from "src/slices/property";
+import { setInitialState, selectAll } from "src/slices/property";
 import {
-  selectAll as selectAllPropertyFiles,
   setInitialState as setInitialFilesState,
+  selectAll as selectAllPropertyFiles,
 } from "src/slices/property/files";
+import { selectAll as selectAllNewLabels } from "src/slices/labels";
+
+import { useCreateLabelForPropertyMutation } from "src/services/labels";
+
+import { useGetPropertyByIdQuery } from "src/services/properties";
+
+import { useDispatch } from "react-redux";
 
 const EditPropertyPage: NextPage = () => {
-  const router = useRouter();
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const { propertyId } = router.query;
-  const { data: fetchedProperty, isSuccess: isPropertySuccess } =
-    useGetPropertyByIdQuery(parseInt(propertyId as string));
 
   const { propertyImages, propertyBlueprints } = useSelector(
     selectAllPropertyFiles
   );
 
-  const [edit, { isSuccess, data: editedCustomer }] = useAddPropertyMutation();
+  const { data: fetchedProperty, isSuccess: isPropertySuccess } =
+    useGetPropertyByIdQuery(parseInt(propertyId as string));
+
+  const [createLabel, { isSuccess: isLabelSuccess }] = useCreateLabelForPropertyMutation();
+
+  const [edit, { isSuccess: isEditProperty, data: editedProperty }] = useAddPropertyMutation();
   const body = useSelector(selectAll);
 
+  const newLabels = useSelector(selectAllNewLabels);
+
+  const createAndAssignNewLabels = () => {
+    const editedPropertyId = editedProperty!.id;
+
+    // foreach label; call create-for-property-with-id
+    newLabels.forEach((newLabel) => {
+      createLabel({
+        propertyId: editedPropertyId,
+        labelBody: newLabel,
+      });
+    });
+  };
+
   useEffect(() => {
-    isPropertySuccess &&
-      dispatch(
-        setInitialFilesState({
-          propertyImages: [
-            fetchedProperty.propertyImage,
-            ...fetchedProperty.images,
-          ],
-          propertyBlueprints: fetchedProperty.blueprints,
-        })
-      );
-    isPropertySuccess && dispatch(setInitialState(fetchedProperty));
+    if (isPropertySuccess) {
+      const initialFileState = {
+        propertyImages: [
+          fetchedProperty.propertyImage,
+          ...fetchedProperty.images,
+        ],
+        propertyBlueprints: fetchedProperty.blueprints,
+      };
+
+      dispatch(setInitialFilesState(initialFileState));
+      dispatch(setInitialState(fetchedProperty));
+    }
   }, [isPropertySuccess]);
 
   useEffect(() => {
-    if (isSuccess) {
-      router.push("/"); // Navigate to the home page or any other desired page
+    if (isEditProperty) {
+      createAndAssignNewLabels();
+      // TODO: update notes
+      router.push("/");
     }
-  }, [isSuccess]);
+  }, [isEditProperty]);
 
   const performUpload = async () => {
     if (!propertyImages || propertyImages.length === 0) return;

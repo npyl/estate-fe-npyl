@@ -1,7 +1,7 @@
 import { IDemand, IDemandPOST } from "./demand";
 import { ILabel } from "./label";
 import { ILocation, ILocationPOST } from "./location";
-import { INote, INotePOST } from "./note";
+import { INote } from "./note";
 import { IProperties } from "./properties";
 import { IUser } from "./user";
 
@@ -14,6 +14,10 @@ export interface ICustomer {
   homePhone: string;
   managedBy: IUser;
   status: number;
+  leaser: boolean;
+  lessor: boolean;
+  seller: boolean;
+  buyer: boolean;
   fax: string;
   nationality: string;
   idNumber: string;
@@ -27,6 +31,7 @@ export interface ICustomer {
   ownedProperties: IProperties[];
   labels: ILabel[];
   demand: IDemand;
+  demandPost: IDemandPOST[];
 }
 
 export interface ICustomerPOST {
@@ -38,6 +43,10 @@ export interface ICustomerPOST {
   homePhone: string;
   managedBy: number;
   status: number;
+  leaser: boolean;
+  lessor: boolean;
+  seller: boolean;
+  buyer: boolean;
   fax: string;
   nationality: string;
   idNumber: string;
@@ -47,8 +56,9 @@ export interface ICustomerPOST {
   preferredLanguage: string;
   suggestedBy: string;
   location: ILocationPOST;
-  notes: INotePOST[];
   ownedProperties: IProperties[];
   labelIDs: number[];
   demand: IDemandPOST;
 }
+
+export type { IDemand };

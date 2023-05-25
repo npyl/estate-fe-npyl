@@ -250,7 +250,7 @@ const initialState: propertyState = {
     loadingDock: false,
   },
   propertyImage: "",
-  labelIDs: [],
+  labelIDs: []
 };
 
 const slice = createSlice({

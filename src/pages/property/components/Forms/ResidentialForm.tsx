@@ -3,7 +3,7 @@ import Stack from "@mui/material/Stack";
 import * as React from "react";
 import AreasSection from "../Areas";
 import BalconiesSection from "../Balconies";
-import BasicSection from "../Basic";
+import BasicSection from "../BasicDetails";
 import ConstructionForResidentialSection from "../ConstructionForResidential";
 import DescriptionSection from "../Description";
 import DistancesSection from "../Distances";

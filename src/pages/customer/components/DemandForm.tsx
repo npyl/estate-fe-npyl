@@ -24,6 +24,8 @@ import {
   selectMaxYearOfConstruction,
   selectMinBathrooms,
   // getters
+  selectLeaser,
+  selectBuyer,
   selectMinBedrooms,
   selectMinCovered,
   selectMinFloor,
@@ -91,6 +93,9 @@ const DemandForm: React.FC<any> = (props) => {
   const minPrice = useSelector(selectMinPrice);
   const maxPrice = useSelector(selectMaxPrice);
   const timeFrame = useSelector(selectTimeFrame);
+
+  const leaser = useSelector(selectLeaser);
+  const buyer = useSelector(selectBuyer);
 
   const dispatch = useDispatch();
 
@@ -168,6 +173,7 @@ const DemandForm: React.FC<any> = (props) => {
     return null;
 
   return (
+    (leaser || buyer) &&
     <Paper
       elevation={10}
       sx={{

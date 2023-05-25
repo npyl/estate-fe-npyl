@@ -1,16 +1,16 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
-import { Box, Grid, Paper, TextField, Typography } from "@mui/material";
+import { Grid, Paper, TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import * as React from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAllGlobalsQuery } from "src/services/global";
 import {
-  resetState,
   selectCategory,
   selectParentCategory,
   setCategory,
@@ -21,29 +21,46 @@ import CommercialFormSection from "./Forms/CommercialForm";
 import LandFormSection from "./Forms/LandForm";
 import OtherFormSection from "./Forms/OtherForm";
 import ResidentialFormSection from "./Forms/ResidentialForm";
+import NotesSection from "./NotesSection";
+
+import { resetState as resetPropertyState } from "src/slices/property";
+import { resetState as resetPropertyFilesState } from "src/slices/property/files";
+import { resetState as resetPropertyNotesState } from 'src/slices/property/notes';
+import { resetState as resetLabelsState } from "src/slices/labels";
 
 export default function Form({
   edit = false,
-  create = false,
   performUpload,
 }: {
   edit?: boolean;
-  create?: boolean;
   performUpload?: () => void;
 }) {
-  const category = useSelector(selectCategory);
-  const parentCategory = useSelector(selectParentCategory);
+  const dispatch = useDispatch();
 
   // enums
   const { data } = useAllGlobalsQuery();
   const enums: IGlobalProperty = data?.property as IGlobalProperty;
   const parentCategoryEnum = enums?.parentCategory;
 
-  const dispatch = useDispatch();
+  const category = useSelector(selectCategory);
+  const parentCategory = useSelector(selectParentCategory);
 
   const handleClick = () => {
     performUpload && performUpload();
   };
+
+  const resetState = () => {
+    dispatch(resetPropertyState());
+    dispatch(resetPropertyFilesState());
+    dispatch(resetPropertyNotesState());
+    dispatch(resetLabelsState());
+  }
+
+  useEffect(() => {
+    if (!edit) {
+      resetState();
+    }
+  }, [edit]);
 
   if (!enums || !parentCategoryEnum) return null;
 
@@ -137,6 +154,8 @@ export default function Form({
             {parentCategory === "Commercial" && <CommercialFormSection />}
             {parentCategory === "Other" && <OtherFormSection />}
 
+            <NotesSection />
+
             <Grid item xs={12} padding={2}>
               <Grid
                 container
@@ -148,7 +167,7 @@ export default function Form({
                   <Button
                     variant="outlined"
                     startIcon={<DeleteIcon />}
-                    onClick={() => dispatch(resetState())}
+                    onClick={() => resetState()}
                   >
                     Clear
                   </Button>
@@ -160,7 +179,6 @@ export default function Form({
                     onClick={handleClick}
                   >
                     {edit ? "Edit" : "Create"}
-                    {create ? "Edit" : "Create"}
                   </Button>
                 </Grid>
               </Grid>
