@@ -332,6 +332,16 @@ const slice = createSlice({
       state.location.region = action.payload.location.region;
       state.location.country = action.payload.location.country;
 
+      // labels
+      const labels: ILabel[] = action.payload.labels;
+      state.labelIDs = labels
+        ? labels
+          .filter((label) => label.id) // where id not null
+          .map((label) => {
+            return label.id!;
+          })
+        : [];
+
       // TODO: check this... doesn't seem right
       state.notes = action.payload.notes;
 
