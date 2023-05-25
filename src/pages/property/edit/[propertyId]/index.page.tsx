@@ -2,34 +2,37 @@ import type { NextPage } from "next";
 import React, { useEffect } from "react";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
+import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import { useDispatch, useSelector } from "react-redux";
 import Form from "../../components/Form";
 import {
   useAddPropertyMutation,
-  useGetPropertyByIdQuery,
 } from "src/services/properties";
-import { selectAll, setInitialState, resetState as resetPropertyState } from "src/slices/property";
+import { setInitialState, selectAll } from "src/slices/property";
 import {
-  selectAll as selectAllPropertyFiles,
   setInitialState as setInitialFilesState,
-  resetState as resetPropertyFilesState
+  selectAll as selectAllPropertyFiles,
 } from "src/slices/property/files";
-import { selectAll as selectAllNewLabels, resetState as resetLabelsState } from "src/slices/labels";
+import { selectAll as selectAllNewLabels } from "src/slices/labels";
 
 import { useCreateLabelForPropertyMutation } from "src/services/labels";
 
+import { useGetPropertyByIdQuery } from "src/services/properties";
+
+import { useDispatch } from "react-redux";
+
 const EditPropertyPage: NextPage = () => {
-  const router = useRouter();
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const { propertyId } = router.query;
-  const { data: fetchedProperty, isSuccess: isPropertySuccess } =
-    useGetPropertyByIdQuery(parseInt(propertyId as string));
 
   const { propertyImages, propertyBlueprints } = useSelector(
     selectAllPropertyFiles
   );
+
+  const { data: fetchedProperty, isSuccess: isPropertySuccess } =
+    useGetPropertyByIdQuery(parseInt(propertyId as string));
 
   const [createLabel, { isSuccess: isLabelSuccess }] = useCreateLabelForPropertyMutation();
 
@@ -49,11 +52,6 @@ const EditPropertyPage: NextPage = () => {
       });
     });
   };
-  const resetState = () => {
-    dispatch(resetPropertyState());
-    dispatch(resetPropertyFilesState());
-    dispatch(resetLabelsState());
-  }
 
   useEffect(() => {
     if (isPropertySuccess) {
@@ -74,7 +72,6 @@ const EditPropertyPage: NextPage = () => {
     if (isEditProperty) {
       createAndAssignNewLabels();
       // TODO: update notes
-      resetState();
       router.push("/");
     }
   }, [isEditProperty]);

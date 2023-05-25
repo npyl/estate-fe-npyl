@@ -7,9 +7,9 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 
-import { selectAll, resetState as resetPropertyState } from "src/slices/property";
-import { selectAll as selectAllPropertyFiles, resetState as resetPropertyFilesState } from "src/slices/property/files";
-import { selectAll as selectAllNewLabels, resetState as resetLabelsState } from "src/slices/labels";
+import { selectAll } from "src/slices/property";
+import { selectAll as selectAllPropertyFiles } from "src/slices/property/files";
+import { selectAll as selectAllNewLabels } from "src/slices/labels";
 
 import Form from "../components/Form";
 
@@ -42,17 +42,11 @@ const CreatePropertyPage: NextPage = () => {
       });
     });
   };
-  const resetState = () => {
-    dispatch(resetPropertyState());
-    dispatch(resetPropertyFilesState());
-    dispatch(resetLabelsState());
-  }
 
   useEffect(() => {
     if (isSuccess) {
       createAndAssignNewLabels();
       // TODO: create notes
-      resetState();
       router.push("/");
     }
   }, [isSuccess, router]);
