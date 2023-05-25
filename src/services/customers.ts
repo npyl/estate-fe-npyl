@@ -1,5 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { ICustomer } from "src/types/customer";
+import { ICustomer, IDemand } from "src/types/customer";
+import { IDemandPOST } from "src/types/demand";
+import { IProperties } from "src/types/properties";
 
 export const customers = createApi({
   reducerPath: "customers",
@@ -45,6 +47,12 @@ export const customers = createApi({
       }),
       invalidatesTags: ["Customers"],
     }),
+    getCustomerPropertySuggestions: builder.query<IProperties[], number>({
+      query: (id: number) => ({
+        url: `${id}/suggestProperties`,
+        providesTags: ["Customers"],
+      }),
+    }),
   }),
 });
 
@@ -53,4 +61,5 @@ export const {
   useGetCustomerByIdQuery,
   useAddCustomerMutation,
   useDeleteCustomerMutation,
+  useGetCustomerPropertySuggestionsQuery,
 } = customers;
