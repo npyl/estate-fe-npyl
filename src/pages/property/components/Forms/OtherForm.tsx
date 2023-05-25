@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import * as React from "react";
-import BasicSection from "../Basic";
+import BasicSection from "../BasicDetails";
 import ConstructionForOtherSection from "../ConstructionForOther";
 import DescriptionSection from "../Description";
 import FeaturesForOtherSection from "../FeaturesForOther";
