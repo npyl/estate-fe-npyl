@@ -23,6 +23,11 @@ const AddNote = (props: AddNoteProps) => {
   const handleChangeMessage = (value: string) => {
     setMessage(value);
   };
+  const handleKeyPress = (event: { key: string }) => {
+    if (event.key === "Enter") {
+      onAdd(message);
+    }
+  };
 
   return (
     <Grid item xs={12} padding={1}>
@@ -41,6 +46,7 @@ const AddNote = (props: AddNoteProps) => {
             inputRef={commentInputRef}
             placeholder="Write a comment…"
             onChange={(event) => handleChangeMessage(event.target.value)}
+            onKeyPress={handleKeyPress}
             endAdornment={
               <InputAdornment position="end" sx={{ mr: 1 }}>
                 <IconButton size="small" onClick={() => onAdd(message)}>
