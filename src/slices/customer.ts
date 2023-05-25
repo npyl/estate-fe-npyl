@@ -23,6 +23,10 @@ const initialState: customerState = {
   leadSource: "",
   preferredLanguage: "",
   suggestedBy: "",
+  leaser: false,
+  lessor: false,
+  seller: false,
+  buyer: false,
   location: {
     street: "",
     number: 0,
@@ -149,6 +153,19 @@ const slice = createSlice({
   name: "customer",
   initialState,
   reducers: {
+    toggleLeaser(state: customerState, { payload }): void {
+      state.leaser = !state.leaser;
+    },
+    toggleLessor(state: customerState, { payload }): void {
+      state.lessor = !state.lessor;
+    },
+    toggleSeller(state: customerState, { payload }): void {
+      state.seller = !state.seller;
+    },
+    toggleBuyer(state: customerState, { payload }): void {
+      state.buyer = !state.buyer;
+    },
+
     setId(state: customerState, action): void {
       state.id = action.payload;
     },
@@ -307,6 +324,11 @@ const slice = createSlice({
     },
 
     setInitialState: (state: customerState, action): void => {
+      state.leaser = action.payload.leaser;
+      state.lessor = action.payload.lessor;
+      state.seller = action.payload.seller;
+      state.buyer = action.payload.buyer;
+
       state.id = action.payload.id;
       state.suggestedBy = action.payload.suggestedBy;
       state.managedBy = action.payload.id;
@@ -391,6 +413,11 @@ const slice = createSlice({
 });
 
 export const {
+  toggleLeaser,
+  toggleLessor,
+  toggleSeller,
+  toggleBuyer,
+
   setId,
   setManagedBy,
   setFirstName,
@@ -447,6 +474,11 @@ export const {
 } = slice.actions;
 
 export const selectAll = ({ customer }: RootState) => customer;
+
+export const selectLeaser = ({ customer }: RootState) => customer.leaser;
+export const selectLessor = ({ customer }: RootState) => customer.lessor;
+export const selectSeller = ({ customer }: RootState) => customer.seller;
+export const selectBuyer = ({ customer }: RootState) => customer.buyer;
 
 export const selectFirstName = ({ customer }: RootState) => customer.firstName;
 export const selectLastName = ({ customer }: RootState) => customer.lastName;

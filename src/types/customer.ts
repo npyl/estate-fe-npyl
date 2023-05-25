@@ -14,6 +14,10 @@ export interface ICustomer {
   homePhone: string;
   managedBy: IUser;
   status: number;
+  leaser: boolean;
+  lessor: boolean;
+  seller: boolean;
+  buyer: boolean;
   fax: string;
   nationality: string;
   idNumber: string;
@@ -38,6 +42,10 @@ export interface ICustomerPOST {
   homePhone: string;
   managedBy: number;
   status: number;
+  leaser: boolean;
+  lessor: boolean;
+  seller: boolean;
+  buyer: boolean;
   fax: string;
   nationality: string;
   idNumber: string;

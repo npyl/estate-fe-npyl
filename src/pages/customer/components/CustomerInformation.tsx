@@ -58,6 +58,8 @@ import { useGetLabelsQuery } from "src/services/labels";
 import { addLabel as addNewLabel, selectAll as selectAllNewLabels } from "src/slices/labels";
 import { ILabel } from "src/types/label";
 
+import CustomerTypeSelect from "./CustomerTypeSelect";
+
 const CustomerInformation: React.FC<any> = (props) => {
   const enums = useAllGlobalsQuery().data;
   const propertyEnums = enums?.property;
@@ -323,6 +325,9 @@ const CustomerInformation: React.FC<any> = (props) => {
           </Grid>
           <Grid item xs={6}>
             <LabelCreate existingLabels={customerLabels} assignedLabels={assignedLabels} newLabels={newLabels} onLabelClick={handleLabelClick} onLabelCreate={handleLabelCreate} />
+          </Grid>
+          <Grid item xs={12}>
+            <CustomerTypeSelect />
           </Grid>
         </Grid>
       </Grid>
