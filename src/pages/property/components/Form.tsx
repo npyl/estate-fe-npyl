@@ -21,11 +21,11 @@ import CommercialFormSection from "./Forms/CommercialForm";
 import LandFormSection from "./Forms/LandForm";
 import OtherFormSection from "./Forms/OtherForm";
 import ResidentialFormSection from "./Forms/ResidentialForm";
-
-import { useRouter } from "next/router";
+import NotesSection from "./NotesSection";
 
 import { resetState as resetPropertyState } from "src/slices/property";
 import { resetState as resetPropertyFilesState } from "src/slices/property/files";
+import { resetState as resetPropertyNotesState } from 'src/slices/property/notes';
 import { resetState as resetLabelsState } from "src/slices/labels";
 
 export default function Form({
@@ -52,6 +52,7 @@ export default function Form({
   const resetState = () => {
     dispatch(resetPropertyState());
     dispatch(resetPropertyFilesState());
+    dispatch(resetPropertyNotesState());
     dispatch(resetLabelsState());
   }
 
@@ -152,6 +153,8 @@ export default function Form({
             {parentCategory === "Land" && <LandFormSection />}
             {parentCategory === "Commercial" && <CommercialFormSection />}
             {parentCategory === "Other" && <OtherFormSection />}
+
+            <NotesSection />
 
             <Grid item xs={12} padding={2}>
               <Grid
