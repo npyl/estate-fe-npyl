@@ -12,7 +12,8 @@ import { Box, Stack, alpha } from "@mui/system";
 import { useRouter } from "next/router";
 import * as React from "react";
 import { useRef, useState } from "react";
-import Note from "src/components/Note";
+import { Note } from "src/components/Note";
+
 import {
   useAddNoteToCustomerWithIdMutation,
   useGetNotesByCustomerIdQuery,
@@ -21,37 +22,6 @@ import {
 const NotesCustomerSection: React.FC = () => {
   const router = useRouter();
   const { customerId } = router.query;
-
-  // // const { data } = useGetCustomerByIdQuery(parseInt(customerId as string)); // basic details
-  // // const notes = data?.notes;
-  // const { data } = props;
-  // const notes = useGetNotesByCustomerIdQuery(data.id).data;
-
-  // const commentInputRef = React.useRef<HTMLInputElement>(null);
-  // const [message, setMessage] = React.useState("");
-  // const [addNote, { isSuccess }] = useAddNoteToCustomerWithIdMutation();
-  // // const [create, { isSuccess }] = useAddNoteToCustomerWithIdMutation();
-
-  // if (!notes || notes.length == 0) return null;
-
-  // const handleChangeMessage = (value: string) => {
-  //   setMessage(value);
-  // };
-
-  // const handleSendNote = () => {
-  //   // perform POST
-  //   addNote({
-  //     id: data.id,
-  //     dataToSend: { creatorId: 1, content: message },
-  //   });
-
-  //   isSuccess && setMessage("");
-  // };
-  // const handleKeyPress = (event: { key: string }) => {
-  //   if (event.key === "Enter") {
-  //     handleSendNote();
-  //   }
-  // };
 
   const notes = useGetNotesByCustomerIdQuery(
     parseInt(customerId as string)
