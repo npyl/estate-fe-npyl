@@ -18,11 +18,14 @@ import Form from "../components/Form";
 const CreateCustomer: NextPage = () => {
   const router = useRouter();
 
-  const [create, { isSuccess: isCreateCustomerSuccess, data: createdCustomer }] =
-    useAddCustomerMutation();
+  const [
+    create,
+    { isSuccess: isCreateCustomerSuccess, data: createdCustomer },
+  ] = useAddCustomerMutation();
   const [createLabel, { isSuccess: isLabelSuccess }] =
     useCreateLabelForCustomerMutation();
-  const [createNote, { isSuccess: isNoteSuccess }] = useAddNoteToCustomerWithIdMutation();
+  const [createNote, { isSuccess: isNoteSuccess }] =
+    useAddNoteToCustomerWithIdMutation();
 
   const newLabels = useSelector(selectAllNewLabels);
   const newNotes = useSelector(selectNotes);
@@ -44,9 +47,12 @@ const CreateCustomer: NextPage = () => {
 
     // foreach note; call create-for-customer-with-id
     newNotes.forEach(async (newNote) => {
-      await createNote({ id: createdCustomerId, dataToSend: { content: newNote.content } })
-    })
-  }
+      await createNote({
+        id: createdCustomerId,
+        dataToSend: { content: newNote.content },
+      });
+    });
+  };
 
   const performUpload = () => {
     create(body);
@@ -55,8 +61,8 @@ const CreateCustomer: NextPage = () => {
   useEffect(() => {
     if (isCreateCustomerSuccess && createdCustomer) {
       createAndAssignNewLabels(); // create&assign labels
-      createAndAssignNewNotes();  // create&assign notes
-      router.push("/customer");
+      createAndAssignNewNotes(); // create&assign notes
+      // router.push("/customer");
     }
   }, [isCreateCustomerSuccess, createdCustomer]);
 

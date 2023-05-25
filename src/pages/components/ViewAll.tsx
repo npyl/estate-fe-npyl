@@ -88,8 +88,8 @@ const ViewAll: FC = () => {
       <>
         <Image
           src={`data:image/jpeg;base64,${params.formattedValue}` || ""}
-          alt=''
-          ratio='16/9'
+          alt=""
+          ratio="16/9"
           width={1}
         />
       </>
@@ -99,7 +99,7 @@ const ViewAll: FC = () => {
     return (
       <>
         <Label
-          variant='filled'
+          variant="filled"
           color={
             (params.formattedValue === "SOLD" && "error") ||
             (params.formattedValue === "SALE" && "info") ||
@@ -146,7 +146,7 @@ const ViewAll: FC = () => {
     setOpenFilter(false);
   };
 
-  const renderSkeletonCell = () => <Skeleton width={150} animation='wave' />;
+  const renderSkeletonCell = () => <Skeleton width={150} animation="wave" />;
   const skeletonRows = Array.from({ length: 5 }, (_, index) => ({
     id: index + 1,
   }));
@@ -180,10 +180,10 @@ const ViewAll: FC = () => {
             <StyledPriceButton
               open={false}
               disableRipple
-              color='inherit'
+              color="inherit"
               sx={{ width: 120 }}
               endIcon={
-                <Badge badgeContent={changedPropsCount} color='error'>
+                <Badge badgeContent={changedPropsCount} color="error">
                   <TuneIcon />
                 </Badge>
               }

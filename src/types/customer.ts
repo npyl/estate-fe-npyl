@@ -27,6 +27,7 @@ export interface ICustomer {
   ownedProperties: IProperties[];
   labels: ILabel[];
   demand: IDemand;
+  demandPost: IDemandPOST[];
 }
 
 export interface ICustomerPOST {
@@ -52,3 +53,5 @@ export interface ICustomerPOST {
   labelIDs: number[];
   demand: IDemandPOST;
 }
+
+export type { IDemand };
