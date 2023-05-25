@@ -79,7 +79,7 @@ const CreatePropertyPage: NextPage = () => {
     await create(dataToSend);
   };
 
-  return <Form create={true} performUpload={handleUpload} />;
+  return <Form performUpload={handleUpload} />;
 };
 
 CreatePropertyPage.getLayout = (page) => (

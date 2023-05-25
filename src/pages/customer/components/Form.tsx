@@ -71,7 +71,7 @@ const Form = ({
             <Button
               variant="outlined"
               startIcon={<DeleteIcon />}
-              onClick={() => dispatch(resetState())}
+              onClick={() => resetState()}
             >
               Clear
             </Button>
@@ -87,7 +87,7 @@ const Form = ({
           </Grid>
         </Grid>
       </Grid>
-    </Grid>
+    </Grid >
   );
 };
 

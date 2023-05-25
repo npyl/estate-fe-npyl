@@ -60,7 +60,7 @@ const CreateCustomer: NextPage = () => {
     }
   }, [isCreateCustomerSuccess, createdCustomer]);
 
-  return <Form edit={false} performUpload={performUpload} />;
+  return <Form performUpload={performUpload} />;
 };
 
 CreateCustomer.getLayout = (page) => (

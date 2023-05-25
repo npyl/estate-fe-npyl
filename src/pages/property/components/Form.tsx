@@ -30,17 +30,12 @@ import { resetState as resetLabelsState } from "src/slices/labels";
 
 export default function Form({
   edit = false,
-  create = false,
   performUpload,
 }: {
   edit?: boolean;
-  create?: boolean;
   performUpload?: () => void;
 }) {
   const dispatch = useDispatch();
-  const router = useRouter();
-
-  const { propertyId } = router.query;
 
   // enums
   const { data } = useAllGlobalsQuery();
@@ -169,7 +164,7 @@ export default function Form({
                   <Button
                     variant="outlined"
                     startIcon={<DeleteIcon />}
-                    onClick={() => dispatch(resetState())}
+                    onClick={() => resetState()}
                   >
                     Clear
                   </Button>
@@ -181,7 +176,6 @@ export default function Form({
                     onClick={handleClick}
                   >
                     {edit ? "Edit" : "Create"}
-                    {create ? "Edit" : "Create"}
                   </Button>
                 </Grid>
               </Grid>
