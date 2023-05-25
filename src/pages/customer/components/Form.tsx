@@ -1,13 +1,14 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
-import { Button, Grid } from "@mui/material";
-import { Stack } from "@mui/system";
+import { Button, Grid, Stack } from "@mui/material";
 
 import AddressDetails from "./AddressDetails";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 
-import { resetState, selectAll } from "src/slices/customer";
+import { resetState as resetCustomerState } from "src/slices/customer";
+import { resetState as resetLabelsState } from "src/slices/labels";
 
 import CustomerInformation from "./CustomerInformation";
 import DemandForm from "./DemandForm";
@@ -24,10 +25,21 @@ const Form = ({
   performUpload: () => void;
 }) => {
   const dispatch = useDispatch();
-  const body = useSelector(selectAll);
+
   const handleClick = () => {
     performUpload && performUpload();
   };
+
+  const resetState = () => {
+    dispatch(resetCustomerState());
+    dispatch(resetLabelsState());
+  }
+
+  useEffect(() => {
+    if (!edit) {
+      resetState();
+    }
+  }, [edit]);
 
   return (
     <Grid paddingTop={1} paddingRight={0} container spacing={1}>

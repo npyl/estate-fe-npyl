@@ -19,16 +19,21 @@ const EditCustomer: NextPage = () => {
   const { data, isSuccess: fetchedCustomer } = useGetCustomerByIdQuery(
     parseInt(customerId as string)
   );
-  const [edit, { isSuccess, data: editedCustomer }] = useAddCustomerMutation();
+  const [edit, { isSuccess: isEditedSuccess, data: editedCustomer }] = useAddCustomerMutation();
   const body = useSelector(selectAll);
+
+  const performUpload = () => {
+    edit(body);
+  };
 
   useEffect(() => {
     fetchedCustomer && dispatch(setInitialState(data));
   }, [fetchedCustomer]);
 
-  const performUpload = () => {
-    edit(body);
-  };
+  useEffect(() => {
+    if (isEditedSuccess && editedCustomer)
+      router.push('/customer');
+  }, [isEditedSuccess, editedCustomer])
 
   return <Form edit={true} performUpload={performUpload} />;
 };
