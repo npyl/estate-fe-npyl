@@ -59,16 +59,33 @@ import { useAllUsersQuery } from "src/services/user";
 import { useState } from "react";
 import { useAllGlobalsQuery } from "src/services/global";
 
+import { LabelCreate } from "src/components/label";
+
 import OnlyNumbersInput from "./OnlyNumbers";
 
+// Property Slice
+import { addLabel as addLabelID, selectLabelIDs } from "src/slices/property";
+// Labels Slice (for new labels)
+import {
+  addLabel as addNewLabel,
+  selectAll as selectAllNewLabels,
+} from "src/slices/labels";
+import { useGetLabelsQuery } from "src/services/labels";
+
+import { ILabel } from "src/types/label";
+
 const BasicForLandSection: React.FC<any> = (props) => {
+  const dispatch = useDispatch();
+
   const [rentalPeriodStart, setRentalPeriodStart] = useState<Date | null>(
     new Date()
   );
 
   const { data } = useAllGlobalsQuery();
   const enums: IGlobalProperty = data?.property as IGlobalProperty;
-  const dispatch = useDispatch();
+
+  const { data: labels } = useGetLabelsQuery();
+  const propertyLabels = labels?.propertyLabels;
 
   const code = useSelector(selectCode);
   const owner = useSelector(selectOwner);
@@ -90,9 +107,29 @@ const BasicForLandSection: React.FC<any> = (props) => {
   const debatablePrice = useSelector(selectDebatablePrice);
   const stateEnum = enums?.state;
 
+  const labelIDs = useSelector(selectLabelIDs);
+  const assignedLabels = labelIDs &&
+    labelIDs.length > 0 &&
+    propertyLabels &&
+    propertyLabels.length > 0 &&
+    labelIDs.filter((labelID) => labelID).map((labelID, index) => {
+      // get label object with id
+      return propertyLabels.find(
+        (label) => label.id === labelID
+      )!;
+    }) || [];
+  const newLabels = useSelector(selectAllNewLabels);
+
   const handleDateChange = (date: Date | null) => {
     setAvailableAfter(date);
     // onChange(date?.toISOString().substring(0, 10) || "");
+  };
+
+  const handleLabelClick = (label: ILabel) => {
+    dispatch(addLabelID(label.id));
+  };
+  const handleLabelCreate = (label: ILabel) => {
+    dispatch(addNewLabel(label));
   };
 
   // get list of owners & managers
@@ -303,6 +340,16 @@ const BasicForLandSection: React.FC<any> = (props) => {
               value={availableAfter}
               onChange={handleDateChange}
               sx={{ width: "100%", height: " 50px" }}
+            />
+          </Grid>
+
+          <Grid item xs={6}>
+            <LabelCreate
+              existingLabels={propertyLabels}
+              assignedLabels={assignedLabels}
+              newLabels={newLabels}
+              onLabelClick={handleLabelClick}
+              onLabelCreate={handleLabelCreate}
             />
           </Grid>
 
