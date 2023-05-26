@@ -19,6 +19,7 @@ import {
   setStoreroom,
 } from "src/slices/property";
 
+import FloorAreasInput from './FloorAreasInput';
 import OnlyNumbersInput from "./OnlyNumbers";
 
 const AreasSection: React.FC<any> = () => {
@@ -53,6 +54,9 @@ const AreasSection: React.FC<any> = () => {
 
       <Grid item xs={12} padding={1}>
         <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <FloorAreasInput />
+          </Grid>
           <Grid item xs={6}>
             <OnlyNumbersInput label="Plot" value={plot} adornment="m²" onChange={(value) => {
               dispatch(setPlotArea(value));

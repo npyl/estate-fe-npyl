@@ -397,6 +397,25 @@ const slice = createSlice({
     setArea(state: propertyState, action): void {
       state.area = action.payload;
     },
+    setGroundFloor(state: propertyState, action): void {
+      state.areas.groundFloor = action.payload;
+    },
+    setFirst(state: propertyState, action): void {
+      state.areas.first = action.payload;
+    },
+    setSecond(state: propertyState, action): void {
+      state.areas.second = action.payload;
+    },
+    setThird(state: propertyState, action): void {
+      state.areas.third = action.payload;
+    },
+    setFourth(state: propertyState, action): void {
+      state.areas.fourth = action.payload;
+    },
+    setFifth(state: propertyState, action): void {
+      state.areas.fifth = action.payload;
+    },
+
     setPlotArea(state: propertyState, action): void {
       state.plotArea = action.payload;
     },
@@ -1000,8 +1019,21 @@ export const {
   setState,
   setPrice,
   setRented,
+
+  // Areas
   setArea,
   setPlotArea,
+  setBalconies,
+  setBasement,
+  setAttic,
+  setGarden,
+  setGroundFloor,
+  setFirst,
+  setSecond,
+  setThird,
+  setFourth,
+  setFifth,
+
   setKeyCode,
   setStreet,
   setNumber,
@@ -1044,10 +1076,6 @@ export const {
   setBalconySide,
   setBalconyArea,
 
-  setBalconies,
-  setBasement,
-  setAttic,
-  setGarden,
   setPublicTransportation,
   setRooms,
   setHasAttic,
@@ -1129,18 +1157,15 @@ export const selectRegion = ({ property }: RootState) =>
 export const selectCountry = ({ property }: RootState) =>
   property.location.country;
 
-// property.details.furnished;
 export const selectOrientation = ({ property }: RootState) =>
   property.details.orientation;
-
-// property.details.floorType;
 export const selectLandUse = ({ property }: RootState) =>
   property.details.landUse;
 export const selectViewType = ({ property }: RootState) =>
   property.details.viewType;
-
 export const selectAccessibility = ({ property }: RootState) =>
   property.details.accessibility;
+
 export const selectEnergyClass = ({ property }: RootState) =>
   property.heatingAndEnergy.energyClass;
 export const selectOffPeakElectricity = ({ property }: RootState) =>
@@ -1280,6 +1305,7 @@ export const selectFacadeLength = ({ property }: RootState) =>
 export const selectInclination = ({ property }: RootState) =>
   property.technicalFeatures.inclination;
 
+// Areas
 export const selectBalconiesArea = ({ property }: RootState) => property.areas.balconies;
 export const selectCovered = ({ property }: RootState) =>
   property.areas.covered;
@@ -1289,7 +1315,14 @@ export const selectGarden = ({ property }: RootState) => property.areas.garden;
 export const selectStoreroom = ({ property }: RootState) =>
   property.areas.storeroom;
 export const selectAttic = ({ property }: RootState) => property.areas.attic;
+export const selectGroundFloor = ({ property }: RootState) => property.areas.groundFloor;
+export const selectFirst = ({ property }: RootState) => property.areas.first;
+export const selectSecond = ({ property }: RootState) => property.areas.second;
+export const selectThird = ({ property }: RootState) => property.areas.third;
+export const selectFourth = ({ property }: RootState) => property.areas.fourth;
+export const selectFifth = ({ property }: RootState) => property.areas.fifth;
 
+// Parkings & Balconies
 export const selectParkings = ({ property }: RootState) => property.details.parkings;
 export const selectBalconies = ({ property }: RootState) => property.details.balconies;
 
