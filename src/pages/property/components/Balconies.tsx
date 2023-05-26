@@ -1,7 +1,4 @@
-import { Grid, MenuItem, Paper, TextField } from "@mui/material";
-import InputAdornment from "@mui/material/InputAdornment";
-import Typography from "@mui/material/Typography";
-import { Box } from "@mui/system";
+import { Grid, MenuItem, Paper, TextField, Typography, Box } from "@mui/material";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAllGlobalsQuery } from "src/services/global";
@@ -12,6 +9,7 @@ import {
   setBalconySide,
 } from "src/slices/property";
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
+import OnlyNumbersInput from "./OnlyNumbers";
 
 const BalconiesSection: React.FC<any> = (props) => {
   const { data } = useAllGlobalsQuery();
@@ -25,22 +23,6 @@ const BalconiesSection: React.FC<any> = (props) => {
 
   if (!details || !details.balconySide) return null;
 
-  //set the values for BE
-  const handleAreaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const input = event.target.value;
-    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
-    dispatch(setArea(numericValue));
-  };
-
-  //handle onlynumbers
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    const keyCode = event.keyCode || event.which;
-    const keyValue = String.fromCharCode(keyCode);
-    const regex = /[0-9]/;
-    if (!regex.test(keyValue)) {
-      event.preventDefault(); // Prevent entering non-numeric characters
-    }
-  };
   return (
     <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
       <Box
@@ -66,11 +48,6 @@ const BalconiesSection: React.FC<any> = (props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setBalconySide(event.target.value));
               }}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
               size="small"
             >
               {details?.balconySide?.map((option) => (
@@ -82,24 +59,9 @@ const BalconiesSection: React.FC<any> = (props) => {
           </Grid>
 
           <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id="outlined-controlled"
-              label="Area"
-              value={area}
-              onChange={handleAreaChange}
-              onKeyPress={handleKeyPress}
-              InputProps={{
-                endAdornment: (
-                  <InputAdornment position="end">m²</InputAdornment>
-                ),
-              }}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
-            />
+            <OnlyNumbersInput label="Area" value={area} onChange={(value) => {
+              dispatch(setArea(value));
+            }} />
           </Grid>
         </Grid>
       </Grid>

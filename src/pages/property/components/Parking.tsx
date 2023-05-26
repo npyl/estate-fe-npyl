@@ -1,11 +1,7 @@
-import { Grid, MenuItem, Paper, TextField } from "@mui/material";
-import Typography from "@mui/material/Typography";
-import { Box } from "@mui/system";
+import { Grid, MenuItem, Paper, TextField, Typography, Box } from "@mui/material";
 import * as React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
-
-import { useDispatch } from "react-redux";
 import {
   selectParkingType,
   selectSpots,
@@ -13,6 +9,7 @@ import {
   setSpots,
 } from "src/slices/property";
 import { useAllGlobalsQuery } from "src/services/global";
+import OnlyNumbersInput from "./OnlyNumbers";
 
 const ParkingSection: React.FC<any> = (props) => {
   const { data } = useAllGlobalsQuery();
@@ -26,22 +23,6 @@ const ParkingSection: React.FC<any> = (props) => {
 
   if (!details || !details.parkingType) return null;
 
-  //set the values for BE
-  const handleSpotsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const input = event.target.value;
-    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
-    dispatch(setSpots(numericValue));
-  };
-
-  //handle onlynumbers
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    const keyCode = event.keyCode || event.which;
-    const keyValue = String.fromCharCode(keyCode);
-    const regex = /[0-9]/;
-    if (!regex.test(keyValue)) {
-      event.preventDefault(); // Prevent entering non-numeric characters
-    }
-  };
   return (
     <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
       <Box
@@ -67,11 +48,6 @@ const ParkingSection: React.FC<any> = (props) => {
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setParkingType(event.target.value));
               }}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
               size="small"
             >
               {details?.parkingType?.map((option) => (
@@ -83,20 +59,9 @@ const ParkingSection: React.FC<any> = (props) => {
           </Grid>
 
           <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id="outlined-controlled"
-              label="Number of Spots"
-              value={spots}
-              placeholder="1,2,3..."
-              onChange={handleSpotsChange}
-              onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
-            />
+            <OnlyNumbersInput label="Number of Spots" value={spots} onChange={(value) => {
+              dispatch(setSpots(value));
+            }} />
           </Grid>
         </Grid>
       </Grid>
