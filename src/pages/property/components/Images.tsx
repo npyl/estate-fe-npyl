@@ -1,7 +1,9 @@
-import { Card, CardContent, CardHeader } from "@mui/material";
-import { Upload } from "src/components/upload";
-import { Dispatch, SetStateAction, useCallback } from "react";
-import { useDispatch } from "react-redux";
+import { Card, CardContent, CardHeader, Stack } from "@mui/material";
+import { Dispatch, SetStateAction, useCallback, useState } from "react";
+
+import { SoftButton } from "src/components/SoftButton";
+import UploadDnd from "src/components/upload/UploadDnd";
+import GalleryManager from "src/components/GalleryManager";
 
 interface IImageSectionProps {
   files: (File | string)[];
@@ -9,7 +11,8 @@ interface IImageSectionProps {
 }
 
 const ImagesSection: React.FC<IImageSectionProps> = ({ files, setFiles }) => {
-  const dispatch = useDispatch();
+
+  const [galleryManagerOpen, setGalleryManagerOpen] = useState(false);
 
   const handleDropMultiFile = useCallback(
     (acceptedFiles: File[]) => {
@@ -35,19 +38,25 @@ const ImagesSection: React.FC<IImageSectionProps> = ({ files, setFiles }) => {
   };
 
   return (
-    <Card>
-      <CardHeader title="Upload Images" />
-      <CardContent>
-        <Upload
-          multiple
-          thumbnail={true}
-          files={files}
-          onDrop={handleDropMultiFile}
-          onRemove={handleRemoveFile}
-          onRemoveAll={handleRemoveAllFiles}
-        />
-      </CardContent>
-    </Card>
+    <>
+      <Card>
+        <CardHeader title="Upload Images" />
+        <CardContent>
+          <UploadDnd
+            multiple
+            thumbnail={true}
+            files={files}
+            onDrop={handleDropMultiFile}
+            onRemove={handleRemoveFile}
+            onRemoveAll={handleRemoveAllFiles}
+          />
+        </CardContent>
+      </Card>
+
+      <GalleryManager open={galleryManagerOpen} onClose={() => {
+        setGalleryManagerOpen(false);
+      }} onDelete={() => { }} />
+    </>
   );
 };
 export default ImagesSection;
