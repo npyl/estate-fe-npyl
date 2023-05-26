@@ -293,12 +293,6 @@ const slice = createSlice({
     setCoverageFactor(state: propertyState, action): void {
       state.technicalFeatures.coverageFactor = action.payload;
     },
-    setArea(state: propertyState, action): void {
-      state.area = action.payload;
-    },
-    setPlotArea(state: propertyState, action): void {
-      state.plotArea = action.payload;
-    },
     setKeyCode(state: propertyState, action): void {
       state.keyCode = action.payload;
     },
@@ -380,19 +374,16 @@ const slice = createSlice({
     setBedrooms(state: propertyState, action): void {
       state.details.bedrooms = action.payload;
     },
-    setStoreroom(state: propertyState, action): void {
-      state.areas.storeroom = action.payload;
-    },
     setAvgUtils(state: propertyState, action): void {
       state.averageUtils = action.payload;
     },
 
+    // Areas
+    setStoreroom(state: propertyState, action): void {
+      state.areas.storeroom = action.payload;
+    },
     setCovered(state: propertyState, action): void {
       state.areas.covered = action.payload;
-    },
-    // setArea,
-    setPlot(state: propertyState, action): void {
-      state.areas.plot = action.payload;
     },
     setBasement(state: propertyState, action): void {
       state.areas.basement = action.payload;
@@ -403,10 +394,16 @@ const slice = createSlice({
     setGarden(state: propertyState, action): void {
       state.areas.garden = action.payload;
     },
+    setArea(state: propertyState, action): void {
+      state.area = action.payload;
+    },
+    setPlotArea(state: propertyState, action): void {
+      state.plotArea = action.payload;
+    },
+
     setStoreroomBool(state: propertyState, action): void {
       state.details.storeroom = action.payload;
     },
-
     setHeatingType(state: propertyState, action): void {
       state.heatingAndEnergy.heatingType = action.payload;
     },
@@ -478,6 +475,9 @@ const slice = createSlice({
       state.details.balconies[index].area = area;
     },
 
+    setBalconies(state: propertyState, action) {
+      state.areas.balconies = action.payload;
+    },
     setYearOfConstruction(state: propertyState, action): void {
       state.construction.yearOfConstruction = action.payload;
     },
@@ -1044,6 +1044,7 @@ export const {
   setBalconySide,
   setBalconyArea,
 
+  setBalconies,
   setBasement,
   setAttic,
   setGarden,
@@ -1279,7 +1280,7 @@ export const selectFacadeLength = ({ property }: RootState) =>
 export const selectInclination = ({ property }: RootState) =>
   property.technicalFeatures.inclination;
 
-export const selectPlot = ({ property }: RootState) => property.areas.plot;
+export const selectBalconiesArea = ({ property }: RootState) => property.areas.balconies;
 export const selectCovered = ({ property }: RootState) =>
   property.areas.covered;
 export const selectBasement = ({ property }: RootState) =>
