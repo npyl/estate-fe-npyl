@@ -16,7 +16,7 @@ import Image from "src/components/image/Image";
 import { UploadProps } from "../types";
 import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 
 interface Item {
     id: string;
@@ -34,17 +34,7 @@ export default function MultiFilePreviewDnd({
         return null;
     }
 
-    const initialItems: Item[] = [
-        ...files.map((file, index) => {
-            return {
-                id: `item-${index}`,
-                content: `item-${index}`,
-                data: fileData(file).preview!
-            }
-        })
-    ];
-
-    const [items, setItems] = useState<Item[]>(initialItems);
+    const [items, setItems] = useState<Item[]>([]);
 
     const handleDragEnd = (result: DropResult) => {
         if (!result.destination) return;
@@ -57,30 +47,39 @@ export default function MultiFilePreviewDnd({
         setItems(updatedItems);
     };
 
+    useMemo(() => {
+        setItems([...files.map((file, index) => {
+            return {
+                id: `item-${index}`,
+                content: `item-${index}`,
+                data: fileData(file).preview!
+            }
+        })])
+    }, [files]);
+
     return (
         <>
-            {/* <ImageList cols={3} rowHeight={164}>
-            </ImageList> */}
-
             <DragDropContext onDragEnd={handleDragEnd}>
                 <Droppable droppableId="droppable">
                     {(provided) => (
-                        <div {...provided.droppableProps} ref={provided.innerRef}>
+                        <ImageList {...provided.droppableProps} ref={provided.innerRef}>
                             {items.map((item, index) => (
-                                <Draggable key={item.id} draggableId={item.id} index={index}>
-                                    {(provided) => (
-                                        <div
-                                            ref={provided.innerRef}
-                                            {...provided.draggableProps}
-                                            {...provided.dragHandleProps}
-                                        >
-                                            <Image src={item.data} alt={item.content} />
-                                        </div>
-                                    )}
-                                </Draggable>
+                                <ImageListItem>
+                                    <Draggable key={item.id} draggableId={item.id} index={index}>
+                                        {(provided) => (
+                                            <div
+                                                ref={provided.innerRef}
+                                                {...provided.draggableProps}
+                                                {...provided.dragHandleProps}
+                                            >
+                                                <Image src={item.data} alt={item.content} />
+                                            </div>
+                                        )}
+                                    </Draggable>
+                                </ImageListItem>
                             ))}
                             {provided.placeholder}
-                        </div>
+                        </ImageList>
                     )}
                 </Droppable>
             </DragDropContext>
