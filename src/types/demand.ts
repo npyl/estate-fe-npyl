@@ -24,25 +24,25 @@ export interface IDemandFilters {
 }
 
 export interface IDemandFiltersPOST {
-  minBedrooms: number;
-  maxBedrooms: number;
-  minBathrooms: number;
-  maxBathrooms: number;
-  furnished: string;
-  maxCovered: number;
-  minCovered: number;
-  minPlot: number;
-  maxPlot: number;
-  minYearOfConstruction: number;
-  maxYearOfConstruction: number;
-  minFloor: string;
-  maxFloor: string;
-  parentCategory: string;
-  category: string;
-  state: string;
-  minPrice: number;
-  maxPrice: number;
-  labelIDs: number[];
+  minBedrooms?: number;
+  maxBedrooms?: number;
+  minBathrooms?: number;
+  maxBathrooms?: number;
+  furnished?: string;
+  maxCovered?: number;
+  minCovered?: number;
+  minPlot?: number;
+  maxPlot?: number;
+  minYearOfConstruction?: number;
+  maxYearOfConstruction?: number;
+  minFloor?: string;
+  maxFloor?: string;
+  parentCategory?: string;
+  category?: string;
+  state?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  labelIDs?: number[];
 }
 
 export interface IDemand {
