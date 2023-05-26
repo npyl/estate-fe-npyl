@@ -1,4 +1,4 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Box, Divider, Grid, Paper, Typography } from "@mui/material";
 import React from "react";
 import { List, ListItem } from "src/components/List";
 import { IProperties } from "src/types/properties";
@@ -17,41 +17,40 @@ const BalconiesSection: React.FC<BalconiesSectionProps> = (props) => {
         border: 1,
         borderColor: "divider",
         borderRadius: 1,
-        width: { md: "25%", sm: "100%" },
+        width: { md: "100%", sm: "100%" },
       }}
     >
       {balconies?.map((balcony, index) => {
         return (
-          <Grid
-            sx={{ border: 1, borderColor: "divider", borderRadius: 1 }}
-            item
-            key={index}
-          >
+          <Paper elevation={10} sx={{ overflow: "auto" }}>
             <Box
               sx={{
                 px: 3,
                 py: 1.5,
                 display: "flex",
-                justifyContent: "center",
+                justifyContent: "left",
               }}
             >
-              <Typography variant='h6'>Balcony No.{index + 1}</Typography>
+              <Typography variant="h6">Balcony No.{index + 1}</Typography>
             </Box>
-            <List>
-              <ListItem
-                label='Area'
-                value={balcony?.area}
-                align='horizontal'
-                divider
-              />
-              <ListItem
-                label='Side'
-                value={balcony?.side}
-                align='horizontal'
-                divider
-              />
-            </List>
-          </Grid>
+            <Divider></Divider>
+            <Grid container spacing={1}>
+              <Grid item xs={12} order={"row"} padding={0}>
+                <List>
+                  <ListItem
+                    label="Area"
+                    value={balcony?.area}
+                    align="horizontal"
+                  />
+                  <ListItem
+                    label="Side"
+                    value={balcony?.side}
+                    align="horizontal"
+                  />
+                </List>
+              </Grid>
+            </Grid>
+          </Paper>
         );
       })}
     </Box>

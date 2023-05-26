@@ -1,3 +1,4 @@
+import { Box, Paper } from "@mui/material";
 import { m } from "framer-motion";
 import { varFade } from "src/components/animate";
 import CarouselThumbnail from "src/components/CarouselThumbnail";
@@ -35,9 +36,13 @@ const ImageSection: React.FC<ImageSectionProps> = (props) => {
   });
 
   return (
-    <m.div variants={varFade().in}>
-      <CarouselThumbnail data={_carouselsExample} />
-    </m.div>
+    <Paper elevation={10} sx={{ overflow: "auto" }}>
+      <Box>
+        <m.div variants={varFade().in}>
+          <CarouselThumbnail data={_carouselsExample} />
+        </m.div>
+      </Box>
+    </Paper>
   );
 };
 

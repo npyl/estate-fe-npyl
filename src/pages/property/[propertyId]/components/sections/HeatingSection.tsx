@@ -1,7 +1,7 @@
 import React from "react";
 import { IProperties } from "src/types/properties";
 
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, Paper, Divider, Grid } from "@mui/material";
 
 import { List, ListItem, ListBooleanItem } from "src/components/List";
 
@@ -16,68 +16,69 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
   if (!heating) return null;
 
   return (
-    <>
+    <Paper elevation={10} sx={{ overflow: "auto" }}>
       <Box
         sx={{
           px: 3,
           py: 1.5,
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "left",
         }}
       >
         <Typography variant="h6">Heating & Energy</Typography>
       </Box>
-      <List>
-        <ListItem
-          label="Energy Class"
-          value={heating?.energyClass}
-          align="horizontal"
-          divider
-        />
-        <ListItem
-          label="Heating Type"
-          value={heating?.heatingType}
-          align="horizontal"
-          divider
-        />
-        <ListItem
-          label="Heating System"
-          value={heating?.heatingSystem}
-          align="horizontal"
-          divider
-        />
-        <ListItem
-          label="Electricity Type"
-          value={heating?.electricityType}
-          align="horizontal"
-          divider
-        />
-        <ListBooleanItem
-          label="Floor Heating"
-          status={heating?.floorHeating}
-          align="horizontal"
-          divider
-        />
-        <ListBooleanItem
-          label="Air Conditioning"
-          status={heating?.airConditioning}
-          align="horizontal"
-          divider
-        />
-        <ListBooleanItem
-          label="Solar Boiler"
-          status={heating?.solarBoiler}
-          align="horizontal"
-          divider
-        />
-        <ListItem
-          label="Economy Electricity"
-          value={heating?.offPeakElectricity}
-          align="horizontal"
-          divider
-        />
-      </List>
-    </>
+      <Divider></Divider>
+      <Grid container>
+        <Grid item xs={6}>
+          <List>
+            <ListItem
+              label="Energy Class"
+              value={heating?.energyClass}
+              align="horizontal"
+            />
+            <ListItem
+              label="Heating Type"
+              value={heating?.heatingType}
+              align="horizontal"
+            />
+            <ListItem
+              label="Heating System"
+              value={heating?.heatingSystem}
+              align="horizontal"
+            />
+            <ListItem
+              label="Electricity Type"
+              value={heating?.electricityType}
+              align="horizontal"
+            />
+          </List>
+        </Grid>
+        <Grid item xs={6}>
+          <List>
+            <ListBooleanItem
+              label="Floor Heating"
+              status={heating?.floorHeating}
+              align="horizontal"
+            />
+            <ListBooleanItem
+              label="Air Conditioning"
+              status={heating?.airConditioning}
+              align="horizontal"
+            />
+            <ListBooleanItem
+              label="Solar Boiler"
+              status={heating?.solarBoiler}
+              align="horizontal"
+            />
+            <ListItem
+              label="Economy Electricity"
+              value={heating?.offPeakElectricity}
+              align="horizontal"
+            />
+          </List>
+        </Grid>
+      </Grid>
+    </Paper>
   );
 };
 

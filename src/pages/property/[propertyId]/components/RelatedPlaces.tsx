@@ -62,34 +62,34 @@ function ApplicationItem({ app, duration }: ApplicationItemProps) {
   const { vicinity, rating, opening_hours, name } = app;
 
   return (
-    <Stack direction='row' alignItems='center' spacing={2}>
+    <Stack direction="row" alignItems="center" spacing={2}>
       <Box sx={{ flexGrow: 1, minWidth: 160 }}>
-        <Typography variant='subtitle2'>{name}</Typography>
+        <Typography variant="subtitle2">{name}</Typography>
         <Stack
-          direction='row'
-          alignItems='center'
+          direction="row"
+          alignItems="center"
           sx={{ mt: 0.5, color: "text.secondary" }}
         >
-          <Typography variant='caption' sx={{ ml: 0.5, mr: 1 }}>
+          <Typography variant="caption" sx={{ ml: 0.5, mr: 1 }}>
             Απόσταση: {duration?.distance?.text}
           </Typography>
           <DirectionsWalkIcon sx={{ fontSize: "14px" }} />
-          <Typography variant='caption' sx={{ ml: 0.5, mr: 1 }}>
+          <Typography variant="caption" sx={{ ml: 0.5, mr: 1 }}>
             {duration?.duration?.text} με τα πόδια
           </Typography>
         </Stack>
 
         <Stack
-          direction='row'
-          alignItems='center'
+          direction="row"
+          alignItems="center"
           sx={{ mt: 0.5, color: "text.secondary" }}
         >
-          <Typography variant='caption' sx={{ ml: 0.5, mr: 1 }}>
+          <Typography variant="caption" sx={{ ml: 0.5, mr: 1 }}>
             {vicinity}
           </Typography>
 
           <Label
-            variant='soft'
+            variant="soft"
             color={opening_hours?.open_now ? "success" : "error"}
           >
             {opening_hours?.open_now ? "Ανοιχτό τώρα" : "Κλειστό"}
@@ -97,12 +97,12 @@ function ApplicationItem({ app, duration }: ApplicationItemProps) {
         </Stack>
       </Box>
 
-      <Stack alignItems='flex-end' sx={{ pr: 3 }}>
+      <Stack alignItems="flex-end" sx={{ pr: 3 }}>
         <Rating
           readOnly
-          size='small'
+          size="small"
           precision={0.5}
-          name='reviews'
+          name="reviews"
           value={rating}
         />
       </Stack>

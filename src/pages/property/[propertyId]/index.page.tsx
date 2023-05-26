@@ -86,7 +86,7 @@ const SingleProperty: NextPage = () => {
   if (isSuccess) router.push("/");
 
   return (
-    <Box sx={{ width: "100%", paddingY: 3 }}>
+    <Box sx={{ width: "100%", paddingY: 1 }}>
       <ViewHeader
         resource="customer"
         onEdit={handleEdit}

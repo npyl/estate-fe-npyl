@@ -13,7 +13,7 @@ const VideoSection: React.FC<VideoSectionProps> = (props) => {
   if (!data || !data.video) return null;
 
   return (
-    <Stack spacing={2} direction={{ md: "row", xs: "column" }} p={2}>
+    <Paper elevation={10} sx={{ overflow: "auto" }}>
       <Box
         sx={{
           border: 1,
@@ -32,7 +32,7 @@ const VideoSection: React.FC<VideoSectionProps> = (props) => {
           allowFullScreen
         ></iframe>
       </Box>
-    </Stack>
+    </Paper>
   );
 };
 

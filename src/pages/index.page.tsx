@@ -13,7 +13,7 @@ const Home: NextPage = () => {
         <title>Estate</title>
       </Head>
       <Box
-        component='main'
+        component="main"
         sx={{
           flexGrow: 1,
           pt: 2,

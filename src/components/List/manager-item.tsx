@@ -27,8 +27,8 @@ const ListManagerItem: FC<ListManagerItemProps> = (props) => {
       <Button
         sx={{
           flex: 1,
-          maxWidth: "30%",
           float: "right",
+          height: "22px",
         }}
         variant="outlined"
         onClick={performViewManager}
