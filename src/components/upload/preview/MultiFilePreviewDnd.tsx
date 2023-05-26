@@ -27,6 +27,7 @@ interface Item {
 export default function MultiFilePreviewDnd({
     thumbnail,
     files,
+    onImageClick,
     onRemove,
     sx,
 }: UploadProps) {
@@ -72,7 +73,9 @@ export default function MultiFilePreviewDnd({
                                                 {...provided.draggableProps}
                                                 {...provided.dragHandleProps}
                                             >
-                                                <Image src={item.data} alt={item.content} />
+                                                <Image src={item.data} alt={item.content} onClick={() => {
+                                                    onImageClick && onImageClick(item.data, index);
+                                                }} />
                                             </div>
                                         )}
                                     </Draggable>

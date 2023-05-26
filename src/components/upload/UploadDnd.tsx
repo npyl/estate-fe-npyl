@@ -18,7 +18,6 @@ import { UploadProps } from "./types";
 import RejectionFiles from "./errors/RejectionFiles";
 import MultiFilePreviewDnd from "./preview/MultiFilePreviewDnd";
 import SingleFilePreview from "./preview/SingleFilePreview";
-import { useEffect } from "react";
 
 // ----------------------------------------------------------------------
 
@@ -50,6 +49,7 @@ export default function UploadDnd({
     //
     files,
     thumbnail,
+    onImageClick,
     onUpload,
     onRemove,
     onRemoveAll,
@@ -137,6 +137,7 @@ export default function UploadDnd({
                         <MultiFilePreviewDnd
                             files={files}
                             thumbnail={false}
+                            onImageClick={onImageClick}
                             onRemove={onRemove}
                         />
                     </Box>
