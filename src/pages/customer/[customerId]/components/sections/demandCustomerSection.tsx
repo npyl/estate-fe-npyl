@@ -45,54 +45,40 @@ const DemandCustomerSection: React.FC = (props) => {
           align="horizontal"
           
         /> */}
-
             <ListItem
               label="ParentCategory:"
               value={data?.demand.filters.parentCategory}
               align="horizontal"
             />
-
             <ListItem
               label="Furnished:"
               value={data?.demand.filters.furnished}
               align="horizontal"
             />
+            <ListLabelsItem
+              label="Labels:"
+              labels={data?.labels}
+              align="horizontal"
+            />
 
-            <ListLabelsItem label="Labels:" labels={data?.labels} />
-
             <ListItem
-              label="Minimum Bedrooms:"
-              value={data?.demand.filters.minBedrooms}
+              label="Construction Min-Max:"
+              value={` ${data?.demand.filters.minYearOfConstruction} - ${data?.demand.filters.maxYearOfConstruction}`}
               align="horizontal"
             />
             <ListItem
-              label="Minimum Covered:"
-              value={data?.demand.filters.minCovered}
+              label="Bedrooms Min-Max:"
+              value={` ${data?.demand.filters.minBedrooms} - ${data?.demand.filters.maxBedrooms}`}
               align="horizontal"
             />
             <ListItem
-              label="Minimum Price:"
-              value={data?.demand.filters.minPrice}
+              label="Covered Min-Max:"
+              value={`${data?.demand.filters.minCovered} - ${data?.demand.filters.maxCovered}`}
               align="horizontal"
             />
             <ListItem
-              label="Minimum Construction Year:"
-              value={data?.demand.filters.minYearOfConstruction}
-              align="horizontal"
-            />
-            <ListItem
-              label="Minimum Bathrooms Number:"
-              value={data?.demand.filters.minBathrooms}
-              align="horizontal"
-            />
-            <ListItem
-              label="Minimum Plot:"
-              value={data?.demand.filters.minPlot}
-              align="horizontal"
-            />
-            <ListItem
-              label="Minimum Floor:"
-              value={data?.demand.filters.minFloor}
+              label="Price Min-Max:"
+              value={`${data?.demand.filters.minPrice} - ${data?.demand.filters.maxPrice}`}
               align="horizontal"
             />
           </List>
@@ -124,39 +110,20 @@ const DemandCustomerSection: React.FC = (props) => {
               value={data?.demand.timeframe}
               align="horizontal"
             />
+
             <ListItem
-              label="Maximum Bedrooms:"
-              value={data?.demand.filters.maxBedrooms}
+              label="Bathrooms Number Min-Max:"
+              value={`${data?.demand.filters.minBathrooms} - ${data?.demand.filters.maxBathrooms}`}
               align="horizontal"
             />
             <ListItem
-              label="Maximum Covered:"
-              value={data?.demand.filters.maxCovered}
+              label="Plot Min-Max:"
+              value={`${data?.demand.filters.minPlot} - ${data?.demand.filters.maxPlot}`}
               align="horizontal"
             />
             <ListItem
-              label="Maximum Price:"
-              value={data?.demand.filters.maxPrice}
-              align="horizontal"
-            />
-            <ListItem
-              label="Maximum Construction Year:"
-              value={data?.demand.filters.maxYearOfConstruction}
-              align="horizontal"
-            />
-            <ListItem
-              label="Maximum Bathrooms Number:"
-              value={data?.demand.filters.maxBathrooms}
-              align="horizontal"
-            />
-            <ListItem
-              label="Maximum Plot:"
-              value={data?.demand.filters.maxPlot}
-              align="horizontal"
-            />
-            <ListItem
-              label="Maximum Floor:"
-              value={data?.demand.filters.maxFloor}
+              label="Floor Min-Max:"
+              value={`${data?.demand.filters.minFloor} - ${data?.demand.filters.maxFloor}`}
               align="horizontal"
             />
           </List>

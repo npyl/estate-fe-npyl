@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 // @mui
-import { Box } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { alpha, styled } from "@mui/material/styles";
 // utils
 import { bgGradient } from "src/utils/cssStyles";
@@ -27,8 +27,58 @@ import "yet-another-react-lightbox/styles.css";
 import { FullscreenRef } from "yet-another-react-lightbox";
 
 // ----------------------------------------------------------------------
-
-const THUMB_SIZE = 64;
+const data = [
+  {
+    id: "1",
+    title: "Image 1",
+    image: "image1.jpg",
+    description: "Description 1",
+  },
+  {
+    id: "2",
+    title: "Image 2",
+    image: "image2.jpg",
+    description: "Description 2",
+  },
+  {
+    id: "3",
+    title: "Image 3",
+    image: "image3.jpg",
+    description: "Description 3",
+  },
+  {
+    id: "4",
+    title: "Image 4",
+    image: "image4.jpg",
+    description: "Description 4",
+  },
+  {
+    id: "5",
+    title: "Image 5",
+    image: "image5.jpg",
+    description: "Description 5",
+  },
+  {
+    id: "6",
+    title: "Image 6",
+    image: "image6.jpg",
+    description: "Description 6",
+  },
+  {
+    id: "7",
+    title: "Image 7",
+    image: "image7.jpg",
+    description: "Description 7",
+  },
+  {
+    id: "8",
+    title: "Image 8",
+    image: "image8.jpg",
+    description: "Description 8",
+  },
+];
+const THUMB_SIZE = 150;
+const THUMB_SIZEy = 100;
 
 type Props = {
   data: {
@@ -56,8 +106,8 @@ const StyledThumbnailsContainer = styled("div", {
       opacity: 1,
     },
     "& > div": {
-      padding: theme.spacing(0, 0.75),
-      paddingBottom: 10,
+      padding: theme.spacing(0, 0.15),
+      paddingBottom: 0.5,
     },
   },
 
@@ -127,7 +177,7 @@ export default function CarouselThumbnail({ data }: Props) {
     focusOnSelect: true,
     variableWidth: true,
     centerPadding: "0px",
-    slidesToShow: data.length,
+    slidesToShow: data.length > 1 ? 1 : data.length,
   };
 
   useEffect(() => {
@@ -188,8 +238,8 @@ export default function CarouselThumbnail({ data }: Props) {
             src={item.image}
             sx={{
               width: THUMB_SIZE,
-              height: THUMB_SIZE,
-              borderRadius: 1.5,
+              height: THUMB_SIZEy,
+              borderRadius: 0,
               cursor: "pointer",
               ...(currentIndex === index && {
                 border: (theme) => `solid 2px ${theme.palette.primary.main}`,
@@ -237,9 +287,8 @@ export default function CarouselThumbnail({ data }: Props) {
         },
       }}
     >
-      {renderLargeImg}
-
-      {renderThumbnails}
+      <Grid>{renderLargeImg}</Grid>
+      <Grid>{renderThumbnails}</Grid>
 
       <Lightbox
         open={galleryOpen}

@@ -1,7 +1,7 @@
 import React from "react";
 import { IProperties } from "src/types/properties";
 
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, Paper, Divider, Grid } from "@mui/material";
 
 import { List, ListItem } from "src/components/List";
 
@@ -16,96 +16,65 @@ const AreaSection: React.FC<AreaSectionProps> = (props) => {
   if (!areas) return null;
 
   return (
-    <>
+    <Paper elevation={10} sx={{ overflow: "auto" }}>
       <Box
         sx={{
           px: 3,
           py: 1.5,
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "left",
         }}
       >
         <Typography variant="h6">Area</Typography>
       </Box>
-      <List>
-        {areas?.first && (
-          <ListItem
-            label="First"
-            value={areas?.first}
-            align="horizontal"
-            divider
-          />
+      <Divider></Divider>
+      <Grid container>
+        <Grid item xs={6}>
+          <List>
+            {/* {areas?.first && (
+          <ListItem label="First" value={areas?.first} align="horizontal" />
         )}
         {areas?.second && (
-          <ListItem
-            label="Second"
-            value={areas?.second}
-            align="horizontal"
-            divider
-          />
+          <ListItem label="Second" value={areas?.second} align="horizontal" />
         )}
         {areas?.third && (
-          <ListItem
-            label="Third"
-            value={areas?.third}
-            align="horizontal"
-            divider
-          />
+          <ListItem label="Third" value={areas?.third} align="horizontal" />
         )}
         {areas?.fourth && (
-          <ListItem
-            label="Fourth"
-            value={areas?.fourth}
-            align="horizontal"
-            divider
-          />
+          <ListItem label="Fourth" value={areas?.fourth} align="horizontal" />
         )}
         {areas?.fifth && (
-          <ListItem
-            label="Fifth"
-            value={areas?.fifth}
-            align="horizontal"
-            divider
-          />
-        )}
+          <ListItem label="Fifth" value={areas?.fifth} align="horizontal" />
+        )} */}
 
-        <ListItem label="Plot" value={areas?.plot} align="horizontal" divider />
-        <ListItem
-          label="Covered"
-          value={areas?.covered}
-          align="horizontal"
-          divider
-        />
-        {areas?.basement && (
+            <ListItem label="Plot" value={areas?.plot} align="horizontal" />
+          </List>
+        </Grid>
+        <Grid item xs={6}>
+          <List>
+            <ListItem
+              label="Covered"
+              value={areas?.covered}
+              align="horizontal"
+            />
+            {/* {areas?.basement && (
           <ListItem
             label="Basement"
             value={areas?.basement}
             align="horizontal"
-            divider
           />
         )}
         {areas?.attic && (
-          <ListItem
-            label="Attic"
-            value={areas?.attic}
-            align="horizontal"
-            divider
-          />
+          <ListItem label="Attic" value={areas?.attic} align="horizontal" />
         )}
         {areas?.garden && (
-          <ListItem
-            label="Garden"
-            value={areas?.garden}
-            align="horizontal"
-            divider
-          />
+          <ListItem label="Garden" value={areas?.garden} align="horizontal" />
         )}
         {areas?.balconies && (
           <ListItem
             label="Balconies"
             value={areas?.balconies}
             align="horizontal"
-            divider
           />
         )}
         {areas?.storeroom && (
@@ -113,7 +82,6 @@ const AreaSection: React.FC<AreaSectionProps> = (props) => {
             label="Storeroom"
             value={areas?.storeroom}
             align="horizontal"
-            divider
           />
         )}
         {areas?.groundFloor && (
@@ -121,11 +89,12 @@ const AreaSection: React.FC<AreaSectionProps> = (props) => {
             label="Ground Floor"
             value={areas?.groundFloor}
             align="horizontal"
-            divider
           />
-        )}
-      </List>
-    </>
+        )} */}
+          </List>
+        </Grid>
+      </Grid>
+    </Paper>
   );
 };
 

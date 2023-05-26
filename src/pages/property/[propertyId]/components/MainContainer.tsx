@@ -1,4 +1,4 @@
-import { Box, Stack } from "@mui/material";
+import { Box, Grid, Stack } from "@mui/material";
 
 interface MainContainerProps {
   ImageSection: JSX.Element;
@@ -34,125 +34,55 @@ const MainContainer: React.FC<MainContainerProps> = (props) => {
   } = props;
 
   return (
-    <Box>
-      <Stack direction={{ md: "row", xs: "column" }} spacing={2}>
-        <Box
-          sx={{
-            border: 1,
-            borderColor: "divider",
-            borderRadius: 1,
-            width: { md: "60%", sm: "100%" },
-          }}
-        >
-          {ImageSection}
-        </Box>
-        <Box
-          sx={{
-            border: 1,
-            borderColor: "divider",
-            borderRadius: 1,
-            width: { md: "40%", sm: "100%" },
-          }}
-        >
-          {BasicSection}
-        </Box>
-      </Stack>
-      <Stack spacing={2} direction={{ md: "row", xs: "column" }} p={2}>
-        <Box
-          sx={{
-            border: 1,
-            borderColor: "divider",
-            borderRadius: 1,
-            width: { md: "25%", sm: "100%" },
-          }}
-        >
-          {DetailsSection}
-        </Box>
-
-        <Box
-          sx={{
-            border: 1,
-            borderColor: "divider",
-            borderRadius: 1,
-            width: { md: "25%", sm: "100%" },
-          }}
-        >
-          {HeatingSection}
-        </Box>
-
-        <Box
-          sx={{
-            border: 1,
-            borderColor: "divider",
-            borderRadius: 1,
-            width: { md: "25%", sm: "100%" },
-          }}
-        >
-          {AreaSection}
-        </Box>
-
-        <Box
-          sx={{
-            border: 1,
-            borderColor: "divider",
-            borderRadius: 1,
-            width: { md: "25%", sm: "100%" },
-          }}
-        >
-          {DistanceSection}
-        </Box>
-      </Stack>
-      <Stack direction={{ md: "row", xs: "column" }} p={2}>
-        <Box
-          sx={{
-            border: 1,
-            borderColor: "divider",
-            borderRadius: 1,
-            width: { sm: "50%", xs: "100%" },
-          }}
-        >
-          {BlueprintsSection}
-        </Box>
-
-        {ParkingsSection}
-        {BalconiesSection}
-      </Stack>
-
-      <Stack spacing={2} direction={{ md: "row", xs: "column" }} p={2}>
-        <Box
-          sx={{
-            border: 1,
-            borderColor: "divider",
-            borderRadius: 1,
-            width: { md: "40%", sm: "100%" },
-          }}
-        >
-          {NotesSection}
-        </Box>
-        <Box
-          sx={{
-            border: 1,
-            borderColor: "divider",
-            borderRadius: 1,
-            width: { md: "25%", sm: "100%" },
-          }}
-        >
-          {SuitableFor}
-        </Box>
-        <Box
-          sx={{
-            border: 1,
-            borderColor: "divider",
-            borderRadius: 1,
-            width: { md: "35%", sm: "100%" },
-          }}
-        >
-          {TechnicalFeatures}
-        </Box>
-      </Stack>
-
-      {VideoSection}
-    </Box>
+    <Grid container spacing={1}>
+      <Grid item xs={8} order={"row"} padding={0}>
+        <Stack spacing={1}>
+          <Grid item xs={12}>
+            {ImageSection}
+          </Grid>
+          <Grid item xs={12}>
+            {DetailsSection}
+          </Grid>
+          <Grid item xs={12}>
+            {TechnicalFeatures}
+          </Grid>
+          <Grid item xs={8}>
+            {BlueprintsSection}
+          </Grid>
+          <Grid item xs={12}>
+            {NotesSection}
+          </Grid>
+          <Grid item xs={12}>
+            {VideoSection}
+          </Grid>
+        </Stack>
+      </Grid>
+      <Grid item xs={4} spacing={1} order={"row"}>
+        <Stack spacing={1}>
+          <Grid item xs={12}>
+            {BasicSection}
+          </Grid>
+          <Grid item xs={12}>
+            {HeatingSection}
+          </Grid>
+          <Grid item xs={12}>
+            {AreaSection}
+          </Grid>
+          <Grid item xs={12}>
+            {DistanceSection}
+          </Grid>
+          <Grid item xs={12}>
+            {SuitableFor}
+          </Grid>
+          <Grid item xs={12}>
+            {BalconiesSection}
+          </Grid>
+          <Grid item xs={12}>
+            {ParkingsSection}
+          </Grid>
+        </Stack>
+      </Grid>
+    </Grid>
   );
 };
 export default MainContainer;

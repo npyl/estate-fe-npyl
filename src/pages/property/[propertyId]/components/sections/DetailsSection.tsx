@@ -1,6 +1,6 @@
 import { IProperties } from "src/types/properties";
 
-import { Box, Typography } from "@mui/material";
+import { Box, Divider, Grid, Paper, Typography } from "@mui/material";
 
 import { List, ListBooleanItem, ListItem } from "src/components/List";
 
@@ -13,117 +13,111 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
   const details = data?.details;
 
   return (
-    <>
+    <Paper elevation={10} sx={{ overflow: "auto" }}>
       <Box
         sx={{
           px: 3,
           py: 1.5,
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "left",
         }}
       >
-        <Typography variant='h6'>Basic Details</Typography>
+        <Typography variant="h6"> Details</Typography>
       </Box>
-      <List>
-        <ListItem
-          label='Floor'
-          value={details?.floor}
-          align='horizontal'
-          divider
-        />
-        <ListItem
-          label='Layers'
-          value={details?.layers}
-          align='horizontal'
-          divider
-        />
-        <ListItem
-          label='Bedrooms'
-          value={details?.bedrooms}
-          align='horizontal'
-          divider
-        />
-        <ListItem
-          label='Kitchens'
-          value={details?.kitchens}
-          align='horizontal'
-          divider
-        />
-        <ListItem
-          label='Bathrooms'
-          value={details?.bathrooms}
-          align='horizontal'
-          divider
-        />
-        <ListItem label='W/C' value={details?.wc} align='horizontal' divider />
-        <ListItem
-          label='Living Rooms'
-          value={details?.livingrooms}
-          align='horizontal'
-          divider
-        />
-        <ListItem
-          label='Orientation'
-          value={details?.orientation}
-          align='horizontal'
-          divider
-        />
-        <ListBooleanItem
-          label='Floor Apartment'
-          status={details?.floorApartment}
-          align='horizontal'
-          divider
-        />
-        <ListBooleanItem
-          label='Penthouse'
-          status={details?.penthouse}
-          align='horizontal'
-          divider
-        />
-        <ListBooleanItem
-          label='Storeroom'
-          status={details?.storeroom}
-          align='horizontal'
-          divider
-        />
-        <ListBooleanItem
-          label='Attic'
-          status={details?.attic}
-          align='horizontal'
-          divider
-        />
-        <ListBooleanItem
-          label='Playroom'
-          status={details.playroom}
-          align='horizontal'
-          divider
-        />
-        <ListItem
-          label='View Type'
-          value={details.viewType}
-          align='horizontal'
-          divider
-        />
-        <ListItem
-          label='Zone Type'
-          value={details.zoneType}
-          align='horizontal'
-          divider
-        />
-        <ListItem
-          label='Land Use'
-          value={details.landUse}
-          align='horizontal'
-          divider
-        />
-        <ListItem
-          label='Accessibility'
-          value={details.accessibility}
-          align='horizontal'
-          divider
-        />
-      </List>
-    </>
+      <Divider></Divider>
+      <Grid container>
+        <Grid item xs={4}>
+          <List>
+            <ListItem label="Floor" value={details?.floor} align="horizontal" />
+            <ListItem
+              label="Layers"
+              value={details?.layers}
+              align="horizontal"
+            />
+            <ListItem
+              label="Bedrooms"
+              value={details?.bedrooms}
+              align="horizontal"
+            />
+            <ListItem
+              label="Kitchens"
+              value={details?.kitchens}
+              align="horizontal"
+            />
+            <ListItem
+              label="Bathrooms"
+              value={details?.bathrooms}
+              align="horizontal"
+            />
+            <ListItem label="W/C" value={details?.wc} align="horizontal" />
+          </List>
+        </Grid>
+        <Grid item xs={4}>
+          <List>
+            <ListItem
+              label="Living Rooms"
+              value={details?.livingrooms}
+              align="horizontal"
+            />
+            <ListItem
+              label="Orientation"
+              value={details?.orientation}
+              align="horizontal"
+            />
+            <ListBooleanItem
+              label="Floor Apartment"
+              status={details?.floorApartment}
+              align="horizontal"
+            />
+
+            <ListBooleanItem
+              label="Penthouse"
+              status={details?.penthouse}
+              align="horizontal"
+            />
+            <ListBooleanItem
+              label="Storeroom"
+              status={details?.storeroom}
+              align="horizontal"
+            />
+            <ListBooleanItem
+              label="Attic"
+              status={details?.attic}
+              align="horizontal"
+            />
+          </List>
+        </Grid>
+        <Grid item xs={4}>
+          <List>
+            <ListBooleanItem
+              label="Playroom"
+              status={details.playroom}
+              align="horizontal"
+            />
+            <ListItem
+              label="View Type"
+              value={details.viewType}
+              align="horizontal"
+            />
+            <ListItem
+              label="Zone Type"
+              value={details.zoneType}
+              align="horizontal"
+            />
+            <ListItem
+              label="Land Use"
+              value={details.landUse}
+              align="horizontal"
+            />
+            <ListItem
+              label="Accessibility"
+              value={details.accessibility}
+              align="horizontal"
+            />
+          </List>
+        </Grid>
+      </Grid>
+    </Paper>
   );
 };
 

@@ -10,7 +10,7 @@ const Home: NextPage = () => {
   return (
     <>
       <Box
-        component='main'
+        component="main"
         sx={{
           flexGrow: 1,
           pt: 2,

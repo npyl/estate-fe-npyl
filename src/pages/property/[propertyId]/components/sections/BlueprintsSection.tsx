@@ -3,7 +3,7 @@ import { IProperties } from "src/types/properties";
 
 import CarouselWithLightbox from "src/components/CarouselWithLightbox";
 
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, Paper, Divider } from "@mui/material";
 import { IFileModel } from "src/types/fileModel";
 
 interface BlueprintsSectionProps {
@@ -31,21 +31,22 @@ const BlueprintsSection: React.FC<BlueprintsSectionProps> = (props) => {
   });
 
   return (
-    <>
+    <Paper elevation={10} sx={{ overflow: "auto" }}>
       <Box
         sx={{
           px: 3,
           py: 1.5,
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "left",
         }}
       >
         <Typography variant="h6">Blueprints</Typography>
       </Box>
+      <Divider></Divider>
       {_carouselData && _carouselData.length > 0 && (
         <CarouselWithLightbox data={_carouselData} />
       )}
-    </>
+    </Paper>
   );
 };
 
