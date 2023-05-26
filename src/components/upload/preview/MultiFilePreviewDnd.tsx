@@ -74,7 +74,7 @@ export default function MultiFilePreviewDnd({
                                                 {...provided.dragHandleProps}
                                             >
                                                 <Image src={item.data} alt={item.content} onClick={() => {
-                                                    onImageClick && onImageClick(item.data, index);
+                                                    onImageClick && onImageClick(files[index] as File);
                                                 }} />
                                             </div>
                                         )}

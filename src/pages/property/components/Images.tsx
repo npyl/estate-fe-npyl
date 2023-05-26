@@ -12,8 +12,7 @@ interface IImageSectionProps {
 
 const ImagesSection: React.FC<IImageSectionProps> = ({ files, setFiles }) => {
 
-  const [image, setImage] = useState("");
-  const [index, setIndex] = useState(0);
+  const [galleryImageFile, setGalleryImageFile] = useState<File>();
   const [galleryManagerOpen, setGalleryManagerOpen] = useState(false);
 
   const handleDropMultiFile = useCallback(
@@ -39,9 +38,8 @@ const ImagesSection: React.FC<IImageSectionProps> = ({ files, setFiles }) => {
     setFiles([]);
   };
 
-  const handleImageClick = (imageContents: string, index: number) => {
-    setImage(imageContents);
-    setIndex(index);
+  const handleImageClick = (imageFile: File) => {
+    setGalleryImageFile(imageFile);
     setGalleryManagerOpen(true);
   }
 
@@ -62,9 +60,15 @@ const ImagesSection: React.FC<IImageSectionProps> = ({ files, setFiles }) => {
         </CardContent>
       </Card>
 
-      <GalleryManager open={galleryManagerOpen} image={image} index={index} onClose={() => {
-        setGalleryManagerOpen(false);
-      }} onDelete={() => { }} />
+      {galleryImageFile &&
+        <GalleryManager open={galleryManagerOpen} fileInput={galleryImageFile} onClose={() => {
+          setGalleryManagerOpen(false);
+        }} onDelete={(file: File) => {
+          handleRemoveFile(file);
+          setGalleryManagerOpen(false);
+        }} />
+      }
+
     </>
   );
 };

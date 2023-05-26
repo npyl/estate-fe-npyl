@@ -2,41 +2,42 @@ import { Dialog, DialogTitle, DialogContent, Grid, Button } from '@mui/material'
 import { Delete } from '@mui/icons-material';
 import { SoftButton } from './SoftButton';
 
+import { fileData } from "src/components/file-thumbnail";
 import Image from './image/Image';
 
 interface IGalleryManager {
     open: boolean;
-    image: string;
-    index: number; // index of image in the slice
-    onDelete: () => void;
+    fileInput: File;
+    onDelete: (file: File) => void;
     onClose: () => void;
 }
 
-const GalleryManager = (props: IGalleryManager) => {
-    const { open, image, index, onDelete, onClose } = props;
+const GalleryManager: React.FC<IGalleryManager> = (props) => {
+    const { open, fileInput, onDelete, onClose } = props;
 
-    return <>
+    const data = fileData(fileInput);
+    const image = data?.preview;
+
+    if (!image) return null; // Return null instead of undefined
+
+    return (
         <Dialog
             fullWidth
             open={open}
-            onClose={() => {
-                onClose();
-            }}
+            onClose={onClose}
             closeAfterTransition={true}
         >
-            <DialogTitle>
-                Gallery Manager
-            </DialogTitle>
+            <DialogTitle>Gallery Manager</DialogTitle>
             <DialogContent>
                 <Grid container sx={{ minHeight: 600, minWidth: 'auto' }}>
                     <Grid item xs={8}>
-                        <Image src={image} ratio='16/9' />
+                        <Image src={image} ratio="16/9" />
                     </Grid>
                     <Grid item xs={4}>
                         <SoftButton
                             color="error"
                             onClick={() => {
-                                onDelete();
+                                onDelete(fileInput);
                             }}
                         >
                             <Delete />
@@ -45,9 +46,7 @@ const GalleryManager = (props: IGalleryManager) => {
                         <Button
                             variant="outlined"
                             color="secondary"
-                            onClick={() => {
-                                onClose();
-                            }}
+                            onClick={onClose}
                         >
                             Close
                         </Button>
@@ -55,8 +54,7 @@ const GalleryManager = (props: IGalleryManager) => {
                 </Grid>
             </DialogContent>
         </Dialog>
-
-    </>
+    );
 };
 
 export default GalleryManager;
