@@ -26,15 +26,15 @@ const DashboardNavbarRoot = styled(AppBar)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
   ...(theme.palette.mode === "light"
     ? {
-        boxShadow: theme.shadows[3],
-      }
+      boxShadow: theme.shadows[3],
+    }
     : {
-        backgroundColor: theme.palette.background.paper,
-        borderBottomColor: theme.palette.divider,
-        borderBottomStyle: "solid",
-        borderBottomWidth: 1,
-        boxShadow: "none",
-      }),
+      backgroundColor: theme.palette.background.paper,
+      borderBottomColor: theme.palette.divider,
+      borderBottomStyle: "solid",
+      borderBottomWidth: 1,
+      boxShadow: "none",
+    }),
 }));
 
 const AccountButton = () => {
@@ -116,7 +116,7 @@ export const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
           >
             <Link href='/'>
               <Typography color='neutral.900' variant={"h5"}>
-                Estate
+                Mordor
               </Typography>
             </Link>
           </Box>

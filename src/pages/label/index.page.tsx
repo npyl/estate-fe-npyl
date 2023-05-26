@@ -20,7 +20,7 @@ import React, { useRef, useState } from "react";
 import { BlockPicker } from "react-color";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-import Label from "src/components/label";
+import { Label } from "src/components/label";
 import { useAllCustomersQuery } from "src/services/customers";
 import {
   useCreateLabelForCustomerMutation,

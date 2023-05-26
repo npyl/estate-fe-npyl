@@ -185,18 +185,8 @@ const initialState: propertyState = {
     accessibility: "",
     landUse: "",
     zoneType: "",
-    balconies: [
-      {
-        side: "",
-        area: 0,
-      },
-    ],
-    parkings: [
-      {
-        parkingType: "",
-        spots: 0,
-      },
-    ],
+    balconies: [],
+    parkings: [],
   },
   location: {
     street: "0",
@@ -303,12 +293,6 @@ const slice = createSlice({
     setCoverageFactor(state: propertyState, action): void {
       state.technicalFeatures.coverageFactor = action.payload;
     },
-    setArea(state: propertyState, action): void {
-      state.area = action.payload;
-    },
-    setPlotArea(state: propertyState, action): void {
-      state.plotArea = action.payload;
-    },
     setKeyCode(state: propertyState, action): void {
       state.keyCode = action.payload;
     },
@@ -390,19 +374,16 @@ const slice = createSlice({
     setBedrooms(state: propertyState, action): void {
       state.details.bedrooms = action.payload;
     },
-    setStoreroom(state: propertyState, action): void {
-      state.areas.storeroom = action.payload;
-    },
     setAvgUtils(state: propertyState, action): void {
       state.averageUtils = action.payload;
     },
 
+    // Areas
+    setStoreroom(state: propertyState, action): void {
+      state.areas.storeroom = action.payload;
+    },
     setCovered(state: propertyState, action): void {
       state.areas.covered = action.payload;
-    },
-    // setArea,
-    setPlot(state: propertyState, action): void {
-      state.areas.plot = action.payload;
     },
     setBasement(state: propertyState, action): void {
       state.areas.basement = action.payload;
@@ -413,10 +394,35 @@ const slice = createSlice({
     setGarden(state: propertyState, action): void {
       state.areas.garden = action.payload;
     },
+    setArea(state: propertyState, action): void {
+      state.area = action.payload;
+    },
+    setGroundFloor(state: propertyState, action): void {
+      state.areas.groundFloor = action.payload;
+    },
+    setFirst(state: propertyState, action): void {
+      state.areas.first = action.payload;
+    },
+    setSecond(state: propertyState, action): void {
+      state.areas.second = action.payload;
+    },
+    setThird(state: propertyState, action): void {
+      state.areas.third = action.payload;
+    },
+    setFourth(state: propertyState, action): void {
+      state.areas.fourth = action.payload;
+    },
+    setFifth(state: propertyState, action): void {
+      state.areas.fifth = action.payload;
+    },
+
+    setPlotArea(state: propertyState, action): void {
+      state.plotArea = action.payload;
+    },
+
     setStoreroomBool(state: propertyState, action): void {
       state.details.storeroom = action.payload;
     },
-
     setHeatingType(state: propertyState, action): void {
       state.heatingAndEnergy.heatingType = action.payload;
     },
@@ -430,15 +436,67 @@ const slice = createSlice({
       state.heatingAndEnergy.airConditioning = action.payload;
     },
 
-    // TODO:
-    setParkingType(state: propertyState, action): void { },
-    setSpots(state: propertyState, action): void { },
-    setBalconySide(state: propertyState, action): void { },
-    setBalconies(state: propertyState, action): void {
-      state.areas.balconies;
+    // Parkings & Balconies
+    addParking(state: propertyState, { payload }) {
+      state.details.parkings.push(payload);
     },
-    // END TODO
+    removeParking(state: propertyState, { payload }) {
+      const indexToRemove = payload;
+      if (indexToRemove === null) return;
 
+      const newArray = [
+        ...state.details.parkings.slice(0, indexToRemove),
+        ...state.details.parkings.slice(indexToRemove + 1),
+      ];
+
+      state.details.parkings = newArray;
+    },
+    setParkingType(state: propertyState, { payload }) {
+      const index = payload.parkingIndex;
+      const type = payload.type;
+      if (index === null || !type) return;
+
+      state.details.parkings[index].parkingType = type;
+    },
+    setParkingSpots(state: propertyState, { payload }) {
+      const index = payload.parkingIndex;
+      const spots = payload.spots;
+      if (index === null || !spots) return;
+
+      state.details.parkings[index].spots = spots;
+    },
+    addBalcony(state: propertyState, { payload }) {
+      state.details.balconies.push(payload);
+    },
+    removeBalcony(state: propertyState, { payload }) {
+      const indexToRemove = payload;
+      if (indexToRemove === null) return;
+
+      const newArray = [
+        ...state.details.balconies.slice(0, indexToRemove),
+        ...state.details.balconies.slice(indexToRemove + 1),
+      ];
+
+      state.details.balconies = newArray;
+    },
+    setBalconySide(state: propertyState, { payload }) {
+      const index = payload.balconyIndex;
+      const side = payload.side;
+      if (index === null || !side) return;
+
+      state.details.balconies[index].side = side;
+    },
+    setBalconyArea(state: propertyState, { payload }) {
+      const index = payload.balconyIndex;
+      const area = payload.area;
+      if (index === null || !area) return;
+
+      state.details.balconies[index].area = area;
+    },
+
+    setBalconies(state: propertyState, action) {
+      state.areas.balconies = action.payload;
+    },
     setYearOfConstruction(state: propertyState, action): void {
       state.construction.yearOfConstruction = action.payload;
     },
@@ -961,8 +1019,21 @@ export const {
   setState,
   setPrice,
   setRented,
+
+  // Areas
   setArea,
   setPlotArea,
+  setBalconies,
+  setBasement,
+  setAttic,
+  setGarden,
+  setGroundFloor,
+  setFirst,
+  setSecond,
+  setThird,
+  setFourth,
+  setFifth,
+
   setKeyCode,
   setStreet,
   setNumber,
@@ -994,14 +1065,17 @@ export const {
   setHeatingSystem,
   setFloorHeating,
   setAirConditioning,
+
+  // Parkings & Balconies
+  addParking,
+  removeParking,
   setParkingType,
-  setSpots,
+  setParkingSpots,
+  addBalcony,
+  removeBalcony,
   setBalconySide,
-  setPlot,
-  setBasement,
-  setAttic,
-  setGarden,
-  setBalconies,
+  setBalconyArea,
+
   setPublicTransportation,
   setRooms,
   setHasAttic,
@@ -1083,18 +1157,15 @@ export const selectRegion = ({ property }: RootState) =>
 export const selectCountry = ({ property }: RootState) =>
   property.location.country;
 
-// property.details.furnished;
 export const selectOrientation = ({ property }: RootState) =>
   property.details.orientation;
-
-// property.details.floorType;
 export const selectLandUse = ({ property }: RootState) =>
   property.details.landUse;
 export const selectViewType = ({ property }: RootState) =>
   property.details.viewType;
-
 export const selectAccessibility = ({ property }: RootState) =>
   property.details.accessibility;
+
 export const selectEnergyClass = ({ property }: RootState) =>
   property.heatingAndEnergy.energyClass;
 export const selectOffPeakElectricity = ({ property }: RootState) =>
@@ -1234,7 +1305,8 @@ export const selectFacadeLength = ({ property }: RootState) =>
 export const selectInclination = ({ property }: RootState) =>
   property.technicalFeatures.inclination;
 
-export const selectPlot = ({ property }: RootState) => property.areas.plot;
+// Areas
+export const selectBalconiesArea = ({ property }: RootState) => property.areas.balconies;
 export const selectCovered = ({ property }: RootState) =>
   property.areas.covered;
 export const selectBasement = ({ property }: RootState) =>
@@ -1243,13 +1315,16 @@ export const selectGarden = ({ property }: RootState) => property.areas.garden;
 export const selectStoreroom = ({ property }: RootState) =>
   property.areas.storeroom;
 export const selectAttic = ({ property }: RootState) => property.areas.attic;
+export const selectGroundFloor = ({ property }: RootState) => property.areas.groundFloor;
+export const selectFirst = ({ property }: RootState) => property.areas.first;
+export const selectSecond = ({ property }: RootState) => property.areas.second;
+export const selectThird = ({ property }: RootState) => property.areas.third;
+export const selectFourth = ({ property }: RootState) => property.areas.fourth;
+export const selectFifth = ({ property }: RootState) => property.areas.fifth;
 
-// TODO: these are needed foreach parking & each balcony; How should we do it?
-export const selectParkingType = ({ property }: RootState) => "Garage";
-export const selectSpots = ({ property }: RootState) => 0;
-export const selectBalconySide = ({ property }: RootState) => "Front";
-export const selectBalconies = ({ property }: RootState) =>
-  property.areas.balconies;
+// Parkings & Balconies
+export const selectParkings = ({ property }: RootState) => property.details.parkings;
+export const selectBalconies = ({ property }: RootState) => property.details.balconies;
 
 export const selectPublicTransportation = ({ property }: RootState) =>
   property.distances.publicTransport;
