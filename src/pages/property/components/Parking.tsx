@@ -1,5 +1,5 @@
 import { Grid, MenuItem, Paper, TextField, Typography, Box, IconButton } from "@mui/material";
-import { AddCircle } from "@mui/icons-material";
+import { AddCircle, Cancel } from "@mui/icons-material";
 import * as React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
@@ -8,6 +8,7 @@ import {
   setParkingType,
   setParkingSpots,
   addParking,
+  removeParking,
 } from "src/slices/property";
 import { useAllGlobalsQuery } from "src/services/global";
 import OnlyNumbersInput from "./OnlyNumbers";
@@ -39,10 +40,10 @@ const ParkingSection: React.FC<any> = () => {
       </Box>
 
       <Grid item xs={12} padding={1}>
-        <Grid container spacing={2}>
+        <Grid container spacing={1}>
           {parkings.map((parking, index) => {
             return <>
-              <Grid item xs={6} key={index}>
+              <Grid item xs={5.5} key={index}>
                 <TextField
                   fullWidth
                   id="outlined-select-currency"
@@ -62,10 +63,20 @@ const ParkingSection: React.FC<any> = () => {
                 </TextField>
               </Grid>
 
-              <Grid item xs={6}>
+              <Grid item xs={5.5}>
                 <OnlyNumbersInput label="Number of Spots" value={parking.spots} onChange={(value) => {
                   dispatch(setParkingSpots({ parkingIndex: index, spots: value }));
                 }} />
+              </Grid>
+
+              <Grid item xs={1}>
+                <IconButton
+                  onClick={() => {
+                    dispatch(removeParking(index));
+                  }}
+                >
+                  <Cancel />
+                </IconButton>
               </Grid>
             </>
           })}

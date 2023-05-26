@@ -424,6 +424,17 @@ const slice = createSlice({
     addParking(state: propertyState, { payload }) {
       state.details.parkings.push(payload);
     },
+    removeParking(state: propertyState, { payload }) {
+      const indexToRemove = payload;
+      if (indexToRemove === null) return;
+
+      const newArray = [
+        ...state.details.parkings.slice(0, indexToRemove),
+        ...state.details.parkings.slice(indexToRemove + 1),
+      ];
+
+      state.details.parkings = newArray;
+    },
     setParkingType(state: propertyState, { payload }) {
       const index = payload.parkingIndex;
       const type = payload.type;
@@ -440,6 +451,17 @@ const slice = createSlice({
     },
     addBalcony(state: propertyState, { payload }) {
       state.details.balconies.push(payload);
+    },
+    removeBalcony(state: propertyState, { payload }) {
+      const indexToRemove = payload;
+      if (indexToRemove === null) return;
+
+      const newArray = [
+        ...state.details.balconies.slice(0, indexToRemove),
+        ...state.details.balconies.slice(indexToRemove + 1),
+      ];
+
+      state.details.balconies = newArray;
     },
     setBalconySide(state: propertyState, { payload }) {
       const index = payload.balconyIndex;
@@ -1014,9 +1036,11 @@ export const {
 
   // Parkings & Balconies
   addParking,
+  removeParking,
   setParkingType,
   setParkingSpots,
   addBalcony,
+  removeBalcony,
   setBalconySide,
   setBalconyArea,
 

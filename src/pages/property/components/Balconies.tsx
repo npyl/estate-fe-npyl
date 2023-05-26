@@ -1,5 +1,5 @@
 import { Grid, MenuItem, Paper, TextField, Typography, Box, IconButton } from "@mui/material";
-import { AddCircle } from "@mui/icons-material";
+import { AddCircle, Cancel } from "@mui/icons-material";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAllGlobalsQuery } from "src/services/global";
@@ -8,6 +8,7 @@ import {
   setBalconySide,
   setBalconyArea,
   addBalcony,
+  removeBalcony
 } from "src/slices/property";
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 import OnlyNumbersInput from "./OnlyNumbers";
@@ -39,10 +40,10 @@ const BalconiesSection: React.FC<any> = (props) => {
       </Box>
 
       <Grid item xs={12} padding={1}>
-        <Grid container spacing={2}>
+        <Grid container spacing={1}>
           {balconies.map((balcony, index) => {
             return <>
-              <Grid item xs={6} key={index}>
+              <Grid item xs={5.5} key={index}>
                 <TextField
                   fullWidth
                   id="outlined-select-currency"
@@ -62,10 +63,20 @@ const BalconiesSection: React.FC<any> = (props) => {
                 </TextField>
               </Grid>
 
-              <Grid item xs={6}>
+              <Grid item xs={5.5}>
                 <OnlyNumbersInput label="Area" value={balcony.area} onChange={(value) => {
                   dispatch(setBalconyArea({ balconyIndex: index, area: value }));
                 }} />
+              </Grid>
+
+              <Grid item xs={1}>
+                <IconButton
+                  onClick={() => {
+                    dispatch(removeBalcony(index));
+                  }}
+                >
+                  <Cancel />
+                </IconButton>
               </Grid>
             </>
           })}
