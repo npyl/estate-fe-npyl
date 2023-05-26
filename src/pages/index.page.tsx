@@ -9,9 +9,6 @@ import ViewAll from "./components/ViewAll";
 const Home: NextPage = () => {
   return (
     <>
-      <Head>
-        <title>Estate</title>
-      </Head>
       <Box
         component='main'
         sx={{
