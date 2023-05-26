@@ -185,18 +185,8 @@ const initialState: propertyState = {
     accessibility: "",
     landUse: "",
     zoneType: "",
-    balconies: [
-      {
-        side: "",
-        area: 0,
-      },
-    ],
-    parkings: [
-      {
-        parkingType: "",
-        spots: 0,
-      },
-    ],
+    balconies: [],
+    parkings: [],
   },
   location: {
     street: "0",
@@ -430,14 +420,41 @@ const slice = createSlice({
       state.heatingAndEnergy.airConditioning = action.payload;
     },
 
-    // TODO:
-    setParkingType(state: propertyState, action): void { },
-    setSpots(state: propertyState, action): void { },
-    setBalconySide(state: propertyState, action): void { },
-    setBalconies(state: propertyState, action): void {
-      state.areas.balconies;
+    // Parkings & Balconies
+    addParking(state: propertyState, { payload }) {
+      state.details.parkings.push(payload);
     },
-    // END TODO
+    setParkingType(state: propertyState, { payload }) {
+      const index = payload.parkingIndex;
+      const type = payload.type;
+      if (index === null || !type) return;
+
+      state.details.parkings[index].parkingType = type;
+    },
+    setParkingSpots(state: propertyState, { payload }) {
+      const index = payload.parkingIndex;
+      const spots = payload.spots;
+      if (index === null || !spots) return;
+
+      state.details.parkings[index].spots = spots;
+    },
+    addBalcony(state: propertyState, { payload }) {
+      state.details.balconies.push(payload);
+    },
+    setBalconySide(state: propertyState, { payload }) {
+      const index = payload.balconyIndex;
+      const side = payload.side;
+      if (index === null || !side) return;
+
+      state.details.balconies[index].side = side;
+    },
+    setBalconyArea(state: propertyState, { payload }) {
+      const index = payload.balconyIndex;
+      const area = payload.area;
+      if (index === null || !area) return;
+
+      state.details.balconies[index].area = area;
+    },
 
     setYearOfConstruction(state: propertyState, action): void {
       state.construction.yearOfConstruction = action.payload;
@@ -994,14 +1011,18 @@ export const {
   setHeatingSystem,
   setFloorHeating,
   setAirConditioning,
+
+  // Parkings & Balconies
+  addParking,
   setParkingType,
-  setSpots,
+  setParkingSpots,
+  addBalcony,
   setBalconySide,
-  setPlot,
+  setBalconyArea,
+
   setBasement,
   setAttic,
   setGarden,
-  setBalconies,
   setPublicTransportation,
   setRooms,
   setHasAttic,
@@ -1244,12 +1265,8 @@ export const selectStoreroom = ({ property }: RootState) =>
   property.areas.storeroom;
 export const selectAttic = ({ property }: RootState) => property.areas.attic;
 
-// TODO: these are needed foreach parking & each balcony; How should we do it?
-export const selectParkingType = ({ property }: RootState) => "Garage";
-export const selectSpots = ({ property }: RootState) => 0;
-export const selectBalconySide = ({ property }: RootState) => "Front";
-export const selectBalconies = ({ property }: RootState) =>
-  property.areas.balconies;
+export const selectParkings = ({ property }: RootState) => property.details.parkings;
+export const selectBalconies = ({ property }: RootState) => property.details.balconies;
 
 export const selectPublicTransportation = ({ property }: RootState) =>
   property.distances.publicTransport;

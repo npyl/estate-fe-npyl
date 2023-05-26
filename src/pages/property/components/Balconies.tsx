@@ -1,12 +1,13 @@
-import { Grid, MenuItem, Paper, TextField, Typography, Box } from "@mui/material";
+import { Grid, MenuItem, Paper, TextField, Typography, Box, IconButton } from "@mui/material";
+import { AddCircle } from "@mui/icons-material";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAllGlobalsQuery } from "src/services/global";
 import {
-  selectArea,
-  selectBalconySide,
-  setArea,
+  selectBalconies,
   setBalconySide,
+  setBalconyArea,
+  addBalcony,
 } from "src/slices/property";
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 import OnlyNumbersInput from "./OnlyNumbers";
@@ -18,54 +19,59 @@ const BalconiesSection: React.FC<any> = (props) => {
 
   const dispatch = useDispatch();
 
-  const balconySide = useSelector(selectBalconySide);
-  const area = useSelector(selectArea);
+  const balconies = useSelector(selectBalconies);
 
   if (!details || !details.balconySide) return null;
 
   return (
     <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
-      <Box
-        sx={{
-          px: 3,
-          py: 1.5,
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <Typography variant="h6">Balconies</Typography>
+      <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <Typography variant="h6" flex={1}>
+          Balconies
+        </Typography>
+        <IconButton
+          onClick={() => {
+            dispatch(addBalcony({}));
+          }}
+        >
+          <AddCircle />
+        </IconButton>
       </Box>
 
       <Grid item xs={12} padding={1}>
         <Grid container spacing={2}>
-          <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id="outlined-select-currency"
-              select
-              label="Side"
-              value={balconySide}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setBalconySide(event.target.value));
-              }}
-              size="small"
-            >
-              {details?.balconySide?.map((option) => (
-                <MenuItem key={option} value={option}>
-                  {option}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
+          {balconies.map((balcony, index) => {
+            return <>
+              <Grid item xs={6} key={index}>
+                <TextField
+                  fullWidth
+                  id="outlined-select-currency"
+                  select
+                  label="Side"
+                  value={balcony.side}
+                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                    dispatch(setBalconySide({ balconyIndex: index, side: event.target.value }));
+                  }}
+                  size="small"
+                >
+                  {details?.balconySide?.map((option) => (
+                    <MenuItem key={option} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
 
-          <Grid item xs={6}>
-            <OnlyNumbersInput label="Area" value={area} onChange={(value) => {
-              dispatch(setArea(value));
-            }} />
-          </Grid>
+              <Grid item xs={6}>
+                <OnlyNumbersInput label="Area" value={balcony.area} onChange={(value) => {
+                  dispatch(setBalconyArea({ balconyIndex: index, area: value }));
+                }} />
+              </Grid>
+            </>
+          })}
         </Grid>
       </Grid>
-    </Paper>
+    </Paper >
   );
 };
 export default BalconiesSection;
