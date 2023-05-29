@@ -11,7 +11,7 @@ import { selectAll as selectAllNewNotes } from 'src/slices/customer/notes';
 import { selectAll as selectAllNewLabels } from "src/slices/labels";
 
 import { useAddCustomerMutation } from "src/services/customers";
-import { useCreateLabelForCustomerMutation } from "src/services/labels";
+import { useCreateLabelForCustomerWithIDMutation } from "src/services/labels";
 import { useAddNoteToCustomerWithIdMutation } from "src/services/note";
 
 import Form from "../components/Form";
@@ -24,7 +24,7 @@ const CreateCustomer: NextPage = () => {
     { isSuccess: isCreateCustomerSuccess, data: createdCustomer },
   ] = useAddCustomerMutation();
   const [createLabel, { isSuccess: isLabelSuccess }] =
-    useCreateLabelForCustomerMutation();
+    useCreateLabelForCustomerWithIDMutation();
   const [createNote, { isSuccess: isNoteSuccess }] =
     useAddNoteToCustomerWithIdMutation();
 

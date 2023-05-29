@@ -36,7 +36,7 @@ export const labels = createApi({
       }),
       providesTags: ["Labels"],
     }),
-    createLabelForProperty: builder.mutation<ILabels, ILabelForPropertyProps>({
+    createLabelForPropertyWithID: builder.mutation<ILabels, ILabelForPropertyProps>({
       query: (data: ILabelForPropertyProps) => ({
         url: `property/${data.propertyId}`,
         method: "POST",
@@ -44,11 +44,27 @@ export const labels = createApi({
       }),
       invalidatesTags: ["Labels"],
     }),
-    createLabelForCustomer: builder.mutation<ILabels, ILabelForCustomerProps>({
+    createLabelForCustomerWithID: builder.mutation<ILabels, ILabelForCustomerProps>({
       query: (data: ILabelForCustomerProps) => ({
         url: `customer/${data.customerId}`,
         method: "POST",
         body: data.labelBody,
+      }),
+      invalidatesTags: ["Labels"],
+    }),
+    createLabelForProperties: builder.mutation<ILabels, ILabel>({
+      query: (data: ILabel) => ({
+        url: `property`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Labels"],
+    }),
+    createLabelForCustomers: builder.mutation<ILabels, ILabel>({
+      query: (data: ILabel) => ({
+        url: `customer`,
+        method: "POST",
+        body: data,
       }),
       invalidatesTags: ["Labels"],
     }),
@@ -57,6 +73,8 @@ export const labels = createApi({
 
 export const {
   useGetLabelsQuery,
-  useCreateLabelForPropertyMutation,
-  useCreateLabelForCustomerMutation,
+  useCreateLabelForPropertyWithIDMutation,
+  useCreateLabelForCustomerWithIDMutation,
+  useCreateLabelForPropertiesMutation,
+  useCreateLabelForCustomersMutation,
 } = labels;
