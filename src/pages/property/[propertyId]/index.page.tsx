@@ -25,7 +25,7 @@ import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import MainContainer from "./components/MainContainer";
 
-import { SoftButton } from "src/components/SoftButton";
+import { addTab } from "src/slices/tabs";
 
 import {
   AreaSection,
@@ -76,6 +76,9 @@ const SingleProperty: NextPage = () => {
 
   const handleEdit = () => {
     router.push(`/property/edit/${propertyId}`);
+
+    // add tab
+    dispatch(addTab({ path: `/property/edit/${propertyId}`, title: `Edit Property ${propertyId}` }))
   };
 
   const handleDelete = () => {

@@ -16,7 +16,9 @@ import NotesCustomerSection from "./components/sections/notesCustomerSection";
 import OwnedCustomerPropertiesSection from "./components/sections/ownedCustomerPropertiesSection";
 import TabPanel from "src/components/Tabs";
 import ViewHeader from "src/pages/components/ViewHeader";
+import { addTab } from "src/slices/tabs";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 function a11yProps(index: number) {
   return {
     id: `simple-tab-${index}`,
@@ -26,6 +28,7 @@ function a11yProps(index: number) {
 const CustomerView: NextPage = () => {
   // customer
   const router = useRouter();
+  const dispatch = useDispatch();
   const { customerId } = router.query;
   const [value, setValue] = useState(0);
   const [deleteCustomer, { isSuccess }] = useDeleteCustomerMutation();
@@ -34,6 +37,8 @@ const CustomerView: NextPage = () => {
   };
   const handleEdit = () => {
     router.push(`/customer/edit/${customerId}`);
+    // add tab
+    dispatch(addTab({ path: `/customer/edit/${customerId}`, title: `Edit Customer ${customerId}` }))
   };
   const handleDelete = () => {
     deleteCustomer(parseInt(customerId as string));
