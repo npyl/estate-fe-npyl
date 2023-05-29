@@ -50,6 +50,7 @@ interface IPropertiesPostRequest {
   location: ILocationPOST;
   features: IPropertyFeatures;
   labelIDs: number[];
+  roi: number;
 }
 
 type propertyState = IPropertiesPostRequest;
@@ -240,7 +241,7 @@ const initialState: propertyState = {
     loadingDock: false,
   },
   propertyImage: "",
-  labelIDs: []
+  labelIDs: [],
 };
 
 const slice = createSlice({
@@ -283,11 +284,15 @@ const slice = createSlice({
     setRented(state: propertyState, action): void {
       state.rented = action.payload;
     },
+
     setCurrentRentPrice(state: propertyState, action): void {
       state.currentRentPrice = action.payload;
     },
     setEstimatedRentPrice(state: propertyState, action): void {
       state.estimatedRentPrice = action.payload;
+    },
+    setRoi(state: propertyState, action): void {
+      state.roi = action.payload;
     },
 
     setCoverageFactor(state: propertyState, action): void {
@@ -914,10 +919,10 @@ const slice = createSlice({
       // map labels
       state.labelIDs = payload.labels
         ? payload.labels
-          .filter((label) => label.id) // where id not null
-          .map((label) => {
-            return label.id!;
-          })
+            .filter((label) => label.id) // where id not null
+            .map((label) => {
+              return label.id!;
+            })
         : [];
     },
     resetState: () => {
@@ -1019,6 +1024,7 @@ export const {
   setState,
   setPrice,
   setRented,
+  setRoi,
 
   // Areas
   setArea,
@@ -1126,6 +1132,7 @@ export const selectCurrentRentPrice = ({ property }: RootState) =>
   property.currentRentPrice;
 export const selectEstimatedRentPrice = ({ property }: RootState) =>
   property.estimatedRentPrice;
+export const selectRoi = ({ property }: RootState) => property.roi;
 
 export const selectAuction = ({ property }: RootState) => property.auction;
 export const selectDebatablePrice = ({ property }: RootState) =>
@@ -1306,7 +1313,8 @@ export const selectInclination = ({ property }: RootState) =>
   property.technicalFeatures.inclination;
 
 // Areas
-export const selectBalconiesArea = ({ property }: RootState) => property.areas.balconies;
+export const selectBalconiesArea = ({ property }: RootState) =>
+  property.areas.balconies;
 export const selectCovered = ({ property }: RootState) =>
   property.areas.covered;
 export const selectBasement = ({ property }: RootState) =>
@@ -1315,7 +1323,8 @@ export const selectGarden = ({ property }: RootState) => property.areas.garden;
 export const selectStoreroom = ({ property }: RootState) =>
   property.areas.storeroom;
 export const selectAttic = ({ property }: RootState) => property.areas.attic;
-export const selectGroundFloor = ({ property }: RootState) => property.areas.groundFloor;
+export const selectGroundFloor = ({ property }: RootState) =>
+  property.areas.groundFloor;
 export const selectFirst = ({ property }: RootState) => property.areas.first;
 export const selectSecond = ({ property }: RootState) => property.areas.second;
 export const selectThird = ({ property }: RootState) => property.areas.third;
@@ -1323,8 +1332,10 @@ export const selectFourth = ({ property }: RootState) => property.areas.fourth;
 export const selectFifth = ({ property }: RootState) => property.areas.fifth;
 
 // Parkings & Balconies
-export const selectParkings = ({ property }: RootState) => property.details.parkings;
-export const selectBalconies = ({ property }: RootState) => property.details.balconies;
+export const selectParkings = ({ property }: RootState) =>
+  property.details.parkings;
+export const selectBalconies = ({ property }: RootState) =>
+  property.details.balconies;
 
 export const selectPublicTransportation = ({ property }: RootState) =>
   property.distances.publicTransport;
