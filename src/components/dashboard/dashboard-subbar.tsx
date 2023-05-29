@@ -11,12 +11,14 @@ const Subbar = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const tabs = useSelector(selectTabs);
+  const currentPath = router.asPath;
   return (
     <Stack direction={"row"} spacing={2}>
       {tabs.map((tab, index) => (
         <Fragment key={index}>
           <Stack
             sx={{
+              bgcolor: (currentPath === tab.path) ? 'primary.main' : 'unset',
               padding: "0px 8px",
               borderRadius: 2,
               boxShadow: `rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px`,
@@ -29,6 +31,7 @@ const Subbar = () => {
                 minWidth: "90px",
                 padding: 0,
                 borderRadius: 0,
+                color: (currentPath === tab.path) ? 'white' : 'unset',
                 "&:hover": {
                   background: "transparent",
                 },
@@ -43,6 +46,7 @@ const Subbar = () => {
               sx={{
                 padding: 0,
                 marginLeft: 1,
+                color: (currentPath === tab.path) ? 'white' : 'unset',
                 "&:hover": {
                   background: "transparent",
                 },
@@ -56,8 +60,9 @@ const Subbar = () => {
             <Divider orientation='vertical' flexItem />
           )}
         </Fragment>
-      ))}
-    </Stack>
+      ))
+      }
+    </Stack >
   );
 };
 
