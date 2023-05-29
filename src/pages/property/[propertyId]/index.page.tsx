@@ -1,13 +1,5 @@
-import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Box,
-  Button,
-  Dialog,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Grid,
-  Paper,
   Tab,
   Tabs,
 } from "@mui/material";
@@ -25,7 +17,7 @@ import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import MainContainer from "./components/MainContainer";
 
-import { addTab } from "src/slices/tabs";
+import { addTab, deleteTabWithPath } from "src/slices/tabs";
 
 import {
   AreaSection,
@@ -46,7 +38,6 @@ import {
 import ViewHeader from "src/pages/components/ViewHeader";
 
 import "photoswipe/dist/photoswipe.css";
-import Iconify from "src/components/iconify/Iconify";
 import InitMap from "./components/Map";
 
 function a11yProps(index: number) {
@@ -63,7 +54,7 @@ const SingleProperty: NextPage = () => {
   const [value, setValue] = useState(0);
 
   const dispatch = useDispatch();
-  const [deleteProperty, { isSuccess }] = useDeletePropertyMutation();
+  const [deleteProperty, { isSuccess: isDeleteSuccess }] = useDeletePropertyMutation();
 
   const { data } = useGetPropertyByIdQuery(parseInt(propertyId as string)); // basic details
   if (!data) {
@@ -76,7 +67,6 @@ const SingleProperty: NextPage = () => {
 
   const handleEdit = () => {
     router.push(`/property/edit/${propertyId}`);
-
     // add tab
     dispatch(addTab({ path: `/property/edit/${propertyId}`, title: `Edit Property ${propertyId}` }))
   };
@@ -86,7 +76,11 @@ const SingleProperty: NextPage = () => {
   };
 
   // upon successful delete
-  if (isSuccess) router.push("/");
+  if (isDeleteSuccess) {
+    router.push("/");
+    // remove tab on succesfull delete
+    isDeleteSuccess && dispatch(deleteTabWithPath(`/property/${propertyId}`));
+  }
 
   return (
     <Box sx={{ width: "100%", paddingY: 1 }}>

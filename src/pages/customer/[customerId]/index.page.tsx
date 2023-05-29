@@ -16,7 +16,7 @@ import NotesCustomerSection from "./components/sections/notesCustomerSection";
 import OwnedCustomerPropertiesSection from "./components/sections/ownedCustomerPropertiesSection";
 import TabPanel from "src/components/Tabs";
 import ViewHeader from "src/pages/components/ViewHeader";
-import { addTab } from "src/slices/tabs";
+import { addTab, deleteTabWithPath } from "src/slices/tabs";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 function a11yProps(index: number) {
@@ -31,7 +31,7 @@ const CustomerView: NextPage = () => {
   const dispatch = useDispatch();
   const { customerId } = router.query;
   const [value, setValue] = useState(0);
-  const [deleteCustomer, { isSuccess }] = useDeleteCustomerMutation();
+  const [deleteCustomer, { isSuccess: isDeleteSuccess }] = useDeleteCustomerMutation();
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
@@ -44,7 +44,11 @@ const CustomerView: NextPage = () => {
     deleteCustomer(parseInt(customerId as string));
   };
 
-  isSuccess && router.push("/customer");
+  if (isDeleteSuccess) {
+    router.push("/customer");
+    // delete tab
+    dispatch(deleteTabWithPath(`/customer/${customerId}`));
+  }
 
   return (
     <Box sx={{ width: "100%", paddingY: 1 }}>

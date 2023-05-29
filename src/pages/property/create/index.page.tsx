@@ -83,10 +83,11 @@ const CreatePropertyPage: NextPage = () => {
 
     // perform POST
     await create(dataToSend);
+
     if (isSuccess) {
       createAndAssignNewLabels(); // create&assign labels
       createAndAssignNewNotes(); // create&assign notes
-      isLabelSuccess && isNoteSuccess && router.push("/");
+      router.push("/");
     }
   };
 

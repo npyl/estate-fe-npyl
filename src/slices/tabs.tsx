@@ -43,10 +43,15 @@ const slice = createSlice({
     deleteTab: (state, action) => {
       return state.filter((item) => item.uuid !== action.payload);
     },
+    deleteTabWithPath: (state, action) => {
+      const path = action.payload;
+      const uuid = generateUUIDFromString(path);
+      return state.filter((item) => item.uuid !== uuid);
+    }
   },
 });
 
-export const { addTab, deleteTab } = slice.actions;
+export const { addTab, deleteTab, deleteTabWithPath } = slice.actions;
 export const selectTabs = ({ tabs }: RootState) => tabs;
 
 export const { reducer } = slice;

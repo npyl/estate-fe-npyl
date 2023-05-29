@@ -63,7 +63,7 @@ const CreateCustomer: NextPage = () => {
     if (isCreateCustomerSuccess && createdCustomer) {
       createAndAssignNewLabels(); // create&assign labels
       createAndAssignNewNotes(); // create&assign notes
-      // router.push("/customer");
+      router.push("/customer");
     }
   }, [isCreateCustomerSuccess, createdCustomer]);
 
