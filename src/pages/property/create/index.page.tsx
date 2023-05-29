@@ -11,7 +11,7 @@ import { selectAll } from "src/slices/property";
 import { selectAll as selectAllPropertyFiles } from "src/slices/property/files";
 import { selectAll as selectAllNewNotes } from "src/slices/property/notes";
 
-import { useCreateLabelForPropertyMutation } from "src/services/labels";
+import { useCreateLabelForPropertyWithIDMutation } from "src/services/labels";
 import { useAddNoteToPropertyWithIdMutation } from "src/services/note";
 
 import Form from "../components/Form";
@@ -22,7 +22,7 @@ const CreatePropertyPage: NextPage = () => {
   const [create, { isSuccess, data: createdProperty }] =
     useAddPropertyMutation();
   const [createLabel, { isSuccess: isLabelSuccess }] =
-    useCreateLabelForPropertyMutation();
+    useCreateLabelForPropertyWithIDMutation();
   const [createNote, { isSuccess: isNoteSuccess }] =
     useAddNoteToPropertyWithIdMutation();
 
@@ -83,10 +83,11 @@ const CreatePropertyPage: NextPage = () => {
 
     // perform POST
     await create(dataToSend);
+
     if (isSuccess) {
       createAndAssignNewLabels(); // create&assign labels
       createAndAssignNewNotes(); // create&assign notes
-      isLabelSuccess && isNoteSuccess && router.push("/");
+      router.push("/");
     }
   };
 

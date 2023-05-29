@@ -23,8 +23,10 @@ import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { Label } from "src/components/label";
 import { useAllCustomersQuery } from "src/services/customers";
 import {
-  useCreateLabelForCustomerMutation,
-  useCreateLabelForPropertyMutation,
+  useCreateLabelForCustomerWithIDMutation,
+  useCreateLabelForCustomersMutation,
+  useCreateLabelForPropertiesMutation,
+  useCreateLabelForPropertyWithIDMutation,
   useGetLabelsQuery,
 } from "src/services/labels";
 import { useAllPropertiesQuery } from "src/services/properties";
@@ -43,10 +45,12 @@ const SingleProperty: NextPage = () => {
   const [searchText, setSearchText] = useState<string>("");
   const [autocompleteValue, setAutocompleteValue] = useState("");
 
-  const [createLabelForProperty, { isSuccess: createForPropertySuccess }] =
-    useCreateLabelForPropertyMutation();
-  const [createLabelForCustomer, { isSuccess: createForCustomerSuccess }] =
-    useCreateLabelForCustomerMutation();
+  const [createLabelForPropertyWithID, { isSuccess: createForPropertySuccess }] =
+    useCreateLabelForPropertyWithIDMutation();
+  const [createLabelForCustomerWithID, { isSuccess: createForCustomerSuccess }] =
+    useCreateLabelForCustomerWithIDMutation();
+  const [createLabelForProperties, { isSuccess: createForPropertiesSuccess }] = useCreateLabelForPropertiesMutation();
+  const [createLabelForCustomers, { isSuccess: createForCustomersSuccess }] = useCreateLabelForCustomersMutation();
 
   const properties: string[] =
     useAllPropertiesQuery(undefined, {
@@ -111,24 +115,41 @@ const SingleProperty: NextPage = () => {
       return customer?.id;
     };
 
-    if (assigneeType === "property") {
-      const propertyId = propertyIdForCode(autocompleteValue);
+    const code = autocompleteValue;
+    const label = { color: pickerColor, name: labelName };
 
-      if (!propertyId) return null;
+    if (code === "") {
+      // create without assign
+      if (assigneeType === 'property') {
+        createLabelForProperties(label);
+      }
+      else if (assigneeType === 'customer') {
+        createLabelForCustomers(label);
+      }
+    }
+    else {
+      // create with assign
 
-      createLabelForProperty({
-        propertyId: propertyId,
-        labelBody: { color: pickerColor, name: labelName },
-      });
-    } else if (assigneeType === "customer") {
-      const customerId = customerIdForFullname(autocompleteValue);
+      if (assigneeType === "property") {
 
-      if (!customerId) return null;
+        const propertyId = propertyIdForCode(code);
 
-      createLabelForCustomer({
-        customerId: customerId,
-        labelBody: { color: pickerColor, name: labelName },
-      });
+        if (!propertyId) return null;
+
+        createLabelForPropertyWithID({
+          propertyId: propertyId,
+          labelBody: label,
+        });
+      } else if (assigneeType === "customer") {
+        const customerId = customerIdForFullname(code);
+
+        if (!customerId) return null;
+
+        createLabelForCustomerWithID({
+          customerId: customerId,
+          labelBody: label,
+        });
+      }
     }
   };
 

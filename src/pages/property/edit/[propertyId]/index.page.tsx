@@ -15,7 +15,7 @@ import {
 } from "src/slices/property/files";
 import { selectAll as selectAllNewLabels } from "src/slices/labels";
 
-import { useCreateLabelForPropertyMutation } from "src/services/labels";
+import { useCreateLabelForPropertyWithIDMutation } from "src/services/labels";
 
 import { useGetPropertyByIdQuery } from "src/services/properties";
 
@@ -34,7 +34,7 @@ const EditPropertyPage: NextPage = () => {
   const { data: fetchedProperty, isSuccess: isPropertySuccess } =
     useGetPropertyByIdQuery(parseInt(propertyId as string));
 
-  const [createLabel, { isSuccess: isLabelSuccess }] = useCreateLabelForPropertyMutation();
+  const [createLabel, { isSuccess: isLabelSuccess }] = useCreateLabelForPropertyWithIDMutation();
 
   const [edit, { isSuccess: isEditProperty, data: editedProperty }] = useAddPropertyMutation();
   const body = useSelector(selectAll);

@@ -9,7 +9,7 @@ import {
   useGetCustomerByIdQuery,
   useAddCustomerMutation,
 } from "src/services/customers";
-import { useCreateLabelForCustomerMutation } from "src/services/labels";
+import { useCreateLabelForCustomerWithIDMutation } from "src/services/labels";
 
 import { setInitialState, selectAll } from "src/slices/customer";
 import { selectAll as selectAllNewLabels } from "src/slices/labels";
@@ -25,7 +25,7 @@ const EditCustomer: NextPage = () => {
   );
   const [edit, { isSuccess: isEditedSuccess, data: editedCustomer }] = useAddCustomerMutation();
   const [createLabel, { isSuccess: isLabelSuccess }] =
-    useCreateLabelForCustomerMutation();
+    useCreateLabelForCustomerWithIDMutation();
   const body = useSelector(selectAll);
 
   const newLabels = useSelector(selectAllNewLabels);
