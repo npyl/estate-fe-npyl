@@ -23,10 +23,10 @@ import OtherFormSection from "./Forms/OtherForm";
 import ResidentialFormSection from "./Forms/ResidentialForm";
 import NotesSection from "./NotesSection";
 
+import { resetState as resetLabelsState } from "src/slices/labels";
 import { resetState as resetPropertyState } from "src/slices/property";
 import { resetState as resetPropertyFilesState } from "src/slices/property/files";
-import { resetState as resetPropertyNotesState } from 'src/slices/property/notes';
-import { resetState as resetLabelsState } from "src/slices/labels";
+import { resetState as resetPropertyNotesState } from "src/slices/property/notes";
 
 export default function Form({
   edit = false,
@@ -54,7 +54,7 @@ export default function Form({
     dispatch(resetPropertyFilesState());
     dispatch(resetPropertyNotesState());
     dispatch(resetLabelsState());
-  }
+  };
 
   useEffect(() => {
     if (!edit) {
@@ -74,118 +74,108 @@ export default function Form({
   };
 
   return (
-    <>
-      <Grid paddingTop={1} paddingRight={0} spacing={1}>
-        <Grid container paddingTop={0} paddingRight={1} spacing={1}>
-          <Grid item xs={12} spacing={1} order={"row"}>
-            <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
-              <Grid item xs={12} padding={1}>
-                <Grid container spacing={2}>
-                  <Grid item xs={6}>
-                    <FormControl fullWidth>
-                      <InputLabel id="demo-simple-select-label">
-                        Parent Category
-                      </InputLabel>
-                      <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={parentCategory}
-                        label="Parent Category"
-                        onChange={(e) => {
-                          dispatch(setParentCategory(e.target.value));
-                        }}
-                      >
-                        {parentCategoryEnum.map((item, index) => {
-                          return (
-                            <MenuItem key={index} value={item}>
-                              {item}
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
-                    </FormControl>
-                  </Grid>
-
-                  <Grid item xs={6}>
-                    <TextField
-                      fullWidth
-                      id="outlined-select-currency"
-                      select
-                      label="Category"
-                      value={category}
-                      onChange={(
-                        event: React.ChangeEvent<HTMLInputElement>
-                      ) => {
-                        dispatch(setCategory(event.target.value));
-                      }}
-                      inputProps={{
-                        style: {
-                          height: "8px",
-                        },
-                      }}
-                      size="small"
-                    >
-                      {subCategoriesMap[parentCategory] &&
-                        subCategoriesMap[parentCategory].map((item, index) => {
-                          return (
-                            <MenuItem key={index} value={item}>
-                              {item}
-                            </MenuItem>
-                          );
-                        })}
-                    </TextField>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Paper>
-          </Grid>
+    <Grid sx={{ mt: 2 }} spacing={1} pt={1}>
+      <Grid
+        component={Paper}
+        padding={"8px 16px 16px 16px"}
+        container
+        spacing={1}
+      >
+        <Grid item xs={6}>
+          <FormControl fullWidth>
+            <InputLabel id='demo-simple-select-label'>
+              Parent Category
+            </InputLabel>
+            <Select
+              labelId='demo-simple-select-label'
+              id='demo-simple-select'
+              value={parentCategory}
+              label='Parent Category'
+              onChange={(e) => {
+                dispatch(setParentCategory(e.target.value));
+              }}
+            >
+              {parentCategoryEnum.map((item, index) => {
+                return (
+                  <MenuItem key={index} value={item}>
+                    {item}
+                  </MenuItem>
+                );
+              })}
+            </Select>
+          </FormControl>
         </Grid>
 
-        {parentCategory !== "" && (
+        <Grid item xs={6}>
+          <TextField
+            disabled={parentCategory === ""}
+            fullWidth
+            id='outlined-select-currency'
+            select
+            label='Category'
+            value={category}
+            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+              dispatch(setCategory(event.target.value));
+            }}
+          >
+            {subCategoriesMap[parentCategory] &&
+              subCategoriesMap[parentCategory].map((item, index) => {
+                return (
+                  <MenuItem key={index} value={item}>
+                    {item}
+                  </MenuItem>
+                );
+              })}
+          </TextField>
+        </Grid>
+      </Grid>
+
+      {parentCategory !== "" && (
+        <Grid
+          container
+          mt={1}
+          paddingTop={1}
+          paddingLeft={1}
+          paddingRight={0}
+          spacing={1}
+        >
+          {parentCategory === "Residential" && <ResidentialFormSection />}
+          {parentCategory === "Land" && <LandFormSection />}
+          {parentCategory === "Commercial" && <CommercialFormSection />}
+          {parentCategory === "Other" && <OtherFormSection />}
+
+          <NotesSection />
+
           <Grid
+            item
+            xs={12}
+            padding={2}
             container
-            paddingTop={1}
-            paddingLeft={1}
-            paddingRight={0}
+            alignItems='center'
+            justifyContent='flex-end'
             spacing={1}
           >
-            {parentCategory === "Residential" && <ResidentialFormSection />}
-            {parentCategory === "Land" && <LandFormSection />}
-            {parentCategory === "Commercial" && <CommercialFormSection />}
-            {parentCategory === "Other" && <OtherFormSection />}
-
-            <NotesSection />
-
-            <Grid item xs={12} padding={2}>
-              <Grid
-                container
-                alignItems="center"
-                justifyContent="flex-end"
-                spacing={1}
+            <Grid item>
+              <Button
+                variant='outlined'
+                startIcon={<DeleteIcon />}
+                onClick={() => resetState()}
               >
-                <Grid item>
-                  <Button
-                    variant="outlined"
-                    startIcon={<DeleteIcon />}
-                    onClick={() => resetState()}
-                  >
-                    Clear
-                  </Button>
-                </Grid>
-                <Grid item>
-                  <Button
-                    variant="contained"
-                    endIcon={<SendIcon />}
-                    onClick={handleClick}
-                  >
-                    {edit ? "Edit" : "Create"}
-                  </Button>
-                </Grid>
-              </Grid>
+                Clear
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button
+                variant='contained'
+                endIcon={<SendIcon />}
+                onClick={handleClick}
+              >
+                {edit ? "Edit" : "Create"}
+              </Button>
             </Grid>
           </Grid>
-        )}
-      </Grid>
-    </>
+        </Grid>
+      )}
+    </Grid>
   );
 }

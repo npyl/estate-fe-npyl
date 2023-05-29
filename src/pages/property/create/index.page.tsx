@@ -3,14 +3,13 @@ import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { useAddPropertyMutation } from "src/services/properties";
 
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
+import { useSelector } from "react-redux";
 
+import { selectAll as selectAllNewLabels } from "src/slices/labels";
 import { selectAll } from "src/slices/property";
 import { selectAll as selectAllPropertyFiles } from "src/slices/property/files";
-import { selectAll as selectAllNewNotes } from 'src/slices/property/notes';
-import { selectAll as selectAllNewLabels } from "src/slices/labels";
+import { selectAll as selectAllNewNotes } from "src/slices/property/notes";
 
 import { useCreateLabelForPropertyMutation } from "src/services/labels";
 import { useAddNoteToPropertyWithIdMutation } from "src/services/note";
@@ -20,10 +19,12 @@ import Form from "../components/Form";
 const CreatePropertyPage: NextPage = () => {
   const router = useRouter();
 
-  const [create, { isSuccess, data: createdProperty }] = useAddPropertyMutation();
+  const [create, { isSuccess, data: createdProperty }] =
+    useAddPropertyMutation();
   const [createLabel, { isSuccess: isLabelSuccess }] =
     useCreateLabelForPropertyMutation();
-  const [createNote, { isSuccess: isNoteSuccess }] = useAddNoteToPropertyWithIdMutation();
+  const [createNote, { isSuccess: isNoteSuccess }] =
+    useAddNoteToPropertyWithIdMutation();
 
   const { propertyImages, propertyBlueprints } = useSelector(
     selectAllPropertyFiles
@@ -49,17 +50,12 @@ const CreatePropertyPage: NextPage = () => {
 
     // foreach note; call create-for-customer-with-id
     newNotes.forEach(async (newNote) => {
-      await createNote({ id: createdPropertyId, dataToSend: { content: newNote.content } })
-    })
-  }
-
-  useEffect(() => {
-    if (isSuccess) {
-      createAndAssignNewLabels(); // create&assign labels
-      createAndAssignNewNotes();  // create&assign notes
-      router.push("/");
-    }
-  }, [isSuccess, router]);
+      await createNote({
+        id: createdPropertyId,
+        dataToSend: { content: newNote.content },
+      });
+    });
+  };
 
   const handleUpload = async () => {
     if (!propertyImages || propertyImages.length === 0) return;
@@ -87,6 +83,11 @@ const CreatePropertyPage: NextPage = () => {
 
     // perform POST
     await create(dataToSend);
+    if (isSuccess) {
+      createAndAssignNewLabels(); // create&assign labels
+      createAndAssignNewNotes(); // create&assign notes
+      isLabelSuccess && isNoteSuccess && router.push("/");
+    }
   };
 
   return <Form performUpload={handleUpload} />;

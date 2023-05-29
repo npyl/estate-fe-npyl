@@ -4,16 +4,39 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   IconButton,
+  ListItemText,
+  MenuItem,
+  Select,
+  Slider,
   Stack,
   Typography,
 } from "@mui/material";
 import { useSelector } from "react-redux";
 import Iconify from "src/components/iconify";
-import sumOfChangedProperties from "src/slices/filters";
-import TagFiltered from "./TagFiltered";
+import { useAllGlobalsQuery } from "src/services/global";
+import sumOfChangedProperties, {
+  selectFrameType,
+  selectFurnished,
+  selectHeatingType,
+  selectMaxBedrooms,
+  selectMaxConstructionYear,
+  selectMaxFloor,
+  selectMinBedrooms,
+  selectMinConstructionYear,
+  selectMinFloor,
+  setFrameType,
+  setFurnished,
+  setHeatingType,
+  setMaxBedrooms,
+  setMaxConstructionYear,
+  setMaxFloor,
+  setMinBedrooms,
+  setMinConstructionYear,
+  setMinFloor,
+} from "src/slices/filters";
+import { useDispatch } from "src/store";
 
 // ----------------------------------------------------------------------
 
@@ -40,28 +63,229 @@ export default function FilterMore({
   onClose,
   onResetFilter,
 }: Props) {
+  const dispatch = useDispatch();
   const changedPropsCount = useSelector(sumOfChangedProperties);
+  const { data } = useAllGlobalsQuery();
+  const frameType = useSelector(selectFrameType);
+  const furnished = useSelector(selectFurnished);
+  const heatingType = useSelector(selectHeatingType);
+  const minYear = useSelector(selectMinConstructionYear);
+  const maxYear = useSelector(selectMaxConstructionYear);
+  const minBedrooms = useSelector(selectMinBedrooms);
+  const maxBedrooms = useSelector(selectMaxBedrooms);
+  const minFloors = useSelector(selectMinFloor);
+  const maxFloors = useSelector(selectMaxFloor);
+
+  const fields = [
+    {
+      id: "frameType",
+      value: frameType,
+      title: "Frame Type",
+      options: data?.property.details.frameType,
+      onClick: setFrameType,
+    },
+    {
+      id: "Furnished",
+      value: furnished,
+      title: "Furnished",
+      options: data?.property.details.furnished,
+      onClick: setFurnished,
+    },
+    {
+      id: "heatingType",
+      title: "Heating Type",
+      value: heatingType,
+      options: data?.property.details.heatingType,
+      onClick: setHeatingType,
+    },
+  ];
   return (
-    <Dialog open={open} onClose={onClose} scroll={"paper"}>
+    <Dialog maxWidth={"xl"} open={open} onClose={onClose} scroll={"paper"}>
       <DialogTitle>
         <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
+          direction='row'
+          alignItems='center'
+          justifyContent='space-between'
         >
           <Chip label={changedPropsCount} color={"error"} />
-          <Typography variant="subtitle1">Φίλτρα</Typography>
+          <Typography variant='subtitle1'>Φίλτρα</Typography>
 
           <IconButton onClick={onClose}>
-            <Iconify icon="eva:close-fill" />
+            <Iconify icon='eva:close-fill' />
           </IconButton>
         </Stack>
       </DialogTitle>
+      <DialogContent dividers>
+        <Typography>Bedrooms</Typography>
+        <Stack direction='row' spacing={1} alignItems={"center"}>
+          <Typography>Από</Typography>
+          <Select
+            sx={{ width: 130 }}
+            value={minBedrooms}
+            onChange={(e) => dispatch(setMinBedrooms(e.target.value))}
+            MenuProps={{
+              PaperProps: {
+                style: {
+                  maxHeight: 210,
+                  overflowY: "scroll",
+                },
+              },
+            }}
+          >
+            <MenuItem value={0} onClick={() => dispatch(setMinBedrooms(0))}>
+              <ListItemText primary={"Αδιάφορο"} />
+            </MenuItem>
+            {generateNumbers().map((option) => (
+              <MenuItem
+                key={option}
+                value={option}
+                onClick={() =>
+                  option > maxBedrooms &&
+                  maxBedrooms !== 0 &&
+                  dispatch(setMaxBedrooms(0))
+                }
+              >
+                <ListItemText primary={option.toString()} />
+              </MenuItem>
+            ))}
+          </Select>
+          <Typography>- Εώς</Typography>
+          <Select
+            sx={{ width: 130 }}
+            value={maxBedrooms}
+            onChange={(e) => dispatch(setMaxBedrooms(e.target.value))}
+            MenuProps={{
+              PaperProps: {
+                style: {
+                  maxHeight: 210,
+                  overflowY: "scroll",
+                },
+              },
+            }}
+          >
+            <MenuItem value={0} onClick={() => dispatch(setMaxBedrooms(0))}>
+              <ListItemText primary={"Αδιάφορο"} />
+            </MenuItem>
+            {generateNumbers().map((option) => (
+              <MenuItem
+                key={option}
+                value={option}
+                onClick={() =>
+                  option < minBedrooms && dispatch(setMinBedrooms(0))
+                }
+              >
+                <ListItemText primary={option.toString()} />
+              </MenuItem>
+            ))}
+          </Select>
+        </Stack>
+      </DialogContent>
+      <DialogContent dividers>
+        <Typography>Floors</Typography>
+        <Stack direction='row' spacing={1} alignItems={"center"}>
+          <Typography>Από</Typography>
+          <Select
+            sx={{ width: 130 }}
+            value={minFloors}
+            onChange={(e) => dispatch(setMinFloor(e.target.value))}
+            MenuProps={{
+              PaperProps: {
+                style: {
+                  maxHeight: 210,
+                  overflowY: "scroll",
+                },
+              },
+            }}
+          >
+            <MenuItem value={0} onClick={() => dispatch(setMinFloor(0))}>
+              <ListItemText primary={"Αδιάφορο"} />
+            </MenuItem>
+            {generateNumbers().map((option) => (
+              <MenuItem
+                key={option}
+                value={option}
+                onClick={() =>
+                  option > maxFloors &&
+                  maxFloors !== 0 &&
+                  dispatch(setMaxFloor(0))
+                }
+              >
+                <ListItemText primary={option.toString()} />
+              </MenuItem>
+            ))}
+          </Select>
+          <Typography>- Εώς</Typography>
+          <Select
+            sx={{ width: 130 }}
+            value={maxFloors}
+            onChange={(e) => dispatch(setMaxFloor(e.target.value))}
+            MenuProps={{
+              PaperProps: {
+                style: {
+                  maxHeight: 210,
+                  overflowY: "scroll",
+                },
+              },
+            }}
+          >
+            <MenuItem value={0} onClick={() => dispatch(setMaxFloor(0))}>
+              <ListItemText primary={"Αδιάφορο"} />
+            </MenuItem>
+            {generateNumbers().map((option) => (
+              <MenuItem
+                key={option}
+                value={option}
+                onClick={() => option < minFloors && dispatch(setMinFloor(0))}
+              >
+                <ListItemText primary={option.toString()} />
+              </MenuItem>
+            ))}
+          </Select>
+        </Stack>
+      </DialogContent>
+      {fields.map((field) => (
+        <DialogContent key={field.id} dividers>
+          <Typography>{field.title}</Typography>
+          <Stack direction={"row"} spacing={1}>
+            {field.options &&
+              field.options.map((e) => (
+                <Button
+                  variant={field.value === e ? "contained" : "outlined"}
+                  color={"primary"}
+                  key={e}
+                  onClick={() => dispatch(field.onClick(e))}
+                >
+                  {e}
+                </Button>
+              ))}
+          </Stack>
+        </DialogContent>
+      ))}
 
       <DialogContent dividers>
-        <TagFiltered />
+        <Typography>Construction Year</Typography>
+        <Slider
+          value={[minYear, maxYear]}
+          onChange={(_event, newValue) => {
+            if (Array.isArray(newValue)) {
+              dispatch(setMinConstructionYear(newValue[0]));
+              dispatch(setMaxConstructionYear(newValue[1]));
+            }
+            console.log(newValue);
+          }}
+          min={1960}
+          max={new Date().getFullYear()}
+          marks={[
+            { value: 1960, label: "1960" },
+            {
+              value: new Date().getFullYear(),
+              label: new Date().getFullYear().toString(),
+            },
+          ]}
+          valueLabelDisplay='auto'
+          aria-labelledby='year-slider'
+        />
       </DialogContent>
-
       <DialogActions sx={{ justifyContent: "space-between" }}>
         <Button color={"secondary"} onClick={onResetFilter}>
           Εκκαθάριση όλων
@@ -69,7 +293,7 @@ export default function FilterMore({
 
         <Button
           color={"secondary"}
-          variant="outlined"
+          variant='outlined'
           onClick={() => {
             onApply();
             onClose();
@@ -80,4 +304,14 @@ export default function FilterMore({
       </DialogActions>
     </Dialog>
   );
+}
+
+function generateNumbers() {
+  const numbers = [];
+
+  for (let i = 1; i <= 10; i += 1) {
+    numbers.push(i);
+  }
+
+  return numbers;
 }

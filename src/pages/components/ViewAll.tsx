@@ -1,8 +1,7 @@
 import GridViewIcon from "@mui/icons-material/GridView";
 import MapIcon from "@mui/icons-material/Map";
-import TuneIcon from "@mui/icons-material/Tune";
 import {
-  Badge,
+  ButtonGroup,
   IconButton,
   Paper,
   Skeleton,
@@ -13,7 +12,7 @@ import {
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import { Box } from "@mui/system";
 import { GridCellParams, GridColDef } from "@mui/x-data-grid";
-import { FC, ReactNode, useEffect, useState } from "react";
+import { FC, ReactNode, SetStateAction, useEffect, useState } from "react";
 
 import Image from "src/components/image";
 import Label from "src/components/label/Label";
@@ -23,26 +22,13 @@ import DataGridTable from "../../components/DataGrid";
 import MapView from "./MapView";
 import MediaCard from "./MediaCard";
 
-import sumOfChangedProperties, {
-  getChangedFields,
-  resetState,
-} from "src/slices/filters";
+import sumOfChangedProperties, { getChangedFields } from "src/slices/filters";
 
 import { useDispatch, useSelector } from "src/store";
 import { IPropertyFilter } from "src/types/properties";
-import {
-  CategorySelect,
-  FilterMore,
-  FilterSortBy,
-  PriceSelect,
-  SaleSelect,
-  StyledPriceButton,
-  SubCategorySelect,
-  TagFiltered,
-} from "./Filters";
-import CountrySelect from "./Filters/FilterCities";
-import FilterLabels from "./Filters/FilterLabels";
+import { FilterSection } from "./Filters";
 import FilterRows from "./Filters/FilterRows";
+import FilterSortBy from "./Filters/FilterSortBy";
 
 const ViewAll: FC = () => {
   const dispatch = useDispatch();
@@ -88,8 +74,8 @@ const ViewAll: FC = () => {
       <>
         <Image
           src={`data:image/jpeg;base64,${params.formattedValue}` || ""}
-          alt=""
-          ratio="16/9"
+          alt=''
+          ratio='16/9'
           width={1}
         />
       </>
@@ -99,7 +85,7 @@ const ViewAll: FC = () => {
     return (
       <>
         <Label
-          variant="filled"
+          variant='filled'
           color={
             (params.formattedValue === "SOLD" && "error") ||
             (params.formattedValue === "SALE" && "info") ||
@@ -130,23 +116,7 @@ const ViewAll: FC = () => {
     { field: "area", headerName: "Area" },
   ];
 
-  const handleResetFilter = () => {
-    dispatch(resetState());
-  };
-
-  const handleOpenFilter = () => {
-    setOpenFilter(true);
-  };
-
-  const handleApplyFilter = () => {
-    setFilter(changedProps);
-  };
-
-  const handleCloseFilter = () => {
-    setOpenFilter(false);
-  };
-
-  const renderSkeletonCell = () => <Skeleton width={150} animation="wave" />;
+  const renderSkeletonCell = () => <Skeleton width={150} animation='wave' />;
   const skeletonRows = Array.from({ length: 5 }, (_, index) => ({
     id: index + 1,
   }));
@@ -155,56 +125,7 @@ const ViewAll: FC = () => {
   }, [filter]);
   return (
     <Box>
-      <Paper sx={{ paddingX: 2, paddingY: 1, overflow: "scroll" }}>
-        <Box
-          sx={{
-            alignItems: "center",
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <Stack
-            direction={"row"}
-            justifyContent={"center"}
-            alignItems={"center"}
-            spacing={0.5}
-          >
-            <CountrySelect />
-            <SaleSelect />
-
-            <CategorySelect />
-            <SubCategorySelect />
-
-            <PriceSelect type={"price"} />
-            <FilterLabels />
-            <StyledPriceButton
-              open={false}
-              disableRipple
-              color="inherit"
-              sx={{ width: 120 }}
-              endIcon={
-                <Badge badgeContent={changedPropsCount} color="error">
-                  <TuneIcon />
-                </Badge>
-              }
-              onClick={handleOpenFilter}
-            >
-              Φίλτρα
-            </StyledPriceButton>
-          </Stack>
-        </Box>
-        <Box
-          sx={{
-            alignItems: "center",
-            display: "flex",
-            justifyContent: "space-between",
-          }}
-        >
-          <Stack>
-            <TagFiltered />
-          </Stack>
-        </Box>
-      </Paper>
+      <FilterSection />
       <Stack
         direction={"row"}
         justifyContent={"space-between"}
@@ -212,30 +133,37 @@ const ViewAll: FC = () => {
         paddingTop={2}
         paddingX={2}
       >
-        <Typography variant={"body2"} fontWeight={600}>
-          {data?.length} Αποτελέσματα
-        </Typography>
-        <Stack direction={"row"} spacing={0.5}>
-          {viewOptions.map((option) => (
-            <IconButton
-              sx={{
-                color:
-                  optionView === option.id ? "primary.main" : "neutral.300",
-                border:
-                  optionView === option.id
-                    ? "1px solid blue"
-                    : "1px solid lightgrey",
-              }}
-              key={option.id}
-              onClick={() => setOptionView(option.id)}
-            >
-              <option.icon />
-            </IconButton>
-          ))}
-        </Stack>
+        <Box display={"flex"} alignItems={"center"} gap={1}>
+          <Typography variant={"body2"} fontWeight={600}>
+            {data?.length} Αποτελέσματα
+          </Typography>
+          <ButtonGroup size='small' aria-label='small button group'>
+            {viewOptions.map((option) => (
+              <IconButton
+                sx={{
+                  height: 30,
+                  width: 30,
+                  color:
+                    optionView === option.id ? "primary.main" : "neutral.300",
+                  border:
+                    optionView === option.id
+                      ? "1px solid blue"
+                      : "1px solid lightgrey",
+                }}
+                key={option.id}
+                onClick={() => setOptionView(option.id)}
+              >
+                <option.icon />
+              </IconButton>
+            ))}
+          </ButtonGroup>
+        </Box>
         <Stack direction={"row"} alignItems={"center"}>
           <FilterSortBy
-            onSorting={(sortingBy, sortingOrder) => {
+            onSorting={(
+              sortingBy: SetStateAction<string>,
+              sortingOrder: SetStateAction<string>
+            ) => {
               setSortingBy(sortingBy);
               setSortingOrder(sortingOrder);
             }}
@@ -278,16 +206,6 @@ const ViewAll: FC = () => {
             sortingOrder={sortingOrder}
           />
         </Paper>
-      )}
-
-      {openFilter && (
-        <FilterMore
-          open={openFilter}
-          onOpen={handleOpenFilter}
-          onApply={handleApplyFilter}
-          onClose={handleCloseFilter}
-          onResetFilter={handleResetFilter}
-        />
       )}
     </Box>
   );

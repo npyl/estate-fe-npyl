@@ -23,7 +23,14 @@ export const location = createApi({
         url: `${{ parentID }}`,
       }),
     }),
+    getSubAreas: builder.mutation<IGeoLocation[], number[]>({
+      query: (body: number[]) => ({
+        url: "",
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
-export const { useGetLocationQuery } = location;
+export const { useGetLocationQuery, useGetSubAreasMutation } = location;

@@ -16,16 +16,16 @@ import {
   selectMaxPrice,
   selectMinArea,
   selectMinPrice,
+  selectStates,
   setMaxArea,
   setMaxPrice,
   setMinArea,
   setMinPrice,
-  selectStates,
 } from "src/slices/filters";
 import { useDispatch, useSelector } from "src/store";
 import { StyledBox, StyledPriceButton } from "./styles";
 
-const RangeSelect = ({ type }: { type: string }) => {
+const PriceSelect = ({ type }: { type: string }) => {
   const dispatch = useDispatch();
 
   const setMinValue = useMemo(() => {
@@ -91,10 +91,6 @@ const RangeSelect = ({ type }: { type: string }) => {
     return generateNumbers(states, type);
   }, [states, type]);
 
-  const customWidth = useMemo(() => {
-    return (valueMin.toString().length + valueMax.toString().length) * 10 + 130;
-  }, [valueMin, valueMax, type]);
-
   const renderLabel = useMemo(() => {
     if (valueMin === 0 && valueMax === 0) {
       return label;
@@ -110,22 +106,22 @@ const RangeSelect = ({ type }: { type: string }) => {
 
   return (
     <ClickAwayListener
-      mouseEvent="onMouseDown"
-      touchEvent="onTouchStart"
+      mouseEvent='onMouseDown'
+      touchEvent='onTouchStart'
       onClickAway={() => setOpen(false)}
     >
       <Box>
         <StyledPriceButton
-          sx={{ width: customWidth }}
+          sx={{ width: "max-content" }}
           open={open}
-          variant="outlined"
+          variant='outlined'
           endIcon={open ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
           onClick={handleClick}
         >
           {renderLabel}
         </StyledPriceButton>
         {open && (
-          <Popper open={open} anchorEl={anchorEl} placement="bottom-start">
+          <Popper open={open} anchorEl={anchorEl} placement='bottom-start'>
             <StyledBox>
               <Grid container padding={1} spacing={3}>
                 <Grid item xs={12} sm={6}>
@@ -244,4 +240,4 @@ function generateNumbers(states: string[], type: string) {
 
   return numbers;
 }
-export default RangeSelect;
+export default PriceSelect;

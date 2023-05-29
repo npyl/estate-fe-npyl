@@ -8,38 +8,50 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-import nomoi from "src/json/nomoi.json";
+import { useCallback, useEffect } from "react";
+import { useGetSubAreasMutation } from "src/services/location";
+// import { useGetSubAreasMutation } from "src/services/location";
 import {
   selectParentLocation,
-  setParentLocation,
+  selectSubLocation,
   setSubLocation,
 } from "src/slices/filters";
 import { useDispatch, useSelector } from "src/store";
 
-export default function CountrySelect() {
+export default function SubAreas() {
   const dispatch = useDispatch();
-  const cities = useSelector(selectParentLocation);
+  const parentLocations = useSelector(selectParentLocation);
 
-  const handleChange = (event: SelectChangeEvent<typeof cities>) => {
+  const subLocations = useSelector(selectSubLocation);
+  const [getSubAreas, { data: subLocationOptions }] = useGetSubAreasMutation();
+
+  const getSubLocations = useCallback(() => {
+    getSubAreas(parentLocations.map((location) => +location));
+  }, [parentLocations]);
+
+  useEffect(() => {
+    getSubLocations();
+  }, [parentLocations]);
+
+  const handleChange = (event: SelectChangeEvent<typeof subLocations>) => {
     const {
       target: { value },
     } = event;
     dispatch(
-      setParentLocation(
+      setSubLocation(
         // On autofill we get a stringified value.
         typeof value === "string" ? value.split(",") : value
       )
     );
-    dispatch(setSubLocation([]));
   };
   interface optionsType {
     groupName: string;
     options: { value: string; label: string }[];
   }
   const getGroupedOptions = () => {
-    const groupedOptions = nomoi.reduce((acc: any, option) => {
-      const groupName = option["Parent Name GR"];
-      const optionData = { value: option["Area ID"], label: option["Name GR"] };
+    const groupedOptions = subLocationOptions!.reduce((acc: any, option) => {
+      const groupName = option["parentNameGR"];
+      const optionData = { value: option["areaID"], label: option["nameGR"] };
       if (acc[groupName]) {
         acc[groupName].options.push(optionData);
       } else {
@@ -58,34 +70,39 @@ export default function CountrySelect() {
     const items = group.options.map((option: any) => {
       return (
         <MenuItem key={option.value} value={option.value}>
-          <Checkbox checked={cities.indexOf(option.value) > -1} />
+          <Checkbox checked={subLocations.indexOf(option.value) > -1} />
           {option.label}
         </MenuItem>
       );
     });
     return [<ListSubheader> {group.groupName}</ListSubheader>, items];
   };
-
+  if (parentLocations.length === 0) {
+    return null;
+  }
   return (
-    <FormControl sx={{ width: 110 }}>
-      <InputLabel id='demo-simple-select-label'>Περιοχή</InputLabel>
+    <FormControl sx={{ width: 140 }}>
+      <InputLabel id='demo-simple-select-label'>Υποπεριοχή</InputLabel>
       <Select
         multiple
         labelId='demo-simple-select-label'
-        value={cities}
+        value={subLocations}
         onChange={handleChange}
         renderValue={(selected) =>
           selected
             .map((value) => {
-              const option = nomoi.find((opt) => opt["Area ID"] === value);
-              return option ? option["Name GR"] : "";
+              const option = subLocationOptions!.find(
+                (opt) => opt["areaID"] === +value
+              );
+              return option ? option["nameGR"] : "";
             })
             .join(", ")
         }
-        input={<OutlinedInput label='Περιοχή' />}
+        input={<OutlinedInput label='Υποπεριοχή' />}
         MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
       >
-        {getGroupedOptions().map((group, i) => renderSelectGroup(group))}
+        {subLocationOptions &&
+          getGroupedOptions().map((group, i) => renderSelectGroup(group))}
       </Select>
     </FormControl>
   );
