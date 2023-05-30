@@ -121,7 +121,7 @@ const StyledThumbnailsContainer = styled("div", {
     maxWidth: THUMB_SIZE * 3 + 48,
   }),
   ...(length >= 5 && {
-    maxWidth: THUMB_SIZE * 6,
+    maxWidth: THUMB_SIZE * length,
   }),
   ...(length > 2 && {
     "&:before, &:after": {
