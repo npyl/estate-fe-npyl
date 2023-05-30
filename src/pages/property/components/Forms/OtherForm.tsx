@@ -53,7 +53,7 @@ const OtherFormSection: React.FC<any> = (props) => {
         <Grid item xs={6} spacing={1}>
           <Stack spacing={1}>
             <ImageSection
-              files={images}
+              images={images}
               setFiles={(images) => {
                 dispatch(setPropertyImages(images));
               }}

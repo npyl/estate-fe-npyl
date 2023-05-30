@@ -1,18 +1,6 @@
-import { m } from "framer-motion";
-// @mui
-import { IconButton, Stack, Typography } from "@mui/material";
-import { alpha } from "@mui/material/styles";
-// utils
-import { fData } from "../../../utils/formatNumber";
-//
-import { varFade } from "../../animate";
-import FileThumbnail, { fileData } from "../../file-thumbnail";
-import Iconify from "../../iconify";
-
 import { ImageList, ImageListItem } from '@mui/material';
 import Image from "src/components/image/Image";
 
-//
 import { UploadProps } from "../types";
 import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
 
@@ -25,11 +13,8 @@ interface Item {
 }
 
 export default function MultiFilePreviewDnd({
-    thumbnail,
     files,
     onImageClick,
-    onRemove,
-    sx,
 }: UploadProps) {
     if (!files?.length) {
         return null;
@@ -53,7 +38,7 @@ export default function MultiFilePreviewDnd({
             return {
                 id: `item-${index}`,
                 content: `item-${index}`,
-                data: fileData(file).preview!
+                data: file as string
             }
         })])
     }, [files]);
@@ -74,7 +59,7 @@ export default function MultiFilePreviewDnd({
                                                 {...provided.dragHandleProps}
                                             >
                                                 <Image src={item.data} alt={item.content} onClick={() => {
-                                                    onImageClick && onImageClick(files[index] as File);
+                                                    onImageClick && onImageClick(files[index] as string);
                                                 }} />
                                             </div>
                                         )}

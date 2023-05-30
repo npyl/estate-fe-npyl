@@ -1,36 +1,33 @@
 import { Card, CardContent, CardHeader, Stack } from "@mui/material";
 import { Dispatch, SetStateAction, useCallback, useState } from "react";
 
-import { SoftButton } from "src/components/SoftButton";
 import UploadDnd from "src/components/upload/UploadDnd";
 import GalleryManager from "src/components/GalleryManager";
 
 interface IImageSectionProps {
-  files: (File | string)[];
-  setFiles: Dispatch<SetStateAction<(string | File)[]>>;
+  images: string[];
+  setFiles: Dispatch<SetStateAction<string[]>>;
 }
 
-const ImagesSection: React.FC<IImageSectionProps> = ({ files, setFiles }) => {
+const ImagesSection: React.FC<IImageSectionProps> = ({ images, setFiles }) => {
 
-  const [galleryImageFile, setGalleryImageFile] = useState<File>();
+  const [galleryImage, setGalleryImage] = useState<string>();
   const [galleryManagerOpen, setGalleryManagerOpen] = useState(false);
 
   const handleDropMultiFile = useCallback(
     (acceptedFiles: File[]) => {
       setFiles([
-        ...files,
-        ...acceptedFiles.map((file) =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file),
-          })
-        ),
+        ...images.map((image) => {
+          return image;
+        }),
+        ...acceptedFiles.map((file) => URL.createObjectURL(file)),
       ]);
     },
-    [files]
+    [images]
   );
 
-  const handleRemoveFile = (inputFile: File | string) => {
-    const filtered = files.filter((file) => file !== inputFile);
+  const handleRemoveFile = (input: File | string) => {
+    const filtered = images.filter((image) => image !== input);
     setFiles(filtered);
   };
 
@@ -38,8 +35,8 @@ const ImagesSection: React.FC<IImageSectionProps> = ({ files, setFiles }) => {
     setFiles([]);
   };
 
-  const handleImageClick = (imageFile: File) => {
-    setGalleryImageFile(imageFile);
+  const handleImageClick = (image: string) => {
+    setGalleryImage(image);
     setGalleryManagerOpen(true);
   }
 
@@ -51,7 +48,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({ files, setFiles }) => {
           <UploadDnd
             multiple
             thumbnail={true}
-            files={files}
+            files={images}
             onImageClick={handleImageClick}
             onDrop={handleDropMultiFile}
             onRemove={handleRemoveFile}
@@ -60,11 +57,11 @@ const ImagesSection: React.FC<IImageSectionProps> = ({ files, setFiles }) => {
         </CardContent>
       </Card>
 
-      {galleryImageFile &&
-        <GalleryManager open={galleryManagerOpen} fileInput={galleryImageFile} onClose={() => {
+      {galleryImage &&
+        <GalleryManager open={galleryManagerOpen} image={galleryImage} onClose={() => {
           setGalleryManagerOpen(false);
-        }} onDelete={(file: File) => {
-          handleRemoveFile(file);
+        }} onDelete={(image: string) => {
+          handleRemoveFile(image);
           setGalleryManagerOpen(false);
         }} />
       }

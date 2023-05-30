@@ -210,7 +210,7 @@ function Placeholder({ sx, ...other }: StackProps) {
                     >
                         browse
                     </Typography>
-                    thorough your machine
+                    through your machine
                 </Typography>
             </Box>
         </Stack>
