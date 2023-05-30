@@ -1,10 +1,16 @@
-import { Grid, Paper } from "@mui/material";
-import Typography from "@mui/material/Typography";
-import { Box } from "@mui/system";
+import { Typography, Grid, Paper, Box } from "@mui/material";
 import * as React from "react";
 
-const PriorityFeatures: React.FC<any> = (props) => {
+import { selectLeaser, selectBuyer } from "src/slices/customer";
+import { useSelector } from "react-redux";
+
+const PriorityFeatures = () => {
+
+  const leaser = useSelector(selectLeaser);
+  const buyer = useSelector(selectBuyer);
+
   return (
+    (leaser || buyer) &&
     <Paper
       elevation={10}
       sx={{

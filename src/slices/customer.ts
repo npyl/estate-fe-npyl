@@ -436,6 +436,11 @@ export const {
   setMaxPrice,
   setTimeFrame,
 
+  // priority features
+  setPriorityFeature,
+  // non-priority features
+  setNonPriorityFeature,
+
   setInitialState,
   resetState,
 } = slice.actions;
@@ -489,6 +494,13 @@ export const selectRegion = ({ customer }: RootState) =>
   customer.location.region;
 export const selectCountry = ({ customer }: RootState) =>
   customer.location.country;
+
+// Priority Features
+export const selectPriorityFeatures = ({ customer }: RootState) =>
+  customer.demand.priorityFeatures;
+// Non-priority Features
+export const selectNonPriorityFeatures = ({ customer }: RootState) =>
+  customer.demand.nonPriorityFeatures;
 
 // Demand
 export const selectMinBedrooms = ({ customer }: RootState) =>

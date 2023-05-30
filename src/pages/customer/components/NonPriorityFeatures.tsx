@@ -1,10 +1,15 @@
-import { Grid, Paper } from "@mui/material";
-import Typography from "@mui/material/Typography";
-import { Box } from "@mui/system";
+import { Box, Grid, Paper, Typography } from "@mui/material";
 import * as React from "react";
+import { useSelector } from "react-redux";
+import { selectLeaser, selectBuyer } from "src/slices/customer";
 
-const NonPriorityFeatures: React.FC<any> = (props) => {
+const NonPriorityFeatures = () => {
+
+  const leaser = useSelector(selectLeaser);
+  const buyer = useSelector(selectBuyer);
+
   return (
+    (leaser || buyer) &&
     <Paper
       elevation={10}
       sx={{
