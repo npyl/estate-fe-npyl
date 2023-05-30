@@ -24,7 +24,7 @@ import {
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 import { useAllUsersQuery } from "src/services/user";
 import { useAllGlobalsQuery } from "src/services/global";
-const PopupWindow: React.FC<any> = (props) => {
+const ROIChangeCalculation: React.FC<any> = (props) => {
   const { data } = useAllGlobalsQuery();
   const enums: IGlobalProperty = data?.property as IGlobalProperty;
   const details = enums?.details as IGlobalPropertyDetails;
@@ -63,17 +63,20 @@ const PopupWindow: React.FC<any> = (props) => {
     setAdditionalCheckboxROIEnabled(checked);
   };
 
-  //roi calculator
+  // calculate price and change roi calculator with rend price stack
   useEffect(() => {
-    let calculatedRoi = 0;
-    if (additionalCheckbox1Enabled) {
-      calculatedRoi = ((currentRentPrice * 12) / price) * 100;
-    } else if (additionalCheckbox2Enabled) {
-      calculatedRoi = ((estimatedRentPrice * 12) / price) * 100;
-    }
+    const calculatePrice = (() => {
+      if (additionalCheckbox1Enabled) {
+        return ((currentRentPrice * 12) / roi) * 100;
+      } else if (additionalCheckbox2Enabled) {
+        return ((estimatedRentPrice * 12) / roi) * 100;
+      }
+      return price; // Use the initial value of `price` if no conditions match
+    })();
 
-    dispatch(setRoi(calculatedRoi)); // Assuming you have a corresponding action `setRoi` to update the `roi` value in the Redux store
+    dispatch(setPrice(calculatePrice));
   }, [
+    additionalCheckboxROIEnabled,
     additionalCheckbox1Enabled,
     additionalCheckbox2Enabled,
     currentRentPrice,
@@ -81,28 +84,6 @@ const PopupWindow: React.FC<any> = (props) => {
     price,
     dispatch,
   ]);
-
-  // calculate price and change roi calculator with rend price stack
-  //   useEffect(() => {
-  //     const calculatePrice = (() => {
-  //       if (additionalCheckbox1Enabled) {
-  //         return ((currentRentPrice * 12) / roi) * 100;
-  //       } else if (additionalCheckbox2Enabled) {
-  //         return ((estimatedRentPrice * 12) / roi) * 100;
-  //       }
-  //       return price; // Use the initial value of `price` if no conditions match
-  //     })();
-
-  //     dispatch(setPrice(calculatePrice));
-  //   }, [
-  //     additionalCheckboxROIEnabled,
-  //     additionalCheckbox1Enabled,
-  //     additionalCheckbox2Enabled,
-  //     currentRentPrice,
-  //     estimatedRentPrice,
-  //     price,
-  //     dispatch,
-  //   ]);
   const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const input = event.target.value;
     const numericValue = input.replace(/[^0-9.,]/g, ""); // Remove non-numeric characters from the input
@@ -138,7 +119,9 @@ const PopupWindow: React.FC<any> = (props) => {
   };
 
   return (
-    <Grid container xs={12}>
+    <Grid container xs={12} spacing={2} padding={2}>
+      ON ROI CHANGE
+      {/* //////////////////////////////// onROIChange  //////////////////////////////// */}
       <Grid container xs={12} spacing={2} padding={2}>
         <Grid item xs={5}>
           <TextField
@@ -146,8 +129,7 @@ const PopupWindow: React.FC<any> = (props) => {
             id="outlined-select-currency"
             label="Price" /* < euro sticky to field> */
             value={price}
-            onChange={handlePriceChange}
-            onKeyPress={handleKeyPress}
+            disabled
             InputProps={{
               endAdornment: <InputAdornment position="end">€</InputAdornment>,
             }}
@@ -158,14 +140,16 @@ const PopupWindow: React.FC<any> = (props) => {
             }}
           />
         </Grid>
+
         <Grid item xs={1}></Grid>
         <Grid item xs={5}>
           <TextField
             fullWidth
-            id="outlined-currency"
+            id="outlined-select-currency"
             label="ROI" /* < euro sticky to field> */
             value={roi}
-            disabled
+            onChange={handleRoiChange}
+            onKeyPress={handleKeyPress}
             InputProps={{
               endAdornment: <InputAdornment position="end">%</InputAdornment>,
             }}
@@ -176,8 +160,16 @@ const PopupWindow: React.FC<any> = (props) => {
             }}
           />
         </Grid>
-        <Grid item xs={1}></Grid>
 
+        <Grid item xs={1}>
+          <Typography>price stack</Typography>
+          <Checkbox
+            onChange={handleROICheckboxChange}
+            checked={additionalCheckboxROIEnabled} // Set the checked state based on additionalCheckboxesEnabled
+            sx={{ cursor: "default" }}
+            color="primary"
+          />
+        </Grid>
         <Grid item xs={5}>
           <TextField
             fullWidth
@@ -186,7 +178,7 @@ const PopupWindow: React.FC<any> = (props) => {
             value={currentRentPrice}
             onChange={handleCurrentRentPriceChange}
             onKeyPress={handleKeyPress}
-            disabled={!additionalCheckbox1Enabled} // Disable if additional checkboxes are not enabled
+            disabled
             InputProps={{
               endAdornment: <InputAdornment position="end">€</InputAdornment>,
             }}
@@ -197,20 +189,7 @@ const PopupWindow: React.FC<any> = (props) => {
             }}
           />
         </Grid>
-        <Grid
-          item
-          xs={1}
-          flexDirection="row"
-          sx={{ display: "inline-flex", alignItems: "center" }}
-        >
-          <Checkbox
-            onChange={handleFirstCheckboxChange}
-            checked={additionalCheckbox1Enabled} // Set the checked state based on additionalCheckboxesEnabled
-            sx={{ cursor: "default" }}
-            color="primary"
-          />
-          <Typography variant="body1" sx={{ ml: 0 }}></Typography>
-        </Grid>
+        <Grid item xs={1}></Grid>
         <Grid item xs={5}>
           <TextField
             fullWidth
@@ -219,7 +198,7 @@ const PopupWindow: React.FC<any> = (props) => {
             value={estimatedRentPrice}
             onChange={handleEstimatedRentPriceChange}
             onKeyPress={handleKeyPress}
-            disabled={!additionalCheckbox2Enabled} // Disable if additional checkboxes are not enabled
+            disabled // Disable if additional checkboxes are not enabled
             InputProps={{
               endAdornment: <InputAdornment position="end">€</InputAdornment>,
             }}
@@ -230,22 +209,8 @@ const PopupWindow: React.FC<any> = (props) => {
             }}
           />
         </Grid>
-        <Grid
-          item
-          xs={1}
-          flexDirection="row"
-          sx={{ display: "inline-flex", alignItems: "center" }}
-        >
-          <Checkbox
-            onChange={handleSecondCheckboxChange}
-            checked={additionalCheckbox2Enabled} // Set the checked state based on additionalCheckboxesEnabled
-            sx={{ cursor: "default" }}
-            color="primary"
-          />
-          <Typography variant="body1" sx={{ ml: 0 }}></Typography>
-        </Grid>
+        <Grid item xs={1}></Grid>
       </Grid>
-      {/* //////////////////////////////// onROIChange  //////////////////////////////// */}
     </Grid>
   );
 };

@@ -1,8 +1,4 @@
-import {
-  Box,
-  Tab,
-  Tabs,
-} from "@mui/material";
+import { Box, Tab, Tabs } from "@mui/material";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -54,7 +50,8 @@ const SingleProperty: NextPage = () => {
   const [value, setValue] = useState(0);
 
   const dispatch = useDispatch();
-  const [deleteProperty, { isSuccess: isDeleteSuccess }] = useDeletePropertyMutation();
+  const [deleteProperty, { isSuccess: isDeleteSuccess }] =
+    useDeletePropertyMutation();
 
   const { data } = useGetPropertyByIdQuery(parseInt(propertyId as string)); // basic details
   if (!data) {
@@ -68,7 +65,12 @@ const SingleProperty: NextPage = () => {
   const handleEdit = () => {
     router.push(`/property/edit/${propertyId}`);
     // add tab
-    dispatch(addTab({ path: `/property/edit/${propertyId}`, title: `Edit Property ${propertyId}` }))
+    dispatch(
+      addTab({
+        path: `/property/edit/${propertyId}`,
+        title: `Edit Property ${propertyId}`,
+      })
+    );
   };
 
   const handleDelete = () => {
@@ -95,11 +97,11 @@ const SingleProperty: NextPage = () => {
           aria-label="View Property Tabs"
         >
           <Tab label="Overview" {...a11yProps(0)} />
-          <Tab label="Deals" {...a11yProps(1)} />
+          <Tab label="Quick View" {...a11yProps(1)} />
           <Tab label="Tickets" {...a11yProps(2)} />
           <Tab label="Activities" {...a11yProps(3)} />
           <Tab label="Storage" {...a11yProps(4)} />
-          <Tab label="Logs" {...a11yProps(5)} />
+          <Tab label="Connections" {...a11yProps(5)} />
           <Tab label="Map" {...a11yProps(6)} />
         </Tabs>
       </ViewHeader>

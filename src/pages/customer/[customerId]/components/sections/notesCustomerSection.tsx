@@ -32,7 +32,7 @@ const NotesCustomerSection: React.FC = () => {
   const commentInputRef = useRef<HTMLInputElement>(null);
   const [message, setMessage] = useState("");
 
-  if (!notes || notes.length == 0) return null;
+  if (!notes) return null;
 
   const handleChangeMessage = (value: string) => {
     setMessage(value);
