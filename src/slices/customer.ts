@@ -3,8 +3,13 @@ import { ICustomerPOST } from "src/types/customer";
 import { ILabel } from "src/types/label";
 import type { RootState } from "../store";
 import { IDemand, IDemandFilters } from "src/types/demand";
+import { IPropertyFeatures } from "src/types/features";
 
 interface customerState extends ICustomerPOST { }
+
+interface IFeatureKey {
+  key: keyof IPropertyFeatures;
+}
 
 const initialState: customerState = {
   id: undefined,
@@ -224,6 +229,21 @@ const slice = createSlice({
     },
     setCountry(state: customerState, action): void {
       state.location.country = action.payload;
+    },
+
+    // priority features
+    setPriorityFeature(state: customerState, action): void {
+      const feature: IFeatureKey = action.payload;
+      const { key } = feature;
+      if (!key) return;
+      state.demand.priorityFeatures[key] = state.demand.priorityFeatures[key] !== null ? !state.demand.priorityFeatures[key] : true;
+    },
+    // non-priority features
+    setNonPriorityFeature(state: customerState, action): void {
+      const feature: IFeatureKey = action.payload;
+      const { key } = feature;
+      if (!key) return;
+      state.demand.nonPriorityFeatures[key] = state.demand.nonPriorityFeatures[key] !== null ? !state.demand.nonPriorityFeatures[key] : true;
     },
 
     // DEMAND

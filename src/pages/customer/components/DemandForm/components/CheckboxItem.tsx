@@ -3,11 +3,12 @@ import { Grid, Checkbox, Typography } from "@mui/material";
 interface ICheckboxItemProps {
     label: string;
     value: boolean;
-    onChange: (event: React.ChangeEvent<unknown>, checked: boolean) => void;
+    sliceKey: string;
+    onChange: (sliceKey: string, checked: boolean) => void;
 }
 
 const CheckboxItem = (props: ICheckboxItemProps) => {
-    const { value, label, onChange } = props;
+    const { label, value, sliceKey, onChange } = props;
 
     return <Grid
         item
@@ -18,7 +19,7 @@ const CheckboxItem = (props: ICheckboxItemProps) => {
         <Checkbox
             value={value}
             checked={value}
-            onChange={onChange}
+            onChange={(event: React.ChangeEvent<unknown>, checked: boolean) => onChange(sliceKey, checked)}
             sx={{ cursor: "default" }}
             color="primary"
             inputProps={{ "aria-label": "Panoramic View" }}

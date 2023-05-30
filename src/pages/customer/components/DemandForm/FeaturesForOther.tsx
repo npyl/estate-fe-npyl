@@ -1,42 +1,28 @@
-import { Typography, Box, Grid, Paper } from "@mui/material";
-import Checkbox from "@mui/material/Checkbox";
+import { Grid } from "@mui/material";
 import CheckboxItem from "./components/CheckboxItem";
 import * as React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { selectPriorityFeatures, selectNonPriorityFeatures } from "src/slices/customer";
+import { IFeatureSectionProps } from "./types/FeatureSectionProps";
 
-interface IFeatureSectionProps {
-  priorityFeaturesMode: boolean;
-}
 
 const FeaturesForOtherSection = (props: IFeatureSectionProps) => {
-  const { priorityFeaturesMode } = props;
-
-  const dispatch = useDispatch();
+  const { priorityFeaturesMode, onChange: handleChange } = props;
 
   const priorityFeatures = useSelector(selectPriorityFeatures);
-  const nonPriorityFeatures = useSelector(selectPriorityFeatures);
+  const nonPriorityFeatures = useSelector(selectNonPriorityFeatures);
   const features = (priorityFeaturesMode) ? priorityFeatures : nonPriorityFeatures;
-
-  const handleChange = () => {
-    if (priorityFeaturesMode) {
-
-    }
-    else {
-
-    }
-  }
 
   return (
     <Grid item xs={12} padding={1}>
       <Grid container spacing={2}>
-        <CheckboxItem label="Panoramic View" value={features.panoramicView} onChange={handleChange} />
-        <CheckboxItem label="Alarm System" value={features.alarmSystem} onChange={handleChange} />
-        <CheckboxItem label="Facade" value={features.facade} onChange={handleChange} />
-        <CheckboxItem label="Loading Dock" value={features.loadingDock} onChange={handleChange} />
+        <CheckboxItem label="Panoramic View" value={features.panoramicView} sliceKey={"panoramicView"} onChange={handleChange} />
+        <CheckboxItem label="Alarm System" value={features.alarmSystem} sliceKey={"alarmSystem"} onChange={handleChange} />
+        <CheckboxItem label="Facade" value={features.facade} sliceKey={"facade"} onChange={handleChange} />
+        <CheckboxItem label="Loading Dock" value={features.loadingDock} sliceKey={"loadingDock"} onChange={handleChange} />
 
-        <CheckboxItem label="Veranda" value={features.veranda} onChange={handleChange} />
-        <CheckboxItem label="View" value={features.view} onChange={handleChange} />
+        <CheckboxItem label="Veranda" value={features.veranda} sliceKey={"veranda"} onChange={handleChange} />
+        <CheckboxItem label="View" value={features.view} sliceKey={"view"} onChange={handleChange} />
       </Grid>
     </Grid>
   );

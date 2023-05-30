@@ -6,11 +6,13 @@ import FeaturesForCommercialSection from "./DemandForm/FeaturesForCommercial";
 import FeaturesForLandSection from "./DemandForm/FeaturesForLand";
 import FeaturesForOtherSection from "./DemandForm/FeaturesForOther";
 
-import { selectLeaser, selectBuyer, selectDemand } from "src/slices/customer";
-import { useSelector } from "react-redux";
+import { selectLeaser, selectBuyer, selectDemand, setPriorityFeature } from "src/slices/customer";
+import { useSelector, useDispatch } from "react-redux";
 import { IDemandPOST } from "src/types/demand";
 
 const PriorityFeatures = () => {
+
+  const dispatch = useDispatch();
 
   const leaser = useSelector(selectLeaser);
   const buyer = useSelector(selectBuyer);
@@ -18,6 +20,10 @@ const PriorityFeatures = () => {
 
   const parentCategory = demand.filters?.parentCategory;
   if (!parentCategory) return null;
+
+  const handleChange = (key: string, checked: boolean) => {
+    dispatch(setPriorityFeature({ key }));
+  }
 
   return (
     (leaser || buyer) &&
@@ -41,10 +47,10 @@ const PriorityFeatures = () => {
 
       <Grid item xs={12} padding={1}>
         <Grid container spacing={2}>
-          {parentCategory === "Residential" && <FeaturesSection priorityFeaturesMode />}
-          {parentCategory === "Land" && <FeaturesForLandSection priorityFeaturesMode />}
-          {parentCategory === "Commercial" && <FeaturesForCommercialSection priorityFeaturesMode />}
-          {parentCategory === "Other" && <FeaturesForOtherSection priorityFeaturesMode />}
+          {parentCategory === "Residential" && <FeaturesSection priorityFeaturesMode onChange={handleChange} />}
+          {parentCategory === "Land" && <FeaturesForLandSection priorityFeaturesMode onChange={handleChange} />}
+          {parentCategory === "Commercial" && <FeaturesForCommercialSection priorityFeaturesMode onChange={handleChange} />}
+          {parentCategory === "Other" && <FeaturesForOtherSection priorityFeaturesMode onChange={handleChange} />}
         </Grid>
       </Grid>
     </Paper>
