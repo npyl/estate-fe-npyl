@@ -137,10 +137,23 @@ const ViewAll: FC = () => {
           <Typography variant={"body2"} fontWeight={600}>
             {data?.length} Αποτελέσματα
           </Typography>
+        </Box>
+        <Stack direction={"row"} alignItems={"center"} spacing={1}>
+          <FilterSortBy
+            onSorting={(
+              sortingBy: SetStateAction<string>,
+              sortingOrder: SetStateAction<string>
+            ) => {
+              setSortingBy(sortingBy);
+              setSortingOrder(sortingOrder);
+            }}
+          />
+          <FilterRows />
           <ButtonGroup size='small' aria-label='small button group'>
             {viewOptions.map((option) => (
               <IconButton
                 sx={{
+                  ml: 1,
                   height: 30,
                   width: 30,
                   color:
@@ -157,18 +170,6 @@ const ViewAll: FC = () => {
               </IconButton>
             ))}
           </ButtonGroup>
-        </Box>
-        <Stack direction={"row"} alignItems={"center"}>
-          <FilterSortBy
-            onSorting={(
-              sortingBy: SetStateAction<string>,
-              sortingOrder: SetStateAction<string>
-            ) => {
-              setSortingBy(sortingBy);
-              setSortingOrder(sortingOrder);
-            }}
-          />
-          <FilterRows />
         </Stack>
       </Stack>
       {!isLoading && data ? (

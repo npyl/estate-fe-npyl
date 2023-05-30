@@ -1,5 +1,5 @@
 import TuneIcon from "@mui/icons-material/Tune";
-import { Badge, Grid, Paper, Stack, Typography } from "@mui/material";
+import { Badge, Box, Paper, Stack } from "@mui/material";
 import { useState } from "react";
 import sumOfChangedProperties, { resetState } from "src/slices/filters";
 import { useDispatch, useSelector } from "src/store";
@@ -39,10 +39,7 @@ export function FilterSection() {
       component={Paper}
       sx={{ paddingX: 2, paddingTop: 2, paddingBottom: 1 }}
     >
-      <Typography color={"text.secondary"} variant='h5'>
-        Φίλτρα
-      </Typography>
-      <Grid container direction={"row"} gap={1}>
+      <Stack flexWrap={"nowrap"} direction={"row"} sx={{ overflowX: "auto" }}>
         <CountrySelect />
         <SubAreas />
         <SaleSelect />
@@ -57,20 +54,18 @@ export function FilterSection() {
           open={false}
           disableRipple
           color='inherit'
-          sx={{ width: 120 }}
-          endIcon={
-            <Badge badgeContent={changedPropsCount} color='error'>
-              <TuneIcon />
-            </Badge>
-          }
+          sx={{ width: "auto" }}
           onClick={handleOpenFilter}
         >
-          Έξτρα
+          {" "}
+          <Badge badgeContent={changedPropsCount} color='error'>
+            <TuneIcon />
+          </Badge>
         </StyledPriceButton>
-      </Grid>
-
-      <ChosenFilters />
-
+      </Stack>
+      <Box overflow={"auto"}>
+        <ChosenFilters />
+      </Box>
       {openFilter && (
         <FilterMore
           open={openFilter}
