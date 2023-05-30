@@ -469,7 +469,7 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
           >
             <Checkbox
               id="outlined-controlled"
-              value={setStoreroomBool}
+              value={storeroomBool}
               placeholder="storer room"
               onChange={(
                 event: React.ChangeEvent<unknown>,

@@ -62,7 +62,7 @@ export default function Form({
     }
   }, [edit]);
 
-  if (!enums || !parentCategoryEnum) return null;
+  if (!enums || !parentCategoryEnum || parentCategoryEnum.length === 0) return null;
 
   const subCategoriesMap: {
     [key: string]: string[];
@@ -118,14 +118,14 @@ export default function Form({
               dispatch(setCategory(event.target.value));
             }}
           >
-            {subCategoriesMap[parentCategory] &&
+            {subCategoriesMap[parentCategory] ?
               subCategoriesMap[parentCategory].map((item, index) => {
                 return (
                   <MenuItem key={index} value={item}>
                     {item}
                   </MenuItem>
                 );
-              })}
+              }) : <MenuItem></MenuItem>}
           </TextField>
         </Grid>
       </Grid>
