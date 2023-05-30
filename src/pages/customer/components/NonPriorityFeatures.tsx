@@ -1,12 +1,23 @@
-import { Box, Grid, Paper, Typography } from "@mui/material";
+import { Typography, Grid, Paper, Box } from "@mui/material";
 import * as React from "react";
+
+import FeaturesSection from "./DemandForm/Features";
+import FeaturesForCommercialSection from "./DemandForm/FeaturesForCommercial";
+import FeaturesForLandSection from "./DemandForm/FeaturesForLand";
+import FeaturesForOtherSection from "./DemandForm/FeaturesForOther";
+
+import { selectLeaser, selectBuyer, selectDemand } from "src/slices/customer";
 import { useSelector } from "react-redux";
-import { selectLeaser, selectBuyer } from "src/slices/customer";
+import { IDemandPOST } from "src/types/demand";
 
 const NonPriorityFeatures = () => {
 
   const leaser = useSelector(selectLeaser);
   const buyer = useSelector(selectBuyer);
+  const demand: IDemandPOST = useSelector(selectDemand);
+
+  const parentCategory = demand.filters?.parentCategory;
+  if (!parentCategory) return null;
 
   return (
     (leaser || buyer) &&
@@ -29,7 +40,12 @@ const NonPriorityFeatures = () => {
       </Box>
 
       <Grid item xs={12} padding={1}>
-        <Grid container spacing={2}></Grid>
+        <Grid container spacing={2}>
+          {parentCategory === "Residential" && <FeaturesSection priorityFeaturesMode />}
+          {parentCategory === "Land" && <FeaturesForLandSection priorityFeaturesMode />}
+          {parentCategory === "Commercial" && <FeaturesForCommercialSection priorityFeaturesMode />}
+          {parentCategory === "Other" && <FeaturesForOtherSection priorityFeaturesMode />}
+        </Grid>
       </Grid>
     </Paper>
   );

@@ -9,7 +9,7 @@ interface IFeatureSectionProps {
   priorityFeaturesMode: boolean;
 }
 
-const FeaturesSection: React.FC<any> = (props: IFeatureSectionProps) => {
+const FeaturesSection = (props: IFeatureSectionProps) => {
   const { priorityFeaturesMode } = props;
 
   const dispatch = useDispatch();

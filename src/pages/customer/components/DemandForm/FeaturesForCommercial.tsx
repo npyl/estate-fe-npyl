@@ -11,7 +11,7 @@ interface IFeatureSectionProps {
   priorityFeaturesMode: boolean;
 }
 
-const FeaturesForCommercialSection: React.FC<any> = (props: IFeatureSectionProps) => {
+const FeaturesForCommercialSection = (props: IFeatureSectionProps) => {
   const { priorityFeaturesMode } = props;
 
   const dispatch = useDispatch();
