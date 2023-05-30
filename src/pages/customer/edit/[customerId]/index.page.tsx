@@ -10,9 +10,11 @@ import {
   useAddCustomerMutation,
 } from "src/services/customers";
 import { useCreateLabelForCustomerWithIDMutation } from "src/services/labels";
+import { useAddNoteToCustomerWithIdMutation } from "src/services/note";
 
 import { setInitialState, selectAll } from "src/slices/customer";
 import { selectAll as selectAllNewLabels } from "src/slices/labels";
+import { selectAll as selectAllNewNotes, setInitialState as setInitialNotesState } from 'src/slices/notes';
 import { useDispatch } from "src/store";
 import Form from "../../components/Form";
 
@@ -26,9 +28,12 @@ const EditCustomer: NextPage = () => {
   const [edit, { isSuccess: isEditedSuccess, data: editedCustomer }] = useAddCustomerMutation();
   const [createLabel, { isSuccess: isLabelSuccess }] =
     useCreateLabelForCustomerWithIDMutation();
-  const body = useSelector(selectAll);
+  const [createNote, { isSuccess: isNoteSuccess }] =
+    useAddNoteToCustomerWithIdMutation();
 
   const newLabels = useSelector(selectAllNewLabels);
+  const newNotes = useSelector(selectAllNewNotes);
+  const body = useSelector(selectAll);
 
   const performUpload = () => {
     edit(body);
@@ -44,15 +49,29 @@ const EditCustomer: NextPage = () => {
       });
     });
   };
+  const createAndAssignNewNotes = () => {
+    const editedCustomerId = editedCustomer!.id;
+
+    // foreach note; call create-for-customer-with-id
+    newNotes.forEach(async (newNote) => {
+      await createNote({
+        id: editedCustomerId,
+        dataToSend: { content: newNote.content },
+      });
+    });
+  };
 
   useEffect(() => {
-    fetchedCustomer && dispatch(setInitialState(data));
+    if (fetchedCustomer) {
+      dispatch(setInitialNotesState(data.notes));
+      dispatch(setInitialState(data));
+    }
   }, [fetchedCustomer]);
 
   useEffect(() => {
     if (isEditedSuccess && editedCustomer) {
       createAndAssignNewLabels(); // create&assign labels
-      // TODO: notes
+      createAndAssignNewNotes(); // create&assign notes
       router.push('/customer');
     }
   }, [isEditedSuccess, editedCustomer])

@@ -26,7 +26,7 @@ import NotesSection from "./NotesSection";
 import { resetState as resetLabelsState } from "src/slices/labels";
 import { resetState as resetPropertyState } from "src/slices/property";
 import { resetState as resetPropertyFilesState } from "src/slices/property/files";
-import { resetState as resetPropertyNotesState } from "src/slices/property/notes";
+import { resetState as resetPropertyNotesState } from "src/slices/notes";
 
 export default function Form({
   edit = false,
@@ -62,7 +62,7 @@ export default function Form({
     }
   }, [edit]);
 
-  if (!enums || !parentCategoryEnum) return null;
+  if (!enums || !parentCategoryEnum || parentCategoryEnum.length === 0) return null;
 
   const subCategoriesMap: {
     [key: string]: string[];
@@ -74,7 +74,7 @@ export default function Form({
   };
 
   return (
-    <Grid sx={{ mt: 2 }} spacing={1} pt={1}>
+    <Grid container sx={{ mt: 2 }} spacing={1} pt={1}>
       <Grid
         component={Paper}
         padding={"8px 16px 16px 16px"}
@@ -118,14 +118,14 @@ export default function Form({
               dispatch(setCategory(event.target.value));
             }}
           >
-            {subCategoriesMap[parentCategory] &&
+            {subCategoriesMap[parentCategory] ?
               subCategoriesMap[parentCategory].map((item, index) => {
                 return (
                   <MenuItem key={index} value={item}>
                     {item}
                   </MenuItem>
                 );
-              })}
+              }) : <MenuItem></MenuItem>}
           </TextField>
         </Grid>
       </Grid>
@@ -147,8 +147,6 @@ export default function Form({
           <NotesSection />
 
           <Grid
-            item
-            xs={12}
             padding={2}
             container
             alignItems='center'

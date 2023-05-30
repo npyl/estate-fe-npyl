@@ -128,6 +128,35 @@ const FeaturesSection: React.FC<any> = (props) => {
   const veranda = useSelector(selectVeranda);
   const tents = useSelector(selectTents);
 
+  interface ICheckboxItemProps {
+    label: string;
+    value: boolean;
+    onChange: (event: React.ChangeEvent<unknown>, checked: boolean) => void;
+  }
+
+  const CheckboxItem = (props: ICheckboxItemProps) => {
+    const { value, label, onChange } = props;
+
+    return <Grid
+      item
+      xs={3}
+      flexDirection="row"
+      sx={{ display: "inline-flex", alignItems: "center" }}
+    >
+      <Checkbox
+        value={value}
+        checked={value}
+        onChange={onChange}
+        sx={{ cursor: "default" }}
+        color="primary"
+        inputProps={{ "aria-label": "Panoramic View" }}
+      />
+      <Typography variant="body1" sx={{ ml: 0 }}>
+        {label}
+      </Typography>
+    </Grid>
+  }
+
   return (
     <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
       <Box
@@ -143,98 +172,18 @@ const FeaturesSection: React.FC<any> = (props) => {
 
       <Grid item xs={12} padding={1}>
         <Grid container spacing={2}>
-          <Grid
-            item
-            xs={3}
-            flexDirection="row"
-            sx={{ display: "inline-flex", alignItems: "center" }}
-          >
-            <Checkbox
-              value={panoramicView}
-              checked={panoramicView}
-              onChange={(
-                event: React.ChangeEvent<unknown>,
-                checked: boolean
-              ) => {
-                dispatch(setPanoramicView(checked));
-              }}
-              sx={{ cursor: "default" }}
-              color="primary"
-              inputProps={{ "aria-label": "Panoramic View" }}
-            />
-            <Typography variant="body1" sx={{ ml: 0 }}>
-              Panoramic View
-            </Typography>
-          </Grid>
-          <Grid
-            item
-            xs={3}
-            flexDirection="row"
-            sx={{ display: "inline-flex", alignItems: "center" }}
-          >
-            <Checkbox
-              value={smartHome}
-              checked={smartHome}
-              onChange={(
-                event: React.ChangeEvent<unknown>,
-                checked: boolean
-              ) => {
-                dispatch(setSmartHome(checked));
-              }}
-              sx={{ cursor: "default" }}
-              color="primary"
-              inputProps={{ "aria-label": "Smart Home" }}
-            />
-            <Typography variant="body1" sx={{ ml: 0 }}>
-              Smart Home
-            </Typography>
-          </Grid>
-          <Grid
-            item
-            xs={3}
-            flexDirection="row"
-            sx={{ display: "inline-flex", alignItems: "center" }}
-          >
-            <Checkbox
-              value={organizedGarden}
-              checked={organizedGarden}
-              onChange={(
-                event: React.ChangeEvent<unknown>,
-                checked: boolean
-              ) => {
-                dispatch(setOrganizedGarden(checked));
-              }}
-              sx={{ cursor: "default" }}
-              color="primary"
-              inputProps={{ "aria-label": "Organized Garden" }}
-            />
-            <Typography variant="body1" sx={{ ml: 0 }}>
-              Organized Garden
-            </Typography>
-          </Grid>
-          <Grid
-            item
-            xs={3}
-            flexDirection="row"
-            sx={{ display: "inline-flex", alignItems: "center" }}
-          >
-            <Checkbox
-              value={alarmSystem}
-              checked={alarmSystem}
-              onChange={(
-                event: React.ChangeEvent<unknown>,
-                checked: boolean
-              ) => {
-                dispatch(setAlarmSystem(checked));
-              }}
-              sx={{ cursor: "default" }}
-              color="primary"
-              inputProps={{ "aria-label": "Alarm System" }}
-            />
-            <Typography variant="body1" sx={{ ml: 0 }}>
-              Alarm System
-            </Typography>
-          </Grid>
+          <CheckboxItem label="Panoramic View" value={panoramicView} onChange={(event, checked) => {
+            dispatch(setPanoramicView(checked));
+          }} />
+          <CheckboxItem label="Smart Home" value={smartHome} onChange={(event, checked) => {
+            dispatch(setSmartHome(checked));
+          }} />
+          <CheckboxItem label="Organized Garden" value={organizedGarden} onChange={(event, checked) => {
+            dispatch(setOrganizedGarden(checked));
+          }} />
+          <CheckboxItem label="Alarm System" value={alarmSystem} onChange={(event, checked) => {
+            dispatch(setAlarmSystem(checked));
+          }} />
           <Grid
             item
             xs={3}

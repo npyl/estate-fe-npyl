@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NoteCreate } from "src/components/Note";
-import { addNote, selectAll } from "src/slices/customer/notes";
+import { addNote, selectAll } from "src/slices/notes";
 
 import { useProfileQuery } from "src/services/user";
 

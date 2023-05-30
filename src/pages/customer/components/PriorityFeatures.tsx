@@ -1,10 +1,32 @@
-import { Grid, Paper } from "@mui/material";
-import Typography from "@mui/material/Typography";
-import { Box } from "@mui/system";
+import { Typography, Grid, Paper, Box } from "@mui/material";
 import * as React from "react";
 
-const PriorityFeatures: React.FC<any> = (props) => {
+import FeaturesSection from "./DemandForm/Features";
+import FeaturesForCommercialSection from "./DemandForm/FeaturesForCommercial";
+import FeaturesForLandSection from "./DemandForm/FeaturesForLand";
+import FeaturesForOtherSection from "./DemandForm/FeaturesForOther";
+
+import { selectLeaser, selectBuyer, selectDemand, setPriorityFeature } from "src/slices/customer";
+import { useSelector, useDispatch } from "react-redux";
+import { IDemandPOST } from "src/types/demand";
+
+const PriorityFeatures = () => {
+
+  const dispatch = useDispatch();
+
+  const leaser = useSelector(selectLeaser);
+  const buyer = useSelector(selectBuyer);
+  const demand: IDemandPOST = useSelector(selectDemand);
+
+  const parentCategory = demand.filters?.parentCategory;
+  if (!parentCategory) return null;
+
+  const handleChange = (key: string, checked: boolean) => {
+    dispatch(setPriorityFeature({ key }));
+  }
+
   return (
+    (leaser || buyer) &&
     <Paper
       elevation={10}
       sx={{
@@ -24,7 +46,12 @@ const PriorityFeatures: React.FC<any> = (props) => {
       </Box>
 
       <Grid item xs={12} padding={1}>
-        <Grid container spacing={2}></Grid>
+        <Grid container spacing={2}>
+          {parentCategory === "Residential" && <FeaturesSection priorityFeaturesMode onChange={handleChange} />}
+          {parentCategory === "Land" && <FeaturesForLandSection priorityFeaturesMode onChange={handleChange} />}
+          {parentCategory === "Commercial" && <FeaturesForCommercialSection priorityFeaturesMode onChange={handleChange} />}
+          {parentCategory === "Other" && <FeaturesForOtherSection priorityFeaturesMode onChange={handleChange} />}
+        </Grid>
       </Grid>
     </Paper>
   );

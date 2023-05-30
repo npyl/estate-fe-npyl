@@ -9,5 +9,6 @@ export interface INote {
 }
 
 export interface INotePOST {
+  id?: number;
   content: string;
 }

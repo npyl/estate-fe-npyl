@@ -14,12 +14,14 @@ import {
   selectAll as selectAllPropertyFiles,
 } from "src/slices/property/files";
 import { selectAll as selectAllNewLabels } from "src/slices/labels";
+import { selectAll as selectAllNewNotes, setInitialState as setInitialNotesState } from 'src/slices/notes';
 
 import { useCreateLabelForPropertyWithIDMutation } from "src/services/labels";
 
 import { useGetPropertyByIdQuery } from "src/services/properties";
 
 import { useDispatch } from "react-redux";
+import { useAddNoteToPropertyWithIdMutation } from "src/services/note";
 
 const EditPropertyPage: NextPage = () => {
   const dispatch = useDispatch();
@@ -35,11 +37,13 @@ const EditPropertyPage: NextPage = () => {
     useGetPropertyByIdQuery(parseInt(propertyId as string));
 
   const [createLabel, { isSuccess: isLabelSuccess }] = useCreateLabelForPropertyWithIDMutation();
-
+  const [createNote, { isSuccess: isNoteSuccess }] = useAddNoteToPropertyWithIdMutation();
   const [edit, { isSuccess: isEditProperty, data: editedProperty }] = useAddPropertyMutation();
+
   const body = useSelector(selectAll);
 
   const newLabels = useSelector(selectAllNewLabels);
+  const newNotes = useSelector(selectAllNewNotes);
 
   const createAndAssignNewLabels = () => {
     const editedPropertyId = editedProperty!.id;
@@ -49,6 +53,18 @@ const EditPropertyPage: NextPage = () => {
       createLabel({
         propertyId: editedPropertyId,
         labelBody: newLabel,
+      });
+    });
+  };
+
+  const createAndAssignNewNotes = () => {
+    const editedPropertyId = editedProperty!.id;
+
+    // foreach label; call create-for-property-with-id
+    newNotes.forEach((newNote) => {
+      createNote({
+        id: editedPropertyId,
+        dataToSend: newNote
       });
     });
   };
@@ -64,6 +80,7 @@ const EditPropertyPage: NextPage = () => {
       };
 
       dispatch(setInitialFilesState(initialFileState));
+      dispatch(setInitialNotesState(fetchedProperty.notes));
       dispatch(setInitialState(fetchedProperty));
     }
   }, [isPropertySuccess]);
@@ -71,7 +88,7 @@ const EditPropertyPage: NextPage = () => {
   useEffect(() => {
     if (isEditProperty) {
       createAndAssignNewLabels();
-      // TODO: update notes
+      createAndAssignNewNotes();
       router.push("/");
     }
   }, [isEditProperty]);
