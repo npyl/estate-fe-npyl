@@ -65,7 +65,7 @@ const ResidentialFormSection: React.FC<any> = (props) => {
         <Grid item xs={6} spacing={1}>
           <Stack spacing={1}>
             <ImageSection
-              images={images}
+              files={images}
               setFiles={(images) => {
                 dispatch(setPropertyImages(images));
               }}

@@ -58,12 +58,10 @@ const EditPropertyPage: NextPage = () => {
       const initialFileState = {
         propertyImages: [
           fetchedProperty.propertyImage,
-          // ...fetchedProperty.images,
+          ...fetchedProperty.images,
         ],
         propertyBlueprints: fetchedProperty.blueprints,
       };
-
-      console.log('initialFileState: ', initialFileState)
 
       dispatch(setInitialFilesState(initialFileState));
       dispatch(setInitialState(fetchedProperty));

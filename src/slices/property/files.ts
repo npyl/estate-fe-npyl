@@ -4,8 +4,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "src/store";
 
 interface propertyFilesState {
-  propertyImages: string[];
-  propertyBlueprints: string[];
+  propertyImages: (File | string)[];
+  propertyBlueprints: File[];
 }
 
 const initialState: propertyFilesState = {
@@ -17,9 +17,9 @@ const slice = createSlice({
   name: "propertyFiles",
   initialState,
   reducers: {
-    setInitialState(state: propertyFilesState, action): void {
-      state.propertyImages = action.payload.propertyImages;
-      state.propertyBlueprints = action.payload.propertyBlueprints;
+    setInitialState(state: propertyFilesState, { payload }): void {
+      state.propertyImages = payload.propertyImages;
+      state.propertyBlueprints = payload.propertyBlueprints;
     },
 
     setPropertyBlueprints(state: propertyFilesState, { payload }): void {

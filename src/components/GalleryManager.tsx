@@ -9,13 +9,16 @@ import { useState } from 'react';
 
 interface IGalleryManager {
     open: boolean;
-    image: string;
-    onDelete: (image: string) => void;
+    fileInput: File;
+    onDelete: (file: File) => void;
     onClose: () => void;
 }
 
 const GalleryManager: React.FC<IGalleryManager> = (props) => {
-    const { open, image, onDelete, onClose } = props;
+    const { open, fileInput, onDelete, onClose } = props;
+
+    const data = fileData(fileInput);
+    const image = data?.preview;
 
     const [visibility, setVisibility] = useState("public");
 
@@ -72,7 +75,7 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
                 <SoftButton
                     color="error"
                     onClick={() => {
-                        onDelete(image);
+                        onDelete(fileInput);
                     }}
                 >
                     <Delete />
