@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { useEffect } from "react";
 
 import { selectAll } from "src/slices/customer";
-import { selectAll as selectAllNewNotes } from 'src/slices/customer/notes';
+import { selectAll as selectAllNewNotes } from 'src/slices/notes';
 import { selectAll as selectAllNewLabels } from "src/slices/labels";
 
 import { useAddCustomerMutation } from "src/services/customers";

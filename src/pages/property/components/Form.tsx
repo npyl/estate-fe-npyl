@@ -26,7 +26,7 @@ import NotesSection from "./NotesSection";
 import { resetState as resetLabelsState } from "src/slices/labels";
 import { resetState as resetPropertyState } from "src/slices/property";
 import { resetState as resetPropertyFilesState } from "src/slices/property/files";
-import { resetState as resetPropertyNotesState } from "src/slices/property/notes";
+import { resetState as resetPropertyNotesState } from "src/slices/notes";
 
 export default function Form({
   edit = false,

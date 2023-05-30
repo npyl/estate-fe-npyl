@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import { selectAll as selectAllNewLabels } from "src/slices/labels";
 import { selectAll } from "src/slices/property";
 import { selectAll as selectAllPropertyFiles } from "src/slices/property/files";
-import { selectAll as selectAllNewNotes } from "src/slices/property/notes";
+import { selectAll as selectAllNewNotes } from "src/slices/notes";
 
 import { useCreateLabelForPropertyWithIDMutation } from "src/services/labels";
 import { useAddNoteToPropertyWithIdMutation } from "src/services/note";
