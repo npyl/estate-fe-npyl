@@ -74,7 +74,7 @@ export default function Form({
   };
 
   return (
-    <Grid sx={{ mt: 2 }} spacing={1} pt={1}>
+    <Grid container sx={{ mt: 2 }} spacing={1} pt={1}>
       <Grid
         component={Paper}
         padding={"8px 16px 16px 16px"}
@@ -147,8 +147,6 @@ export default function Form({
           <NotesSection />
 
           <Grid
-            item
-            xs={12}
             padding={2}
             container
             alignItems='center'

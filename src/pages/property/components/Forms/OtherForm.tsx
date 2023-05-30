@@ -33,7 +33,7 @@ const OtherFormSection: React.FC<any> = (props) => {
   return (
     <>
       <Grid container paddingTop={1} paddingRight={1} spacing={1}>
-        <Grid item xs={6} spacing={1} order={"row"}>
+        <Grid item xs={6} order={"row"}>
           <Stack spacing={1}>
             <BasicSection />
             {state === "Sale" && <ROISection />}
@@ -50,7 +50,7 @@ const OtherFormSection: React.FC<any> = (props) => {
             />
           </Stack>
         </Grid>
-        <Grid item xs={6} spacing={1}>
+        <Grid item xs={6}>
           <Stack spacing={1}>
             <ImageSection
               files={images}
