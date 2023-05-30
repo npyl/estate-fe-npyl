@@ -27,32 +27,18 @@ const FeaturesForOtherSection = (props: IFeatureSectionProps) => {
     }
   }
 
-
   return (
-    <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
-      <Box
-        sx={{
-          px: 3,
-          py: 1.5,
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <Typography variant="h6">Feautures</Typography>
-      </Box>
+    <Grid item xs={12} padding={1}>
+      <Grid container spacing={2}>
+        <CheckboxItem label="Panoramic View" value={features.panoramicView} onChange={handleChange} />
+        <CheckboxItem label="Alarm System" value={features.alarmSystem} onChange={handleChange} />
+        <CheckboxItem label="Facade" value={features.facade} onChange={handleChange} />
+        <CheckboxItem label="Loading Dock" value={features.loadingDock} onChange={handleChange} />
 
-      <Grid item xs={12} padding={1}>
-        <Grid container spacing={2}>
-          <CheckboxItem label="Panoramic View" value={features.panoramicView} onChange={handleChange} />
-          <CheckboxItem label="Alarm System" value={features.alarmSystem} onChange={handleChange} />
-          <CheckboxItem label="Facade" value={features.facade} onChange={handleChange} />
-          <CheckboxItem label="Loading Dock" value={features.loadingDock} onChange={handleChange} />
-
-          <CheckboxItem label="Veranda" value={features.veranda} onChange={handleChange} />
-          <CheckboxItem label="View" value={features.view} onChange={handleChange} />
-        </Grid>
+        <CheckboxItem label="Veranda" value={features.veranda} onChange={handleChange} />
+        <CheckboxItem label="View" value={features.view} onChange={handleChange} />
       </Grid>
-    </Paper>
+    </Grid>
   );
 };
 export default FeaturesForOtherSection;
