@@ -205,10 +205,9 @@ const slice = createSlice({
       if (!state.labelIDs.includes(payload)) state.labelIDs.push(payload);
     },
 
-    // TODO
-    // setSuggestedBy(state: customerState, action): void {
-    //   state.suggestedBy = action.payload;
-    // },
+    setSuggestedBy(state: customerState, action): void {
+      state.suggestedBy = action.payload;
+    },
 
     setStreet(state: customerState, action): void {
       state.location.street = action.payload;
@@ -415,6 +414,7 @@ export const {
 
   setId,
   setManagedBy,
+  setSuggestedBy,
   setFirstName,
   setLastName,
   setEmail,
