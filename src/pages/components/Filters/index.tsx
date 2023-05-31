@@ -44,14 +44,14 @@ export function FilterSection() {
       <Stack flexWrap={"nowrap"} direction={"row"} sx={{ overflowX: "auto" }}>
         {/* <CountrySelect /> */}
         {/* <SubAreas /> */}
-        {/* <SaleSelect /> */}
+        <SaleSelect />
 
         <CategorySelect />
         <SubCategorySelect />
 
-        {/* <PriceSelect type={"price"} /> */}
+        <PriceSelect type={"price"} />
         <PriceSelect type={"area"} />
-        {/* <FilterLabels /> */}
+        <FilterLabels />
         <StyledPriceButton
           open={false}
           disableRipple

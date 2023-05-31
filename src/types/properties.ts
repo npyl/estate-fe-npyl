@@ -21,17 +21,17 @@ export interface IPropertyFilter {
   maxBedrooms?: number;
   minFloor?: number;
   maxFloor?: number;
-  minConstructionYear?: number;
-  maxConstructionYear?: number;
+  minConstructionYear: number;
+  maxConstructionYear: number;
   heatingType?: string;
   frameType?: string;
   furnished?: string;
   city?: string;
   managerId?: number;
-  labelIDs?: string[];
+  labelIDs: string[];
   parentLocation?: string[];
   subLocation?: string[];
-  states?: string[];
+  states: string[];
   categories: string[];
   parentCategories: string[];
 }

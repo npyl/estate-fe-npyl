@@ -7,13 +7,14 @@ interface IFilterProps extends IPropertyFilter {
 }
 
 const initialState: IFilterProps = {
+  minConstructionYear: 1960,
   maxConstructionYear: new Date().getFullYear(),
   parentCategories: [],
   categories: [],
-  // labels: [],
+  labelIDs: [],
   // parentLocation: [],
   // subLocation: [],
-  // states: [],
+  states: [],
 };
 
 const slice = createSlice({
@@ -97,7 +98,7 @@ const slice = createSlice({
 
     // multiple
     setLabels(state, { payload }) {
-      state.labels = payload;
+      state.labelIDs = payload;
     },
     setParentLocation(state, { payload }) {
       state.parentLocation = payload;
@@ -205,7 +206,7 @@ export const selectParentCategories = ({ filters }: RootState) =>
   filters.parentCategories;
 export const selectSubCategories = ({ filters }: RootState) =>
   filters.categories;
-export const selectLabels = ({ filters }: RootState) => filters.labels;
+export const selectLabels = ({ filters }: RootState) => filters.labelIDs;
 
 export const selectAll = ({ filters }: RootState) => filters;
 
