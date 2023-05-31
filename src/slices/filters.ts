@@ -7,32 +7,14 @@ interface IFilterProps extends IPropertyFilter {
 }
 
 const initialState: IFilterProps = {
-  filterName: "",
-  code: 0,
-  minPrice: 0,
-  maxPrice: 0,
-  minArea: 0,
-  maxArea: 0,
-  state: "",
-  category: "",
-  parentCategory: "",
-  minBedrooms: 0,
-  maxBedrooms: 0,
-  minFloor: 0,
-  maxFloor: 0,
   minConstructionYear: 1960,
   maxConstructionYear: new Date().getFullYear(),
-  heatingType: "",
-  frameType: "",
-  furnished: "",
-  city: "",
-  managerId: 0,
-  labels: [],
-  parentLocation: [],
-  subLocation: [],
-  states: [],
-  categories: [],
   parentCategories: [],
+  categories: [],
+  labelIDs: [],
+  // parentLocation: [],
+  // subLocation: [],
+  states: [],
 };
 
 const slice = createSlice({
@@ -116,7 +98,7 @@ const slice = createSlice({
 
     // multiple
     setLabels(state, { payload }) {
-      state.labels = payload;
+      state.labelIDs = payload;
     },
     setParentLocation(state, { payload }) {
       state.parentLocation = payload;
@@ -224,7 +206,9 @@ export const selectParentCategories = ({ filters }: RootState) =>
   filters.parentCategories;
 export const selectSubCategories = ({ filters }: RootState) =>
   filters.categories;
-export const selectLabels = ({ filters }: RootState) => filters.labels;
+export const selectLabels = ({ filters }: RootState) => filters.labelIDs;
+
+export const selectAll = ({ filters }: RootState) => filters;
 
 const sumOfChangedProperties = createSelector(
   (state: RootState) => state.filters,
@@ -264,8 +248,8 @@ const sumOfChangedProperties = createSelector(
             ? acc + 1
             : acc
           : filter[curr]
-          ? acc + 1
-          : acc,
+            ? acc + 1
+            : acc,
       0
     );
   }

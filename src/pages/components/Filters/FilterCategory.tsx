@@ -52,7 +52,7 @@ export default function CategorySelect() {
         {categoryEnums!.map((option) => {
           return (
             <MenuItem key={option} value={option}>
-              <Checkbox checked={categories.indexOf(option) > -1} />
+              <Checkbox checked={categories && categories.length > 0 && categories.indexOf(option) > -1} />
 
               {option}
             </MenuItem>

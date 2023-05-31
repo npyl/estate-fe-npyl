@@ -45,6 +45,7 @@ const initialState: customerState = {
   labelIDs: [],
   demand: {
     filters: {
+      labelIDs: [],
     },
     priorityFeatures: {
       panoramicView: false,
@@ -204,10 +205,9 @@ const slice = createSlice({
       if (!state.labelIDs.includes(payload)) state.labelIDs.push(payload);
     },
 
-    // TODO
-    // setSuggestedBy(state: customerState, action): void {
-    //   state.suggestedBy = action.payload;
-    // },
+    setSuggestedBy(state: customerState, action): void {
+      state.suggestedBy = action.payload;
+    },
 
     setStreet(state: customerState, action): void {
       state.location.street = action.payload;
@@ -315,6 +315,10 @@ const slice = createSlice({
       state.demand.filters.maxPrice = action.payload;
     },
 
+    setDemandLabels(state: customerState, action): void {
+      state.demand.filters.labelIDs = action.payload;
+    },
+
     setTimeFrame(state: customerState, action): void {
       state.demand.timeframe = action.payload;
     },
@@ -410,6 +414,7 @@ export const {
 
   setId,
   setManagedBy,
+  setSuggestedBy,
   setFirstName,
   setLastName,
   setEmail,
@@ -454,6 +459,7 @@ export const {
   setState,
   setMinPrice,
   setMaxPrice,
+  setDemandLabels,
   setTimeFrame,
 
   // priority features
@@ -573,6 +579,8 @@ export const selectMinPrice = ({ customer }: RootState) =>
 
 export const selectMaxPrice = ({ customer }: RootState) =>
   customer.demand.filters.maxPrice;
+
+export const selectDemandLabels = ({ customer }: RootState) => customer.demand.filters.labelIDs;
 
 export const selectTimeFrame = ({ customer }: RootState) =>
   customer.demand.timeframe;

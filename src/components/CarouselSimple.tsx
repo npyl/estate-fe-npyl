@@ -8,13 +8,14 @@ import { bgGradient } from "src/utils/cssStyles";
 import Carousel from "./carousel";
 import CarouselArrowIndex from "./carousel/CarouselArrowIndex";
 
-import Image from "src/components/image";
+import Image, { ImageRatio } from "src/components/image";
 
 // ----------------------------------------------------------------------
 
 const THUMB_SIZE = 64;
 
 type Props = {
+  ratio?: string;
   data: {
     id: string;
     title: string;
@@ -81,7 +82,7 @@ const StyledThumbnailsContainer = styled("div", {
 
 // ----------------------------------------------------------------------
 
-export default function CarouselSimple({ data, onImageClick }: Props) {
+export default function CarouselSimple({ data, onImageClick, ratio = "16/9" }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const [nav1, setNav1] = useState<Carousel | undefined>(undefined);
@@ -128,7 +129,7 @@ export default function CarouselSimple({ data, onImageClick }: Props) {
             alt={item.title}
             src={item.image}
             onClick={onImageClick}
-            ratio="16/9"
+            ratio={ratio! as ImageRatio}
           />
         ))}
       </Carousel>

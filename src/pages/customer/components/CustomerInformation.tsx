@@ -38,6 +38,7 @@ import {
   setFax,
   // setters
   setManagedBy,
+  setSuggestedBy,
   setFirstName,
   setHomePhone,
   setIdNumber,
@@ -290,7 +291,7 @@ const CustomerInformation: React.FC<any> = (props) => {
               label="Suggested by"
               value={suggestedBy}
               onChange={(e) => {
-                // dispatch(selectSuggestedBy(e.target.value));
+                dispatch(setSuggestedBy(e.target.value));
               }}
             />
           </Grid>

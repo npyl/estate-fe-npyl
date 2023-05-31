@@ -71,7 +71,7 @@ const ChosenFilters = () => {
     categories: {
       label: "Υποκατηγορίες",
     },
-    labels: {
+    labelIDs: {
       label: "Ετικέτες",
     },
   };
@@ -158,8 +158,8 @@ const ChosenFilters = () => {
                 >
                   {Array.isArray(changedProps[key])
                     ? changedProps[key]
-                        .map((element: string) => element)
-                        .join(", ")
+                      .map((element: string) => element)
+                      .join(", ")
                     : changedProps[key]}
                 </Typography>
               </Stack>

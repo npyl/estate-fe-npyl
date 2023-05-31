@@ -1,7 +1,7 @@
 import TuneIcon from "@mui/icons-material/Tune";
 import { Badge, Box, Paper, Stack } from "@mui/material";
-import { useState } from "react";
-import sumOfChangedProperties, { resetState } from "src/slices/filters";
+import { useEffect, useState } from "react";
+import sumOfChangedProperties, { resetState, selectAll } from "src/slices/filters";
 import { useDispatch, useSelector } from "src/store";
 import ChosenFilters from "./ChosenFilters";
 import CategorySelect from "./FilterCategory";
@@ -18,6 +18,7 @@ export function FilterSection() {
   const dispatch = useDispatch();
   const changedPropsCount = useSelector(sumOfChangedProperties);
   const [openFilter, setOpenFilter] = useState(false);
+
   const handleResetFilter = () => {
     dispatch(resetState());
   };
@@ -33,6 +34,7 @@ export function FilterSection() {
   const handleCloseFilter = () => {
     setOpenFilter(false);
   };
+
   return (
     <Stack
       spacing={3}
@@ -40,8 +42,8 @@ export function FilterSection() {
       sx={{ paddingX: 2, paddingTop: 2, paddingBottom: 1 }}
     >
       <Stack flexWrap={"nowrap"} direction={"row"} sx={{ overflowX: "auto" }}>
-        <CountrySelect />
-        <SubAreas />
+        {/* <CountrySelect /> */}
+        {/* <SubAreas /> */}
         <SaleSelect />
 
         <CategorySelect />
@@ -57,7 +59,6 @@ export function FilterSection() {
           sx={{ width: "auto" }}
           onClick={handleOpenFilter}
         >
-          {" "}
           <Badge badgeContent={changedPropsCount} color='error'>
             <TuneIcon />
           </Badge>

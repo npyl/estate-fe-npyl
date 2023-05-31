@@ -65,6 +65,7 @@ import { useAllPropertiesQuery } from "src/services/properties";
 import { IProperties } from "src/types/properties";
 
 import OnlyNumbersInput from "src/pages/property/components/OnlyNumbers";
+import { LabelSelect } from "./LabelSelect";
 
 const DemandForm: React.FC<any> = (props) => {
   const enums = useAllGlobalsQuery().data;
@@ -273,18 +274,7 @@ const DemandForm: React.FC<any> = (props) => {
             </FormControl>
           </Grid>
           <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id="outlined-controlled"
-              label="Labels: TODO: ..."
-              //   onChange={handleGardenChange}
-              //   onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
-            />
+            <LabelSelect />
           </Grid>
           <Grid item xs={6}>
             <FormControl fullWidth>
