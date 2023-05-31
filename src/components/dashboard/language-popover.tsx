@@ -1,7 +1,3 @@
-import type { FC } from "react";
-import PropTypes from "prop-types";
-import { toast } from "react-hot-toast";
-import { useTranslation } from "react-i18next";
 import {
   Box,
   ListItemIcon,
@@ -10,7 +6,11 @@ import {
   Popover,
   Typography,
 } from "@mui/material";
-import Image from "next/legacy/image";
+import Image from "next/image";
+import PropTypes from "prop-types";
+import type { FC } from "react";
+import { toast } from "react-hot-toast";
+import { useTranslation } from "react-i18next";
 
 interface LanguagePopoverProps {
   anchorEl: null | Element;
@@ -18,7 +18,7 @@ interface LanguagePopoverProps {
   open?: boolean;
 }
 
-type Language = "en" | "de" | "es";
+type Language = "en" | "gr";
 
 type LanguageOptions = {
   [key in Language]: {
@@ -32,13 +32,9 @@ const languageOptions: LanguageOptions = {
     icon: "/static/icons/uk_flag.svg",
     label: "English",
   },
-  de: {
-    icon: "/static/icons/de_flag.svg",
-    label: "German",
-  },
-  es: {
-    icon: "/static/icons/es_flag.svg",
-    label: "Spanish",
+  gr: {
+    icon: "/static/icons/gr_flag.svg",
+    label: "Greek",
   },
 };
 
@@ -76,6 +72,7 @@ export const LanguagePopover: FC<LanguagePopoverProps> = (props) => {
                 width: 20,
                 "& img": {
                   width: "100%",
+                  height: "20px",
                 },
                 position: "relative",
               }}
