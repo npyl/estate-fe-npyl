@@ -69,12 +69,12 @@ export default function FilterMore({
   const frameType = useSelector(selectFrameType);
   const furnished = useSelector(selectFurnished);
   const heatingType = useSelector(selectHeatingType);
-  const minYear = useSelector(selectMinConstructionYear);
-  const maxYear = useSelector(selectMaxConstructionYear);
-  const minBedrooms = useSelector(selectMinBedrooms);
-  const maxBedrooms = useSelector(selectMaxBedrooms);
-  const minFloors = useSelector(selectMinFloor);
-  const maxFloors = useSelector(selectMaxFloor);
+  const minYear = useSelector(selectMinConstructionYear) || 0;
+  const maxYear = useSelector(selectMaxConstructionYear) || 0;
+  const minBedrooms = useSelector(selectMinBedrooms) || 0;
+  const maxBedrooms = useSelector(selectMaxBedrooms) || 0;
+  const minFloors = useSelector(selectMinFloor) || 0;
+  const maxFloors = useSelector(selectMaxFloor) || 0;
 
   const fields = [
     {

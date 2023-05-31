@@ -54,8 +54,8 @@ const PriceSelect = ({ type }: { type: string }) => {
     return selectMaxArea;
   }, [type]);
 
-  const valueMin = useSelector(selectMinValue);
-  const valueMax = useSelector(selectMaxValue);
+  const valueMin = useSelector(selectMinValue) || 0;
+  const valueMax = useSelector(selectMaxValue) || 0;
   const states = useSelector(selectStates);
 
   const [anchorEl, setAnchorEl] = useState(null);
