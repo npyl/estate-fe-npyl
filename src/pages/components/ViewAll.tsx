@@ -21,26 +21,25 @@ import { useFilterPropertiesMutation } from "src/services/properties";
 import DataGridTable from "../../components/DataGrid";
 import MapView from "./MapView";
 import MediaCard from "./MediaCard";
-
-import sumOfChangedProperties, { getChangedFields } from "src/slices/filters";
-
-import { useDispatch, useSelector } from "src/store";
-import { IPropertyFilter } from "src/types/properties";
 import { FilterSection } from "./Filters";
 import FilterRows from "./Filters/FilterRows";
 import FilterSortBy from "./Filters/FilterSortBy";
 
+import { selectAll } from "src/slices/filters";
+import { useSelector } from "react-redux";
+
 const ViewAll: FC = () => {
-  const dispatch = useDispatch();
-  const changedPropsCount = useSelector(sumOfChangedProperties);
-  const changedProps = useSelector(getChangedFields);
   const [sortingBy, setSortingBy] = useState("");
   const [sortingOrder, setSortingOrder] = useState("asc");
-  const [openFilter, setOpenFilter] = useState(false);
   const [optionView, setOptionView] = useState<optionType>("list");
 
-  const [filter, setFilter] = useState<IPropertyFilter>({} as IPropertyFilter);
-  const [filterProperties, { isLoading, data }] = useFilterPropertiesMutation();
+  const allFilters = useSelector(selectAll);
+
+  const [filterProperties, { isSuccess, data }] = useFilterPropertiesMutation();
+
+  useEffect(() => {
+    filterProperties(allFilters);
+  }, [allFilters])
 
   type optionType = "list" | "grid" | "map";
 
@@ -120,9 +119,7 @@ const ViewAll: FC = () => {
   const skeletonRows = Array.from({ length: 5 }, (_, index) => ({
     id: index + 1,
   }));
-  useEffect(() => {
-    filterProperties(filter);
-  }, [filter]);
+
   return (
     <Box>
       <FilterSection />
@@ -172,7 +169,7 @@ const ViewAll: FC = () => {
           </ButtonGroup>
         </Stack>
       </Stack>
-      {!isLoading && data ? (
+      {data ? (
         <>
           {optionView === "list" && (
             <Paper sx={{ mt: 2 }}>
