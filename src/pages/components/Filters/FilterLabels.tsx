@@ -47,8 +47,8 @@ export default function FilterLabels() {
       >
         {labelOptions.map((option) => {
           return (
-            <MenuItem key={option.id} value={option.name}>
-              <Checkbox checked={labels.indexOf(option.name) > -1} />
+            <MenuItem key={option.id} value={option.id}>
+              <Checkbox checked={labels.indexOf(option.id!) > -1} />
               <Label
                 variant='soft'
                 sx={{
