@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 import * as React from "react";
 import { useRef, useState } from "react";
 import { Note } from "src/components/Note";
-
+import { useTranslation } from "react-i18next";
 import {
   useAddNoteToCustomerWithIdMutation,
   useGetNotesByCustomerIdQuery,
@@ -22,7 +22,7 @@ import {
 const NotesCustomerSection: React.FC = () => {
   const router = useRouter();
   const { customerId } = router.query;
-
+  const { t } = useTranslation();
   const notes = useGetNotesByCustomerIdQuery(
     parseInt(customerId as string)
   ).data;
@@ -91,7 +91,7 @@ const NotesCustomerSection: React.FC = () => {
               fullWidth
               value={message}
               inputRef={commentInputRef}
-              placeholder="Write a note..."
+              placeholder={t("Write a note...")}
               onChange={(event) => handleChangeMessage(event.target.value)}
               onKeyPress={handleKeyPress}
               endAdornment={

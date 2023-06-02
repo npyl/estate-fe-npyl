@@ -54,27 +54,12 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
           <Grid container>
             <Grid item xs={6}>
               <List>
-                <ListStatusItem
-                  label="Publiced"
-                  status={isAvailable(data?.state)}
-                  align="horizontal"
-                />
                 <ListItem
                   label="Category"
                   value={data?.category}
                   align="horizontal"
                 />
-                <ListItem label="Code" value={data?.code} align="horizontal" />
-                <ListItem
-                  label="Key Code"
-                  value={data?.keyCode}
-                  align="horizontal"
-                />
-                <ListItem
-                  label="Price"
-                  value={data?.price + " € / m^2"}
-                  align="horizontal"
-                />
+
                 <ListItem
                   label="House Area"
                   value={areas?.covered}
@@ -85,6 +70,57 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                   value={areas?.plot}
                   align="horizontal"
                 />
+                <ListBooleanItem
+                  label="Rented"
+                  status={data?.rented}
+                  align="horizontal"
+                />
+                <ListItem
+                  label="Available After"
+                  value={data?.availableAfter}
+                  align="horizontal"
+                />
+                <ListItem
+                  label="Monthly Utilities"
+                  value={data?.averageUtils + " €"}
+                  align="horizontal"
+                />
+                <ListItem
+                  label="Construction Year"
+                  value={data.construction.yearOfConstruction}
+                  align="horizontal"
+                />
+                {/* yer build na prosthetei??? */}
+              </List>
+            </Grid>
+            <Grid item xs={6}>
+              <List>
+                <ListItem label="Code" value={data?.code} align="horizontal" />
+                <ListItem
+                  label="Price"
+                  value={data?.price + " € / m^2"}
+                  align="horizontal"
+                />
+
+                <ListItem
+                  label="Key Code"
+                  value={data?.keyCode}
+                  align="horizontal"
+                />
+
+                <ListManagerItem manager={manager} />
+                <ListStatusItem
+                  label="Publiced"
+                  status={isAvailable(data?.state)}
+                  align="horizontal"
+                />
+                <ListItem
+                  label="State"
+                  value={data?.state}
+                  align="horizontal"
+                />
+
+                <ListLabelsItem labels={data?.labels} />
                 <ListItem label={"ROI"}>
                   <Button
                     sx={{
@@ -98,37 +134,6 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                     ROI
                   </Button>
                 </ListItem>
-              </List>
-            </Grid>
-            <Grid item xs={6}>
-              <List>
-                <ListItem
-                  label="Renovation Year"
-                  value={data.construction.yearOfConstruction}
-                  align="horizontal"
-                />
-                <ListItem
-                  label="Monthly Utilities"
-                  value={data?.averageUtils + " €"}
-                  align="horizontal"
-                />
-                <ListManagerItem manager={manager} />
-                <ListItem
-                  label="State"
-                  value={data?.state}
-                  align="horizontal"
-                />
-                <ListBooleanItem
-                  label="Rented"
-                  status={data?.rented}
-                  align="horizontal"
-                />
-                <ListItem
-                  label="Available After"
-                  value={data?.availableAfter}
-                  align="horizontal"
-                />
-                <ListLabelsItem labels={data?.labels} />
               </List>
             </Grid>
           </Grid>
