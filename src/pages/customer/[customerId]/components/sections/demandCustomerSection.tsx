@@ -32,7 +32,7 @@ const DemandCustomerSection: React.FC = (props) => {
           justifyContent: "left",
         }}
       >
-        <Typography variant="h6">Demand</Typography>
+        <Typography variant='h6'>Demand</Typography>
       </Box>
       <Divider></Divider>
       <Grid container>
@@ -46,40 +46,40 @@ const DemandCustomerSection: React.FC = (props) => {
           
         /> */}
             <ListItem
-              label="ParentCategory:"
+              label='ParentCategory:'
               value={data?.demand.filters.parentCategory}
-              align="horizontal"
+              align='horizontal'
             />
             <ListItem
-              label="Furnished:"
+              label='Furnished:'
               value={data?.demand.filters.furnished}
-              align="horizontal"
+              align='horizontal'
             />
             <ListLabelsItem
-              label="Labels:"
+              label='Labels:'
               labels={data?.labels}
-              align="horizontal"
+              align='horizontal'
             />
 
             <ListItem
-              label="Construction Min-Max:"
+              label='Construction Min-Max:'
               value={` ${data?.demand.filters.minYearOfConstruction} - ${data?.demand.filters.maxYearOfConstruction}`}
-              align="horizontal"
+              align='horizontal'
             />
             <ListItem
-              label="Bedrooms Min-Max:"
+              label='Bedrooms Min-Max:'
               value={` ${data?.demand.filters.minBedrooms} - ${data?.demand.filters.maxBedrooms}`}
-              align="horizontal"
+              align='horizontal'
             />
             <ListItem
-              label="Covered Min-Max:"
+              label='Covered Min-Max:'
               value={`${data?.demand.filters.minCovered} - ${data?.demand.filters.maxCovered}`}
-              align="horizontal"
+              align='horizontal'
             />
             <ListItem
-              label="Price Min-Max:"
+              label='Price Min-Max:'
               value={`${data?.demand.filters.minPrice} - ${data?.demand.filters.maxPrice}`}
-              align="horizontal"
+              align='horizontal'
             />
           </List>
         </Grid>
@@ -94,37 +94,37 @@ const DemandCustomerSection: React.FC = (props) => {
           
         /> */}
             <ListItem
-              label="Category:"
+              label='Category:'
               value={data?.demand.filters.category}
-              align="horizontal"
+              align='horizontal'
             />
 
             <ListItem
-              label="State:"
+              label='State:'
               value={data?.demand.filters.state}
-              align="horizontal"
+              align='horizontal'
             />
 
             <ListItem
-              label="Time Frame:"
+              label='Time Frame:'
               value={data?.demand.timeframe}
-              align="horizontal"
+              align='horizontal'
             />
 
             <ListItem
-              label="Bathrooms Number Min-Max:"
+              label='Bathrooms Number Min-Max:'
               value={`${data?.demand.filters.minBathrooms} - ${data?.demand.filters.maxBathrooms}`}
-              align="horizontal"
+              align='horizontal'
             />
             <ListItem
-              label="Plot Min-Max:"
+              label='Plot Min-Max:'
               value={`${data?.demand.filters.minPlot} - ${data?.demand.filters.maxPlot}`}
-              align="horizontal"
+              align='horizontal'
             />
             <ListItem
-              label="Floor Min-Max:"
+              label='Floor Min-Max:'
               value={`${data?.demand.filters.minFloor} - ${data?.demand.filters.maxFloor}`}
-              align="horizontal"
+              align='horizontal'
             />
           </List>
         </Grid>

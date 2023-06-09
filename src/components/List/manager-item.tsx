@@ -14,7 +14,7 @@ const ListManagerItem: FC<ListManagerItemProps> = (props) => {
 
   const router = useRouter();
 
-  const { data } = user.useProfileQuery(manager?.id);
+  const { data } = user.useProfileQuery();
   if (!data) return null;
 
   const performViewManager = () => {
@@ -23,17 +23,17 @@ const ListManagerItem: FC<ListManagerItemProps> = (props) => {
   };
 
   return (
-    <ListItem label="Manager" {...other}>
+    <ListItem label='Manager' {...other}>
       <Button
         sx={{
           flex: 1,
           float: "right",
           height: "22px",
         }}
-        variant="outlined"
+        variant='outlined'
         onClick={performViewManager}
       >
-        <Typography variant="subtitle2" sx={{ overflow: "hidden" }}>
+        <Typography variant='subtitle2' sx={{ overflow: "hidden" }}>
           {manager?.lastName}
         </Typography>
       </Button>

@@ -12,8 +12,8 @@ import { Box, Stack, alpha } from "@mui/system";
 import { useRouter } from "next/router";
 import * as React from "react";
 import { useRef, useState } from "react";
-import { Note } from "src/components/Note";
 import { useTranslation } from "react-i18next";
+import { Note } from "src/components/Note";
 import {
   useAddNoteToCustomerWithIdMutation,
   useGetNotesByCustomerIdQuery,
@@ -68,7 +68,7 @@ const NotesCustomerSection: React.FC = () => {
           justifyContent: "left",
         }}
       >
-        <Typography variant="h6">Notes</Typography>
+        <Typography variant='h6'>Notes</Typography>
       </Box>
       <Divider></Divider>
       <Grid container>
@@ -81,8 +81,8 @@ const NotesCustomerSection: React.FC = () => {
 
           <Grid
             spacing={0}
-            direction="row"
-            alignItems="center"
+            direction='row'
+            alignItems='center'
             sx={{
               p: (theme) => theme.spacing(0, 3, 3, 3),
             }}
@@ -91,12 +91,12 @@ const NotesCustomerSection: React.FC = () => {
               fullWidth
               value={message}
               inputRef={commentInputRef}
-              placeholder={t("Write a note...")}
+              placeholder={t("Write a note...") as string}
               onChange={(event) => handleChangeMessage(event.target.value)}
               onKeyPress={handleKeyPress}
               endAdornment={
-                <InputAdornment position="end" sx={{ mr: 1 }}>
-                  <IconButton size="small" onClick={handleSendNote}>
+                <InputAdornment position='end' sx={{ mr: 1 }}>
+                  <IconButton size='small' onClick={handleSendNote}>
                     <SendIcon />
                   </IconButton>
                 </InputAdornment>

@@ -14,7 +14,10 @@ import {
 import * as React from "react";
 
 import {
+  selectBuyer,
   selectFurnished,
+  // getters
+  selectLeaser,
   selectMaxBathrooms,
   selectMaxBedrooms,
   selectMaxCovered,
@@ -23,9 +26,6 @@ import {
   selectMaxPrice,
   selectMaxYearOfConstruction,
   selectMinBathrooms,
-  // getters
-  selectLeaser,
-  selectBuyer,
   selectMinBedrooms,
   selectMinCovered,
   selectMinFloor,
@@ -57,7 +57,7 @@ import {
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { useMemo, useState } from "react";
+import { FC, useMemo, useState } from "react";
 
 import { useAllGlobalsQuery } from "src/services/global";
 import { useAllPropertiesQuery } from "src/services/properties";
@@ -67,7 +67,7 @@ import { IProperties } from "src/types/properties";
 import OnlyNumbersInput from "src/pages/property/components/OnlyNumbers";
 import { LabelSelect } from "./LabelSelect";
 
-const DemandForm: React.FC<any> = (props) => {
+const DemandForm: FC = () => {
   const enums = useAllGlobalsQuery().data;
   const propertyEnums = enums?.property;
   const stateEnum = propertyEnums?.state;
@@ -103,7 +103,7 @@ const DemandForm: React.FC<any> = (props) => {
   const [searchText, setSearchText] = useState<string>("");
   const [autocompleteValue, setAutocompleteValue] = useState("");
 
-  const autocompleteChange = (_event: any, value: string) => {
+  const autocompleteChange = (_event: any, value: string | null) => {
     if (!value) return;
     setAutocompleteValue(value);
   };
@@ -173,8 +173,7 @@ const DemandForm: React.FC<any> = (props) => {
   )
     return null;
 
-  return (
-    (leaser || buyer) &&
+  return leaser || buyer ? (
     <Paper
       elevation={10}
       sx={{
@@ -190,7 +189,7 @@ const DemandForm: React.FC<any> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant="h6">Demand Form</Typography>
+        <Typography variant='h6'>Demand Form</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -198,14 +197,14 @@ const DemandForm: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <Autocomplete
               disablePortal
-              id="combo-box-demo"
+              id='combo-box-demo'
               value={autocompleteValue}
               onChange={autocompleteChange}
               options={propertyCodes}
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  placeholder="Property Code"
+                  placeholder='Property Code'
                   onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                     handleSearch(event.target.value);
                   }}
@@ -218,7 +217,7 @@ const DemandForm: React.FC<any> = (props) => {
               <InputLabel>Parent Category</InputLabel>
               <Select
                 value={parentCategory}
-                label="Parent Category"
+                label='Parent Category'
                 onChange={(e) => {
                   dispatch(setParentCategory(e.target.value));
                 }}
@@ -238,7 +237,7 @@ const DemandForm: React.FC<any> = (props) => {
               <InputLabel>Furnishing</InputLabel>
               <Select
                 value={furnished}
-                label="Furnishing"
+                label='Furnishing'
                 onChange={(e) => {
                   dispatch(setFurnished(e.target.value));
                 }}
@@ -258,7 +257,7 @@ const DemandForm: React.FC<any> = (props) => {
               <InputLabel>State</InputLabel>
               <Select
                 value={state}
-                label="State"
+                label='State'
                 onChange={(e) => {
                   dispatch(setState(e.target.value));
                 }}
@@ -281,7 +280,7 @@ const DemandForm: React.FC<any> = (props) => {
               <InputLabel>Time Frame</InputLabel>
               <Select
                 value={timeFrame}
-                label="Time Frame"
+                label='Time Frame'
                 onChange={(e) => {
                   dispatch(setTimeFrame(e.target.value));
                 }}
@@ -297,11 +296,11 @@ const DemandForm: React.FC<any> = (props) => {
             </FormControl>{" "}
           </Grid>
           <Grid item xs={6}>
-            <Typography variant="h6">Bedrooms</Typography>
+            <Typography variant='h6'>Bedrooms</Typography>
             <Grid container direction={"row"} spacing={1}>
               <Grid item xs={6}>
                 <OnlyNumbersInput
-                  label="min"
+                  label='min'
                   value={minBedrooms}
                   onChange={(value) => {
                     dispatch(setMinBedrooms(value));
@@ -310,7 +309,7 @@ const DemandForm: React.FC<any> = (props) => {
               </Grid>
               <Grid item xs={6}>
                 <OnlyNumbersInput
-                  label="max"
+                  label='max'
                   value={maxBedrooms}
                   onChange={(value) => {
                     dispatch(setMaxBedrooms(value));
@@ -321,11 +320,11 @@ const DemandForm: React.FC<any> = (props) => {
           </Grid>
 
           <Grid item xs={6}>
-            <Typography variant="h6">Bathrooms</Typography>
+            <Typography variant='h6'>Bathrooms</Typography>
             <Grid container direction={"row"} spacing={1}>
               <Grid item xs={6}>
                 <OnlyNumbersInput
-                  label="min"
+                  label='min'
                   value={minBathrooms}
                   onChange={(value) => {
                     dispatch(setMinBathrooms(value));
@@ -334,7 +333,7 @@ const DemandForm: React.FC<any> = (props) => {
               </Grid>
               <Grid item xs={6}>
                 <OnlyNumbersInput
-                  label="max"
+                  label='max'
                   value={maxBathrooms}
                   onChange={(value) => {
                     dispatch(setMaxBathrooms(value));
@@ -345,11 +344,11 @@ const DemandForm: React.FC<any> = (props) => {
           </Grid>
 
           <Grid item xs={6}>
-            <Typography variant="h6">Covered</Typography>
+            <Typography variant='h6'>Covered</Typography>
             <Grid container direction={"row"} spacing={1}>
               <Grid item xs={6}>
                 <OnlyNumbersInput
-                  label="min"
+                  label='min'
                   value={minCovered}
                   onChange={(value) => {
                     dispatch(setMinCovered(value));
@@ -358,7 +357,7 @@ const DemandForm: React.FC<any> = (props) => {
               </Grid>
               <Grid item xs={6}>
                 <OnlyNumbersInput
-                  label="max"
+                  label='max'
                   value={maxCovered}
                   onChange={(value) => {
                     dispatch(setMaxCovered(value));
@@ -369,11 +368,11 @@ const DemandForm: React.FC<any> = (props) => {
           </Grid>
 
           <Grid item xs={6}>
-            <Typography variant="h6">Plot</Typography>
+            <Typography variant='h6'>Plot</Typography>
             <Grid container direction={"row"} spacing={1}>
               <Grid item xs={6}>
                 <OnlyNumbersInput
-                  label="min"
+                  label='min'
                   value={minPlot}
                   onChange={(value) => {
                     dispatch(setMinPlot(value));
@@ -382,7 +381,7 @@ const DemandForm: React.FC<any> = (props) => {
               </Grid>
               <Grid item xs={6}>
                 <OnlyNumbersInput
-                  label="max"
+                  label='max'
                   value={maxPlot}
                   onChange={(value) => {
                     dispatch(setMaxPlot(value));
@@ -393,11 +392,11 @@ const DemandForm: React.FC<any> = (props) => {
           </Grid>
 
           <Grid item xs={6}>
-            <Typography variant="h6">Price</Typography>
+            <Typography variant='h6'>Price</Typography>
             <Grid container direction={"row"} spacing={1}>
               <Grid item xs={6}>
                 <OnlyNumbersInput
-                  label="min"
+                  label='min'
                   value={minPrice}
                   onChange={(value) => {
                     dispatch(setMinPrice(value));
@@ -406,7 +405,7 @@ const DemandForm: React.FC<any> = (props) => {
               </Grid>
               <Grid item xs={6}>
                 <OnlyNumbersInput
-                  label="max"
+                  label='max'
                   value={maxPrice}
                   onChange={(value) => {
                     dispatch(setMaxPrice(value));
@@ -417,11 +416,11 @@ const DemandForm: React.FC<any> = (props) => {
           </Grid>
 
           <Grid item xs={6}>
-            <Typography variant="h6">Floor</Typography>
+            <Typography variant='h6'>Floor</Typography>
             <Grid container direction={"row"} spacing={1}>
               <Grid item xs={6}>
                 <OnlyNumbersInput
-                  label="min"
+                  label='min'
                   value={minFloor}
                   onChange={(value) => {
                     dispatch(setMinFloor(value));
@@ -430,7 +429,7 @@ const DemandForm: React.FC<any> = (props) => {
               </Grid>
               <Grid item xs={6}>
                 <OnlyNumbersInput
-                  label="max"
+                  label='max'
                   value={maxFloor}
                   onChange={(value) => {
                     dispatch(setMaxFloor(value));
@@ -441,11 +440,11 @@ const DemandForm: React.FC<any> = (props) => {
           </Grid>
 
           <Grid item xs={6}>
-            <Typography variant="h6">Year of Construction</Typography>
+            <Typography variant='h6'>Year of Construction</Typography>
             <Grid container direction={"row"} spacing={1}>
               <Grid item xs={6}>
                 <OnlyNumbersInput
-                  label="min"
+                  label='min'
                   value={minYearOfConstruction}
                   onChange={(value) => {
                     dispatch(setMinYearOfConstruction(value));
@@ -454,7 +453,7 @@ const DemandForm: React.FC<any> = (props) => {
               </Grid>
               <Grid item xs={6}>
                 <OnlyNumbersInput
-                  label="max"
+                  label='max'
                   value={maxYearOfConstruction}
                   onChange={(value) => {
                     dispatch(setMaxYearOfConstruction(value));
@@ -466,6 +465,8 @@ const DemandForm: React.FC<any> = (props) => {
         </Grid>
       </Grid>
     </Paper>
+  ) : (
+    <></>
   );
 };
 export default DemandForm;

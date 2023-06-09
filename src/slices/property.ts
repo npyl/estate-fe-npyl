@@ -242,6 +242,7 @@ const initialState: propertyState = {
   },
   propertyImage: "",
   labelIDs: [],
+  roi: 0,
 };
 
 const slice = createSlice({
@@ -919,10 +920,10 @@ const slice = createSlice({
       // map labels
       state.labelIDs = payload.labels
         ? payload.labels
-          .filter((label) => label.id) // where id not null
-          .map((label) => {
-            return label.id!;
-          })
+            .filter((label) => label.id) // where id not null
+            .map((label) => {
+              return label.id!;
+            })
         : [];
     },
     resetState: () => {

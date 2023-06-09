@@ -1,4 +1,3 @@
-import { skipToken } from "@reduxjs/toolkit/dist/query";
 import type { FC, ReactNode } from "react";
 import { createContext, useEffect, useReducer } from "react";
 import { useLoginMutation, useRegisterMutation } from "../services/auth";
@@ -123,9 +122,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
     isLoading: userLoading,
     isSuccess,
     isError,
-  } = useProfileQuery(
-    globalThis?.localStorage?.getItem("accessToken") ?? skipToken
-  );
+  } = useProfileQuery();
   const [register] = useRegisterMutation();
   useEffect(() => {
     const initialize = async (): Promise<void> => {
@@ -142,7 +139,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
             type: ActionType.INITIALIZE,
             payload: {
               isAuthenticated: true,
-              user: profileData,
+              user: profileData || null,
             },
           });
         }
@@ -169,7 +166,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
     dispatch({
       type: ActionType.LOGIN,
       payload: {
-        user: profileData,
+        user: profileData!,
       },
     });
   };

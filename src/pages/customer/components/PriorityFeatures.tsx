@@ -1,17 +1,20 @@
-import { Typography, Grid, Paper, Box } from "@mui/material";
-import * as React from "react";
+import { Box, Grid, Paper, Typography } from "@mui/material";
 
 import FeaturesSection from "./DemandForm/Features";
 import FeaturesForCommercialSection from "./DemandForm/FeaturesForCommercial";
 import FeaturesForLandSection from "./DemandForm/FeaturesForLand";
 import FeaturesForOtherSection from "./DemandForm/FeaturesForOther";
 
-import { selectLeaser, selectBuyer, selectDemand, setPriorityFeature } from "src/slices/customer";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectBuyer,
+  selectDemand,
+  selectLeaser,
+  setPriorityFeature,
+} from "src/slices/customer";
 import { IDemandPOST } from "src/types/demand";
 
 const PriorityFeatures = () => {
-
   const dispatch = useDispatch();
 
   const leaser = useSelector(selectLeaser);
@@ -23,10 +26,9 @@ const PriorityFeatures = () => {
 
   const handleChange = (key: string, checked: boolean) => {
     dispatch(setPriorityFeature({ key }));
-  }
+  };
 
-  return (
-    (leaser || buyer) &&
+  return leaser || buyer ? (
     <Paper
       elevation={10}
       sx={{
@@ -47,13 +49,32 @@ const PriorityFeatures = () => {
 
       <Grid item xs={12} padding={1}>
         <Grid container spacing={2}>
-          {parentCategory === "Residential" && <FeaturesSection priorityFeaturesMode onChange={handleChange} />}
-          {parentCategory === "Land" && <FeaturesForLandSection priorityFeaturesMode onChange={handleChange} />}
-          {parentCategory === "Commercial" && <FeaturesForCommercialSection priorityFeaturesMode onChange={handleChange} />}
-          {parentCategory === "Other" && <FeaturesForOtherSection priorityFeaturesMode onChange={handleChange} />}
+          {parentCategory === "Residential" && (
+            <FeaturesSection priorityFeaturesMode onChange={handleChange} />
+          )}
+          {parentCategory === "Land" && (
+            <FeaturesForLandSection
+              priorityFeaturesMode
+              onChange={handleChange}
+            />
+          )}
+          {parentCategory === "Commercial" && (
+            <FeaturesForCommercialSection
+              priorityFeaturesMode
+              onChange={handleChange}
+            />
+          )}
+          {parentCategory === "Other" && (
+            <FeaturesForOtherSection
+              priorityFeaturesMode
+              onChange={handleChange}
+            />
+          )}
         </Grid>
       </Grid>
     </Paper>
+  ) : (
+    <></>
   );
 };
 export default PriorityFeatures;

@@ -18,7 +18,7 @@ import { useDispatch, useSelector } from "src/store";
 
 export default function CountrySelect() {
   const dispatch = useDispatch();
-  const cities = useSelector(selectParentLocation);
+  const cities = useSelector(selectParentLocation) || [];
 
   const handleChange = (event: SelectChangeEvent<typeof cities>) => {
     const {

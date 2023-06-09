@@ -19,7 +19,6 @@ import {
   selectArea,
   selectAvgUtils,
   selectBalconies,
-  selectBalconySide,
   selectBasement,
   selectBathrooms,
   selectBedrooms,
@@ -40,13 +39,9 @@ import {
   selectLivingRooms,
   selectNumOfWC,
   selectOrientation,
-  selectParkingType,
-  selectPlot,
   selectPublicTransportation,
   selectSea,
-  selectSpots,
   selectStoreroom,
-  selectStorerooms,
   selectViewType,
   selectZoneType,
   setAccessibility,
@@ -68,7 +63,7 @@ import {
   setLivingRooms,
   setNumOfWC,
   setOrientation,
-  setStorerooms,
+  setStoreroom,
   setViewType,
   setZoneType,
 } from "src/slices/property";
@@ -98,18 +93,18 @@ const DetailsSection: React.FC<any> = (props) => {
   const numOfWC = useSelector(selectNumOfWC);
   const livingRooms = useSelector(selectLivingRooms);
   const bedrooms = useSelector(selectBedrooms);
-  const Storerooms = useSelector(selectStorerooms);
+  const Storerooms = useSelector(selectStoreroom);
   const covered = useSelector(selectCovered);
   const avgUtils = useSelector(selectAvgUtils);
   const heatingType = useSelector(selectHeatingType);
   const heatingSystem = useSelector(selectHeatingSystem);
   const floorHeating = useSelector(selectFloorHeating);
   const airConditioning = useSelector(selectAirConditioning);
-  const parkingType = useSelector(selectParkingType);
-  const spots = useSelector(selectSpots);
-  const balconySide = useSelector(selectBalconySide);
+  // const parkingType = useSelector(selectParkingType);
+  // const spots = useSelector(selectSpots);
+  // const balconySide = useSelector(selectBalconySide);
   const area = useSelector(selectArea);
-  const plot = useSelector(selectPlot);
+  // const plot = useSelector(selectPlot);
   const basement = useSelector(selectBasement);
   const hasAttic = useSelector(selectHasAttic);
   const garden = useSelector(selectGarden);
@@ -455,7 +450,7 @@ const DetailsSection: React.FC<any> = (props) => {
                             onChange={(
                               event: React.ChangeEvent<HTMLInputElement>
                             ) => {
-                              dispatch(setStorerooms(event.target.value));
+                              dispatch(setStoreroom(event.target.value));
                             }}
                           />
                         </Grid>

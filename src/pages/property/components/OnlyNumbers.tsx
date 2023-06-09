@@ -1,8 +1,8 @@
-import { TextField, InputAdornment } from "@mui/material";
+import { InputAdornment, TextField } from "@mui/material";
 
 interface OnlyNumbersInputProps {
   label: string;
-  value: number | string;
+  value?: number | string;
   onChange: (value: string) => void;
   adornment?: string;
 }
@@ -42,7 +42,7 @@ const OnlyNumbersInput: React.FC<OnlyNumbersInputProps> = ({
       }}
       InputProps={{
         endAdornment: adornment ? (
-          <InputAdornment position="end">{adornment}</InputAdornment>
+          <InputAdornment position='end'>{adornment}</InputAdornment>
         ) : (
           <></>
         ),

@@ -1,23 +1,26 @@
-import { ListItemProps } from "@mui/material";
-import { Typography } from "@mui/material";
-import Label from "../label/Label";
+import { ListItemProps, Typography } from "@mui/material";
 import type { FC } from "react";
+import Label from "../label/Label";
 
-import ListItem from "./item";
 import { ILabel } from "src/types/label";
+import ListItem from "./item";
+
+type Direction = "horizontal" | "vertical";
 
 interface ListLabelsItemProps extends ListItemProps {
   labels: ILabel[];
+  align?: Direction;
+  label: string;
 }
 
 const ListLabelsItem: FC<ListLabelsItemProps> = (props) => {
-  const { labels, ...other } = props;
+  const { labels, label = "Labels", ...other } = props;
 
   return (
-    <ListItem label={"Labels"} {...other}>
+    <ListItem label={label} {...other}>
       <Typography
-        color="textSecondary"
-        variant="body2"
+        color='textSecondary'
+        variant='body2'
         sx={{
           float: "right",
         }}

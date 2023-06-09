@@ -20,13 +20,13 @@ import { useDispatch, useSelector } from "src/store";
 
 export default function SubAreas() {
   const dispatch = useDispatch();
-  const parentLocations = useSelector(selectParentLocation);
+  const parentLocations = useSelector(selectParentLocation) || [];
 
-  const subLocations = useSelector(selectSubLocation);
+  const subLocations = useSelector(selectSubLocation) || [];
   const [getSubAreas, { data: subLocationOptions }] = useGetSubAreasMutation();
 
   const getSubLocations = useCallback(() => {
-    getSubAreas(parentLocations.map((location) => +location));
+    getSubAreas(parentLocations.map((location: string | number) => +location));
   }, [parentLocations]);
 
   useEffect(() => {

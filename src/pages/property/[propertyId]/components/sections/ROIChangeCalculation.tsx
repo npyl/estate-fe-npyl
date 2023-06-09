@@ -1,29 +1,25 @@
 import {
-  Grid,
-  TextField,
-  InputAdornment,
   Checkbox,
+  Grid,
+  InputAdornment,
+  TextField,
   Typography,
-  Divider,
 } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
-import { useAllCustomersQuery } from "src/services/customers";
+import { useDispatch, useSelector } from "react-redux";
 import {
-  selectPrice,
-  selectEstimatedRentPrice,
-  setEstimatedRentPrice,
   selectCurrentRentPrice,
-  setCurrentRentPrice,
-  selectStudent,
-  setPrice,
+  selectEstimatedRentPrice,
+  selectPrice,
   selectRoi,
+  setCurrentRentPrice,
+  setEstimatedRentPrice,
+  setPrice,
   setRoi,
 } from "src/slices/property";
 
-import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
-import { useAllUsersQuery } from "src/services/user";
 import { useAllGlobalsQuery } from "src/services/global";
+import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 const ROIChangeCalculation: React.FC<any> = (props) => {
   const { data } = useAllGlobalsQuery();
   const enums: IGlobalProperty = data?.property as IGlobalProperty;
@@ -126,12 +122,12 @@ const ROIChangeCalculation: React.FC<any> = (props) => {
         <Grid item xs={5}>
           <TextField
             fullWidth
-            id="outlined-select-currency"
-            label="Price" /* < euro sticky to field> */
+            id='outlined-select-currency'
+            label='Price' /* < euro sticky to field> */
             value={price}
             disabled
             InputProps={{
-              endAdornment: <InputAdornment position="end">€</InputAdornment>,
+              endAdornment: <InputAdornment position='end'>€</InputAdornment>,
             }}
             inputProps={{
               style: {
@@ -145,13 +141,13 @@ const ROIChangeCalculation: React.FC<any> = (props) => {
         <Grid item xs={5}>
           <TextField
             fullWidth
-            id="outlined-select-currency"
-            label="ROI" /* < euro sticky to field> */
+            id='outlined-select-currency'
+            label='ROI' /* < euro sticky to field> */
             value={roi}
             onChange={handleRoiChange}
             onKeyPress={handleKeyPress}
             InputProps={{
-              endAdornment: <InputAdornment position="end">%</InputAdornment>,
+              endAdornment: <InputAdornment position='end'>%</InputAdornment>,
             }}
             inputProps={{
               style: {
@@ -167,20 +163,20 @@ const ROIChangeCalculation: React.FC<any> = (props) => {
             onChange={handleROICheckboxChange}
             checked={additionalCheckboxROIEnabled} // Set the checked state based on additionalCheckboxesEnabled
             sx={{ cursor: "default" }}
-            color="primary"
+            color='primary'
           />
         </Grid>
         <Grid item xs={5}>
           <TextField
             fullWidth
-            id="outlined-select-currency"
-            label="Current Rent Price" /* < euro sticky to field> */
+            id='outlined-select-currency'
+            label='Current Rent Price' /* < euro sticky to field> */
             value={currentRentPrice}
             onChange={handleCurrentRentPriceChange}
             onKeyPress={handleKeyPress}
             disabled
             InputProps={{
-              endAdornment: <InputAdornment position="end">€</InputAdornment>,
+              endAdornment: <InputAdornment position='end'>€</InputAdornment>,
             }}
             inputProps={{
               style: {
@@ -193,14 +189,14 @@ const ROIChangeCalculation: React.FC<any> = (props) => {
         <Grid item xs={5}>
           <TextField
             fullWidth
-            id="outlined-select-currency"
-            label="Estimated Rent Price" /* < euro sticky to field> */
+            id='outlined-select-currency'
+            label='Estimated Rent Price' /* < euro sticky to field> */
             value={estimatedRentPrice}
             onChange={handleEstimatedRentPriceChange}
             onKeyPress={handleKeyPress}
             disabled // Disable if additional checkboxes are not enabled
             InputProps={{
-              endAdornment: <InputAdornment position="end">€</InputAdornment>,
+              endAdornment: <InputAdornment position='end'>€</InputAdornment>,
             }}
             inputProps={{
               style: {
@@ -215,4 +211,4 @@ const ROIChangeCalculation: React.FC<any> = (props) => {
   );
 };
 
-export default PopupWindow;
+export default ROIChangeCalculation;
