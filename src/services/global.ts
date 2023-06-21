@@ -6,7 +6,7 @@ export const global = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl:
       // "http://Learningpathbe-env.eba-qvdghecz.us-east-2.elasticbeanstalk.com/api/users",
-      "http://localhost:8080/api/global",
+      `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/global`,
     prepareHeaders: (headers) => {
       // By default, if we have a token in the store, let's use that for authenticated requests
 

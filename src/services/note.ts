@@ -12,7 +12,7 @@ export const note = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl:
       // "http://Learningpathbe-env.eba-qvdghecz.us-east-2.elasticbeanstalk.com/api/users",
-      "http://localhost:8080/api/notes",
+      `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/notes`,
     prepareHeaders: (headers) => {
       // By default, if we have a token in the store, let's use that for authenticated requests
 

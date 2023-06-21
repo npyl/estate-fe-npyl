@@ -6,7 +6,7 @@ export const auth = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl:
       // "http://Learningpathbe-env.eba-qvdghecz.us-east-2.elasticbeanstalk.com/api",
-      "http://localhost:8080/api",
+      `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api`,
   }),
   endpoints: (builder) => ({
     login: builder.mutation<UserResponse, IAuthReq>({
