@@ -2,7 +2,6 @@ import { Divider, Grid, Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import * as React from "react";
 import { useGetCustomerByIdQuery } from "src/services/customers";
-import { useFilterPropertiesMutation } from "src/services/properties";
 import { GridCellParams, GridColDef } from "@mui/x-data-grid";
 import { useRouter } from "next/router";
 import DataGridTable from "src/components/DataGrid";
@@ -45,8 +44,6 @@ const OwnedCustomerPropertiesSection: NextPage = () => {
       width: 180,
     },
   ];
-
-  const [filterProperties, { isLoading }] = useFilterPropertiesMutation();
 
   const { data } = useGetCustomerByIdQuery(parseInt(customerId as string)); // basic details
   if (!data || !data.ownedProperties) {
