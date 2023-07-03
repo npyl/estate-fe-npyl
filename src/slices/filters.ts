@@ -11,7 +11,7 @@ const initialState: IFilterProps = {
   maxConstructionYear: new Date().getFullYear(),
   parentCategories: [],
   categories: [],
-  labelIDs: [],
+  labels: [],
   // parentLocation: [],
   // subLocation: [],
   states: [],
@@ -98,7 +98,7 @@ const slice = createSlice({
 
     // multiple
     setLabels(state, { payload }) {
-      state.labelIDs = payload;
+      state.labels = payload;
     },
     setParentLocation(state, { payload }) {
       state.parentLocation = payload;
@@ -206,7 +206,7 @@ export const selectParentCategories = ({ filters }: RootState) =>
   filters.parentCategories;
 export const selectSubCategories = ({ filters }: RootState) =>
   filters.categories;
-export const selectLabels = ({ filters }: RootState) => filters.labelIDs;
+export const selectLabels = ({ filters }: RootState) => filters.labels;
 
 export const selectAll = ({ filters }: RootState) => filters;
 

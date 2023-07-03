@@ -2,9 +2,16 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IDemand } from "src/types/customer";
 import { IProperties, IPropertyFilter } from "src/types/properties";
 
+import IPage from "src/types/page";
+
 interface ISuggestPropertiesProps {
   id: number;
   dataToSend: IDemand;
+}
+interface IPropertyFilterParam {
+  filter: IPropertyFilter;
+  page: number;
+  pageSize: number;
 }
 
 export const properties = createApi({
@@ -43,11 +50,12 @@ export const properties = createApi({
         body: dataToSend,
       }),
     }),
-    filterProperties: builder.mutation<IProperties[], IPropertyFilter>({
-      query: (filter: IPropertyFilter) => ({
+    filterProperties: builder.mutation<IPage<IProperties>, IPropertyFilterParam>({
+      query: (filterParam: IPropertyFilterParam) => ({
         url: "/filter",
         method: "POST",
-        body: filter,
+        body: filterParam.filter,
+        params: { page: filterParam.page, pageSize: filterParam.pageSize }
       }),
       invalidatesTags: ["Properties"],
     }),

@@ -28,7 +28,7 @@ export interface IPropertyFilter {
   furnished?: string;
   city?: string;
   managerId?: number;
-  labelIDs: number[];
+  labels: string[];
   parentLocation?: string[];
   subLocation?: string[];
   states: string[];
