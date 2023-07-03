@@ -14,7 +14,7 @@ import {
 import match from "autosuggest-highlight/match";
 import parse from "autosuggest-highlight/parse";
 import { useRouter } from "next/router";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useGetSearchResultsQuery } from "src/services/properties";
 import { IProperties } from "src/types/properties";
 import { useDebouncedCallback } from "use-debounce";
@@ -28,7 +28,8 @@ export const DashboardNavbarSearch: FC = () => {
   const [searchText, setSearchText] = useState("");
   const [debouncedText, setDebouncedText] = useState("");
   const [searchCategory, setSearchCategory] = useState<SearchCategory>("all");
-  const { data: results, isLoading } = useGetSearchResultsQuery(debouncedText, {
+  const [results, setResults] = useState<IProperties[]>([]);
+  const { data, isLoading } = useGetSearchResultsQuery({ searchString: debouncedText, page: 0, pageSize: 10 }, {
     skip: debouncedText === "",
   });
   const handleSearch = useDebouncedCallback((value) => {
@@ -46,6 +47,11 @@ export const DashboardNavbarSearch: FC = () => {
   };
 
   const open = Boolean(anchorEl);
+
+  useEffect(() => {
+    if (!data) return;
+    setResults(data.content);
+  }, [data]);
 
   return (
     <div>

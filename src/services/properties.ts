@@ -8,8 +8,13 @@ interface ISuggestPropertiesProps {
   id: number;
   dataToSend: IDemand;
 }
-interface IPropertyFilterParam {
+interface IPropertyFilterParams {
   filter: IPropertyFilter;
+  page: number;
+  pageSize: number;
+}
+interface IPropertySearchParams {
+  searchString: string;
   page: number;
   pageSize: number;
 }
@@ -50,8 +55,8 @@ export const properties = createApi({
         body: dataToSend,
       }),
     }),
-    filterProperties: builder.mutation<IPage<IProperties>, IPropertyFilterParam>({
-      query: (filterParam: IPropertyFilterParam) => ({
+    filterProperties: builder.mutation<IPage<IProperties>, IPropertyFilterParams>({
+      query: (filterParam: IPropertyFilterParams) => ({
         url: "/filter",
         method: "POST",
         body: filterParam.filter,
@@ -73,11 +78,11 @@ export const properties = createApi({
       }),
       invalidatesTags: ["Properties"],
     }),
-    getSearchResults: builder.query<IProperties[], string>({
-      query: (text: string) => {
+    getSearchResults: builder.query<IPage<IProperties>, IPropertySearchParams>({
+      query: (searchParams: IPropertySearchParams) => {
         return {
           url: "/search",
-          params: { searchString: text },
+          params: searchParams,
         };
       },
     }),
