@@ -4,9 +4,7 @@ import { IAuthReq, UserResponse } from "src/interfaces/auth";
 export const auth = createApi({
   reducerPath: "auth",
   baseQuery: fetchBaseQuery({
-    baseUrl:
-      // "http://Learningpathbe-env.eba-qvdghecz.us-east-2.elasticbeanstalk.com/api",
-      `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api`,
+    baseUrl: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api`,
   }),
   endpoints: (builder) => ({
     login: builder.mutation<UserResponse, IAuthReq>({

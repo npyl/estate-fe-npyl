@@ -4,9 +4,7 @@ import { IUser } from "src/types/user";
 export const user = createApi({
   reducerPath: "user",
   baseQuery: fetchBaseQuery({
-    baseUrl:
-      // "http://Learningpathbe-env.eba-qvdghecz.us-east-2.elasticbeanstalk.com/api/users",
-      `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/users`,
+    baseUrl: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/users`,
     prepareHeaders: (headers) => {
       // By default, if we have a token in the store, let's use that for authenticated requests
 
