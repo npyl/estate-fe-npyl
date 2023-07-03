@@ -30,7 +30,7 @@ import { useSelector } from "react-redux";
 import { IProperties } from "src/types/properties";
 
 const ViewAll: FC = () => {
-  const [rows, setRows] = useState<IProperties[]>();
+  const [rows, setRows] = useState<IProperties[]>([]);
   const [sortingBy, setSortingBy] = useState("");
   const [sortingOrder, setSortingOrder] = useState("asc");
   const [optionView, setOptionView] = useState<optionType>("list");

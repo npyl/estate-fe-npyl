@@ -24,7 +24,7 @@ export const customers = createApi({
   endpoints: (builder) => ({
     allCustomers: builder.query<ICustomer[], void>({
       query: () => ({
-        url: "",
+        url: "all",
       }),
       providesTags: ["Customers"],
     }),
