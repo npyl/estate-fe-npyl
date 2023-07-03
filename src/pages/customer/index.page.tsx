@@ -2,11 +2,13 @@ import { Box, Paper } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 
 import type { NextPage } from "next";
+import { useEffect, useState } from "react";
 import DataGridTable from "src/components/DataGrid";
 
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-import { useAllCustomersQuery } from "src/services/customers";
+import { useAllCustomersPaginatedQuery } from "src/services/customers";
+import { ICustomer } from "src/types/customer";
 
 const columns: GridColDef[] = [
   {
@@ -32,9 +34,14 @@ const columns: GridColDef[] = [
 ];
 
 const Customers: NextPage = () => {
-  const { data } = useAllCustomersQuery();
+  const { data } = useAllCustomersPaginatedQuery({ page: 0, pageSize: 25 });
+  const [rows, setRows] = useState<ICustomer[]>([]);
 
-  if (!data) return null;
+  useEffect(() => {
+    if (!data) return;
+    setRows(data.content);
+  }, [data])
+
 
   return (
     <>
@@ -47,7 +54,7 @@ const Customers: NextPage = () => {
       >
         <Paper sx={{ mt: 2 }}>
           <DataGridTable
-            rows={data}
+            rows={rows}
             columns={columns}
             resource={"customer"}
             sortingBy={"firstName"}

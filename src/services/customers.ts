@@ -1,7 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { ICustomer, IDemand } from "src/types/customer";
-import { IDemandPOST } from "src/types/demand";
-import { IProperties } from "src/types/properties";
+import { ICustomer } from "src/types/customer";
+import IPage from "src/types/page";
+
+interface ICustomerParams {
+  page: number;
+  pageSize: number;
+}
 
 export const customers = createApi({
   reducerPath: "customers",
@@ -23,6 +27,13 @@ export const customers = createApi({
     allCustomers: builder.query<ICustomer[], void>({
       query: () => ({
         url: "all",
+      }),
+      providesTags: ["Customers"],
+    }),
+    allCustomersPaginated: builder.query<IPage<ICustomer>, ICustomerParams>({
+      query: (params: ICustomerParams) => ({
+        url: "",
+        params: params
       }),
       providesTags: ["Customers"],
     }),
@@ -50,6 +61,7 @@ export const customers = createApi({
 
 export const {
   useAllCustomersQuery,
+  useAllCustomersPaginatedQuery,
   useGetCustomerByIdQuery,
   useAddCustomerMutation,
   useDeleteCustomerMutation,

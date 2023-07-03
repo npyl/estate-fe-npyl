@@ -50,7 +50,6 @@ interface IPropertiesPostRequest {
   location: ILocationPOST;
   features: IPropertyFeatures;
   labelIDs: number[];
-  roi: number;
 }
 
 type propertyState = IPropertiesPostRequest;
@@ -242,7 +241,6 @@ const initialState: propertyState = {
   },
   propertyImage: "",
   labelIDs: [],
-  roi: 0,
 };
 
 const slice = createSlice({
@@ -291,9 +289,6 @@ const slice = createSlice({
     },
     setEstimatedRentPrice(state: propertyState, action): void {
       state.estimatedRentPrice = action.payload;
-    },
-    setRoi(state: propertyState, action): void {
-      state.roi = action.payload;
     },
 
     setCoverageFactor(state: propertyState, action): void {
@@ -920,10 +915,10 @@ const slice = createSlice({
       // map labels
       state.labelIDs = payload.labels
         ? payload.labels
-            .filter((label) => label.id) // where id not null
-            .map((label) => {
-              return label.id!;
-            })
+          .filter((label) => label.id) // where id not null
+          .map((label) => {
+            return label.id!;
+          })
         : [];
     },
     resetState: () => {
@@ -1025,7 +1020,9 @@ export const {
   setState,
   setPrice,
   setRented,
-  setRoi,
+
+  // ROI
+
 
   // Areas
   setArea,
@@ -1133,7 +1130,6 @@ export const selectCurrentRentPrice = ({ property }: RootState) =>
   property.currentRentPrice;
 export const selectEstimatedRentPrice = ({ property }: RootState) =>
   property.estimatedRentPrice;
-export const selectRoi = ({ property }: RootState) => property.roi;
 
 export const selectAuction = ({ property }: RootState) => property.auction;
 export const selectDebatablePrice = ({ property }: RootState) =>
