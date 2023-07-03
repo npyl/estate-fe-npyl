@@ -31,7 +31,7 @@ export const properties = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Properties", "PropertyById", "FilterProperties"],
+  tagTypes: ["Properties", "PropertyById", "FilterProperties", "SuggestedProperties"],
   endpoints: (builder) => ({
     allProperties: builder.query<IProperties[], void>({
       query: () => ({
@@ -58,6 +58,13 @@ export const properties = createApi({
         params: { page: filterParam.page, pageSize: filterParam.pageSize }
       }),
       invalidatesTags: ["Properties"],
+    }),
+    suggestForCustomer: builder.query<IProperties[], number>({
+      query: (id: number) => ({
+        url: '/customerSuggest',
+        params: { customerId: id }
+      }),
+      providesTags: ["SuggestedProperties"],
     }),
     deleteProperty: builder.mutation<IProperties, number>({
       query: (id: number) => ({
@@ -96,4 +103,5 @@ export const {
   useAddPropertyMutation,
   useDeletePropertyMutation,
   useFilterPropertiesMutation,
+  useSuggestForCustomerQuery,
 } = properties;

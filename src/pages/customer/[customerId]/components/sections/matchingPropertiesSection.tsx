@@ -1,6 +1,6 @@
 import { Box, Divider, Grid, Paper, Typography } from "@mui/material";
 import { GridCellParams, GridColDef } from "@mui/x-data-grid";
-import { useGetCustomerPropertySuggestionsQuery } from "src/services/customers";
+import { useSuggestForCustomerQuery } from "src/services/properties";
 import type { NextPage } from "next";
 import DataGridTable from "src/components/DataGrid";
 import { useRouter } from "next/router";
@@ -43,7 +43,7 @@ const MatchingPropertiesSection: NextPage = () => {
   ];
   const router = useRouter();
   const { customerId } = router.query;
-  const { data } = useGetCustomerPropertySuggestionsQuery(
+  const { data } = useSuggestForCustomerQuery(
     parseInt(customerId as string)
   ); // basic details
 

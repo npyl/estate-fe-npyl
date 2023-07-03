@@ -47,12 +47,6 @@ export const customers = createApi({
       }),
       invalidatesTags: ["Customers"],
     }),
-    getCustomerPropertySuggestions: builder.query<IProperties[], number>({
-      query: (id: number) => ({
-        url: `${id}/suggestProperties`,
-        providesTags: ["Customers"],
-      }),
-    }),
   }),
 });
 
@@ -61,5 +55,4 @@ export const {
   useGetCustomerByIdQuery,
   useAddCustomerMutation,
   useDeleteCustomerMutation,
-  useGetCustomerPropertySuggestionsQuery,
 } = customers;
