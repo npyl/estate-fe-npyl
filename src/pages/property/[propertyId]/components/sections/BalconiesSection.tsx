@@ -22,7 +22,7 @@ const BalconiesSection: React.FC<BalconiesSectionProps> = (props) => {
     >
       {balconies?.map((balcony, index) => {
         return (
-          <Paper elevation={10} sx={{ overflow: "auto" }}>
+          <Paper elevation={10} sx={{ overflow: "auto" }} key={index}>
             <Box
               sx={{
                 px: 3,
