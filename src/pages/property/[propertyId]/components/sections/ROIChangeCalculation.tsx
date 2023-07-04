@@ -26,7 +26,7 @@ const ROIChangeCalculation: React.FC<any> = (props) => {
   const price = useSelector(selectPrice);
   const currentRentPrice = useSelector(selectCurrentRentPrice);
   const estimatedRentPrice = useSelector(selectEstimatedRentPrice);
-  const roi = useSelector(selectRoi);
+  const [roi, setRoi] = useState(0);
 
   const [additionalCheckbox1Enabled, setAdditionalCheckbox1Enabled] =
     useState(false); // State variable for enabling additional checkboxes
@@ -36,20 +36,6 @@ const ROIChangeCalculation: React.FC<any> = (props) => {
     useState(false); // State variable for enabling additional checkboxes
 
   //συνάρτηση click/checkbox
-  const handleFirstCheckboxChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const checked = event.target.checked;
-    setAdditionalCheckbox1Enabled(checked);
-    setAdditionalCheckbox2Enabled(!checked);
-  };
-  const handleSecondCheckboxChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const checked = event.target.checked;
-    setAdditionalCheckbox2Enabled(checked);
-    setAdditionalCheckbox1Enabled(!checked);
-  };
   const handleROICheckboxChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {

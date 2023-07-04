@@ -59,6 +59,8 @@ const Customers: NextPage = () => {
             resource={"customer"}
             sortingBy={"firstName"}
             sortingOrder={"asc"}
+            page={0}
+            pageSize={25}
           />
         </Paper>
       </Box>

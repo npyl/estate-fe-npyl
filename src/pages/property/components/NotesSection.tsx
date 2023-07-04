@@ -9,7 +9,7 @@ import { useProfileQuery } from "src/services/user";
 const NotesSection: React.FC<any> = (props) => {
     const dispatch = useDispatch();
     const notes = useSelector(selectAll);
-    const profile = useProfileQuery().data; // current user
+    const profile = useProfileQuery({}).data; // current user
 
     if (!profile) return null;
 

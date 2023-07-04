@@ -4,7 +4,7 @@ import { Box } from "@mui/system";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 
-import { ListItem } from "src/components/List";
+import { ListItem, ListManagerItem } from "src/components/List";
 import ListLabelsItem from "src/components/List/labels-item";
 import { useGetCustomerByIdQuery } from "src/services/customers";
 
@@ -43,7 +43,7 @@ const CustomerInformationSection: React.FC = (props) => {
           item
           xs={6}
           padding={0}
-          // style={{ borderRight: "1px solid #d9d9d9", paddingTop: "0" }}
+        // style={{ borderRight: "1px solid #d9d9d9", paddingTop: "0" }}
         >
           <List>
             <ListItem
@@ -61,10 +61,9 @@ const CustomerInformationSection: React.FC = (props) => {
               value={data?.email}
               align='horizontal'
             />
-            <ListItem
+            <ListManagerItem
               label={t("Managed By")}
-              value={data?.managedBy}
-              align='horizontal'
+              manager={data?.managedBy}
             />
             <ListItem
               label={t("Mobile Phone")}

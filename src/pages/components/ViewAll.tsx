@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import { Box } from "@mui/system";
-import { GridCellParams, GridColDef } from "@mui/x-data-grid";
+import { GridCallbackDetails, GridCellParams, GridColDef, GridPaginationModel } from "@mui/x-data-grid";
 import { FC, ReactNode, SetStateAction, useEffect, useState } from "react";
 
 import Image from "src/components/image";
@@ -29,10 +29,25 @@ import { selectAll } from "src/slices/filters";
 import { useSelector } from "react-redux";
 import { IProperties } from "src/types/properties";
 
+type optionType = "list" | "grid" | "map";
+
+type viewOptionsType = {
+  id: optionType;
+  icon: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
+    muiName: string;
+  };
+  label: string;
+};
+
 const ViewAll: FC = () => {
   const [rows, setRows] = useState<IProperties[]>([]);
+  // sorting
   const [sortingBy, setSortingBy] = useState("");
   const [sortingOrder, setSortingOrder] = useState("asc");
+  // pagination
+  const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState(25);
+  // view
   const [optionView, setOptionView] = useState<optionType>("list");
 
   const allFilters = useSelector(selectAll);
@@ -40,23 +55,14 @@ const ViewAll: FC = () => {
   const [filterProperties, { isSuccess, data }] = useFilterPropertiesMutation();
 
   useEffect(() => {
-    filterProperties({ filter: allFilters, page: 0, pageSize: 25 });
-  }, [allFilters])
+    filterProperties({ filter: allFilters, page: page, pageSize: pageSize });
+  }, [allFilters, page, pageSize])
 
   useEffect(() => {
     if (!data) return;
     setRows(data.content);
   }, [data]);
 
-  type optionType = "list" | "grid" | "map";
-
-  type viewOptionsType = {
-    id: optionType;
-    icon: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
-      muiName: string;
-    };
-    label: string;
-  };
   const viewOptions: viewOptionsType[] = [
     {
       id: "list",
@@ -127,6 +133,11 @@ const ViewAll: FC = () => {
     id: index + 1,
   }));
 
+  const handlePaginationModelChange = (model: GridPaginationModel, details: GridCallbackDetails) => {
+    setPage(model.page);
+    setPageSize(model.pageSize);
+  };
+
   return (
     <Box>
       <FilterSection />
@@ -185,6 +196,9 @@ const ViewAll: FC = () => {
                 columns={columns}
                 sortingBy={sortingBy}
                 sortingOrder={sortingOrder}
+                page={page}
+                pageSize={pageSize}
+                onPaginationModelChange={handlePaginationModelChange}
               />
             </Paper>
           )}
@@ -209,6 +223,9 @@ const ViewAll: FC = () => {
             }))}
             sortingBy={sortingBy}
             sortingOrder={sortingOrder}
+            page={page}
+            pageSize={pageSize}
+            onPaginationModelChange={handlePaginationModelChange}
           />
         </Paper>
       )}

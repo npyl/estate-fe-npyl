@@ -1,4 +1,3 @@
-import { ILabel } from "./label";
 import { IPropertyFeatures } from "./features";
 
 export interface IDemandFilters {
@@ -20,7 +19,7 @@ export interface IDemandFilters {
   state: string;
   minPrice: number;
   maxPrice: number;
-  labels: ILabel[];
+  labels: number[];
 }
 
 export interface IDemandFiltersPOST {

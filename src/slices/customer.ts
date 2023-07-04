@@ -387,14 +387,7 @@ const slice = createSlice({
       state.demand.filters.state = demandFilters.state;
       state.demand.filters.minPrice = demandFilters.minPrice;
       state.demand.filters.maxPrice = demandFilters.maxPrice;
-      // map labels
-      state.demand.filters.labels = demandFilters.labels
-        ? demandFilters.labels
-          .filter((label) => label.id) // where id not null
-          .map((label) => {
-            return label.id!;
-          })
-        : [];
+      state.demand.filters.labels = demandFilters.labels;
       state.demand.nonPriorityFeatures = demand.nonPriorityFeatures;
       state.demand.priorityFeatures = demand.priorityFeatures;
       state.demand.timeframe = demand.timeframe;
@@ -580,7 +573,7 @@ export const selectMinPrice = ({ customer }: RootState) =>
 export const selectMaxPrice = ({ customer }: RootState) =>
   customer.demand.filters.maxPrice;
 
-export const selectDemandLabels = ({ customer }: RootState) => customer.demand.filters.labelIDs;
+export const selectDemandLabels = ({ customer }: RootState) => customer.demand.filters.labels;
 
 export const selectTimeFrame = ({ customer }: RootState) =>
   customer.demand.timeframe;

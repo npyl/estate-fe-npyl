@@ -76,7 +76,7 @@ export default function CountrySelect() {
         onChange={handleChange}
         renderValue={(selected) =>
           selected
-            .map((value) => {
+            .map((value: any) => {
               const option = nomoi.find((opt) => opt["Area ID"] === value);
               return option ? option["Name GR"] : "";
             })

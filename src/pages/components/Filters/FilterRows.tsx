@@ -1,10 +1,6 @@
 import { MenuItem, Select } from "@mui/material";
 import { useState } from "react";
 
-interface IFilterSortByProps {
-  onSorting: (sortingBy: string, sortingOrder: string) => void;
-}
-
 export default function FilterRows() {
   const rowsOptions = [
     {

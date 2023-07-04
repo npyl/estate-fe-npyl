@@ -49,11 +49,13 @@ export default function MultiFilePreviewDnd({
     };
 
     useMemo(() => {
+        console.log('wtvr: ', files);
+
         setItems([...files.map((file, index) => {
             return {
                 id: `item-${index}`,
                 content: `item-${index}`,
-                data: fileData(file).preview!
+                data: URL.createObjectURL(file)
             }
         })])
     }, [files]);

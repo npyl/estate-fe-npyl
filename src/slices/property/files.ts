@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "src/store";
 
 interface propertyFilesState {
-  propertyImages: (File | string)[];
+  propertyImages: File[];
   propertyBlueprints: File[];
 }
 

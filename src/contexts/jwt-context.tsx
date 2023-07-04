@@ -1,6 +1,6 @@
 import { skipToken } from "@reduxjs/toolkit/dist/query";
 import type { FC, ReactNode } from "react";
-import { createContext, useEffect, useReducer } from "react";
+import { createContext, useEffect, useMemo, useReducer } from "react";
 import { useLoginMutation, useRegisterMutation } from "../services/auth";
 import { useProfileQuery } from "../services/user";
 import type { IUser } from "../types/user";
@@ -117,36 +117,37 @@ export const AuthContext = createContext<AuthContextValue>({
 export const AuthProvider: FC<AuthProviderProps> = (props) => {
   const { children } = props;
   const [state, dispatch] = useReducer(reducer, initialState);
-  const [login, { isLoading }] = useLoginMutation();
+  const [login, { isLoading, isSuccess: loginSuccess }] = useLoginMutation();
+
+  const skipRequest = useMemo(() => {
+    return loginSuccess && !!globalThis?.localStorage?.getItem("accessToken");
+  }, [globalThis?.localStorage?.getItem("accessToken"), loginSuccess]);
+
   const {
     data: profileData,
     isLoading: userLoading,
     isSuccess,
+    isUninitialized,
     isError,
-  } = useProfileQuery(
-    globalThis?.localStorage?.getItem("accessToken") ?? skipToken
-  );
+  } = useProfileQuery({}, { skip: !skipRequest });
+
   const [register] = useRegisterMutation();
+
   useEffect(() => {
     const initialize = async (): Promise<void> => {
       try {
-        const accessToken = globalThis.localStorage.getItem("accessToken");
-
         if (isError) {
           localStorage.removeItem("accessToken");
           dispatch({ type: ActionType.LOGOUT });
-        }
-
-        if (isSuccess || accessToken) {
+        } else if (isSuccess || globalThis?.localStorage?.getItem("accessToken")) {
           dispatch({
             type: ActionType.INITIALIZE,
             payload: {
               isAuthenticated: true,
-              user: profileData,
+              user: profileData!,
             },
           });
-        }
-        if (!accessToken) {
+        } else {
           dispatch({
             type: ActionType.INITIALIZE,
             payload: {
@@ -160,8 +161,9 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
         dispatch({ type: ActionType.LOGOUT });
       }
     };
+
     initialize();
-  }, [profileData, isError]);
+  }, [profileData, isError, loginSuccess]);
 
   const signin = async (username: string, password: string): Promise<void> => {
     const loginRes = await login({ username, password }).unwrap();
@@ -169,7 +171,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
     dispatch({
       type: ActionType.LOGIN,
       payload: {
-        user: profileData,
+        user: profileData!,
       },
     });
   };
