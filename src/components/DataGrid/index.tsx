@@ -1,5 +1,7 @@
 import {
+  GridCallbackDetails,
   GridColDef,
+  GridPaginationModel,
   GridRowsProp,
   GridSortDirection,
   GridSortModel,
@@ -14,16 +16,28 @@ import { StyledDataGrid } from "./styles";
 type GridProps = {
   rows: GridRowsProp;
   columns: GridColDef[];
+
   sortingBy: string | null;
   sortingOrder: string | null;
+
+  page: number;
+  pageSize: number;
+  onPaginationModelChange?: (model: GridPaginationModel, details: GridCallbackDetails) => void;
+
   resource?: string;
 };
 
 const DataGridTable: FC<GridProps> = ({
   rows,
   columns,
+
   sortingBy,
   sortingOrder,
+
+  page,
+  pageSize,
+  onPaginationModelChange,
+
   resource = "property",
 }) => {
   const router = useRouter();
@@ -53,8 +67,9 @@ const DataGridTable: FC<GridProps> = ({
           columnsPanelTextFieldPlaceholder: "'Ονομα πεδίου",
         }}
         initialState={{
-          pagination: { paginationModel: { pageSize: 25 } },
+          pagination: { paginationModel: { pageSize: pageSize, page: page } },
         }}
+        onPaginationModelChange={onPaginationModelChange}
         disableColumnFilter
         disableDensitySelector
         rowHeight={100}
