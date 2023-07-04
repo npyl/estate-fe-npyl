@@ -45,7 +45,7 @@ const initialState: customerState = {
   labelIDs: [],
   demand: {
     filters: {
-      labelIDs: [],
+      labels: [],
     },
     priorityFeatures: {
       panoramicView: false,
@@ -316,7 +316,7 @@ const slice = createSlice({
     },
 
     setDemandLabels(state: customerState, action): void {
-      state.demand.filters.labelIDs = action.payload;
+      state.demand.filters.labels = action.payload;
     },
 
     setTimeFrame(state: customerState, action): void {
@@ -388,7 +388,7 @@ const slice = createSlice({
       state.demand.filters.minPrice = demandFilters.minPrice;
       state.demand.filters.maxPrice = demandFilters.maxPrice;
       // map labels
-      state.demand.filters.labelIDs = demandFilters.labels
+      state.demand.filters.labels = demandFilters.labels
         ? demandFilters.labels
           .filter((label) => label.id) // where id not null
           .map((label) => {

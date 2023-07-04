@@ -2,17 +2,27 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IDemand } from "src/types/customer";
 import { IProperties, IPropertyFilter } from "src/types/properties";
 
+import IPage from "src/types/page";
+
 interface ISuggestPropertiesProps {
   id: number;
   dataToSend: IDemand;
+}
+interface IPropertyFilterParams {
+  filter: IPropertyFilter;
+  page: number;
+  pageSize: number;
+}
+interface IPropertySearchParams {
+  searchString: string;
+  page: number;
+  pageSize: number;
 }
 
 export const properties = createApi({
   reducerPath: "properties",
   baseQuery: fetchBaseQuery({
-    baseUrl:
-      // "http://Learningpathbe-env.eba-qvdghecz.us-east-2.elasticbeanstalk.com/api/users",
-      `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/property`,
+    baseUrl: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/property`,
     prepareHeaders: (headers) => {
       // By default, if we have a token in the store, let's use that for authenticated requests
 
@@ -24,7 +34,7 @@ export const properties = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Properties", "PropertyById", "FilterProperties"],
+  tagTypes: ["Properties", "PropertyById", "FilterProperties", "SuggestedProperties"],
   endpoints: (builder) => ({
     allProperties: builder.query<IProperties[], void>({
       query: () => ({
@@ -43,13 +53,21 @@ export const properties = createApi({
         body: dataToSend,
       }),
     }),
-    filterProperties: builder.mutation<IProperties[], IPropertyFilter>({
-      query: (filter: IPropertyFilter) => ({
+    filterProperties: builder.mutation<IPage<IProperties>, IPropertyFilterParams>({
+      query: (filterParam: IPropertyFilterParams) => ({
         url: "/filter",
         method: "POST",
-        body: filter,
+        body: filterParam.filter,
+        params: { page: filterParam.page, pageSize: filterParam.pageSize }
       }),
       invalidatesTags: ["Properties"],
+    }),
+    suggestForCustomer: builder.query<IProperties[], number>({
+      query: (id: number) => ({
+        url: '/customerSuggest',
+        params: { customerId: id }
+      }),
+      providesTags: ["SuggestedProperties"],
     }),
     deleteProperty: builder.mutation<IProperties, number>({
       query: (id: number) => ({
@@ -58,11 +76,11 @@ export const properties = createApi({
       }),
       invalidatesTags: ["Properties"],
     }),
-    getSearchResults: builder.query<IProperties[], string>({
-      query: (text: string) => {
+    getSearchResults: builder.query<IPage<IProperties>, IPropertySearchParams>({
+      query: (searchParams: IPropertySearchParams) => {
         return {
           url: "/search",
-          params: { searchString: text },
+          params: searchParams,
         };
       },
     }),
@@ -88,4 +106,5 @@ export const {
   useAddPropertyMutation,
   useDeletePropertyMutation,
   useFilterPropertiesMutation,
+  useSuggestForCustomerQuery,
 } = properties;

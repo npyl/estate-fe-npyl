@@ -24,11 +24,10 @@ const ParkingsSection: React.FC<ParkingsSectionProps> = (props) => {
     >
       {parkings?.map((parking, index) => {
         return (
-          <Paper elevation={10} sx={{ overflow: "auto" }}>
+          <Paper elevation={10} sx={{ overflow: "auto" }} key={index}>
             <Grid
               sx={{ border: 1, borderColor: "divider", borderRadius: 1 }}
               item
-              key={index}
             >
               <Box
                 sx={{

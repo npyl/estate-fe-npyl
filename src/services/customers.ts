@@ -1,14 +1,16 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { ICustomer, IDemand } from "src/types/customer";
-import { IDemandPOST } from "src/types/demand";
-import { IProperties } from "src/types/properties";
+import { ICustomer } from "src/types/customer";
+import IPage from "src/types/page";
+
+interface ICustomerParams {
+  page: number;
+  pageSize: number;
+}
 
 export const customers = createApi({
   reducerPath: "customers",
   baseQuery: fetchBaseQuery({
-    baseUrl:
-      // "http://Learningpathbe-env.eba-qvdghecz.us-east-2.elasticbeanstalk.com/api/users",
-      `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/customers`,
+    baseUrl: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/customers`,
     prepareHeaders: (headers) => {
       // By default, if we have a token in the store, let's use that for authenticated requests
 
@@ -24,7 +26,14 @@ export const customers = createApi({
   endpoints: (builder) => ({
     allCustomers: builder.query<ICustomer[], void>({
       query: () => ({
+        url: "all",
+      }),
+      providesTags: ["Customers"],
+    }),
+    allCustomersPaginated: builder.query<IPage<ICustomer>, ICustomerParams>({
+      query: (params: ICustomerParams) => ({
         url: "",
+        params: params
       }),
       providesTags: ["Customers"],
     }),
@@ -47,19 +56,13 @@ export const customers = createApi({
       }),
       invalidatesTags: ["Customers"],
     }),
-    getCustomerPropertySuggestions: builder.query<IProperties[], number>({
-      query: (id: number) => ({
-        url: `${id}/suggestProperties`,
-        providesTags: ["Customers"],
-      }),
-    }),
   }),
 });
 
 export const {
   useAllCustomersQuery,
+  useAllCustomersPaginatedQuery,
   useGetCustomerByIdQuery,
   useAddCustomerMutation,
   useDeleteCustomerMutation,
-  useGetCustomerPropertySuggestionsQuery,
 } = customers;

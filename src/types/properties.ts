@@ -14,26 +14,23 @@ export interface IPropertyFilter {
   maxPrice?: number;
   minArea?: number;
   maxArea?: number;
-  state?: string;
-  category?: string;
-  parentCategory?: string;
   minBedrooms?: number;
   maxBedrooms?: number;
-  minFloor?: number;
-  maxFloor?: number;
-  minConstructionYear: number;
-  maxConstructionYear: number;
+  minFloor?: string;
+  maxFloor?: string;
+  minConstructionYear?: number;
+  maxConstructionYear?: number;
   heatingType?: string;
   frameType?: string;
   furnished?: string;
-  city?: string;
   managerId?: number;
-  labelIDs: number[];
-  parentLocation?: string[];
-  subLocation?: string[];
+
+  cities: string[];
   states: string[];
   categories: string[];
   parentCategories: string[];
+  labels: number[];
+  points: [number, number][];
 }
 
 export interface IPropertySuitableFor {

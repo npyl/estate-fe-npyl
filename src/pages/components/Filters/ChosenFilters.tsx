@@ -71,7 +71,7 @@ const ChosenFilters = () => {
     categories: {
       label: "Υποκατηγορίες",
     },
-    labelIDs: {
+    labels: {
       label: "Ετικέτες",
     },
   };

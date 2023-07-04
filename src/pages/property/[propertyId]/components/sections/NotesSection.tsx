@@ -80,8 +80,6 @@ const NotesPropertySection: React.FC = () => {
           </Stack>
 
           <Grid
-            spacing={0}
-            direction="row"
             alignItems="center"
             sx={{
               p: (theme) => theme.spacing(0, 3, 3, 3),

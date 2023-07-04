@@ -11,27 +11,16 @@ const initialState: IFilterProps = {
   maxConstructionYear: new Date().getFullYear(),
   parentCategories: [],
   categories: [],
-  labelIDs: [],
-  // parentLocation: [],
-  // subLocation: [],
+  labels: [],
   states: [],
+  cities: [],
+  points: [],
 };
 
 const slice = createSlice({
   name: "filters",
   initialState,
   reducers: {
-    setCategory(state, { payload }) {
-      state.parentCategory = payload;
-    },
-    setSubCategory(state, { payload }) {
-      state.category = payload;
-    },
-
-    setCity(state, { payload }) {
-      state.city = payload;
-    },
-
     setCode(state, { payload }) {
       state.code = payload;
     },
@@ -92,13 +81,9 @@ const slice = createSlice({
       state.minPrice = payload;
     },
 
-    setState(state, { payload }) {
-      state.state = payload;
-    },
-
     // multiple
     setLabels(state, { payload }) {
-      state.labelIDs = payload;
+      state.labels = payload;
     },
     setParentLocation(state, { payload }) {
       state.parentLocation = payload;
@@ -137,9 +122,6 @@ const slice = createSlice({
 });
 
 export const {
-  setCategory,
-  setSubCategory,
-  setCity,
   setCode,
   setFrameType,
   setFurnished,
@@ -155,7 +137,6 @@ export const {
   setMinConstructionYear,
   setMinFloor,
   setMinPrice,
-  setState,
 
   // multiple
   setLabels,
@@ -172,10 +153,6 @@ export const {
   resetState,
 } = slice.actions;
 
-export const selectCategory = ({ filters }: RootState) =>
-  filters.parentCategory;
-export const selectSubCategory = ({ filters }: RootState) => filters.category;
-export const selectCity = ({ filters }: RootState) => filters.city;
 export const selectCode = ({ filters }: RootState) => filters.code;
 export const selectFrameType = ({ filters }: RootState) => filters.frameType;
 export const selectFurnished = ({ filters }: RootState) => filters.furnished;
@@ -196,17 +173,14 @@ export const selectMinConstructionYear = ({ filters }: RootState) =>
   filters.minConstructionYear;
 export const selectMinFloor = ({ filters }: RootState) => filters.minFloor;
 export const selectMinPrice = ({ filters }: RootState) => filters.minPrice;
-export const selectState = ({ filters }: RootState) => filters.state;
 export const selectParentLocation = ({ filters }: RootState) =>
   filters.parentLocation;
-export const selectSubLocation = ({ filters }: RootState) =>
-  filters.subLocation;
 export const selectStates = ({ filters }: RootState) => filters.states;
 export const selectParentCategories = ({ filters }: RootState) =>
   filters.parentCategories;
 export const selectSubCategories = ({ filters }: RootState) =>
   filters.categories;
-export const selectLabels = ({ filters }: RootState) => filters.labelIDs;
+export const selectLabels = ({ filters }: RootState) => filters.labels;
 
 export const selectAll = ({ filters }: RootState) => filters;
 
@@ -233,8 +207,6 @@ const sumOfChangedProperties = createSelector(
 
       // multiple
 
-      "parentLocation",
-      "subLocation",
       "states",
       "parentCategories",
       "categories",

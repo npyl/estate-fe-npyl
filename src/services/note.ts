@@ -10,9 +10,7 @@ type NoteForCustomerProps = NoteForPropertyProps;
 export const note = createApi({
   reducerPath: "note",
   baseQuery: fetchBaseQuery({
-    baseUrl:
-      // "http://Learningpathbe-env.eba-qvdghecz.us-east-2.elasticbeanstalk.com/api/users",
-      `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/notes`,
+    baseUrl: `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/notes`,
     prepareHeaders: (headers) => {
       // By default, if we have a token in the store, let's use that for authenticated requests
 

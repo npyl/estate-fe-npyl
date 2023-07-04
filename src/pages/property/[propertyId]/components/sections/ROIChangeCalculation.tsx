@@ -11,11 +11,9 @@ import {
   selectCurrentRentPrice,
   selectEstimatedRentPrice,
   selectPrice,
-  selectRoi,
   setCurrentRentPrice,
   setEstimatedRentPrice,
-  setPrice,
-  setRoi,
+  setPrice
 } from "src/slices/property";
 
 import { useAllGlobalsQuery } from "src/services/global";
@@ -102,7 +100,7 @@ const ROIChangeCalculation: React.FC<any> = (props) => {
   const handleRoiChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const input = event.target.value;
     const numericValue = input.replace(/[^0-9.,]/g, ""); // Remove non-numeric characters from the input
-    dispatch(setRoi(numericValue));
+    // dispatch(setRoi(numericValue));
   };
   //handle onlynumbers
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {

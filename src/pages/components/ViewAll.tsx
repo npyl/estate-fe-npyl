@@ -27,8 +27,10 @@ import FilterSortBy from "./Filters/FilterSortBy";
 
 import { selectAll } from "src/slices/filters";
 import { useSelector } from "react-redux";
+import { IProperties } from "src/types/properties";
 
 const ViewAll: FC = () => {
+  const [rows, setRows] = useState<IProperties[]>([]);
   const [sortingBy, setSortingBy] = useState("");
   const [sortingOrder, setSortingOrder] = useState("asc");
   const [optionView, setOptionView] = useState<optionType>("list");
@@ -38,8 +40,13 @@ const ViewAll: FC = () => {
   const [filterProperties, { isSuccess, data }] = useFilterPropertiesMutation();
 
   useEffect(() => {
-    filterProperties(allFilters);
+    filterProperties({ filter: allFilters, page: 0, pageSize: 25 });
   }, [allFilters])
+
+  useEffect(() => {
+    if (!data) return;
+    setRows(data.content);
+  }, [data]);
 
   type optionType = "list" | "grid" | "map";
 
@@ -132,7 +139,7 @@ const ViewAll: FC = () => {
       >
         <Box display={"flex"} alignItems={"center"} gap={1}>
           <Typography variant={"body2"} fontWeight={600}>
-            {data?.length} Αποτελέσματα
+            {rows?.length} Αποτελέσματα
           </Typography>
         </Box>
         <Stack direction={"row"} alignItems={"center"} spacing={1}>
@@ -169,12 +176,12 @@ const ViewAll: FC = () => {
           </ButtonGroup>
         </Stack>
       </Stack>
-      {data ? (
+      {rows ? (
         <>
           {optionView === "list" && (
             <Paper sx={{ mt: 2 }}>
               <DataGridTable
-                rows={data}
+                rows={rows}
                 columns={columns}
                 sortingBy={sortingBy}
                 sortingOrder={sortingOrder}
@@ -183,7 +190,7 @@ const ViewAll: FC = () => {
           )}
           {optionView === "grid" && (
             <Paper sx={{ marginTop: 2 }}>
-              <MediaCard data={data} />
+              <MediaCard data={rows} />
             </Paper>
           )}
           {optionView === "map" && (

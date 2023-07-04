@@ -8,17 +8,13 @@ import {
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect, useState } from "react";
-import { useAllCustomersQuery } from "src/services/customers";
 import {
   selectPrice,
   selectEstimatedRentPrice,
   setEstimatedRentPrice,
   selectCurrentRentPrice,
   setCurrentRentPrice,
-  selectStudent,
   setPrice,
-  selectRoi,
-  setRoi,
 } from "src/slices/property";
 
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
@@ -32,7 +28,8 @@ const PopupWindow: React.FC<any> = (props) => {
   const price = useSelector(selectPrice);
   const currentRentPrice = useSelector(selectCurrentRentPrice);
   const estimatedRentPrice = useSelector(selectEstimatedRentPrice);
-  const roi = useSelector(selectRoi);
+
+  const [roi, setRoi] = useState(0);
 
   const [additionalCheckbox1Enabled, setAdditionalCheckbox1Enabled] =
     useState(false); // State variable for enabling additional checkboxes
@@ -72,7 +69,7 @@ const PopupWindow: React.FC<any> = (props) => {
       calculatedRoi = ((estimatedRentPrice * 12) / price) * 100;
     }
 
-    dispatch(setRoi(calculatedRoi)); // Assuming you have a corresponding action `setRoi` to update the `roi` value in the Redux store
+    setRoi(calculatedRoi);
   }, [
     additionalCheckbox1Enabled,
     additionalCheckbox2Enabled,
@@ -125,7 +122,7 @@ const PopupWindow: React.FC<any> = (props) => {
   const handleRoiChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const input = event.target.value;
     const numericValue = input.replace(/[^0-9.,]/g, ""); // Remove non-numeric characters from the input
-    dispatch(setRoi(numericValue));
+    setRoi(parseInt(numericValue));
   };
   //handle onlynumbers
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
