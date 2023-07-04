@@ -4,7 +4,7 @@ import { Dispatch, SetStateAction, useCallback } from "react";
 import { useDispatch } from "react-redux";
 
 interface FileSectionProps {
-  fileData: (File | string)[];
+  fileData: File[];
   setFileData: Dispatch<SetStateAction<(string | File)[]>>;
 }
 

@@ -1,29 +1,33 @@
-import { Card, CardContent, CardHeader, Stack } from "@mui/material";
+import { Card, CardContent, CardHeader } from "@mui/material";
 import { Dispatch, SetStateAction, useCallback, useState } from "react";
 
-import { SoftButton } from "src/components/SoftButton";
 import UploadDnd from "src/components/upload/UploadDnd";
 import GalleryManager from "src/components/GalleryManager";
 
 interface IImageSectionProps {
-  files: (File | string)[];
+  files: File[];
   setFiles: Dispatch<SetStateAction<(string | File)[]>>;
 }
 
 const ImagesSection: React.FC<IImageSectionProps> = ({ files, setFiles }) => {
+
+  console.log('received: ', files);
 
   const [galleryImageFile, setGalleryImageFile] = useState<File>();
   const [galleryManagerOpen, setGalleryManagerOpen] = useState(false);
 
   const handleDropMultiFile = useCallback(
     (acceptedFiles: File[]) => {
+      console.log("accepted: ", acceptedFiles);
+
       setFiles([
         ...files,
-        ...acceptedFiles.map((file) =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file),
-          })
-        ),
+        ...acceptedFiles
+        // .map((file) =>
+        //   Object.assign(file, {
+        //     preview: URL.createObjectURL(file),
+        //   })
+        // ),
       ]);
     },
     [files]

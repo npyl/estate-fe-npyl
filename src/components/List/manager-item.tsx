@@ -1,9 +1,9 @@
 import { Button, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import type { FC } from "react";
-import * as user from "src/services/user";
 import { IUser } from "src/types/user";
 import ListItem from "./item";
+import { useProfileQuery } from "src/services/user";
 
 interface ListManagerItemProps {
   manager: IUser;
@@ -15,7 +15,7 @@ const ListManagerItem: FC<ListManagerItemProps> = (props) => {
 
   const router = useRouter();
 
-  const { data } = user.useProfileQuery();
+  const { data } = useProfileQuery({});
   if (!data) return null;
 
   const performViewManager = () => {

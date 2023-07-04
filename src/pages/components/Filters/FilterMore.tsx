@@ -205,7 +205,7 @@ export default function FilterMore({
                 key={option}
                 value={option}
                 onClick={() =>
-                  option > maxFloors &&
+                  option > +maxFloors &&
                   maxFloors !== 0 &&
                   dispatch(setMaxFloor(0))
                 }
@@ -235,7 +235,7 @@ export default function FilterMore({
               <MenuItem
                 key={option}
                 value={option}
-                onClick={() => option < minFloors && dispatch(setMinFloor(0))}
+                onClick={() => option < +minFloors && dispatch(setMinFloor(0))}
               >
                 <ListItemText primary={option.toString()} />
               </MenuItem>

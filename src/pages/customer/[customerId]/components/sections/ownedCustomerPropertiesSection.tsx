@@ -78,6 +78,8 @@ const OwnedCustomerPropertiesSection: NextPage = () => {
               resource={"property"}
               sortingBy={"firstName"}
               sortingOrder={"asc"}
+              page={0}
+              pageSize={10}
             />
           </Paper>
         </Grid>
