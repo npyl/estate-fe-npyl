@@ -5,16 +5,24 @@ import * as React from "react";
 import { ListItem } from "src/components/List";
 import ListLabelsItem from "src/components/List/labels-item";
 import { useGetCustomerByIdQuery } from "src/services/customers";
+import { useGetLabelsQuery } from "src/services/labels";
+import { ILabels } from "src/types/label";
 
 const DemandCustomerSection: React.FC = (props) => {
   const router = useRouter();
   const { customerId } = router.query;
 
   const { data } = useGetCustomerByIdQuery(parseInt(customerId as string)); // basic details
-  const demandFilters = data?.demand.filters;
-  if (!data || !demandFilters) {
+  const { data: allLabels } = useGetLabelsQuery();
+  const customerLabels = allLabels?.customerLabels;
+  const demandFilters = data?.demand?.filters;
+  const demandFilterLabelIDs = demandFilters?.labels;
+
+  if (!data || !demandFilters || !customerLabels) {
     return null;
   }
+
+  const selectedLabels = customerLabels.filter((customerLabel) => demandFilterLabelIDs?.find((labelID => labelID === customerLabel.id))) || [];
 
   return (
     <Paper
@@ -57,7 +65,7 @@ const DemandCustomerSection: React.FC = (props) => {
             />
             <ListLabelsItem
               label='Labels:'
-              labels={data?.demand.filters.labels}
+              labels={selectedLabels}
               align='horizontal'
             />
 
