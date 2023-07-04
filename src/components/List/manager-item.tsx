@@ -7,10 +7,11 @@ import ListItem from "./item";
 
 interface ListManagerItemProps {
   manager: IUser;
+  label?: string | any;
 }
 
 const ListManagerItem: FC<ListManagerItemProps> = (props) => {
-  const { manager, ...other } = props;
+  const { manager, label = 'Manager', ...other } = props;
 
   const router = useRouter();
 
@@ -23,7 +24,7 @@ const ListManagerItem: FC<ListManagerItemProps> = (props) => {
   };
 
   return (
-    <ListItem label='Manager' {...other}>
+    <ListItem label={label} {...other}>
       <Button
         sx={{
           flex: 1,
