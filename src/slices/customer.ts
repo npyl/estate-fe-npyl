@@ -580,7 +580,7 @@ export const selectMinPrice = ({ customer }: RootState) =>
 export const selectMaxPrice = ({ customer }: RootState) =>
   customer.demand.filters.maxPrice;
 
-export const selectDemandLabels = ({ customer }: RootState) => customer.demand.filters.labelIDs;
+export const selectDemandLabels = ({ customer }: RootState) => customer.demand.filters.labels;
 
 export const selectTimeFrame = ({ customer }: RootState) =>
   customer.demand.timeframe;

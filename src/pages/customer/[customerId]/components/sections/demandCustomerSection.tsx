@@ -57,7 +57,7 @@ const DemandCustomerSection: React.FC = (props) => {
             />
             <ListLabelsItem
               label='Labels:'
-              labels={data?.labels}
+              labels={data?.demand.filters.labels}
               align='horizontal'
             />
 
