@@ -29,7 +29,7 @@ export interface IPropertyFilter {
   states: string[];
   categories: string[];
   parentCategories: string[];
-  labels: string[];
+  labels: number[];
   points: [number, number][];
 }
 
