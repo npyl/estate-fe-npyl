@@ -388,7 +388,7 @@ const slice = createSlice({
       state.demand.filters.minPrice = demandFilters.minPrice;
       state.demand.filters.maxPrice = demandFilters.maxPrice;
       // map labels
-      state.demand.filters.labelIDs = demandFilters.labels
+      state.demand.filters.labels = demandFilters.labels
         ? demandFilters.labels
           .filter((label) => label.id) // where id not null
           .map((label) => {
