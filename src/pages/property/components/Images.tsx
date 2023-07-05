@@ -11,14 +11,12 @@ interface IImageSectionProps {
 
 const ImagesSection: React.FC<IImageSectionProps> = ({ files, setFiles }) => {
 
-  console.log('received: ', files);
-
   const [galleryImageFile, setGalleryImageFile] = useState<File>();
   const [galleryManagerOpen, setGalleryManagerOpen] = useState(false);
 
   const handleDropMultiFile = useCallback(
     (acceptedFiles: File[]) => {
-      console.log("accepted: ", acceptedFiles);
+      // console.log("accepted: ", acceptedFiles);
 
       setFiles([
         ...files,

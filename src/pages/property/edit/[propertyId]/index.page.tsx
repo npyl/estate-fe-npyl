@@ -72,10 +72,8 @@ const EditPropertyPage: NextPage = () => {
   useEffect(() => {
     if (isPropertySuccess) {
       const initialFileState = {
-        propertyImages: [
-          fetchedProperty.propertyImage,
-          ...fetchedProperty.images,
-        ],
+        mainPropertyImage: fetchedProperty.propertyImage,
+        secondaryPropertyImages: [...fetchedProperty.images],
         propertyBlueprints: fetchedProperty.blueprints,
       };
 
