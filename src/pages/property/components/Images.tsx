@@ -33,11 +33,6 @@ const ImagesSection: React.FC<IImageSectionProps> = ({ files, setFiles }) => {
     setFiles([]);
   };
 
-  const handleImageClick = (imageFile: File) => {
-    setGalleryImageFile(imageFile);
-    setGalleryManagerOpen(true);
-  }
-
   const handleOpenGalleryManager = () => {
     setGalleryManagerOpen(true);
   }
@@ -62,7 +57,6 @@ const ImagesSection: React.FC<IImageSectionProps> = ({ files, setFiles }) => {
             multiple
             thumbnail={true}
             files={files}
-            onImageClick={handleImageClick}
             onDrop={handleDropMultiFile}
             onRemove={handleRemoveFile}
             onRemoveAll={handleRemoveAllFiles}
