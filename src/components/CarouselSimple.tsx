@@ -9,6 +9,7 @@ import Carousel from "./carousel";
 import CarouselArrowIndex from "./carousel/CarouselArrowIndex";
 
 import Image, { ImageRatio } from "src/components/image";
+import ICarouselImage from "./carousel/types";
 
 // ----------------------------------------------------------------------
 
@@ -16,13 +17,9 @@ const THUMB_SIZE = 64;
 
 type Props = {
   ratio?: string;
-  data: {
-    id: string;
-    title: string;
-    image: string;
-    description: string;
-  }[];
-  onImageClick: () => void;
+  data: ICarouselImage[];
+  onImageChange?: (newImage: ICarouselImage) => void;
+  onImageClick?: () => void;
 };
 
 type StyledThumbnailsContainerProps = {
@@ -82,7 +79,7 @@ const StyledThumbnailsContainer = styled("div", {
 
 // ----------------------------------------------------------------------
 
-export default function CarouselSimple({ data, onImageClick, ratio = "16/9" }: Props) {
+export default function CarouselSimple({ data, onImageChange, onImageClick, ratio = "16/9" }: Props) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const [nav1, setNav1] = useState<Carousel | undefined>(undefined);
@@ -97,6 +94,7 @@ export default function CarouselSimple({ data, onImageClick, ratio = "16/9" }: P
     slidesToScroll: 1,
     adaptiveHeight: true,
     beforeChange: (current: number, next: number) => setCurrentIndex(next),
+    afterChange: (currentSlide: number) => onImageChange && onImageChange(data[currentSlide]),
   };
 
   useEffect(() => {

@@ -20,12 +20,22 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
     const _carouselImages: ICarouselImage[] = images.map((image, index) => ({
         id: `${index}`,
         title: "Image",
-        image: URL.createObjectURL(images[0]),
+        image: URL.createObjectURL(image),
         description: "",
         path: "/repository",
     }));
 
+    const [currentIndex, setCurrentIndex] = useState(0);
     const [visibility, setVisibility] = useState("public");
+
+    const handleImageChange = (newImage: ICarouselImage) => {
+        /*
+        INFO: the indexes used inside the carousel are not updated in a consistent manner,
+                this is why we receive the currentImage on "afterChange", and we get the index that
+                translates to our array.
+        */
+        setCurrentIndex(+newImage.id);
+    }
 
     return (
         <Dialog
@@ -38,7 +48,7 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
             <DialogContent >
                 <Grid container sx={{ minWidth: 'auto' }}>
                     <Grid item xs={8}>
-                        <CarouselSimple onImageClick={() => { }} data={_carouselImages} />
+                        <CarouselSimple onImageChange={handleImageChange} data={_carouselImages} />
                     </Grid>
                     <Grid item xs={4}>
 
@@ -78,7 +88,7 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
                 <SoftButton
                     color="error"
                     onClick={() => {
-                        // onDelete(fileInput);
+                        onDelete(images[currentIndex]);
                     }}
                 >
                     <Delete />
