@@ -46,7 +46,6 @@ const LabelCreate = (props: ILabelCreateProps) => {
   const [pickerColor, setPickerColor] = useState("#22194d");
   const [labelName, setLabelName] = useState("Νέα Ετικέτα");
   const [openPicker, setOpenPicker] = useState(false);
-  const { data: labels } = useGetLabelsQuery();
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   const handleChangeComplete = (color: any) => {
@@ -58,6 +57,9 @@ const LabelCreate = (props: ILabelCreateProps) => {
   };
   const createLabel = () => {
     onLabelCreate({ color: pickerColor, name: labelName });
+
+    /* close dialog */
+    setAddLabelDialog(false);
   };
 
   if (!existingLabels) return null;
