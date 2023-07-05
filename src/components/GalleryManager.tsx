@@ -2,27 +2,40 @@ import { Dialog, DialogTitle, DialogContent, Grid, Button, Stack, TextField, Men
 import { Delete } from '@mui/icons-material';
 import { SoftButton } from './SoftButton';
 
-import { fileData } from "src/components/file-thumbnail";
-import Image from './image/Image';
-
 import { useState } from 'react';
+import CarouselSimple from './CarouselSimple';
+import ICarouselImage from './carousel/types';
+
 
 interface IGalleryManager {
     open: boolean;
-    fileInput: File;
+    images: File[];
     onDelete: (file: File) => void;
     onClose: () => void;
 }
 
 const GalleryManager: React.FC<IGalleryManager> = (props) => {
-    const { open, fileInput, onDelete, onClose } = props;
+    const { open, images, onDelete, onClose } = props;
 
-    const data = fileData(fileInput);
-    const image = data?.preview;
+    const _carouselImages: ICarouselImage[] = images.map((image, index) => ({
+        id: `${index}`,
+        title: "Image",
+        image: URL.createObjectURL(image),
+        description: "",
+        path: "/repository",
+    }));
 
+    const [currentIndex, setCurrentIndex] = useState(0);
     const [visibility, setVisibility] = useState("public");
 
-    if (!image) return null; // Return null instead of undefined
+    const handleImageChange = (newImage: ICarouselImage) => {
+        /*
+        INFO: the indexes used inside the carousel are not updated in a consistent manner,
+                this is why we receive the currentImage on "afterChange", and we get the index that
+                translates to our array.
+        */
+        setCurrentIndex(+newImage.id);
+    }
 
     return (
         <Dialog
@@ -35,7 +48,7 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
             <DialogContent >
                 <Grid container sx={{ minWidth: 'auto' }}>
                     <Grid item xs={8}>
-                        <Image src={image} ratio="16/9" />
+                        <CarouselSimple onImageChange={handleImageChange} data={_carouselImages} />
                     </Grid>
                     <Grid item xs={4}>
 
@@ -75,7 +88,7 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
                 <SoftButton
                     color="error"
                     onClick={() => {
-                        onDelete(fileInput);
+                        onDelete(images[currentIndex]);
                     }}
                 >
                     <Delete />

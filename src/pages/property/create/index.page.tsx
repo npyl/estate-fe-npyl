@@ -16,10 +16,12 @@ import { useAddNoteToPropertyWithIdMutation } from "src/services/note";
 
 import Form from "../components/Form";
 
+import { LogoProgressIndicator } from "src/components/LogoProgressIndicator";
+
 const CreatePropertyPage: NextPage = () => {
   const router = useRouter();
 
-  const [create, { isSuccess, data: createdProperty }] =
+  const [create, { isSuccess, isLoading: isCreateLoading, data: createdProperty }] =
     useAddPropertyMutation();
   const [createLabel, { isSuccess: isLabelSuccess }] =
     useCreateLabelForPropertyWithIDMutation();
@@ -91,7 +93,14 @@ const CreatePropertyPage: NextPage = () => {
     }
   };
 
-  return <Form performUpload={handleUpload} />;
+  return <>
+    <Form performUpload={handleUpload} />
+
+    {
+      // loading indicator (incase POST request is taking alot of time)
+      isCreateLoading && <LogoProgressIndicator />
+    }
+  </>
 };
 
 CreatePropertyPage.getLayout = (page) => (

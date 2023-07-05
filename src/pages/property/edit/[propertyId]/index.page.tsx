@@ -22,6 +22,7 @@ import { useGetPropertyByIdQuery } from "src/services/properties";
 
 import { useDispatch } from "react-redux";
 import { useAddNoteToPropertyWithIdMutation } from "src/services/note";
+import { LogoProgressIndicator } from "src/components/LogoProgressIndicator";
 
 const EditPropertyPage: NextPage = () => {
   const dispatch = useDispatch();
@@ -38,7 +39,7 @@ const EditPropertyPage: NextPage = () => {
 
   const [createLabel, { isSuccess: isLabelSuccess }] = useCreateLabelForPropertyWithIDMutation();
   const [createNote, { isSuccess: isNoteSuccess }] = useAddNoteToPropertyWithIdMutation();
-  const [edit, { isSuccess: isEditProperty, data: editedProperty }] = useAddPropertyMutation();
+  const [edit, { isSuccess: isEditProperty, isLoading: isEditLoading, data: editedProperty }] = useAddPropertyMutation();
 
   const body = useSelector(selectAll);
 
@@ -72,10 +73,8 @@ const EditPropertyPage: NextPage = () => {
   useEffect(() => {
     if (isPropertySuccess) {
       const initialFileState = {
-        propertyImages: [
-          fetchedProperty.propertyImage,
-          ...fetchedProperty.images,
-        ],
+        mainPropertyImage: fetchedProperty.propertyImage,
+        secondaryPropertyImages: [...fetchedProperty.images],
         propertyBlueprints: fetchedProperty.blueprints,
       };
 
@@ -121,7 +120,14 @@ const EditPropertyPage: NextPage = () => {
     await edit(dataToSend);
   };
 
-  return <Form edit={true} performUpload={performUpload} />;
+  return <>
+    <Form edit={true} performUpload={performUpload} />;
+
+    {
+      // loading indicator (incase POST request is taking alot of time)
+      isEditLoading && <LogoProgressIndicator />
+    }
+  </>
 };
 
 EditPropertyPage.getLayout = (page) => (

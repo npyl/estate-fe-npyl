@@ -31,6 +31,7 @@ const AddNote = (props: AddNoteProps) => {
 
   return (
     <Grid
+      container
       spacing={0}
       direction="row"
       alignItems="center"

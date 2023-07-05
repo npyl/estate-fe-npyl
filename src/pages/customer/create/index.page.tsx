@@ -16,12 +16,14 @@ import { useAddNoteToCustomerWithIdMutation } from "src/services/note";
 
 import Form from "../components/Form";
 
+import { LogoProgressIndicator } from "src/components/LogoProgressIndicator";
+
 const CreateCustomer: NextPage = () => {
   const router = useRouter();
 
   const [
     create,
-    { isSuccess: isCreateCustomerSuccess, data: createdCustomer },
+    { isSuccess: isCreateCustomerSuccess, isLoading: isCreateCustomerLoading, data: createdCustomer },
   ] = useAddCustomerMutation();
   const [createLabel, { isSuccess: isLabelSuccess }] =
     useCreateLabelForCustomerWithIDMutation();
@@ -67,7 +69,14 @@ const CreateCustomer: NextPage = () => {
     }
   }, [isCreateCustomerSuccess, createdCustomer]);
 
-  return <Form performUpload={performUpload} />;
+  return <>
+    <Form performUpload={performUpload} />;
+
+    {
+      // loading indicator (incase POST request is taking alot of time)
+      isCreateCustomerLoading && <LogoProgressIndicator />
+    }
+  </>
 };
 
 CreateCustomer.getLayout = (page) => (

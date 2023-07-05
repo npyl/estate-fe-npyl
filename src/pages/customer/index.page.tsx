@@ -1,4 +1,4 @@
-import { Box, Paper } from "@mui/material";
+import { Box, Paper, Skeleton } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
 
 import type { NextPage } from "next";
@@ -34,7 +34,7 @@ const columns: GridColDef[] = [
 ];
 
 const Customers: NextPage = () => {
-  const { data } = useAllCustomersPaginatedQuery({ page: 0, pageSize: 25 });
+  const { data, isFetching } = useAllCustomersPaginatedQuery({ page: 0, pageSize: 25 });
   const [rows, setRows] = useState<ICustomer[]>([]);
 
   useEffect(() => {
@@ -42,6 +42,10 @@ const Customers: NextPage = () => {
     setRows(data.content);
   }, [data])
 
+  const renderSkeletonCell = () => <Skeleton width={150} animation='wave' />;
+  const skeletonRows = Array.from({ length: 2 }, (_, index) => ({
+    id: index + 1,
+  }));
 
   return (
     <>
@@ -53,7 +57,7 @@ const Customers: NextPage = () => {
         }}
       >
         <Paper sx={{ mt: 2 }}>
-          <DataGridTable
+          {rows && !isFetching ? <DataGridTable
             rows={rows}
             columns={columns}
             resource={"customer"}
@@ -61,7 +65,19 @@ const Customers: NextPage = () => {
             sortingOrder={"asc"}
             page={0}
             pageSize={25}
-          />
+          /> :
+            <DataGridTable
+              rows={skeletonRows}
+              columns={columns.map((column) => ({
+                ...column,
+                renderCell: renderSkeletonCell,
+              }))}
+              sortingBy={""}
+              sortingOrder={"asc"}
+              page={0}
+              pageSize={25}
+            />
+          }
         </Paper>
       </Box>
     </>

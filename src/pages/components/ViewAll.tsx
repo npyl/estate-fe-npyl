@@ -52,7 +52,8 @@ const ViewAll: FC = () => {
 
   const allFilters = useSelector(selectAll);
 
-  const [filterProperties, { isSuccess, data }] = useFilterPropertiesMutation();
+  // TODO: use isFetching instead of isLoading, because it allows us to check if a request has finished
+  const [filterProperties, { isLoading, data }] = useFilterPropertiesMutation();
 
   useEffect(() => {
     filterProperties({ filter: allFilters, page: page, pageSize: pageSize });
@@ -129,7 +130,7 @@ const ViewAll: FC = () => {
   ];
 
   const renderSkeletonCell = () => <Skeleton width={150} animation='wave' />;
-  const skeletonRows = Array.from({ length: 5 }, (_, index) => ({
+  const skeletonRows = Array.from({ length: 2 }, (_, index) => ({
     id: index + 1,
   }));
 
@@ -187,7 +188,7 @@ const ViewAll: FC = () => {
           </ButtonGroup>
         </Stack>
       </Stack>
-      {rows ? (
+      {rows && !isLoading ? (
         <>
           {optionView === "list" && (
             <Paper sx={{ mt: 2 }}>
