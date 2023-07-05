@@ -17,6 +17,7 @@ import { selectAll as selectAllNewLabels } from "src/slices/labels";
 import { selectAll as selectAllNewNotes, setInitialState as setInitialNotesState } from 'src/slices/notes';
 import { useDispatch } from "src/store";
 import Form from "../../components/Form";
+import { LogoProgressIndicator } from "src/components/LogoProgressIndicator";
 
 const EditCustomer: NextPage = () => {
   const router = useRouter();
@@ -25,7 +26,7 @@ const EditCustomer: NextPage = () => {
   const { data, isSuccess: fetchedCustomer } = useGetCustomerByIdQuery(
     parseInt(customerId as string)
   );
-  const [edit, { isSuccess: isEditedSuccess, data: editedCustomer }] = useAddCustomerMutation();
+  const [edit, { isSuccess: isEditedSuccess, isLoading: isEditedLoading, data: editedCustomer }] = useAddCustomerMutation();
   const [createLabel, { isSuccess: isLabelSuccess }] =
     useCreateLabelForCustomerWithIDMutation();
   const [createNote, { isSuccess: isNoteSuccess }] =
@@ -76,7 +77,14 @@ const EditCustomer: NextPage = () => {
     }
   }, [isEditedSuccess, editedCustomer])
 
-  return <Form edit={true} performUpload={performUpload} />;
+  return <>
+    <Form edit={true} performUpload={performUpload} />
+
+    {
+      // loading indicator (incase POST request is taking alot of time)
+      isEditedLoading && <LogoProgressIndicator />
+    }
+  </>
 };
 
 EditCustomer.getLayout = (page) => (
