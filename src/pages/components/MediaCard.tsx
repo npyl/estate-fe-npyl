@@ -1,9 +1,11 @@
 "use client";
 import { Box, BoxProps, Grid, Paper, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/router";
+import ICarouselImage from "src/components/carousel/types";
 import CarouselSimple from "src/components/CarouselSimple";
 import Iconify from "src/components/iconify/Iconify";
 import { IProperties } from "src/types/properties";
+
 
 // ----------------------------------------------------------------------
 
@@ -59,14 +61,6 @@ export function BookingItem({ item, activeMarker }: BookingItemProps) {
     !id
   )
     return null;
-
-  interface ICarouselImage {
-    id: string;
-    title: string;
-    image: string;
-    description: string;
-    path: string;
-  }
 
   const _carouselImages: ICarouselImage[] = [
     {
