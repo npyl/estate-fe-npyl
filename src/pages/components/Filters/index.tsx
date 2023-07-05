@@ -39,9 +39,9 @@ export function FilterSection() {
     <Stack
       spacing={3}
       component={Paper}
-      sx={{ paddingX: 2, paddingTop: 2, paddingBottom: 1 }}
+      p={2}
     >
-      <Stack flexWrap={"nowrap"} direction={"row"} sx={{ overflowX: "auto" }}>
+      <Stack flexWrap={"wrap"} direction={"row"} spacing={1}>
         {/* <CountrySelect /> */}
         {/* <SubAreas /> */}
         <SaleSelect />
