@@ -15,18 +15,42 @@ const initialState: propertyFilesState = {
   propertyBlueprints: [],
 };
 
+function base64ToFile(base64Data: string, filename: string, mimeType: string): File {
+  const byteCharacters = atob(base64Data);
+  const byteArrays: Uint8Array[] = [];
+
+  for (let offset = 0; offset < byteCharacters.length; offset += 512) {
+    const slice = byteCharacters.slice(offset, offset + 512);
+
+    const byteNumbers = new Array(slice.length);
+    for (let i = 0; i < slice.length; i++) {
+      byteNumbers[i] = slice.charCodeAt(i);
+    }
+
+    const byteArray = new Uint8Array(byteNumbers);
+    byteArrays.push(byteArray);
+  }
+
+  const blob = new Blob(byteArrays, { type: mimeType });
+  return new File([blob], filename, { type: mimeType });
+}
+
 const slice = createSlice({
   name: "propertyFiles",
   initialState,
   reducers: {
     setInitialState(state: propertyFilesState, { payload }): void {
+      //
+      // on Edit
+      //
+
       const mainPropertyImageData: string = payload.mainPropertyImage;                // raw base64 encoded image data e.g. 
       const secondaryPropertyImages: IFileModel[] = payload.secondaryPropertyImages;  // FileModel
       const propertyBlueprints: IFileModel[] = payload.propertyBlueprints;            // FileModel
 
-      // convert image-data to base64-encoded URL
-      const mainPropertyImageURL = `data:image/png;base64,${mainPropertyImageData}`;
-      const secondaryPropertyImageURLs = secondaryPropertyImages.map((imageData) => `data:image/png;base64,${imageData.data}`);
+      // convert base64-encoded image-data to File (blob-urls)
+      const mainPropertyImageURL = URL.createObjectURL(base64ToFile(mainPropertyImageData, 'myFile.png', 'image/png'));
+      const secondaryPropertyImageURLs = secondaryPropertyImages.map((imageData) => URL.createObjectURL(base64ToFile(mainPropertyImageData, 'myFile.png', 'image/png')));
 
       // gather everything up
       state.propertyImages = [
