@@ -99,7 +99,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
             marginBottom: 0,
 
             display: "flex",
-            flex: "11 auto",
+            flex: "1 1 auto",
             flexDirection: "column",
             width: "100%",
           }}
