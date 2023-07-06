@@ -6,7 +6,7 @@ import GalleryManager from "src/components/GalleryManager";
 import { SoftButton } from "src/components/SoftButton";
 
 interface IImageSectionProps {
-  files: File[];
+  files: string[];
   setFiles: Dispatch<SetStateAction<(string | File)[]>>;
 }
 
@@ -64,7 +64,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({ files, setFiles }) => {
         </CardContent>
       </Card>
 
-      {files && files.length > 0 && <GalleryManager open={galleryManagerOpen} images={files} onClose={handleCloseGalleryManager} onDelete={(file: File) => {
+      {files && files.length > 0 && <GalleryManager open={galleryManagerOpen} images={files} onClose={handleCloseGalleryManager} onDelete={(file: string) => {
         handleRemoveFile(file);
       }} />}
 
