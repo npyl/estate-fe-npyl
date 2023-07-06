@@ -58,7 +58,8 @@ export default function Form({
     }
   }, [edit]);
 
-  if (!enums || !parentCategoryEnum || parentCategoryEnum.length === 0) return null;
+  if (!enums || !parentCategoryEnum || parentCategoryEnum.length === 0)
+    return null;
 
   const subCategoriesMap: {
     [key: string]: string[];
@@ -70,23 +71,23 @@ export default function Form({
   };
 
   return (
-    <Grid container sx={{ mt: 2 }} spacing={1} pt={1}>
+    <Grid container spacing={1} paddingLeft={2} paddingTop={3}>
       <Grid
         component={Paper}
-        padding={"8px 16px 16px 16px"}
+        padding={"8px 16px 16px 10px"}
         container
         spacing={1}
       >
         <Grid item xs={6}>
           <FormControl fullWidth>
-            <InputLabel id='demo-simple-select-label'>
+            <InputLabel id="demo-simple-select-label">
               Parent Category
             </InputLabel>
             <Select
-              labelId='demo-simple-select-label'
-              id='demo-simple-select'
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
               value={parentCategory}
-              label='Parent Category'
+              label="Parent Category"
               onChange={(e) => {
                 dispatch(setParentCategory(e.target.value));
               }}
@@ -106,35 +107,31 @@ export default function Form({
           <TextField
             disabled={parentCategory === ""}
             fullWidth
-            id='outlined-select-currency'
+            id="outlined-select-currency"
             select
-            label='Category'
+            label="Category"
             value={category}
             onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
               dispatch(setCategory(event.target.value));
             }}
           >
-            {subCategoriesMap[parentCategory] ?
+            {subCategoriesMap[parentCategory] ? (
               subCategoriesMap[parentCategory].map((item, index) => {
                 return (
                   <MenuItem key={index} value={item}>
                     {item}
                   </MenuItem>
                 );
-              }) : <MenuItem></MenuItem>}
+              })
+            ) : (
+              <MenuItem></MenuItem>
+            )}
           </TextField>
         </Grid>
       </Grid>
 
       {parentCategory !== "" && (
-        <Grid
-          container
-          mt={1}
-          paddingTop={1}
-          paddingLeft={1}
-          paddingRight={0}
-          spacing={1}
-        >
+        <Grid container mt={0} spacing={1}>
           {parentCategory === "Residential" && <ResidentialFormSection />}
           {parentCategory === "Land" && <LandFormSection />}
           {parentCategory === "Commercial" && <CommercialFormSection />}
@@ -145,13 +142,13 @@ export default function Form({
           <Grid
             padding={2}
             container
-            alignItems='center'
-            justifyContent='flex-end'
+            alignItems="center"
+            justifyContent="flex-end"
             spacing={1}
           >
             <Grid item>
               <Button
-                variant='outlined'
+                variant="outlined"
                 startIcon={<DeleteIcon />}
                 onClick={() => resetState()}
               >
@@ -160,7 +157,7 @@ export default function Form({
             </Grid>
             <Grid item>
               <Button
-                variant='contained'
+                variant="contained"
                 endIcon={<SendIcon />}
                 onClick={handleClick}
               >

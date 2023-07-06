@@ -22,6 +22,7 @@ import {
   selectAvgUtils,
   selectBuildable,
   selectCode,
+  selectAvailableAfter,
   selectCurrentRentPrice,
   selectDebatablePrice,
   selectEstimatedRentPrice,
@@ -31,6 +32,7 @@ import {
   selectPlotArea,
   selectPrice,
   selectRentalPeriodEnd,
+  selectRentalPeriodStart,
   selectRented,
   selectState,
   setArea,
@@ -47,6 +49,7 @@ import {
   setPlotArea,
   setPrice,
   setRentalPeriodEnd,
+  setRentalPeriodStart,
   setRented,
   setState,
 } from "src/slices/property";
@@ -72,13 +75,10 @@ import {
 } from "src/slices/labels";
 
 import { ILabel } from "src/types/label";
+import { DateField } from "@mui/x-date-pickers";
 
 const BasicForLandSection: React.FC<any> = (props) => {
   const dispatch = useDispatch();
-
-  const [rentalPeriodStart, setRentalPeriodStart] = useState<Date | null>(
-    new Date()
-  );
 
   const { data } = useAllGlobalsQuery();
   const enums: IGlobalProperty = data?.property as IGlobalProperty;
@@ -99,8 +99,8 @@ const BasicForLandSection: React.FC<any> = (props) => {
   const buildable = useSelector(selectBuildable);
   const plotArea = useSelector(selectPlotArea);
   const rented = useSelector(selectRented);
-  const availableAfter = useSelector(selectRented);
-  // const rentalPeriodStart = useSelector(selectRentalPeriodStart);
+  const availableAfter = useSelector(selectAvailableAfter);
+  const rentalPeriodStart = useSelector(selectRentalPeriodStart);
   const rentalPeriodEnd = useSelector(selectRentalPeriodEnd);
   const auction = useSelector(selectAuction);
   const debatablePrice = useSelector(selectDebatablePrice);
@@ -148,14 +148,14 @@ const BasicForLandSection: React.FC<any> = (props) => {
           justifyContent: "center",
         }}
       >
-        <Typography variant='h6'>Basic Details</Typography>
+        <Typography variant="h6">Basic Details</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
         <Grid container spacing={2}>
           <Grid item xs={6}>
             <OnlyNumbersInput
-              label='Code'
+              label="Code"
               value={code}
               onChange={(value) => {
                 dispatch(setCode(value));
@@ -166,14 +166,14 @@ const BasicForLandSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-start-adornment'
+              id="outlined-start-adornment"
               select
-              label='Owner'
+              label="Owner"
               value={owner}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setOwner(event.target.value));
               }}
-              size='small'
+              size="small"
             >
               {owners && owners.length > 0 ? (
                 owners?.map((option, index) => (
@@ -189,14 +189,14 @@ const BasicForLandSection: React.FC<any> = (props) => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-start-adornment'
+              id="outlined-start-adornment"
               select
-              label='Manager'
+              label="Manager"
               value={manager}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setManager(event.target.value));
               }}
-              size='small'
+              size="small"
             >
               {managers && managers.length > 0 ? (
                 managers?.map((option, index) => (
@@ -212,12 +212,12 @@ const BasicForLandSection: React.FC<any> = (props) => {
 
           <Grid item xs={6}>
             <FormControl fullWidth>
-              <InputLabel id='demo-simple-select-label'>State</InputLabel>
+              <InputLabel id="demo-simple-select-label">State</InputLabel>
               <Select
-                labelId='demo-simple-select-label'
-                id='demo-simple-select'
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
                 value={state}
-                label='State'
+                label="State"
                 onChange={(e) => {
                   dispatch(setState(e.target.value));
                 }}
@@ -234,9 +234,9 @@ const BasicForLandSection: React.FC<any> = (props) => {
           </Grid>
           <Grid item xs={6}>
             <OnlyNumbersInput
-              label='Area'
+              label="Area"
               value={area}
-              adornment='m²'
+              adornment="m²"
               onChange={(value) => {
                 dispatch(setArea(value));
               }}
@@ -244,9 +244,9 @@ const BasicForLandSection: React.FC<any> = (props) => {
           </Grid>
           <Grid item xs={6}>
             <OnlyNumbersInput
-              label='Plot Area'
+              label="Plot Area"
               value={plotArea}
-              adornment='m²'
+              adornment="m²"
               onChange={(value) => {
                 dispatch(setPlotArea(value));
               }}
@@ -254,9 +254,9 @@ const BasicForLandSection: React.FC<any> = (props) => {
           </Grid>
           <Grid item xs={6}>
             <OnlyNumbersInput
-              label='Price'
+              label="Price"
               value={price}
-              adornment='€'
+              adornment="€"
               onChange={(value) => {
                 dispatch(setPrice(value));
               }}
@@ -266,11 +266,11 @@ const BasicForLandSection: React.FC<any> = (props) => {
           <Grid
             item
             xs={6}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
-              id='outlined-controlled'
+              id="outlined-controlled"
               value={rented}
               checked={rented}
               onChange={(
@@ -280,18 +280,18 @@ const BasicForLandSection: React.FC<any> = (props) => {
                 dispatch(setRented(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Elevator" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Rented
             </Typography>
           </Grid>
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-start-adornment'
-              label='Key Code'
+              id="outlined-start-adornment"
+              label="Key Code"
               value={keyCode}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setKeyCode(event.target.value));
@@ -300,9 +300,9 @@ const BasicForLandSection: React.FC<any> = (props) => {
           </Grid>
           <Grid item xs={6}>
             <OnlyNumbersInput
-              label='Current Rent Price'
+              label="Current Rent Price"
               value={currentRentPrice}
-              adornment='€'
+              adornment="€"
               onChange={(value) => {
                 dispatch(setCurrentRentPrice(value));
               }}
@@ -311,65 +311,12 @@ const BasicForLandSection: React.FC<any> = (props) => {
 
           <Grid item xs={6}>
             <OnlyNumbersInput
-              label='Estimated Rent Price'
+              label="Estimated Rent Price"
               value={estimatedRentPrice}
-              adornment='€'
+              adornment="€"
               onChange={(value) => {
                 dispatch(setEstimatedRentPrice(value));
               }}
-            />
-          </Grid>
-
-          <Grid
-            item
-            xs={6}
-            flexDirection='row'
-            sx={{
-              display: "inline-flex",
-              alignItems: "center",
-              height: "100px",
-            }}
-          >
-            <DatePicker
-              label=' Rental Start'
-              value={rentalPeriodStart}
-              onChange={(newValue: Date) => setRentalPeriodStart(newValue)}
-              sx={{ width: "100%", height: " 50px" }}
-            />
-          </Grid>
-          <Grid
-            item
-            xs={6}
-            flexDirection='row'
-            sx={{
-              display: "inline-flex",
-              alignItems: "center",
-              height: "100px",
-            }}
-          >
-            <DatePicker
-              label='Rental End'
-              value={rentalPeriodEnd}
-              onChange={(newValue: Date) => setRentalPeriodEnd(newValue)}
-              sx={{ width: "100%", height: " 50px" }}
-            />
-          </Grid>
-
-          <Grid
-            item
-            xs={6}
-            flexDirection='row'
-            sx={{
-              display: "inline-flex",
-              alignItems: "center",
-              height: "100px",
-            }}
-          >
-            <DatePicker
-              label='Available After'
-              value={availableAfter}
-              onChange={handleDateChange}
-              sx={{ width: "100%", height: " 50px" }}
             />
           </Grid>
 
@@ -383,10 +330,103 @@ const BasicForLandSection: React.FC<any> = (props) => {
             />
           </Grid>
 
+          <Grid item xs={12} padding={1}>
+            <Grid
+              container
+              spacing={0}
+              sx={{
+                padding: "10px",
+                border: "1px solid #000000",
+                borderRadius: "10px",
+              }}
+            >
+              <Grid item xs={12}>
+                <Grid container spacing={2}>
+                  <Grid
+                    item
+                    xs={6}
+                    flexDirection="row"
+                    sx={{ display: "inline-flex", alignItems: "center" }}
+                  >
+                    <Checkbox
+                      id="outlined-controlled"
+                      value={rented}
+                      checked={rented}
+                      onChange={(
+                        event: React.ChangeEvent<unknown>,
+                        checked: boolean
+                      ) => {
+                        dispatch(setRented(checked));
+                      }}
+                      sx={{ cursor: "default" }}
+                      color="primary"
+                      inputProps={{ "aria-label": "Elevator" }}
+                    />
+                    <Typography variant="body1" sx={{ ml: 0 }}>
+                      Rented
+                    </Typography>
+                  </Grid>
+                  {/* <LocalizationProvider dateAdapter={AdapterDayjs}> */}
+                  <Grid item xs={6}>
+                    {/* <DemoContainer components={["DateField"]}> */}
+                    <DateField
+                      fullWidth
+                      label="Available After:"
+                      value={availableAfter}
+                      onChange={(value) => {
+                        dispatch(setAvailableAfter(value));
+                      }}
+                      disabled={!rented} // Disable the field if "rented" is unchecked
+                    />
+                    {/* </DemoContainer> */}
+                  </Grid>
+
+                  <Grid item xs={6}>
+                    {/* <DemoContainer components={["DateField"]}> */}
+                    <DateField
+                      fullWidth
+                      label="Rental Period Start"
+                      value={rentalPeriodStart}
+                      onChange={(value) => {
+                        dispatch(setRentalPeriodStart(value));
+                      }}
+                      disabled={!rented} // Disable the field if "rented" is unchecked
+                    />
+                    {/* </DemoContainer> */}
+                  </Grid>
+                  <Grid item xs={6}>
+                    {/* <DemoContainer components={["DateField"]}> */}
+                    <DateField
+                      fullWidth
+                      label="Rental Period End"
+                      value={rentalPeriodEnd}
+                      onChange={(value) => {
+                        dispatch(setRentalPeriodEnd(value));
+                      }}
+                      disabled={!rented} // Disable the field if "rented" is unchecked
+                    />
+                    {/* </DemoContainer> */}
+                  </Grid>
+                  <Grid item xs={6}>
+                    <OnlyNumbersInput
+                      label="Current Rent Price"
+                      value={currentRentPrice}
+                      onChange={(value) => {
+                        dispatch(setCurrentRentPrice(value));
+                      }}
+                      adornment="€"
+                      disabled={!rented}
+                    />
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -399,10 +439,10 @@ const BasicForLandSection: React.FC<any> = (props) => {
                 dispatch(setDebatablePrice(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Floor Heating Checkbox" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Debatable Price
             </Typography>
           </Grid>
@@ -410,7 +450,7 @@ const BasicForLandSection: React.FC<any> = (props) => {
           <Grid
             item
             xs={2}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -423,10 +463,10 @@ const BasicForLandSection: React.FC<any> = (props) => {
                 dispatch(setBuildable(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Buildable" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Buildable
             </Typography>
           </Grid>
@@ -434,7 +474,7 @@ const BasicForLandSection: React.FC<any> = (props) => {
           <Grid
             item
             xs={2}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -447,10 +487,10 @@ const BasicForLandSection: React.FC<any> = (props) => {
                 dispatch(setAuction(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Floor Heating Checkbox" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               Auction
             </Typography>
           </Grid>

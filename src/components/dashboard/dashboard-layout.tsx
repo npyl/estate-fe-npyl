@@ -26,7 +26,7 @@ const DashboardLayoutRoot = styled("div")(({ theme }) => ({
   paddingTop: 64,
   marginRight: "16px",
   [theme.breakpoints.up("md")]: {
-    paddingLeft: 200,
+    paddingLeft: 220,
   },
 }));
 
