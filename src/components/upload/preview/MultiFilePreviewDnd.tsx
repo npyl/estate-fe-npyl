@@ -1,19 +1,7 @@
-import { m } from "framer-motion";
-// @mui
-import { IconButton, Stack, Typography } from "@mui/material";
-import { alpha } from "@mui/material/styles";
-// utils
-import { fData } from "../../../utils/formatNumber";
-//
-import { varFade } from "../../animate";
-import FileThumbnail, { fileData } from "../../file-thumbnail";
-import Iconify from "../../iconify";
-
 import { ImageList, ImageListItem } from '@mui/material';
 import Image from "src/components/image/Image";
 
-//
-import { UploadProps } from "../types";
+import { UploadStringProps } from "../types";
 import { DragDropContext, Draggable, Droppable, DropResult } from "react-beautiful-dnd";
 
 import { useState, useMemo } from "react";
@@ -25,12 +13,11 @@ interface Item {
 }
 
 export default function MultiFilePreviewDnd({
-    thumbnail,
     files,
     onImageClick,
     onRemove,
     sx,
-}: UploadProps) {
+}: UploadStringProps) {
     if (!files?.length) {
         return null;
     }
@@ -49,13 +36,13 @@ export default function MultiFilePreviewDnd({
     };
 
     useMemo(() => {
-        console.log('wtvr: ', files);
+        console.log('files: ', files);
 
         setItems([...files.map((file, index) => {
             return {
                 id: `item-${index}`,
                 content: `item-${index}`,
-                data: URL.createObjectURL(file)
+                data: file
             }
         })])
     }, [files]);
@@ -76,7 +63,7 @@ export default function MultiFilePreviewDnd({
                                                 {...provided.dragHandleProps}
                                             >
                                                 <Image src={item.data} alt={item.content} onClick={() => {
-                                                    onImageClick && onImageClick(files[index] as File);
+                                                    onImageClick && onImageClick(files[index]);
                                                 }} />
                                             </div>
                                         )}

@@ -18,6 +18,24 @@ import Form from "../components/Form";
 
 import { LogoProgressIndicator } from "src/components/LogoProgressIndicator";
 
+async function convertBlobUrlsToFiles(blobUrls: string[]): Promise<File[]> {
+  function getFileNameFromUrl(blobUrl: string): string {
+    // Replace this with your own logic to extract the file name from the blob URL
+    // For example, you can use string manipulation or URL parsing methods
+    return blobUrl.split('/').pop() || 'unknown_filename';
+  }
+
+  const filePromises = blobUrls.map(async (blobUrl) => {
+    const response = await fetch(blobUrl);
+    const blobData = await response.blob();
+    const fileName = getFileNameFromUrl(blobUrl); // Replace with your own logic to extract the file name
+
+    return new File([blobData], fileName);
+  });
+
+  return Promise.all(filePromises);
+}
+
 const CreatePropertyPage: NextPage = () => {
   const router = useRouter();
 
@@ -28,7 +46,8 @@ const CreatePropertyPage: NextPage = () => {
   const [createNote, { isSuccess: isNoteSuccess }] =
     useAddNoteToPropertyWithIdMutation();
 
-  const { propertyImages, propertyBlueprints } = useSelector(
+  // get property images & blueprints as base64-encoded string urls
+  const { propertyImages: propertyImagesURLs, propertyBlueprints: propertyBlueprintsURLs } = useSelector(
     selectAllPropertyFiles
   );
 
@@ -59,38 +78,47 @@ const CreatePropertyPage: NextPage = () => {
     });
   };
 
-  const handleUpload = async () => {
-    if (!propertyImages || propertyImages.length === 0) return;
-    if (!propertyImages[0]) return;
+  const handleUpload = () => {
+    if (!propertyImagesURLs || !propertyBlueprintsURLs) return;
 
-    const blob = new Blob([JSON.stringify(body)], {
-      type: "application/json",
+    convertBlobUrlsToFiles(propertyImagesURLs).then((propertyImages) => {
+      convertBlobUrlsToFiles(propertyBlueprintsURLs).then((propertyBlueprints) => {
+
+        if (!propertyImages || propertyImages.length === 0) return;
+        if (!propertyImages[0]) return;
+
+        const blob = new Blob([JSON.stringify(body)], {
+          type: "application/json",
+        });
+
+        let dataToSend = new FormData();
+        // main image
+        dataToSend.append("propertyImage ", propertyImages[0]);
+        // gallery
+        for (let i = 1; i < propertyImages.length; i++) {
+          if (!propertyImages[i]) continue;
+          dataToSend.append("propertyGallery ", propertyImages[i]);
+        }
+        // blueprints
+        for (let i = 0; i < propertyBlueprints.length; i++) {
+          if (!propertyBlueprints[i]) continue;
+          dataToSend.append("propertyBlueprints ", propertyBlueprints[i]);
+        }
+
+        dataToSend.append("propertyForm ", blob);
+
+        // perform POST
+        create(dataToSend);
+
+        if (isSuccess) {
+          createAndAssignNewLabels(); // create&assign labels
+          createAndAssignNewNotes(); // create&assign notes
+          router.push("/");
+        }
+
+
+      });
     });
-
-    let dataToSend = new FormData();
-    // main image
-    dataToSend.append("propertyImage ", propertyImages[0]);
-    // gallery
-    for (let i = 1; i < propertyImages.length; i++) {
-      if (!propertyImages[i]) continue;
-      dataToSend.append("propertyGallery ", propertyImages[i]);
-    }
-    // blueprints
-    for (let i = 0; i < propertyBlueprints.length; i++) {
-      if (!propertyBlueprints[i]) continue;
-      dataToSend.append("propertyBlueprints ", propertyBlueprints[i]);
-    }
-
-    dataToSend.append("propertyForm ", blob);
-
-    // perform POST
-    await create(dataToSend);
-
-    if (isSuccess) {
-      createAndAssignNewLabels(); // create&assign labels
-      createAndAssignNewNotes(); // create&assign notes
-      router.push("/");
-    }
   };
 
   return <>

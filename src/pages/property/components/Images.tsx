@@ -18,7 +18,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({ files, setFiles }) => {
     (acceptedFiles: File[]) => {
       setFiles([
         ...files,
-        ...acceptedFiles
+        ...acceptedFiles.map((acceptedFile) => URL.createObjectURL(acceptedFile))
       ]);
     },
     [files]
