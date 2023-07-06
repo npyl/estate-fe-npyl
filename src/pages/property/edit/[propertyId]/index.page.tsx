@@ -24,13 +24,15 @@ import { useDispatch } from "react-redux";
 import { useAddNoteToPropertyWithIdMutation } from "src/services/note";
 import { LogoProgressIndicator } from "src/components/LogoProgressIndicator";
 
+import { convertBlobUrlsToFiles } from "src/utils/blob-urls-to-files";
+
 const EditPropertyPage: NextPage = () => {
   const dispatch = useDispatch();
   const router = useRouter();
 
   const { propertyId } = router.query;
 
-  const { propertyImages, propertyBlueprints } = useSelector(
+  const { propertyImages: propertyImagesURLs, propertyBlueprints: propertyBlueprintsURLs } = useSelector(
     selectAllPropertyFiles
   );
 
@@ -92,32 +94,38 @@ const EditPropertyPage: NextPage = () => {
     }
   }, [isEditProperty]);
 
-  const performUpload = async () => {
-    if (!propertyImages || propertyImages.length === 0) return;
-    if (!propertyImages[0]) return;
+  const performUpload = () => {
+    convertBlobUrlsToFiles(propertyImagesURLs).then((propertyImages) => {
+      convertBlobUrlsToFiles(propertyBlueprintsURLs).then((propertyBlueprints) => {
+        if (!propertyImages || propertyImages.length === 0) return;
+        if (!propertyImages[0]) return;
 
-    const blob = new Blob([JSON.stringify(body)], {
-      type: "application/json",
+        console.log('here: ', propertyImages);
+
+        const blob = new Blob([JSON.stringify(body)], {
+          type: "application/json",
+        });
+
+        let dataToSend = new FormData();
+        // main image
+        dataToSend.append("propertyImage ", propertyImages[0]);
+        // gallery
+        for (let i = 1; i < propertyImages.length; i++) {
+          if (!propertyImages[i]) continue;
+          dataToSend.append("propertyGallery ", propertyImages[i]);
+        }
+        // blueprints
+        for (let i = 0; i < propertyBlueprints.length; i++) {
+          if (!propertyBlueprints[i]) continue;
+          dataToSend.append("propertyBlueprints ", propertyBlueprints[i]);
+        }
+
+        dataToSend.append("propertyForm ", blob);
+
+        // perform POST
+        edit(dataToSend);
+      })
     });
-
-    let dataToSend = new FormData();
-    // main image
-    dataToSend.append("propertyImage ", propertyImages[0]);
-    // gallery
-    for (let i = 1; i < propertyImages.length; i++) {
-      if (!propertyImages[i]) continue;
-      dataToSend.append("propertyGallery ", propertyImages[i]);
-    }
-    // blueprints
-    for (let i = 0; i < propertyBlueprints.length; i++) {
-      if (!propertyBlueprints[i]) continue;
-      dataToSend.append("propertyBlueprints ", propertyBlueprints[i]);
-    }
-
-    dataToSend.append("propertyForm ", blob);
-
-    // perform POST
-    await edit(dataToSend);
   };
 
   return <>

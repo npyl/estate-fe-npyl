@@ -18,23 +18,7 @@ import Form from "../components/Form";
 
 import { LogoProgressIndicator } from "src/components/LogoProgressIndicator";
 
-async function convertBlobUrlsToFiles(blobUrls: string[]): Promise<File[]> {
-  function getFileNameFromUrl(blobUrl: string): string {
-    // Replace this with your own logic to extract the file name from the blob URL
-    // For example, you can use string manipulation or URL parsing methods
-    return blobUrl.split('/').pop() || 'unknown_filename';
-  }
-
-  const filePromises = blobUrls.map(async (blobUrl) => {
-    const response = await fetch(blobUrl);
-    const blobData = await response.blob();
-    const fileName = getFileNameFromUrl(blobUrl); // Replace with your own logic to extract the file name
-
-    return new File([blobData], fileName);
-  });
-
-  return Promise.all(filePromises);
-}
+import { convertBlobUrlsToFiles } from "src/utils/blob-urls-to-files";
 
 const CreatePropertyPage: NextPage = () => {
   const router = useRouter();
@@ -115,8 +99,6 @@ const CreatePropertyPage: NextPage = () => {
           createAndAssignNewNotes(); // create&assign notes
           router.push("/");
         }
-
-
       });
     });
   };
