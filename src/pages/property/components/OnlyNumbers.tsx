@@ -5,6 +5,7 @@ interface OnlyNumbersInputProps {
   value?: number | string;
   onChange: (value: string) => void;
   adornment?: string;
+  disabled?: boolean;
 }
 
 const OnlyNumbersInput: React.FC<OnlyNumbersInputProps> = ({
@@ -12,6 +13,8 @@ const OnlyNumbersInput: React.FC<OnlyNumbersInputProps> = ({
   value,
   onChange,
   adornment = "",
+  disabled = false,
+  ...props
 }) => {
   const handleCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const input = event.target.value;
@@ -35,6 +38,8 @@ const OnlyNumbersInput: React.FC<OnlyNumbersInputProps> = ({
       value={value}
       onChange={handleCodeChange}
       onKeyPress={handleKeyPress}
+      {...props}
+      disabled={disabled}
       inputProps={{
         style: {
           height: "8px",
@@ -42,7 +47,7 @@ const OnlyNumbersInput: React.FC<OnlyNumbersInputProps> = ({
       }}
       InputProps={{
         endAdornment: adornment ? (
-          <InputAdornment position='end'>{adornment}</InputAdornment>
+          <InputAdornment position="end">{adornment}</InputAdornment>
         ) : (
           <></>
         ),

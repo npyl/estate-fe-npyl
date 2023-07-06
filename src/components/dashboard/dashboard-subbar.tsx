@@ -18,7 +18,7 @@ const Subbar = () => {
         <Fragment key={index}>
           <Stack
             sx={{
-              bgcolor: (currentPath === tab.path) ? 'primary.main' : 'unset',
+              bgcolor: currentPath === tab.path ? "primary.main" : "unset",
               padding: "0px 8px",
               borderRadius: 2,
               boxShadow: `rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px`,
@@ -31,12 +31,12 @@ const Subbar = () => {
                 minWidth: "90px",
                 padding: 0,
                 borderRadius: 0,
-                color: (currentPath === tab.path) ? 'white' : 'unset',
+                color: currentPath === tab.path ? "white" : "unset",
                 "&:hover": {
                   background: "transparent",
                 },
               }}
-              variant='text'
+              variant="text"
               id={tab.title}
               onClick={() => router.push(tab.path)}
             >
@@ -46,7 +46,7 @@ const Subbar = () => {
               sx={{
                 padding: 0,
                 marginLeft: 1,
-                color: (currentPath === tab.path) ? 'white' : 'unset',
+                color: currentPath === tab.path ? "white" : "unset",
                 "&:hover": {
                   background: "transparent",
                 },
@@ -57,12 +57,11 @@ const Subbar = () => {
             </IconButton>
           </Stack>
           {index !== tabs.length - 1 && (
-            <Divider orientation='vertical' flexItem />
+            <Divider orientation="vertical" flexItem />
           )}
         </Fragment>
-      ))
-      }
-    </Stack >
+      ))}
+    </Stack>
   );
 };
 
