@@ -493,7 +493,7 @@ const BasicSection: React.FC<any> = (props) => {
               {/* <LocalizationProvider dateAdapter={AdapterDayjs}> */}
               <Grid item xs={6}>
                 {/* <DemoContainer components={["DateField"]}> */}
-                <DateField
+                {/* <DateField
                   fullWidth
                   label="Available After:"
                   value={availableAfter}
@@ -501,13 +501,13 @@ const BasicSection: React.FC<any> = (props) => {
                     dispatch(setAvailableAfter(value));
                   }}
                   disabled={!rented} // Disable the field if "rented" is unchecked
-                />
+                /> */}
                 {/* </DemoContainer> */}
               </Grid>
 
               <Grid item xs={6}>
                 {/* <DemoContainer components={["DateField"]}> */}
-                <DateField
+                {/* <DateField
                   fullWidth
                   label="Rental Period Start"
                   value={rentalPeriodStart}
@@ -515,12 +515,12 @@ const BasicSection: React.FC<any> = (props) => {
                     dispatch(setRentalPeriodStart(value));
                   }}
                   disabled={!rented} // Disable the field if "rented" is unchecked
-                />
+                /> */}
                 {/* </DemoContainer> */}
               </Grid>
               <Grid item xs={6}>
                 {/* <DemoContainer components={["DateField"]}> */}
-                <DateField
+                {/* <DateField
                   fullWidth
                   label="Rental Period End"
                   value={rentalPeriodEnd}
@@ -528,7 +528,7 @@ const BasicSection: React.FC<any> = (props) => {
                     dispatch(setRentalPeriodEnd(value));
                   }}
                   disabled={!rented} // Disable the field if "rented" is unchecked
-                />
+                /> */}
                 {/* </DemoContainer> */}
               </Grid>
               <Grid item xs={6}>

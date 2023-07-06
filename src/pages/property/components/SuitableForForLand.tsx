@@ -46,8 +46,7 @@ const SuitableForForLandSection: React.FC<any> = (props) => {
   const agriculturalUse = useSelector(selectAgriculturalUse);
 
   // get list of owners & managers
-  const { data: owners } = useAllCustomersQuery();
-  const { data: managers } = useAllUsersQuery();
+
   if (!enums) return null;
   return (
     <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
