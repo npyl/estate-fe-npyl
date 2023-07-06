@@ -4,7 +4,7 @@ import { Dispatch, SetStateAction, useCallback } from "react";
 import { useDispatch } from "react-redux";
 
 interface FileSectionProps {
-  fileData: File[];
+  fileData: string[];
   setFileData: Dispatch<SetStateAction<(string | File)[]>>;
 }
 
@@ -38,14 +38,14 @@ const FileSection: React.FC<FileSectionProps> = ({ fileData, setFileData }) => {
     <Card>
       <CardHeader title="fileData" />
       <CardContent>
-        <Upload
+        {/* <Upload
           multiple
           thumbnail={false}
           files={fileData}
           onDrop={handleDropMultiFile}
           onRemove={handleRemoveFile}
           onRemoveAll={handleRemoveAllFileData}
-        />
+        /> */}
       </CardContent>
     </Card>
   );
