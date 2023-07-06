@@ -28,3 +28,22 @@ export interface UploadProps extends DropzoneOptions {
   onRemove?: (file: CustomFile | string) => void;
   onRemoveAll?: VoidFunction;
 }
+
+// Upload that supports only base64-string url images
+export interface UploadStringProps extends DropzoneOptions {
+  error?: boolean;
+  sx?: SxProps<Theme>;
+  thumbnail?: boolean;
+  placeholder?: React.ReactNode;
+  helperText?: React.ReactNode;
+  disableMultiple?: boolean;
+  //
+  file?: string | null;
+  onDelete?: VoidFunction;
+  //
+  files?: string[];
+  onImageClick?: (file: string) => void;
+  onUpload?: VoidFunction;
+  onRemove?: (file: string) => void;
+  onRemoveAll?: VoidFunction;
+}

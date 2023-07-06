@@ -40,9 +40,6 @@ const ROISection: React.FC<any> = (props) => {
   const currentRentPrice = useSelector(selectCurrentRentPrice);
   const estimatedRentPrice = useSelector(selectEstimatedRentPrice);
 
-  // get list of owners & managers
-  const { data: owners } = useAllCustomersQuery();
-  const { data: managers } = useAllUsersQuery();
   if (!enums) return null;
 
   const [additionalCheckbox1Enabled, setAdditionalCheckbox1Enabled] =
@@ -98,8 +95,8 @@ const ROISection: React.FC<any> = (props) => {
   const roi: number = additionalCheckbox1Enabled
     ? ((currentRentPrice * 12) / price) * 100
     : additionalCheckbox2Enabled
-    ? ((estimatedRentPrice * 12) / price) * 100
-    : 0;
+      ? ((estimatedRentPrice * 12) / price) * 100
+      : 0;
   return (
     <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
       <Box
