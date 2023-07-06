@@ -1,4 +1,3 @@
-import { DatePicker } from "@mui/lab";
 import {
   Checkbox,
   FormControl,
@@ -12,10 +11,16 @@ import {
   Typography,
 } from "@mui/material";
 
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+
 import * as React from "react";
+import { DatePicker } from "@mui/lab";
+import AdapterDateFns from "@mui/lab/AdapterDateFns";
+import LocalizationProvider from "@mui/lab/LocalizationProvider";
 
 import OnlyNumbersInput from "./OnlyNumbers";
-
 import { useDispatch, useSelector } from "react-redux";
 import { useAllCustomersQuery } from "src/services/customers";
 import {
@@ -33,6 +38,7 @@ import {
   selectPlotArea,
   selectPrice,
   selectRentalPeriodEnd,
+  selectRentalPeriodStart,
   selectRented,
   selectState,
   setArea,
@@ -49,6 +55,7 @@ import {
   setPlotArea,
   setPrice,
   setRentalPeriodEnd,
+  setRentalPeriodStart,
   setRented,
   setState,
 } from "src/slices/property";
@@ -71,12 +78,11 @@ import {
   selectAll as selectAllNewLabels,
 } from "src/slices/labels";
 import { useGetLabelsQuery } from "src/services/labels";
+import { DateField } from "@mui/x-date-pickers";
+import { format, parse } from "date-fns";
+import { selectAvailableAfter } from "src/slices/property";
 
 const BasicSection: React.FC<any> = (props) => {
-  const [rentalPeriodStart, setRentalPeriodStart] = useState<Date | null>(
-    new Date()
-  );
-
   const { data } = useAllGlobalsQuery();
   const enums: IGlobalProperty = data?.property as IGlobalProperty;
 
@@ -97,8 +103,8 @@ const BasicSection: React.FC<any> = (props) => {
   const area = useSelector(selectArea);
   const plotArea = useSelector(selectPlotArea);
   const rented = useSelector(selectRented);
-  const availableAfter = useSelector(selectRented);
-  // const rentalPeriodStart = useSelector(selectRentalPeriodStart);
+  const availableAfter = useSelector(selectAvailableAfter);
+  const rentalPeriodStart = useSelector(selectRentalPeriodStart);
   const rentalPeriodEnd = useSelector(selectRentalPeriodEnd);
   const auction = useSelector(selectAuction);
   const debatablePrice = useSelector(selectDebatablePrice);
@@ -106,16 +112,18 @@ const BasicSection: React.FC<any> = (props) => {
   const stateEnum = enums?.state;
 
   const labelIDs = useSelector(selectLabelIDs);
-  const assignedLabels = labelIDs &&
-    labelIDs.length > 0 &&
-    propertyLabels &&
-    propertyLabels.length > 0 &&
-    labelIDs.filter((labelID) => labelID).map((labelID, index) => {
-      // get label object with id
-      return propertyLabels.find(
-        (label) => label.id === labelID
-      )!;
-    }) || [];
+  const assignedLabels =
+    (labelIDs &&
+      labelIDs.length > 0 &&
+      propertyLabels &&
+      propertyLabels.length > 0 &&
+      labelIDs
+        .filter((labelID) => labelID)
+        .map((labelID, index) => {
+          // get label object with id
+          return propertyLabels.find((label) => label.id === labelID)!;
+        })) ||
+    [];
   const newLabels = useSelector(selectAllNewLabels);
 
   // const [value, setValue] = React.useState<Date>(new Date());
@@ -300,31 +308,16 @@ const BasicSection: React.FC<any> = (props) => {
               adornment="€/Month"
             />
           </Grid>
-
-          <Grid
-            item
-            xs={6}
-            flexDirection="row"
-            sx={{ display: "inline-flex", alignItems: "center" }}
-          >
-            <Checkbox
-              id="outlined-controlled"
-              value={rented}
-              checked={rented}
-              onChange={(
-                event: React.ChangeEvent<unknown>,
-                checked: boolean
-              ) => {
-                dispatch(setRented(checked));
-              }}
-              sx={{ cursor: "default" }}
-              color="primary"
-              inputProps={{ "aria-label": "Elevator" }}
+          <Grid item xs={6}>
+            <LabelCreate
+              existingLabels={propertyLabels}
+              assignedLabels={assignedLabels}
+              newLabels={newLabels}
+              onLabelClick={handleLabelClick}
+              onLabelCreate={handleLabelCreate}
             />
-            <Typography variant="body1" sx={{ ml: 0 }}>
-              Rented
-            </Typography>
           </Grid>
+
           <Grid item xs={6}>
             <TextField
               fullWidth
@@ -341,16 +334,6 @@ const BasicSection: React.FC<any> = (props) => {
               }}
             />
           </Grid>
-          <Grid item xs={6}>
-            <OnlyNumbersInput
-              label="Current Rent Price"
-              value={currentRentPrice}
-              onChange={(value) => {
-                dispatch(setCurrentRentPrice(value));
-              }}
-              adornment="€"
-            />
-          </Grid>
 
           <Grid item xs={6}>
             <OnlyNumbersInput
@@ -362,70 +345,6 @@ const BasicSection: React.FC<any> = (props) => {
               adornment="€"
             />
           </Grid>
-
-          <Grid
-            item
-            xs={6}
-            flexDirection="row"
-            sx={{
-              display: "inline-flex",
-              alignItems: "center",
-              height: "100px",
-            }}
-          >
-            <DatePicker
-              label=" Rental Start"
-              value={rentalPeriodStart}
-              onChange={(newValue: Date) => setRentalPeriodStart(newValue)}
-              sx={{ width: "100%", height: " 50px" }}
-            />
-          </Grid>
-          <Grid
-            item
-            xs={6}
-            flexDirection="row"
-            sx={{
-              display: "inline-flex",
-              alignItems: "center",
-              height: "100px",
-            }}
-          >
-            <DatePicker
-              label="Rental End"
-              value={rentalPeriodEnd}
-              onChange={(newValue: Date) => setRentalPeriodEnd(newValue)}
-              sx={{ width: "100%", height: " 50px" }}
-            />
-          </Grid>
-
-          <Grid
-            item
-            xs={6}
-            flexDirection="row"
-            sx={{
-              display: "inline-flex",
-              alignItems: "center",
-              height: "100px",
-            }}
-          >
-            <DatePicker
-              label="Available After"
-              value={availableAfter}
-              onChange={handleDateChange}
-              sx={{ width: "100%", height: " 50px" }}
-            />
-          </Grid>
-
-          <Grid item xs={6}>
-            <LabelCreate
-              existingLabels={propertyLabels}
-              assignedLabels={assignedLabels}
-              newLabels={newLabels}
-              onLabelClick={handleLabelClick}
-              onLabelCreate={handleLabelCreate}
-            />
-          </Grid>
-
           <Grid
             item
             xs={3}
@@ -472,6 +391,158 @@ const BasicSection: React.FC<any> = (props) => {
             <Typography variant="body1" sx={{ ml: 0 }}>
               Auction
             </Typography>
+          </Grid>
+
+          {/* </LocalizationProvider> */}
+          {/* <DatePicker label="Basic date picker" />
+          <LocalizationProvider dateAdapter={AdapterDateFns}>
+            <Grid
+              item
+              xs={6}
+              flexDirection="row"
+              sx={{
+                display: "inline-flex",
+                alignItems: "center",
+                height: "100px",
+              }}
+            >
+              <DatePicker label="Basic date picker" />
+              <DatePicker
+                label="Rental Start"
+                value={rentalPeriodStart}
+                onChange={(newValue: Date | null) =>
+                  setRentalPeriodStart(newValue)
+                }
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </Grid>
+            <Grid
+              item
+              xs={6}
+              flexDirection="row"
+              sx={{
+                display: "inline-flex",
+                alignItems: "center",
+                height: "100px",
+              }}
+            >
+              <DatePicker
+                label="Rental End"
+                value={rentalPeriodEnd}
+                onChange={(newValue: Date) => setRentalPeriodEnd(newValue)}
+                sx={{ width: "100%", height: " 50px" }}
+              />
+            </Grid> */}
+
+          {/* <Grid
+              item
+              xs={6}
+              flexDirection="row"
+              sx={{
+                display: "inline-flex",
+                alignItems: "center",
+                height: "100px",
+              }}
+            >
+              <DatePicker
+                label="Available After"
+                value={availableAfter}
+                onChange={handleDateChange}
+                sx={{ width: "100%", height: " 50px" }}
+              />
+            </Grid>
+          </LocalizationProvider> */}
+        </Grid>
+      </Grid>
+      <Grid item xs={12} padding={1}>
+        <Grid
+          container
+          spacing={0}
+          sx={{
+            padding: "10px",
+            border: "1px solid #000000",
+            borderRadius: "10px",
+          }}
+        >
+          <Grid item xs={12}>
+            <Grid container spacing={2}>
+              <Grid
+                item
+                xs={6}
+                flexDirection="row"
+                sx={{ display: "inline-flex", alignItems: "center" }}
+              >
+                <Checkbox
+                  id="outlined-controlled"
+                  value={rented}
+                  checked={rented}
+                  onChange={(
+                    event: React.ChangeEvent<unknown>,
+                    checked: boolean
+                  ) => {
+                    dispatch(setRented(checked));
+                  }}
+                  sx={{ cursor: "default" }}
+                  color="primary"
+                  inputProps={{ "aria-label": "Elevator" }}
+                />
+                <Typography variant="body1" sx={{ ml: 0 }}>
+                  Rented
+                </Typography>
+              </Grid>
+              {/* <LocalizationProvider dateAdapter={AdapterDayjs}> */}
+              <Grid item xs={6}>
+                {/* <DemoContainer components={["DateField"]}> */}
+                <DateField
+                  fullWidth
+                  label="Available After:"
+                  value={availableAfter}
+                  onChange={(value) => {
+                    dispatch(setAvailableAfter(value));
+                  }}
+                  disabled={!rented} // Disable the field if "rented" is unchecked
+                />
+                {/* </DemoContainer> */}
+              </Grid>
+
+              <Grid item xs={6}>
+                {/* <DemoContainer components={["DateField"]}> */}
+                <DateField
+                  fullWidth
+                  label="Rental Period Start"
+                  value={rentalPeriodStart}
+                  onChange={(value) => {
+                    dispatch(setRentalPeriodStart(value));
+                  }}
+                  disabled={!rented} // Disable the field if "rented" is unchecked
+                />
+                {/* </DemoContainer> */}
+              </Grid>
+              <Grid item xs={6}>
+                {/* <DemoContainer components={["DateField"]}> */}
+                <DateField
+                  fullWidth
+                  label="Rental Period End"
+                  value={rentalPeriodEnd}
+                  onChange={(value) => {
+                    dispatch(setRentalPeriodEnd(value));
+                  }}
+                  disabled={!rented} // Disable the field if "rented" is unchecked
+                />
+                {/* </DemoContainer> */}
+              </Grid>
+              <Grid item xs={6}>
+                <OnlyNumbersInput
+                  label="Current Rent Price"
+                  value={currentRentPrice}
+                  onChange={(value) => {
+                    dispatch(setCurrentRentPrice(value));
+                  }}
+                  adornment="€"
+                  disabled={!rented}
+                />
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>

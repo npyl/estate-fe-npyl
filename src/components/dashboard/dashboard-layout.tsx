@@ -26,7 +26,7 @@ const DashboardLayoutRoot = styled("div")(({ theme }) => ({
   paddingTop: 64,
   marginRight: "16px",
   [theme.breakpoints.up("md")]: {
-    paddingLeft: 200,
+    paddingLeft: 220,
   },
 }));
 
@@ -99,7 +99,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
             marginBottom: 0,
 
             display: "flex",
-            flex: "1 1 auto",
+            flex: "11 auto",
             flexDirection: "column",
             width: "100%",
           }}

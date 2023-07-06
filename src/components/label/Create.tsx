@@ -39,7 +39,13 @@ interface ILabelCreateProps {
 }
 
 const LabelCreate = (props: ILabelCreateProps) => {
-  const { existingLabels, assignedLabels, newLabels, onLabelClick, onLabelCreate } = props;
+  const {
+    existingLabels,
+    assignedLabels,
+    newLabels,
+    onLabelClick,
+    onLabelCreate,
+  } = props;
 
   const [addLabelDialog, setAddLabelDialog] = useState(false);
 
@@ -77,8 +83,8 @@ const LabelCreate = (props: ILabelCreateProps) => {
       }}
       flexDirection={"column"}
     >
-      <Box sx={{ display: "flex", justifyContent: "center" }}>
-        <Typography variant="h6" flex={1}>
+      <Box sx={{ display: "flex", justifyContent: "center", height: "10px" }}>
+        <Typography flex={1} sx={{ justifyContent: "center" }}>
           Labels
         </Typography>
         <IconButton
@@ -89,6 +95,7 @@ const LabelCreate = (props: ILabelCreateProps) => {
           <AddCircleIcon />
         </IconButton>
       </Box>
+
       <Box sx={{ display: "flex", justifyContent: "center" }}>
         {assignedLabels.map((label, index) => {
           if (!label) return <></>;
