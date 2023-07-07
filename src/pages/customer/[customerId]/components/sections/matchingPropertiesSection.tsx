@@ -4,25 +4,10 @@ import { useSuggestForCustomerQuery } from "src/services/properties";
 import type { NextPage } from "next";
 import DataGridTable from "src/components/DataGrid";
 import { useRouter } from "next/router";
-import { AuthGuard } from "src/components/authentication/auth-guard";
-import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-import { useAllCustomersQuery } from "src/services/customers";
+
 import Image from "src/components/image";
 
 const MatchingPropertiesSection: NextPage = () => {
-  function renderImage(params: GridCellParams) {
-    return (
-      <>
-        <Image
-          src={`data:image/jpeg;base64,${params.formattedValue}` || ""}
-          alt=""
-          ratio="16/9"
-          width={1}
-        />
-      </>
-    );
-  }
-
   const columns: GridColDef[] = [
     {
       field: "propertyImage",

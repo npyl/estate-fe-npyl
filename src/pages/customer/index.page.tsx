@@ -57,7 +57,7 @@ const Customers: NextPage = () => {
         }}
       >
         <Paper sx={{ mt: 2 }}>
-          {rows && !isFetching ? <DataGridTable
+          {rows ? <DataGridTable
             rows={rows}
             columns={columns}
             resource={"customer"}

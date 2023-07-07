@@ -14,7 +14,7 @@ import { UploadIllustration } from "../../assets/illustrations";
 //
 import Iconify from "../iconify";
 //
-import { UploadProps } from "./types";
+import { UploadStringProps } from "./types";
 import RejectionFiles from "./errors/RejectionFiles";
 import MultiFilePreviewDnd from "./preview/MultiFilePreviewDnd";
 import SingleFilePreview from "./preview/SingleFilePreview";
@@ -55,7 +55,7 @@ export default function UploadDnd({
     onRemoveAll,
     sx,
     ...other
-}: UploadProps) {
+}: UploadStringProps) {
     const {
         getRootProps,
         getInputProps,

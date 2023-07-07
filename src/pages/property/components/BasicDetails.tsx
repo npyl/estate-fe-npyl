@@ -504,7 +504,7 @@ const BasicSection: React.FC<any> = (props) => {
                     dispatch(setAvailableAfter(value as string));
                   }}
                   disabled={!rented} // Disable the field if "rented" is unchecked
-                />
+                /> */}
                 {/* </DemoContainer> */}
               </Grid>
 
@@ -519,7 +519,7 @@ const BasicSection: React.FC<any> = (props) => {
                     dispatch(setRentalPeriodStart(value as string));
                   }}
                   disabled={!rented} // Disable the field if "rented" is unchecked
-                />
+                /> */}
                 {/* </DemoContainer> */}
               </Grid>
               <Grid item xs={6}>
@@ -532,7 +532,7 @@ const BasicSection: React.FC<any> = (props) => {
                     dispatch(setRentalPeriodEnd(value as string));
                   }}
                   disabled={!rented} // Disable the field if "rented" is unchecked
-                />
+                /> */}
                 {/* </DemoContainer> */}
               </Grid>
               <Grid item xs={6}>

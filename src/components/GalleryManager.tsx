@@ -1,4 +1,4 @@
-import { Dialog, DialogTitle, DialogContent, Grid, Button, Stack, TextField, MenuItem } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, Grid, Button, Stack, TextField, MenuItem, makeStyles } from '@mui/material';
 import { Delete } from '@mui/icons-material';
 import { SoftButton } from './SoftButton';
 
@@ -9,8 +9,8 @@ import ICarouselImage from './carousel/types';
 
 interface IGalleryManager {
     open: boolean;
-    images: File[];
-    onDelete: (file: File) => void;
+    images: string[];
+    onDelete: (file: string) => void;
     onClose: () => void;
 }
 
@@ -20,7 +20,7 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
     const _carouselImages: ICarouselImage[] = images.map((image, index) => ({
         id: `${index}`,
         title: "Image",
-        image: URL.createObjectURL(image),
+        image: image,
         description: "",
         path: "/repository",
     }));
@@ -41,12 +41,19 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
         <Dialog
             fullWidth
             open={open}
+            sx={{
+                "& .MuiDialog-container": {
+                    "& .MuiPaper-root": {
+                        minWidth: '80vw'
+                    },
+                },
+            }}
             onClose={onClose}
             closeAfterTransition={true}
         >
             <DialogTitle>Gallery Manager</DialogTitle>
-            <DialogContent >
-                <Grid container sx={{ minWidth: 'auto' }}>
+            <DialogContent>
+                <Grid container>
                     <Grid item xs={8}>
                         <CarouselSimple onImageChange={handleImageChange} data={_carouselImages} />
                     </Grid>
