@@ -210,7 +210,7 @@ const ViewAll: FC = () => {
           )}
           {optionView === "map" && (
             <Paper sx={{ marginTop: 2 }}>
-              <MapView />
+              <MapView data={rows} />
             </Paper>
           )}
         </>
