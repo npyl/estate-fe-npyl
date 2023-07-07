@@ -15,6 +15,7 @@ import {
 
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import ColorizeIcon from "@mui/icons-material/Colorize";
+import { Close as CloseIcon } from "@mui/icons-material";
 
 import * as React from "react";
 import { useRef, useState } from "react";
@@ -137,12 +138,25 @@ const LabelCreate = (props: ILabelCreateProps) => {
         fullWidth
         maxWidth="xs"
         open={addLabelDialog}
-        onClose={() => {
-          setAddLabelDialog(false);
-        }}
+        onClose={() => setAddLabelDialog(false)}
         closeAfterTransition={true}
       >
-        <DialogTitle variant="h5">Προσθήκη Υπάρχουσας</DialogTitle>
+        <DialogTitle variant="h5">
+          Προσθήκη Υπάρχουσας
+
+          <IconButton
+            aria-label="close"
+            onClick={() => setAddLabelDialog(false)}
+            sx={{
+              position: 'absolute',
+              right: 8,
+              top: 8,
+              color: 'grey',
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
         <DialogContent>
           <DialogContentText>Customer Labels</DialogContentText>
           <Stack direction={"row"} spacing={1}>
@@ -251,7 +265,7 @@ const LabelCreate = (props: ILabelCreateProps) => {
           </Stack>
         </DialogContent>
       </Dialog>
-    </Box>
+    </Box >
   );
 };
 export default LabelCreate;
