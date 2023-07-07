@@ -499,8 +499,8 @@ const BasicSection: React.FC<any> = (props) => {
                   fullWidth
                   label="Available After:"
                   value={new Date(availableAfter)}
-                  onChange={(value) => {
-                    dispatch(setAvailableAfter(value as string));
+                  onChange={(value: any) => {
+                    handleDateChange(setAvailableAfter, value);
                   }}
                   disabled={!rented} // Disable the field if "rented" is unchecked
                 />
@@ -518,7 +518,7 @@ const BasicSection: React.FC<any> = (props) => {
                     dispatch(setRentalPeriodStart(value as string));
                   }}
                   disabled={!rented} // Disable the field if "rented" is unchecked
-                /> */}
+                />
                 {/* </DemoContainer> */}
               </Grid>
               <Grid item xs={6}>
@@ -531,7 +531,7 @@ const BasicSection: React.FC<any> = (props) => {
                     dispatch(setRentalPeriodEnd(value as string));
                   }}
                   disabled={!rented} // Disable the field if "rented" is unchecked
-                /> */}
+                />
                 {/* </DemoContainer> */}
               </Grid>
               <Grid item xs={6}>
