@@ -107,7 +107,6 @@ const LabelCreate = (props: ILabelCreateProps) => {
               variant="soft"
               sx={{
                 bgcolor: label.color,
-                borderRadius: 7,
                 color: "white",
               }}
               onClose={() => onRemoveAssignedLabel(index)}
@@ -125,7 +124,6 @@ const LabelCreate = (props: ILabelCreateProps) => {
                 variant="soft"
                 sx={{
                   bgcolor: label.color,
-                  borderRadius: 7,
                   color: "white",
                 }}
                 onClose={() => onRemoveNewLabel(index)}

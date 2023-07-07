@@ -19,6 +19,7 @@ const Label = forwardRef<HTMLSpanElement, LabelProps>(
       minHeight: 16,
       '& svg, img': { width: 1, height: 1, objectFit: 'cover' },
     };
+    const radius = 10;
 
     return (
       <StyledLabel
@@ -28,21 +29,18 @@ const Label = forwardRef<HTMLSpanElement, LabelProps>(
         sx={{
           pl: 0.75,
           ...(onClose && { pr: 0.75 }),
-          m: 0.13
+          m: 0.13,
+          borderRadius: radius,
         }}
         theme={theme}
         {...other}
       >
-        <Box sx={{ mr: 0.75, ...sx, ...iconStyle }}>
-
-        </Box>
+        <Box sx={{ mr: 0.75, ...sx, borderRadius: radius, ...iconStyle }}></Box>
 
         {children}
 
         {onClose &&
-          <Box sx={{
-            ml: 0.75,
-          }}>
+          <Box>
             <IconButton
               aria-label="close"
               onClick={onClose}
