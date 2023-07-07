@@ -116,7 +116,9 @@ const BasicSection: React.FC<any> = (props) => {
   const stateEnum = enums?.state;
 
   const labelIDs = useSelector(selectLabelIDs);
-  const assignedLabels =
+
+  // TODO: convert this to useState / useEffect
+  var assignedLabels =
     (labelIDs &&
       labelIDs.length > 0 &&
       propertyLabels &&
@@ -128,6 +130,7 @@ const BasicSection: React.FC<any> = (props) => {
           return propertyLabels.find((label) => label.id === labelID)!;
         })) ||
     [];
+
   const newLabels = useSelector(selectAllNewLabels);
 
   const handleLabelClick = (label: ILabel) => {
@@ -142,6 +145,13 @@ const BasicSection: React.FC<any> = (props) => {
 
     dispatch(setter(date.toISOString()));
   };
+
+  const handleRemoveAssignedLabel = (index: number) => {
+    assignedLabels = assignedLabels.filter((_, i) => i !== index);
+  }
+  const handleRemoveNewLabel = (index: number) => {
+
+  }
 
   // get list of owners & managers
   const { data: owners } = useAllCustomersQuery();
@@ -317,6 +327,8 @@ const BasicSection: React.FC<any> = (props) => {
               newLabels={newLabels}
               onLabelClick={handleLabelClick}
               onLabelCreate={handleLabelCreate}
+              onRemoveAssignedLabel={handleRemoveAssignedLabel}
+              onRemoveNewLabel={handleRemoveNewLabel}
             />
           </Grid>
 

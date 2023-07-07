@@ -20,8 +20,6 @@ import { Close as CloseIcon } from "@mui/icons-material";
 import * as React from "react";
 import { useRef, useState } from "react";
 
-import { useGetLabelsQuery } from "src/services/labels";
-
 import Label from "src/components/label/Label";
 
 import { BlockPicker } from "react-color";
@@ -37,6 +35,8 @@ interface ILabelCreateProps {
   // handlers
   onLabelClick: (label: ILabel) => void;
   onLabelCreate: (label: ILabel) => void;
+  onRemoveAssignedLabel: (index: number) => void,
+  onRemoveNewLabel: (index: number) => void,
 }
 
 const LabelCreate = (props: ILabelCreateProps) => {
@@ -46,6 +46,8 @@ const LabelCreate = (props: ILabelCreateProps) => {
     newLabels,
     onLabelClick,
     onLabelCreate,
+    onRemoveAssignedLabel,
+    onRemoveNewLabel,
   } = props;
 
   const [addLabelDialog, setAddLabelDialog] = useState(false);
@@ -89,15 +91,13 @@ const LabelCreate = (props: ILabelCreateProps) => {
           Labels
         </Typography>
         <IconButton
-          onClick={() => {
-            setAddLabelDialog(true);
-          }}
+          onClick={() => setAddLabelDialog(true)}
         >
           <AddCircleIcon />
         </IconButton>
       </Box>
 
-      <Box sx={{ display: "flex", justifyContent: "center" }}>
+      <Box sx={{ display: "flex", justifyContent: "center", flexWrap: 'wrap' }}>
         {assignedLabels.map((label, index) => {
           if (!label) return <></>;
 
@@ -110,6 +110,7 @@ const LabelCreate = (props: ILabelCreateProps) => {
                 borderRadius: 7,
                 color: "white",
               }}
+              onClose={() => onRemoveAssignedLabel(index)}
             >
               {label.name}
             </Label>
@@ -127,6 +128,7 @@ const LabelCreate = (props: ILabelCreateProps) => {
                   borderRadius: 7,
                   color: "white",
                 }}
+                onClose={() => onRemoveNewLabel(index)}
               >
                 {label.name}
               </Label>
