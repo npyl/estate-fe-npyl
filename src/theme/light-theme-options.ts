@@ -1,4 +1,4 @@
-import { ThemeOptions } from "@mui/material";
+import { ThemeOptions, createTheme } from "@mui/material";
 
 // Colors
 
@@ -13,6 +13,13 @@ const neutral = {
   800: "#1F2937",
   900: "#111827",
 };
+const theme = createTheme({
+  palette: {
+    error: {
+      main: "#000000", // Or whatever color you want
+    },
+  },
+});
 
 const background = {
   default: "#F9FAFC",

@@ -10,10 +10,13 @@ import {
   Select,
   TextField,
   Typography,
+  createStyles,
+  createTheme,
+  makeStyles,
 } from "@mui/material";
 
 import * as React from "react";
-
+import DateFieldStyled from "./DateFieldStyled";
 import { useDispatch, useSelector } from "react-redux";
 import { useAllCustomersQuery } from "src/services/customers";
 import {
@@ -60,6 +63,7 @@ import { useAllUsersQuery } from "src/services/user";
 
 import { useState } from "react";
 import { useAllGlobalsQuery } from "src/services/global";
+import styled from "@emotion/styled";
 
 import { LabelCreate } from "src/components/label";
 
@@ -107,6 +111,7 @@ const BasicForLandSection: React.FC<any> = (props) => {
   const stateEnum = enums?.state;
 
   const labelIDs = useSelector(selectLabelIDs);
+
   const assignedLabels =
     (labelIDs &&
       labelIDs.length > 0 &&
@@ -369,7 +374,7 @@ const BasicForLandSection: React.FC<any> = (props) => {
                   {/* <LocalizationProvider dateAdapter={AdapterDayjs}> */}
                   <Grid item xs={6}>
                     {/* <DemoContainer components={["DateField"]}> */}
-                    <DateField
+                    <DateFieldStyled
                       fullWidth
                       label="Available After:"
                       value={availableAfter}
@@ -383,7 +388,7 @@ const BasicForLandSection: React.FC<any> = (props) => {
 
                   <Grid item xs={6}>
                     {/* <DemoContainer components={["DateField"]}> */}
-                    <DateField
+                    <DateFieldStyled
                       fullWidth
                       label="Rental Period Start"
                       value={rentalPeriodStart}
@@ -396,7 +401,7 @@ const BasicForLandSection: React.FC<any> = (props) => {
                   </Grid>
                   <Grid item xs={6}>
                     {/* <DemoContainer components={["DateField"]}> */}
-                    <DateField
+                    <DateFieldStyled
                       fullWidth
                       label="Rental Period End"
                       value={rentalPeriodEnd}
