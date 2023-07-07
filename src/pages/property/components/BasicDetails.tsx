@@ -10,19 +10,16 @@ import {
   Box,
   Typography,
 } from "@mui/material";
-
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import DateFieldStyled from "./DateFieldStyled"; // adjust the path based on your directory structure
 
 import * as React from "react";
-import { DatePicker } from "@mui/lab";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
 
 import OnlyNumbersInput from "./OnlyNumbers";
 import { useDispatch, useSelector } from "react-redux";
 import { useAllCustomersQuery } from "src/services/customers";
+
+import "react-day-picker/dist/style.css";
+
 import {
   selectArea,
   selectAuction,
@@ -60,10 +57,8 @@ import {
   setState,
 } from "src/slices/property";
 
-import { useState } from "react";
-
-import { IGlobalCustomer, IGlobalProperty } from "src/types/global";
-import { ILabel, ILabels } from "src/types/label";
+import { IGlobalProperty } from "src/types/global";
+import { ILabel } from "src/types/label";
 
 import { useAllUsersQuery } from "src/services/user";
 import { useAllGlobalsQuery } from "src/services/global";
@@ -71,16 +66,17 @@ import { useAllGlobalsQuery } from "src/services/global";
 import { LabelCreate } from "src/components/label";
 
 // Property Slice
-import { addLabel as addLabelID } from "src/slices/property";
+import { addLabel as addLabelID, removeLabel as removeAssignedLabel } from "src/slices/property";
 // Labels Slice (for new labels)
 import {
   addLabel as addNewLabel,
+  removeLabel as removeNewLabel,
   selectAll as selectAllNewLabels,
 } from "src/slices/labels";
 import { useGetLabelsQuery } from "src/services/labels";
-import { DateField } from "@mui/x-date-pickers";
-import { format, parse } from "date-fns";
+
 import { selectAvailableAfter } from "src/slices/property";
+import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 
 const BasicSection: React.FC<any> = (props) => {
   const { data } = useAllGlobalsQuery();
@@ -112,6 +108,8 @@ const BasicSection: React.FC<any> = (props) => {
   const stateEnum = enums?.state;
 
   const labelIDs = useSelector(selectLabelIDs);
+
+  // TODO: convert this to useState / useEffect
   const assignedLabels =
     (labelIDs &&
       labelIDs.length > 0 &&
@@ -124,27 +122,24 @@ const BasicSection: React.FC<any> = (props) => {
           return propertyLabels.find((label) => label.id === labelID)!;
         })) ||
     [];
+
   const newLabels = useSelector(selectAllNewLabels);
 
-  // const [value, setValue] = React.useState<Date>(new Date());
-  const handleDateChange = (date: Date | null) => {
-    setAvailableAfter(date);
-    // onChange(date?.toISOString().substring(0, 10) || "");
-  };
+  const handleLabelClick = (label: ILabel) => dispatch(addLabelID(label.id));
+  const handleLabelCreate = (label: ILabel) => dispatch(addNewLabel(label));
+  const handleRemoveAssignedLabel = (index: number) => dispatch(removeAssignedLabel(index));
+  const handleRemoveNewLabel = (index: number) => dispatch(removeNewLabel(index));
 
-  const handleLabelClick = (label: ILabel) => {
-    dispatch(addLabelID(label.id));
-  };
-  const handleLabelCreate = (label: ILabel) => {
-    dispatch(addNewLabel(label));
+  const handleDateChange = (setter: ActionCreatorWithPayload<any, string>, date: Date | null) => {
+    if (!date || !setter) return;  // we don't need null
+
+    dispatch(setter(date.toISOString()));
   };
 
   // get list of owners & managers
   const { data: owners } = useAllCustomersQuery();
   const { data: managers } = useAllUsersQuery();
   if (!enums || !propertyLabels) return null;
-
-  //set the values for BE
 
   return (
     <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
@@ -315,6 +310,8 @@ const BasicSection: React.FC<any> = (props) => {
               newLabels={newLabels}
               onLabelClick={handleLabelClick}
               onLabelCreate={handleLabelCreate}
+              onRemoveAssignedLabel={handleRemoveAssignedLabel}
+              onRemoveNewLabel={handleRemoveNewLabel}
             />
           </Grid>
 
@@ -493,42 +490,43 @@ const BasicSection: React.FC<any> = (props) => {
               {/* <LocalizationProvider dateAdapter={AdapterDayjs}> */}
               <Grid item xs={6}>
                 {/* <DemoContainer components={["DateField"]}> */}
-                {/* <DateField
+                <DateFieldStyled
                   fullWidth
                   label="Available After:"
-                  value={availableAfter}
-                  onChange={(value) => {
-                    dispatch(setAvailableAfter(value));
+                  value={new Date(availableAfter)}
+                  onChange={(value: any) => {
+                    handleDateChange(setAvailableAfter, value);
                   }}
                   disabled={!rented} // Disable the field if "rented" is unchecked
-                /> */}
+                />
                 {/* </DemoContainer> */}
               </Grid>
 
               <Grid item xs={6}>
                 {/* <DemoContainer components={["DateField"]}> */}
-                {/* <DateField
+
+                <DateFieldStyled
                   fullWidth
                   label="Rental Period Start"
                   value={rentalPeriodStart}
                   onChange={(value) => {
-                    dispatch(setRentalPeriodStart(value));
+                    dispatch(setRentalPeriodStart(value as string));
                   }}
                   disabled={!rented} // Disable the field if "rented" is unchecked
-                /> */}
+                />
                 {/* </DemoContainer> */}
               </Grid>
               <Grid item xs={6}>
                 {/* <DemoContainer components={["DateField"]}> */}
-                {/* <DateField
+                <DateFieldStyled
                   fullWidth
                   label="Rental Period End"
                   value={rentalPeriodEnd}
                   onChange={(value) => {
-                    dispatch(setRentalPeriodEnd(value));
+                    dispatch(setRentalPeriodEnd(value as string));
                   }}
                   disabled={!rented} // Disable the field if "rented" is unchecked
-                /> */}
+                />
                 {/* </DemoContainer> */}
               </Grid>
               <Grid item xs={6}>

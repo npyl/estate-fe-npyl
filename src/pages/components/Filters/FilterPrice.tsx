@@ -139,7 +139,7 @@ const PriceSelect = ({ type }: { type: string }) => {
                           backgroundColor: "neutral.200",
                         },
                       }}
-                      onClick={() => dispatch(setMinValue(0))}
+                      onClick={() => dispatch(setMinValue(undefined))}
                     >
                       <ListItemText primary={"Αδιάφορο"} />
                     </ListItem>
@@ -178,7 +178,7 @@ const PriceSelect = ({ type }: { type: string }) => {
                           backgroundColor: "neutral.200",
                         },
                       }}
-                      onClick={() => dispatch(setMaxValue(0))}
+                      onClick={() => dispatch(setMaxValue(undefined))}
                     >
                       <ListItemText primary={"Αδιάφορο"} />
                     </ListItem>

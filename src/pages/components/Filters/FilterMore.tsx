@@ -122,7 +122,7 @@ export default function FilterMore({
           <Select
             sx={{ width: 130 }}
             value={minBedrooms}
-            onChange={(e) => dispatch(setMinBedrooms(e.target.value))}
+            onChange={(e) => dispatch(setMinBedrooms(e.target.value === 0 ? undefined : e.target.value))}
             MenuProps={{
               PaperProps: {
                 style: {
@@ -132,7 +132,7 @@ export default function FilterMore({
               },
             }}
           >
-            <MenuItem value={0} onClick={() => dispatch(setMinBedrooms(0))}>
+            <MenuItem value={0}>
               <ListItemText primary={"Αδιάφορο"} />
             </MenuItem>
             {generateNumbers().map((option) => (
@@ -153,7 +153,7 @@ export default function FilterMore({
           <Select
             sx={{ width: 130 }}
             value={maxBedrooms}
-            onChange={(e) => dispatch(setMaxBedrooms(e.target.value))}
+            onChange={(e) => dispatch(setMaxBedrooms(e.target.value === 0 ? undefined : e.target.value))}
             MenuProps={{
               PaperProps: {
                 style: {
@@ -163,7 +163,7 @@ export default function FilterMore({
               },
             }}
           >
-            <MenuItem value={0} onClick={() => dispatch(setMaxBedrooms(0))}>
+            <MenuItem value={0}>
               <ListItemText primary={"Αδιάφορο"} />
             </MenuItem>
             {generateNumbers().map((option) => (
@@ -187,7 +187,7 @@ export default function FilterMore({
           <Select
             sx={{ width: 130 }}
             value={minFloors}
-            onChange={(e) => dispatch(setMinFloor(e.target.value))}
+            onChange={(e) => dispatch(setMinFloor(e.target.value === 0 ? undefined : e.target.value))}
             MenuProps={{
               PaperProps: {
                 style: {
@@ -197,7 +197,7 @@ export default function FilterMore({
               },
             }}
           >
-            <MenuItem value={0} onClick={() => dispatch(setMinFloor(0))}>
+            <MenuItem value={0}>
               <ListItemText primary={"Αδιάφορο"} />
             </MenuItem>
             {generateNumbers().map((option) => (
@@ -218,7 +218,7 @@ export default function FilterMore({
           <Select
             sx={{ width: 130 }}
             value={maxFloors}
-            onChange={(e) => dispatch(setMaxFloor(e.target.value))}
+            onChange={(e) => dispatch(setMaxFloor(e.target.value === 0 ? undefined : e.target.value))}
             MenuProps={{
               PaperProps: {
                 style: {
@@ -228,7 +228,7 @@ export default function FilterMore({
               },
             }}
           >
-            <MenuItem value={0} onClick={() => dispatch(setMaxFloor(0))}>
+            <MenuItem value={0}>
               <ListItemText primary={"Αδιάφορο"} />
             </MenuItem>
             {generateNumbers().map((option) => (

@@ -1,22 +1,25 @@
 import { forwardRef } from 'react';
 // @mui
 import { useTheme } from '@mui/material/styles';
-import { Box } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 //
 import { StyledLabel } from './styles';
 import { LabelProps } from './types';
 
+import { Close as CloseIcon } from "@mui/icons-material";
+
 // ----------------------------------------------------------------------
 
 const Label = forwardRef<HTMLSpanElement, LabelProps>(
-  ({ children, color = 'default', variant = 'soft', startIcon, endIcon, sx, ...other }, ref) => {
+  ({ children, color = 'default', variant = 'soft', onClose, sx, ...other }, ref) => {
     const theme = useTheme();
 
     const iconStyle = {
-      width: 16,
-      height: 16,
+      minWidth: 16,
+      minHeight: 16,
       '& svg, img': { width: 1, height: 1, objectFit: 'cover' },
     };
+    const radius = 10;
 
     return (
       <StyledLabel
@@ -24,18 +27,27 @@ const Label = forwardRef<HTMLSpanElement, LabelProps>(
         component="span"
         ownerState={{ color, variant }}
         sx={{
-          ...(startIcon && { pl: 0.75 }),
-          ...(endIcon && { pr: 0.75 }),
-          ...sx,
+          pl: 0.75,
+          ...(onClose && { pr: 0.75 }),
+          m: 0.13,
+          borderRadius: radius,
         }}
         theme={theme}
         {...other}
       >
-        {startIcon && <Box sx={{ mr: 0.75, ...iconStyle }}> {startIcon} </Box>}
+        <Box sx={{ mr: 0.75, ...sx, borderRadius: radius, ...iconStyle }}></Box>
 
         {children}
 
-        {endIcon && <Box sx={{ ml: 0.75, ...iconStyle }}> {endIcon} </Box>}
+        {onClose &&
+          <Box>
+            <IconButton
+              aria-label="close"
+              onClick={onClose}
+            >
+              <CloseIcon />
+            </IconButton>
+          </Box>}
       </StyledLabel>
     );
   }

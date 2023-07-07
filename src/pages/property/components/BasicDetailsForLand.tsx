@@ -10,10 +10,13 @@ import {
   Select,
   TextField,
   Typography,
+  createStyles,
+  createTheme,
+  makeStyles,
 } from "@mui/material";
 
 import * as React from "react";
-
+import DateFieldStyled from "./DateFieldStyled";
 import { useDispatch, useSelector } from "react-redux";
 import { useAllCustomersQuery } from "src/services/customers";
 import {
@@ -55,27 +58,23 @@ import {
 } from "src/slices/property";
 
 import { IGlobalProperty } from "src/types/global";
-
 import { useAllUsersQuery } from "src/services/user";
-
-import { useState } from "react";
 import { useAllGlobalsQuery } from "src/services/global";
-
 import { LabelCreate } from "src/components/label";
 
 import OnlyNumbersInput from "./OnlyNumbers";
 
 // Property Slice
-import { addLabel as addLabelID, selectLabelIDs } from "src/slices/property";
+import { addLabel as addLabelID, removeLabel as removeAssignedLabel, selectLabelIDs } from "src/slices/property";
 // Labels Slice (for new labels)
 import { useGetLabelsQuery } from "src/services/labels";
 import {
   addLabel as addNewLabel,
+  removeLabel as removeNewLabel,
   selectAll as selectAllNewLabels,
 } from "src/slices/labels";
 
 import { ILabel } from "src/types/label";
-import { DateField } from "@mui/x-date-pickers";
 
 const BasicForLandSection: React.FC<any> = (props) => {
   const dispatch = useDispatch();
@@ -107,6 +106,7 @@ const BasicForLandSection: React.FC<any> = (props) => {
   const stateEnum = enums?.state;
 
   const labelIDs = useSelector(selectLabelIDs);
+
   const assignedLabels =
     (labelIDs &&
       labelIDs.length > 0 &&
@@ -121,17 +121,10 @@ const BasicForLandSection: React.FC<any> = (props) => {
     [];
   const newLabels = useSelector(selectAllNewLabels);
 
-  const handleDateChange = (date: Date | null) => {
-    setAvailableAfter(date);
-    // onChange(date?.toISOString().substring(0, 10) || "");
-  };
-
-  const handleLabelClick = (label: ILabel) => {
-    dispatch(addLabelID(label.id));
-  };
-  const handleLabelCreate = (label: ILabel) => {
-    dispatch(addNewLabel(label));
-  };
+  const handleLabelClick = (label: ILabel) => dispatch(addLabelID(label.id));
+  const handleLabelCreate = (label: ILabel) => dispatch(addNewLabel(label));
+  const handleRemoveAssignedLabel = (index: number) => dispatch(removeAssignedLabel(index));
+  const handleRemoveNewLabel = (index: number) => dispatch(removeNewLabel(index));
 
   // get list of owners & managers
   const { data: owners } = useAllCustomersQuery();
@@ -327,6 +320,8 @@ const BasicForLandSection: React.FC<any> = (props) => {
               newLabels={newLabels}
               onLabelClick={handleLabelClick}
               onLabelCreate={handleLabelCreate}
+              onRemoveAssignedLabel={handleRemoveAssignedLabel}
+              onRemoveNewLabel={handleRemoveNewLabel}
             />
           </Grid>
 
@@ -369,7 +364,7 @@ const BasicForLandSection: React.FC<any> = (props) => {
                   {/* <LocalizationProvider dateAdapter={AdapterDayjs}> */}
                   <Grid item xs={6}>
                     {/* <DemoContainer components={["DateField"]}> */}
-                    <DateField
+                    <DateFieldStyled
                       fullWidth
                       label="Available After:"
                       value={availableAfter}
@@ -383,7 +378,7 @@ const BasicForLandSection: React.FC<any> = (props) => {
 
                   <Grid item xs={6}>
                     {/* <DemoContainer components={["DateField"]}> */}
-                    <DateField
+                    <DateFieldStyled
                       fullWidth
                       label="Rental Period Start"
                       value={rentalPeriodStart}
@@ -396,7 +391,7 @@ const BasicForLandSection: React.FC<any> = (props) => {
                   </Grid>
                   <Grid item xs={6}>
                     {/* <DemoContainer components={["DateField"]}> */}
-                    <DateField
+                    <DateFieldStyled
                       fullWidth
                       label="Rental Period End"
                       value={rentalPeriodEnd}

@@ -15,11 +15,10 @@ import {
 
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import ColorizeIcon from "@mui/icons-material/Colorize";
+import { Close as CloseIcon } from "@mui/icons-material";
 
 import * as React from "react";
 import { useRef, useState } from "react";
-
-import { useGetLabelsQuery } from "src/services/labels";
 
 import Label from "src/components/label/Label";
 
@@ -36,6 +35,8 @@ interface ILabelCreateProps {
   // handlers
   onLabelClick: (label: ILabel) => void;
   onLabelCreate: (label: ILabel) => void;
+  onRemoveAssignedLabel: (index: number) => void,
+  onRemoveNewLabel: (index: number) => void,
 }
 
 const LabelCreate = (props: ILabelCreateProps) => {
@@ -45,6 +46,8 @@ const LabelCreate = (props: ILabelCreateProps) => {
     newLabels,
     onLabelClick,
     onLabelCreate,
+    onRemoveAssignedLabel,
+    onRemoveNewLabel,
   } = props;
 
   const [addLabelDialog, setAddLabelDialog] = useState(false);
@@ -88,15 +91,13 @@ const LabelCreate = (props: ILabelCreateProps) => {
           Labels
         </Typography>
         <IconButton
-          onClick={() => {
-            setAddLabelDialog(true);
-          }}
+          onClick={() => setAddLabelDialog(true)}
         >
           <AddCircleIcon />
         </IconButton>
       </Box>
 
-      <Box sx={{ display: "flex", justifyContent: "center" }}>
+      <Box sx={{ display: "flex", justifyContent: "center", flexWrap: 'wrap' }}>
         {assignedLabels.map((label, index) => {
           if (!label) return <></>;
 
@@ -106,9 +107,9 @@ const LabelCreate = (props: ILabelCreateProps) => {
               variant="soft"
               sx={{
                 bgcolor: label.color,
-                borderRadius: 7,
                 color: "white",
               }}
+              onClose={() => onRemoveAssignedLabel(index)}
             >
               {label.name}
             </Label>
@@ -123,9 +124,9 @@ const LabelCreate = (props: ILabelCreateProps) => {
                 variant="soft"
                 sx={{
                   bgcolor: label.color,
-                  borderRadius: 7,
                   color: "white",
                 }}
+                onClose={() => onRemoveNewLabel(index)}
               >
                 {label.name}
               </Label>
@@ -137,12 +138,25 @@ const LabelCreate = (props: ILabelCreateProps) => {
         fullWidth
         maxWidth="xs"
         open={addLabelDialog}
-        onClose={() => {
-          setAddLabelDialog(false);
-        }}
+        onClose={() => setAddLabelDialog(false)}
         closeAfterTransition={true}
       >
-        <DialogTitle variant="h5">Προσθήκη Υπάρχουσας</DialogTitle>
+        <DialogTitle variant="h5">
+          Προσθήκη Υπάρχουσας
+
+          <IconButton
+            aria-label="close"
+            onClick={() => setAddLabelDialog(false)}
+            sx={{
+              position: 'absolute',
+              right: 8,
+              top: 8,
+              color: 'grey',
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
         <DialogContent>
           <DialogContentText>Customer Labels</DialogContentText>
           <Stack direction={"row"} spacing={1}>
@@ -251,7 +265,7 @@ const LabelCreate = (props: ILabelCreateProps) => {
           </Stack>
         </DialogContent>
       </Dialog>
-    </Box>
+    </Box >
   );
 };
 export default LabelCreate;

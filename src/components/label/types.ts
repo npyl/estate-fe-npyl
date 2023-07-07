@@ -14,8 +14,7 @@ export type LabelColor =
 export type LabelVariant = "filled" | "outlined" | "soft";
 
 export interface LabelProps extends BoxProps {
-  startIcon?: React.ReactElement | null;
-  endIcon?: React.ReactElement | null;
+  onClose?: () => void;
   color?: LabelColor;
   variant?: LabelVariant;
 }

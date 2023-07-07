@@ -204,6 +204,11 @@ const slice = createSlice({
     addLabelID(state: customerState, { payload }): void {
       if (!state.labelIDs.includes(payload)) state.labelIDs.push(payload);
     },
+    removeLabel(state: customerState, { payload }): void {
+      // INFO: removes based on array index (contrary to addLabelID)
+      const index = payload;
+      state.labelIDs = state.labelIDs.filter((_, i) => i !== index);
+    },
 
     setSuggestedBy(state: customerState, action): void {
       state.suggestedBy = action.payload;
@@ -316,7 +321,15 @@ const slice = createSlice({
     },
 
     setDemandLabels(state: customerState, action): void {
-      state.demand.filters.labels = action.payload;
+      const labels: ILabel[] = action.payload;
+
+      state.demand.filters.labels = labels
+        ? labels
+          .filter((label) => label.id) // where id not null
+          .map((label) => {
+            return label.id!;
+          })
+        : [];
     },
 
     setTimeFrame(state: customerState, action): void {
@@ -424,6 +437,7 @@ export const {
 
   // labels
   addLabelID,
+  removeLabel,
 
   // location
   setStreet,

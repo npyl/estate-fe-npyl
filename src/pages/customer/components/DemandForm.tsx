@@ -53,16 +53,15 @@ import {
   setParentCategory,
   setState,
   setTimeFrame,
+  setDemandLabels,
 } from "src/slices/customer";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { FC, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 
 import { useAllGlobalsQuery } from "src/services/global";
-import { useAllPropertiesQuery } from "src/services/properties";
-
-import { IProperties } from "src/types/properties";
+import { useAllPropertiesQuery, useGetPropertyByCodeQuery } from "src/services/properties";
 
 import OnlyNumbersInput from "src/pages/property/components/OnlyNumbers";
 import { LabelSelect } from "./LabelSelect";
@@ -76,42 +75,35 @@ const DemandForm: FC = () => {
   const furnishingEnum = detailsEnum?.furnished;
   const timeframeEnum = enums?.customer?.timeframe;
 
-  const minBedrooms = useSelector(selectMinBedrooms);
-  const maxBedrooms = useSelector(selectMaxBedrooms);
-  const minBathrooms = useSelector(selectMinBathrooms);
-  const maxBathrooms = useSelector(selectMaxBathrooms);
-  const furnished = useSelector(selectFurnished);
-  const maxCovered = useSelector(selectMaxCovered);
-  const minCovered = useSelector(selectMinCovered);
-  const minPlot = useSelector(selectMinPlot);
-  const maxPlot = useSelector(selectMaxPlot);
-  const minYearOfConstruction = useSelector(selectMinYearOfConstruction);
-  const maxYearOfConstruction = useSelector(selectMaxYearOfConstruction);
-  const minFloor = useSelector(selectMinFloor);
-  const maxFloor = useSelector(selectMaxFloor);
-  const parentCategory = useSelector(selectParentCategory);
-  const state = useSelector(selectState);
-  const minPrice = useSelector(selectMinPrice);
-  const maxPrice = useSelector(selectMaxPrice);
-  const timeFrame = useSelector(selectTimeFrame);
+  const minBedrooms = useSelector(selectMinBedrooms) || 0;
+  const maxBedrooms = useSelector(selectMaxBedrooms) || 0;
+  const minBathrooms = useSelector(selectMinBathrooms) || 0;
+  const maxBathrooms = useSelector(selectMaxBathrooms) || 0;
+  const furnished = useSelector(selectFurnished) || "";
+  const maxCovered = useSelector(selectMaxCovered) || 0;
+  const minCovered = useSelector(selectMinCovered) || 0;
+  const minPlot = useSelector(selectMinPlot) || 0;
+  const maxPlot = useSelector(selectMaxPlot) || 0;
+  const minYearOfConstruction = useSelector(selectMinYearOfConstruction) || 0;
+  const maxYearOfConstruction = useSelector(selectMaxYearOfConstruction) || 0;
+  const minFloor = useSelector(selectMinFloor) || 0;
+  const maxFloor = useSelector(selectMaxFloor) || 0;
+  const parentCategory = useSelector(selectParentCategory) || "";
+  const state = useSelector(selectState) || "";
+  const minPrice = useSelector(selectMinPrice) || 0;
+  const maxPrice = useSelector(selectMaxPrice) || 0;
+  const timeFrame = useSelector(selectTimeFrame) || "";
 
   const leaser = useSelector(selectLeaser);
   const buyer = useSelector(selectBuyer);
 
   const dispatch = useDispatch();
 
-  const [searchText, setSearchText] = useState<string>("");
   const [autocompleteValue, setAutocompleteValue] = useState("");
 
   const autocompleteChange = (_event: any, value: string | null) => {
     if (!value) return;
     setAutocompleteValue(value);
-  };
-  const handleSearch = (value: string) => {
-    if (!value) return;
-    if (value.length < 3) return;
-
-    setSearchText(value);
   };
 
   const propertyCodes: string[] =
@@ -124,21 +116,16 @@ const DemandForm: FC = () => {
           }),
       }),
     }).data || [];
-  const allProperties: IProperties[] = useAllPropertiesQuery().data || [];
+
+  const { data: propertyForCode, isSuccess: isPropertyForCodeSuccess } = useGetPropertyByCodeQuery(+autocompleteValue, {
+    skip: autocompleteValue === ""
+  }) || {};
 
   // everytime the autocomplete's value is updated, fetch a property
-  useMemo(() => {
-    const propertyForCode = (code: string) => {
-      return allProperties.find(
-        (property) => property.code && property.code.toString() === code
-      );
-    };
+  useEffect(() => {
+    const property = propertyForCode;
 
-    // the autocomplete's value is code
-    const code = autocompleteValue;
-    const property = propertyForCode(code);
-
-    if (!property) return null;
+    if (!property) return;
 
     dispatch(setParentCategory(property.parentCategory));
     dispatch(setFurnished(property.technicalFeatures.furnished));
@@ -159,8 +146,11 @@ const DemandForm: FC = () => {
     dispatch(
       setMinYearOfConstruction(property.construction.yearOfConstruction)
     );
+
+    dispatch(setDemandLabels(property.labels));
+
     // dispatch(setMaxYearOfConstruction(property));
-  }, [autocompleteValue]);
+  }, [isPropertyForCodeSuccess]);
 
   if (
     !enums ||
@@ -205,9 +195,6 @@ const DemandForm: FC = () => {
                 <TextField
                   {...params}
                   placeholder='Property Code'
-                  onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                    handleSearch(event.target.value);
-                  }}
                 />
               )}
             />

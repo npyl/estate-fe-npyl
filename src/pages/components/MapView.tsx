@@ -1,6 +1,5 @@
 import { Button, Box, Grid, Paper, Stack, Typography } from "@mui/material";
 import { useState } from "react";
-import { useAllPropertiesQuery } from "src/services/properties";
 import Map from "./Map";
 import { BookingItem } from "./MediaCard";
 import { IProperties } from "src/types/properties";
@@ -9,10 +8,14 @@ import Iconify from "src/components/iconify";
 import CarouselSimple from "src/components/CarouselSimple";
 import FlipIcon from '@mui/icons-material/Flip';
 
-const MapView = () => {
+interface Props {
+  data: IProperties[];
+}
+
+const MapView = ({ data }: Props) => {
   const [activeMarker, setActiveMarker] = useState(null);
-  const [orientation, setOrientation] = useState(false);  // true -> vertical, false -> horizontal
-  const { data } = useAllPropertiesQuery();
+  const [orientation, setOrientation] = useState(false);  // true -> vertical, false -> horizontal)
+
   if (!data) {
     return null;
   }

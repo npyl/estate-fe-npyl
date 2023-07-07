@@ -69,6 +69,11 @@ const DataGridTable: FC<GridProps> = ({
         initialState={{
           pagination: { paginationModel: { pageSize: pageSize, page: page } },
         }}
+        sx={{
+          "& .MuiDataGrid-row": {
+            cursor: 'pointer'
+          }
+        }}
         onPaginationModelChange={onPaginationModelChange}
         disableColumnFilter
         disableDensitySelector

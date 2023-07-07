@@ -54,9 +54,9 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 import OnlyNumbersInput from "src/pages/property/components/OnlyNumbers";
-import { addLabelID } from "src/slices/customer";
+import { addLabelID, removeLabel as removeAssignedLabel } from "src/slices/customer";
 import { useGetLabelsQuery } from "src/services/labels";
-import { addLabel as addNewLabel, selectAll as selectAllNewLabels } from "src/slices/labels";
+import { addLabel as addNewLabel, removeLabel as removeNewLabel, selectAll as selectAllNewLabels } from "src/slices/labels";
 import { ILabel } from "src/types/label";
 
 import CustomerTypeSelect from "./CustomerTypeSelect";
@@ -103,8 +103,11 @@ const CustomerInformation: React.FC<any> = (props) => {
 
   const dispatch = useDispatch();
 
-  const handleLabelClick = (label: ILabel) => { dispatch(addLabelID(label.id)); }
-  const handleLabelCreate = (label: ILabel) => { dispatch(addNewLabel(label)); }
+  // Label Handlers
+  const handleLabelClick = (label: ILabel) => dispatch(addLabelID(label.id));
+  const handleLabelCreate = (label: ILabel) => dispatch(addNewLabel(label));
+  const handleRemoveAssignedLabel = (index: number) => dispatch(removeAssignedLabel(index));
+  const handleRemoveNewLabel = (index: number) => dispatch(removeNewLabel(index));
 
   if (!enums || !customerLabels || !propertyEnums || !leadSourceEnum || !managers) return null;
 
@@ -325,7 +328,15 @@ const CustomerInformation: React.FC<any> = (props) => {
             </Box>
           </Grid>
           <Grid item xs={6}>
-            <LabelCreate existingLabels={customerLabels} assignedLabels={assignedLabels} newLabels={newLabels} onLabelClick={handleLabelClick} onLabelCreate={handleLabelCreate} />
+            <LabelCreate
+              existingLabels={customerLabels}
+              assignedLabels={assignedLabels}
+              newLabels={newLabels}
+              onLabelClick={handleLabelClick}
+              onLabelCreate={handleLabelCreate}
+              onRemoveAssignedLabel={handleRemoveAssignedLabel}
+              onRemoveNewLabel={handleRemoveNewLabel}
+            />
           </Grid>
           <Grid item xs={12}>
             <CustomerTypeSelect />

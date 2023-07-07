@@ -863,6 +863,11 @@ const slice = createSlice({
       if (!state.labelIDs.includes(action.payload))
         state.labelIDs.push(action.payload);
     },
+    removeLabel(state: propertyState, { payload }): void {
+      // INFO: removes based on array index (contrary to addLabel)
+      const index = payload;
+      state.labelIDs = state.labelIDs.filter((_, i) => i !== index);
+    },
 
     setInitialState: (state: propertyState, action): void => {
       const payload: IProperties = action.payload;
@@ -1110,6 +1115,7 @@ export const {
   setElevator,
 
   addLabel,
+  removeLabel,
 
   resetState,
 } = slice.actions;
