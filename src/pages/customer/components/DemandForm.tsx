@@ -125,8 +125,6 @@ const DemandForm: FC = () => {
   useEffect(() => {
     const property = propertyForCode;
 
-    console.log('wtf: ', property);
-
     if (!property) return;
 
     dispatch(setParentCategory(property.parentCategory));
@@ -149,8 +147,7 @@ const DemandForm: FC = () => {
       setMinYearOfConstruction(property.construction.yearOfConstruction)
     );
 
-    // TODO:
-    // dispatch(setDemandLabels(property.labels));
+    dispatch(setDemandLabels(property.labels));
 
     // dispatch(setMaxYearOfConstruction(property));
   }, [isPropertyForCodeSuccess]);
