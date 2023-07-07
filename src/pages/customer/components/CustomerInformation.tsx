@@ -105,6 +105,12 @@ const CustomerInformation: React.FC<any> = (props) => {
 
   const handleLabelClick = (label: ILabel) => { dispatch(addLabelID(label.id)); }
   const handleLabelCreate = (label: ILabel) => { dispatch(addNewLabel(label)); }
+  const handleRemoveAssignedLabel = (index: number) => {
+    dispatch(removeAssignedLabel(1));
+  }
+  const handleRemoveNewLabel = (index: number) => {
+    dispatch(removeNewLabel(1));
+  }
 
   if (!enums || !customerLabels || !propertyEnums || !leadSourceEnum || !managers) return null;
 
@@ -325,7 +331,15 @@ const CustomerInformation: React.FC<any> = (props) => {
             </Box>
           </Grid>
           <Grid item xs={6}>
-            <LabelCreate existingLabels={customerLabels} assignedLabels={assignedLabels} newLabels={newLabels} onLabelClick={handleLabelClick} onLabelCreate={handleLabelCreate} />
+            <LabelCreate
+              existingLabels={customerLabels}
+              assignedLabels={assignedLabels}
+              newLabels={newLabels}
+              onLabelClick={handleLabelClick}
+              onLabelCreate={handleLabelCreate}
+              onRemoveAssignedLabel={handleRemoveAssignedLabel}
+              onRemoveNewLabel={handleRemoveNewLabel}
+            />
           </Grid>
           <Grid item xs={12}>
             <CustomerTypeSelect />

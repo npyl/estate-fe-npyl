@@ -20,6 +20,11 @@ const slice = createSlice({
     addLabel(state: labelsState, { payload }): void {
       state.labels.push(payload);
     },
+    removeLabel(state: labelsState, { payload }): void {
+      // INFO: removes based on array index (contrary to addLabel)
+      const index = payload;
+      state.labels = state.labels.filter((_, i) => i !== index);
+    },
 
     resetState: () => {
       return initialState;
@@ -29,6 +34,7 @@ const slice = createSlice({
 
 export const {
   addLabel,
+  removeLabel,
 
   resetState,
 } = slice.actions;

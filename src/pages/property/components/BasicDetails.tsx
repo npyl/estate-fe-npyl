@@ -11,20 +11,15 @@ import {
   Typography,
 } from "@mui/material";
 import DateFieldStyled from "./DateFieldStyled"; // adjust the path based on your directory structure
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import dayjs, { Dayjs } from "dayjs";
 import * as React from "react";
-import { DatePicker } from "@mui/lab";
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import dynamic from "next/dynamic";
+
 import OnlyNumbersInput from "./OnlyNumbers";
 import { useDispatch, useSelector } from "react-redux";
 import { useAllCustomersQuery } from "src/services/customers";
 
-import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
+
 import {
   selectArea,
   selectAuction,
@@ -62,10 +57,8 @@ import {
   setState,
 } from "src/slices/property";
 
-import { useState } from "react";
-
-import { IGlobalCustomer, IGlobalProperty } from "src/types/global";
-import { ILabel, ILabels } from "src/types/label";
+import { IGlobalProperty } from "src/types/global";
+import { ILabel } from "src/types/label";
 
 import { useAllUsersQuery } from "src/services/user";
 import { useAllGlobalsQuery } from "src/services/global";
@@ -73,22 +66,21 @@ import { useAllGlobalsQuery } from "src/services/global";
 import { LabelCreate } from "src/components/label";
 
 // Property Slice
-import { addLabel as addLabelID } from "src/slices/property";
+import { addLabel as addLabelID, removeLabel as removeAssignedLabel } from "src/slices/property";
 // Labels Slice (for new labels)
 import {
   addLabel as addNewLabel,
+  removeLabel as removeNewLabel,
   selectAll as selectAllNewLabels,
 } from "src/slices/labels";
 import { useGetLabelsQuery } from "src/services/labels";
-import { DateField } from "@mui/x-date-pickers";
-import { format, parse } from "date-fns";
+
 import { selectAvailableAfter } from "src/slices/property";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 
 const BasicSection: React.FC<any> = (props) => {
   const { data } = useAllGlobalsQuery();
   const enums: IGlobalProperty = data?.property as IGlobalProperty;
-  const [value, setValue] = React.useState<Dayjs | null>(dayjs("2022-04-17"));
 
   const { data: labels } = useGetLabelsQuery();
   const propertyLabels = labels?.propertyLabels;
@@ -118,7 +110,7 @@ const BasicSection: React.FC<any> = (props) => {
   const labelIDs = useSelector(selectLabelIDs);
 
   // TODO: convert this to useState / useEffect
-  var assignedLabels =
+  const assignedLabels =
     (labelIDs &&
       labelIDs.length > 0 &&
       propertyLabels &&
@@ -133,25 +125,16 @@ const BasicSection: React.FC<any> = (props) => {
 
   const newLabels = useSelector(selectAllNewLabels);
 
-  const handleLabelClick = (label: ILabel) => {
-    dispatch(addLabelID(label.id));
-  };
-  const handleLabelCreate = (label: ILabel) => {
-    dispatch(addNewLabel(label));
-  };
+  const handleLabelClick = (label: ILabel) => dispatch(addLabelID(label.id));
+  const handleLabelCreate = (label: ILabel) => dispatch(addNewLabel(label));
+  const handleRemoveAssignedLabel = (index: number) => dispatch(removeAssignedLabel(index));
+  const handleRemoveNewLabel = (index: number) => dispatch(removeNewLabel(index));
 
   const handleDateChange = (setter: ActionCreatorWithPayload<any, string>, date: Date | null) => {
     if (!date || !setter) return;  // we don't need null
 
     dispatch(setter(date.toISOString()));
   };
-
-  const handleRemoveAssignedLabel = (index: number) => {
-    assignedLabels = assignedLabels.filter((_, i) => i !== index);
-  }
-  const handleRemoveNewLabel = (index: number) => {
-
-  }
 
   // get list of owners & managers
   const { data: owners } = useAllCustomersQuery();
