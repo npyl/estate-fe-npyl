@@ -83,6 +83,7 @@ import { useGetLabelsQuery } from "src/services/labels";
 import { DateField } from "@mui/x-date-pickers";
 import { format, parse } from "date-fns";
 import { selectAvailableAfter } from "src/slices/property";
+import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 
 const BasicSection: React.FC<any> = (props) => {
   const { data } = useAllGlobalsQuery();
@@ -129,12 +130,6 @@ const BasicSection: React.FC<any> = (props) => {
     [];
   const newLabels = useSelector(selectAllNewLabels);
 
-  // const [value, setValue] = React.useState<Date>(new Date());
-  const handleDateChange = (date: Date | null) => {
-    setAvailableAfter(date);
-    // onChange(date?.toISOString().substring(0, 10) || "");
-  };
-
   const handleLabelClick = (label: ILabel) => {
     dispatch(addLabelID(label.id));
   };
@@ -142,12 +137,16 @@ const BasicSection: React.FC<any> = (props) => {
     dispatch(addNewLabel(label));
   };
 
+  const handleDateChange = (setter: ActionCreatorWithPayload<any, string>, date: Date | null) => {
+    if (!date || !setter) return;  // we don't need null
+
+    dispatch(setter(date.toISOString()));
+  };
+
   // get list of owners & managers
   const { data: owners } = useAllCustomersQuery();
   const { data: managers } = useAllUsersQuery();
   if (!enums || !propertyLabels) return null;
-
-  //set the values for BE
 
   return (
     <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
@@ -499,12 +498,12 @@ const BasicSection: React.FC<any> = (props) => {
                 <DateFieldStyled
                   fullWidth
                   label="Available After:"
-                  value={availableAfter}
+                  value={new Date(availableAfter)}
                   onChange={(value) => {
                     dispatch(setAvailableAfter(value as string));
                   }}
                   disabled={!rented} // Disable the field if "rented" is unchecked
-                /> */}
+                />
                 {/* </DemoContainer> */}
               </Grid>
 

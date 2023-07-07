@@ -46,6 +46,10 @@ export const properties = createApi({
       query: (id: number) => `${id}`,
       providesTags: ["PropertyById"],
     }),
+    getPropertyByCode: builder.query<IProperties, number>({
+      query: (code: number) => `code/${code}`,
+      providesTags: ["Properties"],
+    }),
     addProperty: builder.mutation<any, any>({
       query: (dataToSend: any) => ({
         url: "",
@@ -103,6 +107,7 @@ export const {
   useGetSearchResultsQuery,
   useAllPropertiesQuery,
   useGetPropertyByIdQuery,
+  useGetPropertyByCodeQuery,
   useAddPropertyMutation,
   useDeletePropertyMutation,
   useFilterPropertiesMutation,
