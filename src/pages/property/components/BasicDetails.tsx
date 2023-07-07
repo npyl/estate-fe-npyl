@@ -12,11 +12,14 @@ import {
 } from "@mui/material";
 import DateFieldStyled from "./DateFieldStyled"; // adjust the path based on your directory structure
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
+
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+
 import * as React from "react";
-import { DatePicker } from "@mui/lab";
+
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import dynamic from "next/dynamic";
 import OnlyNumbersInput from "./OnlyNumbers";
@@ -137,8 +140,11 @@ const BasicSection: React.FC<any> = (props) => {
     dispatch(addNewLabel(label));
   };
 
-  const handleDateChange = (setter: ActionCreatorWithPayload<any, string>, date: Date | null) => {
-    if (!date || !setter) return;  // we don't need null
+  const handleDateChange = (
+    setter: ActionCreatorWithPayload<any, string>,
+    date: Date | null
+  ) => {
+    if (!date || !setter) return; // we don't need null
 
     dispatch(setter(date.toISOString()));
   };
@@ -495,15 +501,17 @@ const BasicSection: React.FC<any> = (props) => {
               {/* <LocalizationProvider dateAdapter={AdapterDayjs}> */}
               <Grid item xs={6}>
                 {/* <DemoContainer components={["DateField"]}> */}
+
                 <DateFieldStyled
-                  fullWidth
                   label="Available After:"
                   value={new Date(availableAfter)}
                   onChange={(value: any) => {
                     handleDateChange(setAvailableAfter, value);
                   }}
                   disabled={!rented} // Disable the field if "rented" is unchecked
+                  sx={{ width: "100%" }} // Add custom styles to make it full width
                 />
+
                 {/* </DemoContainer> */}
               </Grid>
 
@@ -511,26 +519,26 @@ const BasicSection: React.FC<any> = (props) => {
                 {/* <DemoContainer components={["DateField"]}> */}
 
                 <DateFieldStyled
-                  fullWidth
                   label="Rental Period Start"
-                  value={rentalPeriodStart}
-                  onChange={(value) => {
-                    dispatch(setRentalPeriodStart(value as string));
+                  value={new Date(rentalPeriodStart)}
+                  onChange={(value: any) => {
+                    handleDateChange(setRentalPeriodStart, value);
                   }}
                   disabled={!rented} // Disable the field if "rented" is unchecked
+                  sx={{ width: "100%" }} // Add custom styles to make it full width
                 />
                 {/* </DemoContainer> */}
               </Grid>
               <Grid item xs={6}>
                 {/* <DemoContainer components={["DateField"]}> */}
                 <DateFieldStyled
-                  fullWidth
                   label="Rental Period End"
-                  value={rentalPeriodEnd}
-                  onChange={(value) => {
-                    dispatch(setRentalPeriodEnd(value as string));
+                  value={new Date(rentalPeriodEnd)}
+                  onChange={(value: any) => {
+                    handleDateChange(setRentalPeriodEnd, value);
                   }}
                   disabled={!rented} // Disable the field if "rented" is unchecked
+                  sx={{ width: "100%" }} // Add custom styles to make it full width
                 />
                 {/* </DemoContainer> */}
               </Grid>

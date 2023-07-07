@@ -172,7 +172,7 @@ const ConstructionForCommercialSection: React.FC<any> = (props) => {
               inputProps={{ "aria-label": "Under Construction" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Under Constraction
+              Under Construction
             </Typography>
           </Grid>
           <Grid

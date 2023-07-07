@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { setDescription } from "src/slices/property";
-import { Card, CardContent, CardHeader, Grid } from "@mui/material";
+import { Box, Card, CardContent, CardHeader, Grid } from "@mui/material";
 import * as React from "react";
 import Editor from "src/components/editor/Editor";
 
@@ -20,6 +20,7 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = ({
           <Card>
             <CardHeader title="Description" />
             <CardContent>
+              <Box height={465}></Box>
               {/* <Editor
                 id="full-editor"
                 value={description}

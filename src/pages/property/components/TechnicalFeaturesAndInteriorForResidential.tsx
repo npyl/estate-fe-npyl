@@ -44,6 +44,7 @@ import {
   setFurnished,
   setLuxurious,
   setPainted,
+  setPaneGlassType,
   setPetsAllowed,
   setReception,
   setSafetyDoor,
@@ -174,7 +175,7 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
               label="Pane Glass Type"
               value={paneGlassType}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setFurnished(event.target.value));
+                dispatch(setPaneGlassType(event.target.value));
               }}
               inputProps={{
                 style: {
