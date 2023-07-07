@@ -76,7 +76,6 @@ const ChosenFilters = () => {
     },
   };
 
-  console.log(changedProps);
   // if (
   //   Object.keys(changedProps).includes("minPrice") &&
   //   Object.keys(changedProps).includes("maxPrice")
