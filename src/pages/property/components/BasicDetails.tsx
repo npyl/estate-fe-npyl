@@ -10,19 +10,21 @@ import {
   Box,
   Typography,
 } from "@mui/material";
-
+import DateFieldStyled from "./DateFieldStyled"; // adjust the path based on your directory structure
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-
+import dayjs, { Dayjs } from "dayjs";
 import * as React from "react";
 import { DatePicker } from "@mui/lab";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
-
+import dynamic from "next/dynamic";
 import OnlyNumbersInput from "./OnlyNumbers";
 import { useDispatch, useSelector } from "react-redux";
 import { useAllCustomersQuery } from "src/services/customers";
+
+import { DayPicker } from "react-day-picker";
+import "react-day-picker/dist/style.css";
 import {
   selectArea,
   selectAuction,
@@ -86,6 +88,7 @@ import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 const BasicSection: React.FC<any> = (props) => {
   const { data } = useAllGlobalsQuery();
   const enums: IGlobalProperty = data?.property as IGlobalProperty;
+  const [value, setValue] = React.useState<Dayjs | null>(dayjs("2022-04-17"));
 
   const { data: labels } = useGetLabelsQuery();
   const propertyLabels = labels?.propertyLabels;
@@ -492,12 +495,12 @@ const BasicSection: React.FC<any> = (props) => {
               {/* <LocalizationProvider dateAdapter={AdapterDayjs}> */}
               <Grid item xs={6}>
                 {/* <DemoContainer components={["DateField"]}> */}
-                <DateField
+                <DateFieldStyled
                   fullWidth
                   label="Available After:"
                   value={new Date(availableAfter)}
                   onChange={(value) => {
-                    handleDateChange(setAvailableAfter, value);
+                    dispatch(setAvailableAfter(value as string));
                   }}
                   disabled={!rented} // Disable the field if "rented" is unchecked
                 />
@@ -506,12 +509,13 @@ const BasicSection: React.FC<any> = (props) => {
 
               <Grid item xs={6}>
                 {/* <DemoContainer components={["DateField"]}> */}
-                {/* <DateField
+
+                <DateFieldStyled
                   fullWidth
                   label="Rental Period Start"
                   value={rentalPeriodStart}
                   onChange={(value) => {
-                    dispatch(setRentalPeriodStart(value));
+                    dispatch(setRentalPeriodStart(value as string));
                   }}
                   disabled={!rented} // Disable the field if "rented" is unchecked
                 /> */}
@@ -519,12 +523,12 @@ const BasicSection: React.FC<any> = (props) => {
               </Grid>
               <Grid item xs={6}>
                 {/* <DemoContainer components={["DateField"]}> */}
-                {/* <DateField
+                <DateFieldStyled
                   fullWidth
                   label="Rental Period End"
                   value={rentalPeriodEnd}
                   onChange={(value) => {
-                    dispatch(setRentalPeriodEnd(value));
+                    dispatch(setRentalPeriodEnd(value as string));
                   }}
                   disabled={!rented} // Disable the field if "rented" is unchecked
                 /> */}
