@@ -52,7 +52,6 @@ const ViewAll: FC = () => {
 
   const allFilters = useSelector(selectAll);
 
-  // TODO: use isFetching instead of isLoading, because it allows us to check if a request has finished
   const [filterProperties, { isLoading, data }] = useFilterPropertiesMutation();
 
   useEffect(() => {
