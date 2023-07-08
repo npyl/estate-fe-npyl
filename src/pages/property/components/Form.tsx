@@ -1,6 +1,15 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
-import { Grid, Paper, TextField, Button, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import {
+  Grid,
+  Paper,
+  TextField,
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
 
 import * as React from "react";
 import { useEffect } from "react";
@@ -136,8 +145,6 @@ export default function Form({
           {parentCategory === "Land" && <LandFormSection />}
           {parentCategory === "Commercial" && <CommercialFormSection />}
           {parentCategory === "Other" && <OtherFormSection />}
-
-          <NotesSection />
 
           <Grid
             padding={2}

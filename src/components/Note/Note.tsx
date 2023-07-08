@@ -5,16 +5,16 @@ import { INote } from "src/types/note";
 
 import Iconify from "src/components/iconify/Iconify";
 
-import { useDeleteWithIdMutation } from "src/services/note";
-
 interface NoteProps {
   note: INote;
+  onRemove: () => void;
 }
 
 const Note: React.FC<NoteProps> = (props) => {
-  const { note } = props;
-  const [deleteNote, { isSuccess }] = useDeleteWithIdMutation();
+  const { note, onRemove } = props;
+
   const createdAt = new Date(note.createdAt);
+
   const formattedDate = `${createdAt.getHours()}:${createdAt.getMinutes()} ${createdAt.getDate()}/${
     createdAt.getMonth() + 1
   }/${createdAt.getFullYear()}`;
@@ -52,12 +52,7 @@ const Note: React.FC<NoteProps> = (props) => {
             {note.content.toString()}
           </Typography>
           <Grid item>
-            <IconButton
-              onClick={() => {
-                note.id && deleteNote(note.id);
-                console.log("Button clicked!");
-              }}
-            >
+            <IconButton onClick={onRemove}>
               <Iconify icon={"eva:trash-2-outline"} />
             </IconButton>
           </Grid>
