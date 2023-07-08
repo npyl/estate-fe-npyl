@@ -49,6 +49,8 @@ import { useState } from "react";
 import ChosenFilters from "./ChosenFilters";
 import SaleSelect from "./FilterSale";
 import CategorySelect from "./FilterCategory";
+import PriceSelect from "./FilterPrice";
+import FilterLabels from "./FilterLabels";
 
 // ----------------------------------------------------------------------
 
@@ -79,7 +81,7 @@ export default function FilterMore({
   const minFloors = useSelector(selectMinFloor) || 0;
   const maxFloors = useSelector(selectMaxFloor) || 0;
 
-  const [showChosenFilters, setShowChosenFilters] = useState(false);
+  const [showAll, setShowAll] = useState(false);
 
   const fields = [
     {
@@ -106,7 +108,7 @@ export default function FilterMore({
   ];
 
   return (
-    <Dialog maxWidth={"xl"} open={open} onClose={onClose} scroll={"body"}>
+    <Dialog maxWidth="md" open={open} onClose={onClose} scroll={"body"}>
       <DialogTitle>
         <Stack
           direction='row'
@@ -118,9 +120,9 @@ export default function FilterMore({
 
           <Stack direction={"row"}>
             <Button
-              startIcon={showChosenFilters ? <FilterListOffIcon /> : <FilterListIcon />}
+              startIcon={showAll ? <FilterListOffIcon /> : <FilterListIcon />}
               sx={{ marginRight: 2 }}
-              onClick={() => setShowChosenFilters(!showChosenFilters)} variant={showChosenFilters ? 'contained' : 'outlined'}
+              onClick={() => setShowAll(!showAll)} variant={showAll ? 'contained' : 'outlined'}
             >
               Όλα
             </Button>
@@ -132,18 +134,26 @@ export default function FilterMore({
         </Stack>
       </DialogTitle>
       {
-        showChosenFilters && changedPropsCount > 0 &&
-        <>
-          <StyledDialogContent>
-            <ChosenFilters />
-          </StyledDialogContent>
-          <StyledDialogContent dividers>
-            <Stack direction={"row"} spacing={1}>
-              <SaleSelect />
-              <CategorySelect />
-            </Stack>
-          </StyledDialogContent>
-        </>
+        showAll && changedPropsCount > 0 &&
+        <StyledDialogContent>
+          <ChosenFilters />
+        </StyledDialogContent>
+      }
+      {
+        showAll &&
+        <StyledDialogContent dividers>
+          <Typography>Basic</Typography>
+
+          <Stack direction={"row"} spacing={1}>
+            <SaleSelect />
+            <CategorySelect />
+
+            <PriceSelect type="price" />
+            <PriceSelect type="area" />
+
+            <FilterLabels />
+          </Stack>
+        </StyledDialogContent>
       }
       <StyledDialogContent sx={{ maxHeight: "none", overflow: "visible" }} dividers>
         <Typography>Bedrooms</Typography>
@@ -273,24 +283,26 @@ export default function FilterMore({
           </Select>
         </Stack>
       </StyledDialogContent>
-      {fields.map((field) => (
-        <StyledDialogContent key={field.id} dividers>
-          <Typography>{field.title}</Typography>
-          <Stack direction={"row"} spacing={1}>
-            {field.options &&
-              field.options.map((e) => (
-                <Button
-                  variant={field.value === e ? "contained" : "outlined"}
-                  color={"primary"}
-                  key={e}
-                  onClick={() => dispatch(field.onClick(e))}
-                >
-                  {e}
-                </Button>
-              ))}
-          </Stack>
-        </StyledDialogContent>
-      ))}
+      {
+        fields.map((field) => (
+          <StyledDialogContent key={field.id} dividers>
+            <Typography>{field.title}</Typography>
+            <Stack direction={"row"} spacing={1}>
+              {field.options &&
+                field.options.map((e) => (
+                  <Button
+                    variant={field.value === e ? "contained" : "outlined"}
+                    color={"primary"}
+                    key={e}
+                    onClick={() => dispatch(field.onClick(e))}
+                  >
+                    {e}
+                  </Button>
+                ))}
+            </Stack>
+          </StyledDialogContent>
+        ))
+      }
 
       <StyledDialogContent dividers>
         <Typography>Construction Year</Typography>
@@ -332,7 +344,7 @@ export default function FilterMore({
           Εφαρμογή
         </Button>
       </DialogActions>
-    </Dialog>
+    </Dialog >
   );
 }
 
