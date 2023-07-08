@@ -7,21 +7,21 @@ import { addNote, selectAll } from "src/slices/notes";
 import { useProfileQuery } from "src/services/user";
 
 const NotesSection: React.FC<any> = (props) => {
-    const dispatch = useDispatch();
-    const notes = useSelector(selectAll);
-    const profile = useProfileQuery({}).data; // current user
+  const dispatch = useDispatch();
+  const notes = useSelector(selectAll);
+  const profile = useProfileQuery({}).data; // current user
 
-    if (!profile) return null;
+  if (!profile) return null;
 
-    const handleAddNote = (message: string) => {
-        dispatch(
-            addNote({
-                content: message,
-            })
-        );
-    };
+  const handleAddNote = (message: string) => {
+    dispatch(
+      addNote({
+        content: message,
+      })
+    );
+  };
 
-    return <NoteCreate notes={notes} onAdd={handleAddNote} onRemove={() => { }} />;
+  return <NoteCreate notes={notes} onAdd={handleAddNote} onRemove={() => {}} />;
 };
 
 export default NotesSection;

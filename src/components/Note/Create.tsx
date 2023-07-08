@@ -13,7 +13,7 @@ interface INoteCreate {
 }
 
 const NoteCreate = (props: INoteCreate) => {
-  const { notes, onAdd } = props;
+  const { notes, onAdd, onRemove } = props;
   const profile = useProfileQuery({}).data; // current user
   if (!profile) return null;
 
@@ -55,6 +55,7 @@ const NoteCreate = (props: INoteCreate) => {
 
                 return (
                   <Note
+                    onRemove={onRemove}
                     note={{
                       content: note.content,
                       creator: profile,

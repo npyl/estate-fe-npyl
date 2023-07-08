@@ -17,6 +17,7 @@ import {
   selectOffPeakElectricity,
   selectSolarBoiler,
   setAirConditioning,
+  setElectricityType,
   setEnergyClass,
   setFloorHeating,
   setHeatingSystem,
@@ -141,7 +142,7 @@ const HeatingAndEnergySection: React.FC<any> = (props) => {
               label="Electricity Type"
               value={electricityType}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setEnergyClass(event.target.value));
+                dispatch(setElectricityType(event.target.value));
               }}
               inputProps={{
                 style: {

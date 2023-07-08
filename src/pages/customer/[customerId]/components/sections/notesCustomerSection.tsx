@@ -16,6 +16,7 @@ import { useTranslation } from "react-i18next";
 import { Note } from "src/components/Note";
 import {
   useAddNoteToCustomerWithIdMutation,
+  useDeleteWithIdMutation,
   useGetNotesByCustomerIdQuery,
 } from "src/services/note";
 
@@ -28,7 +29,8 @@ const NotesCustomerSection: React.FC = () => {
   ).data;
 
   const [addNote, { isSuccess }] = useAddNoteToCustomerWithIdMutation();
-
+  const [deleteNote, { isSuccess: isDeleteSuccess }] =
+    useDeleteWithIdMutation();
   const commentInputRef = useRef<HTMLInputElement>(null);
   const [message, setMessage] = useState("");
 
@@ -37,7 +39,9 @@ const NotesCustomerSection: React.FC = () => {
   const handleChangeMessage = (value: string) => {
     setMessage(value);
   };
-
+  const handleRemove = (id: number) => {
+    deleteNote(id);
+  };
   const handleSendNote = () => {
     // perform POST
     addNote({
@@ -68,21 +72,25 @@ const NotesCustomerSection: React.FC = () => {
           justifyContent: "left",
         }}
       >
-        <Typography variant='h6'>Notes</Typography>
+        <Typography variant="h6">Notes</Typography>
       </Box>
       <Divider></Divider>
       <Grid container>
         <Grid item xs={12} padding={1}>
           <Stack spacing={1} sx={{ px: 3, pb: 2 }}>
             {notes.map((note, index) => (
-              <Note note={note} key={index} />
+              <Note
+                note={note}
+                key={index}
+                onRemove={() => note.id && handleRemove(note.id)}
+              />
             ))}
           </Stack>
 
           <Grid
             spacing={0}
-            direction='row'
-            alignItems='center'
+            direction="row"
+            alignItems="center"
             sx={{
               p: (theme) => theme.spacing(0, 3, 3, 3),
             }}
@@ -95,8 +103,8 @@ const NotesCustomerSection: React.FC = () => {
               onChange={(event) => handleChangeMessage(event.target.value)}
               onKeyPress={handleKeyPress}
               endAdornment={
-                <InputAdornment position='end' sx={{ mr: 1 }}>
-                  <IconButton size='small' onClick={handleSendNote}>
+                <InputAdornment position="end" sx={{ mr: 1 }}>
+                  <IconButton size="small" onClick={handleSendNote}>
                     <SendIcon />
                   </IconButton>
                 </InputAdornment>

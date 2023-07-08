@@ -215,13 +215,15 @@ const sumOfChangedProperties = createSelector(
 
     return propertiesToInclude.reduce(
       (acc, curr) =>
-        Array.isArray(filter[curr])
-          ? filter[curr].length > 0
-            ? acc + 1
-            : acc
-          : filter[curr]
-            ? acc + 1
-            : acc,
+        filter[curr] !== initialState[curr] ? // ignore default filter values (e.g. yearOfConstruction = 1960)
+          Array.isArray(filter[curr])
+            ? filter[curr].length > 0
+              ? acc + 1
+              : acc
+            : filter[curr]
+              ? acc + 1
+              : acc
+          : acc,
       0
     );
   }

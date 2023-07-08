@@ -31,6 +31,7 @@ import {
   selectPropertyBlueprints,
   selectPropertyImages,
 } from "src/slices/property/files";
+import NotesSection from "../NotesSection";
 
 const ResidentialFormSection: React.FC<any> = (props) => {
   const dispatch = useDispatch();
@@ -81,6 +82,7 @@ const ResidentialFormSection: React.FC<any> = (props) => {
             <SuitableForForResidentialSection />
 
             <DescriptionSection />
+            <NotesSection />
           </Stack>
         </Grid>
 

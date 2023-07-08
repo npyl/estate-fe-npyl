@@ -16,6 +16,7 @@ import { Note } from "src/components/Note";
 
 import {
   useAddNoteToPropertyWithIdMutation,
+  useDeleteWithIdMutation,
   useGetNotesByPropertyIdQuery,
 } from "src/services/note";
 
@@ -28,7 +29,8 @@ const NotesPropertySection: React.FC = () => {
   ).data;
 
   const [addNote, { isSuccess }] = useAddNoteToPropertyWithIdMutation();
-
+  const [deleteNote, { isSuccess: isDeleteSuccess }] =
+    useDeleteWithIdMutation();
   const commentInputRef = useRef<HTMLInputElement>(null);
   const [message, setMessage] = useState("");
 
@@ -46,6 +48,9 @@ const NotesPropertySection: React.FC = () => {
     });
 
     isSuccess && setMessage("");
+  };
+  const handleRemove = (id: number) => {
+    deleteNote(id);
   };
   const handleKeyPress = (event: { key: string }) => {
     if (event.key === "Enter") {
@@ -75,7 +80,11 @@ const NotesPropertySection: React.FC = () => {
         <Grid item xs={12} padding={1}>
           <Stack spacing={1} sx={{ px: 3, pb: 2 }}>
             {notes.map((note, index) => (
-              <Note note={note} key={index} />
+              <Note
+                note={note}
+                key={index}
+                onRemove={() => note.id && handleRemove(note.id)}
+              />
             ))}
           </Stack>
 

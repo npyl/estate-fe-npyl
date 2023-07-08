@@ -112,7 +112,6 @@ const PriceSelect = ({ type }: { type: string }) => {
     >
       <Box>
         <StyledPriceButton
-          sx={{ width: "max-content" }}
           open={open}
           variant='outlined'
           endIcon={open ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
@@ -121,7 +120,7 @@ const PriceSelect = ({ type }: { type: string }) => {
           {renderLabel}
         </StyledPriceButton>
         {open && (
-          <Popper open={open} anchorEl={anchorEl} placement='bottom-start'>
+          <Popper open={open} anchorEl={anchorEl} sx={{ zIndex: 2000 }} placement='bottom-start'>
             <StyledBox>
               <Grid container padding={1} spacing={3}>
                 <Grid item xs={12} sm={6}>

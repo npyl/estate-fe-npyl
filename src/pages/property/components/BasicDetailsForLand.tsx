@@ -365,7 +365,6 @@ const BasicForLandSection: React.FC<any> = (props) => {
                   <Grid item xs={6}>
                     {/* <DemoContainer components={["DateField"]}> */}
                     <DateFieldStyled
-                      fullWidth
                       label="Available After:"
                       value={availableAfter}
                       onChange={(value) => {
@@ -379,7 +378,6 @@ const BasicForLandSection: React.FC<any> = (props) => {
                   <Grid item xs={6}>
                     {/* <DemoContainer components={["DateField"]}> */}
                     <DateFieldStyled
-                      fullWidth
                       label="Rental Period Start"
                       value={rentalPeriodStart}
                       onChange={(value) => {
@@ -392,7 +390,6 @@ const BasicForLandSection: React.FC<any> = (props) => {
                   <Grid item xs={6}>
                     {/* <DemoContainer components={["DateField"]}> */}
                     <DateFieldStyled
-                      fullWidth
                       label="Rental Period End"
                       value={rentalPeriodEnd}
                       onChange={(value) => {
