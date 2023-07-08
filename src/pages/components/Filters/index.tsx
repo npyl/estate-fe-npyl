@@ -64,9 +64,11 @@ export function FilterSection() {
           </Badge>
         </StyledPriceButton>
       </Stack>
-      <Box overflow={"auto"}>
-        <ChosenFilters />
-      </Box>
+      {changedPropsCount > 0 &&
+        <Box overflow={"auto"}>
+          <ChosenFilters />
+        </Box>
+      }
       {openFilter && (
         <FilterMore
           open={openFilter}

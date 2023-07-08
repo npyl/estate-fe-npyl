@@ -7,7 +7,7 @@ export const StyledPriceButton = styled(Button, {
 })<PriceButtonProps>(({ theme, open }) => ({
   backgroundColor: theme.palette.background.paper,
 
-  fontWeight: 500,
+  fontWeight: 400,
   color: theme.palette.neutral?.[500],
   fontSize: "16px",
   border: open
