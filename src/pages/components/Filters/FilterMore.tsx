@@ -3,7 +3,6 @@ import {
   Chip,
   Dialog,
   DialogActions,
-  DialogContent,
   DialogTitle,
   IconButton,
   ListItemText,
@@ -13,8 +12,16 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import { StyledDialogContent } from "./styles";
+
 import { useSelector } from "react-redux";
+import { useDispatch } from "src/store";
+
 import Iconify from "src/components/iconify";
+
+import FilterListIcon from '@mui/icons-material/FilterList';
+import FilterListOffIcon from '@mui/icons-material/FilterListOff';
+
 import { useAllGlobalsQuery } from "src/services/global";
 import sumOfChangedProperties, {
   selectFrameType,
@@ -36,16 +43,12 @@ import sumOfChangedProperties, {
   setMinConstructionYear,
   setMinFloor,
 } from "src/slices/filters";
-import { useDispatch } from "src/store";
 
-// ----------------------------------------------------------------------
+import { useState } from "react";
 
-export const FILTER_RATING_OPTIONS = [
-  "up4Star",
-  "up3Star",
-  "up2Star",
-  "up1Star",
-];
+import ChosenFilters from "./ChosenFilters";
+import SaleSelect from "./FilterSale";
+import CategorySelect from "./FilterCategory";
 
 // ----------------------------------------------------------------------
 
@@ -76,6 +79,8 @@ export default function FilterMore({
   const minFloors = useSelector(selectMinFloor) || 0;
   const maxFloors = useSelector(selectMaxFloor) || 0;
 
+  const [showChosenFilters, setShowChosenFilters] = useState(false);
+
   const fields = [
     {
       id: "frameType",
@@ -99,8 +104,9 @@ export default function FilterMore({
       onClick: setHeatingType,
     },
   ];
+
   return (
-    <Dialog maxWidth={"xl"} open={open} onClose={onClose} scroll={"paper"}>
+    <Dialog maxWidth={"xl"} open={open} onClose={onClose} scroll={"body"}>
       <DialogTitle>
         <Stack
           direction='row'
@@ -110,12 +116,36 @@ export default function FilterMore({
           <Chip label={changedPropsCount} color={"error"} />
           <Typography variant='subtitle1'>Φίλτρα</Typography>
 
-          <IconButton onClick={onClose}>
-            <Iconify icon='eva:close-fill' />
-          </IconButton>
+          <Stack direction={"row"}>
+            <Button
+              startIcon={showChosenFilters ? <FilterListOffIcon /> : <FilterListIcon />}
+              sx={{ marginRight: 2 }}
+              onClick={() => setShowChosenFilters(!showChosenFilters)} variant={showChosenFilters ? 'contained' : 'outlined'}
+            >
+              Όλα
+            </Button>
+
+            <IconButton onClick={onClose}>
+              <Iconify icon='eva:close-fill' />
+            </IconButton>
+          </Stack>
         </Stack>
       </DialogTitle>
-      <DialogContent dividers>
+      {
+        showChosenFilters && changedPropsCount > 0 &&
+        <>
+          <StyledDialogContent>
+            <ChosenFilters />
+          </StyledDialogContent>
+          <StyledDialogContent dividers>
+            <Stack direction={"row"} spacing={1}>
+              <SaleSelect />
+              <CategorySelect />
+            </Stack>
+          </StyledDialogContent>
+        </>
+      }
+      <StyledDialogContent sx={{ maxHeight: "none", overflow: "visible" }} dividers>
         <Typography>Bedrooms</Typography>
         <Stack direction='row' spacing={1} alignItems={"center"}>
           <Typography>Από</Typography>
@@ -179,8 +209,8 @@ export default function FilterMore({
             ))}
           </Select>
         </Stack>
-      </DialogContent>
-      <DialogContent dividers>
+      </StyledDialogContent>
+      <StyledDialogContent dividers>
         <Typography>Floors</Typography>
         <Stack direction='row' spacing={1} alignItems={"center"}>
           <Typography>Από</Typography>
@@ -242,9 +272,9 @@ export default function FilterMore({
             ))}
           </Select>
         </Stack>
-      </DialogContent>
+      </StyledDialogContent>
       {fields.map((field) => (
-        <DialogContent key={field.id} dividers>
+        <StyledDialogContent key={field.id} dividers>
           <Typography>{field.title}</Typography>
           <Stack direction={"row"} spacing={1}>
             {field.options &&
@@ -259,10 +289,10 @@ export default function FilterMore({
                 </Button>
               ))}
           </Stack>
-        </DialogContent>
+        </StyledDialogContent>
       ))}
 
-      <DialogContent dividers>
+      <StyledDialogContent dividers>
         <Typography>Construction Year</Typography>
         <Slider
           value={[minYear, maxYear]}
@@ -285,7 +315,7 @@ export default function FilterMore({
           valueLabelDisplay='auto'
           aria-labelledby='year-slider'
         />
-      </DialogContent>
+      </StyledDialogContent>
       <DialogActions sx={{ justifyContent: "space-between" }}>
         <Button color={"secondary"} onClick={onResetFilter}>
           Εκκαθάριση όλων
