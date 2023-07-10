@@ -32,6 +32,7 @@ import {
   selectPropertyImages,
 } from "src/slices/property/files";
 import NotesSection from "../NotesSection";
+import VideoLinkSection from "../VideoLink";
 
 const ResidentialFormSection: React.FC<any> = (props) => {
   const dispatch = useDispatch();
@@ -61,6 +62,7 @@ const ResidentialFormSection: React.FC<any> = (props) => {
                 dispatch(setPropertyBlueprints(blueprints));
               }}
             />
+            <VideoLinkSection></VideoLinkSection>
           </Stack>
         </Grid>
         <Grid item xs={6}>

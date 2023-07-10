@@ -9,7 +9,7 @@ import { INotePOST } from "src/types/note";
 interface INoteCreate {
   notes: INotePOST[];
   onAdd: (message: string) => void;
-  onRemove: () => void;
+  onRemove: (index: number) => void;
 }
 
 const NoteCreate = (props: INoteCreate) => {
@@ -55,7 +55,7 @@ const NoteCreate = (props: INoteCreate) => {
 
                 return (
                   <Note
-                    onRemove={onRemove}
+                    onRemove={() => onRemove(index)}
                     note={{
                       content: note.content,
                       creator: profile,

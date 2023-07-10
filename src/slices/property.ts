@@ -478,6 +478,9 @@ const slice = createSlice({
     setAvailableAfter(state: propertyState, action): void {
       state.availableAfter = action.payload;
     },
+    setVideo(state: propertyState, action): void {
+      state.video = action.payload;
+    },
 
     setNeoclassical(state: propertyState, action): void {
       state.construction.neoclassical = action.payload;
@@ -876,10 +879,10 @@ const slice = createSlice({
       // map labels
       state.labelIDs = payload.labels
         ? payload.labels
-          .filter((label) => label.id) // where id not null
-          .map((label) => {
-            return label.id!;
-          })
+            .filter((label) => label.id) // where id not null
+            .map((label) => {
+              return label.id!;
+            })
         : [];
     },
     resetState: () => {
@@ -890,7 +893,7 @@ const slice = createSlice({
 
 export const {
   setInitialState,
-
+  setVideo,
   setCoverageFactor,
   setSeaFront,
   setAgriculturalUse,
@@ -983,7 +986,6 @@ export const {
   setRented,
 
   // ROI
-
 
   // Areas
   setArea,
@@ -1108,7 +1110,7 @@ export const selectDescription = ({ property }: RootState) =>
   property.description;
 export const selectAvailableAfter = ({ property }: RootState) =>
   property.availableAfter;
-
+export const selectVideo = ({ property }: RootState) => property.video;
 export const selectStreet = ({ property }: RootState) =>
   property.location.street;
 export const selectNumber = ({ property }: RootState) =>
