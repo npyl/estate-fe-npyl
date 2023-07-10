@@ -98,6 +98,7 @@ const ViewAll: FC = () => {
       <>
         <Label
           variant='filled'
+          opaque
           color={
             (params.formattedValue === "SOLD" && "error") ||
             (params.formattedValue === "SALE" && "info") ||
