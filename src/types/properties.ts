@@ -3,7 +3,7 @@ import { IPropertyDetails } from "./details";
 import { IPropertyFeatures } from "./features";
 import { IFileModel } from "./fileModel";
 import { ILabel } from "./label";
-import { ILocation } from "./location";
+import { ILocation, ILocationPOST } from "./location";
 import { INote } from "./note";
 import { IUser } from "./user";
 
@@ -147,6 +147,43 @@ export interface IPropertyDistances {
   sea: number;
   publicTransport: number;
   entertainment: number;
+}
+
+export interface IPropertiesPostRequest {
+  id?: number;
+  code: number;
+  title: string;
+  managerId: number;
+  ownerId: number;
+  state: string;
+  parentCategory: string;
+  category: string;
+  area: number;
+  plotArea: number;
+  price: number;
+  averageUtils: number;
+  rented: boolean;
+  currentRentPrice: number;
+  estimatedRentPrice: number;
+  rentalStart: string;
+  rentalEnd: string;
+  availableAfter: string;
+  keyCode: string;
+  auction: boolean;
+  debatablePrice: boolean;
+  buildable: boolean;
+  video: string;
+  description: string;
+  suitableFor: IPropertySuitableFor;
+  heatingAndEnergy: IPropertyHeatingAndEnergy;
+  distances: IPropertyDistances;
+  areas: IPropertyAreas;
+  construction: IPropertyConstruction;
+  technicalFeatures: IPropertyTechnicalFeatures;
+  details: IPropertyDetails;
+  location: ILocationPOST;
+  features: IPropertyFeatures;
+  labelIDs: number[];
 }
 
 export interface IProperties {

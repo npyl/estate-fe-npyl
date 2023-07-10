@@ -85,7 +85,7 @@ const ViewAll: FC = () => {
     return (
       <>
         <Image
-          src={`data:image/jpeg;base64,${params.formattedValue}` || ""}
+          src={`${params.formattedValue}` || ""}
           alt=''
           ratio='16/9'
           width={1}
@@ -98,6 +98,7 @@ const ViewAll: FC = () => {
       <>
         <Label
           variant='filled'
+          opaque
           color={
             (params.formattedValue === "SOLD" && "error") ||
             (params.formattedValue === "SALE" && "info") ||

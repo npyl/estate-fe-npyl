@@ -25,7 +25,7 @@ const BlueprintsSection: React.FC<BlueprintsSectionProps> = (props) => {
     return {
       id: (index + 1).toString(),
       title: "Image",
-      image: `data:image/jpeg;base64,${blueprint.data}` || "",
+      image: blueprint.url || "",
       description: "One of the images",
     };
   });

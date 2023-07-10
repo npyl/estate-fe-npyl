@@ -7,10 +7,30 @@ interface VideoSectionProps {
   data: IProperties;
 }
 
+const getVideoId = (url: string) => {
+  if (url.includes("youtu.be/")) {
+    return url.split("youtu.be/")[1];
+  } else if (url.includes("youtube.com/embed/")) {
+    return url.split("youtube.com/embed/")[1];
+  } else if (url.includes("watch?v=")) {
+    let videoId = url.split("watch?v=")[1];
+    const ampersandPosition = videoId.indexOf("&");
+    if (ampersandPosition !== -1) {
+      videoId = videoId.substring(0, ampersandPosition);
+    }
+    return videoId;
+  }
+  return null;
+};
+
 const VideoSection: React.FC<VideoSectionProps> = (props) => {
   const { data } = props;
 
   if (!data || !data.video) return null;
+
+  const videoId = getVideoId(data.video.trim());
+
+  if (!videoId) return null;
 
   return (
     <Paper elevation={10} sx={{ overflow: "auto" }}>
@@ -19,15 +39,18 @@ const VideoSection: React.FC<VideoSectionProps> = (props) => {
           border: 1,
           borderColor: "divider",
           borderRadius: 1,
-          width: { md: "50vw", sm: "100vw" },
+          width: {},
           height: { md: "50vh", sm: "100vh" },
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         <iframe
           width="100%"
           height="100%"
-          src={data.video}
-          title="YouTube video player"
+          src={`https://www.youtube.com/embed/${videoId}`}
+          frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
         ></iframe>

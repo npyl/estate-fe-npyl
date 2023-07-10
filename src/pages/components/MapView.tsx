@@ -102,7 +102,7 @@ export function HorizontalCard({ item, activeMarker }: BookingItemProps) {
     {
       id: "0",
       title: "Image",
-      image: `data:image/jpeg;base64,${propertyImage}`,
+      image: propertyImage,
       description: "One of the images",
       path: "/repository",
     },
@@ -113,7 +113,7 @@ export function HorizontalCard({ item, activeMarker }: BookingItemProps) {
     _carouselImages.push({
       id: (index + 1).toString(),
       title: "Image",
-      image: `data:image/jpeg;base64,${image.data}`,
+      image: image.url,
       description: "One of the images",
       path: "/repository",
     });

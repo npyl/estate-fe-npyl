@@ -3,54 +3,11 @@ import type { RootState } from "../store";
 
 import { IPropertyDetails } from "src/types/details";
 import { IPropertyFeatures } from "src/types/features";
-import { ILocation, ILocationPOST } from "src/types/location";
+import { ILocation } from "src/types/location";
 import {
   IProperties,
-  IPropertyAreas,
-  IPropertyConstruction,
-  IPropertyDistances,
-  IPropertyHeatingAndEnergy,
-  IPropertySuitableFor,
-  IPropertyTechnicalFeatures,
+  IPropertiesPostRequest
 } from "src/types/properties";
-
-interface IPropertiesPostRequest {
-  id?: number;
-  code: number;
-  title: string;
-  managerId: number;
-  ownerId: number;
-  state: string;
-  parentCategory: string;
-  category: string;
-  area: number;
-  plotArea: number;
-  price: number;
-  averageUtils: number;
-  rented: boolean;
-  currentRentPrice: number;
-  estimatedRentPrice: number;
-  rentalStart: string;
-  rentalEnd: string;
-  availableAfter: string;
-  keyCode: string;
-  auction: boolean;
-  debatablePrice: boolean;
-  buildable: boolean;
-  video: string;
-  description: string;
-  propertyImage: string;
-  suitableFor: IPropertySuitableFor;
-  heatingAndEnergy: IPropertyHeatingAndEnergy;
-  distances: IPropertyDistances;
-  areas: IPropertyAreas;
-  construction: IPropertyConstruction;
-  technicalFeatures: IPropertyTechnicalFeatures;
-  details: IPropertyDetails;
-  location: ILocationPOST;
-  features: IPropertyFeatures;
-  labelIDs: number[];
-}
 
 type propertyState = IPropertiesPostRequest;
 
@@ -239,7 +196,6 @@ const initialState: propertyState = {
     withinCityPlan: false,
     loadingDock: false,
   },
-  propertyImage: "",
   labelIDs: [],
 };
 
@@ -521,6 +477,9 @@ const slice = createSlice({
     },
     setAvailableAfter(state: propertyState, action): void {
       state.availableAfter = action.payload;
+    },
+    setVideo(state: propertyState, action): void {
+      state.video = action.payload;
     },
 
     setNeoclassical(state: propertyState, action): void {
@@ -896,7 +855,7 @@ const slice = createSlice({
       state.buildable = payload.buildable;
       state.video = payload.video;
       state.description = payload.description;
-      state.propertyImage = payload.propertyImage;
+      // state.propertyImage = payload.propertyImage;
       state.suitableFor = payload.suitableFor;
       state.heatingAndEnergy = payload.heatingAndEnergy;
       state.distances = payload.distances;
@@ -920,10 +879,10 @@ const slice = createSlice({
       // map labels
       state.labelIDs = payload.labels
         ? payload.labels
-          .filter((label) => label.id) // where id not null
-          .map((label) => {
-            return label.id!;
-          })
+            .filter((label) => label.id) // where id not null
+            .map((label) => {
+              return label.id!;
+            })
         : [];
     },
     resetState: () => {
@@ -934,7 +893,7 @@ const slice = createSlice({
 
 export const {
   setInitialState,
-
+  setVideo,
   setCoverageFactor,
   setSeaFront,
   setAgriculturalUse,
@@ -1027,7 +986,6 @@ export const {
   setRented,
 
   // ROI
-
 
   // Areas
   setArea,
@@ -1152,7 +1110,7 @@ export const selectDescription = ({ property }: RootState) =>
   property.description;
 export const selectAvailableAfter = ({ property }: RootState) =>
   property.availableAfter;
-
+export const selectVideo = ({ property }: RootState) => property.video;
 export const selectStreet = ({ property }: RootState) =>
   property.location.street;
 export const selectNumber = ({ property }: RootState) =>

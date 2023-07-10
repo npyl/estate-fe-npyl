@@ -24,7 +24,7 @@ import { useDispatch } from "react-redux";
 import { useAddNoteToPropertyWithIdMutation } from "src/services/note";
 import { LogoProgressIndicator } from "src/components/LogoProgressIndicator";
 
-import { convertBlobUrlsToFiles } from "src/utils/blob-urls-to-files";
+import { convertBlobUrlsToBlobs } from "src/utils/blob-urls-to-blobs";
 
 const EditPropertyPage: NextPage = () => {
   const dispatch = useDispatch();
@@ -95,12 +95,10 @@ const EditPropertyPage: NextPage = () => {
   }, [isEditProperty]);
 
   const performUpload = () => {
-    convertBlobUrlsToFiles(propertyImagesURLs).then((propertyImages) => {
-      convertBlobUrlsToFiles(propertyBlueprintsURLs).then((propertyBlueprints) => {
+    convertBlobUrlsToBlobs(propertyImagesURLs).then((propertyImages) => {
+      convertBlobUrlsToBlobs(propertyBlueprintsURLs).then((propertyBlueprints) => {
         if (!propertyImages || propertyImages.length === 0) return;
         if (!propertyImages[0]) return;
-
-        console.log('here: ', propertyImages);
 
         const blob = new Blob([JSON.stringify(body)], {
           type: "application/json",

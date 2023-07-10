@@ -49,8 +49,11 @@ import { useState } from "react";
 import ChosenFilters from "./ChosenFilters";
 import SaleSelect from "./FilterSale";
 import CategorySelect from "./FilterCategory";
+import SubCategorySelect from './FilterSubCategory';
 import PriceSelect from "./FilterPrice";
 import FilterLabels from "./FilterLabels";
+import CodeSelect from "./FilterCode";
+import ManagerIdSelect from "./FilterManagerId";
 
 // ----------------------------------------------------------------------
 
@@ -145,8 +148,13 @@ export default function FilterMore({
           <Typography>Basic</Typography>
 
           <Stack direction={"row"} spacing={1}>
+            <CodeSelect />
+            <ManagerIdSelect />
+
             <SaleSelect />
+
             <CategorySelect />
+            <SubCategorySelect />
 
             <PriceSelect type="price" />
             <PriceSelect type="area" />

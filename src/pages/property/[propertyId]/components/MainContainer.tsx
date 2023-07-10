@@ -1,4 +1,4 @@
-import { Box, Grid, Stack } from "@mui/material";
+import { Box, Grid, Paper, Stack } from "@mui/material";
 
 interface MainContainerProps {
   ImageSection: JSX.Element;

@@ -48,14 +48,10 @@ const slice = createSlice({
       const secondaryPropertyImages: IFileModel[] = payload.secondaryPropertyImages;  // FileModel
       const propertyBlueprints: IFileModel[] = payload.propertyBlueprints;            // FileModel
 
-      // convert base64-encoded image-data to File (blob-urls)
-      const mainPropertyImageURL = URL.createObjectURL(base64ToFile(mainPropertyImageData, 'myFile.png', 'image/png'));
-      const secondaryPropertyImageURLs = secondaryPropertyImages.map((imageData) => URL.createObjectURL(base64ToFile(mainPropertyImageData, 'myFile.png', 'image/png')));
-
       // gather everything up
       state.propertyImages = [
-        mainPropertyImageURL,
-        ...secondaryPropertyImageURLs
+        mainPropertyImageData,
+        ...secondaryPropertyImages.map((image) => image.url)
       ];
 
       // TODO:
