@@ -18,7 +18,7 @@ import Form from "../components/Form";
 
 import { LogoProgressIndicator } from "src/components/LogoProgressIndicator";
 
-import { convertBlobUrlsToFiles } from "src/utils/blob-urls-to-files";
+import { convertBlobUrlsToBlobs } from "src/utils/blob-urls-to-blobs";
 
 const CreatePropertyPage: NextPage = () => {
   const router = useRouter();
@@ -65,8 +65,8 @@ const CreatePropertyPage: NextPage = () => {
   const handleUpload = () => {
     if (!propertyImagesURLs || !propertyBlueprintsURLs) return;
 
-    convertBlobUrlsToFiles(propertyImagesURLs).then((propertyImages) => {
-      convertBlobUrlsToFiles(propertyBlueprintsURLs).then((propertyBlueprints) => {
+    convertBlobUrlsToBlobs(propertyImagesURLs).then((propertyImages) => {
+      convertBlobUrlsToBlobs(propertyBlueprintsURLs).then((propertyBlueprints) => {
 
         if (!propertyImages || propertyImages.length === 0) return;
         if (!propertyImages[0]) return;
@@ -90,6 +90,8 @@ const CreatePropertyPage: NextPage = () => {
         }
 
         dataToSend.append("propertyForm ", blob);
+
+        console.log('dataToSend: ', dataToSend);
 
         // perform POST
         create(dataToSend);
