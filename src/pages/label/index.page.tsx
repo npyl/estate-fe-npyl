@@ -36,7 +36,7 @@ import { IProperties } from "src/types/properties";
 
 const SingleProperty: NextPage = () => {
   const [pickerColor, setPickerColor] = useState("#22194d");
-  const [labelName, setLabelName] = useState("Νέα Ετικέτα");
+  const [labelName, setLabelName] = useState("");
   const [openPicker, setOpenPicker] = useState(false);
   const { data: labels } = useGetLabelsQuery();
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -201,6 +201,9 @@ const SingleProperty: NextPage = () => {
                   <TextField
                     id='outlined-select-currency'
                     value={labelName}
+                    placeholder="Νέα Ετικέτα"
+                    onFocus={(event) => event.target.placeholder = ""}
+                    onBlur={(event) => event.target.placeholder = "Νέα Ετικέτα"}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                       setLabelName(event.target.value);
                     }}
@@ -253,7 +256,7 @@ const SingleProperty: NextPage = () => {
                         color: "white",
                       }}
                     >
-                      {labelName}
+                      {labelName || "Νέα Ετικέτα"}
                     </Label>
                   </Stack>
                   <Stack paddingTop={1} direction={"row"} alignItems={"center"}>

@@ -53,7 +53,7 @@ const LabelCreate = (props: ILabelCreateProps) => {
   const [addLabelDialog, setAddLabelDialog] = useState(false);
 
   const [pickerColor, setPickerColor] = useState("#22194d");
-  const [labelName, setLabelName] = useState("Νέα Ετικέτα");
+  const [labelName, setLabelName] = useState("");
   const [openPicker, setOpenPicker] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -195,6 +195,9 @@ const LabelCreate = (props: ILabelCreateProps) => {
                   <TextField
                     id="outlined-select-currency"
                     value={labelName}
+                    placeholder="Νέα Ετικέτα"
+                    onFocus={(event) => event.target.placeholder = ""}
+                    onBlur={(event) => event.target.placeholder = "Νέα Ετικέτα"}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                       setLabelName(event.target.value);
                     }}
@@ -252,7 +255,7 @@ const LabelCreate = (props: ILabelCreateProps) => {
                         color: "white",
                       }}
                     >
-                      {labelName}
+                      {labelName || "Νέα Ετικέτα"}
                     </Label>
                   </Stack>
 
