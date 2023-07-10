@@ -102,8 +102,7 @@ const DemandForm: FC = () => {
   const [autocompleteValue, setAutocompleteValue] = useState("");
 
   const autocompleteChange = (_event: any, value: string | null) => {
-    if (!value) return;
-    setAutocompleteValue(value);
+    setAutocompleteValue(value || "");
   };
 
   const propertyCodes: string[] =
