@@ -49,6 +49,7 @@ import { useState } from "react";
 import ChosenFilters from "./ChosenFilters";
 import SaleSelect from "./FilterSale";
 import CategorySelect from "./FilterCategory";
+import SubCategorySelect from './FilterSubCategory';
 import PriceSelect from "./FilterPrice";
 import FilterLabels from "./FilterLabels";
 
@@ -146,7 +147,9 @@ export default function FilterMore({
 
           <Stack direction={"row"} spacing={1}>
             <SaleSelect />
+
             <CategorySelect />
+            <SubCategorySelect />
 
             <PriceSelect type="price" />
             <PriceSelect type="area" />
