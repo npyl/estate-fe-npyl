@@ -52,6 +52,7 @@ import CategorySelect from "./FilterCategory";
 import SubCategorySelect from './FilterSubCategory';
 import PriceSelect from "./FilterPrice";
 import FilterLabels from "./FilterLabels";
+import CodeSelect from "./FilterCode";
 
 // ----------------------------------------------------------------------
 
@@ -146,6 +147,8 @@ export default function FilterMore({
           <Typography>Basic</Typography>
 
           <Stack direction={"row"} spacing={1}>
+            <CodeSelect />
+
             <SaleSelect />
 
             <CategorySelect />
