@@ -5,25 +5,25 @@ import {
 } from "@mui/material";
 import { useDispatch } from "react-redux";
 import {
-    setCode,
+    setManagerId,
 } from "src/slices/filters";
 
-import { useAllPropertiesQuery } from "src/services/properties";
+import { useAllUsersQuery } from "src/services/user";
 
 import { useState } from "react";
 
-export default function CodeSelect() {
+export default function ManagerIdSelect() {
     const dispatch = useDispatch();
 
     const [autocompleteValue, setAutocompleteValue] = useState("");
 
-    const propertyCodes: string[] =
-        useAllPropertiesQuery(undefined, {
+    const managerIds: string[] =
+        useAllUsersQuery(undefined, {
             selectFromResult: ({ data }) => ({
                 data: data
-                    ?.filter((property) => property.code !== null)
-                    .map((property) => {
-                        return property.code.toString();
+                    ?.filter((manager) => manager.id !== null)
+                    .map((manager) => {
+                        return manager.id.toString();
                     }),
             }),
         }).data || [];
@@ -32,9 +32,10 @@ export default function CodeSelect() {
         setAutocompleteValue(value || "");
 
         dispatch(
-            setCode(
+            setManagerId(
                 // On autofill we get a stringified value.
-                value ? (typeof value === 'string' ? parseInt(value) : value) : undefined)
+                value ? (typeof value === 'string' ? parseInt(value) : value) : undefined
+            )
         );
     };
 
@@ -45,11 +46,11 @@ export default function CodeSelect() {
                 id='combo-box-demo'
                 value={autocompleteValue}
                 onChange={autocompleteChange}
-                options={propertyCodes}
+                options={managerIds}
                 renderInput={(params) => (
                     <TextField
                         {...params}
-                        placeholder='Κωδικός'
+                        placeholder='Id Διαχειριστή'
                     />
                 )}
             />

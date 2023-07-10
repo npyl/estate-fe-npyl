@@ -53,6 +53,7 @@ import SubCategorySelect from './FilterSubCategory';
 import PriceSelect from "./FilterPrice";
 import FilterLabels from "./FilterLabels";
 import CodeSelect from "./FilterCode";
+import ManagerIdSelect from "./FilterManagerId";
 
 // ----------------------------------------------------------------------
 
@@ -148,6 +149,7 @@ export default function FilterMore({
 
           <Stack direction={"row"} spacing={1}>
             <CodeSelect />
+            <ManagerIdSelect />
 
             <SaleSelect />
 
