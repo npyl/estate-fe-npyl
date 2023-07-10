@@ -19,7 +19,7 @@ const ImageSection: React.FC<ImageSectionProps> = (props) => {
     {
       id: "1",
       title: "Main Image",
-      image: `data:image/jpeg;base64,${data?.propertyImage}`,
+      image: data?.propertyImage,
       description: "A registry of multidisciplinar artefacts...",
       path: "/repository",
     },
@@ -30,7 +30,7 @@ const ImageSection: React.FC<ImageSectionProps> = (props) => {
     _carouselsExample.push({
       id: (index + 1).toString(),
       title: "Image",
-      image: `data:image/jpeg;base64,${images.at(index)?.data}` || "",
+      image: images.at(index)?.url || "",
       description: "One of the images",
       path: "/repository",
     });

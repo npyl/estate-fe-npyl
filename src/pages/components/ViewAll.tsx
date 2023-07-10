@@ -85,7 +85,7 @@ const ViewAll: FC = () => {
     return (
       <>
         <Image
-          src={`data:image/jpeg;base64,${params.formattedValue}` || ""}
+          src={`${params.formattedValue}` || ""}
           alt=''
           ratio='16/9'
           width={1}
