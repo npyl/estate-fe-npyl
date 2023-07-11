@@ -111,7 +111,7 @@ const DemandForm: FC = () => {
         data: data
           ?.filter((property) => property.code !== null)
           .map((property) => {
-            return property.code.toString();
+            return property.code;
           }),
       }),
     }).data || [];

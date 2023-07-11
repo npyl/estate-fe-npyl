@@ -1,6 +1,6 @@
 export interface ILocation {
   street: string;
-  number: number;
+  number: string;
   complex: string;
   zipCode: number;
   city: string;
@@ -12,7 +12,7 @@ export interface ILocation {
 
 export interface ILocationPOST {
   street: string;
-  number: number;
+  number: string;
   complex: string;
   zipCode: number;
   city: string;

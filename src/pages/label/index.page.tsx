@@ -57,7 +57,7 @@ const SingleProperty: NextPage = () => {
         data: data
           ?.filter((property) => property.code !== null)
           .map((property) => {
-            return property.code.toString();
+            return property.code;
           }),
       }),
     }).data || [];
@@ -97,7 +97,7 @@ const SingleProperty: NextPage = () => {
   const createLabel = () => {
     const propertyIdForCode = (code: string) => {
       const property = allProperties.find(
-        (property) => property.code.toString() === code
+        (property) => property.code === code
       );
       return property?.id;
     };

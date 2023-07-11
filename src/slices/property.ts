@@ -12,7 +12,7 @@ import {
 type propertyState = IPropertiesPostRequest;
 
 const initialState: propertyState = {
-  code: 0,
+  code: "",
   title: "",
   managerId: 0,
   ownerId: 0,
@@ -147,7 +147,7 @@ const initialState: propertyState = {
   },
   location: {
     street: "0",
-    number: 0,
+    number: "",
     complex: "",
     zipCode: 0,
     city: "",
@@ -879,10 +879,10 @@ const slice = createSlice({
       // map labels
       state.labelIDs = payload.labels
         ? payload.labels
-            .filter((label) => label.id) // where id not null
-            .map((label) => {
-              return label.id!;
-            })
+          .filter((label) => label.id) // where id not null
+          .map((label) => {
+            return label.id!;
+          })
         : [];
     },
     resetState: () => {

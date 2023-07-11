@@ -23,7 +23,7 @@ export default function CodeSelect() {
                 data: data
                     ?.filter((property) => property.code !== null)
                     .map((property) => {
-                        return property.code.toString();
+                        return property.code;
                     }),
             }),
         }).data || [];
@@ -34,7 +34,8 @@ export default function CodeSelect() {
         dispatch(
             setCode(
                 // On autofill we get a stringified value.
-                value ? (typeof value === 'string' ? parseInt(value) : value) : undefined)
+                value ? value : undefined
+            )
         );
     };
 
