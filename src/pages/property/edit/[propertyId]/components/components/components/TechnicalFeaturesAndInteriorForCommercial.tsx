@@ -58,6 +58,7 @@ import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 import { useState } from "react";
 import { useAllUsersQuery } from "src/services/user";
 import { useAllGlobalsQuery } from "src/services/global";
+import OnlyNumbersInput from "./OnlyNumbers";
 
 const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
   props
@@ -146,17 +147,12 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
       <Grid item xs={12} padding={1}>
         <Grid container spacing={2}>
           <Grid item xs={6}>
-            <TextField
-              fullWidth
-              id="outlined-controlled"
+            <OnlyNumbersInput
               label="Display Window Length"
               value={displayWindowsLength}
-              onChange={handleDisplayWindowsLengthChange}
-              onKeyPress={handleKeyPress}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
+              adornment="m"
+              onChange={(value) => {
+                dispatch(setDisplayWindowsLength(value));
               }}
             />
           </Grid>

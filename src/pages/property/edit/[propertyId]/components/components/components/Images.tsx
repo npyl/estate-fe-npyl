@@ -11,14 +11,15 @@ interface IImageSectionProps {
 }
 
 const ImagesSection: React.FC<IImageSectionProps> = ({ files, setFiles }) => {
-
   const [galleryManagerOpen, setGalleryManagerOpen] = useState(false);
 
   const handleDropMultiFile = useCallback(
     (acceptedFiles: File[]) => {
       setFiles([
         ...files,
-        ...acceptedFiles.map((acceptedFile) => URL.createObjectURL(acceptedFile))
+        ...acceptedFiles.map((acceptedFile) =>
+          URL.createObjectURL(acceptedFile)
+        ),
       ]);
     },
     [files]
@@ -35,23 +36,30 @@ const ImagesSection: React.FC<IImageSectionProps> = ({ files, setFiles }) => {
 
   const handleOpenGalleryManager = () => {
     setGalleryManagerOpen(true);
-  }
+  };
   const handleCloseGalleryManager = () => {
     setGalleryManagerOpen(false);
-  }
+  };
 
   return (
     <>
       <Card>
-        <CardHeader title="Upload Images" action={files.length > 0 && <SoftButton onClick={handleOpenGalleryManager}>Edit</SoftButton>}
+        <CardHeader
+          title="Upload Images"
+          action={
+            files.length > 0 && (
+              <SoftButton onClick={handleOpenGalleryManager}>Edit</SoftButton>
+            )
+          }
           sx={{
-            display: 'flex',
-            alignItems: 'center',
-            '& .MuiCardHeader-action': {
-              position: 'absolute',
-              alignSelf: 'flex-end'
+            display: "flex",
+            alignItems: "center",
+            "& .MuiCardHeader-action": {
+              position: "absolute",
+              alignSelf: "flex-end",
             },
-          }} />
+          }}
+        />
         <CardContent>
           <UploadDnd
             multiple
@@ -64,10 +72,16 @@ const ImagesSection: React.FC<IImageSectionProps> = ({ files, setFiles }) => {
         </CardContent>
       </Card>
 
-      {files && files.length > 0 && <GalleryManager open={galleryManagerOpen} images={files} onClose={handleCloseGalleryManager} onDelete={(file: string) => {
-        handleRemoveFile(file);
-      }} />}
-
+      {files && files.length > 0 && (
+        <GalleryManager
+          open={galleryManagerOpen}
+          images={files}
+          onClose={handleCloseGalleryManager}
+          onDelete={(file: string) => {
+            handleRemoveFile(file);
+          }}
+        />
+      )}
     </>
   );
 };

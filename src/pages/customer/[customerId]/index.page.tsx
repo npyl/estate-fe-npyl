@@ -31,14 +31,20 @@ const CustomerView: NextPage = () => {
   const dispatch = useDispatch();
   const { customerId } = router.query;
   const [value, setValue] = useState(0);
-  const [deleteCustomer, { isSuccess: isDeleteSuccess }] = useDeleteCustomerMutation();
+  const [deleteCustomer, { isSuccess: isDeleteSuccess }] =
+    useDeleteCustomerMutation();
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
   const handleEdit = () => {
     router.push(`/customer/edit/${customerId}`);
     // add tab
-    dispatch(addTab({ path: `/customer/edit/${customerId}`, title: `Edit Customer ${customerId}` }))
+    dispatch(
+      addTab({
+        path: `/customer/edit/${customerId}`,
+        title: `Edit Customer ${customerId}`,
+      })
+    );
   };
   const handleDelete = () => {
     deleteCustomer(parseInt(customerId as string));

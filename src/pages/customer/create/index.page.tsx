@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { useEffect } from "react";
 
 import { selectAll } from "src/slices/customer";
-import { selectAll as selectAllNewNotes } from 'src/slices/notes';
+import { selectAll as selectAllNewNotes } from "src/slices/notes";
 import { selectAll as selectAllNewLabels } from "src/slices/labels";
 
 import { useAddCustomerMutation } from "src/services/customers";
@@ -23,7 +23,11 @@ const CreateCustomer: NextPage = () => {
 
   const [
     create,
-    { isSuccess: isCreateCustomerSuccess, isLoading: isCreateCustomerLoading, data: createdCustomer },
+    {
+      isSuccess: isCreateCustomerSuccess,
+      isLoading: isCreateCustomerLoading,
+      data: createdCustomer,
+    },
   ] = useAddCustomerMutation();
   const [createLabel, { isSuccess: isLabelSuccess }] =
     useCreateLabelForCustomerWithIDMutation();
@@ -69,14 +73,16 @@ const CreateCustomer: NextPage = () => {
     }
   }, [isCreateCustomerSuccess, createdCustomer]);
 
-  return <>
-    <Form performUpload={performUpload} />;
+  return (
+    <>
+      <Form performUpload={performUpload} />
 
-    {
-      // loading indicator (incase POST request is taking alot of time)
-      isCreateCustomerLoading && <LogoProgressIndicator />
-    }
-  </>
+      {
+        // loading indicator (incase POST request is taking alot of time)
+        isCreateCustomerLoading && <LogoProgressIndicator />
+      }
+    </>
+  );
 };
 
 CreateCustomer.getLayout = (page) => (
