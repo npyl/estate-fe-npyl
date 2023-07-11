@@ -146,6 +146,8 @@ export default function Form({
           {parentCategory === "Commercial" && <CommercialFormSection />}
           {parentCategory === "Other" && <OtherFormSection />}
 
+          <NotesSection />
+
           <Grid
             padding={2}
             container
@@ -168,7 +170,7 @@ export default function Form({
                 endIcon={<SendIcon />}
                 onClick={handleClick}
               >
-                {edit ? "Edit" : "Create"}
+                {edit ? "Save" : "Create"}
               </Button>
             </Grid>
           </Grid>
