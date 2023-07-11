@@ -6,9 +6,11 @@ import {
   DialogTitle,
   Grid,
   Paper,
+  Typography,
 } from "@mui/material";
 
 import DeleteIcon from "@mui/icons-material/Delete";
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import Iconify from "src/components/iconify/Iconify";
 
 import { SoftButton } from "src/components/SoftButton";
@@ -54,29 +56,27 @@ const ViewHeader = (props: IViewHeaderProps) => {
           </SoftButton>
 
           <Dialog
-            fullWidth
-            maxWidth="xs"
+            maxWidth='xs'
             open={deleteDialogOpen}
             onClose={() => {
               setDeleteDialogOpen(false);
             }}
             closeAfterTransition={true}
           >
-            <DialogTitle>
-              Delete {resource === "property" ? "Property" : "Customer"}
+            <DialogTitle sx={{ textAlign: 'center' }}>
+              <HighlightOffIcon sx={{ fontSize: '100px', stroke: "Window", strokeWidth: 1.5, color: 'error.main' }} />
             </DialogTitle>
-            <DialogContentText ml={3}>Are you sure?</DialogContentText>
-            <DialogContent>
-              <SoftButton
-                color="error"
-                sx={{ mr: 1 }}
-                onClick={onDelete}
-                startIcon={<Iconify icon={"eva:trash-2-outline"} />}
-              >
-                Yes
-              </SoftButton>
-
+            <DialogContent sx={{ textAlign: 'center' }}>
+              <Typography variant="h5" fontWeight={400}>Are you sure?</Typography>
+            </DialogContent>
+            <DialogContentText ml={3} mr={3} sx={{ textAlign: 'center' }}>
+              Do you really want to delete this record?
+              <br />
+              This process cannot be undone
+            </DialogContentText>
+            <DialogContent sx={{ textAlign: 'center' }}>
               <Button
+                sx={{ mr: 1 }}
                 variant="outlined"
                 color="secondary"
                 onClick={() => {
@@ -85,6 +85,14 @@ const ViewHeader = (props: IViewHeaderProps) => {
               >
                 No
               </Button>
+
+              <SoftButton
+                color="error"
+                onClick={onDelete}
+              // startIcon={<Iconify icon={"eva:trash-2-outline"} />}
+              >
+                Yes
+              </SoftButton>
             </DialogContent>
           </Dialog>
         </Grid>
