@@ -16,7 +16,7 @@ import {
   Typography,
 } from "@mui/material";
 import type { NextPage } from "next";
-import React, { useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { BlockPicker } from "react-color";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
@@ -42,7 +42,6 @@ const SingleProperty: NextPage = () => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const [assigneeType, setAssigneeType] = React.useState("");
   const [checked, setChecked] = React.useState(false);
-  const [searchText, setSearchText] = useState<string>("");
   const [autocompleteValue, setAutocompleteValue] = useState("");
 
   const [createLabelForPropertyWithID, { isSuccess: createForPropertySuccess }] =
@@ -93,12 +92,6 @@ const SingleProperty: NextPage = () => {
   const autocompleteChange = (_event: any, value: string | null) => {
     if (!value) return;
     setAutocompleteValue(value);
-  };
-  const handleSearch = (value: string) => {
-    if (!value) return;
-    if (value.length < 3) return;
-
-    setSearchText(value);
   };
 
   const createLabel = () => {
@@ -152,6 +145,21 @@ const SingleProperty: NextPage = () => {
       }
     }
   };
+
+  const labelData: Record<string, { label: string, data: ILabel[] }> | null = useMemo(() => {
+    if (!labels) return null;
+
+    return {
+      propertyLabels: {
+        label: 'Ακίνητα: ',
+        data: labels.propertyLabels
+      },
+      customerLabels: {
+        label: 'Πελάτες: ',
+        data: labels.customerLabels
+      }
+    };
+  }, [labels]);
 
   return (
     <Grid container direction={"row"} gap={1} paddingY={3}>
@@ -287,11 +295,6 @@ const SingleProperty: NextPage = () => {
                       renderInput={(params) => (
                         <TextField
                           {...params}
-                          onChange={(
-                            event: React.ChangeEvent<HTMLInputElement>
-                          ) => {
-                            handleSearch(event.target.value);
-                          }}
                         />
                       )}
                     />
@@ -309,44 +312,31 @@ const SingleProperty: NextPage = () => {
       <Grid component={Paper} item xs={12} sm p={2}>
         <Stack direction={"column"} spacing={3}>
           <Typography variant='h5'>Προβολή υπαρχόντων</Typography>
-          <Box gap={1} display={"flex"}>
-            <Typography variant='h6' color={"text.secondary"}>
-              Ακίνητα:
-            </Typography>
-            {labels &&
-              labels?.propertyLabels.map((label: ILabel) => (
-                <Label
-                  key={label.id}
-                  variant='soft'
-                  sx={{
-                    borderRadius: 7,
-                    color: "white",
-                    bgcolor: label.color,
-                  }}
-                >
-                  {label.name}
-                </Label>
-              ))}
-          </Box>
-          <Box gap={1} display={"flex"}>
-            <Typography variant='h6' color={"text.secondary"}>
-              Πελάτες:
-            </Typography>
-            {labels &&
-              labels?.customerLabels.map((label: ILabel) => (
-                <Label
-                  key={label.id}
-                  variant='soft'
-                  sx={{
-                    borderRadius: 7,
-                    color: "white",
-                    bgcolor: label.color,
-                  }}
-                >
-                  {label.name}
-                </Label>
-              ))}
-          </Box>
+          {
+            labelData && Object.entries(labelData).map(([_, value], index) => {
+              return <Grid key={index} gap={1} container flex={1} direction={"column"}>
+                <Typography variant='h6' color={"text.secondary"}>
+                  {value.label}
+                </Typography>
+                <Stack direction={"row"} flexWrap={"wrap"}>
+                  {value.data &&
+                    value.data.map((label: ILabel) => (
+                      <Label
+                        key={label.id}
+                        variant='soft'
+                        sx={{
+                          borderRadius: 7,
+                          color: "white",
+                          bgcolor: label.color,
+                        }}
+                      >
+                        {label.name}
+                      </Label>
+                    ))}
+                </Stack>
+              </Grid>
+            })
+          }
         </Stack>
       </Grid>
     </Grid>
