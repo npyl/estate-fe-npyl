@@ -20,12 +20,11 @@ import { ReactNode, useState } from "react";
 interface IViewHeaderProps {
   onEdit: VoidFunction;
   onDelete: VoidFunction;
-  resource?: string;
   children?: ReactNode;
 }
 
 const ViewHeader = (props: IViewHeaderProps) => {
-  const { onDelete, onEdit, resource = "property", children } = props;
+  const { onDelete, onEdit, children } = props;
 
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
