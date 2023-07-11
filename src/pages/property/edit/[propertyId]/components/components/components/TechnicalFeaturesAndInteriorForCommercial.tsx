@@ -58,7 +58,8 @@ import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 import { useState } from "react";
 import { useAllUsersQuery } from "src/services/user";
 import { useAllGlobalsQuery } from "src/services/global";
-import OnlyNumbersInput from "./OnlyNumbers";
+
+import OnlyNumbersInput from "src/components/OnlyNumbers";
 
 const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
   props
