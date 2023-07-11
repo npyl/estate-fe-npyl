@@ -21,7 +21,7 @@ import {
 
 import { useDispatch, useSelector } from "react-redux";
 
-import OnlyNumbersInput from "src/pages/property/components/OnlyNumbers";
+import OnlyNumbersInput from "src/components/OnlyNumbers";
 
 const AddressDetails: React.FC<any> = (props) => {
   const street = useSelector(selectStreet);

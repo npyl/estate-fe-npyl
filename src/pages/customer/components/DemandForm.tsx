@@ -63,7 +63,8 @@ import { FC, useEffect, useMemo, useState } from "react";
 import { useAllGlobalsQuery } from "src/services/global";
 import { useAllPropertiesQuery, useGetPropertyByCodeQuery } from "src/services/properties";
 
-import OnlyNumbersInput from "src/pages/property/components/OnlyNumbers";
+import OnlyNumbersInput from "src/components/OnlyNumbers";
+
 import { LabelSelect } from "./LabelSelect";
 
 const DemandForm: FC = () => {

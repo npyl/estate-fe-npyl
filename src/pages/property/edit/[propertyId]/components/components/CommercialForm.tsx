@@ -1,21 +1,21 @@
 import { Grid } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import * as React from "react";
-import AreasSection from "../Areas";
-import BasicSection from "../BasicDetails";
-import ConstructionForCommercialSection from "../ConstructionForCommercial";
-import DescriptionSection from "../Description";
-import DistancesSection from "../Distances";
-import FeaturesForCommercialSection from "../FeaturesForCommercial";
-import FileSection from "../Files";
-import HeatingAndEnergyForResidentialSection from "../HeatingAndEnergyForCommercial";
-import ImageSection from "../Images";
-import LocationSection from "../Location";
-import PropertyDescriptionForCommercialSection from "../PropertyDescriptionForCommercial";
-import SuitableForForCommercialSection from "../SuitableForForCommercial";
-import TechnicalFeaturesAndInteriorForCommercialSection from "../TechnicalFeaturesAndInteriorForCommercial";
+import AreasSection from "./components/Areas";
+import BasicSection from "./components/BasicDetails";
+import ConstructionForCommercialSection from "./components/ConstructionForCommercial";
+import DescriptionSection from "./components/Description";
+import DistancesSection from "./components/Distances";
+import FeaturesForCommercialSection from "./components/FeaturesForCommercial";
+import FileSection from "./components/Files";
+import HeatingAndEnergyForResidentialSection from "./components/HeatingAndEnergyForCommercial";
+import ImageSection from "./components/Images";
+import LocationSection from "./components/Location";
+import PropertyDescriptionForCommercialSection from "./components/PropertyDescriptionForCommercial";
+import SuitableForForCommercialSection from "./components/SuitableForForCommercial";
+import TechnicalFeaturesAndInteriorForCommercialSection from "./components/TechnicalFeaturesAndInteriorForCommercial";
 
-import ROISection from "../ROI";
+import ROISection from "./components/ROI";
 import { useSelector, useDispatch } from "react-redux";
 
 import {

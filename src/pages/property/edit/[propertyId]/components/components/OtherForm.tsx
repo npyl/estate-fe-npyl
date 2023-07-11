@@ -1,18 +1,18 @@
 import { Grid } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import * as React from "react";
-import BasicSection from "../BasicDetails";
-import ConstructionForOtherSection from "../ConstructionForOther";
-import DescriptionSection from "../Description";
-import FeaturesForOtherSection from "../FeaturesForOther";
-import FileSection from "../Files";
-import HeatingAndEnergyForCommercialSection from "../HeatingAndEnergyForCommercial";
-import ImageSection from "../Images";
-import LocationSection from "../Location";
-import PropertyDescriptionForOtherSection from "../PropertyDescriptionForOther";
-import SuitableForForOtherSection from "../SuitableForForOther";
-import TechnicalFeaturesAndInteriorForOtherSection from "../TechnicalFeaturesAndInteriorForOther";
-import ROISection from "../ROI";
+import BasicSection from "./components/BasicDetails";
+import ConstructionForOtherSection from "./components/ConstructionForOther";
+import DescriptionSection from "./components/Description";
+import FeaturesForOtherSection from "./components/FeaturesForOther";
+import FileSection from "./components/Files";
+import HeatingAndEnergyForCommercialSection from "./components/HeatingAndEnergyForCommercial";
+import ImageSection from "./components/Images";
+import LocationSection from "./components/Location";
+import PropertyDescriptionForOtherSection from "./components/PropertyDescriptionForOther";
+import SuitableForForOtherSection from "./components/SuitableForForOther";
+import TechnicalFeaturesAndInteriorForOtherSection from "./components/TechnicalFeaturesAndInteriorForOther";
+import ROISection from "./components/ROI";
 import { useDispatch, useSelector } from "react-redux";
 
 import {

@@ -1,22 +1,22 @@
 import { Grid } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import * as React from "react";
-import AreasSection from "../Areas";
-import BalconiesSection from "../Balconies";
-import BasicSection from "../BasicDetails";
-import ConstructionForResidentialSection from "../ConstructionForResidential";
-import DescriptionSection from "../Description";
-import DistancesSection from "../Distances";
-import FeaturesSection from "../Features";
-import FileSection from "../Files";
-import HeatingAndEnergySection from "../HeatingAndEnergy";
-import ImageSection from "../Images";
-import LocationSection from "../Location";
-import ParkingSection from "../Parking";
-import PropertyDescriptionSection from "../PropertyDescription";
-import SuitableForForResidentialSection from "../SuitableForForResidential";
-import TechnicalFeaturesAndInteriorForResidentialSection from "../TechnicalFeaturesAndInteriorForResidential";
-import ROISection from "../ROI";
+import AreasSection from "./components/Areas";
+import BalconiesSection from "./components/Balconies";
+import BasicSection from "./components/BasicDetails";
+import ConstructionForResidentialSection from "./components/ConstructionForResidential";
+import DescriptionSection from "./components/Description";
+import DistancesSection from "./components/Distances";
+import FeaturesSection from "./components/Features";
+import FileSection from "./components/Files";
+import HeatingAndEnergySection from "./components/HeatingAndEnergy";
+import ImageSection from "./components/Images";
+import LocationSection from "./components/Location";
+import ParkingSection from "./components/Parking";
+import PropertyDescriptionSection from "./components/PropertyDescription";
+import SuitableForForResidentialSection from "./components/SuitableForForResidential";
+import TechnicalFeaturesAndInteriorForResidentialSection from "./components/TechnicalFeaturesAndInteriorForResidential";
+import ROISection from "./components/ROI";
 import { useSelector } from "react-redux";
 
 import { useDispatch } from "react-redux";
@@ -31,8 +31,8 @@ import {
   selectPropertyBlueprints,
   selectPropertyImages,
 } from "src/slices/property/files";
-import NotesSection from "../NotesSection";
-import VideoLinkSection from "../VideoLink";
+import NotesSection from "./components/NotesSection";
+import VideoLinkSection from "./components/VideoLink";
 
 const ResidentialFormSection: React.FC<any> = (props) => {
   const dispatch = useDispatch();

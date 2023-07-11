@@ -6,108 +6,38 @@ import { useAddPropertyMutation } from "src/services/properties";
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 
-import { selectAll as selectAllNewLabels } from "src/slices/labels";
 import { selectAll } from "src/slices/property";
-import { selectAll as selectAllPropertyFiles } from "src/slices/property/files";
-import { selectAll as selectAllNewNotes } from "src/slices/notes";
 
-import { useCreateLabelForPropertyWithIDMutation } from "src/services/labels";
-import { useAddNoteToPropertyWithIdMutation } from "src/services/note";
-
-import Form from "../components/Form";
+import Form from "./components/Form";
 
 import { LogoProgressIndicator } from "src/components/LogoProgressIndicator";
-
-import { convertBlobUrlsToBlobs } from "src/utils/blob-urls-to-blobs";
+import { useEffect } from "react";
 
 const CreatePropertyPage: NextPage = () => {
   const router = useRouter();
 
   const [create, { isSuccess, isLoading: isCreateLoading, data: createdProperty }] =
     useAddPropertyMutation();
-  const [createLabel, { isSuccess: isLabelSuccess }] =
-    useCreateLabelForPropertyWithIDMutation();
-  const [createNote, { isSuccess: isNoteSuccess }] =
-    useAddNoteToPropertyWithIdMutation();
 
-  // get property images & blueprints as base64-encoded string urls
-  const { propertyImages: propertyImagesURLs, propertyBlueprints: propertyBlueprintsURLs } = useSelector(
-    selectAllPropertyFiles
-  );
-
-  const newLabels = useSelector(selectAllNewLabels);
-  const newNotes = useSelector(selectAllNewNotes);
   const body = useSelector(selectAll);
 
-  const createAndAssignNewLabels = () => {
-    const createdPropertyId = createdProperty!.id;
-
-    // foreach label; call create-for-customer-with-id
-    newLabels.forEach((newLabel) => {
-      createLabel({
-        propertyId: createdPropertyId,
-        labelBody: newLabel,
-      });
-    });
-  };
-  const createAndAssignNewNotes = () => {
-    const createdPropertyId = createdProperty!.id;
-
-    // foreach note; call create-for-customer-with-id
-    newNotes.forEach(async (newNote) => {
-      await createNote({
-        id: createdPropertyId,
-        dataToSend: { content: newNote.content },
-      });
-    });
-  };
-
   const handleUpload = () => {
-    if (!propertyImagesURLs || !propertyBlueprintsURLs) return;
-
-    convertBlobUrlsToBlobs(propertyImagesURLs).then((propertyImages) => {
-      convertBlobUrlsToBlobs(propertyBlueprintsURLs).then((propertyBlueprints) => {
-
-        // INFO: we must accept properties with NO images
-
-        if (!propertyImages) return;
-
-        const blob = new Blob([JSON.stringify(body)], {
-          type: "application/json",
-        });
-
-        let dataToSend = new FormData();
-
-        // main image
-        if (propertyImages.length > 0 && propertyImages[0])
-          dataToSend.append("propertyImage ", propertyImages[0]);
-
-        // gallery
-        for (let i = 1; i < propertyImages.length; i++) {
-          if (!propertyImages[i]) continue;
-          dataToSend.append("propertyGallery ", propertyImages[i]);
-        }
-        // blueprints
-        for (let i = 0; i < propertyBlueprints.length; i++) {
-          if (!propertyBlueprints[i]) continue;
-          dataToSend.append("propertyBlueprints ", propertyBlueprints[i]);
-        }
-
-        dataToSend.append("propertyForm ", blob);
-
-        console.log('dataToSend: ', dataToSend);
-
-        // perform POST
-        create(dataToSend);
-
-        if (isSuccess) {
-          createAndAssignNewLabels(); // create&assign labels
-          createAndAssignNewNotes(); // create&assign notes
-          router.push("/");
-        }
-      });
+    const blob = new Blob([JSON.stringify(body)], {
+      type: "application/json",
     });
+
+    let dataToSend = new FormData();
+    dataToSend.append("propertyForm ", blob);
+
+    // perform POST
+    create(dataToSend);
   };
+
+  useEffect(() => {
+    if (!isSuccess || !createdProperty || !createdProperty.id) return;
+
+    router.push(`/property/edit/${createdProperty.id}`);
+  }, [isSuccess, createdProperty]);
 
   return <>
     <Form performUpload={handleUpload} />

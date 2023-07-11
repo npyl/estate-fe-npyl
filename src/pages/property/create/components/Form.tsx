@@ -1,18 +1,7 @@
-import DeleteIcon from "@mui/icons-material/Delete";
-import SendIcon from "@mui/icons-material/Send";
-import {
-  Grid,
-  Paper,
-  TextField,
-  Button,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-} from "@mui/material";
+import { Grid, Paper, TextField, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 import * as React from "react";
-import { useEffect } from "react";
+import { useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAllGlobalsQuery } from "src/services/global";
 import {
@@ -22,19 +11,8 @@ import {
   setParentCategory,
 } from "src/slices/property";
 import { IGlobalProperty } from "src/types/global";
-import CommercialFormSection from "./Forms/CommercialForm";
-import LandFormSection from "./Forms/LandForm";
-import OtherFormSection from "./Forms/OtherForm";
-import ResidentialFormSection from "./Forms/ResidentialForm";
-import NotesSection from "./NotesSection";
-
-import { resetState as resetLabelsState } from "src/slices/labels";
-import { resetState as resetPropertyState } from "src/slices/property";
-import { resetState as resetPropertyFilesState } from "src/slices/property/files";
-import { resetState as resetPropertyNotesState } from "src/slices/notes";
 
 export default function Form({
-  edit = false,
   performUpload,
 }: {
   edit?: boolean;
@@ -50,22 +28,12 @@ export default function Form({
   const category = useSelector(selectCategory);
   const parentCategory = useSelector(selectParentCategory);
 
-  const handleClick = () => {
+  useMemo(() => {
+    if (!category) return;
+
+    // create our property draft
     performUpload && performUpload();
-  };
-
-  const resetState = () => {
-    dispatch(resetPropertyState());
-    dispatch(resetPropertyFilesState());
-    dispatch(resetPropertyNotesState());
-    dispatch(resetLabelsState());
-  };
-
-  useEffect(() => {
-    if (!edit) {
-      resetState();
-    }
-  }, [edit]);
+  }, [category]);
 
   if (!enums || !parentCategoryEnum || parentCategoryEnum.length === 0)
     return null;
@@ -138,42 +106,6 @@ export default function Form({
           </TextField>
         </Grid>
       </Grid>
-
-      {parentCategory !== "" && (
-        <Grid container mt={0} spacing={1}>
-          {parentCategory === "Residential" && <ResidentialFormSection />}
-          {parentCategory === "Land" && <LandFormSection />}
-          {parentCategory === "Commercial" && <CommercialFormSection />}
-          {parentCategory === "Other" && <OtherFormSection />}
-
-          <Grid
-            padding={2}
-            container
-            alignItems="center"
-            justifyContent="flex-end"
-            spacing={1}
-          >
-            <Grid item>
-              <Button
-                variant="outlined"
-                startIcon={<DeleteIcon />}
-                onClick={() => resetState()}
-              >
-                Clear
-              </Button>
-            </Grid>
-            <Grid item>
-              <Button
-                variant="contained"
-                endIcon={<SendIcon />}
-                onClick={handleClick}
-              >
-                {edit ? "Edit" : "Create"}
-              </Button>
-            </Grid>
-          </Grid>
-        </Grid>
-      )}
     </Grid>
   );
 }

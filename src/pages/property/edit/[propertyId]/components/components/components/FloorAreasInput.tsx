@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import OnlyNumbersInput from "./OnlyNumbers";
+import OnlyNumbersInput from "../../../../../../../components/OnlyNumbers";
 
 import { useSelector, useDispatch } from "react-redux";
 

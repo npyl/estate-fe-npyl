@@ -53,7 +53,7 @@ import {
 
 import { useDispatch, useSelector } from "react-redux";
 
-import OnlyNumbersInput from "src/pages/property/components/OnlyNumbers";
+import OnlyNumbersInput from "src/components/OnlyNumbers";
 import { addLabelID, removeLabel as removeAssignedLabel } from "src/slices/customer";
 import { useGetLabelsQuery } from "src/services/labels";
 import { addLabel as addNewLabel, removeLabel as removeNewLabel, selectAll as selectAllNewLabels } from "src/slices/labels";
