@@ -7,8 +7,6 @@ interface IFilterProps extends IPropertyFilter {
 }
 
 const initialState: IFilterProps = {
-  minConstructionYear: 1960,
-  maxConstructionYear: new Date().getFullYear(),
   parentCategories: [],
   categories: [],
   labels: [],

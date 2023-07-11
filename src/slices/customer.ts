@@ -34,7 +34,7 @@ const initialState: customerState = {
   buyer: false,
   location: {
     street: "",
-    number: 0,
+    number: "",
     complex: "",
     zipCode: 0,
     city: "",

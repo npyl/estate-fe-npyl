@@ -42,10 +42,6 @@ export const DashboardNavbarSearch: FC = () => {
     handleSearch(event.target.value);
   };
 
-  const handleClear = () => {
-    setSearchText("");
-  };
-
   const open = Boolean(anchorEl);
 
   useEffect(() => {
@@ -123,8 +119,8 @@ export const DashboardNavbarSearch: FC = () => {
                 results.length > 0 &&
                 results.map((option: IProperties, index: number) => {
                   const partsPath = parse(
-                    option.code.toString(),
-                    match(option.code.toString(), searchText)
+                    option.code,
+                    match(option.code, searchText)
                   );
                   return (
                     <StyledSearchStack
@@ -162,23 +158,24 @@ export const DashboardNavbarSearch: FC = () => {
                             ))}
                           </Stack>
                           <Stack direction={"row"} alignItems={"center"} mr={1}>
-                            {parse(
-                              option.keyCode,
-                              match(option.keyCode, searchText)
-                            ).map((part, index) => (
-                              <Box
-                                key={index}
-                                component='span'
-                                sx={{
-                                  typography: "body2",
-                                  fontWeight: part.highlight
-                                    ? "bold"
-                                    : "normal",
-                                }}
-                              >
-                                {part.text}
-                              </Box>
-                            ))}
+                            {option.keyCode &&
+                              parse(
+                                option.keyCode,
+                                match(option.keyCode, searchText)
+                              ).map((part, index) => (
+                                <Box
+                                  key={index}
+                                  component='span'
+                                  sx={{
+                                    typography: "body2",
+                                    fontWeight: part.highlight
+                                      ? "bold"
+                                      : "normal",
+                                  }}
+                                >
+                                  {part.text}
+                                </Box>
+                              ))}
                             <Box>
                               <KeyIcon
                                 sx={{

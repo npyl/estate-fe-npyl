@@ -87,7 +87,6 @@ const SingleProperty: NextPage = () => {
   return (
     <Box sx={{ width: "100%", paddingY: 1 }}>
       <ViewHeader
-        resource='customer'
         onEdit={handleEdit}
         onDelete={handleDelete}
       >

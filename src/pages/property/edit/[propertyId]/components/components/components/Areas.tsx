@@ -20,7 +20,7 @@ import {
 } from "src/slices/property";
 
 import FloorAreasInput from './FloorAreasInput';
-import OnlyNumbersInput from "./OnlyNumbers";
+import OnlyNumbersInput from "../../../../../../../components/OnlyNumbers";
 
 const AreasSection: React.FC<any> = () => {
   const dispatch = useDispatch();

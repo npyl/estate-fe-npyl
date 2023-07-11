@@ -11,7 +11,7 @@ import {
   removeParking,
 } from "src/slices/property";
 import { useAllGlobalsQuery } from "src/services/global";
-import OnlyNumbersInput from "./OnlyNumbers";
+import OnlyNumbersInput from "../../../../../../../components/OnlyNumbers";
 
 const ParkingSection: React.FC<any> = () => {
   const { data } = useAllGlobalsQuery();

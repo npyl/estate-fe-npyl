@@ -11,7 +11,7 @@ import {
   removeBalcony
 } from "src/slices/property";
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
-import OnlyNumbersInput from "./OnlyNumbers";
+import OnlyNumbersInput from "../../../../../../../components/OnlyNumbers";
 
 const BalconiesSection: React.FC<any> = (props) => {
   const { data } = useAllGlobalsQuery();

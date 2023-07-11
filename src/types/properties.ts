@@ -9,7 +9,7 @@ import { IUser } from "./user";
 
 export interface IPropertyFilter {
   filterName?: string;
-  code?: number;
+  code?: string;
   minPrice?: number;
   maxPrice?: number;
   minArea?: number;
@@ -151,7 +151,7 @@ export interface IPropertyDistances {
 
 export interface IPropertiesPostRequest {
   id?: number;
-  code: number;
+  code: string;
   title: string;
   managerId: number;
   ownerId: number;
@@ -188,7 +188,7 @@ export interface IPropertiesPostRequest {
 
 export interface IProperties {
   id: number;
-  code: number;
+  code: string;
   title: string;
   manager: IUser;
   owner: ICustomer;

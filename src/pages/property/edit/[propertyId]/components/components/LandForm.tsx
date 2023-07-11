@@ -1,16 +1,16 @@
 import { Grid } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import * as React from "react";
-import BasicForLandSection from "../BasicDetailsForLand";
-import DescriptionSection from "../Description";
-import FeaturesForLandSection from "../FeaturesForLand";
-import FileSection from "../Files";
-import ImageSection from "../Images";
-import LocationSection from "../Location";
-import PropertyDescriptionForLandSection from "../PropertyDescriptionForLand";
-import SuitableForForLandSection from "../SuitableForForLand";
-import TechnicalFeaturesAndInteriorForLandSection from "../TechnicalFeaturesAndInteriorForLand";
-import ROISection from "../ROI";
+import BasicForLandSection from "./components/BasicDetailsForLand";
+import DescriptionSection from "./components/Description";
+import FeaturesForLandSection from "./components/FeaturesForLand";
+import FileSection from "./components/Files";
+import ImageSection from "./components/Images";
+import LocationSection from "./components/Location";
+import PropertyDescriptionForLandSection from "./components/PropertyDescriptionForLand";
+import SuitableForForLandSection from "./components/SuitableForForLand";
+import TechnicalFeaturesAndInteriorForLandSection from "./components/TechnicalFeaturesAndInteriorForLand";
+import ROISection from "./components/ROI";
 import { useSelector, useDispatch } from "react-redux";
 
 import {

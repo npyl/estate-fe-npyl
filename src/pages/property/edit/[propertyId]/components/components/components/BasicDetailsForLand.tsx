@@ -62,7 +62,7 @@ import { useAllUsersQuery } from "src/services/user";
 import { useAllGlobalsQuery } from "src/services/global";
 import { LabelCreate } from "src/components/label";
 
-import OnlyNumbersInput from "./OnlyNumbers";
+import OnlyNumbersInput from "../../../../../../../components/OnlyNumbers";
 
 // Property Slice
 import { addLabel as addLabelID, removeLabel as removeAssignedLabel, selectLabelIDs } from "src/slices/property";

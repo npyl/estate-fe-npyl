@@ -24,7 +24,7 @@ import * as React from "react";
 
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import dynamic from "next/dynamic";
-import OnlyNumbersInput from "./OnlyNumbers";
+import OnlyNumbersInput from "../../../../../../../components/OnlyNumbers";
 import { useDispatch, useSelector } from "react-redux";
 import { useAllCustomersQuery } from "src/services/customers";
 

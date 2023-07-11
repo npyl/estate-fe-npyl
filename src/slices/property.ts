@@ -1,8 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
+import { v4 as uuidv4 } from 'uuid';
 
-import { IPropertyDetails } from "src/types/details";
-import { IPropertyFeatures } from "src/types/features";
 import { ILocation } from "src/types/location";
 import {
   IProperties,
@@ -12,7 +11,7 @@ import {
 type propertyState = IPropertiesPostRequest;
 
 const initialState: propertyState = {
-  code: 0,
+  code: uuidv4(),   // TODO: temporary until we have backend autosuggest!
   title: "",
   managerId: 0,
   ownerId: 0,
@@ -147,7 +146,7 @@ const initialState: propertyState = {
   },
   location: {
     street: "0",
-    number: 0,
+    number: "",
     complex: "",
     zipCode: 0,
     city: "",
@@ -834,8 +833,8 @@ const slice = createSlice({
       state.id = payload.id;
       state.code = payload.code;
       state.title = payload.title;
-      state.managerId = payload.manager.id;
-      state.ownerId = payload.owner.id;
+      state.managerId = payload.manager?.id;
+      state.ownerId = payload.owner?.id;
       state.state = payload.state;
       state.parentCategory = payload.parentCategory;
       state.category = payload.category;
@@ -866,23 +865,23 @@ const slice = createSlice({
 
       // Location
       const location: ILocation = payload.location;
-      state.location.city = location.city;
-      state.location.complex = location.complex;
-      state.location.country = location.country;
-      state.location.number = location.number;
-      state.location.region = location.region;
-      state.location.street = location.street;
-      state.location.zipCode = location.zipCode;
+      state.location.city = location?.city;
+      state.location.complex = location?.complex;
+      state.location.country = location?.country;
+      state.location.number = location?.number;
+      state.location.region = location?.region;
+      state.location.street = location?.street;
+      state.location.zipCode = location?.zipCode;
 
       state.features = payload.features;
 
       // map labels
       state.labelIDs = payload.labels
         ? payload.labels
-            .filter((label) => label.id) // where id not null
-            .map((label) => {
-              return label.id!;
-            })
+          .filter((label) => label.id) // where id not null
+          .map((label) => {
+            return label.id!;
+          })
         : [];
     },
     resetState: () => {
