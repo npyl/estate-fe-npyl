@@ -97,16 +97,21 @@ const EditPropertyPage: NextPage = () => {
   const performUpload = () => {
     convertBlobUrlsToBlobs(propertyImagesURLs).then((propertyImages) => {
       convertBlobUrlsToBlobs(propertyBlueprintsURLs).then((propertyBlueprints) => {
-        if (!propertyImages || propertyImages.length === 0) return;
-        if (!propertyImages[0]) return;
+
+        // INFO: we must accept properties with NO images
+
+        if (!propertyImages) return;
 
         const blob = new Blob([JSON.stringify(body)], {
           type: "application/json",
         });
 
         let dataToSend = new FormData();
+
         // main image
-        dataToSend.append("propertyImage ", propertyImages[0]);
+        if (propertyImages.length > 0 && propertyImages[0])
+          dataToSend.append("propertyImage ", propertyImages[0]);
+
         // gallery
         for (let i = 1; i < propertyImages.length; i++) {
           if (!propertyImages[i]) continue;
