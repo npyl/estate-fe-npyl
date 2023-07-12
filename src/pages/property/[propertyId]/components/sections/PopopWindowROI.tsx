@@ -25,7 +25,7 @@ const PopupWindow: React.FC<any> = (props) => {
   const enums: IGlobalProperty = data?.property as IGlobalProperty;
   const details = enums?.details as IGlobalPropertyDetails;
   const dispatch = useDispatch();
-  const price = useSelector(selectPrice);
+  const price = useSelector(selectPrice) || 0;
   const currentRentPrice = useSelector(selectCurrentRentPrice);
   const estimatedRentPrice = useSelector(selectEstimatedRentPrice);
 
