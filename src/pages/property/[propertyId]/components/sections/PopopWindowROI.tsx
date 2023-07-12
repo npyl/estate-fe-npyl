@@ -26,8 +26,8 @@ const PopupWindow: React.FC<any> = (props) => {
   const details = enums?.details as IGlobalPropertyDetails;
   const dispatch = useDispatch();
   const price = useSelector(selectPrice) || 0;
-  const currentRentPrice = useSelector(selectCurrentRentPrice);
-  const estimatedRentPrice = useSelector(selectEstimatedRentPrice);
+  const currentRentPrice = useSelector(selectCurrentRentPrice) || 0;
+  const estimatedRentPrice = useSelector(selectEstimatedRentPrice) || 0;
 
   const [roi, setRoi] = useState(0);
 
