@@ -58,20 +58,13 @@ export const properties = createApi({
       query: (code: number) => `code/${code}`,
       providesTags: ["Properties"],
     }),
-    // TODO: remove
-    addProperty: builder.mutation<any, any>({
-      query: (dataToSend: any) => ({
-        url: "",
-        method: "POST",
-        body: dataToSend,
-      }),
-    }),
     editProperty: builder.mutation<number, IEditPropertyProps>({
       query: (props: IEditPropertyProps) => ({
         url: `/edit/${props.id}`,
         method: "POST",
         body: props.body
       }),
+      invalidatesTags: ["Properties"]
     }),
     createProperty: builder.mutation<number, ICreatePropertyParams>({
       query: (dataToSend: ICreatePropertyParams) => ({
@@ -79,6 +72,7 @@ export const properties = createApi({
         method: "POST",
         params: dataToSend
       }),
+      invalidatesTags: ["Properties"]
     }),
     filterProperties: builder.mutation<IPage<IProperties>, IPropertyFilterParams>({
       query: (filterParam: IPropertyFilterParams) => ({
@@ -131,7 +125,6 @@ export const {
   useAllPropertiesQuery,
   useGetPropertyByIdQuery,
   useGetPropertyByCodeQuery,
-  useAddPropertyMutation,   // TODO: remove
   useEditPropertyMutation,
   useCreatePropertyMutation,
   useDeletePropertyMutation,
