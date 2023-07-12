@@ -827,6 +827,10 @@ const slice = createSlice({
       state.labelIDs = state.labelIDs.filter((_, i) => i !== index);
     },
 
+    setDefaultState: (state: propertyState, action): void => {
+      state = initialState;
+    },
+  
     setInitialState: (state: propertyState, action): void => {
       const payload: IProperties = action.payload;
 
@@ -892,6 +896,7 @@ const slice = createSlice({
 
 export const {
   setInitialState,
+
   setVideo,
   setCoverageFactor,
   setSeaFront,

@@ -9,13 +9,7 @@ import {
   selectAttic,
   selectBathrooms,
   selectBedrooms,
-  selectElectricityType,
-  selectEnergyClass,
   selectFloor,
-  selectFloorApartment,
-  selectFloorType,
-  selectFrameType,
-  selectFurnished,
   selectKitchens,
   selectLandUse,
   selectLayers,
@@ -47,26 +41,20 @@ import {
   setZoneType,
 } from "src/slices/property";
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
-const ariaLabel = { "aria-label": "description" };
+
 const PropertyDescriptionSection: React.FC<any> = (props) => {
   const { data } = useAllGlobalsQuery();
   const enums: IGlobalProperty = data?.property as IGlobalProperty;
   const details = enums?.details as IGlobalPropertyDetails;
 
   const dispatch = useDispatch();
-  const furnished = useSelector(selectFurnished);
   const atttic = useSelector(selectAttic);
   const playroom = useSelector(selectPlayRoom);
-  const floorApartment = useSelector(selectFloorApartment);
   const penthouse = useSelector(selectPenthouse);
   const landUse = useSelector(selectLandUse);
-  const floorType = useSelector(selectFloorType);
   const viewType = useSelector(selectViewType);
-  const frameType = useSelector(selectFrameType);
   const accessibility = useSelector(selectAccessibility);
-  const energyClass = useSelector(selectEnergyClass);
   const zoneType = useSelector(selectZoneType);
-  const electricityType = useSelector(selectElectricityType);
 
   const kitchens = useSelector(selectKitchens);
   const layers = useSelector(selectLayers);

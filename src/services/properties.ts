@@ -4,6 +4,10 @@ import { IProperties, IPropertyFilter } from "src/types/properties";
 
 import IPage from "src/types/page";
 
+interface ICreatePropertyParams {
+  parentCategory: string;
+  category: string;
+}
 interface ISuggestPropertiesProps {
   id: number;
   dataToSend: IDemand;
@@ -50,11 +54,19 @@ export const properties = createApi({
       query: (code: number) => `code/${code}`,
       providesTags: ["Properties"],
     }),
+    // TODO: remove
     addProperty: builder.mutation<any, any>({
       query: (dataToSend: any) => ({
         url: "",
         method: "POST",
         body: dataToSend,
+      }),
+    }),
+    createProperty: builder.mutation<number, ICreatePropertyParams>({
+      query: (dataToSend: ICreatePropertyParams) => ({
+        url: "/create",
+        method: "POST",
+        params: dataToSend
       }),
     }),
     filterProperties: builder.mutation<IPage<IProperties>, IPropertyFilterParams>({
@@ -109,6 +121,7 @@ export const {
   useGetPropertyByIdQuery,
   useGetPropertyByCodeQuery,
   useAddPropertyMutation,
+  useCreatePropertyMutation,
   useDeletePropertyMutation,
   useFilterPropertiesMutation,
   useSuggestForCustomerQuery,

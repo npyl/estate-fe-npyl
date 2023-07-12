@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-import { useAddPropertyMutation } from "src/services/properties";
+import { useCreatePropertyMutation } from "src/services/properties";
 
 import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
@@ -16,28 +16,19 @@ import { useEffect } from "react";
 const CreatePropertyPage: NextPage = () => {
   const router = useRouter();
 
-  const [create, { isSuccess, isLoading: isCreateLoading, data: createdProperty }] =
-    useAddPropertyMutation();
-
-  const body = useSelector(selectAll);
+  const [create, { isSuccess, isLoading: isCreateLoading, data: createdPropertyId }] =
+    useCreatePropertyMutation();
 
   const handleUpload = () => {
-    const blob = new Blob([JSON.stringify(body)], {
-      type: "application/json",
-    });
-
-    let dataToSend = new FormData();
-    dataToSend.append("propertyForm ", blob);
-
     // perform POST
-    create(dataToSend);
+    create({ parentCategory: 'Residential', category: 'Apartment' });
   };
 
   useEffect(() => {
-    if (!isSuccess || !createdProperty || !createdProperty.id) return;
+    if (!isSuccess || !createdPropertyId) return;
 
-    router.push(`/property/edit/${createdProperty.id}`);
-  }, [isSuccess, createdProperty]);
+    router.push(`/property/edit/${createdPropertyId}?draft=1`);
+  }, [isSuccess, createdPropertyId]);
 
   return <>
     <Form performUpload={handleUpload} />
