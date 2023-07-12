@@ -1,12 +1,16 @@
 import type { NextPage } from "next";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-import { useAddPropertyMutation } from "src/services/properties";
+import { useCreatePropertyMutation } from "src/services/properties";
 
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
-import { selectAll } from "src/slices/property";
+import {
+  resetState,
+  selectCategory,
+  selectParentCategory,
+} from "src/slices/property";
 
 import Form from "./components/Form";
 
@@ -15,29 +19,25 @@ import { useEffect } from "react";
 
 const CreatePropertyPage: NextPage = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
 
-  const [create, { isSuccess, isLoading: isCreateLoading, data: createdProperty }] =
-    useAddPropertyMutation();
+  const [create, { isSuccess, isLoading: isCreateLoading, data: createdPropertyId }] =
+    useCreatePropertyMutation();
 
-  const body = useSelector(selectAll);
+  const category = useSelector(selectCategory);
+  const parentCategory = useSelector(selectParentCategory);
 
   const handleUpload = () => {
-    const blob = new Blob([JSON.stringify(body)], {
-      type: "application/json",
-    });
-
-    let dataToSend = new FormData();
-    dataToSend.append("propertyForm ", blob);
+    if (!category || !parentCategory) return;
 
     // perform POST
-    create(dataToSend);
+    create({ parentCategory: parentCategory, category: category });
   };
 
-  useEffect(() => {
-    if (!isSuccess || !createdProperty || !createdProperty.id) return;
-
-    router.push(`/property/edit/${createdProperty.id}`);
-  }, [isSuccess, createdProperty]);
+  // redirect on success
+  isSuccess && 
+  createdPropertyId && 
+  router.push(`/property/edit/${createdPropertyId}`);
 
   return <>
     <Form performUpload={handleUpload} />

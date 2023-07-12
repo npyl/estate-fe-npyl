@@ -20,7 +20,7 @@ const BalconiesSection: React.FC<any> = (props) => {
 
   const dispatch = useDispatch();
 
-  const balconies = useSelector(selectBalconies);
+  const balconies = useSelector(selectBalconies) || [];
 
   if (!details || !details.balconySide) return null;
 

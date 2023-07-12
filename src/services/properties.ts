@@ -1,9 +1,17 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IDemand } from "src/types/customer";
-import { IProperties, IPropertyFilter } from "src/types/properties";
+import { IProperties, IPropertiesPostRequest, IPropertyFilter } from "src/types/properties";
 
 import IPage from "src/types/page";
 
+interface ICreatePropertyParams {
+  parentCategory: string;
+  category: string;
+}
+interface IEditPropertyProps {
+  id: number;
+  body: IPropertiesPostRequest;
+}
 interface ISuggestPropertiesProps {
   id: number;
   dataToSend: IDemand;
@@ -50,12 +58,21 @@ export const properties = createApi({
       query: (code: number) => `code/${code}`,
       providesTags: ["Properties"],
     }),
-    addProperty: builder.mutation<any, any>({
-      query: (dataToSend: any) => ({
-        url: "",
+    editProperty: builder.mutation<number, IEditPropertyProps>({
+      query: (props: IEditPropertyProps) => ({
+        url: `/edit/${props.id}`,
         method: "POST",
-        body: dataToSend,
+        body: props.body
       }),
+      invalidatesTags: ["Properties"]
+    }),
+    createProperty: builder.mutation<number, ICreatePropertyParams>({
+      query: (dataToSend: ICreatePropertyParams) => ({
+        url: "/create",
+        method: "POST",
+        params: dataToSend
+      }),
+      invalidatesTags: ["Properties"]
     }),
     filterProperties: builder.mutation<IPage<IProperties>, IPropertyFilterParams>({
       query: (filterParam: IPropertyFilterParams) => ({
@@ -108,7 +125,8 @@ export const {
   useAllPropertiesQuery,
   useGetPropertyByIdQuery,
   useGetPropertyByCodeQuery,
-  useAddPropertyMutation,
+  useEditPropertyMutation,
+  useCreatePropertyMutation,
   useDeletePropertyMutation,
   useFilterPropertiesMutation,
   useSuggestForCustomerQuery,

@@ -18,7 +18,7 @@ const center = {
 };
 
 interface IMapProps {
-  data: IProperties[];
+  data?: IProperties[];
   activeMarker: number | null;
   setActiveMarker: any;
 }
@@ -37,24 +37,8 @@ const Map = ({ data, activeMarker, setActiveMarker }: IMapProps) => {
   const [center, setCenter] = useState({ lat: 37.98381, lng: 23.727539 }); // Athens
   const [bounds, setBounds] = useState<any>(null);
   const [cities, setCities] = useState([]);
-  // fetch(
-  //   `https://maps.googleapis.com/maps/api/geocode/json?address=Greece&components=country:GR&key=${apiKey}`
-  // )
-  //   .then((response) => response.json())
-  //   .then((data) => {
-  //     const countries = data.results.flatMap(
-  //       (result: { address_components: any[] }) => {
-  //         const countryComponent = result.address_components.find((component) =>
-  //           component.types.includes("country")
-  //         );
-  //         return countryComponent ? [countryComponent.long_name] : [];
-  //       }
-  //     );
 
-  //     console.log(countries);
-  //   });
-
-  const markers = data
+  const markers = data ? data
     .filter((property) => property.location !== null) // some properties are dummies
     .map((property) => {
       const location = property.location;
@@ -63,7 +47,7 @@ const Map = ({ data, activeMarker, setActiveMarker }: IMapProps) => {
         lat: location.lat,
         lng: location.lng,
       };
-    });
+    }) : [];
 
   const onMapLoad = (map: any) => {
     setMapRef(map);

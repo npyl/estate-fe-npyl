@@ -43,27 +43,27 @@ const ROIChangeCalculation: React.FC<any> = (props) => {
     setAdditionalCheckboxROIEnabled(checked);
   };
 
-  // calculate price and change roi calculator with rend price stack
-  useEffect(() => {
-    const calculatePrice = (() => {
-      if (additionalCheckbox1Enabled) {
-        return ((currentRentPrice * 12) / roi) * 100;
-      } else if (additionalCheckbox2Enabled) {
-        return ((estimatedRentPrice * 12) / roi) * 100;
-      }
-      return price; // Use the initial value of `price` if no conditions match
-    })();
+  // // calculate price and change roi calculator with rend price stack
+  // useEffect(() => {
+  //   const calculatePrice = (() => {
+  //     if (additionalCheckbox1Enabled) {
+  //       return ((currentRentPrice * 12) / roi) * 100;
+  //     } else if (additionalCheckbox2Enabled) {
+  //       return ((estimatedRentPrice * 12) / roi) * 100;
+  //     }
+  //     return price; // Use the initial value of `price` if no conditions match
+  //   })();
 
-    dispatch(setPrice(calculatePrice));
-  }, [
-    additionalCheckboxROIEnabled,
-    additionalCheckbox1Enabled,
-    additionalCheckbox2Enabled,
-    currentRentPrice,
-    estimatedRentPrice,
-    price,
-    dispatch,
-  ]);
+  //   dispatch(setPrice(calculatePrice));
+  // }, [
+  //   additionalCheckboxROIEnabled,
+  //   additionalCheckbox1Enabled,
+  //   additionalCheckbox2Enabled,
+  //   currentRentPrice,
+  //   estimatedRentPrice,
+  //   price,
+  //   dispatch,
+  // ]);
   const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const input = event.target.value;
     const numericValue = input.replace(/[^0-9.,]/g, ""); // Remove non-numeric characters from the input

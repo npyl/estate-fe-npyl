@@ -13,18 +13,10 @@ type propertyState = IPropertiesPostRequest;
 const initialState: propertyState = {
   code: uuidv4(),   // TODO: temporary until we have backend autosuggest!
   title: "",
-  managerId: 0,
-  ownerId: 0,
   state: "",
   parentCategory: "",
   category: "",
-  area: 0,
-  plotArea: 0,
-  price: 0,
-  averageUtils: 0,
   rented: false,
-  currentRentPrice: 0,
-  estimatedRentPrice: 0,
   rentalStart: "",
   rentalEnd: "",
   availableAfter: "",
@@ -54,48 +46,20 @@ const initialState: propertyState = {
     solarBoiler: false,
     offPeakElectricity: false,
   },
-  distances: {
-    schools: 0,
-    supermarket: 0,
-    cafeRestaurant: 0,
-    hospital: 0,
-    airport: 0,
-    sea: 0,
-    publicTransport: 0,
-    entertainment: 0,
-  },
-  areas: {
-    first: 0,
-    second: 0,
-    third: 0,
-    fourth: 0,
-    fifth: 0,
-    plot: 0,
-    covered: 0,
-    basement: 0,
-    attic: 0,
-    garden: 0,
-    balconies: 0,
-    storeroom: 0,
-    groundFloor: 0,
-  },
+  distances: {},
+  areas: {},
   construction: {
-    yearOfConstruction: 0,
     underConstruction: false,
     newlyBuilt: false,
     incomplete: false,
-    totalFloorNumber: 0,
     internalStairs: false,
     neoclassical: false,
-    yearOfRenovation: 0,
     renovated: false,
     needsRenovation: false,
     preserved: false,
     elevator: false,
   },
   technicalFeatures: {
-    entrances: 0,
-    displayWindowsLength: 0,
     safetyDoor: false,
     alarmSystem: false,
     painted: false,
@@ -117,20 +81,10 @@ const initialState: propertyState = {
     withEquipment: false,
     doubleFrontage: false,
     consideration: false,
-    floorToAreaRatio: 0,
-    coverageFactor: 0,
-    facadeLength: 0,
     inclination: "",
   },
   details: {
     floor: "",
-    bedrooms: 0,
-    kitchens: 0,
-    wc: 0,
-    layers: 0,
-    livingrooms: 0,
-    bathrooms: 0,
-    rooms: 0,
     attic: false,
     storeroom: false,
     playroom: false,
@@ -145,10 +99,9 @@ const initialState: propertyState = {
     parkings: [],
   },
   location: {
-    street: "0",
+    street: "",
     number: "",
     complex: "",
-    zipCode: 0,
     city: "",
     region: "",
     country: "",
@@ -827,6 +780,10 @@ const slice = createSlice({
       state.labelIDs = state.labelIDs.filter((_, i) => i !== index);
     },
 
+    setDefaultState: (state: propertyState, action): void => {
+      state = initialState;
+    },
+  
     setInitialState: (state: propertyState, action): void => {
       const payload: IProperties = action.payload;
 
@@ -854,16 +811,19 @@ const slice = createSlice({
       state.buildable = payload.buildable;
       state.video = payload.video;
       state.description = payload.description;
-      // state.propertyImage = payload.propertyImage;
-      state.suitableFor = payload.suitableFor;
-      state.heatingAndEnergy = payload.heatingAndEnergy;
-      state.distances = payload.distances;
-      state.areas = payload.areas;
-      state.construction = payload.construction;
-      state.technicalFeatures = payload.technicalFeatures;
-      state.details = payload.details;
 
-      // Location
+      state.details = payload.details || initialState.details;
+      state.heatingAndEnergy = payload.heatingAndEnergy || initialState.heatingAndEnergy;
+      state.suitableFor = payload.suitableFor || initialState.suitableFor;
+      state.distances = payload.distances || initialState.distances;
+      state.construction = payload.construction || initialState.construction;
+      state.features = payload.features || initialState.features;      
+      state.technicalFeatures = payload.technicalFeatures || initialState.technicalFeatures;
+
+      // areas
+      state.areas = payload.areas || initialState.areas;
+
+      // Location (convert from ILocationPOST to ILocation)
       const location: ILocation = payload.location;
       state.location.city = location?.city;
       state.location.complex = location?.complex;
@@ -872,8 +832,6 @@ const slice = createSlice({
       state.location.region = location?.region;
       state.location.street = location?.street;
       state.location.zipCode = location?.zipCode;
-
-      state.features = payload.features;
 
       // map labels
       state.labelIDs = payload.labels
@@ -892,6 +850,7 @@ const slice = createSlice({
 
 export const {
   setInitialState,
+
   setVideo,
   setCoverageFactor,
   setSeaFront,
@@ -1102,7 +1061,8 @@ export const selectArea = ({ property }: RootState) => property.area;
 export const selectPlotArea = ({ property }: RootState) => property.plotArea;
 export const selectParentCategory = ({ property }: RootState) =>
   property.parentCategory;
-
+export const selectAvgUtils = ({ property }: RootState) =>
+  property.averageUtils;
 export const selectKeyCode = ({ property }: RootState) => property.keyCode;
 export const selectBuildable = ({ property }: RootState) => property.buildable;
 export const selectDescription = ({ property }: RootState) =>
@@ -1110,362 +1070,356 @@ export const selectDescription = ({ property }: RootState) =>
 export const selectAvailableAfter = ({ property }: RootState) =>
   property.availableAfter;
 export const selectVideo = ({ property }: RootState) => property.video;
-export const selectStreet = ({ property }: RootState) =>
-  property.location.street;
-export const selectNumber = ({ property }: RootState) =>
-  property.location.number;
-export const selectCity = ({ property }: RootState) => property.location.city;
-export const selectComplex = ({ property }: RootState) =>
-  property.location.complex;
-export const selectZipCode = ({ property }: RootState) =>
-  property.location.zipCode;
-export const selectRegion = ({ property }: RootState) =>
-  property.location.region;
-export const selectCountry = ({ property }: RootState) =>
-  property.location.country;
-
-export const selectOrientation = ({ property }: RootState) =>
-  property.details.orientation;
-export const selectLandUse = ({ property }: RootState) =>
-  property.details.landUse;
-export const selectViewType = ({ property }: RootState) =>
-  property.details.viewType;
-export const selectAccessibility = ({ property }: RootState) =>
-  property.details.accessibility;
-
-export const selectEnergyClass = ({ property }: RootState) =>
-  property.heatingAndEnergy.energyClass;
-export const selectOffPeakElectricity = ({ property }: RootState) =>
-  property.heatingAndEnergy.offPeakElectricity;
-export const selectZoneType = ({ property }: RootState) =>
-  property.details.zoneType;
-export const selectElectricityType = ({ property }: RootState) =>
-  property.heatingAndEnergy.electricityType;
-export const selectFloor = ({ property }: RootState) => property.details.floor;
-export const selectKitchens = ({ property }: RootState) =>
-  property.details.kitchens;
-export const selectLayers = ({ property }: RootState) =>
-  property.details.layers;
-export const selectBathrooms = ({ property }: RootState) =>
-  property.details.bathrooms;
-export const selectNumOfWC = ({ property }: RootState) => property.details.wc;
-
-export const selectLivingRooms = ({ property }: RootState) =>
-  property.details.livingrooms;
-
-export const selectBedrooms = ({ property }: RootState) =>
-  property.details.bedrooms;
-export const selectStoreroomBool = ({ property }: RootState) =>
-  property.details.storeroom;
-export const selectAvgUtils = ({ property }: RootState) =>
-  property.averageUtils;
-export const selectRooms = ({ property }: RootState) => property.details.rooms;
-
 export const selectRented = ({ property }: RootState) => property.rented;
 
+// Location
+export const selectStreet = ({ property }: RootState) =>
+  property.location?.street;
+export const selectNumber = ({ property }: RootState) =>
+  property.location?.number;
+export const selectCity = ({ property }: RootState) => property.location?.city;
+export const selectComplex = ({ property }: RootState) =>
+  property.location?.complex;
+export const selectZipCode = ({ property }: RootState) =>
+  property.location?.zipCode;
+export const selectRegion = ({ property }: RootState) =>
+  property.location?.region;
+export const selectCountry = ({ property }: RootState) =>
+  property.location?.country;
+
+// Details
+export const selectOrientation = ({ property }: RootState) =>
+  property.details?.orientation;
+export const selectLandUse = ({ property }: RootState) =>
+  property.details?.landUse;
+export const selectViewType = ({ property }: RootState) =>
+  property.details?.viewType;
+export const selectAccessibility = ({ property }: RootState) =>
+  property.details?.accessibility;
+export const selectFloor = ({ property }: RootState) => property.details?.floor;
+export const selectKitchens = ({ property }: RootState) =>
+  property.details?.kitchens;
+export const selectLayers = ({ property }: RootState) =>
+  property.details?.layers;
+export const selectBathrooms = ({ property }: RootState) =>
+  property.details?.bathrooms;
+export const selectNumOfWC = ({ property }: RootState) => property.details?.wc;
+export const selectLivingRooms = ({ property }: RootState) =>
+  property.details?.livingrooms;
+export const selectBedrooms = ({ property }: RootState) =>
+  property.details?.bedrooms;
+export const selectStoreroomBool = ({ property }: RootState) =>
+  property.details?.storeroom;
+export const selectRooms = ({ property }: RootState) => property.details?.rooms;
+
+// Heating
+export const selectElectricityType = ({ property }: RootState) =>
+  property.heatingAndEnergy?.electricityType;
+export const selectSolarBoiler = ({ property }: RootState) =>
+  property.heatingAndEnergy?.solarBoiler;
+export const selectEnergyClass = ({ property }: RootState) =>
+  property.heatingAndEnergy?.energyClass;
+export const selectOffPeakElectricity = ({ property }: RootState) =>
+  property.heatingAndEnergy?.offPeakElectricity;
+export const selectZoneType = ({ property }: RootState) =>
+  property.details?.zoneType;
 export const selectHeatingSystem = ({ property }: RootState) =>
-  property.heatingAndEnergy.heatingSystem;
+  property.heatingAndEnergy?.heatingSystem;
 export const selectHeatingType = ({ property }: RootState) =>
-  property.heatingAndEnergy.heatingType;
+  property.heatingAndEnergy?.heatingType;
 export const selectFloorHeating = ({ property }: RootState) =>
-  property.heatingAndEnergy.floorHeating;
+  property.heatingAndEnergy?.floorHeating;
 export const selectAirConditioning = ({ property }: RootState) =>
-  property.heatingAndEnergy.airConditioning;
+  property.heatingAndEnergy?.airConditioning;
 
-export const selectEntrances = ({ property }: RootState) =>
-  property.technicalFeatures.entrances;
-
+// Suitable For
 export const selectStudent = ({ property }: RootState) =>
-  property.suitableFor.student;
-
+  property.suitableFor?.student;
 export const selectCottage = ({ property }: RootState) =>
-  property.suitableFor.cottage;
+  property.suitableFor?.cottage;
 export const selectTouristRental = ({ property }: RootState) =>
-  property.suitableFor.touristRental;
+  property.suitableFor?.touristRental;
 export const selectInvestment = ({ property }: RootState) =>
-  property.suitableFor.investment;
+  property.suitableFor?.investment;
 export const selectDoctorsOffice = ({ property }: RootState) =>
-  property.suitableFor.doctorsOffice;
+  property.suitableFor?.doctorsOffice;
 export const selectProfessionalUse = ({ property }: RootState) =>
-  property.suitableFor.professionalUse;
+  property.suitableFor?.professionalUse;
 export const selectRenovation = ({ property }: RootState) =>
-  property.suitableFor.renovation;
-
+  property.suitableFor?.renovation;
 export const selectAgriculturalUse = ({ property }: RootState) =>
-  property.suitableFor.agriculturalUse;
+  property.suitableFor?.agriculturalUse;
 
+// Technical Features
 export const selectDisplayWindowsLength = ({ property }: RootState) =>
-  property.technicalFeatures.displayWindowsLength;
+  property.technicalFeatures?.displayWindowsLength;
 
 export const selectSafetyDoor = ({ property }: RootState) =>
-  property.technicalFeatures.safetyDoor;
+  property.technicalFeatures?.safetyDoor;
 
 export const selectAlarmSystem = ({ property }: RootState) =>
-  property.technicalFeatures.alarmSystem;
+  property.technicalFeatures?.alarmSystem;
 
 export const selectPainted = ({ property }: RootState) =>
-  property.technicalFeatures.painted;
+  property.technicalFeatures?.painted;
 
 export const selectFurnished = ({ property }: RootState) =>
-  property.technicalFeatures.furnished;
+  property.technicalFeatures?.furnished;
 
 export const selectFrameType = ({ property }: RootState) =>
-  property.technicalFeatures.frameType;
+  property.technicalFeatures?.frameType;
 
 export const selectPaneGlassType = ({ property }: RootState) =>
-  property.technicalFeatures.paneGlassType;
+  property.technicalFeatures?.paneGlassType;
 
 export const selectWindowScreens = ({ property }: RootState) =>
-  property.technicalFeatures.windowScreens;
+  property.technicalFeatures?.windowScreens;
 
 export const selectFireplace = ({ property }: RootState) =>
-  property.technicalFeatures.fireplace;
+  property.technicalFeatures?.fireplace;
 
 export const selectBright = ({ property }: RootState) =>
-  property.technicalFeatures.bright;
+  property.technicalFeatures?.bright;
 
 export const selectLuxurious = ({ property }: RootState) =>
-  property.technicalFeatures.luxurious;
+  property.technicalFeatures?.luxurious;
 
 export const selectElectricCarChargingFacilities = ({ property }: RootState) =>
-  property.technicalFeatures.electricCarChargingFacilities;
+  property.technicalFeatures?.electricCarChargingFacilities;
 
 export const selectReception = ({ property }: RootState) =>
-  property.technicalFeatures.reception;
+  property.technicalFeatures?.reception;
 
 export const selectPetsAllowed = ({ property }: RootState) =>
-  property.technicalFeatures.petsAllowed;
+  property.technicalFeatures?.petsAllowed;
 
 export const selectFloorType = ({ property }: RootState) =>
-  property.technicalFeatures.floorType;
+  property.technicalFeatures?.floorType;
 
 export const selectSatelliteTV = ({ property }: RootState) =>
-  property.technicalFeatures.satelliteTV;
+  property.technicalFeatures?.satelliteTV;
 
 export const selectWiring = ({ property }: RootState) =>
-  property.technicalFeatures.wiring;
+  property.technicalFeatures?.wiring;
 
 export const selectLoadingUnloadingElevator = ({ property }: RootState) =>
-  property.technicalFeatures.loadingUnloadingElevator;
+  property.technicalFeatures?.loadingUnloadingElevator;
 
 export const selectFalseCeiling = ({ property }: RootState) =>
-  property.technicalFeatures.falseCeiling;
+  property.technicalFeatures?.falseCeiling;
 
 export const selectWithEquipment = ({ property }: RootState) =>
-  property.technicalFeatures.withEquipment;
+  property.technicalFeatures?.withEquipment;
 
 export const selectDoubleFrontage = ({ property }: RootState) =>
-  property.technicalFeatures.doubleFrontage;
+  property.technicalFeatures?.doubleFrontage;
 
 export const selectConsideration = ({ property }: RootState) =>
-  property.technicalFeatures.consideration;
+  property.technicalFeatures?.consideration;
 
 export const selectFloorToAreaRatio = ({ property }: RootState) =>
-  property.technicalFeatures.floorToAreaRatio;
+  property.technicalFeatures?.floorToAreaRatio;
 
 export const selectCoverageFactor = ({ property }: RootState) =>
-  property.technicalFeatures.coverageFactor;
+  property.technicalFeatures?.coverageFactor;
 
 export const selectFacadeLength = ({ property }: RootState) =>
-  property.technicalFeatures.facadeLength;
+  property.technicalFeatures?.facadeLength;
 
 export const selectInclination = ({ property }: RootState) =>
-  property.technicalFeatures.inclination;
+  property.technicalFeatures?.inclination;
+
+export const selectEntrances = ({ property }: RootState) =>
+  property.technicalFeatures?.entrances;
 
 // Areas
 export const selectBalconiesArea = ({ property }: RootState) =>
-  property.areas.balconies;
+  property.areas?.balconies;
 export const selectCovered = ({ property }: RootState) =>
-  property.areas.covered;
+  property.areas?.covered;
 export const selectBasement = ({ property }: RootState) =>
-  property.areas.basement;
-export const selectGarden = ({ property }: RootState) => property.areas.garden;
+  property.areas?.basement;
+export const selectGarden = ({ property }: RootState) => property.areas?.garden;
 export const selectStoreroom = ({ property }: RootState) =>
-  property.areas.storeroom;
-export const selectAttic = ({ property }: RootState) => property.areas.attic;
+  property.areas?.storeroom;
+export const selectAttic = ({ property }: RootState) => property.areas?.attic;
 export const selectGroundFloor = ({ property }: RootState) =>
-  property.areas.groundFloor;
-export const selectFirst = ({ property }: RootState) => property.areas.first;
-export const selectSecond = ({ property }: RootState) => property.areas.second;
-export const selectThird = ({ property }: RootState) => property.areas.third;
-export const selectFourth = ({ property }: RootState) => property.areas.fourth;
-export const selectFifth = ({ property }: RootState) => property.areas.fifth;
+  property.areas?.groundFloor;
+export const selectFirst = ({ property }: RootState) => property.areas?.first;
+export const selectSecond = ({ property }: RootState) => property.areas?.second;
+export const selectThird = ({ property }: RootState) => property.areas?.third;
+export const selectFourth = ({ property }: RootState) => property.areas?.fourth;
+export const selectFifth = ({ property }: RootState) => property.areas?.fifth;
 
 // Parkings & Balconies
 export const selectParkings = ({ property }: RootState) =>
-  property.details.parkings;
+  property.details?.parkings;
 export const selectBalconies = ({ property }: RootState) =>
-  property.details.balconies;
+  property.details?.balconies;
 
+// Distances
 export const selectPublicTransportation = ({ property }: RootState) =>
-  property.distances.publicTransport;
-export const selectSea = ({ property }: RootState) => property.distances.sea;
+  property.distances?.publicTransport;
+export const selectSea = ({ property }: RootState) => property.distances?.sea;
 export const selectSchools = ({ property }: RootState) =>
-  property.distances.schools;
-
+  property.distances?.schools;
 export const selectSupermarket = ({ property }: RootState) =>
-  property.distances.supermarket;
-
+  property.distances?.supermarket;
 export const selectCafeRestaurant = ({ property }: RootState) =>
-  property.distances.cafeRestaurant;
-
+  property.distances?.cafeRestaurant;
 export const selectHospital = ({ property }: RootState) =>
-  property.distances.hospital;
-
+  property.distances?.hospital;
 export const selectAirport = ({ property }: RootState) =>
-  property.distances.airport;
+  property.distances?.airport;
 
 // Construction
 export const selectYearOfConstruction = ({ property }: RootState) =>
-  property.construction.yearOfConstruction;
+  property.construction?.yearOfConstruction;
 export const selectNewlyBuilt = ({ property }: RootState) =>
-  property.construction.newlyBuilt;
+  property.construction?.newlyBuilt;
 export const selectIncomplete = ({ property }: RootState) =>
-  property.construction.incomplete;
+  property.construction?.incomplete;
 export const selectUnderConstruction = ({ property }: RootState) =>
-  property.construction.underConstruction;
+  property.construction?.underConstruction;
 export const selectTotalFloorNumber = ({ property }: RootState) =>
-  property.construction.totalFloorNumber;
+  property.construction?.totalFloorNumber;
 export const selectElevator = ({ property }: RootState) =>
-  property.construction.elevator;
+  property.construction?.elevator;
 export const selectInternalStairs = ({ property }: RootState) =>
-  property.construction.internalStairs;
+  property.construction?.internalStairs;
 export const selectNeoclassical = ({ property }: RootState) =>
-  property.construction.neoclassical;
+  property.construction?.neoclassical;
 export const selectYearOfRenovation = ({ property }: RootState) =>
-  property.construction.yearOfRenovation;
+  property.construction?.yearOfRenovation;
 export const selectRenovated = ({ property }: RootState) =>
-  property.construction.renovated;
+  property.construction?.renovated;
 export const selectNeedsRenovation = ({ property }: RootState) =>
-  property.construction.needsRenovation;
+  property.construction?.needsRenovation;
 export const selectPreserved = ({ property }: RootState) =>
-  property.construction.preserved;
+  property.construction?.preserved;
 
-export const selectPool = ({ property }: RootState) => property.features.pool;
+export const selectPool = ({ property }: RootState) => property.features?.pool;
 
 export const selectOffice = ({ property }: RootState) =>
-  property.features.office;
+  property.features?.office;
 
 export const selectInternet = ({ property }: RootState) =>
-  property.features.internet;
+  property.features?.internet;
 
 export const selectThermalInsulation = ({ property }: RootState) =>
-  property.features.thermalInsulation;
+  property.features?.thermalInsulation;
 
 export const selectSeaView = ({ property }: RootState) =>
-  property.features.seaView;
+  property.features?.seaView;
 
 export const selectGuestroom = ({ property }: RootState) =>
-  property.features.guestroom;
+  property.features?.guestroom;
 
 export const selectQuietArea = ({ property }: RootState) =>
-  property.features.quietArea;
+  property.features?.quietArea;
 
 export const selectSoundInsulation = ({ property }: RootState) =>
-  property.features.soundInsulation;
+  property.features?.soundInsulation;
 
 export const selectHas24HoursSecurity = ({ property }: RootState) =>
-  property.features.has24HoursSecurity;
+  property.features?.has24HoursSecurity;
 
 export const selectBarbeque = ({ property }: RootState) =>
-  property.features.barbeque;
+  property.features?.barbeque;
 
-export const selectCctv = ({ property }: RootState) => property.features.cctv;
+export const selectCctv = ({ property }: RootState) => property.features?.cctv;
 
 export const selectCombinedKitchenAndDiningArea = ({ property }: RootState) =>
-  property.features.combinedKitchenAndDiningArea;
+  property.features?.combinedKitchenAndDiningArea;
 
 export const selectFireDetector = ({ property }: RootState) =>
-  property.features.fireDetector;
+  property.features?.fireDetector;
 
 export const selectHomeCinema = ({ property }: RootState) =>
-  property.features.homeCinema;
+  property.features?.homeCinema;
 
 export const selectJacuzzi = ({ property }: RootState) =>
-  property.features.jacuzzi;
+  property.features?.jacuzzi;
 
 export const selectNearBusRoute = ({ property }: RootState) =>
-  property.features.nearBusRoute;
+  property.features?.nearBusRoute;
 
 export const selectPanoramicView = ({ property }: RootState) =>
-  property.features.panoramicView;
+  property.features?.panoramicView;
 
 export const selectPlayRoom = ({ property }: RootState) =>
-  property.details.playroom;
+  property.details?.playroom;
 export const selectHasAttic = ({ property }: RootState) =>
-  property.details.attic;
+  property.details?.attic;
 
 //Property Description
 export const selectFloorApartment = ({ property }: RootState) =>
-  property.details.floorApartment;
+  property.details?.floorApartment;
 export const selectPenthouse = ({ property }: RootState) =>
-  property.details.penthouse;
-
-export const selectSolarBoiler = ({ property }: RootState) =>
-  property.heatingAndEnergy.solarBoiler;
+  property.details?.penthouse;
 
 export const selectAccessForDisable = ({ property }: RootState) =>
-  property.features.accessForDisabled;
+  property.features?.accessForDisabled;
 
 export const selectSmartHome = ({ property }: RootState) =>
-  property.features.smartHome;
+  property.features?.smartHome;
 
 export const selectMountainView = ({ property }: RootState) =>
-  property.features.mountainView;
+  property.features?.mountainView;
 
 export const selectSeaFront = ({ property }: RootState) =>
-  property.features.seaFront;
+  property.features?.seaFront;
 
 export const selectHeatedPool = ({ property }: RootState) =>
-  property.features.heatedPool;
+  property.features?.heatedPool;
 
 export const selectIndoorPool = ({ property }: RootState) =>
-  property.features.indoorPool;
+  property.features?.indoorPool;
 
 export const selectOrganizedGarden = ({ property }: RootState) =>
-  property.features.organizedGarden;
+  property.features?.organizedGarden;
 
-export const selectWell = ({ property }: RootState) => property.features.well;
+export const selectWell = ({ property }: RootState) => property.features?.well;
 
 export const selectDrilling = ({ property }: RootState) =>
-  property.features.drilling;
+  property.features?.drilling;
 
 export const selectMasonryFence = ({ property }: RootState) =>
-  property.features.masonryFence;
+  property.features?.masonryFence;
 
 export const selectAccessForDisabled = ({ property }: RootState) =>
-  property.features.accessForDisabled;
+  property.features?.accessForDisabled;
 
 export const selectIndependentHeatingPerRoom = ({ property }: RootState) =>
-  property.features.independentHeatingPerRoom;
+  property.features?.independentHeatingPerRoom;
 
 export const selectAdaptingToTheGround = ({ property }: RootState) =>
-  property.features.adaptingToTheGround;
+  property.features?.adaptingToTheGround;
 
-export const selectView = ({ property }: RootState) => property.features.view;
+export const selectView = ({ property }: RootState) => property.features?.view;
 
 export const selectFacade = ({ property }: RootState) =>
-  property.features.facade;
+  property.features?.facade;
 
 export const selectCorner = ({ property }: RootState) =>
-  property.features.corner;
+  property.features?.corner;
 
 export const selectVeranda = ({ property }: RootState) =>
-  property.features.veranda;
+  property.features?.veranda;
 
-export const selectTents = ({ property }: RootState) => property.features.tents;
+export const selectTents = ({ property }: RootState) => property.features?.tents;
 
 export const selectWithinResidentialZone = ({ property }: RootState) =>
-  property.features.withinResidentialZone;
+  property.features?.withinResidentialZone;
 
 export const selectWithinCityPlan = ({ property }: RootState) =>
-  property.features.withinCityPlan;
+  property.features?.withinCityPlan;
 
 export const selectWalkableDistanceToBeach = ({ property }: RootState) =>
-  property.features.walkableDistanceToBeach;
+  property.features?.walkableDistanceToBeach;
 
 export const selectLoadingDock = ({ property }: RootState) =>
-  property.features.loadingDock;
+  property.features?.loadingDock;
 
 export const selectLabelIDs = ({ property }: RootState) => property.labelIDs;
 

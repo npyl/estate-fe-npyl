@@ -7,6 +7,7 @@ import {
   MenuItem,
   Paper,
   Select,
+  Slider,
   TextField,
   Typography,
 } from "@mui/material";
@@ -61,11 +62,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { FC, useEffect, useMemo, useState } from "react";
 
 import { useAllGlobalsQuery } from "src/services/global";
-import { useAllPropertiesQuery, useGetPropertyByCodeQuery } from "src/services/properties";
+import {
+  useAllPropertiesQuery,
+  useGetPropertyByCodeQuery,
+} from "src/services/properties";
 
 import OnlyNumbersInput from "src/components/OnlyNumbers";
 
 import { LabelSelect } from "./LabelSelect";
+// function valuetext(value: number) {
+//   return `${value}°C`;
+// }
 
 const DemandForm: FC = () => {
   const enums = useAllGlobalsQuery().data;
@@ -99,6 +106,13 @@ const DemandForm: FC = () => {
   const buyer = useSelector(selectBuyer);
 
   const dispatch = useDispatch();
+  const floorMap: Map<number, string> = new Map([
+    [-3, "Basement"],
+    [-2, "Semi-basement"],
+    [-1, "Ground Floor"],
+    [0, "Mezzanine"],
+    ...Array.from({ length: 21 }, (_, i) => [i + 1, `Floor ${i + 1}`] as const),
+  ]);
 
   const [autocompleteValue, setAutocompleteValue] = useState("");
 
@@ -117,9 +131,10 @@ const DemandForm: FC = () => {
       }),
     }).data || [];
 
-  const { data: propertyForCode, isSuccess: isPropertyForCodeSuccess } = useGetPropertyByCodeQuery(+autocompleteValue, {
-    skip: autocompleteValue === ""
-  }) || {};
+  const { data: propertyForCode, isSuccess: isPropertyForCodeSuccess } =
+    useGetPropertyByCodeQuery(+autocompleteValue, {
+      skip: autocompleteValue === "",
+    }) || {};
 
   // everytime the autocomplete's value is updated, fetch a property
   useEffect(() => {
@@ -151,6 +166,49 @@ const DemandForm: FC = () => {
 
     // dispatch(setMaxYearOfConstruction(property));
   }, [isPropertyForCodeSuccess]);
+  const handleSliderChange = (event: any, newValue: any, activeThumb: any) => {
+    const newValues = newValue;
+    const [minValue, maxValue] = newValues;
+    dispatch(setMinBedrooms(minValue)); // Set minBedrooms variable
+    dispatch(setMaxBedrooms(maxValue)); // Set maxBedrooms variable
+  };
+
+  const handleSliderChange1 = (event: any, newValue: any, activeThumb: any) => {
+    const newValues = newValue;
+    const [minValue, maxValue] = newValues;
+    dispatch(setMinBathrooms(minValue)); // Set minBedrooms variable
+    dispatch(setMaxBathrooms(maxValue)); // Set maxBedrooms variable
+  };
+  const handleSliderChange2 = (event: any, newValue: any, activeThumb: any) => {
+    const newValues = newValue;
+    const [minValue, maxValue] = newValues;
+    dispatch(setMinCovered(minValue)); // Set minBedrooms variable
+    dispatch(setMaxCovered(maxValue)); // Set maxBedrooms variable
+  };
+  const handleSliderChange3 = (event: any, newValue: any, activeThumb: any) => {
+    const newValues = newValue;
+    const [minValue, maxValue] = newValues;
+    dispatch(setMinPlot(minValue)); // Set minBedrooms variable
+    dispatch(setMaxPlot(maxValue)); // Set maxBedrooms variable
+  };
+  const handleSliderChange4 = (event: any, newValue: any, activeThumb: any) => {
+    const newValues = newValue;
+    const [minValue, maxValue] = newValues;
+    dispatch(setMinPrice(minValue)); // Set minBedrooms variable
+    dispatch(setMaxPrice(maxValue)); // Set maxBedrooms variable
+  };
+  const handleSliderChange5 = (event: any, newValue: any, activeThumb: any) => {
+    const newValues = newValue;
+    const [minValue, maxValue] = newValues;
+    dispatch(setMinFloor(minValue)); // Set minBedrooms variable
+    dispatch(setMaxFloor(maxValue)); // Set maxBedrooms variable
+  };
+  const handleSliderChange6 = (event: any, newValue: any, activeThumb: any) => {
+    const newValues = newValue;
+    const [minValue, maxValue] = newValues;
+    dispatch(setMinYearOfConstruction(minValue)); // Set minBedrooms variable
+    dispatch(setMaxYearOfConstruction(maxValue)); // Set maxBedrooms variable
+  };
 
   if (
     !enums ||
@@ -179,7 +237,7 @@ const DemandForm: FC = () => {
           justifyContent: "center",
         }}
       >
-        <Typography variant='h6'>Demand Form</Typography>
+        <Typography variant="h6">Demand Form</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -187,15 +245,12 @@ const DemandForm: FC = () => {
           <Grid item xs={6}>
             <Autocomplete
               disablePortal
-              id='combo-box-demo'
+              id="combo-box-demo"
               value={autocompleteValue}
               onChange={autocompleteChange}
               options={propertyCodes}
               renderInput={(params) => (
-                <TextField
-                  {...params}
-                  placeholder='Property Code'
-                />
+                <TextField {...params} placeholder="Property Code" />
               )}
             />
           </Grid>
@@ -204,7 +259,7 @@ const DemandForm: FC = () => {
               <InputLabel>Parent Category</InputLabel>
               <Select
                 value={parentCategory}
-                label='Parent Category'
+                label="Parent Category"
                 onChange={(e) => {
                   dispatch(setParentCategory(e.target.value));
                 }}
@@ -224,7 +279,7 @@ const DemandForm: FC = () => {
               <InputLabel>Furnishing</InputLabel>
               <Select
                 value={furnished}
-                label='Furnishing'
+                label="Furnishing"
                 onChange={(e) => {
                   dispatch(setFurnished(e.target.value));
                 }}
@@ -244,7 +299,7 @@ const DemandForm: FC = () => {
               <InputLabel>State</InputLabel>
               <Select
                 value={state}
-                label='State'
+                label="State"
                 onChange={(e) => {
                   dispatch(setState(e.target.value));
                 }}
@@ -267,7 +322,7 @@ const DemandForm: FC = () => {
               <InputLabel>Time Frame</InputLabel>
               <Select
                 value={timeFrame}
-                label='Time Frame'
+                label="Time Frame"
                 onChange={(e) => {
                   dispatch(setTimeFrame(e.target.value));
                 }}
@@ -283,170 +338,158 @@ const DemandForm: FC = () => {
             </FormControl>{" "}
           </Grid>
           <Grid item xs={6}>
-            <Typography variant='h6'>Bedrooms</Typography>
-            <Grid container direction={"row"} spacing={1}>
-              <Grid item xs={6}>
-                <OnlyNumbersInput
-                  label='min'
-                  value={minBedrooms}
-                  onChange={(value) => {
-                    dispatch(setMinBedrooms(value));
-                  }}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <OnlyNumbersInput
-                  label='max'
-                  value={maxBedrooms}
-                  onChange={(value) => {
-                    dispatch(setMaxBedrooms(value));
-                  }}
-                />
-              </Grid>
+            <Typography variant="h6">Bedrooms Min-Max</Typography>
+            <Grid
+              container
+              direction={"row"}
+              spacing={1}
+              paddingTop={2}
+              paddingLeft={3}
+              paddingRight={3}
+            >
+              <Slider
+                getAriaLabel={() => "Bedrooms Slider"}
+                orientation="horizontal"
+                value={[minBedrooms, maxBedrooms]}
+                onChange={handleSliderChange}
+                valueLabelDisplay="auto"
+                min={0}
+                max={10}
+              />
             </Grid>
           </Grid>
 
           <Grid item xs={6}>
-            <Typography variant='h6'>Bathrooms</Typography>
-            <Grid container direction={"row"} spacing={1}>
-              <Grid item xs={6}>
-                <OnlyNumbersInput
-                  label='min'
-                  value={minBathrooms}
-                  onChange={(value) => {
-                    dispatch(setMinBathrooms(value));
-                  }}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <OnlyNumbersInput
-                  label='max'
-                  value={maxBathrooms}
-                  onChange={(value) => {
-                    dispatch(setMaxBathrooms(value));
-                  }}
-                />
-              </Grid>
+            <Typography variant="h6">Bathrooms Min-Max</Typography>
+
+            <Grid
+              container
+              direction={"row"}
+              spacing={1}
+              paddingTop={2}
+              paddingLeft={3}
+              paddingRight={3}
+            >
+              <Slider
+                getAriaLabel={() => "Bathrooms Slider"}
+                orientation="horizontal"
+                value={[minBathrooms, maxBathrooms]}
+                onChange={handleSliderChange1}
+                valueLabelDisplay="auto"
+                min={0}
+                max={10}
+              />
             </Grid>
           </Grid>
 
           <Grid item xs={6}>
-            <Typography variant='h6'>Covered</Typography>
-            <Grid container direction={"row"} spacing={1}>
-              <Grid item xs={6}>
-                <OnlyNumbersInput
-                  label='min'
-                  value={minCovered}
-                  onChange={(value) => {
-                    dispatch(setMinCovered(value));
-                  }}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <OnlyNumbersInput
-                  label='max'
-                  value={maxCovered}
-                  onChange={(value) => {
-                    dispatch(setMaxCovered(value));
-                  }}
-                />
-              </Grid>
+            <Typography variant="h6">Covered Min-Max (m²)</Typography>
+            <Grid
+              container
+              direction={"row"}
+              spacing={1}
+              paddingTop={2}
+              paddingLeft={3}
+              paddingRight={3}
+            >
+              <Slider
+                getAriaLabel={() => "Covered Slider"}
+                orientation="horizontal"
+                value={[minCovered, maxCovered]}
+                onChange={handleSliderChange2}
+                valueLabelDisplay="auto"
+                min={0}
+                max={3000}
+              />
             </Grid>
           </Grid>
 
           <Grid item xs={6}>
-            <Typography variant='h6'>Plot</Typography>
-            <Grid container direction={"row"} spacing={1}>
-              <Grid item xs={6}>
-                <OnlyNumbersInput
-                  label='min'
-                  value={minPlot}
-                  onChange={(value) => {
-                    dispatch(setMinPlot(value));
-                  }}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <OnlyNumbersInput
-                  label='max'
-                  value={maxPlot}
-                  onChange={(value) => {
-                    dispatch(setMaxPlot(value));
-                  }}
-                />
-              </Grid>
+            <Typography variant="h6">Plot Min-Max (m²)</Typography>
+            <Grid
+              container
+              direction={"row"}
+              spacing={1}
+              paddingTop={2}
+              paddingLeft={3}
+              paddingRight={3}
+            >
+              <Slider
+                getAriaLabel={() => "Plot Slider"}
+                orientation="horizontal"
+                value={[minPlot, maxPlot]}
+                onChange={handleSliderChange3}
+                valueLabelDisplay="auto"
+                min={0}
+                max={10000}
+              />
             </Grid>
           </Grid>
 
           <Grid item xs={6}>
-            <Typography variant='h6'>Price</Typography>
-            <Grid container direction={"row"} spacing={1}>
-              <Grid item xs={6}>
-                <OnlyNumbersInput
-                  label='min'
-                  value={minPrice}
-                  onChange={(value) => {
-                    dispatch(setMinPrice(value));
-                  }}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <OnlyNumbersInput
-                  label='max'
-                  value={maxPrice}
-                  onChange={(value) => {
-                    dispatch(setMaxPrice(value));
-                  }}
-                />
-              </Grid>
+            <Typography variant="h6">Price Min-Max (€)</Typography>
+            <Grid
+              container
+              direction={"row"}
+              spacing={1}
+              paddingTop={2}
+              paddingLeft={3}
+              paddingRight={3}
+            >
+              <Slider
+                getAriaLabel={() => "Price Slider"}
+                orientation="horizontal"
+                value={[minPrice, maxPrice]}
+                onChange={handleSliderChange4}
+                valueLabelDisplay="auto"
+                min={0}
+                max={1000000}
+              />
             </Grid>
           </Grid>
 
           <Grid item xs={6}>
-            <Typography variant='h6'>Floor</Typography>
-            <Grid container direction={"row"} spacing={1}>
-              <Grid item xs={6}>
-                <OnlyNumbersInput
-                  label='min'
-                  value={minFloor}
-                  onChange={(value) => {
-                    dispatch(setMinFloor(value));
-                  }}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <OnlyNumbersInput
-                  label='max'
-                  value={maxFloor}
-                  onChange={(value) => {
-                    dispatch(setMaxFloor(value));
-                  }}
-                />
-              </Grid>
+            <Typography variant="h6">Floor Min-Max</Typography>
+            <Grid
+              container
+              direction={"row"}
+              spacing={1}
+              paddingTop={2}
+              paddingLeft={3}
+              paddingRight={3}
+            >
+              {/* <Slider
+                getAriaLabel={() => "Floor Slider"}
+                orientation="horizontal"
+                value={[minFloor, maxFloor]}
+                onChange={handleSliderChange5}
+                valueLabelDisplay="auto"
+                valueLabelFormat={(value) => floorMap.get(value)}
+                min={-3}
+                max={20}
+              /> */}
             </Grid>
           </Grid>
 
           <Grid item xs={6}>
-            <Typography variant='h6'>Year of Construction</Typography>
-            <Grid container direction={"row"} spacing={1}>
-              <Grid item xs={6}>
-                <OnlyNumbersInput
-                  label='min'
-                  value={minYearOfConstruction}
-                  onChange={(value) => {
-                    dispatch(setMinYearOfConstruction(value));
-                  }}
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <OnlyNumbersInput
-                  label='max'
-                  value={maxYearOfConstruction}
-                  onChange={(value) => {
-                    dispatch(setMaxYearOfConstruction(value));
-                  }}
-                />
-              </Grid>
+            <Typography variant="h6">Year of Construction Min-Max</Typography>
+            <Grid
+              container
+              direction={"row"}
+              spacing={1}
+              paddingTop={2}
+              paddingLeft={3}
+              paddingRight={3}
+            >
+              <Slider
+                getAriaLabel={() => "Year Of Constuction Slider"}
+                orientation="horizontal"
+                value={[minYearOfConstruction, maxYearOfConstruction]}
+                onChange={handleSliderChange6}
+                valueLabelDisplay="auto"
+                min={1960}
+                max={2023}
+              />
             </Grid>
           </Grid>
         </Grid>

@@ -57,6 +57,8 @@ const LabelCreate = (props: ILabelCreateProps) => {
   const [openPicker, setOpenPicker] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
+  const [error, setError] = useState("");
+
   const handleChangeComplete = (color: any) => {
     setPickerColor(color.hex);
   };
@@ -65,6 +67,12 @@ const LabelCreate = (props: ILabelCreateProps) => {
     onLabelClick(label);
   };
   const createLabel = () => {
+    if (!labelName)
+    {
+      setError("Το όνομα της ετικέτας είναι υποχρεωτικό");
+      return;
+    }
+  
     onLabelCreate({ color: pickerColor, name: labelName });
 
     /* close dialog */
@@ -98,26 +106,10 @@ const LabelCreate = (props: ILabelCreateProps) => {
       </Box>
 
       <Box sx={{ display: "flex", justifyContent: "center", flexWrap: 'wrap' }}>
-        {assignedLabels.map((label, index) => {
-          if (!label) return <></>;
+        <Stack direction={"row"} flexWrap={"wrap"} spacing={1}>
+          {assignedLabels.map((label, index) => {
+            if (!label) return <></>;
 
-          return (
-            <Label
-              key={index}
-              variant="soft"
-              sx={{
-                bgcolor: label.color,
-                color: "white",
-              }}
-              onClose={() => onRemoveAssignedLabel(index)}
-            >
-              {label.name}
-            </Label>
-          );
-        })}
-        {newLabels &&
-          newLabels.length > 0 &&
-          newLabels.map((label, index) => {
             return (
               <Label
                 key={index}
@@ -126,12 +118,32 @@ const LabelCreate = (props: ILabelCreateProps) => {
                   bgcolor: label.color,
                   color: "white",
                 }}
-                onClose={() => onRemoveNewLabel(index)}
+                onClose={() => onRemoveAssignedLabel(index)}
               >
                 {label.name}
               </Label>
             );
           })}
+        </Stack>
+        <Stack direction={"row"} flexWrap={"wrap"} spacing={1}>
+          {newLabels &&
+            newLabels.length > 0 &&
+            newLabels.map((label, index) => {
+              return (
+                <Label
+                  key={index}
+                  variant="soft"
+                  sx={{
+                    bgcolor: label.color,
+                    color: "white",
+                  }}
+                  onClose={() => onRemoveNewLabel(index)}
+                >
+                  {label.name}
+                </Label>
+              );
+            })}
+        </Stack>
       </Box>
 
       <Dialog
@@ -159,7 +171,7 @@ const LabelCreate = (props: ILabelCreateProps) => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText>Customer Labels</DialogContentText>
-          <Stack direction={"row"} spacing={1}>
+          <Stack direction={"row"} flexWrap={"wrap"} spacing={1}>
             {existingLabels.map((label, index) => {
               return (
                 <Label
@@ -196,7 +208,9 @@ const LabelCreate = (props: ILabelCreateProps) => {
                     id="outlined-select-currency"
                     value={labelName}
                     placeholder="Νέα Ετικέτα"
-                    onFocus={(event) => event.target.placeholder = ""}
+                    error={!!error}
+                    helperText={error}
+                    onFocus={(event) => {event.target.placeholder = "", setError("")}}
                     onBlur={(event) => event.target.placeholder = "Νέα Ετικέτα"}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                       setLabelName(event.target.value);

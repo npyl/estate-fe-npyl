@@ -10,7 +10,7 @@ import FeaturesForCommercialSection from "./components/FeaturesForCommercial";
 import FileSection from "./components/Files";
 import HeatingAndEnergyForResidentialSection from "./components/HeatingAndEnergyForCommercial";
 import ImageSection from "./components/Images";
-import LocationSection from "./components/Location";
+import LocationSection from "src/components/Location";
 import PropertyDescriptionForCommercialSection from "./components/PropertyDescriptionForCommercial";
 import SuitableForForCommercialSection from "./components/SuitableForForCommercial";
 import TechnicalFeaturesAndInteriorForCommercialSection from "./components/TechnicalFeaturesAndInteriorForCommercial";
@@ -25,7 +25,25 @@ import {
   setPropertyImages,
 } from "src/slices/property/files";
 
-import { selectState } from "src/slices/property";
+import { 
+  selectState,
+
+  selectStreet,
+  selectNumber,
+  selectCity,
+  selectComplex,
+  selectZipCode,
+  selectRegion,
+  selectCountry,
+
+  setStreet,
+  setNumber,
+  setCity,
+  setComplex,
+  setZipCode,
+  setRegion,
+  setCountry,
+} from "src/slices/property";
 
 const CommercialFormSection: React.FC<any> = (props) => {
   const dispatch = useDispatch();
@@ -33,6 +51,14 @@ const CommercialFormSection: React.FC<any> = (props) => {
   const images = useSelector(selectPropertyImages);
   const blueprints = useSelector(selectPropertyBlueprints);
   const state = useSelector(selectState);
+
+  const street = useSelector(selectStreet);
+  const number = useSelector(selectNumber);
+  const city = useSelector(selectCity);
+  const complex = useSelector(selectComplex);
+  const zipCode = useSelector(selectZipCode);
+  const region = useSelector(selectRegion);
+  const country = useSelector(selectCountry);
 
   return (
     <>
@@ -61,7 +87,23 @@ const CommercialFormSection: React.FC<any> = (props) => {
                 dispatch(setPropertyImages(images));
               }}
             />
-            <LocationSection />
+            <LocationSection
+              street={street}
+              number={number}
+              city={city}
+              complex={complex}
+              zipCode={zipCode}
+              region={region}
+              country={country}
+
+              setStreet={setStreet}
+              setNumber={setNumber}
+              setCity={setCity}
+              setComplex={setComplex}
+              setZipCode={setZipCode}
+              setRegion={setRegion}
+              setCountry={setCountry}
+            />
 
             <SuitableForForCommercialSection />
             <ConstructionForCommercialSection />

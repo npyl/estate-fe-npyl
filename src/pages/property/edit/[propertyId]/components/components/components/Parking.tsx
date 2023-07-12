@@ -20,7 +20,7 @@ const ParkingSection: React.FC<any> = () => {
 
   const dispatch = useDispatch();
 
-  const parkings = useSelector(selectParkings);
+  const parkings = useSelector(selectParkings) || [];
 
   if (!details || !details.parkingType) return null;
 

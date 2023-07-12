@@ -11,36 +11,24 @@ import * as React from "react";
 import { Box } from "@mui/system";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useAllCustomersQuery } from "src/services/customers";
 import {
   selectPrice,
   selectEstimatedRentPrice,
   setEstimatedRentPrice,
   selectCurrentRentPrice,
   setCurrentRentPrice,
-  selectStudent,
   setPrice,
 } from "src/slices/property";
 
-import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
-
 import { useState } from "react";
-import { useAllUsersQuery } from "src/services/user";
-import { useAllGlobalsQuery } from "src/services/global";
 
 const ROISection: React.FC<any> = (props) => {
-  const { data } = useAllGlobalsQuery();
-  const enums: IGlobalProperty = data?.property as IGlobalProperty;
-  const details = enums?.details as IGlobalPropertyDetails;
-  const dispatch = useDispatch();
 
-  const student = useSelector(selectStudent);
+  const dispatch = useDispatch();
 
   const price = useSelector(selectPrice);
   const currentRentPrice = useSelector(selectCurrentRentPrice);
   const estimatedRentPrice = useSelector(selectEstimatedRentPrice);
-
-  if (!enums) return null;
 
   const [additionalCheckbox1Enabled, setAdditionalCheckbox1Enabled] =
     useState(false); // State variable for enabling additional checkboxes
@@ -91,12 +79,16 @@ const ROISection: React.FC<any> = (props) => {
       event.preventDefault(); // Prevent entering non-numeric characters
     }
   };
-  //roi calculator
-  const roi: number = additionalCheckbox1Enabled
-    ? ((currentRentPrice * 12) / price) * 100
-    : additionalCheckbox2Enabled
-      ? ((estimatedRentPrice * 12) / price) * 100
-      : 0;
+  const roi: number = 0;
+  // //roi calculator
+  // const roi: number = additionalCheckbox1Enabled
+  //   ? ((currentRentPrice * 12) / price) * 100
+  //   : additionalCheckbox2Enabled
+  //     ? ((estimatedRentPrice * 12) / price) * 100
+  //     : 0;
+
+  return <>TODO: add ROI back again</>;
+
   return (
     <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
       <Box

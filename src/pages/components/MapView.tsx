@@ -1,6 +1,6 @@
 import { Button, Box, Grid, Paper, Stack, Typography } from "@mui/material";
 import { useState } from "react";
-import Map from "./Map";
+import Map from "src/components/Map/Map";
 import { BookingItem } from "./MediaCard";
 import { IProperties } from "src/types/properties";
 import { useRouter } from "next/router";
