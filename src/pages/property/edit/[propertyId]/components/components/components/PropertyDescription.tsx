@@ -48,7 +48,7 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
   const details = enums?.details as IGlobalPropertyDetails;
 
   const dispatch = useDispatch();
-  const atttic = useSelector(selectAttic);
+  const attic = useSelector(selectAttic);
   const playroom = useSelector(selectPlayRoom);
   const penthouse = useSelector(selectPenthouse);
   const landUse = useSelector(selectLandUse);
@@ -408,7 +408,7 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
           >
             <Checkbox
               id="outlined-controlled"
-              value={atttic}
+              value={attic}
               placeholder="Attic"
               onChange={(
                 event: React.ChangeEvent<unknown>,

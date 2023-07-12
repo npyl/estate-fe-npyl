@@ -27,7 +27,7 @@ const CreatePropertyPage: NextPage = () => {
   useEffect(() => {
     if (!isSuccess || !createdPropertyId) return;
 
-    router.push(`/property/edit/${createdPropertyId}?draft=1`);
+    router.push(`/property/edit/${createdPropertyId}`);
   }, [isSuccess, createdPropertyId]);
 
   return <>
