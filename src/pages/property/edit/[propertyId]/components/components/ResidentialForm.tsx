@@ -11,7 +11,7 @@ import FeaturesSection from "./components/Features";
 import FileSection from "./components/Files";
 import HeatingAndEnergySection from "./components/HeatingAndEnergy";
 import ImageSection from "./components/Images";
-import LocationSection from "./components/Location";
+import LocationSection from "src/components/Location";
 import ParkingSection from "./components/Parking";
 import PropertyDescriptionSection from "./components/PropertyDescription";
 import SuitableForForResidentialSection from "./components/SuitableForForResidential";
@@ -26,7 +26,26 @@ import {
   setPropertyBlueprints,
 } from "src/slices/property/files";
 
-import { selectState } from "src/slices/property";
+import { 
+  selectState, 
+
+  selectStreet,
+  selectNumber,
+  selectCity,
+  selectComplex,
+  selectZipCode,
+  selectRegion,
+  selectCountry,
+
+  setStreet,
+  setNumber,
+  setCity,
+  setComplex,
+  setZipCode,
+  setRegion,
+  setCountry,
+} from "src/slices/property";
+
 import {
   selectPropertyBlueprints,
   selectPropertyImages,
@@ -41,6 +60,14 @@ const ResidentialFormSection: React.FC<any> = (props) => {
   const blueprints = useSelector(selectPropertyBlueprints);
 
   const state = useSelector(selectState);
+
+  const street = useSelector(selectStreet);
+  const number = useSelector(selectNumber);
+  const city = useSelector(selectCity);
+  const complex = useSelector(selectComplex);
+  const zipCode = useSelector(selectZipCode);
+  const region = useSelector(selectRegion);
+  const country = useSelector(selectCountry);
 
   return (
     <>
@@ -73,7 +100,24 @@ const ResidentialFormSection: React.FC<any> = (props) => {
                 dispatch(setPropertyImages(images));
               }}
             />
-            <LocationSection />
+            <LocationSection
+              street={street}
+              number={number}
+              city={city}
+              complex={complex}
+              zipCode={zipCode}
+              region={region}
+              country={country}
+
+              setStreet={setStreet}
+              setNumber={setNumber}
+              setCity={setCity}
+              setComplex={setComplex}
+              setZipCode={setZipCode}
+              setRegion={setRegion}
+              setCountry={setCountry}
+            />
+
             <HeatingAndEnergySection />
 
             <ParkingSection />

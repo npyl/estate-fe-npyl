@@ -8,7 +8,7 @@ import FeaturesForOtherSection from "./components/FeaturesForOther";
 import FileSection from "./components/Files";
 import HeatingAndEnergyForCommercialSection from "./components/HeatingAndEnergyForCommercial";
 import ImageSection from "./components/Images";
-import LocationSection from "./components/Location";
+import LocationSection from "src/components/Location";
 import PropertyDescriptionForOtherSection from "./components/PropertyDescriptionForOther";
 import SuitableForForOtherSection from "./components/SuitableForForOther";
 import TechnicalFeaturesAndInteriorForOtherSection from "./components/TechnicalFeaturesAndInteriorForOther";
@@ -22,13 +22,40 @@ import {
   setPropertyImages,
 } from "src/slices/property/files";
 
-import { selectState, setState } from "src/slices/property";
+import { 
+  selectState, 
+
+  selectStreet,
+  selectNumber,
+  selectCity,
+  selectComplex,
+  selectZipCode,
+  selectRegion,
+  selectCountry,
+
+  setStreet,
+  setNumber,
+  setCity,
+  setComplex,
+  setZipCode,
+  setRegion,
+  setCountry,
+} from "src/slices/property";
+
 const OtherFormSection: React.FC<any> = (props) => {
   const dispatch = useDispatch();
 
   const state = useSelector(selectState);
   const images = useSelector(selectPropertyImages);
   const blueprints = useSelector(selectPropertyBlueprints);
+
+  const street = useSelector(selectStreet);
+  const number = useSelector(selectNumber);
+  const city = useSelector(selectCity);
+  const complex = useSelector(selectComplex);
+  const zipCode = useSelector(selectZipCode);
+  const region = useSelector(selectRegion);
+  const country = useSelector(selectCountry);
 
   return (
     <>
@@ -58,7 +85,25 @@ const OtherFormSection: React.FC<any> = (props) => {
                 dispatch(setPropertyImages(images));
               }}
             />
-            <LocationSection />
+
+            <LocationSection
+              street={street}
+              number={number}
+              city={city}
+              complex={complex}
+              zipCode={zipCode}
+              region={region}
+              country={country}
+
+              setStreet={setStreet}
+              setNumber={setNumber}
+              setCity={setCity}
+              setComplex={setComplex}
+              setZipCode={setZipCode}
+              setRegion={setRegion}
+              setCountry={setCountry}
+            />
+
             <HeatingAndEnergyForCommercialSection />
 
             <TechnicalFeaturesAndInteriorForOtherSection />

@@ -6,7 +6,7 @@ import DescriptionSection from "./components/Description";
 import FeaturesForLandSection from "./components/FeaturesForLand";
 import FileSection from "./components/Files";
 import ImageSection from "./components/Images";
-import LocationSection from "./components/Location";
+import LocationSection from "src/components/Location";
 import PropertyDescriptionForLandSection from "./components/PropertyDescriptionForLand";
 import SuitableForForLandSection from "./components/SuitableForForLand";
 import TechnicalFeaturesAndInteriorForLandSection from "./components/TechnicalFeaturesAndInteriorForLand";
@@ -20,7 +20,25 @@ import {
   setPropertyImages,
 } from "src/slices/property/files";
 
-import { selectState } from "src/slices/property";
+import { 
+  selectState,
+
+  selectStreet,
+  selectNumber,
+  selectCity,
+  selectComplex,
+  selectZipCode,
+  selectRegion,
+  selectCountry,
+
+  setStreet,
+  setNumber,
+  setCity,
+  setComplex,
+  setZipCode,
+  setRegion,
+  setCountry,
+} from "src/slices/property";
 
 const LandFormSection: React.FC<any> = (props) => {
   const dispatch = useDispatch();
@@ -28,6 +46,14 @@ const LandFormSection: React.FC<any> = (props) => {
   const state = useSelector(selectState);
   const images = useSelector(selectPropertyImages);
   const blueprints = useSelector(selectPropertyBlueprints);
+
+  const street = useSelector(selectStreet);
+  const number = useSelector(selectNumber);
+  const city = useSelector(selectCity);
+  const complex = useSelector(selectComplex);
+  const zipCode = useSelector(selectZipCode);
+  const region = useSelector(selectRegion);
+  const country = useSelector(selectCountry);
 
   return (
     <>
@@ -55,7 +81,23 @@ const LandFormSection: React.FC<any> = (props) => {
                 dispatch(setPropertyImages(images));
               }}
             />
-            <LocationSection />
+            <LocationSection
+              street={street}
+              number={number}
+              city={city}
+              complex={complex}
+              zipCode={zipCode}
+              region={region}
+              country={country}
+
+              setStreet={setStreet}
+              setNumber={setNumber}
+              setCity={setCity}
+              setComplex={setComplex}
+              setZipCode={setZipCode}
+              setRegion={setRegion}
+              setCountry={setCountry}
+            />
 
             <SuitableForForLandSection />
             <DescriptionSection />
