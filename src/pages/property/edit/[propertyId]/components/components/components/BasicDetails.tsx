@@ -10,6 +10,7 @@ import {
   Box,
   Typography,
 } from "@mui/material";
+
 import DateFieldStyled from "./DateFieldStyled"; // adjust the path based on your directory structure
 
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
@@ -20,7 +21,6 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 import * as React from "react";
-
 
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import dynamic from "next/dynamic";
@@ -67,6 +67,12 @@ import {
   setRented,
   setState,
 } from "src/slices/property";
+import {
+  setFirstName,
+  setLastName,
+  selectFirstName,
+  selectLastName,
+} from "src/slices/customer";
 
 import { IGlobalProperty } from "src/types/global";
 import { ILabel } from "src/types/label";
@@ -77,7 +83,10 @@ import { useAllGlobalsQuery } from "src/services/global";
 import { LabelCreate } from "src/components/label";
 
 // Property Slice
-import { addLabel as addLabelID, removeLabel as removeAssignedLabel } from "src/slices/property";
+import {
+  addLabel as addLabelID,
+  removeLabel as removeAssignedLabel,
+} from "src/slices/property";
 // Labels Slice (for new labels)
 import {
   addLabel as addNewLabel,
@@ -88,6 +97,7 @@ import { useGetLabelsQuery } from "src/services/labels";
 
 import { selectAvailableAfter } from "src/slices/property";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
+import { ICustomer } from "src/types/customer";
 
 const BasicSection: React.FC<any> = (props) => {
   const { data } = useAllGlobalsQuery();
@@ -136,9 +146,13 @@ const BasicSection: React.FC<any> = (props) => {
 
   const handleLabelClick = (label: ILabel) => dispatch(addLabelID(label.id));
   const handleLabelCreate = (label: ILabel) => dispatch(addNewLabel(label));
-  const handleRemoveAssignedLabel = (index: number) => dispatch(removeAssignedLabel(index));
-  const handleRemoveNewLabel = (index: number) => dispatch(removeNewLabel(index));
+  const handleRemoveAssignedLabel = (index: number) =>
+    dispatch(removeAssignedLabel(index));
+  const handleRemoveNewLabel = (index: number) =>
+    dispatch(removeNewLabel(index));
 
+  const firstName = useSelector(selectFirstName);
+  const lastName = useSelector(selectLastName);
   const handleDateChange = (
     setter: ActionCreatorWithPayload<any, string>,
     date: Date | null
@@ -177,7 +191,6 @@ const BasicSection: React.FC<any> = (props) => {
               }}
             />
           </Grid>
-
           <Grid item xs={6}>
             <TextField
               fullWidth
@@ -191,9 +204,9 @@ const BasicSection: React.FC<any> = (props) => {
               size="small"
             >
               {owners && owners.length > 0 ? (
-                owners?.map((option, index) => (
+                owners?.map((option: ICustomer, index: number) => (
                   <MenuItem key={index} value={option.id}>
-                    {option.email}
+                    {`${option.firstName} ${option.lastName}`}
                   </MenuItem>
                 ))
               ) : (
@@ -201,6 +214,7 @@ const BasicSection: React.FC<any> = (props) => {
               )}
             </TextField>
           </Grid>
+
           <Grid item xs={6}>
             <TextField
               fullWidth
@@ -216,7 +230,7 @@ const BasicSection: React.FC<any> = (props) => {
               {managers && managers.length > 0 ? (
                 managers?.map((option, index) => (
                   <MenuItem key={index} value={option.id}>
-                    {option.email}
+                    {`${option.firstName} ${option.lastName}`}
                   </MenuItem>
                 ))
               ) : (
@@ -246,33 +260,6 @@ const BasicSection: React.FC<any> = (props) => {
                 })}
               </Select>
             </FormControl>
-            {/* <TextField
-              fullWidth
-              id="outlined-select-currency"
-              slot=""
-              select
-              label="State"
-              value={state}
-              onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                dispatch(setState(event.target.value));
-              }}
-              inputProps={{
-                style: {
-                  height: "8px",
-                },
-              }}
-              size="small"
-            >
-              {enums && enums.state ? (
-                enums?.state.map((option) => (
-                  <MenuItem key={option} value={option}>
-                    {option}
-                  </MenuItem>
-                ))
-              ) : (
-                <MenuItem value={""}></MenuItem>
-              )}
-            </TextField> */}
           </Grid>
           <Grid item xs={6}>
             <OnlyNumbersInput
@@ -401,66 +388,6 @@ const BasicSection: React.FC<any> = (props) => {
               Auction
             </Typography>
           </Grid>
-
-          {/* </LocalizationProvider> */}
-          {/* <DatePicker label="Basic date picker" />
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <Grid
-              item
-              xs={6}
-              flexDirection="row"
-              sx={{
-                display: "inline-flex",
-                alignItems: "center",
-                height: "100px",
-              }}
-            >
-              <DatePicker label="Basic date picker" />
-              <DatePicker
-                label="Rental Start"
-                value={rentalPeriodStart}
-                onChange={(newValue: Date | null) =>
-                  setRentalPeriodStart(newValue)
-                }
-                renderInput={(params) => <TextField {...params} />}
-              />
-            </Grid>
-            <Grid
-              item
-              xs={6}
-              flexDirection="row"
-              sx={{
-                display: "inline-flex",
-                alignItems: "center",
-                height: "100px",
-              }}
-            >
-              <DatePicker
-                label="Rental End"
-                value={rentalPeriodEnd}
-                onChange={(newValue: Date) => setRentalPeriodEnd(newValue)}
-                sx={{ width: "100%", height: " 50px" }}
-              />
-            </Grid> */}
-
-          {/* <Grid
-              item
-              xs={6}
-              flexDirection="row"
-              sx={{
-                display: "inline-flex",
-                alignItems: "center",
-                height: "100px",
-              }}
-            >
-              <DatePicker
-                label="Available After"
-                value={availableAfter}
-                onChange={handleDateChange}
-                sx={{ width: "100%", height: " 50px" }}
-              />
-            </Grid>
-          </LocalizationProvider> */}
         </Grid>
       </Grid>
       <Grid item xs={12} padding={1}>
@@ -499,10 +426,8 @@ const BasicSection: React.FC<any> = (props) => {
                   Rented
                 </Typography>
               </Grid>
-              {/* <LocalizationProvider dateAdapter={AdapterDayjs}> */}
-              <Grid item xs={6}>
-                {/* <DemoContainer components={["DateField"]}> */}
 
+              <Grid item xs={6}>
                 <DateFieldStyled
                   label="Available After:"
                   value={new Date(availableAfter)}
@@ -512,13 +437,9 @@ const BasicSection: React.FC<any> = (props) => {
                   disabled={!rented} // Disable the field if "rented" is unchecked
                   sx={{ width: "100%" }} // Add custom styles to make it full width
                 />
-
-                {/* </DemoContainer> */}
               </Grid>
 
               <Grid item xs={6}>
-                {/* <DemoContainer components={["DateField"]}> */}
-
                 <DateFieldStyled
                   label="Rental Period Start"
                   value={new Date(rentalPeriodStart)}
@@ -528,10 +449,8 @@ const BasicSection: React.FC<any> = (props) => {
                   disabled={!rented} // Disable the field if "rented" is unchecked
                   sx={{ width: "100%" }} // Add custom styles to make it full width
                 />
-                {/* </DemoContainer> */}
               </Grid>
               <Grid item xs={6}>
-                {/* <DemoContainer components={["DateField"]}> */}
                 <DateFieldStyled
                   label="Rental Period End"
                   value={new Date(rentalPeriodEnd)}
@@ -541,7 +460,6 @@ const BasicSection: React.FC<any> = (props) => {
                   disabled={!rented} // Disable the field if "rented" is unchecked
                   sx={{ width: "100%" }} // Add custom styles to make it full width
                 />
-                {/* </DemoContainer> */}
               </Grid>
               <Grid item xs={6}>
                 <OnlyNumbersInput

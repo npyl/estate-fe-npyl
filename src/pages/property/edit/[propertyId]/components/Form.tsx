@@ -79,7 +79,7 @@ export default function Form({
             endIcon={<SendIcon />}
             onClick={handleClick}
           >
-            {edit ? "Edit" : "Create"}
+            {edit ? "Save" : "Create"}
           </Button>
         </Grid>
       </Grid>
