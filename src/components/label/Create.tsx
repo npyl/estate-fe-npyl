@@ -57,6 +57,8 @@ const LabelCreate = (props: ILabelCreateProps) => {
   const [openPicker, setOpenPicker] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
+  const [error, setError] = useState("");
+
   const handleChangeComplete = (color: any) => {
     setPickerColor(color.hex);
   };
@@ -65,6 +67,12 @@ const LabelCreate = (props: ILabelCreateProps) => {
     onLabelClick(label);
   };
   const createLabel = () => {
+    if (!labelName)
+    {
+      setError("Το όνομα της ετικέτας είναι υποχρεωτικό");
+      return;
+    }
+  
     onLabelCreate({ color: pickerColor, name: labelName });
 
     /* close dialog */
@@ -196,7 +204,9 @@ const LabelCreate = (props: ILabelCreateProps) => {
                     id="outlined-select-currency"
                     value={labelName}
                     placeholder="Νέα Ετικέτα"
-                    onFocus={(event) => event.target.placeholder = ""}
+                    error={!!error}
+                    helperText={error}
+                    onFocus={(event) => {event.target.placeholder = "", setError("")}}
                     onBlur={(event) => event.target.placeholder = "Νέα Ετικέτα"}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                       setLabelName(event.target.value);
