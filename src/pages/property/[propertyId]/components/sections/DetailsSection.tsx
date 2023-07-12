@@ -91,27 +91,27 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
           <List>
             <ListBooleanItem
               label="Playroom"
-              status={details.playroom}
+              status={details?.playroom}
               align="horizontal"
             />
             <ListItem
               label="View Type"
-              value={details.viewType}
+              value={details?.viewType}
               align="horizontal"
             />
             <ListItem
               label="Zone Type"
-              value={details.zoneType}
+              value={details?.zoneType}
               align="horizontal"
             />
             <ListItem
               label="Land Use"
-              value={details.landUse}
+              value={details?.landUse}
               align="horizontal"
             />
             <ListItem
               label="Accessibility"
-              value={details.accessibility}
+              value={details?.accessibility}
               align="horizontal"
             />
           </List>
