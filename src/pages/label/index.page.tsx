@@ -35,14 +35,19 @@ import { ILabel } from "src/types/label";
 import { IProperties } from "src/types/properties";
 
 const SingleProperty: NextPage = () => {
+  const [assigneeType, setAssigneeType] = useState("");
+
   const [pickerColor, setPickerColor] = useState("#22194d");
-  const [labelName, setLabelName] = useState("");
   const [openPicker, setOpenPicker] = useState(false);
-  const { data: labels } = useGetLabelsQuery();
   const buttonRef = useRef<HTMLButtonElement>(null);
-  const [assigneeType, setAssigneeType] = React.useState("");
-  const [checked, setChecked] = React.useState(false);
+
+  const [checked, setChecked] = useState(false);
+
+  const [labelName, setLabelName] = useState("");
   const [autocompleteValue, setAutocompleteValue] = useState("");
+
+  const [error, setError] = useState("");
+  const [autocompleteError, setAutocompleteError] = useState("");
 
   const [createLabelForPropertyWithID, { isSuccess: createForPropertySuccess }] =
     useCreateLabelForPropertyWithIDMutation();
@@ -50,6 +55,8 @@ const SingleProperty: NextPage = () => {
     useCreateLabelForCustomerWithIDMutation();
   const [createLabelForProperties, { isSuccess: createForPropertiesSuccess }] = useCreateLabelForPropertiesMutation();
   const [createLabelForCustomers, { isSuccess: createForCustomersSuccess }] = useCreateLabelForCustomersMutation();
+
+  const { data: labels } = useGetLabelsQuery();
 
   const properties: string[] =
     useAllPropertiesQuery(undefined, {
@@ -95,6 +102,17 @@ const SingleProperty: NextPage = () => {
   };
 
   const createLabel = () => {
+    if (!labelName)
+    {
+      setError("Το όνομα της ετικέτας είναι υποχρεωτικό");
+      return;
+    }
+    if (!autocompleteValue)
+    {
+      setAutocompleteError("Το code είναι υποχρεωτικό");
+      return;
+    }
+
     const propertyIdForCode = (code: string) => {
       const property = allProperties.find(
         (property) => property.code === code
@@ -210,7 +228,9 @@ const SingleProperty: NextPage = () => {
                     id='outlined-select-currency'
                     value={labelName}
                     placeholder="Νέα Ετικέτα"
-                    onFocus={(event) => event.target.placeholder = ""}
+                    error={!!error}
+                    helperText={error}
+                    onFocus={(event) => {event.target.placeholder = "", setError("")}}
                     onBlur={(event) => event.target.placeholder = "Νέα Ετικέτα"}
                     onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                       setLabelName(event.target.value);
@@ -294,6 +314,9 @@ const SingleProperty: NextPage = () => {
                       sx={{ width: "50%", marginBottom: 2 }}
                       renderInput={(params) => (
                         <TextField
+                          error={!!autocompleteError}
+                          helperText={autocompleteError}
+                          onFocus={(event) => setAutocompleteError("")}
                           {...params}
                         />
                       )}
