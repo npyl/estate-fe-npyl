@@ -55,6 +55,22 @@ export interface IPropertyDistances {
   entertainment: number;
 }
 
+export interface IPropertyAreasPOST {
+  first?: number;
+  second?: number;
+  third?: number;
+  fourth?: number;
+  fifth?: number;
+  plot?: number;
+  covered?: number;
+  basement?: number;
+  attic?: number;
+  garden?: number;
+  balconies?: number;
+  storeroom?: number;
+  groundFloor?: number;
+}
+
 export interface IPropertyAreas {
   first: number;
   second: number;
@@ -69,6 +85,21 @@ export interface IPropertyAreas {
   balconies: number;
   storeroom: number;
   groundFloor: number;
+}
+
+export interface IPropertyConstructionPOST {
+  yearOfConstruction?: number;
+  underConstruction: boolean;
+  newlyBuilt: boolean;
+  incomplete: boolean;
+  totalFloorNumber?: number;
+  internalStairs: boolean;
+  neoclassical: boolean;
+  yearOfRenovation?: number;
+  renovated: boolean;
+  elevator: boolean;
+  needsRenovation: boolean;
+  preserved: boolean;
 }
 
 export interface IPropertyConstruction {
@@ -95,6 +126,36 @@ export interface IPropertyDistances {
   sea: number;
   publicTransport: number;
   entertainment: number;
+}
+
+export interface IPropertyTechnicalFeaturesPOST {
+  entrances?: number;
+  displayWindowsLength?: number;
+  safetyDoor: boolean;
+  alarmSystem: boolean;
+  painted: boolean;
+  furnished: string;
+  frameType: string;
+  paneGlassType: string;
+  windowScreens: boolean;
+  fireplace: boolean;
+  bright: boolean;
+  luxurious: boolean;
+  electricCarChargingFacilities: boolean;
+  reception: boolean;
+  petsAllowed: boolean;
+  floorType: string;
+  satelliteTV: boolean;
+  wiring: boolean;
+  loadingUnloadingElevator: boolean;
+  falseCeiling: boolean;
+  withEquipment: boolean;
+  doubleFrontage: boolean;
+  consideration: boolean;
+  floorToAreaRatio?: number;
+  coverageFactor?: number;
+  facadeLength?: number;
+  inclination: string;
 }
 
 export interface IPropertyTechnicalFeatures {
@@ -138,6 +199,17 @@ export interface IPropertyHeatingAndEnergy {
   offPeakElectricity: boolean;
 }
 
+export interface IPropertyDistancesPOST {
+  schools?: number;
+  supermarket?: number;
+  cafeRestaurant?: number;
+  hospital?: number;
+  airport?: number;
+  sea?: number;
+  publicTransport?: number;
+  entertainment?: number;
+}
+
 export interface IPropertyDistances {
   schools: number;
   supermarket: number;
@@ -153,18 +225,18 @@ export interface IPropertiesPostRequest {
   id?: number;
   code: string;
   title: string;
-  managerId: number;
-  ownerId: number;
+  managerId?: number;
+  ownerId?: number;
   state: string;
   parentCategory: string;
   category: string;
-  area: number;
-  plotArea: number;
-  price: number;
-  averageUtils: number;
+  area?: number;
+  plotArea?: number;
+  price?: number;
+  averageUtils?: number;
   rented: boolean;
-  currentRentPrice: number;
-  estimatedRentPrice: number;
+  currentRentPrice?: number;
+  estimatedRentPrice?: number;
   rentalStart: string;
   rentalEnd: string;
   availableAfter: string;
@@ -176,10 +248,10 @@ export interface IPropertiesPostRequest {
   description: string;
   suitableFor: IPropertySuitableFor;
   heatingAndEnergy: IPropertyHeatingAndEnergy;
-  distances: IPropertyDistances;
-  areas: IPropertyAreas;
-  construction: IPropertyConstruction;
-  technicalFeatures: IPropertyTechnicalFeatures;
+  distances: IPropertyDistancesPOST;
+  areas: IPropertyAreasPOST;
+  construction: IPropertyConstructionPOST;
+  technicalFeatures: IPropertyTechnicalFeaturesPOST;
   details: IPropertyDetailsPOST;
   location: ILocationPOST;
   features: IPropertyFeatures;
