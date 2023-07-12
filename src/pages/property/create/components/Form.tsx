@@ -1,7 +1,7 @@
 import { Grid, Paper, TextField, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 import * as React from "react";
-import { useMemo } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAllGlobalsQuery } from "src/services/global";
 import {
@@ -28,12 +28,12 @@ export default function Form({
   const category = useSelector(selectCategory);
   const parentCategory = useSelector(selectParentCategory);
 
-  useMemo(() => {
-    if (!category) return;
+  useEffect(() => {
+    if (!parentCategory || !category) return;
 
     // create our property draft
     performUpload && performUpload();
-  }, [category]);
+  }, [parentCategory, category]);
 
   if (!enums || !parentCategoryEnum || parentCategoryEnum.length === 0)
     return null;

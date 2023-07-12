@@ -4,9 +4,13 @@ import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { useCreatePropertyMutation } from "src/services/properties";
 
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
-import { selectAll } from "src/slices/property";
+import {
+  resetState,
+  selectCategory,
+  selectParentCategory,
+} from "src/slices/property";
 
 import Form from "./components/Form";
 
@@ -15,20 +19,25 @@ import { useEffect } from "react";
 
 const CreatePropertyPage: NextPage = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const [create, { isSuccess, isLoading: isCreateLoading, data: createdPropertyId }] =
     useCreatePropertyMutation();
 
+  const category = useSelector(selectCategory);
+  const parentCategory = useSelector(selectParentCategory);
+
   const handleUpload = () => {
+    if (!category || !parentCategory) return;
+
     // perform POST
-    create({ parentCategory: 'Residential', category: 'Apartment' });
+    create({ parentCategory: parentCategory, category: category });
   };
 
-  useEffect(() => {
-    if (!isSuccess || !createdPropertyId) return;
-
-    router.push(`/property/edit/${createdPropertyId}`);
-  }, [isSuccess, createdPropertyId]);
+  // redirect on success
+  isSuccess && 
+  createdPropertyId && 
+  router.push(`/property/edit/${createdPropertyId}`);
 
   return <>
     <Form performUpload={handleUpload} />
