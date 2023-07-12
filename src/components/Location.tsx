@@ -3,9 +3,11 @@ import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import * as React from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 
 import OnlyNumbersInput from "src/components/OnlyNumbers";
+import Map from "./Map/Map";
 
 import { ILocationPOST } from "src/types/location";
 
@@ -23,6 +25,8 @@ interface ILocationSectionProps extends ILocationPOST
 
 const LocationSection = (props: ILocationSectionProps) => {
   const dispatch = useDispatch();
+
+  const [activeMarker, setActiveMarker] = useState(null);
 
   const { 
     street,
@@ -60,6 +64,15 @@ const LocationSection = (props: ILocationSectionProps) => {
       </Box>
 
       <Grid item xs={12} padding={1}>
+        <Box display={"flex"} pb={2}>
+          <Box height={`50vh`} width={"100%"}>
+            <Map
+              activeMarker={activeMarker}
+              setActiveMarker={setActiveMarker}
+            />
+          </Box>
+        </Box >
+
         <Grid container spacing={2}>
           <Grid item xs={6}>
             <TextField
