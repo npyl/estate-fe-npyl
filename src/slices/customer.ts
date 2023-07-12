@@ -5,7 +5,7 @@ import type { RootState } from "../store";
 import { IDemand, IDemandFilters } from "src/types/demand";
 import { IPropertyFeatures } from "src/types/features";
 
-interface customerState extends ICustomerPOST { }
+interface customerState extends ICustomerPOST {}
 
 interface IFeatureKey {
   key: keyof IPropertyFeatures;
@@ -241,14 +241,20 @@ const slice = createSlice({
       const feature: IFeatureKey = action.payload;
       const { key } = feature;
       if (!key) return;
-      state.demand.priorityFeatures[key] = state.demand.priorityFeatures[key] !== null ? !state.demand.priorityFeatures[key] : true;
+      state.demand.priorityFeatures[key] =
+        state.demand.priorityFeatures[key] !== null
+          ? !state.demand.priorityFeatures[key]
+          : true;
     },
     // non-priority features
     setNonPriorityFeature(state: customerState, action): void {
       const feature: IFeatureKey = action.payload;
       const { key } = feature;
       if (!key) return;
-      state.demand.nonPriorityFeatures[key] = state.demand.nonPriorityFeatures[key] !== null ? !state.demand.nonPriorityFeatures[key] : true;
+      state.demand.nonPriorityFeatures[key] =
+        state.demand.nonPriorityFeatures[key] !== null
+          ? !state.demand.nonPriorityFeatures[key]
+          : true;
     },
 
     // DEMAND
@@ -325,10 +331,10 @@ const slice = createSlice({
 
       state.demand.filters.labels = labels
         ? labels
-          .filter((label) => label.id) // where id not null
-          .map((label) => {
-            return label.id!;
-          })
+            .filter((label) => label.id) // where id not null
+            .map((label) => {
+              return label.id!;
+            })
         : [];
     },
 
@@ -371,10 +377,10 @@ const slice = createSlice({
       const labels: ILabel[] = action.payload.labels;
       state.labelIDs = labels
         ? labels
-          .filter((label) => label.id) // where id not null
-          .map((label) => {
-            return label.id!;
-          })
+            .filter((label) => label.id) // where id not null
+            .map((label) => {
+              return label.id!;
+            })
         : [];
 
       const demand: IDemand = action.payload.demand;
@@ -389,12 +395,13 @@ const slice = createSlice({
       state.demand.filters.minCovered = demandFilters.minCovered;
       state.demand.filters.minPlot = demandFilters.minPlot;
       state.demand.filters.maxPlot = demandFilters.maxPlot;
+      state.demand.filters.minFloor = demandFilters.minFloor;
+      state.demand.filters.maxFloor = demandFilters.maxFloor;
       state.demand.filters.minYearOfConstruction =
         demandFilters.minYearOfConstruction;
       state.demand.filters.maxYearOfConstruction =
         demandFilters.maxYearOfConstruction;
-      state.demand.filters.minFloor = demandFilters.minFloor;
-      state.demand.filters.maxFloor = demandFilters.maxFloor;
+
       state.demand.filters.parentCategory = demandFilters.parentCategory;
       state.demand.filters.category = demandFilters.category;
       state.demand.filters.state = demandFilters.state;
@@ -587,7 +594,8 @@ export const selectMinPrice = ({ customer }: RootState) =>
 export const selectMaxPrice = ({ customer }: RootState) =>
   customer.demand.filters.maxPrice;
 
-export const selectDemandLabels = ({ customer }: RootState) => customer.demand.filters.labels;
+export const selectDemandLabels = ({ customer }: RootState) =>
+  customer.demand.filters.labels;
 
 export const selectTimeFrame = ({ customer }: RootState) =>
   customer.demand.timeframe;
