@@ -107,7 +107,7 @@ const SingleProperty: NextPage = () => {
       setError("Το όνομα της ετικέτας είναι υποχρεωτικό");
       return;
     }
-    if (!autocompleteValue)
+    if (checked && !autocompleteValue)
     {
       setAutocompleteError("Το code είναι υποχρεωτικό");
       return;

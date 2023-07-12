@@ -106,26 +106,10 @@ const LabelCreate = (props: ILabelCreateProps) => {
       </Box>
 
       <Box sx={{ display: "flex", justifyContent: "center", flexWrap: 'wrap' }}>
-        {assignedLabels.map((label, index) => {
-          if (!label) return <></>;
+        <Stack direction={"row"} flexWrap={"wrap"} spacing={1}>
+          {assignedLabels.map((label, index) => {
+            if (!label) return <></>;
 
-          return (
-            <Label
-              key={index}
-              variant="soft"
-              sx={{
-                bgcolor: label.color,
-                color: "white",
-              }}
-              onClose={() => onRemoveAssignedLabel(index)}
-            >
-              {label.name}
-            </Label>
-          );
-        })}
-        {newLabels &&
-          newLabels.length > 0 &&
-          newLabels.map((label, index) => {
             return (
               <Label
                 key={index}
@@ -134,12 +118,32 @@ const LabelCreate = (props: ILabelCreateProps) => {
                   bgcolor: label.color,
                   color: "white",
                 }}
-                onClose={() => onRemoveNewLabel(index)}
+                onClose={() => onRemoveAssignedLabel(index)}
               >
                 {label.name}
               </Label>
             );
           })}
+        </Stack>
+        <Stack direction={"row"} flexWrap={"wrap"} spacing={1}>
+          {newLabels &&
+            newLabels.length > 0 &&
+            newLabels.map((label, index) => {
+              return (
+                <Label
+                  key={index}
+                  variant="soft"
+                  sx={{
+                    bgcolor: label.color,
+                    color: "white",
+                  }}
+                  onClose={() => onRemoveNewLabel(index)}
+                >
+                  {label.name}
+                </Label>
+              );
+            })}
+        </Stack>
       </Box>
 
       <Dialog
@@ -167,7 +171,7 @@ const LabelCreate = (props: ILabelCreateProps) => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText>Customer Labels</DialogContentText>
-          <Stack direction={"row"} spacing={1}>
+          <Stack direction={"row"} flexWrap={"wrap"} spacing={1}>
             {existingLabels.map((label, index) => {
               return (
                 <Label
