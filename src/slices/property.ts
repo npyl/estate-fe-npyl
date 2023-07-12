@@ -124,13 +124,13 @@ const initialState: propertyState = {
   },
   details: {
     floor: "",
-    bedrooms: 0,
-    kitchens: 0,
-    wc: 0,
-    layers: 0,
-    livingrooms: 0,
-    bathrooms: 0,
-    rooms: 0,
+    // bedrooms: 0,
+    // kitchens: 0,
+    // wc: 0,
+    // layers: 0,
+    // livingrooms: 0,
+    // bathrooms: 0,
+    // rooms: 0,
     attic: false,
     storeroom: false,
     playroom: false,
@@ -858,18 +858,19 @@ const slice = createSlice({
       state.buildable = payload.buildable;
       state.video = payload.video;
       state.description = payload.description;
-      // state.propertyImage = payload.propertyImage;
-      state.suitableFor = payload.suitableFor;
-      state.heatingAndEnergy = payload.heatingAndEnergy;
-      state.distances = payload.distances;
-      state.construction = payload.construction;
-      state.technicalFeatures = payload.technicalFeatures;
-      state.details = payload.details;
+
+      state.details = payload.details || initialState.details;
+      state.heatingAndEnergy = payload.heatingAndEnergy || initialState.heatingAndEnergy;
+      state.suitableFor = payload.suitableFor || initialState.suitableFor;
+      state.distances = payload.distances || initialState.distances;
+      state.construction = payload.construction || initialState.construction;
+      state.features = payload.features || initialState.features;      
+      state.technicalFeatures = payload.technicalFeatures || initialState.technicalFeatures;
 
       // areas
-      state.areas = payload.areas;
+      state.areas = payload.areas || initialState.areas;
 
-      // Location
+      // Location (convert from ILocationPOST to ILocation)
       const location: ILocation = payload.location;
       state.location.city = location?.city;
       state.location.complex = location?.complex;
@@ -878,8 +879,6 @@ const slice = createSlice({
       state.location.region = location?.region;
       state.location.street = location?.street;
       state.location.zipCode = location?.zipCode;
-
-      state.features = payload.features;
 
       // map labels
       state.labelIDs = payload.labels

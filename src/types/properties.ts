@@ -1,5 +1,5 @@
 import { ICustomer } from "./customer";
-import { IPropertyDetails } from "./details";
+import { IPropertyDetails, IPropertyDetailsPOST } from "./details";
 import { IPropertyFeatures } from "./features";
 import { IFileModel } from "./fileModel";
 import { ILabel } from "./label";
@@ -180,7 +180,7 @@ export interface IPropertiesPostRequest {
   areas: IPropertyAreas;
   construction: IPropertyConstruction;
   technicalFeatures: IPropertyTechnicalFeatures;
-  details: IPropertyDetails;
+  details: IPropertyDetailsPOST;
   location: ILocationPOST;
   features: IPropertyFeatures;
   labelIDs: number[];
