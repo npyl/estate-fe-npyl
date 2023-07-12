@@ -1,13 +1,11 @@
 import type { NextPage } from "next";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import Form from "./components/Form";
-import {
-  useAddPropertyMutation,
-} from "src/services/properties";
+import { useEditPropertyMutation } from "src/services/properties";
 import { setInitialState, selectAll } from "src/slices/property";
 import {
   setInitialState as setInitialFilesState,
@@ -41,7 +39,7 @@ const EditPropertyPage: NextPage = () => {
 
   const [createLabel, { isSuccess: isLabelSuccess }] = useCreateLabelForPropertyWithIDMutation();
   const [createNote, { isSuccess: isNoteSuccess }] = useAddNoteToPropertyWithIdMutation();
-  const [edit, { isSuccess: isEditProperty, isLoading: isEditLoading, data: editedProperty }] = useAddPropertyMutation();
+  const [edit, { isSuccess: isEditProperty, isLoading: isEditLoading, data: editedProperty }] = useEditPropertyMutation();
 
   const body = useSelector(selectAll);
 
@@ -97,36 +95,8 @@ const EditPropertyPage: NextPage = () => {
   const performUpload = () => {
     convertBlobUrlsToBlobs(propertyImagesURLs).then((propertyImages) => {
       convertBlobUrlsToBlobs(propertyBlueprintsURLs).then((propertyBlueprints) => {
-
-        // INFO: we must accept properties with NO images
-
-        if (!propertyImages) return;
-
-        const blob = new Blob([JSON.stringify(body)], {
-          type: "application/json",
-        });
-
-        let dataToSend = new FormData();
-
-        // main image
-        if (propertyImages.length > 0 && propertyImages[0])
-          dataToSend.append("propertyImage ", propertyImages[0]);
-
-        // gallery
-        for (let i = 1; i < propertyImages.length; i++) {
-          if (!propertyImages[i]) continue;
-          dataToSend.append("propertyGallery ", propertyImages[i]);
-        }
-        // blueprints
-        for (let i = 0; i < propertyBlueprints.length; i++) {
-          if (!propertyBlueprints[i]) continue;
-          dataToSend.append("propertyBlueprints ", propertyBlueprints[i]);
-        }
-
-        dataToSend.append("propertyForm ", blob);
-
         // perform POST
-        edit(dataToSend);
+        edit({id: +propertyId!, body: body});
       })
     });
   };

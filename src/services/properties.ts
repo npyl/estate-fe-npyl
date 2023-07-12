@@ -1,12 +1,16 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IDemand } from "src/types/customer";
-import { IProperties, IPropertyFilter } from "src/types/properties";
+import { IProperties, IPropertiesPostRequest, IPropertyFilter } from "src/types/properties";
 
 import IPage from "src/types/page";
 
 interface ICreatePropertyParams {
   parentCategory: string;
   category: string;
+}
+interface IEditPropertyProps {
+  id: number;
+  body: IPropertiesPostRequest;
 }
 interface ISuggestPropertiesProps {
   id: number;
@@ -60,6 +64,13 @@ export const properties = createApi({
         url: "",
         method: "POST",
         body: dataToSend,
+      }),
+    }),
+    editProperty: builder.mutation<number, IEditPropertyProps>({
+      query: (props: IEditPropertyProps) => ({
+        url: `/edit/${props.id}`,
+        method: "POST",
+        body: props.body
       }),
     }),
     createProperty: builder.mutation<number, ICreatePropertyParams>({
@@ -120,7 +131,8 @@ export const {
   useAllPropertiesQuery,
   useGetPropertyByIdQuery,
   useGetPropertyByCodeQuery,
-  useAddPropertyMutation,
+  useAddPropertyMutation,   // TODO: remove
+  useEditPropertyMutation,
   useCreatePropertyMutation,
   useDeletePropertyMutation,
   useFilterPropertiesMutation,
