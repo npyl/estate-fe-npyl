@@ -39,7 +39,7 @@ const EditPropertyPage: NextPage = () => {
 
   const [createLabel, { isSuccess: isLabelSuccess }] = useCreateLabelForPropertyWithIDMutation();
   const [createNote, { isSuccess: isNoteSuccess }] = useAddNoteToPropertyWithIdMutation();
-  const [edit, { isSuccess: isEditProperty, isLoading: isEditLoading, data: editedProperty }] = useEditPropertyMutation();
+  const [edit, { isSuccess: isEditProperty, isLoading: isEditLoading, data: editedPropertyId }] = useEditPropertyMutation();
 
   const body = useSelector(selectAll);
 
@@ -47,24 +47,20 @@ const EditPropertyPage: NextPage = () => {
   const newNotes = useSelector(selectAllNewNotes);
 
   const createAndAssignNewLabels = () => {
-    const editedPropertyId = editedProperty!.id;
-
     // foreach label; call create-for-property-with-id
     newLabels.forEach((newLabel) => {
       createLabel({
-        propertyId: editedPropertyId,
+        propertyId: editedPropertyId!,
         labelBody: newLabel,
       });
     });
   };
 
   const createAndAssignNewNotes = () => {
-    const editedPropertyId = editedProperty!.id;
-
     // foreach label; call create-for-property-with-id
     newNotes.forEach((newNote) => {
       createNote({
-        id: editedPropertyId,
+        id: editedPropertyId!,
         dataToSend: newNote
       });
     });
