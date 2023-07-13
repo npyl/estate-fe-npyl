@@ -50,6 +50,10 @@ const LocationSection = (props: ILocationSectionProps) => {
     dispatch(setter(event.target.value));
   };
 
+  const handleMapClick = (event: google.maps.MapMouseEvent) => {
+    console.log(event.latLng?.lat());
+  };
+
   return (
     <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
       <Box
@@ -67,6 +71,7 @@ const LocationSection = (props: ILocationSectionProps) => {
         <Box display={"flex"} pb={2}>
           <Box height={`50vh`} width={"100%"}>
             <Map
+              onClick={handleMapClick}
               activeMarker={activeMarker}
               setActiveMarker={setActiveMarker}
             />
