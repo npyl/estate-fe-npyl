@@ -94,41 +94,24 @@ const LabelCreate = (props: ILabelCreateProps) => {
       }}
       flexDirection={"column"}
     >
-      <Box sx={{ display: "flex", justifyContent: "center", height: "10px" }}>
+      <Box sx={{ display: "flex", justifyContent: "center", alignItems: 'center',  height: '10px' }}>
         <Typography flex={1} sx={{ justifyContent: "center" }}>
           Labels
         </Typography>
-        <IconButton
+        <IconButton size="small"
           onClick={() => setAddLabelDialog(true)}
         >
           <AddCircleIcon />
         </IconButton>
       </Box>
 
-      <Box sx={{ display: "flex", justifyContent: "center", flexWrap: 'wrap' }}>
-        <Stack direction={"row"} flexWrap={"wrap"} spacing={1}>
-          {assignedLabels.map((label, index) => {
-            if (!label) return <></>;
+      {((assignedLabels && assignedLabels.length > 0) ||
+       (newLabels && newLabels.length > 0)) &&
+        <Box flex={1} justifyContent={"center"} flexWrap={'wrap'} pt={2}>
+          <Stack direction={"row"} flexWrap={"wrap"} spacing={1}>
+            {assignedLabels.map((label, index) => {
+              if (!label) return <></>;
 
-            return (
-              <Label
-                key={index}
-                variant="soft"
-                sx={{
-                  bgcolor: label.color,
-                  color: "white",
-                }}
-                onClose={() => onRemoveAssignedLabel(index)}
-              >
-                {label.name}
-              </Label>
-            );
-          })}
-        </Stack>
-        <Stack direction={"row"} flexWrap={"wrap"} spacing={1}>
-          {newLabels &&
-            newLabels.length > 0 &&
-            newLabels.map((label, index) => {
               return (
                 <Label
                   key={index}
@@ -137,14 +120,34 @@ const LabelCreate = (props: ILabelCreateProps) => {
                     bgcolor: label.color,
                     color: "white",
                   }}
-                  onClose={() => onRemoveNewLabel(index)}
+                  onClose={() => onRemoveAssignedLabel(index)}
                 >
                   {label.name}
                 </Label>
               );
             })}
-        </Stack>
-      </Box>
+          </Stack>
+          <Stack direction={"row"} flexWrap={"wrap"} spacing={1}>
+            {newLabels &&
+              newLabels.length > 0 &&
+              newLabels.map((label, index) => {
+                return (
+                  <Label
+                    key={index}
+                    variant="soft"
+                    sx={{
+                      bgcolor: label.color,
+                      color: "white",
+                    }}
+                    onClose={() => onRemoveNewLabel(index)}
+                  >
+                    {label.name}
+                  </Label>
+                );
+              })}
+          </Stack>
+        </Box>
+      }
 
       <Dialog
         fullWidth
