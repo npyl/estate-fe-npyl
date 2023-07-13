@@ -22,8 +22,19 @@ const slice = createSlice({
 			// on Edit
 			//
 
-			state.propertyImages = payload.propertyImages;
-			state.propertyBlueprints = payload.propertyBlueprints;
+			const propertyImage = payload.propertyImage;
+			const propertyImages = payload.propertyImages;
+
+			propertyImage && state.propertyImages.push(propertyImage);
+
+			state.propertyImages = [
+				...state.propertyImages,
+				...propertyImages.filter((image: any) => image), // filter nulls
+			];
+
+			state.propertyBlueprints = payload.propertyBlueprints.filter(
+				(blueprint: any) => blueprint // filter nulls
+			);
 		},
 
 		setPropertyBlueprints(state: propertyFilesState, { payload }): void {
