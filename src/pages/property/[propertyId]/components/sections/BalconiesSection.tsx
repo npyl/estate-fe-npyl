@@ -9,7 +9,8 @@ interface BalconiesSectionProps {
 
 const BalconiesSection: React.FC<BalconiesSectionProps> = (props) => {
   const { data } = props;
-  const balconies = data?.details.balconies;
+  const details = data?.details;
+  const balconies = details?.balconies || [];
 
   return balconies && balconies.length > 0 ? (
     <Box
