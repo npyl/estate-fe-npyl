@@ -1,6 +1,5 @@
+import React, { Dispatch, SetStateAction, useCallback, useState } from "react";
 import { Card, CardContent, CardHeader } from "@mui/material";
-import { Dispatch, SetStateAction, useCallback, useState } from "react";
-
 import UploadDnd from "src/components/upload/UploadDnd";
 import GalleryManager from "src/components/GalleryManager";
 import { SoftButton } from "src/components/SoftButton";
@@ -12,6 +11,9 @@ interface IImageSectionProps {
 
 const ImagesSection: React.FC<IImageSectionProps> = ({ files, setFiles }) => {
   const [galleryManagerOpen, setGalleryManagerOpen] = useState(false);
+
+  // Default image
+  const defaultImage = "/static/img/previewImage.png";
 
   const handleDropMultiFile = useCallback(
     (acceptedFiles: File[]) => {
@@ -64,7 +66,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({ files, setFiles }) => {
           <UploadDnd
             multiple
             thumbnail={true}
-            files={files}
+            files={files.length > 0 ? files : [defaultImage]}
             onDrop={handleDropMultiFile}
             onRemove={handleRemoveFile}
             onRemoveAll={handleRemoveAllFiles}

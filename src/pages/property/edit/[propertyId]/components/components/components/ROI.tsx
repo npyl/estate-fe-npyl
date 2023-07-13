@@ -23,7 +23,6 @@ import {
 import { useState } from "react";
 
 const ROISection: React.FC<any> = (props) => {
-
   const dispatch = useDispatch();
 
   const price = useSelector(selectPrice);
@@ -79,15 +78,19 @@ const ROISection: React.FC<any> = (props) => {
       event.preventDefault(); // Prevent entering non-numeric characters
     }
   };
-  const roi: number = 0;
-  // //roi calculator
-  // const roi: number = additionalCheckbox1Enabled
-  //   ? ((currentRentPrice * 12) / price) * 100
-  //   : additionalCheckbox2Enabled
-  //     ? ((estimatedRentPrice * 12) / price) * 100
-  //     : 0;
+  const parsedPrice = price;
+  const parsedCurrentRentPrice = currentRentPrice;
+  const parsedEstimatedRentPrice = estimatedRentPrice;
 
-  return <>TODO: add ROI back again</>;
+  const roi: number = additionalCheckbox1Enabled
+    ? parsedPrice && parsedCurrentRentPrice && parsedPrice !== 0
+      ? ((parsedCurrentRentPrice * 12) / parsedPrice) * 100
+      : 0
+    : additionalCheckbox2Enabled
+    ? parsedPrice && parsedEstimatedRentPrice && parsedPrice !== 0
+      ? ((parsedEstimatedRentPrice * 12) / parsedPrice) * 100
+      : 0
+    : 0;
 
   return (
     <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
