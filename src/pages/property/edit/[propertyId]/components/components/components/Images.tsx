@@ -65,7 +65,6 @@ const ImagesSection: React.FC<IImageSectionProps> = ({ files, setFiles }) => {
 				// this is the first image we are adding; therefore it is the mainImage
 				uploadThumbnail(acceptedFiles[0])
 					.then((cdnUrl) => {
-						console.log("cdnUrl: ", cdnUrl);
 						setFiles([...files, cdnUrl]);
 					})
 					.catch((reason) => console.error("uploadThumbnail: ", reason));
