@@ -3,6 +3,12 @@ import { IDemand } from "src/types/customer";
 import { IProperties, IPropertiesPostRequest, IPropertyFilter } from "src/types/properties";
 
 import IPage from "src/types/page";
+import { IFileResponse } from "src/types/fileModel";
+
+export interface IThumbnailPOST {
+  filename: string;
+  contentType: string;
+}
 
 interface ICreatePropertyParams {
   parentCategory: string;
@@ -12,9 +18,9 @@ interface IEditPropertyProps {
   id: number;
   body: IPropertiesPostRequest;
 }
-interface ISuggestPropertiesProps {
+interface IPropertyAddFileParams {
   id: number;
-  dataToSend: IDemand;
+  body: IThumbnailPOST;
 }
 interface IPropertyFilterParams {
   filter: IPropertyFilter;
@@ -105,22 +111,20 @@ export const properties = createApi({
         };
       },
     }),
-    CustomerPropertySuggestions: builder.mutation<
-      IProperties[],
-      ISuggestPropertiesProps
-    >({
-      query: (data: ISuggestPropertiesProps) => ({
-        url: `${data.id}/suggestProperties`,
+
+    // images & files
+    addPropertyThumbnail: builder.mutation<IFileResponse, IPropertyAddFileParams>({
+      query: (params: IPropertyAddFileParams) => ({
+        url: `/${params.id}/thumbnail`,
         method: "POST",
-        body: data.dataToSend,
+        body: params.body
       }),
-      invalidatesTags: ["Properties"],
+      invalidatesTags: ["Properties"]
     }),
   }),
 });
 
 export const {
-  useCustomerPropertySuggestionsMutation,
   useGetSearchResultsQuery,
   useAllPropertiesQuery,
   useGetPropertyByIdQuery,
@@ -130,4 +134,7 @@ export const {
   useDeletePropertyMutation,
   useFilterPropertiesMutation,
   useSuggestForCustomerQuery,
+
+  // images & files
+  useAddPropertyThumbnailMutation,
 } = properties;
