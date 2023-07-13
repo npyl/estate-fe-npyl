@@ -18,12 +18,13 @@ const center = {
 };
 
 interface IMapProps {
+  onClick?: (event: google.maps.MapMouseEvent) => void;
   data?: IProperties[];
   activeMarker: number | null;
   setActiveMarker: any;
 }
 
-const Map = ({ data, activeMarker, setActiveMarker }: IMapProps) => {
+const Map = ({ onClick, data, activeMarker, setActiveMarker }: IMapProps) => {
   const apiKey = "AIzaSyC6BN1ePFMAmJJfF71uN7vsNXIOCpQ5DbQ";
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
@@ -88,6 +89,7 @@ const Map = ({ data, activeMarker, setActiveMarker }: IMapProps) => {
       mapContainerStyle={containerStyle}
       center={center}
       zoom={16}
+      onClick={(event) => onClick && onClick(event)}
       onLoad={onLoad}
       onUnmount={onUnmount}
     >

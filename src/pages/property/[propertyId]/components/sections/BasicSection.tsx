@@ -87,7 +87,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 />
                 <ListItem
                   label='Construction Year'
-                  value={data.construction.yearOfConstruction}
+                  value={data.construction?.yearOfConstruction}
                   align='horizontal'
                 />
                 {/* yer build na prosthetei??? */}

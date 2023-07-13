@@ -40,12 +40,13 @@ const Label = forwardRef<HTMLSpanElement, LabelProps>(
         {children}
 
         {onClose &&
-          <Box>
+          <Box ml={1} >
             <IconButton
+              size='small'
               aria-label="close"
               onClick={onClose}
             >
-              <CloseIcon />
+              <CloseIcon sx={{ height: 16, width: 16 }}  />
             </IconButton>
           </Box>}
       </StyledLabel>

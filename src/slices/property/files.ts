@@ -2,89 +2,73 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "src/store";
-
-import { IFileModel } from "src/types/fileModel";
+import { IPropertyImage } from "src/types/fileModel";
 
 interface propertyFilesState {
-  propertyImages: string[];             // base64-encoded image url
-  propertyBlueprints: string[];         // base64-encoded image url
+	propertyImages: string[];
+	propertyBlueprints: string[];
 }
 
 const initialState: propertyFilesState = {
-  propertyImages: [],
-  propertyBlueprints: [],
+	propertyImages: [],
+	propertyBlueprints: [],
 };
 
-function base64ToFile(base64Data: string, filename: string, mimeType: string): File {
-  const byteCharacters = atob(base64Data);
-  const byteArrays: Uint8Array[] = [];
-
-  for (let offset = 0; offset < byteCharacters.length; offset += 512) {
-    const slice = byteCharacters.slice(offset, offset + 512);
-
-    const byteNumbers = new Array(slice.length);
-    for (let i = 0; i < slice.length; i++) {
-      byteNumbers[i] = slice.charCodeAt(i);
-    }
-
-    const byteArray = new Uint8Array(byteNumbers);
-    byteArrays.push(byteArray);
-  }
-
-  const blob = new Blob(byteArrays, { type: mimeType });
-  return new File([blob], filename, { type: mimeType });
-}
-
 const slice = createSlice({
-  name: "propertyFiles",
-  initialState,
-  reducers: {
-    setInitialState(state: propertyFilesState, { payload }): void {
-      //
-      // on Edit
-      //
+	name: "propertyFiles",
+	initialState,
+	reducers: {
+		setInitialState(state: propertyFilesState, { payload }): void {
+			//
+			// on Edit
+			//
 
-      const mainPropertyImageData: string = payload.mainPropertyImage;                // raw base64 encoded image data e.g. 
-      const secondaryPropertyImages: IFileModel[] = payload.secondaryPropertyImages;  // FileModel
-      const propertyBlueprints: IFileModel[] = payload.propertyBlueprints;            // FileModel
+			const propertyImage = payload.propertyImage;
+			const propertyImages: IPropertyImage[] = payload.propertyImages;
 
-      // gather everything up
-      state.propertyImages = [
-        mainPropertyImageData,
-        ...secondaryPropertyImages.map((image) => image.url)
-      ];
+			propertyImage && state.propertyImages.push(propertyImage);
 
-      // TODO:
-      // state.propertyBlueprints = payload.propertyBlueprints;
-    },
+			state.propertyImages = [
+				...state.propertyImages,
+				...propertyImages.filter((image) => image).map((image) => image.url), // filter nulls
+			];
 
-    setPropertyBlueprints(state: propertyFilesState, { payload }): void {
-      state.propertyBlueprints = payload;
-    },
-    setPropertyImages(state: propertyFilesState, { payload }): void {
-      state.propertyImages = payload;
-    },
+			state.propertyBlueprints = payload.propertyBlueprints.filter(
+				(blueprint: any) => blueprint // filter nulls
+			);
+		},
 
-    resetState: () => {
-      return initialState;
-    },
-  },
+		setPropertyBlueprints(state: propertyFilesState, { payload }): void {
+			state.propertyBlueprints = payload;
+		},
+		setPropertyImages(state: propertyFilesState, { payload }): void {
+			state.propertyImages = payload;
+		},
+		addPropertyImage(state: propertyFilesState, { payload }): void {
+			state.propertyImages.push(payload);
+		},
+
+		resetState: () => {
+			return initialState;
+		},
+	},
 });
 
 export const {
-  setInitialState,
+	setInitialState,
 
-  setPropertyImages,
-  setPropertyBlueprints,
+	setPropertyImages,
+	addPropertyImage,
+	setPropertyBlueprints,
 
-  resetState,
+	resetState,
 } = slice.actions;
 
 export const selectAll = ({ propertyFiles }: RootState) => propertyFiles;
 
 export const selectPropertyImages = ({ propertyFiles }: RootState) =>
-  propertyFiles.propertyImages;
+	propertyFiles.propertyImages;
 export const selectPropertyBlueprints = ({ propertyFiles }: RootState) =>
-  propertyFiles.propertyBlueprints;
+	propertyFiles.propertyBlueprints;
 
 export const { reducer } = slice;
