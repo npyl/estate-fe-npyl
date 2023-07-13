@@ -19,6 +19,7 @@ import ROISection from "./components/ROI";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
+	addPropertyImage,
 	selectPropertyBlueprints,
 	selectPropertyImages,
 	setPropertyBlueprints,
@@ -58,6 +59,13 @@ const CommercialFormSection: React.FC<any> = () => {
 	const region = useSelector(selectRegion);
 	const country = useSelector(selectCountry);
 
+	const handleAddFile = (images: string) => {
+		dispatch(addPropertyImage(images));
+	};
+	const handleAddFiles = (images: string[]) => {
+		dispatch(setPropertyImages(images));
+	};
+
 	return (
 		<>
 			<Grid container paddingTop={1} spacing={1}>
@@ -81,9 +89,8 @@ const CommercialFormSection: React.FC<any> = () => {
 					<Stack spacing={1}>
 						<ImageSection
 							files={images}
-							setFiles={(images) => {
-								dispatch(setPropertyImages(images));
-							}}
+							addFile={handleAddFile}
+							setFiles={handleAddFiles}
 						/>
 						<LocationSection
 							street={street}

@@ -12,10 +12,15 @@ import { useRouter } from "next/router";
 
 interface IImageSectionProps {
 	files: string[];
-	setFiles: Dispatch<SetStateAction<(string | File)[]>>;
+	addFile: (image: string) => void;
+	setFiles: (images: string[]) => void;
 }
 
-const ImagesSection: React.FC<IImageSectionProps> = ({ files, setFiles }) => {
+const ImagesSection: React.FC<IImageSectionProps> = ({
+	files,
+	addFile,
+	setFiles,
+}) => {
 	const router = useRouter();
 	const { propertyId } = router.query;
 
@@ -74,7 +79,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({ files, setFiles }) => {
 				uploadThumbnail(acceptedFiles[0])
 					.then((cdnUrl) => {
 						console.log("main cdn: ", cdnUrl);
-						setFiles([...files, cdnUrl]);
+						addFile(cdnUrl);
 					})
 					.catch((reason) => console.error("uploadThumbnail: ", reason));
 
@@ -82,7 +87,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({ files, setFiles }) => {
 					uploadImage(acceptedFiles[i])
 						.then((cdnUrl) => {
 							console.log("secondary cdn: ", cdnUrl);
-							setFiles([...files, cdnUrl]);
+							addFile(cdnUrl);
 						})
 						.catch((reason) => console.error("uploadImage: ", reason));
 			} else {
@@ -91,7 +96,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({ files, setFiles }) => {
 				// treat every file as secondary image
 				acceptedFiles.forEach((acceptedFile) =>
 					uploadImage(acceptedFile)
-						.then((cdnUrl) => setFiles([...files, cdnUrl]))
+						.then((cdnUrl) => addFile(cdnUrl))
 						.catch((reason) => console.error("uploadImage: ", reason))
 				);
 			}

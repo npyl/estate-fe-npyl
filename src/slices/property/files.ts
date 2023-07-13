@@ -44,6 +44,9 @@ const slice = createSlice({
 		setPropertyImages(state: propertyFilesState, { payload }): void {
 			state.propertyImages = payload;
 		},
+		addPropertyImage(state: propertyFilesState, { payload }): void {
+			state.propertyImages.push(payload);
+		},
 
 		resetState: () => {
 			return initialState;
@@ -55,6 +58,7 @@ export const {
 	setInitialState,
 
 	setPropertyImages,
+	addPropertyImage,
 	setPropertyBlueprints,
 
 	resetState,
