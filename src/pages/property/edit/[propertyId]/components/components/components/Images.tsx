@@ -4,7 +4,10 @@ import { Dispatch, SetStateAction, useCallback, useState } from "react";
 import UploadDnd from "src/components/upload/UploadDnd";
 import GalleryManager from "src/components/GalleryManager";
 import { SoftButton } from "src/components/SoftButton";
-import { useAddPropertyThumbnailMutation } from "src/services/properties";
+import {
+	useAddPropertyThumbnailMutation,
+	useAddPropertyImageMutation,
+} from "src/services/properties";
 import { useRouter } from "next/router";
 
 interface IImageSectionProps {
@@ -19,6 +22,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({ files, setFiles }) => {
 	const [galleryManagerOpen, setGalleryManagerOpen] = useState(false);
 
 	const [addThumbnail] = useAddPropertyThumbnailMutation();
+	const [addImage] = useAddPropertyImageMutation();
 
 	const uploadFile = async (image: File, addMutation: any): Promise<string> => {
 		const filename = image.name;
@@ -57,21 +61,39 @@ const ImagesSection: React.FC<IImageSectionProps> = ({ files, setFiles }) => {
 	const uploadThumbnail = (image: File): Promise<string> => {
 		return uploadFile(image, addThumbnail);
 	};
-	const uploadImage = (image: File) => {};
+	const uploadImage = (image: File): Promise<string> => {
+		return uploadFile(image, addImage);
+	};
 
 	const handleDropMultiFile = useCallback(
 		(acceptedFiles: File[]) => {
 			if (files.length === 0) {
+				alert("case1");
+
 				// this is the first image we are adding; therefore it is the mainImage
 				uploadThumbnail(acceptedFiles[0])
 					.then((cdnUrl) => {
+						console.log("main cdn: ", cdnUrl);
 						setFiles([...files, cdnUrl]);
 					})
 					.catch((reason) => console.error("uploadThumbnail: ", reason));
 
-				// TODO: add the rest secondary images
+				for (let i = 1; i < acceptedFiles.length; i++)
+					uploadImage(acceptedFiles[i])
+						.then((cdnUrl) => {
+							console.log("secondary cdn: ", cdnUrl);
+							setFiles([...files, cdnUrl]);
+						})
+						.catch((reason) => console.error("uploadImage: ", reason));
 			} else {
+				alert("case2");
+
 				// treat every file as secondary image
+				acceptedFiles.forEach((acceptedFile) =>
+					uploadImage(acceptedFile)
+						.then((cdnUrl) => setFiles([...files, cdnUrl]))
+						.catch((reason) => console.error("uploadImage: ", reason))
+				);
 			}
 		},
 		[files]

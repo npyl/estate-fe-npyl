@@ -2,6 +2,7 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "src/store";
+import { IPropertyImage } from "src/types/fileModel";
 
 interface propertyFilesState {
 	propertyImages: string[];
@@ -23,13 +24,13 @@ const slice = createSlice({
 			//
 
 			const propertyImage = payload.propertyImage;
-			const propertyImages = payload.propertyImages;
+			const propertyImages: IPropertyImage[] = payload.propertyImages;
 
 			propertyImage && state.propertyImages.push(propertyImage);
 
 			state.propertyImages = [
 				...state.propertyImages,
-				...propertyImages.filter((image: any) => image), // filter nulls
+				...propertyImages.filter((image) => image).map((image) => image.url), // filter nulls
 			];
 
 			state.propertyBlueprints = payload.propertyBlueprints.filter(

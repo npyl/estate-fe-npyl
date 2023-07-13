@@ -70,17 +70,17 @@ const EditPropertyPage: NextPage = () => {
 	};
 
 	useEffect(() => {
-		if (isPropertySuccess) {
-			dispatch(
-				setInitialFilesState({
-					propertyImage: fetchedProperty.propertyImage,
-					propertyImages: fetchedProperty.images,
-					propertyBlueprints: fetchedProperty.blueprints,
-				})
-			);
-			dispatch(setInitialNotesState(fetchedProperty.notes));
-			dispatch(setInitialState(fetchedProperty));
-		}
+		if (!isPropertySuccess) return;
+
+		dispatch(
+			setInitialFilesState({
+				propertyImage: fetchedProperty.propertyImage,
+				propertyImages: fetchedProperty.images,
+				propertyBlueprints: fetchedProperty.blueprints,
+			})
+		);
+		dispatch(setInitialNotesState(fetchedProperty.notes));
+		dispatch(setInitialState(fetchedProperty));
 	}, [isPropertySuccess]);
 
 	useEffect(() => {
