@@ -56,7 +56,7 @@ export default function MultiFilePreviewReorder({
 														}}
 													/>
 												) : (
-													<PreviewImage />
+													<PreviewImage animate />
 												)}
 											</div>
 										)}
