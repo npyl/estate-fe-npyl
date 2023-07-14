@@ -10,6 +10,7 @@ import {
 } from "react-beautiful-dnd";
 
 import { useState, useMemo } from "react";
+import PreviewImage from "src/components/PreviewImage";
 
 interface Item {
 	id: string;
@@ -65,13 +66,17 @@ export default function MultiFilePreviewReorder({
 												{...provided.draggableProps}
 												{...provided.dragHandleProps}
 											>
-												<Image
-													src={item.data}
-													alt={item.content}
-													onClick={() => {
-														onImageClick && onImageClick(files[index]);
-													}}
-												/>
+												{item.data ? (
+													<Image
+														src={item.data}
+														alt={item.content}
+														onClick={() => {
+															onImageClick && onImageClick(files[index]);
+														}}
+													/>
+												) : (
+													<PreviewImage />
+												)}
 											</div>
 										)}
 									</Draggable>
