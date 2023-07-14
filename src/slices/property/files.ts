@@ -47,18 +47,16 @@ const slice = createSlice({
 		addPropertyImage(state: propertyFilesState, { payload }): void {
 			state.propertyImages.push(payload);
 		},
-		setCdnUrlForFile(state: propertyFilesState, { payload }): void {
-			const targetOrderNumber = payload.orderNumber;
-			const cdnUrl = payload.cdnUrl;
 
-			for (let i = 0; i < state.propertyImages.length; i++) {
-				const current = state.propertyImages[i];
+		// INFO: traverses list of images and finds the next in the list that doesn't have a url yet and sets it to cdnUrl
+		setCdnUrlForNextAvailable(state: propertyFilesState, { payload }): void {
+			const cdnUrl = payload;
 
-				if (current.orderNumber === targetOrderNumber) {
+			for (let i = 0; i < state.propertyImages.length; i++)
+				if (state.propertyImages[i] && !state.propertyImages[i].url) {
 					state.propertyImages[i].url = cdnUrl;
 					break;
 				}
-			}
 		},
 
 		resetState: () => {
@@ -72,7 +70,7 @@ export const {
 
 	setPropertyImages,
 	addPropertyImage,
-	setCdnUrlForFile,
+	setCdnUrlForNextAvailable,
 	setPropertyBlueprints,
 
 	resetState,

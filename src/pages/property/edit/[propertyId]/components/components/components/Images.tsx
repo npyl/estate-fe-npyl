@@ -14,7 +14,7 @@ import { IPropertyImage, IPropertyImagePOST } from "src/types/file";
 interface IImageSectionProps {
 	files: IPropertyImage[];
 	addFile: (image: IPropertyImage | IPropertyImagePOST) => void;
-	setCdnUrlForFile: (orderNumber: number, cdnUrl: string) => void;
+	setCdnUrlForNextAvailable: (cdnUrl: string) => void;
 	setFiles: (images: IPropertyImage[]) => void;
 }
 
@@ -22,7 +22,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 	files,
 	addFile,
 	setFiles,
-	setCdnUrlForFile,
+	setCdnUrlForNextAvailable,
 }) => {
 	const router = useRouter();
 	const { propertyId } = router.query;
@@ -32,10 +32,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 	const [addThumbnail] = useAddPropertyThumbnailMutation();
 	const [addImage] = useAddPropertyImageMutation();
 
-	const uploadFile = async (
-		image: File,
-		addMutation: any
-	): Promise<{ orderNumber: number; cdnUrl: string }> => {
+	const uploadFile = async (image: File, addMutation: any): Promise<string> => {
 		const filename = image.name;
 		const contentType = image.type;
 		const orderNumber = files.length + 1;
@@ -75,7 +72,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 		if (!response) throw new Error("PUT request failed: " + response);
 		if (!response.ok) throw new Error("Uploading the image failed!");
 
-		return { orderNumber, cdnUrl };
+		return cdnUrl;
 	};
 
 	const handleDropMultiFile = useCallback(
@@ -83,24 +80,18 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 			if (files.length === 0) {
 				// this is the first image we are adding; therefore it is the mainImage
 				uploadFile(acceptedFiles[0], addThumbnail)
-					.then(({ orderNumber, cdnUrl }) =>
-						setCdnUrlForFile(orderNumber, cdnUrl)
-					)
+					.then((cdnUrl) => setCdnUrlForNextAvailable(cdnUrl))
 					.catch((reason) => console.error("uploadThumbnail: ", reason));
 
 				for (let i = 1; i < acceptedFiles.length; i++)
 					uploadFile(acceptedFiles[i], addImage)
-						.then(({ orderNumber, cdnUrl }) =>
-							setCdnUrlForFile(orderNumber, cdnUrl)
-						)
+						.then((cdnUrl) => setCdnUrlForNextAvailable(cdnUrl))
 						.catch((reason) => console.error("uploadImage: ", reason));
 			} else {
 				// treat every file as secondary image
 				acceptedFiles.forEach((acceptedFile) =>
 					uploadFile(acceptedFile, addImage)
-						.then(({ orderNumber, cdnUrl }) =>
-							setCdnUrlForFile(orderNumber, cdnUrl)
-						)
+						.then((cdnUrl) => setCdnUrlForNextAvailable(cdnUrl))
 						.catch((reason) => console.error("uploadImage: ", reason))
 				);
 			}
