@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import OnlyNumbersInput from "src/components/OnlyNumbers";
-import Map from "../Map/Map";
+import Map, { IMapMarker } from "../Map/Map";
 
 import { ILocationPOST } from "src/types/location";
 import { RegionSelect } from "./RegionSelect";
@@ -28,6 +28,12 @@ const LocationSection = (props: ILocationSectionProps) => {
 	const dispatch = useDispatch();
 
 	const [activeMarker, setActiveMarker] = useState(null);
+	const [mainMarker, setMainMarker] = useState<IMapMarker>({
+		lat: 37.98381,
+		lng: 23.727539,
+		address: "",
+		draggable: true,
+	});
 	const [region, setRegion] = useState("");
 	const [municipNameEN, setMunicipNameEN] = useState("");
 
@@ -85,6 +91,7 @@ const LocationSection = (props: ILocationSectionProps) => {
 					<Box height={`50vh`} width={"100%"}>
 						<Map
 							drawing={false}
+							mainMarker={mainMarker}
 							onClick={handleMapClick}
 							activeMarker={activeMarker}
 							setActiveMarker={setActiveMarker}

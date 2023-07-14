@@ -4,7 +4,7 @@ import {
 	Marker,
 	useJsApiLoader,
 } from "@react-google-maps/api";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { IProperties } from "src/types/properties";
 
 const containerStyle = {
@@ -12,14 +12,17 @@ const containerStyle = {
 	height: "100%",
 };
 
-const center = {
-	lat: 38.246639,
-	lng: 21.734573,
-};
+export interface IMapMarker {
+	lat: number;
+	lng: number;
+	address: string;
+	draggable: boolean;
+}
 
 interface IMapProps {
 	onClick?: (event: google.maps.MapMouseEvent) => void;
 	data?: IProperties[];
+	mainMarker?: IMapMarker;
 	activeMarker: number | null;
 	setActiveMarker: any;
 	drawing?: boolean;
@@ -28,6 +31,7 @@ interface IMapProps {
 const Map = ({
 	onClick,
 	data,
+	mainMarker,
 	activeMarker,
 	setActiveMarker,
 	drawing = true,
@@ -43,30 +47,38 @@ const Map = ({
 	const [isOpen, setIsOpen] = useState(false);
 	const [infoWindowData, setInfoWindowData] = useState<any>();
 	const [center, setCenter] = useState({ lat: 37.98381, lng: 23.727539 }); // Athens
-	const [bounds, setBounds] = useState<any>(null);
-	const [cities, setCities] = useState([]);
 
-	const markers = data
-		? data
+	const [markers, setMarkers] = useState<IMapMarker[]>([]);
+
+	useEffect(() => {
+		if (!data) return;
+
+		setMarkers([
+			...markers,
+			...data
 				.filter((property) => property.location !== null) // some properties are dummies
 				.map((property) => {
 					const location = property.location;
+
 					return {
 						address: location.street + " " + location.number,
 						lat: location.lat,
 						lng: location.lng,
+						draggable: false,
 					};
-				})
-		: [];
+				}),
+		]);
+	}, [data]);
 
-	const handleMarkerClick = (id: any, lat: any, lng: any, address: any) => {
-		mapRef?.panTo({ lat, lng });
-		setInfoWindowData({ id, address });
-		setIsOpen(true);
-	};
+	useEffect(() => {
+		if (!mainMarker) return;
 
-	const onLoad = React.useCallback(function callback(map: any) {
+		setMarkers([...markers, mainMarker]);
+	}, [mainMarker]);
+
+	const onLoad = useCallback((map: any) => {
 		const bounds = new window.google.maps.LatLngBounds(center);
+
 		if (map.current) {
 			map.current.fitBounds(bounds);
 		}
@@ -74,14 +86,38 @@ const Map = ({
 		setMap(map);
 	}, []);
 
-	const onUnmount = React.useCallback(function callback() {
+	const onUnmount = useCallback(() => {
 		setMap(null);
 	}, []);
+
+	//
+	// Markers
+	//
+	const handleMarkerClick = (id: any, lat: any, lng: any, address: any) => {
+		mapRef?.panTo({ lat, lng });
+		setInfoWindowData({ id, address });
+		setIsOpen(true);
+	};
 
 	const handleMarkerMouseOver = (marker: any) => {
 		setActiveMarker(marker);
 	};
 
+	const onMarkerDragEnd = (
+		latLng: any,
+		index: number,
+		markers: IMapMarker[]
+	) => {
+		const lat = latLng.lat();
+		const lng = latLng.lng();
+		markers[index].lat = lat;
+		markers[index].lng = lng;
+		setMarkers([...markers]);
+	};
+
+	//
+	//	Draw
+	//
 	const onPolygonComplete = (polygon: any) => {
 		console.log(polygon);
 	};
@@ -99,19 +135,27 @@ const Map = ({
 				<DrawingManager onLoad={onLoad} onPolygonComplete={onPolygonComplete} />
 			)}
 
-			{markers.map(({ address, lat, lng }, ind) => (
-				<Marker
-					key={ind}
-					position={{ lat, lng }}
-					onMouseUp={() => handleMarkerMouseOver(ind)}
-					animation={
-						activeMarker === ind ? google.maps.Animation.BOUNCE : undefined
-					}
-					onClick={() => {
-						handleMarkerClick(ind, lat, lng, address);
-					}}
-				/>
-			))}
+			{markers.map((marker, ind) => {
+				const { address, lat, lng, draggable } = marker;
+
+				return (
+					<Marker
+						key={ind}
+						position={{ lat, lng }}
+						onMouseUp={() => handleMarkerMouseOver(ind)}
+						animation={
+							marker !== mainMarker && activeMarker === ind
+								? google.maps.Animation.BOUNCE
+								: undefined
+						}
+						onClick={() => handleMarkerClick(ind, lat, lng, address)}
+						draggable={draggable}
+						onDragEnd={(e: google.maps.MapMouseEvent) =>
+							onMarkerDragEnd(e.latLng, ind, markers)
+						}
+					/>
+				);
+			})}
 		</GoogleMap>
 	) : (
 		<></>
