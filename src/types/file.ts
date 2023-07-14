@@ -11,11 +11,11 @@ export interface IThumbnailPOST {
 
 export interface IPropertyImagePOST {
 	id?: number;
-	hidden: boolean;
-	description: string;
-	title: string;
-	orderNumber: number;
-	url: string;
+	hidden?: boolean;
+	description?: string;
+	title?: string;
+	orderNumber?: number;
+	url?: string;
 }
 
 export interface IPropertyImage {

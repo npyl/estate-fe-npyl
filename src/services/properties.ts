@@ -6,11 +6,7 @@ import {
 } from "src/types/properties";
 
 import IPage from "src/types/page";
-import {
-	IFileResponse,
-	IThumbnailPOST,
-	IPropertyImagePOST,
-} from "src/types/file";
+import { IFileResponse, IPropertyImagePOST } from "src/types/file";
 
 interface ICreatePropertyParams {
 	parentCategory: string;
@@ -22,7 +18,7 @@ interface IEditPropertyProps {
 }
 interface IPropertyAddFileParams {
 	id: number;
-	body: IThumbnailPOST | IPropertyImagePOST;
+	body: IPropertyImagePOST;
 }
 interface IPropertyFilterParams {
 	filter: IPropertyFilter;

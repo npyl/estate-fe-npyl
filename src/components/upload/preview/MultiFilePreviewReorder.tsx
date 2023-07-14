@@ -1,7 +1,7 @@
 import { ImageList, ImageListItem } from "@mui/material";
 import Image from "src/components/image/Image";
 
-import { UploadStringProps } from "../types";
+import { UploadPropertyImageProps } from "../types";
 import {
 	DragDropContext,
 	Draggable,
@@ -17,12 +17,10 @@ interface Item {
 	data: string;
 }
 
-export default function MultiFilePreviewDnd({
+export default function MultiFilePreviewReorder({
 	files,
 	onImageClick,
-	onRemove,
-	sx,
-}: UploadStringProps) {
+}: UploadPropertyImageProps) {
 	if (!files?.length) {
 		return null;
 	}
@@ -46,7 +44,7 @@ export default function MultiFilePreviewDnd({
 				return {
 					id: `item-${index}`,
 					content: `item-${index}`,
-					data: file,
+					data: file.url,
 				};
 			}),
 		]);

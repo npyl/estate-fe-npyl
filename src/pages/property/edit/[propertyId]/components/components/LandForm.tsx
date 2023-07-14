@@ -38,8 +38,9 @@ import {
 	setRegion,
 	setCountry,
 } from "src/slices/property";
+import { IPropertyImage, IPropertyImagePOST } from "src/types/file";
 
-const LandFormSection: React.FC<any> = (props) => {
+const LandFormSection: React.FC<any> = () => {
 	const dispatch = useDispatch();
 
 	const state = useSelector(selectState);
@@ -54,10 +55,11 @@ const LandFormSection: React.FC<any> = (props) => {
 	const region = useSelector(selectRegion);
 	const country = useSelector(selectCountry);
 
-	const handleAddFile = (images: string) => {
+	const handleAddFile = (images: IPropertyImage | IPropertyImagePOST) => {
 		dispatch(addPropertyImage(images));
 	};
-	const handleAddFiles = (images: string[]) => {
+	const handleSetCdnUrlForFile = (orderNumber: number, cdnUrl: string) => {};
+	const handleAddFiles = (images: (IPropertyImage | IPropertyImagePOST)[]) => {
 		dispatch(setPropertyImages(images));
 	};
 
@@ -84,6 +86,7 @@ const LandFormSection: React.FC<any> = (props) => {
 						<ImageSection
 							files={images}
 							addFile={handleAddFile}
+							setCdnUrlForFile={handleSetCdnUrlForFile}
 							setFiles={handleAddFiles}
 						/>
 						<LocationSection

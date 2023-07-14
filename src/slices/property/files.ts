@@ -5,7 +5,7 @@ import type { RootState } from "src/store";
 import { IPropertyImage } from "src/types/file";
 
 interface propertyFilesState {
-	propertyImages: string[];
+	propertyImages: IPropertyImage[];
 	propertyBlueprints: string[];
 }
 
@@ -23,14 +23,14 @@ const slice = createSlice({
 			// on Edit
 			//
 
-			const propertyImage = payload.propertyImage;
+			const propertyImage: IPropertyImage = payload.propertyImage;
 			const propertyImages: IPropertyImage[] = payload.propertyImages;
 
 			propertyImage && state.propertyImages.push(propertyImage);
 
 			state.propertyImages = [
 				...state.propertyImages,
-				...propertyImages.filter((image) => image).map((image) => image.url), // filter nulls
+				...propertyImages.filter((image) => image), // filter nulls
 			];
 
 			state.propertyBlueprints = payload.propertyBlueprints.filter(

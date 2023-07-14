@@ -52,6 +52,8 @@ import {
 import NotesSection from "./components/NotesSection";
 import VideoLinkSection from "./components/VideoLink";
 
+import { IPropertyImage, IPropertyImagePOST } from "src/types/file";
+
 const ResidentialFormSection: React.FC<any> = (props) => {
 	const dispatch = useDispatch();
 
@@ -68,10 +70,11 @@ const ResidentialFormSection: React.FC<any> = (props) => {
 	const region = useSelector(selectRegion);
 	const country = useSelector(selectCountry);
 
-	const handleAddFile = (images: string) => {
+	const handleAddFile = (images: IPropertyImage | IPropertyImagePOST) => {
 		dispatch(addPropertyImage(images));
 	};
-	const handleAddFiles = (images: string[]) => {
+	const handleSetCdnUrlForFile = (orderNumber: number, cdnUrl: string) => {};
+	const handleAddFiles = (images: (IPropertyImage | IPropertyImagePOST)[]) => {
 		dispatch(setPropertyImages(images));
 	};
 
@@ -103,6 +106,7 @@ const ResidentialFormSection: React.FC<any> = (props) => {
 						<ImageSection
 							files={images}
 							addFile={handleAddFile}
+							setCdnUrlForFile={handleSetCdnUrlForFile}
 							setFiles={handleAddFiles}
 						/>
 

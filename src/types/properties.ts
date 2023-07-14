@@ -1,7 +1,7 @@
 import { ICustomer } from "./customer";
 import { IPropertyDetails, IPropertyDetailsPOST } from "./details";
 import { IPropertyFeatures } from "./features";
-import { IFileModel } from "./file";
+import { IFileModel, IPropertyImage } from "./file";
 import { ILabel } from "./label";
 import { ILocation, ILocationPOST } from "./location";
 import { INote } from "./note";
@@ -283,7 +283,7 @@ export interface IProperties {
 	buildable: boolean;
 	video: string;
 	description: string;
-	propertyImage: string;
+	propertyImage: IPropertyImage;
 	suitableFor: IPropertySuitableFor;
 	heatingAndEnergy: IPropertyHeatingAndEnergy;
 	distances: IPropertyDistances;
@@ -294,7 +294,7 @@ export interface IProperties {
 	location: ILocation;
 	features: IPropertyFeatures;
 	notes: INote[];
-	images: IFileModel[];
+	images: IPropertyImage[];
 	documents: IFileModel[];
 	blueprints: IFileModel[];
 	labels: ILabel[];
