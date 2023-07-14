@@ -21,6 +21,8 @@ export interface IMapMarker {
 
 interface IMapProps {
 	onClick?: (event: google.maps.MapMouseEvent) => void;
+	onDragEnd?: (marker: IMapMarker, newLat: number, newLng: number) => void;
+
 	data?: IProperties[];
 	mainMarker?: IMapMarker;
 	activeMarker: number | null;
@@ -30,6 +32,7 @@ interface IMapProps {
 
 const Map = ({
 	onClick,
+	onDragEnd,
 	data,
 	mainMarker,
 	activeMarker,
@@ -113,6 +116,9 @@ const Map = ({
 		markers[index].lat = lat;
 		markers[index].lng = lng;
 		setMarkers([...markers]);
+
+		// also call parent callback
+		if (onDragEnd) onDragEnd(markers[index], lat, lng);
 	};
 
 	//

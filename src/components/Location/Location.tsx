@@ -69,8 +69,20 @@ const LocationSection = (props: ILocationSectionProps) => {
 		setMunicipNameEN(municipNameEN);
 	};
 
+	//
+	// Map
+	//
 	const handleMapClick = (event: google.maps.MapMouseEvent) => {
 		console.log(event.latLng?.lat());
+	};
+	const handleMarkerDragEnd = (
+		marker: IMapMarker,
+		newLat: number,
+		newLng: number
+	) => {
+		if (!marker || marker !== mainMarker) return; // we only care about mainMarker drag
+
+		// TODO: somehow get fields region, etc...
 	};
 
 	return (
@@ -92,6 +104,7 @@ const LocationSection = (props: ILocationSectionProps) => {
 						<Map
 							drawing={false}
 							mainMarker={mainMarker}
+							onDragEnd={handleMarkerDragEnd}
 							onClick={handleMapClick}
 							activeMarker={activeMarker}
 							setActiveMarker={setActiveMarker}
