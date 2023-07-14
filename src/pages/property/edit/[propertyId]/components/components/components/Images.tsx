@@ -164,6 +164,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 						multiple
 						thumbnail={true}
 						files={files}
+						setFiles={setFiles}
 						onDrop={handleDropMultiFile}
 						onRemove={handleRemoveFile}
 						onRemoveAll={handleRemoveAllFiles}

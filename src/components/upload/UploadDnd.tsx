@@ -45,6 +45,7 @@ export default function UploadDnd({
 	helperText,
 	//
 	file,
+	setFiles,
 	onDelete,
 	//
 	files,
@@ -137,6 +138,7 @@ export default function UploadDnd({
 						<MultiFilePreviewReorder
 							files={files}
 							thumbnail={false}
+							setFiles={setFiles}
 							onImageClick={onImageClick}
 							onRemove={onRemove}
 						/>

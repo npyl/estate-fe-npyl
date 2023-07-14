@@ -22,6 +22,7 @@ import {
 	addPropertyImage,
 	selectPropertyBlueprints,
 	selectPropertyImages,
+	setCdnUrlForFile,
 	setPropertyBlueprints,
 	setPropertyImages,
 } from "src/slices/property/files";
@@ -63,7 +64,9 @@ const CommercialFormSection: React.FC<any> = () => {
 	const handleAddFile = (images: IPropertyImage | IPropertyImagePOST) => {
 		dispatch(addPropertyImage(images));
 	};
-	const handleSetCdnUrlForFile = (orderNumber: number, cdnUrl: string) => {};
+	const handleSetCdnUrlForFile = (orderNumber: number, cdnUrl: string) => {
+		dispatch(setCdnUrlForFile({ orderNumber, cdnUrl }));
+	};
 	const handleAddFiles = (images: (IPropertyImage | IPropertyImagePOST)[]) => {
 		dispatch(setPropertyImages(images));
 	};

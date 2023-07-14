@@ -24,6 +24,7 @@ import { useDispatch } from "react-redux";
 import {
 	setPropertyImages,
 	setPropertyBlueprints,
+	setCdnUrlForFile,
 } from "src/slices/property/files";
 
 import {
@@ -73,7 +74,9 @@ const ResidentialFormSection: React.FC<any> = (props) => {
 	const handleAddFile = (images: IPropertyImage | IPropertyImagePOST) => {
 		dispatch(addPropertyImage(images));
 	};
-	const handleSetCdnUrlForFile = (orderNumber: number, cdnUrl: string) => {};
+	const handleSetCdnUrlForFile = (orderNumber: number, cdnUrl: string) => {
+		dispatch(setCdnUrlForFile({ orderNumber, cdnUrl }));
+	};
 	const handleAddFiles = (images: (IPropertyImage | IPropertyImagePOST)[]) => {
 		dispatch(setPropertyImages(images));
 	};
