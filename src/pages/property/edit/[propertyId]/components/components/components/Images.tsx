@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader } from "@mui/material";
-import { Dispatch, SetStateAction, useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 
 import UploadDnd from "src/components/upload/UploadDnd";
 import GalleryManager from "src/components/GalleryManager";
@@ -9,17 +9,20 @@ import {
 	useAddPropertyImageMutation,
 } from "src/services/properties";
 import { useRouter } from "next/router";
+import { IPropertyImage, IPropertyImagePOST } from "src/types/file";
 
 interface IImageSectionProps {
-	files: string[];
-	addFile: (image: string) => void;
-	setFiles: (images: string[]) => void;
+	files: IPropertyImage[];
+	addFile: (image: IPropertyImage | IPropertyImagePOST) => void;
+	setCdnUrlForNextAvailable: (cdnUrl: string) => void;
+	setFiles: (images: IPropertyImage[]) => void;
 }
 
 const ImagesSection: React.FC<IImageSectionProps> = ({
 	files,
 	addFile,
 	setFiles,
+	setCdnUrlForNextAvailable,
 }) => {
 	const router = useRouter();
 	const { propertyId } = router.query;
@@ -32,14 +35,21 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 	const uploadFile = async (image: File, addMutation: any): Promise<string> => {
 		const filename = image.name;
 		const contentType = image.type;
+		const orderNumber = files.length + 1;
 
 		if (!filename || !contentType)
 			throw new Error("filename or contentType cannot be null");
 
+		const body = {
+			filename,
+			contentType,
+			orderNumber,
+		};
+
 		// get amazon url
 		const fileResponse = await addMutation({
 			id: +propertyId!,
-			body: { filename, contentType },
+			body: body,
 		}).unwrap();
 
 		if (!fileResponse) throw new Error("Error: FileResponse: " + fileResponse);
@@ -47,6 +57,8 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 		const key = fileResponse.key;
 		const url = fileResponse.url;
 		const cdnUrl = fileResponse.cdnUrl;
+
+		addFile(body);
 
 		// PUT to amazon url
 		const response = await fetch(url, {
@@ -63,40 +75,23 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 		return cdnUrl;
 	};
 
-	const uploadThumbnail = (image: File): Promise<string> => {
-		return uploadFile(image, addThumbnail);
-	};
-	const uploadImage = (image: File): Promise<string> => {
-		return uploadFile(image, addImage);
-	};
-
 	const handleDropMultiFile = useCallback(
 		(acceptedFiles: File[]) => {
 			if (files.length === 0) {
-				alert("case1");
-
 				// this is the first image we are adding; therefore it is the mainImage
-				uploadThumbnail(acceptedFiles[0])
-					.then((cdnUrl) => {
-						console.log("main cdn: ", cdnUrl);
-						addFile(cdnUrl);
-					})
+				uploadFile(acceptedFiles[0], addThumbnail)
+					.then((cdnUrl) => setCdnUrlForNextAvailable(cdnUrl))
 					.catch((reason) => console.error("uploadThumbnail: ", reason));
 
 				for (let i = 1; i < acceptedFiles.length; i++)
-					uploadImage(acceptedFiles[i])
-						.then((cdnUrl) => {
-							console.log("secondary cdn: ", cdnUrl);
-							addFile(cdnUrl);
-						})
+					uploadFile(acceptedFiles[i], addImage)
+						.then((cdnUrl) => setCdnUrlForNextAvailable(cdnUrl))
 						.catch((reason) => console.error("uploadImage: ", reason));
 			} else {
-				alert("case2");
-
 				// treat every file as secondary image
 				acceptedFiles.forEach((acceptedFile) =>
-					uploadImage(acceptedFile)
-						.then((cdnUrl) => addFile(cdnUrl))
+					uploadFile(acceptedFile, addImage)
+						.then((cdnUrl) => setCdnUrlForNextAvailable(cdnUrl))
 						.catch((reason) => console.error("uploadImage: ", reason))
 				);
 			}
@@ -104,7 +99,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 		[files]
 	);
 
-	const handleRemoveFile = (inputFile: File | string) => {
+	const handleRemoveFile = (inputFile: IPropertyImage) => {
 		const filtered = files.filter((file) => file !== inputFile);
 		setFiles(filtered);
 	};
@@ -146,6 +141,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 						multiple
 						thumbnail={true}
 						files={files}
+						setFiles={setFiles}
 						onDrop={handleDropMultiFile}
 						onRemove={handleRemoveFile}
 						onRemoveAll={handleRemoveAllFiles}
@@ -158,7 +154,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 					open={galleryManagerOpen}
 					images={files}
 					onClose={handleCloseGalleryManager}
-					onDelete={(file: string) => {
+					onDelete={(file: IPropertyImage) => {
 						handleRemoveFile(file);
 					}}
 				/>

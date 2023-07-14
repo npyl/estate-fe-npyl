@@ -1,7 +1,7 @@
 import { ImageList, ImageListItem } from "@mui/material";
 import Image from "src/components/image/Image";
 
-import { UploadStringProps } from "../types";
+import { UploadPropertyImageProps } from "../types";
 import {
 	DragDropContext,
 	Draggable,
@@ -9,48 +9,25 @@ import {
 	DropResult,
 } from "react-beautiful-dnd";
 
-import { useState, useMemo } from "react";
+import PreviewImage from "src/components/PreviewImage";
 
-interface Item {
-	id: string;
-	content: string;
-	data: string;
-}
-
-export default function MultiFilePreviewDnd({
+export default function MultiFilePreviewReorder({
 	files,
+	setFiles,
 	onImageClick,
-	onRemove,
-	sx,
-}: UploadStringProps) {
-	if (!files?.length) {
-		return null;
-	}
-
-	const [items, setItems] = useState<Item[]>([]);
+}: UploadPropertyImageProps) {
+	if (!files || !files?.length) return null;
 
 	const handleDragEnd = (result: DropResult) => {
 		if (!result.destination) return;
 
 		const { source, destination } = result;
-		const updatedItems = [...items];
+		const updatedItems = [...files];
 		const [removed] = updatedItems.splice(source.index, 1);
 		updatedItems.splice(destination.index, 0, removed);
 
-		setItems(updatedItems);
+		setFiles(updatedItems);
 	};
-
-	useMemo(() => {
-		setItems([
-			...files.map((file, index) => {
-				return {
-					id: `item-${index}`,
-					content: `item-${index}`,
-					data: file,
-				};
-			}),
-		]);
-	}, [files]);
 
 	return (
 		<>
@@ -58,22 +35,29 @@ export default function MultiFilePreviewDnd({
 				<Droppable droppableId="droppable">
 					{(provided) => (
 						<ImageList {...provided.droppableProps} ref={provided.innerRef}>
-							{items.map((item, index) => (
+							{files.map((file, index) => (
 								<ImageListItem>
-									<Draggable key={item.id} draggableId={item.id} index={index}>
+									<Draggable
+										key={index}
+										draggableId={index.toString()}
+										index={index}
+									>
 										{(provided) => (
 											<div
 												ref={provided.innerRef}
 												{...provided.draggableProps}
 												{...provided.dragHandleProps}
 											>
-												<Image
-													src={item.data}
-													alt={item.content}
-													onClick={() => {
-														onImageClick && onImageClick(files[index]);
-													}}
-												/>
+												{file.url ? (
+													<Image
+														src={file.url}
+														onClick={() => {
+															onImageClick && onImageClick(files[index]);
+														}}
+													/>
+												) : (
+													<PreviewImage animate />
+												)}
 											</div>
 										)}
 									</Draggable>

@@ -11,7 +11,7 @@ import FeaturesSection from "./components/Features";
 import FileSection from "./components/Files";
 import HeatingAndEnergySection from "./components/HeatingAndEnergy";
 import ImageSection from "./components/Images";
-import LocationSection from "src/components/Location";
+import LocationSection from "src/components/Location/Location";
 import ParkingSection from "./components/Parking";
 import PropertyDescriptionSection from "./components/PropertyDescription";
 import SuitableForForResidentialSection from "./components/SuitableForForResidential";
@@ -24,6 +24,7 @@ import { useDispatch } from "react-redux";
 import {
 	setPropertyImages,
 	setPropertyBlueprints,
+	setCdnUrlForNextAvailable,
 } from "src/slices/property/files";
 
 import {
@@ -52,6 +53,8 @@ import {
 import NotesSection from "./components/NotesSection";
 import VideoLinkSection from "./components/VideoLink";
 
+import { IPropertyImage, IPropertyImagePOST } from "src/types/file";
+
 const ResidentialFormSection: React.FC<any> = (props) => {
 	const dispatch = useDispatch();
 
@@ -68,10 +71,13 @@ const ResidentialFormSection: React.FC<any> = (props) => {
 	const region = useSelector(selectRegion);
 	const country = useSelector(selectCountry);
 
-	const handleAddFile = (images: string) => {
+	const handleAddFile = (images: IPropertyImage | IPropertyImagePOST) => {
 		dispatch(addPropertyImage(images));
 	};
-	const handleAddFiles = (images: string[]) => {
+	const handleSetCdnUrlForNextAvailable = (cdnUrl: string) => {
+		dispatch(setCdnUrlForNextAvailable(cdnUrl));
+	};
+	const handleAddFiles = (images: (IPropertyImage | IPropertyImagePOST)[]) => {
 		dispatch(setPropertyImages(images));
 	};
 
@@ -103,6 +109,7 @@ const ResidentialFormSection: React.FC<any> = (props) => {
 						<ImageSection
 							files={images}
 							addFile={handleAddFile}
+							setCdnUrlForNextAvailable={handleSetCdnUrlForNextAvailable}
 							setFiles={handleAddFiles}
 						/>
 

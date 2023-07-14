@@ -8,7 +8,7 @@ import FeaturesForOtherSection from "./components/FeaturesForOther";
 import FileSection from "./components/Files";
 import HeatingAndEnergyForCommercialSection from "./components/HeatingAndEnergyForCommercial";
 import ImageSection from "./components/Images";
-import LocationSection from "src/components/Location";
+import LocationSection from "src/components/Location/Location";
 import PropertyDescriptionForOtherSection from "./components/PropertyDescriptionForOther";
 import SuitableForForOtherSection from "./components/SuitableForForOther";
 import TechnicalFeaturesAndInteriorForOtherSection from "./components/TechnicalFeaturesAndInteriorForOther";
@@ -21,6 +21,7 @@ import {
 	setPropertyBlueprints,
 	addPropertyImage,
 	setPropertyImages,
+	setCdnUrlForNextAvailable,
 } from "src/slices/property/files";
 
 import {
@@ -40,6 +41,7 @@ import {
 	setRegion,
 	setCountry,
 } from "src/slices/property";
+import { IPropertyImage, IPropertyImagePOST } from "src/types/file";
 
 const OtherFormSection: React.FC<any> = (props) => {
 	const dispatch = useDispatch();
@@ -56,10 +58,13 @@ const OtherFormSection: React.FC<any> = (props) => {
 	const region = useSelector(selectRegion);
 	const country = useSelector(selectCountry);
 
-	const handleAddFile = (images: string) => {
+	const handleAddFile = (images: IPropertyImage | IPropertyImagePOST) => {
 		dispatch(addPropertyImage(images));
 	};
-	const handleAddFiles = (images: string[]) => {
+	const handleSetCdnUrlForNextAvailable = (cdnUrl: string) => {
+		dispatch(setCdnUrlForNextAvailable(cdnUrl));
+	};
+	const handleAddFiles = (images: (IPropertyImage | IPropertyImagePOST)[]) => {
 		dispatch(setPropertyImages(images));
 	};
 
@@ -88,6 +93,7 @@ const OtherFormSection: React.FC<any> = (props) => {
 						<ImageSection
 							files={images}
 							addFile={handleAddFile}
+							setCdnUrlForNextAvailable={handleSetCdnUrlForNextAvailable}
 							setFiles={handleAddFiles}
 						/>
 

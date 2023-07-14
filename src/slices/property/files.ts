@@ -2,10 +2,10 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "src/store";
-import { IPropertyImage } from "src/types/fileModel";
+import { IPropertyImage } from "src/types/file";
 
 interface propertyFilesState {
-	propertyImages: string[];
+	propertyImages: IPropertyImage[];
 	propertyBlueprints: string[];
 }
 
@@ -23,14 +23,14 @@ const slice = createSlice({
 			// on Edit
 			//
 
-			const propertyImage = payload.propertyImage;
+			const propertyImage: IPropertyImage = payload.propertyImage;
 			const propertyImages: IPropertyImage[] = payload.propertyImages;
 
 			propertyImage && state.propertyImages.push(propertyImage);
 
 			state.propertyImages = [
 				...state.propertyImages,
-				...propertyImages.filter((image) => image).map((image) => image.url), // filter nulls
+				...propertyImages.filter((image) => image), // filter nulls
 			];
 
 			state.propertyBlueprints = payload.propertyBlueprints.filter(
@@ -48,6 +48,17 @@ const slice = createSlice({
 			state.propertyImages.push(payload);
 		},
 
+		// INFO: traverses list of images and finds the next in the list that doesn't have a url yet and sets it to cdnUrl
+		setCdnUrlForNextAvailable(state: propertyFilesState, { payload }): void {
+			const cdnUrl = payload;
+
+			for (let i = 0; i < state.propertyImages.length; i++)
+				if (state.propertyImages[i] && !state.propertyImages[i].url) {
+					state.propertyImages[i].url = cdnUrl;
+					break;
+				}
+		},
+
 		resetState: () => {
 			return initialState;
 		},
@@ -59,6 +70,7 @@ export const {
 
 	setPropertyImages,
 	addPropertyImage,
+	setCdnUrlForNextAvailable,
 	setPropertyBlueprints,
 
 	resetState,

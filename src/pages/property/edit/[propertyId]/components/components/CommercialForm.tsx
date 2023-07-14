@@ -10,7 +10,7 @@ import FeaturesForCommercialSection from "./components/FeaturesForCommercial";
 import FileSection from "./components/Files";
 import HeatingAndEnergyForResidentialSection from "./components/HeatingAndEnergyForCommercial";
 import ImageSection from "./components/Images";
-import LocationSection from "src/components/Location";
+import LocationSection from "src/components/Location/Location";
 import PropertyDescriptionForCommercialSection from "./components/PropertyDescriptionForCommercial";
 import SuitableForForCommercialSection from "./components/SuitableForForCommercial";
 import TechnicalFeaturesAndInteriorForCommercialSection from "./components/TechnicalFeaturesAndInteriorForCommercial";
@@ -22,6 +22,7 @@ import {
 	addPropertyImage,
 	selectPropertyBlueprints,
 	selectPropertyImages,
+	setCdnUrlForNextAvailable,
 	setPropertyBlueprints,
 	setPropertyImages,
 } from "src/slices/property/files";
@@ -43,6 +44,7 @@ import {
 	setRegion,
 	setCountry,
 } from "src/slices/property";
+import { IPropertyImage, IPropertyImagePOST } from "src/types/file";
 
 const CommercialFormSection: React.FC<any> = () => {
 	const dispatch = useDispatch();
@@ -59,10 +61,13 @@ const CommercialFormSection: React.FC<any> = () => {
 	const region = useSelector(selectRegion);
 	const country = useSelector(selectCountry);
 
-	const handleAddFile = (images: string) => {
+	const handleAddFile = (images: IPropertyImage | IPropertyImagePOST) => {
 		dispatch(addPropertyImage(images));
 	};
-	const handleAddFiles = (images: string[]) => {
+	const handleSetCdnUrlForNextAvailable = (cdnUrl: string) => {
+		dispatch(setCdnUrlForNextAvailable(cdnUrl));
+	};
+	const handleAddFiles = (images: (IPropertyImage | IPropertyImagePOST)[]) => {
 		dispatch(setPropertyImages(images));
 	};
 
@@ -90,6 +95,7 @@ const CommercialFormSection: React.FC<any> = () => {
 						<ImageSection
 							files={images}
 							addFile={handleAddFile}
+							setCdnUrlForNextAvailable={handleSetCdnUrlForNextAvailable}
 							setFiles={handleAddFiles}
 						/>
 						<LocationSection
