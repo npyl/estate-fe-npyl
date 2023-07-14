@@ -6,7 +6,7 @@ import DescriptionSection from "./components/Description";
 import FeaturesForLandSection from "./components/FeaturesForLand";
 import FileSection from "./components/Files";
 import ImageSection from "./components/Images";
-import LocationSection from "src/components/Location";
+import LocationSection from "src/components/Location/Location";
 import PropertyDescriptionForLandSection from "./components/PropertyDescriptionForLand";
 import SuitableForForLandSection from "./components/SuitableForForLand";
 import TechnicalFeaturesAndInteriorForLandSection from "./components/TechnicalFeaturesAndInteriorForLand";

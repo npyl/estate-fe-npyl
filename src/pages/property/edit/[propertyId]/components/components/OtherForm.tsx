@@ -8,7 +8,7 @@ import FeaturesForOtherSection from "./components/FeaturesForOther";
 import FileSection from "./components/Files";
 import HeatingAndEnergyForCommercialSection from "./components/HeatingAndEnergyForCommercial";
 import ImageSection from "./components/Images";
-import LocationSection from "src/components/Location";
+import LocationSection from "src/components/Location/Location";
 import PropertyDescriptionForOtherSection from "./components/PropertyDescriptionForOther";
 import SuitableForForOtherSection from "./components/SuitableForForOther";
 import TechnicalFeaturesAndInteriorForOtherSection from "./components/TechnicalFeaturesAndInteriorForOther";

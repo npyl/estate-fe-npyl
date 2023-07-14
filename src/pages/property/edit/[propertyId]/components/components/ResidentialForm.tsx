@@ -11,7 +11,7 @@ import FeaturesSection from "./components/Features";
 import FileSection from "./components/Files";
 import HeatingAndEnergySection from "./components/HeatingAndEnergy";
 import ImageSection from "./components/Images";
-import LocationSection from "src/components/Location";
+import LocationSection from "src/components/Location/Location";
 import ParkingSection from "./components/Parking";
 import PropertyDescriptionSection from "./components/PropertyDescription";
 import SuitableForForResidentialSection from "./components/SuitableForForResidential";

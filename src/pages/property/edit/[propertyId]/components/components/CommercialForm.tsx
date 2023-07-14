@@ -10,7 +10,7 @@ import FeaturesForCommercialSection from "./components/FeaturesForCommercial";
 import FileSection from "./components/Files";
 import HeatingAndEnergyForResidentialSection from "./components/HeatingAndEnergyForCommercial";
 import ImageSection from "./components/Images";
-import LocationSection from "src/components/Location";
+import LocationSection from "src/components/Location/Location";
 import PropertyDescriptionForCommercialSection from "./components/PropertyDescriptionForCommercial";
 import SuitableForForCommercialSection from "./components/SuitableForForCommercial";
 import TechnicalFeaturesAndInteriorForCommercialSection from "./components/TechnicalFeaturesAndInteriorForCommercial";
