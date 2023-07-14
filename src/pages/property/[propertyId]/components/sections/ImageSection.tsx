@@ -4,7 +4,7 @@ import { m } from "framer-motion";
 import { varFade } from "src/components/animate";
 import CarouselThumbnail from "src/components/CarouselThumbnail";
 import PreviewImage from "src/components/PreviewImage";
-import { IFileModel } from "src/types/fileModel";
+import { IFileModel } from "src/types/file";
 import { IProperties } from "src/types/properties";
 
 interface ImageSectionProps {
