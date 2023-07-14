@@ -58,10 +58,7 @@ const CustomerView: NextPage = () => {
 
   return (
     <Box sx={{ width: "100%", paddingY: 1 }}>
-      <ViewHeader
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-      >
+      <ViewHeader onEdit={handleEdit} onDelete={handleDelete}>
         <Tabs
           value={value}
           onChange={handleChange}
@@ -81,7 +78,6 @@ const CustomerView: NextPage = () => {
               <CustomerInformationSection />
               <CustomerAdressDetailsSection />
               <DemandCustomerSection />
-
               <NotesCustomerSection />
             </Stack>
           </Grid>

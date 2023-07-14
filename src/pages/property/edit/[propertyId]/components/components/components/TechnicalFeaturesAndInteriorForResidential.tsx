@@ -9,6 +9,7 @@ import { useAllCustomersQuery } from "src/services/customers";
 import {
   selectAlarmSystem,
   selectBright,
+  // selectLuxury,
   selectConsideration,
   selectCoverageFactor,
   selectDisplayWindowsLength,
@@ -50,6 +51,7 @@ import {
   setSafetyDoor,
   setSatelliteTV,
   setWindowScreens,
+  // setLuxury,
 } from "src/slices/property";
 
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
@@ -308,6 +310,7 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
               Bright
             </Typography>
           </Grid>
+
           <Grid
             item
             xs={3}

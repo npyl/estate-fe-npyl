@@ -46,7 +46,11 @@ const OwnedCustomerPropertiesSection: NextPage = () => {
   ];
 
   const { data } = useGetCustomerByIdQuery(parseInt(customerId as string)); // basic details
-  if (!data || !data.ownedProperties) {
+  if (
+    !data ||
+    !Array.isArray(data.ownedProperties) ||
+    data.ownedProperties.length === 0
+  ) {
     return null;
   }
 

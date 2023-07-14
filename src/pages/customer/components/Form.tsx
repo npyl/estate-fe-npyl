@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 
 import { resetState as resetCustomerState } from "src/slices/customer";
-import { resetState as resetNotesState } from 'src/slices/notes';
+import { resetState as resetNotesState } from "src/slices/notes";
 import { resetState as resetLabelsState } from "src/slices/labels";
 
 import CustomerInformation from "./CustomerInformation";
@@ -35,7 +35,7 @@ const Form = ({
     dispatch(resetCustomerState());
     dispatch(resetLabelsState());
     dispatch(resetNotesState());
-  }
+  };
 
   useEffect(() => {
     if (!edit) {
@@ -84,12 +84,12 @@ const Form = ({
               endIcon={<SendIcon />}
               onClick={handleClick}
             >
-              {edit ? "Edit" : "Create"}
+              {edit ? "Save" : "Create"}
             </Button>
           </Grid>
         </Grid>
       </Grid>
-    </Grid >
+    </Grid>
   );
 };
 

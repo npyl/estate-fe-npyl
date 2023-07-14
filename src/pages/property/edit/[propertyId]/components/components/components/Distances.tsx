@@ -39,59 +39,30 @@ const DistancesSection: React.FC<any> = (props) => {
   const hospital = useSelector(selectHospital);
   const airport = useSelector(selectAirport);
   const sea = useSelector(selectSea);
-
+  const handleChange = (
+    setter: any,
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    dispatch(setter(event.target.value));
+  };
   //set the values for BE
-  const handlePublicTransportationChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const input = event.target.value;
-    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
-    dispatch(setPublicTransportation(numericValue));
-  };
-  const handleSeaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const input = event.target.value;
-    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
-    dispatch(setSea(numericValue));
-  };
-  const handleSchoolsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const input = event.target.value;
-    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
-    dispatch(setSchools(numericValue));
-  };
-  const handleSupermarketChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const input = event.target.value;
-    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
-    dispatch(setSupermarket(numericValue));
-  };
-  const handleCafeRestaurantChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const input = event.target.value;
-    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
-    dispatch(setCafeRestaurant(numericValue));
-  };
-  const handleHospitalChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const input = event.target.value;
-    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
-    dispatch(setHospital(numericValue));
-  };
-  const handleAirportChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const input = event.target.value;
-    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
-    dispatch(setAirport(numericValue));
-  };
+  // const handlePublicTransportationChange = (
+  //   event: React.ChangeEvent<HTMLInputElement>
+  // ) => {
+  //   const input = event.target.value;
+  //   const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+  //   dispatch(setPublicTransportation(publicTransportation));
+  // };
 
   //handle onlynumbers
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    const keyCode = event.keyCode || event.which;
-    const keyValue = String.fromCharCode(keyCode);
-    const regex = /[0-9]/;
-    if (!regex.test(keyValue)) {
-      event.preventDefault(); // Prevent entering non-numeric characters
-    }
-  };
+  // const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  //   const keyCode = event.keyCode || event.which;
+  //   const keyValue = String.fromCharCode(keyCode);
+  //   const regex = /[0-9]/;
+  //   if (!regex.test(keyValue)) {
+  //     event.preventDefault(); // Prevent entering non-numeric characters
+  //   }
+  // };
   return (
     <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
       <Box
@@ -109,12 +80,13 @@ const DistancesSection: React.FC<any> = (props) => {
         <Grid container spacing={2}>
           <Grid item xs={6}>
             <TextField
+              type="number"
               fullWidth
               id="outlined-controlled"
               label="Public Transportation"
               value={publicTransportation}
-              onChange={handlePublicTransportationChange}
-              onKeyPress={handleKeyPress}
+              onChange={(event) => handleChange(setPublicTransportation, event)}
+              // onKeyPress={handleKeyPress}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">km</InputAdornment>
@@ -130,12 +102,12 @@ const DistancesSection: React.FC<any> = (props) => {
 
           <Grid item xs={6}>
             <TextField
+              type="number"
               fullWidth
               id="outlined-controlled"
               label="Sea"
               value={sea}
-              onChange={handleSeaChange}
-              onKeyPress={handleKeyPress}
+              onChange={(event) => handleChange(setSea, event)}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">km</InputAdornment>
@@ -150,12 +122,12 @@ const DistancesSection: React.FC<any> = (props) => {
           </Grid>
           <Grid item xs={6}>
             <TextField
+              type="number"
               fullWidth
               id="outlined-controlled"
               label="Schools"
               value={schools}
-              onChange={handleSchoolsChange}
-              onKeyPress={handleKeyPress}
+              onChange={(event) => handleChange(setSchools, event)}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">km</InputAdornment>
@@ -170,12 +142,12 @@ const DistancesSection: React.FC<any> = (props) => {
           </Grid>
           <Grid item xs={6}>
             <TextField
+              type="number"
               fullWidth
               id="outlined-controlled"
               label="Supermarket"
               value={supermarket}
-              onChange={handleSupermarketChange}
-              onKeyPress={handleKeyPress}
+              onChange={(event) => handleChange(setSupermarket, event)}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">km</InputAdornment>
@@ -190,12 +162,12 @@ const DistancesSection: React.FC<any> = (props) => {
           </Grid>
           <Grid item xs={6}>
             <TextField
+              type="number"
               fullWidth
               id="outlined-controlled"
               label="Cafe-Restaurant"
               value={cafeRestaurant}
-              onChange={handleCafeRestaurantChange}
-              onKeyPress={handleKeyPress}
+              onChange={(event) => handleChange(setCafeRestaurant, event)}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">km</InputAdornment>
@@ -210,12 +182,12 @@ const DistancesSection: React.FC<any> = (props) => {
           </Grid>
           <Grid item xs={6}>
             <TextField
+              type="number"
               fullWidth
               id="outlined-controlled"
               label="Hospital"
               value={hospital}
-              onChange={handleHospitalChange}
-              onKeyPress={handleKeyPress}
+              onChange={(event) => handleChange(setHospital, event)}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">km</InputAdornment>
@@ -230,12 +202,12 @@ const DistancesSection: React.FC<any> = (props) => {
           </Grid>
           <Grid item xs={6}>
             <TextField
+              type="number"
               fullWidth
               id="outlined-controlled"
               label="Airport"
               value={airport}
-              onChange={handleAirportChange}
-              onKeyPress={handleKeyPress}
+              onChange={(event) => handleChange(setAirport, event)}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">km</InputAdornment>

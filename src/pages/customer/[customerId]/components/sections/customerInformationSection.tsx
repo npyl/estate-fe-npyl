@@ -11,6 +11,7 @@ import { useGetCustomerByIdQuery } from "src/services/customers";
 import { useRouter } from "next/router";
 import { setStatus } from "src/slices/customer";
 import { disableCache } from "@iconify/react";
+import { DisabledByDefault } from "@mui/icons-material";
 
 const CustomerInformationSection: React.FC = (props) => {
   const router = useRouter();
@@ -81,7 +82,7 @@ const CustomerInformationSection: React.FC = (props) => {
 
             <div style={{ display: "flex", alignItems: "center" }}>
               <ListItem label={t("Status")} />
-              <Rating name="simple-controlled" value={data?.status} />
+              <Rating name="simple-controlled" value={data?.status} readOnly />
             </div>
           </List>
         </Grid>
