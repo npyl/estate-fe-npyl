@@ -51,8 +51,6 @@ const slice = createSlice({
 			const targetOrderNumber = payload.orderNumber;
 			const cdnUrl = payload.cdnUrl;
 
-			console.log("setting cdnUrl: ", cdnUrl, " for: ", targetOrderNumber);
-
 			for (let i = 0; i < state.propertyImages.length; i++) {
 				const current = state.propertyImages[i];
 

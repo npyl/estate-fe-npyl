@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader } from "@mui/material";
-import { Dispatch, SetStateAction, useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 
 import UploadDnd from "src/components/upload/UploadDnd";
 import GalleryManager from "src/components/GalleryManager";
@@ -43,14 +43,11 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 		if (!filename || !contentType)
 			throw new Error("filename or contentType cannot be null");
 
-		const body =
-			typeof addMutation === typeof useAddPropertyImageMutation
-				? {
-						filename,
-						contentType,
-						orderNumber,
-				  }
-				: { filename, contentType };
+		const body = {
+			filename,
+			contentType,
+			orderNumber,
+		};
 
 		// get amazon url
 		const fileResponse = await addMutation({
@@ -81,29 +78,18 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 		return { orderNumber, cdnUrl };
 	};
 
-	const uploadThumbnail = (
-		image: File
-	): Promise<{ orderNumber: number; cdnUrl: string }> => {
-		return uploadFile(image, addThumbnail);
-	};
-	const uploadImage = (
-		image: File
-	): Promise<{ orderNumber: number; cdnUrl: string }> => {
-		return uploadFile(image, addImage);
-	};
-
 	const handleDropMultiFile = useCallback(
 		(acceptedFiles: File[]) => {
 			if (files.length === 0) {
 				// this is the first image we are adding; therefore it is the mainImage
-				uploadThumbnail(acceptedFiles[0])
+				uploadFile(acceptedFiles[0], addThumbnail)
 					.then(({ orderNumber, cdnUrl }) =>
 						setCdnUrlForFile(orderNumber, cdnUrl)
 					)
 					.catch((reason) => console.error("uploadThumbnail: ", reason));
 
 				for (let i = 1; i < acceptedFiles.length; i++)
-					uploadImage(acceptedFiles[i])
+					uploadFile(acceptedFiles[i], addImage)
 						.then(({ orderNumber, cdnUrl }) =>
 							setCdnUrlForFile(orderNumber, cdnUrl)
 						)
@@ -111,7 +97,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 			} else {
 				// treat every file as secondary image
 				acceptedFiles.forEach((acceptedFile) =>
-					uploadImage(acceptedFile)
+					uploadFile(acceptedFile, addImage)
 						.then(({ orderNumber, cdnUrl }) =>
 							setCdnUrlForFile(orderNumber, cdnUrl)
 						)
