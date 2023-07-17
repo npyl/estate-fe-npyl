@@ -16,7 +16,7 @@ export interface IMapMarker {
 	lat: number;
 	lng: number;
 	address: string;
-	draggable: boolean;
+	main: boolean;
 }
 
 interface IMapProps {
@@ -75,17 +75,17 @@ const Map = ({
 						address: location.street + " " + location.number,
 						lat: location.lat,
 						lng: location.lng,
-						draggable: false,
+						main: false,
 					};
 				}),
 		]);
 	}, [data]);
 
 	useEffect(() => {
-		if (!mainMarker) return;
+		if (!markers || !mainMarker) return;
 
 		setMarkers([...markers, mainMarker]);
-	}, [mainMarker]);
+	}, []);
 
 	const onLoad = useCallback((map: any) => {
 		const bounds = new window.google.maps.LatLngBounds(center);
@@ -150,7 +150,7 @@ const Map = ({
 			)}
 
 			{markers.map((marker, ind) => {
-				const { address, lat, lng, draggable } = marker;
+				const { address, lat, lng, main } = marker;
 
 				return (
 					<Marker
@@ -158,12 +158,12 @@ const Map = ({
 						position={{ lat, lng }}
 						onMouseUp={() => handleMarkerMouseOver(ind)}
 						animation={
-							marker !== mainMarker && activeMarker === ind
+							!main && activeMarker === ind
 								? google.maps.Animation.BOUNCE
 								: undefined
 						}
 						onClick={() => handleMarkerClick(ind, lat, lng, address)}
-						draggable={draggable}
+						draggable={main}
 						onDragEnd={(e: google.maps.MapMouseEvent) =>
 							onMarkerDragEnd(e.latLng, ind, markers)
 						}

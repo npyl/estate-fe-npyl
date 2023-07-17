@@ -32,7 +32,7 @@ const LocationSection = (props: ILocationSectionProps) => {
 		lat: 37.98381,
 		lng: 23.727539,
 		address: "",
-		draggable: true,
+		main: true,
 	});
 	const [region, setRegion] = useState("");
 	const [municipNameEN, setMunicipNameEN] = useState("");
@@ -79,7 +79,13 @@ const LocationSection = (props: ILocationSectionProps) => {
 	// Map
 	//
 	const handleMapClick = (event: google.maps.MapMouseEvent) => {
-		console.log(event.latLng?.lat());
+		const latLng = event.latLng;
+		const lat = latLng?.lat();
+		const lng = latLng?.lng();
+
+		if (!lat || !lng) return;
+
+		setMainMarker({ ...mainMarker, lat: lat, lng: lng });
 	};
 	const handleMarkerDragEnd = (
 		marker: IMapMarker,
@@ -88,7 +94,7 @@ const LocationSection = (props: ILocationSectionProps) => {
 	) => {
 		if (!marker || marker !== mainMarker) return; // we only care about mainMarker drag
 
-		// TODO: somehow get fields region, etc...
+		setMainMarker({ ...mainMarker, lat: newLat, lng: newLng });
 	};
 
 	return (

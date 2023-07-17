@@ -61,8 +61,8 @@ export const RegionSelect = (props: IRegionSelectProps) => {
 
 		onChange(
 			areaID,
-			parseInt(selectedArea.latitude),
-			parseInt(selectedArea.longitude)
+			parseFloat(selectedArea.latitude),
+			parseFloat(selectedArea.longitude)
 		);
 	};
 
