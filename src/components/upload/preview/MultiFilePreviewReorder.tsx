@@ -15,6 +15,7 @@ export default function MultiFilePreviewReorder({
 	files,
 	setFiles,
 	onImageClick,
+	onReorder,
 }: UploadPropertyImageProps) {
 	if (!files || !files?.length) return null;
 
@@ -27,6 +28,9 @@ export default function MultiFilePreviewReorder({
 		updatedItems.splice(destination.index, 0, removed);
 
 		setFiles(updatedItems);
+
+		// reorder callback
+		onReorder && onReorder(source.index, destination.index);
 	};
 
 	return (
