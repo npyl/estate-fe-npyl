@@ -4,7 +4,7 @@ import {
 	Marker,
 	useJsApiLoader,
 } from "@react-google-maps/api";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { IProperties } from "src/types/properties";
 
 const containerStyle = {
@@ -16,7 +16,7 @@ export interface IMapMarker {
 	lat: number;
 	lng: number;
 	address: string;
-	draggable: boolean;
+	main: boolean;
 }
 
 interface IMapProps {
@@ -40,18 +40,26 @@ const Map = ({
 	drawing = true,
 }: IMapProps) => {
 	const apiKey = "AIzaSyC6BN1ePFMAmJJfF71uN7vsNXIOCpQ5DbQ";
+	const athensLatLng = { lat: 37.98381, lng: 23.727539 };
 	const { isLoaded } = useJsApiLoader({
 		id: "google-map-script",
 		googleMapsApiKey: apiKey,
 		libraries: ["drawing"],
 	});
+
 	const [map, setMap] = React.useState(null);
 	const [mapRef, setMapRef] = useState<any>();
 	const [isOpen, setIsOpen] = useState(false);
 	const [infoWindowData, setInfoWindowData] = useState<any>();
-	const [center, setCenter] = useState({ lat: 37.98381, lng: 23.727539 }); // Athens
 
 	const [markers, setMarkers] = useState<IMapMarker[]>([]);
+
+	// center is based on mainMarker's latLng
+	const center = useMemo(() => {
+		return mainMarker
+			? { lat: mainMarker.lat, lng: mainMarker.lng }
+			: athensLatLng;
+	}, [mainMarker]);
 
 	useEffect(() => {
 		if (!data) return;
@@ -67,17 +75,17 @@ const Map = ({
 						address: location.street + " " + location.number,
 						lat: location.lat,
 						lng: location.lng,
-						draggable: false,
+						main: false,
 					};
 				}),
 		]);
 	}, [data]);
 
 	useEffect(() => {
-		if (!mainMarker) return;
+		if (!markers || !mainMarker) return;
 
 		setMarkers([...markers, mainMarker]);
-	}, [mainMarker]);
+	}, []);
 
 	const onLoad = useCallback((map: any) => {
 		const bounds = new window.google.maps.LatLngBounds(center);
@@ -142,7 +150,7 @@ const Map = ({
 			)}
 
 			{markers.map((marker, ind) => {
-				const { address, lat, lng, draggable } = marker;
+				const { address, lat, lng, main } = marker;
 
 				return (
 					<Marker
@@ -150,12 +158,12 @@ const Map = ({
 						position={{ lat, lng }}
 						onMouseUp={() => handleMarkerMouseOver(ind)}
 						animation={
-							marker !== mainMarker && activeMarker === ind
+							!main && activeMarker === ind
 								? google.maps.Animation.BOUNCE
 								: undefined
 						}
 						onClick={() => handleMarkerClick(ind, lat, lng, address)}
-						draggable={draggable}
+						draggable={main}
 						onDragEnd={(e: google.maps.MapMouseEvent) =>
 							onMarkerDragEnd(e.latLng, ind, markers)
 						}

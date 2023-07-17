@@ -10,11 +10,13 @@ import {
 } from "react-beautiful-dnd";
 
 import PreviewImage from "src/components/PreviewImage";
+import { LabeledImage } from "src/components/image";
 
 export default function MultiFilePreviewReorder({
 	files,
 	setFiles,
 	onImageClick,
+	onReorder,
 }: UploadPropertyImageProps) {
 	if (!files || !files?.length) return null;
 
@@ -27,6 +29,9 @@ export default function MultiFilePreviewReorder({
 		updatedItems.splice(destination.index, 0, removed);
 
 		setFiles(updatedItems);
+
+		// reorder callback
+		onReorder && onReorder(source.index, destination.index);
 	};
 
 	return (
@@ -49,8 +54,9 @@ export default function MultiFilePreviewReorder({
 												{...provided.dragHandleProps}
 											>
 												{file.url ? (
-													<Image
+													<LabeledImage
 														src={file.url}
+														label={index === 0 ? "main" : ""}
 														onClick={() => {
 															onImageClick && onImageClick(files[index]);
 														}}

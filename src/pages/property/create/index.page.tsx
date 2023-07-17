@@ -4,55 +4,60 @@ import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { useCreatePropertyMutation } from "src/services/properties";
 
 import { useRouter } from "next/router";
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import {
-  resetState,
-  selectCategory,
-  selectParentCategory,
-} from "src/slices/property";
+import { selectCategory, selectParentCategory } from "src/slices/property";
 
 import Form from "./components/Form";
 
 import { LogoProgressIndicator } from "src/components/LogoProgressIndicator";
-import { useEffect } from "react";
+import { resetState } from "src/slices/property";
 
 const CreatePropertyPage: NextPage = () => {
-  const router = useRouter();
-  const dispatch = useDispatch();
+	const router = useRouter();
+	const dispatch = useDispatch();
 
-  const [create, { isSuccess, isLoading: isCreateLoading, data: createdPropertyId }] =
-    useCreatePropertyMutation();
+	const [
+		create,
+		{ isSuccess, isLoading: isCreateLoading, data: createdPropertyId },
+	] = useCreatePropertyMutation();
 
-  const category = useSelector(selectCategory);
-  const parentCategory = useSelector(selectParentCategory);
+	const category = useSelector(selectCategory);
+	const parentCategory = useSelector(selectParentCategory);
 
-  const handleUpload = () => {
-    if (!category || !parentCategory) return;
+	useEffect(() => {
+		dispatch(resetState());
+	}, []);
 
-    // perform POST
-    create({ parentCategory: parentCategory, category: category });
-  };
+	const handleUpload = () => {
+		if (!category || !parentCategory) return;
 
-  // redirect on success
-  isSuccess && 
-  createdPropertyId && 
-  router.push(`/property/edit/${createdPropertyId}`);
+		// perform POST
+		create({ parentCategory: parentCategory, category: category });
+	};
 
-  return <>
-    <Form performUpload={handleUpload} />
+	// redirect on success
+	isSuccess &&
+		createdPropertyId &&
+		router.push(`/property/edit/${createdPropertyId}`);
 
-    {
-      // loading indicator (incase POST request is taking alot of time)
-      isCreateLoading && <LogoProgressIndicator />
-    }
-  </>
+	return (
+		<>
+			<Form performUpload={handleUpload} />
+
+			{
+				// loading indicator (incase POST request is taking alot of time)
+				isCreateLoading && <LogoProgressIndicator />
+			}
+		</>
+	);
 };
 
 CreatePropertyPage.getLayout = (page) => (
-  <AuthGuard>
-    <DashboardLayout>{page}</DashboardLayout>
-  </AuthGuard>
+	<AuthGuard>
+		<DashboardLayout>{page}</DashboardLayout>
+	</AuthGuard>
 );
 
 export default CreatePropertyPage;

@@ -1,111 +1,132 @@
-import { Grid, Paper, TextField, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import {
+	Grid,
+	Paper,
+	TextField,
+	FormControl,
+	InputLabel,
+	MenuItem,
+	Select,
+	Button,
+} from "@mui/material";
 
 import * as React from "react";
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAllGlobalsQuery } from "src/services/global";
 import {
-  selectCategory,
-  selectParentCategory,
-  setCategory,
-  setParentCategory,
+	selectCategory,
+	selectParentCategory,
+	setCategory,
+	setParentCategory,
 } from "src/slices/property";
+
 import { IGlobalProperty } from "src/types/global";
 
-export default function Form({
-  performUpload,
-}: {
-  edit?: boolean;
-  performUpload?: () => void;
-}) {
-  const dispatch = useDispatch();
+import { Send as SendIcon } from "@mui/icons-material";
 
-  // enums
-  const { data } = useAllGlobalsQuery();
-  const enums: IGlobalProperty = data?.property as IGlobalProperty;
-  const parentCategoryEnum = enums?.parentCategory;
+interface IFormProps {
+	performUpload?: () => void;
+}
 
-  const category = useSelector(selectCategory);
-  const parentCategory = useSelector(selectParentCategory);
+export default function Form({ performUpload }: IFormProps) {
+	const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (!parentCategory || !category) return;
+	// enums
+	const { data } = useAllGlobalsQuery();
+	const enums: IGlobalProperty = data?.property as IGlobalProperty;
+	const parentCategoryEnum = enums?.parentCategory;
 
-    // create our property draft
-    performUpload && performUpload();
-  }, [parentCategory, category]);
+	const category = useSelector(selectCategory);
+	const parentCategory = useSelector(selectParentCategory);
 
-  if (!enums || !parentCategoryEnum || parentCategoryEnum.length === 0)
-    return null;
+	if (!enums || !parentCategoryEnum || parentCategoryEnum.length === 0)
+		return null;
 
-  const subCategoriesMap: {
-    [key: string]: string[];
-  } = {
-    Residential: enums.residentialCategory,
-    Commercial: enums.commercialCategory,
-    Land: enums.landCategory,
-    Other: enums.otherCategory,
-  };
+	const subCategoriesMap: {
+		[key: string]: string[];
+	} = {
+		Residential: enums.residentialCategory,
+		Commercial: enums.commercialCategory,
+		Land: enums.landCategory,
+		Other: enums.otherCategory,
+	};
 
-  return (
-    <Grid container spacing={1} paddingLeft={2} paddingTop={3}>
-      <Grid
-        component={Paper}
-        padding={"8px 16px 16px 10px"}
-        container
-        spacing={1}
-      >
-        <Grid item xs={6}>
-          <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">
-              Parent Category
-            </InputLabel>
-            <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              value={parentCategory}
-              label="Parent Category"
-              onChange={(e) => {
-                dispatch(setParentCategory(e.target.value));
-              }}
-            >
-              {parentCategoryEnum.map((item, index) => {
-                return (
-                  <MenuItem key={index} value={item}>
-                    {item}
-                  </MenuItem>
-                );
-              })}
-            </Select>
-          </FormControl>
-        </Grid>
+	return (
+		<Grid container spacing={1} paddingLeft={2} paddingTop={3}>
+			<Grid
+				component={Paper}
+				padding={"8px 16px 16px 10px"}
+				container
+				spacing={1}
+			>
+				<Grid item xs={6}>
+					<FormControl fullWidth>
+						<InputLabel id="demo-simple-select-label">
+							Parent Category
+						</InputLabel>
+						<Select
+							labelId="demo-simple-select-label"
+							id="demo-simple-select"
+							value={parentCategory}
+							label="Parent Category"
+							onChange={(e) => {
+								dispatch(setParentCategory(e.target.value));
+							}}
+						>
+							{parentCategoryEnum.map((item, index) => {
+								return (
+									<MenuItem key={index} value={item}>
+										{item}
+									</MenuItem>
+								);
+							})}
+						</Select>
+					</FormControl>
+				</Grid>
 
-        <Grid item xs={6}>
-          <TextField
-            disabled={parentCategory === ""}
-            fullWidth
-            id="outlined-select-currency"
-            select
-            label="Category"
-            value={category}
-            onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-              dispatch(setCategory(event.target.value));
-            }}
-          >
-            {subCategoriesMap[parentCategory] ? (
-              subCategoriesMap[parentCategory].map((item, index) => {
-                return (
-                  <MenuItem key={index} value={item}>
-                    {item}
-                  </MenuItem>
-                );
-              })
-            ) : (
-              <MenuItem></MenuItem>
-            )}
-          </TextField>
-        </Grid>
-      </Grid>
-    </Grid>
-  );
+				<Grid item xs={6}>
+					<TextField
+						disabled={parentCategory === ""}
+						fullWidth
+						id="outlined-select-currency"
+						select
+						label="Category"
+						value={category}
+						onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+							dispatch(setCategory(event.target.value));
+						}}
+					>
+						{subCategoriesMap[parentCategory] ? (
+							subCategoriesMap[parentCategory].map((item, index) => {
+								return (
+									<MenuItem key={index} value={item}>
+										{item}
+									</MenuItem>
+								);
+							})
+						) : (
+							<MenuItem></MenuItem>
+						)}
+					</TextField>
+				</Grid>
+			</Grid>
+
+			<Grid
+				padding={2}
+				container
+				alignItems="center"
+				justifyContent="flex-end"
+				spacing={1}
+			>
+				<Grid item>
+					<Button
+						variant="contained"
+						endIcon={<SendIcon />}
+						onClick={performUpload}
+					>
+						Create
+					</Button>
+				</Grid>
+			</Grid>
+		</Grid>
+	);
 }

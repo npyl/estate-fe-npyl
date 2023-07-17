@@ -20,6 +20,10 @@ interface IPropertyAddFileParams {
 	id: number;
 	body: IPropertyImagePOST;
 }
+interface IDeleteImageProps {
+	propertyId: number;
+	imageId: number;
+}
 interface IPropertyFilterParams {
 	filter: IPropertyFilter;
 	page: number;
@@ -140,6 +144,21 @@ export const properties = createApi({
 			}),
 			invalidatesTags: ["Properties"],
 		}),
+
+		deleteThumbnail: builder.mutation<void, number>({
+			query: (id: number) => ({
+				url: `/${id}/thumbnail`,
+				method: "DELETE",
+			}),
+			invalidatesTags: ["Properties"],
+		}),
+		deletePropertyImage: builder.mutation<void, IDeleteImageProps>({
+			query: ({ propertyId, imageId }: IDeleteImageProps) => ({
+				url: `/${propertyId}/thumbnail/${imageId}`,
+				method: "DELETE",
+			}),
+			invalidatesTags: ["Properties"],
+		}),
 	}),
 });
 
@@ -157,4 +176,6 @@ export const {
 	// images & files
 	useAddPropertyThumbnailMutation,
 	useAddPropertyImageMutation,
+	useDeleteThumbnailMutation,
+	useDeletePropertyImageMutation,
 } = properties;

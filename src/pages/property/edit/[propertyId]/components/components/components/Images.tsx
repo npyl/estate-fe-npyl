@@ -7,13 +7,15 @@ import { SoftButton } from "src/components/SoftButton";
 import {
 	useAddPropertyThumbnailMutation,
 	useAddPropertyImageMutation,
+	useDeleteThumbnailMutation,
+	useDeletePropertyImageMutation,
 } from "src/services/properties";
 import { useRouter } from "next/router";
 import { IPropertyImage, IPropertyImagePOST } from "src/types/file";
 
 interface IImageSectionProps {
 	files: IPropertyImage[];
-	addFile: (image: IPropertyImage | IPropertyImagePOST) => void;
+	addFile: (image: IPropertyImagePOST) => void;
 	setCdnUrlForNextAvailable: (cdnUrl: string) => void;
 	setFiles: (images: IPropertyImage[]) => void;
 }
@@ -31,19 +33,19 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 
 	const [addThumbnail] = useAddPropertyThumbnailMutation();
 	const [addImage] = useAddPropertyImageMutation();
+	const [deleteThumbnail] = useDeleteThumbnailMutation();
+	const [deleteImage] = useDeletePropertyImageMutation();
 
 	const uploadFile = async (image: File, addMutation: any): Promise<string> => {
 		const filename = image.name;
 		const contentType = image.type;
-		const orderNumber = files.length + 1;
 
 		if (!filename || !contentType)
 			throw new Error("filename or contentType cannot be null");
 
-		const body = {
+		const body: IPropertyImagePOST = {
 			filename,
 			contentType,
-			orderNumber,
 		};
 
 		// get amazon url
@@ -103,10 +105,10 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 		const filtered = files.filter((file) => file !== inputFile);
 		setFiles(filtered);
 	};
-
 	const handleRemoveAllFiles = () => {
 		setFiles([]);
 	};
+	const handleReorder = (sourceIndex: number, newIndex: number) => {};
 
 	const handleOpenGalleryManager = () => {
 		setGalleryManagerOpen(true);
@@ -143,6 +145,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 						files={files}
 						setFiles={setFiles}
 						onDrop={handleDropMultiFile}
+						onReorder={handleReorder}
 						onRemove={handleRemoveFile}
 						onRemoveAll={handleRemoveAllFiles}
 					/>
