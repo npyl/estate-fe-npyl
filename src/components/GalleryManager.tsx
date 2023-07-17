@@ -67,6 +67,7 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
 					<Grid item xs={8}>
 						<CarouselSimple
 							onImageChange={handleImageChange}
+							mainLabel="main"
 							data={_carouselImages}
 						/>
 					</Grid>
