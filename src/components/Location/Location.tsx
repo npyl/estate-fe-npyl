@@ -62,8 +62,9 @@ const LocationSection = (props: ILocationSectionProps) => {
 		dispatch(setter(event.target.value));
 	};
 
-	const handleRegionChange = (event: SelectChangeEvent<string>) => {
-		setRegion(event.target.value);
+	const handleRegionChange = (regionCode: string, lat: number, lng: number) => {
+		setRegion(regionCode);
+		setMainMarker({ ...mainMarker, lat: lat, lng: lng });
 	};
 	const handleMunicipChange = (
 		municipNameEN: string,
@@ -71,7 +72,6 @@ const LocationSection = (props: ILocationSectionProps) => {
 		lng: number
 	) => {
 		setMunicipNameEN(municipNameEN);
-		console.log("got: ", lat, " lng: ", lng);
 		setMainMarker({ ...mainMarker, lat: lat, lng: lng });
 	};
 

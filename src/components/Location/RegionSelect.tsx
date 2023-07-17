@@ -12,7 +12,7 @@ import nomoi from "src/json/nomoi.json";
 
 interface IRegionSelectProps {
 	region: string;
-	onChange: (event: SelectChangeEvent<string>) => void;
+	onChange: (regionCode: string, lat: number, lng: number) => void;
 }
 
 export const RegionSelect = (props: IRegionSelectProps) => {
@@ -53,13 +53,26 @@ export const RegionSelect = (props: IRegionSelectProps) => {
 		return [<ListSubheader> {group.groupName}</ListSubheader>, items];
 	};
 
+	const handleChange = (event: SelectChangeEvent<string>) => {
+		const areaID = event.target.value;
+		const selectedArea = nomoi!.filter(
+			(nomos) => nomos["Area ID"] === areaID
+		)[0]; // filter by areaID
+
+		onChange(
+			areaID,
+			parseInt(selectedArea.latitude),
+			parseInt(selectedArea.longitude)
+		);
+	};
+
 	return (
 		<FormControl fullWidth>
 			<InputLabel id="demo-simple-select-label">Περιοχή</InputLabel>
 			<Select
 				labelId="demo-simple-select-label"
 				value={region}
-				onChange={onChange}
+				onChange={(event) => handleChange(event)}
 				renderValue={(selected) => {
 					const option = nomoi.find((opt) => opt["Area ID"] === selected);
 					return option ? option["Name GR"] : "";
