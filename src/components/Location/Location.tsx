@@ -65,8 +65,14 @@ const LocationSection = (props: ILocationSectionProps) => {
 	const handleRegionChange = (event: SelectChangeEvent<string>) => {
 		setRegion(event.target.value);
 	};
-	const handleMunicipChange = (municipNameEN: string) => {
+	const handleMunicipChange = (
+		municipNameEN: string,
+		lat: number,
+		lng: number
+	) => {
 		setMunicipNameEN(municipNameEN);
+		console.log("got: ", lat, " lng: ", lng);
+		setMainMarker({ ...mainMarker, lat: lat, lng: lng });
 	};
 
 	//
