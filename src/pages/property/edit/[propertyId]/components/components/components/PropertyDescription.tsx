@@ -161,10 +161,11 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
 
           <Grid item xs={6}>
             <TextField
+              type="number"
               fullWidth
               id="outlined-controlled"
               label="Bedrooms"
-              placeholder=""
+              placeholder="1,2,3..."
               value={bedrooms}
               onChange={handleBedroomsChange}
               onKeyPress={handleKeyPress}
@@ -178,11 +179,12 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
 
           <Grid item xs={6}>
             <TextField
+              type="number"
               fullWidth
               id="outlined-controlled"
               label="Layers"
               value={layers}
-              placeholder=""
+              placeholder="1,2,3..."
               onChange={handleLayersChange}
               onKeyPress={handleKeyPress}
               inputProps={{
@@ -194,8 +196,8 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
           </Grid>
 
           <Grid item xs={6}>
-            {/* <> */}
             <TextField
+              type="number"
               fullWidth
               id="outlined-controlled"
               label="Kitchens"
@@ -212,6 +214,7 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
           </Grid>
           <Grid item xs={6}>
             <TextField
+              type="number"
               fullWidth
               id="outlined-controlled"
               label="Living Rooms"
@@ -229,6 +232,7 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
 
           <Grid item xs={6}>
             <TextField
+              type="number"
               fullWidth
               id="outlined-controlled"
               label="Number of WC"
@@ -246,6 +250,7 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
 
           <Grid item xs={6}>
             <TextField
+              type="number"
               fullWidth
               id="outlined-controlled"
               label="Bathrooms"
@@ -361,11 +366,12 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
 
           <Grid item xs={6}>
             <TextField
+              type="number"
               fullWidth
               id="outlined-controlled"
               label="Rooms"
               value={rooms}
-              placeholder=""
+              placeholder="1,2,3..."
               onChange={handleRoomsChange}
               onKeyPress={handleKeyPress}
               inputProps={{

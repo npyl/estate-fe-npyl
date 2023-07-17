@@ -6,6 +6,7 @@ import DataGridTable from "src/components/DataGrid";
 import { useRouter } from "next/router";
 
 import Image from "src/components/image";
+import { BluetoothAudio } from "@mui/icons-material";
 
 const MatchingPropertiesSection: NextPage = () => {
   const columns: GridColDef[] = [
@@ -28,11 +29,9 @@ const MatchingPropertiesSection: NextPage = () => {
   ];
   const router = useRouter();
   const { customerId } = router.query;
-  const { data } = useSuggestForCustomerQuery(
-    parseInt(customerId as string)
-  ); // basic details
+  const { data } = useSuggestForCustomerQuery(parseInt(customerId as string)); // basic details
 
-  if (!data) return null;
+  if (!data || !Array.isArray(data) || data.length === 0) return null;
 
   return (
     <Paper
@@ -50,7 +49,7 @@ const MatchingPropertiesSection: NextPage = () => {
           justifyContent: "left",
         }}
       >
-        <Typography variant="h6">Owned Properties</Typography>
+        <Typography variant="h6">Matching Properties</Typography>
       </Box>
       <Divider></Divider>
       <Grid container>

@@ -1,4 +1,11 @@
-import { Checkbox, Grid, MenuItem, Paper, TextField } from "@mui/material";
+import {
+  Checkbox,
+  Grid,
+  InputAdornment,
+  MenuItem,
+  Paper,
+  TextField,
+} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 
@@ -46,6 +53,7 @@ import {
   setLuxurious,
   setPainted,
   setPetsAllowed,
+  setPublicTransportation,
   setReception,
   setSafetyDoor,
   setSatelliteTV,
@@ -102,20 +110,25 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
   const coverageFactor = useSelector(selectCoverageFactor);
   const facadeLength = useSelector(selectFacadeLength);
   const inclination = useSelector(selectInclination);
-
+  const handleChange = (
+    setter: any,
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    dispatch(setter(event.target.value));
+  };
   // get list of owners & managers
   const { data: owners } = useAllCustomersQuery();
   const { data: managers } = useAllUsersQuery();
   if (!enums) return null;
 
   //set the values for BE
-  const handleDisplayWindowsLengthChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const input = event.target.value;
-    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
-    dispatch(setDisplayWindowsLength(numericValue));
-  };
+  // const handleDisplayWindowsLengthChange = (
+  //   event: React.ChangeEvent<HTMLInputElement>
+  // ) => {
+  //   const input = event.target.value;
+  //   const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
+  //   dispatch(setDisplayWindowsLength(numericValue));
+  // };
   const handleEntrancesChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -148,12 +161,20 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
       <Grid item xs={12} padding={1}>
         <Grid container spacing={2}>
           <Grid item xs={6}>
-            <OnlyNumbersInput
+            <TextField
+              type="number"
+              fullWidth
+              id="outlined-controlled"
               label="Display Window Length"
               value={displayWindowsLength}
-              adornment="m"
-              onChange={(value) => {
-                dispatch(setDisplayWindowsLength(value));
+              onChange={(event) => handleChange(setDisplayWindowsLength, event)}
+              InputProps={{
+                endAdornment: <InputAdornment position="end">m</InputAdornment>,
+              }}
+              inputProps={{
+                style: {
+                  height: "8px",
+                },
               }}
             />
           </Grid>
