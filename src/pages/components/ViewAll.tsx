@@ -2,6 +2,7 @@ import GridViewIcon from "@mui/icons-material/GridView";
 import MapIcon from "@mui/icons-material/Map";
 import {
   ButtonGroup,
+  Grid,
   IconButton,
   Paper,
   Skeleton,
@@ -10,8 +11,13 @@ import {
   Typography,
 } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
-import { Box } from "@mui/system";
-import { GridCallbackDetails, GridCellParams, GridColDef, GridPaginationModel } from "@mui/x-data-grid";
+import { Box, padding, width } from "@mui/system";
+import {
+  GridCallbackDetails,
+  GridCellParams,
+  GridColDef,
+  GridPaginationModel,
+} from "@mui/x-data-grid";
 import { FC, ReactNode, SetStateAction, useEffect, useState } from "react";
 
 import Image from "src/components/image";
@@ -56,7 +62,7 @@ const ViewAll: FC = () => {
 
   useEffect(() => {
     filterProperties({ filter: allFilters, page: page, pageSize: pageSize });
-  }, [allFilters, page, pageSize])
+  }, [allFilters, page, pageSize]);
 
   useEffect(() => {
     if (!data) return;
@@ -84,57 +90,124 @@ const ViewAll: FC = () => {
   function renderImage(params: GridCellParams) {
     return (
       <>
-        <Image
-          src={`${params.formattedValue}` || ""}
-          alt=''
-          ratio='16/9'
-          width={1}
-        />
-      </>
-    );
-  }
-  function renderLabel(params: GridCellParams) {
-    return (
-      <>
-        <Label
-          variant='filled'
-          opaque
-          color={
-            (params.formattedValue === "SOLD" && "error") ||
-            (params.formattedValue === "SALE" && "info") ||
-            "warning"
-          }
-        >
-          {params.formattedValue as ReactNode}
-        </Label>
+        <Image src={`${params.formattedValue}` || ""} alt="" ratio="16/9" />
       </>
     );
   }
 
+  type PropertyStatus =
+    | "SOLD"
+    | "SALE"
+    | "RENTED"
+    | "UNAVAILABLE"
+    | "RENT"
+    | "TAKEN"
+    | "UNDER_CONSTRUCTION"
+    | "UNDER_MAINTENANCE";
+
+  type Color = string;
+
+  type StatusColors = Record<PropertyStatus, Color>;
+
+  const STATUS_COLORS: StatusColors = {
+    SOLD: "#79798a",
+    SALE: "#57825e",
+    RENT: "#bd9e39",
+    RENTED: "#3e78c2",
+    UNAVAILABLE: "#c72c2e",
+    TAKEN: "#7d673e",
+    UNDER_CONSTRUCTION: "#A300D8",
+    UNDER_MAINTENANCE: "#E0067C",
+  };
+  function statusColor(params: GridCellParams) {
+    if (!params.value) {
+      return <></>;
+    }
+    const status = (params.value as string).trim();
+    const statusUpper = status.toUpperCase() as PropertyStatus;
+    console.log("statusUpper:", statusUpper); // add this to debug the value
+    const color = STATUS_COLORS[statusUpper] || "#537f91"; // default color if status is not recognized
+
+    return (
+      <Box
+        sx={{
+          width: 150,
+          height: 30,
+          bgcolor: color,
+          color: "white",
+          borderRadius: "20px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        {status}
+      </Box>
+    );
+  }
   const columns: GridColDef[] = [
     {
       field: "propertyImage",
       headerName: "Thumbnail",
       width: 180,
+      align: "center",
+      headerAlign: "center",
       renderCell: renderImage,
     },
-    { field: "code", headerName: "Reference ID", align: "center" },
-    { field: "type", headerName: "Type" },
-    { field: "price", headerName: "Price" },
+    {
+      field: "code",
+      headerName: "Reference ID",
+      width: 180,
+      headerAlign: "center",
+
+      align: "center",
+    },
+    {
+      field: "parentCategory",
+      width: 180,
+      align: "center",
+      headerAlign: "center",
+      headerName: "Category",
+    },
+    {
+      field: "category",
+      width: 180,
+      align: "center",
+      headerAlign: "center",
+      headerName: "Subcategory",
+    },
+    {
+      field: "price",
+      width: 180,
+      headerAlign: "center",
+      align: "center",
+      headerName: "Price",
+    },
     {
       field: "state",
+      headerAlign: "center",
+      width: 180,
+      align: "center",
       headerName: "Status",
-      renderCell: renderLabel,
+      renderCell: statusColor,
     },
-    { field: "area", headerName: "Area" },
+    {
+      field: "area",
+      width: 180,
+      headerAlign: "center",
+      align: "center",
+      headerName: "Area",
+    },
   ];
 
-  const renderSkeletonCell = () => <Skeleton width={150} animation='wave' />;
+  const renderSkeletonCell = () => <Skeleton width={150} animation="wave" />;
   const skeletonRows = Array.from({ length: 2 }, (_, index) => ({
     id: index + 1,
   }));
-
-  const handlePaginationModelChange = (model: GridPaginationModel, details: GridCallbackDetails) => {
+  const handlePaginationModelChange = (
+    model: GridPaginationModel,
+    details: GridCallbackDetails
+  ) => {
     setPage(model.page);
     setPageSize(model.pageSize);
   };
@@ -165,7 +238,7 @@ const ViewAll: FC = () => {
             }}
           />
           <FilterRows />
-          <ButtonGroup size='small' aria-label='small button group'>
+          <ButtonGroup size="small" aria-label="small button group">
             {viewOptions.map((option) => (
               <IconButton
                 sx={{

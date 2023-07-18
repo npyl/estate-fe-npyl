@@ -35,6 +35,7 @@ import ViewHeader from "src/pages/components/ViewHeader";
 
 import "photoswipe/dist/photoswipe.css";
 import InitMap from "./components/Map";
+import DescriptionSection from "./components/sections/DescriptionSection";
 
 function a11yProps(index: number) {
   return {
@@ -86,22 +87,19 @@ const SingleProperty: NextPage = () => {
 
   return (
     <Box sx={{ width: "100%", paddingY: 1 }}>
-      <ViewHeader
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-      >
+      <ViewHeader onEdit={handleEdit} onDelete={handleDelete}>
         <Tabs
           value={value}
           onChange={handleChange}
-          aria-label='View Property Tabs'
+          aria-label="View Property Tabs"
         >
-          <Tab label='Overview' {...a11yProps(0)} />
-          <Tab label='Quick View' {...a11yProps(1)} />
-          <Tab label='Tickets' {...a11yProps(2)} />
-          <Tab label='Activities' {...a11yProps(3)} />
-          <Tab label='Storage' {...a11yProps(4)} />
-          <Tab label='Connections' {...a11yProps(5)} />
-          <Tab label='Map' {...a11yProps(6)} />
+          <Tab label="Overview" {...a11yProps(0)} />
+          <Tab label="Quick View" {...a11yProps(1)} />
+          <Tab label="Tickets" {...a11yProps(2)} />
+          <Tab label="Activities" {...a11yProps(3)} />
+          <Tab label="Storage" {...a11yProps(4)} />
+          <Tab label="Connections" {...a11yProps(5)} />
+          <Tab label="Map" {...a11yProps(6)} />
         </Tabs>
       </ViewHeader>
       <TabPanel value={value} index={0}>
@@ -119,6 +117,7 @@ const SingleProperty: NextPage = () => {
           VideoSection={<VideoSection data={data} />}
           SuitableFor={<SuitableFor data={data} />}
           TechnicalFeatures={<TechnicalFeatures data={data} />}
+          DescriptionSection={<DescriptionSection data={data} />}
         />
       </TabPanel>
       <TabPanel value={value} index={1}></TabPanel>

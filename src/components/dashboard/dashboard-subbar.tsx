@@ -4,7 +4,7 @@ import { Stack } from "@mui/system";
 import { useRouter } from "next/router";
 import { Fragment } from "react";
 import { useSelector } from "react-redux";
-import { deleteTab, selectTabs } from "src/slices/tabs";
+import { deleteSectionData, deleteTab, selectTabs } from "src/slices/tabs";
 import { useDispatch } from "src/store";
 
 const Subbar = () => {
@@ -12,6 +12,24 @@ const Subbar = () => {
   const router = useRouter();
   const tabs = useSelector(selectTabs);
   const currentPath = router.asPath;
+  const handleDeleteTab = (tabUuid: string, tabIndex: number) => {
+    // Dispatch the delete actions
+    dispatch(deleteTab(tabUuid));
+    dispatch(deleteSectionData(tabUuid));
+
+    // Calculate the new tab to move to
+    let newTab;
+    if (tabs.length > 1) {
+      newTab =
+        tabIndex === tabs.length - 1 ? tabs[tabIndex - 1] : tabs[tabIndex + 1];
+    } else {
+      // Fallback route if there are no more tabs
+      newTab = { path: "/" };
+    }
+
+    // Redirect to the new tab
+    router.push(newTab.path);
+  };
   return (
     <Stack direction={"row"} spacing={2}>
       {tabs.map((tab, index) => (
@@ -20,7 +38,7 @@ const Subbar = () => {
             sx={{
               bgcolor: currentPath === tab.path ? "primary.main" : "unset",
               padding: "0px 8px",
-              borderRadius: 2,
+              borderRadius: 4,
               boxShadow: `rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px`,
             }}
             direction={"row"}
@@ -51,7 +69,7 @@ const Subbar = () => {
                   background: "transparent",
                 },
               }}
-              onClick={() => dispatch(deleteTab(tab.uuid))}
+              onClick={() => handleDeleteTab(tab.uuid, index)}
             >
               <ClearIcon sx={{ fontSize: 13 }} />
             </IconButton>
