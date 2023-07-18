@@ -108,6 +108,7 @@ const LocationSection = (props: ILocationSectionProps) => {
 
 		if (!lat || !lng) return;
 
+		setOnDragEndCoord({ lat, lng });
 		updateMainMarkerCoordinates(lat, lng);
 	};
 	const handleMarkerDragEnd = (
@@ -126,6 +127,8 @@ const LocationSection = (props: ILocationSectionProps) => {
 
 		setRegion(closest.parentID.toString());
 		setMunicipNameEN(closest.nameEN);
+
+		// TODO: street, number, etc...
 	}, [closest]);
 
 	return (
