@@ -3,7 +3,7 @@ import { Grid, Paper } from "@mui/material";
 import { m } from "framer-motion";
 import { varFade } from "src/components/animate";
 import CarouselThumbnail from "src/components/CarouselThumbnail";
-import PreviewImage from "src/components/PreviewImage";
+import PreviewImage from "src/components/image/PreviewImage";
 import { IPropertyImage } from "src/types/file";
 import { IProperties } from "src/types/properties";
 

@@ -124,6 +124,16 @@ export const properties = createApi({
 			},
 		}),
 
+		// checks
+		checkCodeExists: builder.query<boolean, string>({
+			query: (code: string) => {
+				return {
+					url: "/check/code",
+					params: { code },
+				};
+			},
+		}),
+
 		// images & files
 		addPropertyThumbnail: builder.mutation<
 			IFileResponse,
@@ -172,6 +182,9 @@ export const {
 	useDeletePropertyMutation,
 	useFilterPropertiesMutation,
 	useSuggestForCustomerQuery,
+
+	// check
+	useLazyCheckCodeExistsQuery,
 
 	// images & files
 	useAddPropertyThumbnailMutation,

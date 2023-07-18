@@ -63,7 +63,7 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
 		>
 			<DialogTitle>Gallery Manager</DialogTitle>
 			<DialogContent>
-				<Grid container>
+				<Grid container spacing={1}>
 					<Grid item xs={8}>
 						<CarouselSimple
 							onImageChange={handleImageChange}
@@ -71,44 +71,53 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
 							data={_carouselImages}
 						/>
 					</Grid>
-					<Grid item xs={4}>
-						<TextField
-							fullWidth
-							label="Title"
-							onChange={(event: React.ChangeEvent<HTMLInputElement>) => {}}
-							size="small"
-						></TextField>
+					<Grid item xs={4} mt={1}>
+						<Stack spacing={1} flex={1}>
+							<TextField
+								fullWidth
+								label="Title"
+								onChange={(event: React.ChangeEvent<HTMLInputElement>) => {}}
+								size="small"
+							></TextField>
 
-						<TextField
-							fullWidth
-							select
-							label="Visibility"
-							value={visibility}
-							onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-								setVisibility(event.target.value);
-							}}
-							size="small"
-						>
-							<MenuItem value={"public"}>Public</MenuItem>
-							<MenuItem value={"private"}>Private</MenuItem>
-						</TextField>
+							<TextField
+								fullWidth
+								select
+								label="Visibility"
+								value={visibility}
+								onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+									setVisibility(event.target.value);
+								}}
+								size="small"
+							>
+								<MenuItem value={"public"}>Public</MenuItem>
+								<MenuItem value={"private"}>Private</MenuItem>
+							</TextField>
+						</Stack>
 					</Grid>
 				</Grid>
 			</DialogContent>
-
-			<Stack direction={"row"} justifyContent={"right"} spacing={1} p={1}>
-				<SoftButton
-					color="error"
-					onClick={() => {
-						onDelete(images[currentIndex]);
-					}}
-				>
-					<Delete />
-				</SoftButton>
-				<Button variant="outlined" color="secondary" onClick={onClose}>
-					Close
-				</Button>
-			</Stack>
+			<DialogContent
+				sx={{
+					position: "absolute",
+					bottom: 0,
+					right: 0,
+				}}
+			>
+				<Stack direction={"row"} justifyContent={"right"} spacing={1}>
+					<SoftButton
+						color="error"
+						onClick={() => {
+							onDelete(images[currentIndex]);
+						}}
+					>
+						<Delete />
+					</SoftButton>
+					<Button variant="outlined" color="secondary" onClick={onClose}>
+						Close
+					</Button>
+				</Stack>
+			</DialogContent>
 		</Dialog>
 	);
 };

@@ -1,19 +1,25 @@
 import { CircularProgress } from "@mui/material";
-import Image from "./image/Image";
+import Image from "./Image";
+import { ImageProps } from ".";
 
-interface IPreviewImageProps {
+interface IPreviewImageProps extends ImageProps {
 	animate?: boolean;
 }
 
-const PreviewImage = (props: IPreviewImageProps) => {
-	const { animate = false } = props;
-
+const PreviewImage = ({
+	animate = false,
+	ref,
+	sx,
+	...props
+}: IPreviewImageProps) => {
 	// Default image
 	const defaultImage = "/static/img/previewImage.png";
 
+	// INFO: ignore the ref, please do not pass it to Image
+
 	return (
 		<div style={{ position: "relative", display: "inline-block" }}>
-			<Image src={defaultImage} />
+			<Image src={defaultImage} sx={sx} {...props} />
 			{animate && (
 				<CircularProgress
 					sx={{

@@ -22,8 +22,8 @@ const columns: GridColDef[] = [
     width: 180,
   },
   {
-    field: "phoneNumber",
-    headerName: "Phone Number",
+    field: "mobilePhone",
+    headerName: "Mobile-Phone",
     width: 180,
   },
   {
@@ -34,15 +34,18 @@ const columns: GridColDef[] = [
 ];
 
 const Customers: NextPage = () => {
-  const { data, isFetching } = useAllCustomersPaginatedQuery({ page: 0, pageSize: 25 });
+  const { data, isFetching } = useAllCustomersPaginatedQuery({
+    page: 0,
+    pageSize: 25,
+  });
   const [rows, setRows] = useState<ICustomer[]>([]);
 
   useEffect(() => {
     if (!data) return;
     setRows(data.content);
-  }, [data])
+  }, [data]);
 
-  const renderSkeletonCell = () => <Skeleton width={150} animation='wave' />;
+  const renderSkeletonCell = () => <Skeleton width={150} animation="wave" />;
   const skeletonRows = Array.from({ length: 2 }, (_, index) => ({
     id: index + 1,
   }));
@@ -57,15 +60,17 @@ const Customers: NextPage = () => {
         }}
       >
         <Paper sx={{ mt: 2 }}>
-          {rows ? <DataGridTable
-            rows={rows}
-            columns={columns}
-            resource={"customer"}
-            sortingBy={"firstName"}
-            sortingOrder={"asc"}
-            page={0}
-            pageSize={25}
-          /> :
+          {rows ? (
+            <DataGridTable
+              rows={rows}
+              columns={columns}
+              resource={"customer"}
+              sortingBy={"firstName"}
+              sortingOrder={"asc"}
+              page={0}
+              pageSize={25}
+            />
+          ) : (
             <DataGridTable
               rows={skeletonRows}
               columns={columns.map((column) => ({
@@ -77,7 +82,7 @@ const Customers: NextPage = () => {
               page={0}
               pageSize={25}
             />
-          }
+          )}
         </Paper>
       </Box>
     </>
