@@ -46,7 +46,10 @@ export const MunicipSelect = (props: IMunicipSelectProps) => {
 						labelId="demo-simple-select-label"
 						value={municipNameEN}
 						onChange={handleChange}
-						renderValue={(selected) => selected}
+						renderValue={(selected) => {
+							const option = subAreas.find((opt) => opt.nameEN === selected);
+							return option ? option.nameGR : "";
+						}}
 						input={<OutlinedInput label="Δήμος / Συνοικία" />}
 						MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
 					>
