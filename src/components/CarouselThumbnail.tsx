@@ -25,6 +25,7 @@ import "yet-another-react-lightbox/styles.css";
 import "yet-another-react-lightbox/styles.css";
 
 import { FullscreenRef } from "yet-another-react-lightbox";
+import PreviewImage from "./PreviewImage";
 
 // ----------------------------------------------------------------------
 const data = [
@@ -207,16 +208,19 @@ export default function CarouselThumbnail({ data }: Props) {
 			}}
 		>
 			<Carousel {...carouselSettings1} asNavFor={nav2} ref={carousel1}>
-				{data.map((item) => (
-					<Image
-						key={item.id}
-						alt={item.title}
-						src={item.image}
-						disabledEffect={false}
-						ratio="16/9"
-						onClick={() => setGalleryOpen(true)}
-					/>
-				))}
+				{data.map((item) =>
+					item.image ? (
+						<Image
+							key={item.id}
+							alt={item.title}
+							src={item.image}
+							ratio="16/9"
+							onClick={() => setGalleryOpen(true)}
+						/>
+					) : (
+						<PreviewImage ratio="" />
+					)
+				)}
 			</Carousel>
 
 			<CarouselArrowIndex
@@ -231,23 +235,37 @@ export default function CarouselThumbnail({ data }: Props) {
 	const renderThumbnails = (
 		<StyledThumbnailsContainer length={data.length}>
 			<Carousel {...carouselSettings2} asNavFor={nav1} ref={carousel2}>
-				{data.map((item, index) => (
-					<Image
-						key={item.id}
-						disabledEffect={false}
-						alt={item.title}
-						src={item.image}
-						sx={{
-							width: THUMB_SIZE,
-							height: THUMB_SIZEy,
-							borderRadius: 0,
-							cursor: "pointer",
-							...(currentIndex === index && {
-								border: (theme) => `solid 2px ${theme.palette.primary.main}`,
-							}),
-						}}
-					/>
-				))}
+				{data.map((item, index) =>
+					item.image ? (
+						<Image
+							key={item.id}
+							disabledEffect
+							alt={item.title}
+							src={item.image}
+							sx={{
+								width: THUMB_SIZE,
+								height: THUMB_SIZEy,
+								borderRadius: 0,
+								cursor: "pointer",
+								...(currentIndex === index && {
+									border: (theme) => `solid 2px ${theme.palette.primary.main}`,
+								}),
+							}}
+						/>
+					) : (
+						<PreviewImage
+							sx={{
+								width: THUMB_SIZE,
+								height: THUMB_SIZEy,
+								borderRadius: 0,
+								cursor: "pointer",
+								...(currentIndex === index && {
+									border: (theme) => `solid 2px ${theme.palette.primary.main}`,
+								}),
+							}}
+						/>
+					)
+				)}
 			</Carousel>
 		</StyledThumbnailsContainer>
 	);
