@@ -1,6 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IGeoLocation } from "src/types/geolocation";
 
+interface IGetClosestParams {
+	longitude: number;
+	latitude: number;
+}
+
 export const location = createApi({
 	reducerPath: "location",
 	baseQuery: fetchBaseQuery({
@@ -32,7 +37,14 @@ export const location = createApi({
 				body,
 			}),
 		}),
+		getClosest: builder.query<IGeoLocation, IGetClosestParams>({
+			query: (params: IGetClosestParams) => ({
+				url: "/closest",
+				params: params,
+			}),
+		}),
 	}),
 });
 
-export const { useGetAreasQuery, useGetSubAreasMutation } = location;
+export const { useGetAreasQuery, useGetSubAreasMutation, useGetClosestQuery } =
+	location;
