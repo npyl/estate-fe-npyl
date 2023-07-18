@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useAllGlobalsQuery } from "src/services/global";
 import {
   selectAccessibility,
-  selectAttic,
+  selectHasAttic,
   selectBathrooms,
   selectBedrooms,
   selectFloor,
@@ -23,7 +23,7 @@ import {
   selectViewType,
   selectZoneType,
   setAccessibility,
-  setAttic,
+  setHasAttic,
   setBathrooms,
   setBedrooms,
   setFloor,
@@ -48,7 +48,7 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
   const details = enums?.details as IGlobalPropertyDetails;
 
   const dispatch = useDispatch();
-  const attic = useSelector(selectAttic);
+  const hasAttic = useSelector(selectHasAttic);
   const playroom = useSelector(selectPlayRoom);
   const penthouse = useSelector(selectPenthouse);
   const landUse = useSelector(selectLandUse);
@@ -414,13 +414,13 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
           >
             <Checkbox
               id="outlined-controlled"
-              value={attic}
+              value={hasAttic}
               placeholder="Attic"
               onChange={(
                 event: React.ChangeEvent<unknown>,
                 checked: boolean
               ) => {
-                dispatch(setAttic(checked));
+                dispatch(setHasAttic(checked));
               }}
               sx={{ cursor: "default" }}
               color="primary"

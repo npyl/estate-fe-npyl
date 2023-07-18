@@ -19,7 +19,7 @@ import {
   setStoreroom,
 } from "src/slices/property";
 
-import FloorAreasInput from './FloorAreasInput';
+import FloorAreasInput from "./FloorAreasInput";
 import OnlyNumbersInput from "../../../../../../../components/OnlyNumbers";
 
 const AreasSection: React.FC<any> = () => {
@@ -57,40 +57,66 @@ const AreasSection: React.FC<any> = () => {
           <Grid item xs={12}>
             <FloorAreasInput />
           </Grid>
+
           <Grid item xs={6}>
-            <OnlyNumbersInput label="Plot" value={plot} adornment="m²" onChange={(value) => {
-              dispatch(setPlotArea(value));
-            }} />
+            <OnlyNumbersInput
+              label="Covered"
+              value={covered}
+              adornment="m²"
+              onChange={(value) => {
+                dispatch(setCovered(value));
+              }}
+            />
           </Grid>
           <Grid item xs={6}>
-            <OnlyNumbersInput label="Covered" value={covered} adornment="m²" onChange={(value) => {
-              dispatch(setCovered(value));
-            }} />
+            <OnlyNumbersInput
+              label="Basement"
+              value={basement}
+              adornment="m²"
+              onChange={(value) => {
+                dispatch(setBasement(value));
+              }}
+            />
           </Grid>
           <Grid item xs={6}>
-            <OnlyNumbersInput label="Basement" value={basement} adornment="m²" onChange={(value) => {
-              dispatch(setBasement(value));
-            }} />
+            <OnlyNumbersInput
+              label="Attic"
+              value={attic}
+              adornment="m²"
+              onChange={(value) => {
+                dispatch(setAttic(value));
+              }}
+            />
           </Grid>
           <Grid item xs={6}>
-            <OnlyNumbersInput label="Attic" value={attic} adornment="m²" onChange={(value) => {
-              dispatch(setAttic(value));
-            }} />
+            <OnlyNumbersInput
+              label="Garden"
+              value={garden}
+              adornment="m²"
+              onChange={(value) => {
+                dispatch(setGarden(value));
+              }}
+            />
           </Grid>
           <Grid item xs={6}>
-            <OnlyNumbersInput label="Garden" value={garden} adornment="m²" onChange={(value) => {
-              dispatch(setGarden(value));
-            }} />
+            <OnlyNumbersInput
+              label="Balconies"
+              value={balconies}
+              adornment="m²"
+              onChange={(value) => {
+                dispatch(setBalconies(value));
+              }}
+            />
           </Grid>
           <Grid item xs={6}>
-            <OnlyNumbersInput label="Balconies" value={balconies} adornment="m²" onChange={(value) => {
-              dispatch(setBalconies(value));
-            }} />
-          </Grid>
-          <Grid item xs={6}>
-            <OnlyNumbersInput label="Storeroom" value={storeroom} adornment="m²" onChange={(value) => {
-              dispatch(setStoreroom(value));
-            }} />
+            <OnlyNumbersInput
+              label="Storeroom"
+              value={storeroom}
+              adornment="m²"
+              onChange={(value) => {
+                dispatch(setStoreroom(value));
+              }}
+            />
           </Grid>
         </Grid>
       </Grid>

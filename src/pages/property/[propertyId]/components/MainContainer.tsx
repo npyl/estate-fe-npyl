@@ -3,6 +3,7 @@ import { Box, Grid, Paper, Stack } from "@mui/material";
 interface MainContainerProps {
   ImageSection: JSX.Element;
   BasicSection: JSX.Element;
+  DescriptionSection: JSX.Element;
   DetailsSection: JSX.Element;
   HeatingSection: JSX.Element;
   AreaSection: JSX.Element;
@@ -20,6 +21,7 @@ const MainContainer: React.FC<MainContainerProps> = (props) => {
   const {
     ImageSection,
     BasicSection,
+    DescriptionSection,
     DetailsSection,
     HeatingSection,
     AreaSection,
@@ -80,6 +82,9 @@ const MainContainer: React.FC<MainContainerProps> = (props) => {
           </Grid>
           <Grid item xs={12}>
             {NotesSection}
+          </Grid>
+          <Grid item xs={12}>
+            {DescriptionSection}
           </Grid>
         </Stack>
       </Grid>
