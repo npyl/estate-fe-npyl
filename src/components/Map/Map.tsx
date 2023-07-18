@@ -62,7 +62,7 @@ const Map = ({
 		return mainMarker
 			? { lat: mainMarker.lat, lng: mainMarker.lng }
 			: athensLatLng;
-	}, [mainMarker]);
+	}, [mainMarker?.lat, mainMarker?.lng]);
 
 	useEffect(() => {
 		if (!data) return;

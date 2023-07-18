@@ -71,6 +71,13 @@ const LocationSection = (props: ILocationSectionProps) => {
 		}
 	).data;
 
+	const updateMainMarkerCoordinates = (lat: number, lng: number) => {
+		let newMarker = mainMarker;
+		newMarker.lat = lat;
+		newMarker.lng = lng;
+		setMainMarker(newMarker);
+	};
+
 	const handleChange = (
 		setter: any,
 		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -80,7 +87,7 @@ const LocationSection = (props: ILocationSectionProps) => {
 
 	const handleRegionChange = (regionCode: string, lat: number, lng: number) => {
 		setRegion(regionCode);
-		setMainMarker({ ...mainMarker, lat: lat, lng: lng });
+		updateMainMarkerCoordinates(lat, lng);
 	};
 	const handleMunicipChange = (
 		municipNameEN: string,
@@ -88,7 +95,7 @@ const LocationSection = (props: ILocationSectionProps) => {
 		lng: number
 	) => {
 		setMunicipNameEN(municipNameEN);
-		setMainMarker({ ...mainMarker, lat: lat, lng: lng });
+		updateMainMarkerCoordinates(lat, lng);
 	};
 
 	//
@@ -101,7 +108,7 @@ const LocationSection = (props: ILocationSectionProps) => {
 
 		if (!lat || !lng) return;
 
-		setMainMarker({ ...mainMarker, lat: lat, lng: lng });
+		updateMainMarkerCoordinates(lat, lng);
 	};
 	const handleMarkerDragEnd = (
 		marker: IMapMarker,
@@ -111,7 +118,7 @@ const LocationSection = (props: ILocationSectionProps) => {
 		if (!marker || marker !== mainMarker) return; // we only care about mainMarker drag
 
 		setOnDragEndCoord({ lat: newLat, lng: newLng });
-		setMainMarker({ ...mainMarker, lat: newLat, lng: newLng });
+		updateMainMarkerCoordinates(newLat, newLng);
 	};
 
 	useEffect(() => {
