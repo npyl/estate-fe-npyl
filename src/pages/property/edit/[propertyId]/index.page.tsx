@@ -1,15 +1,22 @@
 import type { NextPage } from "next";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import Form from "./components/Form";
 import { useEditPropertyMutation } from "src/services/properties";
-import { setInitialState, selectAll } from "src/slices/property";
-import { setInitialState as setInitialFilesState } from "src/slices/property/files";
-import { selectAll as selectAllNewLabels } from "src/slices/labels";
+import { setInitialState, selectAll, resetState } from "src/slices/property";
 import {
+	resetState as resetFiles,
+	setInitialState as setInitialFilesState,
+} from "src/slices/property/files";
+import {
+	resetState as resetLabels,
+	selectAll as selectAllNewLabels,
+} from "src/slices/labels";
+import {
+	resetState as resetNotes,
 	selectAll as selectAllNewNotes,
 	setInitialState as setInitialNotesState,
 } from "src/slices/notes";
@@ -28,6 +35,9 @@ const EditPropertyPage: NextPage = () => {
 
 	const { propertyId } = router.query;
 
+	// everythingIsClear; we can now setInitialState
+	const [everythingIsClear, setEverythingIsClear] = useState(false);
+
 	const { data: fetchedProperty, isSuccess: isPropertySuccess } =
 		useGetPropertyByIdQuery(parseInt(propertyId as string));
 
@@ -45,7 +55,6 @@ const EditPropertyPage: NextPage = () => {
 	] = useEditPropertyMutation();
 
 	const body = useSelector(selectAll);
-
 	const newLabels = useSelector(selectAllNewLabels);
 	const newNotes = useSelector(selectAllNewNotes);
 
@@ -69,8 +78,16 @@ const EditPropertyPage: NextPage = () => {
 		});
 	};
 
+	const resetEverything = () => {
+		dispatch(resetFiles());
+		dispatch(resetLabels());
+		dispatch(resetNotes());
+		dispatch(resetState());
+	};
+
 	useEffect(() => {
-		if (!isPropertySuccess) return;
+		if (!everythingIsClear) return;
+		if (!fetchedProperty || !isPropertySuccess) return;
 
 		dispatch(
 			setInitialFilesState({
@@ -81,7 +98,7 @@ const EditPropertyPage: NextPage = () => {
 		);
 		dispatch(setInitialNotesState(fetchedProperty.notes));
 		dispatch(setInitialState(fetchedProperty));
-	}, [isPropertySuccess]);
+	}, [everythingIsClear, fetchedProperty, isPropertySuccess]);
 
 	useEffect(() => {
 		if (isEditProperty) {
@@ -91,13 +108,19 @@ const EditPropertyPage: NextPage = () => {
 		}
 	}, [isEditProperty]);
 
+	useEffect(() => {
+		// clear store before getting data
+		resetEverything();
+		setEverythingIsClear(true); // prevent race condition between reset and setInitialState
+	}, []);
+
 	const performUpload = () => {
 		edit({ id: +propertyId!, body: body });
 	};
 
 	return (
 		<>
-			<Form edit={true} performUpload={performUpload} />
+			<Form performUpload={performUpload} resetEverything={resetEverything} />
 
 			{
 				// loading indicator (incase POST request is taking alot of time)
