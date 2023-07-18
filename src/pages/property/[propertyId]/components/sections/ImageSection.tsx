@@ -43,11 +43,7 @@ const ImageSection: React.FC<ImageSectionProps> = (props) => {
 			<Grid container>
 				<Grid item xs={12}>
 					<m.div variants={varFade().in}>
-						{data?.propertyImage ? (
-							<CarouselThumbnail data={_carouselsExample} />
-						) : (
-							<PreviewImage />
-						)}
+						<CarouselThumbnail data={_carouselsExample} />
 					</m.div>
 				</Grid>
 			</Grid>
