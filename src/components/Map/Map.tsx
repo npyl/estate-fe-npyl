@@ -12,9 +12,12 @@ const containerStyle = {
 	height: "100%",
 };
 
-export interface IMapMarker {
+export interface IMapCoordinates {
 	lat: number;
 	lng: number;
+}
+
+export interface IMapMarker extends IMapCoordinates {
 	address: string;
 	main: boolean;
 }
@@ -59,7 +62,7 @@ const Map = ({
 		return mainMarker
 			? { lat: mainMarker.lat, lng: mainMarker.lng }
 			: athensLatLng;
-	}, [mainMarker]);
+	}, [mainMarker?.lat, mainMarker?.lng]);
 
 	useEffect(() => {
 		if (!data) return;

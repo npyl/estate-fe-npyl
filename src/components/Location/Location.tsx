@@ -1,4 +1,4 @@
-import { Grid, Paper, SelectChangeEvent, TextField } from "@mui/material";
+import { Grid, Paper, TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
@@ -7,11 +7,12 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import OnlyNumbersInput from "src/components/OnlyNumbers";
-import Map, { IMapMarker } from "../Map/Map";
+import Map, { IMapMarker, IMapCoordinates } from "../Map/Map";
 
 import { ILocationPOST } from "src/types/location";
 import { RegionSelect } from "./RegionSelect";
 import { MunicipSelect } from "./MunicipSelect";
+import { useGetClosestQuery } from "src/services/location";
 
 interface ILocationSectionProps extends ILocationPOST {
 	// redux setters
@@ -25,18 +26,6 @@ interface ILocationSectionProps extends ILocationPOST {
 }
 
 const LocationSection = (props: ILocationSectionProps) => {
-	const dispatch = useDispatch();
-
-	const [activeMarker, setActiveMarker] = useState(null);
-	const [mainMarker, setMainMarker] = useState<IMapMarker>({
-		lat: 37.98381,
-		lng: 23.727539,
-		address: "",
-		main: true,
-	});
-	const [region, setRegion] = useState("");
-	const [municipNameEN, setMunicipNameEN] = useState("");
-
 	const {
 		street,
 		number,
@@ -55,6 +44,40 @@ const LocationSection = (props: ILocationSectionProps) => {
 		setCountry,
 	} = props;
 
+	const dispatch = useDispatch();
+
+	const [activeMarker, setActiveMarker] = useState(null);
+	const [mainMarker, setMainMarker] = useState<IMapMarker>({
+		lat: 37.98381,
+		lng: 23.727539,
+		address: "",
+		main: true,
+	});
+
+	const [region, setRegion] = useState("");
+	const [municipNameEN, setMunicipNameEN] = useState("");
+
+	const nullCoord = {
+		lat: -1,
+		lng: -1,
+	};
+	const [onDragEndCoord, setOnDragEndCoord] =
+		useState<IMapCoordinates>(nullCoord);
+
+	const closest = useGetClosestQuery(
+		{ latitude: onDragEndCoord.lat, longitude: onDragEndCoord.lng },
+		{
+			skip: onDragEndCoord === nullCoord,
+		}
+	).data;
+
+	const updateMainMarkerCoordinates = (lat: number, lng: number) => {
+		let newMarker = mainMarker;
+		newMarker.lat = lat;
+		newMarker.lng = lng;
+		setMainMarker(newMarker);
+	};
+
 	const handleChange = (
 		setter: any,
 		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -64,7 +87,7 @@ const LocationSection = (props: ILocationSectionProps) => {
 
 	const handleRegionChange = (regionCode: string, lat: number, lng: number) => {
 		setRegion(regionCode);
-		setMainMarker({ ...mainMarker, lat: lat, lng: lng });
+		updateMainMarkerCoordinates(lat, lng);
 	};
 	const handleMunicipChange = (
 		municipNameEN: string,
@@ -72,7 +95,7 @@ const LocationSection = (props: ILocationSectionProps) => {
 		lng: number
 	) => {
 		setMunicipNameEN(municipNameEN);
-		setMainMarker({ ...mainMarker, lat: lat, lng: lng });
+		updateMainMarkerCoordinates(lat, lng);
 	};
 
 	//
@@ -85,7 +108,8 @@ const LocationSection = (props: ILocationSectionProps) => {
 
 		if (!lat || !lng) return;
 
-		setMainMarker({ ...mainMarker, lat: lat, lng: lng });
+		setOnDragEndCoord({ lat, lng });
+		updateMainMarkerCoordinates(lat, lng);
 	};
 	const handleMarkerDragEnd = (
 		marker: IMapMarker,
@@ -94,8 +118,18 @@ const LocationSection = (props: ILocationSectionProps) => {
 	) => {
 		if (!marker || marker !== mainMarker) return; // we only care about mainMarker drag
 
-		setMainMarker({ ...mainMarker, lat: newLat, lng: newLng });
+		setOnDragEndCoord({ lat: newLat, lng: newLng });
+		updateMainMarkerCoordinates(newLat, newLng);
 	};
+
+	useEffect(() => {
+		if (!closest) return;
+
+		setRegion(closest.parentID.toString());
+		setMunicipNameEN(closest.nameEN);
+
+		// TODO: street, number, etc...
+	}, [closest]);
 
 	return (
 		<Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
