@@ -25,59 +25,10 @@ import "yet-another-react-lightbox/styles.css";
 import "yet-another-react-lightbox/styles.css";
 
 import { FullscreenRef } from "yet-another-react-lightbox";
-import PreviewImage from "./PreviewImage";
+import PreviewImage from "./image/PreviewImage";
 
 // ----------------------------------------------------------------------
-const data = [
-	{
-		id: "1",
-		title: "Image 1",
-		image: "image1.jpg",
-		description: "Description 1",
-	},
-	{
-		id: "2",
-		title: "Image 2",
-		image: "image2.jpg",
-		description: "Description 2",
-	},
-	{
-		id: "3",
-		title: "Image 3",
-		image: "image3.jpg",
-		description: "Description 3",
-	},
-	{
-		id: "4",
-		title: "Image 4",
-		image: "image4.jpg",
-		description: "Description 4",
-	},
-	{
-		id: "5",
-		title: "Image 5",
-		image: "image5.jpg",
-		description: "Description 5",
-	},
-	{
-		id: "6",
-		title: "Image 6",
-		image: "image6.jpg",
-		description: "Description 6",
-	},
-	{
-		id: "7",
-		title: "Image 7",
-		image: "image7.jpg",
-		description: "Description 7",
-	},
-	{
-		id: "8",
-		title: "Image 8",
-		image: "image8.jpg",
-		description: "Description 8",
-	},
-];
+
 const THUMB_SIZE = 150;
 const THUMB_SIZEy = 100;
 
@@ -218,7 +169,7 @@ export default function CarouselThumbnail({ data }: Props) {
 							onClick={() => setGalleryOpen(true)}
 						/>
 					) : (
-						<PreviewImage ratio="" />
+						<PreviewImage />
 					)
 				)}
 			</Carousel>

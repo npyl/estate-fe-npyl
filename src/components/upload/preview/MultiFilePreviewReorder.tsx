@@ -9,7 +9,7 @@ import {
 	DropResult,
 } from "react-beautiful-dnd";
 
-import PreviewImage from "src/components/PreviewImage";
+import PreviewImage from "src/components/image/PreviewImage";
 import { LabeledImage } from "src/components/image";
 
 export default function MultiFilePreviewReorder({

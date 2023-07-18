@@ -1,7 +1,6 @@
 import { CircularProgress } from "@mui/material";
-import Image from "./image/Image";
-import { ImageProps } from "./image";
-import { forwardRef } from "react";
+import Image from "./Image";
+import { ImageProps } from ".";
 
 interface IPreviewImageProps extends ImageProps {
 	animate?: boolean;
