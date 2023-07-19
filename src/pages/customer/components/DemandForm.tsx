@@ -3,6 +3,7 @@ import {
   Box,
   FormControl,
   Grid,
+  InputAdornment,
   InputLabel,
   MenuItem,
   Paper,
@@ -56,7 +57,7 @@ import {
   setTimeFrame,
   setDemandLabels,
 } from "src/slices/customer";
-
+import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 import { useDispatch, useSelector } from "react-redux";
 
 import { FC, useEffect, useMemo, useState } from "react";
@@ -70,6 +71,7 @@ import {
 import OnlyNumbersInput from "src/components/OnlyNumbers";
 
 import { LabelSelect } from "./LabelSelect";
+
 // function valuetext(value: number) {
 //   return `${value}°C`;
 // }
@@ -106,6 +108,7 @@ const DemandForm: FC = () => {
   const buyer = useSelector(selectBuyer);
 
   const dispatch = useDispatch();
+
   const floorMap: Map<number, string> = new Map([
     [-3, "Basement"],
     [-2, "Semi-basement"],
@@ -115,7 +118,12 @@ const DemandForm: FC = () => {
   ]);
 
   const [autocompleteValue, setAutocompleteValue] = useState("");
-
+  const handleChange = (
+    setter: any,
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    dispatch(setter(event.target.value));
+  };
   const autocompleteChange = (_event: any, value: string | null) => {
     setAutocompleteValue(value || "");
   };
@@ -356,6 +364,24 @@ const DemandForm: FC = () => {
                 min={0}
                 max={10}
               />
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Min"
+                    type="number"
+                    value={minBedrooms === 0 ? "" : minBedrooms}
+                    onChange={(event) => handleChange(setMinBedrooms, event)}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Max"
+                    type="number"
+                    value={maxBedrooms === 0 ? "" : maxBedrooms}
+                    onChange={(event) => handleChange(setMaxBedrooms, event)}
+                  />
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
 
@@ -379,6 +405,24 @@ const DemandForm: FC = () => {
                 min={0}
                 max={10}
               />
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Min"
+                    type="number"
+                    value={minBathrooms === 0 ? "" : minBathrooms}
+                    onChange={(event) => handleChange(setMinBathrooms, event)}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Max"
+                    type="number"
+                    value={maxBathrooms === 0 ? "" : maxBathrooms}
+                    onChange={(event) => handleChange(setMaxBathrooms, event)}
+                  />
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
 
@@ -401,6 +445,34 @@ const DemandForm: FC = () => {
                 min={0}
                 max={3000}
               />
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Min"
+                    type="number"
+                    value={minCovered === 0 ? "" : minCovered}
+                    onChange={(event) => handleChange(setMinCovered, event)}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">m²</InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Max"
+                    type="number"
+                    value={maxCovered === 0 ? "" : maxCovered}
+                    onChange={(event) => handleChange(setMaxCovered, event)}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">m²</InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
 
@@ -423,6 +495,34 @@ const DemandForm: FC = () => {
                 min={0}
                 max={10000}
               />
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Min"
+                    type="number"
+                    value={minPlot === 0 ? "" : minPlot}
+                    onChange={(event) => handleChange(setMinPlot, event)}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">m²</InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Max"
+                    type="number"
+                    value={maxPlot === 0 ? "" : maxPlot}
+                    onChange={(event) => handleChange(setMaxPlot, event)}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">m²</InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
 
@@ -445,32 +545,36 @@ const DemandForm: FC = () => {
                 min={0}
                 max={1000000}
               />
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Min"
+                    type="number"
+                    value={minPrice === 0 ? "" : minPrice}
+                    onChange={(event) => handleChange(setMinPrice, event)}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">€</InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Max"
+                    type="number"
+                    value={maxPrice === 0 ? "" : maxPrice}
+                    onChange={(event) => handleChange(setMaxPrice, event)}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">€</InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
+              </Grid>
             </Grid>
           </Grid>
-
-          <Grid item xs={6}>
-            <Typography variant="h6">Floor Min-Max</Typography>
-            <Grid
-              container
-              direction={"row"}
-              spacing={1}
-              paddingTop={2}
-              paddingLeft={3}
-              paddingRight={3}
-            >
-              {/* <Slider
-                getAriaLabel={() => "Floor Slider"}
-                orientation="horizontal"
-                value={[minFloor, maxFloor]}
-                onChange={handleSliderChange5}
-                valueLabelDisplay="auto"
-                valueLabelFormat={(value) => floorMap.get(value)}
-                min={-3}
-                max={20}
-              /> */}
-            </Grid>
-          </Grid>
-
           <Grid item xs={6}>
             <Typography variant="h6">Year of Construction Min-Max</Typography>
             <Grid
@@ -490,6 +594,91 @@ const DemandForm: FC = () => {
                 min={1960}
                 max={2023}
               />
+              <Grid container spacing={2}>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Min"
+                    type="number"
+                    value={
+                      minYearOfConstruction === 0 ? "" : minYearOfConstruction
+                    }
+                    onChange={(event) =>
+                      handleChange(setMinYearOfConstruction, event)
+                    }
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    label="Max"
+                    type="number"
+                    value={
+                      maxYearOfConstruction === 0 ? "" : maxYearOfConstruction
+                    }
+                    onChange={(event) =>
+                      handleChange(setMaxYearOfConstruction, event)
+                    }
+                  />
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography variant="h6">Floor Min-Max</Typography>
+            <Grid
+              container
+              direction={"row"}
+              spacing={2}
+              paddingTop={2}
+              paddingLeft={3}
+              paddingRight={3}
+            >
+              {/* <Slider
+                getAriaLabel={() => "Floor Slider"}
+                orientation="horizontal"
+                value={[minFloor, maxFloor]}
+                onChange={handleSliderChange5}
+                valueLabelDisplay="auto"
+                valueLabelFormat={(value) => floorMap.get(value)}
+                min={-3}
+                max={20}
+              /> */}
+
+              <Grid item xs={6}>
+                <FormControl fullWidth>
+                  <InputLabel>Min Floor</InputLabel>
+                  <Select
+                    value={minFloor}
+                    label="Min floor"
+                    onChange={(e) => {
+                      dispatch(setMinFloor(e.target.value));
+                    }}
+                  >
+                    {/* {details?.minFloors?.map((option) => (
+                      <MenuItem key={option} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))} */}
+                  </Select>
+                </FormControl>{" "}
+              </Grid>
+              <Grid item xs={6}>
+                <FormControl fullWidth>
+                  <InputLabel>Max Floor</InputLabel>
+                  <Select
+                    value={maxFloor}
+                    label="Max floor"
+                    onChange={(e) => {
+                      dispatch(setMaxFloor(e.target.value));
+                    }}
+                  >
+                    {/* {details?.minFloors?.map((option) => (
+                      <MenuItem key={option} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))} */}
+                  </Select>
+                </FormControl>{" "}
+              </Grid>
             </Grid>
           </Grid>
         </Grid>

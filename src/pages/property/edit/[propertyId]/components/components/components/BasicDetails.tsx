@@ -95,15 +95,16 @@ const BasicSection: React.FC<any> = () => {
 	const [checkCode, { data: codeExists, isSuccess: chechCodeSuccess }] =
 		useLazyCheckCodeExistsQuery();
 
-	const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-	const [codeError, setCodeError] = useState("");
+  const [codeError, setCodeError] = useState("");
 
-	const code = useSelector(selectCode);
-	const owner = useSelector(selectOwner);
-	const manager = useSelector(selectManager);
-	const currentRentPrice = useSelector(selectCurrentRentPrice);
-	const estimatedRentPrice = useSelector(selectEstimatedRentPrice);
+  const currentDate = new Date();
+  const code = useSelector(selectCode);
+  const owner = useSelector(selectOwner);
+  const manager = useSelector(selectManager);
+  const currentRentPrice = useSelector(selectCurrentRentPrice);
+  const estimatedRentPrice = useSelector(selectEstimatedRentPrice);
 
 	const price = useSelector(selectPrice);
 	const keyCode = useSelector(selectKeyCode);
