@@ -165,7 +165,6 @@ const LocationSection = (props: ILocationSectionProps) => {
 					<Grid item xs={4}>
 						<TextField
 							fullWidth
-							id="outlined-controlled"
 							label="Country"
 							value={country}
 							onChange={(event) => handleChange(setCountry, event)}
@@ -190,8 +189,7 @@ const LocationSection = (props: ILocationSectionProps) => {
 					<Grid item xs={6}>
 						<TextField
 							fullWidth
-							id="outlined-controlled"
-							label="Street"
+							placeholder="Street"
 							value={street}
 							onChange={(event) => handleChange(setStreet, event)}
 						/>
@@ -199,8 +197,7 @@ const LocationSection = (props: ILocationSectionProps) => {
 					<Grid item xs={6}>
 						<TextField
 							fullWidth
-							id="outlined-controlled"
-							label="Number"
+							placeholder="Number"
 							value={number}
 							onChange={(event) => handleChange(setNumber, event)}
 						/>
@@ -208,8 +205,7 @@ const LocationSection = (props: ILocationSectionProps) => {
 					<Grid item xs={6}>
 						<TextField
 							fullWidth
-							id="outlined-controlled"
-							label="Complex"
+							placeholder="Complex"
 							value={complex}
 							onChange={(event) => handleChange(setComplex, event)}
 						/>
