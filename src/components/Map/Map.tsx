@@ -22,9 +22,20 @@ export interface IMapMarker extends IMapCoordinates {
 	main: boolean;
 }
 
+export interface IMapAddress {
+	street: string;
+	number: string;
+	zipCode: string;
+}
+
 interface IMapProps {
-	onClick?: (event: google.maps.MapMouseEvent) => void;
-	onDragEnd?: (marker: IMapMarker, newLat: number, newLng: number) => void;
+	onClick?: (lat: number, lng: number, address: IMapAddress) => void;
+	onDragEnd?: (
+		marker: IMapMarker,
+		newLat: number,
+		newLng: number,
+		address: IMapAddress
+	) => void;
 
 	data?: IProperties[];
 	mainMarker?: IMapMarker;
@@ -49,6 +60,7 @@ const Map = ({
 		googleMapsApiKey: apiKey,
 		libraries: ["drawing"],
 	});
+	const [geocoder, setGeocoder] = useState<google.maps.Geocoder>();
 
 	const [map, setMap] = React.useState(null);
 	const [mapRef, setMapRef] = useState<any>();
@@ -92,6 +104,7 @@ const Map = ({
 
 	const onLoad = useCallback((map: any) => {
 		const bounds = new window.google.maps.LatLngBounds(center);
+		setGeocoder(new window.google.maps.Geocoder());
 
 		if (map.current) {
 			map.current.fitBounds(bounds);
@@ -104,19 +117,68 @@ const Map = ({
 		setMap(null);
 	}, []);
 
+	const getAddressFromLatLng = async (
+		lat: number,
+		lng: number
+	): Promise<IMapAddress> => {
+		if (!geocoder) throw new Error("Geocoder is not initialised!");
+
+		// Helper function to extract the address component value based on the type
+		const getAddressComponent = (
+			addressComponents: google.maps.GeocoderAddressComponent[],
+			type: string
+		) => {
+			const component = addressComponents.find((component) =>
+				component.types.includes(type)
+			);
+			return component ? component.long_name : "";
+		};
+
+		const { results } = await geocoder.geocode({
+			location: { lat, lng },
+		});
+
+		if (!results || results.length === 0 || !results[0])
+			throw new Error("Geocoder failed");
+
+		// Access the address components from the first result
+		const addressComponents = results[0].address_components;
+
+		// Extract the desired address details from address components
+		const street = getAddressComponent(addressComponents, "route");
+		const number = getAddressComponent(addressComponents, "street_number");
+		const zipCode = getAddressComponent(addressComponents, "postal_code");
+
+		return { street, number, zipCode };
+	};
+
 	//
-	// Markers
+	//	Map
+	//
+	const handleMapClick = (event: google.maps.MapMouseEvent) => {
+		const latLng = event.latLng;
+		const lat = latLng?.lat();
+		const lng = latLng?.lng();
+
+		if (!lat || !lng) return;
+
+		if (onClick)
+			getAddressFromLatLng(lat, lng).then((response) =>
+				onClick(lat, lng, response)
+			);
+	};
+
+	//
+	// 	Markers
 	//
 	const handleMarkerClick = (id: any, lat: any, lng: any, address: any) => {
 		mapRef?.panTo({ lat, lng });
 		setInfoWindowData({ id, address });
 		setIsOpen(true);
 	};
-
 	const handleMarkerMouseOver = (marker: any) => {
 		setActiveMarker(marker);
 	};
-
 	const onMarkerDragEnd = (
 		latLng: any,
 		index: number,
@@ -129,7 +191,10 @@ const Map = ({
 		setMarkers([...markers]);
 
 		// also call parent callback
-		if (onDragEnd) onDragEnd(markers[index], lat, lng);
+		if (onDragEnd)
+			getAddressFromLatLng(lat, lng).then((response) =>
+				onDragEnd(markers[index], lat, lng, response)
+			);
 	};
 
 	//
@@ -144,7 +209,7 @@ const Map = ({
 			mapContainerStyle={containerStyle}
 			center={center}
 			zoom={16}
-			onClick={(event) => onClick && onClick(event)}
+			onClick={handleMapClick}
 			onLoad={onLoad}
 			onUnmount={onUnmount}
 		>

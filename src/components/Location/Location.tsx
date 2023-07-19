@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 import OnlyNumbersInput from "src/components/OnlyNumbers";
-import Map, { IMapMarker, IMapCoordinates } from "../Map/Map";
+import Map, { IMapMarker, IMapCoordinates, IMapAddress } from "../Map/Map";
 
 import { ILocationPOST } from "src/types/location";
 import { RegionSelect } from "./RegionSelect";
@@ -101,25 +101,30 @@ const LocationSection = (props: ILocationSectionProps) => {
 	//
 	// Map
 	//
-	const handleMapClick = (event: google.maps.MapMouseEvent) => {
-		const latLng = event.latLng;
-		const lat = latLng?.lat();
-		const lng = latLng?.lng();
-
+	const handleMapClick = (lat: number, lng: number, address: IMapAddress) => {
 		if (!lat || !lng) return;
 
 		setOnDragEndCoord({ lat, lng });
 		updateMainMarkerCoordinates(lat, lng);
+
+		dispatch(setStreet(address.street));
+		dispatch(setNumber(address.number));
+		dispatch(setZipCode(address.zipCode));
 	};
 	const handleMarkerDragEnd = (
 		marker: IMapMarker,
 		newLat: number,
-		newLng: number
+		newLng: number,
+		address: IMapAddress
 	) => {
 		if (!marker || marker !== mainMarker) return; // we only care about mainMarker drag
 
 		setOnDragEndCoord({ lat: newLat, lng: newLng });
 		updateMainMarkerCoordinates(newLat, newLng);
+
+		dispatch(setStreet(address.street));
+		dispatch(setNumber(address.number));
+		dispatch(setZipCode(address.zipCode));
 	};
 
 	useEffect(() => {
@@ -127,8 +132,6 @@ const LocationSection = (props: ILocationSectionProps) => {
 
 		setRegion(closest.parentID.toString());
 		setMunicipNameEN(closest.nameEN);
-
-		// TODO: street, number, etc...
 	}, [closest]);
 
 	return (
