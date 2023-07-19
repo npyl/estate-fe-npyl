@@ -3,7 +3,6 @@ import { Grid, Paper } from "@mui/material";
 import { m } from "framer-motion";
 import { varFade } from "src/components/animate";
 import CarouselThumbnail from "src/components/CarouselThumbnail";
-import PreviewImage from "src/components/image/PreviewImage";
 import { IPropertyImage } from "src/types/file";
 import { IProperties } from "src/types/properties";
 
@@ -14,36 +13,23 @@ interface ImageSectionProps {
 const ImageSection: React.FC<ImageSectionProps> = (props) => {
 	const { data } = props;
 	const images: IPropertyImage[] = data.images;
-	const propertyImage: IPropertyImage = data.propertyImage;
 
-	const _carouselsExample = [
-		// add main image
-		{
-			id: "1",
-			title: "Main Image",
-			image: propertyImage?.url,
-			description: "A registry of multidisciplinar artefacts...",
-			path: "/repository",
-		},
-	];
-
-	// add all images
-	images.forEach((image, index) => {
-		_carouselsExample.push({
-			id: (index + 1).toString(),
+	const carouselImages = [
+		...images.map((image, index) => ({
+			id: index.toString(),
 			title: "Image",
 			image: image.url || "",
 			description: "One of the images",
 			path: "/repository",
-		});
-	});
+		})),
+	];
 
 	return (
 		<Paper elevation={10} sx={{ overflow: "auto" }}>
 			<Grid container>
 				<Grid item xs={12}>
 					<m.div variants={varFade().in}>
-						<CarouselThumbnail data={_carouselsExample} />
+						<CarouselThumbnail data={carouselImages} />
 					</m.div>
 				</Grid>
 			</Grid>

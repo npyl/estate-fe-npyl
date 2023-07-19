@@ -118,26 +118,13 @@ export function HorizontalCard({ item, activeMarker }: BookingItemProps) {
 		path: string;
 	}
 
-	const _carouselImages: ICarouselImage[] = [
-		{
-			id: "0",
-			title: "Image",
-			image: propertyImage.url,
-			description: "One of the images",
-			path: "/repository",
-		},
-	];
-
-	// add all images
-	images.forEach((image, index) => {
-		_carouselImages.push({
-			id: (index + 1).toString(),
-			title: "Image",
-			image: image.url,
-			description: "One of the images",
-			path: "/repository",
-		});
-	});
+	const _carouselImages: ICarouselImage[] = images.map((image, index) => ({
+		id: `${index}`,
+		title: "Image",
+		image: image.url,
+		description: "",
+		path: "/repository",
+	}));
 
 	return _carouselImages && _carouselImages.length > 0 ? (
 		<Grid

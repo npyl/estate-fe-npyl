@@ -91,7 +91,6 @@ const EditPropertyPage: NextPage = () => {
 
 		dispatch(
 			setInitialFilesState({
-				propertyImage: fetchedProperty.propertyImage,
 				propertyImages: fetchedProperty.images,
 				propertyBlueprints: fetchedProperty.blueprints,
 			})

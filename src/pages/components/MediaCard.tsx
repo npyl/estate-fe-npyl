@@ -8,17 +8,6 @@ import { IProperties } from "src/types/properties";
 
 // ----------------------------------------------------------------------
 
-type ItemProps = {
-	id: string;
-	name: string;
-
-	bookdAt: Date | string | number;
-	roomNumber: string;
-	person: string;
-	roomType: string;
-	cover: string;
-};
-
 interface Props extends BoxProps {
 	title?: string;
 	subheader?: string;
@@ -61,26 +50,13 @@ export function BookingItem({ item, activeMarker }: BookingItemProps) {
 	)
 		return null;
 
-	const _carouselImages: ICarouselImage[] = [
-		{
-			id: "0",
-			title: "Image",
-			image: propertyImage.url,
-			description: "One of the images",
-			path: "/repository",
-		},
-	];
-
-	// add all images
-	images.forEach((image, index) => {
-		_carouselImages.push({
-			id: (index + 1).toString(),
-			title: "Image",
-			image: image.url,
-			description: "One of the images",
-			path: "/repository",
-		});
-	});
+	const _carouselImages: ICarouselImage[] = images.map((image, index) => ({
+		id: `${index}`,
+		title: "Image",
+		image: image.url,
+		description: "",
+		path: "/repository",
+	}));
 
 	return _carouselImages && _carouselImages.length > 0 ? (
 		<Paper
