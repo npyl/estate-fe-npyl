@@ -15,6 +15,7 @@ import { IPropertyImage, IPropertyImagePOST } from "src/types/file";
 interface IImageSectionProps {
 	files: IPropertyImage[];
 	addFile: (image: IPropertyImagePOST) => void;
+	deleteFile: (image: string) => void;
 	setCdnUrlForNextAvailable: (cdnUrl: string) => void;
 	setFiles: (images: IPropertyImage[]) => void;
 }
@@ -22,6 +23,7 @@ interface IImageSectionProps {
 const ImagesSection: React.FC<IImageSectionProps> = ({
 	files,
 	addFile,
+	deleteFile,
 	setFiles,
 	setCdnUrlForNextAvailable,
 }) => {
@@ -105,11 +107,14 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 	);
 
 	const handleRemoveFile = (inputFile: IPropertyImage) => {
-		const filtered = files.filter((file) => file !== inputFile);
-		setFiles(filtered);
+		if (!inputFile.key) return;
+
+		deleteImage({ propertyId: +propertyId!, imageKey: inputFile.key })
+			.then((response) => deleteFile(inputFile.key))
+			.catch((reason) => console.error("deleteImage: ", reason));
 	};
 	const handleRemoveAllFiles = () => {
-		setFiles([]);
+		files.forEach((file) => handleRemoveFile(file));
 	};
 	const handleReorder = (sourceIndex: number, newIndex: number) => {};
 

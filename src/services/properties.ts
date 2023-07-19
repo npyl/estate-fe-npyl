@@ -26,7 +26,7 @@ interface IPropertySetThumbnailProps {
 }
 interface IDeleteImageProps {
 	propertyId: number;
-	imageId: number;
+	imageKey: string;
 }
 interface IPropertyFilterParams {
 	filter: IPropertyFilter;
@@ -157,8 +157,8 @@ export const properties = createApi({
 		}),
 
 		deletePropertyImage: builder.mutation<void, IDeleteImageProps>({
-			query: ({ propertyId, imageId }: IDeleteImageProps) => ({
-				url: `/${propertyId}/thumbnail/${imageId}`,
+			query: ({ propertyId, imageKey }: IDeleteImageProps) => ({
+				url: `/${propertyId}/image/${imageKey}`,
 				method: "DELETE",
 			}),
 			invalidatesTags: ["Properties"],

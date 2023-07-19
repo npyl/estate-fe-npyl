@@ -20,6 +20,7 @@ import {
 	selectPropertyImages,
 	setPropertyBlueprints,
 	addPropertyImage,
+	deletePropertyImage,
 	setPropertyImages,
 	setCdnUrlForNextAvailable,
 } from "src/slices/property/files";
@@ -67,6 +68,9 @@ const OtherFormSection: React.FC<any> = (props) => {
 	const handleAddFiles = (images: (IPropertyImage | IPropertyImagePOST)[]) => {
 		dispatch(setPropertyImages(images));
 	};
+	const handleDeleteFile = (imageKey: string) => {
+		dispatch(deletePropertyImage(imageKey));
+	};
 
 	return (
 		<>
@@ -93,6 +97,7 @@ const OtherFormSection: React.FC<any> = (props) => {
 						<ImageSection
 							files={images}
 							addFile={handleAddFile}
+							deleteFile={handleDeleteFile}
 							setCdnUrlForNextAvailable={handleSetCdnUrlForNextAvailable}
 							setFiles={handleAddFiles}
 						/>
