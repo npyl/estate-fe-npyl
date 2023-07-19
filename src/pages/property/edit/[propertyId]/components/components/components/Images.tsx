@@ -5,9 +5,8 @@ import UploadDnd from "src/components/upload/UploadDnd";
 import GalleryManager from "src/components/GalleryManager";
 import { SoftButton } from "src/components/SoftButton";
 import {
-	useAddPropertyThumbnailMutation,
 	useAddPropertyImageMutation,
-	useDeleteThumbnailMutation,
+	useSetPropertyThumbailMutation,
 	useDeletePropertyImageMutation,
 } from "src/services/properties";
 import { useRouter } from "next/router";
@@ -31,12 +30,13 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 
 	const [galleryManagerOpen, setGalleryManagerOpen] = useState(false);
 
-	const [addThumbnail] = useAddPropertyThumbnailMutation();
 	const [addImage] = useAddPropertyImageMutation();
-	const [deleteThumbnail] = useDeleteThumbnailMutation();
+	const [setThumbnail] = useSetPropertyThumbailMutation();
 	const [deleteImage] = useDeletePropertyImageMutation();
 
-	const uploadFile = async (image: File, addMutation: any): Promise<string> => {
+	const uploadFile = async (
+		image: File
+	): Promise<{ cdnUrl: string; key: string }> => {
 		const filename = image.name;
 		const contentType = image.type;
 
@@ -49,7 +49,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 		};
 
 		// get amazon url
-		const fileResponse = await addMutation({
+		const fileResponse = await addImage({
 			id: +propertyId!,
 			body: body,
 		}).unwrap();
@@ -60,7 +60,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 		const url = fileResponse.url;
 		const cdnUrl = fileResponse.cdnUrl;
 
-		addFile(body);
+		addFile({ ...body, key });
 
 		// PUT to amazon url
 		const response = await fetch(url, {
@@ -74,26 +74,29 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 		if (!response) throw new Error("PUT request failed: " + response);
 		if (!response.ok) throw new Error("Uploading the image failed!");
 
-		return cdnUrl;
+		return { cdnUrl, key };
 	};
 
 	const handleDropMultiFile = useCallback(
 		(acceptedFiles: File[]) => {
 			if (files.length === 0) {
 				// this is the first image we are adding; therefore it is the mainImage
-				uploadFile(acceptedFiles[0], addThumbnail)
-					.then((cdnUrl) => setCdnUrlForNextAvailable(cdnUrl))
+				uploadFile(acceptedFiles[0])
+					.then(({ cdnUrl, key }) => {
+						setCdnUrlForNextAvailable(cdnUrl);
+						setThumbnail({ propertyId: +propertyId!, imageKey: key });
+					})
 					.catch((reason) => console.error("uploadThumbnail: ", reason));
 
 				for (let i = 1; i < acceptedFiles.length; i++)
-					uploadFile(acceptedFiles[i], addImage)
-						.then((cdnUrl) => setCdnUrlForNextAvailable(cdnUrl))
+					uploadFile(acceptedFiles[i])
+						.then(({ cdnUrl, key }) => setCdnUrlForNextAvailable(cdnUrl))
 						.catch((reason) => console.error("uploadImage: ", reason));
 			} else {
 				// treat every file as secondary image
 				acceptedFiles.forEach((acceptedFile) =>
-					uploadFile(acceptedFile, addImage)
-						.then((cdnUrl) => setCdnUrlForNextAvailable(cdnUrl))
+					uploadFile(acceptedFile)
+						.then(({ cdnUrl, key }) => setCdnUrlForNextAvailable(cdnUrl))
 						.catch((reason) => console.error("uploadImage: ", reason))
 				);
 			}
