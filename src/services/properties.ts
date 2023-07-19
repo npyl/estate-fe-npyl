@@ -20,9 +20,13 @@ interface IPropertyAddFileParams {
 	id: number;
 	body: IPropertyImagePOST;
 }
+interface IPropertySetThumbnailProps {
+	propertyId: number;
+	imageKey: string;
+}
 interface IDeleteImageProps {
 	propertyId: number;
-	imageId: number;
+	imageKey: string;
 }
 interface IPropertyFilterParams {
 	filter: IPropertyFilter;
@@ -135,17 +139,6 @@ export const properties = createApi({
 		}),
 
 		// images & files
-		addPropertyThumbnail: builder.mutation<
-			IFileResponse,
-			IPropertyAddFileParams
-		>({
-			query: (params: IPropertyAddFileParams) => ({
-				url: `/${params.id}/thumbnail`,
-				method: "POST",
-				body: params.body,
-			}),
-			invalidatesTags: ["Properties"],
-		}),
 		addPropertyImage: builder.mutation<IFileResponse, IPropertyAddFileParams>({
 			query: (params: IPropertyAddFileParams) => ({
 				url: `/${params.id}/image`,
@@ -155,16 +148,17 @@ export const properties = createApi({
 			invalidatesTags: ["Properties"],
 		}),
 
-		deleteThumbnail: builder.mutation<void, number>({
-			query: (id: number) => ({
-				url: `/${id}/thumbnail`,
-				method: "DELETE",
+		setPropertyThumbail: builder.mutation<void, IPropertySetThumbnailProps>({
+			query: (props: IPropertySetThumbnailProps) => ({
+				url: `/${props.propertyId}/thumbnail/${props.imageKey}`,
+				method: "POST",
 			}),
 			invalidatesTags: ["Properties"],
 		}),
+
 		deletePropertyImage: builder.mutation<void, IDeleteImageProps>({
-			query: ({ propertyId, imageId }: IDeleteImageProps) => ({
-				url: `/${propertyId}/thumbnail/${imageId}`,
+			query: ({ propertyId, imageKey }: IDeleteImageProps) => ({
+				url: `/${propertyId}/image/${imageKey}`,
 				method: "DELETE",
 			}),
 			invalidatesTags: ["Properties"],
@@ -187,8 +181,7 @@ export const {
 	useLazyCheckCodeExistsQuery,
 
 	// images & files
-	useAddPropertyThumbnailMutation,
 	useAddPropertyImageMutation,
-	useDeleteThumbnailMutation,
+	useSetPropertyThumbailMutation,
 	useDeletePropertyImageMutation,
 } = properties;

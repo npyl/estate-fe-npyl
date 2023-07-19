@@ -12,6 +12,8 @@ export interface IPropertyImagePOST {
 	description?: string;
 	title?: string;
 	orderNumber?: number;
+	key?: string;
+	thumbnail?: boolean;
 }
 
 export interface IPropertyImage {
@@ -21,6 +23,8 @@ export interface IPropertyImage {
 	title: string;
 	orderNumber: number;
 	url: string;
+	key: string;
+	thumbnail: boolean;
 }
 
 export interface IFileModel {

@@ -75,7 +75,6 @@ import {
 } from "src/slices/labels";
 import { useLazyCheckCodeExistsQuery } from "src/services/properties";
 import { ILabel } from "src/types/label";
-import { useEffect } from "react";
 
 const BasicForLandSection: React.FC<any> = (props) => {
 	const dispatch = useDispatch();
@@ -140,12 +139,6 @@ const BasicForLandSection: React.FC<any> = (props) => {
 		dispatch(setCode(code));
 		checkCode(code);
 	};
-
-	useEffect(() => {
-		if (!codeExists) return;
-
-		if (codeExists) alert("Code exists!");
-	}, [codeExists]);
 
 	return (
 		<Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>

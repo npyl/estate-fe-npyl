@@ -2,7 +2,7 @@ import { connect } from "react-redux";
 import { setDescription } from "src/slices/property";
 import { Box, Card, CardContent, CardHeader, Grid } from "@mui/material";
 import * as React from "react";
-// import Editor from "src/components/editor/Editor";
+import Editor from "src/components/editor/Editor";
 
 interface DescriptionSectionProps {
 	description: string;
@@ -20,11 +20,11 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = ({
 					<Card>
 						<CardHeader title="Description" />
 						<CardContent>
-							{/* <Editor
-                id="full-editor"
-                value={description}
-                onChange={(value) => setDescription(value)}
-              /> */}
+							<Editor
+								id="full-editor"
+								value={description}
+								onChange={(value) => setDescription(value)}
+							/>
 						</CardContent>
 					</Card>
 				</Grid>

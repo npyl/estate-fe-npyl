@@ -83,7 +83,6 @@ import { selectAvailableAfter } from "src/slices/property";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { ICustomer } from "src/types/customer";
 import { useLazyCheckCodeExistsQuery } from "src/services/properties";
-import { useEffect } from "react";
 
 const BasicSection: React.FC<any> = () => {
 	const { data } = useAllGlobalsQuery();
@@ -157,12 +156,6 @@ const BasicSection: React.FC<any> = () => {
 		dispatch(setCode(code));
 		checkCode(code);
 	};
-
-	useEffect(() => {
-		if (!codeExists) return;
-
-		if (codeExists) alert("Code exists!");
-	}, [codeExists]);
 
 	return (
 		<Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
