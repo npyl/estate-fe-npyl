@@ -83,6 +83,7 @@ import { selectAvailableAfter } from "src/slices/property";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { ICustomer } from "src/types/customer";
 import { useLazyCheckCodeExistsQuery } from "src/services/properties";
+import { useEffect, useState } from "react";
 
 const BasicSection: React.FC<any> = () => {
 	const { data } = useAllGlobalsQuery();
@@ -91,9 +92,12 @@ const BasicSection: React.FC<any> = () => {
 	const { data: labels } = useGetLabelsQuery();
 	const propertyLabels = labels?.propertyLabels;
 
-	const [checkCode, { data: codeExists }] = useLazyCheckCodeExistsQuery();
+	const [checkCode, { data: codeExists, isSuccess: chechCodeSuccess }] =
+		useLazyCheckCodeExistsQuery();
 
 	const dispatch = useDispatch();
+
+	const [codeError, setCodeError] = useState("");
 
 	const code = useSelector(selectCode);
 	const owner = useSelector(selectOwner);
@@ -131,6 +135,12 @@ const BasicSection: React.FC<any> = () => {
 
 	const newLabels = useSelector(selectAllNewLabels);
 
+	useEffect(() => {
+		if (codeExists === null || !chechCodeSuccess) return;
+
+		setCodeError(codeExists ? "Code already exists!" : "");
+	}, [codeExists, chechCodeSuccess]);
+
 	const handleLabelClick = (label: ILabel) => dispatch(addLabelID(label.id));
 	const handleLabelCreate = (label: ILabel) => dispatch(addNewLabel(label));
 	const handleRemoveAssignedLabel = (index: number) =>
@@ -147,15 +157,15 @@ const BasicSection: React.FC<any> = () => {
 		dispatch(setter(date.toISOString()));
 	};
 
-	// get list of owners & managers
-	const { data: owners } = useAllCustomersQuery();
-	const { data: managers } = useAllUsersQuery();
-	if (!enums || !propertyLabels) return null;
-
 	const handleCodeChange = (code: string) => {
 		dispatch(setCode(code));
 		checkCode(code);
 	};
+
+	// get list of owners & managers
+	const { data: owners } = useAllCustomersQuery();
+	const { data: managers } = useAllUsersQuery();
+	if (!enums || !propertyLabels) return null;
 
 	return (
 		<Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
@@ -173,10 +183,15 @@ const BasicSection: React.FC<any> = () => {
 			<Grid item xs={12} padding={1}>
 				<Grid container spacing={2}>
 					<Grid item xs={6}>
-						<OnlyNumbersInput
+						<TextField
+							fullWidth
+							id="outlined-start-adornment"
 							label="Code"
 							value={code}
-							onChange={handleCodeChange}
+							onChange={(event) => handleCodeChange(event.target.value)}
+							error={!!codeError}
+							helperText={codeError}
+							size="small"
 						/>
 					</Grid>
 					<Grid item xs={6}>

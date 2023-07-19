@@ -75,6 +75,7 @@ import {
 } from "src/slices/labels";
 import { useLazyCheckCodeExistsQuery } from "src/services/properties";
 import { ILabel } from "src/types/label";
+import { useEffect, useState } from "react";
 
 const BasicForLandSection: React.FC<any> = (props) => {
 	const dispatch = useDispatch();
@@ -85,7 +86,10 @@ const BasicForLandSection: React.FC<any> = (props) => {
 	const { data: labels } = useGetLabelsQuery();
 	const propertyLabels = labels?.propertyLabels || [];
 
-	const [checkCode, { data: codeExists }] = useLazyCheckCodeExistsQuery();
+	const [checkCode, { data: codeExists, isSuccess: chechCodeSuccess }] =
+		useLazyCheckCodeExistsQuery();
+
+	const [codeError, setCodeError] = useState("");
 
 	const code = useSelector(selectCode);
 	const owner = useSelector(selectOwner);
@@ -123,6 +127,12 @@ const BasicForLandSection: React.FC<any> = (props) => {
 		[];
 	const newLabels = useSelector(selectAllNewLabels);
 
+	useEffect(() => {
+		if (codeExists === null || !chechCodeSuccess) return;
+
+		setCodeError(codeExists ? "Code already exists!" : "");
+	}, [codeExists, chechCodeSuccess]);
+
 	const handleLabelClick = (label: ILabel) => dispatch(addLabelID(label.id));
 	const handleLabelCreate = (label: ILabel) => dispatch(addNewLabel(label));
 	const handleRemoveAssignedLabel = (index: number) =>
@@ -130,15 +140,15 @@ const BasicForLandSection: React.FC<any> = (props) => {
 	const handleRemoveNewLabel = (index: number) =>
 		dispatch(removeNewLabel(index));
 
-	// get list of owners & managers
-	const { data: owners } = useAllCustomersQuery();
-	const { data: managers } = useAllUsersQuery();
-	if (!enums) return null;
-
 	const handleCodeChange = (code: string) => {
 		dispatch(setCode(code));
 		checkCode(code);
 	};
+
+	// get list of owners & managers
+	const { data: owners } = useAllCustomersQuery();
+	const { data: managers } = useAllUsersQuery();
+	if (!enums) return null;
 
 	return (
 		<Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
@@ -155,14 +165,17 @@ const BasicForLandSection: React.FC<any> = (props) => {
 
 			<Grid item xs={12} padding={1}>
 				<Grid container spacing={2}>
-					<Grid item xs={6}>
-						<OnlyNumbersInput
-							label="Code"
-							value={code}
-							onChange={handleCodeChange}
-						/>
-					</Grid>
-
+					<Grid item xs={6}></Grid>
+					<TextField
+						fullWidth
+						id="outlined-start-adornment"
+						label="Code"
+						value={code}
+						onChange={(event) => handleCodeChange(event.target.value)}
+						error={!!codeError}
+						helperText={codeError}
+						size="small"
+					/>
 					<Grid item xs={6}>
 						<TextField
 							fullWidth
