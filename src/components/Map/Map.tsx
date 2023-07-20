@@ -5,7 +5,7 @@ import {
 	useJsApiLoader,
 } from "@react-google-maps/api";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { IProperties } from "src/types/properties";
+import { ILocationPOST } from "src/types/location";
 
 const containerStyle = {
 	width: "100%",
@@ -37,7 +37,7 @@ interface IMapProps {
 		address: IMapAddress
 	) => void;
 
-	data?: IProperties[];
+	data?: ILocationPOST[];
 	mainMarker?: IMapMarker;
 	activeMarker: number | null;
 	setActiveMarker: any;
@@ -82,17 +82,13 @@ const Map = ({
 		setMarkers([
 			...markers,
 			...data
-				.filter((property) => property.location !== null) // some properties are dummies
-				.map((property) => {
-					const location = property.location;
-
-					return {
-						address: location.street + " " + location.number,
-						lat: location.lat,
-						lng: location.lng,
-						main: false,
-					};
-				}),
+				.filter((location) => location !== null) // some properties are dummies
+				.map((location) => ({
+					address: location.street + " " + location.number,
+					lat: location.lat!,
+					lng: location.lng!,
+					main: false,
+				})),
 		]);
 	}, [data]);
 

@@ -1,6 +1,7 @@
 "use client";
 import { Box, BoxProps, Grid, Paper, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/router";
+import { useMemo } from "react";
 import ICarouselImage from "src/components/carousel/types";
 import CarouselSimple from "src/components/CarouselSimple";
 import Iconify from "src/components/iconify/Iconify";
@@ -34,21 +35,23 @@ type BookingItemProps = {
 };
 
 export function BookingItem({ item, activeMarker }: BookingItemProps) {
-	const { state, details, price, location, images, id, area } = item;
+	const { details, price, location, images, id, area } = item;
 
 	const router = useRouter();
 
-	if (!state || !details || !price || !location || !images || !id) return null;
+	const _carouselImages: ICarouselImage[] = useMemo(() => {
+		return images && images.length > 0
+			? images.map((image, index) => ({
+					id: `${index}`,
+					title: "Image",
+					image: image,
+					description: "",
+					path: "/repository",
+			  }))
+			: [];
+	}, [images]);
 
-	const _carouselImages: ICarouselImage[] = images.map((image, index) => ({
-		id: `${index}`,
-		title: "Image",
-		image: image,
-		description: "",
-		path: "/repository",
-	}));
-
-	return _carouselImages && _carouselImages.length > 0 ? (
+	return (
 		<Paper
 			sx={{
 				mt: 2,
@@ -67,23 +70,6 @@ export function BookingItem({ item, activeMarker }: BookingItemProps) {
 			}}
 		>
 			<Box sx={{ position: "relative" }}>
-				{/* <Label
-          variant='filled'
-          color={
-            (state === "SOLD" && "error") ||
-            (state === "SALE" && "info") ||
-            "warning"
-          }
-          sx={{
-            left: 16,
-            zIndex: 1,
-            bottom: 16,
-            position: "absolute",
-          }}
-        >
-          {state}
-        </Label> */}
-
 				<CarouselSimple
 					onImageClick={() => router.push(`property/${id}`)}
 					data={_carouselImages}
@@ -117,7 +103,5 @@ export function BookingItem({ item, activeMarker }: BookingItemProps) {
 				</Typography>
 			</Stack>
 		</Paper>
-	) : (
-		<></>
 	);
 }

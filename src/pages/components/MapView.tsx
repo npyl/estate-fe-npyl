@@ -1,24 +1,25 @@
 import { Button, Box, Grid, Paper, Stack, Typography } from "@mui/material";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Map from "src/components/Map/Map";
 import { BookingItem } from "./MediaCard";
-import { IProperties } from "src/types/properties";
+import { IPropertyFilterResponse } from "src/types/properties";
 import { useRouter } from "next/router";
 import Iconify from "src/components/iconify";
+import ICarouselImage from "src/components/carousel/types";
 import CarouselSimple from "src/components/CarouselSimple";
 import FlipIcon from "@mui/icons-material/Flip";
 
 interface Props {
-	data: IProperties[];
+	data: IPropertyFilterResponse[];
 }
 
 const MapView = ({ data }: Props) => {
 	const [activeMarker, setActiveMarker] = useState(null);
 	const [orientation, setOrientation] = useState(false); // true -> vertical, false -> horizontal)
 
-	if (!data) {
-		return null;
-	}
+	const locations = useMemo(() => {
+		return data.map((property) => property.location);
+	}, [data]);
 
 	const toggleOrientation = () => {
 		setOrientation(!orientation);
@@ -31,7 +32,7 @@ const MapView = ({ data }: Props) => {
 					<Map
 						activeMarker={activeMarker}
 						setActiveMarker={setActiveMarker}
-						data={data}
+						data={locations}
 					/>
 				</Box>
 
@@ -74,7 +75,7 @@ const MapView = ({ data }: Props) => {
 export default MapView;
 
 type BookingItemProps = {
-	item: IProperties;
+	item: IPropertyFilterResponse;
 	activeMarker?: number;
 };
 
@@ -83,11 +84,9 @@ export function HorizontalCard({ item, activeMarker }: BookingItemProps) {
 		plotArea,
 		parentCategory,
 		description,
-		state,
 		details,
 		price,
 		location,
-		propertyImage,
 		images,
 		id,
 		area,
@@ -97,36 +96,19 @@ export function HorizontalCard({ item, activeMarker }: BookingItemProps) {
 
 	const router = useRouter();
 
-	if (
-		!parentCategory ||
-		!state ||
-		!description ||
-		!details ||
-		!price ||
-		!location ||
-		!propertyImage ||
-		!images ||
-		!id
-	)
-		return null;
+	const _carouselImages: ICarouselImage[] = useMemo(() => {
+		return images && images.length > 0
+			? images.map((image, index) => ({
+					id: `${index}`,
+					title: "Image",
+					image: image,
+					description: "",
+					path: "/repository",
+			  }))
+			: [];
+	}, [images]);
 
-	interface ICarouselImage {
-		id: string;
-		title: string;
-		image: string;
-		description: string;
-		path: string;
-	}
-
-	const _carouselImages: ICarouselImage[] = images.map((image, index) => ({
-		id: `${index}`,
-		title: "Image",
-		image: image.url,
-		description: "",
-		path: "/repository",
-	}));
-
-	return _carouselImages && _carouselImages.length > 0 ? (
+	return (
 		<Grid
 			component={Paper}
 			sx={{
@@ -229,7 +211,5 @@ export function HorizontalCard({ item, activeMarker }: BookingItemProps) {
 				</Stack>
 			</Grid>
 		</Grid>
-	) : (
-		<></>
 	);
 }
