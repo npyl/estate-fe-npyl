@@ -61,17 +61,18 @@ const LocationSection = (props: ILocationSectionProps) => {
 	const [region, setRegion] = useState("");
 	const [municipNameEN, setMunicipNameEN] = useState("");
 
-	const nullCoord = {
+	const nullCoord = -1;
+
+	const [onDragEndCoord, setOnDragEndCoord] = useState<IMapCoordinates>({
 		lat: -1,
 		lng: -1,
-	};
-	const [onDragEndCoord, setOnDragEndCoord] =
-		useState<IMapCoordinates>(nullCoord);
+	});
 
 	const closest = useGetClosestQuery(
 		{ latitude: onDragEndCoord.lat, longitude: onDragEndCoord.lng },
 		{
-			skip: onDragEndCoord === nullCoord,
+			skip:
+				onDragEndCoord.lat === nullCoord && onDragEndCoord.lng === nullCoord,
 		}
 	).data;
 
