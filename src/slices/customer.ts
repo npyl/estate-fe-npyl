@@ -18,7 +18,6 @@ const initialState: customerState = {
 	email: "",
 	mobilePhone: "",
 	homePhone: "",
-	managedBy: 1,
 	status: 0,
 	fax: "",
 	nationality: "",
@@ -354,7 +353,7 @@ const slice = createSlice({
 
 			state.id = payload.id;
 			state.suggestedBy = payload.suggestedBy;
-			state.managedBy = payload.managedBy.id;
+			state.managedBy = payload.managedBy?.id;
 			state.firstName = payload.firstName;
 			state.lastName = payload.lastName;
 			state.email = payload.email;
