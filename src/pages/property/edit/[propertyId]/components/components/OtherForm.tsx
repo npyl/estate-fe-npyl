@@ -41,6 +41,8 @@ import {
 	setZipCode,
 	setRegion,
 	setCountry,
+	setLatitude,
+	setLongitude,
 } from "src/slices/property";
 import { IPropertyImage, IPropertyImagePOST } from "src/types/file";
 
@@ -110,6 +112,7 @@ const OtherFormSection: React.FC<any> = (props) => {
 							zipCode={zipCode}
 							region={region}
 							country={country}
+							// setters
 							setStreet={setStreet}
 							setNumber={setNumber}
 							setCity={setCity}
@@ -117,6 +120,8 @@ const OtherFormSection: React.FC<any> = (props) => {
 							setZipCode={setZipCode}
 							setRegion={setRegion}
 							setCountry={setCountry}
+							setLatitude={setLatitude}
+							setLongitude={setLongitude}
 						/>
 
 						<HeatingAndEnergyForCommercialSection />

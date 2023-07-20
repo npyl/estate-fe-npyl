@@ -44,6 +44,8 @@ import {
 	setZipCode,
 	setRegion,
 	setCountry,
+	setLatitude,
+	setLongitude,
 } from "src/slices/property";
 import { IPropertyImage, IPropertyImagePOST } from "src/types/file";
 
@@ -111,6 +113,7 @@ const CommercialFormSection: React.FC<any> = () => {
 							zipCode={zipCode}
 							region={region}
 							country={country}
+							// setters
 							setStreet={setStreet}
 							setNumber={setNumber}
 							setCity={setCity}
@@ -118,6 +121,8 @@ const CommercialFormSection: React.FC<any> = () => {
 							setZipCode={setZipCode}
 							setRegion={setRegion}
 							setCountry={setCountry}
+							setLatitude={setLatitude}
+							setLongitude={setLongitude}
 						/>
 
 						<SuitableForForCommercialSection />

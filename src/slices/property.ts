@@ -230,6 +230,12 @@ const slice = createSlice({
 		setCountry(state: propertyState, action): void {
 			state.location.country = action.payload;
 		},
+		setLatitude(state: propertyState, action): void {
+			state.location.lat = action.payload;
+		},
+		setLongitude(state: propertyState, action): void {
+			state.location.lng = action.payload;
+		},
 
 		setOrientation(state: propertyState, action): void {
 			state.details.orientation = action.payload;
@@ -961,6 +967,7 @@ export const {
 	setFourth,
 	setFifth,
 
+	// Location
 	setKeyCode,
 	setStreet,
 	setNumber,
@@ -970,6 +977,8 @@ export const {
 	setRegion,
 	setCountry,
 	setDescription,
+	setLatitude,
+	setLongitude,
 
 	setOrientation,
 	setViewType,
@@ -1088,6 +1097,10 @@ export const selectRegion = ({ property }: RootState) =>
 	property.location?.region;
 export const selectCountry = ({ property }: RootState) =>
 	property.location?.country;
+export const selectLatitude = ({ property }: RootState) =>
+	property.location?.lat;
+export const selectLongitude = ({ property }: RootState) =>
+	property.location?.lng;
 
 // Details
 export const selectOrientation = ({ property }: RootState) =>

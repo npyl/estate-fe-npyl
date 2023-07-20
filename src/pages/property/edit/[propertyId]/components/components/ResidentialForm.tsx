@@ -44,6 +44,8 @@ import {
 	setZipCode,
 	setRegion,
 	setCountry,
+	setLatitude,
+	setLongitude,
 } from "src/slices/property";
 
 import {
@@ -126,6 +128,7 @@ const ResidentialFormSection: React.FC<any> = (props) => {
 							zipCode={zipCode}
 							region={region}
 							country={country}
+							// setters
 							setStreet={setStreet}
 							setNumber={setNumber}
 							setCity={setCity}
@@ -133,6 +136,8 @@ const ResidentialFormSection: React.FC<any> = (props) => {
 							setZipCode={setZipCode}
 							setRegion={setRegion}
 							setCountry={setCountry}
+							setLatitude={setLatitude}
+							setLongitude={setLongitude}
 						/>
 
 						<HeatingAndEnergySection />

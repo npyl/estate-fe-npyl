@@ -23,6 +23,8 @@ interface ILocationSectionProps extends ILocationPOST {
 	setZipCode: ActionCreatorWithPayload<any, string>;
 	setRegion: ActionCreatorWithPayload<any, string>;
 	setCountry: ActionCreatorWithPayload<any, string>;
+	setLatitude: ActionCreatorWithPayload<any, string>;
+	setLongitude: ActionCreatorWithPayload<any, string>;
 }
 
 const LocationSection = (props: ILocationSectionProps) => {
@@ -42,6 +44,8 @@ const LocationSection = (props: ILocationSectionProps) => {
 		setZipCode,
 		// setRegion,
 		setCountry,
+		setLatitude,
+		setLongitude,
 	} = props;
 
 	const dispatch = useDispatch();
@@ -76,6 +80,10 @@ const LocationSection = (props: ILocationSectionProps) => {
 		newMarker.lat = lat;
 		newMarker.lng = lng;
 		setMainMarker(newMarker);
+
+		// update store
+		setLatitude(lat);
+		setLongitude(lng);
 	};
 
 	const handleChange = (
@@ -119,7 +127,6 @@ const LocationSection = (props: ILocationSectionProps) => {
 	) => {
 		if (!marker || marker !== mainMarker) return; // we only care about mainMarker drag
 
-		//
 		setOnDragEndCoord({ lat: newLat, lng: newLng });
 		updateMainMarkerCoordinates(newLat, newLng);
 
