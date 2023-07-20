@@ -12,29 +12,29 @@ import { useGetSubAreasMutation } from "src/services/location";
 import { IGeoLocation } from "src/types/geolocation";
 
 interface IMunicipSelectProps {
-	regionCode: number;
-	municipNameEN: string;
-	onChange: (municipNameEN: string, lat: number, lng: number) => void;
+	regionCode: string;
+	municipCode: string;
+	onChange: (municipCode: string, lat: number, lng: number) => void;
 }
 
 export const MunicipSelect = (props: IMunicipSelectProps) => {
-	const { municipNameEN, regionCode, onChange } = props;
+	const { municipCode, regionCode, onChange } = props;
 
 	const [getSubareas, { data: subAreas }] = useGetSubAreasMutation();
 
 	const handleChange = (event: SelectChangeEvent<string>) => {
-		const nameEN = event.target.value;
+		const municipCode = event.target.value;
 		const selectedSubArea = subAreas!.filter(
-			(subArea) => subArea.nameEN === nameEN
+			(subArea) => subArea.areaID.toString() === municipCode
 		)[0]; // filter by nameEN
 
-		onChange(nameEN, selectedSubArea.latitude, selectedSubArea.longitude);
+		onChange(municipCode, selectedSubArea.latitude, selectedSubArea.longitude);
 	};
 
 	useEffect(() => {
 		if (!regionCode) return;
 
-		getSubareas([regionCode]);
+		getSubareas([+regionCode]);
 	}, [regionCode]);
 
 	return (
@@ -44,10 +44,12 @@ export const MunicipSelect = (props: IMunicipSelectProps) => {
 				{subAreas && subAreas.length > 0 && (
 					<Select
 						labelId="demo-simple-select-label"
-						value={municipNameEN}
+						value={municipCode}
 						onChange={handleChange}
 						renderValue={(selected) => {
-							const option = subAreas.find((opt) => opt.nameEN === selected);
+							const option = subAreas.find(
+								(opt) => opt.areaID.toString() === selected
+							);
 							return option ? option.nameGR : "";
 						}}
 						input={<OutlinedInput label="Δήμος / Συνοικία" />}
@@ -55,8 +57,10 @@ export const MunicipSelect = (props: IMunicipSelectProps) => {
 					>
 						{subAreas.map((option: IGeoLocation) => {
 							return (
-								<MenuItem key={option.nameEN} value={option.nameEN}>
-									<Checkbox checked={option.nameEN === municipNameEN} />
+								<MenuItem key={option.areaID} value={option.areaID.toString()}>
+									<Checkbox
+										checked={option.areaID.toString() === municipCode}
+									/>
 									{option.nameGR}
 								</MenuItem>
 							);

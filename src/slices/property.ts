@@ -97,7 +97,6 @@ const initialState: propertyState = {
 	location: {
 		street: "",
 		number: "",
-		complex: "",
 		city: "",
 		region: "",
 		country: "",
@@ -216,19 +215,24 @@ const slice = createSlice({
 			state.location.number = action.payload;
 		},
 		setCity(state: propertyState, action): void {
+			console.log("city: ", action.payload);
 			state.location.city = action.payload;
-		},
-		setComplex(state: propertyState, action): void {
-			state.location.complex = action.payload;
 		},
 		setZipCode(state: propertyState, action): void {
 			state.location.zipCode = action.payload;
 		},
 		setRegion(state: propertyState, action): void {
+			console.log("region: ", action.payload);
 			state.location.region = action.payload;
 		},
 		setCountry(state: propertyState, action): void {
 			state.location.country = action.payload;
+		},
+		setLatitude(state: propertyState, action): void {
+			state.location.lat = action.payload;
+		},
+		setLongitude(state: propertyState, action): void {
+			state.location.lng = action.payload;
 		},
 
 		setOrientation(state: propertyState, action): void {
@@ -828,7 +832,6 @@ const slice = createSlice({
 			// Location (convert from ILocationPOST to ILocation)
 			const location: ILocation = payload.location;
 			state.location.city = location?.city || state.location.city;
-			state.location.complex = location?.complex || state.location.complex;
 			state.location.country = location?.country || state.location.country;
 			state.location.number = location?.number || state.location.number;
 			state.location.region = location?.region || state.location.region;
@@ -961,15 +964,17 @@ export const {
 	setFourth,
 	setFifth,
 
+	// Location
 	setKeyCode,
 	setStreet,
 	setNumber,
 	setCity,
-	setComplex,
 	setZipCode,
 	setRegion,
 	setCountry,
 	setDescription,
+	setLatitude,
+	setLongitude,
 
 	setOrientation,
 	setViewType,
@@ -1080,14 +1085,16 @@ export const selectStreet = ({ property }: RootState) =>
 export const selectNumber = ({ property }: RootState) =>
 	property.location?.number;
 export const selectCity = ({ property }: RootState) => property.location?.city;
-export const selectComplex = ({ property }: RootState) =>
-	property.location?.complex;
 export const selectZipCode = ({ property }: RootState) =>
 	property.location?.zipCode;
 export const selectRegion = ({ property }: RootState) =>
 	property.location?.region;
 export const selectCountry = ({ property }: RootState) =>
 	property.location?.country;
+export const selectLatitude = ({ property }: RootState) =>
+	property.location?.lat;
+export const selectLongitude = ({ property }: RootState) =>
+	property.location?.lng;
 
 // Details
 export const selectOrientation = ({ property }: RootState) =>

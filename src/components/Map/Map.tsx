@@ -143,7 +143,10 @@ const Map = ({
 		// Extract the desired address details from address components
 		const street = getAddressComponent(addressComponents, "route");
 		const number = getAddressComponent(addressComponents, "street_number");
-		const zipCode = getAddressComponent(addressComponents, "postal_code");
+		const zipCode = getAddressComponent(
+			addressComponents,
+			"postal_code"
+		).replace(/\s/g, ""); // remove spaces
 
 		return { street, number, zipCode };
 	};

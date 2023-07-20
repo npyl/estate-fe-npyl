@@ -11,12 +11,12 @@ import {
 import nomoi from "src/json/nomoi.json";
 
 interface IRegionSelectProps {
-	region: string;
+	regionCode: string;
 	onChange: (regionCode: string, lat: number, lng: number) => void;
 }
 
 export const RegionSelect = (props: IRegionSelectProps) => {
-	const { region, onChange } = props;
+	const { regionCode, onChange } = props;
 
 	interface optionsType {
 		groupName: string;
@@ -45,7 +45,7 @@ export const RegionSelect = (props: IRegionSelectProps) => {
 		const items = group.options.map((option: any) => {
 			return (
 				<MenuItem key={option.value} value={option.value}>
-					<Checkbox checked={region === option.value} />
+					<Checkbox checked={regionCode === option.value} />
 					{option.label}
 				</MenuItem>
 			);
@@ -71,10 +71,11 @@ export const RegionSelect = (props: IRegionSelectProps) => {
 			<InputLabel id="demo-simple-select-label">Περιοχή</InputLabel>
 			<Select
 				labelId="demo-simple-select-label"
-				value={region}
+				value={regionCode}
 				onChange={(event) => handleChange(event)}
 				renderValue={(selected) => {
 					const option = nomoi.find((opt) => opt["Area ID"] === selected);
+					console.log("option: ", option);
 					return option ? option["Name GR"] : "";
 				}}
 				input={<OutlinedInput label="Περιοχή" />}

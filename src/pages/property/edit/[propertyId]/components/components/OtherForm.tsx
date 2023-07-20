@@ -30,17 +30,17 @@ import {
 	selectStreet,
 	selectNumber,
 	selectCity,
-	selectComplex,
 	selectZipCode,
 	selectRegion,
 	selectCountry,
 	setStreet,
 	setNumber,
 	setCity,
-	setComplex,
 	setZipCode,
 	setRegion,
 	setCountry,
+	setLatitude,
+	setLongitude,
 } from "src/slices/property";
 import { IPropertyImage, IPropertyImagePOST } from "src/types/file";
 
@@ -54,7 +54,6 @@ const OtherFormSection: React.FC<any> = (props) => {
 	const street = useSelector(selectStreet);
 	const number = useSelector(selectNumber);
 	const city = useSelector(selectCity);
-	const complex = useSelector(selectComplex);
 	const zipCode = useSelector(selectZipCode);
 	const region = useSelector(selectRegion);
 	const country = useSelector(selectCountry);
@@ -106,17 +105,18 @@ const OtherFormSection: React.FC<any> = (props) => {
 							street={street}
 							number={number}
 							city={city}
-							complex={complex}
 							zipCode={zipCode}
 							region={region}
 							country={country}
+							// setters
 							setStreet={setStreet}
 							setNumber={setNumber}
 							setCity={setCity}
-							setComplex={setComplex}
 							setZipCode={setZipCode}
 							setRegion={setRegion}
 							setCountry={setCountry}
+							setLatitude={setLatitude}
+							setLongitude={setLongitude}
 						/>
 
 						<HeatingAndEnergyForCommercialSection />

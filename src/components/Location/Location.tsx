@@ -1,4 +1,4 @@
-import { FormControl, Grid, InputLabel, Paper, TextField } from "@mui/material";
+import { Grid, Paper, TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
@@ -19,29 +19,30 @@ interface ILocationSectionProps extends ILocationPOST {
 	setStreet: ActionCreatorWithPayload<any, string>;
 	setNumber: ActionCreatorWithPayload<any, string>;
 	setCity: ActionCreatorWithPayload<any, string>;
-	setComplex: ActionCreatorWithPayload<any, string>;
 	setZipCode: ActionCreatorWithPayload<any, string>;
 	setRegion: ActionCreatorWithPayload<any, string>;
 	setCountry: ActionCreatorWithPayload<any, string>;
+	setLatitude: ActionCreatorWithPayload<any, string>;
+	setLongitude: ActionCreatorWithPayload<any, string>;
 }
 
 const LocationSection = (props: ILocationSectionProps) => {
 	const {
 		street,
 		number,
-		// city,
-		complex,
+		city,
 		zipCode,
-		// region,
+		region,
 		country,
 
 		setStreet,
 		setNumber,
-		// setCity,
-		setComplex,
+		setCity,
 		setZipCode,
-		// setRegion,
+		setRegion,
 		setCountry,
+		setLatitude,
+		setLongitude,
 	} = props;
 
 	const dispatch = useDispatch();
@@ -54,20 +55,18 @@ const LocationSection = (props: ILocationSectionProps) => {
 		main: true,
 	});
 
-	const [region, setRegion] = useState("");
-	const [municipNameEN, setMunicipNameEN] = useState("");
+	const nullCoord = -1;
 
-	const nullCoord = {
-		lat: -1,
-		lng: -1,
-	};
-	const [onDragEndCoord, setOnDragEndCoord] =
-		useState<IMapCoordinates>(nullCoord);
+	const [onDragEndCoord, setOnDragEndCoord] = useState<IMapCoordinates>({
+		lat: nullCoord,
+		lng: nullCoord,
+	});
 
 	const closest = useGetClosestQuery(
 		{ latitude: onDragEndCoord.lat, longitude: onDragEndCoord.lng },
 		{
-			skip: onDragEndCoord === nullCoord,
+			skip:
+				onDragEndCoord.lat === nullCoord && onDragEndCoord.lng === nullCoord,
 		}
 	).data;
 
@@ -76,6 +75,10 @@ const LocationSection = (props: ILocationSectionProps) => {
 		newMarker.lat = lat;
 		newMarker.lng = lng;
 		setMainMarker(newMarker);
+
+		// update slice
+		// dispatch(setLatitude(lat));
+		// dispatch(setLongitude(lng));
 	};
 
 	const handleChange = (
@@ -86,16 +89,20 @@ const LocationSection = (props: ILocationSectionProps) => {
 	};
 
 	const handleRegionChange = (regionCode: string, lat: number, lng: number) => {
-		setRegion(regionCode);
 		updateMainMarkerCoordinates(lat, lng);
+
+		// update slice
+		dispatch(setRegion(regionCode));
 	};
 	const handleMunicipChange = (
-		municipNameEN: string,
+		municipCode: string,
 		lat: number,
 		lng: number
 	) => {
-		setMunicipNameEN(municipNameEN);
 		updateMainMarkerCoordinates(lat, lng);
+
+		// update slice
+		dispatch(setCity(municipCode));
 	};
 
 	//
@@ -107,6 +114,7 @@ const LocationSection = (props: ILocationSectionProps) => {
 		setOnDragEndCoord({ lat, lng });
 		updateMainMarkerCoordinates(lat, lng);
 
+		// update slice
 		dispatch(setStreet(address.street));
 		dispatch(setNumber(address.number));
 		dispatch(setZipCode(address.zipCode));
@@ -122,6 +130,7 @@ const LocationSection = (props: ILocationSectionProps) => {
 		setOnDragEndCoord({ lat: newLat, lng: newLng });
 		updateMainMarkerCoordinates(newLat, newLng);
 
+		// update slice
 		dispatch(setStreet(address.street));
 		dispatch(setNumber(address.number));
 		dispatch(setZipCode(address.zipCode));
@@ -130,8 +139,9 @@ const LocationSection = (props: ILocationSectionProps) => {
 	useEffect(() => {
 		if (!closest) return;
 
-		setRegion(closest.parentID.toString());
-		setMunicipNameEN(closest.nameEN);
+		// update slice
+		dispatch(setRegion(closest.parentID.toString()));
+		dispatch(setCity(closest.areaID.toString()));
 	}, [closest]);
 
 	return (
@@ -174,12 +184,15 @@ const LocationSection = (props: ILocationSectionProps) => {
 					<Grid item xs={12}>
 						<Grid container direction={"row"} spacing={2}>
 							<Grid item xs={6}>
-								<RegionSelect region={region} onChange={handleRegionChange} />
+								<RegionSelect
+									regionCode={region}
+									onChange={handleRegionChange}
+								/>
 							</Grid>
 							<Grid item xs={6}>
 								<MunicipSelect
-									regionCode={parseInt(region)}
-									municipNameEN={municipNameEN}
+									regionCode={region}
+									municipCode={city}
 									onChange={handleMunicipChange}
 								/>
 							</Grid>
@@ -200,14 +213,6 @@ const LocationSection = (props: ILocationSectionProps) => {
 							label="Number"
 							value={number}
 							onChange={(event) => handleChange(setNumber, event)}
-						/>
-					</Grid>
-					<Grid item xs={6}>
-						<TextField
-							fullWidth
-							label="Complex"
-							value={complex}
-							onChange={(event) => handleChange(setComplex, event)}
 						/>
 					</Grid>
 					<Grid item xs={6}>
