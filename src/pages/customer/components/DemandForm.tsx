@@ -84,6 +84,8 @@ const DemandForm: FC = () => {
   const parentCategoryEnum = propertyEnums?.parentCategory;
   const furnishingEnum = detailsEnum?.furnished;
   const timeframeEnum = enums?.customer?.timeframe;
+  const minFloors = detailsEnum?.floors;
+  const maxFloors = detailsEnum?.floors;
 
   const minBedrooms = useSelector(selectMinBedrooms) || 0;
   const maxBedrooms = useSelector(selectMaxBedrooms) || 0;
@@ -103,6 +105,16 @@ const DemandForm: FC = () => {
   const minPrice = useSelector(selectMinPrice) || 0;
   const maxPrice = useSelector(selectMaxPrice) || 0;
   const timeFrame = useSelector(selectTimeFrame) || "";
+  //Convert the enum to an array
+  const minFloorsArray = minFloors;
+  const maxFloorsArray = maxFloors;
+  // slider value change handler
+  const handleSliderChange7 = (_event: any, newValue: number[]) => {
+    if (minFloors && maxFloors) {
+      dispatch(setMinFloor(minFloors[newValue[0]]));
+      dispatch(setMaxFloor(maxFloors[newValue[1]]));
+    }
+  };
 
   const leaser = useSelector(selectLeaser);
   const buyer = useSelector(selectBuyer);
@@ -155,17 +167,17 @@ const DemandForm: FC = () => {
     dispatch(setState(property.state));
     // dispatch(setTimeFrame());
     dispatch(setMinBedrooms(property.details.bedrooms));
-    // dispatch(setMaxBedrooms(property));
+    dispatch(setMaxBedrooms(property));
     dispatch(setMinBathrooms(property.details.bathrooms));
-    // dispatch(setMaxBathrooms(property));
+    dispatch(setMaxBathrooms(property));
     dispatch(setMinCovered(property.technicalFeatures.coverageFactor));
-    // dispatch(setMaxCovered(property));
+    dispatch(setMaxCovered(property));
     dispatch(setMinPlot(property.plotArea));
-    // dispatch(setMaxPlot(property));
+    dispatch(setMaxPlot(property));
     dispatch(setMinPrice(property.price));
-    // dispatch(setMaxPrice(property));
+    dispatch(setMaxPrice(property));
     dispatch(setMinFloor(property.details.floor));
-    // dispatch(setMaxFloor(property));
+    dispatch(setMaxFloor(property));
     dispatch(
       setMinYearOfConstruction(property.construction.yearOfConstruction)
     );
@@ -443,7 +455,7 @@ const DemandForm: FC = () => {
                 onChange={handleSliderChange2}
                 valueLabelDisplay="auto"
                 min={0}
-                max={3000}
+                max={300}
               />
               <Grid container spacing={2}>
                 <Grid item xs={6}>
@@ -456,6 +468,10 @@ const DemandForm: FC = () => {
                       endAdornment: (
                         <InputAdornment position="end">m²</InputAdornment>
                       ),
+                      inputProps: {
+                        // New field
+                        step: 10,
+                      },
                     }}
                   />
                 </Grid>
@@ -469,6 +485,10 @@ const DemandForm: FC = () => {
                       endAdornment: (
                         <InputAdornment position="end">m²</InputAdornment>
                       ),
+                      inputProps: {
+                        // New field
+                        step: 10,
+                      },
                     }}
                   />
                 </Grid>
@@ -493,7 +513,7 @@ const DemandForm: FC = () => {
                 onChange={handleSliderChange3}
                 valueLabelDisplay="auto"
                 min={0}
-                max={10000}
+                max={500}
               />
               <Grid container spacing={2}>
                 <Grid item xs={6}>
@@ -506,6 +526,10 @@ const DemandForm: FC = () => {
                       endAdornment: (
                         <InputAdornment position="end">m²</InputAdornment>
                       ),
+                      inputProps: {
+                        // New field
+                        step: 10,
+                      },
                     }}
                   />
                 </Grid>
@@ -519,6 +543,10 @@ const DemandForm: FC = () => {
                       endAdornment: (
                         <InputAdornment position="end">m²</InputAdornment>
                       ),
+                      inputProps: {
+                        // New field
+                        step: 10,
+                      },
                     }}
                   />
                 </Grid>
@@ -556,6 +584,10 @@ const DemandForm: FC = () => {
                       endAdornment: (
                         <InputAdornment position="end">€</InputAdornment>
                       ),
+                      inputProps: {
+                        // New field
+                        step: 50,
+                      },
                     }}
                   />
                 </Grid>
@@ -569,6 +601,10 @@ const DemandForm: FC = () => {
                       endAdornment: (
                         <InputAdornment position="end">€</InputAdornment>
                       ),
+                      inputProps: {
+                        // New field
+                        step: 50,
+                      },
                     }}
                   />
                 </Grid>
@@ -632,16 +668,34 @@ const DemandForm: FC = () => {
               paddingLeft={3}
               paddingRight={3}
             >
-              {/* <Slider
-                getAriaLabel={() => "Floor Slider"}
-                orientation="horizontal"
-                value={[minFloor, maxFloor]}
-                onChange={handleSliderChange5}
-                valueLabelDisplay="auto"
-                valueLabelFormat={(value) => floorMap.get(value)}
-                min={-3}
-                max={20}
-              /> */}
+              {minFloorsArray && maxFloorsArray && (
+                <Slider
+                  getAriaLabel={() => "Floor Slider"}
+                  orientation="horizontal"
+                  value={[
+                    minFloorsArray.indexOf(minFloor as string),
+                    maxFloorsArray.indexOf(maxFloor as string),
+                  ]}
+                  onChange={(
+                    _event: any,
+                    newValue: number | number[],
+                    _activeThumb: number
+                  ) => {
+                    if (Array.isArray(newValue)) {
+                      const min = minFloorsArray[newValue[0]];
+                      const max = maxFloorsArray[newValue[1]];
+                      dispatch(setMinFloor(min));
+                      dispatch(setMaxFloor(max));
+                    }
+                  }}
+                  valueLabelDisplay="auto"
+                  valueLabelFormat={(value: number, index: number) =>
+                    index === 0 ? minFloorsArray[value] : maxFloorsArray[value]
+                  }
+                  min={0}
+                  max={maxFloorsArray.length - 41}
+                />
+              )}
 
               <Grid item xs={6}>
                 <FormControl fullWidth>
@@ -653,11 +707,15 @@ const DemandForm: FC = () => {
                       dispatch(setMinFloor(e.target.value));
                     }}
                   >
-                    {/* {details?.minFloors?.map((option) => (
-                      <MenuItem key={option} value={option}>
-                        {option}
-                      </MenuItem>
-                    ))} */}
+                    {minFloors
+                      ? minFloors.map((item, index) => {
+                          return (
+                            <MenuItem key={index} value={item}>
+                              {item}
+                            </MenuItem>
+                          );
+                        })
+                      : null}
                   </Select>
                 </FormControl>{" "}
               </Grid>
@@ -671,11 +729,15 @@ const DemandForm: FC = () => {
                       dispatch(setMaxFloor(e.target.value));
                     }}
                   >
-                    {/* {details?.minFloors?.map((option) => (
-                      <MenuItem key={option} value={option}>
-                        {option}
-                      </MenuItem>
-                    ))} */}
+                    {maxFloors
+                      ? maxFloors.map((item, index) => {
+                          return (
+                            <MenuItem key={index} value={item}>
+                              {item}
+                            </MenuItem>
+                          );
+                        })
+                      : null}
                   </Select>
                 </FormControl>{" "}
               </Grid>

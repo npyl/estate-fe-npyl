@@ -27,6 +27,7 @@ const AddNote = (props: AddNoteProps) => {
     if (event.key === "Enter") {
       onAdd(message);
     }
+    message == "";
   };
 
   return (
