@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { ICustomerPOST } from "src/types/customer";
+import { ICustomer, ICustomerPOST } from "src/types/customer";
 import { ILabel } from "src/types/label";
 import type { RootState } from "../store";
 import { IDemand, IDemandFilters } from "src/types/demand";
@@ -345,37 +345,39 @@ const slice = createSlice({
 		},
 
 		setInitialState: (state: customerState, action): void => {
-			state.leaser = action.payload.leaser;
-			state.lessor = action.payload.lessor;
-			state.seller = action.payload.seller;
-			state.buyer = action.payload.buyer;
+			const payload: ICustomer = action.payload;
 
-			state.id = action.payload.id;
-			state.suggestedBy = action.payload.suggestedBy;
-			state.managedBy = action.payload.id;
-			state.firstName = action.payload.firstName;
-			state.lastName = action.payload.lastName;
-			state.email = action.payload.email;
-			state.mobilePhone = action.payload.mobilePhone;
-			state.homePhone = action.payload.homePhone;
-			state.status = action.payload.status;
-			state.fax = action.payload.fax;
-			state.nationality = action.payload.nationality;
-			state.idNumber = action.payload.idNumber;
-			state.passportNumber = action.payload.passportNumber;
-			state.dateOfBirth = action.payload.dateOfBirth;
-			state.leadSource = action.payload.leadSource;
-			state.preferredLanguage = action.payload.preferredLanguage;
+			state.leaser = payload.leaser;
+			state.lessor = payload.lessor;
+			state.seller = payload.seller;
+			state.buyer = payload.buyer;
 
-			state.location.street = action.payload.location.street;
-			state.location.number = action.payload.location.number;
-			state.location.zipCode = action.payload.location.zipCode;
-			state.location.city = action.payload.location.city;
-			state.location.region = action.payload.location.region;
-			state.location.country = action.payload.location.country;
+			state.id = payload.id;
+			state.suggestedBy = payload.suggestedBy;
+			state.managedBy = payload.managedBy.id;
+			state.firstName = payload.firstName;
+			state.lastName = payload.lastName;
+			state.email = payload.email;
+			state.mobilePhone = payload.mobilePhone;
+			state.homePhone = payload.homePhone;
+			state.status = payload.status;
+			state.fax = payload.fax;
+			state.nationality = payload.nationality;
+			state.idNumber = payload.idNumber;
+			state.passportNumber = payload.passportNumber;
+			state.dateOfBirth = payload.dateOfBirth;
+			state.leadSource = payload.leadSource;
+			state.preferredLanguage = payload.preferredLanguage;
+
+			state.location.street = payload.location.street;
+			state.location.number = payload.location.number;
+			state.location.zipCode = payload.location.zipCode;
+			state.location.city = payload.location.city;
+			state.location.region = payload.location.region;
+			state.location.country = payload.location.country;
 
 			// labels
-			const labels: ILabel[] = action.payload.labels;
+			const labels: ILabel[] = payload.labels;
 			state.labelIDs = labels
 				? labels
 						.filter((label) => label.id) // where id not null
@@ -384,7 +386,7 @@ const slice = createSlice({
 						})
 				: [];
 
-			const demand: IDemand = action.payload.demand;
+			const demand: IDemand = payload.demand;
 			const demandFilters: IDemandFilters = demand.filters;
 
 			state.demand.filters.minBedrooms = demandFilters.minBedrooms;
