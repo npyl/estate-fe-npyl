@@ -93,13 +93,13 @@ export function BookingItem({ item, activeMarker }: BookingItemProps) {
 					<Iconify icon={"solar:ruler-angular-linear"} />
 					<Typography variant="body2">{area}sqm -</Typography>
 					<Iconify icon={"ph:bed"} />
-					<Typography variant="body2">{details.bedrooms} -</Typography>
+					<Typography variant="body2">{details?.bedrooms} -</Typography>
 					<Iconify icon={"mdi:bathroom"} />
-					<Typography variant="body2">{details.bathrooms}</Typography>
+					<Typography variant="body2">{details?.bathrooms}</Typography>
 				</Stack>
 
 				<Typography color={"text.secondary"} variant="body1">
-					{location.street} {location.number}, {location.zipCode}
+					{location?.street} {location?.number}, {location?.zipCode}
 				</Typography>
 			</Stack>
 		</Paper>

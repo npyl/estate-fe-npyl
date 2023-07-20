@@ -3,6 +3,7 @@ import {
 	IProperties,
 	IPropertiesPostRequest,
 	IPropertyFilter,
+	IPropertyFilterResponse,
 } from "src/types/properties";
 
 import IPage from "src/types/page";
@@ -94,7 +95,7 @@ export const properties = createApi({
 			invalidatesTags: ["Properties"],
 		}),
 		filterProperties: builder.mutation<
-			IPage<IProperties>,
+			IPage<IPropertyFilterResponse>,
 			IPropertyFilterParams
 		>({
 			query: (filterParam: IPropertyFilterParams) => ({

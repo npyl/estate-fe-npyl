@@ -157,7 +157,7 @@ export function HorizontalCard({ item, activeMarker }: BookingItemProps) {
 				</Stack>
 
 				<Typography color={"text.secondary"} variant="body1" mb={2}>
-					{location.street} {location.number}, {location.zipCode}
+					{location?.street} {location?.number}, {location?.zipCode}
 				</Typography>
 
 				<Stack
@@ -179,17 +179,17 @@ export function HorizontalCard({ item, activeMarker }: BookingItemProps) {
 				>
 					<Stack direction={"row"} spacing={1}>
 						<Iconify icon={"ph:bed"} />
-						<Typography variant="body2">{details.floor}</Typography>
+						<Typography variant="body2">{details?.floor}</Typography>
 					</Stack>
 
 					<Stack direction={"row"} spacing={1}>
 						<Iconify icon={"ph:bed"} />
-						<Typography variant="body2">{details.bedrooms}</Typography>
+						<Typography variant="body2">{details?.bedrooms}</Typography>
 					</Stack>
 
 					<Stack direction={"row"} spacing={1}>
 						<Iconify icon={"mdi:bathroom"} />
-						<Typography variant="body2">{details.bathrooms}</Typography>
+						<Typography variant="body2">{details?.bathrooms}</Typography>
 					</Stack>
 
 					{parentCategory === "Land" && (
