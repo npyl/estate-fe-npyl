@@ -19,7 +19,6 @@ interface ILocationSectionProps extends ILocationPOST {
 	setStreet: ActionCreatorWithPayload<any, string>;
 	setNumber: ActionCreatorWithPayload<any, string>;
 	setCity: ActionCreatorWithPayload<any, string>;
-	setComplex: ActionCreatorWithPayload<any, string>;
 	setZipCode: ActionCreatorWithPayload<any, string>;
 	setRegion: ActionCreatorWithPayload<any, string>;
 	setCountry: ActionCreatorWithPayload<any, string>;
@@ -32,7 +31,6 @@ const LocationSection = (props: ILocationSectionProps) => {
 		street,
 		number,
 		city,
-		complex,
 		zipCode,
 		region,
 		country,
@@ -40,7 +38,6 @@ const LocationSection = (props: ILocationSectionProps) => {
 		setStreet,
 		setNumber,
 		setCity,
-		setComplex,
 		setZipCode,
 		setRegion,
 		setCountry,
@@ -61,8 +58,8 @@ const LocationSection = (props: ILocationSectionProps) => {
 	const nullCoord = -1;
 
 	const [onDragEndCoord, setOnDragEndCoord] = useState<IMapCoordinates>({
-		lat: -1,
-		lng: -1,
+		lat: nullCoord,
+		lng: nullCoord,
 	});
 
 	const closest = useGetClosestQuery(
@@ -214,14 +211,6 @@ const LocationSection = (props: ILocationSectionProps) => {
 							label="Number"
 							value={number}
 							onChange={(event) => handleChange(setNumber, event)}
-						/>
-					</Grid>
-					<Grid item xs={6}>
-						<TextField
-							fullWidth
-							label="Complex"
-							value={complex}
-							onChange={(event) => handleChange(setComplex, event)}
 						/>
 					</Grid>
 					<Grid item xs={6}>

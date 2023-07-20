@@ -97,7 +97,6 @@ const initialState: propertyState = {
 	location: {
 		street: "",
 		number: "",
-		complex: "",
 		city: "",
 		region: "",
 		country: "",
@@ -218,9 +217,6 @@ const slice = createSlice({
 		setCity(state: propertyState, action): void {
 			console.log("city: ", action.payload);
 			state.location.city = action.payload;
-		},
-		setComplex(state: propertyState, action): void {
-			state.location.complex = action.payload;
 		},
 		setZipCode(state: propertyState, action): void {
 			state.location.zipCode = action.payload;
@@ -836,7 +832,6 @@ const slice = createSlice({
 			// Location (convert from ILocationPOST to ILocation)
 			const location: ILocation = payload.location;
 			state.location.city = location?.city || state.location.city;
-			state.location.complex = location?.complex || state.location.complex;
 			state.location.country = location?.country || state.location.country;
 			state.location.number = location?.number || state.location.number;
 			state.location.region = location?.region || state.location.region;
@@ -974,7 +969,6 @@ export const {
 	setStreet,
 	setNumber,
 	setCity,
-	setComplex,
 	setZipCode,
 	setRegion,
 	setCountry,
@@ -1091,8 +1085,6 @@ export const selectStreet = ({ property }: RootState) =>
 export const selectNumber = ({ property }: RootState) =>
 	property.location?.number;
 export const selectCity = ({ property }: RootState) => property.location?.city;
-export const selectComplex = ({ property }: RootState) =>
-	property.location?.complex;
 export const selectZipCode = ({ property }: RootState) =>
 	property.location?.zipCode;
 export const selectRegion = ({ property }: RootState) =>
