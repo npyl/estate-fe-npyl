@@ -216,6 +216,7 @@ const slice = createSlice({
 			state.location.number = action.payload;
 		},
 		setCity(state: propertyState, action): void {
+			console.log("city: ", action.payload);
 			state.location.city = action.payload;
 		},
 		setComplex(state: propertyState, action): void {
@@ -225,6 +226,7 @@ const slice = createSlice({
 			state.location.zipCode = action.payload;
 		},
 		setRegion(state: propertyState, action): void {
+			console.log("region: ", action.payload);
 			state.location.region = action.payload;
 		},
 		setCountry(state: propertyState, action): void {

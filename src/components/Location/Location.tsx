@@ -1,4 +1,4 @@
-import { FormControl, Grid, InputLabel, Paper, TextField } from "@mui/material";
+import { Grid, Paper, TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
@@ -31,18 +31,18 @@ const LocationSection = (props: ILocationSectionProps) => {
 	const {
 		street,
 		number,
-		// city,
+		city,
 		complex,
 		zipCode,
-		// region,
+		region,
 		country,
 
 		setStreet,
 		setNumber,
-		// setCity,
+		setCity,
 		setComplex,
 		setZipCode,
-		// setRegion,
+		setRegion,
 		setCountry,
 		setLatitude,
 		setLongitude,
@@ -57,9 +57,6 @@ const LocationSection = (props: ILocationSectionProps) => {
 		address: "",
 		main: true,
 	});
-
-	const [region, setRegion] = useState("");
-	const [municipNameEN, setMunicipNameEN] = useState("");
 
 	const nullCoord = -1;
 
@@ -83,8 +80,8 @@ const LocationSection = (props: ILocationSectionProps) => {
 		setMainMarker(newMarker);
 
 		// update store
-		setLatitude(lat);
-		setLongitude(lng);
+		// dispatch(setLatitude(lat));
+		// dispatch(setLongitude(lng));
 	};
 
 	const handleChange = (
@@ -95,16 +92,20 @@ const LocationSection = (props: ILocationSectionProps) => {
 	};
 
 	const handleRegionChange = (regionCode: string, lat: number, lng: number) => {
-		setRegion(regionCode);
 		updateMainMarkerCoordinates(lat, lng);
+
+		// update slice
+		dispatch(setRegion(regionCode));
 	};
 	const handleMunicipChange = (
-		municipNameEN: string,
+		municipCode: string,
 		lat: number,
 		lng: number
 	) => {
-		setMunicipNameEN(municipNameEN);
 		updateMainMarkerCoordinates(lat, lng);
+
+		// update slice
+		dispatch(setCity(municipCode));
 	};
 
 	//
@@ -139,8 +140,9 @@ const LocationSection = (props: ILocationSectionProps) => {
 	useEffect(() => {
 		if (!closest) return;
 
-		setRegion(closest.parentID.toString());
-		setMunicipNameEN(closest.nameEN);
+		// update slice
+		dispatch(setRegion(closest.parentID.toString()));
+		dispatch(setCity(closest.areaID.toString()));
 	}, [closest]);
 
 	return (
@@ -183,12 +185,15 @@ const LocationSection = (props: ILocationSectionProps) => {
 					<Grid item xs={12}>
 						<Grid container direction={"row"} spacing={2}>
 							<Grid item xs={6}>
-								<RegionSelect region={region} onChange={handleRegionChange} />
+								<RegionSelect
+									regionCode={region}
+									onChange={handleRegionChange}
+								/>
 							</Grid>
 							<Grid item xs={6}>
 								<MunicipSelect
-									regionCode={parseInt(region)}
-									municipNameEN={municipNameEN}
+									regionCode={region}
+									municipCode={city}
 									onChange={handleMunicipChange}
 								/>
 							</Grid>
