@@ -1,17 +1,18 @@
 "use client";
 import { Box, BoxProps, Grid, Paper, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/router";
+import { useMemo } from "react";
 import ICarouselImage from "src/components/carousel/types";
 import CarouselSimple from "src/components/CarouselSimple";
 import Iconify from "src/components/iconify/Iconify";
-import { IProperties } from "src/types/properties";
+import { IPropertyFilterResponse } from "src/types/properties";
 
 // ----------------------------------------------------------------------
 
 interface Props extends BoxProps {
 	title?: string;
 	subheader?: string;
-	data: IProperties[];
+	data: IPropertyFilterResponse[];
 }
 
 export default function MediaCard({ data, sx, ...other }: Props) {
@@ -29,36 +30,28 @@ export default function MediaCard({ data, sx, ...other }: Props) {
 // ----------------------------------------------------------------------
 
 type BookingItemProps = {
-	item: IProperties;
+	item: IPropertyFilterResponse;
 	activeMarker?: number;
 };
 
 export function BookingItem({ item, activeMarker }: BookingItemProps) {
-	const { state, details, price, location, propertyImage, images, id, area } =
-		item;
+	const { details, price, location, images, id, area } = item;
 
 	const router = useRouter();
 
-	if (
-		!state ||
-		!details ||
-		!price ||
-		!location ||
-		!propertyImage ||
-		!images ||
-		!id
-	)
-		return null;
+	const _carouselImages: ICarouselImage[] = useMemo(() => {
+		return images && images.length > 0
+			? images.map((image, index) => ({
+					id: `${index}`,
+					title: "Image",
+					image: image,
+					description: "",
+					path: "/repository",
+			  }))
+			: [];
+	}, [images]);
 
-	const _carouselImages: ICarouselImage[] = images.map((image, index) => ({
-		id: `${index}`,
-		title: "Image",
-		image: image.url,
-		description: "",
-		path: "/repository",
-	}));
-
-	return _carouselImages && _carouselImages.length > 0 ? (
+	return (
 		<Paper
 			sx={{
 				mt: 2,
@@ -77,23 +70,6 @@ export function BookingItem({ item, activeMarker }: BookingItemProps) {
 			}}
 		>
 			<Box sx={{ position: "relative" }}>
-				{/* <Label
-          variant='filled'
-          color={
-            (state === "SOLD" && "error") ||
-            (state === "SALE" && "info") ||
-            "warning"
-          }
-          sx={{
-            left: 16,
-            zIndex: 1,
-            bottom: 16,
-            position: "absolute",
-          }}
-        >
-          {state}
-        </Label> */}
-
 				<CarouselSimple
 					onImageClick={() => router.push(`property/${id}`)}
 					data={_carouselImages}
@@ -117,17 +93,15 @@ export function BookingItem({ item, activeMarker }: BookingItemProps) {
 					<Iconify icon={"solar:ruler-angular-linear"} />
 					<Typography variant="body2">{area}sqm -</Typography>
 					<Iconify icon={"ph:bed"} />
-					<Typography variant="body2">{details.bedrooms} -</Typography>
+					<Typography variant="body2">{details?.bedrooms} -</Typography>
 					<Iconify icon={"mdi:bathroom"} />
-					<Typography variant="body2">{details.bathrooms}</Typography>
+					<Typography variant="body2">{details?.bathrooms}</Typography>
 				</Stack>
 
 				<Typography color={"text.secondary"} variant="body1">
-					{location.street} {location.number}, {location.zipCode}
+					{location?.street} {location?.number}, {location?.zipCode}
 				</Typography>
 			</Stack>
 		</Paper>
-	) : (
-		<></>
 	);
 }

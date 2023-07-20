@@ -95,16 +95,16 @@ const BasicSection: React.FC<any> = () => {
 	const [checkCode, { data: codeExists, isSuccess: chechCodeSuccess }] =
 		useLazyCheckCodeExistsQuery();
 
-  const dispatch = useDispatch();
+	const dispatch = useDispatch();
 
-  const [codeError, setCodeError] = useState("");
+	const [codeError, setCodeError] = useState("");
 
-  const currentDate = new Date();
-  const code = useSelector(selectCode);
-  const owner = useSelector(selectOwner);
-  const manager = useSelector(selectManager);
-  const currentRentPrice = useSelector(selectCurrentRentPrice);
-  const estimatedRentPrice = useSelector(selectEstimatedRentPrice);
+	const currentDate = new Date();
+	const code = useSelector(selectCode);
+	const owner = useSelector(selectOwner);
+	const manager = useSelector(selectManager);
+	const currentRentPrice = useSelector(selectCurrentRentPrice);
+	const estimatedRentPrice = useSelector(selectEstimatedRentPrice);
 
 	const price = useSelector(selectPrice);
 	const keyCode = useSelector(selectKeyCode);
@@ -400,7 +400,7 @@ const BasicSection: React.FC<any> = () => {
 					spacing={0}
 					sx={{
 						padding: "10px",
-						border: "1px solid #000000",
+						border: "1px solid #CCCCCC",
 						borderRadius: "10px",
 					}}
 				>
@@ -434,7 +434,9 @@ const BasicSection: React.FC<any> = () => {
 							<Grid item xs={6}>
 								<DateFieldStyled
 									label="Available After:"
-									value={new Date(availableAfter)}
+									value={
+										availableAfter ? new Date(availableAfter) : currentDate
+									}
 									onChange={(value: any) => {
 										handleDateChange(setAvailableAfter, value);
 									}}
@@ -446,7 +448,11 @@ const BasicSection: React.FC<any> = () => {
 							<Grid item xs={6}>
 								<DateFieldStyled
 									label="Rental Period Start"
-									value={new Date(rentalPeriodStart)}
+									value={
+										rentalPeriodStart
+											? new Date(rentalPeriodStart)
+											: currentDate
+									}
 									onChange={(value: any) => {
 										handleDateChange(setRentalPeriodStart, value);
 									}}
@@ -457,7 +463,9 @@ const BasicSection: React.FC<any> = () => {
 							<Grid item xs={6}>
 								<DateFieldStyled
 									label="Rental Period End"
-									value={new Date(rentalPeriodEnd)}
+									value={
+										rentalPeriodEnd ? new Date(rentalPeriodEnd) : currentDate
+									}
 									onChange={(value: any) => {
 										handleDateChange(setRentalPeriodEnd, value);
 									}}

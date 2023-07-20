@@ -1,4 +1,4 @@
-import { Grid, Paper, TextField } from "@mui/material";
+import { FormControl, Grid, InputLabel, Paper, TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
@@ -189,7 +189,7 @@ const LocationSection = (props: ILocationSectionProps) => {
 					<Grid item xs={6}>
 						<TextField
 							fullWidth
-							placeholder="Street"
+							label="Street"
 							value={street}
 							onChange={(event) => handleChange(setStreet, event)}
 						/>
@@ -197,7 +197,7 @@ const LocationSection = (props: ILocationSectionProps) => {
 					<Grid item xs={6}>
 						<TextField
 							fullWidth
-							placeholder="Number"
+							label="Number"
 							value={number}
 							onChange={(event) => handleChange(setNumber, event)}
 						/>
@@ -205,7 +205,7 @@ const LocationSection = (props: ILocationSectionProps) => {
 					<Grid item xs={6}>
 						<TextField
 							fullWidth
-							placeholder="Complex"
+							label="Complex"
 							value={complex}
 							onChange={(event) => handleChange(setComplex, event)}
 						/>

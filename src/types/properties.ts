@@ -7,6 +7,22 @@ import { ILocation, ILocationPOST } from "./location";
 import { INote } from "./note";
 import { IUser } from "./user";
 
+export interface IPropertyFilterResponse {
+	id: number;
+	code: string;
+	category: string;
+	state: string;
+	area: number;
+	plotArea: number;
+	description: string;
+	details: IPropertyDetailsPOST;
+	price: number;
+	parentCategory: string;
+	propertyImage: IPropertyImage;
+	images: string[]; // urls only
+	location: ILocationPOST;
+}
+
 export interface IPropertyFilter {
 	filterName?: string;
 	code?: string;
