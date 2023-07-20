@@ -119,6 +119,7 @@ const LocationSection = (props: ILocationSectionProps) => {
 	) => {
 		if (!marker || marker !== mainMarker) return; // we only care about mainMarker drag
 
+		//
 		setOnDragEndCoord({ lat: newLat, lng: newLng });
 		updateMainMarkerCoordinates(newLat, newLng);
 
