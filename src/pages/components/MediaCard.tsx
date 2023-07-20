@@ -4,14 +4,14 @@ import { useRouter } from "next/router";
 import ICarouselImage from "src/components/carousel/types";
 import CarouselSimple from "src/components/CarouselSimple";
 import Iconify from "src/components/iconify/Iconify";
-import { IProperties } from "src/types/properties";
+import { IPropertyFilterResponse } from "src/types/properties";
 
 // ----------------------------------------------------------------------
 
 interface Props extends BoxProps {
 	title?: string;
 	subheader?: string;
-	data: IProperties[];
+	data: IPropertyFilterResponse[];
 }
 
 export default function MediaCard({ data, sx, ...other }: Props) {
@@ -29,31 +29,21 @@ export default function MediaCard({ data, sx, ...other }: Props) {
 // ----------------------------------------------------------------------
 
 type BookingItemProps = {
-	item: IProperties;
+	item: IPropertyFilterResponse;
 	activeMarker?: number;
 };
 
 export function BookingItem({ item, activeMarker }: BookingItemProps) {
-	const { state, details, price, location, propertyImage, images, id, area } =
-		item;
+	const { state, details, price, location, images, id, area } = item;
 
 	const router = useRouter();
 
-	if (
-		!state ||
-		!details ||
-		!price ||
-		!location ||
-		!propertyImage ||
-		!images ||
-		!id
-	)
-		return null;
+	if (!state || !details || !price || !location || !images || !id) return null;
 
 	const _carouselImages: ICarouselImage[] = images.map((image, index) => ({
 		id: `${index}`,
 		title: "Image",
-		image: image.url,
+		image: image,
 		description: "",
 		path: "/repository",
 	}));
