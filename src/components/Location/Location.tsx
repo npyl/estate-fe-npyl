@@ -76,7 +76,7 @@ const LocationSection = (props: ILocationSectionProps) => {
 		newMarker.lng = lng;
 		setMainMarker(newMarker);
 
-		// update store
+		// update slice
 		// dispatch(setLatitude(lat));
 		// dispatch(setLongitude(lng));
 	};
@@ -114,6 +114,7 @@ const LocationSection = (props: ILocationSectionProps) => {
 		setOnDragEndCoord({ lat, lng });
 		updateMainMarkerCoordinates(lat, lng);
 
+		// update slice
 		dispatch(setStreet(address.street));
 		dispatch(setNumber(address.number));
 		dispatch(setZipCode(address.zipCode));
@@ -129,6 +130,7 @@ const LocationSection = (props: ILocationSectionProps) => {
 		setOnDragEndCoord({ lat: newLat, lng: newLng });
 		updateMainMarkerCoordinates(newLat, newLng);
 
+		// update slice
 		dispatch(setStreet(address.street));
 		dispatch(setNumber(address.number));
 		dispatch(setZipCode(address.zipCode));

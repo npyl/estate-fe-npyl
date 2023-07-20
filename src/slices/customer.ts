@@ -35,7 +35,6 @@ const initialState: customerState = {
 	location: {
 		street: "",
 		number: "",
-		zipCode: 0,
 		city: "",
 		region: "",
 		country: "",
@@ -213,6 +212,7 @@ const slice = createSlice({
 			state.suggestedBy = action.payload;
 		},
 
+		// Location
 		setStreet(state: customerState, action): void {
 			state.location.street = action.payload;
 		},
@@ -230,6 +230,12 @@ const slice = createSlice({
 		},
 		setCountry(state: customerState, action): void {
 			state.location.country = action.payload;
+		},
+		setLatitude(state: customerState, action): void {
+			state.location.lat = action.payload;
+		},
+		setLongitude(state: customerState, action): void {
+			state.location.lng = action.payload;
 		},
 
 		// priority features
@@ -448,6 +454,8 @@ export const {
 	setZipCode,
 	setRegion,
 	setCountry,
+	setLatitude,
+	setLongitude,
 
 	// demand
 	setMinBedrooms,
@@ -526,6 +534,10 @@ export const selectRegion = ({ customer }: RootState) =>
 	customer.location.region;
 export const selectCountry = ({ customer }: RootState) =>
 	customer.location.country;
+export const selectLatitude = ({ customer }: RootState) =>
+	customer.location.lat;
+export const selectLongitude = ({ customer }: RootState) =>
+	customer.location.lng;
 
 // Priority Features
 export const selectPriorityFeatures = ({ customer }: RootState) =>
