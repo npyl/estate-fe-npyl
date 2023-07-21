@@ -26,8 +26,8 @@ const AddNote = (props: AddNoteProps) => {
   const handleKeyPress = (event: { key: string }) => {
     if (event.key === "Enter") {
       onAdd(message);
+      setMessage("");
     }
-    message == "";
   };
 
   return (

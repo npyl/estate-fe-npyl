@@ -47,9 +47,7 @@ const NotesCustomerSection: React.FC = () => {
     addNote({
       id: parseInt(customerId as string),
       dataToSend: { content: message },
-    });
-
-    isSuccess && setMessage("");
+    }).then(() => setMessage(""));
   };
   const handleKeyPress = (event: { key: string }) => {
     if (event.key === "Enter") {

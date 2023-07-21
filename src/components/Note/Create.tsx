@@ -1,7 +1,6 @@
 import { Box, Divider, Grid, Paper, Stack, Typography } from "@mui/material";
 import * as React from "react";
 import AddNote from "src/components/AddNote";
-
 import { Note } from "src/components/Note";
 import { useProfileQuery } from "src/services/user";
 import { INotePOST } from "src/types/note";

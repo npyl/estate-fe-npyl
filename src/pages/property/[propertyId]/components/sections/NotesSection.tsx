@@ -45,9 +45,7 @@ const NotesPropertySection: React.FC = () => {
     addNote({
       id: parseInt(propertyId as string),
       dataToSend: { content: message },
-    });
-
-    isSuccess && setMessage("");
+    }).then(() => setMessage(""));
   };
   const handleRemove = (id: number) => {
     deleteNote(id);
