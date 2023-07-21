@@ -11,17 +11,12 @@ import {
 	resetState as resetFiles,
 	setInitialState as setInitialFilesState,
 } from "src/slices/property/files";
-import {
-	resetState as resetLabels,
-	selectAll as selectAllNewLabels,
-} from "src/slices/labels";
+import { resetState as resetLabels } from "src/slices/labels";
 import {
 	resetState as resetNotes,
 	selectAll as selectAllNewNotes,
 	setInitialState as setInitialNotesState,
 } from "src/slices/notes";
-
-import { useCreateLabelForPropertyWithIDMutation } from "src/services/labels";
 
 import { useGetPropertyByIdQuery } from "src/services/properties";
 
@@ -41,8 +36,6 @@ const EditPropertyPage: NextPage = () => {
 	const { data: fetchedProperty, isSuccess: isPropertySuccess } =
 		useGetPropertyByIdQuery(parseInt(propertyId as string));
 
-	const [createLabel, { isSuccess: isLabelSuccess }] =
-		useCreateLabelForPropertyWithIDMutation();
 	const [createNote, { isSuccess: isNoteSuccess }] =
 		useAddNoteToPropertyWithIdMutation();
 	const [
@@ -55,18 +48,7 @@ const EditPropertyPage: NextPage = () => {
 	] = useEditPropertyMutation();
 
 	const body = useSelector(selectAll);
-	const newLabels = useSelector(selectAllNewLabels);
 	const newNotes = useSelector(selectAllNewNotes);
-
-	const createAndAssignNewLabels = () => {
-		// foreach label; call create-for-property-with-id
-		newLabels.forEach((newLabel) => {
-			createLabel({
-				propertyId: editedPropertyId!,
-				labelBody: newLabel,
-			});
-		});
-	};
 
 	const createAndAssignNewNotes = () => {
 		// foreach label; call create-for-property-with-id
@@ -101,7 +83,6 @@ const EditPropertyPage: NextPage = () => {
 
 	useEffect(() => {
 		if (isEditProperty) {
-			createAndAssignNewLabels();
 			createAndAssignNewNotes();
 			router.push("/");
 		}

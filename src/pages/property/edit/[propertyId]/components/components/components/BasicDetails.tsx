@@ -67,30 +67,39 @@ import { useAllGlobalsQuery } from "src/services/global";
 import { LabelCreate } from "src/components/label";
 
 // Property Slice
+import { removeLabel as removeAssignedLabel } from "src/slices/property";
 import {
-	addLabel as addLabelID,
-	removeLabel as removeAssignedLabel,
-} from "src/slices/property";
-// Labels Slice (for new labels)
-import {
-	addLabel as addNewLabel,
-	removeLabel as removeNewLabel,
-	selectAll as selectAllNewLabels,
-} from "src/slices/labels";
-import { useGetLabelsQuery } from "src/services/labels";
+	useAssignLabelToPropertyWithIDMutation,
+	useCreateLabelForPropertyWithIDMutation,
+	useDeleteLabelForPropertyWithIdMutation,
+	useGetLabelsQuery,
+} from "src/services/labels";
 
 import { selectAvailableAfter } from "src/slices/property";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { ICustomer } from "src/types/customer";
 import { useLazyCheckCodeExistsQuery } from "src/services/properties";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/router";
+import { label } from "yet-another-react-lightbox";
 
 const BasicSection: React.FC<any> = () => {
+	const router = useRouter();
+	const { propertyId } = router.query;
+
 	const { data } = useAllGlobalsQuery();
 	const enums: IGlobalProperty = data?.property as IGlobalProperty;
 
+	// get list of owners, managers & labels
+	const { data: owners } = useAllCustomersQuery();
+	const { data: managers } = useAllUsersQuery();
 	const { data: labels } = useGetLabelsQuery();
 	const propertyLabels = labels?.propertyLabels;
+
+	// labels
+	const [assignLabel] = useAssignLabelToPropertyWithIDMutation();
+	const [createAndAssignLabel] = useCreateLabelForPropertyWithIDMutation();
+	const [deleteLabel] = useDeleteLabelForPropertyWithIdMutation();
 
 	const [checkCode, { data: codeExists, isSuccess: chechCodeSuccess }] =
 		useLazyCheckCodeExistsQuery();
@@ -121,20 +130,19 @@ const BasicSection: React.FC<any> = () => {
 	const stateEnum = enums?.state;
 
 	const labelIDs = useSelector(selectLabelIDs);
-	const assignedLabels =
-		(labelIDs &&
-			labelIDs.length > 0 &&
-			propertyLabels &&
-			propertyLabels.length > 0 &&
+
+	const assignedLabels = useMemo(() => {
+		if (!labelIDs || !propertyLabels) return [];
+
+		return (
 			labelIDs
 				.filter((labelID) => labelID)
 				.map((labelID, index) => {
 					// get label object with id
 					return propertyLabels.find((label) => label.id === labelID)!;
-				})) ||
-		[];
-
-	const newLabels = useSelector(selectAllNewLabels);
+				}) || []
+		);
+	}, [labelIDs, propertyLabels]);
 
 	useEffect(() => {
 		if (codeExists === null || !chechCodeSuccess) return;
@@ -142,12 +150,13 @@ const BasicSection: React.FC<any> = () => {
 		setCodeError(codeExists ? "Code already exists!" : "");
 	}, [codeExists, chechCodeSuccess]);
 
-	const handleLabelClick = (label: ILabel) => dispatch(addLabelID(label.id));
-	const handleLabelCreate = (label: ILabel) => dispatch(addNewLabel(label));
-	const handleRemoveAssignedLabel = (index: number) =>
-		dispatch(removeAssignedLabel(index));
-	const handleRemoveNewLabel = (index: number) =>
-		dispatch(removeNewLabel(index));
+	const handleLabelClick = (label: ILabel) =>
+		label.id && assignLabel({ propertyId: +propertyId!, labelId: label.id });
+	const handleLabelCreate = (label: ILabel) =>
+		createAndAssignLabel({ propertyId: +propertyId!, labelBody: label });
+	const handleLabelRemove = (index: number) =>
+		labelIDs[index] &&
+		deleteLabel({ propertyId: +propertyId!, labelId: labelIDs[index]! });
 
 	const handleDateChange = (
 		setter: ActionCreatorWithPayload<any, string>,
@@ -163,10 +172,7 @@ const BasicSection: React.FC<any> = () => {
 		checkCode(code);
 	};
 
-	// get list of owners & managers
-	const { data: owners } = useAllCustomersQuery();
-	const { data: managers } = useAllUsersQuery();
-	if (!enums || !propertyLabels) return null;
+	if (!enums || !propertyLabels || !propertyId) return null;
 
 	return (
 		<Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
@@ -310,11 +316,11 @@ const BasicSection: React.FC<any> = () => {
 						<LabelCreate
 							existingLabels={propertyLabels}
 							assignedLabels={assignedLabels}
-							newLabels={newLabels}
+							newLabels={[]}
 							onLabelClick={handleLabelClick}
 							onLabelCreate={handleLabelCreate}
-							onRemoveAssignedLabel={handleRemoveAssignedLabel}
-							onRemoveNewLabel={handleRemoveNewLabel}
+							onRemoveAssignedLabel={handleLabelRemove}
+							onRemoveNewLabel={() => {}}
 						/>
 					</Grid>
 
