@@ -2,12 +2,12 @@ import { Divider, Paper, Typography, Box } from "@mui/material";
 import { useRouter } from "next/router";
 import * as React from "react";
 import { ViewLocation } from "src/components/Location/View";
-import { useGetCustomerByIdQuery } from "src/services/customers";
+import { useGetPropertyByIdQuery } from "src/services/properties";
 
-const CustomerAdressDetailsSection: React.FC = () => {
+const AddressSection: React.FC = () => {
 	const router = useRouter();
-	const { customerId } = router.query;
-	const { data } = useGetCustomerByIdQuery(parseInt(customerId as string)); // basic details
+	const { propertyId } = router.query;
+	const { data } = useGetPropertyByIdQuery(parseInt(propertyId as string)); // basic details
 	const location = data?.location;
 
 	if (!location) return;
@@ -36,4 +36,4 @@ const CustomerAdressDetailsSection: React.FC = () => {
 	);
 };
 
-export default CustomerAdressDetailsSection;
+export default AddressSection;

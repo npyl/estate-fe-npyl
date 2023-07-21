@@ -1,4 +1,5 @@
 export { default as AreaSection } from "./AreaSection";
+export { default as AddressSection } from "./AddressSection";
 export { default as BalconiesSection } from "./BalconiesSection";
 export { default as BasicSection } from "./BasicSection";
 export { default as DetailsSection } from "./DetailsSection";

@@ -16,6 +16,7 @@ import MainContainer from "./components/MainContainer";
 import { addTab, deleteTabWithPath } from "src/slices/tabs";
 
 import {
+	AddressSection,
 	AreaSection,
 	BalconiesSection,
 	BasicSection,
@@ -104,6 +105,7 @@ const SingleProperty: NextPage = () => {
 			</ViewHeader>
 			<TabPanel value={value} index={0}>
 				<MainContainer
+					AddressSection={<AddressSection />}
 					ImageSection={<ImageSection data={data} />}
 					BasicSection={<BasicSection data={data} />}
 					DetailsSection={<DetailsSection data={data} />}
