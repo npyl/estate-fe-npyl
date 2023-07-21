@@ -9,7 +9,7 @@ export const notification = createApi({
 	baseQuery: fetchBaseQuery({
 		baseUrl: `${
 			process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"
-		}/contact/notification`,
+		}/api/contact/notification`,
 	}),
 	tagTypes: ["Notifications", "NotificationById"],
 	endpoints: (builder) => ({
