@@ -1,10 +1,4 @@
-import {
-  Grid,
-  Stack,
-  InputBase,
-  InputAdornment,
-  IconButton,
-} from "@mui/material";
+import { Grid, InputBase, InputAdornment, IconButton } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { alpha } from "@mui/material/styles";
 
@@ -29,6 +23,10 @@ const AddNote = (props: AddNoteProps) => {
       setMessage("");
     }
   };
+  const handleOnClick = () => {
+    onAdd(message);
+    setMessage("");
+  };
 
   return (
     <Grid
@@ -49,7 +47,7 @@ const AddNote = (props: AddNoteProps) => {
         onKeyPress={handleKeyPress}
         endAdornment={
           <InputAdornment position="end" sx={{ mr: 1 }}>
-            <IconButton size="small" onClick={() => onAdd(message)}>
+            <IconButton size="small" onClick={handleOnClick}>
               <SendIcon />
             </IconButton>
           </InputAdornment>
