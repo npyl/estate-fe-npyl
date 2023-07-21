@@ -14,14 +14,12 @@ import {
 import { resetState as resetLabels } from "src/slices/labels";
 import {
 	resetState as resetNotes,
-	selectAll as selectAllNewNotes,
 	setInitialState as setInitialNotesState,
 } from "src/slices/notes";
 
 import { useGetPropertyByIdQuery } from "src/services/properties";
 
 import { useDispatch } from "react-redux";
-import { useAddNoteToPropertyWithIdMutation } from "src/services/note";
 import { LogoProgressIndicator } from "src/components/LogoProgressIndicator";
 
 const EditPropertyPage: NextPage = () => {
@@ -30,35 +28,13 @@ const EditPropertyPage: NextPage = () => {
 
 	const { propertyId } = router.query;
 
-	// everythingIsClear; we can now setInitialState
-	const [everythingIsClear, setEverythingIsClear] = useState(false);
-
 	const { data: fetchedProperty, isSuccess: isPropertySuccess } =
 		useGetPropertyByIdQuery(parseInt(propertyId as string));
-
-	const [createNote, { isSuccess: isNoteSuccess }] =
-		useAddNoteToPropertyWithIdMutation();
-	const [
-		edit,
-		{
-			isSuccess: isEditProperty,
-			isLoading: isEditLoading,
-			data: editedPropertyId,
-		},
-	] = useEditPropertyMutation();
+	const [edit, { isLoading: isEditLoading }] = useEditPropertyMutation();
 
 	const body = useSelector(selectAll);
-	const newNotes = useSelector(selectAllNewNotes);
-
-	const createAndAssignNewNotes = () => {
-		// foreach label; call create-for-property-with-id
-		newNotes.forEach((newNote) => {
-			createNote({
-				id: editedPropertyId!,
-				dataToSend: newNote,
-			});
-		});
-	};
+	// everythingIsClear; we can now setInitialState
+	const [everythingIsClear, setEverythingIsClear] = useState(false);
 
 	const resetEverything = () => {
 		dispatch(resetFiles());
@@ -80,13 +56,6 @@ const EditPropertyPage: NextPage = () => {
 		dispatch(setInitialNotesState(fetchedProperty.notes));
 		dispatch(setInitialState(fetchedProperty));
 	}, [everythingIsClear, fetchedProperty, isPropertySuccess]);
-
-	useEffect(() => {
-		if (isEditProperty) {
-			createAndAssignNewNotes();
-			router.push("/");
-		}
-	}, [isEditProperty]);
 
 	useEffect(() => {
 		// clear store before getting data
