@@ -86,7 +86,11 @@ const DistancesSection: React.FC<any> = (props) => {
               label="Public Transportation"
               value={publicTransportation}
               onChange={(event) => handleChange(setPublicTransportation, event)}
-              // onKeyPress={handleKeyPress}
+              onKeyPress={(event) => {
+                if (event.key === "-") {
+                  event.preventDefault();
+                }
+              }}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position="end">km</InputAdornment>
@@ -96,6 +100,7 @@ const DistancesSection: React.FC<any> = (props) => {
                 style: {
                   height: "8px",
                 },
+                min: 0,
               }}
             />
           </Grid>
@@ -117,6 +122,7 @@ const DistancesSection: React.FC<any> = (props) => {
                 style: {
                   height: "8px",
                 },
+                min: 0,
               }}
             />
           </Grid>
@@ -137,6 +143,7 @@ const DistancesSection: React.FC<any> = (props) => {
                 style: {
                   height: "8px",
                 },
+                min: 0,
               }}
             />
           </Grid>
@@ -157,6 +164,7 @@ const DistancesSection: React.FC<any> = (props) => {
                 style: {
                   height: "8px",
                 },
+                min: 0,
               }}
             />
           </Grid>
@@ -177,6 +185,7 @@ const DistancesSection: React.FC<any> = (props) => {
                 style: {
                   height: "8px",
                 },
+                min: 0,
               }}
             />
           </Grid>
@@ -197,6 +206,7 @@ const DistancesSection: React.FC<any> = (props) => {
                 style: {
                   height: "8px",
                 },
+                min: 0,
               }}
             />
           </Grid>
@@ -217,6 +227,7 @@ const DistancesSection: React.FC<any> = (props) => {
                 style: {
                   height: "8px",
                 },
+                min: 0,
               }}
             />
           </Grid>

@@ -21,23 +21,17 @@ import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 import { useAllUsersQuery } from "src/services/user";
 import { useAllGlobalsQuery } from "src/services/global";
 const PopupWindow: React.FC<any> = (props) => {
-  const { data } = useAllGlobalsQuery();
-  const enums: IGlobalProperty = data?.property as IGlobalProperty;
-  const details = enums?.details as IGlobalPropertyDetails;
   const dispatch = useDispatch();
-  const price = useSelector(selectPrice) || 0;
-  const currentRentPrice = useSelector(selectCurrentRentPrice) || 0;
-  const estimatedRentPrice = useSelector(selectEstimatedRentPrice) || 0;
 
-  const [roi, setRoi] = useState(0);
+  const price = useSelector(selectPrice);
+  const currentRentPrice = useSelector(selectCurrentRentPrice);
+  const estimatedRentPrice = useSelector(selectEstimatedRentPrice);
 
   const [additionalCheckbox1Enabled, setAdditionalCheckbox1Enabled] =
     useState(false); // State variable for enabling additional checkboxes
-  const [additionalCheckboxROIEnabled, setAdditionalCheckboxROIEnabled] =
-    useState(false); // State variable for enabling additional checkboxes
+
   const [additionalCheckbox2Enabled, setAdditionalCheckbox2Enabled] =
     useState(false); // State variable for enabling additional checkboxes
-
   //συνάρτηση click/checkbox
   const handleFirstCheckboxChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -53,86 +47,48 @@ const PopupWindow: React.FC<any> = (props) => {
     setAdditionalCheckbox2Enabled(checked);
     setAdditionalCheckbox1Enabled(!checked);
   };
-  const handleROICheckboxChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const checked = event.target.checked;
-    setAdditionalCheckboxROIEnabled(checked);
-  };
-
-  //roi calculator
-  useEffect(() => {
-    let calculatedRoi = 0;
-    if (additionalCheckbox1Enabled) {
-      calculatedRoi = ((currentRentPrice * 12) / price) * 100;
-    } else if (additionalCheckbox2Enabled) {
-      calculatedRoi = ((estimatedRentPrice * 12) / price) * 100;
-    }
-
-    setRoi(calculatedRoi);
-  }, [
-    additionalCheckbox1Enabled,
-    additionalCheckbox2Enabled,
-    currentRentPrice,
-    estimatedRentPrice,
-    price,
-    dispatch,
-  ]);
-
-  // calculate price and change roi calculator with rend price stack
-  //   useEffect(() => {
-  //     const calculatePrice = (() => {
-  //       if (additionalCheckbox1Enabled) {
-  //         return ((currentRentPrice * 12) / roi) * 100;
-  //       } else if (additionalCheckbox2Enabled) {
-  //         return ((estimatedRentPrice * 12) / roi) * 100;
-  //       }
-  //       return price; // Use the initial value of `price` if no conditions match
-  //     })();
-
-  //     dispatch(setPrice(calculatePrice));
-  //   }, [
-  //     additionalCheckboxROIEnabled,
-  //     additionalCheckbox1Enabled,
-  //     additionalCheckbox2Enabled,
-  //     currentRentPrice,
-  //     estimatedRentPrice,
-  //     price,
-  //     dispatch,
-  //   ]);
+  //set the values for BE
   const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const input = event.target.value;
-    const numericValue = input.replace(/[^0-9.,]/g, ""); // Remove non-numeric characters from the input
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
     dispatch(setPrice(numericValue));
   };
   const handleCurrentRentPriceChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const input = event.target.value;
-    const numericValue = input.replace(/[^0-9.,]/g, ""); // Remove non-numeric characters from the input
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
     dispatch(setCurrentRentPrice(numericValue));
   };
   const handleEstimatedRentPriceChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const input = event.target.value;
-    const numericValue = input.replace(/[^0-9.,]/g, ""); // Remove non-numeric characters from the input
+    const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
     dispatch(setEstimatedRentPrice(numericValue));
-  };
-  const handleRoiChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const input = event.target.value;
-    const numericValue = input.replace(/[^0-9.,]/g, ""); // Remove non-numeric characters from the input
-    setRoi(parseInt(numericValue));
   };
   //handle onlynumbers
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     const keyCode = event.keyCode || event.which;
     const keyValue = String.fromCharCode(keyCode);
-    const regex = /[0-9.,]/;
+    const regex = /[0-9]/;
     if (!regex.test(keyValue)) {
       event.preventDefault(); // Prevent entering non-numeric characters
     }
   };
+  const parsedPrice = price;
+  const parsedCurrentRentPrice = currentRentPrice;
+  const parsedEstimatedRentPrice = estimatedRentPrice;
+
+  const roi: number = additionalCheckbox1Enabled
+    ? parsedPrice && parsedCurrentRentPrice && parsedPrice !== 0
+      ? ((parsedCurrentRentPrice * 12) / parsedPrice) * 100
+      : 0
+    : additionalCheckbox2Enabled
+    ? parsedPrice && parsedEstimatedRentPrice && parsedPrice !== 0
+      ? ((parsedEstimatedRentPrice * 12) / parsedPrice) * 100
+      : 0
+    : 0;
 
   return (
     <Grid container xs={12}>
