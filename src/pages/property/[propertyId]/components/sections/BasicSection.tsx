@@ -48,76 +48,76 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
               justifyContent: "left",
             }}
           >
-            <Typography variant='h6'>Basic Details</Typography>
+            <Typography variant="h6">Basic Details</Typography>
           </Box>
           <Divider></Divider>
           <Grid container>
             <Grid item xs={6}>
               <List>
                 <ListItem
-                  label='Category'
+                  label="Category"
                   value={data?.category}
-                  align='horizontal'
+                  align="horizontal"
                 />
 
                 <ListItem
-                  label='House Area'
+                  label="House Area"
                   value={areas?.covered}
-                  align='horizontal'
+                  align="horizontal"
                 />
                 <ListItem
-                  label='Plot Area'
+                  label="Plot Area"
                   value={areas?.plot}
-                  align='horizontal'
+                  align="horizontal"
                 />
                 <ListBooleanItem
-                  label='Rented'
+                  label="Rented"
                   status={data?.rented}
-                  align='horizontal'
+                  align="horizontal"
                 />
                 <ListItem
-                  label='Available After'
+                  label="Available After"
                   value={data?.availableAfter}
-                  align='horizontal'
+                  align="horizontal"
                 />
                 <ListItem
-                  label='Monthly Utilities'
+                  label="Monthly Utilities"
                   value={data?.averageUtils + " €"}
-                  align='horizontal'
+                  align="horizontal"
                 />
                 <ListItem
-                  label='Construction Year'
+                  label="Construction Year"
                   value={data.construction?.yearOfConstruction}
-                  align='horizontal'
+                  align="horizontal"
                 />
                 {/* yer build na prosthetei??? */}
               </List>
             </Grid>
             <Grid item xs={6}>
               <List>
-                <ListItem label='Code' value={data?.code} align='horizontal' />
+                <ListItem label="Code" value={data?.code} align="horizontal" />
                 <ListItem
-                  label='Price'
+                  label="Price"
                   value={data?.price + " € / m^2"}
-                  align='horizontal'
+                  align="horizontal"
                 />
 
                 <ListItem
-                  label='Key Code'
+                  label="Key Code"
                   value={data?.keyCode}
-                  align='horizontal'
+                  align="horizontal"
                 />
 
                 <ListManagerItem manager={manager} />
                 <ListStatusItem
-                  label='Publiced'
+                  label="Publiced"
                   status={isAvailable(data?.state)}
-                  align='horizontal'
+                  align="horizontal"
                 />
                 <ListItem
-                  label='State'
+                  label="State"
                   value={data?.state}
-                  align='horizontal'
+                  align="horizontal"
                 />
 
                 <ListLabelsItem labels={data?.labels} label={""} />
@@ -128,7 +128,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                       float: "right",
                       height: "22px",
                     }}
-                    variant='outlined'
+                    variant="outlined"
                     onClick={handleOpenPopup}
                   >
                     ROI
@@ -151,7 +151,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 justifyContent: "left",
               }}
             >
-              <Typography variant='h6'>ROI</Typography>
+              <Typography variant="h6">ROI</Typography>
             </Box>
             <Divider></Divider>
             <Grid container>

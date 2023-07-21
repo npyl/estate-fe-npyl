@@ -118,20 +118,33 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
               spacing={1}
             >
               <Subbar />
-              <Button
-                sx={{ minWidth: "90px", marginRight: "15px" }}
-                id="create-menu-button"
-                aria-controls={open ? "create-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
-                variant="contained"
-                disableElevation
-                onClick={showDropdown}
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "flex-end",
+                  position: "sticky",
+                  right: 0,
+                  top: 0,
+                }}
               >
-                <AddIcon />
-                Create
-              </Button>
-
+                <Button
+                  sx={{
+                    minWidth: "90px",
+                    marginRight: "15px",
+                  }}
+                  id="create-menu-button"
+                  aria-controls={open ? "create-menu" : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? "true" : undefined}
+                  variant="contained"
+                  disableElevation
+                  onClick={showDropdown}
+                >
+                  <AddIcon />
+                  Create
+                </Button>
+              </Box>
               <StyledMenu
                 id="create-menu"
                 MenuListProps={{
