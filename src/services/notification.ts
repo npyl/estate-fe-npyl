@@ -13,7 +13,7 @@ export const notification = createApi({
 	}),
 	tagTypes: ["Notifications", "NotificationById"],
 	endpoints: (builder) => ({
-		getNotifications: builder.query<ContactNotification, number>({
+		getNotifications: builder.query<ContactNotification, void>({
 			query: () => "",
 			providesTags: ["Notifications"],
 		}),
