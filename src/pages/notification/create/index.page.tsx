@@ -1,11 +1,11 @@
-import { Box, Grid, Paper, TextField, Typography } from "@mui/material";
-
+import { Box, Button, Grid, Paper, TextField, Typography } from "@mui/material";
 import type { NextPage } from "next";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { useAddNotificationMutation } from "src/services/notification";
+import { Send as SendIcon } from "@mui/icons-material";
 
 import { addTab } from "src/slices/tabs";
 
@@ -50,6 +50,9 @@ const NotificationCreatePage: NextPage = () => {
 
 	const handleChange = (value: string, key: string) => {
 		dispatch(setAttribute({ key, value }));
+	};
+	const handleSubmit = () => {
+		addNotification(body);
 	};
 
 	return (
@@ -132,6 +135,23 @@ const NotificationCreatePage: NextPage = () => {
 									value={tourType}
 									onChange={(e) => handleChange(e.target.value, "tourType")}
 								/>
+							</Grid>
+						</Grid>
+						<Grid
+							padding={2}
+							container
+							alignItems="center"
+							justifyContent="flex-end"
+							spacing={1}
+						>
+							<Grid item>
+								<Button
+									variant="contained"
+									endIcon={<SendIcon />}
+									onClick={handleSubmit}
+								>
+									Send
+								</Button>
 							</Grid>
 						</Grid>
 					</Grid>

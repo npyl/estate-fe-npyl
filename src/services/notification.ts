@@ -5,11 +5,11 @@ import {
 } from "src/types/notification";
 
 export const notification = createApi({
-	reducerPath: "contact/notification",
+	reducerPath: "contactNotification",
 	baseQuery: fetchBaseQuery({
 		baseUrl: `${
 			process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"
-		}/api`,
+		}/contact/notification`,
 	}),
 	tagTypes: ["Notifications", "NotificationById"],
 	endpoints: (builder) => ({

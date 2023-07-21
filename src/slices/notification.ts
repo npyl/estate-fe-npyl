@@ -20,7 +20,7 @@ const initialState: notificationState = {
 };
 
 const slice = createSlice({
-	name: "notifications",
+	name: "notification",
 	initialState,
 	reducers: {
 		setAttribute(state: notificationState, { payload }): void {
