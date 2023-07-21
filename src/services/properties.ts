@@ -9,6 +9,10 @@ import {
 import IPage from "src/types/page";
 import { IFileResponse, IPropertyImagePOST } from "src/types/file";
 
+interface IGetPropertyAttributeProps {
+	propertyId: number;
+	attributeName: string;
+}
 interface ICreatePropertyParams {
 	parentCategory: string;
 	category: string;
@@ -62,6 +66,9 @@ export const properties = createApi({
 		"PropertyById",
 		"FilterProperties",
 		"SuggestedProperties",
+
+		// attributes
+		"PropertyByIdLabels",
 	],
 	endpoints: (builder) => ({
 		allProperties: builder.query<IProperties[], void>({
@@ -70,6 +77,8 @@ export const properties = createApi({
 			}),
 			providesTags: ["Properties"],
 		}),
+
+		// Get
 		getPropertyById: builder.query<IProperties, number>({
 			query: (id: number) => `${id}`,
 			providesTags: ["PropertyById"],
@@ -78,13 +87,20 @@ export const properties = createApi({
 			query: (code: number) => `code/${code}`,
 			providesTags: ["Properties"],
 		}),
+		getPropertyAttribute: builder.query<number[], IGetPropertyAttributeProps>({
+			query: (props: IGetPropertyAttributeProps) =>
+				`${props.propertyId}/${props.attributeName}`,
+			providesTags: ["PropertyByIdLabels"],
+		}),
+
+		// mutations
 		editProperty: builder.mutation<number, IEditPropertyProps>({
 			query: (props: IEditPropertyProps) => ({
 				url: `/edit/${props.id}`,
 				method: "POST",
 				body: props.body,
 			}),
-			invalidatesTags: ["Properties", "PropertyById"],
+			invalidatesTags: ["Properties"],
 		}),
 		createProperty: builder.mutation<number, ICreatePropertyParams>({
 			query: (dataToSend: ICreatePropertyParams) => ({
@@ -168,10 +184,14 @@ export const properties = createApi({
 });
 
 export const {
+	// get
 	useGetSearchResultsQuery,
 	useAllPropertiesQuery,
 	useGetPropertyByIdQuery,
 	useGetPropertyByCodeQuery,
+	useGetPropertyAttributeQuery,
+
+	// mutations
 	useEditPropertyMutation,
 	useCreatePropertyMutation,
 	useDeletePropertyMutation,
