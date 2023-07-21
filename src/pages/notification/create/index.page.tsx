@@ -8,6 +8,8 @@ import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 
 import { addTab } from "src/slices/tabs";
 
+import { useGetNotificationsQuery } from "src/services/notification";
+
 const NotificationCreatePage: NextPage = () => {
 	const dispatch = useDispatch();
 

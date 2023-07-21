@@ -16,6 +16,7 @@ import { location } from "../services/location";
 import { properties } from "../services/properties";
 import { user } from "../services/user";
 import { rootReducer } from "./root-reducer";
+import { notification } from "src/services/notification";
 export const createStore = (
 	options?: ConfigureStoreOptions["preloadedState"] | undefined
 ) =>
@@ -37,6 +38,7 @@ export const createStore = (
 				note.middleware,
 				labels.middleware,
 				location.middleware,
+				notification.middleware,
 				rtkQueryErrorLogger
 			),
 		...options,
