@@ -9,6 +9,7 @@ import { location } from "../services/location";
 import { properties } from "../services/properties";
 import { user } from "../services/user";
 import { notification } from "src/services/notification";
+import { reducer as notificationReducer } from "../slices/notification";
 import { reducer as customerReducer } from "../slices/customer";
 import { reducer as filtersReducer } from "../slices/filters";
 import { reducer as labelsReducer } from "../slices/labels";
@@ -34,4 +35,5 @@ export const rootReducer = combineReducers({
 	labelsStore: labelsReducer,
 	tabs: tabsReducer,
 	filters: filtersReducer,
+	notification: notificationReducer,
 });
