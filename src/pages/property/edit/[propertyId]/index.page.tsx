@@ -30,7 +30,8 @@ const EditPropertyPage: NextPage = () => {
 
 	const { data: fetchedProperty, isSuccess: isPropertySuccess } =
 		useGetPropertyByIdQuery(parseInt(propertyId as string));
-	const [edit, { isLoading: isEditLoading }] = useEditPropertyMutation();
+	const [edit, { isSuccess: isEditSuccess, isLoading: isEditLoading }] =
+		useEditPropertyMutation();
 
 	const body = useSelector(selectAll);
 	// everythingIsClear; we can now setInitialState
@@ -66,6 +67,8 @@ const EditPropertyPage: NextPage = () => {
 	const performUpload = () => {
 		edit({ id: +propertyId!, body: body });
 	};
+
+	isEditSuccess && router.push("/");
 
 	return (
 		<>
