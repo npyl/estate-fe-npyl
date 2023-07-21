@@ -4,7 +4,7 @@ import * as React from "react";
 import { ViewLocation } from "src/components/Location/View";
 import { useGetCustomerByIdQuery } from "src/services/customers";
 
-const CustomerAdressDetailsSection: React.FC = () => {
+const AddressSection: React.FC = () => {
 	const router = useRouter();
 	const { customerId } = router.query;
 	const { data } = useGetCustomerByIdQuery(parseInt(customerId as string)); // basic details
@@ -36,4 +36,4 @@ const CustomerAdressDetailsSection: React.FC = () => {
 	);
 };
 
-export default CustomerAdressDetailsSection;
+export default AddressSection;
