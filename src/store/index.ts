@@ -11,11 +11,13 @@ import { labels } from "src/services/labels";
 import { note } from "src/services/note";
 import { auth } from "../services/auth";
 import { customers } from "../services/customers";
-import { rtkQueryErrorLogger } from "../services/error";
 import { location } from "../services/location";
 import { properties } from "../services/properties";
 import { user } from "../services/user";
+import { rtkQueryErrorLogger } from "../services/error";
 import { rootReducer } from "./root-reducer";
+import { notification } from "src/services/notification";
+
 export const createStore = (
 	options?: ConfigureStoreOptions["preloadedState"] | undefined
 ) =>
@@ -37,6 +39,7 @@ export const createStore = (
 				note.middleware,
 				labels.middleware,
 				location.middleware,
+				notification.middleware,
 				rtkQueryErrorLogger
 			),
 		...options,

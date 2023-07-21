@@ -14,20 +14,21 @@ import Subbar from "./dashboard-subbar";
 
 import { addTab } from "src/slices/tabs";
 import { useDispatch } from "src/store";
+import { CircleNotifications } from "@mui/icons-material";
 
 interface DashboardLayoutProps {
-  children?: ReactNode;
+	children?: ReactNode;
 }
 
 const DashboardLayoutRoot = styled("div")(({ theme }) => ({
-  display: "flex",
-  flex: "1 1 auto",
-  maxWidth: "100%",
-  paddingTop: 64,
-  marginRight: "16px",
-  [theme.breakpoints.up("md")]: {
-    paddingLeft: 220,
-  },
+	display: "flex",
+	flex: "1 1 auto",
+	maxWidth: "100%",
+	paddingTop: 64,
+	marginRight: "16px",
+	[theme.breakpoints.up("md")]: {
+		paddingLeft: 220,
+	},
 }));
 
 export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
@@ -40,10 +41,11 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
   const dispatch = useDispatch();
   const router = useRouter();
 
-  const propertyItemType = "property-menu-item";
-  const managerItemType = "manager-menu-item";
-  const ownerItemType = "owner-menu-item";
-  const labelItemType = "label-menu-item";
+	const propertyItemType = "property-menu-item";
+	const managerItemType = "manager-menu-item";
+	const ownerItemType = "owner-menu-item";
+	const labelItemType = "label-menu-item";
+	const notificationItemType = "notification-menu-item";
 
   interface tabConfigProp {
     title: string;
@@ -67,26 +69,29 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
     var title: string = "";
     var path: string = "";
 
-    if (itemType === propertyItemType) {
-      title = "Create Property";
-      path = "/property/create";
-    } else if (itemType === managerItemType) {
-      title = "Create Manager";
-      path = "/user/create";
-    } else if (itemType === ownerItemType) {
-      title = "Create Customer";
-      path = "/customer/create";
-    } else if (itemType === labelItemType) {
-      title = "Create Label";
-      path = "/label";
-    }
+		if (itemType === propertyItemType) {
+			title = "Create Property";
+			path = "/property/create";
+		} else if (itemType === managerItemType) {
+			title = "Create Manager";
+			path = "/user/create";
+		} else if (itemType === ownerItemType) {
+			title = "Create Customer";
+			path = "/customer/create";
+		} else if (itemType === labelItemType) {
+			title = "Create Label";
+			path = "/label";
+		} else if (itemType === notificationItemType) {
+			title = "Create Notification";
+			path = "/notification/create";
+		}
 
     tabConfig = {
       title: title,
       path: path,
     };
 
-    router.push(path);
+		router.push(path);
 
     dispatch(addTab(tabConfig));
   };
@@ -118,20 +123,33 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
               spacing={1}
             >
               <Subbar />
-              <Button
-                sx={{ minWidth: "90px", marginRight: "15px" }}
-                id="create-menu-button"
-                aria-controls={open ? "create-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
-                variant="contained"
-                disableElevation
-                onClick={showDropdown}
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "flex-end",
+                  position: "sticky",
+                  right: 0,
+                  top: 0,
+                }}
               >
-                <AddIcon />
-                Create
-              </Button>
-
+                <Button
+                  sx={{
+                    minWidth: "90px",
+                    marginRight: "15px",
+                  }}
+                  id="create-menu-button"
+                  aria-controls={open ? "create-menu" : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? "true" : undefined}
+                  variant="contained"
+                  disableElevation
+                  onClick={showDropdown}
+                >
+                  <AddIcon />
+                  Create
+                </Button>
+              </Box>
               <StyledMenu
                 id="create-menu"
                 MenuListProps={{

@@ -26,6 +26,8 @@ import { SliderPicker } from "react-color";
 import { ILabel } from "src/types/label";
 
 interface ILabelCreateProps {
+	variant?: string;
+
 	existingLabels: ILabel[];
 	// assigned-existing labels & newly-created labels
 	assignedLabels: ILabel[];
@@ -40,6 +42,7 @@ interface ILabelCreateProps {
 
 const LabelCreate = (props: ILabelCreateProps) => {
 	const {
+		variant = "property",
 		existingLabels,
 		assignedLabels,
 		newLabels,
@@ -173,7 +176,9 @@ const LabelCreate = (props: ILabelCreateProps) => {
 					</IconButton>
 				</DialogTitle>
 				<DialogContent>
-					<DialogContentText>Customer Labels</DialogContentText>
+					<DialogContentText>
+						{variant === "property" ? "Property Labels" : "Customer Labels"}
+					</DialogContentText>
 					<Stack direction={"row"} flexWrap={"wrap"} spacing={1}>
 						{existingLabels.map((label, index) => {
 							return (
