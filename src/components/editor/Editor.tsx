@@ -6,6 +6,7 @@ import { Box } from "@mui/material";
 //
 import { StyledEditor } from "./styles";
 import { EditorProps } from "./types";
+import { useTranslation } from "react-i18next";
 
 const ReactQuill = dynamic(() => import("react-quill"), {
   ssr: false,
@@ -81,7 +82,7 @@ export default function Editor({
       matchVisual: false,
     },
   };
-
+  const { t } = useTranslation();
   return (
     <>
       <StyledEditor
@@ -99,7 +100,7 @@ export default function Editor({
           onChange={onChange}
           modules={modules}
           formats={formats}
-          placeholder="Write your Description"
+          placeholder={t("Write your Description")}
           {...other}
         />
       </StyledEditor>

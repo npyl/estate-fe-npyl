@@ -1,7 +1,15 @@
-import { Checkbox, Grid, MenuItem, Paper, TextField } from "@mui/material";
+import {
+  Checkbox,
+  Divider,
+  Grid,
+  MenuItem,
+  Paper,
+  TextField,
+} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import * as React from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useAllGlobalsQuery } from "src/services/global";
 import {
@@ -46,7 +54,7 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
   const { data } = useAllGlobalsQuery();
   const enums: IGlobalProperty = data?.property as IGlobalProperty;
   const details = enums?.details as IGlobalPropertyDetails;
-
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const hasAttic = useSelector(selectHasAttic);
   const playroom = useSelector(selectPlayRoom);
@@ -126,10 +134,10 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
           px: 3,
           py: 1.5,
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "left",
         }}
       >
-        <Typography variant="h6">Property Description</Typography>
+        <Typography variant="h6">{"Property Description"}</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -139,7 +147,7 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               fullWidth
               id="outlined-select-currency"
               select
-              label="Floor"
+              label={t("Floor")}
               value={floor}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setFloor(event.target.value));
@@ -164,7 +172,7 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               type="number"
               fullWidth
               id="outlined-controlled"
-              label="Bedrooms"
+              label={t("Bedrooms")}
               placeholder="1,2,3..."
               value={bedrooms}
               onChange={handleBedroomsChange}
@@ -182,7 +190,7 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               type="number"
               fullWidth
               id="outlined-controlled"
-              label="Layers"
+              label={t("Layers")}
               value={layers}
               placeholder="1,2,3..."
               onChange={handleLayersChange}
@@ -200,7 +208,7 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               type="number"
               fullWidth
               id="outlined-controlled"
-              label="Kitchens"
+              label={t("Kitchens")}
               value={kitchens}
               placeholder="1,2,3..."
               onChange={handleKitchensChange}
@@ -217,7 +225,7 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               type="number"
               fullWidth
               id="outlined-controlled"
-              label="Living Rooms"
+              label={t("Living Rooms")}
               value={livingRooms}
               placeholder="1,2,3..."
               onChange={handleLivingRoomsChange}
@@ -235,7 +243,7 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               type="number"
               fullWidth
               id="outlined-controlled"
-              label="Number of WC"
+              label={t("Number of WC")}
               value={numOfWC}
               placeholder="1,2,3..."
               onChange={handleNumOfWCChange}
@@ -253,7 +261,7 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               type="number"
               fullWidth
               id="outlined-controlled"
-              label="Bathrooms"
+              label={t("Bathrooms")}
               value={bathrooms}
               placeholder="1,2,3..."
               onChange={handleBathroomsChange}
@@ -271,7 +279,7 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               fullWidth
               id="outlined-select-currency"
               select
-              label="View"
+              label={t("View")}
               value={viewType}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setViewType(event.target.value));
@@ -295,7 +303,7 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               fullWidth
               id="outlined-select-currency"
               select
-              label="Accessibility"
+              label={t("Accessibility")}
               value={accessibility}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setAccessibility(event.target.value));
@@ -319,7 +327,7 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               fullWidth
               id="outlined-select-currency"
               select
-              label="Land Use"
+              label={t("Land Use")}
               value={landUse}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setLandUse(event.target.value));
@@ -344,7 +352,7 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               fullWidth
               id="outlined-select-currency"
               select
-              label="Zone"
+              label={t("Zone")}
               value={zoneType}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setZoneType(event.target.value));
@@ -369,7 +377,7 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               type="number"
               fullWidth
               id="outlined-controlled"
-              label="Rooms"
+              label={t("Rooms")}
               value={rooms}
               placeholder="1,2,3..."
               onChange={handleRoomsChange}
@@ -386,7 +394,7 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               fullWidth
               id="outlined-select-currency"
               select
-              label="Orientation"
+              label={t("Orientation")}
               value={orientation}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setOrientation(event.target.value));
@@ -427,7 +435,7 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               inputProps={{ "aria-label": "Elevator" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Attic
+              {t("Attic")}
             </Typography>
           </Grid>
           <Grid
@@ -451,7 +459,7 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               inputProps={{ "aria-label": "Elevator" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Playroom
+              {t("Playroom")}
             </Typography>
           </Grid>
 
@@ -476,7 +484,7 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               inputProps={{ "aria-label": "Elevator" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Storeroom
+              {t("Storeroom")}
             </Typography>
           </Grid>
 
@@ -501,7 +509,7 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
               inputProps={{ "aria-label": "Elevator" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Penthouse
+              {t("Penthouse")}
             </Typography>
           </Grid>
         </Grid>

@@ -1,16 +1,16 @@
 import {
-	Box,
-	Button,
-	Dialog,
-	DialogContent,
-	DialogContentText,
-	DialogTitle,
-	FormControl,
-	FormLabel,
-	IconButton,
-	Stack,
-	TextField,
-	Typography,
+  Box,
+  Button,
+  Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  FormControl,
+  FormLabel,
+  IconButton,
+  Stack,
+  TextField,
+  Typography,
 } from "@mui/material";
 
 import AddCircleIcon from "@mui/icons-material/AddCircle";
@@ -24,254 +24,255 @@ import Label from "src/components/label/Label";
 import { SliderPicker } from "react-color";
 
 import { ILabel } from "src/types/label";
+import { useTranslation } from "react-i18next";
 
 interface ILabelCreateProps {
-	variant?: string;
+  variant?: string;
 
-	existingLabels: ILabel[];
-	// assigned-existing labels & newly-created labels
-	assignedLabels: ILabel[];
-	newLabels: ILabel[];
+  existingLabels: ILabel[];
+  // assigned-existing labels & newly-created labels
+  assignedLabels: ILabel[];
+  newLabels: ILabel[];
 
-	// handlers
-	onLabelClick: (label: ILabel) => void;
-	onLabelCreate: (label: ILabel) => void;
-	onRemoveAssignedLabel: (index: number) => void;
-	onRemoveNewLabel: (index: number) => void;
+  // handlers
+  onLabelClick: (label: ILabel) => void;
+  onLabelCreate: (label: ILabel) => void;
+  onRemoveAssignedLabel: (index: number) => void;
+  onRemoveNewLabel: (index: number) => void;
 }
 
 const LabelCreate = (props: ILabelCreateProps) => {
-	const {
-		variant = "property",
-		existingLabels,
-		assignedLabels,
-		newLabels,
-		onLabelClick,
-		onLabelCreate,
-		onRemoveAssignedLabel,
-		onRemoveNewLabel,
-	} = props;
+  const {
+    variant = "property",
+    existingLabels,
+    assignedLabels,
+    newLabels,
+    onLabelClick,
+    onLabelCreate,
+    onRemoveAssignedLabel,
+    onRemoveNewLabel,
+  } = props;
+  const { t } = useTranslation();
+  const [addLabelDialog, setAddLabelDialog] = useState(false);
 
-	const [addLabelDialog, setAddLabelDialog] = useState(false);
+  const [pickerColor, setPickerColor] = useState("#22194d");
+  const [labelName, setLabelName] = useState("");
 
-	const [pickerColor, setPickerColor] = useState("#22194d");
-	const [labelName, setLabelName] = useState("");
+  const [error, setError] = useState("");
 
-	const [error, setError] = useState("");
+  const handleChangeComplete = (color: any) => {
+    setPickerColor(color.hex);
+  };
 
-	const handleChangeComplete = (color: any) => {
-		setPickerColor(color.hex);
-	};
+  const clickLabel = (label: ILabel) => {
+    onLabelClick(label);
+  };
+  const createLabel = () => {
+    if (!labelName) {
+      setError("Το όνομα της ετικέτας είναι υποχρεωτικό");
+      return;
+    }
 
-	const clickLabel = (label: ILabel) => {
-		onLabelClick(label);
-	};
-	const createLabel = () => {
-		if (!labelName) {
-			setError("Το όνομα της ετικέτας είναι υποχρεωτικό");
-			return;
-		}
+    onLabelCreate({ color: pickerColor, name: labelName });
 
-		onLabelCreate({ color: pickerColor, name: labelName });
+    /* close dialog */
+    setAddLabelDialog(false);
+  };
 
-		/* close dialog */
-		setAddLabelDialog(false);
-	};
+  if (!existingLabels) return null;
 
-	if (!existingLabels) return null;
+  return (
+    <Box
+      sx={{
+        border: 1,
+        borderColor: "divider",
+        borderRadius: 1,
+        height: "100%",
+        px: 1.5,
+        py: 1.5,
+        display: "flex",
+      }}
+      flexDirection={"column"}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "10px",
+        }}
+      >
+        <Typography flex={1} sx={{ justifyContent: "center" }}>
+          {t("Labels")}
+        </Typography>
+        <IconButton size="small" onClick={() => setAddLabelDialog(true)}>
+          <AddCircleIcon />
+        </IconButton>
+      </Box>
 
-	return (
-		<Box
-			sx={{
-				border: 1,
-				borderColor: "divider",
-				borderRadius: 1,
-				height: "100%",
-				px: 1.5,
-				py: 1.5,
-				display: "flex",
-			}}
-			flexDirection={"column"}
-		>
-			<Box
-				sx={{
-					display: "flex",
-					justifyContent: "center",
-					alignItems: "center",
-					height: "10px",
-				}}
-			>
-				<Typography flex={1} sx={{ justifyContent: "center" }}>
-					Labels
-				</Typography>
-				<IconButton size="small" onClick={() => setAddLabelDialog(true)}>
-					<AddCircleIcon />
-				</IconButton>
-			</Box>
+      {((assignedLabels && assignedLabels.length > 0) ||
+        (newLabels && newLabels.length > 0)) && (
+        <Box flex={1} justifyContent={"center"} flexWrap={"wrap"} pt={2}>
+          <Stack direction={"row"} flexWrap={"wrap"} spacing={1}>
+            {assignedLabels.map((label, index) => {
+              if (!label) return <></>;
 
-			{((assignedLabels && assignedLabels.length > 0) ||
-				(newLabels && newLabels.length > 0)) && (
-				<Box flex={1} justifyContent={"center"} flexWrap={"wrap"} pt={2}>
-					<Stack direction={"row"} flexWrap={"wrap"} spacing={1}>
-						{assignedLabels.map((label, index) => {
-							if (!label) return <></>;
+              return (
+                <Label
+                  key={index}
+                  variant="soft"
+                  sx={{
+                    bgcolor: label.color,
+                    color: "white",
+                  }}
+                  onClose={() => onRemoveAssignedLabel(index)}
+                >
+                  {label.name}
+                </Label>
+              );
+            })}
+          </Stack>
+          <Stack direction={"row"} flexWrap={"wrap"} spacing={1}>
+            {newLabels &&
+              newLabels.length > 0 &&
+              newLabels.map((label, index) => {
+                return (
+                  <Label
+                    key={index}
+                    variant="soft"
+                    sx={{
+                      bgcolor: label.color,
+                      color: "white",
+                    }}
+                    onClose={() => onRemoveNewLabel(index)}
+                  >
+                    {label.name}
+                  </Label>
+                );
+              })}
+          </Stack>
+        </Box>
+      )}
 
-							return (
-								<Label
-									key={index}
-									variant="soft"
-									sx={{
-										bgcolor: label.color,
-										color: "white",
-									}}
-									onClose={() => onRemoveAssignedLabel(index)}
-								>
-									{label.name}
-								</Label>
-							);
-						})}
-					</Stack>
-					<Stack direction={"row"} flexWrap={"wrap"} spacing={1}>
-						{newLabels &&
-							newLabels.length > 0 &&
-							newLabels.map((label, index) => {
-								return (
-									<Label
-										key={index}
-										variant="soft"
-										sx={{
-											bgcolor: label.color,
-											color: "white",
-										}}
-										onClose={() => onRemoveNewLabel(index)}
-									>
-										{label.name}
-									</Label>
-								);
-							})}
-					</Stack>
-				</Box>
-			)}
+      <Dialog
+        fullWidth
+        maxWidth="xs"
+        open={addLabelDialog}
+        onClose={() => setAddLabelDialog(false)}
+        closeAfterTransition={true}
+      >
+        <DialogTitle variant="h5">
+          Προσθήκη Υπάρχουσας
+          <IconButton
+            aria-label="close"
+            onClick={() => setAddLabelDialog(false)}
+            sx={{
+              position: "absolute",
+              right: 8,
+              top: 8,
+              color: "grey",
+            }}
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            {variant === "property" ? "Property Labels" : "Customer Labels"}
+          </DialogContentText>
+          <Stack direction={"row"} flexWrap={"wrap"} spacing={1}>
+            {existingLabels.map((label, index) => {
+              return (
+                <Label
+                  key={index}
+                  variant="soft"
+                  onClick={() => clickLabel(label)}
+                  sx={{
+                    bgcolor: label.color,
+                    borderRadius: 7,
+                    color: "white",
+                    "&:hover": { cursor: "pointer" },
+                  }}
+                >
+                  {label.name}
+                </Label>
+              );
+            })}
+          </Stack>
 
-			<Dialog
-				fullWidth
-				maxWidth="xs"
-				open={addLabelDialog}
-				onClose={() => setAddLabelDialog(false)}
-				closeAfterTransition={true}
-			>
-				<DialogTitle variant="h5">
-					Προσθήκη Υπάρχουσας
-					<IconButton
-						aria-label="close"
-						onClick={() => setAddLabelDialog(false)}
-						sx={{
-							position: "absolute",
-							right: 8,
-							top: 8,
-							color: "grey",
-						}}
-					>
-						<CloseIcon />
-					</IconButton>
-				</DialogTitle>
-				<DialogContent>
-					<DialogContentText>
-						{variant === "property" ? "Property Labels" : "Customer Labels"}
-					</DialogContentText>
-					<Stack direction={"row"} flexWrap={"wrap"} spacing={1}>
-						{existingLabels.map((label, index) => {
-							return (
-								<Label
-									key={index}
-									variant="soft"
-									onClick={() => clickLabel(label)}
-									sx={{
-										bgcolor: label.color,
-										borderRadius: 7,
-										color: "white",
-										"&:hover": { cursor: "pointer" },
-									}}
-								>
-									{label.name}
-								</Label>
-							);
-						})}
-					</Stack>
+          <Typography variant="h5">Δημιουργία νέας</Typography>
+          <Stack spacing={3} mt={2}>
+            <Stack spacing={1}>
+              <FormControl>
+                <FormLabel id="demo-controlled-radio-buttons-group">
+                  <Typography
+                    variant="subtitle2"
+                    sx={{ color: "text.secondary" }}
+                  >
+                    Εισάγετε όνομα:
+                  </Typography>
+                </FormLabel>
+                <Stack direction={"row"} spacing={1}>
+                  <TextField
+                    id="outlined-select-currency"
+                    value={labelName}
+                    placeholder="Νέα Ετικέτα"
+                    error={!!error}
+                    helperText={error}
+                    onFocus={(event) => {
+                      (event.target.placeholder = ""), setError("");
+                    }}
+                    onBlur={(event) =>
+                      (event.target.placeholder = "Νέα Ετικέτα")
+                    }
+                    onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                      setLabelName(event.target.value);
+                    }}
+                  />
+                </Stack>
+                <Box m={2}>
+                  <SliderPicker
+                    color={pickerColor}
+                    onChangeComplete={handleChangeComplete}
+                  />
+                </Box>
+                <FormControl>
+                  <Stack
+                    direction={"row"}
+                    paddingTop={2}
+                    paddingBottom={2}
+                    spacing={3}
+                  >
+                    <FormLabel id="demo-controlled-radio-buttons-group">
+                      <Typography
+                        variant="subtitle2"
+                        sx={{ color: "text.secondary" }}
+                      >
+                        Προεπισκόπιση:
+                      </Typography>
+                    </FormLabel>
+                    <Label
+                      variant="soft"
+                      sx={{
+                        bgcolor: pickerColor,
+                        borderRadius: 7,
+                        color: "white",
+                      }}
+                    >
+                      {labelName || "Νέα Ετικέτα"}
+                    </Label>
+                  </Stack>
 
-					<Typography variant="h5">Δημιουργία νέας</Typography>
-					<Stack spacing={3} mt={2}>
-						<Stack spacing={1}>
-							<FormControl>
-								<FormLabel id="demo-controlled-radio-buttons-group">
-									<Typography
-										variant="subtitle2"
-										sx={{ color: "text.secondary" }}
-									>
-										Εισάγετε όνομα:
-									</Typography>
-								</FormLabel>
-								<Stack direction={"row"} spacing={1}>
-									<TextField
-										id="outlined-select-currency"
-										value={labelName}
-										placeholder="Νέα Ετικέτα"
-										error={!!error}
-										helperText={error}
-										onFocus={(event) => {
-											(event.target.placeholder = ""), setError("");
-										}}
-										onBlur={(event) =>
-											(event.target.placeholder = "Νέα Ετικέτα")
-										}
-										onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-											setLabelName(event.target.value);
-										}}
-									/>
-								</Stack>
-								<Box m={2}>
-									<SliderPicker
-										color={pickerColor}
-										onChangeComplete={handleChangeComplete}
-									/>
-								</Box>
-								<FormControl>
-									<Stack
-										direction={"row"}
-										paddingTop={2}
-										paddingBottom={2}
-										spacing={3}
-									>
-										<FormLabel id="demo-controlled-radio-buttons-group">
-											<Typography
-												variant="subtitle2"
-												sx={{ color: "text.secondary" }}
-											>
-												Προεπισκόπιση:
-											</Typography>
-										</FormLabel>
-										<Label
-											variant="soft"
-											sx={{
-												bgcolor: pickerColor,
-												borderRadius: 7,
-												color: "white",
-											}}
-										>
-											{labelName || "Νέα Ετικέτα"}
-										</Label>
-									</Stack>
-
-									<Button variant="outlined" onClick={createLabel}>
-										Δημιουργία & Προσθήκη
-									</Button>
-								</FormControl>
-							</FormControl>
-						</Stack>
-					</Stack>
-				</DialogContent>
-			</Dialog>
-		</Box>
-	);
+                  <Button variant="outlined" onClick={createLabel}>
+                    Δημιουργία & Προσθήκη
+                  </Button>
+                </FormControl>
+              </FormControl>
+            </Stack>
+          </Stack>
+        </DialogContent>
+      </Dialog>
+    </Box>
+  );
 };
 export default LabelCreate;

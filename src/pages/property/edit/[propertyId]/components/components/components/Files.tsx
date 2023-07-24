@@ -2,6 +2,7 @@ import { Card, CardHeader, CardContent } from "@mui/material";
 import { Upload } from "src/components/upload";
 import { Dispatch, SetStateAction, useCallback } from "react";
 import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 interface FileSectionProps {
   fileData: string[];
@@ -10,7 +11,7 @@ interface FileSectionProps {
 
 const FileSection: React.FC<FileSectionProps> = ({ fileData, setFileData }) => {
   const dispatch = useDispatch();
-
+  const { t } = useTranslation();
   const handleDropMultiFile = useCallback(
     (acceptedFileData: File[]) => {
       setFileData([
@@ -36,7 +37,7 @@ const FileSection: React.FC<FileSectionProps> = ({ fileData, setFileData }) => {
 
   return (
     <Card>
-      <CardHeader title="fileData" />
+      <CardHeader title={t("fileData")} />
       <CardContent>
         {/* <Upload
           multiple

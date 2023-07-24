@@ -13,9 +13,11 @@ import {
   setPriorityFeature,
 } from "src/slices/customer";
 import { IDemandPOST } from "src/types/demand";
+import { useTranslation } from "react-i18next";
 
 const PriorityFeatures = () => {
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const leaser = useSelector(selectLeaser);
   const buyer = useSelector(selectBuyer);
@@ -41,10 +43,10 @@ const PriorityFeatures = () => {
           px: 3,
           py: 1.5,
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "left",
         }}
       >
-        <Typography variant='h6'>Priority Features</Typography>
+        <Typography variant="h6">{t("Priority Feautures")}</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>

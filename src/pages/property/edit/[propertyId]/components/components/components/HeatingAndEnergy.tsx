@@ -26,6 +26,7 @@ import {
   setSolarBoiler,
 } from "src/slices/property";
 import { useAllGlobalsQuery } from "src/services/global";
+import { useTranslation } from "react-i18next";
 
 const HeatingAndEnergySection: React.FC<any> = (props) => {
   const { data } = useAllGlobalsQuery();
@@ -33,7 +34,7 @@ const HeatingAndEnergySection: React.FC<any> = (props) => {
   const details = enums?.details as IGlobalPropertyDetails;
 
   const dispatch = useDispatch();
-
+  const { t } = useTranslation();
   const heatingType = useSelector(selectHeatingType);
   const heatingSystem = useSelector(selectHeatingSystem);
   const floorHeating = useSelector(selectFloorHeating);
@@ -52,10 +53,10 @@ const HeatingAndEnergySection: React.FC<any> = (props) => {
           px: 3,
           py: 1.5,
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "left",
         }}
       >
-        <Typography variant="h6">Heating and Energy</Typography>
+        <Typography variant="h6">{t("Heating and Energy")}</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -65,7 +66,7 @@ const HeatingAndEnergySection: React.FC<any> = (props) => {
               fullWidth
               id="outlined-select-currency"
               select
-              label="Heating Type"
+              label={t("Heating Type")}
               value={heatingType}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setHeatingType(event.target.value));
@@ -90,7 +91,7 @@ const HeatingAndEnergySection: React.FC<any> = (props) => {
               fullWidth
               id="outlined-select-currency"
               select
-              label="Energy Class"
+              label={t("Energy Class")}
               value={energyClass}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setEnergyClass(event.target.value));
@@ -114,7 +115,7 @@ const HeatingAndEnergySection: React.FC<any> = (props) => {
               fullWidth
               id="outlined-select-currency"
               select
-              label="Heating System"
+              label={t("Heating System")}
               value={heatingSystem}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setHeatingSystem(event.target.value));
@@ -139,7 +140,7 @@ const HeatingAndEnergySection: React.FC<any> = (props) => {
               fullWidth
               id="outlined-select-currency"
               select
-              label="Electricity Type"
+              label={t("Electricity Type")}
               value={electricityType}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setElectricityType(event.target.value));
@@ -179,7 +180,7 @@ const HeatingAndEnergySection: React.FC<any> = (props) => {
               inputProps={{ "aria-label": "Floor Heating Checkbox" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Floor Heating
+              {t("Floor Heating")}
             </Typography>
           </Grid>
 
@@ -203,7 +204,7 @@ const HeatingAndEnergySection: React.FC<any> = (props) => {
               inputProps={{ "aria-label": "Floor Heating Checkbox" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Air-Coditioning
+              {t("Air-Coditioning")}
             </Typography>
           </Grid>
 
@@ -227,7 +228,7 @@ const HeatingAndEnergySection: React.FC<any> = (props) => {
               inputProps={{ "aria-label": "Floor Heating Checkbox" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Solar Boiler
+              {t("Solar Boiler")}
             </Typography>
           </Grid>
 
@@ -251,7 +252,7 @@ const HeatingAndEnergySection: React.FC<any> = (props) => {
               inputProps={{ "aria-label": "Floor Heating Checkbox" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Off Peak Electricity
+              {t("Off Peak Electricity")}
             </Typography>
           </Grid>
         </Grid>

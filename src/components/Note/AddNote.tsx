@@ -3,6 +3,7 @@ import SendIcon from "@mui/icons-material/Send";
 import { alpha } from "@mui/material/styles";
 
 import { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface AddNoteProps {
   onAdd(message: string): void;
@@ -27,7 +28,7 @@ const AddNote = (props: AddNoteProps) => {
     onAdd(message);
     setMessage("");
   };
-
+  const { t } = useTranslation();
   return (
     <Grid
       container
@@ -42,7 +43,7 @@ const AddNote = (props: AddNoteProps) => {
         fullWidth
         value={message}
         inputRef={commentInputRef}
-        placeholder="Write a note..."
+        placeholder={t("Write a note...")}
         onChange={(event) => handleChangeMessage(event.target.value)}
         onKeyPress={handleKeyPress}
         endAdornment={

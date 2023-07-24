@@ -34,6 +34,7 @@ import {
   setYearOfRenovation,
 } from "src/slices/property";
 import { useAllGlobalsQuery } from "src/services/global";
+import { useTranslation } from "react-i18next";
 
 const ConstructionForResidentialSection: React.FC<any> = (props) => {
   const { data } = useAllGlobalsQuery();
@@ -89,6 +90,7 @@ const ConstructionForResidentialSection: React.FC<any> = (props) => {
       event.preventDefault(); // Prevent entering non-numeric characters
     }
   };
+  const { t } = useTranslation();
   return (
     <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
       <Box
@@ -96,10 +98,10 @@ const ConstructionForResidentialSection: React.FC<any> = (props) => {
           px: 3,
           py: 1.5,
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "left",
         }}
       >
-        <Typography variant="h6">Construction</Typography>
+        <Typography variant="h6">{t("Construction")}</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -108,7 +110,7 @@ const ConstructionForResidentialSection: React.FC<any> = (props) => {
             <TextField
               fullWidth
               id="outlined-controlled"
-              label="Year of Construction"
+              label={t("Year of Construction")}
               value={yearOfConstruction}
               onChange={handleYearOfConstructionChange}
               onKeyPress={handleKeyPress}
@@ -123,7 +125,7 @@ const ConstructionForResidentialSection: React.FC<any> = (props) => {
             <TextField
               fullWidth
               id="outlined-controlled"
-              label="Year of Renovation"
+              label={t("Year of Renovation")}
               value={yearOfRenovation}
               onChange={handleYearOfRenovationChange}
               onKeyPress={handleKeyPress}
@@ -138,7 +140,7 @@ const ConstructionForResidentialSection: React.FC<any> = (props) => {
             <TextField
               fullWidth
               id="outlined-controlled"
-              label="Total Floor Number"
+              label={t("Total Floor Number")}
               value={totalFloorNumber}
               onChange={handleTotalFloorNumberChange}
               onKeyPress={handleKeyPress}
@@ -169,7 +171,7 @@ const ConstructionForResidentialSection: React.FC<any> = (props) => {
               inputProps={{ "aria-label": "Under Construction" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Under Construction
+              {t("Under Construction")}
             </Typography>
           </Grid>
           <Grid
@@ -192,7 +194,7 @@ const ConstructionForResidentialSection: React.FC<any> = (props) => {
               inputProps={{ "aria-label": "Rrenovated" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Renovated
+              {t("Renovated")}
             </Typography>
           </Grid>
           <Grid
@@ -215,7 +217,7 @@ const ConstructionForResidentialSection: React.FC<any> = (props) => {
               inputProps={{ "aria-label": "Needs Renivation" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Needs Renovation
+              {t("Needs Renovation")}
             </Typography>
           </Grid>
 
@@ -239,7 +241,7 @@ const ConstructionForResidentialSection: React.FC<any> = (props) => {
               inputProps={{ "aria-label": "Elevator" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Elevator
+              {t("Elevator")}
             </Typography>
           </Grid>
           <Grid
@@ -262,7 +264,7 @@ const ConstructionForResidentialSection: React.FC<any> = (props) => {
               inputProps={{ "aria-label": "Internal stairs" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Internal Stairs
+              {t("Internal Stairs")}
             </Typography>
           </Grid>
           <Grid
@@ -285,7 +287,7 @@ const ConstructionForResidentialSection: React.FC<any> = (props) => {
               inputProps={{ "aria-label": "Newly Build" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Newly Build
+              {t("Newly Build")}
             </Typography>
           </Grid>
           <Grid
@@ -308,7 +310,7 @@ const ConstructionForResidentialSection: React.FC<any> = (props) => {
               inputProps={{ "aria-label": "Incomplete" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Incomplete
+              {t("Incomplete")}
             </Typography>
           </Grid>
           <Grid
@@ -331,7 +333,7 @@ const ConstructionForResidentialSection: React.FC<any> = (props) => {
               inputProps={{ "aria-label": "Neoclassical" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Neoclassical
+              {t("Neoclassical")}
             </Typography>
           </Grid>
           <Grid
@@ -354,7 +356,7 @@ const ConstructionForResidentialSection: React.FC<any> = (props) => {
               inputProps={{ "aria-label": "Preserved" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Preserved
+              {t("Preserved")}
             </Typography>
           </Grid>
         </Grid>
