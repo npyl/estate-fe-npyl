@@ -10,6 +10,7 @@ import { CollapsibleTable, createRow } from "./components/CollapsibleTable";
 import { useGetNotificationByIdQuery } from "src/services/notification";
 
 import { Paper } from "@mui/material";
+import { resetState } from "src/slices/notification";
 
 const NotificationPage: NextPage = () => {
 	const dispatch = useDispatch();
@@ -17,6 +18,7 @@ const NotificationPage: NextPage = () => {
 	const publish = () => {
 		useEffect(() => {
 			dispatch(addTab({ title: "Notifications", path: "/notification" }));
+			dispatch(resetState());
 		}, []);
 	};
 
@@ -39,10 +41,14 @@ const NotificationPage: NextPage = () => {
 		[notifications]
 	);
 
+	const handleRemove = (index: number) => {
+		console.log("will delete notification: ", index);
+	};
+
 	return (
 		<>
 			<Paper sx={{ flex: 1, mt: 1 }}>
-				<CollapsibleTable rows={rows} />
+				<CollapsibleTable rows={rows} onRemove={handleRemove} />
 			</Paper>
 		</>
 	);

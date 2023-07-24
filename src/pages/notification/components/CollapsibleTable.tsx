@@ -63,11 +63,12 @@ export function createRow(props: ContactNotification) {
 	};
 }
 
-function Row(props: { row: ReturnType<typeof createRow> }) {
-	const { row } = props;
+function Row(props: {
+	row: ReturnType<typeof createRow>;
+	onRemove: () => void;
+}) {
+	const { row, onRemove } = props;
 	const [open, setOpen] = useState(false);
-
-	const onRemove = () => {};
 
 	return (
 		<Fragment>
@@ -136,8 +137,9 @@ function Row(props: { row: ReturnType<typeof createRow> }) {
 
 export const CollapsibleTable = (props: {
 	rows: ReturnType<typeof createRow>[];
+	onRemove: (index: number) => void;
 }) => {
-	const { rows } = props;
+	const { rows, onRemove } = props;
 
 	return (
 		<TableContainer component={Paper}>
@@ -154,8 +156,12 @@ export const CollapsibleTable = (props: {
 					</TableRow>
 				</TableHead>
 				<TableBody>
-					{rows.map((row) => (
-						<Row key={row.customerName} row={row} />
+					{rows.map((row, index) => (
+						<Row
+							key={row.customerName}
+							row={row}
+							onRemove={() => onRemove(index)}
+						/>
 					))}
 				</TableBody>
 			</Table>
