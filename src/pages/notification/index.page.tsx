@@ -15,6 +15,7 @@ const NotificationPage: NextPage = () => {
 
 	const publish = () => {
 		useEffect(() => {
+			alert("alot!");
 			dispatch(addTab({ title: "Notifications", path: "/notification" }));
 		}, []);
 	};
