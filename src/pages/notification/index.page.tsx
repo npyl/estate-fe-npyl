@@ -1,14 +1,16 @@
-import { Paper } from "@mui/material";
-
 import type { NextPage } from "next";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 
 import { addTab } from "src/slices/tabs";
+import { CollapsibleTable, createRow } from "./components/CollapsibleTable";
 
-import { useGetNotificationsQuery } from "src/services/notification";
+import { useGetNotificationByIdQuery } from "src/services/notification";
+
+import { Paper } from "@mui/material";
+import { resetState } from "src/slices/notification";
 
 const NotificationPage: NextPage = () => {
 	const dispatch = useDispatch();
@@ -16,16 +18,39 @@ const NotificationPage: NextPage = () => {
 	const publish = () => {
 		useEffect(() => {
 			dispatch(addTab({ title: "Notifications", path: "/notification" }));
+			dispatch(resetState());
 		}, []);
 	};
 
 	publish();
 
-	const { data: notifications } = useGetNotificationsQuery();
+	// const { data: notifications } = useGetNotificationsQuery();
+
+	// TODO: test data; remove
+	const { data: notification1 } = useGetNotificationByIdQuery(1);
+	const { data: notification2 } = useGetNotificationByIdQuery(2);
+
+	const notifications = useMemo(() => {
+		if (!notification1 && !notification2) return [];
+		if (notification1 && !notification2) return [notification1];
+		if (!notification1 && notification2) return [notification2];
+		return [notification1, notification2];
+	}, [notification1, notification2]);
+
+	const rows = useMemo(
+		() => notifications.map((notification) => createRow(notification!)),
+		[notifications]
+	);
+
+	const handleRemove = (index: number) => {
+		console.log("will delete notification: ", index);
+	};
 
 	return (
 		<>
-			<Paper sx={{ flex: 1, mt: 1 }}></Paper>
+			<Paper sx={{ flex: 1, mt: 1 }}>
+				<CollapsibleTable rows={rows} onRemove={handleRemove} />
+			</Paper>
 		</>
 	);
 };

@@ -10,6 +10,16 @@ export const notification = createApi({
 		baseUrl: `${
 			process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"
 		}/api/contact/notification`,
+		prepareHeaders: (headers) => {
+			// By default, if we have a token in the store, let's use that for authenticated requests
+
+			headers.set(
+				"Authorization",
+				`Bearer  ${localStorage.getItem("accessToken")}`
+			);
+
+			return headers;
+		},
 	}),
 	tagTypes: ["Notifications", "NotificationById"],
 	endpoints: (builder) => ({

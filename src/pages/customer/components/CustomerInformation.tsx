@@ -67,8 +67,11 @@ import {
 import { ILabel } from "src/types/label";
 
 import CustomerTypeSelect from "./CustomerTypeSelect";
+import { useTranslation } from "react-i18next";
 
 const CustomerInformation: React.FC<any> = (props) => {
+	const { t } = useTranslation();
+
 	const enums = useAllGlobalsQuery().data;
 	const propertyEnums = enums?.property;
 	const managers = useAllUsersQuery().data;
@@ -90,7 +93,6 @@ const CustomerInformation: React.FC<any> = (props) => {
 	const leadSource = useSelector(selectLeadSource);
 	const suggestedBy = useSelector(selectSuggestedBy);
 	const status = useSelector(selectStatus);
-
 	const { data: labels } = useGetLabelsQuery();
 	const customerLabels = labels?.customerLabels;
 
@@ -142,10 +144,10 @@ const CustomerInformation: React.FC<any> = (props) => {
 					px: 3,
 					py: 1.5,
 					display: "flex",
-					justifyContent: "center",
+					justifyContent: "left",
 				}}
 			>
-				<Typography variant="h6">Customer Information</Typography>
+				<Typography variant="h6">{t("Customer Information")}</Typography>
 			</Box>
 
 			<Grid item xs={12} padding={1}>
@@ -154,7 +156,7 @@ const CustomerInformation: React.FC<any> = (props) => {
 						<TextField
 							fullWidth
 							id="outlined-controlled"
-							label="First Name"
+							label={t("First Name")}
 							value={firstName}
 							onChange={(e) => {
 								dispatch(setFirstName(e.target.value));
@@ -165,7 +167,7 @@ const CustomerInformation: React.FC<any> = (props) => {
 						<TextField
 							fullWidth
 							id="outlined-controlled"
-							label="Last Name"
+							label={t("Last Name")}
 							value={lastName}
 							onChange={(e) => {
 								dispatch(setLastName(e.target.value));
@@ -176,7 +178,7 @@ const CustomerInformation: React.FC<any> = (props) => {
 						<TextField
 							fullWidth
 							id="outlined-controlled"
-							label="Email"
+							label={t("Email")}
 							value={email}
 							onChange={(e) => {
 								dispatch(setEmail(e.target.value));
@@ -185,10 +187,10 @@ const CustomerInformation: React.FC<any> = (props) => {
 					</Grid>
 					<Grid item xs={6}>
 						<FormControl fullWidth>
-							<InputLabel>Managed By</InputLabel>
+							<InputLabel>{t("Managed By")}</InputLabel>
 							<Select
 								value={managedBy}
-								label="Managed By"
+								label={t("Managed By")}
 								onChange={(e) => {
 									dispatch(setManagedBy(e.target.value));
 								}}
@@ -205,7 +207,7 @@ const CustomerInformation: React.FC<any> = (props) => {
 					</Grid>
 					<Grid item xs={6}>
 						<OnlyNumbersInput
-							label="Mobile Phone"
+							label={t("Mobile Phone")}
 							value={mobilePhone}
 							onChange={(value) => {
 								dispatch(setMobilePhone(value));
@@ -214,7 +216,7 @@ const CustomerInformation: React.FC<any> = (props) => {
 					</Grid>
 					<Grid item xs={6}>
 						<OnlyNumbersInput
-							label="Home Phone"
+							label={t("Home Phone")}
 							value={homePhone}
 							onChange={(value) => {
 								dispatch(setHomePhone(value));
@@ -223,7 +225,7 @@ const CustomerInformation: React.FC<any> = (props) => {
 					</Grid>
 					<Grid item xs={6}>
 						<OnlyNumbersInput
-							label="Fax"
+							label={t("Fax")}
 							value={fax}
 							onChange={(value) => {
 								dispatch(setFax(value));
@@ -234,7 +236,7 @@ const CustomerInformation: React.FC<any> = (props) => {
 						<TextField
 							fullWidth
 							id="outlined-controlled"
-							label="Nationality"
+							label={t("Nationality")}
 							value={nationality}
 							onChange={(e) => {
 								dispatch(setNationality(e.target.value));
@@ -245,7 +247,7 @@ const CustomerInformation: React.FC<any> = (props) => {
 						<TextField
 							fullWidth
 							id="outlined-controlled"
-							label="ID Number"
+							label={t("ID Number")}
 							value={idNumber}
 							onChange={(e) => {
 								dispatch(setIdNumber(e.target.value));
@@ -256,7 +258,7 @@ const CustomerInformation: React.FC<any> = (props) => {
 						<TextField
 							fullWidth
 							id="outlined-controlled"
-							label="Date of birth"
+							label={t("Date of Birth")}
 							value={dateOfBirth}
 							onChange={(e) => {
 								dispatch(setDateOfBirth(e.target.value));
@@ -267,7 +269,7 @@ const CustomerInformation: React.FC<any> = (props) => {
 						<TextField
 							fullWidth
 							id="outlined-controlled"
-							label="Passport number"
+							label={t("Passport Number")}
 							value={passportNumber}
 							onChange={(e) => {
 								dispatch(setPassportNumber(e.target.value));
@@ -278,7 +280,7 @@ const CustomerInformation: React.FC<any> = (props) => {
 						<TextField
 							fullWidth
 							id="outlined-controlled"
-							label="Preferred Language"
+							label={t("Preferred Language")}
 							value={preferredLanguage}
 							onChange={(e) => {
 								dispatch(setPreferredLanguage(e.target.value));
@@ -287,10 +289,10 @@ const CustomerInformation: React.FC<any> = (props) => {
 					</Grid>
 					<Grid item xs={6}>
 						<FormControl fullWidth>
-							<InputLabel>Lead Source</InputLabel>
+							<InputLabel>{t("Lead Source")}</InputLabel>
 							<Select
 								value={leadSource}
-								label="Lead Source"
+								label={t("Lead Source")}
 								onChange={(e) => {
 									dispatch(setLeadSource(e.target.value));
 								}}
@@ -309,7 +311,7 @@ const CustomerInformation: React.FC<any> = (props) => {
 						<TextField
 							fullWidth
 							id="outlined-controlled"
-							label="Suggested by"
+							label={t("Suggested by")}
 							value={suggestedBy}
 							onChange={(e) => {
 								dispatch(setSuggestedBy(e.target.value));
@@ -331,7 +333,7 @@ const CustomerInformation: React.FC<any> = (props) => {
 							flexDirection={"column"}
 						>
 							<Box sx={{ display: "flex", justifyContent: "center" }}>
-								<Typography variant="h6">Status</Typography>
+								<Typography variant="h6"> {t("Status")}</Typography>
 							</Box>
 
 							<Box sx={{ display: "flex", justifyContent: "center", py: 1.5 }}>

@@ -9,13 +9,15 @@ import OtherFormSection from "./components/OtherForm";
 import ResidentialFormSection from "./components/ResidentialForm";
 
 import { Delete as DeleteIcon, Send as SendIcon } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 
 interface IFormProps {
 	resetEverything: () => void;
 	performUpload: () => void;
 }
-
 export default function Form({ performUpload, resetEverything }: IFormProps) {
+	const { t } = useTranslation();
+
 	// enums
 	const parentCategory = useSelector(selectParentCategory);
 
@@ -23,7 +25,6 @@ export default function Form({ performUpload, resetEverything }: IFormProps) {
 		// create our property draft
 		performUpload();
 	};
-
 	return (
 		<Grid container spacing={1} paddingLeft={2} paddingTop={3}>
 			{parentCategory !== "" && (
@@ -48,7 +49,7 @@ export default function Form({ performUpload, resetEverything }: IFormProps) {
 						startIcon={<DeleteIcon />}
 						onClick={resetEverything}
 					>
-						Clear
+						{t("Clear")}
 					</Button>
 				</Grid>
 				<Grid item>
@@ -57,7 +58,7 @@ export default function Form({ performUpload, resetEverything }: IFormProps) {
 						endIcon={<SendIcon />}
 						onClick={handleClick}
 					>
-						Save
+						{t("Save")}
 					</Button>
 				</Grid>
 			</Grid>

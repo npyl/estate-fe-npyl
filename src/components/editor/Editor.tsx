@@ -6,105 +6,108 @@ import { Box } from "@mui/material";
 //
 import { StyledEditor } from "./styles";
 import { EditorProps } from "./types";
+import { useTranslation } from "react-i18next";
 
 const ReactQuill = dynamic(() => import("react-quill"), {
-  ssr: false,
-  loading: () => (
-    <Box
-      sx={{
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        position: "absolute",
-        bgcolor: "background.paper",
-      }}
-    >
-      Loading...
-    </Box>
-  ),
+	ssr: false,
+	loading: () => (
+		<Box
+			sx={{
+				top: 0,
+				left: 0,
+				right: 0,
+				bottom: 0,
+				position: "absolute",
+				bgcolor: "background.paper",
+			}}
+		>
+			Loading...
+		</Box>
+	),
 });
 
 const EditorToolbar = dynamic(() => import("./EditorToolbar"), {
-  ssr: false,
+	ssr: false,
 });
 
 export const formats = [
-  "align",
-  "background",
-  "blockquote",
-  "bold",
-  "bullet",
-  "code",
-  "code-block",
-  "color",
-  "direction",
-  "font",
-  "formula",
-  "header",
-  "image",
-  "indent",
-  "italic",
-  "link",
-  "list",
-  "script",
-  "size",
-  "strike",
-  "table",
-  "underline",
-  "emoji",
+	"align",
+	"background",
+	"blockquote",
+	"bold",
+	"bullet",
+	"code",
+	"code-block",
+	"color",
+	"direction",
+	"font",
+	"formula",
+	"header",
+	"image",
+	"indent",
+	"italic",
+	"link",
+	"list",
+	"script",
+	"size",
+	"strike",
+	"table",
+	"underline",
+	"emoji",
 ];
 
 // ----------------------------------------------------------------------
 
 export default function Editor({
-  id = "minimal-quill",
-  error,
-  value,
-  onChange,
-  simple = false,
-  helperText,
-  sx,
-  ...other
+	id = "minimal-quill",
+	error,
+	value,
+	onChange,
+	simple = false,
+	helperText,
+	sx,
+	...other
 }: EditorProps) {
-  const modules = {
-    toolbar: {
-      container: `#${id}`,
-    },
-    history: {
-      delay: 500,
-      maxStack: 300,
-      userOnly: true,
-    },
-    syntax: true,
-    clipboard: {
-      matchVisual: false,
-    },
-  };
+	const { t } = useTranslation();
 
-  return (
-    <>
-      <StyledEditor
-        sx={{
-          ...(error && {
-            border: (theme) => `solid 1px ${theme.palette.error.main}`,
-          }),
-          ...sx,
-        }}
-      >
-        <EditorToolbar id={id} isSimple={simple} />
+	const modules = {
+		toolbar: {
+			container: `#${id}`,
+		},
+		history: {
+			delay: 500,
+			maxStack: 300,
+			userOnly: true,
+		},
+		syntax: true,
+		clipboard: {
+			matchVisual: false,
+		},
+	};
 
-        <ReactQuill
-          value={value}
-          onChange={onChange}
-          modules={modules}
-          formats={formats}
-          placeholder="Write your Description"
-          {...other}
-        />
-      </StyledEditor>
+	return (
+		<>
+			<StyledEditor
+				sx={{
+					...(error && {
+						border: (theme) => `solid 1px ${theme.palette.error.main}`,
+					}),
+					...sx,
+				}}
+			>
+				<EditorToolbar id={id} isSimple={simple} />
 
-      {helperText && helperText}
-    </>
-  );
+				<ReactQuill
+					value={value}
+					onChange={onChange}
+					modules={modules}
+					formats={formats}
+					placeholder={t("Write your Description").toString()}
+					{...other}
+				/>
+			</StyledEditor>
+
+			{helperText && helperText}
+		</>
+	);
 }

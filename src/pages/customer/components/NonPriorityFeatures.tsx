@@ -13,10 +13,11 @@ import {
   setNonPriorityFeature,
 } from "src/slices/customer";
 import { IDemandPOST } from "src/types/demand";
+import { useTranslation } from "react-i18next";
 
 const NonPriorityFeatures = () => {
   const dispatch = useDispatch();
-
+  const { t } = useTranslation();
   const leaser = useSelector(selectLeaser);
   const buyer = useSelector(selectBuyer);
   const demand: IDemandPOST = useSelector(selectDemand);
@@ -41,10 +42,10 @@ const NonPriorityFeatures = () => {
           px: 3,
           py: 1.5,
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "left",
         }}
       >
-        <Typography variant='h6'>Non-priority Features</Typography>
+        <Typography variant="h6"> {t("Non-Priority Feautures")}</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>

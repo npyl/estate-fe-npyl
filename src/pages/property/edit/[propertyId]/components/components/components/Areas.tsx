@@ -20,9 +20,11 @@ import {
 
 import FloorAreasInput from "./FloorAreasInput";
 import OnlyNumbersInput from "src/components/OnlyNumbers";
+import { useTranslation } from "react-i18next";
 
 const AreasSection: React.FC<any> = () => {
 	const dispatch = useDispatch();
+	const { t } = useTranslation();
 
 	const plot = useSelector(selectPlotArea);
 	const covered = useSelector(selectCovered);
@@ -45,10 +47,10 @@ const AreasSection: React.FC<any> = () => {
 					px: 3,
 					py: 1.5,
 					display: "flex",
-					justifyContent: "center",
+					justifyContent: "left",
 				}}
 			>
-				<Typography variant="h6">Areas</Typography>
+				<Typography variant="h6">{t("Areas")}</Typography>
 			</Box>
 
 			<Grid item xs={12} padding={1}>
@@ -59,7 +61,7 @@ const AreasSection: React.FC<any> = () => {
 
 					<Grid item xs={6}>
 						<OnlyNumbersInput
-							label="Covered"
+							label={t("Covered")}
 							value={covered}
 							adornment="m²"
 							onChange={(value) => {
@@ -69,7 +71,7 @@ const AreasSection: React.FC<any> = () => {
 					</Grid>
 					<Grid item xs={6}>
 						<OnlyNumbersInput
-							label="Basement"
+							label={t("Basement")}
 							value={basement}
 							adornment="m²"
 							onChange={(value) => {
@@ -79,7 +81,7 @@ const AreasSection: React.FC<any> = () => {
 					</Grid>
 					<Grid item xs={6}>
 						<OnlyNumbersInput
-							label="Attic"
+							label={t("Attic")}
 							value={attic}
 							adornment="m²"
 							onChange={(value) => {
@@ -89,7 +91,7 @@ const AreasSection: React.FC<any> = () => {
 					</Grid>
 					<Grid item xs={6}>
 						<OnlyNumbersInput
-							label="Garden"
+							label={t("Garden")}
 							value={garden}
 							adornment="m²"
 							onChange={(value) => {
@@ -99,7 +101,7 @@ const AreasSection: React.FC<any> = () => {
 					</Grid>
 					<Grid item xs={6}>
 						<OnlyNumbersInput
-							label="Balconies"
+							label={t("Balconies")}
 							value={balconies}
 							adornment="m²"
 							onChange={(value) => {
@@ -109,7 +111,7 @@ const AreasSection: React.FC<any> = () => {
 					</Grid>
 					<Grid item xs={6}>
 						<OnlyNumbersInput
-							label="Storeroom"
+							label={t("Storeroom")}
 							value={storeroom}
 							adornment="m²"
 							onChange={(value) => {

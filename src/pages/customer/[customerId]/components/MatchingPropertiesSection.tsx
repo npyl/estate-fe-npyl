@@ -3,6 +3,7 @@ import { GridColDef } from "@mui/x-data-grid";
 import { useSuggestForCustomerQuery } from "src/services/properties";
 import DataGridTable from "src/components/DataGrid";
 import { useRouter } from "next/router";
+import { useTranslation } from "react-i18next";
 
 const MatchingPropertiesSection: React.FC = () => {
 	const columns: GridColDef[] = [
@@ -22,10 +23,12 @@ const MatchingPropertiesSection: React.FC = () => {
 			width: 180,
 		},
 	];
+
 	const router = useRouter();
+	const { t } = useTranslation();
+
 	const { customerId } = router.query;
 	const { data } = useSuggestForCustomerQuery(parseInt(customerId as string)); // basic details
-
 	if (!data || !Array.isArray(data) || data.length === 0) return null;
 
 	return (
@@ -44,7 +47,7 @@ const MatchingPropertiesSection: React.FC = () => {
 					justifyContent: "left",
 				}}
 			>
-				<Typography variant="h6">Matching Properties</Typography>
+				<Typography variant="h6">{t("Matching Properties")}</Typography>
 			</Box>
 			<Divider></Divider>
 			<Grid container>

@@ -21,6 +21,8 @@ import {
 	selectTourType,
 	// setter
 	setAttribute,
+	// reset
+	resetState,
 } from "src/slices/notification";
 
 const NotificationCreatePage: NextPage = () => {
@@ -31,6 +33,7 @@ const NotificationCreatePage: NextPage = () => {
 			dispatch(
 				addTab({ title: "Create Notification", path: "/notification/create" })
 			);
+			dispatch(resetState());
 		}, []);
 	};
 

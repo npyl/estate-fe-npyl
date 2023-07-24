@@ -18,7 +18,6 @@ import { useAllCustomersQuery } from "src/services/customers";
 import {
 	selectArea,
 	selectAuction,
-	selectAvgUtils,
 	selectBuildable,
 	selectCode,
 	selectAvailableAfter,
@@ -60,31 +59,39 @@ import { LabelCreate } from "src/components/label";
 
 import OnlyNumbersInput from "src/components/OnlyNumbers";
 
-// Property Slice
 import {
-	addLabel as addLabelID,
-	removeLabel as removeAssignedLabel,
-	selectLabelIDs,
-} from "src/slices/property";
-// Labels Slice (for new labels)
-import { useGetLabelsQuery } from "src/services/labels";
-import {
-	addLabel as addNewLabel,
-	removeLabel as removeNewLabel,
-	selectAll as selectAllNewLabels,
-} from "src/slices/labels";
-import { useLazyCheckCodeExistsQuery } from "src/services/properties";
+	useLazyCheckCodeExistsQuery,
+	useLazyGetPropertyLabelsQuery,
+} from "src/services/properties";
 import { ILabel } from "src/types/label";
 import { useEffect, useState } from "react";
 
-const BasicForLandSection: React.FC<any> = (props) => {
+import {
+	useAssignLabelToPropertyWithIDMutation,
+	useCreateLabelForPropertyWithIDMutation,
+	useDeleteLabelForPropertyWithIdMutation,
+	useGetLabelsQuery,
+} from "src/services/labels";
+import { useRouter } from "next/router";
+
+const BasicForLandSection: React.FC<any> = () => {
+	const router = useRouter();
 	const dispatch = useDispatch();
+
+	const { propertyId } = router.query;
+	if (!propertyId) return;
 
 	const { data } = useAllGlobalsQuery();
 	const enums: IGlobalProperty = data?.property as IGlobalProperty;
 
 	const { data: labels } = useGetLabelsQuery();
 	const propertyLabels = labels?.propertyLabels || [];
+
+	// labels
+	const [getLabels, { data: assignedLabels }] = useLazyGetPropertyLabelsQuery();
+	const [assignLabel] = useAssignLabelToPropertyWithIDMutation();
+	const [createAndAssignLabel] = useCreateLabelForPropertyWithIDMutation();
+	const [deleteLabel] = useDeleteLabelForPropertyWithIdMutation();
 
 	const [checkCode, { data: codeExists, isSuccess: chechCodeSuccess }] =
 		useLazyCheckCodeExistsQuery();
@@ -99,7 +106,6 @@ const BasicForLandSection: React.FC<any> = (props) => {
 	const state = useSelector(selectState);
 	const price = useSelector(selectPrice);
 	const keyCode = useSelector(selectKeyCode);
-	const avgUtils = useSelector(selectAvgUtils);
 	const area = useSelector(selectArea);
 	const buildable = useSelector(selectBuildable);
 	const plotArea = useSelector(selectPlotArea);
@@ -111,34 +117,39 @@ const BasicForLandSection: React.FC<any> = (props) => {
 	const debatablePrice = useSelector(selectDebatablePrice);
 	const stateEnum = enums?.state;
 
-	const labelIDs = useSelector(selectLabelIDs);
-
-	const assignedLabels =
-		(labelIDs &&
-			labelIDs.length > 0 &&
-			propertyLabels &&
-			propertyLabels.length > 0 &&
-			labelIDs
-				.filter((labelID) => labelID)
-				.map((labelID, index) => {
-					// get label object with id
-					return propertyLabels.find((label) => label.id === labelID)!;
-				})) ||
-		[];
-	const newLabels = useSelector(selectAllNewLabels);
-
 	useEffect(() => {
 		if (codeExists === null || !chechCodeSuccess) return;
 
 		setCodeError(codeExists ? "Code already exists!" : "");
 	}, [codeExists, chechCodeSuccess]);
 
-	const handleLabelClick = (label: ILabel) => dispatch(addLabelID(label.id));
-	const handleLabelCreate = (label: ILabel) => dispatch(addNewLabel(label));
-	const handleRemoveAssignedLabel = (index: number) =>
-		dispatch(removeAssignedLabel(index));
-	const handleRemoveNewLabel = (index: number) =>
-		dispatch(removeNewLabel(index));
+	useEffect(() => {
+		if (!propertyId) return;
+		revalidate();
+	}, [propertyId]);
+
+	const revalidate = () => {
+		// TODO: improve this by revalidating automatically (invalidating a tag)
+		getLabels(+propertyId!);
+	};
+
+	const handleLabelClick = (label: ILabel) =>
+		label.id &&
+		assignLabel({ propertyId: +propertyId!, labelId: label.id }).then(() =>
+			revalidate()
+		);
+	const handleLabelCreate = (label: ILabel) =>
+		createAndAssignLabel({ propertyId: +propertyId!, labelBody: label }).then(
+			() => revalidate()
+		);
+	const handleLabelRemove = (index: number) =>
+		assignedLabels &&
+		assignedLabels[index] &&
+		assignedLabels[index].id &&
+		deleteLabel({
+			propertyId: +propertyId!,
+			labelId: assignedLabels[index].id!,
+		}).then(() => revalidate());
 
 	const handleCodeChange = (code: string) => {
 		dispatch(setCode(code));
@@ -165,17 +176,18 @@ const BasicForLandSection: React.FC<any> = (props) => {
 
 			<Grid item xs={12} padding={1}>
 				<Grid container spacing={2}>
-					<Grid item xs={6}></Grid>
-					<TextField
-						fullWidth
-						id="outlined-start-adornment"
-						label="Code"
-						value={code}
-						onChange={(event) => handleCodeChange(event.target.value)}
-						error={!!codeError}
-						helperText={codeError}
-						size="small"
-					/>
+					<Grid item xs={6}>
+						<TextField
+							fullWidth
+							id="outlined-start-adornment"
+							label="Code"
+							value={code}
+							onChange={(event) => handleCodeChange(event.target.value)}
+							error={!!codeError}
+							helperText={codeError}
+							size="small"
+						/>
+					</Grid>
 					<Grid item xs={6}>
 						<TextField
 							fullWidth
@@ -336,12 +348,12 @@ const BasicForLandSection: React.FC<any> = (props) => {
 					<Grid item xs={6}>
 						<LabelCreate
 							existingLabels={propertyLabels}
-							assignedLabels={assignedLabels}
-							newLabels={newLabels}
+							assignedLabels={assignedLabels || []}
+							newLabels={[]}
 							onLabelClick={handleLabelClick}
 							onLabelCreate={handleLabelCreate}
-							onRemoveAssignedLabel={handleRemoveAssignedLabel}
-							onRemoveNewLabel={handleRemoveNewLabel}
+							onRemoveAssignedLabel={handleLabelRemove}
+							onRemoveNewLabel={() => {}}
 						/>
 					</Grid>
 

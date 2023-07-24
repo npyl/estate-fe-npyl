@@ -18,6 +18,8 @@ import { UploadPropertyImageProps } from "./types";
 import RejectionFiles from "./errors/RejectionFiles";
 import MultiFilePreviewReorder from "./preview/MultiFilePreviewReorder";
 import SingleFilePreview from "./preview/SingleFilePreview";
+import { useTranslation } from "react-i18next";
+import { t } from "i18next";
 
 // ----------------------------------------------------------------------
 
@@ -69,10 +71,10 @@ export default function UploadDnd({
 		...other,
 	});
 
+	const { t } = useTranslation();
+
 	const hasFile = !!file && !multiple;
-
 	const hasFiles = files && multiple && files.length > 0;
-
 	const isError = isDragReject || !!error;
 
 	return (
@@ -152,13 +154,13 @@ export default function UploadDnd({
 								size="small"
 								onClick={onRemoveAll}
 							>
-								Remove all
+								{t("Remove all")}
 							</Button>
 						)}
 
 						{onUpload && (
 							<Button size="small" variant="contained" onClick={onUpload}>
-								Upload files
+								{t("Upload files")}
 							</Button>
 						)}
 					</Stack>
@@ -196,23 +198,13 @@ function Placeholder({ sx, ...other }: StackProps) {
 
 			<Box sx={{ p: 3 }}>
 				<Typography gutterBottom variant="h5">
-					Drop or Select file
+					{t("Drop or Select file")}
 				</Typography>
 
 				<Typography variant="body2" sx={{ color: "text.secondary" }}>
-					Drop files here or click
-					<Typography
-						variant="body2"
-						component="span"
-						sx={{
-							mx: 0.5,
-							color: "primary.main",
-							textDecoration: "underline",
-						}}
-					>
-						browse
+					<Typography variant="body2" component="span">
+						{t("Drop files here or click browse  thorough your machine")}
 					</Typography>
-					thorough your machine
 				</Typography>
 			</Box>
 		</Stack>

@@ -99,6 +99,22 @@ export const labels = createApi({
 			}),
 			invalidatesTags: ["Labels"],
 		}),
+
+		// general
+		deletePropertyLabel: builder.mutation<void, number>({
+			query: (labelId: number) => ({
+				url: `property/${labelId}`,
+				method: "DELETE",
+			}),
+			invalidatesTags: ["Labels"],
+		}),
+		deleteCustomerLabel: builder.mutation<void, number>({
+			query: (labelId: number) => ({
+				url: `customer/${labelId}`,
+				method: "DELETE",
+			}),
+			invalidatesTags: ["Labels"],
+		}),
 	}),
 });
 
@@ -112,4 +128,7 @@ export const {
 	useCreateLabelForCustomerWithIDMutation,
 	useCreateLabelForPropertiesMutation,
 	useCreateLabelForCustomersMutation,
+	// general
+	useDeletePropertyLabelMutation,
+	useDeleteCustomerLabelMutation,
 } = labels;

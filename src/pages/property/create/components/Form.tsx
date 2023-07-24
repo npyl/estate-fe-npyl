@@ -22,6 +22,7 @@ import {
 import { IGlobalProperty } from "src/types/global";
 
 import { Send as SendIcon } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 
 interface IFormProps {
 	performUpload?: () => void;
@@ -29,6 +30,7 @@ interface IFormProps {
 
 export default function Form({ performUpload }: IFormProps) {
 	const dispatch = useDispatch();
+	const { t } = useTranslation();
 
 	// enums
 	const { data } = useAllGlobalsQuery();
@@ -61,7 +63,7 @@ export default function Form({ performUpload }: IFormProps) {
 				<Grid item xs={6}>
 					<FormControl fullWidth>
 						<InputLabel id="demo-simple-select-label">
-							Parent Category
+							{t("Parent Category")}
 						</InputLabel>
 						<Select
 							labelId="demo-simple-select-label"
@@ -89,7 +91,7 @@ export default function Form({ performUpload }: IFormProps) {
 						fullWidth
 						id="outlined-select-currency"
 						select
-						label="Category"
+						label={t("Category")}
 						value={category}
 						onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
 							dispatch(setCategory(event.target.value));
@@ -123,7 +125,7 @@ export default function Form({ performUpload }: IFormProps) {
 						endIcon={<SendIcon />}
 						onClick={performUpload}
 					>
-						Create
+						{t("Create")}
 					</Button>
 				</Grid>
 			</Grid>

@@ -2,43 +2,45 @@ import { Card, CardHeader, CardContent } from "@mui/material";
 import { Upload } from "src/components/upload";
 import { Dispatch, SetStateAction, useCallback } from "react";
 import { useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 interface FileSectionProps {
-  fileData: string[];
-  setFileData: Dispatch<SetStateAction<(string | File)[]>>;
+	fileData: string[];
+	setFileData: Dispatch<SetStateAction<(string | File)[]>>;
 }
 
 const FileSection: React.FC<FileSectionProps> = ({ fileData, setFileData }) => {
-  const dispatch = useDispatch();
+	const dispatch = useDispatch();
+	const { t } = useTranslation();
 
-  const handleDropMultiFile = useCallback(
-    (acceptedFileData: File[]) => {
-      setFileData([
-        ...fileData,
-        ...acceptedFileData.map((file) =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file),
-          })
-        ),
-      ]);
-    },
-    [fileData]
-  );
+	const handleDropMultiFile = useCallback(
+		(acceptedFileData: File[]) => {
+			setFileData([
+				...fileData,
+				...acceptedFileData.map((file) =>
+					Object.assign(file, {
+						preview: URL.createObjectURL(file),
+					})
+				),
+			]);
+		},
+		[fileData]
+	);
 
-  const handleRemoveFile = (inputFile: File | string) => {
-    const filtered = fileData.filter((file) => file !== inputFile);
-    setFileData(filtered);
-  };
+	const handleRemoveFile = (inputFile: File | string) => {
+		const filtered = fileData.filter((file) => file !== inputFile);
+		setFileData(filtered);
+	};
 
-  const handleRemoveAllFileData = () => {
-    setFileData([]);
-  };
+	const handleRemoveAllFileData = () => {
+		setFileData([]);
+	};
 
-  return (
-    <Card>
-      <CardHeader title="fileData" />
-      <CardContent>
-        {/* <Upload
+	return (
+		<Card>
+			<CardHeader title={t("fileData")} />
+			<CardContent>
+				{/* <Upload
           multiple
           thumbnail={false}
           files={fileData}
@@ -46,8 +48,8 @@ const FileSection: React.FC<FileSectionProps> = ({ fileData, setFileData }) => {
           onRemove={handleRemoveFile}
           onRemoveAll={handleRemoveAllFileData}
         /> */}
-      </CardContent>
-    </Card>
-  );
+			</CardContent>
+		</Card>
+	);
 };
 export default FileSection;

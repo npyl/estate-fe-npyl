@@ -8,6 +8,7 @@ import {
 
 import IPage from "src/types/page";
 import { IFileResponse, IPropertyImagePOST } from "src/types/file";
+import { ILabel } from "src/types/label";
 
 interface IGetPropertyAttributeProps {
 	propertyId: number;
@@ -87,9 +88,13 @@ export const properties = createApi({
 			query: (code: number) => `code/${code}`,
 			providesTags: ["Properties"],
 		}),
-		getPropertyAttribute: builder.query<number[], IGetPropertyAttributeProps>({
+		getPropertyAttribute: builder.query<any[], IGetPropertyAttributeProps>({
 			query: (props: IGetPropertyAttributeProps) =>
 				`${props.propertyId}/${props.attributeName}`,
+			providesTags: ["PropertyById"],
+		}),
+		getPropertyLabels: builder.query<ILabel[], number>({
+			query: (propertyId: number) => `${propertyId}/labels`,
 			providesTags: ["PropertyByIdLabels"],
 		}),
 
@@ -190,6 +195,7 @@ export const {
 	useGetPropertyByIdQuery,
 	useGetPropertyByCodeQuery,
 	useGetPropertyAttributeQuery,
+	useLazyGetPropertyLabelsQuery,
 
 	// mutations
 	useEditPropertyMutation,

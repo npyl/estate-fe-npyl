@@ -19,119 +19,120 @@ import ROISection from "./components/ROI";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
-	addPropertyImage,
-	deletePropertyImage,
-	selectPropertyBlueprints,
-	selectPropertyImages,
-	setCdnUrlForNextAvailable,
-	setPropertyBlueprints,
-	setPropertyImages,
+  addPropertyImage,
+  deletePropertyImage,
+  selectPropertyBlueprints,
+  selectPropertyImages,
+  setCdnUrlForNextAvailable,
+  setPropertyBlueprints,
+  setPropertyImages,
 } from "src/slices/property/files";
-
+import NotesSection from "./components/NotesSection";
 import {
-	selectState,
-	selectStreet,
-	selectNumber,
-	selectCity,
-	selectZipCode,
-	selectRegion,
-	selectCountry,
-	setStreet,
-	setNumber,
-	setCity,
-	setZipCode,
-	setRegion,
-	setCountry,
-	setLatitude,
-	setLongitude,
+  selectState,
+  selectStreet,
+  selectNumber,
+  selectCity,
+  selectZipCode,
+  selectRegion,
+  selectCountry,
+  setStreet,
+  setNumber,
+  setCity,
+  setZipCode,
+  setRegion,
+  setCountry,
+  setLatitude,
+  setLongitude,
 } from "src/slices/property";
 import { IPropertyImage, IPropertyImagePOST } from "src/types/file";
 
 const CommercialFormSection: React.FC<any> = () => {
-	const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-	const images = useSelector(selectPropertyImages);
-	const blueprints = useSelector(selectPropertyBlueprints);
-	const state = useSelector(selectState);
+  const images = useSelector(selectPropertyImages);
+  const blueprints = useSelector(selectPropertyBlueprints);
+  const state = useSelector(selectState);
 
-	const street = useSelector(selectStreet);
-	const number = useSelector(selectNumber);
-	const city = useSelector(selectCity);
-	const zipCode = useSelector(selectZipCode);
-	const region = useSelector(selectRegion);
-	const country = useSelector(selectCountry);
+  const street = useSelector(selectStreet);
+  const number = useSelector(selectNumber);
+  const city = useSelector(selectCity);
+  const zipCode = useSelector(selectZipCode);
+  const region = useSelector(selectRegion);
+  const country = useSelector(selectCountry);
 
-	const handleAddFile = (images: IPropertyImage | IPropertyImagePOST) => {
-		dispatch(addPropertyImage(images));
-	};
-	const handleSetCdnUrlForNextAvailable = (cdnUrl: string) => {
-		dispatch(setCdnUrlForNextAvailable(cdnUrl));
-	};
-	const handleAddFiles = (images: (IPropertyImage | IPropertyImagePOST)[]) => {
-		dispatch(setPropertyImages(images));
-	};
-	const handleDeleteFile = (imageKey: string) => {
-		dispatch(deletePropertyImage(imageKey));
-	};
+  const handleAddFile = (images: IPropertyImage | IPropertyImagePOST) => {
+    dispatch(addPropertyImage(images));
+  };
+  const handleSetCdnUrlForNextAvailable = (cdnUrl: string) => {
+    dispatch(setCdnUrlForNextAvailable(cdnUrl));
+  };
+  const handleAddFiles = (images: (IPropertyImage | IPropertyImagePOST)[]) => {
+    dispatch(setPropertyImages(images));
+  };
+  const handleDeleteFile = (imageKey: string) => {
+    dispatch(deletePropertyImage(imageKey));
+  };
 
-	return (
-		<>
-			<Grid container paddingTop={1} spacing={1}>
-				<Grid item xs={6} order={"row"}>
-					<Stack spacing={1}>
-						<BasicSection />
-						{state === "Sale" && <ROISection />}
-						<PropertyDescriptionForCommercialSection />
-						<HeatingAndEnergyForResidentialSection />
-						<AreasSection />
-						<DistancesSection />
-						<FileSection
-							fileData={blueprints}
-							setFileData={(blueprints) => {
-								dispatch(setPropertyBlueprints(blueprints));
-							}}
-						/>
-					</Stack>
-				</Grid>
-				<Grid item xs={6}>
-					<Stack spacing={1}>
-						<ImageSection
-							files={images}
-							addFile={handleAddFile}
-							deleteFile={handleDeleteFile}
-							setCdnUrlForNextAvailable={handleSetCdnUrlForNextAvailable}
-							setFiles={handleAddFiles}
-						/>
-						<LocationSection
-							street={street}
-							number={number}
-							city={city}
-							zipCode={zipCode}
-							region={region}
-							country={country}
-							// setters
-							setStreet={setStreet}
-							setNumber={setNumber}
-							setCity={setCity}
-							setZipCode={setZipCode}
-							setRegion={setRegion}
-							setCountry={setCountry}
-							setLatitude={setLatitude}
-							setLongitude={setLongitude}
-						/>
+  return (
+    <>
+      <Grid container paddingTop={1} spacing={1}>
+        <Grid item xs={6} order={"row"}>
+          <Stack spacing={1}>
+            <BasicSection />
+            {state === "Sale" && <ROISection />}
+            <PropertyDescriptionForCommercialSection />
+            <HeatingAndEnergyForResidentialSection />
+            <AreasSection />
+            <DistancesSection />
+            <FileSection
+              fileData={blueprints}
+              setFileData={(blueprints) => {
+                dispatch(setPropertyBlueprints(blueprints));
+              }}
+            />
+            <NotesSection />
+          </Stack>
+        </Grid>
+        <Grid item xs={6}>
+          <Stack spacing={1}>
+            <ImageSection
+              files={images}
+              addFile={handleAddFile}
+              deleteFile={handleDeleteFile}
+              setCdnUrlForNextAvailable={handleSetCdnUrlForNextAvailable}
+              setFiles={handleAddFiles}
+            />
+            <LocationSection
+              street={street}
+              number={number}
+              city={city}
+              zipCode={zipCode}
+              region={region}
+              country={country}
+              // setters
+              setStreet={setStreet}
+              setNumber={setNumber}
+              setCity={setCity}
+              setZipCode={setZipCode}
+              setRegion={setRegion}
+              setCountry={setCountry}
+              setLatitude={setLatitude}
+              setLongitude={setLongitude}
+            />
 
-						<SuitableForForCommercialSection />
-						<ConstructionForCommercialSection />
-						<TechnicalFeaturesAndInteriorForCommercialSection />
-						<DescriptionSection />
-					</Stack>
-				</Grid>
+            <SuitableForForCommercialSection />
+            <ConstructionForCommercialSection />
+            <TechnicalFeaturesAndInteriorForCommercialSection />
+            <DescriptionSection />
+          </Stack>
+        </Grid>
 
-				<Grid item xs={12}>
-					<FeaturesForCommercialSection />
-				</Grid>
-			</Grid>
-		</>
-	);
+        <Grid item xs={12}>
+          <FeaturesForCommercialSection />
+        </Grid>
+      </Grid>
+    </>
+  );
 };
 export default CommercialFormSection;
