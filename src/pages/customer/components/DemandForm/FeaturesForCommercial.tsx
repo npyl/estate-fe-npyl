@@ -28,107 +28,107 @@ const FeaturesForCommercialSection = (props: IFeatureSectionProps) => {
           onChange={handleChange}
         />
         <CheckboxItem
-          label="Alarm System"
+          label={t("Alarm System")}
           value={features.alarmSystem}
           sliceKey={"alarmSystem"}
           onChange={handleChange}
         />
         <CheckboxItem
-          label="Has 24 Hours Security"
+          label={t("Has 24 Hours Security")}
           value={features.has24HoursSecurity}
           sliceKey={"has24HoursSecurity"}
           onChange={handleChange}
         />
         <CheckboxItem
-          label="CCTV"
+          label={t("CCTV")}
           value={features.cctv}
           sliceKey={"cctv"}
           onChange={handleChange}
         />
 
         <CheckboxItem
-          label="Internet"
+          label={t("Internet")}
           value={features.internet}
           sliceKey={"internet"}
           onChange={handleChange}
         />
         <CheckboxItem
-          label="Walkable Distance to Beach"
+          label={t("Walkable Distance to Beach")}
           value={features.walkableDistanceToBeach}
           sliceKey={"walkableDistanceToBeach"}
           onChange={handleChange}
         />
         <CheckboxItem
-          label="Fire Detector"
+          label={t("Fire Detector")}
           value={features.fireDetector}
           sliceKey={"fireDetector"}
           onChange={handleChange}
         />
         <CheckboxItem
-          label="Quiet Area"
+          label={t("Quiet Area")}
           value={features.quietArea}
           sliceKey={"quietArea"}
           onChange={handleChange}
         />
 
         <CheckboxItem
-          label="Sound Insulation"
+          label={t("Sound Insulation")}
           value={features.soundInsulation}
           sliceKey={"soundInsulation"}
           onChange={handleChange}
         />
         <CheckboxItem
-          label="Access for Disabled"
+          label={t("Access for Disabled")}
           value={features.accessForDisabled}
           sliceKey={"accessForDisabled"}
           onChange={handleChange}
         />
         <CheckboxItem
-          label="Independent Heating Per Room"
+          label={t("Independent Heating Per Room")}
           value={features.fireDetector}
           sliceKey={"independentHeatingPerRoom"}
           onChange={handleChange}
         />
         <CheckboxItem
-          label="Bright"
+          label={t("Bright")}
           value={features.bright}
           sliceKey={"bright"}
           onChange={handleChange}
         />
 
         <CheckboxItem
-          label="Adapting to the Ground"
+          label={t("Adapting to the Ground")}
           value={features.adaptingToTheGround}
           sliceKey={"adaptingToTheGround"}
           onChange={handleChange}
         />
         <CheckboxItem
-          label="Pool"
+          label={t("Pool")}
           value={features.pool}
           sliceKey={"pool"}
           onChange={handleChange}
         />
         <CheckboxItem
-          label="View"
+          label={t("View")}
           value={features.view}
           sliceKey={"view"}
           onChange={handleChange}
         />
         <CheckboxItem
-          label="Veranda"
+          label={t("Veranda")}
           value={features.veranda}
           sliceKey={"veranda"}
           onChange={handleChange}
         />
 
         <CheckboxItem
-          label="Corner"
+          label={t("Corner")}
           value={features.corner}
           sliceKey={"corner"}
           onChange={handleChange}
         />
         <CheckboxItem
-          label="Facade"
+          label={t("Facade")}
           value={features.facade}
           sliceKey={"facade"}
           onChange={handleChange}

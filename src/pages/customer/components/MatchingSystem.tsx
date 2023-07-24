@@ -1,8 +1,10 @@
 import { Checkbox, FormLabel, Stack, Typography } from "@mui/material";
 
 import * as React from "react";
+import { useTranslation } from "react-i18next";
 
 const MatchingSystem: React.FC<any> = (props) => {
+  const { t } = useTranslation();
   return (
     <Stack
       paddingTop={1}
@@ -16,9 +18,9 @@ const MatchingSystem: React.FC<any> = (props) => {
         inputProps={{ "aria-label": "controlled" }}
       />
 
-      <FormLabel id='demo-controlled-radio-buttons-group'>
-        <Typography variant='subtitle2' sx={{ color: "text.secondary" }}>
-          Matching system enabled
+      <FormLabel id="demo-controlled-radio-buttons-group">
+        <Typography variant="subtitle2" sx={{ color: "text.secondary" }}>
+          {t("Matching System Enabled")}
         </Typography>
       </FormLabel>
     </Stack>

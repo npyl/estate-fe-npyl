@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader } from "@mui/material";
+import { Box, Card, CardContent, CardHeader, Typography } from "@mui/material";
 import { useCallback, useState } from "react";
 
 import UploadDnd from "src/components/upload/UploadDnd";
@@ -11,6 +11,7 @@ import {
 } from "src/services/properties";
 import { useRouter } from "next/router";
 import { IPropertyImage, IPropertyImagePOST } from "src/types/file";
+import { useTranslation } from "react-i18next";
 
 interface IImageSectionProps {
   files: IPropertyImage[];
@@ -31,7 +32,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
   const { propertyId } = router.query;
 
   const [galleryManagerOpen, setGalleryManagerOpen] = useState(false);
-
+  const { t } = useTranslation();
   const [addImage] = useAddPropertyImageMutation();
   const [setThumbnail] = useSetPropertyThumbailMutation();
   const [deleteImage] = useDeletePropertyImageMutation();
@@ -129,16 +130,27 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
   return (
     <>
       <Card>
+        <Box
+          sx={{
+            px: 3,
+            py: 1.5,
+            display: "flex",
+            justifyContent: "left",
+          }}
+        >
+          <Typography variant="h6">{t("Upload Images")}</Typography>
+        </Box>
         <CardHeader
-          title="Upload Images"
           action={
             files.length > 0 && (
-              <SoftButton onClick={handleOpenGalleryManager}>Edit</SoftButton>
+              <SoftButton onClick={handleOpenGalleryManager}>
+                {t("Edit")}
+              </SoftButton>
             )
           }
           sx={{
             display: "flex",
-            alignItems: "center",
+            justifyContent: "left",
             "& .MuiCardHeader-action": {
               position: "absolute",
               alignSelf: "flex-end",

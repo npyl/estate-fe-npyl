@@ -24,6 +24,7 @@ import {
   setSupermarket,
 } from "src/slices/property";
 import { useAllGlobalsQuery } from "src/services/global";
+import { useTranslation } from "react-i18next";
 
 const DistancesSection: React.FC<any> = (props) => {
   const { data } = useAllGlobalsQuery();
@@ -31,7 +32,7 @@ const DistancesSection: React.FC<any> = (props) => {
   const details = enums?.details as IGlobalPropertyDetails;
 
   const dispatch = useDispatch();
-
+  const { t } = useTranslation();
   const publicTransportation = useSelector(selectPublicTransportation);
   const schools = useSelector(selectSchools);
   const supermarket = useSelector(selectSupermarket);
@@ -70,10 +71,10 @@ const DistancesSection: React.FC<any> = (props) => {
           px: 3,
           py: 1.5,
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "left",
         }}
       >
-        <Typography variant="h6">Distances</Typography>
+        <Typography variant="h6">{t("Distances")}</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -83,7 +84,7 @@ const DistancesSection: React.FC<any> = (props) => {
               type="number"
               fullWidth
               id="outlined-controlled"
-              label="Public Transportation"
+              label={t("Public Transportation")}
               value={publicTransportation}
               onChange={(event) => handleChange(setPublicTransportation, event)}
               onKeyPress={(event) => {
@@ -110,7 +111,7 @@ const DistancesSection: React.FC<any> = (props) => {
               type="number"
               fullWidth
               id="outlined-controlled"
-              label="Sea"
+              label={t("Sea")}
               value={sea}
               onChange={(event) => handleChange(setSea, event)}
               InputProps={{
@@ -131,7 +132,7 @@ const DistancesSection: React.FC<any> = (props) => {
               type="number"
               fullWidth
               id="outlined-controlled"
-              label="Schools"
+              label={t("Schools")}
               value={schools}
               onChange={(event) => handleChange(setSchools, event)}
               InputProps={{
@@ -152,7 +153,7 @@ const DistancesSection: React.FC<any> = (props) => {
               type="number"
               fullWidth
               id="outlined-controlled"
-              label="Supermarket"
+              label={t("Supermarket")}
               value={supermarket}
               onChange={(event) => handleChange(setSupermarket, event)}
               InputProps={{
@@ -173,7 +174,7 @@ const DistancesSection: React.FC<any> = (props) => {
               type="number"
               fullWidth
               id="outlined-controlled"
-              label="Cafe-Restaurant"
+              label={t("Cafe-Restaurant")}
               value={cafeRestaurant}
               onChange={(event) => handleChange(setCafeRestaurant, event)}
               InputProps={{
@@ -194,7 +195,7 @@ const DistancesSection: React.FC<any> = (props) => {
               type="number"
               fullWidth
               id="outlined-controlled"
-              label="Hospital"
+              label={t("Hospital")}
               value={hospital}
               onChange={(event) => handleChange(setHospital, event)}
               InputProps={{
@@ -215,7 +216,7 @@ const DistancesSection: React.FC<any> = (props) => {
               type="number"
               fullWidth
               id="outlined-controlled"
-              label="Airport"
+              label={t("Airport")}
               value={airport}
               onChange={(event) => handleChange(setAirport, event)}
               InputProps={{

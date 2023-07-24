@@ -1,4 +1,4 @@
-import { Grid, Paper, TextField } from "@mui/material";
+import { Divider, Grid, Paper, TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
@@ -13,6 +13,7 @@ import { ILocationPOST } from "src/types/location";
 import { RegionSelect } from "./RegionSelect";
 import { MunicipSelect } from "./MunicipSelect";
 import { useGetClosestQuery } from "src/services/location";
+import { useTranslation } from "react-i18next";
 
 interface ILocationSectionProps extends ILocationPOST {
 	// redux setters
@@ -61,7 +62,7 @@ const LocationSection = (props: ILocationSectionProps) => {
 		lat: nullCoord,
 		lng: nullCoord,
 	});
-
+	const { t } = useTranslation();
 	const closest = useGetClosestQuery(
 		{ latitude: onDragEndCoord.lat, longitude: onDragEndCoord.lng },
 		{
@@ -151,12 +152,12 @@ const LocationSection = (props: ILocationSectionProps) => {
 					px: 3,
 					py: 1.5,
 					display: "flex",
-					justifyContent: "center",
+					justifyContent: "left",
 				}}
 			>
-				<Typography variant="h6">Location</Typography>
+				<Typography variant="h6">{t("Location")}</Typography>
 			</Box>
-
+			<Divider></Divider>
 			<Grid item xs={12} padding={1}>
 				<Box display={"flex"} pb={2}>
 					<Box height={`50vh`} width={"100%"}>
@@ -175,7 +176,7 @@ const LocationSection = (props: ILocationSectionProps) => {
 					<Grid item xs={4}>
 						<TextField
 							fullWidth
-							label="Country"
+							label={t("Country")}
 							value={country}
 							onChange={(event) => handleChange(setCountry, event)}
 						/>
@@ -202,7 +203,7 @@ const LocationSection = (props: ILocationSectionProps) => {
 					<Grid item xs={6}>
 						<TextField
 							fullWidth
-							label="Street"
+							label={t("Street")}
 							value={street}
 							onChange={(event) => handleChange(setStreet, event)}
 						/>
@@ -210,14 +211,14 @@ const LocationSection = (props: ILocationSectionProps) => {
 					<Grid item xs={6}>
 						<TextField
 							fullWidth
-							label="Number"
+							label={t("Number")}
 							value={number}
 							onChange={(event) => handleChange(setNumber, event)}
 						/>
 					</Grid>
 					<Grid item xs={6}>
 						<OnlyNumbersInput
-							label="Zip Code"
+							label={t("Zip Code")}
 							value={zipCode || ""}
 							onChange={(value) => dispatch(setZipCode(value))}
 						/>

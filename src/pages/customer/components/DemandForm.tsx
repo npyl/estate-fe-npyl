@@ -71,6 +71,7 @@ import {
 import OnlyNumbersInput from "src/components/OnlyNumbers";
 
 import { LabelSelect } from "./LabelSelect";
+import { useTranslation } from "react-i18next";
 
 // function valuetext(value: number) {
 //   return `${value}°C`;
@@ -86,7 +87,7 @@ const DemandForm: FC = () => {
   const timeframeEnum = enums?.customer?.timeframe;
   const minFloors = detailsEnum?.floors;
   const maxFloors = detailsEnum?.floors;
-
+  const { t } = useTranslation();
   const minBedrooms = useSelector(selectMinBedrooms) || 0;
   const maxBedrooms = useSelector(selectMaxBedrooms) || 0;
   const minBathrooms = useSelector(selectMinBathrooms) || 0;
@@ -254,10 +255,10 @@ const DemandForm: FC = () => {
           px: 3,
           py: 1.5,
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "left",
         }}
       >
-        <Typography variant="h6">Demand Form</Typography>
+        <Typography variant="h6">{t("Demand Form")}</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -270,13 +271,13 @@ const DemandForm: FC = () => {
               onChange={autocompleteChange}
               options={propertyCodes}
               renderInput={(params) => (
-                <TextField {...params} placeholder="Property Code" />
+                <TextField {...params} label={t("Property Code")} />
               )}
             />
           </Grid>
           <Grid item xs={6}>
             <FormControl fullWidth>
-              <InputLabel>Parent Category</InputLabel>
+              <InputLabel>{t("Parent Category")}</InputLabel>
               <Select
                 value={parentCategory}
                 label="Parent Category"
@@ -296,7 +297,7 @@ const DemandForm: FC = () => {
           </Grid>
           <Grid item xs={6}>
             <FormControl fullWidth>
-              <InputLabel>Furnishing</InputLabel>
+              <InputLabel>{t("Furnishing")}</InputLabel>
               <Select
                 value={furnished}
                 label="Furnishing"
@@ -316,10 +317,10 @@ const DemandForm: FC = () => {
           </Grid>
           <Grid item xs={6}>
             <FormControl fullWidth>
-              <InputLabel>State</InputLabel>
+              <InputLabel>{t("State")}</InputLabel>
               <Select
                 value={state}
-                label="State"
+                label={t("State")}
                 onChange={(e) => {
                   dispatch(setState(e.target.value));
                 }}
@@ -339,10 +340,10 @@ const DemandForm: FC = () => {
           </Grid>
           <Grid item xs={6}>
             <FormControl fullWidth>
-              <InputLabel>Time Frame</InputLabel>
+              <InputLabel>{t("Time Frame")}</InputLabel>
               <Select
                 value={timeFrame}
-                label="Time Frame"
+                label={t("Time Frame")}
                 onChange={(e) => {
                   dispatch(setTimeFrame(e.target.value));
                 }}
@@ -358,7 +359,7 @@ const DemandForm: FC = () => {
             </FormControl>{" "}
           </Grid>
           <Grid item xs={6}>
-            <Typography variant="h6">Bedrooms Min-Max</Typography>
+            <Typography variant="h6">{t("Bedrooms")}</Typography>
             <Grid
               container
               direction={"row"}
@@ -398,7 +399,7 @@ const DemandForm: FC = () => {
           </Grid>
 
           <Grid item xs={6}>
-            <Typography variant="h6">Bathrooms Min-Max</Typography>
+            <Typography variant="h6">{t("Bathrooms")}</Typography>
 
             <Grid
               container
@@ -439,7 +440,7 @@ const DemandForm: FC = () => {
           </Grid>
 
           <Grid item xs={6}>
-            <Typography variant="h6">Covered Min-Max (m²)</Typography>
+            <Typography variant="h6">{t("Covered")} </Typography>
             <Grid
               container
               direction={"row"}
@@ -497,7 +498,7 @@ const DemandForm: FC = () => {
           </Grid>
 
           <Grid item xs={6}>
-            <Typography variant="h6">Plot Min-Max (m²)</Typography>
+            <Typography variant="h6">{t("Plot")} </Typography>
             <Grid
               container
               direction={"row"}
@@ -555,7 +556,7 @@ const DemandForm: FC = () => {
           </Grid>
 
           <Grid item xs={6}>
-            <Typography variant="h6">Price Min-Max (€)</Typography>
+            <Typography variant="h6">{t("Price")} </Typography>
             <Grid
               container
               direction={"row"}
@@ -612,7 +613,7 @@ const DemandForm: FC = () => {
             </Grid>
           </Grid>
           <Grid item xs={6}>
-            <Typography variant="h6">Year of Construction Min-Max</Typography>
+            <Typography variant="h6">{t("Year of Construction")}</Typography>
             <Grid
               container
               direction={"row"}
@@ -659,7 +660,7 @@ const DemandForm: FC = () => {
             </Grid>
           </Grid>
           <Grid item xs={6}>
-            <Typography variant="h6">Floor Min-Max</Typography>
+            <Typography variant="h6">{t("Floor")}</Typography>
             <Grid
               container
               direction={"row"}

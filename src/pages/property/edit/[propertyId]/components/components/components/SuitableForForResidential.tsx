@@ -28,6 +28,7 @@ import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 import { useState } from "react";
 import { useAllUsersQuery } from "src/services/user";
 import { useAllGlobalsQuery } from "src/services/global";
+import { useTranslation } from "react-i18next";
 
 const SuitableForForResidentialSection: React.FC<any> = (props) => {
   const [rentalPeriodStart, setRentalPeriodStart] = useState<Date | null>(
@@ -38,7 +39,7 @@ const SuitableForForResidentialSection: React.FC<any> = (props) => {
   const enums: IGlobalProperty = data?.property as IGlobalProperty;
   const details = enums?.details as IGlobalPropertyDetails;
   const dispatch = useDispatch();
-
+  const { t } = useTranslation();
   const student = useSelector(selectStudent);
 
   const cottage = useSelector(selectCottage);
@@ -59,10 +60,10 @@ const SuitableForForResidentialSection: React.FC<any> = (props) => {
           px: 3,
           py: 1.5,
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "left",
         }}
       >
-        <Typography variant="h6">Suitable For</Typography>
+        <Typography variant="h6">{t("Suitable For")}</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -87,7 +88,7 @@ const SuitableForForResidentialSection: React.FC<any> = (props) => {
               inputProps={{ "aria-label": "Student" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Student
+              {t("Student")}
             </Typography>
           </Grid>
           <Grid
@@ -110,7 +111,7 @@ const SuitableForForResidentialSection: React.FC<any> = (props) => {
               inputProps={{ "aria-label": "Cottage" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Cottage
+              {t("Cottage")}
             </Typography>
           </Grid>
           <Grid
@@ -133,7 +134,7 @@ const SuitableForForResidentialSection: React.FC<any> = (props) => {
               inputProps={{ "aria-label": "Renovation" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Renovation
+              {t("Renovation")}
             </Typography>
           </Grid>
           <Grid
@@ -156,7 +157,7 @@ const SuitableForForResidentialSection: React.FC<any> = (props) => {
               inputProps={{ "aria-label": "Investment" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Investment
+              {t("Investment")}
             </Typography>
           </Grid>
           <Grid
@@ -179,7 +180,7 @@ const SuitableForForResidentialSection: React.FC<any> = (props) => {
               inputProps={{ "aria-label": "Tourist Rental" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Tourist Rental
+              {t("Tourist Rental")}
             </Typography>
           </Grid>
           <Grid
@@ -202,7 +203,7 @@ const SuitableForForResidentialSection: React.FC<any> = (props) => {
               inputProps={{ "aria-label": "Doctors Office" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Doctor's Office
+              {t("Doctor's Office")}
             </Typography>
           </Grid>
           <Grid
@@ -225,7 +226,7 @@ const SuitableForForResidentialSection: React.FC<any> = (props) => {
               inputProps={{ "aria-label": " Professional Use" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Professional Use
+              {t("Professional Use")}
             </Typography>
           </Grid>
         </Grid>

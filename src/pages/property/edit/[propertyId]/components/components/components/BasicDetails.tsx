@@ -30,7 +30,6 @@ import {
 	selectDebatablePrice,
 	selectEstimatedRentPrice,
 	selectKeyCode,
-	selectLabelIDs,
 	selectManager,
 	selectOwner,
 	selectPlotArea,
@@ -60,60 +59,48 @@ import {
 
 import { IGlobalProperty } from "src/types/global";
 import { ILabel } from "src/types/label";
-
 import { useAllUsersQuery } from "src/services/user";
 import { useAllGlobalsQuery } from "src/services/global";
-
 import { LabelCreate } from "src/components/label";
-
 import {
 	useAssignLabelToPropertyWithIDMutation,
 	useCreateLabelForPropertyWithIDMutation,
 	useDeleteLabelForPropertyWithIdMutation,
 	useGetLabelsQuery,
 } from "src/services/labels";
-
 import { selectAvailableAfter } from "src/slices/property";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { ICustomer } from "src/types/customer";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useLazyCheckCodeExistsQuery } from "src/services/properties";
 import { useLazyGetPropertyLabelsQuery } from "src/services/properties";
+import { useTranslation } from "react-i18next";
 
 const BasicSection: React.FC<any> = () => {
 	const router = useRouter();
 	const { propertyId } = router.query;
-
 	const { data } = useAllGlobalsQuery();
 	const enums: IGlobalProperty = data?.property as IGlobalProperty;
+
+	const { t } = useTranslation();
+	const dispatch = useDispatch();
 
 	// get list of owners, managers & labels
 	const { data: owners } = useAllCustomersQuery();
 	const { data: managers } = useAllUsersQuery();
 	const { data: labels } = useGetLabelsQuery();
 	const propertyLabels = labels?.propertyLabels;
-
-	// labels
-	const [getLabels, { data: assignedLabels }] = useLazyGetPropertyLabelsQuery();
-	const [assignLabel] = useAssignLabelToPropertyWithIDMutation();
-	const [createAndAssignLabel] = useCreateLabelForPropertyWithIDMutation();
-	const [deleteLabel] = useDeleteLabelForPropertyWithIdMutation();
-
 	const [checkCode, { data: codeExists, isSuccess: chechCodeSuccess }] =
 		useLazyCheckCodeExistsQuery();
 
-	const dispatch = useDispatch();
-
 	const [codeError, setCodeError] = useState("");
-
 	const currentDate = new Date();
 	const code = useSelector(selectCode);
 	const owner = useSelector(selectOwner);
 	const manager = useSelector(selectManager);
 	const currentRentPrice = useSelector(selectCurrentRentPrice);
 	const estimatedRentPrice = useSelector(selectEstimatedRentPrice);
-
 	const price = useSelector(selectPrice);
 	const keyCode = useSelector(selectKeyCode);
 	const avgUtils = useSelector(selectAvgUtils);
@@ -127,6 +114,12 @@ const BasicSection: React.FC<any> = () => {
 	const debatablePrice = useSelector(selectDebatablePrice);
 	const state = useSelector(selectState);
 	const stateEnum = enums?.state;
+
+	// labels
+	const [getLabels, { data: assignedLabels }] = useLazyGetPropertyLabelsQuery();
+	const [assignLabel] = useAssignLabelToPropertyWithIDMutation();
+	const [createAndAssignLabel] = useCreateLabelForPropertyWithIDMutation();
+	const [deleteLabel] = useDeleteLabelForPropertyWithIdMutation();
 
 	useEffect(() => {
 		if (codeExists === null || !chechCodeSuccess) return;
@@ -162,6 +155,11 @@ const BasicSection: React.FC<any> = () => {
 			labelId: assignedLabels[index].id!,
 		}).then(() => revalidate());
 
+	const handleCodeChange = (code: string) => {
+		dispatch(setCode(code));
+		checkCode(code);
+	};
+
 	const handleDateChange = (
 		setter: ActionCreatorWithPayload<any, string>,
 		date: Date | null
@@ -169,11 +167,6 @@ const BasicSection: React.FC<any> = () => {
 		if (!date || !setter) return; // we don't need null
 
 		dispatch(setter(date.toISOString()));
-	};
-
-	const handleCodeChange = (code: string) => {
-		dispatch(setCode(code));
-		checkCode(code);
 	};
 
 	if (!enums || !propertyLabels || !propertyId) return null;
@@ -185,10 +178,10 @@ const BasicSection: React.FC<any> = () => {
 					px: 3,
 					py: 1.5,
 					display: "flex",
-					justifyContent: "center",
+					justifyContent: "left",
 				}}
 			>
-				<Typography variant="h6">Basic Details</Typography>
+				<Typography variant="h6">{t("Basic Details")}</Typography>
 			</Box>
 
 			<Grid item xs={12} padding={1}>
@@ -197,7 +190,7 @@ const BasicSection: React.FC<any> = () => {
 						<TextField
 							fullWidth
 							id="outlined-start-adornment"
-							label="Code"
+							label={t("Code")}
 							value={code}
 							onChange={(event) => handleCodeChange(event.target.value)}
 							error={!!codeError}
@@ -210,7 +203,7 @@ const BasicSection: React.FC<any> = () => {
 							fullWidth
 							id="outlined-start-adornment"
 							select
-							label="Owner"
+							label={t("Owner")}
 							value={owner}
 							onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
 								dispatch(setOwner(event.target.value));
@@ -234,7 +227,7 @@ const BasicSection: React.FC<any> = () => {
 							fullWidth
 							id="outlined-start-adornment"
 							select
-							label="Manager"
+							label={t("Manager")}
 							value={manager}
 							onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
 								dispatch(setManager(event.target.value));
@@ -252,7 +245,6 @@ const BasicSection: React.FC<any> = () => {
 							)}
 						</TextField>
 					</Grid>
-
 					<Grid item xs={6}>
 						<FormControl fullWidth>
 							<InputLabel id="demo-simple-select-label">State</InputLabel>
@@ -260,7 +252,7 @@ const BasicSection: React.FC<any> = () => {
 								labelId="demo-simple-select-label"
 								id="demo-simple-select"
 								value={state}
-								label="State"
+								label={t("State")}
 								onChange={(e) => {
 									dispatch(setState(e.target.value));
 								}}
@@ -277,7 +269,7 @@ const BasicSection: React.FC<any> = () => {
 					</Grid>
 					<Grid item xs={6}>
 						<OnlyNumbersInput
-							label="Area"
+							label={t("Area")}
 							value={area}
 							onChange={(value) => {
 								dispatch(setArea(value));
@@ -287,7 +279,7 @@ const BasicSection: React.FC<any> = () => {
 					</Grid>
 					<Grid item xs={6}>
 						<OnlyNumbersInput
-							label="Plot Area"
+							label={t("Plot Area")}
 							value={plotArea}
 							onChange={(value) => {
 								dispatch(setPlotArea(value));
@@ -297,7 +289,7 @@ const BasicSection: React.FC<any> = () => {
 					</Grid>
 					<Grid item xs={6}>
 						<OnlyNumbersInput
-							label="Price"
+							label={t("Price")}
 							value={price}
 							onChange={(value) => {
 								dispatch(setPrice(value));
@@ -308,7 +300,7 @@ const BasicSection: React.FC<any> = () => {
 
 					<Grid item xs={6}>
 						<OnlyNumbersInput
-							label="Average Utils"
+							label={t("Average Utils")}
 							value={avgUtils}
 							onChange={(value) => {
 								dispatch(setAvgUtils(value));
@@ -332,7 +324,7 @@ const BasicSection: React.FC<any> = () => {
 						<TextField
 							fullWidth
 							id="outlined-start-adornment"
-							label="Key Code"
+							label={t("Key Code")}
 							value={keyCode}
 							onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
 								dispatch(setKeyCode(event.target.value));
@@ -347,7 +339,7 @@ const BasicSection: React.FC<any> = () => {
 
 					<Grid item xs={6}>
 						<OnlyNumbersInput
-							label="Estimated Rent Price"
+							label={t("Estimated Rent Price")}
 							value={estimatedRentPrice}
 							onChange={(value) => {
 								dispatch(setEstimatedRentPrice(value));
@@ -375,7 +367,7 @@ const BasicSection: React.FC<any> = () => {
 							inputProps={{ "aria-label": "Floor Heating Checkbox" }}
 						/>
 						<Typography variant="body1" sx={{ ml: 0 }}>
-							Debatable Price
+							{t("Debatable Price")}
 						</Typography>
 					</Grid>
 
@@ -399,7 +391,7 @@ const BasicSection: React.FC<any> = () => {
 							inputProps={{ "aria-label": "Floor Heating Checkbox" }}
 						/>
 						<Typography variant="body1" sx={{ ml: 0 }}>
-							Auction
+							{t("Auction")}
 						</Typography>
 					</Grid>
 				</Grid>
@@ -437,7 +429,7 @@ const BasicSection: React.FC<any> = () => {
 									inputProps={{ "aria-label": "Elevator" }}
 								/>
 								<Typography variant="body1" sx={{ ml: 0 }}>
-									Rented
+									{t("Rented")}
 								</Typography>
 							</Grid>
 
@@ -472,7 +464,7 @@ const BasicSection: React.FC<any> = () => {
 							</Grid>
 							<Grid item xs={6}>
 								<DateFieldStyled
-									label="Rental Period End"
+									label={t("Rental Period End")}
 									value={
 										rentalPeriodEnd ? new Date(rentalPeriodEnd) : currentDate
 									}
@@ -485,7 +477,7 @@ const BasicSection: React.FC<any> = () => {
 							</Grid>
 							<Grid item xs={6}>
 								<OnlyNumbersInput
-									label="Current Rent Price"
+									label={t("Current Rent Price")}
 									value={currentRentPrice}
 									onChange={(value) => {
 										dispatch(setCurrentRentPrice(value));

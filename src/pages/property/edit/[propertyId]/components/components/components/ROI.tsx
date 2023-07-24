@@ -21,10 +21,11 @@ import {
 } from "src/slices/property";
 
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const ROISection: React.FC<any> = (props) => {
   const dispatch = useDispatch();
-
+  const { t } = useTranslation();
   const price = useSelector(selectPrice);
   const currentRentPrice = useSelector(selectCurrentRentPrice);
   const estimatedRentPrice = useSelector(selectEstimatedRentPrice);
@@ -99,10 +100,10 @@ const ROISection: React.FC<any> = (props) => {
           px: 3,
           py: 1.5,
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "left",
         }}
       >
-        <Typography variant="h6">ROI</Typography>
+        <Typography variant="h6">{t("ROI")}</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -111,7 +112,7 @@ const ROISection: React.FC<any> = (props) => {
             <TextField
               fullWidth
               id="outlined-select-currency"
-              label="Price" /* < euro sticky to field> */
+              label={t("Price")} /* < euro sticky to field> */
               value={price}
               onChange={handlePriceChange}
               onKeyPress={handleKeyPress}
@@ -130,7 +131,7 @@ const ROISection: React.FC<any> = (props) => {
             <TextField
               id="roi-textfield"
               fullWidth
-              label="ROI"
+              label={t("ROI")}
               value={roi}
               variant="outlined"
               disabled
@@ -143,7 +144,7 @@ const ROISection: React.FC<any> = (props) => {
             <TextField
               fullWidth
               id="outlined-select-currency"
-              label="Current Rent Price" /* < euro sticky to field> */
+              label={t("Current Rent Price")} /* < euro sticky to field> */
               value={currentRentPrice}
               onChange={handleCurrentRentPriceChange}
               onKeyPress={handleKeyPress}
@@ -176,7 +177,7 @@ const ROISection: React.FC<any> = (props) => {
             <TextField
               fullWidth
               id="outlined-select-currency"
-              label="Estimated Rent Price" /* < euro sticky to field> */
+              label={t("Estimated Rent Price")} /* < euro sticky to field> */
               value={estimatedRentPrice}
               onChange={handleEstimatedRentPriceChange}
               onKeyPress={handleKeyPress}

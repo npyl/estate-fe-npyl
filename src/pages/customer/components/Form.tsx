@@ -17,6 +17,7 @@ import MatchingSystem from "./MatchingSystem";
 import NonPriorityFeatures from "./NonPriorityFeatures";
 import NotesSection from "./NotesSection";
 import PriorityFeatures from "./PriorityFeatures";
+import { useTranslation } from "react-i18next";
 
 const Form = ({
   edit = false,
@@ -36,7 +37,7 @@ const Form = ({
     dispatch(resetLabelsState());
     dispatch(resetNotesState());
   };
-
+  const { t } = useTranslation();
   useEffect(() => {
     if (!edit) {
       resetState();
@@ -75,7 +76,7 @@ const Form = ({
               startIcon={<DeleteIcon />}
               onClick={() => resetState()}
             >
-              Clear
+              {t("Clear")}
             </Button>
           </Grid>
           <Grid item>
@@ -84,7 +85,7 @@ const Form = ({
               endIcon={<SendIcon />}
               onClick={handleClick}
             >
-              {edit ? "Save" : "Create"}
+              {edit ? t("Save") : t("Create")}
             </Button>
           </Grid>
         </Grid>

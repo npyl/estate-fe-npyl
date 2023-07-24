@@ -59,6 +59,7 @@ import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 import { useState } from "react";
 import { useAllUsersQuery } from "src/services/user";
 import { useAllGlobalsQuery } from "src/services/global";
+import { useTranslation } from "react-i18next";
 
 const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
   props
@@ -71,7 +72,7 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
   const enums: IGlobalProperty = data?.property as IGlobalProperty;
   const details = enums?.details as IGlobalPropertyDetails;
   const dispatch = useDispatch();
-
+  const { t } = useTranslation();
   const entrances = useSelector(selectEntrances);
   const displayWindowsLength = useSelector(selectDisplayWindowsLength);
   const safetyDoor = useSelector(selectSafetyDoor);
@@ -113,10 +114,12 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
           px: 3,
           py: 1.5,
           display: "flex",
-          justifyContent: "center",
+          justifyContent: "left",
         }}
       >
-        <Typography variant="h6">Technical Features And Interior</Typography>
+        <Typography variant="h6">
+          {t("Technical Feautures And Interior")}
+        </Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -126,7 +129,7 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
               fullWidth
               id="outlined-select-currency"
               select
-              label="Furnished"
+              label={t("Furnished")}
               value={furnished}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setFurnished(event.target.value));
@@ -150,7 +153,7 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
               fullWidth
               id="outlined-select-currency"
               select
-              label="Frame Type"
+              label={t("Frame Type")}
               value={frameType}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setFrameType(event.target.value));
@@ -174,7 +177,7 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
               fullWidth
               id="outlined-select-currency"
               select
-              label="Pane Glass Type"
+              label={t("Pane Glass Type")}
               value={paneGlassType}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setPaneGlassType(event.target.value));
@@ -198,7 +201,7 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
               fullWidth
               id="outlined-select-currency"
               select
-              label="Floor Type"
+              label={t("Floor Type")}
               value={floorType}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setFloorType(event.target.value));
@@ -237,7 +240,7 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
               inputProps={{ "aria-label": "Safety Door" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Safety Door
+              {t("Safety Door")}
             </Typography>
           </Grid>
           <Grid
@@ -260,7 +263,7 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
               inputProps={{ "aria-label": "Alarm System" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Alarm System
+              {t("Alarm System")}
             </Typography>
           </Grid>
           <Grid
@@ -283,7 +286,7 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
               inputProps={{ "aria-label": "Painted" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Painted
+              {t("Painted")}
             </Typography>
           </Grid>
 
@@ -307,7 +310,7 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
               inputProps={{ "aria-label": "Bright" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Bright
+              {t("Bright")}
             </Typography>
           </Grid>
 
@@ -331,7 +334,7 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
               inputProps={{ "aria-label": "Window Screens" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Window Screens
+              {t("Window Screens")}
             </Typography>
           </Grid>
           <Grid
@@ -354,7 +357,7 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
               inputProps={{ "aria-label": "Double Frontage" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Double Frontage
+              {t("Double Frontage")}
             </Typography>
           </Grid>
           <Grid
@@ -377,7 +380,7 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
               inputProps={{ "aria-label": "Fireplace" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Fireplace
+              {t("Fireplace")}
             </Typography>
           </Grid>
           <Grid
@@ -400,7 +403,7 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
               inputProps={{ "aria-label": "Luxurious" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Luxurious
+              {t("Luxurious")}
             </Typography>
           </Grid>
           <Grid
@@ -423,7 +426,7 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
               inputProps={{ "aria-label": "Satellite TV" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Satellite TV
+              {t("Satellite TV")}
             </Typography>
           </Grid>
           <Grid
@@ -446,7 +449,7 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
               inputProps={{ "aria-label": "Reception" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Reception
+              {t("Reception")}
             </Typography>
           </Grid>
           <Grid
@@ -469,7 +472,7 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
               inputProps={{ "aria-label": "Pets Allowed" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Pets Allowed
+              {t("Pets Allowed")}
             </Typography>
           </Grid>
           <Grid
@@ -492,7 +495,7 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
               inputProps={{ "aria-label": "Electric Car Charging Facilities" }}
             />
             <Typography variant="body1" sx={{ ml: 0 }}>
-              Electric Car Charging Facilities
+              {t("Electric Car Charging Facilities")}
             </Typography>
           </Grid>
         </Grid>
