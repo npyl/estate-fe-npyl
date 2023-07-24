@@ -78,8 +78,8 @@ const LocationSection = (props: ILocationSectionProps) => {
 		setMainMarker(newMarker);
 
 		// update slice
-		// dispatch(setLatitude(lat));
-		// dispatch(setLongitude(lng));
+		dispatch(setLatitude(lat));
+		dispatch(setLongitude(lng));
 	};
 
 	const handleChange = (
