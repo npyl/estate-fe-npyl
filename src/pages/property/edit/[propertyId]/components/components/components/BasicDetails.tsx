@@ -66,8 +66,6 @@ import { useAllGlobalsQuery } from "src/services/global";
 
 import { LabelCreate } from "src/components/label";
 
-// Property Slice
-import { removeLabel as removeAssignedLabel } from "src/slices/property";
 import {
 	useAssignLabelToPropertyWithIDMutation,
 	useCreateLabelForPropertyWithIDMutation,
@@ -78,10 +76,10 @@ import {
 import { selectAvailableAfter } from "src/slices/property";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { ICustomer } from "src/types/customer";
-import { useLazyCheckCodeExistsQuery } from "src/services/properties";
 import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
-import { label } from "yet-another-react-lightbox";
+import { useLazyCheckCodeExistsQuery } from "src/services/properties";
+import { useLazyGetPropertyLabelsQuery } from "src/services/properties";
 
 const BasicSection: React.FC<any> = () => {
 	const router = useRouter();
@@ -97,6 +95,7 @@ const BasicSection: React.FC<any> = () => {
 	const propertyLabels = labels?.propertyLabels;
 
 	// labels
+	const [getLabels, { data: assignedLabels }] = useLazyGetPropertyLabelsQuery();
 	const [assignLabel] = useAssignLabelToPropertyWithIDMutation();
 	const [createAndAssignLabel] = useCreateLabelForPropertyWithIDMutation();
 	const [deleteLabel] = useDeleteLabelForPropertyWithIdMutation();
@@ -129,34 +128,39 @@ const BasicSection: React.FC<any> = () => {
 	const state = useSelector(selectState);
 	const stateEnum = enums?.state;
 
-	const labelIDs = useSelector(selectLabelIDs);
-
-	const assignedLabels = useMemo(() => {
-		if (!labelIDs || !propertyLabels) return [];
-
-		return (
-			labelIDs
-				.filter((labelID) => labelID)
-				.map((labelID, index) => {
-					// get label object with id
-					return propertyLabels.find((label) => label.id === labelID)!;
-				}) || []
-		);
-	}, [labelIDs, propertyLabels]);
-
 	useEffect(() => {
 		if (codeExists === null || !chechCodeSuccess) return;
 
 		setCodeError(codeExists ? "Code already exists!" : "");
 	}, [codeExists, chechCodeSuccess]);
 
+	useEffect(() => {
+		if (!propertyId) return;
+		revalidate();
+	}, [propertyId]);
+
+	const revalidate = () => {
+		// TODO: improve this by revalidating automatically (invalidating a tag)
+		getLabels(+propertyId!);
+	};
+
 	const handleLabelClick = (label: ILabel) =>
-		label.id && assignLabel({ propertyId: +propertyId!, labelId: label.id });
+		label.id &&
+		assignLabel({ propertyId: +propertyId!, labelId: label.id }).then(() =>
+			revalidate()
+		);
 	const handleLabelCreate = (label: ILabel) =>
-		createAndAssignLabel({ propertyId: +propertyId!, labelBody: label });
+		createAndAssignLabel({ propertyId: +propertyId!, labelBody: label }).then(
+			() => revalidate()
+		);
 	const handleLabelRemove = (index: number) =>
-		labelIDs[index] &&
-		deleteLabel({ propertyId: +propertyId!, labelId: labelIDs[index]! });
+		assignedLabels &&
+		assignedLabels[index] &&
+		assignedLabels[index].id &&
+		deleteLabel({
+			propertyId: +propertyId!,
+			labelId: assignedLabels[index].id!,
+		}).then(() => revalidate());
 
 	const handleDateChange = (
 		setter: ActionCreatorWithPayload<any, string>,
