@@ -15,7 +15,7 @@ import {
 	Typography,
 } from "@mui/material";
 import type { NextPage } from "next";
-import React, { useMemo, useRef, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { SliderPicker } from "react-color";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
@@ -26,6 +26,10 @@ import {
 	useCreateLabelForCustomersMutation,
 	useCreateLabelForPropertiesMutation,
 	useCreateLabelForPropertyWithIDMutation,
+	// General
+	useDeletePropertyLabelMutation,
+	useDeleteCustomerLabelMutation,
+	// Get
 	useGetLabelsQuery,
 } from "src/services/labels";
 import { useAllPropertiesQuery } from "src/services/properties";
@@ -34,6 +38,9 @@ import { ILabel } from "src/types/label";
 import { IProperties } from "src/types/properties";
 
 const SingleProperty: NextPage = () => {
+	const propertySectionLabel = "Ακίνητα: ";
+	const customerSectionLabel = "Πελάτες: ";
+
 	const [assigneeType, setAssigneeType] = useState("");
 	const [checked, setChecked] = useState(false);
 
@@ -51,6 +58,8 @@ const SingleProperty: NextPage = () => {
 		useCreateLabelForCustomerWithIDMutation();
 	const [createLabelForProperties] = useCreateLabelForPropertiesMutation();
 	const [createLabelForCustomers] = useCreateLabelForCustomersMutation();
+	const [deleteLabelForProperties] = useDeletePropertyLabelMutation();
+	const [deleteLabelForCustomers] = useDeleteCustomerLabelMutation();
 
 	const { data: labels } = useGetLabelsQuery();
 
@@ -159,15 +168,20 @@ const SingleProperty: NextPage = () => {
 
 			return {
 				propertyLabels: {
-					label: "Ακίνητα: ",
+					label: propertySectionLabel,
 					data: labels.propertyLabels,
 				},
 				customerLabels: {
-					label: "Πελάτες: ",
+					label: customerSectionLabel,
 					data: labels.customerLabels,
 				},
 			};
 		}, [labels]);
+
+	const handleDelete = (resource: string, labelId: number) => {
+		resource === propertySectionLabel && deleteLabelForProperties(labelId);
+		resource === customerSectionLabel && deleteLabelForCustomers(labelId);
+	};
 
 	return (
 		<Grid container direction={"row"} gap={1} paddingY={3}>
@@ -330,6 +344,7 @@ const SingleProperty: NextPage = () => {
 														color: "white",
 														bgcolor: label.color,
 													}}
+													onClose={() => handleDelete(value.label, label.id)}
 												>
 													{label.name}
 												</Label>
