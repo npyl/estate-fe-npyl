@@ -8,6 +8,7 @@ import {
 	TextField,
 	MenuItem,
 	makeStyles,
+	Box,
 } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { SoftButton } from "./SoftButton";
@@ -72,13 +73,22 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
 						/>
 					</Grid>
 					<Grid item xs={4} mt={1}>
-						<Stack spacing={1} flex={1}>
+						<Grid container gap={1} flex={1}>
 							<TextField
 								fullWidth
 								label="Title"
 								onChange={(event: React.ChangeEvent<HTMLInputElement>) => {}}
 								size="small"
-							></TextField>
+							/>
+
+							<TextField
+								fullWidth
+								label="Description"
+								multiline
+								rows={2}
+								onChange={(event: React.ChangeEvent<HTMLInputElement>) => {}}
+								// size="small"
+							/>
 
 							<TextField
 								fullWidth
@@ -93,7 +103,7 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
 								<MenuItem value={"public"}>Public</MenuItem>
 								<MenuItem value={"private"}>Private</MenuItem>
 							</TextField>
-						</Stack>
+						</Grid>
 					</Grid>
 				</Grid>
 			</DialogContent>
