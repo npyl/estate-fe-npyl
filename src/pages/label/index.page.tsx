@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import type { NextPage } from "next";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import {
@@ -21,10 +21,15 @@ import { ILabel } from "src/types/label";
 import { IProperties } from "src/types/properties";
 import { Preview } from "./components/Preview";
 import { Create } from "./components/Create";
+import { Edit } from "./components/Edit";
+import { IEditProps } from "./components/types";
 
 const SingleProperty: NextPage = () => {
 	const propertySectionLabel = "Ακίνητα: ";
 	const customerSectionLabel = "Πελάτες: ";
+
+	const [editMode, setEditMode] = useState(false);
+	const [editedLabel, setEditedLabel] = useState<IEditProps>();
 
 	const [createLabelForPropertyWithID] =
 		useCreateLabelForPropertyWithIDMutation();
@@ -91,6 +96,20 @@ const SingleProperty: NextPage = () => {
 			}
 		}
 	};
+	const editLabel = (editedLabel: IEditProps) => {
+		editedLabel.resource === propertySectionLabel &&
+			createLabelForProperties({
+				id: editedLabel.id,
+				name: editedLabel.name,
+				color: editedLabel.color,
+			}).then(() => cancelEdit());
+		editedLabel.resource === customerSectionLabel &&
+			createLabelForCustomers({
+				id: editedLabel.id,
+				name: editedLabel.name,
+				color: editedLabel.color,
+			}).then(() => cancelEdit());
+	};
 
 	const labelData: Record<string, { label: string; data: ILabel[] }> | null =
 		useMemo(() => {
@@ -108,6 +127,15 @@ const SingleProperty: NextPage = () => {
 			};
 		}, [labels]);
 
+	const handleEdit = (props: IEditProps) => {
+		setEditedLabel(props);
+		setEditMode(true);
+	};
+
+	const cancelEdit = () => {
+		setEditMode(false);
+	};
+
 	const handleDelete = (resource: string, labelId: number) => {
 		resource === propertySectionLabel && deleteLabelForProperties(labelId);
 		resource === customerSectionLabel && deleteLabelForCustomers(labelId);
@@ -115,8 +143,21 @@ const SingleProperty: NextPage = () => {
 
 	return (
 		<Grid container direction={"row"} gap={1} paddingY={3}>
-			<Create createLabel={createLabel} />
-			<Preview labelData={labelData} onDelete={handleDelete} />
+			{editMode && editedLabel ? (
+				<Edit
+					editedLabel={editedLabel}
+					editLabel={editLabel}
+					cancelEdit={cancelEdit}
+				/>
+			) : (
+				<Create createLabel={createLabel} />
+			)}
+
+			<Preview
+				labelData={labelData}
+				onEdit={handleEdit}
+				onDelete={handleDelete}
+			/>
 		</Grid>
 	);
 };

@@ -1,14 +1,14 @@
 import { Grid, Stack, Typography, Paper } from "@mui/material";
 import { EditableLabel } from "src/components/label";
 import { ILabel } from "src/types/label";
+import { IEditProps } from "./types";
 
 export const Preview = (props: {
 	labelData: Record<string, { label: string; data: ILabel[] }> | null;
+	onEdit: (label: IEditProps) => void;
 	onDelete: (resource: string, labelId: number) => void;
 }) => {
-	const { labelData, onDelete } = props;
-
-	const handleEdit = () => {};
+	const { labelData, onEdit, onDelete } = props;
 
 	return (
 		<>
@@ -42,7 +42,9 @@ export const Preview = (props: {
 													onClose={() =>
 														label.id && onDelete(value.label, label.id)
 													}
-													onEdit={handleEdit}
+													onEdit={() =>
+														onEdit({ ...label, resource: value.label })
+													}
 												>
 													{label.name}
 												</EditableLabel>
