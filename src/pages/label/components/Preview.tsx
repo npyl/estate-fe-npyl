@@ -1,5 +1,5 @@
 import { Grid, Stack, Typography, Paper } from "@mui/material";
-import { Label } from "src/components/label";
+import { EditableLabel } from "src/components/label";
 import { ILabel } from "src/types/label";
 
 export const Preview = (props: {
@@ -7,6 +7,8 @@ export const Preview = (props: {
 	onDelete: (resource: string, labelId: number) => void;
 }) => {
 	const { labelData, onDelete } = props;
+
+	const handleEdit = () => {};
 
 	return (
 		<>
@@ -29,7 +31,7 @@ export const Preview = (props: {
 									<Stack direction={"row"} flexWrap={"wrap"}>
 										{value.data &&
 											value.data.map((label: ILabel) => (
-												<Label
+												<EditableLabel
 													key={label.id}
 													variant="soft"
 													sx={{
@@ -40,9 +42,10 @@ export const Preview = (props: {
 													onClose={() =>
 														label.id && onDelete(value.label, label.id)
 													}
+													onEdit={handleEdit}
 												>
 													{label.name}
-												</Label>
+												</EditableLabel>
 											))}
 									</Stack>
 								</Grid>
