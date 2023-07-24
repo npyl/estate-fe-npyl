@@ -10,6 +10,8 @@ interface AddNoteProps {
 }
 
 const AddNote = (props: AddNoteProps) => {
+	const { t } = useTranslation();
+
 	const commentInputRef = useRef<HTMLInputElement>(null);
 	const [message, setMessage] = useState("");
 
@@ -28,7 +30,7 @@ const AddNote = (props: AddNoteProps) => {
 		onAdd(message);
 		setMessage("");
 	};
-	const { t } = useTranslation();
+
 	return (
 		<Grid
 			container

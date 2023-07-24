@@ -5,183 +5,184 @@ import UploadDnd from "src/components/upload/UploadDnd";
 import GalleryManager from "src/components/GalleryManager";
 import { SoftButton } from "src/components/SoftButton";
 import {
-  useAddPropertyImageMutation,
-  useSetPropertyThumbailMutation,
-  useDeletePropertyImageMutation,
+	useAddPropertyImageMutation,
+	useSetPropertyThumbailMutation,
+	useDeletePropertyImageMutation,
 } from "src/services/properties";
 import { useRouter } from "next/router";
 import { IPropertyImage, IPropertyImagePOST } from "src/types/file";
 import { useTranslation } from "react-i18next";
 
 interface IImageSectionProps {
-  files: IPropertyImage[];
-  addFile: (image: IPropertyImagePOST) => void;
-  deleteFile: (image: string) => void;
-  setCdnUrlForNextAvailable: (cdnUrl: string) => void;
-  setFiles: (images: IPropertyImage[]) => void;
+	files: IPropertyImage[];
+	addFile: (image: IPropertyImagePOST) => void;
+	deleteFile: (image: string) => void;
+	setCdnUrlForNextAvailable: (cdnUrl: string) => void;
+	setFiles: (images: IPropertyImage[]) => void;
 }
 
 const ImagesSection: React.FC<IImageSectionProps> = ({
-  files,
-  addFile,
-  deleteFile,
-  setFiles,
-  setCdnUrlForNextAvailable,
+	files,
+	addFile,
+	deleteFile,
+	setFiles,
+	setCdnUrlForNextAvailable,
 }) => {
-  const router = useRouter();
-  const { propertyId } = router.query;
+	const router = useRouter();
+	const { t } = useTranslation();
 
-  const [galleryManagerOpen, setGalleryManagerOpen] = useState(false);
-  const { t } = useTranslation();
-  const [addImage] = useAddPropertyImageMutation();
-  const [setThumbnail] = useSetPropertyThumbailMutation();
-  const [deleteImage] = useDeletePropertyImageMutation();
+	const { propertyId } = router.query;
 
-  const uploadFile = async (
-    image: File
-  ): Promise<{ cdnUrl: string; key: string }> => {
-    const filename = image.name;
-    const contentType = image.type;
+	const [galleryManagerOpen, setGalleryManagerOpen] = useState(false);
+	const [addImage] = useAddPropertyImageMutation();
+	const [setThumbnail] = useSetPropertyThumbailMutation();
+	const [deleteImage] = useDeletePropertyImageMutation();
 
-    if (!filename || !contentType)
-      throw new Error("filename or contentType cannot be null");
+	const uploadFile = async (
+		image: File
+	): Promise<{ cdnUrl: string; key: string }> => {
+		const filename = image.name;
+		const contentType = image.type;
 
-    const body: IPropertyImagePOST = {
-      filename,
-      contentType,
-    };
+		if (!filename || !contentType)
+			throw new Error("filename or contentType cannot be null");
 
-    // get amazon url
-    const fileResponse = await addImage({
-      id: +propertyId!,
-      body: body,
-    }).unwrap();
+		const body: IPropertyImagePOST = {
+			filename,
+			contentType,
+		};
 
-    if (!fileResponse) throw new Error("Error: FileResponse: " + fileResponse);
+		// get amazon url
+		const fileResponse = await addImage({
+			id: +propertyId!,
+			body: body,
+		}).unwrap();
 
-    const key = fileResponse.key;
-    const url = fileResponse.url;
-    const cdnUrl = fileResponse.cdnUrl;
+		if (!fileResponse) throw new Error("Error: FileResponse: " + fileResponse);
 
-    addFile({ ...body, key });
+		const key = fileResponse.key;
+		const url = fileResponse.url;
+		const cdnUrl = fileResponse.cdnUrl;
 
-    // PUT to amazon url
-    const response = await fetch(url, {
-      method: "PUT",
-      headers: {
-        "Content-Type": contentType,
-      },
-      body: image,
-    });
+		addFile({ ...body, key });
 
-    if (!response) throw new Error("PUT request failed: " + response);
-    if (!response.ok) throw new Error("Uploading the image failed!");
+		// PUT to amazon url
+		const response = await fetch(url, {
+			method: "PUT",
+			headers: {
+				"Content-Type": contentType,
+			},
+			body: image,
+		});
 
-    return { cdnUrl, key };
-  };
+		if (!response) throw new Error("PUT request failed: " + response);
+		if (!response.ok) throw new Error("Uploading the image failed!");
 
-  const handleDropMultiFile = useCallback(
-    (acceptedFiles: File[]) => {
-      if (files.length === 0) {
-        // this is the first image we are adding; therefore it is the mainImage
-        uploadFile(acceptedFiles[0])
-          .then(({ cdnUrl, key }) => {
-            setCdnUrlForNextAvailable(cdnUrl);
-            setThumbnail({ propertyId: +propertyId!, imageKey: key });
-          })
-          .catch((reason) => console.error("uploadThumbnail: ", reason));
+		return { cdnUrl, key };
+	};
 
-        for (let i = 1; i < acceptedFiles.length; i++)
-          uploadFile(acceptedFiles[i])
-            .then(({ cdnUrl, key }) => setCdnUrlForNextAvailable(cdnUrl))
-            .catch((reason) => console.error("uploadImage: ", reason));
-      } else {
-        // treat every file as secondary image
-        acceptedFiles.forEach((acceptedFile) =>
-          uploadFile(acceptedFile)
-            .then(({ cdnUrl, key }) => setCdnUrlForNextAvailable(cdnUrl))
-            .catch((reason) => console.error("uploadImage: ", reason))
-        );
-      }
-    },
-    [files]
-  );
+	const handleDropMultiFile = useCallback(
+		(acceptedFiles: File[]) => {
+			if (files.length === 0) {
+				// this is the first image we are adding; therefore it is the mainImage
+				uploadFile(acceptedFiles[0])
+					.then(({ cdnUrl, key }) => {
+						setCdnUrlForNextAvailable(cdnUrl);
+						setThumbnail({ propertyId: +propertyId!, imageKey: key });
+					})
+					.catch((reason) => console.error("uploadThumbnail: ", reason));
 
-  const handleRemoveFile = (inputFile: IPropertyImage) => {
-    if (!inputFile.key) return;
+				for (let i = 1; i < acceptedFiles.length; i++)
+					uploadFile(acceptedFiles[i])
+						.then(({ cdnUrl, key }) => setCdnUrlForNextAvailable(cdnUrl))
+						.catch((reason) => console.error("uploadImage: ", reason));
+			} else {
+				// treat every file as secondary image
+				acceptedFiles.forEach((acceptedFile) =>
+					uploadFile(acceptedFile)
+						.then(({ cdnUrl, key }) => setCdnUrlForNextAvailable(cdnUrl))
+						.catch((reason) => console.error("uploadImage: ", reason))
+				);
+			}
+		},
+		[files]
+	);
 
-    deleteImage({ propertyId: +propertyId!, imageKey: inputFile.key })
-      .then((response) => deleteFile(inputFile.key))
-      .catch((reason) => console.error("deleteImage: ", reason));
-  };
-  const handleRemoveAllFiles = () => {
-    files.forEach((file) => handleRemoveFile(file));
-  };
-  const handleReorder = (sourceIndex: number, newIndex: number) => {};
+	const handleRemoveFile = (inputFile: IPropertyImage) => {
+		if (!inputFile.key) return;
 
-  const handleOpenGalleryManager = () => {
-    setGalleryManagerOpen(true);
-  };
-  const handleCloseGalleryManager = () => {
-    setGalleryManagerOpen(false);
-  };
+		deleteImage({ propertyId: +propertyId!, imageKey: inputFile.key })
+			.then((response) => deleteFile(inputFile.key))
+			.catch((reason) => console.error("deleteImage: ", reason));
+	};
+	const handleRemoveAllFiles = () => {
+		files.forEach((file) => handleRemoveFile(file));
+	};
+	const handleReorder = (sourceIndex: number, newIndex: number) => {};
 
-  if (!propertyId) return null; // Here's the change!
-  return (
-    <>
-      <Card>
-        <Box
-          sx={{
-            px: 3,
-            py: 1.5,
-            display: "flex",
-            justifyContent: "left",
-          }}
-        >
-          <Typography variant="h6">{t("Upload Images")}</Typography>
-        </Box>
-        <CardHeader
-          action={
-            files.length > 0 && (
-              <SoftButton onClick={handleOpenGalleryManager}>
-                {t("Edit")}
-              </SoftButton>
-            )
-          }
-          sx={{
-            display: "flex",
-            justifyContent: "left",
-            "& .MuiCardHeader-action": {
-              position: "absolute",
-              alignSelf: "flex-end",
-            },
-          }}
-        />
-        <CardContent>
-          <UploadDnd
-            multiple
-            thumbnail={true}
-            files={files}
-            setFiles={setFiles}
-            onDrop={handleDropMultiFile}
-            onReorder={handleReorder}
-            onRemove={handleRemoveFile}
-            onRemoveAll={handleRemoveAllFiles}
-          />
-        </CardContent>
-      </Card>
+	const handleOpenGalleryManager = () => {
+		setGalleryManagerOpen(true);
+	};
+	const handleCloseGalleryManager = () => {
+		setGalleryManagerOpen(false);
+	};
 
-      {files && files.length > 0 && (
-        <GalleryManager
-          open={galleryManagerOpen}
-          images={files}
-          onClose={handleCloseGalleryManager}
-          onDelete={(file: IPropertyImage) => {
-            handleRemoveFile(file);
-          }}
-        />
-      )}
-    </>
-  );
+	if (!propertyId) return null; // Here's the change!
+	return (
+		<>
+			<Card>
+				<Box
+					sx={{
+						px: 3,
+						py: 1.5,
+						display: "flex",
+						justifyContent: "left",
+					}}
+				>
+					<Typography variant="h6">{t("Upload Images")}</Typography>
+				</Box>
+				<CardHeader
+					action={
+						files.length > 0 && (
+							<SoftButton onClick={handleOpenGalleryManager}>
+								{t("Edit")}
+							</SoftButton>
+						)
+					}
+					sx={{
+						display: "flex",
+						justifyContent: "left",
+						"& .MuiCardHeader-action": {
+							position: "absolute",
+							alignSelf: "flex-end",
+						},
+					}}
+				/>
+				<CardContent>
+					<UploadDnd
+						multiple
+						thumbnail={true}
+						files={files}
+						setFiles={setFiles}
+						onDrop={handleDropMultiFile}
+						onReorder={handleReorder}
+						onRemove={handleRemoveFile}
+						onRemoveAll={handleRemoveAllFiles}
+					/>
+				</CardContent>
+			</Card>
+
+			{files && files.length > 0 && (
+				<GalleryManager
+					open={galleryManagerOpen}
+					images={files}
+					onClose={handleCloseGalleryManager}
+					onDelete={(file: IPropertyImage) => {
+						handleRemoveFile(file);
+					}}
+				/>
+			)}
+		</>
+	);
 };
 export default ImagesSection;

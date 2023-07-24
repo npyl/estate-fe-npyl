@@ -68,6 +68,8 @@ export default function Editor({
 	sx,
 	...other
 }: EditorProps) {
+	const { t } = useTranslation();
+
 	const modules = {
 		toolbar: {
 			container: `#${id}`,
@@ -82,7 +84,7 @@ export default function Editor({
 			matchVisual: false,
 		},
 	};
-	const { t } = useTranslation();
+
 	return (
 		<>
 			<StyledEditor

@@ -79,12 +79,12 @@ import { useTranslation } from "react-i18next";
 
 const BasicSection: React.FC<any> = () => {
 	const router = useRouter();
+	const { t } = useTranslation();
+	const dispatch = useDispatch();
+
 	const { propertyId } = router.query;
 	const { data } = useAllGlobalsQuery();
 	const enums: IGlobalProperty = data?.property as IGlobalProperty;
-
-	const { t } = useTranslation();
-	const dispatch = useDispatch();
 
 	// get list of owners, managers & labels
 	const { data: owners } = useAllCustomersQuery();

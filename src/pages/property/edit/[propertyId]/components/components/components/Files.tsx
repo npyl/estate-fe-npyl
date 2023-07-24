@@ -5,41 +5,42 @@ import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 interface FileSectionProps {
-  fileData: string[];
-  setFileData: Dispatch<SetStateAction<(string | File)[]>>;
+	fileData: string[];
+	setFileData: Dispatch<SetStateAction<(string | File)[]>>;
 }
 
 const FileSection: React.FC<FileSectionProps> = ({ fileData, setFileData }) => {
-  const dispatch = useDispatch();
-  const { t } = useTranslation();
-  const handleDropMultiFile = useCallback(
-    (acceptedFileData: File[]) => {
-      setFileData([
-        ...fileData,
-        ...acceptedFileData.map((file) =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file),
-          })
-        ),
-      ]);
-    },
-    [fileData]
-  );
+	const dispatch = useDispatch();
+	const { t } = useTranslation();
 
-  const handleRemoveFile = (inputFile: File | string) => {
-    const filtered = fileData.filter((file) => file !== inputFile);
-    setFileData(filtered);
-  };
+	const handleDropMultiFile = useCallback(
+		(acceptedFileData: File[]) => {
+			setFileData([
+				...fileData,
+				...acceptedFileData.map((file) =>
+					Object.assign(file, {
+						preview: URL.createObjectURL(file),
+					})
+				),
+			]);
+		},
+		[fileData]
+	);
 
-  const handleRemoveAllFileData = () => {
-    setFileData([]);
-  };
+	const handleRemoveFile = (inputFile: File | string) => {
+		const filtered = fileData.filter((file) => file !== inputFile);
+		setFileData(filtered);
+	};
 
-  return (
-    <Card>
-      <CardHeader title={t("fileData")} />
-      <CardContent>
-        {/* <Upload
+	const handleRemoveAllFileData = () => {
+		setFileData([]);
+	};
+
+	return (
+		<Card>
+			<CardHeader title={t("fileData")} />
+			<CardContent>
+				{/* <Upload
           multiple
           thumbnail={false}
           files={fileData}
@@ -47,8 +48,8 @@ const FileSection: React.FC<FileSectionProps> = ({ fileData, setFileData }) => {
           onRemove={handleRemoveFile}
           onRemoveAll={handleRemoveAllFileData}
         /> */}
-      </CardContent>
-    </Card>
-  );
+			</CardContent>
+		</Card>
+	);
 };
 export default FileSection;

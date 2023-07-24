@@ -8,67 +8,69 @@ import nomoi from "src/json/nomoi.json";
 import { useTranslation } from "react-i18next";
 
 interface ViewLocationProps {
-  location: ILocation;
+	location: ILocation;
 }
 
 const isNumberString = (input: string): boolean => !isNaN(Number(input));
 
 export const ViewLocation = ({ location }: ViewLocationProps) => {
-  // region is most of the types a code; translate to human readable form; otherwise just return the string
-  const region = useMemo(() => {
-    if (!location?.region) return "";
+	const { t } = useTranslation();
 
-    return isNumberString(location.region)
-      ? nomoi.filter((o) => o["Area ID"] === location.region)[0]["Name GR"]
-      : location.region;
-  }, [location?.region]);
+	// region is most of the types a code; translate to human readable form; otherwise just return the string
+	const region = useMemo(() => {
+		if (!location?.region) return "";
 
-  // city is most of the types a code; translate to human readable form; otherwise just return the string
-  const city = useMemo(() => {
-    if (!location?.city) return "";
+		return isNumberString(location.region)
+			? nomoi.filter((o) => o["Area ID"] === location.region)[0]["Name GR"]
+			: location.region;
+	}, [location?.region]);
 
-    return isNumberString(location.city)
-      ? nomoi.filter((o) => o["Area ID"] === location.city)[0]["Name GR"]
-      : location.city;
-  }, [location?.city]);
-  const { t } = useTranslation();
-  return (
-    <>
-      <Grid container>
-        <Grid item xs={6} padding={0}>
-          <List>
-            <ListItem
-              label={t("Street")}
-              value={location?.street}
-              align="horizontal"
-            />
+	// city is most of the types a code; translate to human readable form; otherwise just return the string
+	const city = useMemo(() => {
+		if (!location?.city) return "";
 
-            <ListItem
-              label={t("Number")}
-              value={location?.number}
-              align="horizontal"
-            />
+		return isNumberString(location.city)
+			? nomoi.filter((o) => o["Area ID"] === location.city)[0]["Name GR"]
+			: location.city;
+	}, [location?.city]);
 
-            <ListItem label={t("City")} value={city} align="horizontal" />
-          </List>
-        </Grid>
+	return (
+		<>
+			<Grid container>
+				<Grid item xs={6} padding={0}>
+					<List>
+						<ListItem
+							label={t("Street")}
+							value={location?.street}
+							align="horizontal"
+						/>
 
-        <Grid item xs={6} padding={0}>
-          <List>
-            <ListItem
-              label={t("Zip Code")}
-              value={location?.zipCode}
-              align="horizontal"
-            />
-            <ListItem label={t("Region")} value={region} align="horizontal" />
-            <ListItem
-              label={t("Country")}
-              value={location?.country}
-              align="horizontal"
-            />
-          </List>
-        </Grid>
-      </Grid>
-    </>
-  );
+						<ListItem
+							label={t("Number")}
+							value={location?.number}
+							align="horizontal"
+						/>
+
+						<ListItem label={t("City")} value={city} align="horizontal" />
+					</List>
+				</Grid>
+
+				<Grid item xs={6} padding={0}>
+					<List>
+						<ListItem
+							label={t("Zip Code")}
+							value={location?.zipCode}
+							align="horizontal"
+						/>
+						<ListItem label={t("Region")} value={region} align="horizontal" />
+						<ListItem
+							label={t("Country")}
+							value={location?.country}
+							align="horizontal"
+						/>
+					</List>
+				</Grid>
+			</Grid>
+		</>
+	);
 };

@@ -47,6 +47,7 @@ const LocationSection = (props: ILocationSectionProps) => {
 	} = props;
 
 	const dispatch = useDispatch();
+	const { t } = useTranslation();
 
 	const [activeMarker, setActiveMarker] = useState(null);
 	const [mainMarker, setMainMarker] = useState<IMapMarker>({
@@ -62,7 +63,7 @@ const LocationSection = (props: ILocationSectionProps) => {
 		lat: nullCoord,
 		lng: nullCoord,
 	});
-	const { t } = useTranslation();
+
 	const closest = useGetClosestQuery(
 		{ latitude: onDragEndCoord.lat, longitude: onDragEndCoord.lng },
 		{
