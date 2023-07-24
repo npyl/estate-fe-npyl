@@ -170,14 +170,6 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
 									Property
 								</MenuItem>
 								<MenuItem
-									onClick={(e) => startCreate(e, managerItemType)}
-									disableRipple
-								>
-									<ManageAccountsIcon fontSize="small" />
-									Manager
-								</MenuItem>
-								<Divider sx={{ my: 0.5 }} />
-								<MenuItem
 									onClick={(e) => startCreate(e, ownerItemType)}
 									disableRipple
 								>
@@ -197,6 +189,14 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
 								>
 									<CircleNotifications fontSize="small" />
 									Notification
+								</MenuItem>
+								<Divider sx={{ my: 0.5 }} />
+								<MenuItem
+									onClick={(e) => startCreate(e, managerItemType)}
+									disableRipple
+								>
+									<ManageAccountsIcon fontSize="small" />
+									Manager
 								</MenuItem>
 							</StyledMenu>
 						</Stack>
