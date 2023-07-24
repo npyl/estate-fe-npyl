@@ -319,7 +319,7 @@ const BasicSection: React.FC<any> = () => {
 					<Grid item xs={6}>
 						<LabelCreate
 							existingLabels={propertyLabels}
-							assignedLabels={assignedLabels}
+							assignedLabels={assignedLabels || []}
 							newLabels={[]}
 							onLabelClick={handleLabelClick}
 							onLabelCreate={handleLabelCreate}
