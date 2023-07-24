@@ -31,13 +31,14 @@ const NotificationPage: NextPage = () => {
 	const { data: notification2 } = useGetNotificationByIdQuery(2);
 
 	const notifications = useMemo(() => {
-		if (!notification1 || !notification2) return [];
-
+		if (!notification1 && !notification2) return [];
+		if (notification1 && !notification2) return [notification1];
+		if (!notification1 && notification2) return [notification2];
 		return [notification1, notification2];
 	}, [notification1, notification2]);
 
 	const rows = useMemo(
-		() => notifications.map((notification) => createRow(notification)),
+		() => notifications.map((notification) => createRow(notification!)),
 		[notifications]
 	);
 
