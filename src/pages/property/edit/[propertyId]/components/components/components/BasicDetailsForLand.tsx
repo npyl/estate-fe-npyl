@@ -176,17 +176,18 @@ const BasicForLandSection: React.FC<any> = () => {
 
 			<Grid item xs={12} padding={1}>
 				<Grid container spacing={2}>
-					<Grid item xs={6}></Grid>
-					<TextField
-						fullWidth
-						id="outlined-start-adornment"
-						label="Code"
-						value={code}
-						onChange={(event) => handleCodeChange(event.target.value)}
-						error={!!codeError}
-						helperText={codeError}
-						size="small"
-					/>
+					<Grid item xs={6}>
+						<TextField
+							fullWidth
+							id="outlined-start-adornment"
+							label="Code"
+							value={code}
+							onChange={(event) => handleCodeChange(event.target.value)}
+							error={!!codeError}
+							helperText={codeError}
+							size="small"
+						/>
+					</Grid>
 					<Grid item xs={6}>
 						<TextField
 							fullWidth
