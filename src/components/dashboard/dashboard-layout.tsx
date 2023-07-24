@@ -14,6 +14,9 @@ import Subbar from "./dashboard-subbar";
 
 import { addTab } from "src/slices/tabs";
 import { useDispatch } from "src/store";
+
+import { Users as UsersIcon } from "../../icons/users";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import { CircleNotifications } from "@mui/icons-material";
 
 interface DashboardLayoutProps {
@@ -170,6 +173,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
 									onClick={(e) => startCreate(e, managerItemType)}
 									disableRipple
 								>
+									<ManageAccountsIcon fontSize="small" />
 									Manager
 								</MenuItem>
 								<Divider sx={{ my: 0.5 }} />
@@ -177,6 +181,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
 									onClick={(e) => startCreate(e, ownerItemType)}
 									disableRipple
 								>
+									<UsersIcon fontSize="small" />
 									Customer
 								</MenuItem>
 								<MenuItem
