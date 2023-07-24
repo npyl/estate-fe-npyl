@@ -27,7 +27,7 @@ const slice = createSlice({
 			const key = payload.key;
 			const value = payload.value;
 
-			if (!key || !value) return;
+			if (key == null || value == null) return;
 
 			state[key] = value;
 		},
