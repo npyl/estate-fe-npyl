@@ -59,12 +59,9 @@ import { LabelCreate } from "src/components/label";
 
 import OnlyNumbersInput from "src/components/OnlyNumbers";
 
-import {
-	useLazyCheckCodeExistsQuery,
-	useLazyGetPropertyLabelsQuery,
-} from "src/services/properties";
+import { useLazyGetPropertyLabelsQuery } from "src/services/properties";
 import { ILabel } from "src/types/label";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import {
 	useAssignLabelToPropertyWithIDMutation,
@@ -73,6 +70,8 @@ import {
 	useGetLabelsQuery,
 } from "src/services/labels";
 import { useRouter } from "next/router";
+import { KeyCodeField } from "./components/KeyCodeField";
+import { CodeField } from "./components/CodeField";
 
 const BasicForLandSection: React.FC<any> = () => {
 	const router = useRouter();
@@ -93,11 +92,6 @@ const BasicForLandSection: React.FC<any> = () => {
 	const [createAndAssignLabel] = useCreateLabelForPropertyWithIDMutation();
 	const [deleteLabel] = useDeleteLabelForPropertyWithIdMutation();
 
-	const [checkCode, { data: codeExists, isSuccess: chechCodeSuccess }] =
-		useLazyCheckCodeExistsQuery();
-
-	const [codeError, setCodeError] = useState("");
-
 	const code = useSelector(selectCode);
 	const owner = useSelector(selectOwner);
 	const manager = useSelector(selectManager);
@@ -116,12 +110,6 @@ const BasicForLandSection: React.FC<any> = () => {
 	const auction = useSelector(selectAuction);
 	const debatablePrice = useSelector(selectDebatablePrice);
 	const stateEnum = enums?.state;
-
-	useEffect(() => {
-		if (codeExists === null || !chechCodeSuccess) return;
-
-		setCodeError(codeExists ? "Code already exists!" : "");
-	}, [codeExists, chechCodeSuccess]);
 
 	useEffect(() => {
 		if (!propertyId) return;
@@ -151,11 +139,6 @@ const BasicForLandSection: React.FC<any> = () => {
 			labelId: assignedLabels[index].id!,
 		}).then(() => revalidate());
 
-	const handleCodeChange = (code: string) => {
-		dispatch(setCode(code));
-		checkCode(code);
-	};
-
 	// get list of owners & managers
 	const { data: owners } = useAllCustomersQuery();
 	const { data: managers } = useAllUsersQuery();
@@ -177,15 +160,9 @@ const BasicForLandSection: React.FC<any> = () => {
 			<Grid item xs={12} padding={1}>
 				<Grid container spacing={2}>
 					<Grid item xs={6}>
-						<TextField
-							fullWidth
-							id="outlined-start-adornment"
-							label="Code"
-							value={code}
-							onChange={(event) => handleCodeChange(event.target.value)}
-							error={!!codeError}
-							helperText={codeError}
-							size="small"
+						<CodeField
+							code={code}
+							onChange={(event) => dispatch(setCode(event.target.value))}
 						/>
 					</Grid>
 					<Grid item xs={6}>
@@ -313,14 +290,9 @@ const BasicForLandSection: React.FC<any> = () => {
 						</Typography>
 					</Grid>
 					<Grid item xs={6}>
-						<TextField
-							fullWidth
-							id="outlined-start-adornment"
-							label="Key Code"
-							value={keyCode}
-							onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-								dispatch(setKeyCode(event.target.value));
-							}}
+						<KeyCodeField
+							keyCode={keyCode}
+							onChange={(event) => dispatch(setKeyCode(event.target.value))}
 						/>
 					</Grid>
 					<Grid item xs={6}>

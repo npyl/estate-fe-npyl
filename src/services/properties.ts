@@ -123,7 +123,6 @@ export const properties = createApi({
 				body: filterParam.filter,
 				params: { page: filterParam.page, pageSize: filterParam.pageSize },
 			}),
-			invalidatesTags: ["Properties"],
 		}),
 		suggestForCustomer: builder.query<IProperties[], number>({
 			query: (id: number) => ({
@@ -153,6 +152,14 @@ export const properties = createApi({
 			query: (code: string) => {
 				return {
 					url: "/check/code",
+					params: { code },
+				};
+			},
+		}),
+		checkKeyCodeExists: builder.query<boolean, string>({
+			query: (code: string) => {
+				return {
+					url: "/check/keycode",
 					params: { code },
 				};
 			},
@@ -204,6 +211,7 @@ export const {
 
 	// check
 	useLazyCheckCodeExistsQuery,
+	useLazyCheckKeyCodeExistsQuery,
 
 	// images & files
 	useAddPropertyImageMutation,

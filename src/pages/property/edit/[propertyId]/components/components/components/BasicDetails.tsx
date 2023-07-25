@@ -71,11 +71,13 @@ import {
 import { selectAvailableAfter } from "src/slices/property";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { ICustomer } from "src/types/customer";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { useLazyCheckCodeExistsQuery } from "src/services/properties";
 import { useLazyGetPropertyLabelsQuery } from "src/services/properties";
 import { useTranslation } from "react-i18next";
+
+import { KeyCodeField } from "./components/KeyCodeField";
+import { CodeField } from "./components/CodeField";
 
 const BasicSection: React.FC<any> = () => {
 	const router = useRouter();
@@ -91,10 +93,7 @@ const BasicSection: React.FC<any> = () => {
 	const { data: managers } = useAllUsersQuery();
 	const { data: labels } = useGetLabelsQuery();
 	const propertyLabels = labels?.propertyLabels;
-	const [checkCode, { data: codeExists, isSuccess: chechCodeSuccess }] =
-		useLazyCheckCodeExistsQuery();
 
-	const [codeError, setCodeError] = useState("");
 	const currentDate = new Date();
 	const code = useSelector(selectCode);
 	const owner = useSelector(selectOwner);
@@ -120,12 +119,6 @@ const BasicSection: React.FC<any> = () => {
 	const [assignLabel] = useAssignLabelToPropertyWithIDMutation();
 	const [createAndAssignLabel] = useCreateLabelForPropertyWithIDMutation();
 	const [deleteLabel] = useDeleteLabelForPropertyWithIdMutation();
-
-	useEffect(() => {
-		if (codeExists === null || !chechCodeSuccess) return;
-
-		setCodeError(codeExists ? "Code already exists!" : "");
-	}, [codeExists, chechCodeSuccess]);
 
 	useEffect(() => {
 		if (!propertyId) return;
@@ -155,11 +148,6 @@ const BasicSection: React.FC<any> = () => {
 			labelId: assignedLabels[index].id!,
 		}).then(() => revalidate());
 
-	const handleCodeChange = (code: string) => {
-		dispatch(setCode(code));
-		checkCode(code);
-	};
-
 	const handleDateChange = (
 		setter: ActionCreatorWithPayload<any, string>,
 		date: Date | null
@@ -187,15 +175,9 @@ const BasicSection: React.FC<any> = () => {
 			<Grid item xs={12} padding={1}>
 				<Grid container spacing={2}>
 					<Grid item xs={6}>
-						<TextField
-							fullWidth
-							id="outlined-start-adornment"
-							label={t("Code")}
-							value={code}
-							onChange={(event) => handleCodeChange(event.target.value)}
-							error={!!codeError}
-							helperText={codeError}
-							size="small"
+						<CodeField
+							code={code}
+							onChange={(event) => dispatch(setCode(event.target.value))}
 						/>
 					</Grid>
 					<Grid item xs={6}>
@@ -321,19 +303,9 @@ const BasicSection: React.FC<any> = () => {
 					</Grid>
 
 					<Grid item xs={6}>
-						<TextField
-							fullWidth
-							id="outlined-start-adornment"
-							label={t("Key Code")}
-							value={keyCode}
-							onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-								dispatch(setKeyCode(event.target.value));
-							}}
-							inputProps={{
-								style: {
-									height: "8px",
-								},
-							}}
+						<KeyCodeField
+							keyCode={keyCode}
+							onChange={(event) => dispatch(setKeyCode(event.target.value))}
 						/>
 					</Grid>
 
