@@ -208,7 +208,6 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                   height: "8px",
                 },
               }}
-              size="small"
             >
               {details?.floorType?.map((option) => (
                 <MenuItem key={option} value={option}>
