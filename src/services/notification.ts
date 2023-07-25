@@ -7,9 +7,7 @@ import {
 export const notification = createApi({
 	reducerPath: "contactNotification",
 	baseQuery: fetchBaseQuery({
-		baseUrl: `${
-			process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"
-		}/api/contact/notification`,
+		baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/contact/notification`,
 		prepareHeaders: (headers) => {
 			// By default, if we have a token in the store, let's use that for authenticated requests
 

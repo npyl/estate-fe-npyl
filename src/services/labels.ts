@@ -20,9 +20,7 @@ type IDeleteLabelProps = IAssignLabelProps;
 export const labels = createApi({
 	reducerPath: "labels",
 	baseQuery: fetchBaseQuery({
-		baseUrl: `${
-			process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"
-		}/api/labels`,
+		baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/labels`,
 		prepareHeaders: (headers) => {
 			// By default, if we have a token in the store, let's use that for authenticated requests
 

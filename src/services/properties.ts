@@ -48,9 +48,7 @@ interface IPropertySearchParams {
 export const properties = createApi({
 	reducerPath: "properties",
 	baseQuery: fetchBaseQuery({
-		baseUrl: `${
-			process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"
-		}/api/property`,
+		baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/property`,
 		prepareHeaders: (headers) => {
 			// By default, if we have a token in the store, let's use that for authenticated requests
 
