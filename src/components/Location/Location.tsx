@@ -35,6 +35,8 @@ const LocationSection = (props: ILocationSectionProps) => {
 		zipCode,
 		region,
 		country,
+		lat,
+		lng,
 
 		setStreet,
 		setNumber,
@@ -49,10 +51,12 @@ const LocationSection = (props: ILocationSectionProps) => {
 	const dispatch = useDispatch();
 	const { t } = useTranslation();
 
+	console.log("got: ", lat, " ", lng);
+
 	const [activeMarker, setActiveMarker] = useState(null);
 	const [mainMarker, setMainMarker] = useState<IMapMarker>({
-		lat: 37.98381,
-		lng: 23.727539,
+		lat: lat ? lat : 37.98381,
+		lng: lng ? lng : 23.727539,
 		address: "",
 		main: true,
 	});

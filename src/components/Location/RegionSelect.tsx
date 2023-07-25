@@ -75,7 +75,6 @@ export const RegionSelect = (props: IRegionSelectProps) => {
 				onChange={(event) => handleChange(event)}
 				renderValue={(selected) => {
 					const option = nomoi.find((opt) => opt["Area ID"] === selected);
-					console.log("option: ", option);
 					return option ? option["Name GR"] : "";
 				}}
 				input={<OutlinedInput label="Περιοχή" />}
