@@ -16,6 +16,7 @@ import { useTranslation } from "react-i18next";
 interface IImageSectionProps {
 	files: IPropertyImage[];
 	addFile: (image: IPropertyImagePOST) => void;
+	deleteFile: (image: string) => void;
 	setCdnUrlForNextAvailable: (cdnUrl: string) => void;
 	setFiles: (images: IPropertyImage[]) => void;
 }
@@ -23,6 +24,7 @@ interface IImageSectionProps {
 const ImagesSection: React.FC<IImageSectionProps> = ({
 	files,
 	addFile,
+	deleteFile,
 	setFiles,
 	setCdnUrlForNextAvailable,
 }) => {
@@ -109,9 +111,9 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 	const handleRemoveFile = (inputFile: IPropertyImage) => {
 		if (!inputFile.key) return;
 
-		deleteImage({ propertyId: +propertyId!, imageKey: inputFile.key }).catch(
-			(reason) => console.error("deleteImage: ", reason)
-		);
+		deleteImage({ propertyId: +propertyId!, imageKey: inputFile.key })
+			.then((response) => deleteFile(inputFile.key))
+			.catch((reason) => console.error("deleteImage: ", reason));
 	};
 	const handleRemoveAllFiles = () => {
 		files.forEach((file) => handleRemoveFile(file));

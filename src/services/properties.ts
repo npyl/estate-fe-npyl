@@ -188,7 +188,7 @@ export const properties = createApi({
 				url: `/${propertyId}/image/${imageKey}`,
 				method: "DELETE",
 			}),
-			invalidatesTags: ["PropertyById"],
+			invalidatesTags: ["Properties"],
 		}),
 	}),
 });
