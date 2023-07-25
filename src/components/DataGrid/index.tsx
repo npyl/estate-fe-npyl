@@ -48,8 +48,6 @@ const DataGridTable: FC<GridProps> = ({
 	const router = useRouter();
 	const dispatch = useDispatch();
 
-	console.log("got: ", rows);
-
 	const [sortModel, setSortModel] = useState<GridSortModel>([]);
 
 	const handleSortChange = (newSortModel: any) => {

@@ -51,8 +51,6 @@ const LocationSection = (props: ILocationSectionProps) => {
 	const dispatch = useDispatch();
 	const { t } = useTranslation();
 
-	console.log("got: ", lat, " ", lng);
-
 	const [activeMarker, setActiveMarker] = useState(null);
 	const [mainMarker, setMainMarker] = useState<IMapMarker>({
 		lat: lat ? lat : 37.98381,
