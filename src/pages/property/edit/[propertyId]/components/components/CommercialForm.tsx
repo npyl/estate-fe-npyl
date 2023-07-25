@@ -75,9 +75,6 @@ const CommercialFormSection: React.FC<any> = () => {
 	const handleAddFiles = (images: (IPropertyImage | IPropertyImagePOST)[]) => {
 		dispatch(setPropertyImages(images));
 	};
-	const handleDeleteFile = (imageKey: string) => {
-		dispatch(deletePropertyImage(imageKey));
-	};
 
 	return (
 		<>
@@ -104,7 +101,6 @@ const CommercialFormSection: React.FC<any> = () => {
 						<ImageSection
 							files={images}
 							addFile={handleAddFile}
-							deleteFile={handleDeleteFile}
 							setCdnUrlForNextAvailable={handleSetCdnUrlForNextAvailable}
 							setFiles={handleAddFiles}
 						/>
