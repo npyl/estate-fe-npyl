@@ -105,7 +105,7 @@ export const properties = createApi({
 				method: "POST",
 				body: props.body,
 			}),
-			invalidatesTags: ["Properties"],
+			invalidatesTags: ["Properties", "PropertyById"],
 		}),
 		createProperty: builder.mutation<number, ICreatePropertyParams>({
 			query: (dataToSend: ICreatePropertyParams) => ({
