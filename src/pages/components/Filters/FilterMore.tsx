@@ -4,7 +4,6 @@ import {
 	Dialog,
 	DialogActions,
 	DialogTitle,
-	IconButton,
 	ListItemText,
 	MenuItem,
 	Select,
@@ -16,11 +15,6 @@ import { StyledDialogContent } from "./styles";
 
 import { useSelector } from "react-redux";
 import { useDispatch } from "src/store";
-
-import Iconify from "src/components/iconify";
-
-import FilterListIcon from "@mui/icons-material/FilterList";
-import FilterListOffIcon from "@mui/icons-material/FilterListOff";
 
 import { useAllGlobalsQuery } from "src/services/global";
 import sumOfChangedProperties, {
@@ -43,8 +37,6 @@ import sumOfChangedProperties, {
 	setMinConstructionYear,
 	setMinFloor,
 } from "src/slices/filters";
-
-import { useState } from "react";
 
 import ChosenFilters from "./ChosenFilters";
 import SaleSelect from "./FilterSale";
@@ -85,8 +77,6 @@ export default function FilterMore({
 	const minFloors = useSelector(selectMinFloor) || 0;
 	const maxFloors = useSelector(selectMaxFloor) || 0;
 
-	const [showAll, setShowAll] = useState(false);
-
 	const fields = [
 		{
 			id: "frameType",
@@ -121,48 +111,32 @@ export default function FilterMore({
 				>
 					<Chip label={changedPropsCount} color={"error"} />
 					<Typography variant="subtitle1">Φίλτρα</Typography>
-
-					<Stack direction={"row"}>
-						<Button
-							startIcon={showAll ? <FilterListOffIcon /> : <FilterListIcon />}
-							sx={{ marginRight: 2 }}
-							onClick={() => setShowAll(!showAll)}
-							variant={showAll ? "contained" : "outlined"}
-						>
-							Όλα
-						</Button>
-
-						<IconButton onClick={onClose}>
-							<Iconify icon="eva:close-fill" />
-						</IconButton>
-					</Stack>
 				</Stack>
 			</DialogTitle>
-			{showAll && changedPropsCount > 0 && (
+			{changedPropsCount > 0 && (
 				<StyledDialogContent>
 					<ChosenFilters />
 				</StyledDialogContent>
 			)}
-			{showAll && (
-				<StyledDialogContent dividers>
-					<Typography>Basic</Typography>
 
-					<Stack direction={"row"} spacing={1}>
-						<CodeSelect />
-						<ManagerIdSelect />
+			<StyledDialogContent dividers>
+				<Typography>Basic</Typography>
 
-						<SaleSelect />
+				<Stack direction={"row"} spacing={1}>
+					<CodeSelect />
+					<ManagerIdSelect />
 
-						<CategorySelect />
-						<SubCategorySelect />
+					<SaleSelect />
 
-						<PriceSelect type="price" />
-						<PriceSelect type="area" />
+					<CategorySelect />
+					<SubCategorySelect />
 
-						<FilterLabels />
-					</Stack>
-				</StyledDialogContent>
-			)}
+					<PriceSelect type="price" />
+					<PriceSelect type="area" />
+
+					<FilterLabels />
+				</Stack>
+			</StyledDialogContent>
 			<StyledDialogContent
 				sx={{ maxHeight: "none", overflow: "visible" }}
 				dividers
