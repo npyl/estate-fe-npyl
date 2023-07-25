@@ -17,7 +17,7 @@ import {
 	GridColDef,
 	GridPaginationModel,
 } from "@mui/x-data-grid";
-import { FC, SetStateAction, useEffect, useState } from "react";
+import { FC, SetStateAction, useEffect, useMemo, useState } from "react";
 
 import Image from "src/components/image";
 import { Menu } from "src/icons/menu";
@@ -31,7 +31,6 @@ import FilterSortBy from "./Filters/FilterSortBy";
 
 import { selectAll } from "src/slices/filters";
 import { useSelector } from "react-redux";
-import { IPropertyFilterResponse } from "src/types/properties";
 
 type optionType = "list" | "grid" | "map";
 
@@ -44,7 +43,6 @@ type viewOptionsType = {
 };
 
 const ViewAll: FC = () => {
-	const [rows, setRows] = useState<IPropertyFilterResponse[]>([]);
 	// sorting
 	const [sortingBy, setSortingBy] = useState("");
 	const [sortingOrder, setSortingOrder] = useState("asc");
@@ -59,13 +57,21 @@ const ViewAll: FC = () => {
 	const [filterProperties, { isLoading, data }] = useFilterPropertiesMutation();
 
 	useEffect(() => {
-		filterProperties({ filter: allFilters, page: page, pageSize: pageSize });
+		filterProperties({
+			filter: allFilters,
+			page: page,
+			pageSize: pageSize,
+		});
 	}, [allFilters, page, pageSize]);
 
-	useEffect(() => {
-		if (!data) return;
-		setRows(data.content);
-	}, [data]);
+	const rows = useMemo(() => {
+		return data?.content ? data?.content : [];
+	}, [data?.content]);
+
+	const totalRows = useMemo(
+		() => (data?.totalElements ? data?.totalElements : 25),
+		[data?.totalElements]
+	);
 
 	const viewOptions: viewOptionsType[] = [
 		{
@@ -123,7 +129,7 @@ const ViewAll: FC = () => {
 		}
 		const status = (params.value as string).trim();
 		const statusUpper = status.toUpperCase() as PropertyStatus;
-		console.log("statusUpper:", statusUpper); // add this to debug the value
+		// console.log("statusUpper:", statusUpper); // add this to debug the value
 		const color = STATUS_COLORS[statusUpper] || "#537f91"; // default color if status is not recognized
 
 		return (
@@ -202,6 +208,7 @@ const ViewAll: FC = () => {
 	const skeletonRows = Array.from({ length: 2 }, (_, index) => ({
 		id: index + 1,
 	}));
+
 	const handlePaginationModelChange = (
 		model: GridPaginationModel,
 		details: GridCallbackDetails
@@ -270,6 +277,7 @@ const ViewAll: FC = () => {
 								sortingOrder={sortingOrder}
 								page={page}
 								pageSize={pageSize}
+								totalRows={totalRows}
 								onPaginationModelChange={handlePaginationModelChange}
 							/>
 						</Paper>
@@ -297,6 +305,7 @@ const ViewAll: FC = () => {
 						sortingOrder={sortingOrder}
 						page={page}
 						pageSize={pageSize}
+						totalRows={totalRows}
 						onPaginationModelChange={handlePaginationModelChange}
 					/>
 				</Paper>

@@ -61,6 +61,7 @@ const MatchingPropertiesSection: React.FC = () => {
 							sortingOrder={"asc"}
 							page={0}
 							pageSize={10}
+							totalRows={25}
 						/>
 					</Paper>
 				</Grid>
