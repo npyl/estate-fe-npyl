@@ -22,7 +22,7 @@ type GridProps = {
 
   page: number;
   pageSize: number;
-  totalRows: number;
+  totalRows?: number;
   onPaginationModelChange?: (
     model: GridPaginationModel,
     details: GridCallbackDetails
