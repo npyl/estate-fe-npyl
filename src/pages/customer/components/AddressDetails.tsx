@@ -7,6 +7,8 @@ import {
 	selectRegion,
 	selectStreet,
 	selectZipCode,
+	selectLatitude,
+	selectLongitude,
 	// setters
 	setStreet,
 	setZipCode,
@@ -29,6 +31,8 @@ const AddressDetails: React.FC<any> = (props) => {
 	const zipCode = useSelector(selectZipCode);
 	const region = useSelector(selectRegion);
 	const country = useSelector(selectCountry);
+	const lat = useSelector(selectLatitude);
+	const lng = useSelector(selectLongitude);
 
 	return (
 		<LocationSection
@@ -38,6 +42,8 @@ const AddressDetails: React.FC<any> = (props) => {
 			zipCode={zipCode}
 			region={region}
 			country={country}
+			lat={lat}
+			lng={lng}
 			// setters
 			setStreet={setStreet}
 			setNumber={setNumber}

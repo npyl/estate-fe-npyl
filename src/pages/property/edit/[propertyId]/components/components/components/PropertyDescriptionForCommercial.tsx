@@ -136,7 +136,6 @@ const PropertyDescriptionForCommercialSection: React.FC<any> = (props) => {
                   height: "8px",
                 },
               }}
-              size="small"
             >
               {details?.floors?.map((option) => (
                 <MenuItem key={option} value={option}>
@@ -213,7 +212,6 @@ const PropertyDescriptionForCommercialSection: React.FC<any> = (props) => {
                   height: "8px",
                 },
               }}
-              size="small"
             >
               {details?.accessibility?.map((option) => (
                 <MenuItem key={option} value={option}>
@@ -237,7 +235,6 @@ const PropertyDescriptionForCommercialSection: React.FC<any> = (props) => {
                   height: "8px",
                 },
               }}
-              size="small"
             >
               {details?.landUse?.map((option) => (
                 <MenuItem key={option} value={option}>
@@ -262,7 +259,6 @@ const PropertyDescriptionForCommercialSection: React.FC<any> = (props) => {
                   height: "8px",
                 },
               }}
-              size="small"
             >
               {details?.zoneType?.map((option) => (
                 <MenuItem key={option} value={option}>

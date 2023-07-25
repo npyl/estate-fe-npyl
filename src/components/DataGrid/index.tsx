@@ -22,7 +22,11 @@ type GridProps = {
 
   page: number;
   pageSize: number;
-  onPaginationModelChange?: (model: GridPaginationModel, details: GridCallbackDetails) => void;
+  totalRows: number;
+  onPaginationModelChange?: (
+    model: GridPaginationModel,
+    details: GridCallbackDetails
+  ) => void;
 
   resource?: string;
 };
@@ -36,6 +40,7 @@ const DataGridTable: FC<GridProps> = ({
 
   page,
   pageSize,
+  totalRows,
   onPaginationModelChange,
 
   resource = "property",
@@ -66,15 +71,17 @@ const DataGridTable: FC<GridProps> = ({
           columnsPanelTextFieldLabel: "Αναζήτηση πεδίου",
           columnsPanelTextFieldPlaceholder: "'Ονομα πεδίου",
         }}
-        initialState={{
-          pagination: { paginationModel: { pageSize: pageSize, page: page } },
-        }}
         sx={{
           "& .MuiDataGrid-row": {
-            cursor: 'pointer'
-          }
+            cursor: "pointer",
+          },
         }}
+        // --- pagination ---
+        paginationMode="server"
+        rowCount={totalRows}
+        paginationModel={{ page, pageSize }}
         onPaginationModelChange={onPaginationModelChange}
+        // ------------------
         disableColumnFilter
         disableDensitySelector
         rowHeight={100}

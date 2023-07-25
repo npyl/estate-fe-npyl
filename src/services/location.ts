@@ -9,9 +9,7 @@ interface IGetClosestParams {
 export const location = createApi({
 	reducerPath: "location",
 	baseQuery: fetchBaseQuery({
-		baseUrl: `${
-			process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"
-		}/api/geography/hierarchy/`,
+		baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/geography/hierarchy/`,
 		prepareHeaders: (headers) => {
 			// By default, if we have a token in the store, let's use that for authenticated requests
 

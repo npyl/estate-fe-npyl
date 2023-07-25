@@ -31,6 +31,9 @@ import {
 	selectZipCode,
 	selectRegion,
 	selectCountry,
+	selectLatitude,
+	selectLongitude,
+	// setters
 	setStreet,
 	setNumber,
 	setCity,
@@ -55,6 +58,8 @@ const LandFormSection: React.FC<any> = () => {
 	const zipCode = useSelector(selectZipCode);
 	const region = useSelector(selectRegion);
 	const country = useSelector(selectCountry);
+	const lat = useSelector(selectLatitude);
+	const lng = useSelector(selectLongitude);
 
 	const handleAddFile = (images: IPropertyImage | IPropertyImagePOST) => {
 		dispatch(addPropertyImage(images));
@@ -103,6 +108,8 @@ const LandFormSection: React.FC<any> = () => {
 							zipCode={zipCode}
 							region={region}
 							country={country}
+							lat={lat}
+							lng={lng}
 							// setters
 							setStreet={setStreet}
 							setNumber={setNumber}

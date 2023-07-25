@@ -36,17 +36,18 @@ export interface IPropertyFilter {
 	maxFloor?: string;
 	minConstructionYear?: number;
 	maxConstructionYear?: number;
-	heatingType?: string;
-	frameType?: string;
-	furnished?: string;
 	managerId?: number;
 
+	// multiple
 	cities: string[];
 	states: string[];
 	categories: string[];
 	parentCategories: string[];
 	labels: number[];
 	points: [number, number][];
+	heatingType: string[];
+	frameType: string[];
+	furnished: string[];
 }
 
 export interface IPropertySuitableFor {

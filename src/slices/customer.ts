@@ -374,6 +374,8 @@ const slice = createSlice({
 			state.location.city = payload.location.city;
 			state.location.region = payload.location.region;
 			state.location.country = payload.location.country;
+			state.location.lat = payload.location.lat;
+			state.location.lng = payload.location.lng;
 
 			// labels
 			const labels: ILabel[] = payload.labels;

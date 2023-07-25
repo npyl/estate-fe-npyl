@@ -197,7 +197,7 @@ const TechnicalFeaturesAndInteriorForLandSection: React.FC<any> = (props) => {
                   height: "8px",
                 },
               }}
-              size="small"
+              
             >
               {details?.floorType?.map((option) => (
                 <MenuItem key={option} value={option}>

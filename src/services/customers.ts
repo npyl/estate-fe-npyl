@@ -10,9 +10,7 @@ interface ICustomerParams {
 export const customers = createApi({
 	reducerPath: "customers",
 	baseQuery: fetchBaseQuery({
-		baseUrl: `${
-			process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"
-		}/api/customers`,
+		baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/customers`,
 		prepareHeaders: (headers) => {
 			// By default, if we have a token in the store, let's use that for authenticated requests
 

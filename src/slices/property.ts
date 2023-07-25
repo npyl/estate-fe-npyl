@@ -831,12 +831,16 @@ const slice = createSlice({
 
 			// Location (convert from ILocationPOST to ILocation)
 			const location: ILocation = payload.location;
-			state.location.city = location?.city || state.location.city;
-			state.location.country = location?.country || state.location.country;
-			state.location.number = location?.number || state.location.number;
-			state.location.region = location?.region || state.location.region;
-			state.location.street = location?.street || state.location.street;
-			state.location.zipCode = location?.zipCode || state.location.zipCode;
+			state.location.city = location?.city || initialState.location.city;
+			state.location.country =
+				location?.country || initialState.location.country;
+			state.location.number = location?.number || initialState.location.number;
+			state.location.region = location?.region || initialState.location.region;
+			state.location.street = location?.street || initialState.location.street;
+			state.location.zipCode =
+				location?.zipCode || initialState.location.zipCode;
+			state.location.lat = location?.lat || initialState.location.lat;
+			state.location.lng = location?.lng || initialState.location.lng;
 
 			// map labels
 			state.labelIDs = payload.labels

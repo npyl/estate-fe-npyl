@@ -48,9 +48,7 @@ interface IPropertySearchParams {
 export const properties = createApi({
 	reducerPath: "properties",
 	baseQuery: fetchBaseQuery({
-		baseUrl: `${
-			process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080"
-		}/api/property`,
+		baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/property`,
 		prepareHeaders: (headers) => {
 			// By default, if we have a token in the store, let's use that for authenticated requests
 
@@ -105,7 +103,7 @@ export const properties = createApi({
 				method: "POST",
 				body: props.body,
 			}),
-			invalidatesTags: ["Properties"],
+			invalidatesTags: ["Properties", "PropertyById"],
 		}),
 		createProperty: builder.mutation<number, ICreatePropertyParams>({
 			query: (dataToSend: ICreatePropertyParams) => ({
@@ -125,7 +123,6 @@ export const properties = createApi({
 				body: filterParam.filter,
 				params: { page: filterParam.page, pageSize: filterParam.pageSize },
 			}),
-			invalidatesTags: ["Properties"],
 		}),
 		suggestForCustomer: builder.query<IProperties[], number>({
 			query: (id: number) => ({
@@ -155,6 +152,14 @@ export const properties = createApi({
 			query: (code: string) => {
 				return {
 					url: "/check/code",
+					params: { code },
+				};
+			},
+		}),
+		checkKeyCodeExists: builder.query<boolean, string>({
+			query: (code: string) => {
+				return {
+					url: "/check/keycode",
 					params: { code },
 				};
 			},
@@ -206,6 +211,7 @@ export const {
 
 	// check
 	useLazyCheckCodeExistsQuery,
+	useLazyCheckKeyCodeExistsQuery,
 
 	// images & files
 	useAddPropertyImageMutation,

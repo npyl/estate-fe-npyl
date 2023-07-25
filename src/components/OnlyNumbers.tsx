@@ -1,6 +1,6 @@
 import { InputAdornment, TextField, TextFieldProps } from "@mui/material";
 
-interface OnlyNumbersInputProps
+export interface OnlyNumbersInputProps
 	extends Omit<TextFieldProps, "label" | "value" | "onChange" | "disabled"> {
 	label: string;
 	value?: number | string;
