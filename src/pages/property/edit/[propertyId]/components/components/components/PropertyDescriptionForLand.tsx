@@ -115,7 +115,6 @@ const PropertyDescriptionForLandSection: React.FC<any> = (props) => {
                   height: "8px",
                 },
               }}
-              size="small"
             >
               {details?.orientation?.map((option) => (
                 <MenuItem key={option} value={option}>
@@ -140,7 +139,6 @@ const PropertyDescriptionForLandSection: React.FC<any> = (props) => {
                   height: "8px",
                 },
               }}
-              size="small"
             >
               {details?.accessibility?.map((option) => (
                 <MenuItem key={option} value={option}>
@@ -164,7 +162,6 @@ const PropertyDescriptionForLandSection: React.FC<any> = (props) => {
                   height: "8px",
                 },
               }}
-              size="small"
             >
               {details?.landUse?.map((option) => (
                 <MenuItem key={option} value={option}>

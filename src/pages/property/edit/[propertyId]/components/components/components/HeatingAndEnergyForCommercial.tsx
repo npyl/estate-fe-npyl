@@ -72,7 +72,6 @@ const HeatingAndEnergyForCommercialSection: React.FC<any> = (props) => {
                   height: "8px",
                 },
               }}
-              size="small"
             >
               {details?.heatingType?.map((option) => (
                 <MenuItem key={option} value={option}>
@@ -97,7 +96,6 @@ const HeatingAndEnergyForCommercialSection: React.FC<any> = (props) => {
                   height: "8px",
                 },
               }}
-              size="small"
             >
               {details?.energyClass?.map((option) => (
                 <MenuItem key={option} value={option}>
@@ -121,7 +119,6 @@ const HeatingAndEnergyForCommercialSection: React.FC<any> = (props) => {
                   height: "8px",
                 },
               }}
-              size="small"
             >
               {details?.heatingSystem?.map((option) => (
                 <MenuItem key={option} value={option}>
@@ -146,7 +143,6 @@ const HeatingAndEnergyForCommercialSection: React.FC<any> = (props) => {
                   height: "8px",
                 },
               }}
-              size="small"
             >
               {details?.electricityType?.map((option) => (
                 <MenuItem key={option} value={option}>

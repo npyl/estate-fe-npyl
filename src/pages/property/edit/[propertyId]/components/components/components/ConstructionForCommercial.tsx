@@ -142,7 +142,6 @@ const ConstructionForCommercialSection: React.FC<any> = (props) => {
                   height: "8px",
                 },
               }}
-              size="small"
             >
               {/* //TODO: 1,2,3,4,5,6,7,8,9,10 dropdown and sent to the be as string  */}
               {details?.viewType?.map((option) => (
