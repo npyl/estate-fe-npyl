@@ -169,7 +169,7 @@ const BasicSection: React.FC<any> = () => {
           justifyContent: "left",
         }}
       >
-        <Typography variant='h6'>{t("Basic Details")}</Typography>
+        <Typography variant="h6">{t("Basic Details")}</Typography>
       </Box>
 
       <Grid item xs={12} padding={1}>
@@ -183,14 +183,13 @@ const BasicSection: React.FC<any> = () => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-start-adornment'
+              id="outlined-start-adornment"
               select
               label={t("Owner")}
               value={owner}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setOwner(event.target.value));
               }}
-              size='small'
             >
               {owners && owners.length > 0 ? (
                 owners?.map((option: ICustomer, index: number) => (
@@ -207,14 +206,13 @@ const BasicSection: React.FC<any> = () => {
           <Grid item xs={6}>
             <TextField
               fullWidth
-              id='outlined-start-adornment'
+              id="outlined-start-adornment"
               select
               label={t("Manager")}
               value={manager}
               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
                 dispatch(setManager(event.target.value));
               }}
-              size='small'
             >
               {managers && managers.length > 0 ? (
                 managers?.map((option, index) => (
@@ -229,10 +227,10 @@ const BasicSection: React.FC<any> = () => {
           </Grid>
           <Grid item xs={6}>
             <FormControl fullWidth>
-              <InputLabel id='demo-simple-select-label'>State</InputLabel>
+              <InputLabel id="demo-simple-select-label">State</InputLabel>
               <Select
-                labelId='demo-simple-select-label'
-                id='demo-simple-select'
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
                 value={state}
                 label={t("State")}
                 onChange={(e) => {
@@ -256,7 +254,7 @@ const BasicSection: React.FC<any> = () => {
               onChange={(value) => {
                 dispatch(setArea(value));
               }}
-              adornment='m²'
+              adornment="m²"
             />
           </Grid>
           <Grid item xs={6}>
@@ -266,7 +264,7 @@ const BasicSection: React.FC<any> = () => {
               onChange={(value) => {
                 dispatch(setPlotArea(value));
               }}
-              adornment='m²'
+              adornment="m²"
             />
           </Grid>
           <Grid item xs={6}>
@@ -276,7 +274,7 @@ const BasicSection: React.FC<any> = () => {
               onChange={(value) => {
                 dispatch(setPrice(value));
               }}
-              adornment='€'
+              adornment="€"
             />
           </Grid>
 
@@ -287,7 +285,7 @@ const BasicSection: React.FC<any> = () => {
               onChange={(value) => {
                 dispatch(setAvgUtils(value));
               }}
-              adornment='€/Month'
+              adornment="€/Month"
             />
           </Grid>
           <Grid item xs={6}>
@@ -316,13 +314,13 @@ const BasicSection: React.FC<any> = () => {
               onChange={(value) => {
                 dispatch(setEstimatedRentPrice(value));
               }}
-              adornment='€'
+              adornment="€"
             />
           </Grid>
           <Grid
             item
             xs={3}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -335,10 +333,10 @@ const BasicSection: React.FC<any> = () => {
                 dispatch(setDebatablePrice(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Floor Heating Checkbox" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               {t("Debatable Price")}
             </Typography>
           </Grid>
@@ -346,7 +344,7 @@ const BasicSection: React.FC<any> = () => {
           <Grid
             item
             xs={2}
-            flexDirection='row'
+            flexDirection="row"
             sx={{ display: "inline-flex", alignItems: "center" }}
           >
             <Checkbox
@@ -359,10 +357,10 @@ const BasicSection: React.FC<any> = () => {
                 dispatch(setAuction(checked));
               }}
               sx={{ cursor: "default" }}
-              color='primary'
+              color="primary"
               inputProps={{ "aria-label": "Floor Heating Checkbox" }}
             />
-            <Typography variant='body1' sx={{ ml: 0 }}>
+            <Typography variant="body1" sx={{ ml: 0 }}>
               {t("Auction")}
             </Typography>
           </Grid>
@@ -383,11 +381,11 @@ const BasicSection: React.FC<any> = () => {
               <Grid
                 item
                 xs={6}
-                flexDirection='row'
+                flexDirection="row"
                 sx={{ display: "inline-flex", alignItems: "center" }}
               >
                 <Checkbox
-                  id='outlined-controlled'
+                  id="outlined-controlled"
                   value={rented}
                   checked={rented}
                   onChange={(
@@ -397,17 +395,17 @@ const BasicSection: React.FC<any> = () => {
                     dispatch(setRented(checked));
                   }}
                   sx={{ cursor: "default" }}
-                  color='primary'
+                  color="primary"
                   inputProps={{ "aria-label": "Elevator" }}
                 />
-                <Typography variant='body1' sx={{ ml: 0 }}>
+                <Typography variant="body1" sx={{ ml: 0 }}>
                   {t("Rented")}
                 </Typography>
               </Grid>
 
               <Grid item xs={6}>
                 <DateFieldStyled
-                  label='Available After:'
+                  label="Available After:"
                   value={
                     availableAfter ? new Date(availableAfter) : currentDate
                   }
@@ -421,7 +419,7 @@ const BasicSection: React.FC<any> = () => {
 
               <Grid item xs={6}>
                 <DateFieldStyled
-                  label='Rental Period Start'
+                  label="Rental Period Start"
                   value={
                     rentalPeriodStart
                       ? new Date(rentalPeriodStart)
@@ -454,7 +452,7 @@ const BasicSection: React.FC<any> = () => {
                   onChange={(value) => {
                     dispatch(setCurrentRentPrice(value));
                   }}
-                  adornment='€'
+                  adornment="€"
                   disabled={!rented}
                 />
               </Grid>

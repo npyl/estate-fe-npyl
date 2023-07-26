@@ -143,12 +143,14 @@ const ConstructionForCommercialSection: React.FC<any> = (props) => {
                 },
               }}
             >
-              {/* //TODO: 1,2,3,4,5,6,7,8,9,10 dropdown and sent to the be as string  */}
-              {details?.viewType?.map((option) => (
-                <MenuItem key={option} value={option}>
-                  {option}
-                </MenuItem>
-              ))}
+              {[...Array(10)].map((_, index) => {
+                const value = String(index + 1); // Here we are converting number to string
+                return (
+                  <MenuItem key={value} value={value}>
+                    {value}
+                  </MenuItem>
+                );
+              })}
             </TextField>
           </Grid>
           <Grid
