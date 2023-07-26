@@ -1,4 +1,5 @@
 import "../../utils/highlight";
+
 // next
 import dynamic from "next/dynamic";
 // @mui
@@ -9,105 +10,115 @@ import { EditorProps } from "./types";
 import { useTranslation } from "react-i18next";
 
 const ReactQuill = dynamic(() => import("react-quill"), {
-  ssr: false,
-  loading: () => (
-    <Box
-      sx={{
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        position: "absolute",
-        bgcolor: "background.paper",
-      }}
-    >
-      Loading...
-    </Box>
-  ),
+	ssr: false,
+	loading: () => (
+		<Box
+			sx={{
+				top: 0,
+				left: 0,
+				right: 0,
+				bottom: 0,
+				position: "absolute",
+				bgcolor: "background.paper",
+			}}
+		>
+			Loading...
+		</Box>
+	),
 });
 
 const EditorToolbar = dynamic(() => import("./EditorToolbar"), {
-  ssr: false,
+	ssr: false,
 });
 
 export const formats = [
-  "align",
-  "background",
-  "blockquote",
-  "bold",
-  "bullet",
-  "code",
-  "code-block",
-  "color",
-  "direction",
-  "font",
-  "formula",
-  "header",
-  "image",
-  "indent",
-  "italic",
-  "link",
-  "list",
-  "script",
-  "size",
-  "strike",
-  "table",
-  "underline",
-  "emoji",
+	"align",
+	"background",
+	"blockquote",
+	"bold",
+	"bullet",
+	"code",
+	"code-block",
+	"color",
+	"direction",
+	"font",
+	"formula",
+	"header",
+	"image",
+	"indent",
+	"italic",
+	"link",
+	"list",
+	"script",
+	"size",
+	"strike",
+	"table",
+	"underline",
+	"emoji",
 ];
 
 // ----------------------------------------------------------------------
 
 export default function Editor({
-  id = "minimal-quill",
-  error,
-  value,
-  onChange,
-  simple = false,
-  helperText,
-  sx,
-  ...other
+	id = "minimal-quill",
+	error,
+	value,
+	onChange,
+	simple = false,
+	helperText,
+	sx,
+	...other
 }: EditorProps) {
-  const { t } = useTranslation();
+	const { t } = useTranslation();
 
-  const modules = {
-    toolbar: {
-      container: `#${id}`,
-    },
-    history: {
-      delay: 500,
-      maxStack: 300,
-      userOnly: true,
-    },
-    syntax: true,
-    clipboard: {
-      matchVisual: false,
-    },
-  };
+	// See: https://github.com/quilljs/quill/issues/1641
+	const toolbarId = "custom-toolbar";
+	const editorId = "custom-editor";
 
-  return (
-    <>
-      <StyledEditor
-        sx={{
-          ...(error && {
-            border: (theme) => `solid 1px ${theme.palette.error.main}`,
-          }),
-          ...sx,
-        }}
-      >
-        <EditorToolbar id={id} isSimple={simple} />
+	const modules = {
+		toolbar: {
+			container: `#${toolbarId}`,
+		},
+		history: {
+			delay: 500,
+			maxStack: 300,
+			userOnly: true,
+		},
+		syntax: {
+			highlight: (text: string) => hljs.highlightAuto(text).value,
+		},
+		clipboard: {
+			matchVisual: false,
+		},
+	};
 
-        <ReactQuill
-          value={value}
-          onChange={onChange}
-          modules={modules}
-          formats={formats}
-          placeholder={t("Write your Description").toString()}
-          {...other}
-        />
-      </StyledEditor>
+	return (
+		<>
+			<StyledEditor
+				sx={{
+					...(error && {
+						border: (theme) => `solid 1px ${theme.palette.error.main}`,
+					}),
+					...sx,
+				}}
+			>
+				<div id={toolbarId}>
+					<EditorToolbar id={toolbarId} isSimple={simple} />
+				</div>
 
-      {helperText && helperText}
-    </>
-  );
+				<div id={editorId}>
+					<ReactQuill
+						value={value}
+						onChange={onChange}
+						modules={modules}
+						formats={formats}
+						placeholder={t("Write your Description").toString()}
+						{...other}
+					/>
+				</div>
+			</StyledEditor>
+
+			{helperText && helperText}
+		</>
+	);
 }

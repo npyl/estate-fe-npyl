@@ -4,43 +4,129 @@ import { useSuggestForCustomerQuery } from "src/services/properties";
 import DataGridTable from "src/components/DataGrid";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
-
 import * as React from "react";
-import { useGetCustomerByIdQuery } from "src/services/customers";
-
 import Image from "src/components/image";
 
 const MatchingPropertiesSection: React.FC = () => {
   const router = useRouter();
   const { t } = useTranslation();
   const { customerId } = router.query;
+  type PropertyStatus =
+    | "SOLD"
+    | "SALE"
+    | "RENTED"
+    | "UNAVAILABLE"
+    | "RENT"
+    | "TAKEN"
+    | "UNDER_CONSTRUCTION"
+    | "UNDER_MAINTENANCE";
+
+  type Color = string;
+
+  type StatusColors = Record<PropertyStatus, Color>;
+
+  const STATUS_COLORS: StatusColors = {
+    SOLD: "#79798a",
+    SALE: "#57825e",
+    RENT: "#bd9e39",
+    RENTED: "#3e78c2",
+    UNAVAILABLE: "#c72c2e",
+    TAKEN: "#7d673e",
+    UNDER_CONSTRUCTION: "#A300D8",
+    UNDER_MAINTENANCE: "#E0067C",
+  };
+  function statusColor(params: GridCellParams) {
+    if (!params.value) {
+      return <></>;
+    }
+    const status = (params.value as string).trim();
+    const statusUpper = status.toUpperCase() as PropertyStatus;
+    // console.log("statusUpper:", statusUpper); // add this to debug the value
+    const color = STATUS_COLORS[statusUpper] || "#537f91"; // default color if status is not recognized
+
+    return (
+      <Box
+        sx={{
+          width: 150,
+          height: 30,
+          bgcolor: color,
+          color: "white",
+          borderRadius: "20px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        {status}
+      </Box>
+    );
+  }
   function renderImage(params: GridCellParams) {
     return (
       <>
-        <Image
-          src={`data:image/jpeg;base64,${params.formattedValue}` || ""}
-          alt=""
-          ratio="16/9"
-          width={1}
-        />
+        <Image src={`${params.formattedValue}` || ""} alt="" ratio="16/9" />
       </>
     );
   }
+
   const columns: GridColDef[] = [
     {
       field: "propertyImage",
-      headerName: "Photo",
+      headerName: "Thumbnail",
       width: 180,
+      align: "center",
+      headerAlign: "center",
+      renderCell: renderImage,
     },
     {
       field: "code",
-      headerName: "Code",
+      headerName: "Reference ID",
       width: 180,
+      headerAlign: "center",
+
+      align: "center",
+    },
+    {
+      field: "parentCategory",
+      width: 180,
+      align: "center",
+      headerAlign: "center",
+      headerName: "Category",
+    },
+    {
+      field: "category",
+      width: 180,
+      align: "center",
+      headerAlign: "center",
+      headerName: "Subcategory",
     },
     {
       field: "price",
-      headerName: "Price",
       width: 180,
+      headerAlign: "center",
+      align: "center",
+      headerName: "Price",
+      renderCell: (params: GridCellParams) => {
+        return params.value ? `${params.value} €` : "";
+      },
+    },
+    {
+      field: "state",
+      headerAlign: "center",
+      width: 180,
+      align: "center",
+      headerName: "Status",
+      renderCell: statusColor,
+    },
+    {
+      field: "area",
+      width: 180,
+      headerAlign: "center",
+      align: "center",
+      headerName: "Area",
+      renderCell: (params: GridCellParams) => {
+        return params.value ? `${params.value} m²` : "";
+      },
     },
   ];
 
