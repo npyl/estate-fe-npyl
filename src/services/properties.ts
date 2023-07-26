@@ -124,7 +124,7 @@ export const properties = createApi({
 				params: { page: filterParam.page, pageSize: filterParam.pageSize },
 			}),
 		}),
-		suggestForCustomer: builder.query<IProperties[], number>({
+		suggestForCustomer: builder.query<IPage<IProperties>, number>({
 			query: (id: number) => ({
 				url: "/customerSuggest",
 				params: { customerId: id },
@@ -172,7 +172,15 @@ export const properties = createApi({
 				method: "POST",
 				body: params.body,
 			}),
-			invalidatesTags: ["Properties"],
+		}),
+		editPropertyImage: builder.mutation<IFileResponse, IPropertyAddFileParams>({
+			// INFO: same with add but causes revalidate
+			query: (params: IPropertyAddFileParams) => ({
+				url: `/${params.id}/image`,
+				method: "POST",
+				body: params.body,
+			}),
+			invalidatesTags: ["PropertyById"],
 		}),
 
 		setPropertyThumbail: builder.mutation<void, IPropertySetThumbnailProps>({
@@ -180,7 +188,6 @@ export const properties = createApi({
 				url: `/${props.propertyId}/thumbnail/${props.imageKey}`,
 				method: "POST",
 			}),
-			invalidatesTags: ["Properties"],
 		}),
 
 		deletePropertyImage: builder.mutation<void, IDeleteImageProps>({
@@ -188,7 +195,6 @@ export const properties = createApi({
 				url: `/${propertyId}/image/${imageKey}`,
 				method: "DELETE",
 			}),
-			invalidatesTags: ["Properties"],
 		}),
 	}),
 });
@@ -208,6 +214,7 @@ export const {
 	useDeletePropertyMutation,
 	useFilterPropertiesMutation,
 	useSuggestForCustomerQuery,
+	useEditPropertyImageMutation,
 
 	// check
 	useLazyCheckCodeExistsQuery,
