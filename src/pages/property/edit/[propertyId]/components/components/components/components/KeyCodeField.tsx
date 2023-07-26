@@ -12,7 +12,7 @@ export const KeyCodeField = (props: KeyCodeFieldProps) => {
 
 	const { t } = useTranslation();
 
-	const [afterChange, setAfterChange] = useState(false);
+	const [initialKeyCode] = useState(keyCode);
 	const [error, setError] = useState("");
 
 	const [checkKeyCodeExists, { data: keyCodeExists }] =
@@ -24,22 +24,21 @@ export const KeyCodeField = (props: KeyCodeFieldProps) => {
 
 	// detect keyCode change
 	useMemo(() => {
-		if (!keyCode || !afterChange) return;
+		if (!keyCode) return;
+		if (initialKeyCode && initialKeyCode === keyCode) {
+			// prevent checking on property's keyCode
+			setError("");
+			return;
+		}
 		checkKeyCodeExists(keyCode);
-	}, [keyCode, afterChange]);
-
-	const handleChange = (
-		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-	) => {
-		setAfterChange(true); // ignore first value
-		onChange && onChange(event);
-	};
+	}, [keyCode]);
 
 	return (
 		<TextField
+			fullWidth
 			label={t("Key Code")}
 			value={keyCode}
-			onChange={handleChange}
+			onChange={onChange}
 			error={!!error}
 			helperText={error}
 			{...rest}

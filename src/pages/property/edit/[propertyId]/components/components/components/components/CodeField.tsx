@@ -12,7 +12,7 @@ export const CodeField = (props: CodeFieldProps) => {
 
 	const { t } = useTranslation();
 
-	const [afterChange, setAfterChange] = useState(false);
+	const [initialCode] = useState(code);
 	const [error, setError] = useState("");
 
 	const [checkCodeExists, { data: codeExists }] = useLazyCheckCodeExistsQuery();
@@ -23,22 +23,21 @@ export const CodeField = (props: CodeFieldProps) => {
 
 	// detect code change
 	useMemo(() => {
-		if (!code || !afterChange) return;
+		if (!code) return;
+		if (initialCode && initialCode === code) {
+			// prevent checking on property's code
+			setError("");
+			return;
+		}
 		checkCodeExists(code);
-	}, [code, afterChange]);
-
-	const handleChange = (
-		event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-	) => {
-		setAfterChange(true); // ignore first value
-		onChange && onChange(event);
-	};
+	}, [code]);
 
 	return (
 		<TextField
+			fullWidth
 			label={t("Code")}
 			value={code}
-			onChange={handleChange}
+			onChange={onChange}
 			error={!!error}
 			helperText={error}
 			{...rest}
