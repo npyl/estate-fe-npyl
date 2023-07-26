@@ -123,6 +123,40 @@ const slice = createSlice({
 			state[key] = initialValue;
 		},
 
+		resetBasic: (state) => {
+			state.code = initialState.code;
+			state.managerId = initialState.managerId;
+			state.states = initialState.states;
+			state.parentCategories = initialState.parentCategories;
+			state.categories = initialState.categories;
+			state.minPrice = initialState.minPrice;
+			state.maxPrice = initialState.maxPrice;
+			state.minArea = initialState.minArea;
+			state.maxArea = initialState.maxArea;
+			state.labels = initialState.labels;
+		},
+		resetBedrooms: (state) => {
+			state.minBedrooms = initialState.minBedrooms;
+			state.maxBedrooms = initialState.maxBedrooms;
+		},
+		resetFloor: (state) => {
+			state.minFloor = initialState.minFloor;
+			state.maxFloor = initialState.maxFloor;
+		},
+		resetFrameType: (state) => {
+			state.frameType = initialState.frameType;
+		},
+		resetFurnished: (state) => {
+			state.furnished = initialState.furnished;
+		},
+		resetHeatingType: (state) => {
+			state.heatingType = initialState.heatingType;
+		},
+		resetConstructionYear: (state) => {
+			state.minConstructionYear = initialState.minConstructionYear;
+			state.maxConstructionYear = initialState.maxConstructionYear;
+		},
+
 		resetState: () => {
 			return initialState;
 		},
@@ -154,10 +188,19 @@ export const {
 	setSubCategories,
 	setParentCategories,
 
+	// delete
 	deleteSubCategory,
 	deleteState,
-
 	deleteFilter,
+
+	// reset
+	resetBasic,
+	resetBedrooms,
+	resetFloor,
+	resetFrameType,
+	resetFurnished,
+	resetHeatingType,
+	resetConstructionYear,
 	resetState,
 } = slice.actions;
 

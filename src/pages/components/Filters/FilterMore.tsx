@@ -11,7 +11,8 @@ import {
 	Stack,
 	Typography,
 } from "@mui/material";
-import { StyledDialogContent } from "./styles";
+
+import { ClearableDialogContent } from "./components/ClearableDialogContent";
 
 import { useSelector } from "react-redux";
 import { useDispatch } from "src/store";
@@ -27,6 +28,7 @@ import sumOfChangedProperties, {
 	selectMinBedrooms,
 	selectMinConstructionYear,
 	selectMinFloor,
+	// setters
 	toggleFrameType,
 	toggleFurnished,
 	toggleHeatingType,
@@ -36,6 +38,13 @@ import sumOfChangedProperties, {
 	setMinBedrooms,
 	setMinConstructionYear,
 	setMinFloor,
+	// reset
+	resetBasic,
+	resetBedrooms,
+	resetFloor,
+	resetFrameType,
+	resetHeatingType,
+	resetFurnished,
 } from "src/slices/filters";
 
 import ChosenFilters from "./ChosenFilters";
@@ -67,6 +76,7 @@ export default function FilterMore({
 	const { data } = useAllGlobalsQuery();
 
 	const changedPropsCount = useSelector(sumOfChangedProperties);
+
 	const frameType = useSelector(selectFrameType);
 	const furnished = useSelector(selectFurnished);
 	const heatingType = useSelector(selectHeatingType);
@@ -84,6 +94,7 @@ export default function FilterMore({
 			title: "Frame Type",
 			options: data?.property.details.frameType,
 			onClick: toggleFrameType,
+			onReset: resetFrameType,
 		},
 		{
 			id: "Furnished",
@@ -91,6 +102,7 @@ export default function FilterMore({
 			title: "Furnished",
 			options: data?.property.details.furnished,
 			onClick: toggleFurnished,
+			onReset: resetFurnished,
 		},
 		{
 			id: "heatingType",
@@ -98,6 +110,7 @@ export default function FilterMore({
 			values: heatingType,
 			options: data?.property.details.heatingType,
 			onClick: toggleHeatingType,
+			onReset: resetHeatingType,
 		},
 	];
 
@@ -114,12 +127,12 @@ export default function FilterMore({
 				</Stack>
 			</DialogTitle>
 			{changedPropsCount > 0 && (
-				<StyledDialogContent>
+				<ClearableDialogContent>
 					<ChosenFilters />
-				</StyledDialogContent>
+				</ClearableDialogContent>
 			)}
 
-			<StyledDialogContent dividers>
+			<ClearableDialogContent dividers reset={resetBasic}>
 				<Typography>Basic</Typography>
 
 				<Stack direction={"row"} spacing={1}>
@@ -136,10 +149,11 @@ export default function FilterMore({
 
 					<FilterLabels />
 				</Stack>
-			</StyledDialogContent>
-			<StyledDialogContent
+			</ClearableDialogContent>
+			<ClearableDialogContent
 				sx={{ maxHeight: "none", overflow: "visible" }}
 				dividers
+				reset={resetBedrooms}
 			>
 				<Typography>Bedrooms</Typography>
 				<Stack direction="row" spacing={1} alignItems={"center"}>
@@ -216,8 +230,8 @@ export default function FilterMore({
 						))}
 					</Select>
 				</Stack>
-			</StyledDialogContent>
-			<StyledDialogContent dividers>
+			</ClearableDialogContent>
+			<ClearableDialogContent dividers reset={resetFloor}>
 				<Typography>Floors</Typography>
 				<Stack direction="row" spacing={1} alignItems={"center"}>
 					<Typography>Από</Typography>
@@ -287,9 +301,9 @@ export default function FilterMore({
 						))}
 					</Select>
 				</Stack>
-			</StyledDialogContent>
+			</ClearableDialogContent>
 			{fields.map((field) => (
-				<StyledDialogContent key={field.id} dividers>
+				<ClearableDialogContent key={field.id} dividers reset={field.onReset}>
 					<Typography>{field.title}</Typography>
 					<Stack direction={"row"} spacing={1}>
 						{field.options &&
@@ -304,10 +318,10 @@ export default function FilterMore({
 								</Button>
 							))}
 					</Stack>
-				</StyledDialogContent>
+				</ClearableDialogContent>
 			))}
 
-			<StyledDialogContent dividers>
+			<ClearableDialogContent dividers>
 				<Typography>Construction Year</Typography>
 				<Slider
 					value={[minYear, maxYear]}
@@ -330,7 +344,7 @@ export default function FilterMore({
 					valueLabelDisplay="auto"
 					aria-labelledby="year-slider"
 				/>
-			</StyledDialogContent>
+			</ClearableDialogContent>
 			<DialogActions sx={{ justifyContent: "space-between" }}>
 				<Button color={"secondary"} onClick={onResetFilter}>
 					Εκκαθάριση όλων
