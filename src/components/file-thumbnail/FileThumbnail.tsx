@@ -24,7 +24,7 @@ export default function FileThumbnail({
 	sx,
 	imgSx,
 }: FileIconProps) {
-	const renderContent = file ? (
+	const renderContent = file.url ? (
 		<Image
 			src={file.url}
 			sx={{
@@ -35,7 +35,15 @@ export default function FileThumbnail({
 			}}
 		/>
 	) : (
-		<PreviewImage animate />
+		<PreviewImage
+			sx={{
+				width: 32,
+				height: 32,
+				flexShrink: 0,
+				...sx,
+			}}
+			animate
+		/>
 	);
 
 	return tooltip ? (
