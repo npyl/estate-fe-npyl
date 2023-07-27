@@ -7,7 +7,7 @@ import ConstructionForCommercialSection from "./components/ConstructionForCommer
 import DescriptionSection from "./components/Description";
 import DistancesSection from "./components/Distances";
 import FeaturesForCommercialSection from "./components/FeaturesForCommercial";
-import FileSection from "./components/Files";
+import BlueprintsSection from "./components/Blueprints";
 import HeatingAndEnergyForResidentialSection from "./components/HeatingAndEnergyForCommercial";
 import ImageSection from "./components/Images";
 import LocationSection from "src/components/Location/Location";
@@ -87,7 +87,7 @@ const CommercialFormSection: React.FC<any> = () => {
 						<HeatingAndEnergyForResidentialSection />
 						<AreasSection />
 						<DistancesSection />
-						<FileSection />
+						<BlueprintsSection />
 						<NotesSection />
 					</Stack>
 				</Grid>

@@ -6,10 +6,13 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { selectPropertyBlueprints } from "src/slices/property/files";
 import { IPropertyBlueprintPOST } from "src/types/file";
-import { useAddPropertyBlueprintMutation } from "src/services/properties";
+import {
+	properties,
+	useAddPropertyBlueprintMutation,
+} from "src/services/properties";
 import { useRouter } from "next/router";
 
-const FileSection: React.FC = () => {
+const BlueprintsSection: React.FC = () => {
 	const dispatch = useDispatch();
 	const router = useRouter();
 	const { t } = useTranslation();
@@ -63,7 +66,7 @@ const FileSection: React.FC = () => {
 
 	const handleDropMultiFile = useCallback(
 		(acceptedFiles: File[]) =>
-			acceptedFiles.forEach((file) => uploadFile(file)),
+			acceptedFiles.forEach((file) => uploadFile(file).then(() => reRender())),
 		[blueprints]
 	);
 
@@ -75,6 +78,10 @@ const FileSection: React.FC = () => {
 	const handleRemoveFile = (inputFile: File | string) => {};
 
 	const handleRemoveAllFileData = () => {};
+
+	const reRender = () => {
+		dispatch(properties.util.invalidateTags(["PropertyById"]));
+	};
 
 	return (
 		<Card>
@@ -92,4 +99,4 @@ const FileSection: React.FC = () => {
 		</Card>
 	);
 };
-export default FileSection;
+export default BlueprintsSection;

@@ -5,7 +5,7 @@ import BasicSection from "./components/BasicDetails";
 import ConstructionForOtherSection from "./components/ConstructionForOther";
 import DescriptionSection from "./components/Description";
 import FeaturesForOtherSection from "./components/FeaturesForOther";
-import FileSection from "./components/Files";
+import BlueprintsSection from "./components/Blueprints";
 import HeatingAndEnergyForCommercialSection from "./components/HeatingAndEnergyForCommercial";
 import ImageSection from "./components/Images";
 import LocationSection from "src/components/Location/Location";
@@ -85,7 +85,7 @@ const OtherFormSection: React.FC<any> = (props) => {
 						<ConstructionForOtherSection />
 						<FeaturesForOtherSection />
 						<SuitableForForOtherSection />
-						<FileSection />
+						<BlueprintsSection />
 					</Stack>
 				</Grid>
 				<Grid item xs={6}>

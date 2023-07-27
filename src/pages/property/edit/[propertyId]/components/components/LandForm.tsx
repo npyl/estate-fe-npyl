@@ -4,7 +4,7 @@ import * as React from "react";
 import BasicForLandSection from "./components/BasicDetailsForLand";
 import DescriptionSection from "./components/Description";
 import FeaturesForLandSection from "./components/FeaturesForLand";
-import FileSection from "./components/Files";
+import BlueprintsSection from "./components/Blueprints";
 import ImageSection from "./components/Images";
 import LocationSection from "src/components/Location/Location";
 import PropertyDescriptionForLandSection from "./components/PropertyDescriptionForLand";
@@ -81,7 +81,7 @@ const LandFormSection: React.FC<any> = () => {
 						<TechnicalFeaturesAndInteriorForLandSection />
 						<PropertyDescriptionForLandSection />
 						<FeaturesForLandSection />
-						<FileSection />
+						<BlueprintsSection />
 					</Stack>
 				</Grid>
 				<Grid item xs={6}>

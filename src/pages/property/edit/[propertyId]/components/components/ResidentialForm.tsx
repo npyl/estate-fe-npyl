@@ -8,7 +8,7 @@ import ConstructionForResidentialSection from "./components/ConstructionForResid
 import DescriptionSection from "./components/Description";
 import DistancesSection from "./components/Distances";
 import FeaturesSection from "./components/Features";
-import FileSection from "./components/Files";
+import BlueprintsSection from "./components/Blueprints";
 import HeatingAndEnergySection from "./components/HeatingAndEnergy";
 import ImageSection from "./components/Images";
 import LocationSection from "src/components/Location/Location";
@@ -99,7 +99,7 @@ const ResidentialFormSection: React.FC<any> = (props) => {
 						<ConstructionForResidentialSection />
 						<AreasSection />
 						<DistancesSection />
-						<FileSection />
+						<BlueprintsSection />
 						<VideoLinkSection></VideoLinkSection>
 						<NotesSection />
 					</Stack>

@@ -5,15 +5,11 @@ import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import Form from "./components/Form";
-import {
-	useEditPropertyMutation,
-	useGetPropertyBlueprintsQuery,
-} from "src/services/properties";
+import { useEditPropertyMutation } from "src/services/properties";
 import { setInitialState, selectAll, resetState } from "src/slices/property";
 import {
 	resetState as resetFiles,
 	setInitialState as setInitialFilesState,
-	setPropertyBlueprints,
 } from "src/slices/property/files";
 import { resetState as resetLabels } from "src/slices/labels";
 import {
@@ -34,7 +30,6 @@ const EditPropertyPage: NextPage = () => {
 
 	const { data: fetchedProperty, isSuccess: isPropertySuccess } =
 		useGetPropertyByIdQuery(parseInt(propertyId as string));
-	const { data: blueprints } = useGetPropertyBlueprintsQuery(+propertyId!);
 	const [edit, { isSuccess: isEditSuccess, isLoading: isEditLoading }] =
 		useEditPropertyMutation();
 
@@ -56,7 +51,7 @@ const EditPropertyPage: NextPage = () => {
 		dispatch(
 			setInitialFilesState({
 				propertyImages: fetchedProperty.images,
-				propertyBlueprints: [],
+				propertyBlueprints: fetchedProperty.blueprints,
 			})
 		);
 		dispatch(setInitialNotesState(fetchedProperty.notes));
@@ -68,13 +63,6 @@ const EditPropertyPage: NextPage = () => {
 		resetEverything();
 		setEverythingIsClear(true); // prevent race condition between reset and setInitialState
 	}, []);
-
-	// blueprints
-	useEffect(() => {
-		if (!everythingIsClear || !blueprints) return;
-
-		dispatch(setPropertyBlueprints(blueprints));
-	}, [everythingIsClear, blueprints]);
 
 	const performUpload = () => {
 		edit({ id: +propertyId!, body: body });
