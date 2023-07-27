@@ -9,6 +9,7 @@ import { IPropertyBlueprintPOST } from "src/types/file";
 import {
 	properties,
 	useAddPropertyBlueprintMutation,
+	useDeletePropertyBlueprintMutation,
 } from "src/services/properties";
 import { useRouter } from "next/router";
 
@@ -22,6 +23,7 @@ const BlueprintsSection: React.FC = () => {
 	const blueprints = useSelector(selectPropertyBlueprints);
 
 	const [addBlueprint] = useAddPropertyBlueprintMutation();
+	const [deleteBlueprint] = useDeletePropertyBlueprintMutation();
 
 	const uploadFile = async (
 		image: File
@@ -75,9 +77,23 @@ const BlueprintsSection: React.FC = () => {
 		[blueprints]
 	);
 
-	const handleRemoveFile = (inputFile: File | string) => {};
+	const handleRemoveFile = (inputFile: File | string) => {
+		deleteBlueprint({
+			propertyId: +propertyId!,
+			imageKey: blueprints.filter(
+				(blueprint) => blueprint.url === (inputFile as string)
+			)[0].key,
+		});
+	};
 
-	const handleRemoveAllFileData = () => {};
+	const handleRemoveAllFileData = () => {
+		blueprints.forEach((blueprint) =>
+			deleteBlueprint({
+				propertyId: +propertyId!,
+				imageKey: blueprint.key,
+			})
+		);
+	};
 
 	const reRender = () => {
 		dispatch(properties.util.invalidateTags(["PropertyById"]));

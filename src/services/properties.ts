@@ -40,6 +40,7 @@ interface IDeleteImageProps {
 	propertyId: number;
 	imageKey: string;
 }
+type IDeleteBlueprintProps = IDeleteImageProps;
 interface IPropertyFilterParams {
 	filter: IPropertyFilter;
 	page: number;
@@ -221,7 +222,14 @@ export const properties = createApi({
 				method: "POST",
 				body: params.body,
 			}),
-			invalidatesTags: ["PropertyByIdBlueprints"],
+			invalidatesTags: ["PropertyById"],
+		}),
+		deletePropertyBlueprint: builder.mutation<void, IDeleteBlueprintProps>({
+			query: ({ propertyId, imageKey }: IDeleteBlueprintProps) => ({
+				url: `/${propertyId}/blueprint/${imageKey}`,
+				method: "DELETE",
+			}),
+			invalidatesTags: ["PropertyById"],
 		}),
 	}),
 });
@@ -254,4 +262,5 @@ export const {
 	useDeletePropertyImageMutation,
 
 	useAddPropertyBlueprintMutation,
+	useDeletePropertyBlueprintMutation,
 } = properties;
