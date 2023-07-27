@@ -17,6 +17,7 @@ import { useAuth } from "../../hooks/use-auth";
 import { Cog as CogIcon } from "../../icons/cog";
 import { SwitchHorizontalOutlined as SwitchHorizontalOutlinedIcon } from "../../icons/switch-horizontal-outlined";
 import { UserCircle as UserCircleIcon } from "../../icons/user-circle";
+import { useTranslation } from "react-i18next";
 
 interface AccountPopoverProps {
   anchorEl: null | Element;
@@ -42,7 +43,7 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
       toast.error("Unable to logout.");
     }
   };
-
+  const { t } = useTranslation();
   return (
     <Popover
       anchorEl={anchorEl}
@@ -85,42 +86,44 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
             ml: 1,
           }}
         >
-          <Typography variant='body1'>{user?.username}</Typography>
-          <Typography color='textSecondary' variant='body2'>
+          <Typography variant="body1">{user?.username}</Typography>
+          <Typography color="textSecondary" variant="body2">
             {user?.screenName}
           </Typography>
         </Box>
       </Box>
       <Divider />
       <Box sx={{ my: 1 }}>
-        <Link href='/profile'>
+        <Link href="/profile">
           <MenuItem>
             <ListItemIcon>
-              <UserCircleIcon fontSize='small' />
+              <UserCircleIcon fontSize="small" />
             </ListItemIcon>
             <ListItemText
-              primary={<Typography variant='body1'>Profile</Typography>}
+              primary={<Typography variant="body1">{t("Profile")}</Typography>}
             />
           </MenuItem>
         </Link>
-        <Link href='/account'>
+        <Link href="/account">
           <MenuItem>
             <ListItemIcon>
-              <CogIcon fontSize='small' />
+              <CogIcon fontSize="small" />
             </ListItemIcon>
             <ListItemText
-              primary={<Typography variant='body1'>Settings</Typography>}
+              primary={<Typography variant="body1">{t("Settings")}</Typography>}
             />
           </MenuItem>
         </Link>
-        <Link href='/'>
+        <Link href="/">
           <MenuItem>
             <ListItemIcon>
-              <SwitchHorizontalOutlinedIcon fontSize='small' />
+              <SwitchHorizontalOutlinedIcon fontSize="small" />
             </ListItemIcon>
             <ListItemText
               primary={
-                <Typography variant='body1'>Change organization</Typography>
+                <Typography variant="body1">
+                  {t("Change organization")}
+                </Typography>
               }
             />
           </MenuItem>
@@ -128,10 +131,10 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
         <Divider />
         <MenuItem onClick={handleLogout}>
           <ListItemIcon>
-            <LogoutIcon fontSize='small' />
+            <LogoutIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText
-            primary={<Typography variant='body1'>Logout</Typography>}
+            primary={<Typography variant="body1">{t("Logout")}</Typography>}
           />
         </MenuItem>
       </Box>

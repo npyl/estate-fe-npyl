@@ -20,6 +20,11 @@ const OwnedCustomerPropertiesSection: React.FC = () => {
   ) {
     return null;
   }
+  // Transform the data
+  const transformedData = data.ownedProperties.map((property) => ({
+    ...property,
+    propertyImageUrl: property.propertyImage?.url,
+  }));
   type PropertyStatus =
     | "SOLD"
     | "SALE"
@@ -50,7 +55,6 @@ const OwnedCustomerPropertiesSection: React.FC = () => {
     }
     const status = (params.value as string).trim();
     const statusUpper = status.toUpperCase() as PropertyStatus;
-    // console.log("statusUpper:", statusUpper); // add this to debug the value
     const color = STATUS_COLORS[statusUpper] || "#537f91"; // default color if status is not recognized
 
     return (
@@ -73,14 +77,14 @@ const OwnedCustomerPropertiesSection: React.FC = () => {
   function renderImage(params: GridCellParams) {
     return (
       <>
-        <Image src={`${params}` || ""} alt="" ratio="16/9" />
+        <Image src={`${params.formattedValue}` || ""} alt="" ratio="16/9" />
       </>
     );
   }
 
   const columns: GridColDef[] = [
     {
-      field: "propertyImage",
+      field: "propertyImageUrl",
       headerName: "Thumbnail",
       width: 180,
       align: "center",
@@ -162,7 +166,7 @@ const OwnedCustomerPropertiesSection: React.FC = () => {
         <Grid item xs={12}>
           <Paper>
             <DataGridTable
-              rows={data.ownedProperties}
+              rows={transformedData}
               columns={columns}
               resource={"property"}
               sortingBy={"firstName"}

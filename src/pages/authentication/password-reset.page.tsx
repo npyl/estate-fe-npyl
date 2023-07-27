@@ -8,9 +8,10 @@ import { GuestGuard } from "../../components/authentication/guest-guard";
 import { Logo } from "../../components/logo";
 import { useAuth } from "../../hooks/use-auth";
 import { gtm } from "../../lib/gtm";
+import { useTranslation } from "react-i18next";
 
 type Platform = "JWT";
-
+const { t } = useTranslation();
 const platformIcons: { [key in Platform]: string } = {
   JWT: "/static/icons/jwt.svg",
 };
@@ -27,10 +28,10 @@ const PasswordReset: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Password Reset | Material Kit Pro</title>
+        <title>{t("Password Reset | Material Kit Pro")}</title>
       </Head>
       <Box
-        component='main'
+        component="main"
         sx={{
           backgroundColor: "background.default",
           display: "flex",
@@ -39,7 +40,7 @@ const PasswordReset: NextPage = () => {
         }}
       >
         <Container
-          maxWidth='sm'
+          maxWidth="sm"
           sx={{
             py: {
               xs: "60px",
@@ -69,10 +70,10 @@ const PasswordReset: NextPage = () => {
               },
             }}
           >
-            <Typography color='textSecondary' variant='caption'>
-              The app authenticates via {platform}
+            <Typography color="textSecondary" variant="caption">
+              {t("The app authenticates via")} {platform}
             </Typography>
-            <img alt='Auth platform' src={platformIcons[platform]} />
+            <img alt="Auth platform" src={platformIcons[platform]} />
           </Box>
           <Card elevation={16} sx={{ p: 4 }}>
             <Box
@@ -83,7 +84,7 @@ const PasswordReset: NextPage = () => {
                 justifyContent: "center",
               }}
             >
-              <Link href='/'>
+              <Link href="/">
                 <Logo
                   sx={{
                     height: 40,
@@ -91,9 +92,9 @@ const PasswordReset: NextPage = () => {
                   }}
                 />
               </Link>
-              <Typography variant='h4'>Password Reset</Typography>
-              <Typography color='textSecondary' sx={{ mt: 2 }} variant='body2'>
-                Reset your account password using your code
+              <Typography variant="h4">{t("Password Reset")}</Typography>
+              <Typography color="textSecondary" sx={{ mt: 2 }} variant="body2">
+                {t("Reset your account password using your code")}
               </Typography>
             </Box>
 
