@@ -11,6 +11,7 @@ import {
 	IFileResponse,
 	IPropertyImagePOST,
 	IPropertyBlueprintPOST,
+	IPropertyBlueprint,
 } from "src/types/file";
 
 import { ILabel } from "src/types/label";
@@ -73,6 +74,7 @@ export const properties = createApi({
 
 		// attributes
 		"PropertyByIdLabels",
+		"PropertyByIdBlueprints",
 	],
 	endpoints: (builder) => ({
 		allProperties: builder.query<IProperties[], void>({
@@ -99,6 +101,10 @@ export const properties = createApi({
 		getPropertyLabels: builder.query<ILabel[], number>({
 			query: (propertyId: number) => `${propertyId}/labels`,
 			providesTags: ["PropertyByIdLabels"],
+		}),
+		getPropertyBlueprints: builder.query<IPropertyBlueprint[], number>({
+			query: (propertyId: number) => `${propertyId}/blueprints`,
+			providesTags: ["PropertyByIdBlueprints"],
 		}),
 
 		// mutations
@@ -211,10 +217,11 @@ export const properties = createApi({
 			IPropertyAddFileParams<IPropertyBlueprintPOST>
 		>({
 			query: (params: IPropertyAddFileParams<IPropertyBlueprintPOST>) => ({
-				url: `/${params.id}/image`,
+				url: `/${params.id}/blueprint`,
 				method: "POST",
 				body: params.body,
 			}),
+			invalidatesTags: ["PropertyByIdBlueprints"],
 		}),
 	}),
 });
@@ -227,6 +234,7 @@ export const {
 	useGetPropertyByCodeQuery,
 	useGetPropertyAttributeQuery,
 	useLazyGetPropertyLabelsQuery,
+	useGetPropertyBlueprintsQuery,
 
 	// mutations
 	useEditPropertyMutation,
