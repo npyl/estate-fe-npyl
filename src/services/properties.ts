@@ -229,6 +229,18 @@ export const properties = createApi({
 				method: "DELETE",
 			}),
 		}),
+
+		reorderPropertyImages: builder.mutation<
+			void,
+			IPropertyAddFileParams<string[]>
+		>({
+			query: (params: IPropertyAddFileParams<string[]>) => ({
+				url: `/${params.id}/reorder`,
+				method: "POST",
+				body: JSON.stringify(params.body),
+			}),
+			invalidatesTags: ["PropertyById"],
+		}),
 	}),
 });
 
@@ -261,4 +273,6 @@ export const {
 
 	useAddPropertyBlueprintMutation,
 	useDeletePropertyBlueprintMutation,
+
+	useReorderPropertyImagesMutation,
 } = properties;
