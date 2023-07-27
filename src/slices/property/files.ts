@@ -2,11 +2,11 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "src/store";
-import { IPropertyImage } from "src/types/file";
+import { IPropertyBlueprint, IPropertyImage } from "src/types/file";
 
 interface propertyFilesState {
 	propertyImages: IPropertyImage[];
-	propertyBlueprints: string[];
+	propertyBlueprints: IPropertyBlueprint[];
 }
 
 const initialState: propertyFilesState = {
