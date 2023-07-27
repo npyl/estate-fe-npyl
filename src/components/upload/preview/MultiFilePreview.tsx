@@ -1,12 +1,7 @@
-import { m } from "framer-motion";
 // @mui
 import { IconButton, Stack, Typography } from "@mui/material";
 import { alpha } from "@mui/material/styles";
-// utils
-import { fData } from "../../../utils/formatNumber";
-//
-import { varFade } from "../../animate";
-import FileThumbnail, { fileData } from "../../file-thumbnail";
+import FileThumbnail from "../../file-thumbnail";
 import Iconify from "../../iconify";
 //
 import { UploadProps } from "../types";
@@ -24,14 +19,10 @@ export default function MultiFilePreview({
 	}
 	return (
 		<>
-			{files.map((file) => {
-				const { key, name = "", size = 0 } = fileData(file);
-
-				const isNotFormatFile = typeof file === "string";
-
+			{files.map((file, index) => {
 				return thumbnail ? (
 					<Stack
-						key={key}
+						key={index}
 						alignItems="center"
 						display="inline-flex"
 						justifyContent="center"
@@ -76,7 +67,7 @@ export default function MultiFilePreview({
 					</Stack>
 				) : (
 					<Stack
-						key={key}
+						key={index}
 						spacing={2}
 						direction="row"
 						alignItems="center"
@@ -92,13 +83,7 @@ export default function MultiFilePreview({
 						<FileThumbnail file={file} />
 
 						<Stack flexGrow={1} sx={{ minWidth: 0 }}>
-							<Typography variant="subtitle2">
-								{isNotFormatFile ? file : name}
-							</Typography>
-
-							<Typography variant="caption" sx={{ color: "text.secondary" }}>
-								{isNotFormatFile ? "" : fData(size)}
-							</Typography>
+							<Typography variant="subtitle2">{file.filename}</Typography>
 						</Stack>
 
 						{onRemove && (

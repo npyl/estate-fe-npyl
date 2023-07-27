@@ -41,6 +41,9 @@ export interface IPropertyDocumentPOST {
 }
 
 export interface IPropertyBlueprint extends IPropertyDocument {}
+export interface IExtendedPropertyBlueprint extends IPropertyBlueprint {
+	filename: string;
+}
 export interface IPropertyBlueprintPOST extends IPropertyDocumentPOST {}
 
 export interface IFileModel {

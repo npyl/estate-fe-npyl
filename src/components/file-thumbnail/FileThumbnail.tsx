@@ -1,15 +1,14 @@
 import { Theme } from "@mui/material/styles";
 import { Tooltip, SxProps, Stack } from "@mui/material";
-//
-import { fileData } from "./utils";
 import DownloadButton from "./DownloadButton";
 import Image from "../image/Image";
 import PreviewImage from "../image/PreviewImage";
+import { IExtendedPropertyBlueprint } from "src/types/file";
 
 // ----------------------------------------------------------------------
 
 type FileIconProps = {
-	file: File | string;
+	file: IExtendedPropertyBlueprint;
 	tooltip?: boolean;
 	imageView?: boolean;
 	onDownload?: VoidFunction;
@@ -25,39 +24,22 @@ export default function FileThumbnail({
 	sx,
 	imgSx,
 }: FileIconProps) {
-	const { name = "", path = "", preview = "" } = fileData(file);
-
-	console.log("wtvr: ", file);
-
 	const renderContent = file ? (
-		typeof file === "string" ? (
-			<Image
-				src={file as string}
-				sx={{
-					width: 32,
-					height: 32,
-					flexShrink: 0,
-					...sx,
-				}}
-			/>
-		) : (
-			<Image
-				src={preview}
-				sx={{
-					width: 1,
-					height: 1,
-					flexShrink: 0,
-					objectFit: "cover",
-					...imgSx,
-				}}
-			/>
-		)
+		<Image
+			src={file.url}
+			sx={{
+				width: 32,
+				height: 32,
+				flexShrink: 0,
+				...sx,
+			}}
+		/>
 	) : (
 		<PreviewImage animate />
 	);
 
 	return tooltip ? (
-		<Tooltip title={name}>
+		<Tooltip title={file.filename}>
 			<Stack
 				flexShrink={0}
 				component="span"
