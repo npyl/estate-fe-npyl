@@ -3,6 +3,7 @@ import { Tooltip, SxProps, Stack } from "@mui/material";
 //
 import { fileData } from "./utils";
 import DownloadButton from "./DownloadButton";
+import Image from "../image/Image";
 import PreviewImage from "../image/PreviewImage";
 
 // ----------------------------------------------------------------------
@@ -26,9 +27,11 @@ export default function FileThumbnail({
 }: FileIconProps) {
 	const { name = "", path = "", preview = "" } = fileData(file);
 
-	const renderContent =
+	console.log("wtvr: ", file);
+
+	const renderContent = file ? (
 		typeof file === "string" ? (
-			<PreviewImage
+			<Image
 				src={file as string}
 				sx={{
 					width: 32,
@@ -38,7 +41,7 @@ export default function FileThumbnail({
 				}}
 			/>
 		) : (
-			<PreviewImage
+			<Image
 				src={preview}
 				sx={{
 					width: 1,
@@ -48,7 +51,10 @@ export default function FileThumbnail({
 					...imgSx,
 				}}
 			/>
-		);
+		)
+	) : (
+		<PreviewImage animate />
+	);
 
 	return tooltip ? (
 		<Tooltip title={name}>

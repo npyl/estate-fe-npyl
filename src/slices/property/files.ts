@@ -35,6 +35,22 @@ const slice = createSlice({
 		setPropertyBlueprints(state: propertyFilesState, { payload }): void {
 			state.propertyBlueprints = payload;
 		},
+		addPropertyBlueprint(state: propertyFilesState, { payload }): void {
+			state.propertyBlueprints.push(payload);
+		},
+		setCdnUrlForNextAvailableBlueprint(
+			state: propertyFilesState,
+			{ payload }
+		): void {
+			const cdnUrl = payload;
+
+			for (let i = 0; i < state.propertyBlueprints.length; i++)
+				if (state.propertyBlueprints[i] && !state.propertyBlueprints[i].url) {
+					state.propertyBlueprints[i].url = cdnUrl;
+					break;
+				}
+		},
+
 		setPropertyImages(state: propertyFilesState, { payload }): void {
 			state.propertyImages = payload;
 		},
@@ -72,7 +88,10 @@ export const {
 	addPropertyImage,
 	deletePropertyImage,
 	setCdnUrlForNextAvailable,
+
 	setPropertyBlueprints,
+	addPropertyBlueprint,
+	setCdnUrlForNextAvailableBlueprint,
 
 	resetState,
 } = slice.actions;

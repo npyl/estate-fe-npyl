@@ -4,10 +4,13 @@ import { useCallback, useMemo } from "react";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { selectPropertyBlueprints } from "src/slices/property/files";
+import {
+	addPropertyBlueprint,
+	selectPropertyBlueprints,
+	setCdnUrlForNextAvailableBlueprint,
+} from "src/slices/property/files";
 import { IPropertyBlueprintPOST } from "src/types/file";
 import {
-	properties,
 	useAddPropertyBlueprintMutation,
 	useDeletePropertyBlueprintMutation,
 } from "src/services/properties";
@@ -51,6 +54,8 @@ const BlueprintsSection: React.FC = () => {
 		const url = fileResponse.url;
 		const cdnUrl = fileResponse.cdnUrl;
 
+		dispatch(addPropertyBlueprint({ ...body, key }));
+
 		// PUT to amazon url
 		const response = await fetch(url, {
 			method: "PUT",
@@ -63,12 +68,14 @@ const BlueprintsSection: React.FC = () => {
 		if (!response) throw new Error("PUT request failed: " + response);
 		if (!response.ok) throw new Error("Uploading the image failed!");
 
+		dispatch(setCdnUrlForNextAvailableBlueprint(cdnUrl));
+
 		return { cdnUrl, key };
 	};
 
 	const handleDropMultiFile = useCallback(
 		(acceptedFiles: File[]) =>
-			acceptedFiles.forEach((file) => uploadFile(file).then(() => reRender())),
+			acceptedFiles.forEach((file) => uploadFile(file)),
 		[blueprints]
 	);
 
@@ -93,10 +100,6 @@ const BlueprintsSection: React.FC = () => {
 				imageKey: blueprint.key,
 			})
 		);
-	};
-
-	const reRender = () => {
-		dispatch(properties.util.invalidateTags(["PropertyById"]));
 	};
 
 	return (
