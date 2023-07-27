@@ -1,170 +1,171 @@
 import {
-	Box,
-	Collapse,
-	IconButton,
-	Paper,
-	Table,
-	TableBody,
-	TableCell,
-	TableContainer,
-	TableHead,
-	TableRow,
-	Typography,
+  Box,
+  Collapse,
+  IconButton,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
 } from "@mui/material";
 
 import {
-	KeyboardArrowUp as KeyboardArrowUpIcon,
-	KeyboardArrowDown as KeyboardArrowDownIcon,
+  KeyboardArrowUp as KeyboardArrowUpIcon,
+  KeyboardArrowDown as KeyboardArrowDownIcon,
 } from "@mui/icons-material";
 
 import { Fragment, useState } from "react";
 
 import { ContactNotification } from "src/types/notification";
 import Iconify from "src/components/iconify";
+import { useTranslation } from "react-i18next";
 
 export function createRow(props: ContactNotification) {
-	const {
-		customerName,
-		customerEmail,
-		customerMobile,
-		message,
-		notificationDate,
-		notificationType,
-		propertyCode,
-		tourDate,
-		tourTime,
-		tourType,
-		viewed,
-	} = props;
+  const {
+    customerName,
+    customerEmail,
+    customerMobile,
+    message,
+    notificationDate,
+    notificationType,
+    propertyCode,
+    tourDate,
+    tourTime,
+    tourType,
+    viewed,
+  } = props;
 
-	return {
-		customerName,
-		customerEmail,
-		customerMobile,
-		message,
-		notificationDate,
-		notificationType,
-		propertyCode,
-		tourDate,
-		tourTime,
-		tourType,
-		history: [
-			{
-				date: "2020-01-05",
-				customerId: "11091700",
-				amount: 3,
-			},
-			{
-				date: "2020-01-02",
-				customerId: "Anonymous",
-				amount: 1,
-			},
-		],
-	};
+  return {
+    customerName,
+    customerEmail,
+    customerMobile,
+    message,
+    notificationDate,
+    notificationType,
+    propertyCode,
+    tourDate,
+    tourTime,
+    tourType,
+    history: [
+      {
+        date: "2020-01-05",
+        customerId: "11091700",
+        amount: 3,
+      },
+      {
+        date: "2020-01-02",
+        customerId: "Anonymous",
+        amount: 1,
+      },
+    ],
+  };
 }
-
+const { t } = useTranslation();
 function Row(props: {
-	row: ReturnType<typeof createRow>;
-	onRemove: () => void;
+  row: ReturnType<typeof createRow>;
+  onRemove: () => void;
 }) {
-	const { row, onRemove } = props;
-	const [open, setOpen] = useState(false);
+  const { row, onRemove } = props;
+  const [open, setOpen] = useState(false);
 
-	return (
-		<Fragment>
-			<TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
-				<TableCell>
-					<IconButton
-						aria-label="expand row"
-						size="small"
-						onClick={() => setOpen(!open)}
-					>
-						{open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-					</IconButton>
-				</TableCell>
-				<TableCell component="th" scope="row">
-					{row.customerName}
-				</TableCell>
-				<TableCell align="right">{row.customerEmail}</TableCell>
-				<TableCell align="right">{row.customerMobile}</TableCell>
-				<TableCell align="right">{row.message}</TableCell>
-				<TableCell align="right">{row.notificationDate}</TableCell>
+  return (
+    <Fragment>
+      <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
+        <TableCell>
+          <IconButton
+            aria-label="expand row"
+            size="small"
+            onClick={() => setOpen(!open)}
+          >
+            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+          </IconButton>
+        </TableCell>
+        <TableCell component="th" scope="row">
+          {row.customerName}
+        </TableCell>
+        <TableCell align="right">{row.customerEmail}</TableCell>
+        <TableCell align="right">{row.customerMobile}</TableCell>
+        <TableCell align="right">{row.message}</TableCell>
+        <TableCell align="right">{row.notificationDate}</TableCell>
 
-				<TableCell align="right">
-					<IconButton onClick={onRemove}>
-						<Iconify icon={"eva:trash-2-outline"} />
-					</IconButton>
-				</TableCell>
-			</TableRow>
-			<TableRow>
-				<TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-					<Collapse in={open} timeout="auto" unmountOnExit>
-						<Box sx={{ margin: 1 }}>
-							<Typography variant="h6" gutterBottom component="div">
-								History
-							</Typography>
-							<Table size="small" aria-label="purchases">
-								<TableHead>
-									<TableRow>
-										<TableCell>Date</TableCell>
-										<TableCell>Customer</TableCell>
-										<TableCell align="right">Amount</TableCell>
-										<TableCell align="right">Total price ($)</TableCell>
-									</TableRow>
-								</TableHead>
-								<TableBody>
-									{row.history.map((historyRow) => (
-										<TableRow key={historyRow.date}>
-											<TableCell component="th" scope="row">
-												{historyRow.date}
-											</TableCell>
-											<TableCell>{historyRow.customerId}</TableCell>
-											<TableCell align="right">{historyRow.amount}</TableCell>
-											<TableCell align="right">
-												{Math.round(historyRow.amount * -1 * 100) / 100}
-											</TableCell>
-										</TableRow>
-									))}
-								</TableBody>
-							</Table>
-						</Box>
-					</Collapse>
-				</TableCell>
-			</TableRow>
-		</Fragment>
-	);
+        <TableCell align="right">
+          <IconButton onClick={onRemove}>
+            <Iconify icon={"eva:trash-2-outline"} />
+          </IconButton>
+        </TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <Box sx={{ margin: 1 }}>
+              <Typography variant="h6" gutterBottom component="div">
+                {t("History")}
+              </Typography>
+              <Table size="small" aria-label="purchases">
+                <TableHead>
+                  <TableRow>
+                    <TableCell> {t("Date")}</TableCell>
+                    <TableCell> {t("Customer")}</TableCell>
+                    <TableCell align="right"> {t("Amount")}</TableCell>
+                    <TableCell align="right"> {t("Total price ($)")}</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {row.history.map((historyRow) => (
+                    <TableRow key={historyRow.date}>
+                      <TableCell component="th" scope="row">
+                        {historyRow.date}
+                      </TableCell>
+                      <TableCell>{historyRow.customerId}</TableCell>
+                      <TableCell align="right">{historyRow.amount}</TableCell>
+                      <TableCell align="right">
+                        {Math.round(historyRow.amount * -1 * 100) / 100}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </Box>
+          </Collapse>
+        </TableCell>
+      </TableRow>
+    </Fragment>
+  );
 }
 
 export const CollapsibleTable = (props: {
-	rows: ReturnType<typeof createRow>[];
-	onRemove: (index: number) => void;
+  rows: ReturnType<typeof createRow>[];
+  onRemove: (index: number) => void;
 }) => {
-	const { rows, onRemove } = props;
+  const { rows, onRemove } = props;
 
-	return (
-		<TableContainer component={Paper}>
-			<Table aria-label="collapsible table">
-				<TableHead>
-					<TableRow>
-						<TableCell />
-						<TableCell>Name</TableCell>
-						<TableCell align="right">Email</TableCell>
-						<TableCell align="right">Mobile</TableCell>
-						<TableCell align="right">Message</TableCell>
-						<TableCell align="right">Notification Date</TableCell>
-						<TableCell />
-					</TableRow>
-				</TableHead>
-				<TableBody>
-					{rows.map((row, index) => (
-						<Row
-							key={row.customerName}
-							row={row}
-							onRemove={() => onRemove(index)}
-						/>
-					))}
-				</TableBody>
-			</Table>
-		</TableContainer>
-	);
+  return (
+    <TableContainer component={Paper}>
+      <Table aria-label="collapsible table">
+        <TableHead>
+          <TableRow>
+            <TableCell />
+            <TableCell> {t("Name")}</TableCell>
+            <TableCell align="right"> {t("Email")}</TableCell>
+            <TableCell align="right"> {t("Mobile")}</TableCell>
+            <TableCell align="right"> {t("Message")}</TableCell>
+            <TableCell align="right"> {t("Notification Date")}</TableCell>
+            <TableCell />
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {rows.map((row, index) => (
+            <Row
+              key={row.customerName}
+              row={row}
+              onRemove={() => onRemove(index)}
+            />
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
 };

@@ -1,6 +1,13 @@
 import ClearIcon from "@mui/icons-material/Clear";
-import { Button, Divider, IconButton } from "@mui/material";
-import { Stack } from "@mui/system";
+import {
+  Button,
+  Divider,
+  IconButton,
+  Tooltip,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
+import { Box, Stack, useTheme } from "@mui/system";
 import { useRouter } from "next/router";
 import { Fragment } from "react";
 import { useSelector } from "react-redux";
@@ -12,6 +19,8 @@ const Subbar = () => {
   const router = useRouter();
   const tabs = useSelector(selectTabs);
   const currentPath = router.asPath;
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const handleDeleteTab = (tabUuid: string, tabIndex: number) => {
     // Dispatch the delete actions
     dispatch(deleteTab(tabUuid));
@@ -31,25 +40,25 @@ const Subbar = () => {
     router.push(newTab.path);
   };
   return (
-    <Stack direction={"row"} spacing={2}>
+    <Stack direction={isSmallScreen ? "column" : "row"} spacing={1}>
       {tabs.map((tab, index) => (
         <Fragment key={index}>
-          <Stack
+          <Box
             sx={{
-              bgcolor: currentPath === tab.path ? "primary.main" : "unset",
-              padding: "0px 8px",
-              borderRadius: 4,
-              boxShadow: `rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px`,
+              borderBottom: 3,
+              borderBottomColor:
+                currentPath === tab.path ? "primary.main" : "transparent",
+              transition: "0.8s",
+              "&:hover": {
+                borderBottomColor: "primary.main",
+                cursor: "pointer",
+                transform: "scale(1.05)", // Scales up when hovered
+              },
             }}
-            direction={"row"}
-            alignItems={"center"}
           >
             <Button
               sx={{
-                minWidth: "90px",
-                padding: 0,
-                borderRadius: 0,
-                color: currentPath === tab.path ? "white" : "unset",
+                color: currentPath === tab.path ? "primary.main" : "#555",
                 "&:hover": {
                   background: "transparent",
                 },
@@ -58,23 +67,39 @@ const Subbar = () => {
               id={tab.title}
               onClick={() => router.push(tab.path)}
             >
-              {tab.title}
+              <Typography
+                variant="subtitle2" // smaller size
+                sx={{
+                  fontWeight: "300", // thinner weight
+                  textTransform: "capitalize",
+                }}
+              >
+                {tab.title}
+              </Typography>
+              {currentPath === tab.path && (
+                <>
+                  <Typography> __ </Typography>
+                  <Tooltip title="Delete tab" aria-label="delete ">
+                    <IconButton
+                      sx={{
+                        color:
+                          currentPath === tab.path ? "primary.main" : "unset",
+                        "&:hover": {
+                          background: "transparent",
+                        },
+                        marginLeft: 0,
+                        padding: 0,
+                      }}
+                      onClick={() => handleDeleteTab(tab.uuid, index)}
+                    >
+                      <ClearIcon sx={{ fontSize: isSmallScreen ? 8 : 10 }} />
+                    </IconButton>
+                  </Tooltip>
+                </>
+              )}
             </Button>
-            <IconButton
-              sx={{
-                padding: 0,
-                marginLeft: 1,
-                color: currentPath === tab.path ? "white" : "unset",
-                "&:hover": {
-                  background: "transparent",
-                },
-              }}
-              onClick={() => handleDeleteTab(tab.uuid, index)}
-            >
-              <ClearIcon sx={{ fontSize: 13 }} />
-            </IconButton>
-          </Stack>
-          {index !== tabs.length - 1 && (
+          </Box>
+          {!isSmallScreen && index !== tabs.length - 1 && (
             <Divider orientation="vertical" flexItem />
           )}
         </Fragment>

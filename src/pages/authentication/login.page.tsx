@@ -8,13 +8,14 @@ import { JWTLogin } from "../../components/authentication/jwt-login";
 import { Logo } from "../../components/logo";
 import { useAuth } from "../../hooks/use-auth";
 import { gtm } from "../../lib/gtm";
+import { useTranslation } from "react-i18next";
 
 type Platform = "JWT";
 
 const platformIcons: { [key in Platform]: string } = {
   JWT: "/static/icons/jwt.svg",
 };
-
+const { t } = useTranslation();
 const Login: NextPage = () => {
   const router = useRouter();
   const { platform }: { platform: Platform } = useAuth();
@@ -27,10 +28,10 @@ const Login: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Login</title>
+        <title>{t("Login")}</title>
       </Head>
       <Box
-        component='main'
+        component="main"
         sx={{
           backgroundImage: "background.default",
           display: "flex",
@@ -53,10 +54,10 @@ const Login: NextPage = () => {
           loop
           muted
         >
-          <source src='/static/background/site.mp4' type='video/mp4' />
+          <source src="/static/background/site.mp4" type="video/mp4" />
         </video>
         <Container
-          maxWidth='sm'
+          maxWidth="sm"
           sx={{
             py: {
               xs: "60px",
@@ -76,7 +77,7 @@ const Login: NextPage = () => {
                 justifyContent: "center",
               }}
             >
-              <Link href='/'>
+              <Link href="/">
                 <Logo
                   sx={{
                     height: 40,
@@ -84,9 +85,9 @@ const Login: NextPage = () => {
                   }}
                 />
               </Link>
-              <Typography variant='h4'>Log in</Typography>
-              <Typography color='textSecondary' sx={{ mt: 2 }} variant='body2'>
-                Sign in on the internal platform
+              <Typography variant="h4">{t("Log in")}</Typography>
+              <Typography color="textSecondary" sx={{ mt: 2 }} variant="body2">
+                {t("Sign in on the internal platform")}
               </Typography>
             </Box>
             <Box

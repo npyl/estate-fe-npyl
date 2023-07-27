@@ -7,9 +7,10 @@ import { GuestGuard } from "../../components/authentication/guest-guard";
 import { Logo } from "../../components/logo";
 import { useAuth } from "../../hooks/use-auth";
 import { gtm } from "../../lib/gtm";
+import { useTranslation } from "react-i18next";
 
 type Platform = "JWT";
-
+const { t } = useTranslation();
 const platformIcons: { [key in Platform]: string } = {
   JWT: "/static/icons/jwt.svg",
 };
@@ -24,10 +25,10 @@ const PasswordRecovery: NextPage = () => {
   return (
     <>
       <Head>
-        <title>Password Recovery | Material Kit Pro</title>
+        <title>{t("Password Recovery | Material Kit Pro")}</title>
       </Head>
       <Box
-        component='main'
+        component="main"
         sx={{
           backgroundColor: "background.default",
           display: "flex",
@@ -36,7 +37,7 @@ const PasswordRecovery: NextPage = () => {
         }}
       >
         <Container
-          maxWidth='sm'
+          maxWidth="sm"
           sx={{
             py: {
               xs: "60px",
@@ -66,10 +67,10 @@ const PasswordRecovery: NextPage = () => {
               },
             }}
           >
-            <Typography color='textSecondary' variant='caption'>
-              The app authenticates via {platform}
+            <Typography color="textSecondary" variant="caption">
+              {t("The app authenticates via")} {platform}
             </Typography>
-            <img alt='Auth platform' src={platformIcons[platform]} />
+            <img alt="Auth platform" src={platformIcons[platform]} />
           </Box>
           <Card elevation={16} sx={{ p: 4 }}>
             <Box
@@ -80,7 +81,7 @@ const PasswordRecovery: NextPage = () => {
                 justifyContent: "center",
               }}
             >
-              <Link href='/'>
+              <Link href="/">
                 <Logo
                   sx={{
                     height: 40,
@@ -88,9 +89,9 @@ const PasswordRecovery: NextPage = () => {
                   }}
                 />
               </Link>
-              <Typography variant='h4'>Password Recovery</Typography>
-              <Typography color='textSecondary' sx={{ mt: 2 }} variant='body2'>
-                Tell us your email so we can send you a reset link
+              <Typography variant="h4">{t("Password Recovery")}</Typography>
+              <Typography color="textSecondary" sx={{ mt: 2 }} variant="body2">
+                {t("Tell us your email so we can send you a reset link")}
               </Typography>
             </Box>
             <Box
