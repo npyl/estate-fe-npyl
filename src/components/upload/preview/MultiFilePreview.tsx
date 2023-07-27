@@ -32,8 +32,6 @@ export default function MultiFilePreview({
 				return thumbnail ? (
 					<Stack
 						key={key}
-						component={m.div}
-						{...varFade().inUp}
 						alignItems="center"
 						display="inline-flex"
 						justifyContent="center"
@@ -79,8 +77,6 @@ export default function MultiFilePreview({
 				) : (
 					<Stack
 						key={key}
-						component={m.div}
-						{...varFade().inUp}
 						spacing={2}
 						direction="row"
 						alignItems="center"
@@ -96,7 +92,7 @@ export default function MultiFilePreview({
 						<FileThumbnail file={file} />
 
 						<Stack flexGrow={1} sx={{ minWidth: 0 }}>
-							<Typography variant="subtitle2" noWrap>
+							<Typography variant="subtitle2">
 								{isNotFormatFile ? file : name}
 							</Typography>
 
