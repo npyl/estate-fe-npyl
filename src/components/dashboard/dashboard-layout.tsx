@@ -2,7 +2,15 @@ import AddIcon from "@mui/icons-material/Add";
 import HomeIcon from "@mui/icons-material/Home";
 import LabelImportantIcon from "@mui/icons-material/LabelImportant";
 
-import { Box, Button, Divider, MenuItem, Paper, Stack } from "@mui/material";
+import {
+	Box,
+	Button,
+	Divider,
+	MenuItem,
+	Paper,
+	Stack,
+	Typography,
+} from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
@@ -11,13 +19,14 @@ import StyledMenu from "../StyledMenu";
 import { DashboardNavbar } from "./dashboard-navbar";
 import { DashboardSidebar } from "./dashboard-sidebar";
 import Subbar from "./dashboard-subbar";
-
+import { alpha } from "@mui/material/styles";
 import { addTab } from "src/slices/tabs";
 import { useDispatch } from "src/store";
 
 import { Users as UsersIcon } from "../../icons/users";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import { CircleNotifications } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 
 interface DashboardLayoutProps {
 	children?: ReactNode;
@@ -42,6 +51,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
 	const open = Boolean(anchorEl);
 
 	const dispatch = useDispatch();
+	const { t } = useTranslation();
 	const router = useRouter();
 
 	const propertyItemType = "property-menu-item";
@@ -98,7 +108,6 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
 
 		dispatch(addTab(tabConfig));
 	};
-
 	return (
 		<>
 			<DashboardLayoutRoot>
@@ -115,7 +124,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
 					<Paper
 						sx={{
 							marginTop: "24px",
-							padding: 2,
+							padding: 1,
 							overflowX: "auto",
 						}}
 					>
@@ -140,6 +149,23 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
 									sx={{
 										minWidth: "90px",
 										marginRight: "15px",
+										borderRadius: "50px",
+										fontFamily: "'Poppins', sans-serif",
+										fontSize: "1em",
+										color: "white",
+										backgroundImage:
+											"linear-gradient(45deg, #3f51b5 30%, #1a237e 90%)", // deep blue colors
+										boxShadow: (theme) =>
+											`0 3px 5px 2px ${alpha(theme.palette.primary.dark, 0.3)}`,
+										"&:hover": {
+											backgroundImage:
+												"linear-gradient(45deg, #1a237e 30%, #3f51b5 90%)",
+											boxShadow: (theme) =>
+												`0 3px 5px 2px ${alpha(
+													theme.palette.primary.dark,
+													0.3
+												)}`,
+										},
 									}}
 									id="create-menu-button"
 									aria-controls={open ? "create-menu" : undefined}
@@ -149,8 +175,17 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
 									disableElevation
 									onClick={showDropdown}
 								>
-									<AddIcon />
-									Create
+									<Box
+										sx={{
+											display: "flex",
+											justifyContent: "space-between",
+											spacing: "10px",
+											width: "100%",
+										}}
+									>
+										<AddIcon sx={{ ml: 1 }} />
+										<Typography>{t("Create")}</Typography>
+									</Box>
 								</Button>
 							</Box>
 							<StyledMenu
@@ -167,28 +202,28 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
 									disableRipple
 								>
 									<HomeIcon />
-									Property
+									{t("Property")}
 								</MenuItem>
 								<MenuItem
 									onClick={(e) => startCreate(e, ownerItemType)}
 									disableRipple
 								>
 									<UsersIcon fontSize="small" />
-									Customer
+									{t("Customer")}
 								</MenuItem>
 								<MenuItem
 									onClick={(e) => startCreate(e, labelItemType)}
 									disableRipple
 								>
 									<LabelImportantIcon fontSize="small" />
-									Label
+									{t("Label")}
 								</MenuItem>
 								<MenuItem
 									onClick={(e) => startCreate(e, notificationItemType)}
 									disableRipple
 								>
 									<CircleNotifications fontSize="small" />
-									Notification
+									{t("Notification")}
 								</MenuItem>
 								<Divider sx={{ my: 0.5 }} />
 								<MenuItem
@@ -196,7 +231,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
 									disableRipple
 								>
 									<ManageAccountsIcon fontSize="small" />
-									Manager
+									{t("Manager")}
 								</MenuItem>
 							</StyledMenu>
 						</Stack>

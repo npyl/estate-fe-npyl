@@ -8,7 +8,7 @@ import ConstructionForResidentialSection from "./components/ConstructionForResid
 import DescriptionSection from "./components/Description";
 import DistancesSection from "./components/Distances";
 import FeaturesSection from "./components/Features";
-import FileSection from "./components/Files";
+import BlueprintsSection from "./components/Blueprints";
 import HeatingAndEnergySection from "./components/HeatingAndEnergy";
 import ImageSection from "./components/Images";
 import LocationSection from "src/components/Location/Location";
@@ -23,7 +23,6 @@ import { useDispatch } from "react-redux";
 
 import {
 	setPropertyImages,
-	setPropertyBlueprints,
 	setCdnUrlForNextAvailable,
 	deletePropertyImage,
 } from "src/slices/property/files";
@@ -50,7 +49,6 @@ import {
 } from "src/slices/property";
 
 import {
-	selectPropertyBlueprints,
 	selectPropertyImages,
 	addPropertyImage,
 } from "src/slices/property/files";
@@ -63,7 +61,6 @@ const ResidentialFormSection: React.FC<any> = (props) => {
 	const dispatch = useDispatch();
 
 	const images = useSelector(selectPropertyImages);
-	const blueprints = useSelector(selectPropertyBlueprints);
 
 	const state = useSelector(selectState);
 
@@ -102,13 +99,7 @@ const ResidentialFormSection: React.FC<any> = (props) => {
 						<ConstructionForResidentialSection />
 						<AreasSection />
 						<DistancesSection />
-
-						<FileSection
-							fileData={blueprints}
-							setFileData={(blueprints) => {
-								dispatch(setPropertyBlueprints(blueprints));
-							}}
-						/>
+						<BlueprintsSection />
 						<VideoLinkSection></VideoLinkSection>
 						<NotesSection />
 					</Stack>

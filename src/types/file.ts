@@ -27,6 +27,25 @@ export interface IPropertyImage {
 	thumbnail: boolean;
 }
 
+export interface IPropertyDocument {
+	id: number;
+	url: string;
+	key: string;
+}
+
+export interface IPropertyDocumentPOST {
+	id?: number;
+	key?: string;
+	filename: string;
+	contentType: string;
+}
+
+export interface IPropertyBlueprint extends IPropertyDocument {}
+export interface IExtendedPropertyBlueprint extends IPropertyBlueprint {
+	filename: string;
+}
+export interface IPropertyBlueprintPOST extends IPropertyDocumentPOST {}
+
 export interface IFileModel {
 	filename: string;
 	contentType: string;

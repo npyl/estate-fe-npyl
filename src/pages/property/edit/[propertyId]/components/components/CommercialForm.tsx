@@ -7,7 +7,7 @@ import ConstructionForCommercialSection from "./components/ConstructionForCommer
 import DescriptionSection from "./components/Description";
 import DistancesSection from "./components/Distances";
 import FeaturesForCommercialSection from "./components/FeaturesForCommercial";
-import FileSection from "./components/Files";
+import BlueprintsSection from "./components/Blueprints";
 import HeatingAndEnergyForResidentialSection from "./components/HeatingAndEnergyForCommercial";
 import ImageSection from "./components/Images";
 import LocationSection from "src/components/Location/Location";
@@ -21,10 +21,8 @@ import { useSelector, useDispatch } from "react-redux";
 import {
 	addPropertyImage,
 	deletePropertyImage,
-	selectPropertyBlueprints,
 	selectPropertyImages,
 	setCdnUrlForNextAvailable,
-	setPropertyBlueprints,
 	setPropertyImages,
 } from "src/slices/property/files";
 import NotesSection from "./components/NotesSection";
@@ -54,7 +52,6 @@ const CommercialFormSection: React.FC<any> = () => {
 	const dispatch = useDispatch();
 
 	const images = useSelector(selectPropertyImages);
-	const blueprints = useSelector(selectPropertyBlueprints);
 	const state = useSelector(selectState);
 
 	const street = useSelector(selectStreet);
@@ -90,12 +87,7 @@ const CommercialFormSection: React.FC<any> = () => {
 						<HeatingAndEnergyForResidentialSection />
 						<AreasSection />
 						<DistancesSection />
-						<FileSection
-							fileData={blueprints}
-							setFileData={(blueprints) => {
-								dispatch(setPropertyBlueprints(blueprints));
-							}}
-						/>
+						<BlueprintsSection />
 						<NotesSection />
 					</Stack>
 				</Grid>

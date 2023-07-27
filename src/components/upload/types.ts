@@ -2,7 +2,7 @@ import { DropzoneOptions } from "react-dropzone";
 // @mui
 import { SxProps } from "@mui/material";
 import { Theme } from "@mui/material/styles";
-import { IPropertyImage } from "src/types/file";
+import { IExtendedPropertyBlueprint, IPropertyImage } from "src/types/file";
 
 // ----------------------------------------------------------------------
 
@@ -23,10 +23,10 @@ export interface UploadProps extends DropzoneOptions {
 	file?: CustomFile | string | null;
 	onDelete?: VoidFunction;
 	//
-	files?: File[];
+	files?: IExtendedPropertyBlueprint[];
 	onImageClick?: (file: File) => void;
 	onUpload?: VoidFunction;
-	onRemove?: (file: CustomFile | string) => void;
+	onRemove?: (file: IExtendedPropertyBlueprint) => void;
 	onRemoveAll?: VoidFunction;
 }
 
@@ -44,7 +44,7 @@ export interface UploadPropertyImageProps extends DropzoneOptions {
 	files?: IPropertyImage[];
 	setFiles: (files: IPropertyImage[]) => void;
 	onImageClick?: (file: IPropertyImage) => void;
-	onReorder?: (sourceIndex: number, newIndex: number) => void;
+	onReorder?: () => void;
 	onUpload?: VoidFunction;
 	onRemove?: (file: IPropertyImage) => void;
 	onRemoveAll?: VoidFunction;

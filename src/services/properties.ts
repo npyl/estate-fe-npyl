@@ -7,7 +7,13 @@ import {
 } from "src/types/properties";
 
 import IPage from "src/types/page";
-import { IFileResponse, IPropertyImagePOST } from "src/types/file";
+import {
+	IFileResponse,
+	IPropertyImagePOST,
+	IPropertyBlueprintPOST,
+	IPropertyBlueprint,
+} from "src/types/file";
+
 import { ILabel } from "src/types/label";
 
 interface IGetPropertyAttributeProps {
@@ -22,9 +28,9 @@ interface IEditPropertyProps {
 	id: number;
 	body: IPropertiesPostRequest;
 }
-interface IPropertyAddFileParams {
+interface IPropertyAddFileParams<T> {
 	id: number;
-	body: IPropertyImagePOST;
+	body: T;
 }
 interface IPropertySetThumbnailProps {
 	propertyId: number;
@@ -34,6 +40,7 @@ interface IDeleteImageProps {
 	propertyId: number;
 	imageKey: string;
 }
+type IDeleteBlueprintProps = IDeleteImageProps;
 interface IPropertyFilterParams {
 	filter: IPropertyFilter;
 	page: number;
@@ -68,6 +75,7 @@ export const properties = createApi({
 
 		// attributes
 		"PropertyByIdLabels",
+		"PropertyByIdBlueprints",
 	],
 	endpoints: (builder) => ({
 		allProperties: builder.query<IProperties[], void>({
@@ -94,6 +102,10 @@ export const properties = createApi({
 		getPropertyLabels: builder.query<ILabel[], number>({
 			query: (propertyId: number) => `${propertyId}/labels`,
 			providesTags: ["PropertyByIdLabels"],
+		}),
+		getPropertyBlueprints: builder.query<IPropertyBlueprint[], number>({
+			query: (propertyId: number) => `${propertyId}/blueprints`,
+			providesTags: ["PropertyByIdBlueprints"],
 		}),
 
 		// mutations
@@ -166,35 +178,68 @@ export const properties = createApi({
 		}),
 
 		// images & files
-		addPropertyImage: builder.mutation<IFileResponse, IPropertyAddFileParams>({
-			query: (params: IPropertyAddFileParams) => ({
+		addPropertyImage: builder.mutation<
+			IFileResponse,
+			IPropertyAddFileParams<IPropertyImagePOST>
+		>({
+			query: (params: IPropertyAddFileParams<IPropertyImagePOST>) => ({
 				url: `/${params.id}/image`,
 				method: "POST",
 				body: params.body,
 			}),
 		}),
-		editPropertyImage: builder.mutation<IFileResponse, IPropertyAddFileParams>({
+		editPropertyImage: builder.mutation<
+			IFileResponse,
+			IPropertyAddFileParams<IPropertyImagePOST>
+		>({
 			// INFO: same with add but causes revalidate
-			query: (params: IPropertyAddFileParams) => ({
+			query: (params: IPropertyAddFileParams<IPropertyImagePOST>) => ({
 				url: `/${params.id}/image`,
 				method: "POST",
 				body: params.body,
 			}),
 			invalidatesTags: ["PropertyById"],
 		}),
-
 		setPropertyThumbail: builder.mutation<void, IPropertySetThumbnailProps>({
 			query: (props: IPropertySetThumbnailProps) => ({
 				url: `/${props.propertyId}/thumbnail/${props.imageKey}`,
 				method: "POST",
 			}),
 		}),
-
 		deletePropertyImage: builder.mutation<void, IDeleteImageProps>({
 			query: ({ propertyId, imageKey }: IDeleteImageProps) => ({
 				url: `/${propertyId}/image/${imageKey}`,
 				method: "DELETE",
 			}),
+		}),
+
+		addPropertyBlueprint: builder.mutation<
+			IFileResponse,
+			IPropertyAddFileParams<IPropertyBlueprintPOST>
+		>({
+			query: (params: IPropertyAddFileParams<IPropertyBlueprintPOST>) => ({
+				url: `/${params.id}/blueprint`,
+				method: "POST",
+				body: params.body,
+			}),
+		}),
+		deletePropertyBlueprint: builder.mutation<void, IDeleteBlueprintProps>({
+			query: ({ propertyId, imageKey }: IDeleteBlueprintProps) => ({
+				url: `/${propertyId}/blueprint/${imageKey}`,
+				method: "DELETE",
+			}),
+		}),
+
+		reorderPropertyImages: builder.mutation<
+			void,
+			IPropertyAddFileParams<string[]>
+		>({
+			query: (params: IPropertyAddFileParams<string[]>) => ({
+				url: `/${params.id}/reorder`,
+				method: "POST",
+				body: JSON.stringify(params.body),
+			}),
+			invalidatesTags: ["PropertyById"],
 		}),
 	}),
 });
@@ -207,6 +252,7 @@ export const {
 	useGetPropertyByCodeQuery,
 	useGetPropertyAttributeQuery,
 	useLazyGetPropertyLabelsQuery,
+	useGetPropertyBlueprintsQuery,
 
 	// mutations
 	useEditPropertyMutation,
@@ -224,4 +270,9 @@ export const {
 	useAddPropertyImageMutation,
 	useSetPropertyThumbailMutation,
 	useDeletePropertyImageMutation,
+
+	useAddPropertyBlueprintMutation,
+	useDeletePropertyBlueprintMutation,
+
+	useReorderPropertyImagesMutation,
 } = properties;

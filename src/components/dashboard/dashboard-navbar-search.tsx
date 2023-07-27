@@ -21,17 +21,21 @@ import { useDebouncedCallback } from "use-debounce";
 import Image from "../image/Image";
 import SearchNotFound from "../search-not-found/SearchNotFound";
 import { SearchInput, StyledPopper, StyledSearchStack } from "./styles";
+import { useTranslation } from "react-i18next";
 type SearchCategory = "all" | "property" | "customers" | "labels";
 export const DashboardNavbarSearch: FC = () => {
   const router = useRouter();
-
+  const { t } = useTranslation();
   const [searchText, setSearchText] = useState("");
   const [debouncedText, setDebouncedText] = useState("");
   const [searchCategory, setSearchCategory] = useState<SearchCategory>("all");
   const [results, setResults] = useState<IProperties[]>([]);
-  const { data, isLoading } = useGetSearchResultsQuery({ searchString: debouncedText, page: 0, pageSize: 10 }, {
-    skip: debouncedText === "",
-  });
+  const { data, isLoading } = useGetSearchResultsQuery(
+    { searchString: debouncedText, page: 0, pageSize: 10 },
+    {
+      skip: debouncedText === "",
+    }
+  );
   const handleSearch = useDebouncedCallback((value) => {
     setDebouncedText(value);
   }, 50);
@@ -55,11 +59,11 @@ export const DashboardNavbarSearch: FC = () => {
         onBlur={() => setAnchorEl(null)}
         value={searchText}
         onChange={handleInputChange}
-        placeholder='Search with a keyword'
+        placeholder="Search with a keyword"
         endAdornment={
           <InputAdornment
             sx={{ display: { xs: "none", md: "flex" } }}
-            position='end'
+            position="end"
           >
             <IconButton
               sx={{
@@ -88,16 +92,16 @@ export const DashboardNavbarSearch: FC = () => {
                 setSearchCategory(event.target.value as SearchCategory)
               }
             >
-              <MenuItem value='all'>Categories</MenuItem>
-              <MenuItem value='property'>Properties</MenuItem>
-              <MenuItem value='customers'>Customers</MenuItem>
-              <MenuItem value='labels'>Label Keys</MenuItem>
+              <MenuItem value="all">{t("Categories")}</MenuItem>
+              <MenuItem value="property">{t("Properties")}</MenuItem>
+              <MenuItem value="customers">{t("Customers")}</MenuItem>
+              <MenuItem value="labels">{t("Label Keys")}</MenuItem>
             </Select>
           </InputAdornment>
         }
       />
 
-      <StyledPopper open={open} anchorEl={anchorEl} placement='bottom-start'>
+      <StyledPopper open={open} anchorEl={anchorEl} placement="bottom-start">
         <Paper>
           {(!results || results?.length === 0) && (
             <SearchNotFound query={searchText} />
@@ -145,7 +149,7 @@ export const DashboardNavbarSearch: FC = () => {
                             {partsPath.map((part, index) => (
                               <Box
                                 key={index}
-                                component='span'
+                                component="span"
                                 sx={{
                                   typography: "body2",
                                   fontWeight: part.highlight
@@ -165,7 +169,7 @@ export const DashboardNavbarSearch: FC = () => {
                               ).map((part, index) => (
                                 <Box
                                   key={index}
-                                  component='span'
+                                  component="span"
                                   sx={{
                                     typography: "body2",
                                     fontWeight: part.highlight
@@ -195,7 +199,7 @@ export const DashboardNavbarSearch: FC = () => {
                             ).map((part, index) => (
                               <Box
                                 key={index}
-                                component='span'
+                                component="span"
                                 sx={{
                                   typography: "body2",
                                   fontWeight: part.highlight
@@ -215,7 +219,7 @@ export const DashboardNavbarSearch: FC = () => {
                             ).map((part, index) => (
                               <Box
                                 key={index}
-                                component='span'
+                                component="span"
                                 sx={{
                                   typography: "body2",
                                   fontWeight: part.highlight

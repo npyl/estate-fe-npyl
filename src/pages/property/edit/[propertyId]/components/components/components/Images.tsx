@@ -7,6 +7,7 @@ import { SoftButton } from "src/components/SoftButton";
 import {
 	useAddPropertyImageMutation,
 	useSetPropertyThumbailMutation,
+	useReorderPropertyImagesMutation,
 	useDeletePropertyImageMutation,
 } from "src/services/properties";
 import { useRouter } from "next/router";
@@ -36,6 +37,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 	const [galleryManagerOpen, setGalleryManagerOpen] = useState(false);
 	const [addImage] = useAddPropertyImageMutation();
 	const [setThumbnail] = useSetPropertyThumbailMutation();
+	const [reorderImages] = useReorderPropertyImagesMutation();
 	const [deleteImage] = useDeletePropertyImageMutation();
 
 	const uploadFile = async (
@@ -118,7 +120,10 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 	const handleRemoveAllFiles = () => {
 		files.forEach((file) => handleRemoveFile(file));
 	};
-	const handleReorder = (sourceIndex: number, newIndex: number) => {};
+	const handleReorder = () => {
+		// INFO: backend requires a list with reordered keys like:  [key, key, ...]
+		// reorderImages(files.map((file) => file.key));
+	};
 
 	const handleOpenGalleryManager = () => {
 		setGalleryManagerOpen(true);
@@ -131,17 +136,8 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 	return (
 		<>
 			<Card>
-				<Box
-					sx={{
-						px: 3,
-						py: 1.5,
-						display: "flex",
-						justifyContent: "left",
-					}}
-				>
-					<Typography variant="h6">{t("Upload Images")}</Typography>
-				</Box>
 				<CardHeader
+					title={t("Upload Images")}
 					action={
 						files.length > 0 && (
 							<SoftButton onClick={handleOpenGalleryManager}>

@@ -1,7 +1,12 @@
 import { ICustomer } from "./customer";
 import { IPropertyDetails, IPropertyDetailsPOST } from "./details";
 import { IPropertyFeatures } from "./features";
-import { IFileModel, IPropertyImage } from "./file";
+import {
+	IFileModel,
+	IPropertyBlueprint,
+	IPropertyDocument,
+	IPropertyImage,
+} from "./file";
 import { ILabel } from "./label";
 import { ILocation, ILocationPOST } from "./location";
 import { INote } from "./note";
@@ -312,7 +317,7 @@ export interface IProperties {
 	features: IPropertyFeatures;
 	notes: INote[];
 	images: IPropertyImage[];
-	documents: IFileModel[];
-	blueprints: IFileModel[];
+	documents: IPropertyDocument[];
+	blueprints: IPropertyBlueprint[];
 	labels: ILabel[];
 }

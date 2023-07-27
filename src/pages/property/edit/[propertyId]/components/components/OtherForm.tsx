@@ -5,7 +5,7 @@ import BasicSection from "./components/BasicDetails";
 import ConstructionForOtherSection from "./components/ConstructionForOther";
 import DescriptionSection from "./components/Description";
 import FeaturesForOtherSection from "./components/FeaturesForOther";
-import FileSection from "./components/Files";
+import BlueprintsSection from "./components/Blueprints";
 import HeatingAndEnergyForCommercialSection from "./components/HeatingAndEnergyForCommercial";
 import ImageSection from "./components/Images";
 import LocationSection from "src/components/Location/Location";
@@ -16,9 +16,7 @@ import ROISection from "./components/ROI";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
-	selectPropertyBlueprints,
 	selectPropertyImages,
-	setPropertyBlueprints,
 	addPropertyImage,
 	deletePropertyImage,
 	setPropertyImages,
@@ -52,7 +50,6 @@ const OtherFormSection: React.FC<any> = (props) => {
 
 	const state = useSelector(selectState);
 	const images = useSelector(selectPropertyImages);
-	const blueprints = useSelector(selectPropertyBlueprints);
 
 	const street = useSelector(selectStreet);
 	const number = useSelector(selectNumber);
@@ -88,12 +85,7 @@ const OtherFormSection: React.FC<any> = (props) => {
 						<ConstructionForOtherSection />
 						<FeaturesForOtherSection />
 						<SuitableForForOtherSection />
-						<FileSection
-							fileData={blueprints}
-							setFileData={(blueprints) => {
-								dispatch(setPropertyBlueprints(blueprints));
-							}}
-						/>
+						<BlueprintsSection />
 					</Stack>
 				</Grid>
 				<Grid item xs={6}>

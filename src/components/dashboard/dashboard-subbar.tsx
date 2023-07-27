@@ -36,10 +36,17 @@ const Subbar = () => {
         <Fragment key={index}>
           <Stack
             sx={{
-              bgcolor: currentPath === tab.path ? "primary.main" : "unset",
+              bgcolor:
+                currentPath === tab.path ? "primary.dark" : "darkenColor",
               padding: "0px 8px",
-              borderRadius: 4,
+              borderRadius: 1,
               boxShadow: `rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px`,
+              transition: "all 0.3s ease",
+              "&:hover": {
+                transform: "scale(1.05)",
+                bgcolor:
+                  currentPath === tab.path ? "primary.dark" : "darkenColor", // replace "darkenColor" with the darker color for the unset state
+              },
             }}
             direction={"row"}
             alignItems={"center"}
@@ -71,7 +78,7 @@ const Subbar = () => {
               }}
               onClick={() => handleDeleteTab(tab.uuid, index)}
             >
-              <ClearIcon sx={{ fontSize: 13 }} />
+              <ClearIcon sx={{ fontSize: 15 }} />
             </IconButton>
           </Stack>
           {index !== tabs.length - 1 && (

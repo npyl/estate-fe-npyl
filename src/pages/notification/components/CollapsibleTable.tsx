@@ -21,6 +21,7 @@ import { Fragment, useState } from "react";
 
 import { ContactNotification } from "src/types/notification";
 import Iconify from "src/components/iconify";
+import { useTranslation } from "react-i18next";
 
 export function createRow(props: ContactNotification) {
 	const {
@@ -68,6 +69,8 @@ function Row(props: {
 	onRemove: () => void;
 }) {
 	const { row, onRemove } = props;
+
+	const { t } = useTranslation();
 	const [open, setOpen] = useState(false);
 
 	return (
@@ -101,15 +104,15 @@ function Row(props: {
 					<Collapse in={open} timeout="auto" unmountOnExit>
 						<Box sx={{ margin: 1 }}>
 							<Typography variant="h6" gutterBottom component="div">
-								History
+								{t("History")}
 							</Typography>
 							<Table size="small" aria-label="purchases">
 								<TableHead>
 									<TableRow>
-										<TableCell>Date</TableCell>
-										<TableCell>Customer</TableCell>
-										<TableCell align="right">Amount</TableCell>
-										<TableCell align="right">Total price ($)</TableCell>
+										<TableCell> {t("Date")}</TableCell>
+										<TableCell> {t("Customer")}</TableCell>
+										<TableCell align="right"> {t("Amount")}</TableCell>
+										<TableCell align="right"> {t("Total price ($)")}</TableCell>
 									</TableRow>
 								</TableHead>
 								<TableBody>
@@ -140,6 +143,7 @@ export const CollapsibleTable = (props: {
 	onRemove: (index: number) => void;
 }) => {
 	const { rows, onRemove } = props;
+	const { t } = useTranslation();
 
 	return (
 		<TableContainer component={Paper}>
@@ -147,11 +151,11 @@ export const CollapsibleTable = (props: {
 				<TableHead>
 					<TableRow>
 						<TableCell />
-						<TableCell>Name</TableCell>
-						<TableCell align="right">Email</TableCell>
-						<TableCell align="right">Mobile</TableCell>
-						<TableCell align="right">Message</TableCell>
-						<TableCell align="right">Notification Date</TableCell>
+						<TableCell> {t("Name")}</TableCell>
+						<TableCell align="right"> {t("Email")}</TableCell>
+						<TableCell align="right"> {t("Mobile")}</TableCell>
+						<TableCell align="right"> {t("Message")}</TableCell>
+						<TableCell align="right"> {t("Notification Date")}</TableCell>
 						<TableCell />
 					</TableRow>
 				</TableHead>

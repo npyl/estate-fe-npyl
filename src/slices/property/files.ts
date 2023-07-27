@@ -2,11 +2,11 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "src/store";
-import { IPropertyImage } from "src/types/file";
+import { IExtendedPropertyBlueprint, IPropertyImage } from "src/types/file";
 
 interface propertyFilesState {
 	propertyImages: IPropertyImage[];
-	propertyBlueprints: string[];
+	propertyBlueprints: IExtendedPropertyBlueprint[];
 }
 
 const initialState: propertyFilesState = {
@@ -35,6 +35,28 @@ const slice = createSlice({
 		setPropertyBlueprints(state: propertyFilesState, { payload }): void {
 			state.propertyBlueprints = payload;
 		},
+		addPropertyBlueprint(state: propertyFilesState, { payload }): void {
+			state.propertyBlueprints.push(payload);
+		},
+		deletePropertyBlueprint(state: propertyFilesState, { payload }): void {
+			const imageKey = payload;
+			state.propertyBlueprints = state.propertyBlueprints.filter(
+				(image) => image.key !== imageKey
+			);
+		},
+		setCdnUrlForNextAvailableBlueprint(
+			state: propertyFilesState,
+			{ payload }
+		): void {
+			const cdnUrl = payload;
+
+			for (let i = 0; i < state.propertyBlueprints.length; i++)
+				if (state.propertyBlueprints[i] && !state.propertyBlueprints[i].url) {
+					state.propertyBlueprints[i].url = cdnUrl;
+					break;
+				}
+		},
+
 		setPropertyImages(state: propertyFilesState, { payload }): void {
 			state.propertyImages = payload;
 		},
@@ -72,7 +94,11 @@ export const {
 	addPropertyImage,
 	deletePropertyImage,
 	setCdnUrlForNextAvailable,
+
 	setPropertyBlueprints,
+	addPropertyBlueprint,
+	deletePropertyBlueprint,
+	setCdnUrlForNextAvailableBlueprint,
 
 	resetState,
 } = slice.actions;
