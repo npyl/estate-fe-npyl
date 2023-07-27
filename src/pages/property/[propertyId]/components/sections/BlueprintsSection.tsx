@@ -1,34 +1,29 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { IProperties } from "src/types/properties";
 
 import CarouselWithLightbox from "src/components/CarouselWithLightbox";
 
 import { Typography, Box, Paper, Divider } from "@mui/material";
-import { IFileModel } from "src/types/file";
+import { IPropertyBlueprint } from "src/types/file";
 
 interface BlueprintsSectionProps {
 	data: IProperties;
 }
 
-interface ICarouselData {
-	id: string;
-	title: string;
-	image: string;
-	description: string;
-}
-
 const BlueprintsSection: React.FC<BlueprintsSectionProps> = (props) => {
 	const { data } = props;
-	const blueprints: IFileModel[] = data?.blueprints;
+	const blueprints: IPropertyBlueprint[] = data?.blueprints;
 
-	const _carouselData = blueprints.map((blueprint, index) => {
-		return {
-			id: (index + 1).toString(),
-			title: "Image",
-			image: blueprint.url || "",
-			description: "One of the images",
-		};
-	});
+	const _carouselData = useMemo(
+		() =>
+			blueprints.map((blueprint, index) => ({
+				id: (index + 1).toString(),
+				title: "Image",
+				image: blueprint.url || "",
+				description: "One of the images",
+			})),
+		[blueprints]
+	);
 
 	return (
 		<Paper elevation={10} sx={{ overflow: "auto" }}>

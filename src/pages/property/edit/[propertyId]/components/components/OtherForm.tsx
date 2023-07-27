@@ -16,9 +16,7 @@ import ROISection from "./components/ROI";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
-	selectPropertyBlueprints,
 	selectPropertyImages,
-	setPropertyBlueprints,
 	addPropertyImage,
 	deletePropertyImage,
 	setPropertyImages,
@@ -52,7 +50,6 @@ const OtherFormSection: React.FC<any> = (props) => {
 
 	const state = useSelector(selectState);
 	const images = useSelector(selectPropertyImages);
-	const blueprints = useSelector(selectPropertyBlueprints);
 
 	const street = useSelector(selectStreet);
 	const number = useSelector(selectNumber);
@@ -88,12 +85,7 @@ const OtherFormSection: React.FC<any> = (props) => {
 						<ConstructionForOtherSection />
 						<FeaturesForOtherSection />
 						<SuitableForForOtherSection />
-						<FileSection
-							fileData={blueprints}
-							setFileData={(blueprints) => {
-								dispatch(setPropertyBlueprints(blueprints));
-							}}
-						/>
+						<FileSection />
 					</Stack>
 				</Grid>
 				<Grid item xs={6}>

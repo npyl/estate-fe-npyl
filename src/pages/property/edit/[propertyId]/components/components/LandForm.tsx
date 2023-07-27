@@ -14,9 +14,7 @@ import ROISection from "./components/ROI";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
-	selectPropertyBlueprints,
 	selectPropertyImages,
-	setPropertyBlueprints,
 	addPropertyImage,
 	deletePropertyImage,
 	setPropertyImages,
@@ -50,7 +48,6 @@ const LandFormSection: React.FC<any> = () => {
 
 	const state = useSelector(selectState);
 	const images = useSelector(selectPropertyImages);
-	const blueprints = useSelector(selectPropertyBlueprints);
 
 	const street = useSelector(selectStreet);
 	const number = useSelector(selectNumber);
@@ -84,12 +81,7 @@ const LandFormSection: React.FC<any> = () => {
 						<TechnicalFeaturesAndInteriorForLandSection />
 						<PropertyDescriptionForLandSection />
 						<FeaturesForLandSection />
-						<FileSection
-							fileData={blueprints}
-							setFileData={(blueprints) => {
-								dispatch(setPropertyBlueprints(blueprints));
-							}}
-						/>
+						<FileSection />
 					</Stack>
 				</Grid>
 				<Grid item xs={6}>
