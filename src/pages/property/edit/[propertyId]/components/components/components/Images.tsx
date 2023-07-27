@@ -131,17 +131,8 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 	return (
 		<>
 			<Card>
-				<Box
-					sx={{
-						px: 3,
-						py: 1.5,
-						display: "flex",
-						justifyContent: "left",
-					}}
-				>
-					<Typography variant="h6">{t("Upload Images")}</Typography>
-				</Box>
 				<CardHeader
+					title={t("Upload Images")}
 					action={
 						files.length > 0 && (
 							<SoftButton onClick={handleOpenGalleryManager}>
