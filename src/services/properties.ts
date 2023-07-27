@@ -228,7 +228,6 @@ export const properties = createApi({
 				url: `/${propertyId}/blueprint/${imageKey}`,
 				method: "DELETE",
 			}),
-			invalidatesTags: ["PropertyById"],
 		}),
 	}),
 });

@@ -38,6 +38,12 @@ const slice = createSlice({
 		addPropertyBlueprint(state: propertyFilesState, { payload }): void {
 			state.propertyBlueprints.push(payload);
 		},
+		deletePropertyBlueprint(state: propertyFilesState, { payload }): void {
+			const imageKey = payload;
+			state.propertyBlueprints = state.propertyBlueprints.filter(
+				(image) => image.key !== imageKey
+			);
+		},
 		setCdnUrlForNextAvailableBlueprint(
 			state: propertyFilesState,
 			{ payload }
@@ -91,6 +97,7 @@ export const {
 
 	setPropertyBlueprints,
 	addPropertyBlueprint,
+	deletePropertyBlueprint,
 	setCdnUrlForNextAvailableBlueprint,
 
 	resetState,

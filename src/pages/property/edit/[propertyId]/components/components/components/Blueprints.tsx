@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import {
 	addPropertyBlueprint,
+	deletePropertyBlueprint,
 	selectPropertyBlueprints,
 	setCdnUrlForNextAvailableBlueprint,
 } from "src/slices/property/files";
@@ -87,7 +88,7 @@ const BlueprintsSection: React.FC = () => {
 			imageKey: blueprints.filter(
 				(blueprint) => blueprint.url === inputFile.url
 			)[0].key,
-		});
+		}).then(() => dispatch(deletePropertyBlueprint(inputFile.key)));
 	};
 
 	const handleRemoveAllFileData = () => {
@@ -95,7 +96,7 @@ const BlueprintsSection: React.FC = () => {
 			deleteBlueprint({
 				propertyId: +propertyId!,
 				imageKey: blueprint.key,
-			})
+			}).then(() => dispatch(deletePropertyBlueprint(blueprint.key)))
 		);
 	};
 
