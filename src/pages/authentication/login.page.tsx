@@ -15,9 +15,10 @@ type Platform = "JWT";
 const platformIcons: { [key in Platform]: string } = {
   JWT: "/static/icons/jwt.svg",
 };
-const { t } = useTranslation();
+
 const Login: NextPage = () => {
   const router = useRouter();
+  const { t } = useTranslation();
   const { platform }: { platform: Platform } = useAuth();
   const { disableGuard } = router.query;
 
