@@ -19,7 +19,7 @@ export const DashboardNavbarSearch: FC = () => {
 	const [results, setResults] = useState<IProperties[]>([]);
 	const [anchorEl, setAnchorEl] = useState(null);
 
-	const { data, isLoading } = useGetSearchResultsQuery(
+	const { data } = useGetSearchResultsQuery(
 		{ searchString: debouncedText, page: 0, pageSize: 10 },
 		{
 			skip: debouncedText === "",
@@ -90,7 +90,12 @@ export const DashboardNavbarSearch: FC = () => {
 				}
 			/>
 
-			<SearchList open={open} results={results} searchText={searchText} />
+			<SearchList
+				open={open}
+				anchorEl={anchorEl}
+				results={results}
+				searchText={searchText}
+			/>
 		</div>
 	);
 };

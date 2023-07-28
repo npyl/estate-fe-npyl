@@ -1,24 +1,21 @@
-import KeyIcon from "@mui/icons-material/Key";
 import { Box, Stack, Typography } from "@mui/material";
+import KeyIcon from "@mui/icons-material/Key";
+import Image from "src/components/image/Image";
 import match from "autosuggest-highlight/match";
 import parse from "autosuggest-highlight/parse";
 import { useRouter } from "next/router";
 import { IProperties } from "src/types/properties";
-import Image from "src/components/image/Image";
 import { StyledSearchStack } from "../styles";
 
 interface SearchItemProps {
 	searchText: string;
 	option: IProperties;
-	partsPath: Array<{ text: string; highlight: boolean }>;
 }
 
-export const SearchItem = ({
-	option,
-	partsPath,
-	searchText,
-}: SearchItemProps) => {
+export const SearchItem = ({ option, searchText }: SearchItemProps) => {
 	const router = useRouter();
+
+	const partsPath = parse(option.code, match(option.code, searchText));
 
 	return (
 		<StyledSearchStack

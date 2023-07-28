@@ -1,6 +1,4 @@
 import { Grid, Paper, PopperProps } from "@mui/material";
-import match from "autosuggest-highlight/match";
-import parse from "autosuggest-highlight/parse";
 import { IProperties } from "src/types/properties";
 import SearchNotFound from "src/components/search-not-found/SearchNotFound";
 import { StyledPopper } from "../styles";
@@ -20,40 +18,32 @@ export const SearchList = ({
 	return (
 		<StyledPopper open={open} anchorEl={anchorEl} placement="bottom-start">
 			<Paper>
-				{(!results || results?.length === 0) && (
+				{results?.length === 0 ? (
 					<SearchNotFound query={searchText} />
-				)}
-				<Grid container>
-					<Grid
-						item
-						xs={12}
-						sm={12}
-						md={12}
-						lg={4}
-						sx={{
-							borderRight: { lg: "1px solid blue", md: 0 },
-							marginY: "10px",
-							overflow: "hidden",
-						}}
-					>
-						{results &&
-							results.length > 0 &&
-							results.map((option: IProperties, index: number) => {
-								const partsPath = parse(
-									option.code,
-									match(option.code, searchText)
-								);
-								return (
-									<SearchItem
-										key={index}
-										option={option}
-										partsPath={partsPath}
-										searchText={searchText}
-									/>
-								);
-							})}
+				) : (
+					<Grid container>
+						<Grid
+							item
+							xs={12}
+							sm={12}
+							md={12}
+							lg={4}
+							sx={{
+								borderRight: { lg: "1px solid blue", md: 0 },
+								marginY: "10px",
+								overflow: "hidden",
+							}}
+						>
+							{results.map((option: IProperties, index: number) => (
+								<SearchItem
+									key={index}
+									option={option}
+									searchText={searchText}
+								/>
+							))}
+						</Grid>
 					</Grid>
-				</Grid>
+				)}
 			</Paper>
 		</StyledPopper>
 	);
