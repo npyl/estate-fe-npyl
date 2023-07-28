@@ -5,14 +5,14 @@ import { useMemo } from "react";
 import ICarouselImage from "src/components/carousel/types";
 import CarouselSimple from "src/components/CarouselSimple";
 import Iconify from "src/components/iconify/Iconify";
-import { IPropertyFilterResponse } from "src/types/properties";
+import { IPropertyResultResponse } from "src/types/properties";
 
 // ----------------------------------------------------------------------
 
 interface Props extends BoxProps {
 	title?: string;
 	subheader?: string;
-	data: IPropertyFilterResponse[];
+	data: IPropertyResultResponse[];
 }
 
 export default function MediaCard({ data, sx, ...other }: Props) {
@@ -30,7 +30,7 @@ export default function MediaCard({ data, sx, ...other }: Props) {
 // ----------------------------------------------------------------------
 
 type BookingItemProps = {
-	item: IPropertyFilterResponse;
+	item: IPropertyResultResponse;
 	activeMarker?: number;
 };
 

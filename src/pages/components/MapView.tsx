@@ -2,7 +2,7 @@ import { Button, Box, Grid, Paper, Stack, Typography } from "@mui/material";
 import { useState, useMemo } from "react";
 import Map from "src/components/Map/Map";
 import { BookingItem } from "./MediaCard";
-import { IPropertyFilterResponse } from "src/types/properties";
+import { IPropertyResultResponse } from "src/types/properties";
 import { useRouter } from "next/router";
 import Iconify from "src/components/iconify";
 import ICarouselImage from "src/components/carousel/types";
@@ -10,7 +10,7 @@ import CarouselSimple from "src/components/CarouselSimple";
 import FlipIcon from "@mui/icons-material/Flip";
 
 interface Props {
-	data: IPropertyFilterResponse[];
+	data: IPropertyResultResponse[];
 }
 
 const MapView = ({ data }: Props) => {
@@ -75,7 +75,7 @@ const MapView = ({ data }: Props) => {
 export default MapView;
 
 type BookingItemProps = {
-	item: IPropertyFilterResponse;
+	item: IPropertyResultResponse;
 	activeMarker?: number;
 };
 

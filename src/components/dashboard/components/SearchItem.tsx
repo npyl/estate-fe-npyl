@@ -4,13 +4,14 @@ import Image from "src/components/image/Image";
 import match from "autosuggest-highlight/match";
 import parse from "autosuggest-highlight/parse";
 import { useRouter } from "next/router";
-import { IProperties } from "src/types/properties";
+import { IPropertyResultResponse } from "src/types/properties";
 import { StyledSearchStack } from "../styles";
 import { useMemo } from "react";
+import PreviewImage from "src/components/image/PreviewImage";
 
 interface SearchItemProps {
 	searchText: string;
-	option: IProperties;
+	option: IPropertyResultResponse;
 }
 
 export const SearchItem = ({ option, searchText }: SearchItemProps) => {
@@ -69,21 +70,32 @@ export const SearchItem = ({ option, searchText }: SearchItemProps) => {
 			paddingY={1}
 			paddingX={2}
 			spacing={1}
+			flex={1}
 			direction={"row"}
 			alignItems={"center"}
 			onClick={() => router.push(`/property/${option.id}`)}
 		>
-			<Image
-				padding={0}
-				height={20}
-				width={20}
-				src={option.propertyImage.url}
-			/>
+			{option?.propertyImage ? (
+				<Image
+					padding={0}
+					sx={{ borderRadius: 1 }}
+					width={160}
+					height={90}
+					src={option.propertyImage}
+				/>
+			) : (
+				<PreviewImage
+					padding={0}
+					sx={{ borderRadius: 1 }}
+					width={160}
+					height={90}
+				/>
+			)}
 
 			<Stack direction={"column"}>
 				<Stack spacing={1} direction={"row"}>
 					<Stack alignItems={"center"} direction={"row"}>
-						<Typography variant={"body2"}>Code:</Typography>
+						<Typography variant={"body2"}>Code: </Typography>
 						<Box
 							component="span"
 							sx={{
@@ -91,20 +103,10 @@ export const SearchItem = ({ option, searchText }: SearchItemProps) => {
 								fontWeight: code.highlight ? "bold" : "normal",
 							}}
 						>
-							{code.text}
+							{option.code}
 						</Box>
 					</Stack>
 					<Stack direction={"row"} alignItems={"center"} mr={1}>
-						<Typography variant={"body2"}>Key:</Typography>
-						<Box
-							component="span"
-							sx={{
-								typography: "body2",
-								fontWeight: keyCode.highlight ? "bold" : "normal",
-							}}
-						>
-							{keyCode.text}
-						</Box>
 						<Box>
 							<KeyIcon
 								sx={{
@@ -113,6 +115,15 @@ export const SearchItem = ({ option, searchText }: SearchItemProps) => {
 									transform: "rotate(90deg)",
 								}}
 							/>
+						</Box>
+						<Box
+							component="span"
+							sx={{
+								typography: "body2",
+								fontWeight: keyCode.highlight ? "bold" : "normal",
+							}}
+						>
+							{option.keyCode}
 						</Box>
 					</Stack>
 				</Stack>
@@ -125,7 +136,7 @@ export const SearchItem = ({ option, searchText }: SearchItemProps) => {
 								fontWeight: price.highlight ? "bold" : "normal",
 							}}
 						>
-							{price.text}
+							{option.price}
 						</Box>
 						<Typography variant={"body2"}>€</Typography>
 					</Stack>
@@ -137,7 +148,7 @@ export const SearchItem = ({ option, searchText }: SearchItemProps) => {
 								fontWeight: area.highlight ? "bold" : "normal",
 							}}
 						>
-							{area.text}
+							{option.area}
 						</Box>
 						<Typography variant={"body2"}> s.q</Typography>
 					</Stack>

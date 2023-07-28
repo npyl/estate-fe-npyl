@@ -3,7 +3,7 @@ import {
 	IProperties,
 	IPropertiesPostRequest,
 	IPropertyFilter,
-	IPropertyFilterResponse,
+	IPropertyResultResponse,
 } from "src/types/properties";
 
 import IPage from "src/types/page";
@@ -126,7 +126,7 @@ export const properties = createApi({
 			invalidatesTags: ["Properties"],
 		}),
 		filterProperties: builder.mutation<
-			IPage<IPropertyFilterResponse>,
+			IPage<IPropertyResultResponse>,
 			IPropertyFilterParams
 		>({
 			query: (filterParam: IPropertyFilterParams) => ({
@@ -150,7 +150,10 @@ export const properties = createApi({
 			}),
 			invalidatesTags: ["Properties"],
 		}),
-		getSearchResults: builder.query<IPage<IProperties>, IPropertySearchParams>({
+		getSearchResults: builder.query<
+			IPage<IPropertyResultResponse>,
+			IPropertySearchParams
+		>({
 			query: (searchParams: IPropertySearchParams) => {
 				return {
 					url: "/search",

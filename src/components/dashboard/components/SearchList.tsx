@@ -1,11 +1,11 @@
 import { Grid, Paper, PopperProps } from "@mui/material";
-import { IProperties } from "src/types/properties";
+import { IPropertyResultResponse } from "src/types/properties";
 import SearchNotFound from "src/components/search-not-found/SearchNotFound";
 import { StyledPopper } from "../styles";
 import { SearchItem } from "./SearchItem";
 
 interface SearchListProps extends Omit<PopperProps, "direction" | "results"> {
-	results: IProperties[];
+	results: IPropertyResultResponse[];
 	searchText: string;
 }
 
@@ -27,14 +27,14 @@ export const SearchList = ({
 							xs={12}
 							sm={12}
 							md={12}
-							lg={4}
+							lg={12}
 							sx={{
 								borderRight: { lg: "1px solid blue", md: 0 },
 								marginY: "10px",
 								overflow: "hidden",
 							}}
 						>
-							{results.map((option: IProperties, index: number) => (
+							{results.map((option, index: number) => (
 								<SearchItem
 									key={index}
 									option={option}

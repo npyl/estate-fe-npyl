@@ -2,7 +2,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { IconButton, InputAdornment, MenuItem, Select } from "@mui/material";
 import { FC, useEffect, useMemo, useState } from "react";
 import { useGetSearchResultsQuery } from "src/services/properties";
-import { IProperties } from "src/types/properties";
+import { IPropertyResultResponse } from "src/types/properties";
 import { useDebouncedCallback } from "use-debounce";
 import { SearchInput } from "./styles";
 import { useTranslation } from "react-i18next";
@@ -16,7 +16,7 @@ export const DashboardNavbarSearch: FC = () => {
 	const [searchText, setSearchText] = useState("");
 	const [debouncedText, setDebouncedText] = useState("");
 	const [searchCategory, setSearchCategory] = useState<SearchCategory>("all");
-	const [results, setResults] = useState<IProperties[]>([]);
+	const [results, setResults] = useState<IPropertyResultResponse[]>([]);
 	const [anchorEl, setAnchorEl] = useState(null);
 
 	const { data } = useGetSearchResultsQuery(

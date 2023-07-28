@@ -1,20 +1,16 @@
 import { ICustomer } from "./customer";
 import { IPropertyDetails, IPropertyDetailsPOST } from "./details";
 import { IPropertyFeatures } from "./features";
-import {
-	IFileModel,
-	IPropertyBlueprint,
-	IPropertyDocument,
-	IPropertyImage,
-} from "./file";
+import { IPropertyBlueprint, IPropertyDocument, IPropertyImage } from "./file";
 import { ILabel } from "./label";
 import { ILocation, ILocationPOST } from "./location";
 import { INote } from "./note";
 import { IUser } from "./user";
 
-export interface IPropertyFilterResponse {
+export interface IPropertyResultResponse {
 	id: number;
 	code: string;
+	keyCode: string;
 	category: string;
 	state: string;
 	area: number;
@@ -23,7 +19,7 @@ export interface IPropertyFilterResponse {
 	details: IPropertyDetailsPOST;
 	price: number;
 	parentCategory: string;
-	propertyImage: IPropertyImage;
+	propertyImage: string; // url only
 	images: string[]; // urls only
 	location: ILocationPOST;
 }
