@@ -53,6 +53,7 @@ export default function UploadDnd({
 	files,
 	thumbnail,
 	onImageClick,
+	onReorder,
 	onUpload,
 	onRemove,
 	onRemoveAll,
@@ -142,6 +143,7 @@ export default function UploadDnd({
 							thumbnail={false}
 							setFiles={setFiles}
 							onImageClick={onImageClick}
+							onReorder={onReorder}
 							onRemove={onRemove}
 						/>
 					</Box>

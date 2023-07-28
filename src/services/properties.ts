@@ -239,11 +239,11 @@ export const properties = createApi({
 			IPropertyAddFileParams<string[]>
 		>({
 			query: (params: IPropertyAddFileParams<string[]>) => ({
-				url: `/${params.id}/reorder`,
+				url: `/${params.id}/reorderImages`,
 				method: "POST",
-				body: JSON.stringify(params.body),
+				body: params.body,
 			}),
-			invalidatesTags: ["PropertyById"],
+			invalidatesTags: ["Properties", "PropertyById"],
 		}),
 	}),
 });
