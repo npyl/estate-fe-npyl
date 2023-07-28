@@ -1,95 +1,95 @@
 import { Chip, Grid, Stack, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteFilter, getChangedFields } from "src/slices/filters";
+import { deleteFilter, getChangedFields, selectIds } from "src/slices/filters";
 
 const ChosenFilters = () => {
   const dispatch = useDispatch();
   const changedProps = useSelector(getChangedFields);
-
+  const ids = useSelector(selectIds);
   const filterTags: Record<string, { label: string }> = {
     parentLocation: {
-      label: "Περιοχή",
+      label: "Location",
     },
     subLocation: {
-      label: "Υποπεριοχή",
+      label: "SubLocation",
     },
     filterName: {
-      label: "Όνομα φίλτρου",
+      label: "Filter Name",
     },
     code: {
-      label: "Κωδικός",
+      label: "Code",
     },
     minPrice: {
-      label: "Ελάχιστη τιμή",
+      label: "Minimum Price",
     },
     maxPrice: {
-      label: "Μέγιστη τιμή",
+      label: "Maximun Price",
     },
     minArea: {
-      label: "Ελάχιστη έκταση",
+      label: "Minimum Area",
     },
     maxArea: {
-      label: "Μέγιστη έκταση",
+      label: "Maximun Area",
     },
     minBedrooms: {
-      label: "Ελάχιστος αριθμός υπνοδωματίων",
+      label: "Minimun Number of Bedrooms",
     },
     maxBedrooms: {
-      label: "Μέγιστος αριθμός υπνοδωματίων",
+      label: "Maximun Number of Bedrooms",
     },
     minFloor: {
-      label: "Ελάχιστος όροφος",
+      label: "Minimum Floor",
     },
     maxFloor: {
-      label: "Μέγιστος όροφος",
+      label: "Maximun Floor",
     },
     minConstructionYear: {
-      label: "Ελάχιστο έτος κατασκευής",
+      label: "Minimun Constuction Year",
     },
     maxConstructionYear: {
-      label: "Μέγιστο έτος κατασκευής",
+      label: "Maximun Construction Year",
     },
     heatingType: {
-      label: "Τύπος θέρμανσης",
+      label: "Heating Type",
     },
     frameType: {
-      label: "Τύπος κατασκευής",
+      label: "Frame Type",
     },
     furnished: {
-      label: "Επιπλωμένο",
+      label: "Furnished",
     },
     managerId: {
-      label: "ID διαχειριστή",
+      label: "Manager ID",
     },
     states: {
-      label: "Κατάστάση",
+      label: "State",
     },
     parentCategories: {
-      label: "Κατηγορίες",
+      label: "Category",
     },
     categories: {
-      label: "Υποκατηγορίες",
+      label: "Subcategory",
     },
     labels: {
-      label: "Ετικέτες",
+      label: "Labels",
     },
   };
 
   const pairFilterTags: Record<string, { label: string }> = {
     minMaxPrice: {
-      label: "Τιμή (€)",
+      label: "Price (€)",
     },
     minMaxArea: {
-      label: "Έκταση (τ.μ.)",
+      label: "Area (τ.μ.)",
     },
     minMaxBedrooms: {
-      label: "Υπνοδωμάτια",
+      label: "Bedrooms",
     },
     minMaxFloor: {
-      label: "Όροφος",
+      label: "Floor",
     },
     minMaxConstructionYear: {
-      label: "Έτος κατασκευής",
+      label: "Construction Year",
     },
   };
 
@@ -99,39 +99,43 @@ const ChosenFilters = () => {
     const minKey = `min${suffix}`;
     const maxKey = `max${suffix}`;
 
-    return changedProps.hasOwnProperty(minKey) && changedProps.hasOwnProperty(maxKey);
+    return (
+      changedProps.hasOwnProperty(minKey) && changedProps.hasOwnProperty(maxKey)
+    );
   };
 
   return (
-    <Grid container direction="row" >
-      {
-        Object.keys(changedProps).map((key, index) => {
-          const values = changedProps[key];
-          let label = filterTags[key].label;
+    <Grid container direction="row">
+      {ids.map((key, index) => {
+        const values = changedProps[key];
+        console.log(key);
+        let label = filterTags[key].label;
 
-          if (values.length === 0) {
-            return null;
-          }
+        if (values.length === 0) {
+          return null;
+        }
+        const suffix =
+          key.includes("min") || key.includes("max") ? key.slice(3) : null;
+        // If we have min-max pair, make sure we ignore one of them (don't show the same chip twice)
+        if (hasMinMaxPair(suffix) && key === `max${suffix}`) return <></>;
 
-          const suffix = key.includes('min') || key.includes('max') ? key.slice(3) : null;
+        // If we have min-max pair show chip differently
+        if (hasMinMaxPair(suffix)) {
+          label = pairFilterTags[`minMax${suffix}`].label;
+          const minValue = changedProps[`min${suffix}`];
+          const maxValue = changedProps[`max${suffix}`];
 
-          // If we have min-max pair, make sure we ignore one of them (don't show the same chip twice)
-          if (hasMinMaxPair(suffix) && key === `max${suffix}`) return <></>
-
-          // If we have min-max pair show chip differently
-          if (hasMinMaxPair(suffix)) {
-            label = pairFilterTags[`minMax${suffix}`].label;
-            const minValue = changedProps[`min${suffix}`];
-            const maxValue = changedProps[`max${suffix}`];
-
-            return <Chip
+          return (
+            <Chip
               key={index}
               label={
                 <Stack direction="row">
                   <Typography sx={{ fontWeight: "medium", paddingRight: 1 }}>
                     {label}:
                   </Typography>
-                  <Typography sx={{ textTransform: "lowercase", paddingRight: 1 }}>
+                  <Typography
+                    sx={{ textTransform: "lowercase", paddingRight: 1 }}
+                  >
                     {minValue}
                   </Typography>
                   <Typography sx={{ fontWeight: "medium", paddingRight: 1 }}>
@@ -140,7 +144,7 @@ const ChosenFilters = () => {
                   <Typography sx={{ textTransform: "lowercase" }}>
                     {maxValue}
                   </Typography>
-                </Stack >
+                </Stack>
               }
               onDelete={() => {
                 dispatch(deleteFilter(`min${suffix}`));
@@ -148,9 +152,10 @@ const ChosenFilters = () => {
               }}
               sx={{ m: 0.5 }}
             />
-          }
-          else {
-            return <Chip
+          );
+        } else {
+          return (
+            <Chip
               key={index}
               label={
                 <Stack direction="row">
@@ -160,17 +165,17 @@ const ChosenFilters = () => {
                   <Typography sx={{ textTransform: "lowercase" }}>
                     {Array.isArray(values) ? values.join(", ") : values}
                   </Typography>
-                </Stack >
+                </Stack>
               }
               onDelete={() => {
                 dispatch(deleteFilter(key));
               }}
               sx={{ m: 0.5 }}
             />
-          }
-        })
-      }
-    </Grid >
+          );
+        }
+      })}
+    </Grid>
   );
 };
 

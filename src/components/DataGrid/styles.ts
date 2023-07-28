@@ -3,7 +3,7 @@ import { DataGrid } from "@mui/x-data-grid";
 
 export const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
   border: 0,
-  borderRadius: 8,
+  borderRadius: 10,
   backgroundColor:
     theme.palette.mode === "light"
       ? theme.palette.neutral![100]

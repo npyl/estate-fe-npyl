@@ -1,4 +1,11 @@
-import { Box, Button, ButtonProps, DialogContent, DialogContentProps, styled } from "@mui/material";
+import {
+  Box,
+  Button,
+  ButtonProps,
+  DialogContent,
+  DialogContentProps,
+  styled,
+} from "@mui/material";
 
 interface PriceButtonProps extends ButtonProps {
   open: boolean;
@@ -27,7 +34,7 @@ export const StyledBox = styled(Box)(({ theme }) => ({
   marginTop: 35,
   border: 0,
   boxShadow: `rgba(99, 99, 99, 0.2) 0px 2px 8px 0px`,
-  borderRadius: 4,
+  borderRadius: 15,
   background: theme.palette.common.white,
   p: 1,
 }));
@@ -36,5 +43,5 @@ export const StyledDialogContent = styled(DialogContent, {
   shouldForwardProp: (prop) => prop !== "open",
 })<DialogContentProps>(({ theme }) => ({
   maxHeight: "none",
-  overflow: "visible"
+  overflow: "visible",
 }));

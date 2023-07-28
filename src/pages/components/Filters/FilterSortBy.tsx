@@ -7,33 +7,33 @@ interface IFilterSortByProps {
 
 export default function FilterSortBy({ onSorting }: IFilterSortByProps) {
   const sortByFilterOptions = [
-    { value: "default", label: "Αυτόματη ταξινόμηση" },
+    { value: "default", label: "Automatic Sorting" },
     {
       value: "Ascending_Price",
-      label: "Αύξουσα Τιμή",
+      label: "Rising Price ",
     },
     {
       value: "Descending_Price",
-      label: "Φθίνουσα Τιμή",
+      label: "Falling Price ",
     },
     {
       value: "Ascending_Area",
-      label: "Αύξον Μέγεθος",
+      label: "Rsing Area",
     },
     {
       value: "Descending_Area",
-      label: "Φθίνον Μέγεθος",
+      label: "Falling Price",
     },
   ];
 
   const [selectedOption, setSelectedOption] = useState<string>("default");
 
   return (
-    <FormControl variant='standard' sx={{ m: 1, minWidth: 120 }}>
+    <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
       <Select
         disableUnderline
-        labelId='demo-simple-select-standard-label'
-        id='demo-simple-select-standard'
+        labelId="demo-simple-select-standard-label"
+        id="demo-simple-select-standard"
         value={selectedOption}
         sx={{
           "&.Mui-focusVisible": {

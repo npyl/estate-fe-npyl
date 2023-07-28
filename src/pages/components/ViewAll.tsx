@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
-import { Box } from "@mui/system";
+import { Box, border } from "@mui/system";
 import {
   GridCallbackDetails,
   GridCellParams,
@@ -239,16 +239,19 @@ const ViewAll: FC = () => {
         direction={"row"}
         justifyContent={"space-between"}
         alignItems={"center"}
-        paddingTop={2}
-        paddingX={2}
       >
-        <Box display={"flex"} alignItems={"center"} gap={1}>
-          <Typography variant={"body2"} fontWeight={600}>
-            {rows?.length}
-            {t("Αποτελέσματα")}
+        <Box
+          paddingLeft={"10px"}
+          display={"flex"}
+          alignItems={"center"}
+          gap={1}
+        >
+          <Typography variant={"body2"} fontWeight={500}>
+            {rows?.length} {}
+            {t("Results")}
           </Typography>
         </Box>
-        <Stack direction={"row"} alignItems={"center"} spacing={1}>
+        <Stack direction={"row"} alignItems={"center"} spacing={0}>
           <FilterSortBy
             onSorting={(
               sortingBy: SetStateAction<string>,
