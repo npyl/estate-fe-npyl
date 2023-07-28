@@ -14,7 +14,7 @@ interface SearchItemProps {
 	option: IPropertyResultResponse;
 }
 
-export const SearchItem = ({ option, searchText }: SearchItemProps) => {
+export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
 	const router = useRouter();
 
 	const code = useMemo(
@@ -73,7 +73,7 @@ export const SearchItem = ({ option, searchText }: SearchItemProps) => {
 			flex={1}
 			direction={"row"}
 			alignItems={"center"}
-			onClick={() => router.push(`property/${option.id}`)}
+			onClick={() => router.push(`/property/${option.id}`)}
 		>
 			{option?.propertyImage ? (
 				<Image

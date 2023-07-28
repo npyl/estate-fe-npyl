@@ -150,7 +150,7 @@ export const properties = createApi({
 			}),
 			invalidatesTags: ["Properties"],
 		}),
-		getSearchResults: builder.query<
+		searchProperty: builder.query<
 			IPage<IPropertyResultResponse>,
 			IPropertySearchParams
 		>({
@@ -160,6 +160,7 @@ export const properties = createApi({
 					params: searchParams,
 				};
 			},
+			providesTags: ["Properties"],
 		}),
 
 		// checks
@@ -249,7 +250,7 @@ export const properties = createApi({
 
 export const {
 	// get
-	useGetSearchResultsQuery,
+	useSearchPropertyQuery,
 	useAllPropertiesQuery,
 	useGetPropertyByIdQuery,
 	useGetPropertyByCodeQuery,

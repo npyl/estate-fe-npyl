@@ -1,30 +1,30 @@
 import SearchIcon from "@mui/icons-material/Search";
 import { IconButton, InputAdornment, MenuItem, Select } from "@mui/material";
-import { FC, useEffect, useMemo, useState } from "react";
-import { useGetSearchResultsQuery } from "src/services/properties";
-import { IPropertyResultResponse } from "src/types/properties";
+import { FC, useMemo, useState } from "react";
+import { useSearchPropertyQuery } from "src/services/properties";
 import { useDebouncedCallback } from "use-debounce";
 import { SearchInput } from "./styles";
 import { useTranslation } from "react-i18next";
 import { SearchList } from "./components/SearchList";
-
-type SearchCategory = "all" | "property" | "customers";
+import { useSearchCustomerQuery } from "src/services/customers";
 
 export const DashboardNavbarSearch: FC = () => {
 	const { t } = useTranslation();
 
 	const [searchText, setSearchText] = useState("");
 	const [debouncedText, setDebouncedText] = useState("");
-	const [searchCategory, setSearchCategory] = useState<SearchCategory>("all");
-	const [results, setResults] = useState<IPropertyResultResponse[]>([]);
+	const [searchCategory, setSearchCategory] = useState<string>("all");
 	const [anchorEl, setAnchorEl] = useState(null);
 
-	const { data } = useGetSearchResultsQuery(
-		{ searchString: debouncedText, page: 0, pageSize: 10 },
+	const { data: propertiesResults } = useSearchPropertyQuery(
+		{ searchString: debouncedText, page: 0, pageSize: 5 },
 		{
 			skip: debouncedText === "",
 		}
 	);
+	const { data: customersResults } = useSearchCustomerQuery(debouncedText, {
+		skip: debouncedText === "",
+	});
 
 	const handleSearch = useDebouncedCallback((value) => {
 		setDebouncedText(value);
@@ -37,11 +37,15 @@ export const DashboardNavbarSearch: FC = () => {
 	};
 
 	const open = useMemo(() => Boolean(anchorEl), [anchorEl]);
-
-	useEffect(() => {
-		if (!data) return;
-		setResults(data.content);
-	}, [data]);
+	const properties = useMemo(
+		() =>
+			searchCategory !== "customer" ? propertiesResults?.content || [] : [],
+		[searchCategory, propertiesResults]
+	);
+	const customers = useMemo(
+		() => (searchCategory !== "property" ? customersResults || [] : []),
+		[searchCategory, customersResults]
+	);
 
 	return (
 		<div>
@@ -77,9 +81,7 @@ export const DashboardNavbarSearch: FC = () => {
 								},
 							}}
 							value={searchCategory}
-							onChange={(event) =>
-								setSearchCategory(event.target.value as SearchCategory)
-							}
+							onChange={(event) => setSearchCategory(event.target.value)}
 						>
 							<MenuItem value="all">{t("All")}</MenuItem>
 							<MenuItem value="property">{t("Properties")}</MenuItem>
@@ -92,7 +94,8 @@ export const DashboardNavbarSearch: FC = () => {
 			<SearchList
 				open={open}
 				anchorEl={anchorEl}
-				results={results}
+				properties={properties}
+				customers={customers}
 				searchText={searchText}
 				onClickOutside={() => setAnchorEl(null)}
 			/>

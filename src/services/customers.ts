@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { ICustomer } from "src/types/customer";
+import { ICustomer, ICustomerResultResponse } from "src/types/customer";
 import IPage from "src/types/page";
 
 interface ICustomerParams {
@@ -49,6 +49,16 @@ export const customers = createApi({
 			}),
 			invalidatesTags: ["Customers"],
 		}),
+		searchCustomer: builder.query<ICustomerResultResponse[], string>({
+			query: (searchString: string) => {
+				return {
+					url: "/search",
+					params: { searchString },
+				};
+			},
+			providesTags: ["Customers"],
+		}),
+
 		deleteCustomer: builder.mutation<ICustomer, number>({
 			query: (id: number) => ({
 				url: `${id}`,
@@ -63,6 +73,7 @@ export const {
 	useAllCustomersQuery,
 	useAllCustomersPaginatedQuery,
 	useGetCustomerByIdQuery,
+	useSearchCustomerQuery,
 	useAddCustomerMutation,
 	useDeleteCustomerMutation,
 } = customers;
