@@ -35,14 +35,14 @@ export default function FilterLabels() {
 
   return (
     <FormControl sx={{ width: 110 }}>
-      <InputLabel id='demo-simple-select-label'>Ετικέτες</InputLabel>
+      <InputLabel id="demo-simple-select-label">Labels</InputLabel>
       <Select
         multiple
-        labelId='demo-simple-select-label'
+        labelId="demo-simple-select-label"
         value={labels}
         onChange={handleChange}
         renderValue={(selected) => selected.join(", ")}
-        input={<OutlinedInput label='Ετικέτες' />}
+        input={<OutlinedInput label="Ετικέτες" />}
         MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
       >
         {labelOptions.map((option) => {
@@ -50,7 +50,7 @@ export default function FilterLabels() {
             <MenuItem key={option.id} value={option.id}>
               <Checkbox checked={labels.indexOf(option.id!) > -1} />
               <Label
-                variant='soft'
+                variant="soft"
                 sx={{
                   bgcolor: option.color,
                   borderRadius: 7,

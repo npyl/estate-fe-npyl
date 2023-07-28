@@ -120,9 +120,9 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 	const handleRemoveAllFiles = () => {
 		files.forEach((file) => handleRemoveFile(file));
 	};
-	const handleReorder = () => {
+	const handleReorder = (items: string[]) => {
 		// INFO: backend requires a list with reordered keys like:  [key, key, ...]
-		// reorderImages(files.map((file) => file.key));
+		reorderImages({ id: +propertyId!, body: items });
 	};
 
 	const handleOpenGalleryManager = () => {

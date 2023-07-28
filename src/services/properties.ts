@@ -3,7 +3,7 @@ import {
 	IProperties,
 	IPropertiesPostRequest,
 	IPropertyFilter,
-	IPropertyFilterResponse,
+	IPropertyResultResponse,
 } from "src/types/properties";
 
 import IPage from "src/types/page";
@@ -126,7 +126,7 @@ export const properties = createApi({
 			invalidatesTags: ["Properties"],
 		}),
 		filterProperties: builder.mutation<
-			IPage<IPropertyFilterResponse>,
+			IPage<IPropertyResultResponse>,
 			IPropertyFilterParams
 		>({
 			query: (filterParam: IPropertyFilterParams) => ({
@@ -150,13 +150,17 @@ export const properties = createApi({
 			}),
 			invalidatesTags: ["Properties"],
 		}),
-		getSearchResults: builder.query<IPage<IProperties>, IPropertySearchParams>({
+		searchProperty: builder.query<
+			IPage<IPropertyResultResponse>,
+			IPropertySearchParams
+		>({
 			query: (searchParams: IPropertySearchParams) => {
 				return {
 					url: "/search",
 					params: searchParams,
 				};
 			},
+			providesTags: ["Properties"],
 		}),
 
 		// checks
@@ -235,18 +239,18 @@ export const properties = createApi({
 			IPropertyAddFileParams<string[]>
 		>({
 			query: (params: IPropertyAddFileParams<string[]>) => ({
-				url: `/${params.id}/reorder`,
+				url: `/${params.id}/reorderImages`,
 				method: "POST",
-				body: JSON.stringify(params.body),
+				body: params.body,
 			}),
-			invalidatesTags: ["PropertyById"],
+			invalidatesTags: ["Properties", "PropertyById"],
 		}),
 	}),
 });
 
 export const {
 	// get
-	useGetSearchResultsQuery,
+	useSearchPropertyQuery,
 	useAllPropertiesQuery,
 	useGetPropertyByIdQuery,
 	useGetPropertyByCodeQuery,

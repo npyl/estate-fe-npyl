@@ -31,7 +31,7 @@ export default function MultiFilePreviewReorder({
 		setFiles(updatedItems);
 
 		// reorder callback
-		onReorder && onReorder();
+		onReorder && onReorder(updatedItems.map((i) => i.key));
 	};
 
 	return (

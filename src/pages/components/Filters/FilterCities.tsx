@@ -68,10 +68,10 @@ export default function CountrySelect() {
 
   return (
     <FormControl sx={{ width: 110 }}>
-      <InputLabel id='demo-simple-select-label'>Περιοχή</InputLabel>
+      <InputLabel id="demo-simple-select-label">Area</InputLabel>
       <Select
         multiple
-        labelId='demo-simple-select-label'
+        labelId="demo-simple-select-label"
         value={cities}
         onChange={handleChange}
         renderValue={(selected) =>
@@ -82,7 +82,7 @@ export default function CountrySelect() {
             })
             .join(", ")
         }
-        input={<OutlinedInput label='Περιοχή' />}
+        input={<OutlinedInput label="Περιοχή" />}
         MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
       >
         {getGroupedOptions().map((group, i) => renderSelectGroup(group))}

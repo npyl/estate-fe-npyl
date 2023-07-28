@@ -5,6 +5,15 @@ import { INote } from "./note";
 import { IProperties } from "./properties";
 import { IUser } from "./user";
 
+export interface ICustomerResultResponse {
+	id: number;
+	firstName: string;
+	lastName: string;
+	email: string;
+	mobilePhone: string;
+	city: string;
+}
+
 export interface ICustomer {
 	id: number;
 	firstName: string;

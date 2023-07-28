@@ -33,14 +33,14 @@ export default function SaleSelect() {
 
   return (
     <FormControl sx={{ width: 135 }}>
-      <InputLabel id='demo-simple-select-label'>Κατάσταση</InputLabel>
+      <InputLabel id="demo-simple-select-label">State</InputLabel>
       <Select
         multiple
-        labelId='demo-simple-select-label'
+        labelId="demo-simple-select-label"
         value={states}
         onChange={handleChange}
         renderValue={(selected) => selected.join(", ")}
-        input={<OutlinedInput label='Κατάσταση' />}
+        input={<OutlinedInput label="Κατάσταση" />}
         MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
       >
         {stateEnum.map((option) => {

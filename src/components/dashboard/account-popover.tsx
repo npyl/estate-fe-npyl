@@ -9,7 +9,6 @@ import {
 	Popover,
 	Typography,
 } from "@mui/material";
-import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import type { FC } from "react";
 import toast from "react-hot-toast";
@@ -29,10 +28,7 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
 	const { anchorEl, onClose, open, ...other } = props;
 	const { user } = useAuth();
 	const { t } = useTranslation();
-	const router = useRouter();
 	const { logout } = useAuth();
-	// To get the user from the authContext, you can use
-	// `const { user } = useAuth();`
 
 	const handleLogout = async (): Promise<void> => {
 		try {
