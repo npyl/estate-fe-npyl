@@ -67,9 +67,9 @@ const DataGridTable: FC<GridProps> = ({
           toolbar: GridToolbar,
         }}
         localeText={{
-          toolbarColumns: "Πεδία",
-          columnsPanelTextFieldLabel: "Αναζήτηση πεδίου",
-          columnsPanelTextFieldPlaceholder: "'Ονομα πεδίου",
+          toolbarColumns: "Fields",
+          columnsPanelTextFieldLabel: "Search Field",
+          columnsPanelTextFieldPlaceholder: "Name of Fieldss",
         }}
         sx={{
           "& .MuiDataGrid-row": {

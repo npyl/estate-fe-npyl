@@ -82,9 +82,9 @@ const PriceSelect = ({ type }: { type: string }) => {
 
   const label = useMemo(() => {
     if (type === "price") {
-      return "Τιμή";
+      return "Price";
     }
-    return "Εμβαδόν";
+    return "Area";
   }, [type]);
 
   const values = useMemo(() => {
@@ -106,21 +106,26 @@ const PriceSelect = ({ type }: { type: string }) => {
 
   return (
     <ClickAwayListener
-      mouseEvent='onMouseDown'
-      touchEvent='onTouchStart'
+      mouseEvent="onMouseDown"
+      touchEvent="onTouchStart"
       onClickAway={() => setOpen(false)}
     >
       <Box>
         <StyledPriceButton
           open={open}
-          variant='outlined'
+          variant="outlined"
           endIcon={open ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
           onClick={handleClick}
         >
           {renderLabel}
         </StyledPriceButton>
         {open && (
-          <Popper open={open} anchorEl={anchorEl} sx={{ zIndex: 2000 }} placement='bottom-start'>
+          <Popper
+            open={open}
+            anchorEl={anchorEl}
+            sx={{ zIndex: 2000 }}
+            placement="bottom-start"
+          >
             <StyledBox>
               <Grid container padding={1} spacing={3}>
                 <Grid item xs={12} sm={6}>
@@ -140,7 +145,7 @@ const PriceSelect = ({ type }: { type: string }) => {
                       }}
                       onClick={() => dispatch(setMinValue(undefined))}
                     >
-                      <ListItemText primary={"Αδιάφορο"} />
+                      <ListItemText primary={"Indifferent"} />
                     </ListItem>
                     {values.map((option) => (
                       <ListItem
@@ -179,7 +184,7 @@ const PriceSelect = ({ type }: { type: string }) => {
                       }}
                       onClick={() => dispatch(setMaxValue(undefined))}
                     >
-                      <ListItemText primary={"Αδιάφορο"} />
+                      <ListItemText primary={"Indifferent"} />
                     </ListItem>
                     {values.map((option) => (
                       <ListItem
