@@ -3,11 +3,11 @@ import KeyIcon from "@mui/icons-material/Key";
 import Image from "src/components/image/Image";
 import match from "autosuggest-highlight/match";
 import parse from "autosuggest-highlight/parse";
-import { useRouter } from "next/router";
 import { IPropertyResultResponse } from "src/types/properties";
 import { StyledSearchStack } from "../styles";
 import { useMemo } from "react";
 import PreviewImage from "src/components/image/PreviewImage";
+import { useRouter } from "next/router";
 
 interface SearchItemProps {
 	searchText: string;
@@ -73,7 +73,7 @@ export const SearchItem = ({ option, searchText }: SearchItemProps) => {
 			flex={1}
 			direction={"row"}
 			alignItems={"center"}
-			onClick={() => router.push(`/property/${option.id}`)}
+			onClick={() => router.push(`property/${option.id}`)}
 		>
 			{option?.propertyImage ? (
 				<Image

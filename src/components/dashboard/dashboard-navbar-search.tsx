@@ -46,7 +46,6 @@ export const DashboardNavbarSearch: FC = () => {
 	return (
 		<div>
 			<SearchInput
-				onBlur={() => setAnchorEl(null)}
 				value={searchText}
 				onChange={handleInputChange}
 				placeholder="Search with a keyword"
@@ -95,6 +94,7 @@ export const DashboardNavbarSearch: FC = () => {
 				anchorEl={anchorEl}
 				results={results}
 				searchText={searchText}
+				onClickOutside={() => setAnchorEl(null)}
 			/>
 		</div>
 	);

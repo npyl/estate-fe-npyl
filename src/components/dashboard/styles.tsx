@@ -55,7 +55,7 @@ export const StyledPopper = styled((props: PopperProps) => (
 	[theme.breakpoints.down("sm")]: {
 		width: "65vw",
 	},
-	// transform: "none !important",
+
 	[theme.breakpoints.up("md")]: {
 		top: "10px",
 	},
