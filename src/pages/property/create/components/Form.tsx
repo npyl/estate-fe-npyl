@@ -67,7 +67,6 @@ export default function Form({ performUpload }: IFormProps) {
 						</InputLabel>
 						<Select
 							labelId="demo-simple-select-label"
-							id="demo-simple-select"
 							value={parentCategory}
 							label="Parent Category"
 							onChange={(e) => {
@@ -89,7 +88,6 @@ export default function Form({ performUpload }: IFormProps) {
 					<TextField
 						disabled={parentCategory === ""}
 						fullWidth
-						id="outlined-select-currency"
 						select
 						label={t("Category")}
 						value={category}
