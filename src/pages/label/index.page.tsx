@@ -4,15 +4,15 @@ import { useMemo, useState } from "react";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import {
-	useCreateLabelForCustomerWithIDMutation,
-	useCreateLabelForCustomersMutation,
-	useCreateLabelForPropertiesMutation,
-	useCreateLabelForPropertyWithIDMutation,
-	// General
-	useDeletePropertyLabelMutation,
-	useDeleteCustomerLabelMutation,
-	// Get
-	useGetLabelsQuery,
+    useCreateLabelForCustomerWithIDMutation,
+    useCreateLabelForCustomersMutation,
+    useCreateLabelForPropertiesMutation,
+    useCreateLabelForPropertyWithIDMutation,
+    // General
+    useDeletePropertyLabelMutation,
+    useDeleteCustomerLabelMutation,
+    // Get
+    useGetLabelsQuery,
 } from "src/services/labels";
 import { useAllPropertiesQuery } from "src/services/properties";
 import { useAllCustomersQuery } from "src/services/customers";
@@ -25,147 +25,150 @@ import { Edit } from "./components/Edit";
 import { IEditProps } from "./components/types";
 
 const SingleProperty: NextPage = () => {
-	const propertySectionLabel = "Ακίνητα: ";
-	const customerSectionLabel = "Πελάτες: ";
+    const propertySectionLabel = "Ακίνητα: ";
+    const customerSectionLabel = "Πελάτες: ";
 
-	const [editMode, setEditMode] = useState(false);
-	const [editedLabel, setEditedLabel] = useState<IEditProps>();
+    const [editMode, setEditMode] = useState(false);
+    const [editedLabel, setEditedLabel] = useState<IEditProps>();
 
-	const [createLabelForPropertyWithID] =
-		useCreateLabelForPropertyWithIDMutation();
-	const [createLabelForCustomerWithID] =
-		useCreateLabelForCustomerWithIDMutation();
-	const [createLabelForProperties] = useCreateLabelForPropertiesMutation();
-	const [createLabelForCustomers] = useCreateLabelForCustomersMutation();
-	const [deleteLabelForProperties] = useDeletePropertyLabelMutation();
-	const [deleteLabelForCustomers] = useDeleteCustomerLabelMutation();
+    const [createLabelForPropertyWithID] =
+        useCreateLabelForPropertyWithIDMutation();
+    const [createLabelForCustomerWithID] =
+        useCreateLabelForCustomerWithIDMutation();
+    const [createLabelForProperties] = useCreateLabelForPropertiesMutation();
+    const [createLabelForCustomers] = useCreateLabelForCustomersMutation();
+    const [deleteLabelForProperties] = useDeletePropertyLabelMutation();
+    const [deleteLabelForCustomers] = useDeleteCustomerLabelMutation();
 
-	const { data: labels } = useGetLabelsQuery();
+    const { data: labels } = useGetLabelsQuery();
 
-	const allProperties: IProperties[] = useAllPropertiesQuery().data || [];
-	const allCustomers: ICustomer[] = useAllCustomersQuery().data || [];
+    const allProperties: IProperties[] = useAllPropertiesQuery().data || [];
+    const allCustomers: ICustomer[] = useAllCustomersQuery().data || [];
 
-	const createLabel = (
-		labelName: string,
-		autocompleteValue: string,
-		pickerColor: string,
-		assigneeType: string
-	) => {
-		const propertyIdForCode = (code: string) => {
-			const property = allProperties.find((property) => property.code === code);
-			return property?.id;
-		};
-		const customerIdForFullname = (fullname: string) => {
-			const customer = allCustomers.find(
-				(customer) => customer.firstName + " " + customer.lastName === fullname
-			);
-			return customer?.id;
-		};
+    const createLabel = (
+        labelName: string,
+        autocompleteValue: string,
+        pickerColor: string,
+        assigneeType: string
+    ) => {
+        const propertyIdForCode = (code: string) => {
+            const property = allProperties.find(
+                (property) => property.code === code
+            );
+            return property?.id;
+        };
+        const customerIdForFullname = (fullname: string) => {
+            const customer = allCustomers.find(
+                (customer) =>
+                    customer.firstName + " " + customer.lastName === fullname
+            );
+            return customer?.id;
+        };
 
-		const code = autocompleteValue;
-		const label = { color: pickerColor, name: labelName };
+        const code = autocompleteValue;
+        const label = { color: pickerColor, name: labelName };
 
-		if (code === "") {
-			// create without assign
-			if (assigneeType === "property") {
-				createLabelForProperties(label);
-			} else if (assigneeType === "customer") {
-				createLabelForCustomers(label);
-			}
-		} else {
-			// create with assign
+        if (code === "") {
+            // create without assign
+            if (assigneeType === "property") {
+                createLabelForProperties(label);
+            } else if (assigneeType === "customer") {
+                createLabelForCustomers(label);
+            }
+        } else {
+            // create with assign
 
-			if (assigneeType === "property") {
-				const propertyId = propertyIdForCode(code);
+            if (assigneeType === "property") {
+                const propertyId = propertyIdForCode(code);
 
-				if (!propertyId) return null;
+                if (!propertyId) return null;
 
-				createLabelForPropertyWithID({
-					propertyId: propertyId,
-					labelBody: label,
-				});
-			} else if (assigneeType === "customer") {
-				const customerId = customerIdForFullname(code);
+                createLabelForPropertyWithID({
+                    propertyId: propertyId,
+                    labelBody: label,
+                });
+            } else if (assigneeType === "customer") {
+                const customerId = customerIdForFullname(code);
 
-				if (!customerId) return null;
+                if (!customerId) return null;
 
-				createLabelForCustomerWithID({
-					customerId: customerId,
-					labelBody: label,
-				});
-			}
-		}
-	};
-	const editLabel = (editedLabel: IEditProps) => {
-		editedLabel.resource === propertySectionLabel &&
-			createLabelForProperties({
-				id: editedLabel.id,
-				name: editedLabel.name,
-				color: editedLabel.color,
-			}).then(() => cancelEdit());
-		editedLabel.resource === customerSectionLabel &&
-			createLabelForCustomers({
-				id: editedLabel.id,
-				name: editedLabel.name,
-				color: editedLabel.color,
-			}).then(() => cancelEdit());
-	};
+                createLabelForCustomerWithID({
+                    customerId: customerId,
+                    labelBody: label,
+                });
+            }
+        }
+    };
+    const editLabel = (editedLabel: IEditProps) => {
+        editedLabel.resource === propertySectionLabel &&
+            createLabelForProperties({
+                id: editedLabel.id,
+                name: editedLabel.name,
+                color: editedLabel.color,
+            }).then(() => cancelEdit());
+        editedLabel.resource === customerSectionLabel &&
+            createLabelForCustomers({
+                id: editedLabel.id,
+                name: editedLabel.name,
+                color: editedLabel.color,
+            }).then(() => cancelEdit());
+    };
 
-	const labelData: Record<string, { label: string; data: ILabel[] }> | null =
-		useMemo(() => {
-			if (!labels) return null;
+    const labelData: Record<string, { label: string; data: ILabel[] }> | null =
+        useMemo(() => {
+            if (!labels) return null;
 
-			return {
-				propertyLabels: {
-					label: propertySectionLabel,
-					data: labels.propertyLabels,
-				},
-				customerLabels: {
-					label: customerSectionLabel,
-					data: labels.customerLabels,
-				},
-			};
-		}, [labels]);
+            return {
+                propertyLabels: {
+                    label: propertySectionLabel,
+                    data: labels.propertyLabels,
+                },
+                customerLabels: {
+                    label: customerSectionLabel,
+                    data: labels.customerLabels,
+                },
+            };
+        }, [labels]);
 
-	const handleEdit = (props: IEditProps) => {
-		setEditedLabel(props);
-		setEditMode(true);
-	};
+    const handleEdit = (props: IEditProps) => {
+        setEditedLabel(props);
+        setEditMode(true);
+    };
 
-	const cancelEdit = () => {
-		setEditMode(false);
-	};
+    const cancelEdit = () => {
+        setEditMode(false);
+    };
 
-	const handleDelete = (resource: string, labelId: number) => {
-		resource === propertySectionLabel && deleteLabelForProperties(labelId);
-		resource === customerSectionLabel && deleteLabelForCustomers(labelId);
-	};
+    const handleDelete = (resource: string, labelId: number) => {
+        resource === propertySectionLabel && deleteLabelForProperties(labelId);
+        resource === customerSectionLabel && deleteLabelForCustomers(labelId);
+    };
 
-	return (
-		<Grid container direction={"row"} gap={1} paddingY={3}>
-			{editMode && editedLabel ? (
-				<Edit
-					editedLabel={editedLabel}
-					editLabel={editLabel}
-					cancelEdit={cancelEdit}
-				/>
-			) : (
-				<Create createLabel={createLabel} />
-			)}
+    return (
+        <Grid container direction={"row"} gap={1} paddingY={3}>
+            {editMode && editedLabel ? (
+                <Edit
+                    editedLabel={editedLabel}
+                    editLabel={editLabel}
+                    cancelEdit={cancelEdit}
+                />
+            ) : (
+                <Create createLabel={createLabel} />
+            )}
 
-			<Preview
-				labelData={labelData}
-				onEdit={handleEdit}
-				onDelete={handleDelete}
-			/>
-		</Grid>
-	);
+            <Preview
+                labelData={labelData}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+            />
+        </Grid>
+    );
 };
 
 SingleProperty.getLayout = (page) => (
-	<AuthGuard>
-		<DashboardLayout>{page}</DashboardLayout>
-	</AuthGuard>
+    <AuthGuard>
+        <DashboardLayout>{page}</DashboardLayout>
+    </AuthGuard>
 );
 
 export default SingleProperty;

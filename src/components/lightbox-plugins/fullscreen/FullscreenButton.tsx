@@ -1,6 +1,10 @@
 import * as React from "react";
 
-import { createIcon, IconButton, useLightboxProps } from "yet-another-react-lightbox/core";
+import {
+    createIcon,
+    IconButton,
+    useLightboxProps,
+} from "yet-another-react-lightbox/core";
 import { useFullscreen } from "./FullscreenContext";
 
 const EnterFullscreenIcon = createIcon(
@@ -21,7 +25,16 @@ export function FullscreenButton() {
     if (disabled) return null;
 
     if (render.buttonFullscreen) {
-        return <>{render.buttonFullscreen?.({ fullscreen, disabled, enter, exit })}</>;
+        return (
+            <>
+                {render.buttonFullscreen?.({
+                    fullscreen,
+                    disabled,
+                    enter,
+                    exit,
+                })}
+            </>
+        );
     }
 
     return (
@@ -29,7 +42,11 @@ export function FullscreenButton() {
             disabled={disabled}
             label={fullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
             icon={fullscreen ? ExitFullscreenIcon : EnterFullscreenIcon}
-            renderIcon={fullscreen ? render.iconExitFullscreen : render.iconEnterFullscreen}
+            renderIcon={
+                fullscreen
+                    ? render.iconExitFullscreen
+                    : render.iconEnterFullscreen
+            }
             onClick={fullscreen ? exit : enter}
         />
     );

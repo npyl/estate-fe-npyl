@@ -6,37 +6,37 @@ import type { RootState } from "../store";
 import { ILabel } from "src/types/label";
 
 interface labelsState {
-  labels: ILabel[];
+    labels: ILabel[];
 }
 
 const initialState: labelsState = {
-  labels: [],
+    labels: [],
 };
 
 const slice = createSlice({
-  name: "labels",
-  initialState,
-  reducers: {
-    addLabel(state: labelsState, { payload }): void {
-      state.labels.push(payload);
-    },
-    removeLabel(state: labelsState, { payload }): void {
-      // INFO: removes based on array index (contrary to addLabel)
-      const index = payload;
-      state.labels = state.labels.filter((_, i) => i !== index);
-    },
+    name: "labels",
+    initialState,
+    reducers: {
+        addLabel(state: labelsState, { payload }): void {
+            state.labels.push(payload);
+        },
+        removeLabel(state: labelsState, { payload }): void {
+            // INFO: removes based on array index (contrary to addLabel)
+            const index = payload;
+            state.labels = state.labels.filter((_, i) => i !== index);
+        },
 
-    resetState: () => {
-      return initialState;
+        resetState: () => {
+            return initialState;
+        },
     },
-  },
 });
 
 export const {
-  addLabel,
-  removeLabel,
+    addLabel,
+    removeLabel,
 
-  resetState,
+    resetState,
 } = slice.actions;
 
 export const selectAll = ({ labelsStore }: RootState) => labelsStore.labels;

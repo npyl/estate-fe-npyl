@@ -15,7 +15,11 @@ import { FullscreenContextProvider } from "./FullscreenContext";
 /** Fullscreen plugin */
 export function Fullscreen({ augment, contains, addParent }: PluginProps) {
     augment(({ fullscreen, toolbar, ...restProps }) => ({
-        toolbar: addToolbarButton(toolbar, PLUGIN_FULLSCREEN, <FullscreenButton />),
+        toolbar: addToolbarButton(
+            toolbar,
+            PLUGIN_FULLSCREEN,
+            <FullscreenButton />
+        ),
         fullscreen: resolveFullscreenProps(fullscreen),
         ...restProps,
     }));

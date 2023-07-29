@@ -6,19 +6,19 @@ import { Slider, SliderProps } from "@mui/material";
 // ----------------------------------------------------------------------
 
 type Props = SliderProps & {
-  name: string;
+    name: string;
 };
 
 export default function RHFSlider({ name, ...other }: Props) {
-  const { control } = useFormContext();
+    const { control } = useFormContext();
 
-  return (
-    <Controller
-      name={name}
-      control={control}
-      render={({ field }) => (
-        <Slider {...field} valueLabelDisplay='auto' {...other} />
-      )}
-    />
-  );
+    return (
+        <Controller
+            name={name}
+            control={control}
+            render={({ field }) => (
+                <Slider {...field} valueLabelDisplay="auto" {...other} />
+            )}
+        />
+    );
 }

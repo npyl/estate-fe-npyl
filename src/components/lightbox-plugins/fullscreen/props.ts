@@ -5,7 +5,9 @@ export const defaultFullscreenProps = {
     ref: null,
 };
 
-export const resolveFullscreenProps = (fullscreen: LightboxProps["fullscreen"]) => ({
+export const resolveFullscreenProps = (
+    fullscreen: LightboxProps["fullscreen"]
+) => ({
     ...defaultFullscreenProps,
     ...fullscreen,
 });

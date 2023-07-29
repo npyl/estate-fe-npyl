@@ -7,25 +7,25 @@ import { DashboardLayout } from "../components/dashboard/dashboard-layout";
 import ViewAll from "./components/ViewAll";
 
 const Home: NextPage = () => {
-  return (
-    <>
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          pt: 2,
-        }}
-      >
-        <ViewAll />
-      </Box>
-    </>
-  );
+    return (
+        <>
+            <Box
+                component="main"
+                sx={{
+                    flexGrow: 1,
+                    pt: 2,
+                }}
+            >
+                <ViewAll />
+            </Box>
+        </>
+    );
 };
 
 Home.getLayout = (page) => (
-  <AuthGuard>
-    <DashboardLayout>{page}</DashboardLayout>
-  </AuthGuard>
+    <AuthGuard>
+        <DashboardLayout>{page}</DashboardLayout>
+    </AuthGuard>
 );
 
 export default Home;

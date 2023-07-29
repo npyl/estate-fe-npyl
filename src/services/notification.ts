@@ -1,50 +1,50 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
-	ContactNotification,
-	ContactNotificationPOST,
+    ContactNotification,
+    ContactNotificationPOST,
 } from "src/types/notification";
 
 export const notification = createApi({
-	reducerPath: "contactNotification",
-	baseQuery: fetchBaseQuery({
-		baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/contact/notification`,
-		prepareHeaders: (headers) => {
-			// By default, if we have a token in the store, let's use that for authenticated requests
+    reducerPath: "contactNotification",
+    baseQuery: fetchBaseQuery({
+        baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/contact/notification`,
+        prepareHeaders: (headers) => {
+            // By default, if we have a token in the store, let's use that for authenticated requests
 
-			headers.set(
-				"Authorization",
-				`Bearer  ${localStorage.getItem("accessToken")}`
-			);
+            headers.set(
+                "Authorization",
+                `Bearer  ${localStorage.getItem("accessToken")}`
+            );
 
-			return headers;
-		},
-	}),
-	tagTypes: ["Notifications", "NotificationById"],
-	endpoints: (builder) => ({
-		getNotifications: builder.query<ContactNotification, void>({
-			query: () => "",
-			providesTags: ["Notifications"],
-		}),
-		getNotificationById: builder.query<ContactNotification, number>({
-			query: (id: number) => `${id}`,
-			providesTags: ["NotificationById"],
-		}),
-		addNotification: builder.mutation<
-			ContactNotification,
-			ContactNotificationPOST
-		>({
-			query: (body: ContactNotificationPOST) => ({
-				url: "",
-				method: "POST",
-				body: body,
-			}),
-			invalidatesTags: ["Notifications", "NotificationById"],
-		}),
-	}),
+            return headers;
+        },
+    }),
+    tagTypes: ["Notifications", "NotificationById"],
+    endpoints: (builder) => ({
+        getNotifications: builder.query<ContactNotification, void>({
+            query: () => "",
+            providesTags: ["Notifications"],
+        }),
+        getNotificationById: builder.query<ContactNotification, number>({
+            query: (id: number) => `${id}`,
+            providesTags: ["NotificationById"],
+        }),
+        addNotification: builder.mutation<
+            ContactNotification,
+            ContactNotificationPOST
+        >({
+            query: (body: ContactNotificationPOST) => ({
+                url: "",
+                method: "POST",
+                body: body,
+            }),
+            invalidatesTags: ["Notifications", "NotificationById"],
+        }),
+    }),
 });
 
 export const {
-	useGetNotificationsQuery,
-	useGetNotificationByIdQuery,
-	useAddNotificationMutation,
+    useGetNotificationsQuery,
+    useGetNotificationByIdQuery,
+    useAddNotificationMutation,
 } = notification;

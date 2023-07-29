@@ -7,42 +7,44 @@ import { useAllPropertiesQuery } from "src/services/properties";
 import { useState } from "react";
 
 export default function CodeSelect() {
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-  const [autocompleteValue, setAutocompleteValue] = useState("");
+    const [autocompleteValue, setAutocompleteValue] = useState("");
 
-  const propertyCodes: string[] =
-    useAllPropertiesQuery(undefined, {
-      selectFromResult: ({ data }) => ({
-        data: data
-          ?.filter((property) => property.code !== null)
-          .map((property) => {
-            return property.code;
-          }),
-      }),
-    }).data || [];
+    const propertyCodes: string[] =
+        useAllPropertiesQuery(undefined, {
+            selectFromResult: ({ data }) => ({
+                data: data
+                    ?.filter((property) => property.code !== null)
+                    .map((property) => {
+                        return property.code;
+                    }),
+            }),
+        }).data || [];
 
-  const autocompleteChange = (_event: any, value: string | null) => {
-    setAutocompleteValue(value || "");
+    const autocompleteChange = (_event: any, value: string | null) => {
+        setAutocompleteValue(value || "");
 
-    dispatch(
-      setCode(
-        // On autofill we get a stringified value.
-        value ? value : undefined
-      )
+        dispatch(
+            setCode(
+                // On autofill we get a stringified value.
+                value ? value : undefined
+            )
+        );
+    };
+
+    return (
+        <FormControl sx={{ width: 135 }}>
+            <Autocomplete
+                disablePortal
+                id="combo-box-demo"
+                value={autocompleteValue}
+                onChange={autocompleteChange}
+                options={propertyCodes}
+                renderInput={(params) => (
+                    <TextField {...params} placeholder="Code" />
+                )}
+            />
+        </FormControl>
     );
-  };
-
-  return (
-    <FormControl sx={{ width: 135 }}>
-      <Autocomplete
-        disablePortal
-        id="combo-box-demo"
-        value={autocompleteValue}
-        onChange={autocompleteChange}
-        options={propertyCodes}
-        renderInput={(params) => <TextField {...params} placeholder="Code" />}
-      />
-    </FormControl>
-  );
 }

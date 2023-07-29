@@ -1,11 +1,11 @@
 import {
-  Checkbox,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  OutlinedInput,
-  Select,
-  SelectChangeEvent,
+    Checkbox,
+    FormControl,
+    InputLabel,
+    MenuItem,
+    OutlinedInput,
+    Select,
+    SelectChangeEvent,
 } from "@mui/material";
 import { selectLabels, setLabels } from "src/slices/filters";
 import { useDispatch, useSelector } from "src/store";
@@ -14,55 +14,57 @@ import Label from "src/components/label/Label";
 import { useGetLabelsQuery } from "src/services/labels";
 
 export default function FilterLabels() {
-  const dispatch = useDispatch();
-  const labels = useSelector(selectLabels);
-  const { data } = useGetLabelsQuery();
-  const labelOptions = data?.propertyLabels;
+    const dispatch = useDispatch();
+    const labels = useSelector(selectLabels);
+    const { data } = useGetLabelsQuery();
+    const labelOptions = data?.propertyLabels;
 
-  if (!labelOptions) return null;
+    if (!labelOptions) return null;
 
-  const handleChange = (event: SelectChangeEvent<typeof labels>) => {
-    const {
-      target: { value },
-    } = event;
-    dispatch(
-      setLabels(
-        // On autofill we get a stringified value.
-        typeof value === "string" ? value.split(",") : value
-      )
+    const handleChange = (event: SelectChangeEvent<typeof labels>) => {
+        const {
+            target: { value },
+        } = event;
+        dispatch(
+            setLabels(
+                // On autofill we get a stringified value.
+                typeof value === "string" ? value.split(",") : value
+            )
+        );
+    };
+
+    return (
+        <FormControl sx={{ width: 110 }}>
+            <InputLabel id="demo-simple-select-label">Labels</InputLabel>
+            <Select
+                multiple
+                labelId="demo-simple-select-label"
+                value={labels}
+                onChange={handleChange}
+                renderValue={(selected) => selected.join(", ")}
+                input={<OutlinedInput label="Ετικέτες" />}
+                MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
+            >
+                {labelOptions.map((option) => {
+                    return (
+                        <MenuItem key={option.id} value={option.id}>
+                            <Checkbox
+                                checked={labels.indexOf(option.id!) > -1}
+                            />
+                            <Label
+                                variant="soft"
+                                sx={{
+                                    bgcolor: option.color,
+                                    borderRadius: 7,
+                                    color: "white",
+                                }}
+                            >
+                                {option.name}
+                            </Label>
+                        </MenuItem>
+                    );
+                })}
+            </Select>
+        </FormControl>
     );
-  };
-
-  return (
-    <FormControl sx={{ width: 110 }}>
-      <InputLabel id="demo-simple-select-label">Labels</InputLabel>
-      <Select
-        multiple
-        labelId="demo-simple-select-label"
-        value={labels}
-        onChange={handleChange}
-        renderValue={(selected) => selected.join(", ")}
-        input={<OutlinedInput label="Ετικέτες" />}
-        MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
-      >
-        {labelOptions.map((option) => {
-          return (
-            <MenuItem key={option.id} value={option.id}>
-              <Checkbox checked={labels.indexOf(option.id!) > -1} />
-              <Label
-                variant="soft"
-                sx={{
-                  bgcolor: option.color,
-                  borderRadius: 7,
-                  color: "white",
-                }}
-              >
-                {option.name}
-              </Label>
-            </MenuItem>
-          );
-        })}
-      </Select>
-    </FormControl>
-  );
 }

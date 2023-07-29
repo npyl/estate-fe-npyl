@@ -15,49 +15,49 @@ import { LogoProgressIndicator } from "src/components/LogoProgressIndicator";
 import { resetState } from "src/slices/property";
 
 const CreatePropertyPage: NextPage = () => {
-	const router = useRouter();
-	const dispatch = useDispatch();
+    const router = useRouter();
+    const dispatch = useDispatch();
 
-	const [
-		create,
-		{ isSuccess, isLoading: isCreateLoading, data: createdPropertyId },
-	] = useCreatePropertyMutation();
+    const [
+        create,
+        { isSuccess, isLoading: isCreateLoading, data: createdPropertyId },
+    ] = useCreatePropertyMutation();
 
-	const category = useSelector(selectCategory);
-	const parentCategory = useSelector(selectParentCategory);
+    const category = useSelector(selectCategory);
+    const parentCategory = useSelector(selectParentCategory);
 
-	useEffect(() => {
-		dispatch(resetState());
-	}, []);
+    useEffect(() => {
+        dispatch(resetState());
+    }, []);
 
-	const handleUpload = () => {
-		if (!category || !parentCategory) return;
+    const handleUpload = () => {
+        if (!category || !parentCategory) return;
 
-		// perform POST
-		create({ parentCategory: parentCategory, category: category });
-	};
+        // perform POST
+        create({ parentCategory: parentCategory, category: category });
+    };
 
-	// redirect on success
-	isSuccess &&
-		createdPropertyId &&
-		router.push(`/property/edit/${createdPropertyId}`);
+    // redirect on success
+    isSuccess &&
+        createdPropertyId &&
+        router.push(`/property/edit/${createdPropertyId}`);
 
-	return (
-		<>
-			<Form performUpload={handleUpload} />
+    return (
+        <>
+            <Form performUpload={handleUpload} />
 
-			{
-				// loading indicator (incase POST request is taking alot of time)
-				isCreateLoading && <LogoProgressIndicator />
-			}
-		</>
-	);
+            {
+                // loading indicator (incase POST request is taking alot of time)
+                isCreateLoading && <LogoProgressIndicator />
+            }
+        </>
+    );
 };
 
 CreatePropertyPage.getLayout = (page) => (
-	<AuthGuard>
-		<DashboardLayout>{page}</DashboardLayout>
-	</AuthGuard>
+    <AuthGuard>
+        <DashboardLayout>{page}</DashboardLayout>
+    </AuthGuard>
 );
 
 export default CreatePropertyPage;

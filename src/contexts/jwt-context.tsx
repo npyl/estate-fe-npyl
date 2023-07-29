@@ -6,54 +6,54 @@ import { useProfileQuery } from "../services/user";
 import type { IUser } from "../types/user";
 
 interface State {
-  isInitialized: boolean;
-  isAuthenticated: boolean;
-  user: IUser | null;
+    isInitialized: boolean;
+    isAuthenticated: boolean;
+    user: IUser | null;
 }
 
 export interface AuthContextValue extends State {
-  platform: "JWT";
-  profileData: any;
-  signin: (username: string, password: string) => Promise<void>;
-  logout: () => Promise<void>;
-  signup: (username: string, password: string) => Promise<void>;
+    platform: "JWT";
+    profileData: any;
+    signin: (username: string, password: string) => Promise<void>;
+    logout: () => Promise<void>;
+    signup: (username: string, password: string) => Promise<void>;
 }
 
 interface AuthProviderProps {
-  children: ReactNode;
+    children: ReactNode;
 }
 
 enum ActionType {
-  INITIALIZE = "INITIALIZE",
-  LOGIN = "LOGIN",
-  LOGOUT = "LOGOUT",
-  REGISTER = "REGISTER",
+    INITIALIZE = "INITIALIZE",
+    LOGIN = "LOGIN",
+    LOGOUT = "LOGOUT",
+    REGISTER = "REGISTER",
 }
 
 type InitializeAction = {
-  type: ActionType.INITIALIZE;
-  payload: {
-    isAuthenticated: boolean;
-    user: IUser | null;
-  };
+    type: ActionType.INITIALIZE;
+    payload: {
+        isAuthenticated: boolean;
+        user: IUser | null;
+    };
 };
 
 type LoginAction = {
-  type: ActionType.LOGIN;
-  payload: {
-    user: IUser;
-  };
+    type: ActionType.LOGIN;
+    payload: {
+        user: IUser;
+    };
 };
 
 type LogoutAction = {
-  type: ActionType.LOGOUT;
+    type: ActionType.LOGOUT;
 };
 
 type RegisterAction = {
-  type: ActionType.REGISTER;
-  payload: {
-    user: IUser;
-  };
+    type: ActionType.REGISTER;
+    payload: {
+        user: IUser;
+    };
 };
 
 type Action = InitializeAction | LoginAction | LogoutAction | RegisterAction;
@@ -61,156 +61,167 @@ type Action = InitializeAction | LoginAction | LogoutAction | RegisterAction;
 type Handler = (state: State, action: any) => State;
 
 const initialState: State = {
-  isAuthenticated: false,
-  isInitialized: false,
-  user: null,
+    isAuthenticated: false,
+    isInitialized: false,
+    user: null,
 };
 
 const handlers: Record<ActionType, Handler> = {
-  INITIALIZE: (state: State, action: InitializeAction): State => {
-    const { isAuthenticated, user } = action.payload;
+    INITIALIZE: (state: State, action: InitializeAction): State => {
+        const { isAuthenticated, user } = action.payload;
 
-    return {
-      ...state,
-      isAuthenticated,
-      isInitialized: true,
-      user,
-    };
-  },
-  LOGIN: (state: State, action: LoginAction): State => {
-    const { user } = action.payload;
+        return {
+            ...state,
+            isAuthenticated,
+            isInitialized: true,
+            user,
+        };
+    },
+    LOGIN: (state: State, action: LoginAction): State => {
+        const { user } = action.payload;
 
-    return {
-      ...state,
-      isAuthenticated: true,
-      user,
-    };
-  },
-  LOGOUT: (state: State): State => ({
-    ...state,
-    isAuthenticated: false,
-    user: null,
-  }),
-  REGISTER: (state: State, action: RegisterAction): State => {
-    const { user } = action.payload;
+        return {
+            ...state,
+            isAuthenticated: true,
+            user,
+        };
+    },
+    LOGOUT: (state: State): State => ({
+        ...state,
+        isAuthenticated: false,
+        user: null,
+    }),
+    REGISTER: (state: State, action: RegisterAction): State => {
+        const { user } = action.payload;
 
-    return {
-      ...state,
-      isAuthenticated: true,
-      user,
-    };
-  },
+        return {
+            ...state,
+            isAuthenticated: true,
+            user,
+        };
+    },
 };
 
 const reducer = (state: State, action: Action): State =>
-  handlers[action.type] ? handlers[action.type](state, action) : state;
+    handlers[action.type] ? handlers[action.type](state, action) : state;
 
 export const AuthContext = createContext<AuthContextValue>({
-  ...initialState,
-  platform: "JWT",
-  profileData: {},
-  signin: () => Promise.resolve(),
-  logout: () => Promise.resolve(),
-  signup: () => Promise.resolve(),
+    ...initialState,
+    platform: "JWT",
+    profileData: {},
+    signin: () => Promise.resolve(),
+    logout: () => Promise.resolve(),
+    signup: () => Promise.resolve(),
 });
 
 export const AuthProvider: FC<AuthProviderProps> = (props) => {
-  const { children } = props;
-  const [state, dispatch] = useReducer(reducer, initialState);
-  const [login, { isLoading, isSuccess: loginSuccess }] = useLoginMutation();
+    const { children } = props;
+    const [state, dispatch] = useReducer(reducer, initialState);
+    const [login, { isLoading, isSuccess: loginSuccess }] = useLoginMutation();
 
-  const skipRequest = useMemo(() => {
-    return loginSuccess && !!globalThis?.localStorage?.getItem("accessToken");
-  }, [globalThis?.localStorage?.getItem("accessToken"), loginSuccess]);
+    const skipRequest = useMemo(() => {
+        return (
+            loginSuccess && !!globalThis?.localStorage?.getItem("accessToken")
+        );
+    }, [globalThis?.localStorage?.getItem("accessToken"), loginSuccess]);
 
-  const {
-    data: profileData,
-    isLoading: userLoading,
-    isSuccess,
-    isUninitialized,
-    isError,
-  } = useProfileQuery({}, { skip: !skipRequest });
+    const {
+        data: profileData,
+        isLoading: userLoading,
+        isSuccess,
+        isUninitialized,
+        isError,
+    } = useProfileQuery({}, { skip: !skipRequest });
 
-  const [register] = useRegisterMutation();
+    const [register] = useRegisterMutation();
 
-  useEffect(() => {
-    const initialize = async (): Promise<void> => {
-      try {
-        if (isError) {
-          localStorage.removeItem("accessToken");
-          dispatch({ type: ActionType.LOGOUT });
-        } else if (isSuccess || globalThis?.localStorage?.getItem("accessToken")) {
-          dispatch({
-            type: ActionType.INITIALIZE,
+    useEffect(() => {
+        const initialize = async (): Promise<void> => {
+            try {
+                if (isError) {
+                    localStorage.removeItem("accessToken");
+                    dispatch({ type: ActionType.LOGOUT });
+                } else if (
+                    isSuccess ||
+                    globalThis?.localStorage?.getItem("accessToken")
+                ) {
+                    dispatch({
+                        type: ActionType.INITIALIZE,
+                        payload: {
+                            isAuthenticated: true,
+                            user: profileData!,
+                        },
+                    });
+                } else {
+                    dispatch({
+                        type: ActionType.INITIALIZE,
+                        payload: {
+                            isAuthenticated: false,
+                            user: null,
+                        },
+                    });
+                }
+            } catch (err) {
+                localStorage.removeItem("accessToken");
+                dispatch({ type: ActionType.LOGOUT });
+            }
+        };
+
+        initialize();
+    }, [profileData, isError, loginSuccess]);
+
+    const signin = async (
+        username: string,
+        password: string
+    ): Promise<void> => {
+        const loginRes = await login({ username, password }).unwrap();
+        localStorage.setItem("accessToken", loginRes.token);
+        dispatch({
+            type: ActionType.LOGIN,
             payload: {
-              isAuthenticated: true,
-              user: profileData!,
+                user: profileData!,
             },
-          });
-        } else {
-          dispatch({
-            type: ActionType.INITIALIZE,
-            payload: {
-              isAuthenticated: false,
-              user: null,
-            },
-          });
-        }
-      } catch (err) {
-        localStorage.removeItem("accessToken");
-        dispatch({ type: ActionType.LOGOUT });
-      }
+        });
     };
 
-    initialize();
-  }, [profileData, isError, loginSuccess]);
+    const logout = async (): Promise<void> => {
+        localStorage.removeItem("accessToken");
+        dispatch({ type: ActionType.LOGOUT });
+    };
 
-  const signin = async (username: string, password: string): Promise<void> => {
-    const loginRes = await login({ username, password }).unwrap();
-    localStorage.setItem("accessToken", loginRes.token);
-    dispatch({
-      type: ActionType.LOGIN,
-      payload: {
-        user: profileData!,
-      },
-    });
-  };
+    const signup = async (
+        username: string,
+        password: string
+    ): Promise<void> => {
+        await register({
+            username,
+            password,
+        }).unwrap();
+        // localStorage.setItem("accessToken", accessToken.token);
+        // const user = await profile().unwrap();
 
-  const logout = async (): Promise<void> => {
-    localStorage.removeItem("accessToken");
-    dispatch({ type: ActionType.LOGOUT });
-  };
+        // dispatch({
+        //   type: ActionType.REGISTER,
+        //   payload: {
+        //     user,
+        //   },
+        // });
+    };
 
-  const signup = async (username: string, password: string): Promise<void> => {
-    await register({
-      username,
-      password,
-    }).unwrap();
-    // localStorage.setItem("accessToken", accessToken.token);
-    // const user = await profile().unwrap();
-
-    // dispatch({
-    //   type: ActionType.REGISTER,
-    //   payload: {
-    //     user,
-    //   },
-    // });
-  };
-
-  return (
-    <AuthContext.Provider
-      value={{
-        ...state,
-        platform: "JWT",
-        profileData,
-        signin,
-        logout,
-        signup,
-      }}
-    >
-      {children}
-    </AuthContext.Provider>
-  );
+    return (
+        <AuthContext.Provider
+            value={{
+                ...state,
+                platform: "JWT",
+                profileData,
+                signin,
+                logout,
+                signup,
+            }}
+        >
+            {children}
+        </AuthContext.Provider>
+    );
 };
 
 export const AuthConsumer = AuthContext.Consumer;

@@ -9,9 +9,9 @@ import Brightness1Icon from "@mui/icons-material/Brightness1";
 type Direction = "horizontal" | "vertical";
 
 interface ListStatusItemProps extends ListItemProps {
-  align?: Direction;
-  label: string;
-  status: string | boolean;
+    align?: Direction;
+    label: string;
+    status: string | boolean;
 }
 
 //
@@ -19,44 +19,44 @@ interface ListStatusItemProps extends ListItemProps {
 //
 
 const ListStatusItem: FC<ListStatusItemProps> = (props) => {
-  const {
-    align = "vertical",
-    children,
-    disableGutters,
-    status,
-    label,
-    ...other
-  } = props;
+    const {
+        align = "vertical",
+        children,
+        disableGutters,
+        status,
+        label,
+        ...other
+    } = props;
 
-  return (
-    <ListItem label={label} {...other}>
-      <Box
-        sx={{
-          float: "right",
-        }}
-      >
-        <Brightness1Icon
-          sx={{
-            color: status ? "success.main" : "error.main",
-            float: "right",
-            fontSize: 18,
-          }}
-        />
+    return (
+        <ListItem label={label} {...other}>
+            <Box
+                sx={{
+                    float: "right",
+                }}
+            >
+                <Brightness1Icon
+                    sx={{
+                        color: status ? "success.main" : "error.main",
+                        float: "right",
+                        fontSize: 18,
+                    }}
+                />
 
-        <Typography
-          color='textSecondary'
-          variant='body2'
-          sx={{
-            float: "right",
-            paddingRight: 1,
-            color: status ? "success.main" : "error.main",
-          }}
-        >
-          {status ? "On Market" : "Private"}
-        </Typography>
-      </Box>
-    </ListItem>
-  );
+                <Typography
+                    color="textSecondary"
+                    variant="body2"
+                    sx={{
+                        float: "right",
+                        paddingRight: 1,
+                        color: status ? "success.main" : "error.main",
+                    }}
+                >
+                    {status ? "On Market" : "Private"}
+                </Typography>
+            </Box>
+        </ListItem>
+    );
 };
 
 export default ListStatusItem;
