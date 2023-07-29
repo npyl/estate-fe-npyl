@@ -109,9 +109,11 @@ const ChosenFilters = () => {
       {ids.map((key, index) => {
         const values = changedProps[key];
         console.log(key);
+        console.log("filterTags:", filterTags);
+        console.log("key:", key);
         let label = filterTags[key].label;
 
-        if (values.length === 0) {
+        if (values === 0 || values == undefined) {
           return null;
         }
         const suffix =

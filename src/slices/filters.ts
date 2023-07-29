@@ -31,124 +31,166 @@ const slice = createSlice({
   reducers: {
     setCode(state, { payload }) {
       state.filters.code = payload;
-      state.ids.push("code");
+      !state.ids.includes("code") && state.ids.push("code");
     },
 
     setManagerId(state, { payload }) {
       state.filters.managerId = payload;
-      state.ids.push("managerId");
+      !state.ids.includes("managerId") && state.ids.push("managerId");
     },
 
     setMaxArea(state, { payload }) {
       state.filters.maxArea = payload;
-      state.ids.push("maxArea");
+      !state.ids.includes("maxArea") && state.ids.push("maxArea");
     },
 
     setMaxBedrooms(state, { payload }) {
       state.filters.maxBedrooms = payload;
-      state.ids.push("maxBedrooms");
+      !state.ids.includes("maxBedrooms") && state.ids.push("maxBedrooms");
     },
 
     setMaxConstructionYear(state, { payload }) {
       state.filters.maxConstructionYear = payload;
-      state.ids.push("maxConstructionYear");
+      !state.ids.includes("maxConstuctionYear") &&
+        state.ids.push("maxConstructionYear");
     },
 
     setMaxFloor(state, { payload }) {
       state.filters.maxFloor = payload;
-      state.ids.push("maxFloor");
+      !state.ids.includes("maxFloor") && state.ids.push("maxFloor");
     },
 
     setMaxPrice(state, { payload }) {
       state.filters.maxPrice = payload;
-      state.ids.push("maxPrice");
+      !state.ids.includes("maxPrice") && state.ids.push("maxPrice");
     },
     setIds(state, { payload }) {
       state.ids = payload;
-      state.ids.push("ids");
+      !state.ids.includes("ids") && state.ids.push("ids");
     },
     setMinArea(state, { payload }) {
       state.filters.minArea = payload;
-      state.ids.push("minArea");
+      !state.ids.includes("minArea") && state.ids.push("minArea");
     },
 
     setMinBedrooms(state, { payload }) {
       state.filters.minBedrooms = payload;
-      state.ids.push("minBedrooms");
+      !state.ids.includes("minBedrooms") && state.ids.push("minBedrooms");
     },
 
     setMinConstructionYear(state, { payload }) {
       state.filters.minConstructionYear = payload;
-      state.ids.push("minConstructionYear");
+      !state.ids.includes("minConstructionYear") &&
+        state.ids.push("minConstructionYear");
     },
 
     setMinFloor(state, { payload }) {
       state.filters.minFloor = payload;
-      state.ids.push("minFloor");
+      !state.ids.includes("minFloor") && state.ids.push("minFloor");
     },
 
     setMinPrice(state, { payload }) {
       state.filters.minPrice = payload;
-      state.ids.push("minPrice");
+      !state.ids.includes("minPrice") && state.ids.push("minPrice");
     },
 
     // multiple
     setLabels(state, { payload }) {
       state.filters.labels = payload;
-      state.ids.push("labels");
+      !state.ids.includes("labels") && state.ids.push("labels");
     },
     setParentLocation(state, { payload }) {
       state.filters.parentLocation = payload;
-      state.ids.push("parentLocation");
+      !state.ids.includes("parentLocation") && state.ids.push("parentLocation");
     },
     setSubLocation(state, { payload }) {
       state.filters.subLocation = payload;
-      state.ids.push("subLocation");
+      !state.ids.includes("subLocation") && state.ids.push("subLocation");
     },
     setStates(state, { payload }) {
       state.filters.states = payload;
-      state.ids.push("states");
+      !state.ids.includes("states") && state.ids.push("states");
     },
     setSubCategories(state, { payload }) {
       state.filters.categories = payload;
-      state.ids.push("categories");
+      !state.ids.includes("categories") && state.ids.push("categories");
     },
     setParentCategories(state, { payload }) {
       state.filters.parentCategories = payload;
-      state.ids.push("parentCategories");
+      !state.ids.includes("parentCategories") &&
+        state.ids.push("parentCategories");
     },
     deleteSubCategory(state, { payload }) {
+      state.filters.categories.length === 1 &&
+        state.ids.filter((id) => id !== payload);
       state.filters.categories = state.filters.categories.filter(
         (category) => category !== payload
       );
     },
 
     toggleFrameType(state, { payload }) {
-      state.filters.frameType = state.filters.frameType.includes(payload)
-        ? state.filters.frameType.filter((o) => payload !== o) // already exists; remove
-        : [...state.filters.frameType, payload]; // doesn't exist; add
+      if (state.filters.frameType.includes(payload)) {
+        // already exists; remove
+        if (state.filters.frameType.length === 1)
+          state.ids = state.ids.filter((id) => id !== "frameType");
+        state.filters.frameType = state.filters.frameType.filter(
+          (ft) => ft !== payload
+        );
+      } else {
+        // doesn't exist; add
+        state.filters.frameType.push(payload);
+        state.ids.push("frameType");
+      }
     },
-
     toggleFurnished(state, { payload }) {
-      state.filters.furnished = state.filters.furnished.includes(payload)
-        ? state.filters.furnished.filter((o) => payload !== o) // already exists; remove
-        : [...state.filters.furnished, payload]; // doesn't exist; add
+      if (state.filters.furnished.includes(payload)) {
+        // already exists; remove
+        if (state.filters.furnished.length === 1)
+          state.ids = state.ids.filter((id) => id !== "furnished");
+        state.filters.furnished = state.filters.furnished.filter(
+          (ft) => ft !== payload
+        );
+      } else {
+        // doesn't exist; add
+        state.filters.furnished.push(payload);
+        state.ids.push("furnished");
+      }
     },
 
     toggleHeatingType(state, { payload }) {
-      state.filters.heatingType = state.filters.heatingType.includes(payload)
-        ? state.filters.heatingType.filter((o) => payload !== o) // already exists; remove
-        : [...state.filters.heatingType, payload]; // doesn't exist; add
+      if (state.filters.heatingType.includes(payload)) {
+        // already exists; remove
+        if (state.filters.heatingType.length === 1)
+          state.ids = state.ids.filter((id) => id !== "heatingType");
+        state.filters.heatingType = state.filters.heatingType.filter(
+          (ft) => ft !== payload
+        );
+      } else {
+        // doesn't exist; add
+        state.filters.heatingType.push(payload);
+        state.ids.push("heatingType");
+      }
     },
 
     deleteState(state, { payload }) {
+      state.filters.states.length === 1 &&
+        state.ids.filter((id) => id !== payload);
       state.filters.states = state.filters.states.filter(
         (state) => state !== payload
       );
     },
 
+    // general delete
     deleteFilter(state, { payload }) {
       const key = payload;
+
+      if (Array.isArray(state.filters[key])) {
+        state.ids =
+          state.filters[key]?.length === 1
+            ? state.ids.filter((id) => id !== key)
+            : state.ids;
+      } else state.ids = state.ids.filter((id) => id !== key);
+
       const initialValue = initialState.filters[payload];
       state.filters[key] = initialValue;
     },
@@ -164,29 +206,51 @@ const slice = createSlice({
       state.filters.minArea = initialState.filters.minArea;
       state.filters.maxArea = initialState.filters.maxArea;
       state.filters.labels = initialState.filters.labels;
+
+      state.ids = state.ids.filter((id) => id !== "minArea");
+      state.ids = state.ids.filter((id) => id !== "maxPrice");
+      state.ids = state.ids.filter((id) => id !== "minPrice");
+      state.ids = state.ids.filter((id) => id !== "categories");
+      state.ids = state.ids.filter((id) => id !== "parentCategory");
+      state.ids = state.ids.filter((id) => id !== "states");
+      state.ids = state.ids.filter((id) => id !== "managerId");
+      state.ids = state.ids.filter((id) => id !== "code");
+      state.ids = state.ids.filter((id) => id !== "labels");
     },
     resetBedrooms: (state) => {
       state.filters.minBedrooms = initialState.filters.minBedrooms;
       state.filters.maxBedrooms = initialState.filters.maxBedrooms;
+
+      state.ids = state.ids.filter((id) => id !== "minBedrooms");
+      state.ids = state.ids.filter((id) => id !== "maxBedrooms");
     },
     resetFloor: (state) => {
       state.filters.minFloor = initialState.filters.minFloor;
       state.filters.maxFloor = initialState.filters.maxFloor;
+
+      state.ids = state.ids.filter((id) => id !== "minFloor");
+      state.ids = state.ids.filter((id) => id !== "maxFloor");
     },
     resetFrameType: (state) => {
       state.filters.frameType = initialState.filters.frameType;
+      state.ids = state.ids.filter((id) => id !== "frameType");
     },
     resetFurnished: (state) => {
       state.filters.furnished = initialState.filters.furnished;
+      state.ids = state.ids.filter((id) => id !== "furnished");
     },
     resetHeatingType: (state) => {
       state.filters.heatingType = initialState.filters.heatingType;
+      state.ids = state.ids.filter((id) => id !== "heatingType");
     },
     resetConstructionYear: (state) => {
       state.filters.minConstructionYear =
         initialState.filters.minConstructionYear;
       state.filters.maxConstructionYear =
         initialState.filters.maxConstructionYear;
+
+      state.ids = state.ids.filter((id) => id !== "minConstructionYear");
+      state.ids = state.ids.filter((id) => id !== "maxConstructionYear");
     },
 
     resetState: () => {
@@ -327,7 +391,7 @@ export default sumOfChangedProperties;
 export const getChangedFields = createSelector(
   (state: RootState) => state.filters,
   (filter) => {
-    const changedFields = Object.entries(filter).reduce(
+    const changedFields = Object.entries(filter.filters).reduce(
       (acc: any, [key, value]) => {
         if (value !== initialState.filters[key]) {
           acc[key] = value;
