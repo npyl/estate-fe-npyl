@@ -1,5 +1,5 @@
 // export { default as SeoIllustration } from './SeoIllustration';
-export { default as UploadIllustration } from './UploadIllustration';
+export { default as UploadIllustration } from "./UploadIllustration";
 // export { default as BookingIllustration } from './BookingIllustration';
 // export { default as CheckInIllustration } from './CheckInIllustration';
 // export { default as CheckOutIllustration } from './CheckOutIllustration';

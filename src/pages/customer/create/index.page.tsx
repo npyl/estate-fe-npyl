@@ -19,76 +19,76 @@ import Form from "../components/Form";
 import { LogoProgressIndicator } from "src/components/LogoProgressIndicator";
 
 const CreateCustomer: NextPage = () => {
-  const router = useRouter();
+    const router = useRouter();
 
-  const [
-    create,
-    {
-      isSuccess: isCreateCustomerSuccess,
-      isLoading: isCreateCustomerLoading,
-      data: createdCustomer,
-    },
-  ] = useAddCustomerMutation();
-  const [createLabel, { isSuccess: isLabelSuccess }] =
-    useCreateLabelForCustomerWithIDMutation();
-  const [createNote, { isSuccess: isNoteSuccess }] =
-    useAddNoteToCustomerWithIdMutation();
+    const [
+        create,
+        {
+            isSuccess: isCreateCustomerSuccess,
+            isLoading: isCreateCustomerLoading,
+            data: createdCustomer,
+        },
+    ] = useAddCustomerMutation();
+    const [createLabel, { isSuccess: isLabelSuccess }] =
+        useCreateLabelForCustomerWithIDMutation();
+    const [createNote, { isSuccess: isNoteSuccess }] =
+        useAddNoteToCustomerWithIdMutation();
 
-  const newLabels = useSelector(selectAllNewLabels);
-  const newNotes = useSelector(selectAllNewNotes);
-  const body = useSelector(selectAll);
+    const newLabels = useSelector(selectAllNewLabels);
+    const newNotes = useSelector(selectAllNewNotes);
+    const body = useSelector(selectAll);
 
-  const createAndAssignNewLabels = () => {
-    const createdCustomerId = createdCustomer!.id;
+    const createAndAssignNewLabels = () => {
+        const createdCustomerId = createdCustomer!.id;
 
-    // foreach label; call create-for-customer-with-id
-    newLabels.forEach(async (newLabel) => {
-      await createLabel({
-        customerId: createdCustomerId,
-        labelBody: newLabel,
-      });
-    });
-  };
-  const createAndAssignNewNotes = () => {
-    const createdCustomerId = createdCustomer!.id;
+        // foreach label; call create-for-customer-with-id
+        newLabels.forEach(async (newLabel) => {
+            await createLabel({
+                customerId: createdCustomerId,
+                labelBody: newLabel,
+            });
+        });
+    };
+    const createAndAssignNewNotes = () => {
+        const createdCustomerId = createdCustomer!.id;
 
-    // foreach note; call create-for-customer-with-id
-    newNotes.forEach(async (newNote) => {
-      await createNote({
-        id: createdCustomerId,
-        dataToSend: { content: newNote.content },
-      });
-    });
-  };
+        // foreach note; call create-for-customer-with-id
+        newNotes.forEach(async (newNote) => {
+            await createNote({
+                id: createdCustomerId,
+                dataToSend: { content: newNote.content },
+            });
+        });
+    };
 
-  const performUpload = () => {
-    create(body);
-  };
+    const performUpload = () => {
+        create(body);
+    };
 
-  useEffect(() => {
-    if (isCreateCustomerSuccess && createdCustomer) {
-      createAndAssignNewLabels(); // create&assign labels
-      createAndAssignNewNotes(); // create&assign notes
-      router.push("/customer");
-    }
-  }, [isCreateCustomerSuccess, createdCustomer]);
+    useEffect(() => {
+        if (isCreateCustomerSuccess && createdCustomer) {
+            createAndAssignNewLabels(); // create&assign labels
+            createAndAssignNewNotes(); // create&assign notes
+            router.push("/customer");
+        }
+    }, [isCreateCustomerSuccess, createdCustomer]);
 
-  return (
-    <>
-      <Form performUpload={performUpload} />
+    return (
+        <>
+            <Form performUpload={performUpload} />
 
-      {
-        // loading indicator (incase POST request is taking alot of time)
-        isCreateCustomerLoading && <LogoProgressIndicator />
-      }
-    </>
-  );
+            {
+                // loading indicator (incase POST request is taking alot of time)
+                isCreateCustomerLoading && <LogoProgressIndicator />
+            }
+        </>
+    );
 };
 
 CreateCustomer.getLayout = (page) => (
-  <AuthGuard>
-    <DashboardLayout>{page}</DashboardLayout>
-  </AuthGuard>
+    <AuthGuard>
+        <DashboardLayout>{page}</DashboardLayout>
+    </AuthGuard>
 );
 
 export default CreateCustomer;

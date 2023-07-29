@@ -1,112 +1,112 @@
 import {
-	Paper,
-	Popper,
-	PopperProps,
-	Stack,
-	StackProps,
-	alpha,
-	styled,
+    Paper,
+    Popper,
+    PopperProps,
+    Stack,
+    StackProps,
+    alpha,
+    styled,
 } from "@mui/material";
 import InputBase from "@mui/material/InputBase";
 import { bgBlur } from "src/utils/cssStyles";
 
 export const StyledNavbarSearchPaper = styled(Paper)(({ theme }) => ({
-	backgroundColor: theme.palette.neutral![100],
-	p: "2px 4px",
-	display: "flex",
-	alignItems: "center",
-	width: 300,
-	borderRadius: 24,
-	border: `0.5px solid ${theme.palette.neutral![100]}`,
+    backgroundColor: theme.palette.neutral![100],
+    p: "2px 4px",
+    display: "flex",
+    alignItems: "center",
+    width: 300,
+    borderRadius: 24,
+    border: `0.5px solid ${theme.palette.neutral![100]}`,
 
-	"&:hover": {
-		border: `0.5px solid ${theme.palette.primary.main}`,
-	},
+    "&:hover": {
+        border: `0.5px solid ${theme.palette.primary.main}`,
+    },
 }));
 
 export const SearchInput = styled(InputBase)(({ theme }) => ({
-	borderRadius: 24,
-	backgroundColor: theme.palette.background.paper,
-	paddingLeft: theme.spacing(2),
-	border: `1px solid ${theme.palette.divider}`,
-	"&:hover": {
-		borderColor: theme.palette.primary.main,
-	},
-	"&:focus": {
-		borderColor: theme.palette.primary.main,
-	},
-	width: "40vw",
-	height: "50px",
-	[theme.breakpoints.down("sm")]: {
-		width: "65vw",
-	},
+    borderRadius: 24,
+    backgroundColor: theme.palette.background.paper,
+    paddingLeft: theme.spacing(2),
+    border: `1px solid ${theme.palette.divider}`,
+    "&:hover": {
+        borderColor: theme.palette.primary.main,
+    },
+    "&:focus": {
+        borderColor: theme.palette.primary.main,
+    },
+    width: "40vw",
+    height: "50px",
+    [theme.breakpoints.down("sm")]: {
+        width: "65vw",
+    },
 }));
 
 export const StyledPopper = styled((props: PopperProps) => (
-	<Popper {...props} />
+    <Popper {...props} />
 ))<PopperProps>(({ theme }) => ({
-	position: `relative`,
-	top: `10px !important`,
-	boxShadow: theme.shadows[20],
-	width: "40vw",
-	left: "-17px !important",
+    position: `relative`,
+    top: `10px !important`,
+    boxShadow: theme.shadows[20],
+    width: "40vw",
+    left: "-17px !important",
 
-	zIndex: 99999,
-	[theme.breakpoints.down("sm")]: {
-		width: "65vw",
-	},
+    zIndex: 99999,
+    [theme.breakpoints.down("sm")]: {
+        width: "65vw",
+    },
 
-	[theme.breakpoints.up("md")]: {
-		top: "10px",
-	},
-	"& .MuiAutocomplete-paper": {
-		padding: theme.spacing(1, 0),
-	},
-	"& .MuiListSubheader-root": {
-		"&.MuiAutocomplete-groupLabel": {
-			...bgBlur({ color: theme.palette.neutral?.[400] }),
-			...theme.typography.overline,
-			top: 0,
-			margin: 0,
-			lineHeight: "48px",
-		},
-	},
-	"& .MuiAutocomplete-listbox": {
-		"& .MuiAutocomplete-option": {
-			padding: theme.spacing(0.5, 2),
-			margin: 0,
-			display: "block",
-			border: `dashed 1px transparent`,
-			borderBottomColor: theme.palette.divider,
-			"&:last-of-type": {
-				borderBottomColor: "transparent",
-			},
-			"&:hover": {
-				borderColor: theme.palette.primary.main,
-				backgroundColor: alpha(
-					theme.palette.primary.main,
-					theme.palette.action.hoverOpacity
-				),
-			},
-		},
-	},
+    [theme.breakpoints.up("md")]: {
+        top: "10px",
+    },
+    "& .MuiAutocomplete-paper": {
+        padding: theme.spacing(1, 0),
+    },
+    "& .MuiListSubheader-root": {
+        "&.MuiAutocomplete-groupLabel": {
+            ...bgBlur({ color: theme.palette.neutral?.[400] }),
+            ...theme.typography.overline,
+            top: 0,
+            margin: 0,
+            lineHeight: "48px",
+        },
+    },
+    "& .MuiAutocomplete-listbox": {
+        "& .MuiAutocomplete-option": {
+            padding: theme.spacing(0.5, 2),
+            margin: 0,
+            display: "block",
+            border: `dashed 1px transparent`,
+            borderBottomColor: theme.palette.divider,
+            "&:last-of-type": {
+                borderBottomColor: "transparent",
+            },
+            "&:hover": {
+                borderColor: theme.palette.primary.main,
+                backgroundColor: alpha(
+                    theme.palette.primary.main,
+                    theme.palette.action.hoverOpacity
+                ),
+            },
+        },
+    },
 }));
 
 export const StyledSearchStack = styled((props: StackProps) => (
-	<Stack {...props} />
+    <Stack {...props} />
 ))(({ theme }) => ({
-	margin: 0,
+    margin: 0,
 
-	border: `dashed 1px transparent`,
-	borderBottomColor: theme.palette.divider,
-	"&:last-of-type": {
-		borderBottomColor: "transparent",
-	},
-	"&:hover": {
-		borderColor: theme.palette.primary.main,
-		backgroundColor: alpha(
-			theme.palette.primary.main,
-			theme.palette.action.hoverOpacity
-		),
-	},
+    border: `dashed 1px transparent`,
+    borderBottomColor: theme.palette.divider,
+    "&:last-of-type": {
+        borderBottomColor: "transparent",
+    },
+    "&:hover": {
+        borderColor: theme.palette.primary.main,
+        backgroundColor: alpha(
+            theme.palette.primary.main,
+            theme.palette.action.hoverOpacity
+        ),
+    },
 }));

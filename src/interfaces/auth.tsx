@@ -1,13 +1,13 @@
 export interface User {
-  first_name: string;
-  last_name: string;
+    first_name: string;
+    last_name: string;
 }
 
 export interface UserResponse {
-  token: string;
+    token: string;
 }
 
 export interface IAuthReq {
-  username: string;
-  password: string;
+    username: string;
+    password: string;
 }

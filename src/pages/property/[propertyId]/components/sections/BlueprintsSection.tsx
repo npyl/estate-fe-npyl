@@ -7,42 +7,42 @@ import { Typography, Box, Paper, Divider } from "@mui/material";
 import { IPropertyBlueprint } from "src/types/file";
 
 interface BlueprintsSectionProps {
-	data: IProperties;
+    data: IProperties;
 }
 
 const BlueprintsSection: React.FC<BlueprintsSectionProps> = (props) => {
-	const { data } = props;
-	const blueprints: IPropertyBlueprint[] = data?.blueprints;
+    const { data } = props;
+    const blueprints: IPropertyBlueprint[] = data?.blueprints;
 
-	const _carouselData = useMemo(
-		() =>
-			blueprints.map((blueprint, index) => ({
-				id: (index + 1).toString(),
-				title: "Image",
-				image: blueprint.url || "",
-				description: "One of the images",
-			})),
-		[blueprints]
-	);
+    const _carouselData = useMemo(
+        () =>
+            blueprints.map((blueprint, index) => ({
+                id: (index + 1).toString(),
+                title: "Image",
+                image: blueprint.url || "",
+                description: "One of the images",
+            })),
+        [blueprints]
+    );
 
-	return (
-		<Paper elevation={10} sx={{ overflow: "auto" }}>
-			<Box
-				sx={{
-					px: 3,
-					py: 1.5,
-					display: "flex",
-					justifyContent: "left",
-				}}
-			>
-				<Typography variant="h6">Blueprints</Typography>
-			</Box>
-			<Divider></Divider>
-			{_carouselData && _carouselData.length > 0 && (
-				<CarouselWithLightbox data={_carouselData} />
-			)}
-		</Paper>
-	);
+    return (
+        <Paper elevation={10} sx={{ overflow: "auto" }}>
+            <Box
+                sx={{
+                    px: 3,
+                    py: 1.5,
+                    display: "flex",
+                    justifyContent: "left",
+                }}
+            >
+                <Typography variant="h6">Blueprints</Typography>
+            </Box>
+            <Divider></Divider>
+            {_carouselData && _carouselData.length > 0 && (
+                <CarouselWithLightbox data={_carouselData} />
+            )}
+        </Paper>
+    );
 };
 
 export default BlueprintsSection;

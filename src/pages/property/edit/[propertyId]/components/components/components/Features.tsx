@@ -7,438 +7,438 @@ import { useSelector } from "react-redux";
 
 import { useDispatch } from "react-redux";
 import {
-  selectAccessForDisable,
-  selectAdaptingToTheGround,
-  selectAlarmSystem,
-  selectBarbeque,
-  selectBright,
-  selectCctv,
-  selectCombinedKitchenAndDiningArea,
-  selectCorner,
-  selectDrilling,
-  selectFacade,
-  selectFireDetector,
-  selectGuestroom,
-  selectHas24HoursSecurity,
-  selectHeatedPool,
-  selectHomeCinema,
-  selectIndependentHeatingPerRoom,
-  selectIndoorPool,
-  selectInternet,
-  selectJacuzzi,
-  selectMasonryFence,
-  selectMountainView,
-  selectNearBusRoute,
-  selectOffice,
-  selectOrganizedGarden,
-  selectPanoramicView,
-  selectPool,
-  selectQuietArea,
-  selectSeaFront,
-  selectSeaView,
-  selectSmartHome,
-  selectSoundInsulation,
-  selectTents,
-  selectThermalInsulation,
-  selectVeranda,
-  selectView,
-  selectWalkableDistanceToBeach,
-  selectWell,
-  setAccessForDisable,
-  setAdaptingToTheGround,
-  setAlarmSystem,
-  setBarbeque,
-  setBright,
-  setCctv,
-  setCombinedKitchenAndDiningArea,
-  setCorner,
-  setDrilling,
-  setFacade,
-  setFireDetector,
-  setGuestroom,
-  setHas24HoursSecurity,
-  setHeatedPool,
-  setHomeCinema,
-  setIndependentHeatingPerRoom,
-  setIndoorPool,
-  setInternet,
-  setJacuzzi,
-  setMasonryFence,
-  setMountainView,
-  setNearBusRoute,
-  setOffice,
-  setOrganizedGarden,
-  setPanoramicView,
-  setPool,
-  setQuietArea,
-  setSea,
-  setSeaFront,
-  setSeaView,
-  setSmartHome,
-  setSoundInsulation,
-  setTents,
-  setThermalInsulation,
-  setVeranda,
-  setView,
-  setWalkableDistanceToBeach,
-  setWell,
+    selectAccessForDisable,
+    selectAdaptingToTheGround,
+    selectAlarmSystem,
+    selectBarbeque,
+    selectBright,
+    selectCctv,
+    selectCombinedKitchenAndDiningArea,
+    selectCorner,
+    selectDrilling,
+    selectFacade,
+    selectFireDetector,
+    selectGuestroom,
+    selectHas24HoursSecurity,
+    selectHeatedPool,
+    selectHomeCinema,
+    selectIndependentHeatingPerRoom,
+    selectIndoorPool,
+    selectInternet,
+    selectJacuzzi,
+    selectMasonryFence,
+    selectMountainView,
+    selectNearBusRoute,
+    selectOffice,
+    selectOrganizedGarden,
+    selectPanoramicView,
+    selectPool,
+    selectQuietArea,
+    selectSeaFront,
+    selectSeaView,
+    selectSmartHome,
+    selectSoundInsulation,
+    selectTents,
+    selectThermalInsulation,
+    selectVeranda,
+    selectView,
+    selectWalkableDistanceToBeach,
+    selectWell,
+    setAccessForDisable,
+    setAdaptingToTheGround,
+    setAlarmSystem,
+    setBarbeque,
+    setBright,
+    setCctv,
+    setCombinedKitchenAndDiningArea,
+    setCorner,
+    setDrilling,
+    setFacade,
+    setFireDetector,
+    setGuestroom,
+    setHas24HoursSecurity,
+    setHeatedPool,
+    setHomeCinema,
+    setIndependentHeatingPerRoom,
+    setIndoorPool,
+    setInternet,
+    setJacuzzi,
+    setMasonryFence,
+    setMountainView,
+    setNearBusRoute,
+    setOffice,
+    setOrganizedGarden,
+    setPanoramicView,
+    setPool,
+    setQuietArea,
+    setSea,
+    setSeaFront,
+    setSeaView,
+    setSmartHome,
+    setSoundInsulation,
+    setTents,
+    setThermalInsulation,
+    setVeranda,
+    setView,
+    setWalkableDistanceToBeach,
+    setWell,
 } from "src/slices/property";
 
 const FeaturesSection: React.FC<any> = (props) => {
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-  const accessForDisable = useSelector(selectAccessForDisable);
-  const pool = useSelector(selectPool);
-  const office = useSelector(selectOffice);
-  const internet = useSelector(selectInternet);
-  const thermalInsulation = useSelector(selectThermalInsulation);
-  const seaView = useSelector(selectSeaView);
-  const guestroom = useSelector(selectGuestroom);
-  const quietArea = useSelector(selectQuietArea);
-  const bright = useSelector(selectBright);
-  const soundInsulation = useSelector(selectSoundInsulation);
-  const has24HoursSecurity = useSelector(selectHas24HoursSecurity);
-  const alarmSystem = useSelector(selectAlarmSystem);
-  const barbeque = useSelector(selectBarbeque);
-  const cctv = useSelector(selectCctv);
-  const combinedKitchenAndDiningArea = useSelector(
-    selectCombinedKitchenAndDiningArea
-  );
-  const fireDetector = useSelector(selectFireDetector);
-  const homeCinema = useSelector(selectHomeCinema);
-  const jacuzzi = useSelector(selectJacuzzi);
-  const nearBusRoute = useSelector(selectNearBusRoute);
-  const panoramicView = useSelector(selectPanoramicView);
-  const smartHome = useSelector(selectSmartHome);
-  const walkableDistanceToBeach = useSelector(selectWalkableDistanceToBeach);
-  const mountainView = useSelector(selectMountainView);
-  const seaFront = useSelector(selectSeaFront);
-  const heatedPool = useSelector(selectHeatedPool);
-  const indoorPool = useSelector(selectIndoorPool);
-  const organizedGarden = useSelector(selectOrganizedGarden);
-  const well = useSelector(selectWell);
-  const drilling = useSelector(selectDrilling);
-  const masonryFence = useSelector(selectMasonryFence);
-  const independentHeatingPerRoom = useSelector(
-    selectIndependentHeatingPerRoom
-  );
-  const adaptingToTheGround = useSelector(selectAdaptingToTheGround);
-  const view = useSelector(selectView);
-  const facade = useSelector(selectFacade);
-  const corner = useSelector(selectCorner);
-  const veranda = useSelector(selectVeranda);
-  const tents = useSelector(selectTents);
+    const accessForDisable = useSelector(selectAccessForDisable);
+    const pool = useSelector(selectPool);
+    const office = useSelector(selectOffice);
+    const internet = useSelector(selectInternet);
+    const thermalInsulation = useSelector(selectThermalInsulation);
+    const seaView = useSelector(selectSeaView);
+    const guestroom = useSelector(selectGuestroom);
+    const quietArea = useSelector(selectQuietArea);
+    const bright = useSelector(selectBright);
+    const soundInsulation = useSelector(selectSoundInsulation);
+    const has24HoursSecurity = useSelector(selectHas24HoursSecurity);
+    const alarmSystem = useSelector(selectAlarmSystem);
+    const barbeque = useSelector(selectBarbeque);
+    const cctv = useSelector(selectCctv);
+    const combinedKitchenAndDiningArea = useSelector(
+        selectCombinedKitchenAndDiningArea
+    );
+    const fireDetector = useSelector(selectFireDetector);
+    const homeCinema = useSelector(selectHomeCinema);
+    const jacuzzi = useSelector(selectJacuzzi);
+    const nearBusRoute = useSelector(selectNearBusRoute);
+    const panoramicView = useSelector(selectPanoramicView);
+    const smartHome = useSelector(selectSmartHome);
+    const walkableDistanceToBeach = useSelector(selectWalkableDistanceToBeach);
+    const mountainView = useSelector(selectMountainView);
+    const seaFront = useSelector(selectSeaFront);
+    const heatedPool = useSelector(selectHeatedPool);
+    const indoorPool = useSelector(selectIndoorPool);
+    const organizedGarden = useSelector(selectOrganizedGarden);
+    const well = useSelector(selectWell);
+    const drilling = useSelector(selectDrilling);
+    const masonryFence = useSelector(selectMasonryFence);
+    const independentHeatingPerRoom = useSelector(
+        selectIndependentHeatingPerRoom
+    );
+    const adaptingToTheGround = useSelector(selectAdaptingToTheGround);
+    const view = useSelector(selectView);
+    const facade = useSelector(selectFacade);
+    const corner = useSelector(selectCorner);
+    const veranda = useSelector(selectVeranda);
+    const tents = useSelector(selectTents);
 
-  interface ICheckboxItemProps {
-    label: string;
-    value: boolean;
-    onChange: (event: React.ChangeEvent<unknown>, checked: boolean) => void;
-  }
+    interface ICheckboxItemProps {
+        label: string;
+        value: boolean;
+        onChange: (event: React.ChangeEvent<unknown>, checked: boolean) => void;
+    }
 
-  const CheckboxItem = (props: ICheckboxItemProps) => {
-    const { value, label, onChange } = props;
+    const CheckboxItem = (props: ICheckboxItemProps) => {
+        const { value, label, onChange } = props;
+
+        return (
+            <Grid
+                item
+                xs={3}
+                flexDirection="row"
+                sx={{ display: "inline-flex", alignItems: "center" }}
+            >
+                <Checkbox
+                    value={value}
+                    checked={value}
+                    onChange={onChange}
+                    sx={{ cursor: "default" }}
+                    color="primary"
+                    inputProps={{ "aria-label": "Panoramic View" }}
+                />
+                <Typography variant="body1" sx={{ ml: 0 }}>
+                    {label}
+                </Typography>
+            </Grid>
+        );
+    };
 
     return (
-      <Grid
-        item
-        xs={3}
-        flexDirection="row"
-        sx={{ display: "inline-flex", alignItems: "center" }}
-      >
-        <Checkbox
-          value={value}
-          checked={value}
-          onChange={onChange}
-          sx={{ cursor: "default" }}
-          color="primary"
-          inputProps={{ "aria-label": "Panoramic View" }}
-        />
-        <Typography variant="body1" sx={{ ml: 0 }}>
-          {label}
-        </Typography>
-      </Grid>
+        <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
+            <Box
+                sx={{
+                    px: 3,
+                    py: 1.5,
+                    display: "flex",
+                    justifyContent: "center",
+                }}
+            >
+                <Typography variant="h6">Feautures</Typography>
+            </Box>
+
+            <Grid item xs={12} padding={1}>
+                <Grid container spacing={2}>
+                    <CheckboxItem
+                        label="Panoramic View"
+                        value={panoramicView}
+                        onChange={(event, checked) => {
+                            dispatch(setPanoramicView(checked));
+                        }}
+                    />
+                    <CheckboxItem
+                        label="Corner"
+                        value={corner}
+                        onChange={(event, checked) => {
+                            dispatch(setCorner(checked));
+                        }}
+                    />
+                    <CheckboxItem
+                        label="Facade"
+                        value={facade}
+                        onChange={(event, checked) => {
+                            dispatch(setFacade(checked));
+                        }}
+                    />
+
+                    <CheckboxItem
+                        label="Organized Garden"
+                        value={organizedGarden}
+                        onChange={(event, checked) => {
+                            dispatch(setOrganizedGarden(checked));
+                        }}
+                    />
+                    <CheckboxItem
+                        label="Driling"
+                        value={drilling}
+                        onChange={(event, checked) => {
+                            dispatch(setDrilling(checked));
+                        }}
+                    />
+                    <CheckboxItem
+                        label="Adapting to the Ground"
+                        value={adaptingToTheGround}
+                        onChange={(event, checked) => {
+                            dispatch(setAdaptingToTheGround(checked));
+                        }}
+                    />
+                    <CheckboxItem
+                        label="Pool"
+                        value={pool}
+                        onChange={(event, checked) => {
+                            dispatch(setPool(checked));
+                        }}
+                    />
+                    <CheckboxItem
+                        label="Barbeque"
+                        value={barbeque}
+                        onChange={(event, checked) => {
+                            dispatch(setBarbeque(checked));
+                        }}
+                    />
+                    <CheckboxItem
+                        label="Sea View"
+                        value={seaView}
+                        onChange={(event, checked) => {
+                            dispatch(setSeaView(checked));
+                        }}
+                    />
+                    <CheckboxItem
+                        label="Mountain View"
+                        value={mountainView}
+                        onChange={(event, checked) => {
+                            dispatch(setMountainView(checked));
+                        }}
+                    />
+                    <CheckboxItem
+                        label="Sea Front"
+                        value={seaFront}
+                        onChange={(event, checked) => {
+                            dispatch(setSeaFront(checked));
+                        }}
+                    />
+
+                    <CheckboxItem
+                        label="Smart Home"
+                        value={smartHome}
+                        onChange={(event, checked) => {
+                            dispatch(setSmartHome(checked));
+                        }}
+                    />
+                    <CheckboxItem
+                        label="Thermal Insulation"
+                        value={thermalInsulation}
+                        onChange={(event, checked) => {
+                            dispatch(setThermalInsulation(checked));
+                        }}
+                    />
+                    <CheckboxItem
+                        label="Jacuzzi"
+                        value={jacuzzi}
+                        onChange={(event, checked) => {
+                            dispatch(setJacuzzi(checked));
+                        }}
+                    />
+                    <CheckboxItem
+                        label="Internet"
+                        value={internet}
+                        onChange={(event, checked) => {
+                            dispatch(setInternet(checked));
+                        }}
+                    />
+                    <CheckboxItem
+                        label="Walkable Distance to Beach"
+                        value={walkableDistanceToBeach}
+                        onChange={(event, checked) => {
+                            dispatch(setWalkableDistanceToBeach(checked));
+                        }}
+                    />
+                    <CheckboxItem
+                        label="Quiet Area"
+                        value={quietArea}
+                        onChange={(event, checked) => {
+                            dispatch(setQuietArea(checked));
+                        }}
+                    />
+                    <CheckboxItem
+                        label="Bright"
+                        value={bright}
+                        onChange={(event, checked) => {
+                            dispatch(setBright(checked));
+                        }}
+                    />
+                    <CheckboxItem
+                        label="View"
+                        value={view}
+                        onChange={(event, checked) => {
+                            dispatch(setView(checked));
+                        }}
+                    />
+                    <CheckboxItem
+                        label="Near Bus Route"
+                        value={nearBusRoute}
+                        onChange={(event, checked) => {
+                            dispatch(setNearBusRoute(checked));
+                        }}
+                    />
+                    <CheckboxItem
+                        label="Guestroom"
+                        value={guestroom}
+                        onChange={(event, checked) => {
+                            dispatch(setGuestroom(checked));
+                        }}
+                    />
+                    <CheckboxItem
+                        label="Office"
+                        value={office}
+                        onChange={(event, checked) => {
+                            dispatch(setOffice(checked));
+                        }}
+                    />
+                    <CheckboxItem
+                        label="Home Cinema"
+                        value={homeCinema}
+                        onChange={(event, checked) => {
+                            dispatch(setHomeCinema(checked));
+                        }}
+                    />
+                    <CheckboxItem
+                        label="Combined Kitchen and Dining Area"
+                        value={combinedKitchenAndDiningArea}
+                        onChange={(event, checked) => {
+                            dispatch(setCombinedKitchenAndDiningArea(checked));
+                        }}
+                    />
+                    <CheckboxItem
+                        label="Sound Insulation"
+                        value={soundInsulation}
+                        onChange={(event, checked) => {
+                            dispatch(setSoundInsulation(checked));
+                        }}
+                    />
+                    <CheckboxItem
+                        label="Veranda"
+                        value={veranda}
+                        onChange={(event, checked) => {
+                            dispatch(setVeranda(checked));
+                        }}
+                    />
+                    <CheckboxItem
+                        label="Well"
+                        value={well}
+                        onChange={(event, checked) => {
+                            dispatch(setWell(checked));
+                        }}
+                    />
+                    <CheckboxItem
+                        label="Massony Fence"
+                        value={masonryFence}
+                        onChange={(event, checked) => {
+                            dispatch(setMasonryFence(checked));
+                        }}
+                    />
+                    <CheckboxItem
+                        label="Access for Disable"
+                        value={accessForDisable}
+                        onChange={(event, checked) => {
+                            dispatch(setAccessForDisable(checked));
+                        }}
+                    />
+                    <CheckboxItem
+                        label="Tents"
+                        value={tents}
+                        onChange={(event, checked) => {
+                            dispatch(setTents(checked));
+                        }}
+                    />
+                    <CheckboxItem
+                        label="Heated Pool"
+                        value={heatedPool}
+                        onChange={(event, checked) => {
+                            dispatch(setHeatedPool(checked));
+                        }}
+                    />
+                    <CheckboxItem
+                        label="Alarm System"
+                        value={alarmSystem}
+                        onChange={(event, checked) => {
+                            dispatch(setAlarmSystem(checked));
+                        }}
+                    />
+                    <CheckboxItem
+                        label="Has 24 Hours Security"
+                        value={has24HoursSecurity}
+                        onChange={(event, checked) => {
+                            dispatch(setHas24HoursSecurity(checked));
+                        }}
+                    />
+                    <CheckboxItem
+                        label="CCTV"
+                        value={cctv}
+                        onChange={(event, checked) => {
+                            dispatch(setCctv(checked));
+                        }}
+                    />
+                    <CheckboxItem
+                        label="Fire Detector"
+                        value={fireDetector}
+                        onChange={(event, checked) => {
+                            dispatch(setFireDetector(checked));
+                        }}
+                    />
+                    <CheckboxItem
+                        label="Indement Heating Per Room"
+                        value={independentHeatingPerRoom}
+                        onChange={(event, checked) => {
+                            dispatch(setIndependentHeatingPerRoom(checked));
+                        }}
+                    />
+                    <CheckboxItem
+                        label="Indoor Pool"
+                        value={indoorPool}
+                        onChange={(event, checked) => {
+                            dispatch(setIndoorPool(checked));
+                        }}
+                    />
+                </Grid>
+            </Grid>
+        </Paper>
     );
-  };
-
-  return (
-    <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
-      <Box
-        sx={{
-          px: 3,
-          py: 1.5,
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <Typography variant="h6">Feautures</Typography>
-      </Box>
-
-      <Grid item xs={12} padding={1}>
-        <Grid container spacing={2}>
-          <CheckboxItem
-            label="Panoramic View"
-            value={panoramicView}
-            onChange={(event, checked) => {
-              dispatch(setPanoramicView(checked));
-            }}
-          />
-          <CheckboxItem
-            label="Corner"
-            value={corner}
-            onChange={(event, checked) => {
-              dispatch(setCorner(checked));
-            }}
-          />
-          <CheckboxItem
-            label="Facade"
-            value={facade}
-            onChange={(event, checked) => {
-              dispatch(setFacade(checked));
-            }}
-          />
-
-          <CheckboxItem
-            label="Organized Garden"
-            value={organizedGarden}
-            onChange={(event, checked) => {
-              dispatch(setOrganizedGarden(checked));
-            }}
-          />
-          <CheckboxItem
-            label="Driling"
-            value={drilling}
-            onChange={(event, checked) => {
-              dispatch(setDrilling(checked));
-            }}
-          />
-          <CheckboxItem
-            label="Adapting to the Ground"
-            value={adaptingToTheGround}
-            onChange={(event, checked) => {
-              dispatch(setAdaptingToTheGround(checked));
-            }}
-          />
-          <CheckboxItem
-            label="Pool"
-            value={pool}
-            onChange={(event, checked) => {
-              dispatch(setPool(checked));
-            }}
-          />
-          <CheckboxItem
-            label="Barbeque"
-            value={barbeque}
-            onChange={(event, checked) => {
-              dispatch(setBarbeque(checked));
-            }}
-          />
-          <CheckboxItem
-            label="Sea View"
-            value={seaView}
-            onChange={(event, checked) => {
-              dispatch(setSeaView(checked));
-            }}
-          />
-          <CheckboxItem
-            label="Mountain View"
-            value={mountainView}
-            onChange={(event, checked) => {
-              dispatch(setMountainView(checked));
-            }}
-          />
-          <CheckboxItem
-            label="Sea Front"
-            value={seaFront}
-            onChange={(event, checked) => {
-              dispatch(setSeaFront(checked));
-            }}
-          />
-
-          <CheckboxItem
-            label="Smart Home"
-            value={smartHome}
-            onChange={(event, checked) => {
-              dispatch(setSmartHome(checked));
-            }}
-          />
-          <CheckboxItem
-            label="Thermal Insulation"
-            value={thermalInsulation}
-            onChange={(event, checked) => {
-              dispatch(setThermalInsulation(checked));
-            }}
-          />
-          <CheckboxItem
-            label="Jacuzzi"
-            value={jacuzzi}
-            onChange={(event, checked) => {
-              dispatch(setJacuzzi(checked));
-            }}
-          />
-          <CheckboxItem
-            label="Internet"
-            value={internet}
-            onChange={(event, checked) => {
-              dispatch(setInternet(checked));
-            }}
-          />
-          <CheckboxItem
-            label="Walkable Distance to Beach"
-            value={walkableDistanceToBeach}
-            onChange={(event, checked) => {
-              dispatch(setWalkableDistanceToBeach(checked));
-            }}
-          />
-          <CheckboxItem
-            label="Quiet Area"
-            value={quietArea}
-            onChange={(event, checked) => {
-              dispatch(setQuietArea(checked));
-            }}
-          />
-          <CheckboxItem
-            label="Bright"
-            value={bright}
-            onChange={(event, checked) => {
-              dispatch(setBright(checked));
-            }}
-          />
-          <CheckboxItem
-            label="View"
-            value={view}
-            onChange={(event, checked) => {
-              dispatch(setView(checked));
-            }}
-          />
-          <CheckboxItem
-            label="Near Bus Route"
-            value={nearBusRoute}
-            onChange={(event, checked) => {
-              dispatch(setNearBusRoute(checked));
-            }}
-          />
-          <CheckboxItem
-            label="Guestroom"
-            value={guestroom}
-            onChange={(event, checked) => {
-              dispatch(setGuestroom(checked));
-            }}
-          />
-          <CheckboxItem
-            label="Office"
-            value={office}
-            onChange={(event, checked) => {
-              dispatch(setOffice(checked));
-            }}
-          />
-          <CheckboxItem
-            label="Home Cinema"
-            value={homeCinema}
-            onChange={(event, checked) => {
-              dispatch(setHomeCinema(checked));
-            }}
-          />
-          <CheckboxItem
-            label="Combined Kitchen and Dining Area"
-            value={combinedKitchenAndDiningArea}
-            onChange={(event, checked) => {
-              dispatch(setCombinedKitchenAndDiningArea(checked));
-            }}
-          />
-          <CheckboxItem
-            label="Sound Insulation"
-            value={soundInsulation}
-            onChange={(event, checked) => {
-              dispatch(setSoundInsulation(checked));
-            }}
-          />
-          <CheckboxItem
-            label="Veranda"
-            value={veranda}
-            onChange={(event, checked) => {
-              dispatch(setVeranda(checked));
-            }}
-          />
-          <CheckboxItem
-            label="Well"
-            value={well}
-            onChange={(event, checked) => {
-              dispatch(setWell(checked));
-            }}
-          />
-          <CheckboxItem
-            label="Massony Fence"
-            value={masonryFence}
-            onChange={(event, checked) => {
-              dispatch(setMasonryFence(checked));
-            }}
-          />
-          <CheckboxItem
-            label="Access for Disable"
-            value={accessForDisable}
-            onChange={(event, checked) => {
-              dispatch(setAccessForDisable(checked));
-            }}
-          />
-          <CheckboxItem
-            label="Tents"
-            value={tents}
-            onChange={(event, checked) => {
-              dispatch(setTents(checked));
-            }}
-          />
-          <CheckboxItem
-            label="Heated Pool"
-            value={heatedPool}
-            onChange={(event, checked) => {
-              dispatch(setHeatedPool(checked));
-            }}
-          />
-          <CheckboxItem
-            label="Alarm System"
-            value={alarmSystem}
-            onChange={(event, checked) => {
-              dispatch(setAlarmSystem(checked));
-            }}
-          />
-          <CheckboxItem
-            label="Has 24 Hours Security"
-            value={has24HoursSecurity}
-            onChange={(event, checked) => {
-              dispatch(setHas24HoursSecurity(checked));
-            }}
-          />
-          <CheckboxItem
-            label="CCTV"
-            value={cctv}
-            onChange={(event, checked) => {
-              dispatch(setCctv(checked));
-            }}
-          />
-          <CheckboxItem
-            label="Fire Detector"
-            value={fireDetector}
-            onChange={(event, checked) => {
-              dispatch(setFireDetector(checked));
-            }}
-          />
-          <CheckboxItem
-            label="Indement Heating Per Room"
-            value={independentHeatingPerRoom}
-            onChange={(event, checked) => {
-              dispatch(setIndependentHeatingPerRoom(checked));
-            }}
-          />
-          <CheckboxItem
-            label="Indoor Pool"
-            value={indoorPool}
-            onChange={(event, checked) => {
-              dispatch(setIndoorPool(checked));
-            }}
-          />
-        </Grid>
-      </Grid>
-    </Paper>
-  );
 };
 export default FeaturesSection;

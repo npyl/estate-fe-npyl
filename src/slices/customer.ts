@@ -8,486 +8,486 @@ import { IPropertyFeatures } from "src/types/features";
 interface customerState extends ICustomerPOST {}
 
 interface IFeatureKey {
-	key: keyof IPropertyFeatures;
+    key: keyof IPropertyFeatures;
 }
 
 const initialState: customerState = {
-	id: undefined,
-	firstName: "",
-	lastName: "",
-	email: "",
-	mobilePhone: "",
-	homePhone: "",
-	status: 0,
-	fax: "",
-	nationality: "",
-	idNumber: "",
-	passportNumber: "",
-	dateOfBirth: "",
-	leadSource: "",
-	preferredLanguage: "",
-	suggestedBy: "",
-	leaser: false,
-	lessor: false,
-	seller: false,
-	buyer: false,
-	location: {
-		street: "",
-		number: "",
-		city: "",
-		region: "",
-		country: "",
-	},
-	ownedProperties: [],
-	labelIDs: [],
-	demand: {
-		filters: {
-			labels: [],
-		},
-		priorityFeatures: {
-			panoramicView: false,
-			seaView: false,
-			mountainView: false,
-			seaFront: false,
-			walkableDistanceToBeach: false,
-			quietArea: false,
-			bright: false,
-			nearBusRoute: false,
-			smartHome: false,
-			guestroom: false,
-			office: false,
-			homeCinema: false,
-			combinedKitchenAndDiningArea: false,
-			soundInsulation: false,
-			thermalInsulation: false,
-			heatedPool: false,
-			indoorPool: false,
-			organizedGarden: false,
-			jacuzzi: false,
-			well: false,
-			drilling: false,
-			masonryFence: false,
-			accessForDisabled: false,
-			alarmSystem: false,
-			has24HoursSecurity: false,
-			cctv: false,
-			internet: false,
-			fireDetector: false,
-			independentHeatingPerRoom: false,
-			adaptingToTheGround: false,
-			barbeque: false,
-			pool: false,
-			view: false,
-			facade: false,
-			corner: false,
-			veranda: false,
-			tents: false,
-			withinResidentialZone: false,
-			withinCityPlan: false,
-			loadingDock: false,
-		},
-		nonPriorityFeatures: {
-			panoramicView: false,
-			seaView: false,
-			mountainView: false,
-			seaFront: false,
-			walkableDistanceToBeach: false,
-			quietArea: false,
-			bright: false,
-			nearBusRoute: false,
-			smartHome: false,
-			guestroom: false,
-			office: false,
-			homeCinema: false,
-			combinedKitchenAndDiningArea: false,
-			soundInsulation: false,
-			thermalInsulation: false,
-			heatedPool: false,
-			indoorPool: false,
-			organizedGarden: false,
-			jacuzzi: false,
-			well: false,
-			drilling: false,
-			masonryFence: false,
-			accessForDisabled: false,
-			alarmSystem: false,
-			has24HoursSecurity: false,
-			cctv: false,
-			internet: false,
-			fireDetector: false,
-			independentHeatingPerRoom: false,
-			adaptingToTheGround: false,
-			barbeque: false,
-			pool: false,
-			view: false,
-			facade: false,
-			corner: false,
-			veranda: false,
-			tents: false,
-			withinResidentialZone: false,
-			withinCityPlan: false,
-			loadingDock: false,
-		},
-		timeframe: "",
-	},
+    id: undefined,
+    firstName: "",
+    lastName: "",
+    email: "",
+    mobilePhone: "",
+    homePhone: "",
+    status: 0,
+    fax: "",
+    nationality: "",
+    idNumber: "",
+    passportNumber: "",
+    dateOfBirth: "",
+    leadSource: "",
+    preferredLanguage: "",
+    suggestedBy: "",
+    leaser: false,
+    lessor: false,
+    seller: false,
+    buyer: false,
+    location: {
+        street: "",
+        number: "",
+        city: "",
+        region: "",
+        country: "",
+    },
+    ownedProperties: [],
+    labelIDs: [],
+    demand: {
+        filters: {
+            labels: [],
+        },
+        priorityFeatures: {
+            panoramicView: false,
+            seaView: false,
+            mountainView: false,
+            seaFront: false,
+            walkableDistanceToBeach: false,
+            quietArea: false,
+            bright: false,
+            nearBusRoute: false,
+            smartHome: false,
+            guestroom: false,
+            office: false,
+            homeCinema: false,
+            combinedKitchenAndDiningArea: false,
+            soundInsulation: false,
+            thermalInsulation: false,
+            heatedPool: false,
+            indoorPool: false,
+            organizedGarden: false,
+            jacuzzi: false,
+            well: false,
+            drilling: false,
+            masonryFence: false,
+            accessForDisabled: false,
+            alarmSystem: false,
+            has24HoursSecurity: false,
+            cctv: false,
+            internet: false,
+            fireDetector: false,
+            independentHeatingPerRoom: false,
+            adaptingToTheGround: false,
+            barbeque: false,
+            pool: false,
+            view: false,
+            facade: false,
+            corner: false,
+            veranda: false,
+            tents: false,
+            withinResidentialZone: false,
+            withinCityPlan: false,
+            loadingDock: false,
+        },
+        nonPriorityFeatures: {
+            panoramicView: false,
+            seaView: false,
+            mountainView: false,
+            seaFront: false,
+            walkableDistanceToBeach: false,
+            quietArea: false,
+            bright: false,
+            nearBusRoute: false,
+            smartHome: false,
+            guestroom: false,
+            office: false,
+            homeCinema: false,
+            combinedKitchenAndDiningArea: false,
+            soundInsulation: false,
+            thermalInsulation: false,
+            heatedPool: false,
+            indoorPool: false,
+            organizedGarden: false,
+            jacuzzi: false,
+            well: false,
+            drilling: false,
+            masonryFence: false,
+            accessForDisabled: false,
+            alarmSystem: false,
+            has24HoursSecurity: false,
+            cctv: false,
+            internet: false,
+            fireDetector: false,
+            independentHeatingPerRoom: false,
+            adaptingToTheGround: false,
+            barbeque: false,
+            pool: false,
+            view: false,
+            facade: false,
+            corner: false,
+            veranda: false,
+            tents: false,
+            withinResidentialZone: false,
+            withinCityPlan: false,
+            loadingDock: false,
+        },
+        timeframe: "",
+    },
 };
 
 const slice = createSlice({
-	name: "customer",
-	initialState,
-	reducers: {
-		toggleLeaser(state: customerState, { payload }): void {
-			state.leaser = !state.leaser;
-		},
-		toggleLessor(state: customerState, { payload }): void {
-			state.lessor = !state.lessor;
-		},
-		toggleSeller(state: customerState, { payload }): void {
-			state.seller = !state.seller;
-		},
-		toggleBuyer(state: customerState, { payload }): void {
-			state.buyer = !state.buyer;
-		},
+    name: "customer",
+    initialState,
+    reducers: {
+        toggleLeaser(state: customerState, { payload }): void {
+            state.leaser = !state.leaser;
+        },
+        toggleLessor(state: customerState, { payload }): void {
+            state.lessor = !state.lessor;
+        },
+        toggleSeller(state: customerState, { payload }): void {
+            state.seller = !state.seller;
+        },
+        toggleBuyer(state: customerState, { payload }): void {
+            state.buyer = !state.buyer;
+        },
 
-		setId(state: customerState, action): void {
-			state.id = action.payload;
-		},
+        setId(state: customerState, action): void {
+            state.id = action.payload;
+        },
 
-		setFirstName(state: customerState, action): void {
-			state.firstName = action.payload;
-		},
-		setLastName(state: customerState, action): void {
-			state.lastName = action.payload;
-		},
-		setEmail(state: customerState, action): void {
-			state.email = action.payload;
-		},
-		setMobilePhone(state: customerState, action): void {
-			state.mobilePhone = action.payload;
-		},
-		setHomePhone(state: customerState, action): void {
-			state.homePhone = action.payload;
-		},
+        setFirstName(state: customerState, action): void {
+            state.firstName = action.payload;
+        },
+        setLastName(state: customerState, action): void {
+            state.lastName = action.payload;
+        },
+        setEmail(state: customerState, action): void {
+            state.email = action.payload;
+        },
+        setMobilePhone(state: customerState, action): void {
+            state.mobilePhone = action.payload;
+        },
+        setHomePhone(state: customerState, action): void {
+            state.homePhone = action.payload;
+        },
 
-		setManagedBy(state: customerState, action): void {
-			state.managedBy = action.payload;
-		},
+        setManagedBy(state: customerState, action): void {
+            state.managedBy = action.payload;
+        },
 
-		setStatus(state: customerState, action): void {
-			state.status = action.payload;
-		},
-		setFax(state: customerState, action): void {
-			state.fax = action.payload;
-		},
-		setNationality(state: customerState, action): void {
-			state.nationality = action.payload;
-		},
-		setIdNumber(state: customerState, action): void {
-			state.idNumber = action.payload;
-		},
-		setPassportNumber(state: customerState, action): void {
-			state.passportNumber = action.payload;
-		},
-		setDateOfBirth(state: customerState, action): void {
-			state.dateOfBirth = action.payload;
-		},
-		setLeadSource(state: customerState, action): void {
-			state.leadSource = action.payload;
-		},
-		setPreferredLanguage(state: customerState, action): void {
-			state.preferredLanguage = action.payload;
-		},
+        setStatus(state: customerState, action): void {
+            state.status = action.payload;
+        },
+        setFax(state: customerState, action): void {
+            state.fax = action.payload;
+        },
+        setNationality(state: customerState, action): void {
+            state.nationality = action.payload;
+        },
+        setIdNumber(state: customerState, action): void {
+            state.idNumber = action.payload;
+        },
+        setPassportNumber(state: customerState, action): void {
+            state.passportNumber = action.payload;
+        },
+        setDateOfBirth(state: customerState, action): void {
+            state.dateOfBirth = action.payload;
+        },
+        setLeadSource(state: customerState, action): void {
+            state.leadSource = action.payload;
+        },
+        setPreferredLanguage(state: customerState, action): void {
+            state.preferredLanguage = action.payload;
+        },
 
-		addLabelID(state: customerState, { payload }): void {
-			if (!state.labelIDs.includes(payload)) state.labelIDs.push(payload);
-		},
-		removeLabel(state: customerState, { payload }): void {
-			// INFO: removes based on array index (contrary to addLabelID)
-			const index = payload;
-			state.labelIDs = state.labelIDs.filter((_, i) => i !== index);
-		},
+        addLabelID(state: customerState, { payload }): void {
+            if (!state.labelIDs.includes(payload)) state.labelIDs.push(payload);
+        },
+        removeLabel(state: customerState, { payload }): void {
+            // INFO: removes based on array index (contrary to addLabelID)
+            const index = payload;
+            state.labelIDs = state.labelIDs.filter((_, i) => i !== index);
+        },
 
-		setSuggestedBy(state: customerState, action): void {
-			state.suggestedBy = action.payload;
-		},
+        setSuggestedBy(state: customerState, action): void {
+            state.suggestedBy = action.payload;
+        },
 
-		// Location
-		setStreet(state: customerState, action): void {
-			state.location.street = action.payload;
-		},
-		setNumber(state: customerState, action): void {
-			state.location.number = action.payload;
-		},
-		setCity(state: customerState, action): void {
-			state.location.city = action.payload;
-		},
-		setZipCode(state: customerState, action): void {
-			state.location.zipCode = action.payload;
-		},
-		setRegion(state: customerState, action): void {
-			state.location.region = action.payload;
-		},
-		setCountry(state: customerState, action): void {
-			state.location.country = action.payload;
-		},
-		setLatitude(state: customerState, action): void {
-			state.location.lat = action.payload;
-		},
-		setLongitude(state: customerState, action): void {
-			state.location.lng = action.payload;
-		},
+        // Location
+        setStreet(state: customerState, action): void {
+            state.location.street = action.payload;
+        },
+        setNumber(state: customerState, action): void {
+            state.location.number = action.payload;
+        },
+        setCity(state: customerState, action): void {
+            state.location.city = action.payload;
+        },
+        setZipCode(state: customerState, action): void {
+            state.location.zipCode = action.payload;
+        },
+        setRegion(state: customerState, action): void {
+            state.location.region = action.payload;
+        },
+        setCountry(state: customerState, action): void {
+            state.location.country = action.payload;
+        },
+        setLatitude(state: customerState, action): void {
+            state.location.lat = action.payload;
+        },
+        setLongitude(state: customerState, action): void {
+            state.location.lng = action.payload;
+        },
 
-		// priority features
-		setPriorityFeature(state: customerState, action): void {
-			const feature: IFeatureKey = action.payload;
-			const { key } = feature;
-			if (!key) return;
-			state.demand.priorityFeatures[key] =
-				state.demand.priorityFeatures[key] !== null
-					? !state.demand.priorityFeatures[key]
-					: true;
-		},
-		// non-priority features
-		setNonPriorityFeature(state: customerState, action): void {
-			const feature: IFeatureKey = action.payload;
-			const { key } = feature;
-			if (!key) return;
-			state.demand.nonPriorityFeatures[key] =
-				state.demand.nonPriorityFeatures[key] !== null
-					? !state.demand.nonPriorityFeatures[key]
-					: true;
-		},
+        // priority features
+        setPriorityFeature(state: customerState, action): void {
+            const feature: IFeatureKey = action.payload;
+            const { key } = feature;
+            if (!key) return;
+            state.demand.priorityFeatures[key] =
+                state.demand.priorityFeatures[key] !== null
+                    ? !state.demand.priorityFeatures[key]
+                    : true;
+        },
+        // non-priority features
+        setNonPriorityFeature(state: customerState, action): void {
+            const feature: IFeatureKey = action.payload;
+            const { key } = feature;
+            if (!key) return;
+            state.demand.nonPriorityFeatures[key] =
+                state.demand.nonPriorityFeatures[key] !== null
+                    ? !state.demand.nonPriorityFeatures[key]
+                    : true;
+        },
 
-		// DEMAND
-		setMinBedrooms(state: customerState, action): void {
-			state.demand.filters.minBedrooms = action.payload;
-		},
+        // DEMAND
+        setMinBedrooms(state: customerState, action): void {
+            state.demand.filters.minBedrooms = action.payload;
+        },
 
-		setMaxBedrooms(state: customerState, action): void {
-			state.demand.filters.maxBedrooms = action.payload;
-		},
+        setMaxBedrooms(state: customerState, action): void {
+            state.demand.filters.maxBedrooms = action.payload;
+        },
 
-		setMinBathrooms(state: customerState, action): void {
-			state.demand.filters.minBathrooms = action.payload;
-		},
+        setMinBathrooms(state: customerState, action): void {
+            state.demand.filters.minBathrooms = action.payload;
+        },
 
-		setMaxBathrooms(state: customerState, action): void {
-			state.demand.filters.maxBathrooms = action.payload;
-		},
+        setMaxBathrooms(state: customerState, action): void {
+            state.demand.filters.maxBathrooms = action.payload;
+        },
 
-		setFurnished(state: customerState, action): void {
-			state.demand.filters.furnished = action.payload;
-		},
+        setFurnished(state: customerState, action): void {
+            state.demand.filters.furnished = action.payload;
+        },
 
-		setMaxCovered(state: customerState, action): void {
-			state.demand.filters.maxCovered = action.payload;
-		},
+        setMaxCovered(state: customerState, action): void {
+            state.demand.filters.maxCovered = action.payload;
+        },
 
-		setMinCovered(state: customerState, action): void {
-			state.demand.filters.minCovered = action.payload;
-		},
+        setMinCovered(state: customerState, action): void {
+            state.demand.filters.minCovered = action.payload;
+        },
 
-		setMinPlot(state: customerState, action): void {
-			state.demand.filters.minPlot = action.payload;
-		},
+        setMinPlot(state: customerState, action): void {
+            state.demand.filters.minPlot = action.payload;
+        },
 
-		setMaxPlot(state: customerState, action): void {
-			state.demand.filters.maxPlot = action.payload;
-		},
+        setMaxPlot(state: customerState, action): void {
+            state.demand.filters.maxPlot = action.payload;
+        },
 
-		setMinYearOfConstruction(state: customerState, action): void {
-			state.demand.filters.minYearOfConstruction = action.payload;
-		},
+        setMinYearOfConstruction(state: customerState, action): void {
+            state.demand.filters.minYearOfConstruction = action.payload;
+        },
 
-		setMaxYearOfConstruction(state: customerState, action): void {
-			state.demand.filters.maxYearOfConstruction = action.payload;
-		},
+        setMaxYearOfConstruction(state: customerState, action): void {
+            state.demand.filters.maxYearOfConstruction = action.payload;
+        },
 
-		setMinFloor(state: customerState, action): void {
-			state.demand.filters.minFloor = action.payload;
-		},
+        setMinFloor(state: customerState, action): void {
+            state.demand.filters.minFloor = action.payload;
+        },
 
-		setMaxFloor(state: customerState, action): void {
-			state.demand.filters.maxFloor = action.payload;
-		},
+        setMaxFloor(state: customerState, action): void {
+            state.demand.filters.maxFloor = action.payload;
+        },
 
-		setParentCategory(state: customerState, action): void {
-			state.demand.filters.parentCategory = action.payload;
-		},
+        setParentCategory(state: customerState, action): void {
+            state.demand.filters.parentCategory = action.payload;
+        },
 
-		setState(state: customerState, action): void {
-			state.demand.filters.state = action.payload;
-		},
+        setState(state: customerState, action): void {
+            state.demand.filters.state = action.payload;
+        },
 
-		setMinPrice(state: customerState, action): void {
-			state.demand.filters.minPrice = action.payload;
-		},
+        setMinPrice(state: customerState, action): void {
+            state.demand.filters.minPrice = action.payload;
+        },
 
-		setMaxPrice(state: customerState, action): void {
-			state.demand.filters.maxPrice = action.payload;
-		},
+        setMaxPrice(state: customerState, action): void {
+            state.demand.filters.maxPrice = action.payload;
+        },
 
-		setDemandLabels(state: customerState, action): void {
-			const labels: ILabel[] = action.payload;
+        setDemandLabels(state: customerState, action): void {
+            const labels: ILabel[] = action.payload;
 
-			state.demand.filters.labels = labels
-				? labels
-						.filter((label) => label.id) // where id not null
-						.map((label) => {
-							return label.id!;
-						})
-				: [];
-		},
+            state.demand.filters.labels = labels
+                ? labels
+                      .filter((label) => label.id) // where id not null
+                      .map((label) => {
+                          return label.id!;
+                      })
+                : [];
+        },
 
-		setTimeFrame(state: customerState, action): void {
-			state.demand.timeframe = action.payload;
-		},
+        setTimeFrame(state: customerState, action): void {
+            state.demand.timeframe = action.payload;
+        },
 
-		setInitialState: (state: customerState, action): void => {
-			const payload: ICustomer = action.payload;
+        setInitialState: (state: customerState, action): void => {
+            const payload: ICustomer = action.payload;
 
-			state.leaser = payload.leaser;
-			state.lessor = payload.lessor;
-			state.seller = payload.seller;
-			state.buyer = payload.buyer;
+            state.leaser = payload.leaser;
+            state.lessor = payload.lessor;
+            state.seller = payload.seller;
+            state.buyer = payload.buyer;
 
-			state.id = payload.id;
-			state.suggestedBy = payload.suggestedBy;
-			state.managedBy = payload.managedBy?.id;
-			state.firstName = payload.firstName;
-			state.lastName = payload.lastName;
-			state.email = payload.email;
-			state.mobilePhone = payload.mobilePhone;
-			state.homePhone = payload.homePhone;
-			state.status = payload.status;
-			state.fax = payload.fax;
-			state.nationality = payload.nationality;
-			state.idNumber = payload.idNumber;
-			state.passportNumber = payload.passportNumber;
-			state.dateOfBirth = payload.dateOfBirth;
-			state.leadSource = payload.leadSource;
-			state.preferredLanguage = payload.preferredLanguage;
+            state.id = payload.id;
+            state.suggestedBy = payload.suggestedBy;
+            state.managedBy = payload.managedBy?.id;
+            state.firstName = payload.firstName;
+            state.lastName = payload.lastName;
+            state.email = payload.email;
+            state.mobilePhone = payload.mobilePhone;
+            state.homePhone = payload.homePhone;
+            state.status = payload.status;
+            state.fax = payload.fax;
+            state.nationality = payload.nationality;
+            state.idNumber = payload.idNumber;
+            state.passportNumber = payload.passportNumber;
+            state.dateOfBirth = payload.dateOfBirth;
+            state.leadSource = payload.leadSource;
+            state.preferredLanguage = payload.preferredLanguage;
 
-			state.location.street = payload.location.street;
-			state.location.number = payload.location.number;
-			state.location.zipCode = payload.location.zipCode;
-			state.location.city = payload.location.city;
-			state.location.region = payload.location.region;
-			state.location.country = payload.location.country;
-			state.location.lat = payload.location.lat;
-			state.location.lng = payload.location.lng;
+            state.location.street = payload.location.street;
+            state.location.number = payload.location.number;
+            state.location.zipCode = payload.location.zipCode;
+            state.location.city = payload.location.city;
+            state.location.region = payload.location.region;
+            state.location.country = payload.location.country;
+            state.location.lat = payload.location.lat;
+            state.location.lng = payload.location.lng;
 
-			// labels
-			const labels: ILabel[] = payload.labels;
-			state.labelIDs = labels
-				? labels
-						.filter((label) => label.id) // where id not null
-						.map((label) => {
-							return label.id!;
-						})
-				: [];
+            // labels
+            const labels: ILabel[] = payload.labels;
+            state.labelIDs = labels
+                ? labels
+                      .filter((label) => label.id) // where id not null
+                      .map((label) => {
+                          return label.id!;
+                      })
+                : [];
 
-			const demand: IDemand = payload.demand;
-			const demandFilters: IDemandFilters = demand.filters;
+            const demand: IDemand = payload.demand;
+            const demandFilters: IDemandFilters = demand.filters;
 
-			state.demand.filters.minBedrooms = demandFilters.minBedrooms;
-			state.demand.filters.maxBedrooms = demandFilters.maxBedrooms;
-			state.demand.filters.minBathrooms = demandFilters.minBathrooms;
-			state.demand.filters.maxBathrooms = demandFilters.maxBathrooms;
-			state.demand.filters.furnished = demandFilters.furnished;
-			state.demand.filters.maxCovered = demandFilters.maxCovered;
-			state.demand.filters.minCovered = demandFilters.minCovered;
-			state.demand.filters.minPlot = demandFilters.minPlot;
-			state.demand.filters.maxPlot = demandFilters.maxPlot;
-			state.demand.filters.minFloor = demandFilters.minFloor;
-			state.demand.filters.maxFloor = demandFilters.maxFloor;
-			state.demand.filters.minYearOfConstruction =
-				demandFilters.minYearOfConstruction;
-			state.demand.filters.maxYearOfConstruction =
-				demandFilters.maxYearOfConstruction;
+            state.demand.filters.minBedrooms = demandFilters.minBedrooms;
+            state.demand.filters.maxBedrooms = demandFilters.maxBedrooms;
+            state.demand.filters.minBathrooms = demandFilters.minBathrooms;
+            state.demand.filters.maxBathrooms = demandFilters.maxBathrooms;
+            state.demand.filters.furnished = demandFilters.furnished;
+            state.demand.filters.maxCovered = demandFilters.maxCovered;
+            state.demand.filters.minCovered = demandFilters.minCovered;
+            state.demand.filters.minPlot = demandFilters.minPlot;
+            state.demand.filters.maxPlot = demandFilters.maxPlot;
+            state.demand.filters.minFloor = demandFilters.minFloor;
+            state.demand.filters.maxFloor = demandFilters.maxFloor;
+            state.demand.filters.minYearOfConstruction =
+                demandFilters.minYearOfConstruction;
+            state.demand.filters.maxYearOfConstruction =
+                demandFilters.maxYearOfConstruction;
 
-			state.demand.filters.parentCategory = demandFilters.parentCategory;
-			state.demand.filters.category = demandFilters.category;
-			state.demand.filters.state = demandFilters.state;
-			state.demand.filters.minPrice = demandFilters.minPrice;
-			state.demand.filters.maxPrice = demandFilters.maxPrice;
-			state.demand.filters.labels = demandFilters.labels;
-			state.demand.nonPriorityFeatures = demand.nonPriorityFeatures;
-			state.demand.priorityFeatures = demand.priorityFeatures;
-			state.demand.timeframe = demand.timeframe;
-		},
+            state.demand.filters.parentCategory = demandFilters.parentCategory;
+            state.demand.filters.category = demandFilters.category;
+            state.demand.filters.state = demandFilters.state;
+            state.demand.filters.minPrice = demandFilters.minPrice;
+            state.demand.filters.maxPrice = demandFilters.maxPrice;
+            state.demand.filters.labels = demandFilters.labels;
+            state.demand.nonPriorityFeatures = demand.nonPriorityFeatures;
+            state.demand.priorityFeatures = demand.priorityFeatures;
+            state.demand.timeframe = demand.timeframe;
+        },
 
-		resetState: () => {
-			return initialState;
-		},
-	},
+        resetState: () => {
+            return initialState;
+        },
+    },
 });
 
 export const {
-	toggleLeaser,
-	toggleLessor,
-	toggleSeller,
-	toggleBuyer,
+    toggleLeaser,
+    toggleLessor,
+    toggleSeller,
+    toggleBuyer,
 
-	setId,
-	setManagedBy,
-	setSuggestedBy,
-	setFirstName,
-	setLastName,
-	setEmail,
-	setMobilePhone,
-	setHomePhone,
-	setStatus,
-	setFax,
-	setNationality,
-	setIdNumber,
-	setPassportNumber,
-	setDateOfBirth,
-	setLeadSource,
-	setPreferredLanguage,
+    setId,
+    setManagedBy,
+    setSuggestedBy,
+    setFirstName,
+    setLastName,
+    setEmail,
+    setMobilePhone,
+    setHomePhone,
+    setStatus,
+    setFax,
+    setNationality,
+    setIdNumber,
+    setPassportNumber,
+    setDateOfBirth,
+    setLeadSource,
+    setPreferredLanguage,
 
-	// labels
-	addLabelID,
-	removeLabel,
+    // labels
+    addLabelID,
+    removeLabel,
 
-	// location
-	setStreet,
-	setNumber,
-	setCity,
-	setZipCode,
-	setRegion,
-	setCountry,
-	setLatitude,
-	setLongitude,
+    // location
+    setStreet,
+    setNumber,
+    setCity,
+    setZipCode,
+    setRegion,
+    setCountry,
+    setLatitude,
+    setLongitude,
 
-	// demand
-	setMinBedrooms,
-	setMaxBedrooms,
-	setMinBathrooms,
-	setMaxBathrooms,
-	setFurnished,
-	setMaxCovered,
-	setMinCovered,
-	setMinPlot,
-	setMaxPlot,
-	setMinYearOfConstruction,
-	setMaxYearOfConstruction,
-	setMinFloor,
-	setMaxFloor,
-	setParentCategory,
-	setState,
-	setMinPrice,
-	setMaxPrice,
-	setDemandLabels,
-	setTimeFrame,
+    // demand
+    setMinBedrooms,
+    setMaxBedrooms,
+    setMinBathrooms,
+    setMaxBathrooms,
+    setFurnished,
+    setMaxCovered,
+    setMinCovered,
+    setMinPlot,
+    setMaxPlot,
+    setMinYearOfConstruction,
+    setMaxYearOfConstruction,
+    setMinFloor,
+    setMaxFloor,
+    setParentCategory,
+    setState,
+    setMinPrice,
+    setMaxPrice,
+    setDemandLabels,
+    setTimeFrame,
 
-	// priority features
-	setPriorityFeature,
-	// non-priority features
-	setNonPriorityFeature,
+    // priority features
+    setPriorityFeature,
+    // non-priority features
+    setNonPriorityFeature,
 
-	setInitialState,
-	resetState,
+    setInitialState,
+    resetState,
 } = slice.actions;
 
 export const selectAll = ({ customer }: RootState) => customer;
@@ -501,110 +501,110 @@ export const selectFirstName = ({ customer }: RootState) => customer.firstName;
 export const selectLastName = ({ customer }: RootState) => customer.lastName;
 export const selectEmail = ({ customer }: RootState) => customer.email;
 export const selectMobilePhone = ({ customer }: RootState) =>
-	customer.mobilePhone;
+    customer.mobilePhone;
 export const selectHomePhone = ({ customer }: RootState) => customer.homePhone;
 export const selectManagedBy = ({ customer }: RootState) => customer.managedBy;
 export const selectStatus = ({ customer }: RootState) => customer.status;
 export const selectFax = ({ customer }: RootState) => customer.fax;
 export const selectNationality = ({ customer }: RootState) =>
-	customer.nationality;
+    customer.nationality;
 export const selectIdNumber = ({ customer }: RootState) => customer.idNumber;
 export const selectPassportNumber = ({ customer }: RootState) =>
-	customer.passportNumber;
+    customer.passportNumber;
 export const selectDateOfBirth = ({ customer }: RootState) =>
-	customer.dateOfBirth;
+    customer.dateOfBirth;
 export const selectLeadSource = ({ customer }: RootState) =>
-	customer.leadSource;
+    customer.leadSource;
 export const selectPreferredLanguage = ({ customer }: RootState) =>
-	customer.preferredLanguage;
+    customer.preferredLanguage;
 export const selectSuggestedBy = ({ customer }: RootState) =>
-	customer.suggestedBy;
+    customer.suggestedBy;
 export const selectLocation = ({ customer }: RootState) => customer.location;
 export const selectOwnedProperties = ({ customer }: RootState) =>
-	customer.ownedProperties;
+    customer.ownedProperties;
 export const selectLabelIDs = ({ customer }: RootState) => customer.labelIDs;
 export const selectDemand = ({ customer }: RootState) => customer.demand;
 
 // Location
 export const selectStreet = ({ customer }: RootState) =>
-	customer.location.street;
+    customer.location.street;
 export const selectNumber = ({ customer }: RootState) =>
-	customer.location.number;
+    customer.location.number;
 export const selectCity = ({ customer }: RootState) => customer.location.city;
 export const selectZipCode = ({ customer }: RootState) =>
-	customer.location.zipCode;
+    customer.location.zipCode;
 export const selectRegion = ({ customer }: RootState) =>
-	customer.location.region;
+    customer.location.region;
 export const selectCountry = ({ customer }: RootState) =>
-	customer.location.country;
+    customer.location.country;
 export const selectLatitude = ({ customer }: RootState) =>
-	customer.location.lat;
+    customer.location.lat;
 export const selectLongitude = ({ customer }: RootState) =>
-	customer.location.lng;
+    customer.location.lng;
 
 // Priority Features
 export const selectPriorityFeatures = ({ customer }: RootState) =>
-	customer.demand.priorityFeatures;
+    customer.demand.priorityFeatures;
 // Non-priority Features
 export const selectNonPriorityFeatures = ({ customer }: RootState) =>
-	customer.demand.nonPriorityFeatures;
+    customer.demand.nonPriorityFeatures;
 
 // Demand
 export const selectMinBedrooms = ({ customer }: RootState) =>
-	customer.demand.filters.minBedrooms;
+    customer.demand.filters.minBedrooms;
 
 export const selectMaxBedrooms = ({ customer }: RootState) =>
-	customer.demand.filters.maxBedrooms;
+    customer.demand.filters.maxBedrooms;
 
 export const selectMinBathrooms = ({ customer }: RootState) =>
-	customer.demand.filters.minBathrooms;
+    customer.demand.filters.minBathrooms;
 
 export const selectMaxBathrooms = ({ customer }: RootState) =>
-	customer.demand.filters.maxBathrooms;
+    customer.demand.filters.maxBathrooms;
 
 export const selectFurnished = ({ customer }: RootState) =>
-	customer.demand.filters.furnished;
+    customer.demand.filters.furnished;
 
 export const selectMaxCovered = ({ customer }: RootState) =>
-	customer.demand.filters.maxCovered;
+    customer.demand.filters.maxCovered;
 
 export const selectMinCovered = ({ customer }: RootState) =>
-	customer.demand.filters.minCovered;
+    customer.demand.filters.minCovered;
 
 export const selectMinPlot = ({ customer }: RootState) =>
-	customer.demand.filters.minPlot;
+    customer.demand.filters.minPlot;
 
 export const selectMaxPlot = ({ customer }: RootState) =>
-	customer.demand.filters.maxPlot;
+    customer.demand.filters.maxPlot;
 
 export const selectMinYearOfConstruction = ({ customer }: RootState) =>
-	customer.demand.filters.minYearOfConstruction;
+    customer.demand.filters.minYearOfConstruction;
 
 export const selectMaxYearOfConstruction = ({ customer }: RootState) =>
-	customer.demand.filters.maxYearOfConstruction;
+    customer.demand.filters.maxYearOfConstruction;
 
 export const selectMinFloor = ({ customer }: RootState) =>
-	customer.demand.filters.minFloor;
+    customer.demand.filters.minFloor;
 
 export const selectMaxFloor = ({ customer }: RootState) =>
-	customer.demand.filters.maxFloor;
+    customer.demand.filters.maxFloor;
 
 export const selectParentCategory = ({ customer }: RootState) =>
-	customer.demand.filters.parentCategory;
+    customer.demand.filters.parentCategory;
 
 export const selectState = ({ customer }: RootState) =>
-	customer.demand.filters.state;
+    customer.demand.filters.state;
 
 export const selectMinPrice = ({ customer }: RootState) =>
-	customer.demand.filters.minPrice;
+    customer.demand.filters.minPrice;
 
 export const selectMaxPrice = ({ customer }: RootState) =>
-	customer.demand.filters.maxPrice;
+    customer.demand.filters.maxPrice;
 
 export const selectDemandLabels = ({ customer }: RootState) =>
-	customer.demand.filters.labels;
+    customer.demand.filters.labels;
 
 export const selectTimeFrame = ({ customer }: RootState) =>
-	customer.demand.timeframe;
+    customer.demand.timeframe;
 
 export const { reducer } = slice;

@@ -5,45 +5,45 @@ import PropTypes from "prop-types";
 import { useAuth } from "../../hooks/use-auth";
 
 interface AuthGuardProps {
-  children: ReactNode;
+    children: ReactNode;
 }
 
 export const AuthGuard: FC<AuthGuardProps> = (props) => {
-  const { children } = props;
-  const auth = useAuth();
-  const router = useRouter();
-  const [checked, setChecked] = useState(false);
-  useEffect(
-    () => {
-      if (!router.isReady) {
-        return;
-      }
+    const { children } = props;
+    const auth = useAuth();
+    const router = useRouter();
+    const [checked, setChecked] = useState(false);
+    useEffect(
+        () => {
+            if (!router.isReady) {
+                return;
+            }
 
-      if (!auth.isAuthenticated) {
-        router
-          .push({
-            pathname: "/authentication/login",
-            query: { returnUrl: router.asPath },
-          })
-          .catch(console.error);
-      } else {
-        setChecked(true);
-      }
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [router.isReady, auth.isAuthenticated]
-  );
+            if (!auth.isAuthenticated) {
+                router
+                    .push({
+                        pathname: "/authentication/login",
+                        query: { returnUrl: router.asPath },
+                    })
+                    .catch(console.error);
+            } else {
+                setChecked(true);
+            }
+        },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [router.isReady, auth.isAuthenticated]
+    );
 
-  if (!checked) {
-    return null;
-  }
+    if (!checked) {
+        return null;
+    }
 
-  // If got here, it means that the redirect did not occur, and that tells us that the user is
-  // authenticated / authorized.
+    // If got here, it means that the redirect did not occur, and that tells us that the user is
+    // authenticated / authorized.
 
-  return <>{children}</>;
+    return <>{children}</>;
 };
 
 AuthGuard.propTypes = {
-  children: PropTypes.node,
+    children: PropTypes.node,
 };

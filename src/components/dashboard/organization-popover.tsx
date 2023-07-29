@@ -1,46 +1,43 @@
-import type { FC } from 'react';
-import { MenuItem, Popover } from '@mui/material';
+import type { FC } from "react";
+import { MenuItem, Popover } from "@mui/material";
 
 interface OrganizationPopoverProps {
-  anchorEl: null | Element;
-  onClose?: () => void;
-  open?: boolean;
+    anchorEl: null | Element;
+    onClose?: () => void;
+    open?: boolean;
 }
 
-const organizations = [
-  'Acme Inc',
-  'Division Inc'
-];
+const organizations = ["Acme Inc", "Division Inc"];
 
 export const OrganizationPopover: FC<OrganizationPopoverProps> = (props) => {
-  const { anchorEl, onClose, open, ...other } = props;
+    const { anchorEl, onClose, open, ...other } = props;
 
-  const handleChange = (organization: string): void => {
-    onClose?.();
-  };
+    const handleChange = (organization: string): void => {
+        onClose?.();
+    };
 
-  return (
-    <Popover
-      anchorEl={anchorEl}
-      anchorOrigin={{
-        horizontal: 'left',
-        vertical: 'bottom'
-      }}
-      keepMounted
-      onClose={onClose}
-      open={!!open}
-      PaperProps={{ sx: { width: 248 } }}
-      transitionDuration={0}
-      {...other}
-    >
-      {organizations.map((organization) => (
-        <MenuItem
-          key={organization}
-          onClick={() => handleChange(organization)}
+    return (
+        <Popover
+            anchorEl={anchorEl}
+            anchorOrigin={{
+                horizontal: "left",
+                vertical: "bottom",
+            }}
+            keepMounted
+            onClose={onClose}
+            open={!!open}
+            PaperProps={{ sx: { width: 248 } }}
+            transitionDuration={0}
+            {...other}
         >
-          {organization}
-        </MenuItem>
-      ))}
-    </Popover>
-  );
+            {organizations.map((organization) => (
+                <MenuItem
+                    key={organization}
+                    onClick={() => handleChange(organization)}
+                >
+                    {organization}
+                </MenuItem>
+            ))}
+        </Popover>
+    );
 };

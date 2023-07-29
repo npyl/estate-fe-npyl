@@ -14,111 +14,115 @@ import ROISection from "./components/ROI";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
-	selectPropertyImages,
-	addPropertyImage,
-	deletePropertyImage,
-	setPropertyImages,
-	setCdnUrlForNextAvailable,
+    selectPropertyImages,
+    addPropertyImage,
+    deletePropertyImage,
+    setPropertyImages,
+    setCdnUrlForNextAvailable,
 } from "src/slices/property/files";
 
 import {
-	selectState,
-	selectStreet,
-	selectNumber,
-	selectCity,
-	selectZipCode,
-	selectRegion,
-	selectCountry,
-	selectLatitude,
-	selectLongitude,
-	// setters
-	setStreet,
-	setNumber,
-	setCity,
-	setZipCode,
-	setRegion,
-	setCountry,
-	setLatitude,
-	setLongitude,
+    selectState,
+    selectStreet,
+    selectNumber,
+    selectCity,
+    selectZipCode,
+    selectRegion,
+    selectCountry,
+    selectLatitude,
+    selectLongitude,
+    // setters
+    setStreet,
+    setNumber,
+    setCity,
+    setZipCode,
+    setRegion,
+    setCountry,
+    setLatitude,
+    setLongitude,
 } from "src/slices/property";
 import { IPropertyImage, IPropertyImagePOST } from "src/types/file";
 
 const LandFormSection: React.FC<any> = () => {
-	const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-	const state = useSelector(selectState);
-	const images = useSelector(selectPropertyImages);
+    const state = useSelector(selectState);
+    const images = useSelector(selectPropertyImages);
 
-	const street = useSelector(selectStreet);
-	const number = useSelector(selectNumber);
-	const city = useSelector(selectCity);
-	const zipCode = useSelector(selectZipCode);
-	const region = useSelector(selectRegion);
-	const country = useSelector(selectCountry);
-	const lat = useSelector(selectLatitude);
-	const lng = useSelector(selectLongitude);
+    const street = useSelector(selectStreet);
+    const number = useSelector(selectNumber);
+    const city = useSelector(selectCity);
+    const zipCode = useSelector(selectZipCode);
+    const region = useSelector(selectRegion);
+    const country = useSelector(selectCountry);
+    const lat = useSelector(selectLatitude);
+    const lng = useSelector(selectLongitude);
 
-	const handleAddFile = (images: IPropertyImage | IPropertyImagePOST) => {
-		dispatch(addPropertyImage(images));
-	};
-	const handleSetCdnUrlForNextAvailable = (cdnUrl: string) => {
-		dispatch(setCdnUrlForNextAvailable(cdnUrl));
-	};
-	const handleAddFiles = (images: (IPropertyImage | IPropertyImagePOST)[]) => {
-		dispatch(setPropertyImages(images));
-	};
-	const handleDeleteFile = (imageKey: string) => {
-		dispatch(deletePropertyImage(imageKey));
-	};
+    const handleAddFile = (images: IPropertyImage | IPropertyImagePOST) => {
+        dispatch(addPropertyImage(images));
+    };
+    const handleSetCdnUrlForNextAvailable = (cdnUrl: string) => {
+        dispatch(setCdnUrlForNextAvailable(cdnUrl));
+    };
+    const handleAddFiles = (
+        images: (IPropertyImage | IPropertyImagePOST)[]
+    ) => {
+        dispatch(setPropertyImages(images));
+    };
+    const handleDeleteFile = (imageKey: string) => {
+        dispatch(deletePropertyImage(imageKey));
+    };
 
-	return (
-		<>
-			<Grid container paddingTop={1} spacing={1}>
-				<Grid item xs={6} order={"row"}>
-					<Stack spacing={1}>
-						<BasicForLandSection />
-						{state === "Sale" && <ROISection />}
-						<TechnicalFeaturesAndInteriorForLandSection />
-						<PropertyDescriptionForLandSection />
-						<FeaturesForLandSection />
-						<BlueprintsSection />
-					</Stack>
-				</Grid>
-				<Grid item xs={6}>
-					<Stack spacing={1}>
-						<ImageSection
-							files={images}
-							addFile={handleAddFile}
-							deleteFile={handleDeleteFile}
-							setCdnUrlForNextAvailable={handleSetCdnUrlForNextAvailable}
-							setFiles={handleAddFiles}
-						/>
-						<LocationSection
-							street={street}
-							number={number}
-							city={city}
-							zipCode={zipCode}
-							region={region}
-							country={country}
-							lat={lat}
-							lng={lng}
-							// setters
-							setStreet={setStreet}
-							setNumber={setNumber}
-							setCity={setCity}
-							setZipCode={setZipCode}
-							setRegion={setRegion}
-							setCountry={setCountry}
-							setLatitude={setLatitude}
-							setLongitude={setLongitude}
-						/>
+    return (
+        <>
+            <Grid container paddingTop={1} spacing={1}>
+                <Grid item xs={6} order={"row"}>
+                    <Stack spacing={1}>
+                        <BasicForLandSection />
+                        {state === "Sale" && <ROISection />}
+                        <TechnicalFeaturesAndInteriorForLandSection />
+                        <PropertyDescriptionForLandSection />
+                        <FeaturesForLandSection />
+                        <BlueprintsSection />
+                    </Stack>
+                </Grid>
+                <Grid item xs={6}>
+                    <Stack spacing={1}>
+                        <ImageSection
+                            files={images}
+                            addFile={handleAddFile}
+                            deleteFile={handleDeleteFile}
+                            setCdnUrlForNextAvailable={
+                                handleSetCdnUrlForNextAvailable
+                            }
+                            setFiles={handleAddFiles}
+                        />
+                        <LocationSection
+                            street={street}
+                            number={number}
+                            city={city}
+                            zipCode={zipCode}
+                            region={region}
+                            country={country}
+                            lat={lat}
+                            lng={lng}
+                            // setters
+                            setStreet={setStreet}
+                            setNumber={setNumber}
+                            setCity={setCity}
+                            setZipCode={setZipCode}
+                            setRegion={setRegion}
+                            setCountry={setCountry}
+                            setLatitude={setLatitude}
+                            setLongitude={setLongitude}
+                        />
 
-						<SuitableForForLandSection />
-						<DescriptionSection />
-					</Stack>
-				</Grid>
-			</Grid>
-		</>
-	);
+                        <SuitableForForLandSection />
+                        <DescriptionSection />
+                    </Stack>
+                </Grid>
+            </Grid>
+        </>
+    );
 };
 export default LandFormSection;

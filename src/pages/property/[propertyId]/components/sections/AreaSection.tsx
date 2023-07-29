@@ -6,32 +6,32 @@ import { Typography, Box, Paper, Divider, Grid } from "@mui/material";
 import { List, ListItem } from "src/components/List";
 
 interface AreaSectionProps {
-  data: IProperties;
+    data: IProperties;
 }
 
 const AreaSection: React.FC<AreaSectionProps> = (props) => {
-  const { data } = props;
-  if (!data) return null;
-  const areas = data?.areas;
-  if (!areas) return null;
+    const { data } = props;
+    if (!data) return null;
+    const areas = data?.areas;
+    if (!areas) return null;
 
-  return (
-    <Paper elevation={10} sx={{ overflow: "auto" }}>
-      <Box
-        sx={{
-          px: 3,
-          py: 1.5,
-          display: "flex",
-          justifyContent: "left",
-        }}
-      >
-        <Typography variant="h6">Area</Typography>
-      </Box>
-      <Divider></Divider>
-      <Grid container>
-        <Grid item xs={6}>
-          <List>
-            {/* {areas?.first && (
+    return (
+        <Paper elevation={10} sx={{ overflow: "auto" }}>
+            <Box
+                sx={{
+                    px: 3,
+                    py: 1.5,
+                    display: "flex",
+                    justifyContent: "left",
+                }}
+            >
+                <Typography variant="h6">Area</Typography>
+            </Box>
+            <Divider></Divider>
+            <Grid container>
+                <Grid item xs={6}>
+                    <List>
+                        {/* {areas?.first && (
           <ListItem label="First" value={areas?.first} align="horizontal" />
         )}
         {areas?.second && (
@@ -47,17 +47,21 @@ const AreaSection: React.FC<AreaSectionProps> = (props) => {
           <ListItem label="Fifth" value={areas?.fifth} align="horizontal" />
         )} */}
 
-            <ListItem label="Plot" value={areas?.plot} align="horizontal" />
-          </List>
-        </Grid>
-        <Grid item xs={6}>
-          <List>
-            <ListItem
-              label="Covered"
-              value={areas?.covered}
-              align="horizontal"
-            />
-            {/* {areas?.basement && (
+                        <ListItem
+                            label="Plot"
+                            value={areas?.plot}
+                            align="horizontal"
+                        />
+                    </List>
+                </Grid>
+                <Grid item xs={6}>
+                    <List>
+                        <ListItem
+                            label="Covered"
+                            value={areas?.covered}
+                            align="horizontal"
+                        />
+                        {/* {areas?.basement && (
           <ListItem
             label="Basement"
             value={areas?.basement}
@@ -91,11 +95,11 @@ const AreaSection: React.FC<AreaSectionProps> = (props) => {
             align="horizontal"
           />
         )} */}
-          </List>
-        </Grid>
-      </Grid>
-    </Paper>
-  );
+                    </List>
+                </Grid>
+            </Grid>
+        </Paper>
+    );
 };
 
 export default AreaSection;

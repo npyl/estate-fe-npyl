@@ -29,146 +29,147 @@ import { FullscreenRef } from "yet-another-react-lightbox";
 const THUMB_SIZE = 64;
 
 type Props = {
-  data: {
-    id: string;
-    title: string;
-    image: string;
-    description: string;
-  }[];
+    data: {
+        id: string;
+        title: string;
+        image: string;
+        description: string;
+    }[];
 };
 
 // ----------------------------------------------------------------------
 
 export default function CarouselWithLightbox({ data }: Props) {
-  const [currentIndex, setCurrentIndex] = useState(0);
+    const [currentIndex, setCurrentIndex] = useState(0);
 
-  const [nav1, setNav1] = useState<Carousel | undefined>(undefined);
+    const [nav1, setNav1] = useState<Carousel | undefined>(undefined);
 
-  const carousel1 = useRef<Carousel | null>(null);
+    const carousel1 = useRef<Carousel | null>(null);
 
-  const [galleryOpen, setGalleryOpen] = useState(false);
+    const [galleryOpen, setGalleryOpen] = useState(false);
 
-  const carouselSettings1 = {
-    dots: false,
-    arrows: false,
-    slidesToShow: data.length > 3 ? 3 : data.length,
-    draggable: false,
-    slidesToScroll: 1,
-    adaptiveHeight: true,
-    beforeChange: (current: number, next: number) => setCurrentIndex(next),
-  };
+    const carouselSettings1 = {
+        dots: false,
+        arrows: false,
+        slidesToShow: data.length > 3 ? 3 : data.length,
+        draggable: false,
+        slidesToScroll: 1,
+        adaptiveHeight: true,
+        beforeChange: (current: number, next: number) => setCurrentIndex(next),
+    };
 
-  useEffect(() => {
-    if (carousel1.current) {
-      setNav1(carousel1.current);
-    }
-  }, []);
+    useEffect(() => {
+        if (carousel1.current) {
+            setNav1(carousel1.current);
+        }
+    }, []);
 
-  const handlePrev = () => {
-    carousel1.current?.slickPrev();
-  };
+    const handlePrev = () => {
+        carousel1.current?.slickPrev();
+    };
 
-  const handleNext = () => {
-    carousel1.current?.slickNext();
-  };
+    const handleNext = () => {
+        carousel1.current?.slickNext();
+    };
 
-  const renderLargeImg = (
-    <Box
-      sx={{
-        mb: 1,
-        zIndex: 0,
-        overflow: "hidden",
-        position: "relative",
-      }}
-    >
-      <Carousel {...carouselSettings1} asNavFor={nav1} ref={carousel1}>
-        {data.map((item, index) => (
-          <Image
-            key={item.id}
-            alt={item.title}
-            src={item.image}
-            ratio="16/9"
-            borderRadius={2}
-            padding={1}
-            paddingRight={index !== data.length - 1 ? 0 : 1}
-            onClick={() => setGalleryOpen(true)}
-          />
-        ))}
-      </Carousel>
+    const renderLargeImg = (
+        <Box
+            sx={{
+                mb: 1,
+                zIndex: 0,
+                overflow: "hidden",
+                position: "relative",
+            }}
+        >
+            <Carousel {...carouselSettings1} asNavFor={nav1} ref={carousel1}>
+                {data.map((item, index) => (
+                    <Image
+                        key={item.id}
+                        alt={item.title}
+                        src={item.image}
+                        ratio="16/9"
+                        borderRadius={2}
+                        padding={1}
+                        paddingRight={index !== data.length - 1 ? 0 : 1}
+                        onClick={() => setGalleryOpen(true)}
+                    />
+                ))}
+            </Carousel>
 
-      <CarouselArrowIndex
-        index={currentIndex}
-        total={data.length}
-        onNext={handleNext}
-        onPrevious={handlePrev}
-      />
-    </Box>
-  );
+            <CarouselArrowIndex
+                index={currentIndex}
+                total={data.length}
+                onNext={handleNext}
+                onPrevious={handlePrev}
+            />
+        </Box>
+    );
 
-  const _images = data.map((item, index) => {
-    return { src: item.image };
-  });
+    const _images = data.map((item, index) => {
+        return { src: item.image };
+    });
 
-  const fullscreenRef = useRef<FullscreenRef>(null);
-  const thumbnailsRef = useRef<ThumbnailsRef>(null);
+    const fullscreenRef = useRef<FullscreenRef>(null);
+    const thumbnailsRef = useRef<ThumbnailsRef>(null);
 
-  const initialPluginList = [
-    Captions,
-    Fullscreen,
-    Thumbnails,
-    Video,
-    Zoom,
-    Counter,
-  ];
+    const initialPluginList = [
+        Captions,
+        Fullscreen,
+        Thumbnails,
+        Video,
+        Zoom,
+        Counter,
+    ];
 
-  const pluginListWithHideGallery = [
-    Captions,
-    Fullscreen,
-    Thumbnails,
-    Video,
-    Zoom,
-    Counter,
-    HideGallery,
-  ];
+    const pluginListWithHideGallery = [
+        Captions,
+        Fullscreen,
+        Thumbnails,
+        Video,
+        Zoom,
+        Counter,
+        HideGallery,
+    ];
 
-  const [plugins, setPlugins] = useState(initialPluginList);
+    const [plugins, setPlugins] = useState(initialPluginList);
 
-  return (
-    <Box
-      sx={{
-        "& .slick-slide": {
-          float: (theme) => (theme.direction === "rtl" ? "right" : "left"),
-        },
-      }}
-    >
-      {renderLargeImg}
+    return (
+        <Box
+            sx={{
+                "& .slick-slide": {
+                    float: (theme) =>
+                        theme.direction === "rtl" ? "right" : "left",
+                },
+            }}
+        >
+            {renderLargeImg}
 
-      <Lightbox
-        open={galleryOpen}
-        close={() => setGalleryOpen(false)}
-        slides={_images}
-        plugins={plugins}
-        carousel={{ finite: true }}
-        fullscreen={{ ref: fullscreenRef }}
-        thumbnails={{ ref: thumbnailsRef }}
-        on={{
-          fullscreen() {
-            // add HideGallery to the plugins
-            setPlugins(pluginListWithHideGallery);
-          },
-          fullscreenExit() {
-            // remove HideGallery
-            setPlugins(initialPluginList);
-          },
+            <Lightbox
+                open={galleryOpen}
+                close={() => setGalleryOpen(false)}
+                slides={_images}
+                plugins={plugins}
+                carousel={{ finite: true }}
+                fullscreen={{ ref: fullscreenRef }}
+                thumbnails={{ ref: thumbnailsRef }}
+                on={{
+                    fullscreen() {
+                        // add HideGallery to the plugins
+                        setPlugins(pluginListWithHideGallery);
+                    },
+                    fullscreenExit() {
+                        // remove HideGallery
+                        setPlugins(initialPluginList);
+                    },
 
-          hideGalleryEntered() {
-            thumbnailsRef.current?.hide();
-          },
-          hideGalleryExited() {
-            thumbnailsRef.current?.show();
-          },
-        }}
-      />
-    </Box>
-  );
+                    hideGalleryEntered() {
+                        thumbnailsRef.current?.hide();
+                    },
+                    hideGalleryExited() {
+                        thumbnailsRef.current?.show();
+                    },
+                }}
+            />
+        </Box>
+    );
 }

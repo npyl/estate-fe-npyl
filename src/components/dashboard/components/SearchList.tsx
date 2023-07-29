@@ -9,91 +9,103 @@ import { CustomerSearchItem } from "./CustomerSearchItem";
 import { PropertySearchItem } from "./PropertySearchItem";
 
 interface SearchListProps extends Omit<PopperProps, "direction" | "results"> {
-	properties: IPropertyResultResponse[];
-	customers: ICustomerResultResponse[];
-	searchText: string;
-	onClickOutside: () => void;
+    properties: IPropertyResultResponse[];
+    customers: ICustomerResultResponse[];
+    searchText: string;
+    onClickOutside: () => void;
 }
 
 export const SearchList = ({
-	properties,
-	customers,
-	searchText,
-	open,
-	onClickOutside,
-	anchorEl,
+    properties,
+    customers,
+    searchText,
+    open,
+    onClickOutside,
+    anchorEl,
 }: SearchListProps) => {
-	const ref = useRef<HTMLDivElement>(null);
+    const ref = useRef<HTMLDivElement>(null);
 
-	useClickOutside(ref, () => onClickOutside && onClickOutside());
+    useClickOutside(ref, () => onClickOutside && onClickOutside());
 
-	return (
-		<div ref={ref}>
-			<StyledPopper open={open} anchorEl={anchorEl} placement="bottom-start">
-				<Paper>
-					{properties?.length === 0 && customers?.length === 0 && (
-						<SearchNotFound query={searchText} />
-					)}
+    return (
+        <div ref={ref}>
+            <StyledPopper
+                open={open}
+                anchorEl={anchorEl}
+                placement="bottom-start"
+            >
+                <Paper>
+                    {properties?.length === 0 && customers?.length === 0 && (
+                        <SearchNotFound query={searchText} />
+                    )}
 
-					{properties?.length > 0 && (
-						<Grid container>
-							<Grid
-								item
-								xs={12}
-								sm={12}
-								md={12}
-								lg={12}
-								sx={{
-									borderRight: { lg: "1px solid blue", md: 0 },
-									marginY: "10px",
-									overflow: "hidden",
-								}}
-							>
-								<Typography variant="h6" textAlign={"center"}>
-									Properties
-								</Typography>
-								{properties.map((option, index: number) => (
-									<PropertySearchItem
-										key={index}
-										option={option}
-										searchText={searchText}
-									/>
-								))}
-							</Grid>
-						</Grid>
-					)}
+                    {properties?.length > 0 && (
+                        <Grid container>
+                            <Grid
+                                item
+                                xs={12}
+                                sm={12}
+                                md={12}
+                                lg={12}
+                                sx={{
+                                    borderRight: {
+                                        lg: "1px solid blue",
+                                        md: 0,
+                                    },
+                                    marginY: "10px",
+                                    overflow: "hidden",
+                                }}
+                            >
+                                <Typography variant="h6" textAlign={"center"}>
+                                    Properties
+                                </Typography>
+                                {properties.map((option, index: number) => (
+                                    <PropertySearchItem
+                                        key={index}
+                                        option={option}
+                                        searchText={searchText}
+                                    />
+                                ))}
+                            </Grid>
+                        </Grid>
+                    )}
 
-					{properties?.length > 0 && customers?.length > 0 && <Divider />}
+                    {properties?.length > 0 && customers?.length > 0 && (
+                        <Divider />
+                    )}
 
-					{customers?.length > 0 && (
-						<Grid container>
-							<Grid
-								item
-								xs={12}
-								sm={12}
-								md={12}
-								lg={12}
-								sx={{
-									borderRight: { lg: "1px solid blue", md: 0 },
-									marginY: "10px",
-									overflow: "hidden",
-								}}
-							>
-								<Typography variant="h6" textAlign={"center"}>
-									Customers
-								</Typography>
-								{customers.map((option, index: number) => (
-									<CustomerSearchItem
-										key={index}
-										option={option}
-										searchText={searchText}
-									/>
-								))}
-							</Grid>
-						</Grid>
-					)}
-				</Paper>
-			</StyledPopper>
-		</div>
-	);
+                    {customers?.length > 0 && (
+                        <Grid container>
+                            <Grid
+                                item
+                                xs={12}
+                                sm={12}
+                                md={12}
+                                lg={12}
+                                sx={{
+                                    borderRight: {
+                                        lg: "1px solid blue",
+                                        md: 0,
+                                    },
+                                    marginY: "10px",
+                                    overflow: "hidden",
+                                }}
+                            >
+                                <Typography variant="h6" textAlign={"center"}>
+                                    Customers
+                                </Typography>
+                                {customers.map((option, index: number) => (
+                                    <CustomerSearchItem
+                                        key={index}
+                                        option={option}
+                                        searchText={searchText}
+                                    />
+                                ))}
+                            </Grid>
+                        </Grid>
+                    )}
+                </Paper>
+            </StyledPopper>
+        </div>
+    );
 };

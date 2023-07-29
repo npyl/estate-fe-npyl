@@ -28,29 +28,29 @@ const bounce3 = keyframes`
 `;
 
 export const LogoProgressIndicator: FC = () => (
-	<Box
-		sx={{
-			alignItems: "center",
-			display: "flex",
-			bottom: 35,
-			left: 50,
-			flexDirection: "column",
-			justifyContent: "center",
-			position: "fixed",
-			zIndex: 2000,
-		}}
-	>
-		<Logo
-			sx={{
-				height: 40,
-				width: 40,
-				"& path:nth-of-type(1)": {
-					animation: `${bounce1} 1s ease-in-out infinite`,
-				},
-				"& path:nth-of-type(3)": {
-					animation: `${bounce3} 1s ease-in-out infinite`,
-				},
-			}}
-		/>
-	</Box>
+    <Box
+        sx={{
+            alignItems: "center",
+            display: "flex",
+            bottom: 35,
+            left: 50,
+            flexDirection: "column",
+            justifyContent: "center",
+            position: "fixed",
+            zIndex: 2000,
+        }}
+    >
+        <Logo
+            sx={{
+                height: 40,
+                width: 40,
+                "& path:nth-of-type(1)": {
+                    animation: `${bounce1} 1s ease-in-out infinite`,
+                },
+                "& path:nth-of-type(3)": {
+                    animation: `${bounce3} 1s ease-in-out infinite`,
+                },
+            }}
+        />
+    </Box>
 );

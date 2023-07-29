@@ -13,11 +13,20 @@ import {
 } from "yet-another-react-lightbox/core";
 import { resolveFullscreenProps } from "./props";
 
-export const FullscreenContext = React.createContext<FullscreenRef | null>(null);
+export const FullscreenContext = React.createContext<FullscreenRef | null>(
+    null
+);
 
-export const useFullscreen = makeUseContext("useFullscreen", "FullscreenContext", FullscreenContext);
+export const useFullscreen = makeUseContext(
+    "useFullscreen",
+    "FullscreenContext",
+    FullscreenContext
+);
 
-export function FullscreenContextProvider({ fullscreen: fullscreenProps, children }: ComponentProps) {
+export function FullscreenContextProvider({
+    fullscreen: fullscreenProps,
+    children,
+}: ComponentProps) {
     const { on } = useLightboxProps();
     const { auto, ref } = resolveFullscreenProps(fullscreenProps);
 
@@ -96,7 +105,12 @@ export function FullscreenContextProvider({ fullscreen: fullscreenProps, childre
     }, [getFullscreenElement]);
 
     React.useEffect(() => {
-        const events = ["fullscreenchange", "webkitfullscreenchange", "mozfullscreenchange", "MSFullscreenChange"];
+        const events = [
+            "fullscreenchange",
+            "webkitfullscreenchange",
+            "mozfullscreenchange",
+            "MSFullscreenChange",
+        ];
 
         events.forEach((event) => {
             document.addEventListener(event, fullscreenChangeListener);
@@ -109,7 +123,9 @@ export function FullscreenContextProvider({ fullscreen: fullscreenProps, childre
         };
     }, [fullscreenChangeListener]);
 
-    const handleAutoFullscreen = useEventCallback(() => (auto ? enter : null)?.());
+    const handleAutoFullscreen = useEventCallback(() =>
+        (auto ? enter : null)?.()
+    );
 
     React.useEffect(() => {
         handleAutoFullscreen();
@@ -129,8 +145,16 @@ export function FullscreenContextProvider({ fullscreen: fullscreenProps, childre
     React.useImperativeHandle(ref, () => context, [context]);
 
     return (
-        <div ref={containerRef} className={clsx(cssClass(PLUGIN_FULLSCREEN), cssClass(CLASS_FULLSIZE))}>
-            <FullscreenContext.Provider value={context}>{children}</FullscreenContext.Provider>
+        <div
+            ref={containerRef}
+            className={clsx(
+                cssClass(PLUGIN_FULLSCREEN),
+                cssClass(CLASS_FULLSIZE)
+            )}
+        >
+            <FullscreenContext.Provider value={context}>
+                {children}
+            </FullscreenContext.Provider>
         </div>
     );
 }

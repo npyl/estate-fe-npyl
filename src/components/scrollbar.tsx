@@ -7,21 +7,21 @@ import SimpleBar, { Props } from "simplebar-react";
 import "simplebar/dist/simplebar.min.css";
 
 interface ScrollbarProps extends Props {
-  ref: MutableRefObject<typeof SimpleBar>;
-  sx?: SxProps<Theme>;
+    ref: MutableRefObject<typeof SimpleBar>;
+    sx?: SxProps<Theme>;
 }
 
 const ScrollbarRoot = styled(SimpleBar)``;
 
 export const Scrollbar = forwardRef<
-  MutableRefObject<typeof SimpleBar>,
-  ScrollbarProps
+    MutableRefObject<typeof SimpleBar>,
+    ScrollbarProps
 >((props, ref) => {
-  return (
-    <ScrollbarRoot
-      // @ts-ignore
-      ref={ref}
-      {...props}
-    />
-  );
+    return (
+        <ScrollbarRoot
+            // @ts-ignore
+            ref={ref}
+            {...props}
+        />
+    );
 });

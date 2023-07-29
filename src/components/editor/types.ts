@@ -6,9 +6,9 @@ import { Theme } from "@mui/material/styles";
 // ----------------------------------------------------------------------
 
 export interface EditorProps extends ReactQuillProps {
-  id?: string;
-  error?: boolean;
-  simple?: boolean;
-  helperText?: React.ReactNode;
-  sx?: SxProps<Theme>;
+    id?: string;
+    error?: boolean;
+    simple?: boolean;
+    helperText?: React.ReactNode;
+    sx?: SxProps<Theme>;
 }

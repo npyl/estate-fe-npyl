@@ -12,56 +12,60 @@ import { Delete as DeleteIcon, Send as SendIcon } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 
 interface IFormProps {
-	resetEverything: () => void;
-	performUpload: () => void;
+    resetEverything: () => void;
+    performUpload: () => void;
 }
 export default function Form({ performUpload, resetEverything }: IFormProps) {
-	const { t } = useTranslation();
+    const { t } = useTranslation();
 
-	// enums
-	const parentCategory = useSelector(selectParentCategory);
+    // enums
+    const parentCategory = useSelector(selectParentCategory);
 
-	const handleClick = () => {
-		// create our property draft
-		performUpload();
-	};
-	return (
-		<Grid container spacing={1} paddingLeft={2} paddingTop={3}>
-			{parentCategory !== "" && (
-				<Grid container mt={0} spacing={1}>
-					{parentCategory === "Residential" && <ResidentialFormSection />}
-					{parentCategory === "Land" && <LandFormSection />}
-					{parentCategory === "Commercial" && <CommercialFormSection />}
-					{parentCategory === "Other" && <OtherFormSection />}
-				</Grid>
-			)}
+    const handleClick = () => {
+        // create our property draft
+        performUpload();
+    };
+    return (
+        <Grid container spacing={1} paddingLeft={2} paddingTop={3}>
+            {parentCategory !== "" && (
+                <Grid container mt={0} spacing={1}>
+                    {parentCategory === "Residential" && (
+                        <ResidentialFormSection />
+                    )}
+                    {parentCategory === "Land" && <LandFormSection />}
+                    {parentCategory === "Commercial" && (
+                        <CommercialFormSection />
+                    )}
+                    {parentCategory === "Other" && <OtherFormSection />}
+                </Grid>
+            )}
 
-			<Grid
-				padding={2}
-				container
-				alignItems="center"
-				justifyContent="flex-end"
-				spacing={1}
-			>
-				<Grid item>
-					<Button
-						variant="outlined"
-						startIcon={<DeleteIcon />}
-						onClick={resetEverything}
-					>
-						{t("Clear")}
-					</Button>
-				</Grid>
-				<Grid item>
-					<Button
-						variant="contained"
-						endIcon={<SendIcon />}
-						onClick={handleClick}
-					>
-						{t("Save")}
-					</Button>
-				</Grid>
-			</Grid>
-		</Grid>
-	);
+            <Grid
+                padding={2}
+                container
+                alignItems="center"
+                justifyContent="flex-end"
+                spacing={1}
+            >
+                <Grid item>
+                    <Button
+                        variant="outlined"
+                        startIcon={<DeleteIcon />}
+                        onClick={resetEverything}
+                    >
+                        {t("Clear")}
+                    </Button>
+                </Grid>
+                <Grid item>
+                    <Button
+                        variant="contained"
+                        endIcon={<SendIcon />}
+                        onClick={handleClick}
+                    >
+                        {t("Save")}
+                    </Button>
+                </Grid>
+            </Grid>
+        </Grid>
+    );
 }
