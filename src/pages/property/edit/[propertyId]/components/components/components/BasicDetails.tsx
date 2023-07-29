@@ -10,15 +10,11 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { removeLabel as removeAssignedLabel } from "src/slices/customer";
+
 import DateFieldStyled from "./DateFieldStyled"; // adjust the path based on your directory structure
 
 import * as React from "react";
-import {
-  addLabel as addNewLabel,
-  removeLabel as removeNewLabel,
-  selectAll as selectAllNewLabels,
-} from "src/slices/labels";
+
 import { useDispatch, useSelector } from "react-redux";
 import OnlyNumbersInput from "src/components/OnlyNumbers";
 import { useAllCustomersQuery } from "src/services/customers";
@@ -34,7 +30,6 @@ import {
   selectDebatablePrice,
   selectEstimatedRentPrice,
   selectKeyCode,
-  selectLabelIDs,
   selectManager,
   selectOwner,
   selectPlotArea,
@@ -83,20 +78,22 @@ import { ILabel } from "src/types/label";
 
 import { CodeField } from "./components/CodeField";
 import { KeyCodeField } from "./components/KeyCodeField";
-import { addLabelID } from "src/slices/customer";
 
 const BasicSection: React.FC<any> = () => {
   const router = useRouter();
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   const { propertyId } = router.query;
   const { data } = useAllGlobalsQuery();
-  const propertyEnums = data?.property;
   const enums: IGlobalProperty = data?.property as IGlobalProperty;
 
   // get list of owners, managers & labels
   const { data: owners } = useAllCustomersQuery();
   const { data: managers } = useAllUsersQuery();
+  const { data: labels } = useGetLabelsQuery();
+  const propertyLabels = labels?.propertyLabels;
+
   const currentDate = new Date();
   const code = useSelector(selectCode);
   const owner = useSelector(selectOwner);
@@ -107,7 +104,6 @@ const BasicSection: React.FC<any> = () => {
   const keyCode = useSelector(selectKeyCode);
   const avgUtils = useSelector(selectAvgUtils);
   const area = useSelector(selectArea);
-
   const plotArea = useSelector(selectPlotArea);
   const rented = useSelector(selectRented);
   const availableAfter = useSelector(selectAvailableAfter);
@@ -119,47 +115,38 @@ const BasicSection: React.FC<any> = () => {
   const stateEnum = enums?.state;
 
   // labels
-
+  const [getLabels, { data: assignedLabels }] = useLazyGetPropertyLabelsQuery();
   const [assignLabel] = useAssignLabelToPropertyWithIDMutation();
   const [createAndAssignLabel] = useCreateLabelForPropertyWithIDMutation();
   const [deleteLabel] = useDeleteLabelForPropertyWithIdMutation();
 
   useEffect(() => {
     if (!propertyId) return;
+    revalidate();
   }, [propertyId]);
 
-  // const revalidate = () => {
-  //   // TODO: improve this by revalidating automatically (invalidating a tag)
-  //   getLabels(+propertyId!);
-  // };
-  const { data: labels } = useGetLabelsQuery();
-  const propertyLabels = labels?.propertyLabels;
+  const revalidate = () => {
+    // TODO: improve this by revalidating automatically (invalidating a tag)
+    getLabels(+propertyId!);
+  };
 
-  const labelIDs = useSelector(selectLabelIDs);
-  const assignedLabels =
-    (labelIDs &&
-      labelIDs.length > 0 &&
-      propertyLabels &&
-      propertyLabels.length > 0 &&
-      labelIDs
-        .filter((labelID) => labelID)
-        .map((labelID, index) => {
-          // get label object with id
-          return propertyLabels.find((label) => label.id === labelID)!;
-        })) ||
-    [];
-
-  const newLabels = useSelector(selectAllNewLabels);
-
-  const dispatch = useDispatch();
-  const handleLabelClick = (label: ILabel) => dispatch(addLabelID(label.id));
-  const handleLabelCreate = (label: ILabel) => dispatch(addNewLabel(label));
-  const handleRemoveAssignedLabel = (index: number) =>
-    dispatch(removeAssignedLabel(index));
-  const handleRemoveNewLabel = (index: number) =>
-    dispatch(removeNewLabel(index));
-
-  if (!enums || !propertyLabels || !propertyEnums || !managers) return null;
+  const handleLabelClick = (label: ILabel) =>
+    label.id &&
+    assignLabel({ propertyId: +propertyId!, labelId: label.id }).then(() =>
+      revalidate()
+    );
+  const handleLabelCreate = (label: ILabel) =>
+    createAndAssignLabel({ propertyId: +propertyId!, labelBody: label }).then(
+      () => revalidate()
+    );
+  const handleLabelRemove = (index: number) =>
+    assignedLabels &&
+    assignedLabels[index] &&
+    assignedLabels[index].id &&
+    deleteLabel({
+      propertyId: +propertyId!,
+      labelId: assignedLabels[index].id!,
+    }).then(() => revalidate());
 
   const handleDateChange = (
     setter: ActionCreatorWithPayload<any, string>,
@@ -169,6 +156,8 @@ const BasicSection: React.FC<any> = () => {
 
     dispatch(setter(date.toISOString()));
   };
+
+  if (!enums || !propertyLabels || !propertyId) return null;
 
   return (
     <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
@@ -301,14 +290,13 @@ const BasicSection: React.FC<any> = () => {
           </Grid>
           <Grid item xs={6}>
             <LabelCreate
-              variant="property"
               existingLabels={propertyLabels}
-              assignedLabels={assignedLabels}
-              newLabels={newLabels}
+              assignedLabels={assignedLabels || []}
+              newLabels={[]}
               onLabelClick={handleLabelClick}
               onLabelCreate={handleLabelCreate}
-              onRemoveAssignedLabel={handleRemoveAssignedLabel}
-              onRemoveNewLabel={handleRemoveNewLabel}
+              onRemoveAssignedLabel={handleLabelRemove}
+              onRemoveNewLabel={() => {}}
             />
           </Grid>
 
