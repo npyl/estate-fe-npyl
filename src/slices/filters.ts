@@ -344,7 +344,7 @@ export const selectIds = ({ filters }: RootState) => filters.ids;
 
 export const selectAll = ({ filters }: RootState) => filters.filters;
 
-const sumOfChangedProperties = createSelector(
+export const sumOfChangedProperties = createSelector(
     (state: RootState) => state.filters,
     (filter) => {
         const propertiesToInclude = [
@@ -388,8 +388,6 @@ const sumOfChangedProperties = createSelector(
         );
     }
 );
-
-export default sumOfChangedProperties;
 
 export const getChangedFields = createSelector(
     (state: RootState) => state.filters,

@@ -1,7 +1,6 @@
 import TuneIcon from "@mui/icons-material/Tune";
 import { Badge, Box, Paper, Stack } from "@mui/material";
 import { useState } from "react";
-import sumOfChangedProperties, { resetState } from "src/slices/filters";
 import { useDispatch, useSelector } from "src/store";
 import ChosenFilters from "./ChosenFilters";
 import CategorySelect from "./FilterCategory";
@@ -15,28 +14,19 @@ import SubCategorySelect from "./FilterSubCategory";
 import { StyledPriceButton } from "./styles";
 
 import {
-    selectLabels as selectPropertyLabels,
-    setLabels as setPropertyLabels,
+    selectLabels,
+    setLabels,
+    sumOfChangedProperties,
+    resetState,
 } from "src/slices/filters";
-import {
-    selectLabels as selectCustomerLabels,
-    setLabels as setCustomerLabels,
-} from "src/slices/customer/filters";
 
-interface FilterSectionProps {
-    variant?: string;
-}
-
-export const FilterSection = (props: FilterSectionProps) => {
-    const { variant = "property" } = props;
-
+export const FilterSection = () => {
     const dispatch = useDispatch();
 
-    const changedPropsCount = useSelector(sumOfChangedProperties);
     const [openFilter, setOpenFilter] = useState(false);
 
-    const propertyLabels = useSelector(selectPropertyLabels) || [];
-    const customerLabels = useSelector(selectCustomerLabels) || [];
+    const changedPropertyFilters = useSelector(sumOfChangedProperties);
+    const labels = useSelector(selectLabels) || [];
 
     const handleResetFilter = () => {
         dispatch(resetState());
@@ -54,7 +44,7 @@ export const FilterSection = (props: FilterSectionProps) => {
         setOpenFilter(false);
     };
 
-    return variant === "property" ? (
+    return (
         <Stack spacing={3} component={Paper} p={2}>
             <Stack flexWrap={"wrap"} direction={"row"} spacing={1}>
                 {/* <CountrySelect /> */}
@@ -69,8 +59,8 @@ export const FilterSection = (props: FilterSectionProps) => {
 
                 <FilterLabels
                     variant="property"
-                    labels={propertyLabels}
-                    setLabels={setPropertyLabels}
+                    labels={labels}
+                    setLabels={setLabels}
                 />
 
                 <StyledPriceButton
@@ -80,12 +70,12 @@ export const FilterSection = (props: FilterSectionProps) => {
                     sx={{ width: "auto" }}
                     onClick={handleOpenFilter}
                 >
-                    <Badge badgeContent={changedPropsCount} color="error">
+                    <Badge badgeContent={changedPropertyFilters} color="error">
                         <TuneIcon />
                     </Badge>
                 </StyledPriceButton>
             </Stack>
-            {changedPropsCount > 0 && (
+            {changedPropertyFilters > 0 && (
                 <Box overflow={"auto"}>
                     <ChosenFilters />
                 </Box>
@@ -98,21 +88,6 @@ export const FilterSection = (props: FilterSectionProps) => {
                     onClose={handleCloseFilter}
                     onResetFilter={handleResetFilter}
                 />
-            )}
-        </Stack>
-    ) : (
-        <Stack spacing={3} component={Paper} p={2} mt={2}>
-            <Stack flexWrap={"wrap"} direction={"row"} spacing={1}>
-                <FilterLabels
-                    variant="customer"
-                    labels={customerLabels}
-                    setLabels={setCustomerLabels}
-                />
-            </Stack>
-            {changedPropsCount > 0 && (
-                <Box overflow={"auto"}>
-                    <ChosenFilters />
-                </Box>
             )}
         </Stack>
     );

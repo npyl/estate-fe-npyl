@@ -16,7 +16,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "src/store";
 
 import { useAllGlobalsQuery } from "src/services/global";
-import sumOfChangedProperties, {
+import {
     selectFrameType,
     selectFurnished,
     selectHeatingType,
@@ -27,6 +27,7 @@ import sumOfChangedProperties, {
     selectMinConstructionYear,
     selectMinFloor,
     selectLabels,
+    sumOfChangedProperties,
     // setters
     toggleFrameType,
     toggleFurnished,

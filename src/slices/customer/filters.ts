@@ -43,7 +43,7 @@ const slice = createSlice({
                         : state.ids;
             } else state.ids = state.ids.filter((id) => id !== key);
 
-            const initialValue = initialState.filters[payload];
+            const initialValue = initialState.filters[key];
             state.filters[key] = initialValue;
         },
 
@@ -54,6 +54,7 @@ const slice = createSlice({
 });
 
 export const {
+    setStatus,
     // multiple
     setLabels,
 
@@ -74,8 +75,8 @@ export const selectIds = ({ customerFilters }: RootState) =>
 export const selectAll = ({ customerFilters }: RootState) =>
     customerFilters.filters;
 
-const sumOfChangedProperties = createSelector(
-    (state: RootState) => state.filters,
+export const sumOfChangedProperties = createSelector(
+    (state: RootState) => state.customerFilters,
     (filter) => {
         const propertiesToInclude = [
             "status",
@@ -99,10 +100,8 @@ const sumOfChangedProperties = createSelector(
     }
 );
 
-export default sumOfChangedProperties;
-
 export const getChangedFields = createSelector(
-    (state: RootState) => state.filters,
+    (state: RootState) => state.customerFilters,
     (filter) => {
         const changedFields = Object.entries(filter.filters).reduce(
             (acc: any, [key, value]) => {

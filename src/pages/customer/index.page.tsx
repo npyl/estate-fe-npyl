@@ -6,7 +6,7 @@ import DataGridTable from "src/components/DataGrid";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { useFilterCustomersMutation } from "src/services/customers";
-import { FilterSection } from "../components/Filters";
+import { FilterSection } from "./components/Filters";
 import { useSelector } from "react-redux";
 import { selectAll } from "src/slices/customer/filters";
 
@@ -58,7 +58,7 @@ const Customers: NextPage = () => {
 
     return (
         <>
-            <FilterSection variant="customer" />
+            <FilterSection />
 
             <Box
                 component="main"
