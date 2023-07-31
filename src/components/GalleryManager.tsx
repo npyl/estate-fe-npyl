@@ -10,13 +10,15 @@ import {
 } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { SoftButton } from "./SoftButton";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useEditPropertyImageMutation } from "src/services/properties";
 
 import CarouselSimple from "./CarouselSimple";
 import ICarouselImage from "./carousel/types";
 import { IPropertyImage } from "src/types/file";
 import { useRouter } from "next/router";
+import { LanguagePopover } from "./Language/LanguagePopover";
+import { LanguageButton } from "./Language/LanguageButton";
 
 interface IGalleryManager {
     open: boolean;
@@ -29,6 +31,7 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
     const { open, images, onDelete, onClose } = props;
 
     const router = useRouter();
+    const dialogTitleRef = useRef(null);
     const [editImage] = useEditPropertyImageMutation();
 
     const { propertyId } = router.query;
@@ -142,7 +145,18 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
             onClose={onClose}
             closeAfterTransition={true}
         >
-            <DialogTitle>Gallery Manager</DialogTitle>
+            <DialogTitle ref={dialogTitleRef}>
+                Gallery Manager
+                <LanguageButton
+                    sx={{
+                        position: "absolute",
+                        top: 0,
+                        right: 0,
+                        mr: 2,
+                        mt: 1,
+                    }}
+                />
+            </DialogTitle>
             <DialogContent>
                 <Grid container spacing={1}>
                     <Grid item xs={8}>
