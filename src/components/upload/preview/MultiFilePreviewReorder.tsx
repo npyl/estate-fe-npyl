@@ -44,9 +44,8 @@ export default function MultiFilePreviewReorder({
                             ref={provided.innerRef}
                         >
                             {files.map((file, index) => (
-                                <ImageListItem>
+                                <ImageListItem key={index}>
                                     <Draggable
-                                        key={index}
                                         draggableId={index.toString()}
                                         index={index}
                                     >

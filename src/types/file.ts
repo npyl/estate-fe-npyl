@@ -11,9 +11,7 @@ export interface IPropertyImagePOST {
     hidden?: boolean;
     description?: string;
     title?: string;
-    orderNumber?: number;
     key?: string;
-    thumbnail?: boolean;
 }
 
 export interface IPropertyImage {
