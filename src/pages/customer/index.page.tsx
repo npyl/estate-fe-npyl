@@ -21,7 +21,8 @@ const columns: GridColDef[] = [
 
             return firstName && lastName ? (
                 <Avatar>
-                    `${firstName[0]}${lastName[0]}`
+                    {firstName[0]}
+                    {lastName[0]}
                 </Avatar>
             ) : (
                 <UserCircle />
