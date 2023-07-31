@@ -213,6 +213,7 @@ export const properties = createApi({
                     url: `/${props.propertyId}/thumbnail/${props.imageKey}`,
                     method: "POST",
                 }),
+                invalidatesTags: ["PropertyById"],
             }
         ),
         deletePropertyImage: builder.mutation<void, IDeleteImageProps>({
