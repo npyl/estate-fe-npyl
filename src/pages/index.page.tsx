@@ -1,7 +1,6 @@
 import { Box } from "@mui/material";
 
 import type { NextPage } from "next";
-import Head from "next/head";
 import { AuthGuard } from "../components/authentication/auth-guard";
 import { DashboardLayout } from "../components/dashboard/dashboard-layout";
 import ViewAll from "./components/ViewAll";

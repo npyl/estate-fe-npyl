@@ -1,5 +1,5 @@
-import { Box, Paper, Skeleton } from "@mui/material";
-import { GridColDef } from "@mui/x-data-grid";
+import { Box, Paper, Skeleton, Avatar } from "@mui/material";
+import { GridCellParams, GridColDef } from "@mui/x-data-grid";
 import type { NextPage } from "next";
 import { useEffect, useMemo, useState } from "react";
 import DataGridTable from "src/components/DataGrid";
@@ -9,8 +9,25 @@ import { useFilterCustomersMutation } from "src/services/customers";
 import { FilterSection } from "./components/Filters";
 import { useSelector } from "react-redux";
 import { selectAll } from "src/slices/customer/filters";
+import { UserCircle } from "src/icons/user-circle";
 
 const columns: GridColDef[] = [
+    {
+        field: "image",
+        headerName: "Image",
+        renderCell: (params: GridCellParams) => {
+            const firstName = params.row.firstName;
+            const lastName = params.row.lastName;
+
+            return firstName && lastName ? (
+                <Avatar>
+                    `${firstName[0]}${lastName[0]}`
+                </Avatar>
+            ) : (
+                <UserCircle />
+            );
+        },
+    },
     {
         field: "firstName",
         headerName: "First Name",
