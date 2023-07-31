@@ -140,7 +140,7 @@ export default function FilterMore({
             <ClearableDialogContent dividers reset={resetBasic}>
                 <Typography>Basic</Typography>
 
-                <Stack direction={"row"} spacing={1}>
+                <Stack direction={"row"} gap={1} flexWrap={"wrap"}>
                     <CodeSelect />
                     <ManagerIdSelect />
 

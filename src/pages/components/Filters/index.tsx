@@ -46,7 +46,7 @@ export const FilterSection = () => {
 
     return (
         <Stack spacing={3} component={Paper} p={2}>
-            <Stack flexWrap={"wrap"} direction={"row"} spacing={1}>
+            <Stack flexWrap={"wrap"} direction={"row"} gap={1}>
                 {/* <CountrySelect /> */}
                 {/* <SubAreas /> */}
                 <SaleSelect />
