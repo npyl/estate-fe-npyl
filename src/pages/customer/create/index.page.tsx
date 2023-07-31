@@ -1,88 +1,23 @@
+import type { NextPage } from "next";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { toast } from "react-hot-toast";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-import { NextPage } from "next";
-
-import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
-import { useEffect } from "react";
-
-import { selectAll } from "src/slices/customer";
-import { selectAll as selectAllNewNotes } from "src/slices/notes";
-import { selectAll as selectAllNewLabels } from "src/slices/labels";
-
-import { useAddCustomerMutation } from "src/services/customers";
-import { useCreateLabelForCustomerWithIDMutation } from "src/services/labels";
-import { useAddNoteToCustomerWithIdMutation } from "src/services/note";
-
-import Form from "../components/Form";
-
-import { LogoProgressIndicator } from "src/components/LogoProgressIndicator";
+import { useCreateCustomerMutation } from "src/services/customers";
 
 const CreateCustomer: NextPage = () => {
     const router = useRouter();
-
-    const [
-        create,
-        {
-            isSuccess: isCreateCustomerSuccess,
-            isLoading: isCreateCustomerLoading,
-            data: createdCustomer,
-        },
-    ] = useAddCustomerMutation();
-    const [createLabel, { isSuccess: isLabelSuccess }] =
-        useCreateLabelForCustomerWithIDMutation();
-    const [createNote, { isSuccess: isNoteSuccess }] =
-        useAddNoteToCustomerWithIdMutation();
-
-    const newLabels = useSelector(selectAllNewLabels);
-    const newNotes = useSelector(selectAllNewNotes);
-    const body = useSelector(selectAll);
-
-    const createAndAssignNewLabels = () => {
-        const createdCustomerId = createdCustomer!.id;
-
-        // foreach label; call create-for-customer-with-id
-        newLabels.forEach(async (newLabel) => {
-            await createLabel({
-                customerId: createdCustomerId,
-                labelBody: newLabel,
-            });
-        });
-    };
-    const createAndAssignNewNotes = () => {
-        const createdCustomerId = createdCustomer!.id;
-
-        // foreach note; call create-for-customer-with-id
-        newNotes.forEach(async (newNote) => {
-            await createNote({
-                id: createdCustomerId,
-                dataToSend: { content: newNote.content },
-            });
-        });
-    };
-
-    const performUpload = () => {
-        create(body);
-    };
+    const [createCustomer] = useCreateCustomerMutation();
 
     useEffect(() => {
-        if (isCreateCustomerSuccess && createdCustomer) {
-            createAndAssignNewLabels(); // create&assign labels
-            createAndAssignNewNotes(); // create&assign notes
-            router.push("/customer");
-        }
-    }, [isCreateCustomerSuccess, createdCustomer]);
+        createCustomer() // create customer
+            .unwrap()
+            .then((id) => router.push(`/customer/edit/${id}`)) // redirect
+            .catch((reason) => toast.error("Failed to create customer!"));
+    }, []);
 
-    return (
-        <>
-            <Form performUpload={performUpload} />
-
-            {
-                // loading indicator (incase POST request is taking alot of time)
-                isCreateCustomerLoading && <LogoProgressIndicator />
-            }
-        </>
-    );
+    return <></>;
 };
 
 CreateCustomer.getLayout = (page) => (

@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
     ICustomer,
     ICustomerFilter,
+    ICustomerPOST,
     ICustomerResultResponse,
 } from "src/types/customer";
 import IPage from "src/types/page";
@@ -9,6 +10,10 @@ import IPage from "src/types/page";
 interface ICustomerParams {
     page: number;
     pageSize: number;
+}
+interface IEditCustomerProps {
+    customerId: number;
+    body: ICustomerPOST;
 }
 
 interface ICustomerFilterProps extends ICustomerParams {
@@ -67,14 +72,22 @@ export const customers = createApi({
             invalidatesTags: ["Customers"],
         }),
 
-        addCustomer: builder.mutation<ICustomer, any>({
-            query: (dataToSend: any) => ({
-                url: "",
+        createCustomer: builder.mutation<number, void>({
+            query: () => ({
+                url: "/create",
                 method: "POST",
-                body: dataToSend,
             }),
             invalidatesTags: ["Customers"],
         }),
+        editCustomer: builder.mutation<ICustomer, IEditCustomerProps>({
+            query: (props: IEditCustomerProps) => ({
+                url: `/edit/${props.customerId}`,
+                method: "POST",
+                body: props.body,
+            }),
+            invalidatesTags: ["Customers"],
+        }),
+
         searchCustomer: builder.query<ICustomerResultResponse[], string>({
             query: (searchString: string) => {
                 return {
@@ -102,6 +115,7 @@ export const {
     useFilterCustomersMutation,
     useSearchCustomerQuery,
 
-    useAddCustomerMutation,
+    useCreateCustomerMutation,
+    useEditCustomerMutation,
     useDeleteCustomerMutation,
 } = customers;
