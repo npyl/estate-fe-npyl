@@ -17,7 +17,6 @@ import CarouselSimple from "./CarouselSimple";
 import ICarouselImage from "./carousel/types";
 import { IPropertyImage } from "src/types/file";
 import { useRouter } from "next/router";
-import { LanguagePopover } from "./Language/LanguagePopover";
 import { LanguageButton } from "./Language/LanguageButton";
 
 interface IGalleryManager {
@@ -37,6 +36,7 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
     const { propertyId } = router.query;
 
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [language, setLanguage] = useState("");
 
     // default values
     const [initialTitle, setInitialTitle] = useState(
@@ -148,6 +148,7 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
             <DialogTitle ref={dialogTitleRef}>
                 Gallery Manager
                 <LanguageButton
+                    updatesGlobalLanguage={false}
                     sx={{
                         position: "absolute",
                         top: 0,
@@ -155,6 +156,9 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
                         mr: 2,
                         mt: 1,
                     }}
+                    onLanguageChange={(language) =>
+                        setLanguage(language as string)
+                    }
                 />
             </DialogTitle>
             <DialogContent>

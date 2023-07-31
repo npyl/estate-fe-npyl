@@ -11,21 +11,15 @@ import PropTypes from "prop-types";
 import type { FC } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
+import { Language, LanguageOptions } from "./types";
 
 interface LanguagePopoverProps {
+    updatesGlobalLanguage: boolean;
     anchorEl: null | Element;
     onClose?: () => void;
+    onChange?: (language: Language) => void;
     open?: boolean;
 }
-
-type Language = "en" | "gr";
-
-type LanguageOptions = {
-    [key in Language]: {
-        icon: string;
-        label: string;
-    };
-};
 
 const languageOptions: LanguageOptions = {
     en: {
@@ -39,13 +33,24 @@ const languageOptions: LanguageOptions = {
 };
 
 export const LanguagePopover: FC<LanguagePopoverProps> = (props) => {
-    const { anchorEl, onClose, open, ...other } = props;
+    const {
+        updatesGlobalLanguage,
+        anchorEl,
+        onClose,
+        onChange,
+        open,
+        ...other
+    } = props;
     const { i18n, t } = useTranslation();
 
     const handleChange = async (language: Language): Promise<void> => {
         onClose?.();
-        await i18n.changeLanguage(language);
-        toast.success(t("Language changed") as string);
+        onChange?.(language);
+
+        if (updatesGlobalLanguage)
+            i18n.changeLanguage(language).then(() =>
+                toast.success(t("Language changed") as string)
+            );
     };
 
     return (

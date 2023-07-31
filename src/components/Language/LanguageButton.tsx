@@ -3,17 +3,27 @@ import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Image from "../image/Image";
 import { LanguagePopover } from "./LanguagePopover";
-
-type Language = "en" | "gr";
+import { Language } from "./types";
 
 const languages: Record<Language, string> = {
     en: "/static/icons/uk_flag.svg",
     gr: "/static/icons/gr_flag.svg",
 };
 
-export const LanguageButton = ({ ...props }: ButtonProps) => {
-    const anchorRef = useRef<HTMLButtonElement | null>(null);
+interface LanguageButtonProps extends ButtonProps {
+    updatesGlobalLanguage?: boolean;
+    onLanguageChange?: (language: Language) => void;
+}
+
+export const LanguageButton = ({
+    updatesGlobalLanguage = true, // update by default
+    onLanguageChange,
+    ...props
+}: LanguageButtonProps) => {
     const { i18n } = useTranslation();
+    const anchorRef = useRef<HTMLButtonElement | null>(null);
+
+    const [language, setLanguage] = useState<Language>("en");
     const [openPopover, setOpenPopover] = useState<boolean>(false);
 
     const handleOpenPopover = (): void => {
@@ -22,6 +32,11 @@ export const LanguageButton = ({ ...props }: ButtonProps) => {
 
     const handleClosePopover = (): void => {
         setOpenPopover(false);
+    };
+
+    const handleChange = (language: Language) => {
+        setLanguage(language);
+        onLanguageChange?.(language);
     };
 
     return (
@@ -43,12 +58,23 @@ export const LanguageButton = ({ ...props }: ButtonProps) => {
                         position: "relative",
                     }}
                 >
-                    <Image alt="" src={languages[i18n.language as Language]} />
+                    <Image
+                        alt=""
+                        src={
+                            languages[
+                                updatesGlobalLanguage
+                                    ? (i18n.language as Language)
+                                    : language
+                            ]
+                        }
+                    />
                 </Box>
             </IconButton>
             <LanguagePopover
+                updatesGlobalLanguage={updatesGlobalLanguage}
                 anchorEl={anchorRef.current}
                 onClose={handleClosePopover}
+                onChange={handleChange}
                 open={openPopover}
             />
         </>
