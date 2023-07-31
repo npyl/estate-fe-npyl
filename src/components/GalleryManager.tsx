@@ -7,16 +7,17 @@ import {
     Stack,
     TextField,
     MenuItem,
-    makeStyles,
-    Box,
 } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { SoftButton } from "./SoftButton";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { useEditPropertyImageMutation } from "src/services/properties";
 
-import { useState } from "react";
 import CarouselSimple from "./CarouselSimple";
 import ICarouselImage from "./carousel/types";
 import { IPropertyImage } from "src/types/file";
+import { useRouter } from "next/router";
+import { LanguageButton } from "./Language/LanguageButton";
 
 interface IGalleryManager {
     open: boolean;
@@ -28,16 +29,77 @@ interface IGalleryManager {
 const GalleryManager: React.FC<IGalleryManager> = (props) => {
     const { open, images, onDelete, onClose } = props;
 
-    const _carouselImages: ICarouselImage[] = images.map((image, index) => ({
-        id: `${index}`,
-        title: "Image",
-        image: image.url,
-        description: "",
-        path: "/repository",
-    }));
+    const router = useRouter();
+    const dialogTitleRef = useRef(null);
+    const [editImage] = useEditPropertyImageMutation();
+
+    const { propertyId } = router.query;
 
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [visibility, setVisibility] = useState("public");
+    const [language, setLanguage] = useState("");
+
+    // default values
+    const [initialTitle, setInitialTitle] = useState(
+        images[currentIndex]?.title
+    );
+    const [initialDescription, setInitialDescription] = useState(
+        images[currentIndex]?.description
+    );
+    const [initialHidden, setInitialHidden] = useState(
+        images[currentIndex]?.hidden
+    );
+
+    const [title, setTitle] = useState(initialTitle);
+    const [description, setDescription] = useState(initialDescription);
+    const [hidden, setHidden] = useState(initialHidden);
+
+    const _carouselImages: ICarouselImage[] = useMemo(
+        () =>
+            images.map((image, index) => ({
+                id: `${index}`,
+                title: "Image",
+                image: image.url,
+                description: "",
+                path: "/repository",
+            })),
+        [images]
+    );
+
+    const propertyWasChanged = useMemo(
+        () =>
+            title !== initialTitle ||
+            description !== initialDescription ||
+            hidden !== initialHidden,
+        [
+            initialTitle,
+            initialDescription,
+            initialHidden,
+            title,
+            description,
+            hidden,
+        ]
+    );
+
+    useEffect(
+        () => reload(),
+        [
+            currentIndex,
+            images[currentIndex].title,
+            images[currentIndex].description,
+            images[currentIndex].hidden,
+        ]
+    );
+
+    const reload = () => {
+        // default values
+        setInitialTitle(images[currentIndex].title);
+        setInitialDescription(images[currentIndex].description);
+        setInitialHidden(images[currentIndex].hidden);
+
+        setTitle(images[currentIndex].title);
+        setDescription(images[currentIndex].description);
+        setHidden(images[currentIndex].hidden);
+    };
 
     const handleImageChange = (newImage: ICarouselImage) => {
         /*
@@ -46,6 +108,27 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
                 translates to our array.
         */
         setCurrentIndex(+newImage.id);
+    };
+
+    const handleUpdate = () => {
+        const { key } = images[currentIndex];
+
+        // update
+        editImage({
+            id: +propertyId!,
+            body: {
+                key,
+                description,
+                title,
+                hidden,
+            },
+        });
+    };
+
+    const handleClear = () => {
+        setTitle(initialTitle);
+        setDescription(initialDescription);
+        setHidden(initialHidden);
     };
 
     return (
@@ -62,7 +145,22 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
             onClose={onClose}
             closeAfterTransition={true}
         >
-            <DialogTitle>Gallery Manager</DialogTitle>
+            <DialogTitle ref={dialogTitleRef}>
+                Gallery Manager
+                <LanguageButton
+                    updatesGlobalLanguage={false}
+                    sx={{
+                        position: "absolute",
+                        top: 0,
+                        right: 0,
+                        mr: 2,
+                        mt: 1,
+                    }}
+                    onLanguageChange={(language) =>
+                        setLanguage(language as string)
+                    }
+                />
+            </DialogTitle>
             <DialogContent>
                 <Grid container spacing={1}>
                     <Grid item xs={8}>
@@ -77,39 +175,62 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
                             <TextField
                                 fullWidth
                                 label="Title"
-                                onChange={(
-                                    event: React.ChangeEvent<HTMLInputElement>
-                                ) => {}}
-                                size="small"
+                                value={title || ""}
+                                onChange={(event) =>
+                                    setTitle(event.target.value)
+                                }
                             />
 
                             <TextField
                                 fullWidth
                                 label="Description"
+                                value={description || ""}
                                 multiline
-                                rows={2}
-                                onChange={(
-                                    event: React.ChangeEvent<HTMLInputElement>
-                                ) => {}}
-                                // size="small"
+                                onChange={(event) =>
+                                    setDescription(event.target.value)
+                                }
                             />
 
                             <TextField
                                 fullWidth
                                 select
                                 label="Visibility"
-                                value={visibility}
-                                onChange={(
-                                    event: React.ChangeEvent<HTMLInputElement>
-                                ) => {
-                                    setVisibility(event.target.value);
+                                value={hidden ? "private" : "public"}
+                                onChange={(event) => {
+                                    setHidden(
+                                        event.target.value === "public"
+                                            ? false
+                                            : true
+                                    );
                                 }}
-                                size="small"
                             >
                                 <MenuItem value={"public"}>Public</MenuItem>
                                 <MenuItem value={"private"}>Private</MenuItem>
                             </TextField>
                         </Grid>
+                        {propertyWasChanged && (
+                            <Stack
+                                direction={"row"}
+                                justifyContent={"right"}
+                                spacing={1}
+                                mt={2}
+                            >
+                                <Button
+                                    variant="outlined"
+                                    color="secondary"
+                                    onClick={handleClear}
+                                >
+                                    Clear
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    color="secondary"
+                                    onClick={handleUpdate}
+                                >
+                                    Update
+                                </Button>
+                            </Stack>
+                        )}
                     </Grid>
                 </Grid>
             </DialogContent>

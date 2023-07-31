@@ -1,26 +1,32 @@
 import TuneIcon from "@mui/icons-material/Tune";
 import { Badge, Box, Paper, Stack } from "@mui/material";
-import { useEffect, useState } from "react";
-import sumOfChangedProperties, {
-    resetState,
-    selectAll,
-} from "src/slices/filters";
+import { useState } from "react";
 import { useDispatch, useSelector } from "src/store";
 import ChosenFilters from "./ChosenFilters";
 import CategorySelect from "./FilterCategory";
-import CountrySelect from "./FilterCities";
+// import CountrySelect from "./FilterCities";
 import FilterLabels from "./FilterLabels";
 import FilterMore from "./FilterMore";
 import PriceSelect from "./FilterPrice";
 import SaleSelect from "./FilterSale";
-import SubAreas from "./FilterSubAreas";
+// import SubAreas from "./FilterSubAreas";
 import SubCategorySelect from "./FilterSubCategory";
 import { StyledPriceButton } from "./styles";
 
-export function FilterSection() {
+import {
+    selectLabels,
+    setLabels,
+    sumOfChangedProperties,
+    resetState,
+} from "src/slices/filters";
+
+export const FilterSection = () => {
     const dispatch = useDispatch();
-    const changedPropsCount = useSelector(sumOfChangedProperties);
+
     const [openFilter, setOpenFilter] = useState(false);
+
+    const changedPropertyFilters = useSelector(sumOfChangedProperties);
+    const labels = useSelector(selectLabels) || [];
 
     const handleResetFilter = () => {
         dispatch(resetState());
@@ -40,7 +46,7 @@ export function FilterSection() {
 
     return (
         <Stack spacing={3} component={Paper} p={2}>
-            <Stack flexWrap={"wrap"} direction={"row"} spacing={1}>
+            <Stack flexWrap={"wrap"} direction={"row"} gap={1}>
                 {/* <CountrySelect /> */}
                 {/* <SubAreas /> */}
                 <SaleSelect />
@@ -50,7 +56,13 @@ export function FilterSection() {
 
                 <PriceSelect type={"price"} />
                 <PriceSelect type={"area"} />
-                <FilterLabels />
+
+                <FilterLabels
+                    variant="property"
+                    labels={labels}
+                    setLabels={setLabels}
+                />
+
                 <StyledPriceButton
                     open={false}
                     disableRipple
@@ -58,12 +70,12 @@ export function FilterSection() {
                     sx={{ width: "auto" }}
                     onClick={handleOpenFilter}
                 >
-                    <Badge badgeContent={changedPropsCount} color="error">
+                    <Badge badgeContent={changedPropertyFilters} color="error">
                         <TuneIcon />
                     </Badge>
                 </StyledPriceButton>
             </Stack>
-            {changedPropsCount > 0 && (
+            {changedPropertyFilters > 0 && (
                 <Box overflow={"auto"}>
                     <ChosenFilters />
                 </Box>
@@ -79,4 +91,4 @@ export function FilterSection() {
             )}
         </Stack>
     );
-}
+};

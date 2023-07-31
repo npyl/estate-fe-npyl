@@ -16,7 +16,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "src/store";
 
 import { useAllGlobalsQuery } from "src/services/global";
-import sumOfChangedProperties, {
+import {
     selectFrameType,
     selectFurnished,
     selectHeatingType,
@@ -26,6 +26,8 @@ import sumOfChangedProperties, {
     selectMinBedrooms,
     selectMinConstructionYear,
     selectMinFloor,
+    selectLabels,
+    sumOfChangedProperties,
     // setters
     toggleFrameType,
     toggleFurnished,
@@ -36,6 +38,7 @@ import sumOfChangedProperties, {
     setMinBedrooms,
     setMinConstructionYear,
     setMinFloor,
+    setLabels,
     // reset
     resetBasic,
     resetBedrooms,
@@ -87,6 +90,7 @@ export default function FilterMore({
     const maxBedrooms = useSelector(selectMaxBedrooms) || 0;
     const minFloors = useSelector(selectMinFloor) || 0;
     const maxFloors = useSelector(selectMaxFloor) || 0;
+    const labels = useSelector(selectLabels) || [];
 
     const fields = [
         {
@@ -136,7 +140,7 @@ export default function FilterMore({
             <ClearableDialogContent dividers reset={resetBasic}>
                 <Typography>Basic</Typography>
 
-                <Stack direction={"row"} spacing={1}>
+                <Stack direction={"row"} gap={1} flexWrap={"wrap"}>
                     <CodeSelect />
                     <ManagerIdSelect />
 
@@ -148,7 +152,11 @@ export default function FilterMore({
                     <PriceSelect type="price" />
                     <PriceSelect type="area" />
 
-                    <FilterLabels />
+                    <FilterLabels
+                        variant="property"
+                        labels={labels}
+                        setLabels={setLabels}
+                    />
                 </Stack>
             </ClearableDialogContent>
             <ClearableDialogContent

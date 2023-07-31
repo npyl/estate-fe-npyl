@@ -46,13 +46,13 @@ const DashboardLayoutRoot = styled("div")(({ theme }) => ({
 export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
     const { children } = props;
 
-    const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const open = Boolean(anchorEl);
-
     const dispatch = useDispatch();
     const { t } = useTranslation();
     const router = useRouter();
+
+    const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const open = Boolean(anchorEl);
 
     const propertyItemType = "property-menu-item";
     const managerItemType = "manager-menu-item";

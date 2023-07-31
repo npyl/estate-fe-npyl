@@ -35,6 +35,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
     const { propertyId } = router.query;
 
     const [galleryManagerOpen, setGalleryManagerOpen] = useState(false);
+
     const [addImage] = useAddPropertyImageMutation();
     const [setThumbnail] = useSetPropertyThumbailMutation();
     const [reorderImages] = useReorderPropertyImagesMutation();
@@ -136,7 +137,9 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
     };
     const handleReorder = (items: string[]) => {
         // INFO: backend requires a list with reordered keys like:  [key, key, ...]
-        reorderImages({ id: +propertyId!, body: items });
+        reorderImages({ id: +propertyId!, body: items }).then(() =>
+            setThumbnail({ propertyId: +propertyId!, imageKey: items[0] })
+        );
     };
 
     const handleOpenGalleryManager = () => {

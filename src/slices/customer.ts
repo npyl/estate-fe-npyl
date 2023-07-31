@@ -346,36 +346,47 @@ const slice = createSlice({
         setInitialState: (state: customerState, action): void => {
             const payload: ICustomer = action.payload;
 
-            state.leaser = payload.leaser;
-            state.lessor = payload.lessor;
-            state.seller = payload.seller;
-            state.buyer = payload.buyer;
+            state.leaser = payload.leaser || initialState.leaser;
+            state.lessor = payload.lessor || initialState.lessor;
+            state.seller = payload.seller || initialState.seller;
+            state.buyer = payload.buyer || initialState.buyer;
 
-            state.id = payload.id;
-            state.suggestedBy = payload.suggestedBy;
-            state.managedBy = payload.managedBy?.id;
-            state.firstName = payload.firstName;
-            state.lastName = payload.lastName;
-            state.email = payload.email;
-            state.mobilePhone = payload.mobilePhone;
-            state.homePhone = payload.homePhone;
-            state.status = payload.status;
-            state.fax = payload.fax;
-            state.nationality = payload.nationality;
-            state.idNumber = payload.idNumber;
-            state.passportNumber = payload.passportNumber;
-            state.dateOfBirth = payload.dateOfBirth;
-            state.leadSource = payload.leadSource;
-            state.preferredLanguage = payload.preferredLanguage;
+            state.id = payload.id || initialState.id;
+            state.suggestedBy = payload.suggestedBy || initialState.suggestedBy;
+            state.managedBy = payload.managedBy?.id || initialState.managedBy;
+            state.firstName = payload.firstName || initialState.firstName;
+            state.lastName = payload.lastName || initialState.lastName;
+            state.email = payload.email || initialState.email;
+            state.mobilePhone = payload.mobilePhone || initialState.mobilePhone;
+            state.homePhone = payload.homePhone || initialState.homePhone;
+            state.status = payload.status || initialState.status;
+            state.fax = payload.fax || initialState.fax;
+            state.nationality = payload.nationality || initialState.nationality;
+            state.idNumber = payload.idNumber || initialState.idNumber;
+            state.passportNumber =
+                payload.passportNumber || initialState.passportNumber;
+            state.dateOfBirth = payload.dateOfBirth || initialState.dateOfBirth;
+            state.leadSource = payload.leadSource || initialState.leadSource;
+            state.preferredLanguage =
+                payload.preferredLanguage || initialState.preferredLanguage;
 
-            state.location.street = payload.location.street;
-            state.location.number = payload.location.number;
-            state.location.zipCode = payload.location.zipCode;
-            state.location.city = payload.location.city;
-            state.location.region = payload.location.region;
-            state.location.country = payload.location.country;
-            state.location.lat = payload.location.lat;
-            state.location.lng = payload.location.lng;
+            // location
+            state.location.street =
+                payload.location?.street || initialState.location.street;
+            state.location.number =
+                payload.location?.number || initialState.location.number;
+            state.location.zipCode =
+                payload.location?.zipCode || initialState.location.zipCode;
+            state.location.city =
+                payload.location?.city || initialState.location.city;
+            state.location.region =
+                payload.location?.region || initialState.location.region;
+            state.location.country =
+                payload.location?.country || initialState.location.country;
+            state.location.lat =
+                payload.location?.lat || initialState.location.lat;
+            state.location.lng =
+                payload.location?.lng || initialState.location.lng;
 
             // labels
             const labels: ILabel[] = payload.labels;
@@ -388,33 +399,33 @@ const slice = createSlice({
                 : [];
 
             const demand: IDemand = payload.demand;
-            const demandFilters: IDemandFilters = demand.filters;
+            const demandFilters: IDemandFilters = demand?.filters;
 
-            state.demand.filters.minBedrooms = demandFilters.minBedrooms;
-            state.demand.filters.maxBedrooms = demandFilters.maxBedrooms;
-            state.demand.filters.minBathrooms = demandFilters.minBathrooms;
-            state.demand.filters.maxBathrooms = demandFilters.maxBathrooms;
-            state.demand.filters.furnished = demandFilters.furnished;
-            state.demand.filters.maxCovered = demandFilters.maxCovered;
-            state.demand.filters.minCovered = demandFilters.minCovered;
-            state.demand.filters.minPlot = demandFilters.minPlot;
-            state.demand.filters.maxPlot = demandFilters.maxPlot;
-            state.demand.filters.minFloor = demandFilters.minFloor;
-            state.demand.filters.maxFloor = demandFilters.maxFloor;
+            state.demand.filters.minBedrooms = demandFilters?.minBedrooms;
+            state.demand.filters.maxBedrooms = demandFilters?.maxBedrooms;
+            state.demand.filters.minBathrooms = demandFilters?.minBathrooms;
+            state.demand.filters.maxBathrooms = demandFilters?.maxBathrooms;
+            state.demand.filters.furnished = demandFilters?.furnished;
+            state.demand.filters.maxCovered = demandFilters?.maxCovered;
+            state.demand.filters.minCovered = demandFilters?.minCovered;
+            state.demand.filters.minPlot = demandFilters?.minPlot;
+            state.demand.filters.maxPlot = demandFilters?.maxPlot;
+            state.demand.filters.minFloor = demandFilters?.minFloor;
+            state.demand.filters.maxFloor = demandFilters?.maxFloor;
             state.demand.filters.minYearOfConstruction =
-                demandFilters.minYearOfConstruction;
+                demandFilters?.minYearOfConstruction;
             state.demand.filters.maxYearOfConstruction =
-                demandFilters.maxYearOfConstruction;
+                demandFilters?.maxYearOfConstruction;
 
-            state.demand.filters.parentCategory = demandFilters.parentCategory;
-            state.demand.filters.category = demandFilters.category;
-            state.demand.filters.state = demandFilters.state;
-            state.demand.filters.minPrice = demandFilters.minPrice;
-            state.demand.filters.maxPrice = demandFilters.maxPrice;
-            state.demand.filters.labels = demandFilters.labels;
-            state.demand.nonPriorityFeatures = demand.nonPriorityFeatures;
-            state.demand.priorityFeatures = demand.priorityFeatures;
-            state.demand.timeframe = demand.timeframe;
+            state.demand.filters.parentCategory = demandFilters?.parentCategory;
+            state.demand.filters.category = demandFilters?.category;
+            state.demand.filters.state = demandFilters?.state;
+            state.demand.filters.minPrice = demandFilters?.minPrice;
+            state.demand.filters.maxPrice = demandFilters?.maxPrice;
+            state.demand.filters.labels = demandFilters?.labels;
+            state.demand.nonPriorityFeatures = demand?.nonPriorityFeatures;
+            state.demand.priorityFeatures = demand?.priorityFeatures;
+            state.demand.timeframe = demand?.timeframe;
         },
 
         resetState: () => {

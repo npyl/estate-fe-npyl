@@ -1,10 +1,23 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { ICustomer, ICustomerResultResponse } from "src/types/customer";
+import {
+    ICustomer,
+    ICustomerFilter,
+    ICustomerPOST,
+    ICustomerResultResponse,
+} from "src/types/customer";
 import IPage from "src/types/page";
 
 interface ICustomerParams {
     page: number;
     pageSize: number;
+}
+interface IEditCustomerProps {
+    customerId: number;
+    body: ICustomerPOST;
+}
+
+interface ICustomerFilterProps extends ICustomerParams {
+    filter: ICustomerFilter;
 }
 
 export const customers = createApi({
@@ -43,14 +56,38 @@ export const customers = createApi({
             query: (id: number) => `${id}`,
             providesTags: ["CustomerById"],
         }),
-        addCustomer: builder.mutation<ICustomer, any>({
-            query: (dataToSend: any) => ({
-                url: "",
+        filterCustomers: builder.mutation<
+            IPage<ICustomerResultResponse>,
+            ICustomerFilterProps
+        >({
+            query: (props: ICustomerFilterProps) => ({
+                url: "/filter",
                 method: "POST",
-                body: dataToSend,
+                body: props.filter,
+                params: {
+                    page: props.page,
+                    pageSize: props.pageSize,
+                },
             }),
             invalidatesTags: ["Customers"],
         }),
+
+        createCustomer: builder.mutation<number, void>({
+            query: () => ({
+                url: "/create",
+                method: "POST",
+            }),
+            invalidatesTags: ["Customers"],
+        }),
+        editCustomer: builder.mutation<ICustomer, IEditCustomerProps>({
+            query: (props: IEditCustomerProps) => ({
+                url: `/edit/${props.customerId}`,
+                method: "POST",
+                body: props.body,
+            }),
+            invalidatesTags: ["Customers"],
+        }),
+
         searchCustomer: builder.query<ICustomerResultResponse[], string>({
             query: (searchString: string) => {
                 return {
@@ -75,7 +112,10 @@ export const {
     useAllCustomersQuery,
     useAllCustomersPaginatedQuery,
     useGetCustomerByIdQuery,
+    useFilterCustomersMutation,
     useSearchCustomerQuery,
-    useAddCustomerMutation,
+
+    useCreateCustomerMutation,
+    useEditCustomerMutation,
     useDeleteCustomerMutation,
 } = customers;
