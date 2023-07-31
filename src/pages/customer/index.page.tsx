@@ -1,14 +1,14 @@
 import { Box, Paper, Skeleton } from "@mui/material";
 import { GridColDef } from "@mui/x-data-grid";
-
 import type { NextPage } from "next";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import DataGridTable from "src/components/DataGrid";
-
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-import { useAllCustomersPaginatedQuery } from "src/services/customers";
-import { ICustomer } from "src/types/customer";
+import { useFilterCustomersMutation } from "src/services/customers";
+import { FilterSection } from "../components/Filters";
+import { useSelector } from "react-redux";
+import { selectAll } from "src/slices/customer/filters";
 
 const columns: GridColDef[] = [
     {
@@ -34,16 +34,22 @@ const columns: GridColDef[] = [
 ];
 
 const Customers: NextPage = () => {
-    const { data, isFetching } = useAllCustomersPaginatedQuery({
-        page: 0,
-        pageSize: 25,
-    });
-    const [rows, setRows] = useState<ICustomer[]>([]);
+    const allFilters = useSelector(selectAll);
+
+    const [page, setPage] = useState(0);
+    const [pageSize, setPageSize] = useState(25);
+
+    const [filterCustomers, { isLoading, data }] = useFilterCustomersMutation();
 
     useEffect(() => {
-        if (!data) return;
-        setRows(data.content);
-    }, [data]);
+        filterCustomers({
+            filter: allFilters,
+            page: page,
+            pageSize: pageSize,
+        });
+    }, [allFilters, page, pageSize]);
+
+    const rows = useMemo(() => data?.content || [], [data?.content]);
 
     const renderSkeletonCell = () => <Skeleton width={150} animation="wave" />;
     const skeletonRows = Array.from({ length: 2 }, (_, index) => ({
@@ -52,6 +58,8 @@ const Customers: NextPage = () => {
 
     return (
         <>
+            <FilterSection variant="customer" />
+
             <Box
                 component="main"
                 sx={{

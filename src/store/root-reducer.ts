@@ -11,6 +11,7 @@ import { user } from "../services/user";
 import { notification } from "src/services/notification";
 
 import { reducer as customerReducer } from "../slices/customer";
+import { reducer as customerFiltersReducer } from "../slices/customer/filters";
 import { reducer as filtersReducer } from "../slices/filters";
 import { reducer as labelsReducer } from "../slices/labels";
 import { reducer as notesReducer } from "../slices/notes";
@@ -29,12 +30,16 @@ export const rootReducer = combineReducers({
     [note.reducerPath]: note.reducer,
     [labels.reducerPath]: labels.reducer,
     [notification.reducerPath]: notification.reducer,
+    // property
     property: propertyReducer,
     propertyFiles: propertyFilesReducer,
+    filters: filtersReducer,
+    // customer
     customer: customerReducer,
+    customerFilters: customerFiltersReducer,
+    // general
     notes: notesReducer,
     labelsStore: labelsReducer,
     tabs: tabsReducer,
-    filters: filtersReducer,
     notification: notificationReducer,
 });

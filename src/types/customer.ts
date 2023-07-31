@@ -14,6 +14,11 @@ export interface ICustomerResultResponse {
     city: string;
 }
 
+export interface ICustomerFilter {
+    labels?: number[]; // ids
+    status?: number;
+}
+
 export interface ICustomer {
     id: number;
     firstName: string;

@@ -1,10 +1,18 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { ICustomer, ICustomerResultResponse } from "src/types/customer";
+import {
+    ICustomer,
+    ICustomerFilter,
+    ICustomerResultResponse,
+} from "src/types/customer";
 import IPage from "src/types/page";
 
 interface ICustomerParams {
     page: number;
     pageSize: number;
+}
+
+interface ICustomerFilterProps extends ICustomerParams {
+    filter: ICustomerFilter;
 }
 
 export const customers = createApi({
@@ -43,6 +51,22 @@ export const customers = createApi({
             query: (id: number) => `${id}`,
             providesTags: ["CustomerById"],
         }),
+        filterCustomers: builder.mutation<
+            IPage<ICustomerResultResponse>,
+            ICustomerFilterProps
+        >({
+            query: (props: ICustomerFilterProps) => ({
+                url: "/filter",
+                method: "POST",
+                body: props.filter,
+                params: {
+                    page: props.page,
+                    pageSize: props.pageSize,
+                },
+            }),
+            invalidatesTags: ["Customers"],
+        }),
+
         addCustomer: builder.mutation<ICustomer, any>({
             query: (dataToSend: any) => ({
                 url: "",
@@ -75,7 +99,9 @@ export const {
     useAllCustomersQuery,
     useAllCustomersPaginatedQuery,
     useGetCustomerByIdQuery,
+    useFilterCustomersMutation,
     useSearchCustomerQuery,
+
     useAddCustomerMutation,
     useDeleteCustomerMutation,
 } = customers;

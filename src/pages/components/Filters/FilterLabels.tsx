@@ -7,19 +7,34 @@ import {
     Select,
     SelectChangeEvent,
 } from "@mui/material";
-import { selectLabels, setLabels } from "src/slices/filters";
-import { useDispatch, useSelector } from "src/store";
-
+import { useDispatch } from "src/store";
 import Label from "src/components/label/Label";
 import { useGetLabelsQuery } from "src/services/labels";
+import { useMemo } from "react";
+import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 
-export default function FilterLabels() {
+type FilterVariant = "property" | "customer";
+
+interface FilterLabelsProps {
+    variant: FilterVariant;
+    labels: number[];
+    setLabels: ActionCreatorWithPayload<any, string>;
+}
+
+export default function FilterLabels(props: FilterLabelsProps) {
+    const { variant = "property", labels, setLabels } = props;
+
     const dispatch = useDispatch();
-    const labels = useSelector(selectLabels);
-    const { data } = useGetLabelsQuery();
-    const labelOptions = data?.propertyLabels;
 
-    if (!labelOptions) return null;
+    const { data } = useGetLabelsQuery();
+    const labelOptions =
+        useMemo(
+            () =>
+                variant === "property"
+                    ? data?.propertyLabels
+                    : data?.customerLabels,
+            [data]
+        ) || [];
 
     const handleChange = (event: SelectChangeEvent<typeof labels>) => {
         const {
