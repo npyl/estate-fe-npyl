@@ -241,11 +241,13 @@ const ViewAll: FC = () => {
 
     return (
         <Box>
-            <Paper sx={{ mt: 1, paddingRight: 0, paddingLeft: 0,
-                // styling for BulkEditDrawer:
-                position: "relative",
-                marginRight: bulkEditOpen ? 320 : 0
-            }}>
+            <Paper
+                sx={{
+                    mt: 1,
+                    paddingRight: 0,
+                    paddingLeft: 0,
+                }}
+            >
                 <Grid item xs={12}>
                     <Grid container xs={12} padding={1}>
                         <Grid item xs={7}>
@@ -361,7 +363,7 @@ const ViewAll: FC = () => {
                 </Paper>
             )}
 
-            <BulkEditDrawer open={bulkEditOpen} onClose={closeBulkEdit} />
+            {/* <BulkEditDrawer open={bulkEditOpen} onClose={closeBulkEdit} /> */}
         </Box>
     );
 };

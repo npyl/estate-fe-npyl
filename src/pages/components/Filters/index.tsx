@@ -86,11 +86,11 @@ export const FilterSection = () => {
                         </Badge>
                     </StyledPriceButton>
                 </Grid>
-                {/* {changedPropertyFilters > 0 && (
+                {changedPropertyFilters > 0 && (
                     <Box overflow={"auto"}>
                         <ChosenFilters />
                     </Box>
-                )} */}
+                )}
                 {openFilter && (
                     <FilterMore
                         open={openFilter}
