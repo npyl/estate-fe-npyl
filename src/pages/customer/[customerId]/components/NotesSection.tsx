@@ -10,12 +10,13 @@ import {
 const NotesCustomerSection: React.FC = () => {
     const router = useRouter();
     const { customerId } = router.query;
+
     const notes = useGetNotesByCustomerIdQuery(
         parseInt(customerId as string)
     ).data;
-
     const [addNote] = useAddNoteToCustomerWithIdMutation();
     const [deleteNote] = useDeleteWithIdMutation();
+
     const handleAddNote = (message: string) =>
         addNote({ id: +customerId!, dataToSend: { content: message } });
 
