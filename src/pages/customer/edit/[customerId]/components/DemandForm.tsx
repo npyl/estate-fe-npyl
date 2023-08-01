@@ -16,10 +16,10 @@ import {
 import * as React from "react";
 
 import {
-    selectBuyer,
-    selectFurnished,
     // getters
     selectLeaser,
+    selectBuyer,
+    selectFurnished,
     selectMaxBathrooms,
     selectMaxBedrooms,
     selectMaxCovered,
@@ -37,6 +37,7 @@ import {
     selectParentCategory,
     selectState,
     selectTimeFrame,
+    // setters
     setFurnished,
     setMaxBathrooms,
     setMaxBedrooms,
@@ -70,6 +71,7 @@ import { useTranslation } from "react-i18next";
 
 const DemandForm: FC = () => {
     const { t } = useTranslation();
+    const dispatch = useDispatch();
 
     const enums = useAllGlobalsQuery().data;
     const propertyEnums = enums?.property;
@@ -80,6 +82,7 @@ const DemandForm: FC = () => {
     const timeframeEnum = enums?.customer?.timeframe;
     const minFloors = detailsEnum?.floors;
     const maxFloors = detailsEnum?.floors;
+
     const minBedrooms = useSelector(selectMinBedrooms) || 0;
     const maxBedrooms = useSelector(selectMaxBedrooms) || 0;
     const minBathrooms = useSelector(selectMinBathrooms) || 0;
@@ -98,43 +101,14 @@ const DemandForm: FC = () => {
     const minPrice = useSelector(selectMinPrice) || 0;
     const maxPrice = useSelector(selectMaxPrice) || 0;
     const timeFrame = useSelector(selectTimeFrame) || "";
-    //Convert the enum to an array
+
     const minFloorsArray = minFloors;
     const maxFloorsArray = maxFloors;
-    // slider value change handler
-    const handleSliderChange7 = (_event: any, newValue: number[]) => {
-        if (minFloors && maxFloors) {
-            dispatch(setMinFloor(minFloors[newValue[0]]));
-            dispatch(setMaxFloor(maxFloors[newValue[1]]));
-        }
-    };
 
     const leaser = useSelector(selectLeaser);
     const buyer = useSelector(selectBuyer);
 
-    const dispatch = useDispatch();
-
-    const floorMap: Map<number, string> = new Map([
-        [-3, "Basement"],
-        [-2, "Semi-basement"],
-        [-1, "Ground Floor"],
-        [0, "Mezzanine"],
-        ...Array.from(
-            { length: 21 },
-            (_, i) => [i + 1, `Floor ${i + 1}`] as const
-        ),
-    ]);
-
     const [autocompleteValue, setAutocompleteValue] = useState("");
-    const handleChange = (
-        setter: any,
-        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
-        dispatch(setter(event.target.value));
-    };
-    const autocompleteChange = (_event: any, value: string | null) => {
-        setAutocompleteValue(value || "");
-    };
 
     const propertyCodes: string[] =
         useAllPropertiesQuery(undefined, {
@@ -148,41 +122,42 @@ const DemandForm: FC = () => {
         }).data || [];
 
     const { data: propertyForCode, isSuccess: isPropertyForCodeSuccess } =
-        useGetPropertyByCodeQuery(+autocompleteValue, {
-            skip: autocompleteValue === "",
-        }) || {};
+        useGetPropertyByCodeQuery(autocompleteValue, {
+            skip: !autocompleteValue,
+        });
 
-    // everytime the autocomplete's value is updated, fetch a property
     useEffect(() => {
-        const property = propertyForCode;
+        if (!propertyForCode) return;
 
-        if (!property) return;
-
-        dispatch(setParentCategory(property.parentCategory));
-        dispatch(setFurnished(property.technicalFeatures.furnished));
-        dispatch(setState(property.state));
-        // dispatch(setTimeFrame());
-        dispatch(setMinBedrooms(property.details.bedrooms));
-        dispatch(setMaxBedrooms(property));
-        dispatch(setMinBathrooms(property.details.bathrooms));
-        dispatch(setMaxBathrooms(property));
-        dispatch(setMinCovered(property.technicalFeatures.coverageFactor));
-        dispatch(setMaxCovered(property));
-        dispatch(setMinPlot(property.plotArea));
-        dispatch(setMaxPlot(property));
-        dispatch(setMinPrice(property.price));
-        dispatch(setMaxPrice(property));
-        dispatch(setMinFloor(property.details.floor));
-        dispatch(setMaxFloor(property));
+        dispatch(setParentCategory(propertyForCode.parentCategory));
+        dispatch(setFurnished(propertyForCode.technicalFeatures.furnished));
+        dispatch(setState(propertyForCode.state));
+        dispatch(setMinBedrooms(propertyForCode.details.bedrooms));
+        dispatch(setMinBathrooms(propertyForCode.details.bathrooms));
         dispatch(
-            setMinYearOfConstruction(property.construction.yearOfConstruction)
+            setMinCovered(propertyForCode.technicalFeatures.coverageFactor)
+        );
+        dispatch(setMinPlot(propertyForCode.plotArea));
+        dispatch(setMinPrice(propertyForCode.price));
+        dispatch(setMinFloor(propertyForCode.details.floor));
+        dispatch(
+            setMinYearOfConstruction(
+                propertyForCode.construction.yearOfConstruction
+            )
         );
 
-        dispatch(setDemandLabels(property.labels));
+        dispatch(setDemandLabels(propertyForCode.labels));
+    }, [propertyForCode, isPropertyForCodeSuccess]);
 
-        // dispatch(setMaxYearOfConstruction(property));
-    }, [isPropertyForCodeSuccess]);
-    const handleSliderChange = (
+    const handleChange = (
+        setter: any,
+        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => dispatch(setter(event.target.value));
+
+    const autocompleteChange = (_event: any, value: string | null) =>
+        setAutocompleteValue(value || "");
+
+    const handleSliderChange0 = (
         event: any,
         newValue: any,
         activeThumb: any
@@ -192,7 +167,6 @@ const DemandForm: FC = () => {
         dispatch(setMinBedrooms(minValue)); // Set minBedrooms variable
         dispatch(setMaxBedrooms(maxValue)); // Set maxBedrooms variable
     };
-
     const handleSliderChange1 = (
         event: any,
         newValue: any,
@@ -255,7 +229,6 @@ const DemandForm: FC = () => {
     };
 
     if (
-        !enums ||
         !propertyEnums ||
         !stateEnum ||
         !detailsEnum ||
@@ -398,7 +371,7 @@ const DemandForm: FC = () => {
                                 getAriaLabel={() => "Bedrooms Slider"}
                                 orientation="horizontal"
                                 value={[minBedrooms, maxBedrooms]}
-                                onChange={handleSliderChange}
+                                onChange={handleSliderChange0}
                                 valueLabelDisplay="auto"
                                 min={0}
                                 max={10}
