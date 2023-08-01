@@ -1,4 +1,11 @@
-import { Grid, Stack, Paper, Typography, IconButton } from "@mui/material";
+import {
+    Grid,
+    Stack,
+    Paper,
+    Typography,
+    IconButton,
+    Avatar,
+} from "@mui/material";
 import { CustomAvatar } from "../custom-avatar";
 
 import { INote } from "src/types/note";
@@ -23,10 +30,17 @@ const Note: React.FC<NoteProps> = (props) => {
 
     return (
         <Stack direction="row" spacing={2}>
-            <CustomAvatar
-                alt={username}
-                src={note.creator.profilePhoto || ""}
-            />
+            {note.creator.firstName && note.creator.lastName ? (
+                <Avatar>
+                    {note.creator.firstName[0]}
+                    {note.creator.lastName[0]}
+                </Avatar>
+            ) : (
+                <CustomAvatar
+                    alt={username}
+                    src={note.creator.profilePhoto || ""}
+                />
+            )}
 
             <Paper
                 sx={{
