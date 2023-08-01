@@ -57,18 +57,13 @@ import {
     setTimeFrame,
     setDemandLabels,
 } from "src/slices/customer";
-import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 import { useDispatch, useSelector } from "react-redux";
-
-import { FC, useEffect, useMemo, useState } from "react";
-
+import { FC, useEffect, useState } from "react";
 import { useAllGlobalsQuery } from "src/services/global";
 import {
     useAllPropertiesQuery,
     useGetPropertyByCodeQuery,
 } from "src/services/properties";
-
-import OnlyNumbersInput from "src/components/OnlyNumbers";
 
 import { LabelSelect } from "./LabelSelect";
 import { useTranslation } from "react-i18next";

@@ -23,7 +23,6 @@ import {
     selectFirstName,
     selectHomePhone,
     selectIdNumber,
-    selectLabelIDs,
     selectLastName,
     selectLeadSource,
     selectManagedBy,
@@ -55,22 +54,26 @@ import { useDispatch, useSelector } from "react-redux";
 
 import OnlyNumbersInput from "src/components/OnlyNumbers";
 import {
-    addLabelID,
-    removeLabel as removeAssignedLabel,
-} from "src/slices/customer";
-import { useGetLabelsQuery } from "src/services/labels";
-import {
-    addLabel as addNewLabel,
-    removeLabel as removeNewLabel,
-    selectAll as selectAllNewLabels,
-} from "src/slices/labels";
+    useAssignLabelToCustomerWithIDMutation,
+    useCreateLabelForCustomerWithIDMutation,
+    useDeleteLabelForCustomerWithIdMutation,
+    useGetLabelsQuery,
+} from "src/services/labels";
+
 import { ILabel } from "src/types/label";
 
 import CustomerTypeSelect from "./CustomerTypeSelect";
 import { useTranslation } from "react-i18next";
+import { useLazyGetCustomerLabelsQuery } from "src/services/customers";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
-const CustomerInformation: React.FC<any> = (props) => {
+const CustomerInformation: React.FC<any> = () => {
+    const dispatch = useDispatch();
+    const router = useRouter();
     const { t } = useTranslation();
+
+    const { customerId } = router.query;
 
     const enums = useAllGlobalsQuery().data;
     const propertyEnums = enums?.property;
@@ -93,36 +96,45 @@ const CustomerInformation: React.FC<any> = (props) => {
     const leadSource = useSelector(selectLeadSource);
     const suggestedBy = useSelector(selectSuggestedBy);
     const status = useSelector(selectStatus);
+
     const { data: labels } = useGetLabelsQuery();
     const customerLabels = labels?.customerLabels;
 
-    const labelIDs = useSelector(selectLabelIDs);
-    const assignedLabels =
-        (labelIDs &&
-            labelIDs.length > 0 &&
-            customerLabels &&
-            customerLabels.length > 0 &&
-            labelIDs
-                .filter((labelID) => labelID)
-                .map((labelID, index) => {
-                    // get label object with id
-                    return customerLabels.find(
-                        (label) => label.id === labelID
-                    )!;
-                })) ||
-        [];
+    // labels
+    const [getLabels, { data: assignedLabels }] =
+        useLazyGetCustomerLabelsQuery();
+    const [assignLabel] = useAssignLabelToCustomerWithIDMutation();
+    const [createAndAssignLabel] = useCreateLabelForCustomerWithIDMutation();
+    const [deleteLabel] = useDeleteLabelForCustomerWithIdMutation();
 
-    const newLabels = useSelector(selectAllNewLabels);
+    useEffect(() => {
+        if (!customerId) return;
+        revalidate();
+    }, [customerId]);
 
-    const dispatch = useDispatch();
+    const revalidate = () => {
+        // TODO: improve this by revalidating automatically (invalidating a tag)
+        getLabels(+customerId!);
+    };
 
-    // Label Handlers
-    const handleLabelClick = (label: ILabel) => dispatch(addLabelID(label.id));
-    const handleLabelCreate = (label: ILabel) => dispatch(addNewLabel(label));
-    const handleRemoveAssignedLabel = (index: number) =>
-        dispatch(removeAssignedLabel(index));
-    const handleRemoveNewLabel = (index: number) =>
-        dispatch(removeNewLabel(index));
+    const handleLabelClick = (label: ILabel) =>
+        label.id &&
+        assignLabel({ customerId: +customerId!, labelId: label.id }).then(() =>
+            revalidate()
+        );
+    const handleLabelCreate = (label: ILabel) =>
+        createAndAssignLabel({
+            customerId: +customerId!,
+            labelBody: label,
+        }).then(() => revalidate());
+    const handleLabelRemove = (index: number) =>
+        assignedLabels &&
+        assignedLabels[index] &&
+        assignedLabels[index].id &&
+        deleteLabel({
+            customerId: +customerId!,
+            labelId: assignedLabels[index].id!,
+        }).then(() => revalidate());
 
     if (
         !enums ||
@@ -375,14 +387,13 @@ const CustomerInformation: React.FC<any> = (props) => {
                     </Grid>
                     <Grid item xs={6}>
                         <LabelCreate
-                            variant="customer"
                             existingLabels={customerLabels}
-                            assignedLabels={assignedLabels}
-                            newLabels={newLabels}
+                            assignedLabels={assignedLabels || []}
+                            newLabels={[]}
                             onLabelClick={handleLabelClick}
                             onLabelCreate={handleLabelCreate}
-                            onRemoveAssignedLabel={handleRemoveAssignedLabel}
-                            onRemoveNewLabel={handleRemoveNewLabel}
+                            onRemoveAssignedLabel={handleLabelRemove}
+                            onRemoveNewLabel={() => {}}
                         />
                     </Grid>
                     <Grid item xs={12}>
