@@ -237,6 +237,8 @@ const ViewAll: FC = () => {
         });
     };
 
+    const handleBulkEdit = () => {};
+
     return (
         <Box>
             <FilterSection />
@@ -307,6 +309,7 @@ const ViewAll: FC = () => {
                                 onPaginationModelChange={
                                     handlePaginationModelChange
                                 }
+                                onBulkEdit={handleBulkEdit}
                             />
                         </Paper>
                     )}
