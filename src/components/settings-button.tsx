@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Fab, IconButton, Tooltip } from "@mui/material";
+import { IconButton, Tooltip } from "@mui/material";
 import { Adjustments as AdjustmentsIcon } from "../icons/adjustments";
 import { SettingsDrawer } from "./settings-drawer";
 

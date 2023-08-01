@@ -1,14 +1,6 @@
 import { useEffect, useState } from "react";
 import type { FC } from "react";
-import {
-    Box,
-    Button,
-    Checkbox,
-    Drawer,
-    FormControlLabel,
-    IconButton,
-    Typography,
-} from "@mui/material";
+import { Box, Button, Drawer, IconButton, Typography } from "@mui/material";
 import type { Settings } from "../contexts/settings-context";
 import { useSettings } from "../hooks/use-settings";
 import { X as XIcon } from "../icons/x";
@@ -16,8 +8,6 @@ import { X as XIcon } from "../icons/x";
 import LightThemeIcon from "../components/light-theme.svg";
 // @ts-ignore
 import DarkThemeIcon from "../components/dark-theme.svg";
-import PropTypes from "prop-types";
-import Image from "next/legacy/image";
 
 interface SettingsDrawerProps {
     onClose?: () => void;
@@ -53,15 +43,12 @@ export const SettingsDrawer: FC<SettingsDrawerProps> = (props) => {
     }, [settings]);
 
     const handleChange = (field: string, value: unknown): void => {
-        setValues({
+        const updated = {
             ...values,
             [field]: value,
-        });
-    };
-
-    const handleSave = (): void => {
-        saveSettings(values);
-        onClose?.();
+        };
+        setValues(updated);
+        saveSettings(updated);
     };
 
     return (
@@ -153,16 +140,6 @@ export const SettingsDrawer: FC<SettingsDrawerProps> = (props) => {
                         );
                     })}
                 </Box>
-
-                <Button
-                    color="primary"
-                    fullWidth
-                    onClick={handleSave}
-                    sx={{ mt: 3 }}
-                    variant="contained"
-                >
-                    Save Settings
-                </Button>
             </Box>
         </Drawer>
     );
