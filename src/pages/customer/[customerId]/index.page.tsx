@@ -37,10 +37,10 @@ const CustomerView: NextPage = () => {
 
     const [deleteCustomer, { isSuccess: isDeleteSuccess }] =
         useDeleteCustomerMutation();
+
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
-
     const handleEdit = () => {
         router.push(`/customer/edit/${customerId}`);
         // add tab
