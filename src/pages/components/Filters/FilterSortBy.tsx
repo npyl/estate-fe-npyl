@@ -29,10 +29,14 @@ export default function FilterSortBy({ onSorting }: IFilterSortByProps) {
     const [selectedOption, setSelectedOption] = useState<string>("default");
 
     return (
-        <FormControl variant="standard" sx={{ m: 1, minWidth: 120 }}>
+        <FormControl
+            variant="standard"
+            fullWidth
+            sx={{ border: 1, borderRadius: 1, borderColor: "#ECECEC" }}
+        >
             <Select
                 disableUnderline
-                labelId="demo-simple-select-standard-label"
+                labelId="demo-simple-select-label"
                 id="demo-simple-select-standard"
                 value={selectedOption}
                 sx={{

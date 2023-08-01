@@ -23,6 +23,7 @@ export default function FilterRows() {
         <Select
             value={selectedOption}
             onChange={(event) => setSelectedOption(+event.target.value)}
+            fullWidth
         >
             {rowsOptions.map((row) => (
                 <MenuItem key={row.value} value={row.value}>

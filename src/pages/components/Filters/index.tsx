@@ -1,5 +1,5 @@
 import TuneIcon from "@mui/icons-material/Tune";
-import { Badge, Box, Paper, Stack } from "@mui/material";
+import { Badge, Box, Grid, Paper, Stack } from "@mui/material";
 import { useState } from "react";
 import { useDispatch, useSelector } from "src/store";
 import ChosenFilters from "./ChosenFilters";
@@ -45,50 +45,62 @@ export const FilterSection = () => {
     };
 
     return (
-        <Stack spacing={3} component={Paper} p={2}>
-            <Stack flexWrap={"wrap"} direction={"row"} gap={1}>
+        <Grid item xs={12}>
+            <Grid container xs={12}>
                 {/* <CountrySelect /> */}
                 {/* <SubAreas /> */}
-                <SaleSelect />
-
-                <CategorySelect />
-                <SubCategorySelect />
-
-                <PriceSelect type={"price"} />
-                <PriceSelect type={"area"} />
-
-                <FilterLabels
-                    variant="property"
-                    labels={labels}
-                    setLabels={setLabels}
-                />
-
-                <StyledPriceButton
-                    open={false}
-                    disableRipple
-                    color="inherit"
-                    sx={{ width: "auto" }}
-                    onClick={handleOpenFilter}
-                >
-                    <Badge badgeContent={changedPropertyFilters} color="error">
-                        <TuneIcon />
-                    </Badge>
-                </StyledPriceButton>
-            </Stack>
-            {changedPropertyFilters > 0 && (
-                <Box overflow={"auto"}>
-                    <ChosenFilters />
-                </Box>
-            )}
-            {openFilter && (
-                <FilterMore
-                    open={openFilter}
-                    onOpen={handleOpenFilter}
-                    onApply={handleApplyFilter}
-                    onClose={handleCloseFilter}
-                    onResetFilter={handleResetFilter}
-                />
-            )}
-        </Stack>
+                <Grid item xs={1.75}>
+                    <SaleSelect />
+                </Grid>
+                <Grid item xs={1.75}>
+                    <CategorySelect />
+                </Grid>
+                <Grid item xs={1.75}>
+                    <SubCategorySelect />
+                </Grid>
+                <Grid item xs={1.75}>
+                    <PriceSelect type={"price"} />
+                </Grid>
+                <Grid item xs={1.75}>
+                    <PriceSelect type={"area"} />
+                </Grid>
+                <Grid item xs={1.75}>
+                    <FilterLabels
+                        variant="property"
+                        labels={labels}
+                        setLabels={setLabels}
+                    />
+                </Grid>
+                <Grid item xs={1.5}>
+                    <StyledPriceButton
+                        open={false}
+                        disableRipple
+                        color="inherit"
+                        onClick={handleOpenFilter}
+                    >
+                        <Badge
+                            badgeContent={changedPropertyFilters}
+                            color="error"
+                        >
+                            <TuneIcon />
+                        </Badge>
+                    </StyledPriceButton>
+                </Grid>
+                {/* {changedPropertyFilters > 0 && (
+                    <Box overflow={"auto"}>
+                        <ChosenFilters />
+                    </Box>
+                )} */}
+                {openFilter && (
+                    <FilterMore
+                        open={openFilter}
+                        onOpen={handleOpenFilter}
+                        onApply={handleApplyFilter}
+                        onClose={handleCloseFilter}
+                        onResetFilter={handleResetFilter}
+                    />
+                )}
+            </Grid>
+        </Grid>
     );
 };

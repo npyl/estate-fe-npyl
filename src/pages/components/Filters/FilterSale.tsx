@@ -32,7 +32,7 @@ export default function SaleSelect() {
     };
 
     return (
-        <FormControl sx={{ width: 135 }}>
+        <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">State</InputLabel>
             <Select
                 multiple
