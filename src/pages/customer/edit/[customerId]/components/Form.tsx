@@ -7,17 +7,22 @@ import AddressDetails from "./AddressDetails";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 
-import { resetState as resetCustomerState } from "src/slices/customer";
+import {
+    resetState as resetCustomerState,
+    selectLeaser,
+    selectBuyer,
+    selectDemand,
+} from "src/slices/customer";
 import { resetState as resetNotesState } from "src/slices/notes";
 import { resetState as resetLabelsState } from "src/slices/labels";
 
 import CustomerInformation from "./CustomerInformation";
 import DemandForm from "./DemandForm";
-import MatchingSystem from "./MatchingSystem";
 import NonPriorityFeatures from "./NonPriorityFeatures";
 import NotesSection from "./NotesSection";
 import PriorityFeatures from "./PriorityFeatures";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 
 const Form = ({
     edit = false,
@@ -28,6 +33,12 @@ const Form = ({
 }) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
+
+    const demand = useSelector(selectDemand);
+    const leaser = useSelector(selectLeaser);
+    const buyer = useSelector(selectBuyer);
+
+    const parentCategory = demand?.filters?.parentCategory;
 
     const handleClick = () => {
         performUpload && performUpload();
@@ -58,9 +69,16 @@ const Form = ({
                 <Grid item xs={6}>
                     <Stack spacing={1}>
                         <DemandForm />
-                        <PriorityFeatures />
-                        <NonPriorityFeatures />
-                        <MatchingSystem />
+                        {(leaser || buyer) && parentCategory && (
+                            <>
+                                <PriorityFeatures
+                                    parentCategory={parentCategory}
+                                />
+                                <NonPriorityFeatures
+                                    parentCategory={parentCategory}
+                                />
+                            </>
+                        )}
                     </Stack>
                 </Grid>
             </Grid>
@@ -86,7 +104,7 @@ const Form = ({
                             endIcon={<SendIcon />}
                             onClick={handleClick}
                         >
-                            {edit ? t("Save") : t("Create")}
+                            {t("Save")}
                         </Button>
                     </Grid>
                 </Grid>

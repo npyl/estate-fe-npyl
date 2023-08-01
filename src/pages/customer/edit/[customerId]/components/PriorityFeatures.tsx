@@ -5,32 +5,23 @@ import FeaturesForCommercialSection from "./DemandForm/FeaturesForCommercial";
 import FeaturesForLandSection from "./DemandForm/FeaturesForLand";
 import FeaturesForOtherSection from "./DemandForm/FeaturesForOther";
 
-import { useDispatch, useSelector } from "react-redux";
-import {
-    selectBuyer,
-    selectDemand,
-    selectLeaser,
-    setPriorityFeature,
-} from "src/slices/customer";
-import { IDemandPOST } from "src/types/demand";
+import { useDispatch } from "react-redux";
+import { setPriorityFeature } from "src/slices/customer";
 import { useTranslation } from "react-i18next";
 
-const PriorityFeatures = () => {
+interface PriorityFeaturesProps {
+    parentCategory: string;
+}
+
+const PriorityFeatures = ({ parentCategory }: PriorityFeaturesProps) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
-
-    const leaser = useSelector(selectLeaser);
-    const buyer = useSelector(selectBuyer);
-    const demand: IDemandPOST = useSelector(selectDemand);
-
-    const parentCategory = demand.filters?.parentCategory;
-    if (!parentCategory) return null;
 
     const handleChange = (key: string, checked: boolean) => {
         dispatch(setPriorityFeature({ key }));
     };
 
-    return leaser || buyer ? (
+    return (
         <Paper
             elevation={10}
             sx={{
@@ -78,8 +69,6 @@ const PriorityFeatures = () => {
                 </Grid>
             </Grid>
         </Paper>
-    ) : (
-        <></>
     );
 };
 export default PriorityFeatures;

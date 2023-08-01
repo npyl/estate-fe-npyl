@@ -5,31 +5,23 @@ import FeaturesForCommercialSection from "./DemandForm/FeaturesForCommercial";
 import FeaturesForLandSection from "./DemandForm/FeaturesForLand";
 import FeaturesForOtherSection from "./DemandForm/FeaturesForOther";
 
-import { useDispatch, useSelector } from "react-redux";
-import {
-    selectBuyer,
-    selectDemand,
-    selectLeaser,
-    setNonPriorityFeature,
-} from "src/slices/customer";
-import { IDemandPOST } from "src/types/demand";
+import { useDispatch } from "react-redux";
+import { setNonPriorityFeature } from "src/slices/customer";
 import { useTranslation } from "react-i18next";
 
-const NonPriorityFeatures = () => {
+interface NonPriorityFeatures {
+    parentCategory: string;
+}
+
+const NonPriorityFeatures = ({ parentCategory }: NonPriorityFeatures) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
-    const leaser = useSelector(selectLeaser);
-    const buyer = useSelector(selectBuyer);
-    const demand: IDemandPOST = useSelector(selectDemand);
-
-    const parentCategory = demand.filters?.parentCategory;
-    if (!parentCategory) return null;
 
     const handleChange = (key: string, checked: boolean) => {
         dispatch(setNonPriorityFeature({ key }));
     };
 
-    return leaser || buyer ? (
+    return (
         <Paper
             elevation={10}
             sx={{
@@ -46,7 +38,6 @@ const NonPriorityFeatures = () => {
                 }}
             >
                 <Typography variant="h6">
-                    {" "}
                     {t("Non-Priority Feautures")}
                 </Typography>
             </Box>
@@ -80,8 +71,6 @@ const NonPriorityFeatures = () => {
                 </Grid>
             </Grid>
         </Paper>
-    ) : (
-        <></>
     );
 };
 export default NonPriorityFeatures;
