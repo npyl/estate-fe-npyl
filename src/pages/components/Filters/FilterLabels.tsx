@@ -49,7 +49,7 @@ export default function FilterLabels(props: FilterLabelsProps) {
     };
 
     return (
-        <FormControl sx={{ width: 110 }}>
+        <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Labels</InputLabel>
             <Select
                 multiple

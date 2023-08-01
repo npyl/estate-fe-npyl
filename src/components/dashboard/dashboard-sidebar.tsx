@@ -243,7 +243,7 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
             open={open}
             PaperProps={{
                 sx: {
-                    paddingTop: !open ? "64px" : 0,
+                    paddingTop: !open ? "100px" : 0,
 
                     color: "#FFFFFF",
                     width: 200,

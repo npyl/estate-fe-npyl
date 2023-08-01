@@ -110,8 +110,9 @@ const PriceSelect = ({ type }: { type: string }) => {
             touchEvent="onTouchStart"
             onClickAway={() => setOpen(false)}
         >
-            <Box>
+            <Grid item xs={12}>
                 <StyledPriceButton
+                    fullWidth
                     open={open}
                     variant="outlined"
                     endIcon={open ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
@@ -257,7 +258,7 @@ const PriceSelect = ({ type }: { type: string }) => {
                         </StyledBox>
                     </Popper>
                 )}
-            </Box>
+            </Grid>
         </ClickAwayListener>
     );
 };

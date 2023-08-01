@@ -113,8 +113,6 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
             <DashboardLayoutRoot>
                 <Box
                     sx={{
-                        marginBottom: 0,
-
                         display: "flex",
                         flex: "1 1 auto",
                         flexDirection: "column",
@@ -123,7 +121,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
                 >
                     <Paper
                         sx={{
-                            marginTop: "24px",
+                            marginTop: 2,
                             padding: 1,
                             overflowX: "auto",
                         }}

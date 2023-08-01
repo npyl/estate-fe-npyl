@@ -60,8 +60,6 @@ const Subbar = () => {
                         <Button
                             sx={{
                                 minWidth: "90px",
-                                padding: 0,
-                                borderRadius: 0,
                                 color:
                                     currentPath === tab.path
                                         ? "white"
@@ -78,8 +76,6 @@ const Subbar = () => {
                         </Button>
                         <IconButton
                             sx={{
-                                padding: 0,
-                                marginLeft: 1,
                                 color:
                                     currentPath === tab.path
                                         ? "white"

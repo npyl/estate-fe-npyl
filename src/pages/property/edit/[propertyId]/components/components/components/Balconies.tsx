@@ -78,7 +78,6 @@ const BalconiesSection: React.FC<any> = (props) => {
                                                 })
                                             );
                                         }}
-                                        size="small"
                                     >
                                         {details?.balconySide?.map((option) => (
                                             <MenuItem

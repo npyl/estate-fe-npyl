@@ -141,6 +141,7 @@ const DataGridTable: FC<GridProps> = ({
                 onSortModelChange={handleSortChange}
                 rows={rows}
                 columns={columns}
+                pageSizeOptions={[25, 50, 100]}
             />
         </>
     );
