@@ -8,9 +8,9 @@ import {
     Stack,
     SvgIconTypeMap,
     Typography,
+    Box,
 } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
-import { Box, border } from "@mui/system";
 import {
     GridCallbackDetails,
     GridCellParams,
@@ -31,6 +31,8 @@ import { selectAll } from "src/slices/filters";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
+import { BulkEditDrawer } from "./BulkEdit/BulkEdit";
+
 type optionType = "list" | "grid" | "map";
 
 type viewOptionsType = {
@@ -43,6 +45,9 @@ type viewOptionsType = {
 
 const ViewAll: FC = () => {
     const { t } = useTranslation();
+
+    const [bulkEditOpen, setBulkEditOpen] = useState(false);
+
     // sorting
     const [sortingBy, setSortingBy] = useState("");
     const [sortingOrder, setSortingOrder] = useState("asc");
@@ -128,6 +133,7 @@ const ViewAll: FC = () => {
         UNDER_CONSTRUCTION: "#A300D8",
         UNDER_MAINTENANCE: "#E0067C",
     };
+
     function statusColor(params: GridCellParams) {
         if (!params.value) {
             return <></>;
@@ -237,10 +243,18 @@ const ViewAll: FC = () => {
         });
     };
 
-    const handleBulkEdit = () => {};
+    // Bulk Edit
+    const handleBulkEdit = () => setBulkEditOpen(true);
+    const closeBulkEdit = () => setBulkEditOpen(false);
 
     return (
-        <Box>
+        <Box
+            style={{
+                // styling for BulkEditDrawer:
+                position: "relative",
+                marginRight: bulkEditOpen ? 320 : 0,
+            }}
+        >
             <FilterSection />
             <Stack
                 direction={"row"}
@@ -341,6 +355,8 @@ const ViewAll: FC = () => {
                     />
                 </Paper>
             )}
+
+            <BulkEditDrawer open={bulkEditOpen} onClose={closeBulkEdit} />
         </Box>
     );
 };
