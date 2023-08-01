@@ -2,15 +2,16 @@ import GridViewIcon from "@mui/icons-material/GridView";
 import MapIcon from "@mui/icons-material/Map";
 import {
     ButtonGroup,
+    Grid,
     IconButton,
     Paper,
     Skeleton,
     Stack,
     SvgIconTypeMap,
     Typography,
+    Box,
 } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
-import { Box, border } from "@mui/system";
 import {
     GridCallbackDetails,
     GridCellParams,
@@ -31,6 +32,8 @@ import { selectAll } from "src/slices/filters";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
+import { BulkEditDrawer } from "./BulkEdit/BulkEdit";
+
 type optionType = "list" | "grid" | "map";
 
 type viewOptionsType = {
@@ -43,6 +46,9 @@ type viewOptionsType = {
 
 const ViewAll: FC = () => {
     const { t } = useTranslation();
+
+    const [bulkEditOpen, setBulkEditOpen] = useState(false);
+
     // sorting
     const [sortingBy, setSortingBy] = useState("");
     const [sortingOrder, setSortingOrder] = useState("asc");
@@ -70,7 +76,7 @@ const ViewAll: FC = () => {
     }, [data?.content]);
 
     const totalRows = useMemo(
-        () => (data?.totalElements ? data?.totalElements : 25),
+        () => (data?.totalElements ? data?.totalElements : 100000),
         [data?.totalElements]
     );
 
@@ -128,6 +134,7 @@ const ViewAll: FC = () => {
         UNDER_CONSTRUCTION: "#A300D8",
         UNDER_MAINTENANCE: "#E0067C",
     };
+
     function statusColor(params: GridCellParams) {
         if (!params.value) {
             return <></>;
@@ -224,78 +231,94 @@ const ViewAll: FC = () => {
         model: GridPaginationModel,
         details: GridCallbackDetails
     ) => {
-        setPage((prevPage) => {
-            const newPage = model.page;
-            if (prevPage !== newPage) {
-                filterProperties({
-                    filter: allFilters,
-                    page: newPage,
-                    pageSize: model.pageSize,
-                });
-            }
-            return page;
-        });
+        setPageSize(model.pageSize);
+        setPage(model.page);
     };
+
+    // Bulk Edit
+    const handleBulkEdit = () => setBulkEditOpen(true);
+    const closeBulkEdit = () => setBulkEditOpen(false);
 
     return (
         <Box>
-            <FilterSection />
-            <Stack
-                direction={"row"}
-                justifyContent={"space-between"}
-                alignItems={"center"}
+            <Paper
+                sx={{
+                    mt: 1,
+                    paddingRight: 0,
+                    paddingLeft: 0,
+                }}
             >
-                <Box
-                    paddingLeft={"10px"}
-                    display={"flex"}
-                    alignItems={"center"}
-                    gap={1}
-                >
-                    <Typography variant={"body2"} fontWeight={500}>
-                        {rows?.length} {}
-                        {t("Results")}
-                    </Typography>
-                </Box>
-                <Stack direction={"row"} alignItems={"center"} spacing={0}>
-                    <FilterSortBy
-                        onSorting={(
-                            sortingBy: SetStateAction<string>,
-                            sortingOrder: SetStateAction<string>
-                        ) => {
-                            setSortingBy(sortingBy);
-                            setSortingOrder(sortingOrder);
-                        }}
-                    />
-                    <FilterRows />
-                    <ButtonGroup size="small" aria-label="small button group">
-                        {viewOptions.map((option) => (
-                            <IconButton
-                                sx={{
-                                    ml: 1,
-                                    height: 30,
-                                    width: 30,
-                                    color:
-                                        optionView === option.id
-                                            ? "primary.main"
-                                            : "neutral.300",
-                                    border:
-                                        optionView === option.id
-                                            ? "1px solid blue"
-                                            : "1px solid lightgrey",
+                <Grid item xs={12}>
+                    <Grid container xs={12} padding={1}>
+                        <Grid item xs={7}>
+                            <FilterSection />
+                        </Grid>
+                        {/* <Grid item xs={1}>
+                            <Typography variant={"body2"} fontWeight={500}>
+                                {rows?.length} {}
+                                {t("Results")}
+                            </Typography>
+                        </Grid> */}
+                        <Grid item xs={1.75}>
+                            <FilterSortBy
+                                onSorting={(
+                                    sortingBy: SetStateAction<string>,
+                                    sortingOrder: SetStateAction<string>
+                                ) => {
+                                    setSortingBy(sortingBy);
+                                    setSortingOrder(sortingOrder);
                                 }}
-                                key={option.id}
-                                onClick={() => setOptionView(option.id)}
+                            />
+                        </Grid>
+                        <Grid item xs={1.75} sx={{ paddingLeft: 2 }}>
+                            <FilterRows />
+                        </Grid>
+                        <Grid item xs={0.25}></Grid>
+                        <Grid item xs={1}>
+                            <Box
+                                sx={{
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                }}
                             >
-                                <option.icon />
-                            </IconButton>
-                        ))}
-                    </ButtonGroup>
-                </Stack>
-            </Stack>
+                                <ButtonGroup
+                                    size="small"
+                                    aria-label="small button group"
+                                >
+                                    {viewOptions.map((option) => (
+                                        <IconButton
+                                            sx={{
+                                                ml: 1,
+                                                height: 38,
+                                                width: 38,
+                                                color:
+                                                    optionView === option.id
+                                                        ? "primary.main"
+                                                        : "neutral.300",
+                                                border:
+                                                    optionView === option.id
+                                                        ? "1px solid blue"
+                                                        : "1px solid lightgrey",
+                                            }}
+                                            key={option.id}
+                                            onClick={() =>
+                                                setOptionView(option.id)
+                                            }
+                                        >
+                                            <option.icon />
+                                        </IconButton>
+                                    ))}
+                                </ButtonGroup>
+                            </Box>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Paper>
+
             {rows && !isLoading ? (
                 <>
                     {optionView === "list" && (
-                        <Paper sx={{ mt: 2 }}>
+                        <Paper sx={{ mt: 1 }}>
                             <DataGridTable
                                 rows={rows}
                                 columns={columns}
@@ -307,6 +330,7 @@ const ViewAll: FC = () => {
                                 onPaginationModelChange={
                                     handlePaginationModelChange
                                 }
+                                onBulkEdit={handleBulkEdit}
                             />
                         </Paper>
                     )}
@@ -338,6 +362,8 @@ const ViewAll: FC = () => {
                     />
                 </Paper>
             )}
+
+            {/* <BulkEditDrawer open={bulkEditOpen} onClose={closeBulkEdit} /> */}
         </Box>
     );
 };

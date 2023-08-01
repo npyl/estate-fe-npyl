@@ -4,46 +4,33 @@ import { Button, Grid, Stack } from "@mui/material";
 
 import AddressDetails from "./AddressDetails";
 
-import { useDispatch } from "react-redux";
-import { useEffect } from "react";
-
-import { resetState as resetCustomerState } from "src/slices/customer";
-import { resetState as resetNotesState } from "src/slices/notes";
-import { resetState as resetLabelsState } from "src/slices/labels";
+import { selectLeaser, selectBuyer, selectDemand } from "src/slices/customer";
 
 import CustomerInformation from "./CustomerInformation";
 import DemandForm from "./DemandForm";
-import MatchingSystem from "./MatchingSystem";
 import NonPriorityFeatures from "./NonPriorityFeatures";
 import NotesSection from "./NotesSection";
 import PriorityFeatures from "./PriorityFeatures";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 
-const Form = ({
-    edit = false,
-    performUpload,
-}: {
-    edit?: boolean;
+interface FormProps {
     performUpload: () => void;
-}) => {
-    const dispatch = useDispatch();
+    resetState: () => void;
+}
+
+const Form = ({ performUpload, resetState }: FormProps) => {
     const { t } = useTranslation();
+
+    const demand = useSelector(selectDemand);
+    const leaser = useSelector(selectLeaser);
+    const buyer = useSelector(selectBuyer);
+
+    const parentCategory = demand?.filters?.parentCategory;
 
     const handleClick = () => {
         performUpload && performUpload();
     };
-
-    const resetState = () => {
-        dispatch(resetCustomerState());
-        dispatch(resetLabelsState());
-        dispatch(resetNotesState());
-    };
-
-    useEffect(() => {
-        if (!edit) {
-            resetState();
-        }
-    }, [edit]);
 
     return (
         <Grid paddingTop={1} paddingRight={0} container spacing={1}>
@@ -58,9 +45,16 @@ const Form = ({
                 <Grid item xs={6}>
                     <Stack spacing={1}>
                         <DemandForm />
-                        <PriorityFeatures />
-                        <NonPriorityFeatures />
-                        <MatchingSystem />
+                        {(leaser || buyer) && parentCategory && (
+                            <>
+                                <PriorityFeatures
+                                    parentCategory={parentCategory}
+                                />
+                                <NonPriorityFeatures
+                                    parentCategory={parentCategory}
+                                />
+                            </>
+                        )}
                     </Stack>
                 </Grid>
             </Grid>
@@ -86,7 +80,7 @@ const Form = ({
                             endIcon={<SendIcon />}
                             onClick={handleClick}
                         >
-                            {edit ? t("Save") : t("Create")}
+                            {t("Save")}
                         </Button>
                     </Grid>
                 </Grid>

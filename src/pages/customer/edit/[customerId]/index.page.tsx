@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
@@ -14,12 +14,19 @@ import { useDispatch } from "src/store";
 import { LogoProgressIndicator } from "src/components/LogoProgressIndicator";
 import Form from "./components/Form";
 
+import { resetState as resetCustomerState } from "src/slices/customer";
+import { resetState as resetNotesState } from "src/slices/notes";
+import { resetState as resetLabelsState } from "src/slices/labels";
+
 const EditCustomer: NextPage = () => {
     const router = useRouter();
     const dispatch = useDispatch();
     const { customerId } = router.query;
+
+    const [everythingIsClear, setEverythingIsClear] = useState(false);
+
     const { data, isSuccess: fetchedCustomer } = useGetCustomerByIdQuery(
-        parseInt(customerId as string)
+        +customerId!
     );
     const [
         edit,
@@ -32,16 +39,12 @@ const EditCustomer: NextPage = () => {
 
     const body = useSelector(selectAll);
 
-    const performUpload = () => {
-        edit({ customerId: +customerId!, body });
-    };
-
     useEffect(() => {
-        if (fetchedCustomer) {
+        if (everythingIsClear && fetchedCustomer) {
             dispatch(setInitialNotesState(data.notes));
             dispatch(setInitialState(data));
         }
-    }, [fetchedCustomer]);
+    }, [everythingIsClear, fetchedCustomer]);
 
     useEffect(() => {
         if (isEditedSuccess && editedCustomer) {
@@ -49,9 +52,24 @@ const EditCustomer: NextPage = () => {
         }
     }, [isEditedSuccess, editedCustomer]);
 
+    useEffect(() => {
+        resetState();
+        setEverythingIsClear(true);
+    }, []);
+
+    const resetState = () => {
+        dispatch(resetCustomerState());
+        dispatch(resetLabelsState());
+        dispatch(resetNotesState());
+    };
+
+    const performUpload = () => {
+        edit({ customerId: +customerId!, body });
+    };
+
     return (
         <>
-            <Form edit={true} performUpload={performUpload} />
+            <Form performUpload={performUpload} resetState={resetState} />
 
             {
                 // loading indicator (incase POST request is taking alot of time)

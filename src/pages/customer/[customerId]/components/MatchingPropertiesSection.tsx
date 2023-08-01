@@ -6,11 +6,27 @@ import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import * as React from "react";
 import Image from "src/components/image";
+import { useGetCustomerByIdQuery } from "src/services/customers";
+import { useState, useEffect } from "react";
 
 const MatchingPropertiesSection: React.FC = () => {
     const router = useRouter();
     const { t } = useTranslation();
     const { customerId } = router.query;
+
+    const [parentCategory, setParentCategory] = useState("");
+
+    const { data: customer, isSuccess } = useGetCustomerByIdQuery(+customerId!);
+    const { data } = useSuggestForCustomerQuery(+customerId!, {
+        skip: !parentCategory,
+    });
+
+    useEffect(() => {
+        if (!customer || !isSuccess) return;
+
+        setParentCategory(customer?.demand?.filters?.parentCategory);
+    }, [customer, isSuccess]);
+
     type PropertyStatus =
         | "SOLD"
         | "SALE"
@@ -41,7 +57,6 @@ const MatchingPropertiesSection: React.FC = () => {
         }
         const status = (params.value as string).trim();
         const statusUpper = status.toUpperCase() as PropertyStatus;
-        // console.log("statusUpper:", statusUpper); // add this to debug the value
         const color = STATUS_COLORS[statusUpper] || "#537f91"; // default color if status is not recognized
 
         return (
@@ -134,7 +149,7 @@ const MatchingPropertiesSection: React.FC = () => {
         },
     ];
 
-    const { data } = useSuggestForCustomerQuery(parseInt(customerId as string)); // basic details
+    if (!parentCategory) return;
     if (!data || !Array.isArray(data.content) || data.content.length === 0)
         return null;
 

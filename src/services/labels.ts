@@ -12,7 +12,8 @@ interface ILabelForCustomerProps {
 }
 
 interface IAssignLabelProps {
-    propertyId: number;
+    propertyId?: number;
+    customerId?: number;
     labelId: number;
 }
 type IDeleteLabelProps = IAssignLabelProps;
@@ -87,6 +88,30 @@ export const labels = createApi({
             }),
             invalidatesTags: ["Labels"],
         }),
+        assignLabelToCustomerWithID: builder.mutation<
+            ILabels,
+            IAssignLabelProps
+        >({
+            query: (props: IAssignLabelProps) => ({
+                url: `add/customer/${props.customerId}`,
+                method: "POST",
+                params: { labelId: props.labelId },
+            }),
+            invalidatesTags: ["Labels"],
+        }),
+        deleteLabelForCustomerWithId: builder.mutation<
+            ILabels,
+            IDeleteLabelProps
+        >({
+            query: (props: IDeleteLabelProps) => ({
+                url: `/remove/customer/${props.customerId}`,
+                method: "DELETE",
+                params: { labelId: props.labelId },
+            }),
+            invalidatesTags: ["Labels"],
+        }),
+
+        // general
         createLabelForProperties: builder.mutation<ILabels, ILabel>({
             query: (data: ILabel) => ({
                 url: `property`,
@@ -103,8 +128,6 @@ export const labels = createApi({
             }),
             invalidatesTags: ["Labels"],
         }),
-
-        // general
         deletePropertyLabel: builder.mutation<void, number>({
             query: (labelId: number) => ({
                 url: `property/${labelId}`,
@@ -128,11 +151,15 @@ export const {
     useCreateLabelForPropertyWithIDMutation,
     useAssignLabelToPropertyWithIDMutation,
     useDeleteLabelForPropertyWithIdMutation,
+
     // customer
     useCreateLabelForCustomerWithIDMutation,
+    useAssignLabelToCustomerWithIDMutation,
+    useDeleteLabelForCustomerWithIdMutation,
+
+    // general
     useCreateLabelForPropertiesMutation,
     useCreateLabelForCustomersMutation,
-    // general
     useDeletePropertyLabelMutation,
     useDeleteCustomerLabelMutation,
 } = labels;

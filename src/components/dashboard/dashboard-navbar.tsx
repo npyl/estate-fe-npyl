@@ -18,6 +18,7 @@ import { UserCircle as UserCircleIcon } from "../../icons/user-circle";
 import { AccountPopover } from "./account-popover";
 import { DashboardNavbarSearch } from "./dashboard-navbar-search";
 import { LanguageButton } from "../Language/LanguageButton";
+import { SettingsButton } from "../settings-button";
 
 interface DashboardNavbarProps extends AppBarProps {
     onOpenSidebar?: () => void;
@@ -113,7 +114,7 @@ export const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                     >
                         <Link href="/">
                             <Typography color="neutral.900" variant={"h5"}>
-                                Mordor v0.1
+                                Mordor v0.2
                             </Typography>
                         </Link>
                     </Box>
@@ -131,6 +132,7 @@ export const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                     <DashboardNavbarSearch />
                     <Stack direction={"row"}>
                         <LanguageButton />
+                        <SettingsButton />
                         <AccountButton />
                     </Stack>
                 </Toolbar>

@@ -38,7 +38,7 @@ export default function CategorySelect() {
     };
 
     return (
-        <FormControl sx={{ width: 135 }}>
+        <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Categories</InputLabel>
             <Select
                 multiple

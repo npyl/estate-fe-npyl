@@ -5,7 +5,6 @@ import { Box } from "@mui/system";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
-
 import { useDispatch } from "react-redux";
 import {
     selectAirConditioning,
@@ -17,18 +16,20 @@ import {
     selectOffPeakElectricity,
     selectSolarBoiler,
     setAirConditioning,
+    setElectricityType,
     setEnergyClass,
     setFloorHeating,
     setHeatingSystem,
     setHeatingType,
 } from "src/slices/property";
 import { useAllGlobalsQuery } from "src/services/global";
+import { useTranslation } from "react-i18next";
 
 const HeatingAndEnergyForCommercialSection: React.FC<any> = (props) => {
     const { data } = useAllGlobalsQuery();
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
     const details = enums?.details as IGlobalPropertyDetails;
-
+    const { t } = useTranslation();
     const dispatch = useDispatch();
 
     const heatingType = useSelector(selectHeatingType);
@@ -62,7 +63,7 @@ const HeatingAndEnergyForCommercialSection: React.FC<any> = (props) => {
                             fullWidth
                             id="outlined-select-currency"
                             select
-                            label="Heating Type"
+                            label={t("Heating Type")}
                             value={heatingType}
                             onChange={(
                                 event: React.ChangeEvent<HTMLInputElement>
@@ -88,7 +89,7 @@ const HeatingAndEnergyForCommercialSection: React.FC<any> = (props) => {
                             fullWidth
                             id="outlined-select-currency"
                             select
-                            label="Energy Class"
+                            label={t("Energy Class")}
                             value={energyClass}
                             onChange={(
                                 event: React.ChangeEvent<HTMLInputElement>
@@ -113,7 +114,7 @@ const HeatingAndEnergyForCommercialSection: React.FC<any> = (props) => {
                             fullWidth
                             id="outlined-select-currency"
                             select
-                            label="Heating System"
+                            label={t("Heating System")}
                             value={heatingSystem}
                             onChange={(
                                 event: React.ChangeEvent<HTMLInputElement>
@@ -139,12 +140,14 @@ const HeatingAndEnergyForCommercialSection: React.FC<any> = (props) => {
                             fullWidth
                             id="outlined-select-currency"
                             select
-                            label="Electricity Type"
+                            label={t("Electricity Type")}
                             value={electricityType}
                             onChange={(
                                 event: React.ChangeEvent<HTMLInputElement>
                             ) => {
-                                dispatch(setEnergyClass(event.target.value));
+                                dispatch(
+                                    setElectricityType(event.target.value)
+                                );
                             }}
                             inputProps={{
                                 style: {
@@ -159,7 +162,6 @@ const HeatingAndEnergyForCommercialSection: React.FC<any> = (props) => {
                             ))}
                         </TextField>
                     </Grid>
-
                     <Grid
                         item
                         xs={3}

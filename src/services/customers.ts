@@ -5,6 +5,7 @@ import {
     ICustomerPOST,
     ICustomerResultResponse,
 } from "src/types/customer";
+import { ILabel } from "src/types/label";
 import IPage from "src/types/page";
 
 interface ICustomerParams {
@@ -35,7 +36,13 @@ export const customers = createApi({
             return headers;
         },
     }),
-    tagTypes: ["Customers", "CustomerById"],
+    tagTypes: [
+        "Customers",
+        "CustomerById",
+
+        // Attributes
+        "CustomerByIdLabels",
+    ],
     endpoints: (builder) => ({
         allCustomers: builder.query<ICustomer[], void>({
             query: () => ({
@@ -55,6 +62,10 @@ export const customers = createApi({
         getCustomerById: builder.query<ICustomer, number>({
             query: (id: number) => `${id}`,
             providesTags: ["CustomerById"],
+        }),
+        getCustomerLabels: builder.query<ILabel[], number>({
+            query: (id: number) => `${id}/labels`,
+            providesTags: ["CustomerByIdLabels"],
         }),
         filterCustomers: builder.mutation<
             IPage<ICustomerResultResponse>,
@@ -77,7 +88,7 @@ export const customers = createApi({
                 url: "/create",
                 method: "POST",
             }),
-            invalidatesTags: ["Customers"],
+            invalidatesTags: ["Customers", "CustomerById"],
         }),
         editCustomer: builder.mutation<ICustomer, IEditCustomerProps>({
             query: (props: IEditCustomerProps) => ({
@@ -85,7 +96,7 @@ export const customers = createApi({
                 method: "POST",
                 body: props.body,
             }),
-            invalidatesTags: ["Customers"],
+            invalidatesTags: ["Customers", "CustomerById"],
         }),
 
         searchCustomer: builder.query<ICustomerResultResponse[], string>({
@@ -112,6 +123,7 @@ export const {
     useAllCustomersQuery,
     useAllCustomersPaginatedQuery,
     useGetCustomerByIdQuery,
+    useLazyGetCustomerLabelsQuery,
     useFilterCustomersMutation,
     useSearchCustomerQuery,
 

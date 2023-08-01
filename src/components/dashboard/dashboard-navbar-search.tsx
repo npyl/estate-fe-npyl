@@ -8,12 +8,14 @@ import { useTranslation } from "react-i18next";
 import { SearchList } from "./components/SearchList";
 import { useSearchCustomerQuery } from "src/services/customers";
 
+type SearchCategory = "all" | "properties" | "customers";
+
 export const DashboardNavbarSearch: FC = () => {
     const { t } = useTranslation();
 
     const [searchText, setSearchText] = useState("");
     const [debouncedText, setDebouncedText] = useState("");
-    const [searchCategory, setSearchCategory] = useState<string>("all");
+    const [searchCategory, setSearchCategory] = useState<SearchCategory>("all");
     const [anchorEl, setAnchorEl] = useState(null);
 
     const { data: propertiesResults } = useSearchPropertyQuery(
@@ -39,13 +41,13 @@ export const DashboardNavbarSearch: FC = () => {
     const open = useMemo(() => Boolean(anchorEl), [anchorEl]);
     const properties = useMemo(
         () =>
-            searchCategory !== "customer"
+            searchCategory !== "customers"
                 ? propertiesResults?.content || []
                 : [],
         [searchCategory, propertiesResults]
     );
     const customers = useMemo(
-        () => (searchCategory !== "property" ? customersResults || [] : []),
+        () => (searchCategory !== "properties" ? customersResults || [] : []),
         [searchCategory, customersResults]
     );
 
@@ -87,11 +89,13 @@ export const DashboardNavbarSearch: FC = () => {
                             }}
                             value={searchCategory}
                             onChange={(event) =>
-                                setSearchCategory(event.target.value)
+                                setSearchCategory(
+                                    event.target.value as SearchCategory
+                                )
                             }
                         >
                             <MenuItem value="all">{t("All")}</MenuItem>
-                            <MenuItem value="property">
+                            <MenuItem value="properties">
                                 {t("Properties")}
                             </MenuItem>
                             <MenuItem value="customers">

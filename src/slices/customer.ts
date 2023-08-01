@@ -400,32 +400,59 @@ const slice = createSlice({
 
             const demand: IDemand = payload.demand;
             const demandFilters: IDemandFilters = demand?.filters;
+            const initialStateFilters = initialState.demand.filters;
 
-            state.demand.filters.minBedrooms = demandFilters?.minBedrooms;
-            state.demand.filters.maxBedrooms = demandFilters?.maxBedrooms;
-            state.demand.filters.minBathrooms = demandFilters?.minBathrooms;
-            state.demand.filters.maxBathrooms = demandFilters?.maxBathrooms;
-            state.demand.filters.furnished = demandFilters?.furnished;
-            state.demand.filters.maxCovered = demandFilters?.maxCovered;
-            state.demand.filters.minCovered = demandFilters?.minCovered;
-            state.demand.filters.minPlot = demandFilters?.minPlot;
-            state.demand.filters.maxPlot = demandFilters?.maxPlot;
-            state.demand.filters.minFloor = demandFilters?.minFloor;
-            state.demand.filters.maxFloor = demandFilters?.maxFloor;
+            state.demand.filters.minBedrooms =
+                demandFilters?.minBedrooms || initialStateFilters.minBedrooms;
+            state.demand.filters.maxBedrooms =
+                demandFilters?.maxBedrooms || initialStateFilters.maxBedrooms;
+            state.demand.filters.minBathrooms =
+                demandFilters?.minBathrooms || initialStateFilters.minBathrooms;
+            state.demand.filters.maxBathrooms =
+                demandFilters?.maxBathrooms || initialStateFilters.maxBathrooms;
+            state.demand.filters.furnished =
+                demandFilters?.furnished || initialStateFilters.furnished;
+            state.demand.filters.maxCovered =
+                demandFilters?.maxCovered || initialStateFilters.maxCovered;
+            state.demand.filters.minCovered =
+                demandFilters?.minCovered || initialStateFilters.minCovered;
+            state.demand.filters.minPlot =
+                demandFilters?.minPlot || initialStateFilters.minPlot;
+            state.demand.filters.maxPlot =
+                demandFilters?.maxPlot || initialStateFilters.maxPlot;
+            state.demand.filters.minFloor =
+                demandFilters?.minFloor || initialStateFilters.minFloor;
+            state.demand.filters.maxFloor =
+                demandFilters?.maxFloor || initialStateFilters.maxFloor;
             state.demand.filters.minYearOfConstruction =
-                demandFilters?.minYearOfConstruction;
+                demandFilters?.minYearOfConstruction ||
+                initialStateFilters.minYearOfConstruction;
             state.demand.filters.maxYearOfConstruction =
-                demandFilters?.maxYearOfConstruction;
+                demandFilters?.maxYearOfConstruction ||
+                initialStateFilters.maxYearOfConstruction;
 
-            state.demand.filters.parentCategory = demandFilters?.parentCategory;
-            state.demand.filters.category = demandFilters?.category;
-            state.demand.filters.state = demandFilters?.state;
-            state.demand.filters.minPrice = demandFilters?.minPrice;
-            state.demand.filters.maxPrice = demandFilters?.maxPrice;
-            state.demand.filters.labels = demandFilters?.labels;
-            state.demand.nonPriorityFeatures = demand?.nonPriorityFeatures;
-            state.demand.priorityFeatures = demand?.priorityFeatures;
-            state.demand.timeframe = demand?.timeframe;
+            state.demand.filters.parentCategory =
+                demandFilters?.parentCategory ||
+                initialStateFilters.parentCategory;
+            state.demand.filters.category =
+                demandFilters?.category || initialStateFilters.category;
+            state.demand.filters.state =
+                demandFilters?.state || initialStateFilters.state;
+            state.demand.filters.minPrice =
+                demandFilters?.minPrice || initialStateFilters.minPrice;
+            state.demand.filters.maxPrice =
+                demandFilters?.maxPrice || initialStateFilters.maxPrice;
+            state.demand.filters.labels =
+                demandFilters?.labels || initialStateFilters.labels;
+
+            state.demand.nonPriorityFeatures =
+                demand?.nonPriorityFeatures ||
+                initialState.demand.nonPriorityFeatures;
+            state.demand.priorityFeatures =
+                demand?.priorityFeatures ||
+                initialState.demand.priorityFeatures;
+            state.demand.timeframe =
+                demand?.timeframe || initialState.demand.timeframe;
         },
 
         resetState: () => {

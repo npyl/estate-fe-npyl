@@ -16,14 +16,14 @@ export const FilterSection = () => {
 
     return (
         <Stack spacing={3} component={Paper} p={2} mt={2}>
-            <Stack flexWrap={"wrap"} direction={"row"} spacing={1}>
-                <FilterStatus />
-
+            <Stack flexWrap={"wrap"} direction={"row"} gap={1}>
                 <FilterLabels
                     variant="customer"
                     labels={labels}
                     setLabels={setLabels}
                 />
+
+                <FilterStatus />
             </Stack>
             {changedCustomerFilters > 0 && (
                 <Box overflow={"auto"}>

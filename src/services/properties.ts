@@ -90,8 +90,8 @@ export const properties = createApi({
             query: (id: number) => `${id}`,
             providesTags: ["PropertyById"],
         }),
-        getPropertyByCode: builder.query<IProperties, number>({
-            query: (code: number) => `code/${code}`,
+        getPropertyByCode: builder.query<IProperties, string>({
+            query: (code: string) => `code/${code}`,
             providesTags: ["Properties"],
         }),
         getPropertyAttribute: builder.query<any[], IGetPropertyAttributeProps>({
