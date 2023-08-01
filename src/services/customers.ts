@@ -88,7 +88,7 @@ export const customers = createApi({
                 url: "/create",
                 method: "POST",
             }),
-            invalidatesTags: ["Customers"],
+            invalidatesTags: ["Customers", "CustomerById"],
         }),
         editCustomer: builder.mutation<ICustomer, IEditCustomerProps>({
             query: (props: IEditCustomerProps) => ({
@@ -96,7 +96,7 @@ export const customers = createApi({
                 method: "POST",
                 body: props.body,
             }),
-            invalidatesTags: ["Customers"],
+            invalidatesTags: ["Customers", "CustomerById"],
         }),
 
         searchCustomer: builder.query<ICustomerResultResponse[], string>({
