@@ -31,8 +31,16 @@ export default function FilterSortBy({ onSorting }: IFilterSortByProps) {
     return (
         <FormControl
             variant="standard"
-            fullWidth
-            sx={{ border: 1, borderRadius: 1, borderColor: "#ECECEC" }}
+            sx={{
+                border: 1,
+                borderRadius: 1,
+                borderColor: "#ECECEC",
+                ":hover": {
+                    borderColor: "#000",
+                },
+                minWidth: "130px",
+                minHeight: "38px",
+            }}
         >
             <Select
                 disableUnderline

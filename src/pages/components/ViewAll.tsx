@@ -244,75 +244,55 @@ const ViewAll: FC = () => {
             <Paper
                 sx={{
                     mt: 1,
-                    paddingRight: 0,
-                    paddingLeft: 0,
+                    p: 1,
                 }}
             >
-                <Grid item xs={12}>
-                    <Grid container xs={12} padding={1}>
-                        <Grid item xs={7}>
-                            <FilterSection />
-                        </Grid>
-                        {/* <Grid item xs={1}>
-                            <Typography variant={"body2"} fontWeight={500}>
-                                {rows?.length} {}
-                                {t("Results")}
-                            </Typography>
-                        </Grid> */}
-                        <Grid item xs={1.75}>
-                            <FilterSortBy
-                                onSorting={(
-                                    sortingBy: SetStateAction<string>,
-                                    sortingOrder: SetStateAction<string>
-                                ) => {
-                                    setSortingBy(sortingBy);
-                                    setSortingOrder(sortingOrder);
-                                }}
-                            />
-                        </Grid>
-                        <Grid item xs={1.75} sx={{ paddingLeft: 2 }}>
-                            <FilterRows />
-                        </Grid>
-                        <Grid item xs={0.25}></Grid>
-                        <Grid item xs={1}>
-                            <Box
-                                sx={{
-                                    alignItems: "center",
-                                    justifyContent: "center",
-                                }}
+                <Stack direction={"row"} flex={1} flexWrap={"wrap"}>
+                    <FilterSection />
+                    <Stack direction={"row"}>
+                        <FilterSortBy
+                            onSorting={(
+                                sortingBy: SetStateAction<string>,
+                                sortingOrder: SetStateAction<string>
+                            ) => {
+                                setSortingBy(sortingBy);
+                                setSortingOrder(sortingOrder);
+                            }}
+                        />
+                        <Box
+                            sx={{
+                                alignItems: "center",
+                                justifyContent: "center",
+                            }}
+                        >
+                            <ButtonGroup
+                                size="small"
+                                aria-label="small button group"
                             >
-                                <ButtonGroup
-                                    size="small"
-                                    aria-label="small button group"
-                                >
-                                    {viewOptions.map((option) => (
-                                        <IconButton
-                                            sx={{
-                                                ml: 1,
-                                                height: 38,
-                                                width: 38,
-                                                color:
-                                                    optionView === option.id
-                                                        ? "primary.main"
-                                                        : "neutral.300",
-                                                border:
-                                                    optionView === option.id
-                                                        ? "1px solid blue"
-                                                        : "1px solid lightgrey",
-                                            }}
-                                            key={option.id}
-                                            onClick={() =>
-                                                setOptionView(option.id)
-                                            }
-                                        >
-                                            <option.icon />
-                                        </IconButton>
-                                    ))}
-                                </ButtonGroup>
-                            </Box>
-                        </Grid>
-                    </Grid>
-                </Grid>
+                                {viewOptions.map((option) => (
+                                    <IconButton
+                                        sx={{
+                                            height: 38,
+                                            width: 38,
+                                            color:
+                                                optionView === option.id
+                                                    ? "primary.main"
+                                                    : "neutral.300",
+                                            border:
+                                                optionView === option.id
+                                                    ? "1px solid blue"
+                                                    : "1px solid lightgrey",
+                                        }}
+                                        key={option.id}
+                                        onClick={() => setOptionView(option.id)}
+                                    >
+                                        <option.icon />
+                                    </IconButton>
+                                ))}
+                            </ButtonGroup>
+                        </Box>
+                    </Stack>
+                </Stack>
             </Paper>
 
             {rows && !isLoading ? (
