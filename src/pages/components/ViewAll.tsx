@@ -28,11 +28,12 @@ import MediaCard from "./MediaCard";
 import { FilterSection } from "./Filters";
 import FilterRows from "./Filters/FilterRows";
 import FilterSortBy from "./Filters/FilterSortBy";
-import { selectAll } from "src/slices/filters";
+import { selectAll, sumOfChangedProperties } from "src/slices/filters";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 import { BulkEditDrawer } from "./BulkEdit/BulkEdit";
+import ChosenFilters from "./Filters/ChosenFilters";
 
 type optionType = "list" | "grid" | "map";
 
@@ -48,6 +49,8 @@ const ViewAll: FC = () => {
     const { t } = useTranslation();
 
     const [bulkEditOpen, setBulkEditOpen] = useState(false);
+
+    const changedPropertyFilters = useSelector(sumOfChangedProperties);
 
     // sorting
     const [sortingBy, setSortingBy] = useState("");
@@ -293,6 +296,11 @@ const ViewAll: FC = () => {
                         </Box>
                     </Stack>
                 </Stack>
+                {changedPropertyFilters > 0 && (
+                    <Box overflow={"auto"}>
+                        <ChosenFilters />
+                    </Box>
+                )}
             </Paper>
 
             {rows && !isLoading ? (
