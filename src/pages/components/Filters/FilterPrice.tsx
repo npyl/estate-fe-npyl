@@ -112,7 +112,7 @@ const PriceSelect = ({ type }: { type: string }) => {
         >
             <Box>
                 <StyledPriceButton
-                    sx={{ minWidth: "130px" }}
+                    sx={{ minWidth: "135px" }}
                     open={open}
                     variant="outlined"
                     endIcon={open ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}

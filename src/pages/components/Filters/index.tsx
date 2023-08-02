@@ -46,12 +46,11 @@ export const FilterSection = () => {
 
     return (
         <>
-            <Stack direction={"row"} minWidth={"350px"} pr={2}>
+            <Stack direction={"row"} minWidth={"350px"} flex={1}>
                 <SaleSelect />
                 <CategorySelect />
                 <SubCategorySelect />
-            </Stack>
-            <Stack direction={"row"} flex={1}>
+
                 <PriceSelect type={"price"} />
                 <PriceSelect type={"area"} />
                 <FilterLabels

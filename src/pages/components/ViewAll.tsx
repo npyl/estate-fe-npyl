@@ -246,13 +246,12 @@ const ViewAll: FC = () => {
         <Box>
             <Paper
                 sx={{
-                    mt: 1,
                     p: 1,
                 }}
             >
                 <Stack direction={"row"} flex={1} flexWrap={"wrap"}>
                     <FilterSection />
-                    <Stack direction={"row"}>
+                    <Stack direction={"row"} spacing={2}>
                         <FilterSortBy
                             onSorting={(
                                 sortingBy: SetStateAction<string>,
@@ -277,6 +276,8 @@ const ViewAll: FC = () => {
                                         sx={{
                                             height: 38,
                                             width: 38,
+                                            marginLeft: 1, // Add spacing here
+
                                             color:
                                                 optionView === option.id
                                                     ? "primary.main"

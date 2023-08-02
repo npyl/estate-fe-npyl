@@ -72,11 +72,15 @@ import {
 } from "src/services/labels";
 import { CodeField } from "./components/CodeField";
 import { KeyCodeField } from "./components/KeyCodeField";
+import { ICustomer } from "src/types/customer";
+import { useTranslation } from "react-i18next";
+import { label } from "yet-another-react-lightbox/core";
+import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 
 const BasicForLandSection: React.FC<any> = () => {
     const router = useRouter();
     const dispatch = useDispatch();
-
+    const { t } = useTranslation();
     const { propertyId } = router.query;
     if (!propertyId) return null;
 
@@ -92,7 +96,7 @@ const BasicForLandSection: React.FC<any> = () => {
     const [assignLabel] = useAssignLabelToPropertyWithIDMutation();
     const [createAndAssignLabel] = useCreateLabelForPropertyWithIDMutation();
     const [deleteLabel] = useDeleteLabelForPropertyWithIdMutation();
-
+    const currentDate = new Date();
     const code = useSelector(selectCode);
     const owner = useSelector(selectOwner);
     const manager = useSelector(selectManager);
@@ -144,6 +148,15 @@ const BasicForLandSection: React.FC<any> = () => {
     // get list of owners & managers
     const { data: owners } = useAllCustomersQuery();
     const { data: managers } = useAllUsersQuery();
+
+    const handleDateChange = (
+        setter: ActionCreatorWithPayload<any, string>,
+        date: Date | null
+    ) => {
+        if (!date || !setter) return; // we don't need null
+
+        dispatch(setter(date.toISOString()));
+    };
     if (!enums) return null;
 
     return (
@@ -153,7 +166,7 @@ const BasicForLandSection: React.FC<any> = () => {
                     px: 3,
                     py: 1.5,
                     display: "flex",
-                    justifyContent: "center",
+                    justifyContent: "left",
                 }}
             >
                 <Typography variant="h6">Basic Details</Typography>
@@ -174,21 +187,22 @@ const BasicForLandSection: React.FC<any> = () => {
                             fullWidth
                             id="outlined-start-adornment"
                             select
-                            label="Owner"
+                            label={t("Owner")}
                             value={owner}
                             onChange={(
                                 event: React.ChangeEvent<HTMLInputElement>
                             ) => {
                                 dispatch(setOwner(event.target.value));
                             }}
-                            size="small"
                         >
                             {owners && owners.length > 0 ? (
-                                owners?.map((option, index) => (
-                                    <MenuItem key={index} value={option.id}>
-                                        {option.email}
-                                    </MenuItem>
-                                ))
+                                owners?.map(
+                                    (option: ICustomer, index: number) => (
+                                        <MenuItem key={index} value={option.id}>
+                                            {`${option.firstName} ${option.lastName}`}
+                                        </MenuItem>
+                                    )
+                                )
                             ) : (
                                 <MenuItem value={""}></MenuItem>
                             )}
@@ -199,19 +213,18 @@ const BasicForLandSection: React.FC<any> = () => {
                             fullWidth
                             id="outlined-start-adornment"
                             select
-                            label="Manager"
+                            label={t("Manager")}
                             value={manager}
                             onChange={(
                                 event: React.ChangeEvent<HTMLInputElement>
                             ) => {
                                 dispatch(setManager(event.target.value));
                             }}
-                            size="small"
                         >
                             {managers && managers.length > 0 ? (
                                 managers?.map((option, index) => (
                                     <MenuItem key={index} value={option.id}>
-                                        {option.email}
+                                        {`${option.firstName} ${option.lastName}`}
                                     </MenuItem>
                                 ))
                             ) : (
@@ -382,56 +395,70 @@ const BasicForLandSection: React.FC<any> = () => {
                                             variant="body1"
                                             sx={{ ml: 0 }}
                                         >
-                                            Rented
+                                            {t("Rented")}
                                         </Typography>
-                                    </Grid>
-                                    {/* <LocalizationProvider dateAdapter={AdapterDayjs}> */}
-                                    <Grid item xs={6}>
-                                        {/* <DemoContainer components={["DateField"]}> */}
-                                        <DateFieldStyled
-                                            label="Available After:"
-                                            value={availableAfter}
-                                            onChange={(value) => {
-                                                dispatch(
-                                                    setAvailableAfter(value)
-                                                );
-                                            }}
-                                            disabled={!rented} // Disable the field if "rented" is unchecked
-                                        />
-                                        {/* </DemoContainer> */}
                                     </Grid>
 
                                     <Grid item xs={6}>
-                                        {/* <DemoContainer components={["DateField"]}> */}
+                                        <DateFieldStyled
+                                            label="Available After:"
+                                            value={
+                                                availableAfter
+                                                    ? new Date(availableAfter)
+                                                    : currentDate
+                                            }
+                                            onChange={(value: any) => {
+                                                handleDateChange(
+                                                    setAvailableAfter,
+                                                    value
+                                                );
+                                            }}
+                                            disabled={!rented} // Disable the field if "rented" is unchecked
+                                            sx={{ width: "100%" }} // Add custom styles to make it full width
+                                        />
+                                    </Grid>
+
+                                    <Grid item xs={6}>
                                         <DateFieldStyled
                                             label="Rental Period Start"
-                                            value={rentalPeriodStart}
-                                            onChange={(value) => {
-                                                dispatch(
-                                                    setRentalPeriodStart(value)
+                                            value={
+                                                rentalPeriodStart
+                                                    ? new Date(
+                                                          rentalPeriodStart
+                                                      )
+                                                    : currentDate
+                                            }
+                                            onChange={(value: any) => {
+                                                handleDateChange(
+                                                    setRentalPeriodStart,
+                                                    value
                                                 );
                                             }}
                                             disabled={!rented} // Disable the field if "rented" is unchecked
+                                            sx={{ width: "100%" }} // Add custom styles to make it full width
                                         />
-                                        {/* </DemoContainer> */}
                                     </Grid>
                                     <Grid item xs={6}>
-                                        {/* <DemoContainer components={["DateField"]}> */}
                                         <DateFieldStyled
-                                            label="Rental Period End"
-                                            value={rentalPeriodEnd}
-                                            onChange={(value) => {
-                                                dispatch(
-                                                    setRentalPeriodEnd(value)
+                                            label={t("Rental Period End")}
+                                            value={
+                                                rentalPeriodEnd
+                                                    ? new Date(rentalPeriodEnd)
+                                                    : currentDate
+                                            }
+                                            onChange={(value: any) => {
+                                                handleDateChange(
+                                                    setRentalPeriodEnd,
+                                                    value
                                                 );
                                             }}
                                             disabled={!rented} // Disable the field if "rented" is unchecked
+                                            sx={{ width: "100%" }} // Add custom styles to make it full width
                                         />
-                                        {/* </DemoContainer> */}
                                     </Grid>
                                     <Grid item xs={6}>
                                         <OnlyNumbersInput
-                                            label="Current Rent Price"
+                                            label={t("Current Rent Price")}
                                             value={currentRentPrice}
                                             onChange={(value) => {
                                                 dispatch(

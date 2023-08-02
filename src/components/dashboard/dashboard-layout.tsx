@@ -6,6 +6,7 @@ import {
     Box,
     Button,
     Divider,
+    Grid,
     MenuItem,
     Paper,
     Stack,
@@ -36,10 +37,10 @@ const DashboardLayoutRoot = styled("div")(({ theme }) => ({
     display: "flex",
     flex: "1 1 auto",
     maxWidth: "100%",
-    paddingTop: 64,
-    marginRight: "16px",
+    paddingTop: 60,
+    marginRight: "0",
     [theme.breakpoints.up("md")]: {
-        paddingLeft: 220,
+        paddingLeft: 200,
     },
 }));
 
@@ -126,128 +127,137 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
                             overflowX: "auto",
                         }}
                     >
-                        <Stack
-                            alignItems={"center"}
-                            direction={"row"}
-                            justifyContent={"space-between"}
-                            spacing={1}
-                        >
-                            <Subbar />
-                            <Box
-                                sx={{
-                                    display: "flex",
-                                    flexDirection: "row",
-                                    justifyContent: "flex-end",
-                                    position: "sticky",
-                                    right: 0,
-                                    top: 0,
-                                }}
-                            >
-                                <Button
+                        <Grid item xs={12}>
+                            <Grid container xs={12}>
+                                <Grid item xs={10.5} marginTop={1}>
+                                    <Subbar />
+                                </Grid>
+                                <Grid
+                                    item
+                                    xs={1.5}
                                     sx={{
-                                        minWidth: "90px",
-                                        marginRight: "15px",
-                                        borderRadius: "50px",
-                                        fontFamily: "'Poppins', sans-serif",
-                                        fontSize: "1em",
-                                        color: "white",
-                                        backgroundImage:
-                                            "linear-gradient(45deg, #3f51b5 30%, #1a237e 90%)", // deep blue colors
-                                        boxShadow: (theme) =>
-                                            `0 3px 5px 2px ${alpha(
-                                                theme.palette.primary.dark,
-                                                0.3
-                                            )}`,
-                                        "&:hover": {
+                                        display: "flex",
+                                        justifyContent: "center", // This centers horizontally in case of flex direction row (which is default)
+                                        alignItems: "center", // This centers vertically in case of flex direction row
+                                        height: "100%", // Ensures that the flex container takes up the whole height of its parent
+                                        marginTop: "10px",
+                                    }}
+                                >
+                                    <Button
+                                        sx={{
+                                            minWidth: "100px",
+                                            borderRadius: 1,
+                                            fontFamily: "'Poppins', sans-serif",
+                                            fontSize: "1em",
+                                            color: "white",
                                             backgroundImage:
-                                                "linear-gradient(45deg, #1a237e 30%, #3f51b5 90%)",
+                                                "linear-gradient(45deg, #3f51b5 30%, #1a237e 90%)", // deep blue colors
                                             boxShadow: (theme) =>
                                                 `0 3px 5px 2px ${alpha(
                                                     theme.palette.primary.dark,
                                                     0.3
                                                 )}`,
-                                        },
-                                    }}
-                                    id="create-menu-button"
-                                    aria-controls={
-                                        open ? "create-menu" : undefined
-                                    }
-                                    aria-haspopup="true"
-                                    aria-expanded={open ? "true" : undefined}
-                                    variant="contained"
-                                    disableElevation
-                                    onClick={showDropdown}
-                                >
-                                    <Box
-                                        sx={{
-                                            display: "flex",
-                                            justifyContent: "space-between",
-                                            spacing: "10px",
-                                            width: "100%",
+                                            "&:hover": {
+                                                backgroundImage:
+                                                    "linear-gradient(45deg, #1a237e 30%, #3f51b5 90%)",
+                                                boxShadow: (theme) =>
+                                                    `0 3px 5px 2px ${alpha(
+                                                        theme.palette.primary
+                                                            .dark,
+                                                        0.3
+                                                    )}`,
+                                            },
                                         }}
+                                        id="create-menu-button"
+                                        aria-controls={
+                                            open ? "create-menu" : undefined
+                                        }
+                                        aria-haspopup="true"
+                                        aria-expanded={
+                                            open ? "true" : undefined
+                                        }
+                                        variant="contained"
+                                        disableElevation
+                                        onClick={showDropdown}
                                     >
-                                        <AddIcon sx={{ ml: 1 }} />
-                                        <Typography>{t("Create")}</Typography>
-                                    </Box>
-                                </Button>
-                            </Box>
-                            <StyledMenu
-                                id="create-menu"
-                                MenuListProps={{
-                                    "aria-labelledby": "create-menu-button",
-                                }}
-                                anchorEl={anchorEl}
-                                open={open}
-                                onClose={hideDropdown}
-                            >
-                                <MenuItem
-                                    onClick={(e) =>
-                                        startCreate(e, propertyItemType)
-                                    }
-                                    disableRipple
+                                        <Stack
+                                            direction={"row"}
+                                            alignItems={"center"}
+                                            sx={{
+                                                display: "flex",
+                                                gap: "10px",
+                                                width: "100%",
+                                            }}
+                                        >
+                                            <Typography
+                                                sx={{ fontSize: "1.5rem" }}
+                                            >
+                                                +
+                                            </Typography>
+                                            <Typography>
+                                                {t("Create")}
+                                            </Typography>
+                                        </Stack>
+                                    </Button>
+                                </Grid>
+                                <StyledMenu
+                                    id="create-menu"
+                                    MenuListProps={{
+                                        "aria-labelledby": "create-menu-button",
+                                    }}
+                                    anchorEl={anchorEl}
+                                    open={open}
+                                    onClose={hideDropdown}
                                 >
-                                    <HomeIcon />
-                                    {t("Property")}
-                                </MenuItem>
-                                <MenuItem
-                                    onClick={(e) =>
-                                        startCreate(e, ownerItemType)
-                                    }
-                                    disableRipple
-                                >
-                                    <UsersIcon fontSize="small" />
-                                    {t("Customer")}
-                                </MenuItem>
-                                <MenuItem
-                                    onClick={(e) =>
-                                        startCreate(e, labelItemType)
-                                    }
-                                    disableRipple
-                                >
-                                    <LabelImportantIcon fontSize="small" />
-                                    {t("Label")}
-                                </MenuItem>
-                                <MenuItem
-                                    onClick={(e) =>
-                                        startCreate(e, notificationItemType)
-                                    }
-                                    disableRipple
-                                >
-                                    <CircleNotifications fontSize="small" />
-                                    {t("Notification")}
-                                </MenuItem>
-                                <Divider sx={{ my: 0.5 }} />
-                                <MenuItem
-                                    onClick={(e) =>
-                                        startCreate(e, managerItemType)
-                                    }
-                                    disableRipple
-                                >
-                                    <ManageAccountsIcon fontSize="small" />
-                                    {t("Manager")}
-                                </MenuItem>
-                            </StyledMenu>
-                        </Stack>
+                                    <MenuItem
+                                        onClick={(e) =>
+                                            startCreate(e, propertyItemType)
+                                        }
+                                        disableRipple
+                                    >
+                                        <HomeIcon />
+                                        {t("Property")}
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={(e) =>
+                                            startCreate(e, ownerItemType)
+                                        }
+                                        disableRipple
+                                    >
+                                        <UsersIcon fontSize="small" />
+                                        {t("Customer")}
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={(e) =>
+                                            startCreate(e, labelItemType)
+                                        }
+                                        disableRipple
+                                    >
+                                        <LabelImportantIcon fontSize="small" />
+                                        {t("Label")}
+                                    </MenuItem>
+                                    <MenuItem
+                                        onClick={(e) =>
+                                            startCreate(e, notificationItemType)
+                                        }
+                                        disableRipple
+                                    >
+                                        <CircleNotifications fontSize="small" />
+                                        {t("Notification")}
+                                    </MenuItem>
+                                    <Divider sx={{ my: 0.5 }} />
+                                    <MenuItem
+                                        onClick={(e) =>
+                                            startCreate(e, managerItemType)
+                                        }
+                                        disableRipple
+                                    >
+                                        <ManageAccountsIcon fontSize="small" />
+                                        {t("Manager")}
+                                    </MenuItem>
+                                </StyledMenu>
+                            </Grid>
+                        </Grid>
                     </Paper>
                     {children}
                 </Box>
