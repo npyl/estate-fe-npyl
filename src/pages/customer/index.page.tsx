@@ -146,6 +146,7 @@ const Customers: NextPage = () => {
             </Box>
 
             <DeleteDialog
+                multiple
                 open={bulkDeleteDialogOpen}
                 onClose={closeBulkDeleteDialog}
                 onDelete={handleBulkDelete}

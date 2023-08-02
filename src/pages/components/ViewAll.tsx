@@ -389,6 +389,7 @@ const ViewAll: FC = () => {
 
             <BulkEditDrawer open={bulkEditOpen} onClose={closeBulkEdit} />
             <DeleteDialog
+                multiple
                 open={bulkDeleteDialogOpen}
                 onClose={closeBulkDeleteDialog}
                 onDelete={handleBulkDelete}

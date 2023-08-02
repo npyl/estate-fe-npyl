@@ -13,12 +13,14 @@ import { HighlightOff as HighlightOffIcon } from "@mui/icons-material";
 
 interface DeleteDialogProps {
     open: boolean;
+    multiple?: boolean;
     onClose: () => void;
     onDelete: () => void;
 }
 
 export const DeleteDialog = ({
     open,
+    multiple = false,
     onClose,
     onDelete,
 }: DeleteDialogProps) => {
@@ -47,7 +49,9 @@ export const DeleteDialog = ({
                 </Typography>
             </DialogContent>
             <DialogContentText ml={3} mr={3} sx={{ textAlign: "center" }}>
-                {t("Do you really want to delete this record?")}
+                {multiple
+                    ? t("Do you really want to delete these records?")
+                    : t("Do you really want to delete this record?")}
                 <br />
                 {t("This process cannot be undone")}
             </DialogContentText>
