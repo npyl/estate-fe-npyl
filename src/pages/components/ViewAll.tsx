@@ -243,11 +243,16 @@ const ViewAll: FC = () => {
     const closeBulkEdit = () => setBulkEditOpen(false);
 
     return (
-        <Box>
+        <Box
+            sx={{
+                position: "relative",
+            }}
+        >
             <Paper
                 sx={{
                     mt: 1,
                     p: 1,
+                    marginRight: bulkEditOpen ? 40 : 0,
                 }}
             >
                 <Stack direction={"row"} flex={1} flexWrap={"wrap"}>
@@ -306,7 +311,12 @@ const ViewAll: FC = () => {
             {rows && !isLoading ? (
                 <>
                     {optionView === "list" && (
-                        <Paper sx={{ mt: 1 }}>
+                        <Paper
+                            sx={{ mt: 1 }}
+                            style={{
+                                marginRight: bulkEditOpen ? 320 : 0,
+                            }}
+                        >
                             <DataGridTable
                                 rows={rows}
                                 columns={columns}
@@ -351,7 +361,7 @@ const ViewAll: FC = () => {
                 </Paper>
             )}
 
-            {/* <BulkEditDrawer open={bulkEditOpen} onClose={closeBulkEdit} /> */}
+            <BulkEditDrawer open={bulkEditOpen} onClose={closeBulkEdit} />
         </Box>
     );
 };

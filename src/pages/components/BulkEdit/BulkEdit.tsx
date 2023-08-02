@@ -38,7 +38,6 @@ export const BulkEditDrawer = ({ open, onClose }: BulkEditDrawerProps) => {
                 "& .MuiDrawer-paper": {
                     borderRadius: 1,
                     position: "absolute",
-                    marginRight: open ? -40 : 0,
                 },
             }}
         >
