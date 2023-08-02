@@ -7,7 +7,7 @@ interface IFilterSortByProps {
 
 export default function FilterSortBy({ onSorting }: IFilterSortByProps) {
     const sortByFilterOptions = [
-        { value: "default", label: "Automatic Sorting" },
+        { value: "default", label: "Default Sorting" },
         {
             value: "Ascending_Price",
             label: "Rising Price ",
@@ -32,12 +32,6 @@ export default function FilterSortBy({ onSorting }: IFilterSortByProps) {
         <FormControl
             variant="standard"
             sx={{
-                border: 1,
-                borderRadius: 1,
-                borderColor: "#ECECEC",
-                ":hover": {
-                    borderColor: "#000",
-                },
                 minWidth: "130px",
                 minHeight: "38px",
             }}

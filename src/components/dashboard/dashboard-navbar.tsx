@@ -114,7 +114,7 @@ export const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                     >
                         <Link href="/">
                             <Typography color="neutral.900" variant={"h5"}>
-                                Mordor v0.2
+                                Mordor v0.3
                             </Typography>
                         </Link>
                     </Box>

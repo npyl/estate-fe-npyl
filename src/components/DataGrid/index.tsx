@@ -1,6 +1,7 @@
 import {
     GridCallbackDetails,
     GridColDef,
+    GridDeleteIcon,
     GridPaginationModel,
     GridRowSelectionModel,
     GridRowsProp,
@@ -15,7 +16,7 @@ import { FC, useMemo, useState } from "react";
 import { addTab } from "src/slices/tabs";
 import { useDispatch } from "src/store";
 import { StyledDataGrid } from "./styles";
-import { IconButton } from "@mui/material";
+import { Button } from "@mui/material";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 
 type GridProps = {
@@ -33,6 +34,7 @@ type GridProps = {
         details: GridCallbackDetails
     ) => void;
 
+    onBulkDelete?: (selectedRows: GridRowSelectionModel) => void;
     onBulkEdit?: () => void;
 
     resource?: string;
@@ -50,6 +52,7 @@ const DataGridTable: FC<GridProps> = ({
     totalRows,
     onPaginationModelChange,
 
+    onBulkDelete,
     onBulkEdit,
 
     resource = "property",
@@ -57,7 +60,7 @@ const DataGridTable: FC<GridProps> = ({
     const router = useRouter();
     const dispatch = useDispatch();
 
-    const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>();
+    const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
     const [sortModel, setSortModel] = useState<GridSortModel>([]);
 
     useMemo(() => {
@@ -67,12 +70,22 @@ const DataGridTable: FC<GridProps> = ({
     }, [sortingBy, sortingOrder]);
 
     const BulkEditButton = () => (
-        <IconButton
+        <Button
             onClick={onBulkEdit}
+            startIcon={<EditNoteIcon />}
             sx={{ position: "absolute", right: 0, mr: 1, mt: 0.5 }}
         >
-            <EditNoteIcon />
-        </IconButton>
+            Edit
+        </Button>
+    );
+
+    const BulkDeleteButton = () => (
+        <Button
+            startIcon={<GridDeleteIcon />}
+            onClick={() => onBulkDelete?.(selectedRows)}
+        >
+            Delete
+        </Button>
     );
 
     const CustomToolbar = () => {
@@ -81,7 +94,12 @@ const DataGridTable: FC<GridProps> = ({
                 <GridToolbarColumnsButton />
                 <GridToolbarExport />
 
-                {selectedRows && selectedRows.length > 0 && <BulkEditButton />}
+                {selectedRows && selectedRows.length > 0 && (
+                    <>
+                        <BulkDeleteButton />
+                        <BulkEditButton />
+                    </>
+                )}
             </GridToolbarContainer>
         );
     };

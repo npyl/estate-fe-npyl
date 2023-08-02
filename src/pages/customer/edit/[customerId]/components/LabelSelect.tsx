@@ -34,7 +34,7 @@ export const LabelSelect: React.FC = () => {
     };
 
     return (
-        <FormControl sx={{ width: 135 }}>
+        <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Ετικέτες</InputLabel>
             <Select
                 multiple

@@ -6,6 +6,7 @@ import {
     Box,
     Button,
     Divider,
+    Grid,
     MenuItem,
     Paper,
     Stack,
@@ -25,7 +26,7 @@ import { useDispatch } from "src/store";
 
 import { Users as UsersIcon } from "../../icons/users";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import { CircleNotifications } from "@mui/icons-material";
+import { Add, CircleNotifications } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 
 interface DashboardLayoutProps {
@@ -36,10 +37,10 @@ const DashboardLayoutRoot = styled("div")(({ theme }) => ({
     display: "flex",
     flex: "1 1 auto",
     maxWidth: "100%",
-    paddingTop: 64,
-    marginRight: "16px",
+    paddingTop: 60,
+    marginRight: "0",
     [theme.breakpoints.up("md")]: {
-        paddingLeft: 220,
+        paddingLeft: 200,
     },
 }));
 
@@ -126,28 +127,25 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
                             overflowX: "auto",
                         }}
                     >
-                        <Stack
-                            alignItems={"center"}
-                            direction={"row"}
-                            justifyContent={"space-between"}
-                            spacing={1}
-                        >
-                            <Subbar />
-                            <Box
+                        <Grid container>
+                            <Grid item xs={11} marginTop={1}>
+                                <Subbar />
+                            </Grid>
+                            <Grid
+                                item
+                                xs={1}
                                 sx={{
                                     display: "flex",
-                                    flexDirection: "row",
-                                    justifyContent: "flex-end",
-                                    position: "sticky",
-                                    right: 0,
-                                    top: 0,
+                                    justifyContent: "center", // This centers horizontally in case of flex direction row (which is default)
+                                    alignItems: "center", // This centers vertically in case of flex direction row
+                                    height: "100%", // Ensures that the flex container takes up the whole height of its parent
+                                    marginTop: "10px",
                                 }}
                             >
                                 <Button
                                     sx={{
-                                        minWidth: "90px",
-                                        marginRight: "15px",
-                                        borderRadius: "50px",
+                                        minWidth: "100px",
+                                        borderRadius: 1,
                                         fontFamily: "'Poppins', sans-serif",
                                         fontSize: "1em",
                                         color: "white",
@@ -176,21 +174,12 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
                                     aria-expanded={open ? "true" : undefined}
                                     variant="contained"
                                     disableElevation
+                                    startIcon={<Add />}
                                     onClick={showDropdown}
                                 >
-                                    <Box
-                                        sx={{
-                                            display: "flex",
-                                            justifyContent: "space-between",
-                                            spacing: "10px",
-                                            width: "100%",
-                                        }}
-                                    >
-                                        <AddIcon sx={{ ml: 1 }} />
-                                        <Typography>{t("Create")}</Typography>
-                                    </Box>
+                                    <Typography>{t("Create")}</Typography>
                                 </Button>
-                            </Box>
+                            </Grid>
                             <StyledMenu
                                 id="create-menu"
                                 MenuListProps={{
@@ -247,7 +236,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
                                     {t("Manager")}
                                 </MenuItem>
                             </StyledMenu>
-                        </Stack>
+                        </Grid>
                     </Paper>
                     {children}
                 </Box>

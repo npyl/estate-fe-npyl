@@ -1,15 +1,23 @@
 import { Box, Paper, Skeleton, Avatar } from "@mui/material";
-import { GridCellParams, GridColDef } from "@mui/x-data-grid";
+import {
+    GridCellParams,
+    GridColDef,
+    GridRowSelectionModel,
+} from "@mui/x-data-grid";
 import type { NextPage } from "next";
 import { useEffect, useMemo, useState } from "react";
 import DataGridTable from "src/components/DataGrid";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-import { useFilterCustomersMutation } from "src/services/customers";
+import {
+    useDeleteCustomerMutation,
+    useFilterCustomersMutation,
+} from "src/services/customers";
 import { FilterSection } from "./components";
 import { useSelector } from "react-redux";
 import { selectAll } from "src/slices/customer/filters";
 import { UserCircle } from "src/icons/user-circle";
+import { DeleteDialog } from "src/components/Dialog/Delete";
 
 const columns: GridColDef[] = [
     {
@@ -54,25 +62,47 @@ const columns: GridColDef[] = [
 const Customers: NextPage = () => {
     const allFilters = useSelector(selectAll);
 
+    const [bulkDeleteDialogOpen, setBulkDeleteDialogOpen] = useState(false);
+    const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
+
+    // page
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(25);
 
+    const [deleteCustomer] = useDeleteCustomerMutation();
     const [filterCustomers, { isLoading, data }] = useFilterCustomersMutation();
 
     useEffect(() => {
+        revalidate();
+    }, [allFilters, page, pageSize]);
+
+    const rows = useMemo(() => data?.content || [], [data?.content]);
+
+    const revalidate = () => {
         filterCustomers({
             filter: allFilters,
             page: page,
             pageSize: pageSize,
         });
-    }, [allFilters, page, pageSize]);
-
-    const rows = useMemo(() => data?.content || [], [data?.content]);
+    };
 
     const renderSkeletonCell = () => <Skeleton width={150} animation="wave" />;
     const skeletonRows = Array.from({ length: 2 }, (_, index) => ({
         id: index + 1,
     }));
+
+    const openBulkDeleteDialog = (selectedRows: GridRowSelectionModel) => {
+        setBulkDeleteDialogOpen(true);
+        setSelectedRows(selectedRows);
+    };
+    const closeBulkDeleteDialog = () => setBulkDeleteDialogOpen(false);
+    const handleBulkDelete = () => {
+        closeBulkDeleteDialog();
+
+        Promise.all(selectedRows.map((id) => deleteCustomer(+id))).then(() =>
+            revalidate()
+        );
+    };
 
     return (
         <>
@@ -96,6 +126,7 @@ const Customers: NextPage = () => {
                             page={0}
                             pageSize={25}
                             totalRows={25}
+                            onBulkDelete={openBulkDeleteDialog}
                         />
                     ) : (
                         <DataGridTable
@@ -113,6 +144,13 @@ const Customers: NextPage = () => {
                     )}
                 </Paper>
             </Box>
+
+            <DeleteDialog
+                multiple
+                open={bulkDeleteDialogOpen}
+                onClose={closeBulkDeleteDialog}
+                onDelete={handleBulkDelete}
+            />
         </>
     );
 };

@@ -2,32 +2,36 @@ import { Divider, Grid, List, Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useRouter } from "next/router";
 import * as React from "react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { ListItem } from "src/components/List";
 import ListLabelsItem from "src/components/List/labels-item";
 import { useGetCustomerByIdQuery } from "src/services/customers";
 import { useGetLabelsQuery } from "src/services/labels";
 
-const DemandSection: React.FC = (props) => {
+const DemandSection: React.FC = () => {
     const router = useRouter();
-    const { customerId } = router.query;
     const { t } = useTranslation();
+
+    const { customerId } = router.query;
+
     const { data } = useGetCustomerByIdQuery(parseInt(customerId as string)); // basic details
     const { data: allLabels } = useGetLabelsQuery();
-    const customerLabels = allLabels?.customerLabels;
+
+    const propertyLabels = allLabels?.propertyLabels;
     const demandFilters = data?.demand?.filters;
     const demandFilterLabelIDs = demandFilters?.labels;
 
-    if (!data || !demandFilters || !customerLabels) {
-        return null;
-    }
+    const selectedLabels = useMemo(
+        () =>
+            propertyLabels?.filter((propertyLabel) =>
+                demandFilterLabelIDs?.find(
+                    (labelID) => labelID === propertyLabel.id
+                )
+            ) || [],
+        [propertyLabels, demandFilterLabelIDs]
+    );
 
-    const selectedLabels =
-        customerLabels.filter((customerLabel) =>
-            demandFilterLabelIDs?.find(
-                (labelID) => labelID === customerLabel.id
-            )
-        ) || [];
     if (
         data?.demand.filters.parentCategory === null &&
         data?.demand.filters.minYearOfConstruction === null &&
@@ -47,9 +51,11 @@ const DemandSection: React.FC = (props) => {
         data?.demand.filters.minPlot === null &&
         data?.demand.filters.maxPlot === null &&
         data?.demand.filters.minFloor === null &&
-        data?.demand.filters.maxFloor === null
+        data?.demand.filters.maxFloor === null &&
+        data?.demand.filters.labels.length === 0
     )
-        return null;
+        return; // don't show anything
+
     return (
         <Paper
             elevation={10}

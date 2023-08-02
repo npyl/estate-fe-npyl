@@ -17,11 +17,15 @@ import {
     GridCellParams,
     GridColDef,
     GridPaginationModel,
+    GridRowSelectionModel,
 } from "@mui/x-data-grid";
 import { FC, SetStateAction, useEffect, useMemo, useState } from "react";
 import Image from "src/components/image";
 import { Menu } from "src/icons/menu";
-import { useFilterPropertiesMutation } from "src/services/properties";
+import {
+    useDeletePropertyMutation,
+    useFilterPropertiesMutation,
+} from "src/services/properties";
 import DataGridTable from "../../components/DataGrid";
 import MapView from "./MapView";
 import MediaCard from "./MediaCard";
@@ -31,8 +35,8 @@ import FilterSortBy from "./Filters/FilterSortBy";
 import { selectAll, sumOfChangedProperties } from "src/slices/filters";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-
 import { BulkEditDrawer } from "./BulkEdit/BulkEdit";
+import { DeleteDialog } from "src/components/Dialog/Delete";
 import ChosenFilters from "./Filters/ChosenFilters";
 
 type optionType = "list" | "grid" | "map";
@@ -49,6 +53,8 @@ const ViewAll: FC = () => {
     const { t } = useTranslation();
 
     const [bulkEditOpen, setBulkEditOpen] = useState(false);
+    const [bulkDeleteDialogOpen, setBulkDeleteDialogOpen] = useState(false);
+    const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
 
     const changedPropertyFilters = useSelector(sumOfChangedProperties);
 
@@ -63,15 +69,20 @@ const ViewAll: FC = () => {
 
     const allFilters = useSelector(selectAll);
 
+    const [deleteProperty] = useDeletePropertyMutation();
     const [filterProperties, { isLoading, data }] =
         useFilterPropertiesMutation();
 
-    useEffect(() => {
+    const revalidate = () => {
         filterProperties({
             filter: allFilters,
             page: page,
             pageSize: pageSize,
         });
+    };
+
+    useEffect(() => {
+        revalidate();
     }, [allFilters, page, pageSize]);
 
     const rows = useMemo(() => {
@@ -242,17 +253,35 @@ const ViewAll: FC = () => {
     const handleBulkEdit = () => setBulkEditOpen(true);
     const closeBulkEdit = () => setBulkEditOpen(false);
 
+    // Bulk Delete
+    const openBulkDeleteDialog = (selectedRows: GridRowSelectionModel) => {
+        setBulkDeleteDialogOpen(true);
+        setSelectedRows(selectedRows);
+    };
+    const closeBulkDeleteDialog = () => setBulkDeleteDialogOpen(false);
+    const handleBulkDelete = () => {
+        closeBulkDeleteDialog();
+        // delete each row; By default the DataGrid looks for a property named `id` when getting the rows, so selectedRow = id
+        Promise.all(selectedRows.map((id) => deleteProperty(+id))).then(() =>
+            revalidate()
+        );
+    };
+
     return (
-        <Box>
+        <Box
+            sx={{
+                position: "relative",
+            }}
+        >
             <Paper
                 sx={{
-                    mt: 1,
                     p: 1,
+                    marginRight: bulkEditOpen ? 40 : 0,
                 }}
             >
                 <Stack direction={"row"} flex={1} flexWrap={"wrap"}>
                     <FilterSection />
-                    <Stack direction={"row"}>
+                    <Stack direction={"row"} spacing={2}>
                         <FilterSortBy
                             onSorting={(
                                 sortingBy: SetStateAction<string>,
@@ -277,6 +306,8 @@ const ViewAll: FC = () => {
                                         sx={{
                                             height: 38,
                                             width: 38,
+                                            marginLeft: 1, // Add spacing here
+
                                             color:
                                                 optionView === option.id
                                                     ? "primary.main"
@@ -306,7 +337,12 @@ const ViewAll: FC = () => {
             {rows && !isLoading ? (
                 <>
                     {optionView === "list" && (
-                        <Paper sx={{ mt: 1 }}>
+                        <Paper
+                            sx={{ mt: 1 }}
+                            style={{
+                                marginRight: bulkEditOpen ? 320 : 0,
+                            }}
+                        >
                             <DataGridTable
                                 rows={rows}
                                 columns={columns}
@@ -318,6 +354,7 @@ const ViewAll: FC = () => {
                                 onPaginationModelChange={
                                     handlePaginationModelChange
                                 }
+                                onBulkDelete={openBulkDeleteDialog}
                                 onBulkEdit={handleBulkEdit}
                             />
                         </Paper>
@@ -351,7 +388,13 @@ const ViewAll: FC = () => {
                 </Paper>
             )}
 
-            {/* <BulkEditDrawer open={bulkEditOpen} onClose={closeBulkEdit} /> */}
+            <BulkEditDrawer open={bulkEditOpen} onClose={closeBulkEdit} />
+            <DeleteDialog
+                multiple
+                open={bulkDeleteDialogOpen}
+                onClose={closeBulkDeleteDialog}
+                onDelete={handleBulkDelete}
+            />
         </Box>
     );
 };
