@@ -69,11 +69,6 @@ export const FilterSection = () => {
                         <TuneIcon />
                     </Badge>
                 </StyledPriceButton>
-                {/* {changedPropertyFilters > 0 && (
-                    <Box overflow={"auto"}>
-                        <ChosenFilters />
-                    </Box>
-                )} */}
                 {openFilter && (
                     <FilterMore
                         open={openFilter}
