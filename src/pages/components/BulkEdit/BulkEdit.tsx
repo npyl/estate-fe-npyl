@@ -35,10 +35,12 @@ export const BulkEditDrawer = ({ open, onClose }: BulkEditDrawerProps) => {
             ModalProps={{ sx: { zIndex: 999999 } }}
             PaperProps={{ sx: { width: 310 } }}
             sx={{
-                "& .MuiDrawer-paper": {
-                    borderRadius: 1,
-                    position: "absolute",
-                },
+                "& .MuiDrawer-paper": open
+                    ? {
+                          borderRadius: 1,
+                          position: "absolute",
+                      }
+                    : {}, // prevent horizontal scrollbar from exceeding page-content size
             }}
         >
             <Stack textAlign={"center"} flex={1} p={1}>
