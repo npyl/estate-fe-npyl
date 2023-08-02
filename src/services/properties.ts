@@ -12,6 +12,7 @@ import {
     IPropertyImagePOST,
     IPropertyBlueprintPOST,
     IPropertyBlueprint,
+    IPropertyImage,
 } from "src/types/file";
 
 import { ILabel } from "src/types/label";
@@ -74,6 +75,7 @@ export const properties = createApi({
         "SuggestedProperties",
 
         // attributes
+        "PropertyByIdImages",
         "PropertyByIdLabels",
         "PropertyByIdBlueprints",
     ],
@@ -98,6 +100,10 @@ export const properties = createApi({
             query: (props: IGetPropertyAttributeProps) =>
                 `${props.propertyId}/${props.attributeName}`,
             providesTags: ["PropertyById"],
+        }),
+        getPropertyImages: builder.query<IPropertyImage[], number>({
+            query: (propertyId: number) => `${propertyId}/images`,
+            providesTags: ["PropertyByIdImages"],
         }),
         getPropertyLabels: builder.query<ILabel[], number>({
             query: (propertyId: number) => `${propertyId}/labels`,
@@ -205,7 +211,7 @@ export const properties = createApi({
                 method: "POST",
                 body: params.body,
             }),
-            invalidatesTags: ["PropertyById"],
+            invalidatesTags: ["PropertyByIdImages"],
         }),
         setPropertyThumbail: builder.mutation<void, IPropertySetThumbnailProps>(
             {
@@ -213,7 +219,7 @@ export const properties = createApi({
                     url: `/${props.propertyId}/thumbnail/${props.imageKey}`,
                     method: "POST",
                 }),
-                invalidatesTags: ["PropertyById"],
+                invalidatesTags: ["PropertyByIdImages"],
             }
         ),
         deletePropertyImage: builder.mutation<void, IDeleteImageProps>({
@@ -251,7 +257,7 @@ export const properties = createApi({
                 method: "POST",
                 body: params.body,
             }),
-            invalidatesTags: ["Properties", "PropertyById"],
+            invalidatesTags: ["Properties", "PropertyByIdImages"],
         }),
     }),
 });
@@ -263,8 +269,9 @@ export const {
     useGetPropertyByIdQuery,
     useGetPropertyByCodeQuery,
     useGetPropertyAttributeQuery,
+    useLazyGetPropertyImagesQuery,
     useLazyGetPropertyLabelsQuery,
-    useGetPropertyBlueprintsQuery,
+    useLazyGetPropertyBlueprintsQuery,
 
     // mutations
     useEditPropertyMutation,

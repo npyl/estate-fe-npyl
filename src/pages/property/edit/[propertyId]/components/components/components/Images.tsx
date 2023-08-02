@@ -1,4 +1,4 @@
-import { Box, Card, CardContent, CardHeader, Typography } from "@mui/material";
+import { Card, CardContent, CardHeader } from "@mui/material";
 import { useCallback, useState } from "react";
 
 import UploadDnd from "src/components/upload/UploadDnd";

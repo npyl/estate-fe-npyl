@@ -5,7 +5,11 @@ import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import Form from "./components/Form";
-import { useEditPropertyMutation } from "src/services/properties";
+import {
+    useEditPropertyMutation,
+    useLazyGetPropertyBlueprintsQuery,
+    useLazyGetPropertyImagesQuery,
+} from "src/services/properties";
 import { setInitialState, selectAll, resetState } from "src/slices/property";
 import {
     resetState as resetFiles,
@@ -21,6 +25,7 @@ import { useGetPropertyByIdQuery } from "src/services/properties";
 
 import { useDispatch } from "react-redux";
 import { LogoProgressIndicator } from "src/components/LogoProgressIndicator";
+import { IPropertyBlueprint, IPropertyImage } from "src/types/file";
 
 const EditPropertyPage: NextPage = () => {
     const dispatch = useDispatch();
@@ -28,10 +33,16 @@ const EditPropertyPage: NextPage = () => {
 
     const { propertyId } = router.query;
 
-    const { data: fetchedProperty, isSuccess: isPropertySuccess } =
-        useGetPropertyByIdQuery(parseInt(propertyId as string));
+    // INFO: lazy is used on * because addImage doesn't cause invalidate (in contradiction to editImage)
+
+    const { data } = useGetPropertyByIdQuery(+propertyId!);
+    const [getImages] = useLazyGetPropertyImagesQuery(); // *
+    const [getBlueprints] = useLazyGetPropertyBlueprintsQuery(); // *
     const [edit, { isSuccess: isEditSuccess, isLoading: isEditLoading }] =
         useEditPropertyMutation();
+
+    const [images, setImages] = useState<IPropertyImage[]>();
+    const [blueprints, setBluprints] = useState<IPropertyBlueprint[]>();
 
     const body = useSelector(selectAll);
     // everythingIsClear; we can now setInitialState
@@ -46,22 +57,35 @@ const EditPropertyPage: NextPage = () => {
 
     useEffect(() => {
         if (!everythingIsClear) return;
-        if (!fetchedProperty || !isPropertySuccess) return;
+        if (!data) return;
+
+        dispatch(setInitialNotesState(data.notes));
+        dispatch(setInitialState(data));
+    }, [everythingIsClear, data]);
+
+    useEffect(() => {
+        if (!everythingIsClear) return;
+        if (!images || !blueprints) return;
 
         dispatch(
             setInitialFilesState({
-                propertyImages: fetchedProperty.images,
-                propertyBlueprints: fetchedProperty.blueprints,
+                propertyImages: images,
+                propertyBlueprints: blueprints,
             })
         );
-        dispatch(setInitialNotesState(fetchedProperty.notes));
-        dispatch(setInitialState(fetchedProperty));
-    }, [everythingIsClear, fetchedProperty, isPropertySuccess]);
+    }, [everythingIsClear, images, blueprints]);
 
     useEffect(() => {
         // clear store before getting data
         resetEverything();
         setEverythingIsClear(true); // prevent race condition between reset and setInitialState
+
+        getImages(+propertyId!)
+            .unwrap()
+            .then((response) => setImages(response));
+        getBlueprints(+propertyId!)
+            .unwrap()
+            .then((response) => setBluprints(response));
     }, []);
 
     const performUpload = () => {
@@ -72,10 +96,12 @@ const EditPropertyPage: NextPage = () => {
 
     return (
         <>
-            <Form
-                performUpload={performUpload}
-                resetEverything={resetEverything}
-            />
+            {everythingIsClear && (
+                <Form
+                    performUpload={performUpload}
+                    resetEverything={resetEverything}
+                />
+            )}
 
             {
                 // loading indicator (incase POST request is taking alot of time)
