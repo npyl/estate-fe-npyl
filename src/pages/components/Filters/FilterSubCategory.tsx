@@ -43,7 +43,7 @@ export default function SubCategorySelect() {
         );
     };
     return (
-        <FormControl fullWidth>
+        <FormControl sx={{ minWidth: "130px" }}>
             <InputLabel id="demo-simple-select-label">Υποκατηγορίες</InputLabel>
             <Select
                 multiple

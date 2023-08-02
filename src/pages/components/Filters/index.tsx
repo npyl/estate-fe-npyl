@@ -45,52 +45,35 @@ export const FilterSection = () => {
     };
 
     return (
-        <Grid item xs={12}>
-            <Grid container xs={12}>
-                {/* <CountrySelect /> */}
-                {/* <SubAreas /> */}
-                <Grid item xs={1.75}>
-                    <SaleSelect />
-                </Grid>
-                <Grid item xs={1.75}>
-                    <CategorySelect />
-                </Grid>
-                <Grid item xs={1.75}>
-                    <SubCategorySelect />
-                </Grid>
-                <Grid item xs={1.75}>
-                    <PriceSelect type={"price"} />
-                </Grid>
-                <Grid item xs={1.75}>
-                    <PriceSelect type={"area"} />
-                </Grid>
-                <Grid item xs={1.75}>
-                    <FilterLabels
-                        variant="property"
-                        labels={labels}
-                        setLabels={setLabels}
-                    />
-                </Grid>
-                <Grid item xs={1.5}>
-                    <StyledPriceButton
-                        open={false}
-                        disableRipple
-                        color="inherit"
-                        onClick={handleOpenFilter}
-                    >
-                        <Badge
-                            badgeContent={changedPropertyFilters}
-                            color="error"
-                        >
-                            <TuneIcon />
-                        </Badge>
-                    </StyledPriceButton>
-                </Grid>
-                {changedPropertyFilters > 0 && (
+        <>
+            <Stack direction={"row"} minWidth={"350px"} pr={2}>
+                <SaleSelect />
+                <CategorySelect />
+                <SubCategorySelect />
+            </Stack>
+            <Stack direction={"row"} flex={1}>
+                <PriceSelect type={"price"} />
+                <PriceSelect type={"area"} />
+                <FilterLabels
+                    variant="property"
+                    labels={labels}
+                    setLabels={setLabels}
+                />
+                <StyledPriceButton
+                    open={false}
+                    disableRipple
+                    color="inherit"
+                    onClick={handleOpenFilter}
+                >
+                    <Badge badgeContent={changedPropertyFilters} color="error">
+                        <TuneIcon />
+                    </Badge>
+                </StyledPriceButton>
+                {/* {changedPropertyFilters > 0 && (
                     <Box overflow={"auto"}>
                         <ChosenFilters />
                     </Box>
-                )}
+                )} */}
                 {openFilter && (
                     <FilterMore
                         open={openFilter}
@@ -100,7 +83,7 @@ export const FilterSection = () => {
                         onResetFilter={handleResetFilter}
                     />
                 )}
-            </Grid>
-        </Grid>
+            </Stack>
+        </>
     );
 };
