@@ -146,7 +146,9 @@ const DemandForm: FC = () => {
             )
         );
 
-        dispatch(setDemandLabels(propertyForCode.labels));
+        dispatch(
+            setDemandLabels(propertyForCode.labels.map((label) => label.id))
+        );
     }, [propertyForCode, isPropertyForCodeSuccess]);
 
     const handleChange = (
