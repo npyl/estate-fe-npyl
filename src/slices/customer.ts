@@ -327,16 +327,8 @@ const slice = createSlice({
             state.demand.filters.maxPrice = action.payload;
         },
 
-        setDemandLabels(state: customerState, action): void {
-            const labels: ILabel[] = action.payload;
-
-            state.demand.filters.labels = labels
-                ? labels
-                      .filter((label) => label.id) // where id not null
-                      .map((label) => {
-                          return label.id!;
-                      })
-                : [];
+        setDemandLabels(state: customerState, { payload }): void {
+            state.demand.filters.labels = payload;
         },
 
         setTimeFrame(state: customerState, action): void {
