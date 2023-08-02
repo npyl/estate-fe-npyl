@@ -1,17 +1,6 @@
 import React from "react";
 import { IProperties } from "src/types/properties";
-import {
-    Typography,
-    Box,
-    Paper,
-    Divider,
-    Grid,
-    TextField,
-    ListItem,
-} from "@mui/material";
-import { List, ListBooleanItem } from "src/components/List";
-import Editor from "src/components/editor/Editor";
-import ReactQuill from "react-quill";
+import { Typography, Box, Paper, Divider, Grid } from "@mui/material";
 import dynamic from "next/dynamic";
 interface DescriptionSectionProps {
     data: IProperties;
@@ -20,8 +9,6 @@ interface DescriptionSectionProps {
 const DescriptionSection: React.FC<DescriptionSectionProps> = (props) => {
     const { data } = props;
 
-    const details = data?.details;
-    const areas = data?.areas;
     const ReactQuill = dynamic(() => import("react-quill"), {
         ssr: false,
         loading: () => (
