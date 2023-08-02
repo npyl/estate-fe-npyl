@@ -26,7 +26,7 @@ import { useDispatch } from "src/store";
 
 import { Users as UsersIcon } from "../../icons/users";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import { CircleNotifications } from "@mui/icons-material";
+import { Add, CircleNotifications } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 
 interface DashboardLayoutProps {
@@ -127,136 +127,115 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
                             overflowX: "auto",
                         }}
                     >
-                        <Grid item xs={12}>
-                            <Grid container xs={12}>
-                                <Grid item xs={10.5} marginTop={1}>
-                                    <Subbar />
-                                </Grid>
-                                <Grid
-                                    item
-                                    xs={1.5}
+                        <Grid container>
+                            <Grid item xs={11} marginTop={1}>
+                                <Subbar />
+                            </Grid>
+                            <Grid
+                                item
+                                xs={1}
+                                sx={{
+                                    display: "flex",
+                                    justifyContent: "center", // This centers horizontally in case of flex direction row (which is default)
+                                    alignItems: "center", // This centers vertically in case of flex direction row
+                                    height: "100%", // Ensures that the flex container takes up the whole height of its parent
+                                    marginTop: "10px",
+                                }}
+                            >
+                                <Button
                                     sx={{
-                                        display: "flex",
-                                        justifyContent: "center", // This centers horizontally in case of flex direction row (which is default)
-                                        alignItems: "center", // This centers vertically in case of flex direction row
-                                        height: "100%", // Ensures that the flex container takes up the whole height of its parent
-                                        marginTop: "10px",
-                                    }}
-                                >
-                                    <Button
-                                        sx={{
-                                            minWidth: "100px",
-                                            borderRadius: 1,
-                                            fontFamily: "'Poppins', sans-serif",
-                                            fontSize: "1em",
-                                            color: "white",
+                                        minWidth: "100px",
+                                        borderRadius: 1,
+                                        fontFamily: "'Poppins', sans-serif",
+                                        fontSize: "1em",
+                                        color: "white",
+                                        backgroundImage:
+                                            "linear-gradient(45deg, #3f51b5 30%, #1a237e 90%)", // deep blue colors
+                                        boxShadow: (theme) =>
+                                            `0 3px 5px 2px ${alpha(
+                                                theme.palette.primary.dark,
+                                                0.3
+                                            )}`,
+                                        "&:hover": {
                                             backgroundImage:
-                                                "linear-gradient(45deg, #3f51b5 30%, #1a237e 90%)", // deep blue colors
+                                                "linear-gradient(45deg, #1a237e 30%, #3f51b5 90%)",
                                             boxShadow: (theme) =>
                                                 `0 3px 5px 2px ${alpha(
                                                     theme.palette.primary.dark,
                                                     0.3
                                                 )}`,
-                                            "&:hover": {
-                                                backgroundImage:
-                                                    "linear-gradient(45deg, #1a237e 30%, #3f51b5 90%)",
-                                                boxShadow: (theme) =>
-                                                    `0 3px 5px 2px ${alpha(
-                                                        theme.palette.primary
-                                                            .dark,
-                                                        0.3
-                                                    )}`,
-                                            },
-                                        }}
-                                        id="create-menu-button"
-                                        aria-controls={
-                                            open ? "create-menu" : undefined
-                                        }
-                                        aria-haspopup="true"
-                                        aria-expanded={
-                                            open ? "true" : undefined
-                                        }
-                                        variant="contained"
-                                        disableElevation
-                                        onClick={showDropdown}
-                                    >
-                                        <Stack
-                                            direction={"row"}
-                                            alignItems={"center"}
-                                            sx={{
-                                                display: "flex",
-                                                gap: "10px",
-                                                width: "100%",
-                                            }}
-                                        >
-                                            <Typography
-                                                sx={{ fontSize: "1.5rem" }}
-                                            >
-                                                +
-                                            </Typography>
-                                            <Typography>
-                                                {t("Create")}
-                                            </Typography>
-                                        </Stack>
-                                    </Button>
-                                </Grid>
-                                <StyledMenu
-                                    id="create-menu"
-                                    MenuListProps={{
-                                        "aria-labelledby": "create-menu-button",
+                                        },
                                     }}
-                                    anchorEl={anchorEl}
-                                    open={open}
-                                    onClose={hideDropdown}
+                                    id="create-menu-button"
+                                    aria-controls={
+                                        open ? "create-menu" : undefined
+                                    }
+                                    aria-haspopup="true"
+                                    aria-expanded={open ? "true" : undefined}
+                                    variant="contained"
+                                    disableElevation
+                                    startIcon={<Add />}
+                                    onClick={showDropdown}
                                 >
-                                    <MenuItem
-                                        onClick={(e) =>
-                                            startCreate(e, propertyItemType)
-                                        }
-                                        disableRipple
-                                    >
-                                        <HomeIcon />
-                                        {t("Property")}
-                                    </MenuItem>
-                                    <MenuItem
-                                        onClick={(e) =>
-                                            startCreate(e, ownerItemType)
-                                        }
-                                        disableRipple
-                                    >
-                                        <UsersIcon fontSize="small" />
-                                        {t("Customer")}
-                                    </MenuItem>
-                                    <MenuItem
-                                        onClick={(e) =>
-                                            startCreate(e, labelItemType)
-                                        }
-                                        disableRipple
-                                    >
-                                        <LabelImportantIcon fontSize="small" />
-                                        {t("Label")}
-                                    </MenuItem>
-                                    <MenuItem
-                                        onClick={(e) =>
-                                            startCreate(e, notificationItemType)
-                                        }
-                                        disableRipple
-                                    >
-                                        <CircleNotifications fontSize="small" />
-                                        {t("Notification")}
-                                    </MenuItem>
-                                    <Divider sx={{ my: 0.5 }} />
-                                    <MenuItem
-                                        onClick={(e) =>
-                                            startCreate(e, managerItemType)
-                                        }
-                                        disableRipple
-                                    >
-                                        <ManageAccountsIcon fontSize="small" />
-                                        {t("Manager")}
-                                    </MenuItem>
-                                </StyledMenu>
+                                    <Typography>{t("Create")}</Typography>
+                                </Button>
                             </Grid>
+                            <StyledMenu
+                                id="create-menu"
+                                MenuListProps={{
+                                    "aria-labelledby": "create-menu-button",
+                                }}
+                                anchorEl={anchorEl}
+                                open={open}
+                                onClose={hideDropdown}
+                            >
+                                <MenuItem
+                                    onClick={(e) =>
+                                        startCreate(e, propertyItemType)
+                                    }
+                                    disableRipple
+                                >
+                                    <HomeIcon />
+                                    {t("Property")}
+                                </MenuItem>
+                                <MenuItem
+                                    onClick={(e) =>
+                                        startCreate(e, ownerItemType)
+                                    }
+                                    disableRipple
+                                >
+                                    <UsersIcon fontSize="small" />
+                                    {t("Customer")}
+                                </MenuItem>
+                                <MenuItem
+                                    onClick={(e) =>
+                                        startCreate(e, labelItemType)
+                                    }
+                                    disableRipple
+                                >
+                                    <LabelImportantIcon fontSize="small" />
+                                    {t("Label")}
+                                </MenuItem>
+                                <MenuItem
+                                    onClick={(e) =>
+                                        startCreate(e, notificationItemType)
+                                    }
+                                    disableRipple
+                                >
+                                    <CircleNotifications fontSize="small" />
+                                    {t("Notification")}
+                                </MenuItem>
+                                <Divider sx={{ my: 0.5 }} />
+                                <MenuItem
+                                    onClick={(e) =>
+                                        startCreate(e, managerItemType)
+                                    }
+                                    disableRipple
+                                >
+                                    <ManageAccountsIcon fontSize="small" />
+                                    {t("Manager")}
+                                </MenuItem>
+                            </StyledMenu>
                         </Grid>
                     </Paper>
                     {children}

@@ -15,7 +15,6 @@ const Subbar = () => {
     const ScrollBox = styled(Box)(({ theme }) => ({
         height: "50px", // increase height
         padding: "5px 0", // padding to the top and bottom
-        paddingLeft: "5px",
 
         overflow: "auto",
         "&::-webkit-scrollbar": {

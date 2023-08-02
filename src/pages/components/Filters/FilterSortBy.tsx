@@ -7,7 +7,7 @@ interface IFilterSortByProps {
 
 export default function FilterSortBy({ onSorting }: IFilterSortByProps) {
     const sortByFilterOptions = [
-        { value: "default", label: "Deafult Sorting" },
+        { value: "default", label: "Default Sorting" },
         {
             value: "Ascending_Price",
             label: "Rising Price ",
