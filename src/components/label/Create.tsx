@@ -64,9 +64,6 @@ const LabelCreate = (props: ILabelCreateProps) => {
         setPickerColor(color.hex);
     };
 
-    const clickLabel = (label: ILabel) => {
-        onLabelClick(label);
-    };
     const createLabel = () => {
         if (!labelName) {
             setError("Το όνομα της ετικέτας είναι υποχρεωτικό");
@@ -196,7 +193,7 @@ const LabelCreate = (props: ILabelCreateProps) => {
                                 <Label
                                     key={index}
                                     variant="soft"
-                                    onClick={() => clickLabel(label)}
+                                    onClick={() => onLabelClick(label)}
                                     sx={{
                                         bgcolor: label.color,
                                         borderRadius: 7,
