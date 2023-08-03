@@ -1,11 +1,4 @@
-import {
-    Checkbox,
-    Divider,
-    Grid,
-    MenuItem,
-    Paper,
-    TextField,
-} from "@mui/material";
+import { Checkbox, Grid, MenuItem, Paper, TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import * as React from "react";
