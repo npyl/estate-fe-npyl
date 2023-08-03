@@ -1,22 +1,19 @@
-import { connect } from "react-redux";
-import { setDescription } from "src/slices/property";
+import { selectDescription, setDescription } from "src/slices/property";
 import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { DraftEditor } from "src/components/draft-editor";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { debounce } from "lodash";
 
-interface DescriptionSectionProps {
-    description: string;
-    setDescription: (description: string) => void;
-}
-
-const DescriptionSection: React.FC<DescriptionSectionProps> = ({
-    description,
-    setDescription,
-}) => {
+const DescriptionSection: React.FC = () => {
     const { t } = useTranslation();
+    const dispatch = useDispatch();
+
+    const description = useSelector(selectDescription);
 
     const [editorState, setEditorState] = useState<EditorState>(
         EditorState.createEmpty()
@@ -24,16 +21,8 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = ({
 
     const onEditorStateChange = (newEditorState: EditorState) => {
         setEditorState(newEditorState);
+        debouncedSetDescription(newEditorState);
     };
-
-    useEffect(() => {
-        if (!editorState) return;
-
-        // convert currentState (JSON) to string (=> stringify) for description
-        const contentState = editorState.getCurrentContent();
-        const contentStateJSON = JSON.stringify(convertToRaw(contentState));
-        setDescription(contentStateJSON);
-    }, [editorState]);
 
     // first load
     useEffect(() => {
@@ -43,6 +32,19 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = ({
         const contentState = convertFromRaw(JSON.parse(description));
         setEditorState(EditorState.createWithContent(contentState));
     }, []);
+
+    const debouncedSetDescription = useMemo(
+        () =>
+            debounce((newEditorState: EditorState) => {
+                // convert currentState (JSON) to string (=> stringify) for description
+                const contentState = newEditorState.getCurrentContent();
+                const contentStateJSON = JSON.stringify(
+                    convertToRaw(contentState)
+                );
+                dispatch(setDescription(contentStateJSON));
+            }, 300), // debounce for 300ms
+        []
+    );
 
     return (
         <Grid item xs={12} padding={0}>
@@ -74,13 +76,4 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = ({
     );
 };
 
-const mapStateToProps = (state: any) => ({
-    description: state.property.description,
-});
-
-const mapDispatchToProps = (dispatch: any) => ({
-    setDescription: (description: string) =>
-        dispatch(setDescription(description)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(DescriptionSection);
+export default DescriptionSection;
