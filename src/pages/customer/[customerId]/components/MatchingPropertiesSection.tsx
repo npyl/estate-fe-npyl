@@ -149,7 +149,7 @@ const MatchingPropertiesSection: React.FC = () => {
         },
     ];
 
-    if (!parentCategory) return;
+    if (!parentCategory) return null;
     if (!data || !Array.isArray(data.content) || data.content.length === 0)
         return null;
 

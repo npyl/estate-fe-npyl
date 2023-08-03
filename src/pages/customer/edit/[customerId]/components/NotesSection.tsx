@@ -23,7 +23,7 @@ const NotesSection: React.FC<any> = () => {
     const hadleRemove = (index: number) =>
         notes && notes[index].id && deleteNote(notes[index].id!);
 
-    if (!customerId) return;
+    if (!customerId) return null;
 
     return (
         <NoteCreate

@@ -54,7 +54,7 @@ const DemandSection: React.FC = () => {
         data?.demand.filters.maxFloor === null &&
         data?.demand.filters.labels.length === 0
     )
-        return; // don't show anything
+        return null; // don't show anything
 
     return (
         <Paper
