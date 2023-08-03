@@ -17,6 +17,17 @@ import {
 
 import { ILabel } from "src/types/label";
 
+interface BulkEditRequest {
+    ids: number[];
+    managerId?: number;
+    ownerId?: number;
+    zipcode?: number;
+    area?: number;
+    labels?: number[];
+    bedrooms?: number;
+    state?: string;
+}
+
 interface IGetPropertyAttributeProps {
     propertyId: number;
     attributeName: string;
@@ -130,6 +141,14 @@ export const properties = createApi({
                 params: dataToSend,
             }),
             invalidatesTags: ["Properties"],
+        }),
+        bulkEditProperties: builder.mutation<void, BulkEditRequest>({
+            query: (body: BulkEditRequest) => ({
+                url: `/edit/bulk`,
+                method: "POST",
+                body: body,
+            }),
+            invalidatesTags: ["Properties", "PropertyById"],
         }),
         filterProperties: builder.mutation<
             IPage<IPropertyResultResponse>,
@@ -269,9 +288,7 @@ export const {
     useGetPropertyByIdQuery,
     useGetPropertyByCodeQuery,
     useGetPropertyAttributeQuery,
-    useLazyGetPropertyImagesQuery,
     useLazyGetPropertyLabelsQuery,
-    useLazyGetPropertyBlueprintsQuery,
 
     // mutations
     useEditPropertyMutation,
@@ -279,7 +296,7 @@ export const {
     useDeletePropertyMutation,
     useFilterPropertiesMutation,
     useSuggestForCustomerQuery,
-    useEditPropertyImageMutation,
+    useBulkEditPropertiesMutation,
 
     // check
     useLazyCheckCodeExistsQuery,
@@ -287,8 +304,11 @@ export const {
 
     // images & files
     useAddPropertyImageMutation,
+    useEditPropertyImageMutation,
     useSetPropertyThumbailMutation,
     useDeletePropertyImageMutation,
+    useLazyGetPropertyImagesQuery,
+    useLazyGetPropertyBlueprintsQuery,
 
     useAddPropertyBlueprintMutation,
     useDeletePropertyBlueprintMutation,

@@ -9,9 +9,11 @@ import {
     EditZipCode,
 } from "./Edit";
 import { useMemo, useState } from "react";
+import { useBulkEditPropertiesMutation } from "src/services/properties";
 
 interface BulkEditDrawerProps {
     open: boolean;
+    selectedIds: number[];
     onClose: () => void;
 }
 
@@ -25,7 +27,11 @@ type StateType = {
     state: string;
 };
 
-export const BulkEditDrawer = ({ open, onClose }: BulkEditDrawerProps) => {
+export const BulkEditDrawer = ({
+    open,
+    selectedIds,
+    onClose,
+}: BulkEditDrawerProps) => {
     const [manager, setManager] = useState<StateType["manager"]>("");
     const [owner, setOwner] = useState<StateType["owner"]>("");
     const [zipCode, setZipCode] = useState<StateType["zipCode"]>("");
@@ -33,6 +39,8 @@ export const BulkEditDrawer = ({ open, onClose }: BulkEditDrawerProps) => {
     const [labels, setLabels] = useState<StateType["labels"]>([]);
     const [bedrooms, setBedrooms] = useState<StateType["bedrooms"]>("");
     const [state, setState] = useState<StateType["state"]>("");
+
+    const [bulkEdit] = useBulkEditPropertiesMutation();
 
     const initialState: StateType = useMemo(
         () => ({
@@ -83,7 +91,7 @@ export const BulkEditDrawer = ({ open, onClose }: BulkEditDrawerProps) => {
     }, [manager, owner, zipCode, area, labels, bedrooms, state]);
 
     const handleSave = () => {
-        console.log("changed: ", changed);
+        // bulkEdit({ ...changed, ids: selectedIds });
     };
 
     return (

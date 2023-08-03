@@ -389,7 +389,11 @@ const ViewAll: FC = () => {
                 </Paper>
             )}
 
-            <BulkEditDrawer open={bulkEditOpen} onClose={closeBulkEdit} />
+            <BulkEditDrawer
+                open={bulkEditOpen}
+                selectedIds={selectedRows.map((row) => +row)}
+                onClose={closeBulkEdit}
+            />
             <DeleteDialog
                 multiple
                 open={bulkDeleteDialogOpen}
