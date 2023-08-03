@@ -1,5 +1,5 @@
-import { Autocomplete, InputLabel, Stack } from "@mui/material";
-import React, { ReactElement, useMemo, useState } from "react";
+import { Autocomplete, InputLabel, MenuItem, Stack } from "@mui/material";
+import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import CheckIcon from "@mui/icons-material/Check";
@@ -7,7 +7,13 @@ import CheckIcon from "@mui/icons-material/Check";
 import { useAllCustomersQuery } from "src/services/customers";
 import { useAllUsersQuery } from "src/services/user";
 
-import { StyledButton, StyledOnlyNumbersInput, StyledTextField } from "./style";
+import {
+    StyledButton,
+    StyledOnlyNumbersInput,
+    StyledTextField,
+    StyledSelect,
+} from "./style";
+import { useAllGlobalsQuery } from "src/services/global";
 
 interface EditProps<T> {
     data: T;
@@ -154,5 +160,29 @@ export const EditBedrooms = ({ data, setData }: EditProps<string>) => {
 };
 
 export const EditState = ({ data, setData }: EditProps<string>) => {
-    return <div>EditState Component</div>;
+    const { t } = useTranslation();
+
+    const enums = useAllGlobalsQuery().data;
+    const stateEnum = enums?.property?.state;
+
+    return (
+        <DefaultOrEdit label={t("State")} onDisable={() => setData("")}>
+            <StyledSelect
+                value={data}
+                onChange={(e) => setData(e.target.value as string)}
+            >
+                {stateEnum ? (
+                    stateEnum.map((item, index) => {
+                        return (
+                            <MenuItem key={index} value={item}>
+                                {item}
+                            </MenuItem>
+                        );
+                    })
+                ) : (
+                    <MenuItem />
+                )}
+            </StyledSelect>
+        </DefaultOrEdit>
+    );
 };

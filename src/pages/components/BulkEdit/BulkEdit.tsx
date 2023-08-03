@@ -64,7 +64,9 @@ export const BulkEditDrawer = ({ open, onClose }: BulkEditDrawerProps) => {
         [manager, owner, zipCode, area, labels, bedrooms, state]
     );
 
-    const handleSave = () => {};
+    const handleSave = () => {
+        console.log("changed: ", changed);
+    };
 
     return (
         <Drawer

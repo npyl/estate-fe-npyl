@@ -1,4 +1,4 @@
-import { Button, ButtonProps, TextField, styled } from "@mui/material";
+import { Button, ButtonProps, Select, TextField, styled } from "@mui/material";
 import OnlyNumbersInput from "src/components/OnlyNumbers";
 
 export const StyledButton = styled(Button)<ButtonProps>(({ theme }) => ({
@@ -31,4 +31,9 @@ export const StyledOnlyNumbersInput = styled(OnlyNumbersInput)({
         borderTopLeftRadius: 0,
         borderTopRightRadius: 0,
     },
+});
+
+export const StyledSelect = styled(Select)({
+    borderTopLeftRadius: 0,
+    borderTopRightRadius: 0,
 });
