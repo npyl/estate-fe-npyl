@@ -14,6 +14,7 @@ import {
     StyledSelect,
 } from "./style";
 import { useAllGlobalsQuery } from "src/services/global";
+import { Close } from "@mui/icons-material";
 
 interface EditProps<T> {
     data: T;
@@ -40,7 +41,13 @@ export const DefaultOrEdit = ({
             <InputLabel>{label}</InputLabel>
             <StyledButton
                 variant="outlined"
-                endIcon={checked ? <CheckIcon /> : <></>}
+                endIcon={
+                    checked ? (
+                        <CheckIcon color="success" />
+                    ) : (
+                        <Close color="error" />
+                    )
+                }
                 onClick={() => setChecked(!checked)}
             >
                 Default Value

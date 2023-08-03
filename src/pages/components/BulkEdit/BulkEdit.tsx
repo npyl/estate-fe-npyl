@@ -88,7 +88,7 @@ export const BulkEditDrawer = ({ open, onClose }: BulkEditDrawerProps) => {
             <Stack textAlign={"center"} flex={1} p={1} mt={1}>
                 <Typography variant="h6">Bulk Edit</Typography>
 
-                <Stack mt={2} gap={1}>
+                <Stack mt={2} gap={1} spacing={1}>
                     <EditManager data={manager} setData={setManager} />
                     <EditOwner data={owner} setData={setOwner} />
                     <EditZipCode data={zipCode} setData={setZipCode} />
