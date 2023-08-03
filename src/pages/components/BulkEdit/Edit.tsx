@@ -146,6 +146,6 @@ export const EditBedrooms = ({ data, setData }: EditProps<string>) => {
     );
 };
 
-export const EditStatus = ({ data, setData }: EditProps<string>) => {
-    return <div>EditStatus Component</div>;
+export const EditState = ({ data, setData }: EditProps<string>) => {
+    return <div>EditState Component</div>;
 };

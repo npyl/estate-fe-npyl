@@ -5,10 +5,10 @@ import {
     EditLabels,
     EditManager,
     EditOwner,
-    EditStatus,
+    EditState,
     EditZipCode,
 } from "./Edit";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 interface BulkEditDrawerProps {
     open: boolean;
@@ -22,7 +22,47 @@ export const BulkEditDrawer = ({ open, onClose }: BulkEditDrawerProps) => {
     const [area, setArea] = useState("");
     const [labels, setLabels] = useState<number[]>([]);
     const [bedrooms, setBedrooms] = useState("");
-    const [status, setStatus] = useState("");
+    const [state, setState] = useState("");
+
+    const initialState = useMemo(
+        () => ({
+            manager: "",
+            owner: "",
+            zipCode: "",
+            area: "",
+            labels: [],
+            bedrooms: "",
+            state: "",
+        }),
+        []
+    );
+
+    const currentState = useMemo(
+        () => ({
+            manager,
+            owner,
+            zipCode,
+            area,
+            labels,
+            bedrooms,
+            state,
+        }),
+        [manager, owner, zipCode, area, labels, bedrooms, state]
+    );
+
+    const changed = useMemo(
+        () =>
+            (
+                Object.keys(currentState) as Array<keyof typeof currentState>
+            ).filter((key) =>
+                Array.isArray(currentState[key]) &&
+                Array.isArray(initialState[key])
+                    ? JSON.stringify(currentState[key]) !==
+                      JSON.stringify(initialState[key])
+                    : currentState[key] !== initialState[key]
+            ),
+        [manager, owner, zipCode, area, labels, bedrooms, state]
+    );
 
     const handleSave = () => {};
 
@@ -53,7 +93,7 @@ export const BulkEditDrawer = ({ open, onClose }: BulkEditDrawerProps) => {
                     <EditArea data={area} setData={setArea} />
                     <EditLabels data={labels} setData={setLabels} />
                     <EditBedrooms data={bedrooms} setData={setBedrooms} />
-                    <EditStatus data={status} setData={setStatus} />
+                    <EditState data={state} setData={setState} />
                 </Stack>
 
                 <Stack
@@ -69,13 +109,15 @@ export const BulkEditDrawer = ({ open, onClose }: BulkEditDrawerProps) => {
                     >
                         Cancel
                     </Button>
-                    <Button
-                        variant="contained"
-                        color="secondary"
-                        onClick={handleSave}
-                    >
-                        Save
-                    </Button>
+                    {changed.length > 0 && (
+                        <Button
+                            variant="contained"
+                            color="secondary"
+                            onClick={handleSave}
+                        >
+                            Save
+                        </Button>
+                    )}
                 </Stack>
             </Stack>
         </Drawer>
