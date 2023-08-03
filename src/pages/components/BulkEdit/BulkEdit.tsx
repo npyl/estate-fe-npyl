@@ -15,16 +15,26 @@ interface BulkEditDrawerProps {
     onClose: () => void;
 }
 
-export const BulkEditDrawer = ({ open, onClose }: BulkEditDrawerProps) => {
-    const [manager, setManager] = useState("");
-    const [owner, setOwner] = useState("");
-    const [zipCode, setZipCode] = useState("");
-    const [area, setArea] = useState("");
-    const [labels, setLabels] = useState<number[]>([]);
-    const [bedrooms, setBedrooms] = useState("");
-    const [state, setState] = useState("");
+type StateType = {
+    manager: string;
+    owner: string;
+    zipCode: string;
+    area: string;
+    labels: number[];
+    bedrooms: string;
+    state: string;
+};
 
-    const initialState = useMemo(
+export const BulkEditDrawer = ({ open, onClose }: BulkEditDrawerProps) => {
+    const [manager, setManager] = useState<StateType["manager"]>("");
+    const [owner, setOwner] = useState<StateType["owner"]>("");
+    const [zipCode, setZipCode] = useState<StateType["zipCode"]>("");
+    const [area, setArea] = useState<StateType["area"]>("");
+    const [labels, setLabels] = useState<StateType["labels"]>([]);
+    const [bedrooms, setBedrooms] = useState<StateType["bedrooms"]>("");
+    const [state, setState] = useState<StateType["state"]>("");
+
+    const initialState: StateType = useMemo(
         () => ({
             manager: "",
             owner: "",
@@ -37,7 +47,7 @@ export const BulkEditDrawer = ({ open, onClose }: BulkEditDrawerProps) => {
         []
     );
 
-    const currentState = useMemo(
+    const currentState: StateType = useMemo(
         () => ({
             manager,
             owner,
@@ -50,19 +60,27 @@ export const BulkEditDrawer = ({ open, onClose }: BulkEditDrawerProps) => {
         [manager, owner, zipCode, area, labels, bedrooms, state]
     );
 
-    const changed = useMemo(
-        () =>
-            (
-                Object.keys(currentState) as Array<keyof typeof currentState>
-            ).filter((key) =>
-                Array.isArray(currentState[key]) &&
-                Array.isArray(initialState[key])
-                    ? JSON.stringify(currentState[key]) !==
-                      JSON.stringify(initialState[key])
-                    : currentState[key] !== initialState[key]
-            ),
-        [manager, owner, zipCode, area, labels, bedrooms, state]
-    );
+    const changed: Partial<StateType> = useMemo(() => {
+        return (Object.keys(currentState) as Array<keyof StateType>)
+            .filter((key) => {
+                if (
+                    Array.isArray(currentState[key]) &&
+                    Array.isArray(initialState[key])
+                ) {
+                    return (
+                        JSON.stringify(currentState[key]) !==
+                        JSON.stringify(initialState[key])
+                    );
+                } else {
+                    return currentState[key] !== initialState[key];
+                }
+            })
+            .reduce((acc: Partial<StateType>, key: keyof StateType) => {
+                // INFO: Cast currentState[key] to `any` to avoid type errors
+                acc[key] = currentState[key] as any;
+                return acc;
+            }, {});
+    }, [manager, owner, zipCode, area, labels, bedrooms, state]);
 
     const handleSave = () => {
         console.log("changed: ", changed);
@@ -111,7 +129,7 @@ export const BulkEditDrawer = ({ open, onClose }: BulkEditDrawerProps) => {
                     >
                         Cancel
                     </Button>
-                    {changed.length > 0 && (
+                    {Object.keys(changed).length > 0 && (
                         <Button
                             variant="contained"
                             color="secondary"
