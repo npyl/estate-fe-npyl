@@ -14,6 +14,7 @@ import {
     useFilterCustomersMutation,
 } from "src/services/customers";
 import { FilterSection } from "./components";
+import nomoi from "src/json/nomoi.json";
 import { useSelector } from "react-redux";
 import { selectAll } from "src/slices/customer/filters";
 import { UserCircle } from "src/icons/user-circle";
@@ -56,6 +57,19 @@ const columns: GridColDef[] = [
         field: "city",
         headerName: "City",
         width: 180,
+        renderCell: (params: GridCellParams) => {
+            const city = useMemo(() => {
+                if (!params.row.city) return "";
+                const isNumberString = (input: string): boolean =>
+                    !isNaN(Number(input));
+                return isNumberString(params.row.city)
+                    ? nomoi.filter((o) => o["Area ID"] === params.row.city)[0][
+                          "Name GR"
+                      ]
+                    : params.row.city;
+            }, [params.row.city]);
+            return <div>{city}</div>;
+        },
     },
 ];
 

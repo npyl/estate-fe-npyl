@@ -128,12 +128,13 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
                         }}
                     >
                         <Grid container>
-                            <Grid item xs={11} marginTop={1}>
+                            <Grid item xs={10.5} marginTop={1}>
                                 <Subbar />
                             </Grid>
+
                             <Grid
                                 item
-                                xs={1}
+                                xs={1.5}
                                 sx={{
                                     display: "flex",
                                     justifyContent: "center", // This centers horizontally in case of flex direction row (which is default)
