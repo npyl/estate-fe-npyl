@@ -131,19 +131,17 @@ const BasicSection: React.FC<any> = () => {
         getLabels(+propertyId!);
     };
 
-    const handleLabelClick = useDebouncedCallback(
-        (label: ILabel) => {
-            if (assignedLabels.find((item) => item.id === label.id))
-                return null;
+    const handleLabelClick = useDebouncedCallback((label: ILabel) => {
+        if (!assignedLabels) return null;
+        if (assignedLabels.find((item) => item.id === label.id)) return null;
 
-            label.id &&
-                assignLabel({
-                    propertyId: +propertyId!,
-                    labelId: label.id,
-                }).then(() => revalidate());
-        },
-        [500]
-    );
+        label.id &&
+            assignLabel({
+                propertyId: +propertyId!,
+                labelId: label.id,
+            }).then(() => revalidate());
+    }, 500);
+
     const handleLabelCreate = (label: ILabel) => {
         createAndAssignLabel({
             propertyId: +propertyId!,
