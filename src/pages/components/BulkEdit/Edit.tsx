@@ -1,5 +1,5 @@
 import { Autocomplete, InputLabel, Stack } from "@mui/material";
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import CheckIcon from "@mui/icons-material/Check";
@@ -17,10 +17,17 @@ interface EditProps<T> {
 interface DefaultOrEditProps {
     label: string;
     children: React.ReactNode;
+    onDisable: () => void;
 }
 
-export const DefaultOrEdit = ({ label, children }: DefaultOrEditProps) => {
+export const DefaultOrEdit = ({
+    label,
+    children,
+    onDisable,
+}: DefaultOrEditProps) => {
     const [checked, setChecked] = useState(true);
+
+    useMemo(() => checked && onDisable(), [checked]);
 
     return (
         <Stack>
@@ -56,7 +63,7 @@ export const EditManager = ({ data, setData }: EditProps<string>) => {
     };
 
     return (
-        <DefaultOrEdit label={t("Manager")}>
+        <DefaultOrEdit label={t("Manager")} onDisable={() => setData("")}>
             <Autocomplete
                 disablePortal
                 value={data}
@@ -89,7 +96,7 @@ export const EditOwner = ({ data, setData }: EditProps<string>) => {
     };
 
     return (
-        <DefaultOrEdit label={t("Owner")}>
+        <DefaultOrEdit label={t("Owner")} onDisable={() => setData("")}>
             <Autocomplete
                 disablePortal
                 value={data}
@@ -105,7 +112,7 @@ export const EditZipCode = ({ data, setData }: EditProps<string>) => {
     const { t } = useTranslation();
 
     return (
-        <DefaultOrEdit label={t("Zip Code")}>
+        <DefaultOrEdit label={t("Zip Code")} onDisable={() => setData("")}>
             <StyledOnlyNumbersInput label="" value={data} onChange={setData} />
         </DefaultOrEdit>
     );
@@ -115,7 +122,7 @@ export const EditArea = ({ data, setData }: EditProps<string>) => {
     const { t } = useTranslation();
 
     return (
-        <DefaultOrEdit label={t("Area")}>
+        <DefaultOrEdit label={t("Area")} onDisable={() => setData("")}>
             <StyledOnlyNumbersInput
                 label=""
                 value={data}
@@ -134,7 +141,7 @@ export const EditBedrooms = ({ data, setData }: EditProps<string>) => {
     const { t } = useTranslation();
 
     return (
-        <DefaultOrEdit label={t("Bedrooms")}>
+        <DefaultOrEdit label={t("Bedrooms")} onDisable={() => setData("")}>
             <StyledOnlyNumbersInput
                 type="number"
                 label=""
