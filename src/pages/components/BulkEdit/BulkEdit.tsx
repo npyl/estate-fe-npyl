@@ -20,7 +20,7 @@ export const BulkEditDrawer = ({ open, onClose }: BulkEditDrawerProps) => {
     const [owner, setOwner] = useState("");
     const [zipCode, setZipCode] = useState("");
     const [area, setArea] = useState("");
-    const [labels, setLabels] = useState("");
+    const [labels, setLabels] = useState<number[]>([]);
     const [bedrooms, setBedrooms] = useState("");
     const [status, setStatus] = useState("");
 
@@ -43,16 +43,18 @@ export const BulkEditDrawer = ({ open, onClose }: BulkEditDrawerProps) => {
                     : {}, // prevent horizontal scrollbar from exceeding page-content size
             }}
         >
-            <Stack textAlign={"center"} flex={1} p={1}>
+            <Stack textAlign={"center"} flex={1} p={1} mt={1}>
                 <Typography variant="h6">Bulk Edit</Typography>
 
-                <EditManager data={manager} setData={setManager} />
-                <EditOwner data={owner} setData={setOwner} />
-                <EditZipCode data={zipCode} setData={setZipCode} />
-                <EditArea data={area} setData={setArea} />
-                <EditLabels data={labels} setData={setLabels} />
-                <EditBedrooms data={bedrooms} setData={setBedrooms} />
-                <EditStatus data={status} setData={setStatus} />
+                <Stack mt={2} gap={1}>
+                    <EditManager data={manager} setData={setManager} />
+                    <EditOwner data={owner} setData={setOwner} />
+                    <EditZipCode data={zipCode} setData={setZipCode} />
+                    <EditArea data={area} setData={setArea} />
+                    <EditLabels data={labels} setData={setLabels} />
+                    <EditBedrooms data={bedrooms} setData={setBedrooms} />
+                    <EditStatus data={status} setData={setStatus} />
+                </Stack>
 
                 <Stack
                     direction={"row"}
