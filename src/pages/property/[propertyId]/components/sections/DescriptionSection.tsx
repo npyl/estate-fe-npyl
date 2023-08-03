@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { IProperties } from "src/types/properties";
 import { Typography, Box, Paper, Divider, Grid } from "@mui/material";
-import dynamic from "next/dynamic";
+import { DraftEditor } from "src/components/draft-editor";
+import { EditorState, convertFromRaw } from "draft-js";
 interface DescriptionSectionProps {
     data: IProperties;
 }
@@ -9,23 +10,14 @@ interface DescriptionSectionProps {
 const DescriptionSection: React.FC<DescriptionSectionProps> = (props) => {
     const { data } = props;
 
-    const ReactQuill = dynamic(() => import("react-quill"), {
-        ssr: false,
-        loading: () => (
-            <Box
-                sx={{
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    position: "absolute",
-                    bgcolor: "background.paper",
-                }}
-            >
-                Loading...
-            </Box>
-        ),
-    });
+    const [editorState, setEditorState] = useState(EditorState.createEmpty());
+
+    useEffect(() => {
+        if (!data?.description) return;
+
+        const contentState = convertFromRaw(JSON.parse(data?.description));
+        setEditorState(EditorState.createWithContent(contentState));
+    }, [data?.description]);
 
     return (
         <Paper elevation={10} sx={{ overflow: "auto" }}>
@@ -50,15 +42,13 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = (props) => {
                                 justifyContent: "center",
                                 alignItems: "center",
                                 width: "100%",
-
-                                // backgroundColor: "#fff58a",
                                 borderRadius: 10,
                             }}
                         >
-                            <ReactQuill
-                                value={data?.description}
-                                readOnly={true}
-                                theme={"bubble"}
+                            <DraftEditor
+                                editorState={editorState}
+                                toolbarHidden
+                                sx={{ border: "unset" }}
                             />
                         </Box>
                     </Box>
