@@ -126,7 +126,6 @@ export const {
     useLazyGetCustomerLabelsQuery,
     useFilterCustomersMutation,
     useSearchCustomerQuery,
-
     useCreateCustomerMutation,
     useEditCustomerMutation,
     useDeleteCustomerMutation,

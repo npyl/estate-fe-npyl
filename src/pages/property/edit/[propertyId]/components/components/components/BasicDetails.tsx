@@ -10,7 +10,7 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
-
+import { useDebouncedCallback } from "use-debounce";
 import DateFieldStyled from "./DateFieldStyled"; // adjust the path based on your directory structure
 
 import * as React from "react";
@@ -131,16 +131,23 @@ const BasicSection: React.FC<any> = () => {
         getLabels(+propertyId!);
     };
 
-    const handleLabelClick = (label: ILabel) =>
+    const handleLabelClick = useDebouncedCallback((label: ILabel) => {
+        if (!assignedLabels) return null;
+        if (assignedLabels.find((item) => item.id === label.id)) return null;
+
         label.id &&
-        assignLabel({ propertyId: +propertyId!, labelId: label.id }).then(() =>
-            revalidate()
-        );
-    const handleLabelCreate = (label: ILabel) =>
+            assignLabel({
+                propertyId: +propertyId!,
+                labelId: label.id,
+            }).then(() => revalidate());
+    }, 500);
+
+    const handleLabelCreate = (label: ILabel) => {
         createAndAssignLabel({
             propertyId: +propertyId!,
             labelBody: label,
         }).then(() => revalidate());
+    };
     const handleLabelRemove = (index: number) =>
         assignedLabels &&
         assignedLabels[index] &&

@@ -1,16 +1,65 @@
-import { Autocomplete, FormControl, TextField } from "@mui/material";
+import { Autocomplete, InputLabel, MenuItem, Stack } from "@mui/material";
+import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import OnlyNumbersInput from "src/components/OnlyNumbers";
+
+import CheckIcon from "@mui/icons-material/Check";
 
 import { useAllCustomersQuery } from "src/services/customers";
 import { useAllUsersQuery } from "src/services/user";
+
+import {
+    StyledButton,
+    StyledOnlyNumbersInput,
+    StyledTextField,
+    StyledSelect,
+} from "./style";
+import { useAllGlobalsQuery } from "src/services/global";
+import { Close } from "@mui/icons-material";
 
 interface EditProps<T> {
     data: T;
     setData: (data: T) => void;
 }
 
+interface DefaultOrEditProps {
+    label: string;
+    children: React.ReactNode;
+    onDisable: () => void;
+}
+
+export const DefaultOrEdit = ({
+    label,
+    children,
+    onDisable,
+}: DefaultOrEditProps) => {
+    const [checked, setChecked] = useState(true);
+
+    useMemo(() => checked && onDisable(), [checked]);
+
+    return (
+        <Stack>
+            <InputLabel>{label}</InputLabel>
+            <StyledButton
+                variant="outlined"
+                endIcon={
+                    checked ? (
+                        <CheckIcon color="success" />
+                    ) : (
+                        <Close color="error" />
+                    )
+                }
+                onClick={() => setChecked(!checked)}
+            >
+                Default Value
+            </StyledButton>
+            {!checked && children}
+        </Stack>
+    );
+};
+
 export const EditManager = ({ data, setData }: EditProps<string>) => {
+    const { t } = useTranslation();
+
     const managers: string[] =
         useAllUsersQuery(undefined, {
             selectFromResult: ({ data }) => ({
@@ -27,21 +76,21 @@ export const EditManager = ({ data, setData }: EditProps<string>) => {
     };
 
     return (
-        <FormControl fullWidth>
+        <DefaultOrEdit label={t("Manager")} onDisable={() => setData("")}>
             <Autocomplete
                 disablePortal
                 value={data}
                 onChange={autocompleteChange}
                 options={managers}
-                renderInput={(params) => (
-                    <TextField {...params} label="Manager" />
-                )}
+                renderInput={(params) => <StyledTextField {...params} />}
             />
-        </FormControl>
+        </DefaultOrEdit>
     );
 };
 
 export const EditOwner = ({ data, setData }: EditProps<string>) => {
+    const { t } = useTranslation();
+
     const owners: string[] =
         useAllCustomersQuery(undefined, {
             selectFromResult: ({ data }) => ({
@@ -60,17 +109,15 @@ export const EditOwner = ({ data, setData }: EditProps<string>) => {
     };
 
     return (
-        <FormControl fullWidth>
+        <DefaultOrEdit label={t("Owner")} onDisable={() => setData("")}>
             <Autocomplete
                 disablePortal
                 value={data}
                 onChange={autocompleteChange}
                 options={owners}
-                renderInput={(params) => (
-                    <TextField {...params} label="Owner" />
-                )}
+                renderInput={(params) => <StyledTextField {...params} />}
             />
-        </FormControl>
+        </DefaultOrEdit>
     );
 };
 
@@ -78,11 +125,9 @@ export const EditZipCode = ({ data, setData }: EditProps<string>) => {
     const { t } = useTranslation();
 
     return (
-        <OnlyNumbersInput
-            label={t("Zip Code")}
-            value={data}
-            onChange={setData}
-        />
+        <DefaultOrEdit label={t("Zip Code")} onDisable={() => setData("")}>
+            <StyledOnlyNumbersInput label="" value={data} onChange={setData} />
+        </DefaultOrEdit>
     );
 };
 
@@ -90,12 +135,14 @@ export const EditArea = ({ data, setData }: EditProps<string>) => {
     const { t } = useTranslation();
 
     return (
-        <OnlyNumbersInput
-            label={t("Area")}
-            value={data}
-            onChange={setData}
-            adornment="m²"
-        />
+        <DefaultOrEdit label={t("Area")} onDisable={() => setData("")}>
+            <StyledOnlyNumbersInput
+                label=""
+                value={data}
+                onChange={setData}
+                adornment="m²"
+            />
+        </DefaultOrEdit>
     );
 };
 
@@ -107,16 +154,42 @@ export const EditBedrooms = ({ data, setData }: EditProps<string>) => {
     const { t } = useTranslation();
 
     return (
-        <OnlyNumbersInput
-            type="number"
-            label={t("Bedrooms")}
-            placeholder="1,2,3..."
-            value={data}
-            onChange={setData}
-        />
+        <DefaultOrEdit label={t("Bedrooms")} onDisable={() => setData("")}>
+            <StyledOnlyNumbersInput
+                type="number"
+                label=""
+                placeholder="1,2,3..."
+                value={data}
+                onChange={setData}
+            />
+        </DefaultOrEdit>
     );
 };
 
-export const EditStatus = ({ data, setData }: EditProps<string>) => {
-    return <div>EditStatus Component</div>;
+export const EditState = ({ data, setData }: EditProps<string>) => {
+    const { t } = useTranslation();
+
+    const enums = useAllGlobalsQuery().data;
+    const stateEnum = enums?.property?.state;
+
+    return (
+        <DefaultOrEdit label={t("State")} onDisable={() => setData("")}>
+            <StyledSelect
+                value={data}
+                onChange={(e) => setData(e.target.value as string)}
+            >
+                {stateEnum ? (
+                    stateEnum.map((item, index) => {
+                        return (
+                            <MenuItem key={index} value={item}>
+                                {item}
+                            </MenuItem>
+                        );
+                    })
+                ) : (
+                    <MenuItem />
+                )}
+            </StyledSelect>
+        </DefaultOrEdit>
+    );
 };
