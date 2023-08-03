@@ -33,26 +33,26 @@ const DemandSection: React.FC = () => {
     );
 
     if (
-        data?.demand.filters.parentCategory === null &&
-        data?.demand.filters.minYearOfConstruction === null &&
-        data?.demand.filters.furnished === null &&
-        data?.demand.filters.maxYearOfConstruction === null &&
-        data?.demand.filters.minBedrooms === null &&
-        data?.demand.filters.maxBedrooms === null &&
-        data?.demand.filters.minCovered === null &&
-        data?.demand.filters.maxCovered === null &&
-        data?.demand.filters.minPrice === null &&
-        data?.demand.filters.maxPrice === null &&
-        data?.demand.filters.category === null &&
-        data?.demand.filters.state === null &&
-        data?.demand.timeframe === null &&
-        data?.demand.filters.minBathrooms === null &&
-        data?.demand.filters.maxBathrooms === null &&
-        data?.demand.filters.minPlot === null &&
-        data?.demand.filters.maxPlot === null &&
-        data?.demand.filters.minFloor === null &&
-        data?.demand.filters.maxFloor === null &&
-        data?.demand.filters.labels.length === 0
+        demandFilters?.parentCategory === null &&
+        demandFilters?.minYearOfConstruction === null &&
+        demandFilters?.furnished === null &&
+        demandFilters?.maxYearOfConstruction === null &&
+        demandFilters?.minBedrooms === null &&
+        demandFilters?.maxBedrooms === null &&
+        demandFilters?.minCovered === null &&
+        demandFilters?.maxCovered === null &&
+        demandFilters?.minPrice === null &&
+        demandFilters?.maxPrice === null &&
+        demandFilters?.category === null &&
+        demandFilters?.state === null &&
+        data?.demand?.timeframe === null &&
+        demandFilters?.minBathrooms === null &&
+        demandFilters?.maxBathrooms === null &&
+        demandFilters?.minPlot === null &&
+        demandFilters?.maxPlot === null &&
+        demandFilters?.minFloor === null &&
+        demandFilters?.maxFloor === null &&
+        demandFilters?.labels.length === 0
     )
         return null; // don't show anything
 
@@ -80,12 +80,12 @@ const DemandSection: React.FC = () => {
                     <List>
                         <ListItem
                             label={t("Parent Category")}
-                            value={data?.demand.filters.parentCategory}
+                            value={demandFilters?.parentCategory}
                             align="horizontal"
                         />
                         <ListItem
                             label={t("Furnished")}
-                            value={data?.demand.filters.furnished}
+                            value={demandFilters?.furnished}
                             align="horizontal"
                         />
                         <ListLabelsItem
@@ -96,22 +96,22 @@ const DemandSection: React.FC = () => {
 
                         <ListItem
                             label={t("Construction")}
-                            value={` ${data?.demand.filters.minYearOfConstruction} - ${data?.demand.filters.maxYearOfConstruction}`}
+                            value={` ${demandFilters?.minYearOfConstruction} - ${demandFilters?.maxYearOfConstruction}`}
                             align="horizontal"
                         />
                         <ListItem
                             label={t("Bedrooms")}
-                            value={` ${data?.demand.filters.minBedrooms} - ${data?.demand.filters.maxBedrooms}`}
+                            value={` ${demandFilters?.minBedrooms} - ${demandFilters?.maxBedrooms}`}
                             align="horizontal"
                         />
                         <ListItem
                             label={t("Covered")}
-                            value={`${data?.demand.filters.minCovered} - ${data?.demand.filters.maxCovered} (m²)`}
+                            value={`${demandFilters?.minCovered} - ${demandFilters?.maxCovered} (m²)`}
                             align="horizontal"
                         />
                         <ListItem
                             label={t("Price")}
-                            value={`${data?.demand.filters.minPrice} - ${data?.demand.filters.maxPrice} (€)`}
+                            value={`${demandFilters?.minPrice} - ${demandFilters?.maxPrice} (€)`}
                             align="horizontal"
                         />
                     </List>
@@ -121,35 +121,35 @@ const DemandSection: React.FC = () => {
                     <List>
                         <ListItem
                             label={t("Category")}
-                            value={data?.demand.filters.category}
+                            value={demandFilters?.category}
                             align="horizontal"
                         />
 
                         <ListItem
                             label={t("State")}
-                            value={data?.demand.filters.state}
+                            value={demandFilters?.state}
                             align="horizontal"
                         />
 
                         <ListItem
                             label={t("Time Frame")}
-                            value={data?.demand.timeframe}
+                            value={data?.demand?.timeframe}
                             align="horizontal"
                         />
 
                         <ListItem
                             label={t("Bathrooms")}
-                            value={`${data?.demand.filters.minBathrooms} - ${data?.demand.filters.maxBathrooms}`}
+                            value={`${demandFilters?.minBathrooms} - ${demandFilters?.maxBathrooms}`}
                             align="horizontal"
                         />
                         <ListItem
                             label={t("Plot")}
-                            value={`${data?.demand.filters.minPlot} - ${data?.demand.filters.maxPlot} (m²)`}
+                            value={`${demandFilters?.minPlot} - ${demandFilters?.maxPlot} (m²)`}
                             align="horizontal"
                         />
                         <ListItem
                             label={t("Floor")}
-                            value={`${data?.demand.filters.minFloor} - ${data?.demand.filters.maxFloor}`}
+                            value={`${demandFilters?.minFloor} - ${demandFilters?.maxFloor}`}
                             align="horizontal"
                         />
                     </List>
