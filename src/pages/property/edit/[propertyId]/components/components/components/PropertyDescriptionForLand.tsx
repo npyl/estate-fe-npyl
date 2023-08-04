@@ -76,6 +76,11 @@ const PropertyDescriptionForLandSection: React.FC<any> = (props) => {
         const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
         dispatch(setSea(numericValue));
     };
+    const handleChange = (
+        setter: any,
+        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => dispatch(setter(event.target.value));
+
     //handle onlynumbers
     const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
         const keyCode = event.keyCode || event.which;
@@ -179,11 +184,11 @@ const PropertyDescriptionForLandSection: React.FC<any> = (props) => {
                     <Grid item xs={6}>
                         <TextField
                             fullWidth
-                            id="outlined-controlled"
+                            type="number"
                             label=" Distance From Sea"
                             value={sea}
-                            onChange={handleSeaChange}
-                            onKeyPress={handleKeyPress}
+                            onChange={(event) => handleChange(setSea, event)}
+                            // onKeyPress={handleKeyPress}
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="end">

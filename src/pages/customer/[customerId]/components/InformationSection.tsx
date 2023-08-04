@@ -9,12 +9,14 @@ import ListLabelsItem from "src/components/List/labels-item";
 import { useGetCustomerByIdQuery } from "src/services/customers";
 
 import { useRouter } from "next/router";
+import { LeadSource } from "src/types/global";
 
 const InformationSection: React.FC = (props) => {
     const router = useRouter();
     const { customerId } = router.query;
     const { t } = useTranslation();
     const { data } = useGetCustomerByIdQuery(parseInt(customerId as string)); // basic details
+    const leadSource = data?.leadSource as LeadSource;
     if (!data) return null;
 
     return (
@@ -116,14 +118,16 @@ const InformationSection: React.FC = (props) => {
                         />
                         <ListItem
                             label={t("Lead Source")}
-                            value={data?.leadSource}
+                            value={leadSource}
                             align="horizontal"
                         />
-                        <ListItem
-                            label={t("Suggested by")}
-                            value={data?.suggestedBy}
-                            align="horizontal"
-                        />
+                        {leadSource === "Customer" && (
+                            <ListItem
+                                label={t("Suggested by")}
+                                value={data?.suggestedBy}
+                                align="horizontal"
+                            />
+                        )}
                         <ListLabelsItem
                             label={t("Labels")}
                             labels={data?.labels}

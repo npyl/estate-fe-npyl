@@ -46,6 +46,7 @@ import {
     resetFrameType,
     resetHeatingType,
     resetFurnished,
+    resetConstructionYear,
 } from "src/slices/filters";
 
 import ChosenFilters from "./ChosenFilters";
@@ -353,7 +354,7 @@ export default function FilterMore({
                     </Stack>
                 </ClearableDialogContent>
             ))}
-            <ClearableDialogContent dividers>
+            <ClearableDialogContent dividers reset={resetConstructionYear}>
                 <Typography>Construction Year</Typography>
                 <Slider
                     value={[minYear, maxYear]}

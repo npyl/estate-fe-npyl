@@ -1,18 +1,11 @@
-import {
-    EditArea,
-    EditBedrooms,
-    EditManager,
-    EditOwner,
-    EditState,
-    EditZipCode,
-} from "./Edit";
-import { BulkEditDrawer } from "src/pages/components/BulkEditDrawer";
+import { EditManager } from "./Edit";
+import { EditLabels } from "src/pages/components/BulkEdit/EditLabels";
 import { useMemo, useState } from "react";
+import { BulkEditDrawer } from "src/pages/components/BulkEditDrawer";
 import {
     BulkEditRequest,
-    useBulkEditPropertiesMutation,
-} from "src/services/properties";
-import { EditLabels } from "./EditLabels";
+    useBulkEditCustomersMutation,
+} from "src/services/customers";
 
 interface BulkEditProps {
     open: boolean;
@@ -29,33 +22,18 @@ export const BulkEdit = ({
 }: BulkEditProps) => {
     type StateType = {
         managerId: string;
-        ownerId: string;
-        zipCode: string;
-        area: string;
         labels: number[];
-        bedrooms: string;
-        state: string;
     };
 
     const [managerId, setManagerId] = useState<StateType["managerId"]>("");
-    const [ownerId, setOwnerId] = useState<StateType["ownerId"]>("");
-    const [zipCode, setZipCode] = useState<StateType["zipCode"]>("");
-    const [area, setArea] = useState<StateType["area"]>("");
     const [labels, setLabels] = useState<StateType["labels"]>([]);
-    const [bedrooms, setBedrooms] = useState<StateType["bedrooms"]>("");
-    const [state, setState] = useState<StateType["state"]>("");
 
-    const [bulkEdit] = useBulkEditPropertiesMutation();
+    const [bulkEdit] = useBulkEditCustomersMutation();
 
     const initialState: StateType = useMemo(
         () => ({
             managerId: "",
-            ownerId: "",
-            zipCode: "",
-            area: "",
             labels: [],
-            bedrooms: "",
-            state: "",
         }),
         []
     );
@@ -63,14 +41,9 @@ export const BulkEdit = ({
     const currentState: StateType = useMemo(
         () => ({
             managerId,
-            ownerId,
-            zipCode,
-            area,
             labels,
-            bedrooms,
-            state,
         }),
-        [managerId, ownerId, zipCode, area, labels, bedrooms, state]
+        [managerId, labels]
     );
 
     const changed: Partial<StateType> = useMemo(() => {
@@ -90,11 +63,7 @@ export const BulkEdit = ({
             })
             .reduce((acc: Partial<StateType>, key: keyof StateType) => {
                 // INFO: Cast currentState[key] to `any` to avoid type errors
-                if (
-                    key !== "state" &&
-                    key !== "labels" &&
-                    !isNaN(Number(currentState[key]))
-                ) {
+                if (key !== "labels" && !isNaN(Number(currentState[key]))) {
                     // every string except state is expected to be int in Backend
                     acc[key] = parseInt(currentState[key] as string, 10) as any;
                 } else {
@@ -102,22 +71,17 @@ export const BulkEdit = ({
                 }
                 return acc;
             }, {});
-    }, [managerId, ownerId, zipCode, area, labels, bedrooms, state]);
+    }, [managerId, labels]);
 
     const clearState = () => {
         setManagerId("");
-        setOwnerId("");
-        setZipCode("");
-        setArea("");
         setLabels([]);
-        setBedrooms("");
-        setState("");
     };
 
     const handleSave = () => {
         bulkEdit({
             ...changed,
-            propertyIds: selectedIds,
+            customerIds: selectedIds,
         } as BulkEditRequest).then(() => {
             clearState();
             onSave();
@@ -141,12 +105,7 @@ export const BulkEdit = ({
             onClose={handleClose}
         >
             <EditManager data={managerId} setData={setManagerId} />
-            <EditOwner data={ownerId} setData={setOwnerId} />
-            <EditZipCode data={zipCode} setData={setZipCode} />
-            <EditArea data={area} setData={setArea} />
-            <EditLabels variant="property" data={labels} setData={setLabels} />
-            <EditBedrooms data={bedrooms} setData={setBedrooms} />
-            <EditState data={state} setData={setState} />
+            <EditLabels variant="customer" data={labels} setData={setLabels} />
         </BulkEditDrawer>
     );
 };

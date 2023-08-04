@@ -35,7 +35,7 @@ type GridProps = {
     ) => void;
 
     onBulkDelete?: (selectedRows: GridRowSelectionModel) => void;
-    onBulkEdit?: () => void;
+    onBulkEdit?: (selectedRows: GridRowSelectionModel) => void;
 
     resource?: string;
 };
@@ -71,7 +71,7 @@ const DataGridTable: FC<GridProps> = ({
 
     const BulkEditButton = () => (
         <Button
-            onClick={onBulkEdit}
+            onClick={() => onBulkEdit?.(selectedRows)}
             startIcon={<EditNoteIcon />}
             sx={{ position: "absolute", right: 0, mr: 1, mt: 0.5 }}
         >

@@ -1,4 +1,4 @@
-import { Box, Paper, Stack } from "@mui/material";
+import { Box, Paper, PaperProps, Stack } from "@mui/material";
 import { useSelector } from "src/store";
 import ChosenFilters from "./ChosenFilters";
 import FilterLabels from "src/pages/components/Filters/FilterLabels";
@@ -10,12 +10,12 @@ import {
 } from "src/slices/customer/filters";
 import FilterStatus from "./FilterStatus";
 
-export const FilterSection = () => {
+export const FilterSection: React.FC<PaperProps> = ({ ...props }) => {
     const changedCustomerFilters = useSelector(sumOfChangedProperties);
     const labels = useSelector(selectLabels) || [];
 
     return (
-        <Stack spacing={3} component={Paper} p={2} mt={2}>
+        <Stack spacing={3} component={Paper} p={1} mt={2} {...props}>
             <Stack flexWrap={"wrap"} direction={"row"} gap={1}>
                 <FilterLabels
                     variant="customer"

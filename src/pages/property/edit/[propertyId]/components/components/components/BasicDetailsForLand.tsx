@@ -10,7 +10,7 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
-
+import { useDebouncedCallback } from "use-debounce";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAllCustomersQuery } from "src/services/customers";
@@ -83,13 +83,10 @@ const BasicForLandSection: React.FC<any> = () => {
     const { t } = useTranslation();
     const { propertyId } = router.query;
     if (!propertyId) return null;
-
     const { data } = useAllGlobalsQuery();
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
-
     const { data: labels } = useGetLabelsQuery();
     const propertyLabels = labels?.propertyLabels || [];
-
     // labels
     const [getLabels, { data: assignedLabels }] =
         useLazyGetPropertyLabelsQuery();
@@ -126,11 +123,16 @@ const BasicForLandSection: React.FC<any> = () => {
         getLabels(+propertyId!);
     };
 
-    const handleLabelClick = (label: ILabel) =>
+    const handleLabelClick = useDebouncedCallback((label: ILabel) => {
+        if (!assignedLabels) return null;
+        if (assignedLabels.find((item) => item.id === label.id)) return null;
+
         label.id &&
-        assignLabel({ propertyId: +propertyId!, labelId: label.id }).then(() =>
-            revalidate()
-        );
+            assignLabel({
+                propertyId: +propertyId!,
+                labelId: label.id,
+            }).then(() => revalidate());
+    }, 500);
     const handleLabelCreate = (label: ILabel) =>
         createAndAssignLabel({
             propertyId: +propertyId!,
@@ -288,30 +290,6 @@ const BasicForLandSection: React.FC<any> = () => {
                         />
                     </Grid>
 
-                    <Grid
-                        item
-                        xs={6}
-                        flexDirection="row"
-                        sx={{ display: "inline-flex", alignItems: "center" }}
-                    >
-                        <Checkbox
-                            id="outlined-controlled"
-                            value={rented}
-                            checked={rented}
-                            onChange={(
-                                event: React.ChangeEvent<unknown>,
-                                checked: boolean
-                            ) => {
-                                dispatch(setRented(checked));
-                            }}
-                            sx={{ cursor: "default" }}
-                            color="primary"
-                            inputProps={{ "aria-label": "Elevator" }}
-                        />
-                        <Typography variant="body1" sx={{ ml: 0 }}>
-                            Rented
-                        </Typography>
-                    </Grid>
                     <Grid item xs={6}>
                         <KeyCodeField
                             keyCode={keyCode}
@@ -353,7 +331,30 @@ const BasicForLandSection: React.FC<any> = () => {
                             onRemoveNewLabel={() => {}}
                         />
                     </Grid>
-
+                    <Grid
+                        item
+                        xs={6}
+                        flexDirection="row"
+                        sx={{ display: "inline-flex", alignItems: "center" }}
+                    >
+                        <Checkbox
+                            id="outlined-controlled"
+                            value={rented}
+                            checked={rented}
+                            onChange={(
+                                event: React.ChangeEvent<unknown>,
+                                checked: boolean
+                            ) => {
+                                dispatch(setRented(checked));
+                            }}
+                            sx={{ cursor: "default" }}
+                            color="primary"
+                            inputProps={{ "aria-label": "Elevator" }}
+                        />
+                        <Typography variant="body1" sx={{ ml: 0 }}>
+                            Rented
+                        </Typography>
+                    </Grid>
                     <Grid item xs={12} padding={1}>
                         <Grid
                             container
@@ -366,39 +367,6 @@ const BasicForLandSection: React.FC<any> = () => {
                         >
                             <Grid item xs={12}>
                                 <Grid container spacing={2}>
-                                    <Grid
-                                        item
-                                        xs={6}
-                                        flexDirection="row"
-                                        sx={{
-                                            display: "inline-flex",
-                                            alignItems: "center",
-                                        }}
-                                    >
-                                        <Checkbox
-                                            id="outlined-controlled"
-                                            value={rented}
-                                            checked={rented}
-                                            onChange={(
-                                                event: React.ChangeEvent<unknown>,
-                                                checked: boolean
-                                            ) => {
-                                                dispatch(setRented(checked));
-                                            }}
-                                            sx={{ cursor: "default" }}
-                                            color="primary"
-                                            inputProps={{
-                                                "aria-label": "Elevator",
-                                            }}
-                                        />
-                                        <Typography
-                                            variant="body1"
-                                            sx={{ ml: 0 }}
-                                        >
-                                            {t("Rented")}
-                                        </Typography>
-                                    </Grid>
-
                                     <Grid item xs={6}>
                                         <DateFieldStyled
                                             label="Available After:"
@@ -417,7 +385,19 @@ const BasicForLandSection: React.FC<any> = () => {
                                             sx={{ width: "100%" }} // Add custom styles to make it full width
                                         />
                                     </Grid>
-
+                                    <Grid item xs={6}>
+                                        <OnlyNumbersInput
+                                            label={t("Current Rent Price")}
+                                            value={currentRentPrice}
+                                            onChange={(value) => {
+                                                dispatch(
+                                                    setCurrentRentPrice(value)
+                                                );
+                                            }}
+                                            adornment="€"
+                                            disabled={!rented}
+                                        />
+                                    </Grid>
                                     <Grid item xs={6}>
                                         <DateFieldStyled
                                             label="Rental Period Start"
@@ -454,19 +434,6 @@ const BasicForLandSection: React.FC<any> = () => {
                                             }}
                                             disabled={!rented} // Disable the field if "rented" is unchecked
                                             sx={{ width: "100%" }} // Add custom styles to make it full width
-                                        />
-                                    </Grid>
-                                    <Grid item xs={6}>
-                                        <OnlyNumbersInput
-                                            label={t("Current Rent Price")}
-                                            value={currentRentPrice}
-                                            onChange={(value) => {
-                                                dispatch(
-                                                    setCurrentRentPrice(value)
-                                                );
-                                            }}
-                                            adornment="€"
-                                            disabled={!rented}
                                         />
                                     </Grid>
                                 </Grid>

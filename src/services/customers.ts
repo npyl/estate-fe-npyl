@@ -8,6 +8,12 @@ import {
 import { ILabel } from "src/types/label";
 import IPage from "src/types/page";
 
+export interface BulkEditRequest {
+    customerIds: number[];
+    managerId?: number;
+    labels?: number[];
+}
+
 interface ICustomerParams {
     page: number;
     pageSize: number;
@@ -98,6 +104,14 @@ export const customers = createApi({
             }),
             invalidatesTags: ["Customers", "CustomerById"],
         }),
+        bulkEditCustomers: builder.mutation<void, BulkEditRequest>({
+            query: (body: BulkEditRequest) => ({
+                url: `/edit/bulk`,
+                method: "POST",
+                body: body,
+            }),
+            invalidatesTags: ["Customers", "CustomerById"],
+        }),
 
         searchCustomer: builder.query<ICustomerResultResponse[], string>({
             query: (searchString: string) => {
@@ -126,7 +140,9 @@ export const {
     useLazyGetCustomerLabelsQuery,
     useFilterCustomersMutation,
     useSearchCustomerQuery,
+
     useCreateCustomerMutation,
     useEditCustomerMutation,
     useDeleteCustomerMutation,
+    useBulkEditCustomersMutation,
 } = customers;

@@ -61,6 +61,7 @@ import {
 } from "src/services/labels";
 
 import { ILabel } from "src/types/label";
+import { LeadSource } from "src/types/global";
 
 import CustomerTypeSelect from "./CustomerTypeSelect";
 import { useTranslation } from "react-i18next";
@@ -93,7 +94,7 @@ const CustomerInformation: React.FC<any> = () => {
     const dateOfBirth = useSelector(selectDateOfBirth);
     const passportNumber = useSelector(selectPassportNumber);
     const preferredLanguage = useSelector(selectPreferredLanguage);
-    const leadSource = useSelector(selectLeadSource);
+    const leadSource = useSelector(selectLeadSource) as LeadSource;
     const suggestedBy = useSelector(selectSuggestedBy);
     const status = useSelector(selectStatus);
 
@@ -171,7 +172,6 @@ const CustomerInformation: React.FC<any> = () => {
                     <Grid item xs={6}>
                         <TextField
                             fullWidth
-                            id="outlined-controlled"
                             label={t("First Name")}
                             value={firstName}
                             onChange={(e) => {
@@ -182,7 +182,6 @@ const CustomerInformation: React.FC<any> = () => {
                     <Grid item xs={6}>
                         <TextField
                             fullWidth
-                            id="outlined-controlled"
                             label={t("Last Name")}
                             value={lastName}
                             onChange={(e) => {
@@ -193,7 +192,6 @@ const CustomerInformation: React.FC<any> = () => {
                     <Grid item xs={6}>
                         <TextField
                             fullWidth
-                            id="outlined-controlled"
                             label={t("Email")}
                             value={email}
                             onChange={(e) => {
@@ -256,7 +254,6 @@ const CustomerInformation: React.FC<any> = () => {
                     <Grid item xs={6}>
                         <TextField
                             fullWidth
-                            id="outlined-controlled"
                             label={t("Nationality")}
                             value={nationality}
                             onChange={(e) => {
@@ -267,7 +264,6 @@ const CustomerInformation: React.FC<any> = () => {
                     <Grid item xs={6}>
                         <TextField
                             fullWidth
-                            id="outlined-controlled"
                             label={t("ID Number")}
                             value={idNumber}
                             onChange={(e) => {
@@ -278,7 +274,6 @@ const CustomerInformation: React.FC<any> = () => {
                     <Grid item xs={6}>
                         <TextField
                             fullWidth
-                            id="outlined-controlled"
                             label={t("Date of Birth")}
                             value={dateOfBirth}
                             onChange={(e) => {
@@ -289,7 +284,6 @@ const CustomerInformation: React.FC<any> = () => {
                     <Grid item xs={6}>
                         <TextField
                             fullWidth
-                            id="outlined-controlled"
                             label={t("Passport Number")}
                             value={passportNumber}
                             onChange={(e) => {
@@ -300,7 +294,6 @@ const CustomerInformation: React.FC<any> = () => {
                     <Grid item xs={6}>
                         <TextField
                             fullWidth
-                            id="outlined-controlled"
                             label={t("Preferred Language")}
                             value={preferredLanguage}
                             onChange={(e) => {
@@ -332,15 +325,16 @@ const CustomerInformation: React.FC<any> = () => {
                         </FormControl>
                     </Grid>
                     <Grid item xs={6}>
-                        <TextField
-                            fullWidth
-                            id="outlined-controlled"
-                            label={t("Suggested by")}
-                            value={suggestedBy}
-                            onChange={(e) => {
-                                dispatch(setSuggestedBy(e.target.value));
-                            }}
-                        />
+                        {leadSource === "Customer" && (
+                            <TextField
+                                fullWidth
+                                label={t("Suggested by")}
+                                value={suggestedBy}
+                                onChange={(e) => {
+                                    dispatch(setSuggestedBy(e.target.value));
+                                }}
+                            />
+                        )}
                     </Grid>
                     <Grid item xs={6}>
                         <Box
