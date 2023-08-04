@@ -9,7 +9,10 @@ import {
     EditZipCode,
 } from "./Edit";
 import { useMemo, useState } from "react";
-import { useBulkEditPropertiesMutation } from "src/services/properties";
+import {
+    BulkEditRequest,
+    useBulkEditPropertiesMutation,
+} from "src/services/properties";
 
 interface BulkEditDrawerProps {
     open: boolean;
@@ -85,14 +88,23 @@ export const BulkEditDrawer = ({
             })
             .reduce((acc: Partial<StateType>, key: keyof StateType) => {
                 // INFO: Cast currentState[key] to `any` to avoid type errors
-                acc[key] = currentState[key] as any;
+                if (
+                    key !== "state" &&
+                    key !== "labels" &&
+                    !isNaN(Number(currentState[key]))
+                ) {
+                    // every string except state is expected to be int in Backend
+                    acc[key] = parseInt(currentState[key] as string, 10) as any;
+                } else {
+                    acc[key] = currentState[key] as any;
+                }
                 return acc;
             }, {});
     }, [manager, owner, zipCode, area, labels, bedrooms, state]);
 
     const handleSave = () => {
-        console.log("changed: ", changed);
-        // bulkEdit({ ...changed, ids: selectedIds });
+        //console.log("changed: ", changed);
+        // bulkEdit({ ...changed, ids: selectedIds } as BulkEditRequest);
     };
 
     return (
