@@ -47,6 +47,7 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = (props) => {
                         >
                             <DraftEditor
                                 editorState={editorState}
+                                readOnly
                                 toolbarHidden
                                 sx={{ border: "unset" }}
                             />
