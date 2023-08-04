@@ -130,11 +130,14 @@ export const BulkEdit = ({
         onClose();
     };
 
+    const handleClear = () => clearState();
+
     return (
         <BulkEditDrawer
             open={open}
             changed={changed}
             onSave={handleSave}
+            onClear={handleClear}
             onClose={handleClose}
         >
             <EditManager data={managerId} setData={setManagerId} />

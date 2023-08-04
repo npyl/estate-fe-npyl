@@ -4,6 +4,7 @@ interface BulkEditDrawerProps extends DrawerProps {
     open: boolean;
     changed: any;
     onSave: () => void;
+    onClear: () => void;
     onClose: () => void;
 }
 
@@ -11,6 +12,7 @@ export const BulkEditDrawer = ({
     open,
     changed,
     onSave,
+    onClear,
     onClose,
     children,
 }: BulkEditDrawerProps) => {
@@ -50,16 +52,26 @@ export const BulkEditDrawer = ({
                         color="secondary"
                         onClick={onClose}
                     >
-                        Cancel
+                        Close
                     </Button>
+
                     {Object.keys(changed).length > 0 && (
-                        <Button
-                            variant="contained"
-                            color="secondary"
-                            onClick={onSave}
-                        >
-                            Save
-                        </Button>
+                        <>
+                            <Button
+                                variant="outlined"
+                                color="secondary"
+                                onClick={onClear}
+                            >
+                                Clear
+                            </Button>
+                            <Button
+                                variant="contained"
+                                color="secondary"
+                                onClick={onSave}
+                            >
+                                Save
+                            </Button>
+                        </>
                     )}
                 </Stack>
             </Stack>
