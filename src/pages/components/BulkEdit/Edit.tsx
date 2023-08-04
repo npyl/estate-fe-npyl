@@ -7,11 +7,26 @@ import {
     StyledButton,
     StyledOnlyNumbersInput,
     StyledTextField,
+    StyledOutlinedInput,
     StyledSelect,
 } from "src/pages/components/BulkEditDrawer/style";
 import { useAllGlobalsQuery } from "src/services/global";
 import CheckIcon from "@mui/icons-material/Check";
 import { Close } from "@mui/icons-material";
+
+import {
+    Checkbox,
+    FormControl,
+    OutlinedInput,
+    OutlinedInputProps,
+    Select,
+    SelectChangeEvent,
+} from "@mui/material";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Label } from "src/components/label";
+import { useGetLabelsQuery } from "src/services/labels";
+import { selectDemandLabels, setDemandLabels } from "src/slices/customer";
 
 interface EditProps<T> {
     data: T;
@@ -164,7 +179,54 @@ export const EditArea = ({ data, setData }: EditProps<string>) => {
 };
 
 export const EditLabels = ({ data, setData }: EditProps<number[]>) => {
-    return <div>EditLabels Component</div>;
+    const { data: allLabels } = useGetLabelsQuery();
+    const labelOptions = allLabels?.propertyLabels;
+
+    const handleChange = (event: SelectChangeEvent<number[]>) => {
+        const {
+            target: { value },
+        } = event;
+        setData(value as number[]);
+    };
+
+    const nameForId = (id: number) =>
+        labelOptions?.find((option) => option.id === id)?.name;
+
+    const renderValue = (selected: number[]) =>
+        selected.map((id) => nameForId(id)).join(", ");
+
+    if (!labelOptions) return null;
+
+    return (
+        <DefaultOrEdit label="Add Labels" onDisable={() => setData([])}>
+            <Select
+                multiple
+                value={data}
+                onChange={handleChange}
+                renderValue={renderValue}
+                input={<StyledOutlinedInput />}
+                MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
+            >
+                {labelOptions.map((option) => {
+                    return (
+                        <MenuItem key={option.id} value={option.id}>
+                            <Checkbox checked={data.indexOf(option.id!) > -1} />
+                            <Label
+                                variant="soft"
+                                sx={{
+                                    bgcolor: option.color,
+                                    borderRadius: 7,
+                                    color: "white",
+                                }}
+                            >
+                                {option.name}
+                            </Label>
+                        </MenuItem>
+                    );
+                })}
+            </Select>
+        </DefaultOrEdit>
+    );
 };
 
 export const EditBedrooms = ({ data, setData }: EditProps<string>) => {

@@ -1,4 +1,11 @@
-import { Button, ButtonProps, Select, TextField, styled } from "@mui/material";
+import {
+    Button,
+    ButtonProps,
+    OutlinedInput,
+    Select,
+    TextField,
+    styled,
+} from "@mui/material";
 import OnlyNumbersInput from "src/components/OnlyNumbers";
 
 export const StyledButton = styled(Button)<ButtonProps>(({ theme }) => ({
@@ -28,6 +35,13 @@ export const StyledTextField = styled(TextField)({
 
 export const StyledOnlyNumbersInput = styled(OnlyNumbersInput)({
     "& .MuiInputBase-root": {
+        borderTopLeftRadius: 0,
+        borderTopRightRadius: 0,
+    },
+});
+
+export const StyledOutlinedInput = styled(OutlinedInput)({
+    "& .MuiOutlinedInput-notchedOutline": {
         borderTopLeftRadius: 0,
         borderTopRightRadius: 0,
     },
