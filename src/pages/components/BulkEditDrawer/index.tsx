@@ -18,6 +18,7 @@ export const BulkEditDrawer = ({
 }: BulkEditDrawerProps) => {
     return (
         <Drawer
+            key={open ? "opened" : "closed"} // INFO: trick to force drawer to reset state after close
             open={open}
             variant="persistent"
             anchor="right"

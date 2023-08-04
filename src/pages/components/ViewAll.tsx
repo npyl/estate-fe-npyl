@@ -247,8 +247,12 @@ const ViewAll: FC = () => {
     };
 
     // Bulk Edit
-    const handleBulkEdit = () => setBulkEditOpen(true);
+    const handleBulkEdit = (selectedRows: GridRowSelectionModel) => {
+        setBulkEditOpen(true);
+        setSelectedRows(selectedRows);
+    };
     const closeBulkEdit = () => setBulkEditOpen(false);
+    const handleBulkEditSave = () => revalidate();
 
     // Bulk Delete
     const openBulkDeleteDialog = (selectedRows: GridRowSelectionModel) => {
@@ -389,6 +393,7 @@ const ViewAll: FC = () => {
             <BulkEdit
                 open={bulkEditOpen}
                 selectedIds={selectedRows.map((row) => +row)}
+                onSave={handleBulkEditSave}
                 onClose={closeBulkEdit}
             />
             <DeleteDialog

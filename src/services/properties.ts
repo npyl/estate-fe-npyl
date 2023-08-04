@@ -18,7 +18,7 @@ import {
 import { ILabel } from "src/types/label";
 
 export interface BulkEditRequest {
-    ids: number[];
+    propertyIds: number[];
     managerId?: number;
     ownerId?: number;
     zipcode?: number;

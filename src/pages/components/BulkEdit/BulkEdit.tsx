@@ -9,18 +9,27 @@ import {
 } from "./Edit";
 import { BulkEditDrawer } from "src/pages/components/BulkEditDrawer";
 import { useMemo, useState } from "react";
-import { useBulkEditPropertiesMutation } from "src/services/properties";
+import {
+    BulkEditRequest,
+    useBulkEditPropertiesMutation,
+} from "src/services/properties";
 
 interface BulkEditProps {
     open: boolean;
     selectedIds: number[];
+    onSave: () => void;
     onClose: () => void;
 }
 
-export const BulkEdit = ({ open, selectedIds, onClose }: BulkEditProps) => {
+export const BulkEdit = ({
+    open,
+    selectedIds,
+    onSave,
+    onClose,
+}: BulkEditProps) => {
     type StateType = {
-        manager: string;
-        owner: string;
+        managerId: string;
+        ownerId: string;
         zipCode: string;
         area: string;
         labels: number[];
@@ -28,8 +37,8 @@ export const BulkEdit = ({ open, selectedIds, onClose }: BulkEditProps) => {
         state: string;
     };
 
-    const [manager, setManager] = useState<StateType["manager"]>("");
-    const [owner, setOwner] = useState<StateType["owner"]>("");
+    const [managerId, setManagerId] = useState<StateType["managerId"]>("");
+    const [ownerId, setOwnerId] = useState<StateType["ownerId"]>("");
     const [zipCode, setZipCode] = useState<StateType["zipCode"]>("");
     const [area, setArea] = useState<StateType["area"]>("");
     const [labels, setLabels] = useState<StateType["labels"]>([]);
@@ -40,8 +49,8 @@ export const BulkEdit = ({ open, selectedIds, onClose }: BulkEditProps) => {
 
     const initialState: StateType = useMemo(
         () => ({
-            manager: "",
-            owner: "",
+            managerId: "",
+            ownerId: "",
             zipCode: "",
             area: "",
             labels: [],
@@ -53,15 +62,15 @@ export const BulkEdit = ({ open, selectedIds, onClose }: BulkEditProps) => {
 
     const currentState: StateType = useMemo(
         () => ({
-            manager,
-            owner,
+            managerId,
+            ownerId,
             zipCode,
             area,
             labels,
             bedrooms,
             state,
         }),
-        [manager, owner, zipCode, area, labels, bedrooms, state]
+        [managerId, ownerId, zipCode, area, labels, bedrooms, state]
     );
 
     const changed: Partial<StateType> = useMemo(() => {
@@ -93,11 +102,32 @@ export const BulkEdit = ({ open, selectedIds, onClose }: BulkEditProps) => {
                 }
                 return acc;
             }, {});
-    }, [manager, owner, zipCode, area, labels, bedrooms, state]);
+    }, [managerId, ownerId, zipCode, area, labels, bedrooms, state]);
+
+    const clearState = () => {
+        setManagerId("");
+        setOwnerId("");
+        setZipCode("");
+        setArea("");
+        setLabels([]);
+        setBedrooms("");
+        setState("");
+    };
 
     const handleSave = () => {
-        console.log("changed: ", changed);
-        // bulkEdit({ ...changed, ids: selectedIds } as BulkEditRequest);
+        bulkEdit({
+            ...changed,
+            propertyIds: selectedIds,
+        } as BulkEditRequest).then(() => {
+            clearState();
+            onSave();
+            onClose();
+        });
+    };
+
+    const handleClose = () => {
+        clearState();
+        onClose();
     };
 
     return (
@@ -106,10 +136,10 @@ export const BulkEdit = ({ open, selectedIds, onClose }: BulkEditProps) => {
             selectedIds={selectedIds}
             changed={changed}
             onSave={handleSave}
-            onClose={onClose}
+            onClose={handleClose}
         >
-            <EditManager data={manager} setData={setManager} />
-            <EditOwner data={owner} setData={setOwner} />
+            <EditManager data={managerId} setData={setManagerId} />
+            <EditOwner data={ownerId} setData={setOwnerId} />
             <EditZipCode data={zipCode} setData={setZipCode} />
             <EditArea data={area} setData={setArea} />
             <EditLabels data={labels} setData={setLabels} />
