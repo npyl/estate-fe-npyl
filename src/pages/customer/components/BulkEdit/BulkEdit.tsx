@@ -1,28 +1,37 @@
 import { EditLabels, EditManager } from "./Edit";
 import { useMemo, useState } from "react";
 import { BulkEditDrawer } from "src/pages/components/BulkEditDrawer";
-import { useBulkEditPropertiesMutation } from "src/services/properties";
+import {
+    BulkEditRequest,
+    useBulkEditCustomersMutation,
+} from "src/services/customers";
 
 interface BulkEditProps {
     open: boolean;
     selectedIds: number[];
+    onSave: () => void;
     onClose: () => void;
 }
 
-export const BulkEdit = ({ open, selectedIds, onClose }: BulkEditProps) => {
+export const BulkEdit = ({
+    open,
+    selectedIds,
+    onSave,
+    onClose,
+}: BulkEditProps) => {
     type StateType = {
-        manager: string;
+        managerId: string;
         labels: number[];
     };
 
-    const [manager, setManager] = useState<StateType["manager"]>("");
+    const [managerId, setManagerId] = useState<StateType["managerId"]>("");
     const [labels, setLabels] = useState<StateType["labels"]>([]);
 
-    const [bulkEdit] = useBulkEditPropertiesMutation();
+    const [bulkEdit] = useBulkEditCustomersMutation();
 
     const initialState: StateType = useMemo(
         () => ({
-            manager: "",
+            managerId: "",
             labels: [],
         }),
         []
@@ -30,10 +39,10 @@ export const BulkEdit = ({ open, selectedIds, onClose }: BulkEditProps) => {
 
     const currentState: StateType = useMemo(
         () => ({
-            manager,
+            managerId,
             labels,
         }),
-        [manager, labels]
+        [managerId, labels]
     );
 
     const changed: Partial<StateType> = useMemo(() => {
@@ -61,22 +70,37 @@ export const BulkEdit = ({ open, selectedIds, onClose }: BulkEditProps) => {
                 }
                 return acc;
             }, {});
-    }, [manager, labels]);
+    }, [managerId, labels]);
+
+    const clearState = () => {
+        setManagerId("");
+        setLabels([]);
+    };
 
     const handleSave = () => {
-        //console.log("changed: ", changed);
-        // bulkEdit({ ...changed, ids: selectedIds } as BulkEditRequest);
+        bulkEdit({
+            ...changed,
+            customerIds: selectedIds,
+        } as BulkEditRequest).then(() => {
+            clearState();
+            onSave();
+            onClose();
+        });
+    };
+
+    const handleClose = () => {
+        clearState();
+        onClose();
     };
 
     return (
         <BulkEditDrawer
             open={open}
-            selectedIds={selectedIds}
             changed={changed}
             onSave={handleSave}
-            onClose={onClose}
+            onClose={handleClose}
         >
-            <EditManager data={manager} setData={setManager} />
+            <EditManager data={managerId} setData={setManagerId} />
             <EditLabels data={labels} setData={setLabels} />
         </BulkEditDrawer>
     );

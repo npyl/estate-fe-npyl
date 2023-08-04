@@ -3,7 +3,6 @@ import { Drawer, Stack, Button, Typography, DrawerProps } from "@mui/material";
 interface BulkEditDrawerProps extends DrawerProps {
     open: boolean;
     changed: any;
-    selectedIds: number[];
     onSave: () => void;
     onClose: () => void;
 }
@@ -11,7 +10,6 @@ interface BulkEditDrawerProps extends DrawerProps {
 export const BulkEditDrawer = ({
     open,
     changed,
-    selectedIds,
     onSave,
     onClose,
     children,

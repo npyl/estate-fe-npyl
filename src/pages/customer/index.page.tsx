@@ -120,8 +120,12 @@ const Customers: NextPage = () => {
         );
     };
 
-    const openBulkEdit = () => setBulkEditOpen(true);
+    const openBulkEdit = (selectedRows: GridRowSelectionModel) => {
+        setBulkEditOpen(true);
+        setSelectedRows(selectedRows);
+    };
     const closeBulkEdit = () => setBulkEditOpen(false);
+    const handleBulkEditSave = () => revalidate();
 
     return (
         <Box
@@ -170,6 +174,7 @@ const Customers: NextPage = () => {
             <BulkEdit
                 open={bulkEditOpen}
                 selectedIds={selectedRows.map((row) => +row)}
+                onSave={handleBulkEditSave}
                 onClose={closeBulkEdit}
             />
 

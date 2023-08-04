@@ -133,7 +133,6 @@ export const BulkEdit = ({
     return (
         <BulkEditDrawer
             open={open}
-            selectedIds={selectedIds}
             changed={changed}
             onSave={handleSave}
             onClose={handleClose}
