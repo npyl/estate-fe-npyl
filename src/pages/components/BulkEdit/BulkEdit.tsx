@@ -91,6 +91,7 @@ export const BulkEditDrawer = ({
     }, [manager, owner, zipCode, area, labels, bedrooms, state]);
 
     const handleSave = () => {
+        console.log("changed: ", changed);
         // bulkEdit({ ...changed, ids: selectedIds });
     };
 
