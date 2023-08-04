@@ -340,7 +340,7 @@ const BasicSection: React.FC<any> = () => {
                     </Grid>
                     <Grid
                         item
-                        xs={3}
+                        xs={2.7}
                         flexDirection="row"
                         sx={{ display: "inline-flex", alignItems: "center" }}
                     >
@@ -366,7 +366,7 @@ const BasicSection: React.FC<any> = () => {
 
                     <Grid
                         item
-                        xs={2}
+                        xs={1.5}
                         flexDirection="row"
                         sx={{ display: "inline-flex", alignItems: "center" }}
                     >
@@ -389,6 +389,33 @@ const BasicSection: React.FC<any> = () => {
                             {t("Auction")}
                         </Typography>
                     </Grid>
+                    <Grid
+                        item
+                        xs={1.5}
+                        flexDirection="row"
+                        sx={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                        }}
+                    >
+                        <Checkbox
+                            id="outlined-controlled"
+                            value={rented}
+                            checked={rented}
+                            onChange={(
+                                event: React.ChangeEvent<unknown>,
+                                checked: boolean
+                            ) => {
+                                dispatch(setRented(checked));
+                            }}
+                            sx={{ cursor: "default" }}
+                            color="primary"
+                            inputProps={{ "aria-label": "Elevator" }}
+                        />
+                        <Typography variant="body1" sx={{ ml: 0 }}>
+                            {t("Rented")}
+                        </Typography>
+                    </Grid>
                 </Grid>
             </Grid>
             <Grid item xs={12} padding={1}>
@@ -403,34 +430,6 @@ const BasicSection: React.FC<any> = () => {
                 >
                     <Grid item xs={12}>
                         <Grid container spacing={2}>
-                            <Grid
-                                item
-                                xs={6}
-                                flexDirection="row"
-                                sx={{
-                                    display: "inline-flex",
-                                    alignItems: "center",
-                                }}
-                            >
-                                <Checkbox
-                                    id="outlined-controlled"
-                                    value={rented}
-                                    checked={rented}
-                                    onChange={(
-                                        event: React.ChangeEvent<unknown>,
-                                        checked: boolean
-                                    ) => {
-                                        dispatch(setRented(checked));
-                                    }}
-                                    sx={{ cursor: "default" }}
-                                    color="primary"
-                                    inputProps={{ "aria-label": "Elevator" }}
-                                />
-                                <Typography variant="body1" sx={{ ml: 0 }}>
-                                    {t("Rented")}
-                                </Typography>
-                            </Grid>
-
                             <Grid item xs={6}>
                                 <DateFieldStyled
                                     label="Available After:"
@@ -449,7 +448,17 @@ const BasicSection: React.FC<any> = () => {
                                     sx={{ width: "100%" }} // Add custom styles to make it full width
                                 />
                             </Grid>
-
+                            <Grid item xs={6}>
+                                <OnlyNumbersInput
+                                    label={t("Current Rent Price")}
+                                    value={currentRentPrice}
+                                    onChange={(value) => {
+                                        dispatch(setCurrentRentPrice(value));
+                                    }}
+                                    adornment="€"
+                                    disabled={!rented}
+                                />
+                            </Grid>
                             <Grid item xs={6}>
                                 <DateFieldStyled
                                     label="Rental Period Start"
@@ -484,17 +493,6 @@ const BasicSection: React.FC<any> = () => {
                                     }}
                                     disabled={!rented} // Disable the field if "rented" is unchecked
                                     sx={{ width: "100%" }} // Add custom styles to make it full width
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <OnlyNumbersInput
-                                    label={t("Current Rent Price")}
-                                    value={currentRentPrice}
-                                    onChange={(value) => {
-                                        dispatch(setCurrentRentPrice(value));
-                                    }}
-                                    adornment="€"
-                                    disabled={!rented}
                                 />
                             </Grid>
                         </Grid>
