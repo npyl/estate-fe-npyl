@@ -1,3 +1,15 @@
+export type LeadSource =
+    | "Facebook"
+    | "Instagram"
+    | "Google"
+    | "Customer"
+    | "Website"
+    | "spitogatos.gr"
+    | "plot.gr"
+    | "xe.gr"
+    | "Street Sign"
+    | "Other";
+
 export interface IGlobalPropertyDetails {
     accessibility: string[];
     balconySide: string[];
