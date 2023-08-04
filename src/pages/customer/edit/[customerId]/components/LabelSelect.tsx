@@ -4,9 +4,11 @@ import {
     InputLabel,
     MenuItem,
     OutlinedInput,
+    OutlinedInputProps,
     Select,
     SelectChangeEvent,
 } from "@mui/material";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Label } from "src/components/label";
 import { useGetLabelsQuery } from "src/services/labels";
@@ -33,6 +35,12 @@ export const LabelSelect: React.FC = () => {
         );
     };
 
+    const nameForId = (id: number) =>
+        labelOptions.find((option) => option.id === id)?.name;
+
+    const renderValue = (selected: number[]) =>
+        selected.map((id) => nameForId(id)).join(", ");
+
     return (
         <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">Ετικέτες</InputLabel>
@@ -41,7 +49,7 @@ export const LabelSelect: React.FC = () => {
                 labelId="demo-simple-select-label"
                 value={labels}
                 onChange={handleChange}
-                renderValue={(selected) => selected.join(", ")}
+                renderValue={renderValue}
                 input={<OutlinedInput label="Ετικέτες" />}
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
