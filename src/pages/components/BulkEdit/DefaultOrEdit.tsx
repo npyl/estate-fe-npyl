@@ -1,0 +1,41 @@
+import { InputLabel, Stack } from "@mui/material";
+import React, { useMemo, useState } from "react";
+import { StyledButton } from "src/pages/components/BulkEditDrawer/style";
+import CheckIcon from "@mui/icons-material/Check";
+import { Close } from "@mui/icons-material";
+
+interface DefaultOrEditProps {
+    label: string;
+    children: React.ReactNode;
+    onDisable: () => void;
+}
+
+export const DefaultOrEdit = ({
+    label,
+    children,
+    onDisable,
+}: DefaultOrEditProps) => {
+    const [checked, setChecked] = useState(true);
+
+    useMemo(() => checked && onDisable(), [checked]);
+
+    return (
+        <Stack>
+            <InputLabel>{label}</InputLabel>
+            <StyledButton
+                variant="outlined"
+                endIcon={
+                    checked ? (
+                        <CheckIcon color="success" />
+                    ) : (
+                        <Close color="error" />
+                    )
+                }
+                onClick={() => setChecked(!checked)}
+            >
+                Default Value
+            </StyledButton>
+            {!checked && children}
+        </Stack>
+    );
+};

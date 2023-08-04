@@ -1,4 +1,5 @@
-import { EditLabels, EditManager } from "./Edit";
+import { EditManager } from "./Edit";
+import { EditLabels } from "src/pages/components/BulkEdit/EditLabels";
 import { useMemo, useState } from "react";
 import { BulkEditDrawer } from "src/pages/components/BulkEditDrawer";
 import {
@@ -104,7 +105,7 @@ export const BulkEdit = ({
             onClose={handleClose}
         >
             <EditManager data={managerId} setData={setManagerId} />
-            <EditLabels data={labels} setData={setLabels} />
+            <EditLabels variant="customer" data={labels} setData={setLabels} />
         </BulkEditDrawer>
     );
 };

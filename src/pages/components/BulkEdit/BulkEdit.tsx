@@ -1,7 +1,6 @@
 import {
     EditArea,
     EditBedrooms,
-    EditLabels,
     EditManager,
     EditOwner,
     EditState,
@@ -13,6 +12,7 @@ import {
     BulkEditRequest,
     useBulkEditPropertiesMutation,
 } from "src/services/properties";
+import { EditLabels } from "./EditLabels";
 
 interface BulkEditProps {
     open: boolean;
@@ -144,7 +144,7 @@ export const BulkEdit = ({
             <EditOwner data={ownerId} setData={setOwnerId} />
             <EditZipCode data={zipCode} setData={setZipCode} />
             <EditArea data={area} setData={setArea} />
-            <EditLabels data={labels} setData={setLabels} />
+            <EditLabels variant="property" data={labels} setData={setLabels} />
             <EditBedrooms data={bedrooms} setData={setBedrooms} />
             <EditState data={state} setData={setState} />
         </BulkEditDrawer>

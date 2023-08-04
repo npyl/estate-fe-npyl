@@ -1,54 +1,10 @@
-import { Autocomplete, InputLabel, Stack } from "@mui/material";
-import React, { useMemo, useState } from "react";
+import { Autocomplete } from "@mui/material";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useAllUsersQuery } from "src/services/user";
-import {
-    StyledButton,
-    StyledTextField,
-} from "src/pages/components/BulkEditDrawer/style";
-import { Close } from "@mui/icons-material";
-import CheckIcon from "@mui/icons-material/Check";
-
-interface EditProps<T> {
-    data: T;
-    setData: (data: T) => void;
-}
-
-interface DefaultOrEditProps {
-    label: string;
-    children: React.ReactNode;
-    onDisable: () => void;
-}
-
-export const DefaultOrEdit = ({
-    label,
-    children,
-    onDisable,
-}: DefaultOrEditProps) => {
-    const [checked, setChecked] = useState(true);
-
-    useMemo(() => checked && onDisable(), [checked]);
-
-    return (
-        <Stack>
-            <InputLabel>{label}</InputLabel>
-            <StyledButton
-                variant="outlined"
-                endIcon={
-                    checked ? (
-                        <CheckIcon color="success" />
-                    ) : (
-                        <Close color="error" />
-                    )
-                }
-                onClick={() => setChecked(!checked)}
-            >
-                Default Value
-            </StyledButton>
-            {!checked && children}
-        </Stack>
-    );
-};
+import { StyledTextField } from "src/pages/components/BulkEditDrawer/style";
+import { EditProps } from "src/pages/components/BulkEdit/types";
+import { DefaultOrEdit } from "src/pages/components/BulkEdit/DefaultOrEdit";
 
 export const EditManager = ({ data, setData }: EditProps<string>) => {
     const { t } = useTranslation();
@@ -90,8 +46,4 @@ export const EditManager = ({ data, setData }: EditProps<string>) => {
             />
         </DefaultOrEdit>
     );
-};
-
-export const EditLabels = ({ data, setData }: EditProps<number[]>) => {
-    return <div>EditLabels Component</div>;
 };
