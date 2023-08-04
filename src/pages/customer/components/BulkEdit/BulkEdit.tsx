@@ -1,14 +1,6 @@
-import {
-    EditArea,
-    EditBedrooms,
-    EditLabels,
-    EditManager,
-    EditOwner,
-    EditState,
-    EditZipCode,
-} from "./Edit";
-import { BulkEditDrawer } from "src/pages/components/BulkEditDrawer";
+import { EditLabels, EditManager } from "./Edit";
 import { useMemo, useState } from "react";
+import { BulkEditDrawer } from "src/pages/components/BulkEditDrawer";
 import { useBulkEditPropertiesMutation } from "src/services/properties";
 
 interface BulkEditProps {
@@ -20,33 +12,18 @@ interface BulkEditProps {
 export const BulkEdit = ({ open, selectedIds, onClose }: BulkEditProps) => {
     type StateType = {
         manager: string;
-        owner: string;
-        zipCode: string;
-        area: string;
         labels: number[];
-        bedrooms: string;
-        state: string;
     };
 
     const [manager, setManager] = useState<StateType["manager"]>("");
-    const [owner, setOwner] = useState<StateType["owner"]>("");
-    const [zipCode, setZipCode] = useState<StateType["zipCode"]>("");
-    const [area, setArea] = useState<StateType["area"]>("");
     const [labels, setLabels] = useState<StateType["labels"]>([]);
-    const [bedrooms, setBedrooms] = useState<StateType["bedrooms"]>("");
-    const [state, setState] = useState<StateType["state"]>("");
 
     const [bulkEdit] = useBulkEditPropertiesMutation();
 
     const initialState: StateType = useMemo(
         () => ({
             manager: "",
-            owner: "",
-            zipCode: "",
-            area: "",
             labels: [],
-            bedrooms: "",
-            state: "",
         }),
         []
     );
@@ -54,14 +31,9 @@ export const BulkEdit = ({ open, selectedIds, onClose }: BulkEditProps) => {
     const currentState: StateType = useMemo(
         () => ({
             manager,
-            owner,
-            zipCode,
-            area,
             labels,
-            bedrooms,
-            state,
         }),
-        [manager, owner, zipCode, area, labels, bedrooms, state]
+        [manager, labels]
     );
 
     const changed: Partial<StateType> = useMemo(() => {
@@ -81,11 +53,7 @@ export const BulkEdit = ({ open, selectedIds, onClose }: BulkEditProps) => {
             })
             .reduce((acc: Partial<StateType>, key: keyof StateType) => {
                 // INFO: Cast currentState[key] to `any` to avoid type errors
-                if (
-                    key !== "state" &&
-                    key !== "labels" &&
-                    !isNaN(Number(currentState[key]))
-                ) {
+                if (key !== "labels" && !isNaN(Number(currentState[key]))) {
                     // every string except state is expected to be int in Backend
                     acc[key] = parseInt(currentState[key] as string, 10) as any;
                 } else {
@@ -93,10 +61,10 @@ export const BulkEdit = ({ open, selectedIds, onClose }: BulkEditProps) => {
                 }
                 return acc;
             }, {});
-    }, [manager, owner, zipCode, area, labels, bedrooms, state]);
+    }, [manager, labels]);
 
     const handleSave = () => {
-        console.log("changed: ", changed);
+        //console.log("changed: ", changed);
         // bulkEdit({ ...changed, ids: selectedIds } as BulkEditRequest);
     };
 
@@ -109,12 +77,7 @@ export const BulkEdit = ({ open, selectedIds, onClose }: BulkEditProps) => {
             onClose={onClose}
         >
             <EditManager data={manager} setData={setManager} />
-            <EditOwner data={owner} setData={setOwner} />
-            <EditZipCode data={zipCode} setData={setZipCode} />
-            <EditArea data={area} setData={setArea} />
             <EditLabels data={labels} setData={setLabels} />
-            <EditBedrooms data={bedrooms} setData={setBedrooms} />
-            <EditState data={state} setData={setState} />
         </BulkEditDrawer>
     );
 };

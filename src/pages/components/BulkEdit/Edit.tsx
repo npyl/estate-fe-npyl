@@ -1,19 +1,16 @@
 import { Autocomplete, InputLabel, MenuItem, Stack } from "@mui/material";
 import React, { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-
-import CheckIcon from "@mui/icons-material/Check";
-
 import { useAllCustomersQuery } from "src/services/customers";
 import { useAllUsersQuery } from "src/services/user";
-
 import {
     StyledButton,
     StyledOnlyNumbersInput,
     StyledTextField,
     StyledSelect,
-} from "./style";
+} from "src/pages/components/BulkEditDrawer/style";
 import { useAllGlobalsQuery } from "src/services/global";
+import CheckIcon from "@mui/icons-material/Check";
 import { Close } from "@mui/icons-material";
 
 interface EditProps<T> {

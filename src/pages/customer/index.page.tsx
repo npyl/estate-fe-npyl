@@ -19,6 +19,7 @@ import { useSelector } from "react-redux";
 import { selectAll } from "src/slices/customer/filters";
 import { UserCircle } from "src/icons/user-circle";
 import { DeleteDialog } from "src/components/Dialog/Delete";
+import { BulkEdit } from "./components/BulkEdit/BulkEdit";
 
 const columns: GridColDef[] = [
     {
@@ -76,6 +77,7 @@ const columns: GridColDef[] = [
 const Customers: NextPage = () => {
     const allFilters = useSelector(selectAll);
 
+    const [bulkEditOpen, setBulkEditOpen] = useState(false);
     const [bulkDeleteDialogOpen, setBulkDeleteDialogOpen] = useState(false);
     const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
 
@@ -118,46 +120,58 @@ const Customers: NextPage = () => {
         );
     };
 
-    return (
-        <>
-            <FilterSection />
+    const openBulkEdit = () => setBulkEditOpen(true);
+    const closeBulkEdit = () => setBulkEditOpen(false);
 
-            <Box
-                component="main"
+    return (
+        <Box
+            sx={{
+                flexGrow: 1,
+                position: "relative",
+                height: "100%", // make sure height is full so that bulk edit is full even if DataGrid is small
+            }}
+        >
+            <FilterSection
                 sx={{
-                    flexGrow: 1,
-                    pt: 2,
+                    marginRight: bulkEditOpen ? 40 : 0,
                 }}
-            >
-                <Paper sx={{ mt: 2 }}>
-                    {rows ? (
-                        <DataGridTable
-                            rows={rows}
-                            columns={columns}
-                            resource={"customer"}
-                            sortingBy={"firstName"}
-                            sortingOrder={"asc"}
-                            page={0}
-                            pageSize={25}
-                            totalRows={25}
-                            onBulkDelete={openBulkDeleteDialog}
-                        />
-                    ) : (
-                        <DataGridTable
-                            rows={skeletonRows}
-                            columns={columns.map((column) => ({
-                                ...column,
-                                renderCell: renderSkeletonCell,
-                            }))}
-                            sortingBy={""}
-                            sortingOrder={"asc"}
-                            page={0}
-                            pageSize={25}
-                            totalRows={25}
-                        />
-                    )}
-                </Paper>
-            </Box>
+            />
+
+            <Paper sx={{ mt: 1, marginRight: bulkEditOpen ? 40 : 0 }}>
+                {rows ? (
+                    <DataGridTable
+                        rows={rows}
+                        columns={columns}
+                        resource={"customer"}
+                        sortingBy={"firstName"}
+                        sortingOrder={"asc"}
+                        page={0}
+                        pageSize={25}
+                        totalRows={25}
+                        onBulkEdit={openBulkEdit}
+                        onBulkDelete={openBulkDeleteDialog}
+                    />
+                ) : (
+                    <DataGridTable
+                        rows={skeletonRows}
+                        columns={columns.map((column) => ({
+                            ...column,
+                            renderCell: renderSkeletonCell,
+                        }))}
+                        sortingBy={""}
+                        sortingOrder={"asc"}
+                        page={0}
+                        pageSize={25}
+                        totalRows={25}
+                    />
+                )}
+            </Paper>
+
+            <BulkEdit
+                open={bulkEditOpen}
+                selectedIds={selectedRows.map((row) => +row)}
+                onClose={closeBulkEdit}
+            />
 
             <DeleteDialog
                 multiple
@@ -165,7 +179,7 @@ const Customers: NextPage = () => {
                 onClose={closeBulkDeleteDialog}
                 onDelete={handleBulkDelete}
             />
-        </>
+        </Box>
     );
 };
 

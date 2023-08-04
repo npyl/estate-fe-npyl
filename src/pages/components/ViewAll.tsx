@@ -2,13 +2,11 @@ import GridViewIcon from "@mui/icons-material/GridView";
 import MapIcon from "@mui/icons-material/Map";
 import {
     ButtonGroup,
-    Grid,
     IconButton,
     Paper,
     Skeleton,
     Stack,
     SvgIconTypeMap,
-    Typography,
     Box,
 } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
@@ -30,12 +28,11 @@ import DataGridTable from "../../components/DataGrid";
 import MapView from "./MapView";
 import MediaCard from "./MediaCard";
 import { FilterSection } from "./Filters";
-import FilterRows from "./Filters/FilterRows";
 import FilterSortBy from "./Filters/FilterSortBy";
 import { selectAll, sumOfChangedProperties } from "src/slices/filters";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { BulkEditDrawer } from "./BulkEdit/BulkEdit";
+import { BulkEdit } from "./BulkEdit/BulkEdit";
 import { DeleteDialog } from "src/components/Dialog/Delete";
 import ChosenFilters from "./Filters/ChosenFilters";
 
@@ -389,7 +386,7 @@ const ViewAll: FC = () => {
                 </Paper>
             )}
 
-            <BulkEditDrawer
+            <BulkEdit
                 open={bulkEditOpen}
                 selectedIds={selectedRows.map((row) => +row)}
                 onClose={closeBulkEdit}
