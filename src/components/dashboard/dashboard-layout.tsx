@@ -100,15 +100,16 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
             path = "/notification/create";
         }
 
-        tabConfig = {
-            title: title,
-            path: path,
-        };
+        // tabConfig = {
+        //     title: title,
+        //     path: path,
+        // };
 
         router.push(path);
 
-        dispatch(addTab(tabConfig));
+        // dispatch(addTab(tabConfig));
     };
+
     return (
         <>
             <DashboardLayoutRoot>

@@ -20,6 +20,7 @@ import { selectAll } from "src/slices/customer/filters";
 import { UserCircle } from "src/icons/user-circle";
 import { DeleteDialog } from "src/components/Dialog/Delete";
 import { BulkEdit } from "./components/BulkEdit/BulkEdit";
+import { usePublishTab } from "src/components/Tabs/utils";
 
 const columns: GridColDef[] = [
     {
@@ -75,6 +76,8 @@ const columns: GridColDef[] = [
 ];
 
 const Customers: NextPage = () => {
+    usePublishTab({ title: "Customers", path: "/customer" });
+
     const allFilters = useSelector(selectAll);
 
     const [bulkEditOpen, setBulkEditOpen] = useState(false);

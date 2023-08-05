@@ -1,13 +1,10 @@
 import { Box, Button, Grid, Paper, TextField, Typography } from "@mui/material";
 import type { NextPage } from "next";
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { useAddNotificationMutation } from "src/services/notification";
 import { Send as SendIcon } from "@mui/icons-material";
-
-import { addTab } from "src/slices/tabs";
 
 import {
     selectAll,
@@ -21,26 +18,16 @@ import {
     selectTourType,
     // setter
     setAttribute,
-    // reset
-    resetState,
 } from "src/slices/notification";
+import { usePublishTab } from "src/components/Tabs/utils";
 
 const NotificationCreatePage: NextPage = () => {
     const dispatch = useDispatch();
 
-    const publish = () => {
-        useEffect(() => {
-            dispatch(
-                addTab({
-                    title: "Create Notification",
-                    path: "/notification/create",
-                })
-            );
-            dispatch(resetState());
-        }, []);
-    };
-
-    publish();
+    usePublishTab({
+        title: "Create Notifications",
+        path: "/notification/create",
+    });
 
     const [addNotification] = useAddNotificationMutation();
 

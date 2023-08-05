@@ -26,12 +26,18 @@ import { useGetPropertyByIdQuery } from "src/services/properties";
 import { useDispatch } from "react-redux";
 import { LogoProgressIndicator } from "src/components/LogoProgressIndicator";
 import { IPropertyBlueprint, IPropertyImage } from "src/types/file";
+import { usePublishTab } from "src/components/Tabs/utils";
 
 const EditPropertyPage: NextPage = () => {
     const dispatch = useDispatch();
     const router = useRouter();
 
     const { propertyId } = router.query;
+
+    usePublishTab({
+        title: `Edit Property ${propertyId}`,
+        path: `/property/edit/${propertyId}`,
+    });
 
     // INFO: lazy is used on * because addImage doesn't cause invalidate (in contradiction to editImage)
 

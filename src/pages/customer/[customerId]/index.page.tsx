@@ -16,10 +16,11 @@ import MatchingPropertiesSection from "./components/MatchingPropertiesSection";
 import NotesCustomerSection from "./components/NotesSection";
 import OwnedCustomerPropertiesSection from "./components/OwnedPropertiesSection";
 
-import TabPanel from "src/components/Tabs";
+import TabPanel from "src/components/Tabs/Tabs";
 import ViewHeader from "src/pages/components/ViewHeader";
 
-import { addTab, deleteTabWithPath } from "src/slices/tabs";
+import { deleteTabWithPath } from "src/slices/tabs";
+import { usePublishTab } from "src/components/Tabs/utils";
 
 function a11yProps(index: number) {
     return {
@@ -27,33 +28,28 @@ function a11yProps(index: number) {
         "aria-controls": `simple-tabpanel-${index}`,
     };
 }
+
 const CustomerView: NextPage = () => {
     // customer
     const router = useRouter();
     const dispatch = useDispatch();
+
     const { customerId } = router.query;
+
+    usePublishTab({
+        title: `Customer ${customerId}`,
+        path: `/customer/${customerId}`,
+    });
 
     const [value, setValue] = useState(0);
 
     const [deleteCustomer, { isSuccess: isDeleteSuccess }] =
         useDeleteCustomerMutation();
 
-    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    const handleChange = (event: React.SyntheticEvent, newValue: number) =>
         setValue(newValue);
-    };
-    const handleEdit = () => {
-        router.push(`/customer/edit/${customerId}`);
-        // add tab
-        dispatch(
-            addTab({
-                path: `/customer/edit/${customerId}`,
-                title: `Edit Customer ${customerId}`,
-            })
-        );
-    };
-    const handleDelete = () => {
-        deleteCustomer(parseInt(customerId as string));
-    };
+    const handleEdit = () => router.push(`/customer/edit/${customerId}`);
+    const handleDelete = () => deleteCustomer(+customerId!);
 
     if (isDeleteSuccess) {
         router.push("/customer");
