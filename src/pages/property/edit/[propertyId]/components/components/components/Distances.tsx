@@ -25,6 +25,7 @@ import {
 } from "src/slices/property";
 import { useAllGlobalsQuery } from "src/services/global";
 import { useTranslation } from "react-i18next";
+import CustomNumberField from "./componentsFields/OnlyNumbersWithDot";
 
 const DistancesSection: React.FC<any> = (props) => {
     const dispatch = useDispatch();
@@ -47,24 +48,6 @@ const DistancesSection: React.FC<any> = (props) => {
     ) => {
         dispatch(setter(event.target.value));
     };
-    //set the values for BE
-    // const handlePublicTransportationChange = (
-    //   event: React.ChangeEvent<HTMLInputElement>
-    // ) => {
-    //   const input = event.target.value;
-    //   const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
-    //   dispatch(setPublicTransportation(publicTransportation));
-    // };
-
-    //handle onlynumbers
-    // const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    //   const keyCode = event.keyCode || event.which;
-    //   const keyValue = String.fromCharCode(keyCode);
-    //   const regex = /[0-9]/;
-    //   if (!regex.test(keyValue)) {
-    //     event.preventDefault(); // Prevent entering non-numeric characters
-    //   }
-    // };
     return (
         <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
             <Box
@@ -81,182 +64,72 @@ const DistancesSection: React.FC<any> = (props) => {
             <Grid item xs={12} padding={1}>
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
-                        <TextField
-                            type="number"
-                            fullWidth
-                            id="outlined-controlled"
-                            label={t("Public Transportation")}
-                            value={publicTransportation}
+                        <CustomNumberField
+                            label={t("Public Trasportation")}
+                            value={publicTransportation?.toString() || ""}
                             onChange={(event) =>
                                 handleChange(setPublicTransportation, event)
                             }
-                            onKeyPress={(event) => {
-                                if (event.key === "-") {
-                                    event.preventDefault();
-                                }
-                            }}
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        km
-                                    </InputAdornment>
-                                ),
-                            }}
-                            inputProps={{
-                                style: {
-                                    height: "8px",
-                                },
-                                min: 0,
-                            }}
+                            adorValue="km"
                         />
                     </Grid>
 
                     <Grid item xs={6}>
-                        <TextField
-                            type="number"
-                            fullWidth
-                            id="outlined-controlled"
+                        <CustomNumberField
                             label={t("Sea")}
-                            value={sea}
+                            value={sea?.toString() || ""}
                             onChange={(event) => handleChange(setSea, event)}
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        km
-                                    </InputAdornment>
-                                ),
-                            }}
-                            inputProps={{
-                                style: {
-                                    height: "8px",
-                                },
-                                min: 0,
-                            }}
+                            adorValue="km"
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <TextField
-                            type="number"
-                            fullWidth
-                            id="outlined-controlled"
+                        <CustomNumberField
                             label={t("Schools")}
-                            value={schools}
+                            value={schools?.toString() || ""}
                             onChange={(event) =>
                                 handleChange(setSchools, event)
                             }
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        km
-                                    </InputAdornment>
-                                ),
-                            }}
-                            inputProps={{
-                                style: {
-                                    height: "8px",
-                                },
-                                min: 0,
-                            }}
+                            adorValue="km"
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <TextField
-                            type="number"
-                            fullWidth
-                            id="outlined-controlled"
+                        <CustomNumberField
                             label={t("Supermarket")}
-                            value={supermarket}
+                            value={supermarket?.toString() || ""}
                             onChange={(event) =>
                                 handleChange(setSupermarket, event)
                             }
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        km
-                                    </InputAdornment>
-                                ),
-                            }}
-                            inputProps={{
-                                style: {
-                                    height: "8px",
-                                },
-                                min: 0,
-                            }}
+                            adorValue="km"
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <TextField
-                            type="number"
-                            fullWidth
-                            id="outlined-controlled"
+                        <CustomNumberField
                             label={t("Cafe-Restaurant")}
-                            value={cafeRestaurant}
+                            value={cafeRestaurant?.toString() || ""}
                             onChange={(event) =>
                                 handleChange(setCafeRestaurant, event)
                             }
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        km
-                                    </InputAdornment>
-                                ),
-                            }}
-                            inputProps={{
-                                style: {
-                                    height: "8px",
-                                },
-                                min: 0,
-                            }}
+                            adorValue="km"
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <TextField
-                            type="number"
-                            fullWidth
-                            id="outlined-controlled"
+                        <CustomNumberField
                             label={t("Hospital")}
-                            value={hospital}
+                            value={hospital?.toString() || ""}
                             onChange={(event) =>
                                 handleChange(setHospital, event)
                             }
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        km
-                                    </InputAdornment>
-                                ),
-                            }}
-                            inputProps={{
-                                style: {
-                                    height: "8px",
-                                },
-                                min: 0,
-                            }}
+                            adorValue="km"
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <TextField
-                            type="number"
-                            fullWidth
-                            id="outlined-controlled"
+                        <CustomNumberField
                             label={t("Airport")}
-                            value={airport}
+                            value={airport?.toString() || ""}
                             onChange={(event) =>
                                 handleChange(setAirport, event)
                             }
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        km
-                                    </InputAdornment>
-                                ),
-                            }}
-                            inputProps={{
-                                style: {
-                                    height: "8px",
-                                },
-                                min: 0,
-                            }}
+                            adorValue="km"
                         />
                     </Grid>
                 </Grid>

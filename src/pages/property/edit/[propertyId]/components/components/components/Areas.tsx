@@ -19,8 +19,9 @@ import {
 } from "src/slices/property";
 
 import FloorAreasInput from "./FloorAreasInput";
-import OnlyNumbersInput from "src/components/OnlyNumbers";
+
 import { useTranslation } from "react-i18next";
+import OnlyNumbersInput from "src/components/OnlyNumbers";
 
 const AreasSection: React.FC<any> = () => {
     const dispatch = useDispatch();
