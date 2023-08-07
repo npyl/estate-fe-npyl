@@ -1,4 +1,3 @@
-import AddIcon from "@mui/icons-material/Add";
 import HomeIcon from "@mui/icons-material/Home";
 import LabelImportantIcon from "@mui/icons-material/LabelImportant";
 
@@ -9,7 +8,6 @@ import {
     Grid,
     MenuItem,
     Paper,
-    Stack,
     Typography,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -21,8 +19,6 @@ import { DashboardNavbar } from "./dashboard-navbar";
 import { DashboardSidebar } from "./dashboard-sidebar";
 import Subbar from "./dashboard-subbar";
 import { alpha } from "@mui/material/styles";
-import { addTab } from "src/slices/tabs";
-import { useDispatch } from "src/store";
 
 import { Users as UsersIcon } from "../../icons/users";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
@@ -44,10 +40,21 @@ const DashboardLayoutRoot = styled("div")(({ theme }) => ({
     },
 }));
 
-export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
-    const { children } = props;
+const propertyItemType = "property-menu-item";
+const managerItemType = "manager-menu-item";
+const ownerItemType = "owner-menu-item";
+const labelItemType = "label-menu-item";
+const notificationItemType = "notification-menu-item";
 
-    const dispatch = useDispatch();
+const itemTypeToPath: { [key: string]: string } = {
+    [propertyItemType]: "/property/create",
+    [managerItemType]: "/user/create",
+    [ownerItemType]: "/customer/create",
+    [labelItemType]: "/label",
+    [notificationItemType]: "/notification/create",
+};
+
+export const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
     const { t } = useTranslation();
     const router = useRouter();
 
@@ -55,60 +62,12 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
 
-    const propertyItemType = "property-menu-item";
-    const managerItemType = "manager-menu-item";
-    const ownerItemType = "owner-menu-item";
-    const labelItemType = "label-menu-item";
-    const notificationItemType = "notification-menu-item";
-
-    interface tabConfigProp {
-        title: string;
-        path: string;
-    }
-
-    const showDropdown = (event: React.MouseEvent<HTMLElement>) => {
+    const showDropdown = (event: React.MouseEvent<HTMLElement>) =>
         setAnchorEl(event.currentTarget);
-    };
+    const hideDropdown = () => setAnchorEl(null);
 
-    const hideDropdown = () => {
-        setAnchorEl(null);
-    };
-
-    const startCreate = (
-        event: React.MouseEvent<HTMLElement>,
-        itemType: string
-    ) => {
-        var tabConfig: tabConfigProp;
-
-        var title: string = "";
-        var path: string = "";
-
-        if (itemType === propertyItemType) {
-            title = "Create Property";
-            path = "/property/create";
-        } else if (itemType === managerItemType) {
-            title = "Create Manager";
-            path = "/user/create";
-        } else if (itemType === ownerItemType) {
-            title = "Create Customer";
-            path = "/customer/create";
-        } else if (itemType === labelItemType) {
-            title = "Create Label";
-            path = "/label";
-        } else if (itemType === notificationItemType) {
-            title = "Create Notification";
-            path = "/notification/create";
-        }
-
-        // tabConfig = {
-        //     title: title,
-        //     path: path,
-        // };
-
-        router.push(path);
-
-        // dispatch(addTab(tabConfig));
-    };
+    const startCreate = (itemType: string) =>
+        router.push(itemTypeToPath[itemType]);
 
     return (
         <>
@@ -193,7 +152,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
                             >
                                 <MenuItem
                                     onClick={(e) =>
-                                        startCreate(e, propertyItemType)
+                                        startCreate(propertyItemType)
                                     }
                                     disableRipple
                                 >
@@ -201,18 +160,14 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
                                     {t("Property")}
                                 </MenuItem>
                                 <MenuItem
-                                    onClick={(e) =>
-                                        startCreate(e, ownerItemType)
-                                    }
+                                    onClick={(e) => startCreate(ownerItemType)}
                                     disableRipple
                                 >
                                     <UsersIcon fontSize="small" />
                                     {t("Customer")}
                                 </MenuItem>
                                 <MenuItem
-                                    onClick={(e) =>
-                                        startCreate(e, labelItemType)
-                                    }
+                                    onClick={(e) => startCreate(labelItemType)}
                                     disableRipple
                                 >
                                     <LabelImportantIcon fontSize="small" />
@@ -220,7 +175,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
                                 </MenuItem>
                                 <MenuItem
                                     onClick={(e) =>
-                                        startCreate(e, notificationItemType)
+                                        startCreate(notificationItemType)
                                     }
                                     disableRipple
                                 >
@@ -230,7 +185,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = (props) => {
                                 <Divider sx={{ my: 0.5 }} />
                                 <MenuItem
                                     onClick={(e) =>
-                                        startCreate(e, managerItemType)
+                                        startCreate(managerItemType)
                                     }
                                     disableRipple
                                 >
