@@ -1,4 +1,6 @@
 import { InputAdornment, TextField, TextFieldProps } from "@mui/material";
+import { useState } from "react";
+import { useDebouncedCallback } from "use-debounce";
 
 export interface OnlyNumbersInputProps
     extends Omit<TextFieldProps, "label" | "value" | "onChange" | "disabled"> {
@@ -17,17 +19,24 @@ const OnlyNumbersInput: React.FC<OnlyNumbersInputProps> = ({
     disabled = false,
     ...props
 }) => {
+    const [localValue, setLocalValue] = useState<string | number>(value || "");
+
+    const debouncedOnChange = useDebouncedCallback((value: string) => {
+        const numericValue = value.replace(/[^0-9]/g, "");
+        onChange(numericValue);
+    }, 50);
+
     const handleCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const input = event.target.value;
-        const numericValue = input.replace(/[^0-9]/g, "");
-        onChange(numericValue);
+        setLocalValue(input); // set local value immediately
+        debouncedOnChange(input);
     };
 
     return (
         <TextField
             fullWidth
             label={label}
-            value={value}
+            value={localValue}
             onChange={handleCodeChange}
             {...props}
             disabled={disabled}
