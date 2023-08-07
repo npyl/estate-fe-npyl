@@ -7,13 +7,19 @@ interface TabProps {
     path: string;
 }
 
-export const usePublishTab = (tab: TabProps) => {
+export const usePublishTab = (tab: TabProps, dep?: string) => {
+    // dep: can be property code or customer name or anything else; appended to title
+
     const dispatch = useDispatch();
 
-    // run when tab changes
     useEffect(() => {
-        dispatch(addTab(tab));
-    }, []);
+        dispatch(
+            addTab({
+                title: dep ? `${tab.title} ${dep}` : tab.title,
+                path: tab.path,
+            })
+        );
+    }, [dep]);
 };
 
 export const deleteTab = () => {};

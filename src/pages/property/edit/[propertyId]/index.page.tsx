@@ -34,11 +34,6 @@ const EditPropertyPage: NextPage = () => {
 
     const { propertyId } = router.query;
 
-    usePublishTab({
-        title: `Edit Property ${propertyId}`,
-        path: `/property/edit/${propertyId}`,
-    });
-
     // INFO: lazy is used on * because addImage doesn't cause invalidate (in contradiction to editImage)
 
     const { data } = useGetPropertyByIdQuery(+propertyId!);
@@ -54,12 +49,13 @@ const EditPropertyPage: NextPage = () => {
     // everythingIsClear; we can now setInitialState
     const [everythingIsClear, setEverythingIsClear] = useState(false);
 
-    const resetEverything = () => {
-        dispatch(resetFiles());
-        dispatch(resetLabels());
-        dispatch(resetNotes());
-        dispatch(resetState());
-    };
+    usePublishTab(
+        {
+            title: "Edit Property",
+            path: `/property/edit/${propertyId}`,
+        },
+        data?.code
+    );
 
     useEffect(() => {
         if (!everythingIsClear) return;
@@ -93,6 +89,13 @@ const EditPropertyPage: NextPage = () => {
             .unwrap()
             .then((response) => setBluprints(response));
     }, []);
+
+    const resetEverything = () => {
+        dispatch(resetFiles());
+        dispatch(resetLabels());
+        dispatch(resetNotes());
+        dispatch(resetState());
+    };
 
     const performUpload = () => {
         edit({ id: +propertyId!, body: body });

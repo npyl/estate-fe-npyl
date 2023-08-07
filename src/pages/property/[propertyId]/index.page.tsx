@@ -1,7 +1,7 @@
 import { Box, Tab, Tabs } from "@mui/material";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
     useDeletePropertyMutation,
@@ -57,12 +57,15 @@ const SingleProperty: NextPage = () => {
 
     const { propertyId } = router.query;
 
-    usePublishTab({
-        title: `Property ${propertyId}`,
-        path: `/property/${propertyId}`,
-    });
-
     const { data } = useGetPropertyByIdQuery(+propertyId!); // basic details
+
+    usePublishTab(
+        {
+            title: "Property",
+            path: `/property/${propertyId}`,
+        },
+        data?.code
+    );
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) =>
         setValue(newValue);
