@@ -2,13 +2,13 @@ import {
     Checkbox,
     FormControl,
     InputLabel,
-    ListSubheader,
     MenuItem,
     OutlinedInput,
     Select,
     SelectChangeEvent,
 } from "@mui/material";
-import nomoi from "src/json/nomoi.json";
+
+import { useGetRegionsQuery } from "src/services/location";
 
 interface IRegionSelectProps {
     regionCode: string;
@@ -18,76 +18,42 @@ interface IRegionSelectProps {
 export const RegionSelect = (props: IRegionSelectProps) => {
     const { regionCode, onChange } = props;
 
-    interface optionsType {
-        groupName: string;
-        options: { value: string; label: string }[];
-    }
-
-    const getGroupedOptions = () => {
-        const groupedOptions = nomoi.reduce((acc: any, option) => {
-            const groupName = option["Parent Name GR"];
-            const optionData = {
-                value: option["Area ID"],
-                label: option["Name GR"],
-            };
-            if (acc[groupName]) {
-                acc[groupName].options.push(optionData);
-            } else {
-                acc[groupName] = {
-                    groupName,
-                    options: [optionData],
-                };
-            }
-            return acc;
-        }, {});
-
-        return Object.values(groupedOptions) as optionsType[];
-    };
-
-    const renderSelectGroup = (group: any) => {
-        const items = group.options.map((option: any) => {
-            return (
-                <MenuItem key={option.value} value={option.value}>
-                    <Checkbox checked={regionCode === option.value} />
-                    {option.label}
-                </MenuItem>
-            );
-        });
-        return [<ListSubheader> {group.groupName}</ListSubheader>, items];
-    };
+    const regions = useGetRegionsQuery().data;
 
     const handleChange = (event: SelectChangeEvent<string>) => {
         const areaID = event.target.value;
-        const selectedArea = nomoi!.filter(
-            (nomos) => nomos["Area ID"] === areaID
-        )[0]; // filter by areaID
+        const selectedArea = regions!.filter(
+            (region) => region.areaID === +areaID // filter by areaID
+        )[0];
 
-        onChange(
-            areaID,
-            parseFloat(selectedArea.latitude),
-            parseFloat(selectedArea.longitude)
-        );
+        onChange(areaID, selectedArea.latitude, selectedArea.longitude);
     };
+
+    if (!regions) return null;
 
     return (
         <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Περιοχή</InputLabel>
+            <InputLabel>Περιοχή</InputLabel>
             <Select
-                labelId="demo-simple-select-label"
                 value={regionCode}
                 onChange={(event) => handleChange(event)}
                 renderValue={(selected) => {
-                    const option = nomoi.find(
-                        (opt) => opt["Area ID"] === selected
+                    const option = regions.find(
+                        (region) => region.areaID === +selected
                     );
-                    return option ? option["Name GR"] : "";
+                    return option ? option.nameGR : "";
                 }}
                 input={<OutlinedInput label="Περιοχή" />}
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
-                {getGroupedOptions().map((group, i) =>
-                    renderSelectGroup(group)
-                )}
+                {regions.map((region, index) => (
+                    <MenuItem key={index} value={region.areaID}>
+                        <Checkbox
+                            checked={regionCode === region.areaID.toString()}
+                        />
+                        {region.nameGR}
+                    </MenuItem>
+                ))}
             </Select>
         </FormControl>
     );

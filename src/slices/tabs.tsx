@@ -36,16 +36,20 @@ const slice = createSlice({
             return state.filter((section) => section.uuid !== action.payload);
         },
 
-        addTab: (state, action) => {
+        addTab: (state, { payload }) => {
             // add a uuid; the path is always different if the functionality is different
-            action.payload.uuid = generateUUIDFromString(action.payload.path);
+            payload.uuid = generateUUIDFromString(payload.path);
+
+            const index = state.findIndex((obj) => obj.uuid === payload.uuid);
 
             // check if other object exists with same uuid (nearly impossible)
-            if (state.some((obj) => obj.uuid === action.payload.uuid)) {
+            if (state.some((obj) => obj.uuid === payload.uuid)) {
+                // update title only; support changing the title (e.g. when having received property code or customer name)
+                state[index].title = payload.title;
                 return;
             }
 
-            state.push(action.payload);
+            state.push(payload);
         },
         deleteTab: (state, action) => {
             return state.filter((item) => item.uuid !== action.payload);

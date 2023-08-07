@@ -11,12 +11,66 @@ import { useGetCustomerByIdQuery } from "src/services/customers";
 import { useRouter } from "next/router";
 import { LeadSource } from "src/types/global";
 
+import { Label, LabelColor } from "src/components/label";
+import { useMemo } from "react";
+
+interface TypeProps {
+    seller: boolean;
+    lessor: boolean;
+    leaser: boolean;
+    buyer: boolean;
+}
+
+const TypeLabels = ({ seller, lessor, leaser, buyer }: TypeProps) => {
+    const map = useMemo(
+        () => ({
+            Seller: {
+                value: seller,
+                color: "success",
+            },
+            Lessor: {
+                value: lessor,
+                color: "error",
+            },
+            Leaser: {
+                value: leaser,
+                color: "warning",
+            },
+            Buyer: {
+                value: buyer,
+                color: "info",
+            },
+        }),
+        [seller, lessor, leaser, buyer]
+    );
+
+    return (
+        <>
+            {Object.entries(map).map(([type, { value, color }]) =>
+                value ? (
+                    <Label
+                        key={type}
+                        variant="soft"
+                        opaque
+                        color={color as LabelColor}
+                    >
+                        {type}
+                    </Label>
+                ) : (
+                    <></>
+                )
+            )}
+        </>
+    );
+};
+
 const InformationSection: React.FC = (props) => {
     const router = useRouter();
     const { customerId } = router.query;
     const { t } = useTranslation();
     const { data } = useGetCustomerByIdQuery(parseInt(customerId as string)); // basic details
     const leadSource = data?.leadSource as LeadSource;
+
     if (!data) return null;
 
     return (
@@ -35,9 +89,16 @@ const InformationSection: React.FC = (props) => {
                     justifyContent: "left",
                 }}
             >
-                <Typography variant="h6">
+                <Typography variant="h6" flex={1}>
                     {t("Customer Information")}
                 </Typography>
+
+                <TypeLabels
+                    seller={data?.seller}
+                    lessor={data?.lessor}
+                    leaser={data?.leaser}
+                    buyer={data?.buyer}
+                />
             </Box>
             <Divider></Divider>
             <Grid container>

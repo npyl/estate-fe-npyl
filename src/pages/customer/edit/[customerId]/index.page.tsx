@@ -25,11 +25,6 @@ const EditCustomer: NextPage = () => {
 
     const { customerId } = router.query;
 
-    usePublishTab({
-        title: `Edit Customer ${customerId}`,
-        path: `/customer/edit/${customerId}`,
-    });
-
     const [everythingIsClear, setEverythingIsClear] = useState(false);
 
     const { data, isSuccess: fetchedCustomer } = useGetCustomerByIdQuery(
@@ -45,6 +40,17 @@ const EditCustomer: NextPage = () => {
     ] = useEditCustomerMutation();
 
     const body = useSelector(selectAll);
+
+    usePublishTab(
+        {
+            title:
+                data?.firstName && data?.lastName ? "Edit " : "Edit Customer",
+            path: `/customer/edit/${customerId}`,
+        },
+        data?.firstName && data?.lastName
+            ? `${data?.firstName} ${data?.lastName}`
+            : `${data?.id}`
+    );
 
     useEffect(() => {
         if (everythingIsClear && fetchedCustomer) {

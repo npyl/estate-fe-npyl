@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Grid, Stack, Typography } from "@mui/material";
 import match from "autosuggest-highlight/match";
 import parse from "autosuggest-highlight/parse";
 import { StyledSearchStack } from "../styles";
@@ -10,6 +10,29 @@ interface SearchItemProps {
     searchText: string;
     option: ICustomerResultResponse;
 }
+
+interface ItemProps {
+    highlight: boolean;
+    label?: string;
+    value: string;
+}
+
+const Item = ({ highlight, label, value }: ItemProps) => {
+    return (
+        <Stack direction={"row"} gap={1}>
+            {label && <Typography variant="body2">{`${label}: `} </Typography>}
+            <Box
+                component="span"
+                sx={{
+                    typography: "body2",
+                    fontWeight: highlight ? "bold" : "normal",
+                }}
+            >
+                {value}
+            </Box>
+        </Stack>
+    );
+};
 
 export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
     const router = useRouter();
@@ -25,7 +48,7 @@ export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
                       highlight: false,
                       text: "",
                   },
-        [option.firstName]
+        [option.firstName, searchText]
     );
     const lastName = useMemo(
         () =>
@@ -35,7 +58,7 @@ export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
                       highlight: false,
                       text: "",
                   },
-        [option.lastName]
+        [option.lastName, searchText]
     );
     const email = useMemo(
         () =>
@@ -45,7 +68,7 @@ export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
                       highlight: false,
                       text: "",
                   },
-        [option.email]
+        [option.email, searchText]
     );
     const mobilePhone = useMemo(
         () =>
@@ -58,7 +81,7 @@ export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
                       highlight: false,
                       text: "",
                   },
-        [option.mobilePhone]
+        [option.mobilePhone, searchText]
     );
     const city = useMemo(
         () =>
@@ -68,7 +91,7 @@ export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
                       highlight: false,
                       text: "",
                   },
-        [option.city]
+        [option.city, searchText]
     );
 
     return (
@@ -76,74 +99,44 @@ export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
             justifyContent={"flex-start"}
             paddingY={1}
             paddingX={2}
-            spacing={1}
+            gap={2}
             flex={1}
             direction={"row"}
             alignItems={"center"}
             onClick={() => router.push(`/customer/${option.id}`)}
         >
-            <Stack direction={"column"}>
-                <Stack spacing={1} direction={"row"}>
-                    <Stack alignItems={"center"} direction={"row"}>
-                        <Typography variant={"body2"}>Firstname: </Typography>
-                        <Box
-                            component="span"
-                            sx={{
-                                typography: "body2",
-                                fontWeight: firstName.highlight
-                                    ? "bold"
-                                    : "normal",
-                            }}
-                        >
-                            {option.firstName}
-                        </Box>
+            <Stack direction={"column"} flex={1} gap={2}>
+                <Stack direction={"row"} flex={1} gap={1}>
+                    <Item
+                        value={option.firstName}
+                        highlight={firstName.highlight}
+                    />
+                    <Item
+                        value={option.lastName}
+                        highlight={lastName.highlight}
+                    />
+                </Stack>
+
+                <Stack gap={1} direction={"row"}>
+                    <Stack flex={1}>
+                        <Item
+                            label="Email"
+                            value={option.email}
+                            highlight={email.highlight}
+                        />
+                        <Item
+                            label="Mobile"
+                            value={option.mobilePhone}
+                            highlight={mobilePhone.highlight}
+                        />
                     </Stack>
-                    {/* <Stack direction={"row"} alignItems={"center"} mr={1}>
-						<Box>
-							<KeyIcon
-								sx={{
-									marginTop: "5px",
-									fontSize: "16px",
-									transform: "rotate(90deg)",
-								}}
-							/>
-						</Box>
-						<Box
-							component="span"
-							sx={{
-								typography: "body2",
-								fontWeight: keyCode.highlight ? "bold" : "normal",
-							}}
-						>
-							{option.keyCode}
-						</Box>
-					</Stack>
-				</Stack>
-				<Stack alignItems={"center"} direction={"row"}>
-					<Stack direction={"row"} alignItems={"center"} mr={1}>
-						<Box
-							component="span"
-							sx={{
-								typography: "body2",
-								fontWeight: price.highlight ? "bold" : "normal",
-							}}
-						>
-							{option.price}
-						</Box>
-						<Typography variant={"body2"}>€</Typography>
-					</Stack>
-					<Stack direction={"row"} alignItems={"center"}>
-						<Box
-							component="span"
-							sx={{
-								typography: "body2",
-								fontWeight: area.highlight ? "bold" : "normal",
-							}}
-						>
-							{option.area}
-						</Box>
-						<Typography variant={"body2"}> s.q</Typography>
-					</Stack> */}
+                    <Stack alignItems={"center"} direction={"row"}>
+                        <Item
+                            label="City"
+                            value={option.city}
+                            highlight={city.highlight}
+                        />
+                    </Stack>
                 </Stack>
             </Stack>
         </StyledSearchStack>

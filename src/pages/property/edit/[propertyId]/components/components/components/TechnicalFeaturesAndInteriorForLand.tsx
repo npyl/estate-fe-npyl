@@ -1,129 +1,32 @@
-import { Grid, Paper, TextField } from "@mui/material";
+import { Grid, Paper, Box } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
-
-import { Box } from "@mui/system";
-
-import { useDispatch, useSelector } from "react-redux";
-import { useAllCustomersQuery } from "src/services/customers";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import OnlyNumbersInput from "src/components/OnlyNumbers";
 import {
-    selectAlarmSystem,
-    selectBright,
-    selectConsideration,
     selectCoverageFactor,
-    selectDisplayWindowsLength,
-    selectDoubleFrontage,
-    selectElectricCarChargingFacilities,
-    selectEntrances,
     selectFacadeLength,
-    selectFalseCeiling,
-    selectFireplace,
     selectFloorToAreaRatio,
-    selectFloorType,
-    selectFrameType,
-    selectFurnished,
-    selectInclination,
-    selectLoadingUnloadingElevator,
-    selectLuxurious,
-    selectPainted,
-    selectPaneGlassType,
-    selectPetsAllowed,
-    selectReception,
-    selectSafetyDoor,
-    selectSatelliteTV,
-    selectWindowScreens,
-    selectWiring,
-    selectWithEquipment,
-    setEntrances,
     setCoverageFactor,
     setFacadeLength,
     setFloorToAreaRatio,
 } from "src/slices/property";
 
-import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
-
-import { useState } from "react";
-import { useAllUsersQuery } from "src/services/user";
-import { useAllGlobalsQuery } from "src/services/global";
-
-const TechnicalFeaturesAndInteriorForLandSection: React.FC<any> = (props) => {
-    const [rentalPeriodStart, setRentalPeriodStart] = useState<Date | null>(
-        new Date()
-    );
-
-    const { data } = useAllGlobalsQuery();
-    const enums: IGlobalProperty = data?.property as IGlobalProperty;
-    const details = enums?.details as IGlobalPropertyDetails;
+const TechnicalFeaturesAndInteriorForLandSection: React.FC<any> = () => {
     const dispatch = useDispatch();
 
-    const entrances = useSelector(selectEntrances);
-    const displayWindowsLength = useSelector(selectDisplayWindowsLength);
-    const safetyDoor = useSelector(selectSafetyDoor);
-    const alarmSystem = useSelector(selectAlarmSystem);
-    const painted = useSelector(selectPainted);
-    const furnished = useSelector(selectFurnished);
-    const frameType = useSelector(selectFrameType);
-    const paneGlassType = useSelector(selectPaneGlassType);
-    const windowScreens = useSelector(selectWindowScreens);
-    const fireplace = useSelector(selectFireplace);
-    const bright = useSelector(selectBright);
-    const luxurious = useSelector(selectLuxurious);
-    const electricCarChargingFacilities = useSelector(
-        selectElectricCarChargingFacilities
-    );
-    const reception = useSelector(selectReception);
-    const petsAllowed = useSelector(selectPetsAllowed);
-    const floorType = useSelector(selectFloorType);
-    const satelliteTV = useSelector(selectSatelliteTV);
-    const wiring = useSelector(selectWiring);
-    const loadingUnloadingElevator = useSelector(
-        selectLoadingUnloadingElevator
-    );
-    const falseCeiling = useSelector(selectFalseCeiling);
-    const withEquipment = useSelector(selectWithEquipment);
-    const doubleFrontage = useSelector(selectDoubleFrontage);
-    const consideration = useSelector(selectConsideration);
     const floorToAreaRatio = useSelector(selectFloorToAreaRatio);
     const coverageFactor = useSelector(selectCoverageFactor);
     const facadeLength = useSelector(selectFacadeLength);
-    const inclination = useSelector(selectInclination);
 
-    // get list of owners & managers
-    const { data: owners } = useAllCustomersQuery();
-    const { data: managers } = useAllUsersQuery();
-    if (!enums) return null;
+    const handleFloorToAreaRatioChange = (value: string) =>
+        dispatch(setFloorToAreaRatio(value));
+    const handleCoverageFactorChange = (value: string) =>
+        dispatch(setCoverageFactor(value));
+    const handleFacadeLengthChange = (value: string) =>
+        dispatch(setFacadeLength(value));
 
-    //set the values for BE
-    const handleFloorToAreaRatioChange = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        const input = event.target.value;
-        const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
-        dispatch(setFloorToAreaRatio(numericValue));
-    };
-    const handleCoverageFactorChange = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        const input = event.target.value;
-        const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
-        dispatch(setCoverageFactor(numericValue));
-    };
-    const handleFacadeLengthChange = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        const input = event.target.value;
-        const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
-        dispatch(setFacadeLength(numericValue));
-    };
-    //handle onlynumbers
-    const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        const keyCode = event.keyCode || event.which;
-        const keyValue = String.fromCharCode(keyCode);
-        const regex = /[0-9]/;
-        if (!regex.test(keyValue)) {
-            event.preventDefault(); // Prevent entering non-numeric characters
-        }
-    };
     return (
         <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
             <Box
@@ -142,48 +45,28 @@ const TechnicalFeaturesAndInteriorForLandSection: React.FC<any> = (props) => {
             <Grid item xs={12} padding={1}>
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
-                        <TextField
+                        <OnlyNumbersInput
                             fullWidth
-                            id="outlined-controlled"
                             label="Floor To Area Ratio"
                             value={floorToAreaRatio}
                             onChange={handleFloorToAreaRatioChange}
-                            onKeyPress={handleKeyPress}
-                            inputProps={{
-                                style: {
-                                    height: "8px",
-                                },
-                            }}
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <TextField
+                        <OnlyNumbersInput
                             fullWidth
-                            id="outlined-controlled"
                             label="Coverage Factor"
                             value={coverageFactor}
                             onChange={handleCoverageFactorChange}
-                            onKeyPress={handleKeyPress}
-                            inputProps={{
-                                style: {
-                                    height: "8px",
-                                },
-                            }}
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <TextField
+                        <OnlyNumbersInput
                             fullWidth
-                            id="outlined-controlled"
                             label="Facade Length"
                             value={facadeLength}
+                            adornment="m²"
                             onChange={handleFacadeLengthChange}
-                            onKeyPress={handleKeyPress}
-                            inputProps={{
-                                style: {
-                                    height: "8px",
-                                },
-                            }}
                         />
                     </Grid>
                     {/* <Grid item xs={6}>

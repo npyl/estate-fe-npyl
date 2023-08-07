@@ -9,7 +9,6 @@ import {
     SelectChangeEvent,
 } from "@mui/material";
 import { useCallback, useEffect } from "react";
-import { useGetSubAreasMutation } from "src/services/location";
 // import { useGetSubAreasMutation } from "src/services/location";
 import { selectParentLocation } from "src/slices/filters";
 import { useDispatch, useSelector } from "src/store";

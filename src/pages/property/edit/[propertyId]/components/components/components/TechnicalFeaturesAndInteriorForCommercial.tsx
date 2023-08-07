@@ -68,6 +68,7 @@ import { useAllUsersQuery } from "src/services/user";
 import { useAllGlobalsQuery } from "src/services/global";
 
 import OnlyNumbersInput from "src/components/OnlyNumbers";
+import CustomNumberField from "./componentsFields/OnlyNumbersWithDot";
 
 const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
     props
@@ -165,27 +166,13 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
             <Grid item xs={12} padding={1}>
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
-                        <TextField
-                            type="number"
-                            fullWidth
-                            id="outlined-controlled"
+                        <CustomNumberField
                             label="Display Window Length"
-                            value={displayWindowsLength}
+                            value={displayWindowsLength?.toString() || ""}
                             onChange={(event) =>
                                 handleChange(setDisplayWindowsLength, event)
                             }
-                            InputProps={{
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        m
-                                    </InputAdornment>
-                                ),
-                            }}
-                            inputProps={{
-                                style: {
-                                    height: "8px",
-                                },
-                            }}
+                            adorValue="m"
                         />
                     </Grid>
                     <Grid item xs={6}>

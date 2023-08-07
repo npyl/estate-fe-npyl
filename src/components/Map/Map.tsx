@@ -53,7 +53,7 @@ const Map = ({
     setActiveMarker,
     drawing = true,
 }: IMapProps) => {
-    const apiKey = "AIzaSyC6BN1ePFMAmJJfF71uN7vsNXIOCpQ5DbQ";
+    const apiKey = "AIzaSyCW6oijpbC0JhlXRwPBtNIxy9e4sn7NnwU";
     const athensLatLng = { lat: 37.98381, lng: 23.727539 };
     const { isLoaded } = useJsApiLoader({
         id: "google-map-script",

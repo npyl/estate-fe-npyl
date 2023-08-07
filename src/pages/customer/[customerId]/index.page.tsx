@@ -7,7 +7,10 @@ import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useDeleteCustomerMutation } from "src/services/customers";
+import {
+    useDeleteCustomerMutation,
+    useGetCustomerByIdQuery,
+} from "src/services/customers";
 
 import AddressSection from "./components/AddressSection";
 import InformationSection from "./components/InformationSection";
@@ -36,15 +39,21 @@ const CustomerView: NextPage = () => {
 
     const { customerId } = router.query;
 
-    usePublishTab({
-        title: `Customer ${customerId}`,
-        path: `/customer/${customerId}`,
-    });
-
     const [value, setValue] = useState(0);
 
+    const { data } = useGetCustomerByIdQuery(+customerId!);
     const [deleteCustomer, { isSuccess: isDeleteSuccess }] =
         useDeleteCustomerMutation();
+
+    usePublishTab(
+        {
+            title: data?.firstName && data?.lastName ? "" : "Customer",
+            path: `/customer/${customerId}`,
+        },
+        data?.firstName && data?.lastName
+            ? `${data?.firstName} ${data?.lastName}`
+            : `${data?.id}`
+    );
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) =>
         setValue(newValue);
