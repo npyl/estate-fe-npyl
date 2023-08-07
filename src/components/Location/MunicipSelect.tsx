@@ -7,9 +7,8 @@ import {
     Select,
     SelectChangeEvent,
 } from "@mui/material";
-import { useEffect } from "react";
-import { useGetSubAreasMutation } from "src/services/location";
-import { IGeoLocation } from "src/types/geolocation";
+
+import { useGetMunicipalitiesQuery } from "src/services/location";
 
 interface IMunicipSelectProps {
     regionCode: string;
@@ -20,13 +19,13 @@ interface IMunicipSelectProps {
 export const MunicipSelect = (props: IMunicipSelectProps) => {
     const { municipCode, regionCode, onChange } = props;
 
-    const [getSubareas, { data: subAreas }] = useGetSubAreasMutation();
+    const municips = useGetMunicipalitiesQuery(+regionCode).data;
 
     const handleChange = (event: SelectChangeEvent<string>) => {
         const municipCode = event.target.value;
-        const selectedSubArea = subAreas!.filter(
-            (subArea) => subArea.areaID.toString() === municipCode
-        )[0]; // filter by nameEN
+        const selectedSubArea = municips!.filter(
+            (municip) => municip.areaID.toString() === municipCode // filter by nameEN
+        )[0];
 
         onChange(
             municipCode,
@@ -35,53 +34,40 @@ export const MunicipSelect = (props: IMunicipSelectProps) => {
         );
     };
 
-    useEffect(() => {
-        if (!regionCode) return;
-
-        getSubareas([+regionCode]);
-    }, [regionCode]);
+    if (!municips) return null;
 
     return (
-        <>
-            <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">
-                    Δήμος / Συνοικία
-                </InputLabel>
-                {subAreas && subAreas.length > 0 && (
-                    <Select
-                        labelId="demo-simple-select-label"
-                        value={municipCode}
-                        onChange={handleChange}
-                        renderValue={(selected) => {
-                            const option = subAreas.find(
-                                (opt) => opt.areaID.toString() === selected
-                            );
-                            return option ? option.nameGR : "";
-                        }}
-                        input={<OutlinedInput label="Δήμος / Συνοικία" />}
-                        MenuProps={{
-                            PaperProps: { sx: { maxHeight: "60vh" } },
-                        }}
+        <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">
+                Δήμος / Συνοικία
+            </InputLabel>
+            <Select
+                labelId="demo-simple-select-label"
+                value={municipCode}
+                onChange={handleChange}
+                renderValue={(selected) => {
+                    const option = municips.find(
+                        (municip) => municip.areaID.toString() === selected
+                    );
+                    return option ? option.nameGR : "";
+                }}
+                input={<OutlinedInput label="Δήμος / Συνοικία" />}
+                MenuProps={{
+                    PaperProps: { sx: { maxHeight: "60vh" } },
+                }}
+            >
+                {municips.map((option) => (
+                    <MenuItem
+                        key={option.areaID}
+                        value={option.areaID.toString()}
                     >
-                        {subAreas.map((option: IGeoLocation) => {
-                            return (
-                                <MenuItem
-                                    key={option.areaID}
-                                    value={option.areaID.toString()}
-                                >
-                                    <Checkbox
-                                        checked={
-                                            option.areaID.toString() ===
-                                            municipCode
-                                        }
-                                    />
-                                    {option.nameGR}
-                                </MenuItem>
-                            );
-                        })}
-                    </Select>
-                )}
-            </FormControl>
-        </>
+                        <Checkbox
+                            checked={option.areaID.toString() === municipCode}
+                        />
+                        {option.nameGR}
+                    </MenuItem>
+                ))}
+            </Select>
+        </FormControl>
     );
 };

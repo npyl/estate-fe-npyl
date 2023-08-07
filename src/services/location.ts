@@ -9,7 +9,7 @@ interface IGetClosestParams {
 export const location = createApi({
     reducerPath: "location",
     baseQuery: fetchBaseQuery({
-        baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/geography/hierarchy/`,
+        baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/geography/`,
         prepareHeaders: (headers) => {
             // By default, if we have a token in the store, let's use that for authenticated requests
 
@@ -23,16 +23,19 @@ export const location = createApi({
     }),
 
     endpoints: (builder) => ({
-        getAreas: builder.query<IGeoLocation, number>({
-            query: (parentID) => ({
-                url: `${{ parentID }}`,
+        getRegions: builder.query<IGeoLocation[], void>({
+            query: () => ({
+                url: `regions`,
             }),
         }),
-        getSubAreas: builder.mutation<IGeoLocation[], number[]>({
-            query: (body: number[]) => ({
-                url: "",
-                method: "POST",
-                body,
+        getMunicipalities: builder.query<IGeoLocation[], number>({
+            query: (parentID) => ({
+                url: `/hierarchy/${parentID}/municipalities/2`,
+            }),
+        }),
+        getNeighbourhoods: builder.query<IGeoLocation[], number>({
+            query: (parentID) => ({
+                url: `/hierarchy/${parentID}/municipalities/3`,
             }),
         }),
         getClosest: builder.query<IGeoLocation, IGetClosestParams>({
@@ -44,5 +47,9 @@ export const location = createApi({
     }),
 });
 
-export const { useGetAreasQuery, useGetSubAreasMutation, useGetClosestQuery } =
-    location;
+export const {
+    useGetRegionsQuery,
+    useGetMunicipalitiesQuery,
+    useGetNeighbourhoodsQuery,
+    useGetClosestQuery,
+} = location;
