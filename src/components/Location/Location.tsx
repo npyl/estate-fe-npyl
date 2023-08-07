@@ -12,6 +12,7 @@ import Map, { IMapMarker, IMapCoordinates, IMapAddress } from "../Map/Map";
 import { ILocationPOST } from "src/types/location";
 import { RegionSelect } from "./RegionSelect";
 import { MunicipSelect } from "./MunicipSelect";
+import { NeighbourSelect } from "./NeighbourSelect";
 import { useGetClosestQuery } from "src/services/location";
 import { useTranslation } from "react-i18next";
 
@@ -50,6 +51,8 @@ const LocationSection = (props: ILocationSectionProps) => {
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
+
+    const [neighbour, setNeighbour] = useState("");
 
     const [activeMarker, setActiveMarker] = useState(null);
     const [mainMarker, setMainMarker] = useState<IMapMarker>({
@@ -112,6 +115,17 @@ const LocationSection = (props: ILocationSectionProps) => {
 
         // update slice
         dispatch(setCity(municipCode));
+    };
+    const handleNeighbourChange = (
+        neighbourCode: string,
+        lat: number,
+        lng: number
+    ) => {
+        updateMainMarkerCoordinates(lat, lng);
+
+        // update slice
+        // dispatch(setNeighbour(neighbourCode));
+        setNeighbour(neighbourCode);
     };
 
     //
@@ -194,17 +208,24 @@ const LocationSection = (props: ILocationSectionProps) => {
 
                     <Grid item xs={12}>
                         <Grid container direction={"row"} spacing={2}>
-                            <Grid item xs={6}>
+                            <Grid item xs={4}>
                                 <RegionSelect
                                     regionCode={region}
                                     onChange={handleRegionChange}
                                 />
                             </Grid>
-                            <Grid item xs={6}>
+                            <Grid item xs={4}>
                                 <MunicipSelect
                                     regionCode={region}
                                     municipCode={city}
                                     onChange={handleMunicipChange}
+                                />
+                            </Grid>
+                            <Grid item xs={4}>
+                                <NeighbourSelect
+                                    municipCode={city}
+                                    neighbourCode={neighbour}
+                                    onChange={handleNeighbourChange}
                                 />
                             </Grid>
                         </Grid>

@@ -24,7 +24,7 @@ export const MunicipSelect = (props: IMunicipSelectProps) => {
     const handleChange = (event: SelectChangeEvent<string>) => {
         const municipCode = event.target.value;
         const selectedSubArea = municips!.filter(
-            (municip) => municip.areaID.toString() === municipCode // filter by nameEN
+            (municip) => municip.areaID.toString() === municipCode // filter by id
         )[0];
 
         onChange(
