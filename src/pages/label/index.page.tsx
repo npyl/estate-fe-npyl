@@ -23,10 +23,13 @@ import { Preview } from "./components/Preview";
 import { Create } from "./components/Create";
 import { Edit } from "./components/Edit";
 import { IEditProps } from "./components/types";
+import { usePublishTab } from "src/components/Tabs/utils";
 
 const SingleProperty: NextPage = () => {
     const propertySectionLabel = "Ακίνητα: ";
     const customerSectionLabel = "Πελάτες: ";
+
+    usePublishTab({ title: "Labels", path: "/label" });
 
     const [editMode, setEditMode] = useState(false);
     const [editedLabel, setEditedLabel] = useState<IEditProps>();
@@ -135,9 +138,7 @@ const SingleProperty: NextPage = () => {
         setEditMode(true);
     };
 
-    const cancelEdit = () => {
-        setEditMode(false);
-    };
+    const cancelEdit = () => setEditMode(false);
 
     const handleDelete = (resource: string, labelId: number) => {
         resource === propertySectionLabel && deleteLabelForProperties(labelId);

@@ -17,11 +17,18 @@ import Form from "./components/Form";
 import { resetState as resetCustomerState } from "src/slices/customer";
 import { resetState as resetNotesState } from "src/slices/notes";
 import { resetState as resetLabelsState } from "src/slices/labels";
+import { usePublishTab } from "src/components/Tabs/utils";
 
 const EditCustomer: NextPage = () => {
     const router = useRouter();
     const dispatch = useDispatch();
+
     const { customerId } = router.query;
+
+    usePublishTab({
+        title: `Edit Customer ${customerId}`,
+        path: `/customer/edit/${customerId}`,
+    });
 
     const [everythingIsClear, setEverythingIsClear] = useState(false);
 

@@ -13,8 +13,6 @@ import {
 } from "@mui/x-data-grid";
 import { useRouter } from "next/navigation";
 import { FC, useMemo, useState } from "react";
-import { addTab } from "src/slices/tabs";
-import { useDispatch } from "src/store";
 import { StyledDataGrid } from "./styles";
 import { Button } from "@mui/material";
 import EditNoteIcon from "@mui/icons-material/EditNote";
@@ -58,7 +56,6 @@ const DataGridTable: FC<GridProps> = ({
     resource = "property",
 }) => {
     const router = useRouter();
-    const dispatch = useDispatch();
 
     const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
     const [sortModel, setSortModel] = useState<GridSortModel>([]);
@@ -143,15 +140,7 @@ const DataGridTable: FC<GridProps> = ({
                 disableDensitySelector
                 rowHeight={100}
                 getRowId={(e) => e.id}
-                onRowClick={(e) => {
-                    router.push(`/${resource}/${e.row.id}`);
-                    dispatch(
-                        addTab({
-                            title: `${resource} ${e.row.id}`,
-                            path: `/${resource}/${e.row.id}`,
-                        })
-                    );
-                }}
+                onRowClick={(e) => router.push(`/${resource}/${e.row.id}`)}
                 checkboxSelection
                 autoHeight
                 disableRowSelectionOnClick

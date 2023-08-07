@@ -6,17 +6,17 @@ import { useCreatePropertyMutation } from "src/services/properties";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-
 import { selectCategory, selectParentCategory } from "src/slices/property";
-
-import Form from "./components/Form";
-
 import { LogoProgressIndicator } from "src/components/LogoProgressIndicator";
 import { resetState } from "src/slices/property";
+import { usePublishTab } from "src/components/Tabs/utils";
+import Form from "./components/Form";
 
 const CreatePropertyPage: NextPage = () => {
     const router = useRouter();
     const dispatch = useDispatch();
+
+    usePublishTab({ title: "Create Property", path: "/property/create" });
 
     const [
         create,

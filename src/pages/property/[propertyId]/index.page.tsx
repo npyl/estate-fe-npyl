@@ -8,12 +8,12 @@ import {
     useGetPropertyByIdQuery,
 } from "src/services/properties";
 
-import TabPanel from "src/components/Tabs";
+import TabPanel from "src/components/Tabs/Tabs";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import MainContainer from "./components/MainContainer";
 
-import { addTab, deleteTabWithPath } from "src/slices/tabs";
+import { deleteTabWithPath } from "src/slices/tabs";
 
 import {
     AddressSection,
@@ -37,6 +37,7 @@ import ViewHeader from "src/pages/components/ViewHeader";
 import "photoswipe/dist/photoswipe.css";
 import InitMap from "./components/Map";
 import DescriptionSection from "./components/sections/DescriptionSection";
+import { usePublishTab } from "src/components/Tabs/utils";
 
 function a11yProps(index: number) {
     return {
@@ -47,37 +48,27 @@ function a11yProps(index: number) {
 
 const SingleProperty: NextPage = () => {
     const router = useRouter();
-    const { propertyId } = router.query;
+    const dispatch = useDispatch();
 
     const [value, setValue] = useState(0);
 
-    const dispatch = useDispatch();
     const [deleteProperty, { isSuccess: isDeleteSuccess }] =
         useDeletePropertyMutation();
 
-    const { data } = useGetPropertyByIdQuery(parseInt(propertyId as string)); // basic details
-    if (!data) {
-        return null;
-    }
+    const { propertyId } = router.query;
 
-    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    usePublishTab({
+        title: `Property ${propertyId}`,
+        path: `/property/${propertyId}`,
+    });
+
+    const { data } = useGetPropertyByIdQuery(+propertyId!); // basic details
+
+    const handleChange = (event: React.SyntheticEvent, newValue: number) =>
         setValue(newValue);
-    };
 
-    const handleEdit = () => {
-        router.push(`/property/edit/${propertyId}`);
-        // add tab
-        dispatch(
-            addTab({
-                path: `/property/edit/${propertyId}`,
-                title: `Edit Property ${propertyId}`,
-            })
-        );
-    };
-
-    const handleDelete = () => {
-        deleteProperty(parseInt(propertyId as string));
-    };
+    const handleEdit = () => router.push(`/property/edit/${propertyId}`);
+    const handleDelete = () => deleteProperty(+propertyId!);
 
     // upon successful delete
     if (isDeleteSuccess) {
@@ -86,6 +77,8 @@ const SingleProperty: NextPage = () => {
         isDeleteSuccess &&
             dispatch(deleteTabWithPath(`/property/${propertyId}`));
     }
+
+    if (!data) return null;
 
     return (
         <Box sx={{ width: "100%", paddingY: 1 }}>

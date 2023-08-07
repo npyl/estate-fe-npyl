@@ -1,28 +1,14 @@
 import type { NextPage } from "next";
-import { useEffect, useMemo } from "react";
-import { useDispatch } from "react-redux";
+import { useMemo } from "react";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-
-import { addTab } from "src/slices/tabs";
 import { CollapsibleTable, createRow } from "./components/CollapsibleTable";
-
 import { useGetNotificationByIdQuery } from "src/services/notification";
-
 import { Paper } from "@mui/material";
-import { resetState } from "src/slices/notification";
+import { usePublishTab } from "src/components/Tabs/utils";
 
 const NotificationPage: NextPage = () => {
-    const dispatch = useDispatch();
-
-    const publish = () => {
-        useEffect(() => {
-            dispatch(addTab({ title: "Notifications", path: "/notification" }));
-            dispatch(resetState());
-        }, []);
-    };
-
-    publish();
+    usePublishTab({ title: "Notifications", path: "/notification" });
 
     // const { data: notifications } = useGetNotificationsQuery();
 
