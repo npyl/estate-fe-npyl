@@ -1,13 +1,14 @@
 import { TextField, InputAdornment } from "@mui/material";
 import React from "react";
-interface CustomNumberFieldProps {
+
+interface OnlyNumbersWithDotProps {
     label: string;
-    value: string | number; // Adjust this type
+    value: string | number;
     adorValue?: any;
     onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-    //... any other props
 }
-const CustomNumberField: React.FC<CustomNumberFieldProps> = ({
+
+const OnlyNumbersWithDot: React.FC<OnlyNumbersWithDotProps> = ({
     label,
     value,
     onChange,
@@ -45,4 +46,4 @@ const CustomNumberField: React.FC<CustomNumberFieldProps> = ({
     );
 };
 
-export default CustomNumberField;
+export default OnlyNumbersWithDot;

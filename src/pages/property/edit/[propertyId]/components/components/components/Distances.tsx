@@ -26,7 +26,8 @@ import {
     setSupermarket,
 } from "src/slices/property";
 import { useTranslation } from "react-i18next";
-import CustomNumberField from "./componentsFields/OnlyNumbersWithDot";
+
+import OnlyNumbersWithDot from "./componentsFields/OnlyNumbersWithDot";
 
 const DistancesSection: React.FC<any> = (props) => {
     const dispatch = useDispatch();
@@ -39,12 +40,11 @@ const DistancesSection: React.FC<any> = (props) => {
     const hospital = useSelector(selectHospital);
     const airport = useSelector(selectAirport);
     const sea = useSelector(selectSea);
+
     const handleChange = (
         setter: any,
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
-        dispatch(setter(event.target.value));
-    };
+    ) => dispatch(setter(event.target.value));
 
     return (
         <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
@@ -62,7 +62,7 @@ const DistancesSection: React.FC<any> = (props) => {
             <Grid item xs={12} padding={1}>
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
-                        <CustomNumberField
+                        <OnlyNumbersWithDot
                             label={t("Public Trasportation")}
                             value={publicTransportation?.toString() || ""}
                             onChange={(event) =>
@@ -73,7 +73,7 @@ const DistancesSection: React.FC<any> = (props) => {
                     </Grid>
 
                     <Grid item xs={6}>
-                        <CustomNumberField
+                        <OnlyNumbersWithDot
                             label={t("Sea")}
                             value={sea?.toString() || ""}
                             onChange={(event) => handleChange(setSea, event)}
@@ -81,7 +81,7 @@ const DistancesSection: React.FC<any> = (props) => {
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <CustomNumberField
+                        <OnlyNumbersWithDot
                             label={t("Schools")}
                             value={schools?.toString() || ""}
                             onChange={(event) =>
@@ -91,7 +91,7 @@ const DistancesSection: React.FC<any> = (props) => {
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <CustomNumberField
+                        <OnlyNumbersWithDot
                             label={t("Supermarket")}
                             value={supermarket?.toString() || ""}
                             onChange={(event) =>
@@ -101,7 +101,7 @@ const DistancesSection: React.FC<any> = (props) => {
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <CustomNumberField
+                        <OnlyNumbersWithDot
                             label={t("Cafe-Restaurant")}
                             value={cafeRestaurant?.toString() || ""}
                             onChange={(event) =>
@@ -111,7 +111,7 @@ const DistancesSection: React.FC<any> = (props) => {
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <CustomNumberField
+                        <OnlyNumbersWithDot
                             label={t("Hospital")}
                             value={hospital?.toString() || ""}
                             onChange={(event) =>
@@ -121,7 +121,7 @@ const DistancesSection: React.FC<any> = (props) => {
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <CustomNumberField
+                        <OnlyNumbersWithDot
                             label={t("Airport")}
                             value={airport?.toString() || ""}
                             onChange={(event) =>
