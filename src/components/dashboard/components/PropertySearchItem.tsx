@@ -8,6 +8,7 @@ import { StyledSearchStack } from "../styles";
 import { useMemo } from "react";
 import PreviewImage from "src/components/image/PreviewImage";
 import { useRouter } from "next/router";
+import { MatchResult } from "./types";
 
 interface SearchItemProps {
     searchText: string;
@@ -17,6 +18,15 @@ interface SearchItemProps {
 export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
     const router = useRouter();
 
+    const {
+        code: _code,
+        keyCode: _keyCode,
+        price: _price,
+        area: _area,
+
+        ...rest
+    } = option;
+
     const code = useMemo(
         () =>
             option.code
@@ -25,7 +35,7 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                       highlight: false,
                       text: "",
                   },
-        [option.code]
+        [option.code, searchText]
     );
     const keyCode = useMemo(
         () =>
@@ -35,7 +45,7 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                       highlight: false,
                       text: "",
                   },
-        [option.keyCode]
+        [option.keyCode, searchText]
     );
     const price = useMemo(
         () =>
@@ -48,7 +58,7 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                       highlight: false,
                       text: "",
                   },
-        [option.price]
+        [option.price, searchText]
     );
     const area = useMemo(
         () =>
@@ -61,8 +71,27 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                       highlight: false,
                       text: "",
                   },
-        [option.area]
+        [option.area, searchText]
     );
+
+    // other matchings
+    const other: MatchResult = useMemo(() => {
+        const result: MatchResult = {};
+
+        for (const [key, value] of Object.entries(rest)) {
+            if (!value) continue;
+
+            const highlightResult = parse(
+                value.toString(),
+                match(value.toString(), searchText)
+            )[0];
+
+            // add only if highlighted
+            if (highlightResult.highlight) result[key] = value.toString();
+        }
+
+        return result;
+    }, [rest, searchText]);
 
     return (
         <StyledSearchStack
@@ -154,6 +183,23 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                         </Box>
                         <Typography variant={"body2"}> s.q</Typography>
                     </Stack>
+                </Stack>
+
+                <Stack alignItems={"center"} direction={"row"}>
+                    {Object.entries(other).map(([key, value]) => (
+                        <Stack direction={"row"} alignItems={"center"} mr={1}>
+                            <Typography variant={"body2"}>{key}: </Typography>
+                            <Box
+                                component="span"
+                                sx={{
+                                    typography: "body2",
+                                    fontWeight: "bold",
+                                }}
+                            >
+                                {value}
+                            </Box>
+                        </Stack>
+                    ))}
                 </Stack>
             </Stack>
         </StyledSearchStack>

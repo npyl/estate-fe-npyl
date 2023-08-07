@@ -25,7 +25,7 @@ export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
                       highlight: false,
                       text: "",
                   },
-        [option.firstName]
+        [option.firstName, searchText]
     );
     const lastName = useMemo(
         () =>
@@ -35,7 +35,7 @@ export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
                       highlight: false,
                       text: "",
                   },
-        [option.lastName]
+        [option.lastName, searchText]
     );
     const email = useMemo(
         () =>
@@ -45,7 +45,7 @@ export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
                       highlight: false,
                       text: "",
                   },
-        [option.email]
+        [option.email, searchText]
     );
     const mobilePhone = useMemo(
         () =>
@@ -58,7 +58,7 @@ export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
                       highlight: false,
                       text: "",
                   },
-        [option.mobilePhone]
+        [option.mobilePhone, searchText]
     );
     const city = useMemo(
         () =>
@@ -68,7 +68,7 @@ export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
                       highlight: false,
                       text: "",
                   },
-        [option.city]
+        [option.city, searchText]
     );
 
     return (
@@ -84,7 +84,7 @@ export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
         >
             <Stack direction={"column"}>
                 <Stack spacing={1} direction={"row"}>
-                    <Stack alignItems={"center"} direction={"row"}>
+                    <Stack direction={"row"}>
                         <Typography variant={"body2"}>Firstname: </Typography>
                         <Box
                             component="span"
@@ -98,52 +98,20 @@ export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
                             {option.firstName}
                         </Box>
                     </Stack>
-                    {/* <Stack direction={"row"} alignItems={"center"} mr={1}>
-						<Box>
-							<KeyIcon
-								sx={{
-									marginTop: "5px",
-									fontSize: "16px",
-									transform: "rotate(90deg)",
-								}}
-							/>
-						</Box>
-						<Box
-							component="span"
-							sx={{
-								typography: "body2",
-								fontWeight: keyCode.highlight ? "bold" : "normal",
-							}}
-						>
-							{option.keyCode}
-						</Box>
-					</Stack>
-				</Stack>
-				<Stack alignItems={"center"} direction={"row"}>
-					<Stack direction={"row"} alignItems={"center"} mr={1}>
-						<Box
-							component="span"
-							sx={{
-								typography: "body2",
-								fontWeight: price.highlight ? "bold" : "normal",
-							}}
-						>
-							{option.price}
-						</Box>
-						<Typography variant={"body2"}>€</Typography>
-					</Stack>
-					<Stack direction={"row"} alignItems={"center"}>
-						<Box
-							component="span"
-							sx={{
-								typography: "body2",
-								fontWeight: area.highlight ? "bold" : "normal",
-							}}
-						>
-							{option.area}
-						</Box>
-						<Typography variant={"body2"}> s.q</Typography>
-					</Stack> */}
+                    <Stack alignItems={"center"} direction={"row"}>
+                        <Typography variant={"body2"}>Lastname: </Typography>
+                        <Box
+                            component="span"
+                            sx={{
+                                typography: "body2",
+                                fontWeight: lastName.highlight
+                                    ? "bold"
+                                    : "normal",
+                            }}
+                        >
+                            {option.lastName}
+                        </Box>
+                    </Stack>
                 </Stack>
             </Stack>
         </StyledSearchStack>
