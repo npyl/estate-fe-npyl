@@ -21,15 +21,17 @@ const OnlyNumbersInput: React.FC<OnlyNumbersInputProps> = ({
 }) => {
     const [localValue, setLocalValue] = useState<string | number>(value || "");
 
-    const debouncedOnChange = useDebouncedCallback((value: string) => {
-        const numericValue = value.replace(/[^0-9]/g, "");
-        onChange(numericValue);
-    }, 50);
+    const debouncedOnChange = useDebouncedCallback(
+        (value: string) => onChange(value),
+        50
+    );
 
     const handleCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const input = event.target.value;
-        setLocalValue(input); // set local value immediately
-        debouncedOnChange(input);
+        const numericValue = input.replace(/[^0-9]/g, "");
+
+        setLocalValue(numericValue); // set local value immediately
+        debouncedOnChange(numericValue); // set store with debounce
     };
 
     return (
