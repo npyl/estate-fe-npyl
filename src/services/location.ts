@@ -40,7 +40,7 @@ export const location = createApi({
         }),
         getClosest: builder.query<IGeoLocation, IGetClosestParams>({
             query: (params: IGetClosestParams) => ({
-                url: "/closest",
+                url: "/hierarchy/closest",
                 params: params,
             }),
         }),
