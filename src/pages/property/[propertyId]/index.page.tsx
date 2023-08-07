@@ -64,7 +64,7 @@ const SingleProperty: NextPage = () => {
             title: "Property",
             path: `/property/${propertyId}`,
         },
-        data?.code
+        data?.code || `${data?.id}`
     );
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) =>

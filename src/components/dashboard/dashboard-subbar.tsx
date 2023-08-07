@@ -81,7 +81,6 @@ const Subbar = () => {
                             <Button
                                 sx={{
                                     minWidth: "140px",
-                                    maxWidth: "140px",
                                     height: "30px",
                                     color:
                                         currentPath === tab.path

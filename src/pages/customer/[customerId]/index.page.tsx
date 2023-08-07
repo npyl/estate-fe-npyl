@@ -47,10 +47,12 @@ const CustomerView: NextPage = () => {
 
     usePublishTab(
         {
-            title: `Customer`,
+            title: data?.firstName && data?.lastName ? "" : "Customer",
             path: `/customer/${customerId}`,
         },
-        `${data?.firstName} ${data?.lastName}`
+        data?.firstName && data?.lastName
+            ? `${data?.firstName} ${data?.lastName}`
+            : `${data?.id}`
     );
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) =>

@@ -43,10 +43,13 @@ const EditCustomer: NextPage = () => {
 
     usePublishTab(
         {
-            title: "Edit Customer",
+            title:
+                data?.firstName && data?.lastName ? "Edit " : "Edit Customer",
             path: `/customer/edit/${customerId}`,
         },
-        `${data?.firstName} ${data?.lastName}`
+        data?.firstName && data?.lastName
+            ? `${data?.firstName} ${data?.lastName}`
+            : `${data?.id}`
     );
 
     useEffect(() => {

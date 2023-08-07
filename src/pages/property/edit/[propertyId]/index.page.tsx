@@ -54,7 +54,7 @@ const EditPropertyPage: NextPage = () => {
             title: "Edit Property",
             path: `/property/edit/${propertyId}`,
         },
-        data?.code
+        data?.code || `${data?.id}`
     );
 
     useEffect(() => {
