@@ -1,12 +1,14 @@
-import { Grid, Paper, TextField } from "@mui/material";
-import InputAdornment from "@mui/material/InputAdornment";
-import Typography from "@mui/material/Typography";
-import { Box } from "@mui/system";
+import {
+    Grid,
+    Paper,
+    TextField,
+    Box,
+    Typography,
+    InputAdornment,
+} from "@mui/material";
 import * as React from "react";
-import { useSelector } from "react-redux";
-import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
+import { useSelector, useDispatch } from "react-redux";
 
-import { useDispatch } from "react-redux";
 import {
     selectAirport,
     selectCafeRestaurant,
@@ -23,16 +25,11 @@ import {
     setSea,
     setSupermarket,
 } from "src/slices/property";
-import { useAllGlobalsQuery } from "src/services/global";
 import { useTranslation } from "react-i18next";
 
 const DistancesSection: React.FC<any> = (props) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
-
-    const { data } = useAllGlobalsQuery();
-    const enums: IGlobalProperty = data?.property as IGlobalProperty;
-    const details = enums?.details as IGlobalPropertyDetails;
 
     const publicTransportation = useSelector(selectPublicTransportation);
     const schools = useSelector(selectSchools);
@@ -47,24 +44,7 @@ const DistancesSection: React.FC<any> = (props) => {
     ) => {
         dispatch(setter(event.target.value));
     };
-    //set the values for BE
-    // const handlePublicTransportationChange = (
-    //   event: React.ChangeEvent<HTMLInputElement>
-    // ) => {
-    //   const input = event.target.value;
-    //   const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
-    //   dispatch(setPublicTransportation(publicTransportation));
-    // };
 
-    //handle onlynumbers
-    // const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    //   const keyCode = event.keyCode || event.which;
-    //   const keyValue = String.fromCharCode(keyCode);
-    //   const regex = /[0-9]/;
-    //   if (!regex.test(keyValue)) {
-    //     event.preventDefault(); // Prevent entering non-numeric characters
-    //   }
-    // };
     return (
         <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
             <Box
