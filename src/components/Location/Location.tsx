@@ -184,7 +184,7 @@ const LocationSection = (props: ILocationSectionProps) => {
                 <Box display={"flex"} pb={2}>
                     <Box height={`50vh`} width={"100%"}>
                         <Map
-                            drawing={true}
+                            drawing={false}
                             mainMarker={mainMarker}
                             onDragEnd={handleMarkerDragEnd}
                             onClick={handleMapClick}

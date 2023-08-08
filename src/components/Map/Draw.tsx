@@ -1,43 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-
-import { Button, Stack, Typography } from "@mui/material";
-import { darken } from "@mui/material/styles";
-import { styled } from "@mui/system";
-
-const StyledButton = styled(Button)(({ theme }) => ({
-    alignSelf: "center",
-    display: ["none", "none", "none", "none", "inline-flex"],
-    backgroundColor: theme.palette.common.white,
-    borderRadius: theme.spacing(0.25),
-    paddingLeft: theme.spacing(1),
-    paddingRight: theme.spacing(1),
-    paddingTop: theme.spacing(0.5),
-    paddingBottom: theme.spacing(0.5),
-    borderColor: theme.palette.grey[300],
-    color: theme.palette.grey[700],
-
-    "&:hover": {
-        borderColor: theme.palette.grey[400],
-        backgroundColor: darken(theme.palette.common.white, 0.1), // Darkens the white color by 10%
-    },
-    [theme.breakpoints.up("xl")]: {
-        display: "inline-flex",
-        backgroundColor: theme.palette.common.black,
-        borderColor: theme.palette.grey[700],
-        color: theme.palette.grey[300],
-        "&:hover": {
-            backgroundColor: darken(theme.palette.common.black, 0.1), // Darkens the black color by 10%
-        },
-    },
-    "&:focus": {
-        outline: "none",
-    },
-    "&:focus-visible": {
-        ringWidth: "2px",
-        ringColor: theme.palette.common.white,
-        ringOpacity: 0.75,
-    },
-}));
+import { Stack, Typography } from "@mui/material";
+import { StyledButton } from "./style";
 
 interface DrawingComponentProps {
     map: any;
@@ -47,7 +10,7 @@ export const CustomDrawingComponent = ({ map }: DrawingComponentProps) => {
     const drawingManagerRef = useRef<any>(null);
     const shapeRef = useRef<any>(null);
     const [drawMode, setDrawMode] = useState(false);
-    let polygon: any = null;
+    const [polygon, setPolygon] = useState<google.maps.Polygon>();
 
     useEffect(() => {
         // Create a new instance of the DrawingManager
@@ -69,7 +32,6 @@ export const CustomDrawingComponent = ({ map }: DrawingComponentProps) => {
             },
             polylineOptions: {
                 strokeColor: "#FF0000",
-
                 strokeWeight: 2,
                 clickable: true,
                 editable: true,
@@ -93,30 +55,44 @@ export const CustomDrawingComponent = ({ map }: DrawingComponentProps) => {
         google.maps.event.addListener(
             drawingManager,
             "overlaycomplete",
-            (event: any) => {
+            (event: google.maps.drawing.OverlayCompleteEvent) => {
                 console.log(event);
+
+                if (!event.overlay) return null;
+                if (typeof event.overlay === typeof google.maps.Marker)
+                    return null;
+
                 if (shapeRef.current) {
                     // Remove the previous shape
                     shapeRef.current.setMap(null);
                 }
+
                 const shape = event.overlay;
                 shapeRef.current = shape;
                 drawingManagerRef.current.setDrawingMode(null);
-                polygon = event.overlay;
 
-                // Add event listeners for path changes (set_at and insert_at)
-                google.maps.event.addListener(
-                    polygon.getPath(),
-                    "set_at",
-                    handlePathChange
-                );
-                google.maps.event.addListener(
-                    polygon.getPath(),
-                    "insert_at",
-                    handlePathChange
-                );
+                if (event.type === "polygon" || event.type === "polyline") {
+                    setPolygon(event.overlay as google.maps.Polygon);
+
+                    // Add event listeners for path changes (set_at and insert_at)
+                    google.maps.event.addListener(
+                        (
+                            shape as google.maps.Polygon | google.maps.Polyline
+                        ).getPath(),
+                        "set_at",
+                        handlePathChange
+                    );
+                    google.maps.event.addListener(
+                        (
+                            shape as google.maps.Polygon | google.maps.Polyline
+                        ).getPath(),
+                        "insert_at",
+                        handlePathChange
+                    );
+                }
             }
         );
+
         // Store the reference to the DrawingManager
         drawingManagerRef.current = drawingManager;
 
@@ -127,7 +103,7 @@ export const CustomDrawingComponent = ({ map }: DrawingComponentProps) => {
     }, [map]);
 
     function handlePathChange() {
-        const coordinates = polygon.getPath().getArray();
+        const coordinates = polygon!.getPath().getArray();
         const normalizedCoordinates = coordinates.map(({ lat, lng }: any) => ({
             x: lng(),
             y: lat(),
