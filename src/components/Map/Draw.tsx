@@ -1,16 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import { Stack, Typography } from "@mui/material";
 import { StyledButton } from "./style";
+import { DrawShape, StopDraw } from "./types";
 
 interface DrawingComponentProps {
     map: any;
+    onDraw: (shape: DrawShape | StopDraw) => void;
 }
 
-export const CustomDrawingComponent = ({ map }: DrawingComponentProps) => {
+export const CustomDrawingComponent = ({
+    map,
+    onDraw,
+}: DrawingComponentProps) => {
     const drawingManagerRef = useRef<any>(null);
     const shapeRef = useRef<any>(null);
     const [drawMode, setDrawMode] = useState(false);
-    const [polygon, setPolygon] = useState<google.maps.Polygon>();
 
     useEffect(() => {
         // Create a new instance of the DrawingManager
@@ -71,25 +75,7 @@ export const CustomDrawingComponent = ({ map }: DrawingComponentProps) => {
                 shapeRef.current = shape;
                 drawingManagerRef.current.setDrawingMode(null);
 
-                if (event.type === "polygon" || event.type === "polyline") {
-                    setPolygon(event.overlay as google.maps.Polygon);
-
-                    // Add event listeners for path changes (set_at and insert_at)
-                    google.maps.event.addListener(
-                        (
-                            shape as google.maps.Polygon | google.maps.Polyline
-                        ).getPath(),
-                        "set_at",
-                        handlePathChange
-                    );
-                    google.maps.event.addListener(
-                        (
-                            shape as google.maps.Polygon | google.maps.Polyline
-                        ).getPath(),
-                        "insert_at",
-                        handlePathChange
-                    );
-                }
+                onDraw(shape as DrawShape);
             }
         );
 
@@ -101,14 +87,6 @@ export const CustomDrawingComponent = ({ map }: DrawingComponentProps) => {
             drawingManager.setMap(null);
         };
     }, [map]);
-
-    function handlePathChange() {
-        const coordinates = polygon!.getPath().getArray();
-        const normalizedCoordinates = coordinates.map(({ lat, lng }: any) => ({
-            x: lng(),
-            y: lat(),
-        }));
-    }
 
     const startDrawing = () => {
         if (shapeRef.current?.getMap()) {
@@ -152,6 +130,8 @@ export const CustomDrawingComponent = ({ map }: DrawingComponentProps) => {
         if (shapeRef.current?.getMap()) {
             shapeRef.current.setMap(null);
         }
+
+        onDraw(null);
     };
 
     return (
