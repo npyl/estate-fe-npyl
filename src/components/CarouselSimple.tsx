@@ -60,34 +60,46 @@ export default function CarouselSimple({
     };
 
     const renderLargeImg = (
-        <Box
-            sx={{
-                mb: 1,
-                zIndex: 0,
-                overflow: "hidden",
-                position: "relative",
-            }}
-        >
-            <Carousel {...carouselSettings1} asNavFor={nav1} ref={carousel1}>
-                {data.map((item, index) => (
-                    <LabeledImage
-                        key={item.id}
-                        alt={item.title}
-                        src={item.image}
-                        label={mainLabel && index === 0 ? mainLabel : ""}
-                        onClick={onImageClick}
-                        ratio={ratio! as ImageRatio}
-                    />
-                ))}
-            </Carousel>
-
-            <CarouselArrowIndex
-                index={currentIndex}
-                total={data.length}
-                onNext={handleNext}
-                onPrevious={handlePrev}
-            />
-        </Box>
+        <>
+            <Box
+                onClick={() => {
+                    onImageClick && onImageClick();
+                }}
+                sx={{
+                    mb: 1,
+                    zIndex: 0,
+                    overflow: "hidden",
+                    position: "relative",
+                }}
+            >
+                <Carousel
+                    {...carouselSettings1}
+                    asNavFor={nav1}
+                    ref={carousel1}
+                >
+                    {data.map((item, index) => (
+                        <LabeledImage
+                            key={item.id}
+                            alt={item.title}
+                            src={item.image}
+                            label={mainLabel && index === 0 ? mainLabel : ""}
+                            onClick={() => {
+                                onImageClick && onImageClick();
+                            }}
+                            ratio={ratio! as ImageRatio}
+                        />
+                    ))}
+                </Carousel>
+            </Box>
+            <Box>
+                <CarouselArrowIndex
+                    index={currentIndex}
+                    total={data.length}
+                    onNext={handleNext}
+                    onPrevious={handlePrev}
+                />
+            </Box>
+        </>
     );
 
     return (

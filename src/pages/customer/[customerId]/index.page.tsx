@@ -65,7 +65,14 @@ const CustomerView: NextPage = () => {
         // delete tab
         dispatch(deleteTabWithPath(`/customer/${customerId}`));
     }
-
+    //     <TypeLabels
+    //     seller={data?.seller}
+    //     lessor={data?.lessor}
+    //     leaser={data?.leaser}
+    //     buyer={data?.buyer}
+    // />
+    const isSellerOrLessor = data?.seller || data?.lessor;
+    const isBuyerOrLeaser = data?.buyer || data?.leaser;
     return (
         <Box sx={{ width: "100%", paddingY: 1 }}>
             <ViewHeader onEdit={handleEdit} onDelete={handleDelete}>
@@ -75,8 +82,12 @@ const CustomerView: NextPage = () => {
                     aria-label="View Property Tabs"
                 >
                     <Tab label="Customer Information" {...a11yProps(0)} />
-                    <Tab label="Owned Properties" {...a11yProps(1)} />
-                    <Tab label="Matching Properties" {...a11yProps(2)} />
+                    {isSellerOrLessor && (
+                        <Tab label="Owned Properties" {...a11yProps(1)} />
+                    )}
+                    {isBuyerOrLeaser && (
+                        <Tab label="Matching Properties" {...a11yProps(2)} />
+                    )}
                 </Tabs>
             </ViewHeader>
 
@@ -91,22 +102,28 @@ const CustomerView: NextPage = () => {
                             <NotesCustomerSection />
                         </Stack>
                     </Grid>
-
                     <Grid item xs={6}>
                         <Stack spacing={1}>
-                            <MatchingPropertiesSection />
-                            <OwnedCustomerPropertiesSection />
+                            {isBuyerOrLeaser && <MatchingPropertiesSection />}
+                            {isSellerOrLessor && (
+                                <OwnedCustomerPropertiesSection />
+                            )}
                         </Stack>
                     </Grid>
                 </Grid>
             </TabPanel>
 
-            <TabPanel value={value} index={1}>
-                <OwnedCustomerPropertiesSection />
-            </TabPanel>
-            <TabPanel value={value} index={2}>
-                <MatchingPropertiesSection />
-            </TabPanel>
+            {isSellerOrLessor && (
+                <TabPanel value={value} index={1}>
+                    <OwnedCustomerPropertiesSection />
+                </TabPanel>
+            )}
+
+            {isBuyerOrLeaser && (
+                <TabPanel value={value} index={2}>
+                    <MatchingPropertiesSection />
+                </TabPanel>
+            )}
         </Box>
     );
 };
