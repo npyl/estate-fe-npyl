@@ -112,20 +112,6 @@ export const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
                                         color: "white",
                                         backgroundImage:
                                             "linear-gradient(45deg, #3f51b5 30%, #1a237e 90%)", // deep blue colors
-                                        boxShadow: (theme) =>
-                                            `0 3px 5px 2px ${alpha(
-                                                theme.palette.primary.dark,
-                                                0.3
-                                            )}`,
-                                        "&:hover": {
-                                            backgroundImage:
-                                                "linear-gradient(45deg, #1a237e 30%, #3f51b5 90%)",
-                                            boxShadow: (theme) =>
-                                                `0 3px 5px 2px ${alpha(
-                                                    theme.palette.primary.dark,
-                                                    0.3
-                                                )}`,
-                                        },
                                     }}
                                     id="create-menu-button"
                                     aria-controls={
