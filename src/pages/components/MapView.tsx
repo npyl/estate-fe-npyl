@@ -1,28 +1,75 @@
 import { Button, Box, Grid, Paper, Stack, Typography } from "@mui/material";
 import { useState, useMemo } from "react";
 import Map from "src/components/Map/Map";
-import { BookingItem } from "./MediaCard";
+import { BookingItem } from "./BookingItem";
 import { IPropertyResultResponse } from "src/types/properties";
 import { useRouter } from "next/router";
 import Iconify from "src/components/iconify";
 import ICarouselImage from "src/components/carousel/types";
 import CarouselSimple from "src/components/CarouselSimple";
 import FlipIcon from "@mui/icons-material/Flip";
+import { DrawShape, StopDraw } from "src/components/Map/types";
 
 interface Props {
     data: IPropertyResultResponse[];
 }
 
 const MapView = ({ data }: Props) => {
+    const [properties, setProperties] = useState(data);
     const [activeMarker, setActiveMarker] = useState(null);
     const [orientation, setOrientation] = useState(false); // true -> vertical, false -> horizontal)
 
     const locations = useMemo(() => {
-        return data.map((property) => property.location);
-    }, [data]);
+        return properties.map((property) => property.location);
+    }, [properties]);
 
-    const toggleOrientation = () => {
-        setOrientation(!orientation);
+    const toggleOrientation = () => setOrientation(!orientation);
+
+    const isPointInsideShape = (
+        lat: number,
+        lng: number,
+        shape: google.maps.Polygon | google.maps.Circle | google.maps.Rectangle
+    ): boolean => {
+        const point = new google.maps.LatLng(lat, lng);
+
+        if (shape instanceof google.maps.Polygon) {
+            return google.maps.geometry.poly.containsLocation(point, shape);
+        }
+
+        if (shape instanceof google.maps.Circle) {
+            const center = shape.getCenter();
+            if (center) {
+                const distance =
+                    google.maps.geometry.spherical.computeDistanceBetween(
+                        center,
+                        point
+                    );
+                return distance <= shape.getRadius();
+            }
+        }
+
+        if (shape instanceof google.maps.Rectangle) {
+            return shape.getBounds()!.contains(point);
+        }
+
+        return false;
+    };
+
+    const handleDraw = (shape: DrawShape | StopDraw) => {
+        setProperties(
+            shape
+                ? properties.filter(
+                      (property) =>
+                          property.location?.lat &&
+                          property.location?.lng &&
+                          isPointInsideShape(
+                              property.location.lat,
+                              property.location.lng,
+                              shape
+                          )
+                  )
+                : data
+        );
     };
 
     return (
@@ -33,6 +80,7 @@ const MapView = ({ data }: Props) => {
                         activeMarker={activeMarker}
                         setActiveMarker={setActiveMarker}
                         data={locations}
+                        onDraw={handleDraw}
                     />
                 </Box>
 
@@ -54,7 +102,7 @@ const MapView = ({ data }: Props) => {
                     </Stack>
 
                     <Grid container>
-                        {data.map((item, index) => (
+                        {properties.map((item, index) => (
                             <Grid
                                 mb={1}
                                 key={index}

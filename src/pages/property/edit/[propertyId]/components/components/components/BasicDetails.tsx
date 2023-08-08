@@ -159,11 +159,48 @@ const BasicSection: React.FC<any> = () => {
 
     const handleDateChange = (
         setter: ActionCreatorWithPayload<any, string>,
-        date: Date | null
+        newDate: Date | null,
+        rentalPeriodStart: string | null,
+        rentalPeriodEnd: string | null,
+        availableAfter: string | null
     ) => {
-        if (!date || !setter) return; // we don't need null
+        if (!newDate || !setter) return;
 
-        dispatch(setter(date.toISOString()));
+        const updatedDate = newDate.toISOString();
+        dispatch(setter(updatedDate));
+
+        // Convert the strings back to Date objects for comparison
+        const startDate =
+            setter === setRentalPeriodStart
+                ? newDate
+                : rentalPeriodStart
+                ? new Date(rentalPeriodStart)
+                : null;
+
+        const endDate =
+            setter === setRentalPeriodEnd
+                ? newDate
+                : rentalPeriodEnd
+                ? new Date(rentalPeriodEnd)
+                : null;
+
+        const availableAt =
+            setter === setAvailableAfter
+                ? newDate
+                : availableAfter
+                ? new Date(availableAfter)
+                : null;
+
+        if (startDate && endDate && endDate < startDate) {
+            alert(
+                "Error: Rental Period End date should not be before the Rental Period Start date."
+            );
+        }
+        if (endDate && availableAt && availableAt < endDate) {
+            alert(
+                "Error: The property can not be available before the rental period end."
+            );
+        }
     };
 
     if (!enums || !propertyLabels || !propertyId) return null;
@@ -424,7 +461,7 @@ const BasicSection: React.FC<any> = () => {
                     spacing={0}
                     sx={{
                         padding: "10px",
-                        border: "1px solid #CCCCCC",
+                        border: "1px solid #000000",
                         borderRadius: "10px",
                     }}
                 >
@@ -441,7 +478,10 @@ const BasicSection: React.FC<any> = () => {
                                     onChange={(value: any) => {
                                         handleDateChange(
                                             setAvailableAfter,
-                                            value
+                                            value,
+                                            rentalPeriodStart,
+                                            rentalPeriodEnd,
+                                            availableAfter
                                         );
                                     }}
                                     disabled={!rented} // Disable the field if "rented" is unchecked
@@ -462,15 +502,14 @@ const BasicSection: React.FC<any> = () => {
                             <Grid item xs={6}>
                                 <DateFieldStyled
                                     label="Rental Period Start"
-                                    value={
-                                        rentalPeriodStart
-                                            ? new Date(rentalPeriodStart)
-                                            : currentDate
-                                    }
+                                    value={new Date(rentalPeriodStart)}
                                     onChange={(value: any) => {
                                         handleDateChange(
                                             setRentalPeriodStart,
-                                            value
+                                            value,
+                                            rentalPeriodStart,
+                                            rentalPeriodEnd,
+                                            availableAfter
                                         );
                                     }}
                                     disabled={!rented} // Disable the field if "rented" is unchecked
@@ -480,15 +519,14 @@ const BasicSection: React.FC<any> = () => {
                             <Grid item xs={6}>
                                 <DateFieldStyled
                                     label={t("Rental Period End")}
-                                    value={
-                                        rentalPeriodEnd
-                                            ? new Date(rentalPeriodEnd)
-                                            : currentDate
-                                    }
+                                    value={new Date(rentalPeriodEnd)}
                                     onChange={(value: any) => {
                                         handleDateChange(
                                             setRentalPeriodEnd,
-                                            value
+                                            value,
+                                            rentalPeriodStart,
+                                            rentalPeriodEnd,
+                                            availableAfter
                                         );
                                     }}
                                     disabled={!rented} // Disable the field if "rented" is unchecked

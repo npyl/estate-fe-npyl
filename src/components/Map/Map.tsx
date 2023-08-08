@@ -1,11 +1,8 @@
-import {
-    DrawingManager,
-    GoogleMap,
-    Marker,
-    useJsApiLoader,
-} from "@react-google-maps/api";
+import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+import { CustomDrawingComponent } from "./Draw";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { ILocationPOST } from "src/types/location";
+import { DrawShape, StopDraw } from "./types";
 
 const containerStyle = {
     width: "100%",
@@ -36,6 +33,7 @@ interface IMapProps {
         newLng: number,
         address: IMapAddress
     ) => void;
+    onDraw?: (shape: DrawShape | StopDraw) => void;
 
     data?: ILocationPOST[];
     mainMarker?: IMapMarker;
@@ -44,17 +42,19 @@ interface IMapProps {
     drawing?: boolean;
 }
 
+const apiKey = "AIzaSyCW6oijpbC0JhlXRwPBtNIxy9e4sn7NnwU";
+const athensLatLng = { lat: 37.98381, lng: 23.727539 };
+
 const Map = ({
     onClick,
     onDragEnd,
+    onDraw,
     data,
     mainMarker,
     activeMarker,
     setActiveMarker,
     drawing = true,
 }: IMapProps) => {
-    const apiKey = "AIzaSyCW6oijpbC0JhlXRwPBtNIxy9e4sn7NnwU";
-    const athensLatLng = { lat: 37.98381, lng: 23.727539 };
     const { isLoaded } = useJsApiLoader({
         id: "google-map-script",
         googleMapsApiKey: apiKey,
@@ -196,13 +196,6 @@ const Map = ({
             );
     };
 
-    //
-    //	Draw
-    //
-    const onPolygonComplete = (polygon: any) => {
-        console.log(polygon);
-    };
-
     return isLoaded ? (
         <GoogleMap
             mapContainerStyle={containerStyle}
@@ -213,9 +206,9 @@ const Map = ({
             onUnmount={onUnmount}
         >
             {drawing && (
-                <DrawingManager
-                    onLoad={onLoad}
-                    onPolygonComplete={onPolygonComplete}
+                <CustomDrawingComponent
+                    map={map}
+                    onDraw={(shape) => onDraw?.(shape)}
                 />
             )}
 
