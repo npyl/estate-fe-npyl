@@ -1,7 +1,7 @@
 import { Button, Box, Grid, Paper, Stack, Typography } from "@mui/material";
 import { useState, useMemo } from "react";
 import Map from "src/components/Map/Map";
-import { BookingItem } from "./MediaCard";
+import { BookingItem } from "./BookingItem";
 import { IPropertyResultResponse } from "src/types/properties";
 import { useRouter } from "next/router";
 import Iconify from "src/components/iconify";

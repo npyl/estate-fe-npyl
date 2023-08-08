@@ -17,14 +17,14 @@ const Label = styled(Typography)`
     border-radius: ${({ theme }) => theme.shape.borderRadius};
 `;
 
-const LabeledImage = ({ src, label }: LabeledImageProps) => {
+const LabeledImage = ({ src, label, ref, ...props }: LabeledImageProps) => {
     return label ? (
         <ImageContainer>
-            <Image src={src} />
+            <Image src={src} {...props} />
             <Label>{label}</Label>
         </ImageContainer>
     ) : (
-        <Image src={src} />
+        <Image src={src} {...props} />
     );
 };
 
