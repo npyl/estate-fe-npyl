@@ -1,9 +1,5 @@
-import {
-    DrawingManager,
-    GoogleMap,
-    Marker,
-    useJsApiLoader,
-} from "@react-google-maps/api";
+import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+import { CustomDrawingComponent } from "./Draw";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { ILocationPOST } from "src/types/location";
 
@@ -199,9 +195,6 @@ const Map = ({
     //
     //	Draw
     //
-    const onPolygonComplete = (polygon: any) => {
-        console.log(polygon);
-    };
 
     return isLoaded ? (
         <GoogleMap
@@ -212,12 +205,7 @@ const Map = ({
             onLoad={onLoad}
             onUnmount={onUnmount}
         >
-            {drawing && (
-                <DrawingManager
-                    onLoad={onLoad}
-                    onPolygonComplete={onPolygonComplete}
-                />
-            )}
+            {drawing && <CustomDrawingComponent map={map} />}
 
             {markers.map((marker, ind) => {
                 const { address, lat, lng, main } = marker;
