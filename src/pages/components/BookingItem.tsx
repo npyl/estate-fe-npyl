@@ -17,6 +17,27 @@ type BookingItemProps = {
     activeMarker?: number;
 };
 
+const ForSaleLabel = () => {
+    return (
+        <Box
+            borderRadius={1}
+            sx={{
+                position: "absolute",
+                top: 4,
+                left: 4,
+                backgroundColor: "rgb(235, 0, 0)",
+                color: "white",
+                zIndex: 9999,
+                p: 1,
+            }}
+            textAlign={"center"}
+            height={40}
+        >
+            <Typography>For Sale</Typography>
+        </Box>
+    );
+};
+
 const TypeLabel = ({ value }: { value: string }) => {
     return (
         <Box
@@ -50,7 +71,16 @@ const PriceLabel = ({ value }: { value: number }) => {
 };
 
 export const BookingItem = ({ item, activeMarker }: BookingItemProps) => {
-    const { details, price, location, images, id, area, parentCategory } = item;
+    const {
+        details,
+        price,
+        location,
+        images,
+        id,
+        area,
+        parentCategory,
+        state,
+    } = item;
 
     const router = useRouter();
 
@@ -88,6 +118,8 @@ export const BookingItem = ({ item, activeMarker }: BookingItemProps) => {
                 },
             }}
         >
+            {state === "Sale" && <ForSaleLabel />}
+
             <Box sx={{ position: "relative" }}>
                 <CarouselSimple
                     onImageClick={() => router.push(`property/${id}`)}
