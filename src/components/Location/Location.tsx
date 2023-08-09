@@ -52,7 +52,10 @@ const LocationSection = (props: ILocationSectionProps) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
+    // Fields
     const [neighbour, setNeighbour] = useState("");
+    const [x, setX] = useState<number>(lat || -1);
+    const [y, setY] = useState<number>(lng || -1);
 
     const [activeMarker, setActiveMarker] = useState(null);
     const [mainMarker, setMainMarker] = useState<IMapMarker>({
@@ -87,6 +90,10 @@ const LocationSection = (props: ILocationSectionProps) => {
         // update slice
         dispatch(setLatitude(lat));
         dispatch(setLongitude(lng));
+
+        // show x, y
+        setX(lat);
+        setY(lng);
     };
 
     const handleChange = (
@@ -252,6 +259,31 @@ const LocationSection = (props: ILocationSectionProps) => {
                             label={t("Zip Code")}
                             value={zipCode || ""}
                             onChange={(value) => dispatch(setZipCode(value))}
+                        />
+                    </Grid>
+                </Grid>
+
+                <Divider sx={{ mt: 2, mb: 1 }} />
+
+                <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                        <TextField
+                            fullWidth
+                            label={t("Latitude")}
+                            value={x || ""}
+                            InputProps={{
+                                readOnly: true,
+                            }}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <TextField
+                            fullWidth
+                            label={t("Longitude")}
+                            value={y || ""}
+                            InputProps={{
+                                readOnly: true,
+                            }}
                         />
                     </Grid>
                 </Grid>
