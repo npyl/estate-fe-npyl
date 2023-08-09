@@ -36,7 +36,7 @@ interface IMapProps {
         address: IMapAddress
     ) => void;
     onDraw?: (shape: DrawShape | StopDraw) => void;
-    onSearchSelect?: (selected: IMapAddress) => void;
+    onSearchSelect?: (selected: IMapAddress, lat: number, lng: number) => void;
 
     data?: ILocationPOST[];
     mainMarker?: IMapMarker;
@@ -203,7 +203,9 @@ const Map = ({
     };
 
     const handleSearchSelect = (
-        addressComponent: google.maps.GeocoderAddressComponent[]
+        addressComponent: google.maps.GeocoderAddressComponent[],
+        lat: number,
+        lng: number
     ) => {
         const street = getAddressComponent(addressComponent, "route");
         const number = getAddressComponent(addressComponent, "street_number");
@@ -212,7 +214,7 @@ const Map = ({
             "postal_code"
         ).replace(/\s/g, ""); // remove spaces
 
-        onSearchSelect?.({ street, number, zipCode });
+        onSearchSelect?.({ street, number, zipCode }, lat, lng);
     };
 
     return isLoaded ? (

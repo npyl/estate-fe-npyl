@@ -7,7 +7,11 @@ import usePlacesAutocomplete, {
 } from "use-places-autocomplete";
 
 interface SearchOnMapProps {
-    onSearchSelect: (selection: google.maps.GeocoderAddressComponent[]) => void;
+    onSearchSelect: (
+        selection: google.maps.GeocoderAddressComponent[],
+        lat: number,
+        lng: number
+    ) => void;
 }
 
 const SearchOnMap: FC<SearchOnMapProps> = ({ onSearchSelect }) => {
@@ -30,6 +34,7 @@ const SearchOnMap: FC<SearchOnMapProps> = ({ onSearchSelect }) => {
     ) => {
         clearSuggestions();
 
+        // get street, number, zipCode
         const results = await getGeocode({
             placeId: o.place_id,
             language: "gr",
@@ -39,7 +44,12 @@ const SearchOnMap: FC<SearchOnMapProps> = ({ onSearchSelect }) => {
         const { address_components } = results[0];
         if (!address_components) return null;
 
-        onSearchSelect(address_components);
+        // get lat, lng
+        const latLng = getLatLng(results[0]);
+        if (!latLng) return null;
+
+        // send to parent
+        onSearchSelect(address_components, latLng.lat, latLng.lng);
     };
 
     return (

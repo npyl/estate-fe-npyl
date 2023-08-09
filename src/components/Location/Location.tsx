@@ -99,9 +99,7 @@ const LocationSection = (props: ILocationSectionProps) => {
     const handleChange = (
         setter: any,
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
-        dispatch(setter(event.target.value));
-    };
+    ) => dispatch(setter(event.target.value));
 
     const handleRegionChange = (
         regionCode: string,
@@ -165,7 +163,15 @@ const LocationSection = (props: ILocationSectionProps) => {
         dispatch(setNumber(address.number));
         dispatch(setZipCode(address.zipCode));
     };
-    const handleSearchSelect = (address: IMapAddress) => {
+    const handleSearchSelect = (
+        address: IMapAddress,
+        lat: number,
+        lng: number
+    ) => {
+        if (!lat || !lng) return;
+
+        updateMainMarkerCoordinates(lat, lng);
+
         // update slice
         dispatch(setStreet(address.street));
         dispatch(setNumber(address.number));
