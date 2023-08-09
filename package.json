@@ -117,6 +117,7 @@
     "devDependencies": {
         "@svgr/webpack": "^7.0.0",
         "@types/file-saver": "^2.0.5",
+        "@types/google.maps": "^3.53.6",
         "@types/react-big-calendar": "^1.6.3",
         "@types/react-color": "^3.0.6",
         "@types/react-lazy-load-image-component": "^1.5.2",

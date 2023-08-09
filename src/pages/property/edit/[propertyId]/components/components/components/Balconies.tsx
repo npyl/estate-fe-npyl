@@ -17,6 +17,7 @@ import {
     setBalconyArea,
     addBalcony,
     removeBalcony,
+    setBalconies,
 } from "src/slices/property";
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 import OnlyNumbersInput from "../../../../../../../components/OnlyNumbers";
@@ -57,67 +58,62 @@ const BalconiesSection: React.FC<any> = (props) => {
             </Box>
 
             <Grid item xs={12} padding={1}>
-                <Grid container spacing={1}>
-                    {balconies.map((balcony, index) => {
-                        return (
-                            <>
-                                <Grid item xs={5.5} key={index}>
-                                    <TextField
-                                        fullWidth
-                                        id="outlined-select-currency"
-                                        select
-                                        label={t("Side")}
-                                        value={balcony.side}
-                                        onChange={(
-                                            event: React.ChangeEvent<HTMLInputElement>
-                                        ) => {
-                                            dispatch(
-                                                setBalconySide({
-                                                    balconyIndex: index,
-                                                    side: event.target.value,
-                                                })
-                                            );
-                                        }}
-                                    >
-                                        {details?.balconySide?.map((option) => (
-                                            <MenuItem
-                                                key={option}
-                                                value={option}
-                                            >
-                                                {option}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
-                                </Grid>
+                {balconies.map((balcony, index) => {
+                    return (
+                        <Grid container spacing={1} key={index}>
+                            <Grid item xs={5.5}>
+                                <TextField
+                                    fullWidth
+                                    id="outlined-select-currency"
+                                    select
+                                    label={t("Side")}
+                                    value={balcony.side}
+                                    onChange={(
+                                        event: React.ChangeEvent<HTMLInputElement>
+                                    ) => {
+                                        dispatch(
+                                            setBalconySide({
+                                                balconyIndex: index,
+                                                side: event.target.value,
+                                            })
+                                        );
+                                    }}
+                                >
+                                    {details?.balconySide?.map((option) => (
+                                        <MenuItem key={option} value={option}>
+                                            {option}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            </Grid>
 
-                                <Grid item xs={5.5}>
-                                    <OnlyNumbersInput
-                                        label={t("Area")}
-                                        value={balcony.area}
-                                        onChange={(value) => {
-                                            dispatch(
-                                                setBalconyArea({
-                                                    balconyIndex: index,
-                                                    area: value,
-                                                })
-                                            );
-                                        }}
-                                    />
-                                </Grid>
+                            <Grid item xs={5.5}>
+                                <OnlyNumbersInput
+                                    label={t("Area")}
+                                    value={balcony.area}
+                                    onChange={(value) => {
+                                        dispatch(
+                                            setBalconyArea({
+                                                balconyIndex: index,
+                                                area: value,
+                                            })
+                                        );
+                                    }}
+                                />
+                            </Grid>
 
-                                <Grid item xs={1}>
-                                    <IconButton
-                                        onClick={() => {
-                                            dispatch(removeBalcony(index));
-                                        }}
-                                    >
-                                        <Cancel />
-                                    </IconButton>
-                                </Grid>
-                            </>
-                        );
-                    })}
-                </Grid>
+                            <Grid item xs={1}>
+                                <IconButton
+                                    onClick={() => {
+                                        dispatch(removeBalcony(index));
+                                    }}
+                                >
+                                    <Cancel />
+                                </IconButton>
+                            </Grid>
+                        </Grid>
+                    );
+                })}
             </Grid>
         </Paper>
     );

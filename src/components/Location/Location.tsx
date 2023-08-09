@@ -192,6 +192,7 @@ const LocationSection = (props: ILocationSectionProps) => {
                     <Box height={`50vh`} width={"100%"}>
                         <Map
                             drawing={false}
+                            search
                             mainMarker={mainMarker}
                             onDragEnd={handleMarkerDragEnd}
                             onClick={handleMapClick}

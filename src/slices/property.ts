@@ -379,15 +379,17 @@ const slice = createSlice({
         },
         removeBalcony(state: propertyState, { payload }) {
             const indexToRemove = payload;
-            if (indexToRemove === null) return;
+            if (
+                indexToRemove === null ||
+                indexToRemove > state.details.balconies.length
+            )
+                return;
 
-            const newArray = [
-                ...state.details.balconies.slice(0, indexToRemove),
-                ...state.details.balconies.slice(indexToRemove + 1),
-            ];
-
-            state.details.balconies = newArray;
+            state.details.balconies = state.details.balconies.filter(
+                (_, i) => i !== indexToRemove
+            );
         },
+
         setBalconySide(state: propertyState, { payload }) {
             const index = payload.balconyIndex;
             const side = payload.side;

@@ -3,6 +3,8 @@ import { CustomDrawingComponent } from "./Draw";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { ILocationPOST } from "src/types/location";
 import { DrawShape, StopDraw } from "./types";
+import SearchOnMap from "./Search";
+import { IPropertyResultResponse } from "src/types/properties";
 
 const containerStyle = {
     width: "100%",
@@ -34,12 +36,16 @@ interface IMapProps {
         address: IMapAddress
     ) => void;
     onDraw?: (shape: DrawShape | StopDraw) => void;
+    onSearchSelect?: (
+        selected: google.maps.places.AutocompletePrediction
+    ) => void;
 
     data?: ILocationPOST[];
     mainMarker?: IMapMarker;
     activeMarker: number | null;
     setActiveMarker: any;
     drawing?: boolean;
+    search?: boolean;
 }
 
 const apiKey = "AIzaSyCW6oijpbC0JhlXRwPBtNIxy9e4sn7NnwU";
@@ -49,16 +55,18 @@ const Map = ({
     onClick,
     onDragEnd,
     onDraw,
+    onSearchSelect,
     data,
     mainMarker,
     activeMarker,
     setActiveMarker,
     drawing = true,
+    search = false,
 }: IMapProps) => {
     const { isLoaded } = useJsApiLoader({
         id: "google-map-script",
         googleMapsApiKey: apiKey,
-        libraries: ["drawing"],
+        libraries: search ? ["drawing", "places"] : ["drawing"],
     });
     const [geocoder, setGeocoder] = useState<google.maps.Geocoder>();
 
@@ -209,6 +217,11 @@ const Map = ({
                 <CustomDrawingComponent
                     map={map}
                     onDraw={(shape) => onDraw?.(shape)}
+                />
+            )}
+            {search && (
+                <SearchOnMap
+                    onSearchSelect={(selected) => onSearchSelect?.(selected)}
                 />
             )}
 
