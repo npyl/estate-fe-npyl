@@ -170,6 +170,7 @@ const LocationSection = (props: ILocationSectionProps) => {
     ) => {
         if (!lat || !lng) return;
 
+        setOnDragEndCoord({ lat, lng });
         updateMainMarkerCoordinates(lat, lng);
 
         // update slice

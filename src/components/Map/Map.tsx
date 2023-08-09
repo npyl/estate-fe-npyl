@@ -207,6 +207,8 @@ const Map = ({
         lat: number,
         lng: number
     ) => {
+        console.log("a: ", addressComponent);
+
         const street = getAddressComponent(addressComponent, "route");
         const number = getAddressComponent(addressComponent, "street_number");
         const zipCode = getAddressComponent(
