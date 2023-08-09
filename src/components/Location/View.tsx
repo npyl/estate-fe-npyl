@@ -4,8 +4,11 @@ import { ILocation } from "src/types/location";
 
 import { useMemo } from "react";
 
-import nomoi from "src/json/nomoi.json";
 import { useTranslation } from "react-i18next";
+import {
+    useGetMunicipalitiesQuery,
+    useGetRegionsQuery,
+} from "src/services/location";
 
 interface ViewLocationProps {
     location: ILocation;
@@ -16,23 +19,24 @@ const isNumberString = (input: string): boolean => !isNaN(Number(input));
 export const ViewLocation = ({ location }: ViewLocationProps) => {
     const { t } = useTranslation();
 
+    const { data: regions } = useGetRegionsQuery();
+    const { data: municips } = useGetMunicipalitiesQuery(+location?.region);
+
     // region is most of the types a code; translate to human readable form; otherwise just return the string
-    const region = useMemo(() => {
-        if (!location?.region) return "";
+    const region: string = useMemo(() => {
+        if (!location?.region || !regions) return "";
 
         return isNumberString(location.region)
-            ? nomoi.filter((o) => o["Area ID"] === location.region)[0][
-                  "Name GR"
-              ]
+            ? regions.filter((r) => r.areaID === +region)[0]?.nameEN
             : location.region;
-    }, [location?.region]);
+    }, [location?.region, regions]);
 
     // city is most of the types a code; translate to human readable form; otherwise just return the string
     const city = useMemo(() => {
-        if (!location?.city) return "";
+        if (!location?.city || !municips) return "";
 
         return isNumberString(location.city)
-            ? nomoi.filter((o) => o["Area ID"] === location.city)[0]["Name GR"]
+            ? municips.filter((m) => m.areaID === +location.city)[0]?.nameEN
             : location.city;
     }, [location?.city]);
 
