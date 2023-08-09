@@ -1,12 +1,13 @@
 import { MenuItem, Paper, Popper, Stack, TextField } from "@mui/material";
 import { FC, useMemo, useRef, useState } from "react";
 
-import usePlacesAutocomplete from "use-places-autocomplete";
+import usePlacesAutocomplete, {
+    getGeocode,
+    getLatLng,
+} from "use-places-autocomplete";
 
 interface SearchOnMapProps {
-    onSearchSelect: (
-        selection: google.maps.places.AutocompletePrediction
-    ) => void;
+    onSearchSelect: (selection: google.maps.GeocoderAddressComponent[]) => void;
 }
 
 const SearchOnMap: FC<SearchOnMapProps> = ({ onSearchSelect }) => {
@@ -24,9 +25,21 @@ const SearchOnMap: FC<SearchOnMapProps> = ({ onSearchSelect }) => {
 
     const open = useMemo(() => !!anchorEl, [anchorEl]);
 
-    const handleClick = (o: google.maps.places.AutocompletePrediction) => {
+    const handleClick = async (
+        o: google.maps.places.AutocompletePrediction
+    ) => {
         clearSuggestions();
-        onSearchSelect(o);
+
+        const results = await getGeocode({
+            placeId: o.place_id,
+            language: "gr",
+        });
+        if (results.length === 0) return null;
+
+        const { address_components } = results[0];
+        if (!address_components) return null;
+
+        onSearchSelect(address_components);
     };
 
     return (

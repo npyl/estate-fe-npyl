@@ -165,6 +165,12 @@ const LocationSection = (props: ILocationSectionProps) => {
         dispatch(setNumber(address.number));
         dispatch(setZipCode(address.zipCode));
     };
+    const handleSearchSelect = (address: IMapAddress) => {
+        // update slice
+        dispatch(setStreet(address.street));
+        dispatch(setNumber(address.number));
+        dispatch(setZipCode(address.zipCode));
+    };
 
     useEffect(() => {
         if (!closest) return;
@@ -196,6 +202,7 @@ const LocationSection = (props: ILocationSectionProps) => {
                             mainMarker={mainMarker}
                             onDragEnd={handleMarkerDragEnd}
                             onClick={handleMapClick}
+                            onSearchSelect={handleSearchSelect}
                             activeMarker={activeMarker}
                             setActiveMarker={setActiveMarker}
                         />

@@ -36,9 +36,7 @@ interface IMapProps {
         address: IMapAddress
     ) => void;
     onDraw?: (shape: DrawShape | StopDraw) => void;
-    onSearchSelect?: (
-        selected: google.maps.places.AutocompletePrediction
-    ) => void;
+    onSearchSelect?: (selected: IMapAddress) => void;
 
     data?: ILocationPOST[];
     mainMarker?: IMapMarker;
@@ -121,22 +119,22 @@ const Map = ({
         setMap(null);
     }, []);
 
+    // Helper function to extract the address component value based on the type
+    const getAddressComponent = (
+        addressComponents: google.maps.GeocoderAddressComponent[],
+        type: string
+    ) => {
+        const component = addressComponents.find((component) =>
+            component.types.includes(type)
+        );
+        return component ? component.long_name : "";
+    };
+
     const getAddressFromLatLng = async (
         lat: number,
         lng: number
     ): Promise<IMapAddress> => {
         if (!geocoder) throw new Error("Geocoder is not initialised!");
-
-        // Helper function to extract the address component value based on the type
-        const getAddressComponent = (
-            addressComponents: google.maps.GeocoderAddressComponent[],
-            type: string
-        ) => {
-            const component = addressComponents.find((component) =>
-                component.types.includes(type)
-            );
-            return component ? component.long_name : "";
-        };
 
         const { results } = await geocoder.geocode({
             location: { lat, lng },
@@ -204,6 +202,19 @@ const Map = ({
             );
     };
 
+    const handleSearchSelect = (
+        addressComponent: google.maps.GeocoderAddressComponent[]
+    ) => {
+        const street = getAddressComponent(addressComponent, "route");
+        const number = getAddressComponent(addressComponent, "street_number");
+        const zipCode = getAddressComponent(
+            addressComponent,
+            "postal_code"
+        ).replace(/\s/g, ""); // remove spaces
+
+        onSearchSelect?.({ street, number, zipCode });
+    };
+
     return isLoaded ? (
         <GoogleMap
             mapContainerStyle={containerStyle}
@@ -219,11 +230,7 @@ const Map = ({
                     onDraw={(shape) => onDraw?.(shape)}
                 />
             )}
-            {search && (
-                <SearchOnMap
-                    onSearchSelect={(selected) => onSearchSelect?.(selected)}
-                />
-            )}
+            {search && <SearchOnMap onSearchSelect={handleSearchSelect} />}
 
             {markers.map((marker, ind) => {
                 const { address, lat, lng, main } = marker;
