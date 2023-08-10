@@ -27,7 +27,8 @@ export const ViewLocation = ({ location }: ViewLocationProps) => {
         if (!location?.region || !regions) return "";
 
         return isNumberString(location.region)
-            ? regions.filter((r) => r.areaID === +region)[0]?.nameEN
+            ? regions.filter((r) => r.areaID === +location.region)[0]?.nameGR ||
+                  ""
             : location.region;
     }, [location?.region, regions]);
 
@@ -36,7 +37,8 @@ export const ViewLocation = ({ location }: ViewLocationProps) => {
         if (!location?.city || !municips) return "";
 
         return isNumberString(location.city)
-            ? municips.filter((m) => m.areaID === +location.city)[0]?.nameEN
+            ? municips.filter((m) => m.areaID === +location.city)[0]?.nameGR ||
+                  ""
             : location.city;
     }, [location?.city]);
 
