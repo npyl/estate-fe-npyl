@@ -28,7 +28,7 @@ const Form = ({ performUpload, resetState }: FormProps) => {
 
     const parentCategory = demand?.filters?.parentCategory;
 
-    const handleClick = () => {
+    const handleClick = async () => {
         performUpload && performUpload();
     };
 
