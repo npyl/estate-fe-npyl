@@ -75,6 +75,11 @@ export const CustomDrawingComponent = ({
                 shapeRef.current = shape;
                 drawingManagerRef.current.setDrawingMode(null);
 
+                // Support shape drag
+                google.maps.event.addListener(shape, "dragend", () => {
+                    onDraw(shape as DrawShape);
+                });
+
                 onDraw(shape as DrawShape);
             }
         );

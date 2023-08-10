@@ -21,6 +21,7 @@ import {
 import { useAllGlobalsQuery } from "src/services/global";
 import OnlyNumbersInput from "../../../../../../../components/OnlyNumbers";
 import { useTranslation } from "react-i18next";
+import { useState } from "react";
 
 const ParkingSection: React.FC<any> = () => {
     const dispatch = useDispatch();
@@ -32,6 +33,23 @@ const ParkingSection: React.FC<any> = () => {
 
     const parkings = useSelector(selectParkings) || [];
 
+    const isAnyParkingIncomplete = () => {
+        for (let parking of parkings) {
+            if (
+                !parking.parkingType ||
+                parking.parkingType === "" ||
+                !parking.spots ||
+                parking.spots <= 0
+            ) {
+                return true; // there's an incomplete parking entry
+            }
+        }
+        return false; // all parking entries are complete
+    };
+
+    const canAddParking = () => {
+        return !isAnyParkingIncomplete();
+    };
     if (!details || !details.parkingType) return null;
 
     return (
@@ -51,73 +69,69 @@ const ParkingSection: React.FC<any> = () => {
                     onClick={() => {
                         dispatch(addParking({}));
                     }}
+                    disabled={!canAddParking()}
                 >
                     <AddCircle />
                 </IconButton>
             </Box>
 
             <Grid item xs={12} padding={1}>
-                <Grid container spacing={1}>
-                    {parkings.map((parking, index) => {
-                        return (
-                            <>
-                                <Grid item xs={5.5} key={index}>
-                                    <TextField
-                                        fullWidth
-                                        id="outlined-select-currency"
-                                        select
-                                        label={t("Type")}
-                                        value={parking.parkingType}
-                                        onChange={(
-                                            event: React.ChangeEvent<HTMLInputElement>
-                                        ) => {
-                                            dispatch(
-                                                setParkingType({
-                                                    parkingIndex: index,
-                                                    type: event.target.value,
-                                                })
-                                            );
-                                        }}
-                                    >
-                                        {details?.parkingType?.map((option) => (
-                                            <MenuItem
-                                                key={option}
-                                                value={option}
-                                            >
-                                                {option}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
-                                </Grid>
+                {parkings.map((parking, index) => {
+                    return (
+                        <Grid container spacing={1} key={index}>
+                            <Grid item xs={5.5}>
+                                <TextField
+                                    fullWidth
+                                    id="outlined-select-currency"
+                                    select
+                                    label={t("Type")}
+                                    value={parking.parkingType || ""}
+                                    onChange={(
+                                        event: React.ChangeEvent<HTMLInputElement>
+                                    ) => {
+                                        dispatch(
+                                            setParkingType({
+                                                parkingIndex: index,
+                                                type: event.target.value,
+                                            })
+                                        );
+                                    }}
+                                >
+                                    {details?.parkingType?.map((option) => (
+                                        <MenuItem key={option} value={option}>
+                                            {option}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                            </Grid>
 
-                                <Grid item xs={5.5}>
-                                    <OnlyNumbersInput
-                                        label={t("Number of Spots")}
-                                        value={parking.spots}
-                                        onChange={(value) => {
-                                            dispatch(
-                                                setParkingSpots({
-                                                    parkingIndex: index,
-                                                    spots: value,
-                                                })
-                                            );
-                                        }}
-                                    />
-                                </Grid>
+                            <Grid item xs={5.5}>
+                                <OnlyNumbersInput
+                                    label={t("Number of Spots")}
+                                    value={parking.spots}
+                                    onChange={(value) => {
+                                        dispatch(
+                                            setParkingSpots({
+                                                parkingIndex: index,
+                                                spots: value,
+                                            })
+                                        );
+                                    }}
+                                />
+                            </Grid>
 
-                                <Grid item xs={1}>
-                                    <IconButton
-                                        onClick={() => {
-                                            dispatch(removeParking(index));
-                                        }}
-                                    >
-                                        <Cancel />
-                                    </IconButton>
-                                </Grid>
-                            </>
-                        );
-                    })}
-                </Grid>
+                            <Grid item xs={1}>
+                                <IconButton
+                                    onClick={() => {
+                                        dispatch(removeParking(index));
+                                    }}
+                                >
+                                    <Cancel />
+                                </IconButton>
+                            </Grid>
+                        </Grid>
+                    );
+                })}
             </Grid>
         </Paper>
     );

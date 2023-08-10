@@ -242,13 +242,16 @@ const BasicSection: React.FC<any> = () => {
                             }}
                         >
                             {owners && owners.length > 0 ? (
-                                owners?.map(
-                                    (option: ICustomer, index: number) => (
+                                owners
+                                    .filter(
+                                        (option: ICustomer) =>
+                                            option.seller || option.lessor
+                                    ) // Filtering based on sellers or lessors being true
+                                    .map((option: ICustomer, index: number) => (
                                         <MenuItem key={index} value={option.id}>
                                             {`${option.firstName} ${option.lastName}`}
                                         </MenuItem>
-                                    )
-                                )
+                                    ))
                             ) : (
                                 <MenuItem value={""}></MenuItem>
                             )}

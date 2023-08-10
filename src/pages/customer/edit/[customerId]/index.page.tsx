@@ -61,7 +61,7 @@ const EditCustomer: NextPage = () => {
 
     useEffect(() => {
         if (isEditedSuccess && editedCustomer) {
-            router.push("/customer");
+            router.push(`/customer/${customerId}`);
         }
     }, [isEditedSuccess, editedCustomer]);
 

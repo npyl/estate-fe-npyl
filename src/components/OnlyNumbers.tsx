@@ -1,5 +1,5 @@
 import { InputAdornment, TextField, TextFieldProps } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
 export interface OnlyNumbersInputProps
@@ -20,6 +20,9 @@ const OnlyNumbersInput: React.FC<OnlyNumbersInputProps> = ({
     ...props
 }) => {
     const [localValue, setLocalValue] = useState<string | number>(value || "");
+    useEffect(() => {
+        setLocalValue(value || "");
+    }, [value]);
 
     const debouncedOnChange = useDebouncedCallback(
         (value: string) => onChange(value),
