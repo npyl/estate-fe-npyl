@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
-
+import { v4 as uuidv4 } from "uuid";
 import { ILocation } from "src/types/location";
 import { IProperties, IPropertiesPostRequest } from "src/types/properties";
 
@@ -346,6 +346,7 @@ const slice = createSlice({
         },
 
         // Parkings & Balconies
+
         addParking(state: propertyState, { payload }) {
             state.details.parkings.push(payload);
         },
@@ -782,7 +783,6 @@ const slice = createSlice({
             const index = payload;
             state.labelIDs = state.labelIDs.filter((_, i) => i !== index);
         },
-
         setDefaultState: (state: propertyState, action): void => {
             state = initialState;
         },

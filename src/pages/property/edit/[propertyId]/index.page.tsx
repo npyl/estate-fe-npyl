@@ -89,6 +89,11 @@ const EditPropertyPage: NextPage = () => {
             .unwrap()
             .then((response) => setBluprints(response));
     }, []);
+    useEffect(() => {
+        if (isEditSuccess) {
+            router.push(`/property/${propertyId}`);
+        }
+    }, [isEditSuccess]);
 
     const resetEverything = () => {
         dispatch(resetFiles());

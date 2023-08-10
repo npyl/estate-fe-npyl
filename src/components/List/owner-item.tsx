@@ -6,21 +6,22 @@ import ListItem from "./item";
 import { useProfileQuery } from "src/services/user";
 import { ICustomer } from "src/types/customer";
 
-interface ListManagerItemProps {
-    manager: IUser;
+interface ListOwnerItemProps {
+    owner: ICustomer;
     label?: string | any;
 }
 
-const ListManagerItem: FC<ListManagerItemProps> = (props) => {
-    const { manager, label = "Manager", ...other } = props;
+const ListOwnerItem: FC<ListOwnerItemProps> = (props) => {
+    const { owner, label = "Owner", ...other } = props;
 
     const router = useRouter();
 
     const { data } = useProfileQuery({});
     if (!data) return null;
 
-    const performViewManager = () => {
-        router.push(`/customer/${manager.id}`);
+    const performViewOwner = () => {
+        // view Owner
+        router.push(`/customer/${owner.id}`);
     };
 
     return (
@@ -39,7 +40,7 @@ const ListManagerItem: FC<ListManagerItemProps> = (props) => {
                     },
                 }}
                 variant="outlined"
-                onClick={performViewManager}
+                onClick={performViewOwner}
             >
                 <Box
                     display="flex"
@@ -66,9 +67,11 @@ const ListManagerItem: FC<ListManagerItemProps> = (props) => {
                             overflow: "hidden",
                             color: "#1f2124",
                             fontSize: "0.8rem",
+                            marginLeft: "auto", // Centers the Typography inside the flex container
+                            marginRight: "auto", // Centers the Typography inside the flex container
                         }}
                     >
-                        {manager?.lastName}
+                        {owner?.lastName}
                     </Typography>
                 </Box>
             </Button>
@@ -76,4 +79,4 @@ const ListManagerItem: FC<ListManagerItemProps> = (props) => {
     );
 };
 
-export default ListManagerItem;
+export default ListOwnerItem;

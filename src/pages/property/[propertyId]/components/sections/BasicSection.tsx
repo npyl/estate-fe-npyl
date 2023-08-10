@@ -12,6 +12,8 @@ import ListLabelsItem from "src/components/List/labels-item";
 import { IProperties } from "src/types/properties";
 import { IUser } from "src/types/user";
 import PopupWindow from "./PopopWindowROI";
+import { ICustomer } from "src/types/customer";
+import ListOwnerItem from "src/components/List/owner-item";
 
 interface BasicSectionProps {
     data: IProperties;
@@ -31,6 +33,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
     const areas = data?.areas;
 
     const manager: IUser = data?.manager;
+    const owner: ICustomer = data?.owner;
 
     const isAvailable = (state: string) => {
         return state === "Sale" || state === "Rent";
@@ -115,6 +118,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                                 />
 
                                 <ListManagerItem manager={manager} />
+                                <ListOwnerItem owner={owner} />
                                 <ListStatusItem
                                     label="Publiced"
                                     status={isAvailable(data?.state)}

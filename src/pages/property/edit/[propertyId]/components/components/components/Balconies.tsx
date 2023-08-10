@@ -17,7 +17,6 @@ import {
     setBalconyArea,
     addBalcony,
     removeBalcony,
-    setBalconies,
 } from "src/slices/property";
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 import OnlyNumbersInput from "../../../../../../../components/OnlyNumbers";
@@ -32,7 +31,23 @@ const BalconiesSection: React.FC<any> = (props) => {
     const details = enums?.details as IGlobalPropertyDetails;
 
     const balconies = useSelector(selectBalconies) || [];
+    const isAnyBalconiesIncomplete = () => {
+        for (let balconie of balconies) {
+            if (
+                !balconie.side ||
+                balconie.side === "" ||
+                !balconie.area ||
+                balconie.area <= 0
+            ) {
+                return true; // there's an incomplete parking entry
+            }
+        }
+        return false; // all parking entries are complete
+    };
 
+    const canAddBalconie = () => {
+        return !isAnyBalconiesIncomplete();
+    };
     if (!details || !details.balconySide) return null;
 
     return (
@@ -52,6 +67,7 @@ const BalconiesSection: React.FC<any> = (props) => {
                     onClick={() => {
                         dispatch(addBalcony({}));
                     }}
+                    disabled={!canAddBalconie()}
                 >
                     <AddCircle />
                 </IconButton>
@@ -67,7 +83,7 @@ const BalconiesSection: React.FC<any> = (props) => {
                                     id="outlined-select-currency"
                                     select
                                     label={t("Side")}
-                                    value={balcony.side}
+                                    value={balcony.side || ""}
                                     onChange={(
                                         event: React.ChangeEvent<HTMLInputElement>
                                     ) => {
