@@ -4,7 +4,6 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { ILocationPOST } from "src/types/location";
 import { DrawShape, StopDraw } from "./types";
 import SearchOnMap from "./Search";
-import { IPropertyResultResponse } from "src/types/properties";
 
 const containerStyle = {
     width: "100%",
@@ -64,7 +63,7 @@ const Map = ({
     const { isLoaded } = useJsApiLoader({
         id: "google-map-script",
         googleMapsApiKey: apiKey,
-        libraries: search ? ["drawing", "places"] : ["drawing"],
+        libraries: ["drawing", "places"],
     });
     const [geocoder, setGeocoder] = useState<google.maps.Geocoder>();
 
