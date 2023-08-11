@@ -40,7 +40,7 @@ const VideoSection: React.FC<VideoSectionProps> = (props) => {
                     borderColor: "divider",
                     borderRadius: 1,
                     width: {},
-                    height: { md: "50vh", sm: "100vh" },
+                    height: "80vh",
                     display: "flex",
                     justifyContent: "center",
                     alignItems: "center",
