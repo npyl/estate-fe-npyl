@@ -1,27 +1,29 @@
 import { FormControl, MenuItem, Select } from "@mui/material";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface IFilterSortByProps {
     onSorting: (sortingBy: string, sortingOrder: string) => void;
 }
 
 export default function FilterSortBy({ onSorting }: IFilterSortByProps) {
+    const { t } = useTranslation();
     const sortByFilterOptions = [
-        { value: "default", label: "Default Sorting" },
+        { value: "default", label: t("Default Sorting") },
         {
-            value: "Ascending_Price",
+            value: t("Ascending_Price"),
             label: "Rising Price ",
         },
         {
-            value: "Descending_Price",
+            value: t("Descending_Price"),
             label: "Falling Price ",
         },
         {
-            value: "Ascending_Area",
+            value: t("Ascending_Area"),
             label: "Rsing Area",
         },
         {
-            value: "Descending_Area",
+            value: t("Descending_Area"),
             label: "Falling Price",
         },
     ];
@@ -54,19 +56,19 @@ export default function FilterSortBy({ onSorting }: IFilterSortByProps) {
                     } else if (
                         e.target.value === sortByFilterOptions[1].value
                     ) {
-                        onSorting("price", "asc");
+                        onSorting(t("price"), "asc");
                     } else if (
                         e.target.value === sortByFilterOptions[2].value
                     ) {
-                        onSorting("price", "desc");
+                        onSorting(t("price"), "desc");
                     } else if (
                         e.target.value === sortByFilterOptions[3].value
                     ) {
-                        onSorting("area", "asc");
+                        onSorting(t("area"), "asc");
                     } else if (
                         e.target.value === sortByFilterOptions[4].value
                     ) {
-                        onSorting("price", "desc");
+                        onSorting(t("price"), "desc");
                     }
                 }}
             >

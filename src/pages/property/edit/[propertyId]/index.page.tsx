@@ -108,12 +108,17 @@ const EditPropertyPage: NextPage = () => {
 
     isEditSuccess && router.push("/");
 
+    const handleCancel = () => {
+        router.push(`/property/${propertyId}`);
+    };
+
     return (
         <>
             {everythingIsClear && (
                 <Form
                     performUpload={performUpload}
                     resetEverything={resetEverything}
+                    handleCancel={handleCancel}
                 />
             )}
 

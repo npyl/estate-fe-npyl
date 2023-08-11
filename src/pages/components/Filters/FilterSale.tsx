@@ -7,6 +7,7 @@ import {
     Select,
     SelectChangeEvent,
 } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { useAllGlobalsQuery } from "src/services/global";
 import { selectStates, setStates } from "src/slices/filters";
 import { useDispatch, useSelector } from "src/store";
@@ -16,7 +17,7 @@ export default function SaleSelect() {
     const states = useSelector(selectStates);
     const { data } = useAllGlobalsQuery();
     const stateEnum = data?.property?.state;
-
+    const { t } = useTranslation();
     if (!stateEnum) return null;
 
     const handleChange = (event: SelectChangeEvent<typeof states>) => {
@@ -33,7 +34,7 @@ export default function SaleSelect() {
 
     return (
         <FormControl sx={{ minWidth: "130px" }}>
-            <InputLabel id="demo-simple-select-label">State</InputLabel>
+            <InputLabel id="demo-simple-select-label">{t("State")}</InputLabel>
             <Select
                 multiple
                 labelId="demo-simple-select-label"

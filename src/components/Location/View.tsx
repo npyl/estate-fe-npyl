@@ -7,6 +7,7 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import {
     useGetMunicipalitiesQuery,
+    useGetNeighbourhoodsQuery,
     useGetRegionsQuery,
 } from "src/services/location";
 
@@ -21,6 +22,7 @@ export const ViewLocation = ({ location }: ViewLocationProps) => {
 
     const { data: regions } = useGetRegionsQuery();
     const { data: municips } = useGetMunicipalitiesQuery(+location?.region);
+    const { data: neighbs } = useGetNeighbourhoodsQuery(+location?.city);
 
     // region is most of the types a code; translate to human readable form; otherwise just return the string
     const region: string = useMemo(() => {
@@ -41,6 +43,16 @@ export const ViewLocation = ({ location }: ViewLocationProps) => {
                   ""
             : location.city;
     }, [location?.city]);
+
+    // neighb is most of the types a code; translate to human readable form; otherwise just return the string
+    const neighb = useMemo(() => {
+        if (!location?.complex || !neighbs) return "";
+
+        return isNumberString(location.complex)
+            ? neighbs.filter((n) => n.areaID === +location.complex)[0]
+                  ?.nameGR || ""
+            : location.complex;
+    }, [location?.complex]);
 
     return (
         <>
@@ -82,6 +94,11 @@ export const ViewLocation = ({ location }: ViewLocationProps) => {
                         <ListItem
                             label={t("Country")}
                             value={location?.country}
+                            align="horizontal"
+                        />
+                        <ListItem
+                            label={t("Neighbourhood")}
+                            value={neighb}
                             align="horizontal"
                         />
                     </List>

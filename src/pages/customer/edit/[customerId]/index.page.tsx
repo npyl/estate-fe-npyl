@@ -75,6 +75,9 @@ const EditCustomer: NextPage = () => {
         dispatch(resetLabelsState());
         dispatch(resetNotesState());
     };
+    const handleCancel = () => {
+        router.push(`/customer/${customerId}`);
+    };
 
     const performUpload = () => {
         edit({ customerId: +customerId!, body });
@@ -82,7 +85,11 @@ const EditCustomer: NextPage = () => {
 
     return (
         <>
-            <Form performUpload={performUpload} resetState={resetState} />
+            <Form
+                performUpload={performUpload}
+                resetState={resetState}
+                handleCancel={handleCancel}
+            />
 
             {
                 // loading indicator (incase POST request is taking alot of time)

@@ -31,9 +31,11 @@ import {
     selectCountry,
     selectLatitude,
     selectLongitude,
+    selectComplex,
     // setters
     setStreet,
     setNumber,
+    setComplex,
     setCity,
     setZipCode,
     setRegion,
@@ -53,6 +55,7 @@ const LandFormSection: React.FC<any> = () => {
     const number = useSelector(selectNumber);
     const city = useSelector(selectCity);
     const zipCode = useSelector(selectZipCode);
+    const complex = useSelector(selectComplex);
     const region = useSelector(selectRegion);
     const country = useSelector(selectCountry);
     const lat = useSelector(selectLatitude);
@@ -104,6 +107,7 @@ const LandFormSection: React.FC<any> = () => {
                             zipCode={zipCode}
                             region={region}
                             country={country}
+                            complex={complex}
                             lat={lat}
                             lng={lng}
                             // setters
@@ -111,12 +115,12 @@ const LandFormSection: React.FC<any> = () => {
                             setNumber={setNumber}
                             setCity={setCity}
                             setZipCode={setZipCode}
+                            setComplex={setComplex}
                             setRegion={setRegion}
                             setCountry={setCountry}
                             setLatitude={setLatitude}
                             setLongitude={setLongitude}
                         />
-
                         <SuitableForForLandSection />
                         <DescriptionSection />
                     </Stack>

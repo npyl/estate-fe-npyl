@@ -175,7 +175,7 @@ const ViewAll: FC = () => {
     const columns: GridColDef[] = [
         {
             field: "propertyImage",
-            headerName: "Thumbnail",
+            headerName: t("Thumbnail") as string,
             width: 180,
             align: "center",
             headerAlign: "center",
@@ -183,10 +183,9 @@ const ViewAll: FC = () => {
         },
         {
             field: "code",
-            headerName: "Reference ID",
+            headerName: t("Reference ID") as string,
             width: 180,
             headerAlign: "center",
-
             align: "center",
         },
         {
@@ -194,21 +193,21 @@ const ViewAll: FC = () => {
             width: 180,
             align: "center",
             headerAlign: "center",
-            headerName: "Category",
+            headerName: t("Category") as string,
         },
         {
             field: "category",
             width: 180,
             align: "center",
             headerAlign: "center",
-            headerName: "Subcategory",
+            headerName: t("Subcategory") as string,
         },
         {
             field: "price",
             width: 180,
             headerAlign: "center",
             align: "center",
-            headerName: "Price",
+            headerName: t("Price") as string,
             renderCell: (params: GridCellParams) => {
                 return params.value ? `${params.value} €` : "";
             },
@@ -218,7 +217,7 @@ const ViewAll: FC = () => {
             headerAlign: "center",
             width: 180,
             align: "center",
-            headerName: "Status",
+            headerName: t("Status") as string,
             renderCell: statusColor,
         },
         {
@@ -226,7 +225,7 @@ const ViewAll: FC = () => {
             width: 180,
             headerAlign: "center",
             align: "center",
-            headerName: "Area",
+            headerName: t("Area") as string,
             renderCell: (params: GridCellParams) => {
                 return params.value ? `${params.value} m²` : "";
             },

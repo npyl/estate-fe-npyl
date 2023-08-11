@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
-import { v4 as uuidv4 } from "uuid";
 import { ILocation } from "src/types/location";
 import { IProperties, IPropertiesPostRequest } from "src/types/properties";
 
@@ -97,6 +96,7 @@ const initialState: propertyState = {
     location: {
         street: "",
         number: "",
+        complex: "",
         city: "",
         region: "",
         country: "",
@@ -208,21 +208,23 @@ const slice = createSlice({
             state.description = action.payload;
         },
 
+        // Location
         setStreet(state: propertyState, action): void {
             state.location.street = action.payload;
         },
         setNumber(state: propertyState, action): void {
             state.location.number = action.payload;
         },
+        setComplex(state: propertyState, action): void {
+            state.location.complex = action.payload;
+        },
         setCity(state: propertyState, action): void {
-            console.log("city: ", action.payload);
             state.location.city = action.payload;
         },
         setZipCode(state: propertyState, action): void {
             state.location.zipCode = action.payload;
         },
         setRegion(state: propertyState, action): void {
-            console.log("region: ", action.payload);
             state.location.region = action.payload;
         },
         setCountry(state: propertyState, action): void {
@@ -849,6 +851,8 @@ const slice = createSlice({
                 location?.street || initialState.location.street;
             state.location.zipCode =
                 location?.zipCode || initialState.location.zipCode;
+            state.location.complex =
+                location?.complex || initialState.location.complex;
             state.location.lat = location?.lat || initialState.location.lat;
             state.location.lng = location?.lng || initialState.location.lng;
 
@@ -869,6 +873,8 @@ const slice = createSlice({
 
 export const {
     setInitialState,
+
+    setKeyCode,
 
     setVideo,
     setCoverageFactor,
@@ -979,11 +985,11 @@ export const {
     setFifth,
 
     // Location
-    setKeyCode,
     setStreet,
     setNumber,
     setCity,
     setZipCode,
+    setComplex,
     setRegion,
     setCountry,
     setDescription,
@@ -1098,6 +1104,8 @@ export const selectStreet = ({ property }: RootState) =>
     property.location?.street;
 export const selectNumber = ({ property }: RootState) =>
     property.location?.number;
+export const selectComplex = ({ property }: RootState) =>
+    property.location?.complex;
 export const selectCity = ({ property }: RootState) => property.location?.city;
 export const selectZipCode = ({ property }: RootState) =>
     property.location?.zipCode;

@@ -34,6 +34,7 @@ const initialState: customerState = {
     location: {
         street: "",
         number: "",
+        complex: "",
         city: "",
         region: "",
         country: "",
@@ -218,6 +219,9 @@ const slice = createSlice({
         setNumber(state: customerState, action): void {
             state.location.number = action.payload;
         },
+        setComplex(state: customerState, action): void {
+            state.location.complex = action.payload;
+        },
         setCity(state: customerState, action): void {
             state.location.city = action.payload;
         },
@@ -369,6 +373,8 @@ const slice = createSlice({
                 payload.location?.number || initialState.location.number;
             state.location.zipCode =
                 payload.location?.zipCode || initialState.location.zipCode;
+            state.location.complex =
+                payload.location?.complex || initialState.location.complex;
             state.location.city =
                 payload.location?.city || initialState.location.city;
             state.location.region =
@@ -483,6 +489,7 @@ export const {
     // location
     setStreet,
     setNumber,
+    setComplex,
     setCity,
     setZipCode,
     setRegion,
@@ -560,6 +567,8 @@ export const selectStreet = ({ customer }: RootState) =>
     customer.location.street;
 export const selectNumber = ({ customer }: RootState) =>
     customer.location.number;
+export const selectComplex = ({ customer }: RootState) =>
+    customer.location.complex;
 export const selectCity = ({ customer }: RootState) => customer.location.city;
 export const selectZipCode = ({ customer }: RootState) =>
     customer.location.zipCode;

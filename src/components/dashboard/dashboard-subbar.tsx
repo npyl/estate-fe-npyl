@@ -1,37 +1,19 @@
 import ClearIcon from "@mui/icons-material/Clear";
 import { Button, Divider, IconButton } from "@mui/material";
-import { Box, Stack, height, styled } from "@mui/system";
+import { Stack } from "@mui/system";
 import { useRouter } from "next/router";
 import { Fragment } from "react";
 import { useSelector } from "react-redux";
 import { deleteSectionData, deleteTab, selectTabs } from "src/slices/tabs";
 import { useDispatch } from "src/store";
+import { ScrollBox } from "../ScrollBox";
 
 const Subbar = () => {
     const dispatch = useDispatch();
     const router = useRouter();
     const tabs = useSelector(selectTabs);
     const currentPath = router.asPath;
-    const ScrollBox = styled(Box)(({ theme }) => ({
-        height: "50px", // increase height
-        padding: "5px 0", // padding to the top and bottom
 
-        overflow: "auto",
-        "&::-webkit-scrollbar": {
-            height: "5px",
-        },
-        "&::-webkit-scrollbar-track": {
-            boxShadow: "inset 0 0 5px grey",
-            borderRadius: "12px",
-        },
-        "&::-webkit-scrollbar-thumb": {
-            background: theme.palette.grey[500],
-            borderRadius: "100px",
-        },
-        "&::-webkit-scrollbar-thumb:hover": {
-            background: theme.palette.grey[700],
-        },
-    }));
     const handleDeleteTab = (tabUuid: string, tabIndex: number) => {
         // Dispatch the delete actions
         dispatch(deleteTab(tabUuid));
@@ -81,6 +63,7 @@ const Subbar = () => {
                             <Button
                                 sx={{
                                     minWidth: "140px",
+                                    maxWidth: "140px",
                                     height: "30px",
                                     color:
                                         currentPath === tab.path
@@ -89,14 +72,28 @@ const Subbar = () => {
                                     "&:hover": {
                                         background: "transparent",
                                     },
-                                    fontSize: "0.8rem", // Reduce the font size
+                                    fontSize: "0.8rem",
+                                    display: "flex",
+                                    direction: "rtl",
+                                    whiteSpace: "nowrap",
+                                    overflow: "hidden",
                                 }}
                                 variant="text"
                                 id={tab.title}
                                 onClick={() => router.push(tab.path)}
                             >
-                                {tab.title}
+                                <span
+                                    style={{
+                                        direction: "ltr",
+                                        whiteSpace: "nowrap",
+                                        overflow: "hidden",
+                                        textOverflow: "ellipsis",
+                                    }}
+                                >
+                                    {tab.title}
+                                </span>
                             </Button>
+
                             <IconButton
                                 sx={{
                                     color:

@@ -1,11 +1,9 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
 import { Button, Grid, Stack } from "@mui/material";
-
+import CancelIcon from "@mui/icons-material/Cancel";
 import AddressDetails from "./AddressDetails";
-
 import { selectLeaser, selectBuyer, selectDemand } from "src/slices/customer";
-
 import CustomerInformation from "./CustomerInformation";
 import DemandForm from "./DemandForm";
 import NonPriorityFeatures from "./NonPriorityFeatures";
@@ -17,9 +15,10 @@ import { useSelector } from "react-redux";
 interface FormProps {
     performUpload: () => void;
     resetState: () => void;
+    handleCancel: () => void;
 }
 
-const Form = ({ performUpload, resetState }: FormProps) => {
+const Form = ({ performUpload, resetState, handleCancel }: FormProps) => {
     const { t } = useTranslation();
 
     const demand = useSelector(selectDemand);
@@ -65,6 +64,15 @@ const Form = ({ performUpload, resetState }: FormProps) => {
                     justifyContent="flex-end"
                     spacing={1}
                 >
+                    <Grid item>
+                        <Button
+                            variant="outlined"
+                            startIcon={<CancelIcon />}
+                            onClick={handleCancel}
+                        >
+                            {t("Cancel")}
+                        </Button>
+                    </Grid>
                     <Grid item>
                         <Button
                             variant="outlined"

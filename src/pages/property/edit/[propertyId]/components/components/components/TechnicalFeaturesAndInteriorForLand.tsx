@@ -65,7 +65,7 @@ const TechnicalFeaturesAndInteriorForLandSection: React.FC<any> = () => {
                             fullWidth
                             label="Facade Length"
                             value={facadeLength}
-                            adornment="m²"
+                            adornment="m"
                             onChange={handleFacadeLengthChange}
                         />
                     </Grid>

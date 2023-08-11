@@ -1,4 +1,5 @@
 import { Chip, Grid, Stack, Typography } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteFilter, getChangedFields, selectIds } from "src/slices/filters";
 
@@ -6,90 +7,91 @@ const ChosenFilters = () => {
     const dispatch = useDispatch();
     const changedProps = useSelector(getChangedFields);
     const ids = useSelector(selectIds);
+    const { t } = useTranslation();
     const filterTags: Record<string, { label: string }> = {
         parentLocation: {
-            label: "Location",
+            label: t("Location"),
         },
         subLocation: {
-            label: "SubLocation",
+            label: t("SubLocation"),
         },
         filterName: {
-            label: "Filter Name",
+            label: t("Filter Name"),
         },
         code: {
-            label: "Code",
+            label: t("Code"),
         },
         minPrice: {
-            label: "Minimum Price",
+            label: t("Minimum Price"),
         },
         maxPrice: {
-            label: "Maximun Price",
+            label: t("Maximun Price"),
         },
         minArea: {
-            label: "Minimum Area",
+            label: t("Minimum Area"),
         },
         maxArea: {
-            label: "Maximun Area",
+            label: t("Maximun Area"),
         },
         minBedrooms: {
-            label: "Minimun Number of Bedrooms",
+            label: t("Minimun Number of Bedrooms"),
         },
         maxBedrooms: {
-            label: "Maximun Number of Bedrooms",
+            label: t("Maximun Number of Bedrooms"),
         },
         minFloor: {
-            label: "Minimum Floor",
+            label: t("Minimum Floor"),
         },
         maxFloor: {
-            label: "Maximun Floor",
+            label: t("Maximun Floor"),
         },
         minConstructionYear: {
-            label: "Minimun Constuction Year",
+            label: t("Minimun Constuction Year"),
         },
         maxConstructionYear: {
-            label: "Maximun Construction Year",
+            label: t("Maximun Construction Year"),
         },
         heatingType: {
-            label: "Heating Type",
+            label: t("Heating Type"),
         },
         frameType: {
-            label: "Frame Type",
+            label: t("Frame Type"),
         },
         furnished: {
-            label: "Furnished",
+            label: t("Furnished"),
         },
         managerId: {
-            label: "Manager ID",
+            label: t("Manager ID"),
         },
         states: {
-            label: "State",
+            label: t("State"),
         },
         parentCategories: {
-            label: "Category",
+            label: t("Category"),
         },
         categories: {
-            label: "Subcategory",
+            label: t("Subcategory"),
         },
         labels: {
-            label: "Labels",
+            label: t("Labels"),
         },
     };
 
     const pairFilterTags: Record<string, { label: string }> = {
         minMaxPrice: {
-            label: "Price (€)",
+            label: t("Price (€)"),
         },
         minMaxArea: {
-            label: "Area (τ.μ.)",
+            label: t("Area (m²)"),
         },
         minMaxBedrooms: {
-            label: "Bedrooms",
+            label: t("Bedrooms"),
         },
         minMaxFloor: {
-            label: "Floor",
+            label: t("Floor"),
         },
         minMaxConstructionYear: {
-            label: "Construction Year",
+            label: t("Construction Year"),
         },
     };
 

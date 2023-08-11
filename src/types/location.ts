@@ -14,7 +14,8 @@ export interface ILocationPOST {
     street: string;
     number: string;
     zipCode?: number;
-    city: string;
+    complex: string; // shown as: neighbourhood
+    city: string; // shown as: municipality
     region: string;
     country: string;
     lat?: number;

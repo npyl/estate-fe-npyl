@@ -22,6 +22,7 @@ interface ILocationSectionProps extends ILocationPOST {
     setNumber: ActionCreatorWithPayload<any, string>;
     setCity: ActionCreatorWithPayload<any, string>;
     setZipCode: ActionCreatorWithPayload<any, string>;
+    setComplex: ActionCreatorWithPayload<any, string>;
     setRegion: ActionCreatorWithPayload<any, string>;
     setCountry: ActionCreatorWithPayload<any, string>;
     setLatitude: ActionCreatorWithPayload<any, string>;
@@ -34,6 +35,7 @@ const LocationSection = (props: ILocationSectionProps) => {
         number,
         city,
         zipCode,
+        complex,
         region,
         country,
         lat,
@@ -43,6 +45,7 @@ const LocationSection = (props: ILocationSectionProps) => {
         setNumber,
         setCity,
         setZipCode,
+        setComplex,
         setRegion,
         setCountry,
         setLatitude,
@@ -53,7 +56,6 @@ const LocationSection = (props: ILocationSectionProps) => {
     const { t } = useTranslation();
 
     // Fields
-    const [neighbour, setNeighbour] = useState("");
     const [x, setX] = useState<number>(lat || -1);
     const [y, setY] = useState<number>(lng || -1);
 
@@ -129,8 +131,7 @@ const LocationSection = (props: ILocationSectionProps) => {
         updateMainMarkerCoordinates(lat, lng);
 
         // update slice
-        // dispatch(setNeighbour(neighbourCode));
-        setNeighbour(neighbourCode);
+        dispatch(setComplex(neighbourCode));
     };
 
     //
@@ -246,7 +247,7 @@ const LocationSection = (props: ILocationSectionProps) => {
                             <Grid item xs={4}>
                                 <NeighbourSelect
                                     municipCode={city}
-                                    neighbourCode={neighbour}
+                                    neighbourCode={complex}
                                     onChange={handleNeighbourChange}
                                 />
                             </Grid>
