@@ -7,6 +7,7 @@ import useClickOutside from "./useClickOutside";
 import { ICustomerResultResponse } from "src/types/customer";
 import { CustomerSearchItem } from "./CustomerSearchItem";
 import { PropertySearchItem } from "./PropertySearchItem";
+import { ScrollBox } from "src/components/ScrollBox";
 
 interface SearchListProps extends Omit<PopperProps, "direction" | "results"> {
     properties: IPropertyResultResponse[];
@@ -34,76 +35,88 @@ export const SearchList = ({
                 anchorEl={anchorEl}
                 placement="bottom-start"
             >
-                <Paper>
-                    {properties?.length === 0 && customers?.length === 0 && (
-                        <SearchNotFound query={searchText} />
-                    )}
+                <Paper
+                    sx={{
+                        maxHeight: "90vh",
+                        overflowX: "hidden",
+                    }}
+                >
+                    <ScrollBox scrollbarWidth="15px">
+                        {properties?.length === 0 &&
+                            customers?.length === 0 && (
+                                <SearchNotFound query={searchText} />
+                            )}
 
-                    {properties?.length > 0 && (
-                        <Grid container>
-                            <Grid
-                                item
-                                xs={12}
-                                sm={12}
-                                md={12}
-                                lg={12}
-                                sx={{
-                                    borderRight: {
-                                        lg: "1px solid blue",
-                                        md: 0,
-                                    },
-                                    marginY: "10px",
-                                    overflow: "hidden",
-                                }}
-                            >
-                                <Typography variant="h6" textAlign={"center"}>
-                                    Properties
-                                </Typography>
-                                {properties.map((option, index: number) => (
-                                    <PropertySearchItem
-                                        key={index}
-                                        option={option}
-                                        searchText={searchText}
-                                    />
-                                ))}
+                        {properties?.length > 0 && (
+                            <Grid container>
+                                <Grid
+                                    item
+                                    xs={12}
+                                    sm={12}
+                                    md={12}
+                                    lg={12}
+                                    sx={{
+                                        borderRight: {
+                                            lg: "1px solid blue",
+                                            md: 0,
+                                        },
+                                        marginY: "10px",
+                                    }}
+                                >
+                                    <Typography
+                                        variant="h6"
+                                        textAlign={"center"}
+                                    >
+                                        Properties
+                                    </Typography>
+                                    {properties.map((option, index: number) => (
+                                        <PropertySearchItem
+                                            key={index}
+                                            option={option}
+                                            searchText={searchText}
+                                        />
+                                    ))}
+                                </Grid>
                             </Grid>
-                        </Grid>
-                    )}
+                        )}
 
-                    {properties?.length > 0 && customers?.length > 0 && (
-                        <Divider />
-                    )}
+                        {properties?.length > 0 && customers?.length > 0 && (
+                            <Divider />
+                        )}
 
-                    {customers?.length > 0 && (
-                        <Grid container>
-                            <Grid
-                                item
-                                xs={12}
-                                sm={12}
-                                md={12}
-                                lg={12}
-                                sx={{
-                                    borderRight: {
-                                        lg: "1px solid blue",
-                                        md: 0,
-                                    },
-                                    marginY: "10px",
-                                    overflow: "hidden",
-                                }}
-                            >
-                                <Typography variant="h6" textAlign={"center"}>
-                                    Customers
-                                </Typography>
-                                {customers.map((option, index: number) => (
-                                    <CustomerSearchItem
-                                        key={index}
-                                        option={option}
-                                        searchText={searchText}
-                                    />
-                                ))}
+                        {customers?.length > 0 && (
+                            <Grid container>
+                                <Grid
+                                    item
+                                    xs={12}
+                                    sm={12}
+                                    md={12}
+                                    lg={12}
+                                    sx={{
+                                        borderRight: {
+                                            lg: "1px solid blue",
+                                            md: 0,
+                                        },
+                                        marginY: "10px",
+                                    }}
+                                >
+                                    <Typography
+                                        variant="h6"
+                                        textAlign={"center"}
+                                    >
+                                        Customers
+                                    </Typography>
+                                    {customers.map((option, index: number) => (
+                                        <CustomerSearchItem
+                                            key={index}
+                                            option={option}
+                                            searchText={searchText}
+                                        />
+                                    ))}
+                                </Grid>
                             </Grid>
-                        </Grid>
-                    )}
+                        )}
+                    </ScrollBox>
                 </Paper>
             </StyledPopper>
         </div>
