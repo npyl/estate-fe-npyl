@@ -22,6 +22,7 @@ interface ILocationSectionProps extends ILocationPOST {
     setNumber: ActionCreatorWithPayload<any, string>;
     setCity: ActionCreatorWithPayload<any, string>;
     setZipCode: ActionCreatorWithPayload<any, string>;
+    setComplex: ActionCreatorWithPayload<any, string>;
     setRegion: ActionCreatorWithPayload<any, string>;
     setCountry: ActionCreatorWithPayload<any, string>;
     setLatitude: ActionCreatorWithPayload<any, string>;
@@ -34,6 +35,7 @@ const LocationSection = (props: ILocationSectionProps) => {
         number,
         city,
         zipCode,
+        complex,
         region,
         country,
         lat,
@@ -43,6 +45,7 @@ const LocationSection = (props: ILocationSectionProps) => {
         setNumber,
         setCity,
         setZipCode,
+        setComplex,
         setRegion,
         setCountry,
         setLatitude,

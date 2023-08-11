@@ -35,11 +35,13 @@ import {
     selectZipCode,
     selectRegion,
     selectCountry,
+    selectComplex,
     selectLatitude,
     selectLongitude,
     // setters
     setStreet,
     setNumber,
+    setComplex,
     setCity,
     setZipCode,
     setRegion,
@@ -68,6 +70,7 @@ const ResidentialFormSection: React.FC<any> = (props) => {
     const number = useSelector(selectNumber);
     const city = useSelector(selectCity);
     const zipCode = useSelector(selectZipCode);
+    const complex = useSelector(selectComplex);
     const region = useSelector(selectRegion);
     const country = useSelector(selectCountry);
     const lat = useSelector(selectLatitude);
@@ -125,6 +128,7 @@ const ResidentialFormSection: React.FC<any> = (props) => {
                             zipCode={zipCode}
                             region={region}
                             country={country}
+                            complex={complex}
                             lat={lat}
                             lng={lng}
                             // setters
@@ -132,6 +136,7 @@ const ResidentialFormSection: React.FC<any> = (props) => {
                             setNumber={setNumber}
                             setCity={setCity}
                             setZipCode={setZipCode}
+                            setComplex={setComplex}
                             setRegion={setRegion}
                             setCountry={setCountry}
                             setLatitude={setLatitude}
