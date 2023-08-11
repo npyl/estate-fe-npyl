@@ -1,21 +1,24 @@
 import { Grid, Button } from "@mui/material";
-
+import CancelIcon from "@mui/icons-material/Cancel";
 import { useSelector } from "react-redux";
 import { selectParentCategory } from "src/slices/property";
-
 import CommercialFormSection from "./components/CommercialForm";
 import LandFormSection from "./components/LandForm";
 import OtherFormSection from "./components/OtherForm";
 import ResidentialFormSection from "./components/ResidentialForm";
-
 import { Delete as DeleteIcon, Send as SendIcon } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 
 interface IFormProps {
     resetEverything: () => void;
     performUpload: () => void;
+    handleCancel: () => void;
 }
-export default function Form({ performUpload, resetEverything }: IFormProps) {
+export default function Form({
+    performUpload,
+    resetEverything,
+    handleCancel,
+}: IFormProps) {
     const { t } = useTranslation();
 
     // enums
@@ -50,12 +53,22 @@ export default function Form({ performUpload, resetEverything }: IFormProps) {
                 <Grid item>
                     <Button
                         variant="outlined"
+                        startIcon={<CancelIcon />}
+                        onClick={handleCancel}
+                    >
+                        {t("Cancel")}
+                    </Button>
+                </Grid>
+                <Grid item>
+                    <Button
+                        variant="outlined"
                         startIcon={<DeleteIcon />}
                         onClick={resetEverything}
                     >
                         {t("Clear")}
                     </Button>
                 </Grid>
+
                 <Grid item>
                     <Button
                         variant="contained"
