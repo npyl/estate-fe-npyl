@@ -1,15 +1,20 @@
 import { Autocomplete, FormControl, TextField } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { setCode } from "src/slices/filters";
-
+import { useSelector } from "react-redux";
 import { useAllPropertiesQuery } from "src/services/properties";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { selectCode } from "src/slices/filters";
 
 export default function CodeSelect() {
     const dispatch = useDispatch();
-
+    const propertyCode = useSelector(selectCode);
     const [autocompleteValue, setAutocompleteValue] = useState("");
+    useEffect(
+        () => setAutocompleteValue(propertyCode?.toString() || ""),
+        [propertyCode]
+    );
 
     const propertyCodes: string[] =
         useAllPropertiesQuery(undefined, {

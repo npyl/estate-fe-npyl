@@ -1,15 +1,19 @@
 import { Autocomplete, FormControl, TextField } from "@mui/material";
-import { useDispatch } from "react-redux";
-import { setManagerId } from "src/slices/filters";
+import { useDispatch, useSelector } from "react-redux";
+import { selectManagerId, setManagerId } from "src/slices/filters";
 
 import { useAllUsersQuery } from "src/services/user";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function ManagerIdSelect() {
     const dispatch = useDispatch();
-
+    const managerId = useSelector(selectManagerId);
     const [autocompleteValue, setAutocompleteValue] = useState("");
+    useEffect(
+        () => setAutocompleteValue(managerId?.toString() || ""),
+        [managerId]
+    );
 
     const managerIds: string[] =
         useAllUsersQuery(undefined, {
