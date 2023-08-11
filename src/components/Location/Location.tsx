@@ -56,7 +56,6 @@ const LocationSection = (props: ILocationSectionProps) => {
     const { t } = useTranslation();
 
     // Fields
-    const [neighbour, setNeighbour] = useState("");
     const [x, setX] = useState<number>(lat || -1);
     const [y, setY] = useState<number>(lng || -1);
 
@@ -132,8 +131,7 @@ const LocationSection = (props: ILocationSectionProps) => {
         updateMainMarkerCoordinates(lat, lng);
 
         // update slice
-        // dispatch(setNeighbour(neighbourCode));
-        setNeighbour(neighbourCode);
+        dispatch(setComplex(neighbourCode));
     };
 
     //
@@ -249,7 +247,7 @@ const LocationSection = (props: ILocationSectionProps) => {
                             <Grid item xs={4}>
                                 <NeighbourSelect
                                     municipCode={city}
-                                    neighbourCode={neighbour}
+                                    neighbourCode={complex}
                                     onChange={handleNeighbourChange}
                                 />
                             </Grid>
