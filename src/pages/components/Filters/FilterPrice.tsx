@@ -24,10 +24,11 @@ import {
 } from "src/slices/filters";
 import { useDispatch, useSelector } from "src/store";
 import { StyledBox, StyledPriceButton } from "./styles";
+import { useTranslation } from "react-i18next";
 
 const PriceSelect = ({ type }: { type: string }) => {
     const dispatch = useDispatch();
-
+    const { t } = useTranslation();
     const setMinValue = useMemo(() => {
         if (type === "price") {
             return setMinPrice;
@@ -77,14 +78,14 @@ const PriceSelect = ({ type }: { type: string }) => {
         if (type === "price") {
             return "€";
         }
-        return "τ.μ";
+        return "m²";
     }, [type]);
 
     const label = useMemo(() => {
         if (type === "price") {
-            return "Price";
+            return t("Price");
         }
-        return "Area";
+        return t("Area");
     }, [type]);
 
     const values = useMemo(() => {
@@ -131,7 +132,7 @@ const PriceSelect = ({ type }: { type: string }) => {
                             <Grid container padding={1} spacing={3}>
                                 <Grid item xs={12} sm={6}>
                                     <TextField
-                                        label={`${symbol} Από`}
+                                        label={`${symbol} From`}
                                         value={valueMin}
                                         onChange={handleInputChangeMin}
                                     />
@@ -195,7 +196,7 @@ const PriceSelect = ({ type }: { type: string }) => {
 
                                 <Grid item xs={12} sm={6}>
                                     <TextField
-                                        label={`${symbol} Εώς`}
+                                        label={`${symbol} To`}
                                         value={valueMax}
                                         onChange={handleInputChangeMax}
                                     />

@@ -1,16 +1,22 @@
 import { Autocomplete, FormControl, TextField } from "@mui/material";
-import { useDispatch } from "react-redux";
-import { setManagerId } from "src/slices/filters";
+import { useDispatch, useSelector } from "react-redux";
+import { selectManagerId, setManagerId } from "src/slices/filters";
 
 import { useAllUsersQuery } from "src/services/user";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 export default function ManagerIdSelect() {
     const dispatch = useDispatch();
-
+    const managerId = useSelector(selectManagerId);
     const [autocompleteValue, setAutocompleteValue] = useState("");
-
+    useEffect(
+        () => setAutocompleteValue(managerId?.toString() || ""),
+        [managerId]
+    );
+    const { t } = useTranslation();
     const managerIds: string[] =
         useAllUsersQuery(undefined, {
             selectFromResult: ({ data }) => ({
@@ -46,7 +52,12 @@ export default function ManagerIdSelect() {
                 onChange={autocompleteChange}
                 options={managerIds}
                 renderInput={(params) => (
-                    <TextField {...params} placeholder="Manager ID" />
+                    <TextField
+                        {...params}
+                        placeholder={
+                            (t("Manager ID") as string) || "Manager ID"
+                        }
+                    />
                 )}
             />
         </FormControl>

@@ -7,6 +7,7 @@ import {
     Select,
     SelectChangeEvent,
 } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { useAllGlobalsQuery } from "src/services/global";
 import {
     selectParentCategories,
@@ -20,7 +21,7 @@ export default function SubCategorySelect() {
     const dispatch = useDispatch();
     const parentCategories = useSelector(selectParentCategories);
     const subCategories = useSelector(selectSubCategories);
-
+    const { t } = useTranslation();
     const { data } = useAllGlobalsQuery();
     const propertyEnums = data?.property;
     if (!propertyEnums || parentCategories.length === 0) return null;
@@ -44,7 +45,9 @@ export default function SubCategorySelect() {
     };
     return (
         <FormControl sx={{ minWidth: "130px", maxWidth: "130px" }}>
-            <InputLabel id="demo-simple-select-label">Υποκατηγορίες</InputLabel>
+            <InputLabel id="demo-simple-select-label">
+                {t("Subcategory")}
+            </InputLabel>
             <Select
                 multiple
                 labelId="demo-simple-select-label"

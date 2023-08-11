@@ -64,13 +64,13 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                                 />
 
                                 <ListItem
-                                    label="House Area"
-                                    value={areas?.covered}
+                                    label="Area"
+                                    value={data?.area}
                                     align="horizontal"
                                 />
                                 <ListItem
-                                    label="Plot Area"
-                                    value={areas?.plot}
+                                    label="Estimated Rend Price"
+                                    value={data?.estimatedRentPrice}
                                     align="horizontal"
                                 />
                                 <ListBooleanItem
@@ -81,6 +81,31 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                                 <ListItem
                                     label="Available After"
                                     value={data?.availableAfter}
+                                    align="horizontal"
+                                />
+                                <ListItem
+                                    label="Rental Period Start"
+                                    value={data?.rentalStart}
+                                    align="horizontal"
+                                />
+                                <ListItem
+                                    label="Rental Period End"
+                                    value={data?.rentalEnd}
+                                    align="horizontal"
+                                />
+                                <ListItem
+                                    label="Current Rent Price"
+                                    value={data?.currentRentPrice}
+                                    align="horizontal"
+                                />
+                                <ListItem
+                                    label="Debatable Price"
+                                    value={data?.debatablePrice}
+                                    align="horizontal"
+                                />
+                                <ListItem
+                                    label="Auction"
+                                    value={data?.auction}
                                     align="horizontal"
                                 />
                                 <ListItem
@@ -119,11 +144,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
 
                                 <ListManagerItem manager={manager} />
                                 <ListOwnerItem owner={owner} />
-                                <ListStatusItem
-                                    label="Publiced"
-                                    status={isAvailable(data?.state)}
-                                    align="horizontal"
-                                />
+
                                 <ListItem
                                     label="State"
                                     value={data?.state}

@@ -63,6 +63,7 @@ const Subbar = () => {
                             <Button
                                 sx={{
                                     minWidth: "140px",
+                                    maxWidth: "140px",
                                     height: "30px",
                                     color:
                                         currentPath === tab.path
@@ -71,14 +72,28 @@ const Subbar = () => {
                                     "&:hover": {
                                         background: "transparent",
                                     },
-                                    fontSize: "0.8rem", // Reduce the font size
+                                    fontSize: "0.8rem",
+                                    display: "flex",
+                                    direction: "rtl",
+                                    whiteSpace: "nowrap",
+                                    overflow: "hidden",
                                 }}
                                 variant="text"
                                 id={tab.title}
                                 onClick={() => router.push(tab.path)}
                             >
-                                {tab.title}
+                                <span
+                                    style={{
+                                        direction: "ltr",
+                                        whiteSpace: "nowrap",
+                                        overflow: "hidden",
+                                        textOverflow: "ellipsis",
+                                    }}
+                                >
+                                    {tab.title}
+                                </span>
                             </Button>
+
                             <IconButton
                                 sx={{
                                     color:
