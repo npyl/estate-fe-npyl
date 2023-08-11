@@ -5,6 +5,8 @@ import { selectManagerId, setManagerId } from "src/slices/filters";
 import { useAllUsersQuery } from "src/services/user";
 
 import { useEffect, useState } from "react";
+import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 export default function ManagerIdSelect() {
     const dispatch = useDispatch();
@@ -14,7 +16,7 @@ export default function ManagerIdSelect() {
         () => setAutocompleteValue(managerId?.toString() || ""),
         [managerId]
     );
-
+    const { t } = useTranslation();
     const managerIds: string[] =
         useAllUsersQuery(undefined, {
             selectFromResult: ({ data }) => ({
@@ -50,7 +52,12 @@ export default function ManagerIdSelect() {
                 onChange={autocompleteChange}
                 options={managerIds}
                 renderInput={(params) => (
-                    <TextField {...params} placeholder="Manager ID" />
+                    <TextField
+                        {...params}
+                        placeholder={
+                            (t("Manager ID") as string) || "Manager ID"
+                        }
+                    />
                 )}
             />
         </FormControl>

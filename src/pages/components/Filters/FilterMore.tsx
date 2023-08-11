@@ -60,6 +60,7 @@ import ManagerIdSelect from "./FilterManagerId";
 
 import { ClearableDialogContent } from "./components/ClearableDialogContent";
 import { StyledDialogContent } from "./styles";
+import { useTranslation } from "react-i18next";
 
 // ----------------------------------------------------------------------
 
@@ -79,7 +80,7 @@ export default function FilterMore({
 }: Props) {
     const dispatch = useDispatch();
     const { data } = useAllGlobalsQuery();
-
+    const { t } = useTranslation();
     const changedPropsCount = useSelector(sumOfChangedProperties);
 
     const frameType = useSelector(selectFrameType);
@@ -97,7 +98,7 @@ export default function FilterMore({
         {
             id: "frameType",
             values: frameType,
-            title: "Frame Type",
+            title: t("Frame Type"),
             options: data?.property.details.frameType,
             onClick: toggleFrameType,
             onReset: resetFrameType,
@@ -105,14 +106,14 @@ export default function FilterMore({
         {
             id: "Furnished",
             values: furnished,
-            title: "Furnished",
+            title: t("Furnished"),
             options: data?.property.details.furnished,
             onClick: toggleFurnished,
             onReset: resetFurnished,
         },
         {
             id: "heatingType",
-            title: "Heating Type",
+            title: t("Heating Type"),
             values: heatingType,
             options: data?.property.details.heatingType,
             onClick: toggleHeatingType,
@@ -129,7 +130,7 @@ export default function FilterMore({
                     justifyContent="space-between"
                 >
                     <Chip label={changedPropsCount} color={"error"} />
-                    <Typography variant="subtitle1">Filters</Typography>
+                    <Typography variant="subtitle1">{t("Filters")}</Typography>
                 </Stack>
             </DialogTitle>
             {changedPropsCount > 0 && (
@@ -139,7 +140,7 @@ export default function FilterMore({
             )}
 
             <ClearableDialogContent dividers reset={resetBasic}>
-                <Typography>Basic</Typography>
+                <Typography>{t("Basic")}</Typography>
 
                 <Stack direction={"row"} gap={1} flexWrap={"wrap"}>
                     <CodeSelect />
@@ -150,8 +151,8 @@ export default function FilterMore({
                     <CategorySelect />
                     <SubCategorySelect />
 
-                    <PriceSelect type="price" />
-                    <PriceSelect type="area" />
+                    <PriceSelect type={t("price")} />
+                    <PriceSelect type={t("area")} />
 
                     <FilterLabels
                         variant="property"
@@ -165,9 +166,9 @@ export default function FilterMore({
                 dividers
                 reset={resetBedrooms}
             >
-                <Typography>Bedrooms</Typography>
+                <Typography>{t("Bedrooms")}</Typography>
                 <Stack direction="row" spacing={1} alignItems={"center"}>
-                    <Typography>Από</Typography>
+                    <Typography>{t("from")}</Typography>
                     <Select
                         sx={{ width: 130 }}
                         value={minBedrooms}
@@ -206,7 +207,7 @@ export default function FilterMore({
                             </MenuItem>
                         ))}
                     </Select>
-                    <Typography>- Εώς</Typography>
+                    <Typography>- {t("to")}</Typography>
                     <Select
                         sx={{ width: 130 }}
                         value={maxBedrooms}
@@ -247,9 +248,9 @@ export default function FilterMore({
                 </Stack>
             </ClearableDialogContent>
             <ClearableDialogContent dividers reset={resetFloor}>
-                <Typography>Floors</Typography>
+                <Typography>{t("Floors")}</Typography>
                 <Stack direction="row" spacing={1} alignItems={"center"}>
-                    <Typography>Από</Typography>
+                    <Typography>{t("from")}</Typography>
                     <Select
                         sx={{ width: 130 }}
                         value={minFloors}
@@ -288,7 +289,7 @@ export default function FilterMore({
                             </MenuItem>
                         ))}
                     </Select>
-                    <Typography>- Εώς</Typography>
+                    <Typography>- {t("to")}</Typography>
                     <Select
                         sx={{ width: 130 }}
                         value={maxFloors}
@@ -355,7 +356,7 @@ export default function FilterMore({
                 </ClearableDialogContent>
             ))}
             <ClearableDialogContent dividers reset={resetConstructionYear}>
-                <Typography>Construction Year</Typography>
+                <Typography>{t("Construction Year")}</Typography>
                 <Slider
                     value={[minYear, maxYear]}
                     onChange={(_event, newValue) => {
@@ -380,7 +381,7 @@ export default function FilterMore({
             </ClearableDialogContent>
             <DialogActions sx={{ justifyContent: "space-between" }}>
                 <Button color={"secondary"} onClick={onResetFilter}>
-                    Clear all
+                    {t("Clear all")}
                 </Button>
 
                 <Button
@@ -391,7 +392,7 @@ export default function FilterMore({
                         onClose();
                     }}
                 >
-                    Apply
+                    {t("Apply")}
                 </Button>
             </DialogActions>
         </Dialog>

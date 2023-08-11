@@ -14,9 +14,11 @@ import {
 } from "src/slices/filters";
 
 import { useAllGlobalsQuery } from "src/services/global";
+import { useTranslation } from "react-i18next";
 
 export default function CategorySelect() {
     const dispatch = useDispatch();
+    const { t } = useTranslation();
     const categories = useSelector(selectParentCategories);
 
     const { data } = useAllGlobalsQuery();
@@ -39,14 +41,16 @@ export default function CategorySelect() {
 
     return (
         <FormControl sx={{ minWidth: "130px", maxWidth: "130px" }}>
-            <InputLabel id="demo-simple-select-label">Categories</InputLabel>
+            <InputLabel id="demo-simple-select-label">
+                {t("Categories")}
+            </InputLabel>
             <Select
                 multiple
                 labelId="demo-simple-select-label"
                 value={categories}
                 onChange={handleChange}
                 renderValue={(selected) => selected.join(", ")}
-                input={<OutlinedInput label="Κατηγορίες" />}
+                input={<OutlinedInput label={t("Categories")} />}
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
                 {categoryEnums!.map((option) => {

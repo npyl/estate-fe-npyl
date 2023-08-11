@@ -12,6 +12,7 @@ import Label from "src/components/label/Label";
 import { useGetLabelsQuery } from "src/services/labels";
 import { useMemo } from "react";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
+import { useTranslation } from "react-i18next";
 
 type FilterVariant = "property" | "customer";
 
@@ -23,7 +24,7 @@ interface FilterLabelsProps {
 
 export default function FilterLabels(props: FilterLabelsProps) {
     const { variant = "property", labels, setLabels } = props;
-
+    const { t } = useTranslation();
     const dispatch = useDispatch();
 
     const { data } = useGetLabelsQuery();
@@ -50,7 +51,7 @@ export default function FilterLabels(props: FilterLabelsProps) {
 
     return (
         <FormControl sx={{ minWidth: "130px" }}>
-            <InputLabel id="demo-simple-select-label">Labels</InputLabel>
+            <InputLabel id="demo-simple-select-label">{t("Labels")}</InputLabel>
             <Select
                 multiple
                 labelId="demo-simple-select-label"
