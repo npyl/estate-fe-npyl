@@ -4,6 +4,7 @@ import { IProperties } from "src/types/properties";
 import { Typography, Box, Paper, Divider, Grid } from "@mui/material";
 
 import { List, ListItem } from "src/components/List";
+import { useTranslation } from "react-i18next";
 
 interface DistanceSectionProps {
     data: IProperties;
@@ -11,6 +12,7 @@ interface DistanceSectionProps {
 
 const DistanceSection: React.FC<DistanceSectionProps> = (props) => {
     const { data } = props;
+    const { t } = useTranslation();
     if (!data) return null;
     const distances = data?.distances;
     if (!distances) return null;
@@ -25,29 +27,29 @@ const DistanceSection: React.FC<DistanceSectionProps> = (props) => {
                     justifyContent: "left",
                 }}
             >
-                <Typography variant="h6">Distance</Typography>
+                <Typography variant="h6">{t("Distances")}</Typography>
             </Box>
             <Divider></Divider>
             <Grid container spacing={1}>
                 <Grid item xs={6} order={"row"} padding={0}>
                     <List>
                         <ListItem
-                            label="Schools"
+                            label={t("Schools")}
                             value={distances?.schools}
                             align="horizontal"
                         />
                         <ListItem
-                            label="Supermarket"
+                            label={t("Supermarket")}
                             value={distances?.supermarket}
                             align="horizontal"
                         />
                         <ListItem
-                            label="Cafe Restaurant"
+                            label={t("Cafe Restaurant")}
                             value={distances?.cafeRestaurant}
                             align="horizontal"
                         />
                         <ListItem
-                            label="Hospital"
+                            label={t("Hospital")}
                             value={distances?.hospital}
                             align="horizontal"
                         />
@@ -56,22 +58,22 @@ const DistanceSection: React.FC<DistanceSectionProps> = (props) => {
                 <Grid item xs={6}>
                     <List>
                         <ListItem
-                            label="Airport"
+                            label={t("Airport")}
                             value={distances?.airport}
                             align="horizontal"
                         />
                         <ListItem
-                            label="From Sea"
+                            label={t("From Sea")}
                             value={distances?.sea}
                             align="horizontal"
                         />
                         <ListItem
-                            label="From Public Transport"
+                            label={t("From Public Transport")}
                             value={distances?.publicTransport}
                             align="horizontal"
                         />
                         <ListItem
-                            label="Entertainment"
+                            label={t("Entertainment")}
                             value={distances?.entertainment}
                             align="horizontal"
                         />

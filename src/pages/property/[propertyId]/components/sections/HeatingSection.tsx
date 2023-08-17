@@ -4,6 +4,7 @@ import { IProperties } from "src/types/properties";
 import { Typography, Box, Paper, Divider, Grid } from "@mui/material";
 
 import { List, ListItem, ListBooleanItem } from "src/components/List";
+import { useTranslation } from "react-i18next";
 
 interface HeatingSectionProps {
     data: IProperties;
@@ -11,6 +12,7 @@ interface HeatingSectionProps {
 
 const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
     const { data } = props;
+    const { t } = useTranslation();
     if (!data) return null;
     const heating = data?.heatingAndEnergy;
     if (!heating) return null;
@@ -25,29 +27,29 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
                     justifyContent: "left",
                 }}
             >
-                <Typography variant="h6">Heating & Energy</Typography>
+                <Typography variant="h6">{t("Heating and Energy")}</Typography>
             </Box>
             <Divider></Divider>
             <Grid container>
                 <Grid item xs={6}>
                     <List>
                         <ListItem
-                            label="Energy Class"
+                            label={t("Energy Class")}
                             value={heating?.energyClass}
                             align="horizontal"
                         />
                         <ListItem
-                            label="Heating Type"
+                            label={t("Heating Type")}
                             value={heating?.heatingType}
                             align="horizontal"
                         />
                         <ListItem
-                            label="Heating System"
+                            label={t("Heating System")}
                             value={heating?.heatingSystem}
                             align="horizontal"
                         />
                         <ListItem
-                            label="Electricity Type"
+                            label={t("Electricity Type")}
                             value={heating?.electricityType}
                             align="horizontal"
                         />
@@ -56,22 +58,22 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
                 <Grid item xs={6}>
                     <List>
                         <ListBooleanItem
-                            label="Floor Heating"
+                            label={t("Floor Heating")}
                             status={heating?.floorHeating}
                             align="horizontal"
                         />
                         <ListBooleanItem
-                            label="Air Conditioning"
+                            label={t("Air Conditioning")}
                             status={heating?.airConditioning}
                             align="horizontal"
                         />
                         <ListBooleanItem
-                            label="Solar Boiler"
+                            label={t("Solar Boiler")}
                             status={heating?.solarBoiler}
                             align="horizontal"
                         />
                         <ListItem
-                            label="Economy Electricity"
+                            label={t("Economy Electricity")}
                             value={heating?.offPeakElectricity}
                             align="horizontal"
                         />

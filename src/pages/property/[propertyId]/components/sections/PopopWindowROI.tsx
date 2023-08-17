@@ -20,9 +20,10 @@ import {
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 import { useAllUsersQuery } from "src/services/user";
 import { useAllGlobalsQuery } from "src/services/global";
+import { useTranslation } from "react-i18next";
 const PopupWindow: React.FC<any> = (props) => {
     const dispatch = useDispatch();
-
+    const { t } = useTranslation();
     const price = useSelector(selectPrice);
     const currentRentPrice = useSelector(selectCurrentRentPrice);
     const estimatedRentPrice = useSelector(selectEstimatedRentPrice);
@@ -97,7 +98,7 @@ const PopupWindow: React.FC<any> = (props) => {
                     <TextField
                         fullWidth
                         id="outlined-select-currency"
-                        label="Price" /* < euro sticky to field> */
+                        label={t("Price")} /* < euro sticky to field> */
                         value={price}
                         onChange={handlePriceChange}
                         onKeyPress={handleKeyPress}
@@ -143,7 +144,9 @@ const PopupWindow: React.FC<any> = (props) => {
                     <TextField
                         fullWidth
                         id="outlined-select-currency"
-                        label="Current Rent Price" /* < euro sticky to field> */
+                        label={t(
+                            "Current Rent Price"
+                        )} /* < euro sticky to field> */
                         value={currentRentPrice}
                         onChange={handleCurrentRentPriceChange}
                         onKeyPress={handleKeyPress}
@@ -180,7 +183,9 @@ const PopupWindow: React.FC<any> = (props) => {
                     <TextField
                         fullWidth
                         id="outlined-select-currency"
-                        label="Estimated Rent Price" /* < euro sticky to field> */
+                        label={t(
+                            "Estimated Rent Price"
+                        )} /* < euro sticky to field> */
                         value={estimatedRentPrice}
                         onChange={handleEstimatedRentPriceChange}
                         onKeyPress={handleKeyPress}

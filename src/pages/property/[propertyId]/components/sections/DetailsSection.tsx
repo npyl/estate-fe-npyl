@@ -3,6 +3,7 @@ import { IProperties } from "src/types/properties";
 import { Box, Divider, Grid, Paper, Typography } from "@mui/material";
 
 import { List, ListBooleanItem, ListItem } from "src/components/List";
+import { useTranslation } from "react-i18next";
 
 interface DetailsSectionProps {
     data: IProperties;
@@ -10,6 +11,7 @@ interface DetailsSectionProps {
 
 const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
     const { data } = props;
+    const { t } = useTranslation();
     const details = data?.details;
 
     return (
@@ -22,39 +24,42 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                     justifyContent: "left",
                 }}
             >
-                <Typography variant="h6"> Details</Typography>
+                <Typography variant="h6">
+                    {" "}
+                    {t("Property Description")}
+                </Typography>
             </Box>
             <Divider></Divider>
             <Grid container>
                 <Grid item xs={4}>
                     <List>
                         <ListItem
-                            label="Floor"
+                            label={t("Floor")}
                             value={details?.floor}
                             align="horizontal"
                         />
                         <ListItem
-                            label="Layers"
+                            label={t("Layers")}
                             value={details?.layers}
                             align="horizontal"
                         />
                         <ListItem
-                            label="Bedrooms"
+                            label={t("Bedrooms")}
                             value={details?.bedrooms}
                             align="horizontal"
                         />
                         <ListItem
-                            label="Kitchens"
+                            label={t("Kitchens")}
                             value={details?.kitchens}
                             align="horizontal"
                         />
                         <ListItem
-                            label="Bathrooms"
+                            label={t("Bathrooms")}
                             value={details?.bathrooms}
                             align="horizontal"
                         />
                         <ListItem
-                            label="W/C"
+                            label={"W/C"}
                             value={details?.wc}
                             align="horizontal"
                         />
@@ -63,33 +68,33 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                 <Grid item xs={4}>
                     <List>
                         <ListItem
-                            label="Living Rooms"
+                            label={t("Living Rooms")}
                             value={details?.livingrooms}
                             align="horizontal"
                         />
                         <ListItem
-                            label="Orientation"
+                            label={t("Orientation")}
                             value={details?.orientation}
                             align="horizontal"
                         />
                         <ListBooleanItem
-                            label="Floor Apartment"
+                            label={t("Floor Apartment")}
                             status={details?.floorApartment}
                             align="horizontal"
                         />
 
                         <ListBooleanItem
-                            label="Penthouse"
+                            label={t("Penthouse")}
                             status={details?.penthouse}
                             align="horizontal"
                         />
                         <ListBooleanItem
-                            label="Storeroom"
+                            label={t("Storeroom")}
                             status={details?.storeroom}
                             align="horizontal"
                         />
                         <ListBooleanItem
-                            label="Attic"
+                            label={t("Attic")}
                             status={details?.attic}
                             align="horizontal"
                         />
@@ -98,27 +103,27 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                 <Grid item xs={4}>
                     <List>
                         <ListBooleanItem
-                            label="Playroom"
+                            label={t("Playroom")}
                             status={details?.playroom}
                             align="horizontal"
                         />
                         <ListItem
-                            label="View Type"
+                            label={t("View Type")}
                             value={details?.viewType}
                             align="horizontal"
                         />
                         <ListItem
-                            label="Zone Type"
+                            label={t("Zone Type")}
                             value={details?.zoneType}
                             align="horizontal"
                         />
                         <ListItem
-                            label="Land Use"
+                            label={t("Land Use")}
                             value={details?.landUse}
                             align="horizontal"
                         />
                         <ListItem
-                            label="Accessibility"
+                            label={t("Accessibility")}
                             value={details?.accessibility}
                             align="horizontal"
                         />

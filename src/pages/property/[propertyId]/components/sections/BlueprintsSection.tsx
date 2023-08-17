@@ -5,6 +5,7 @@ import CarouselWithLightbox from "src/components/CarouselWithLightbox";
 
 import { Typography, Box, Paper, Divider } from "@mui/material";
 import { IPropertyBlueprint } from "src/types/file";
+import { useTranslation } from "react-i18next";
 
 interface BlueprintsSectionProps {
     data: IProperties;
@@ -12,6 +13,7 @@ interface BlueprintsSectionProps {
 
 const BlueprintsSection: React.FC<BlueprintsSectionProps> = (props) => {
     const { data } = props;
+    const { t } = useTranslation();
     const blueprints: IPropertyBlueprint[] = data?.blueprints;
 
     const _carouselData = useMemo(
@@ -35,7 +37,7 @@ const BlueprintsSection: React.FC<BlueprintsSectionProps> = (props) => {
                     justifyContent: "left",
                 }}
             >
-                <Typography variant="h6">Blueprints</Typography>
+                <Typography variant="h6">{t("Blueprints")}</Typography>
             </Box>
             <Divider></Divider>
             {_carouselData && _carouselData.length > 0 && (

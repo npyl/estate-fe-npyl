@@ -3,6 +3,7 @@ import React, { useMemo, useState } from "react";
 import { StyledButton } from "src/pages/components/BulkEditDrawer/style";
 import CheckIcon from "@mui/icons-material/Check";
 import { Close } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 
 interface DefaultOrEditProps {
     label: string;
@@ -18,7 +19,7 @@ export const DefaultOrEdit = ({
     const [checked, setChecked] = useState(true);
 
     useMemo(() => checked && onDisable(), [checked]);
-
+    const { t } = useTranslation();
     return (
         <Stack>
             <InputLabel>{label}</InputLabel>
@@ -33,7 +34,7 @@ export const DefaultOrEdit = ({
                 }
                 onClick={() => setChecked(!checked)}
             >
-                Default Value
+                {t("Default Value")}
             </StyledButton>
             {!checked && children}
         </Stack>

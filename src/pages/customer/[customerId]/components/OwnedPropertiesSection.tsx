@@ -44,7 +44,7 @@ const OwnedCustomerPropertiesSection: React.FC = () => {
                                 color: "rgba(0, 0, 0, 0.7)",
                             }}
                         >
-                            There are no owned properties
+                            {t("There are no owned properties")}
                         </Typography>
                     </Grid>
                 </Grid>
@@ -120,7 +120,7 @@ const OwnedCustomerPropertiesSection: React.FC = () => {
     const columns: GridColDef[] = [
         {
             field: "propertyImageUrl",
-            headerName: "Thumbnail",
+            headerName: t("Thumbnail") || "",
             width: 180,
             align: "center",
             headerAlign: "center",
@@ -128,7 +128,7 @@ const OwnedCustomerPropertiesSection: React.FC = () => {
         },
         {
             field: "code",
-            headerName: "Reference ID",
+            headerName: t("Reference ID") || "",
             width: 180,
             headerAlign: "center",
 
@@ -136,24 +136,24 @@ const OwnedCustomerPropertiesSection: React.FC = () => {
         },
         {
             field: "parentCategory",
+            headerName: t("Category") || "",
             width: 180,
             align: "center",
             headerAlign: "center",
-            headerName: "Category",
         },
         {
             field: "category",
+            headerName: t("Subcategory") || "",
             width: 180,
             align: "center",
             headerAlign: "center",
-            headerName: "Subcategory",
         },
         {
             field: "price",
             width: 180,
             headerAlign: "center",
             align: "center",
-            headerName: "Price",
+            headerName: t("Price") || "",
             renderCell: (params: GridCellParams) => {
                 return params.value ? `${params.value} €` : "";
             },
@@ -163,7 +163,7 @@ const OwnedCustomerPropertiesSection: React.FC = () => {
             headerAlign: "center",
             width: 180,
             align: "center",
-            headerName: "Status",
+            headerName: t("Status") || "",
             renderCell: statusColor,
         },
         {
@@ -171,7 +171,7 @@ const OwnedCustomerPropertiesSection: React.FC = () => {
             width: 180,
             headerAlign: "center",
             align: "center",
-            headerName: "Area",
+            headerName: t("Area") || "",
             renderCell: (params: GridCellParams) => {
                 return params.value ? `${params.value} m²` : "";
             },

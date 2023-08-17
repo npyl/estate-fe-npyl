@@ -24,6 +24,7 @@ import ViewHeader from "src/pages/components/ViewHeader";
 
 import { deleteTabWithPath } from "src/slices/tabs";
 import { usePublishTab } from "src/components/Tabs/utils";
+import { useTranslation } from "react-i18next";
 
 function a11yProps(index: number) {
     return {
@@ -36,7 +37,7 @@ const CustomerView: NextPage = () => {
     // customer
     const router = useRouter();
     const dispatch = useDispatch();
-
+    const { t } = useTranslation();
     const { customerId } = router.query;
 
     const [value, setValue] = useState(0);
@@ -81,12 +82,15 @@ const CustomerView: NextPage = () => {
                     onChange={handleChange}
                     aria-label="View Property Tabs"
                 >
-                    <Tab label="Customer Information" {...a11yProps(0)} />
+                    <Tab label={t("Customer Information")} {...a11yProps(0)} />
                     {isSellerOrLessor && (
-                        <Tab label="Owned Properties" {...a11yProps(1)} />
+                        <Tab label={t("Owned Properties")} {...a11yProps(1)} />
                     )}
                     {isBuyerOrLeaser && (
-                        <Tab label="Matching Properties" {...a11yProps(2)} />
+                        <Tab
+                            label={t("Matching Properties")}
+                            {...a11yProps(2)}
+                        />
                     )}
                 </Tabs>
             </ViewHeader>

@@ -5,6 +5,7 @@ import { IUser } from "src/types/user";
 import ListItem from "./item";
 import { useProfileQuery } from "src/services/user";
 import { ICustomer } from "src/types/customer";
+import { useTranslation } from "react-i18next";
 
 interface ListManagerItemProps {
     manager: IUser;
@@ -12,7 +13,8 @@ interface ListManagerItemProps {
 }
 
 const ListManagerItem: FC<ListManagerItemProps> = (props) => {
-    const { manager, label = "Manager", ...other } = props;
+    const { t } = useTranslation();
+    const { manager, label = t("Manager"), ...other } = props;
 
     const router = useRouter();
 

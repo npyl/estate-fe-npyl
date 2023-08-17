@@ -12,7 +12,6 @@ type SearchCategory = "all" | "properties" | "customers";
 
 export const DashboardNavbarSearch: FC = () => {
     const { t } = useTranslation();
-
     const [searchText, setSearchText] = useState("");
     const [debouncedText, setDebouncedText] = useState("");
     const [searchCategory, setSearchCategory] = useState<SearchCategory>("all");
@@ -56,7 +55,7 @@ export const DashboardNavbarSearch: FC = () => {
             <SearchInput
                 value={searchText}
                 onChange={handleInputChange}
-                placeholder="Search with a keyword"
+                placeholder={t("Search with a keyword") || ""}
                 endAdornment={
                     <InputAdornment
                         sx={{ display: { xs: "none", md: "flex" } }}
