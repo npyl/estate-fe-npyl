@@ -44,12 +44,21 @@ export const location = createApi({
                 params: params,
             }),
         }),
+
+        getHierarchyByAreaId: builder.query<IGeoLocation, number>({
+            query: (areaId: number) => ({
+                url: `/hierarchy/area/${areaId}`,
+            }),
+        }),
     }),
 });
 
 export const {
     useGetRegionsQuery,
     useGetMunicipalitiesQuery,
+    useLazyGetMunicipalitiesQuery,
     useGetNeighbourhoodsQuery,
     useGetClosestQuery,
+
+    useLazyGetHierarchyByAreaIdQuery,
 } = location;

@@ -5,6 +5,7 @@ import { IUser } from "src/types/user";
 import ListItem from "./item";
 import { useProfileQuery } from "src/services/user";
 import { ICustomer } from "src/types/customer";
+import { useTranslation } from "react-i18next";
 
 interface ListOwnerItemProps {
     owner: ICustomer;
@@ -12,13 +13,11 @@ interface ListOwnerItemProps {
 }
 
 const ListOwnerItem: FC<ListOwnerItemProps> = (props) => {
-    const { owner, label = "Owner", ...other } = props;
-
+    const { t } = useTranslation();
+    const { owner, label = t("Owner"), ...other } = props;
     const router = useRouter();
-
     const { data } = useProfileQuery({});
     if (!data) return null;
-
     const performViewOwner = () => {
         // view Owner
         router.push(`/customer/${owner.id}`);

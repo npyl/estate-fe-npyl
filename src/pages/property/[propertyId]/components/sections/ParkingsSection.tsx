@@ -4,6 +4,7 @@ import { IProperties } from "src/types/properties";
 import { Box, Divider, Grid, Paper, Typography } from "@mui/material";
 
 import { List, ListItem } from "src/components/List";
+import { useTranslation } from "react-i18next";
 
 interface ParkingsSectionProps {
     data: IProperties;
@@ -12,7 +13,7 @@ interface ParkingsSectionProps {
 const ParkingsSection: React.FC<ParkingsSectionProps> = (props) => {
     const { data } = props;
     const parkings = data.details?.parkings;
-
+    const { t } = useTranslation();
     return parkings && parkings.length > 0 ? (
         <Box
             sx={{
@@ -42,18 +43,19 @@ const ParkingsSection: React.FC<ParkingsSectionProps> = (props) => {
                                 }}
                             >
                                 <Typography variant="h6">
-                                    Parking No.{index + 1}
+                                    {t("Parking No.")}
+                                    {index + 1}
                                 </Typography>
                             </Box>
                             <Divider></Divider>
                             <List>
                                 <ListItem
-                                    label="Parking Type"
+                                    label={t("Parking Type")}
                                     value={parking?.parkingType}
                                     align="horizontal"
                                 />
                                 <ListItem
-                                    label="Spots"
+                                    label={t("Spots")}
                                     value={parking?.spots}
                                     align="horizontal"
                                 />

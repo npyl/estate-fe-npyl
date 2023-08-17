@@ -1,5 +1,6 @@
 import { Box, Divider, Grid, Paper, Typography } from "@mui/material";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { List, ListItem } from "src/components/List";
 import { IProperties } from "src/types/properties";
 
@@ -9,6 +10,7 @@ interface BalconiesSectionProps {
 
 const BalconiesSection: React.FC<BalconiesSectionProps> = (props) => {
     const { data } = props;
+    const { t } = useTranslation();
     const details = data?.details;
     const balconies = details?.balconies || [];
 
@@ -33,7 +35,8 @@ const BalconiesSection: React.FC<BalconiesSectionProps> = (props) => {
                             }}
                         >
                             <Typography variant="h6">
-                                Balcony No.{index + 1}
+                                {t("Balcony No.")}
+                                {index + 1}
                             </Typography>
                         </Box>
                         <Divider></Divider>
@@ -41,12 +44,12 @@ const BalconiesSection: React.FC<BalconiesSectionProps> = (props) => {
                             <Grid item xs={12} order={"row"} padding={0}>
                                 <List>
                                     <ListItem
-                                        label="Area"
+                                        label={t("Area")}
                                         value={balcony?.area}
                                         align="horizontal"
                                     />
                                     <ListItem
-                                        label="Side"
+                                        label={t("Side")}
                                         value={balcony?.side}
                                         align="horizontal"
                                     />

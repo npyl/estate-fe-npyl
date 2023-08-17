@@ -16,6 +16,7 @@ import { FC, useMemo, useState } from "react";
 import { StyledDataGrid } from "./styles";
 import { Button } from "@mui/material";
 import EditNoteIcon from "@mui/icons-material/EditNote";
+import { useTranslation } from "react-i18next";
 
 type GridProps = {
     rows: GridRowsProp;
@@ -56,7 +57,7 @@ const DataGridTable: FC<GridProps> = ({
     resource = "property",
 }) => {
     const router = useRouter();
-
+    const { t } = useTranslation();
     const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
     const [sortModel, setSortModel] = useState<GridSortModel>([]);
 
@@ -72,7 +73,7 @@ const DataGridTable: FC<GridProps> = ({
             startIcon={<EditNoteIcon />}
             sx={{ position: "absolute", right: 0, mr: 1, mt: 0.5 }}
         >
-            Edit
+            {t("Edit")}
         </Button>
     );
 
@@ -81,15 +82,18 @@ const DataGridTable: FC<GridProps> = ({
             startIcon={<GridDeleteIcon />}
             onClick={() => onBulkDelete?.(selectedRows)}
         >
-            Delete
+            {t("Delete")}
         </Button>
     );
 
     const CustomToolbar = () => {
+        const { t } = useTranslation();
         return (
             <GridToolbarContainer>
-                <GridToolbarColumnsButton />
-                <GridToolbarExport />
+                <GridToolbarColumnsButton>
+                    {t("Fields")}
+                </GridToolbarColumnsButton>
+                <GridToolbarExport>{t("Export")}</GridToolbarExport>
 
                 {selectedRows && selectedRows.length > 0 && (
                     <>
@@ -122,6 +126,10 @@ const DataGridTable: FC<GridProps> = ({
                     toolbarColumns: "Fields",
                     columnsPanelTextFieldLabel: "Search Field",
                     columnsPanelTextFieldPlaceholder: "Name of Fields",
+                    // rowsPerPage: {t("rows Per Page")}
+                    MuiTablePagination: {
+                        labelRowsPerPage: t("Rows per page"),
+                    },
                 }}
                 sx={{
                     "& .MuiDataGrid-row": {
