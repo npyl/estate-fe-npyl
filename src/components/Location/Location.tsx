@@ -13,7 +13,10 @@ import { ILocationPOST } from "src/types/location";
 import { RegionSelect } from "./RegionSelect";
 import { MunicipSelect } from "./MunicipSelect";
 import { NeighbourSelect } from "./NeighbourSelect";
-import { useGetClosestQuery } from "src/services/location";
+import {
+    useGetClosestQuery,
+    useLazyGetHierarchyByAreaIdQuery,
+} from "src/services/location";
 import { useTranslation } from "react-i18next";
 
 interface ILocationSectionProps extends ILocationPOST {
@@ -54,6 +57,8 @@ const LocationSection = (props: ILocationSectionProps) => {
 
     const dispatch = useDispatch();
     const { t } = useTranslation();
+
+    const [getHierarchy] = useLazyGetHierarchyByAreaIdQuery();
 
     // Fields
     const [x, setX] = useState<number>(lat || -1);
@@ -184,8 +189,27 @@ const LocationSection = (props: ILocationSectionProps) => {
         if (!closest) return;
 
         // update slice
-        dispatch(setRegion(closest.parentID.toString()));
-        dispatch(setCity(closest.areaID.toString()));
+        if (closest.level === 2) {
+            dispatch(setRegion(closest.parentID.toString()));
+            dispatch(setCity(closest.areaID.toString()));
+        } else if (closest.level === 3) {
+            const neighbId = closest.areaID;
+            const municipId = closest.parentID;
+
+            dispatch(setComplex(neighbId.toString()));
+            dispatch(setCity(municipId.toString()));
+
+            // For region
+            getHierarchy(municipId)
+                .unwrap()
+                .then((municipHierarchy) => {
+                    const regionId = municipHierarchy.parentID;
+                    if (!regionId) return;
+
+                    dispatch(setRegion(regionId.toString()));
+                })
+                .catch((reason) => console.log("getHierarchy: ", reason));
+        }
     }, [closest]);
 
     return (
