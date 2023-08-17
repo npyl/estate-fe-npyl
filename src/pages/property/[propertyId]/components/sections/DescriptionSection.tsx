@@ -3,13 +3,14 @@ import { IProperties } from "src/types/properties";
 import { Typography, Box, Paper, Divider, Grid } from "@mui/material";
 import { DraftEditor } from "src/components/draft-editor";
 import { EditorState, convertFromRaw } from "draft-js";
+import { useTranslation } from "react-i18next";
 interface DescriptionSectionProps {
     data: IProperties;
 }
 
 const DescriptionSection: React.FC<DescriptionSectionProps> = (props) => {
     const { data } = props;
-
+    const { t } = useTranslation();
     const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
     useEffect(() => {
@@ -29,7 +30,7 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = (props) => {
                     justifyContent: "left",
                 }}
             >
-                <Typography variant="h6">Description</Typography>
+                <Typography variant="h6">{t("Description")}</Typography>
             </Box>
             <Divider></Divider>
             <Grid container spacing={0}>

@@ -97,8 +97,8 @@ const MatchingPropertiesSection: React.FC = () => {
 
     const columns: GridColDef[] = [
         {
-            field: "propertyImage",
-            headerName: "Thumbnail",
+            field: "propertyImageUrl",
+            headerName: t("Thumbnail") || "",
             width: 180,
             align: "center",
             headerAlign: "center",
@@ -106,7 +106,7 @@ const MatchingPropertiesSection: React.FC = () => {
         },
         {
             field: "code",
-            headerName: "Reference ID",
+            headerName: t("Reference ID") || "",
             width: 180,
             headerAlign: "center",
 
@@ -114,24 +114,24 @@ const MatchingPropertiesSection: React.FC = () => {
         },
         {
             field: "parentCategory",
+            headerName: t("Category") || "",
             width: 180,
             align: "center",
             headerAlign: "center",
-            headerName: "Category",
         },
         {
             field: "category",
+            headerName: t("Subcategory") || "",
             width: 180,
             align: "center",
             headerAlign: "center",
-            headerName: "Subcategory",
         },
         {
             field: "price",
             width: 180,
             headerAlign: "center",
             align: "center",
-            headerName: "Price",
+            headerName: t("Price") || "",
             renderCell: (params: GridCellParams) => {
                 return params.value ? `${params.value} €` : "";
             },
@@ -141,7 +141,7 @@ const MatchingPropertiesSection: React.FC = () => {
             headerAlign: "center",
             width: 180,
             align: "center",
-            headerName: "Status",
+            headerName: t("Status") || "",
             renderCell: statusColor,
         },
         {
@@ -149,7 +149,7 @@ const MatchingPropertiesSection: React.FC = () => {
             width: 180,
             headerAlign: "center",
             align: "center",
-            headerName: "Area",
+            headerName: t("Area") || "",
             renderCell: (params: GridCellParams) => {
                 return params.value ? `${params.value} m²` : "";
             },
@@ -184,7 +184,7 @@ const MatchingPropertiesSection: React.FC = () => {
                                 color: "rgba(0, 0, 0, 0.7)",
                             }}
                         >
-                            There are no matching properties
+                            {t("There are no matching properties")}
                         </Typography>
                     </Grid>
                 </Grid>

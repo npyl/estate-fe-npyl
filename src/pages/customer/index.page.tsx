@@ -21,59 +21,7 @@ import { UserCircle } from "src/icons/user-circle";
 import { DeleteDialog } from "src/components/Dialog/Delete";
 import { BulkEdit } from "./components/BulkEdit/BulkEdit";
 import { usePublishTab } from "src/components/Tabs/utils";
-
-const columns: GridColDef[] = [
-    {
-        field: "image",
-        headerName: "Image",
-        renderCell: (params: GridCellParams) => {
-            const firstName = params.row.firstName;
-            const lastName = params.row.lastName;
-
-            return firstName && lastName ? (
-                <Avatar>
-                    {firstName[0]}
-                    {lastName[0]}
-                </Avatar>
-            ) : (
-                <UserCircle />
-            );
-        },
-    },
-    {
-        field: "firstName",
-        headerName: "First Name",
-        width: 180,
-    },
-    {
-        field: "lastName",
-        headerName: "Last Name",
-        width: 180,
-    },
-    {
-        field: "mobilePhone",
-        headerName: "Mobile-Phone",
-        width: 180,
-    },
-    {
-        field: "city",
-        headerName: "City",
-        width: 180,
-        renderCell: (params: GridCellParams) => {
-            const city = useMemo(() => {
-                if (!params.row.city) return "";
-                const isNumberString = (input: string): boolean =>
-                    !isNaN(Number(input));
-                return isNumberString(params.row.city)
-                    ? nomoi.filter((o) => o["Area ID"] === params.row.city)[0][
-                          "Name GR"
-                      ]
-                    : params.row.city;
-            }, [params.row.city]);
-            return <div>{city}</div>;
-        },
-    },
-];
+import { useTranslation } from "react-i18next";
 
 const Customers: NextPage = () => {
     usePublishTab({ title: "Customers", path: "/customer" });
@@ -83,14 +31,66 @@ const Customers: NextPage = () => {
     const [bulkEditOpen, setBulkEditOpen] = useState(false);
     const [bulkDeleteDialogOpen, setBulkDeleteDialogOpen] = useState(false);
     const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
-
+    const { t } = useTranslation();
     // page
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(25);
 
     const [deleteCustomer] = useDeleteCustomerMutation();
     const [filterCustomers, { isLoading, data }] = useFilterCustomersMutation();
+    const columns: GridColDef[] = [
+        {
+            field: "image",
+            headerName: t("Image") || "",
+            renderCell: (params: GridCellParams) => {
+                const firstName = params.row.firstName;
+                const lastName = params.row.lastName;
 
+                return firstName && lastName ? (
+                    <Avatar>
+                        {firstName[0]}
+                        {lastName[0]}
+                    </Avatar>
+                ) : (
+                    <UserCircle />
+                );
+            },
+        },
+
+        {
+            field: "firstName",
+            headerName: t("First Name") || "",
+            width: 180,
+        },
+        {
+            field: "lastName",
+            headerName: t("Last Name") || "",
+            width: 180,
+        },
+        {
+            field: "mobilePhone",
+            headerName: t("Mobile Phone") || "",
+            width: 180,
+        },
+        {
+            field: "city",
+            headerName: t("City") || "",
+            width: 180,
+            renderCell: (params: GridCellParams) => {
+                const city = useMemo(() => {
+                    if (!params.row.city) return "";
+                    const isNumberString = (input: string): boolean =>
+                        !isNaN(Number(input));
+                    return isNumberString(params.row.city)
+                        ? nomoi.filter(
+                              (o) => o["Area ID"] === params.row.city
+                          )[0]["Name GR"]
+                        : params.row.city;
+                }, [params.row.city]);
+                return <div>{city}</div>;
+            },
+        },
+    ];
     useEffect(() => {
         revalidate();
     }, [allFilters, page, pageSize]);

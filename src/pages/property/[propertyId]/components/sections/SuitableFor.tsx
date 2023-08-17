@@ -2,6 +2,7 @@ import React from "react";
 import { IProperties } from "src/types/properties";
 import { Typography, Box, Paper, Divider, Grid } from "@mui/material";
 import { List, ListBooleanItem } from "src/components/List";
+import { useTranslation } from "react-i18next";
 
 interface SuitableForProps {
     data: IProperties;
@@ -9,6 +10,7 @@ interface SuitableForProps {
 
 const SuitableFor: React.FC<SuitableForProps> = (props) => {
     const { data } = props;
+    const { t } = useTranslation();
     if (!data) return null;
     const suitableFor = data?.suitableFor;
     if (!suitableFor) return null;
@@ -23,29 +25,29 @@ const SuitableFor: React.FC<SuitableForProps> = (props) => {
                     justifyContent: "left",
                 }}
             >
-                <Typography variant="h6">Suitable For</Typography>
+                <Typography variant="h6">{t("Suitable For")}</Typography>
             </Box>
             <Divider></Divider>
             <Grid container spacing={1}>
                 <Grid item xs={6} order={"row"} padding={0}>
                     <List>
                         <ListBooleanItem
-                            label="Student"
+                            label={t("Student")}
                             status={suitableFor?.student}
                             align="horizontal"
                         />
                         <ListBooleanItem
-                            label="Cottage"
+                            label={t("Cottage")}
                             status={suitableFor?.cottage}
                             align="horizontal"
                         />
                         <ListBooleanItem
-                            label="Tourist Rental"
+                            label={t("Tourist Rental")}
                             status={suitableFor?.touristRental}
                             align="horizontal"
                         />
                         <ListBooleanItem
-                            label="Investment"
+                            label={t("Investment")}
                             status={suitableFor?.investment}
                             align="horizontal"
                         />
@@ -54,17 +56,17 @@ const SuitableFor: React.FC<SuitableForProps> = (props) => {
                 <Grid item xs={6}>
                     <List>
                         <ListBooleanItem
-                            label="Doctors Office"
+                            label={t("Doctors Office")}
                             status={suitableFor?.doctorsOffice}
                             align="horizontal"
                         />
                         <ListBooleanItem
-                            label="Professional Usage"
+                            label={t("Professional Usage")}
                             status={suitableFor?.professionalUse}
                             align="horizontal"
                         />
                         <ListBooleanItem
-                            label="Renovation"
+                            label={t("Renovation")}
                             status={suitableFor?.renovation}
                             align="horizontal"
                         />

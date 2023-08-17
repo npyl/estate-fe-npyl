@@ -4,6 +4,7 @@ import { IProperties } from "src/types/properties";
 import { Typography, Box, Paper, Divider, Grid } from "@mui/material";
 
 import { List, ListItem } from "src/components/List";
+import { useTranslation } from "react-i18next";
 
 interface AreaSectionProps {
     data: IProperties;
@@ -11,6 +12,7 @@ interface AreaSectionProps {
 
 const AreaSection: React.FC<AreaSectionProps> = (props) => {
     const { data } = props;
+    const { t } = useTranslation();
     if (!data) return null;
     const areas = data?.areas;
     if (!areas) return null;
@@ -25,7 +27,7 @@ const AreaSection: React.FC<AreaSectionProps> = (props) => {
                     justifyContent: "left",
                 }}
             >
-                <Typography variant="h6">Area</Typography>
+                <Typography variant="h6">{t("Area")}</Typography>
             </Box>
             <Divider></Divider>
             <Grid container>
@@ -48,7 +50,7 @@ const AreaSection: React.FC<AreaSectionProps> = (props) => {
         )} */}
 
                         <ListItem
-                            label="Plot"
+                            label={t("Plot")}
                             value={areas?.plot}
                             align="horizontal"
                         />
@@ -57,7 +59,7 @@ const AreaSection: React.FC<AreaSectionProps> = (props) => {
                 <Grid item xs={6}>
                     <List>
                         <ListItem
-                            label="Covered"
+                            label={t("Covered")}
                             value={areas?.covered}
                             align="horizontal"
                         />

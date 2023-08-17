@@ -20,10 +20,11 @@ import {
     setAttribute,
 } from "src/slices/notification";
 import { usePublishTab } from "src/components/Tabs/utils";
+import { useTranslation } from "react-i18next";
 
 const NotificationCreatePage: NextPage = () => {
     const dispatch = useDispatch();
-
+    const { t } = useTranslation();
     usePublishTab({
         title: "Create Notifications",
         path: "/notification/create",
@@ -67,13 +68,13 @@ const NotificationCreatePage: NextPage = () => {
                             }}
                         >
                             <Typography variant="h6">
-                                Notification Information
+                                {t("Notification Information")}
                             </Typography>
                         </Box>
                         <Grid container spacing={1} p={1}>
                             <Grid item xs={6}>
                                 <TextField
-                                    label="Name"
+                                    label={t("Name")}
                                     value={customerName}
                                     onChange={(e) =>
                                         handleChange(
@@ -85,7 +86,7 @@ const NotificationCreatePage: NextPage = () => {
                             </Grid>
                             <Grid item xs={6}>
                                 <TextField
-                                    label="Email"
+                                    label={t("Email")}
                                     value={customerEmail}
                                     onChange={(e) =>
                                         handleChange(
@@ -97,7 +98,7 @@ const NotificationCreatePage: NextPage = () => {
                             </Grid>
                             <Grid item xs={6}>
                                 <TextField
-                                    label="Mobile Phone"
+                                    label={t("Mobile Phone")}
                                     value={mobilePhone}
                                     onChange={(e) =>
                                         handleChange(
@@ -109,7 +110,7 @@ const NotificationCreatePage: NextPage = () => {
                             </Grid>
                             <Grid item xs={6}>
                                 <TextField
-                                    label="Message"
+                                    label={t("Message")}
                                     value={message}
                                     onChange={(e) =>
                                         handleChange(e.target.value, "message")
@@ -118,7 +119,7 @@ const NotificationCreatePage: NextPage = () => {
                             </Grid>
                             <Grid item xs={6}>
                                 <TextField
-                                    label="Property Code"
+                                    label={t("Property Code")}
                                     value={propertyCode}
                                     onChange={(e) =>
                                         handleChange(
@@ -130,7 +131,7 @@ const NotificationCreatePage: NextPage = () => {
                             </Grid>
                             <Grid item xs={6}>
                                 <TextField
-                                    label="Tour Date"
+                                    label={t("Tour Date")}
                                     value={tourDate}
                                     onChange={(e) =>
                                         handleChange(e.target.value, "tourDate")
@@ -139,7 +140,7 @@ const NotificationCreatePage: NextPage = () => {
                             </Grid>
                             <Grid item xs={6}>
                                 <TextField
-                                    label="Tour Time"
+                                    label={t("Tour Time")}
                                     value={tourTime}
                                     onChange={(e) =>
                                         handleChange(e.target.value, "tourTime")
@@ -148,7 +149,7 @@ const NotificationCreatePage: NextPage = () => {
                             </Grid>
                             <Grid item xs={6}>
                                 <TextField
-                                    label="Tour Type"
+                                    label={t("Tour Type")}
                                     value={tourType}
                                     onChange={(e) =>
                                         handleChange(e.target.value, "tourType")

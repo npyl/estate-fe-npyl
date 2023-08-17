@@ -38,6 +38,7 @@ import "photoswipe/dist/photoswipe.css";
 import InitMap from "./components/Map";
 import DescriptionSection from "./components/sections/DescriptionSection";
 import { usePublishTab } from "src/components/Tabs/utils";
+import { useTranslation } from "react-i18next";
 
 function a11yProps(index: number) {
     return {
@@ -49,7 +50,7 @@ function a11yProps(index: number) {
 const SingleProperty: NextPage = () => {
     const router = useRouter();
     const dispatch = useDispatch();
-
+    const { t } = useTranslation();
     const [value, setValue] = useState(0);
 
     const [deleteProperty, { isSuccess: isDeleteSuccess }] =
@@ -91,13 +92,13 @@ const SingleProperty: NextPage = () => {
                     onChange={handleChange}
                     aria-label="View Property Tabs"
                 >
-                    <Tab label="Overview" {...a11yProps(0)} />
-                    <Tab label="Quick View" {...a11yProps(1)} />
-                    <Tab label="Tickets" {...a11yProps(2)} />
-                    <Tab label="Activities" {...a11yProps(3)} />
-                    <Tab label="Storage" {...a11yProps(4)} />
-                    <Tab label="Connections" {...a11yProps(5)} />
-                    <Tab label="Map" {...a11yProps(6)} />
+                    <Tab label={t("Overview")} {...a11yProps(0)} />
+                    <Tab label={t("Quick View")} {...a11yProps(1)} />
+                    <Tab label={t("Tickets")} {...a11yProps(2)} />
+                    <Tab label={t("Activities")} {...a11yProps(3)} />
+                    <Tab label={t("Storage")} {...a11yProps(4)} />
+                    <Tab label={t("Connections")} {...a11yProps(5)} />
+                    <Tab label={t("Map")} {...a11yProps(6)} />
                 </Tabs>
             </ViewHeader>
             <TabPanel value={value} index={0}>

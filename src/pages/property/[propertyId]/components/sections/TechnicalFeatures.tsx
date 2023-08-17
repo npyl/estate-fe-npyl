@@ -4,6 +4,7 @@ import { IProperties } from "src/types/properties";
 import { Typography, Box, Paper, Divider, Grid } from "@mui/material";
 
 import { List, ListBooleanItem, ListItem } from "src/components/List";
+import { useTranslation } from "react-i18next";
 
 interface TechnicalFeaturesProps {
     data: IProperties;
@@ -11,6 +12,7 @@ interface TechnicalFeaturesProps {
 
 const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
     const { data } = props;
+    const { t } = useTranslation();
     const technicalFeatures = data?.technicalFeatures;
     if (!data || !technicalFeatures) return null;
 
@@ -24,54 +26,54 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                     justifyContent: "left",
                 }}
             >
-                <Typography variant="h6">Technical Details</Typography>
+                <Typography variant="h6">{t("Technical Details")}</Typography>
             </Box>
             <Divider></Divider>
             <Grid container>
                 <Grid item xs={4}>
                     <List>
                         <ListItem
-                            label="Entrances"
+                            label={t("Entrances")}
                             value={technicalFeatures?.entrances}
                             align="horizontal"
                         />
                         <ListItem
-                            label="Display Windows Length"
+                            label={t("Display Windows Length")}
                             value={technicalFeatures?.displayWindowsLength}
                             align="horizontal"
                         />
                         <ListBooleanItem
-                            label="Safety Door"
+                            label={t("Safety Door")}
                             status={technicalFeatures?.safetyDoor}
                             align="horizontal"
                         />
                         <ListBooleanItem
-                            label="Alarm System"
+                            label={t("Alarm System")}
                             status={technicalFeatures?.alarmSystem}
                             align="horizontal"
                         />
                         <ListBooleanItem
-                            label="Painted"
+                            label={t("Painted")}
                             status={technicalFeatures?.painted}
                             align="horizontal"
                         />
                         <ListItem
-                            label="Furnished"
+                            label={t("Furnished")}
                             value={technicalFeatures?.furnished}
                             align="horizontal"
                         />
                         <ListItem
-                            label="Frame Type"
+                            label={t("Frame Type")}
                             value={technicalFeatures?.frameType}
                             align="horizontal"
                         />
                         <ListItem
-                            label="Pane Glass Type"
+                            label={t("Pane Glass Type")}
                             value={technicalFeatures?.paneGlassType}
                             align="horizontal"
                         />
                         <ListBooleanItem
-                            label="Window Screens"
+                            label={t("Window Screens")}
                             status={technicalFeatures?.windowScreens}
                             align="horizontal"
                         />
@@ -80,49 +82,49 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                 <Grid item xs={4}>
                     <List>
                         <ListBooleanItem
-                            label="Fireplace"
+                            label={t("Fireplace")}
                             status={technicalFeatures?.fireplace}
                             align="horizontal"
                         />
                         <ListBooleanItem
-                            label="Bright"
+                            label={t("Bright")}
                             status={technicalFeatures?.bright}
                             align="horizontal"
                         />
                         <ListBooleanItem
-                            label="Luxurious"
+                            label={t("Luxurious")}
                             status={technicalFeatures?.luxurious}
                             align="horizontal"
                         />
                         <ListBooleanItem
-                            label="Electric Car Charging Facilities"
+                            label={t("Electric Car Charging Facilities")}
                             status={
                                 technicalFeatures?.electricCarChargingFacilities
                             }
                             align="horizontal"
                         />
                         <ListBooleanItem
-                            label="Reception"
+                            label={t("Reception")}
                             status={technicalFeatures?.reception}
                             align="horizontal"
                         />
                         <ListBooleanItem
-                            label="Pets Allowed"
+                            label={t("Pets Allowed")}
                             status={technicalFeatures?.petsAllowed}
                             align="horizontal"
                         />
                         <ListItem
-                            label="Floor Type"
+                            label={t("Floor Type")}
                             value={technicalFeatures?.floorType}
                             align="horizontal"
                         />
                         <ListBooleanItem
-                            label="Satellite TV"
+                            label={t("Satellite TV")}
                             status={technicalFeatures?.satelliteTV}
                             align="horizontal"
                         />
                         <ListBooleanItem
-                            label="Wiring"
+                            label={t("Wiring")}
                             status={technicalFeatures?.wiring}
                             align="horizontal"
                         />
@@ -131,48 +133,48 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                 <Grid item xs={4}>
                     <List>
                         <ListBooleanItem
-                            label="Loading - Unloading Elevator"
+                            label={t("Loading - Unloading Elevator")}
                             status={technicalFeatures?.loadingUnloadingElevator}
                             align="horizontal"
                         />
                         <ListBooleanItem
-                            label="False Ceiling"
+                            label={t("False Ceiling")}
                             status={technicalFeatures?.falseCeiling}
                             align="horizontal"
                         />
                         <ListBooleanItem
-                            label="With Equipment"
+                            label={t("With Equipment")}
                             status={technicalFeatures?.withEquipment}
                             align="horizontal"
                         />
                         <ListBooleanItem
-                            label="Double Frontage"
+                            label={t("Double Frontage")}
                             status={technicalFeatures?.doubleFrontage}
                             align="horizontal"
                         />
                         <ListBooleanItem
-                            label="Consideration"
+                            label={t("Consideration")}
                             status={technicalFeatures?.consideration}
                             align="horizontal"
                         />
 
                         <ListItem
-                            label="Floor to Area Ratio"
+                            label={t("Floor to Area Ratio")}
                             value={technicalFeatures?.floorToAreaRatio}
                             align="horizontal"
                         />
                         <ListItem
-                            label="Coverage Factor"
+                            label={t("Coverage Factor")}
                             value={technicalFeatures?.coverageFactor}
                             align="horizontal"
                         />
                         <ListItem
-                            label="Facade Length"
+                            label={t("Facade Length")}
                             value={technicalFeatures?.facadeLength}
                             align="horizontal"
                         />
                         <ListItem
-                            label="Inclination"
+                            label={t("Inclination")}
                             value={technicalFeatures?.inclination}
                             align="horizontal"
                         />

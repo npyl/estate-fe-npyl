@@ -83,10 +83,10 @@ const PriceSelect = ({ type }: { type: string }) => {
 
     const label = useMemo(() => {
         if (type === "price") {
-            return t("Price");
+            return "Price";
         }
-        return t("Area");
-    }, [type]);
+        return "Area";
+    }, [type, t]);
 
     const values = useMemo(() => {
         return generateNumbers(states, type);
@@ -94,7 +94,7 @@ const PriceSelect = ({ type }: { type: string }) => {
 
     const renderLabel = useMemo(() => {
         if (valueMin === 0 && valueMax === 0) {
-            return label;
+            return t(label);
         }
         if (valueMin && valueMax === 0) {
             return "Από " + formatNumber(+valueMin) + symbol;
@@ -103,7 +103,7 @@ const PriceSelect = ({ type }: { type: string }) => {
             return "Εώς " + formatNumber(+valueMax) + symbol;
         }
         return formatNumber(+valueMin) + "-" + formatNumber(+valueMax) + symbol;
-    }, [valueMax, valueMin]);
+    }, [valueMax, valueMin, t]);
 
     return (
         <ClickAwayListener
@@ -132,7 +132,7 @@ const PriceSelect = ({ type }: { type: string }) => {
                             <Grid container padding={1} spacing={3}>
                                 <Grid item xs={12} sm={6}>
                                     <TextField
-                                        label={`${symbol} From`}
+                                        label={`${symbol} ${t("from")}`}
                                         value={valueMin}
                                         onChange={handleInputChangeMin}
                                     />
@@ -196,7 +196,7 @@ const PriceSelect = ({ type }: { type: string }) => {
 
                                 <Grid item xs={12} sm={6}>
                                     <TextField
-                                        label={`${symbol} To`}
+                                        label={`${symbol} ${t("to")}`}
                                         value={valueMax}
                                         onChange={handleInputChangeMax}
                                     />

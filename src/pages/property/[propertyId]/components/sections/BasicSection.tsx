@@ -14,6 +14,7 @@ import { IUser } from "src/types/user";
 import PopupWindow from "./PopopWindowROI";
 import { ICustomer } from "src/types/customer";
 import ListOwnerItem from "src/components/List/owner-item";
+import { useTranslation } from "react-i18next";
 
 interface BasicSectionProps {
     data: IProperties;
@@ -22,7 +23,7 @@ interface BasicSectionProps {
 const BasicSection: React.FC<BasicSectionProps> = (props) => {
     const { data } = props;
     const [showPopup, setShowPopup] = useState(false);
-
+    const { t } = useTranslation();
     const handleClosePopup = () => {
         setShowPopup(false);
     };
@@ -51,70 +52,72 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                             justifyContent: "left",
                         }}
                     >
-                        <Typography variant="h6">Basic Details</Typography>
+                        <Typography variant="h6">
+                            {t("Basic Details")}
+                        </Typography>
                     </Box>
                     <Divider></Divider>
                     <Grid container>
                         <Grid item xs={6}>
                             <List>
                                 <ListItem
-                                    label="Category"
+                                    label={t("Category")}
                                     value={data?.category}
                                     align="horizontal"
                                 />
 
                                 <ListItem
-                                    label="Area"
+                                    label={t("Area")}
                                     value={data?.area}
                                     align="horizontal"
                                 />
                                 <ListItem
-                                    label="Estimated Rend Price"
+                                    label={t("Estimated Rend Price")}
                                     value={data?.estimatedRentPrice}
                                     align="horizontal"
                                 />
                                 <ListBooleanItem
-                                    label="Rented"
+                                    label={t("Rented")}
                                     status={data?.rented}
                                     align="horizontal"
                                 />
                                 <ListItem
-                                    label="Available After"
+                                    label={t("Available After")}
                                     value={data?.availableAfter}
                                     align="horizontal"
                                 />
                                 <ListItem
-                                    label="Rental Period Start"
+                                    label={t("Rental Period Start")}
                                     value={data?.rentalStart}
                                     align="horizontal"
                                 />
                                 <ListItem
-                                    label="Rental Period End"
+                                    label={t("Rental Period End")}
                                     value={data?.rentalEnd}
                                     align="horizontal"
                                 />
                                 <ListItem
-                                    label="Current Rent Price"
+                                    label={t("Current Rent Price")}
                                     value={data?.currentRentPrice}
                                     align="horizontal"
                                 />
                                 <ListItem
-                                    label="Debatable Price"
+                                    label={t("Debatable Price")}
                                     value={data?.debatablePrice}
                                     align="horizontal"
                                 />
                                 <ListItem
-                                    label="Auction"
+                                    label={t("Auction")}
                                     value={data?.auction}
                                     align="horizontal"
                                 />
                                 <ListItem
-                                    label="Monthly Utilities"
+                                    label={t("Monthly Utilities")}
                                     value={data?.averageUtils + " €"}
                                     align="horizontal"
                                 />
                                 <ListItem
-                                    label="Construction Year"
+                                    label={t("Year of Construction")}
                                     value={
                                         data.construction?.yearOfConstruction
                                     }
@@ -126,18 +129,18 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                         <Grid item xs={6}>
                             <List>
                                 <ListItem
-                                    label="Code"
+                                    label={t("Code")}
                                     value={data?.code}
                                     align="horizontal"
                                 />
                                 <ListItem
-                                    label="Price"
+                                    label={t("Price")}
                                     value={data?.price + " € / m^2"}
                                     align="horizontal"
                                 />
 
                                 <ListItem
-                                    label="Key Code"
+                                    label={t("Key Code")}
                                     value={data?.keyCode}
                                     align="horizontal"
                                 />
@@ -146,7 +149,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                                 <ListOwnerItem owner={owner} />
 
                                 <ListItem
-                                    label="State"
+                                    label={t("State")}
                                     value={data?.state}
                                     align="horizontal"
                                 />
