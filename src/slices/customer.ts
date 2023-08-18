@@ -130,6 +130,7 @@ const initialState: customerState = {
             loadingDock: false,
         },
         timeframe: "",
+        shape: "",
     },
 };
 
@@ -338,6 +339,9 @@ const slice = createSlice({
         setTimeFrame(state: customerState, action): void {
             state.demand.timeframe = action.payload;
         },
+        setShape(state: customerState, action): void {
+            state.demand.shape = action.payload;
+        },
 
         setInitialState: (state: customerState, action): void => {
             const payload: ICustomer = action.payload;
@@ -451,6 +455,7 @@ const slice = createSlice({
                 initialState.demand.priorityFeatures;
             state.demand.timeframe =
                 demand?.timeframe || initialState.demand.timeframe;
+            state.demand.shape = demand?.shape || initialState.demand.shape;
         },
 
         resetState: () => {
@@ -517,6 +522,7 @@ export const {
     setMaxPrice,
     setDemandLabels,
     setTimeFrame,
+    setShape,
 
     // priority features
     setPriorityFeature,
@@ -645,5 +651,6 @@ export const selectDemandLabels = ({ customer }: RootState) =>
 
 export const selectTimeFrame = ({ customer }: RootState) =>
     customer.demand.timeframe;
+export const selectShape = ({ customer }: RootState) => customer.demand.shape;
 
 export const { reducer } = slice;
