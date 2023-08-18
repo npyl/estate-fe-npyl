@@ -1,4 +1,5 @@
 import { Drawer, Stack, Button, Typography, DrawerProps } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 interface BulkEditDrawerProps extends DrawerProps {
     open: boolean;
@@ -16,6 +17,7 @@ export const BulkEditDrawer = ({
     onClose,
     children,
 }: BulkEditDrawerProps) => {
+    const { t } = useTranslation();
     return (
         <Drawer
             key={open ? "opened" : "closed"} // INFO: trick to force drawer to reset state after close
@@ -35,7 +37,7 @@ export const BulkEditDrawer = ({
             }}
         >
             <Stack textAlign={"center"} flex={1} p={1} mt={1}>
-                <Typography variant="h6">Bulk Edit</Typography>
+                <Typography variant="h6">{t("Bulk Edit")}</Typography>
 
                 <Stack mt={2} gap={1} spacing={1}>
                     {children}
@@ -52,7 +54,7 @@ export const BulkEditDrawer = ({
                         color="secondary"
                         onClick={onClose}
                     >
-                        Close
+                        {t("Close")}
                     </Button>
 
                     {Object.keys(changed).length > 0 && (
@@ -62,14 +64,14 @@ export const BulkEditDrawer = ({
                                 color="secondary"
                                 onClick={onClear}
                             >
-                                Clear
+                                {t("Clear")}
                             </Button>
                             <Button
                                 variant="contained"
                                 color="secondary"
                                 onClick={onSave}
                             >
-                                Save
+                                {t("Save")}
                             </Button>
                         </>
                     )}

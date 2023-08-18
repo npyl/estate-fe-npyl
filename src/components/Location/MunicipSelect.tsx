@@ -7,6 +7,7 @@ import {
     Select,
     SelectChangeEvent,
 } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 import { useGetMunicipalitiesQuery } from "src/services/location";
 
@@ -18,7 +19,7 @@ interface IMunicipSelectProps {
 
 export const MunicipSelect = (props: IMunicipSelectProps) => {
     const { municipCode, regionCode, onChange } = props;
-
+    const { t } = useTranslation();
     const municips = useGetMunicipalitiesQuery(+regionCode).data;
 
     const handleChange = (event: SelectChangeEvent<string>) => {
@@ -39,7 +40,7 @@ export const MunicipSelect = (props: IMunicipSelectProps) => {
     return (
         <FormControl fullWidth>
             <InputLabel id="demo-simple-select-label">
-                Δήμος / Συνοικία
+                {t("Municipality / District")}
             </InputLabel>
             <Select
                 labelId="demo-simple-select-label"
@@ -51,7 +52,7 @@ export const MunicipSelect = (props: IMunicipSelectProps) => {
                     );
                     return option ? option.nameGR : "";
                 }}
-                input={<OutlinedInput label="Δήμος / Συνοικία" />}
+                input={<OutlinedInput label={t("Municipality / District")} />}
                 MenuProps={{
                     PaperProps: { sx: { maxHeight: "60vh" } },
                 }}

@@ -2,7 +2,7 @@ import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import { CustomDrawingComponent } from "./Draw";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { ILocationPOST } from "src/types/location";
-import { DrawShape, StopDraw } from "./types";
+import { DrawShape, ShapeData, StopDraw } from "./types";
 import SearchOnMap from "./Search";
 
 const containerStyle = {
@@ -27,6 +27,8 @@ export interface IMapAddress {
 }
 
 interface IMapProps {
+    onReady?: (m: google.maps.Map) => void;
+
     onClick?: (lat: number, lng: number, address: IMapAddress) => void;
     onDragEnd?: (
         marker: IMapMarker,
@@ -38,6 +40,8 @@ interface IMapProps {
     onSearchSelect?: (selected: IMapAddress, lat: number, lng: number) => void;
 
     data?: ILocationPOST[];
+    zoom?: number;
+    shape?: ShapeData;
     mainMarker?: IMapMarker;
     activeMarker: number | null;
     setActiveMarker: any;
@@ -49,11 +53,14 @@ const apiKey = "AIzaSyCW6oijpbC0JhlXRwPBtNIxy9e4sn7NnwU";
 const athensLatLng = { lat: 37.98381, lng: 23.727539 };
 
 const Map = ({
+    onReady,
     onClick,
     onDragEnd,
     onDraw,
     onSearchSelect,
     data,
+    zoom,
+    shape,
     mainMarker,
     activeMarker,
     setActiveMarker,
@@ -112,6 +119,8 @@ const Map = ({
         }
 
         setMap(map);
+
+        onReady && onReady(map);
     }, []);
 
     const onUnmount = useCallback(() => {
@@ -222,7 +231,7 @@ const Map = ({
         <GoogleMap
             mapContainerStyle={containerStyle}
             center={center}
-            zoom={16}
+            zoom={zoom || 16}
             onClick={handleMapClick}
             onLoad={onLoad}
             onUnmount={onUnmount}
@@ -230,7 +239,8 @@ const Map = ({
             {drawing && (
                 <CustomDrawingComponent
                     map={map}
-                    onDraw={(shape) => onDraw?.(shape)}
+                    shape={shape}
+                    onDraw={(shape) => onDraw && onDraw(shape)}
                 />
             )}
             {search && <SearchOnMap onSearchSelect={handleSearchSelect} />}

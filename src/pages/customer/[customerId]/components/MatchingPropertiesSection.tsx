@@ -14,7 +14,48 @@ import { useTranslation } from "react-i18next";
 import * as React from "react";
 import Image from "src/components/image";
 import { useGetCustomerByIdQuery } from "src/services/customers";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+import { useSelector } from "react-redux";
+import { selectShape } from "src/slices/customer";
+import { decodeShape, isPointInsideShapeData } from "src/components/Map/util";
+import { IProperties } from "src/types/properties";
+import { ShapeData } from "src/components/Map/types";
+
+type PropertyStatus =
+    | "SOLD"
+    | "SALE"
+    | "RENTED"
+    | "UNAVAILABLE"
+    | "RENT"
+    | "TAKEN"
+    | "UNDER_CONSTRUCTION"
+    | "UNDER_MAINTENANCE";
+
+type Color = string;
+
+type StatusColors = Record<PropertyStatus, Color>;
+
+const STATUS_COLORS: StatusColors = {
+    SOLD: "#79798a",
+    SALE: "#57825e",
+    RENT: "#bd9e39",
+    RENTED: "#3e78c2",
+    UNAVAILABLE: "#c72c2e",
+    TAKEN: "#7d673e",
+    UNDER_CONSTRUCTION: "#A300D8",
+    UNDER_MAINTENANCE: "#E0067C",
+};
+
+const filterPropertiesInShape = (
+    properties: IProperties[],
+    shapeData: ShapeData
+): IProperties[] =>
+    properties.filter(
+        (p) =>
+            p.location?.lat &&
+            p.location?.lng &&
+            isPointInsideShapeData(p.location.lat, p.location.lng, shapeData)
+    );
 
 const MatchingPropertiesSection: React.FC = () => {
     const router = useRouter();
@@ -24,9 +65,21 @@ const MatchingPropertiesSection: React.FC = () => {
     const [parentCategory, setParentCategory] = useState("");
 
     const { data: customer, isSuccess } = useGetCustomerByIdQuery(+customerId!);
-    const { data } = useSuggestForCustomerQuery(+customerId!, {
+    const { data: propertiesPage } = useSuggestForCustomerQuery(+customerId!, {
         skip: !parentCategory,
     });
+
+    const shape = useMemo(() => customer?.demand?.shape, [customer]);
+    const shapeData = useMemo(() => (shape ? decodeShape(shape) : ""), [shape]);
+
+    const properties = useMemo(() => {
+        if (!propertiesPage?.content) return [];
+        return (
+            (shapeData
+                ? filterPropertiesInShape(propertiesPage?.content, shapeData)
+                : propertiesPage?.content) || []
+        );
+    }, [shapeData, propertiesPage]);
 
     useEffect(() => {
         if (!customer || !isSuccess) return;
@@ -34,30 +87,6 @@ const MatchingPropertiesSection: React.FC = () => {
         setParentCategory(customer?.demand?.filters?.parentCategory);
     }, [customer, isSuccess]);
 
-    type PropertyStatus =
-        | "SOLD"
-        | "SALE"
-        | "RENTED"
-        | "UNAVAILABLE"
-        | "RENT"
-        | "TAKEN"
-        | "UNDER_CONSTRUCTION"
-        | "UNDER_MAINTENANCE";
-
-    type Color = string;
-
-    type StatusColors = Record<PropertyStatus, Color>;
-
-    const STATUS_COLORS: StatusColors = {
-        SOLD: "#79798a",
-        SALE: "#57825e",
-        RENT: "#bd9e39",
-        RENTED: "#3e78c2",
-        UNAVAILABLE: "#c72c2e",
-        TAKEN: "#7d673e",
-        UNDER_CONSTRUCTION: "#A300D8",
-        UNDER_MAINTENANCE: "#E0067C",
-    };
     function statusColor(params: GridCellParams) {
         if (!params.value) {
             return <></>;
@@ -157,7 +186,10 @@ const MatchingPropertiesSection: React.FC = () => {
     ];
 
     if (!parentCategory) return null;
-    if (!data || !Array.isArray(data.content) || data.content.length === 0) {
+    if (properties?.length === 0) {
+        // !propertiesPage ||
+        // !Array.isArray(propertiesPage.content) ||
+        // propertiesPage.content.length === 0
         return (
             <Container
                 style={{
@@ -215,7 +247,7 @@ const MatchingPropertiesSection: React.FC = () => {
                 <Grid item xs={12}>
                     <Paper>
                         <DataGridTable
-                            rows={data?.content}
+                            rows={properties}
                             columns={columns}
                             resource={"property"}
                             sortingBy={"firstName"}

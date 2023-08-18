@@ -49,6 +49,7 @@ import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 import { useState } from "react";
 import { useAllUsersQuery } from "src/services/user";
 import { useAllGlobalsQuery } from "src/services/global";
+import { useTranslation } from "react-i18next";
 
 const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = (props) => {
     const [rentalPeriodStart, setRentalPeriodStart] = useState<Date | null>(
@@ -59,7 +60,7 @@ const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = (props) => {
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
     const details = enums?.details as IGlobalPropertyDetails;
     const dispatch = useDispatch();
-
+    const { t } = useTranslation();
     const entrances = useSelector(selectEntrances);
     const displayWindowsLength = useSelector(selectDisplayWindowsLength);
     const safetyDoor = useSelector(selectSafetyDoor);
@@ -107,7 +108,7 @@ const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = (props) => {
                 }}
             >
                 <Typography variant="h6">
-                    Technical Features And Interior
+                    {t("Technical Features And Interior")}
                 </Typography>
             </Box>
 
@@ -133,7 +134,7 @@ const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "Safety Door" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Safety Door
+                            {t("Safety Door")}
                         </Typography>
                     </Grid>
 
@@ -157,7 +158,7 @@ const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "Double Frontage" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Double Frontage
+                            {t("Double Frontage")}
                         </Typography>
                     </Grid>
 
@@ -181,7 +182,7 @@ const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "Satellite TV" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Satellite TV
+                            {t("Satellite TV")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -204,7 +205,7 @@ const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "Reception" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Reception
+                            {t("Reception")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -227,7 +228,7 @@ const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "Pets Allowed" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Pets Allowed
+                            {t("Pets Allowed")}
                         </Typography>
                     </Grid>
 
@@ -253,7 +254,7 @@ const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = (props) => {
                             }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Loading-Unloading Elevator
+                            {t("Loading-Unloading Elevator")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -276,7 +277,7 @@ const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "False Ceiling" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            False Ceiling
+                            {t("False Ceiling")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -299,7 +300,7 @@ const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "With Equipment" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            With Eqipment
+                            {t("With Eqipment")}
                         </Typography>
                     </Grid>
                 </Grid>

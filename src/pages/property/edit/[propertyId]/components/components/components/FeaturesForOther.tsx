@@ -3,6 +3,7 @@ import Checkbox from "@mui/material/Checkbox";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import * as React from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 
 import { useDispatch } from "react-redux";
@@ -23,7 +24,7 @@ import {
 
 const FeaturesForOtherSection: React.FC<any> = (props) => {
     const dispatch = useDispatch();
-
+    const { t } = useTranslation();
     const alarmSystem = useSelector(selectAlarmSystem);
     const panoramicView = useSelector(selectPanoramicView);
     const loadingDock = useSelector(selectLoadingDock);
@@ -41,7 +42,7 @@ const FeaturesForOtherSection: React.FC<any> = (props) => {
                     justifyContent: "center",
                 }}
             >
-                <Typography variant="h6">Feautures</Typography>
+                <Typography variant="h6">{t("Feautures")}</Typography>
             </Box>
 
             <Grid item xs={12} padding={1}>
@@ -66,7 +67,7 @@ const FeaturesForOtherSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "Panoramic View" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Panoramic View
+                            {t("Panoramic View")}
                         </Typography>
                     </Grid>
 
@@ -90,7 +91,7 @@ const FeaturesForOtherSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "Alarm System" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Alarm System
+                            {t("Alarm System")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -113,7 +114,7 @@ const FeaturesForOtherSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "Facade" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Facade
+                            {t("Facade")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -136,7 +137,7 @@ const FeaturesForOtherSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "Loading Dock" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Loading Dock
+                            {t("Loading Dock")}
                         </Typography>
                     </Grid>
 
@@ -160,7 +161,7 @@ const FeaturesForOtherSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "Veranda" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Veranda
+                            {t("Veranda")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -183,7 +184,7 @@ const FeaturesForOtherSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "View" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            View
+                            {t("View")}
                         </Typography>
                     </Grid>
                 </Grid>

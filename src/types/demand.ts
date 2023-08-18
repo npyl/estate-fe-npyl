@@ -49,6 +49,7 @@ export interface IDemand {
     priorityFeatures: IPropertyFeatures;
     nonPriorityFeatures: IPropertyFeatures;
     timeframe: string;
+    shape: string; // map shape
 }
 
 export interface IDemandPOST {
@@ -56,4 +57,5 @@ export interface IDemandPOST {
     priorityFeatures: IPropertyFeatures;
     nonPriorityFeatures: IPropertyFeatures;
     timeframe: string;
+    shape: string; // map shape
 }

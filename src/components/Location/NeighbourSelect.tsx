@@ -7,6 +7,7 @@ import {
     Select,
     SelectChangeEvent,
 } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 import { useGetNeighbourhoodsQuery } from "src/services/location";
 
@@ -18,7 +19,7 @@ interface NeighbourSelectProps {
 
 export const NeighbourSelect = (props: NeighbourSelectProps) => {
     const { municipCode, neighbourCode, onChange } = props;
-
+    const { t } = useTranslation();
     const neighbours = useGetNeighbourhoodsQuery(+municipCode).data;
 
     const handleChange = (event: SelectChangeEvent<string>) => {
@@ -38,7 +39,7 @@ export const NeighbourSelect = (props: NeighbourSelectProps) => {
 
     return (
         <FormControl fullWidth>
-            <InputLabel>Γειτονιά</InputLabel>
+            <InputLabel>{t("Neighborhood")}</InputLabel>
             <Select
                 value={neighbourCode}
                 onChange={handleChange}
@@ -48,7 +49,7 @@ export const NeighbourSelect = (props: NeighbourSelectProps) => {
                     );
                     return option ? option.nameGR : "";
                 }}
-                input={<OutlinedInput label="Γειτονιά" />}
+                input={<OutlinedInput label={t("Neighborhood")} />}
                 MenuProps={{
                     PaperProps: { sx: { maxHeight: "60vh" } },
                 }}
