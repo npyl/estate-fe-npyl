@@ -24,12 +24,13 @@ import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 import { useState } from "react";
 import { useAllUsersQuery } from "src/services/user";
 import { useAllGlobalsQuery } from "src/services/global";
+import { useTranslation } from "react-i18next";
 
 const SuitableForForLandSection: React.FC<any> = (props) => {
     const [rentalPeriodStart, setRentalPeriodStart] = useState<Date | null>(
         new Date()
     );
-
+    const { t } = useTranslation();
     const { data } = useAllGlobalsQuery();
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
     const details = enums?.details as IGlobalPropertyDetails;
@@ -58,7 +59,7 @@ const SuitableForForLandSection: React.FC<any> = (props) => {
                     justifyContent: "center",
                 }}
             >
-                <Typography variant="h6">Suitable For</Typography>
+                <Typography variant="h6">{t("Suitable For")}</Typography>
             </Box>
 
             <Grid item xs={12} padding={1}>
@@ -83,7 +84,7 @@ const SuitableForForLandSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "Investment" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Agricultural Use
+                            {t("Agricultural Use")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -106,7 +107,7 @@ const SuitableForForLandSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "Investment" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Investment
+                            {t("Investment")}
                         </Typography>
                     </Grid>
                 </Grid>

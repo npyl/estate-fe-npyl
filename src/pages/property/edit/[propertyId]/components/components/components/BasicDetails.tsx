@@ -285,7 +285,7 @@ const BasicSection: React.FC<any> = () => {
                     <Grid item xs={6}>
                         <FormControl fullWidth>
                             <InputLabel id="demo-simple-select-label">
-                                State
+                                {t("State")}
                             </InputLabel>
                             <Select
                                 labelId="demo-simple-select-label"
@@ -472,7 +472,7 @@ const BasicSection: React.FC<any> = () => {
                         <Grid container spacing={2}>
                             <Grid item xs={6}>
                                 <DateFieldStyled
-                                    label="Available After:"
+                                    label={t("Available After")}
                                     value={
                                         availableAfter
                                             ? new Date(availableAfter)
@@ -504,7 +504,7 @@ const BasicSection: React.FC<any> = () => {
                             </Grid>
                             <Grid item xs={6}>
                                 <DateFieldStyled
-                                    label="Rental Period Start"
+                                    label={t("Rental Period Start")}
                                     value={new Date(rentalPeriodStart)}
                                     onChange={(value: any) => {
                                         handleDateChange(

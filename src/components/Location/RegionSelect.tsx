@@ -7,6 +7,7 @@ import {
     Select,
     SelectChangeEvent,
 } from "@mui/material";
+import { useTranslation } from "react-i18next";
 
 import { useGetRegionsQuery } from "src/services/location";
 
@@ -17,7 +18,7 @@ interface IRegionSelectProps {
 
 export const RegionSelect = (props: IRegionSelectProps) => {
     const { regionCode, onChange } = props;
-
+    const { t } = useTranslation();
     const regions = useGetRegionsQuery().data;
 
     const handleChange = (event: SelectChangeEvent<string>) => {
@@ -33,7 +34,7 @@ export const RegionSelect = (props: IRegionSelectProps) => {
 
     return (
         <FormControl fullWidth>
-            <InputLabel>Περιοχή</InputLabel>
+            <InputLabel>{t("Area")}</InputLabel>
             <Select
                 value={regionCode}
                 onChange={(event) => handleChange(event)}
@@ -43,7 +44,7 @@ export const RegionSelect = (props: IRegionSelectProps) => {
                     );
                     return option ? option.nameGR : "";
                 }}
-                input={<OutlinedInput label="Περιοχή" />}
+                input={<OutlinedInput label={t("Area")} />}
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
                 {regions.map((region, index) => (

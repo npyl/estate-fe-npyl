@@ -24,6 +24,7 @@ import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 import { useState } from "react";
 import { useAllUsersQuery } from "src/services/user";
 import { useAllGlobalsQuery } from "src/services/global";
+import { useTranslation } from "react-i18next";
 
 const SuitableForForCommercialSection: React.FC<any> = (props) => {
     const [rentalPeriodStart, setRentalPeriodStart] = useState<Date | null>(
@@ -34,7 +35,7 @@ const SuitableForForCommercialSection: React.FC<any> = (props) => {
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
     const details = enums?.details as IGlobalPropertyDetails;
     const dispatch = useDispatch();
-
+    const { t } = useTranslation();
     const student = useSelector(selectStudent);
 
     const cottage = useSelector(selectCottage);
@@ -57,7 +58,7 @@ const SuitableForForCommercialSection: React.FC<any> = (props) => {
                     justifyContent: "center",
                 }}
             >
-                <Typography variant="h6">Suitable For</Typography>
+                <Typography variant="h6">{t("Suitable For")}</Typography>
             </Box>
 
             <Grid item xs={12} padding={1}>
@@ -82,7 +83,7 @@ const SuitableForForCommercialSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "Renovation" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Renovation
+                            {t("Renovation")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -105,7 +106,7 @@ const SuitableForForCommercialSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "Investment" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Investment
+                            {t("Investment")}
                         </Typography>
                     </Grid>
 
@@ -129,7 +130,7 @@ const SuitableForForCommercialSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "Doctors Office" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Doctor's Office
+                            {t("Doctor's Office")}
                         </Typography>
                     </Grid>
                 </Grid>

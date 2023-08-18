@@ -3,6 +3,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import * as React from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useAllGlobalsQuery } from "src/services/global";
 import {
@@ -40,7 +41,7 @@ const PropertyDescriptionForLandSection: React.FC<any> = (props) => {
     const { data } = useAllGlobalsQuery();
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
     const details = enums?.details as IGlobalPropertyDetails;
-
+    const { t } = useTranslation();
     const dispatch = useDispatch();
     const sea = useSelector(selectSea);
     const furnished = useSelector(selectFurnished);
@@ -100,7 +101,9 @@ const PropertyDescriptionForLandSection: React.FC<any> = (props) => {
                     justifyContent: "center",
                 }}
             >
-                <Typography variant="h6">Property Description</Typography>
+                <Typography variant="h6">
+                    {t("Property Description")}
+                </Typography>
             </Box>
 
             <Grid item xs={12} padding={1}>
@@ -110,7 +113,7 @@ const PropertyDescriptionForLandSection: React.FC<any> = (props) => {
                             fullWidth
                             id="outlined-select-currency"
                             select
-                            label="Orientation"
+                            label={t("Orientation")}
                             value={orientation}
                             onChange={(
                                 event: React.ChangeEvent<HTMLInputElement>
@@ -136,7 +139,7 @@ const PropertyDescriptionForLandSection: React.FC<any> = (props) => {
                             fullWidth
                             id="outlined-select-currency"
                             select
-                            label="Accessibility"
+                            label={t("Accessibility")}
                             value={accessibility}
                             onChange={(
                                 event: React.ChangeEvent<HTMLInputElement>
@@ -161,7 +164,7 @@ const PropertyDescriptionForLandSection: React.FC<any> = (props) => {
                             fullWidth
                             id="outlined-select-currency"
                             select
-                            label="Land Use"
+                            label={t("Land Use")}
                             value={landUse}
                             onChange={(
                                 event: React.ChangeEvent<HTMLInputElement>
@@ -185,7 +188,7 @@ const PropertyDescriptionForLandSection: React.FC<any> = (props) => {
                         <TextField
                             fullWidth
                             type="number"
-                            label=" Distance From Sea"
+                            label={t("Distance From Sea")}
                             value={sea}
                             onChange={(event) => handleChange(setSea, event)}
                             // onKeyPress={handleKeyPress}

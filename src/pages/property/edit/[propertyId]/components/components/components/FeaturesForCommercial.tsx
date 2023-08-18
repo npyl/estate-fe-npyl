@@ -3,6 +3,7 @@ import Checkbox from "@mui/material/Checkbox";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import * as React from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 
 import { useDispatch } from "react-redux";
@@ -47,7 +48,7 @@ import {
 
 const FeaturesForCommercialSection: React.FC<any> = (props) => {
     const dispatch = useDispatch();
-
+    const { t } = useTranslation();
     const accessForDisable = useSelector(selectAccessForDisable);
     const pool = useSelector(selectPool);
     const internet = useSelector(selectInternet);
@@ -81,7 +82,7 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                     justifyContent: "center",
                 }}
             >
-                <Typography variant="h6">Feautures</Typography>
+                <Typography variant="h6">{t("Feautures")}</Typography>
             </Box>
 
             <Grid item xs={12} padding={1}>
@@ -106,7 +107,7 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "Organized Garden" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Organized Garden
+                            {t("Organized Garden")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -129,7 +130,7 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "Alarm System" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Alarm System
+                            {t("Alarm System")}
                         </Typography>
                     </Grid>
 
@@ -155,7 +156,7 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                             }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Has 24 Hours Security
+                            {t("Has 24 Hours Security")}
                         </Typography>
                     </Grid>
 
@@ -179,7 +180,7 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "CCTV" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            CCTV
+                            {t("CCTV")}
                         </Typography>
                     </Grid>
 
@@ -203,7 +204,7 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "Internet" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Internet
+                            {t("Internet")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -228,7 +229,7 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                             }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Walkable Distance to Beach
+                            {t("Walkable Distance to Beach")}
                         </Typography>
                     </Grid>
 
@@ -252,7 +253,7 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "Fire Detector" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Fire Detector
+                            {t("Fire Detector")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -275,7 +276,7 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "Quiet Area" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Quiet Area
+                            {t("Quiet Area")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -298,7 +299,7 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "Sound Insulation" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Sound Insulation
+                            {t("Sound Insulation")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -321,7 +322,7 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "Access for Disable" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Access for Disable
+                            {t("Access for Disable")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -346,7 +347,7 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                             }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Indepent Heating Per Room
+                            {t("Indepent Heating Per Room")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -369,7 +370,7 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "Bright" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Bright
+                            {t("Bright")}
                         </Typography>
                     </Grid>
 
@@ -395,7 +396,7 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                             }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Adapting to the Ground
+                            {t("Adapting to the Ground")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -418,7 +419,7 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "Pool" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Pool
+                            {t("Pool")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -441,7 +442,7 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "View" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            View
+                            {t("View")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -464,7 +465,7 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "Veranda" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Veranda
+                            {t("Veranda")}
                         </Typography>
                     </Grid>
 
@@ -488,7 +489,7 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "Corner" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Corner
+                            {t("Corner")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -511,7 +512,7 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "Facade" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Facade
+                            {t("Facade")}
                         </Typography>
                     </Grid>
                 </Grid>

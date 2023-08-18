@@ -27,14 +27,14 @@ import {
     setYearOfConstruction,
 } from "src/slices/property";
 import { useAllGlobalsQuery } from "src/services/global";
+import { useTranslation } from "react-i18next";
 
 const ConstructionForOtherSection: React.FC<any> = (props) => {
     const { data } = useAllGlobalsQuery();
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
     const details = enums?.details as IGlobalPropertyDetails;
-
+    const { t } = useTranslation();
     const dispatch = useDispatch();
-
     const yearOfConstruction = useSelector(selectYearOfConstruction);
     const underConstruction = useSelector(selectUnderConstruction);
     const newlyBuilt = useSelector(selectNewlyBuilt);
@@ -79,7 +79,7 @@ const ConstructionForOtherSection: React.FC<any> = (props) => {
                     justifyContent: "center",
                 }}
             >
-                <Typography variant="h6">Construction</Typography>
+                <Typography variant="h6">{t("Construction")}</Typography>
             </Box>
 
             <Grid item xs={12} padding={1}>
@@ -88,7 +88,7 @@ const ConstructionForOtherSection: React.FC<any> = (props) => {
                         <TextField
                             fullWidth
                             id="outlined-controlled"
-                            label="Year of Construction"
+                            label={t("Year of Construction")}
                             value={yearOfConstruction}
                             onChange={handleYearOfConstructionChange}
                             onKeyPress={handleKeyPress}
@@ -120,7 +120,7 @@ const ConstructionForOtherSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "Under Construction" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Under Construction
+                            {t("Under Construction")}
                         </Typography>
                     </Grid>
 
@@ -144,7 +144,7 @@ const ConstructionForOtherSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "Internal stairs" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Internal Stairs
+                            {t("Internal Stairs")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -167,7 +167,7 @@ const ConstructionForOtherSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "Newly Build" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Newly Build
+                            {t("Newly Build")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -190,7 +190,7 @@ const ConstructionForOtherSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "Incomplete" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Incomplete
+                            {t("Incomplete")}
                         </Typography>
                     </Grid>
                 </Grid>

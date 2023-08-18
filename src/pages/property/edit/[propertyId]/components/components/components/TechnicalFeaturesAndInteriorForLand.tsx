@@ -1,6 +1,7 @@
 import { Grid, Paper, Box } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import OnlyNumbersInput from "src/components/OnlyNumbers";
@@ -15,7 +16,7 @@ import {
 
 const TechnicalFeaturesAndInteriorForLandSection: React.FC<any> = () => {
     const dispatch = useDispatch();
-
+    const { t } = useTranslation();
     const floorToAreaRatio = useSelector(selectFloorToAreaRatio);
     const coverageFactor = useSelector(selectCoverageFactor);
     const facadeLength = useSelector(selectFacadeLength);
@@ -38,7 +39,7 @@ const TechnicalFeaturesAndInteriorForLandSection: React.FC<any> = () => {
                 }}
             >
                 <Typography variant="h6">
-                    Technical Features And Interior
+                    {t("Technical Features And Interior")}
                 </Typography>
             </Box>
 
@@ -47,7 +48,7 @@ const TechnicalFeaturesAndInteriorForLandSection: React.FC<any> = () => {
                     <Grid item xs={6}>
                         <OnlyNumbersInput
                             fullWidth
-                            label="Floor To Area Ratio"
+                            label={t("Floor To Area Ratio")}
                             value={floorToAreaRatio}
                             onChange={handleFloorToAreaRatioChange}
                         />
@@ -55,7 +56,7 @@ const TechnicalFeaturesAndInteriorForLandSection: React.FC<any> = () => {
                     <Grid item xs={6}>
                         <OnlyNumbersInput
                             fullWidth
-                            label="Coverage Factor"
+                            label={t("Coverage Factor")}
                             value={coverageFactor}
                             onChange={handleCoverageFactorChange}
                         />
@@ -63,7 +64,7 @@ const TechnicalFeaturesAndInteriorForLandSection: React.FC<any> = () => {
                     <Grid item xs={6}>
                         <OnlyNumbersInput
                             fullWidth
-                            label="Facade Length"
+                            label={t("Facade Length")}
                             value={facadeLength}
                             adornment="m"
                             onChange={handleFacadeLengthChange}
