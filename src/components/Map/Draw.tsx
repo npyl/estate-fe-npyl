@@ -16,7 +16,7 @@ export const CustomDrawingComponent = ({
     onDraw,
 }: DrawingComponentProps) => {
     const drawingManagerRef = useRef<any>(null);
-    const shapeRef = useRef<any>(null);
+    const shapeRef = useRef<DrawShape | StopDraw>(null);
     const [drawMode, setDrawMode] = useState(false);
 
     // drawing manager ready
@@ -78,7 +78,7 @@ export const CustomDrawingComponent = ({
                 }
 
                 const shape = event.overlay;
-                shapeRef.current = shape;
+                shapeRef.current = shape as DrawShape;
                 drawingManagerRef.current.setDrawingMode(null);
 
                 // Support shape drag
@@ -105,8 +105,9 @@ export const CustomDrawingComponent = ({
         if (!ready || !shape) return;
 
         // draw any imported shape
+        shapeRef.current?.setMap(null);
         shapeRef.current = drawShape(shape, map, onDraw);
-    }, [ready]);
+    }, [ready, shape]);
 
     const startDrawing = () => {
         if (shapeRef.current?.getMap()) {
