@@ -5,7 +5,7 @@ import { DrawShape, StopDraw } from "src/components/Map/types";
 import { encodeShape } from "src/components/Map/util";
 import { setShape } from "src/slices/customer";
 
-export const DemandMap = () => {
+export const AreaOfPreference = () => {
     const dispatch = useDispatch();
 
     // TODO: getting and showing shape from BE

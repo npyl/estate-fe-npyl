@@ -8,6 +8,7 @@ import { ListItem } from "src/components/List";
 import ListLabelsItem from "src/components/List/labels-item";
 import { useGetCustomerByIdQuery } from "src/services/customers";
 import { useGetLabelsQuery } from "src/services/labels";
+import { AreaOfPreference } from "./AreaOfPreference";
 
 const DemandSection: React.FC = () => {
     const router = useRouter();
@@ -21,6 +22,7 @@ const DemandSection: React.FC = () => {
     const propertyLabels = allLabels?.propertyLabels;
     const demandFilters = data?.demand?.filters;
     const demandFilterLabelIDs = demandFilters?.labels;
+    const shape = data?.demand?.shape;
 
     const selectedLabels = useMemo(
         () =>
@@ -52,6 +54,7 @@ const DemandSection: React.FC = () => {
         demandFilters?.maxPlot === null &&
         demandFilters?.minFloor === null &&
         demandFilters?.maxFloor === null &&
+        !shape &&
         demandFilters?.labels.length === 0
     )
         return null; // don't show anything
@@ -154,6 +157,14 @@ const DemandSection: React.FC = () => {
                         />
                     </List>
                 </Grid>
+                {shape && (
+                    <Grid item xs={12}>
+                        <Typography variant="h6" mb={2}>
+                            {t("Area of Preference")}
+                        </Typography>
+                        <AreaOfPreference shape={shape} />
+                    </Grid>
+                )}
             </Grid>
         </Paper>
     );

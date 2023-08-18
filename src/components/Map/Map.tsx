@@ -27,6 +27,8 @@ export interface IMapAddress {
 }
 
 interface IMapProps {
+    onReady?: (m: google.maps.Map) => void;
+
     onClick?: (lat: number, lng: number, address: IMapAddress) => void;
     onDragEnd?: (
         marker: IMapMarker,
@@ -49,6 +51,7 @@ const apiKey = "AIzaSyCW6oijpbC0JhlXRwPBtNIxy9e4sn7NnwU";
 const athensLatLng = { lat: 37.98381, lng: 23.727539 };
 
 const Map = ({
+    onReady,
     onClick,
     onDragEnd,
     onDraw,
@@ -112,6 +115,8 @@ const Map = ({
         }
 
         setMap(map);
+
+        onReady && onReady(map);
     }, []);
 
     const onUnmount = useCallback(() => {
@@ -230,7 +235,7 @@ const Map = ({
             {drawing && (
                 <CustomDrawingComponent
                     map={map}
-                    onDraw={(shape) => onDraw?.(shape)}
+                    onDraw={(shape) => onDraw && onDraw(shape)}
                 />
             )}
             {search && <SearchOnMap onSearchSelect={handleSearchSelect} />}

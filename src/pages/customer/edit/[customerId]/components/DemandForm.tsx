@@ -68,8 +68,7 @@ import {
 
 import { LabelSelect } from "./LabelSelect";
 import { useTranslation } from "react-i18next";
-import { DemandMap } from "./DemandForm/Map";
-import Map from "src/components/Map/Map";
+import { AreaOfPreference } from "./DemandForm/AreaOfPreference";
 
 const DemandForm: FC = () => {
     const { t } = useTranslation();
@@ -838,7 +837,7 @@ const DemandForm: FC = () => {
                     <Typography variant="h6" mb={2}>
                         {t("Area of Preference")}
                     </Typography>
-                    <DemandMap />
+                    <AreaOfPreference />
                 </Grid>
             </Grid>
         </Paper>
