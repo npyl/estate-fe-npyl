@@ -21,56 +21,56 @@ interface TypeProps {
     buyer: boolean;
 }
 
+const TypeLabels = ({ seller, lessor, leaser, buyer }: TypeProps) => {
+    const { t } = useTranslation();
+
+    const map = useMemo(
+        () => ({
+            ["Seller"]: {
+                value: seller,
+                color: "success",
+            },
+            ["Lessor"]: {
+                value: lessor,
+                color: "error",
+            },
+            ["Leaser"]: {
+                value: leaser,
+                color: "warning",
+            },
+            ["Buyer"]: {
+                value: buyer,
+                color: "info",
+            },
+        }),
+        [seller, lessor, leaser, buyer]
+    );
+
+    return (
+        <>
+            {Object.entries(map).map(([type, { value, color }]) =>
+                value ? (
+                    <Label
+                        key={type}
+                        variant="soft"
+                        opaque
+                        color={color as LabelColor}
+                    >
+                        {t(type)}
+                    </Label>
+                ) : null
+            )}
+        </>
+    );
+};
+
 const InformationSection: React.FC = (props) => {
     const router = useRouter();
     const { customerId } = router.query;
     const { t } = useTranslation();
     const { data } = useGetCustomerByIdQuery(parseInt(customerId as string)); // basic details
     const leadSource = data?.leadSource as LeadSource;
-    const TypeLabels = ({ seller, lessor, leaser, buyer }: TypeProps) => {
-        const map = useMemo(
-            () => ({
-                [t("Seller")]: {
-                    value: seller,
-                    color: "success",
-                },
-                [t("Lessor")]: {
-                    // Translate the key "Lessor"
-                    value: lessor,
-                    color: "error",
-                },
-                [t("Leaser")]: {
-                    // Translate the key "Leaser"
-                    value: leaser,
-                    color: "warning",
-                },
-                [t("Buyer")]: {
-                    // Translate the key "Buyer"
-                    value: buyer,
-                    color: "info",
-                },
-            }),
-            [seller, lessor, leaser, buyer, t] // t is added to dependency array
-        );
-        return (
-            <>
-                {Object.entries(map).map(([type, { value, color }]) =>
-                    value ? (
-                        <Label
-                            key={type}
-                            variant="soft"
-                            opaque
-                            color={color as LabelColor}
-                        >
-                            {type}
-                        </Label>
-                    ) : (
-                        <></>
-                    )
-                )}
-            </>
-        );
-    };
+
     if (!data) return null;
 
     return (
