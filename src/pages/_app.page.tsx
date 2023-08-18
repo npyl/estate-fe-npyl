@@ -54,7 +54,9 @@ const App: FC<EnhancedAppProps> = (props) => {
                     name="viewport"
                     content="initial-scale=1, width=device-width"
                 />
+                <link rel="icon" href="/favicon-logo.ico" />
             </Head>
+
             <ReduxProvider store={store}>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <AuthProvider>
