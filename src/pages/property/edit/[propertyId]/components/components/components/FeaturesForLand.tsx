@@ -19,10 +19,11 @@ import {
     setWithinCityPlan,
     setWithinResidentialZone,
 } from "src/slices/property";
+import { useTranslation } from "react-i18next";
 
 const FeaturesForLandSection: React.FC<any> = (props) => {
     const dispatch = useDispatch();
-
+    const { t } = useTranslation();
     const panoramicView = useSelector(selectPanoramicView);
     const facade = useSelector(selectFacade);
     const corner = useSelector(selectCorner);
@@ -39,14 +40,14 @@ const FeaturesForLandSection: React.FC<any> = (props) => {
                     justifyContent: "center",
                 }}
             >
-                <Typography variant="h6">Feautures</Typography>
+                <Typography variant="h6">{t("Feautures")}</Typography>
             </Box>
 
             <Grid item xs={12} padding={1}>
                 <Grid container spacing={2}>
                     <Grid
                         item
-                        xs={3}
+                        xs={4}
                         flexDirection="row"
                         sx={{ display: "inline-flex", alignItems: "center" }}
                     >
@@ -64,13 +65,13 @@ const FeaturesForLandSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "Panoramic View" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Panoramic View
+                            {t("Panoramic View")}
                         </Typography>
                     </Grid>
 
                     <Grid
                         item
-                        xs={3}
+                        xs={4}
                         flexDirection="row"
                         sx={{ display: "inline-flex", alignItems: "center" }}
                     >
@@ -88,12 +89,12 @@ const FeaturesForLandSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "Corner" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Corner
+                            {t("Corner")}
                         </Typography>
                     </Grid>
                     <Grid
                         item
-                        xs={3}
+                        xs={4}
                         flexDirection="row"
                         sx={{ display: "inline-flex", alignItems: "center" }}
                     >
@@ -111,12 +112,12 @@ const FeaturesForLandSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "Facade" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Facade
+                            {t("Facade")}
                         </Typography>
                     </Grid>
                     <Grid
                         item
-                        xs={3}
+                        xs={4}
                         flexDirection="row"
                         sx={{ display: "inline-flex", alignItems: "center" }}
                     >
@@ -134,13 +135,13 @@ const FeaturesForLandSection: React.FC<any> = (props) => {
                             inputProps={{ "aria-label": "Within City Plan" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Within City Plan
+                            {t("Within City Plan")}
                         </Typography>
                     </Grid>
 
                     <Grid
                         item
-                        xs={6}
+                        xs={4}
                         flexDirection="row"
                         sx={{ display: "inline-flex", alignItems: "center" }}
                     >
@@ -160,7 +161,7 @@ const FeaturesForLandSection: React.FC<any> = (props) => {
                             }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Within Residential Zone
+                            {t("Within Residential Zone")}
                         </Typography>
                     </Grid>
                 </Grid>

@@ -207,7 +207,7 @@ const BasicForLandSection: React.FC<any> = () => {
                     justifyContent: "left",
                 }}
             >
-                <Typography variant="h6">Basic Details</Typography>
+                <Typography variant="h6">{t("Basic Details")}</Typography>
             </Box>
 
             <Grid item xs={12} padding={1}>
@@ -274,13 +274,13 @@ const BasicForLandSection: React.FC<any> = () => {
                     <Grid item xs={6}>
                         <FormControl fullWidth>
                             <InputLabel id="demo-simple-select-label">
-                                State
+                                {t("State")}
                             </InputLabel>
                             <Select
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
                                 value={state}
-                                label="State"
+                                label={t("State")}
                                 onChange={(e) => {
                                     dispatch(setState(e.target.value));
                                 }}
@@ -297,7 +297,7 @@ const BasicForLandSection: React.FC<any> = () => {
                     </Grid>
                     <Grid item xs={6}>
                         <OnlyNumbersInput
-                            label="Area"
+                            label={t("Area")}
                             value={area}
                             adornment="m²"
                             onChange={(value) => {
@@ -307,7 +307,7 @@ const BasicForLandSection: React.FC<any> = () => {
                     </Grid>
                     <Grid item xs={6}>
                         <OnlyNumbersInput
-                            label="Plot Area"
+                            label={t("Plot Area")}
                             value={plotArea}
                             adornment="m²"
                             onChange={(value) => {
@@ -317,7 +317,7 @@ const BasicForLandSection: React.FC<any> = () => {
                     </Grid>
                     <Grid item xs={6}>
                         <OnlyNumbersInput
-                            label="Price"
+                            label={t("Price")}
                             value={price}
                             adornment="€"
                             onChange={(value) => {
@@ -336,7 +336,7 @@ const BasicForLandSection: React.FC<any> = () => {
                     </Grid>
                     <Grid item xs={6}>
                         <OnlyNumbersInput
-                            label="Current Rent Price"
+                            label={t("Current Rent Price")}
                             value={currentRentPrice}
                             adornment="€"
                             onChange={(value) => {
@@ -347,7 +347,7 @@ const BasicForLandSection: React.FC<any> = () => {
 
                     <Grid item xs={6}>
                         <OnlyNumbersInput
-                            label="Estimated Rent Price"
+                            label={t("Estimated Rent Price")}
                             value={estimatedRentPrice}
                             adornment="€"
                             onChange={(value) => {
@@ -388,7 +388,7 @@ const BasicForLandSection: React.FC<any> = () => {
                             inputProps={{ "aria-label": "Elevator" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Rented
+                            {t("Rented")}
                         </Typography>
                     </Grid>
                     <Grid item xs={12} padding={1}>
@@ -405,7 +405,7 @@ const BasicForLandSection: React.FC<any> = () => {
                                 <Grid container spacing={2}>
                                     <Grid item xs={6}>
                                         <DateFieldStyled
-                                            label="Available After:"
+                                            label={t("Available After:")}
                                             value={
                                                 availableAfter
                                                     ? new Date(availableAfter)
@@ -439,7 +439,7 @@ const BasicForLandSection: React.FC<any> = () => {
                                     </Grid>
                                     <Grid item xs={6}>
                                         <DateFieldStyled
-                                            label="Rental Period Start"
+                                            label={t("Rental Period Start")}
                                             value={new Date(rentalPeriodStart)}
                                             onChange={(value: any) => {
                                                 handleDateChange(
@@ -498,7 +498,7 @@ const BasicForLandSection: React.FC<any> = () => {
                             }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Debatable Price
+                            {t("Debatable Price")}
                         </Typography>
                     </Grid>
 
@@ -522,7 +522,7 @@ const BasicForLandSection: React.FC<any> = () => {
                             inputProps={{ "aria-label": "Buildable" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Buildable
+                            {t("Buildable")}
                         </Typography>
                     </Grid>
 
@@ -548,7 +548,7 @@ const BasicForLandSection: React.FC<any> = () => {
                             }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Auction
+                            {t("Auction")}
                         </Typography>
                     </Grid>
                 </Grid>

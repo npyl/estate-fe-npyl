@@ -35,12 +35,14 @@ const Login: NextPage = () => {
                     display: "flex",
                     flexDirection: "column",
                     minHeight: "100vh",
+                    justifyContent: "center",
+                    alignItems: "center",
                 }}
             >
                 <video
                     style={{
                         zIndex: -10,
-                        filter: `blur("5px")`,
+                        filter: "blur(5px)",
                         position: "absolute",
                         top: 0,
                         left: 0,
@@ -57,56 +59,45 @@ const Login: NextPage = () => {
                         type="video/mp4"
                     />
                 </video>
-                <Container
-                    maxWidth="sm"
-                    sx={{
-                        py: {
-                            xs: "60px",
-                            md: "120px",
-                        },
-                    }}
-                >
+                <Container maxWidth="sm">
                     <Card
                         elevation={16}
                         sx={{
                             p: 4,
                             backgroundColor: "rgba(255, 255, 255, 0.9)",
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            justifyContent: "center",
                         }}
                     >
-                        <Box
-                            sx={{
-                                alignItems: "center",
-                                display: "flex",
-                                flexDirection: "column",
-                                justifyContent: "center",
-                            }}
+                        <Link href="/" sx={{ marginBottom: 2 }}>
+                            <Logo
+                                sx={{
+                                    height: 50,
+                                    width: 50,
+                                }}
+                            />
+                        </Link>
+                        <Typography variant="h4" sx={{ fontWeight: 600 }}>
+                            {t("Log in")}
+                        </Typography>
+                        <Typography
+                            color="textSecondary"
+                            sx={{ mt: 1, textAlign: "center" }}
+                            variant="body2"
                         >
-                            <Link href="/">
-                                <Logo
-                                    sx={{
-                                        height: 40,
-                                        width: 40,
-                                    }}
-                                />
-                            </Link>
-                            <Typography variant="h4">{t("Log in")}</Typography>
-                            <Typography
-                                color="textSecondary"
-                                sx={{ mt: 2 }}
-                                variant="body2"
-                            >
-                                {t("Sign in on the internal platform")}
-                            </Typography>
-                        </Box>
+                            {t("Sign in on the internal platform")}
+                        </Typography>
                         <Box
                             sx={{
                                 flexGrow: 1,
                                 mt: 3,
+                                width: "100%",
                             }}
                         >
                             {platform === "JWT" && <JWTLogin />}
                         </Box>
-                        <Divider sx={{ my: 3 }} />
                     </Card>
                 </Container>
             </Box>

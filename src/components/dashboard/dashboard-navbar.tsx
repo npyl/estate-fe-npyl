@@ -19,6 +19,7 @@ import { AccountPopover } from "./account-popover";
 import { DashboardNavbarSearch } from "./dashboard-navbar-search";
 import { LanguageButton } from "../Language/LanguageButton";
 import { SettingsButton } from "../settings-button";
+import { Logo } from "../logo";
 
 interface DashboardNavbarProps extends AppBarProps {
     onOpenSidebar?: () => void;
@@ -112,12 +113,23 @@ export const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                             },
                         }}
                     >
-                        <Link href="/">
+                        <Link
+                            href="/"
+                            sx={{ display: "flex", alignItems: "center" }}
+                        >
+                            <Logo
+                                sx={{
+                                    height: 40,
+                                    width: 40,
+                                    marginRight: 2, // Adds some spacing between the logo and the text
+                                }}
+                            />
                             <Typography color="neutral.900" variant={"h5"}>
                                 Mordor v0.14
                             </Typography>
                         </Link>
                     </Box>
+
                     <IconButton
                         onClick={onOpenSidebar}
                         sx={{

@@ -3,6 +3,7 @@ import Checkbox from "@mui/material/Checkbox";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import * as React from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 
 import { useDispatch } from "react-redux";
@@ -86,7 +87,7 @@ import {
 
 const FeaturesSection: React.FC<any> = (props) => {
     const dispatch = useDispatch();
-
+    const { t } = useTranslation();
     const accessForDisable = useSelector(selectAccessForDisable);
     const pool = useSelector(selectPool);
     const office = useSelector(selectOffice);
@@ -170,27 +171,27 @@ const FeaturesSection: React.FC<any> = (props) => {
                     justifyContent: "center",
                 }}
             >
-                <Typography variant="h6">Feautures</Typography>
+                <Typography variant="h6">{t("Feautures")}</Typography>
             </Box>
 
             <Grid item xs={12} padding={1}>
                 <Grid container spacing={2}>
                     <CheckboxItem
-                        label="Panoramic View"
+                        label={t("Panoramic View")}
                         value={panoramicView}
                         onChange={(event, checked) => {
                             dispatch(setPanoramicView(checked));
                         }}
                     />
                     <CheckboxItem
-                        label="Corner"
+                        label={t("Corner")}
                         value={corner}
                         onChange={(event, checked) => {
                             dispatch(setCorner(checked));
                         }}
                     />
                     <CheckboxItem
-                        label="Facade"
+                        label={t("Facade")}
                         value={facade}
                         onChange={(event, checked) => {
                             dispatch(setFacade(checked));
@@ -198,56 +199,56 @@ const FeaturesSection: React.FC<any> = (props) => {
                     />
 
                     <CheckboxItem
-                        label="Organized Garden"
+                        label={t("Organized Garden")}
                         value={organizedGarden}
                         onChange={(event, checked) => {
                             dispatch(setOrganizedGarden(checked));
                         }}
                     />
                     <CheckboxItem
-                        label="Driling"
+                        label={t("Driling")}
                         value={drilling}
                         onChange={(event, checked) => {
                             dispatch(setDrilling(checked));
                         }}
                     />
                     <CheckboxItem
-                        label="Adapting to the Ground"
+                        label={t("Adapting to the Ground")}
                         value={adaptingToTheGround}
                         onChange={(event, checked) => {
                             dispatch(setAdaptingToTheGround(checked));
                         }}
                     />
                     <CheckboxItem
-                        label="Pool"
+                        label={t("Pool")}
                         value={pool}
                         onChange={(event, checked) => {
                             dispatch(setPool(checked));
                         }}
                     />
                     <CheckboxItem
-                        label="Barbeque"
+                        label={t("Barbeque")}
                         value={barbeque}
                         onChange={(event, checked) => {
                             dispatch(setBarbeque(checked));
                         }}
                     />
                     <CheckboxItem
-                        label="Sea View"
+                        label={t("Sea View")}
                         value={seaView}
                         onChange={(event, checked) => {
                             dispatch(setSeaView(checked));
                         }}
                     />
                     <CheckboxItem
-                        label="Mountain View"
+                        label={t("Mountain View")}
                         value={mountainView}
                         onChange={(event, checked) => {
                             dispatch(setMountainView(checked));
                         }}
                     />
                     <CheckboxItem
-                        label="Sea Front"
+                        label={t("Sea Front")}
                         value={seaFront}
                         onChange={(event, checked) => {
                             dispatch(setSeaFront(checked));
@@ -255,182 +256,182 @@ const FeaturesSection: React.FC<any> = (props) => {
                     />
 
                     <CheckboxItem
-                        label="Smart Home"
+                        label={t("Smart Home")}
                         value={smartHome}
                         onChange={(event, checked) => {
                             dispatch(setSmartHome(checked));
                         }}
                     />
                     <CheckboxItem
-                        label="Thermal Insulation"
+                        label={t("Thermal Insulation")}
                         value={thermalInsulation}
                         onChange={(event, checked) => {
                             dispatch(setThermalInsulation(checked));
                         }}
                     />
                     <CheckboxItem
-                        label="Jacuzzi"
+                        label={t("Jacuzzi")}
                         value={jacuzzi}
                         onChange={(event, checked) => {
                             dispatch(setJacuzzi(checked));
                         }}
                     />
                     <CheckboxItem
-                        label="Internet"
+                        label={t("Internet")}
                         value={internet}
                         onChange={(event, checked) => {
                             dispatch(setInternet(checked));
                         }}
                     />
                     <CheckboxItem
-                        label="Walkable Distance to Beach"
+                        label={t("Walkable Distance to Beach")}
                         value={walkableDistanceToBeach}
                         onChange={(event, checked) => {
                             dispatch(setWalkableDistanceToBeach(checked));
                         }}
                     />
                     <CheckboxItem
-                        label="Quiet Area"
+                        label={t("Quiet Area")}
                         value={quietArea}
                         onChange={(event, checked) => {
                             dispatch(setQuietArea(checked));
                         }}
                     />
                     <CheckboxItem
-                        label="Bright"
+                        label={t("Bright")}
                         value={bright}
                         onChange={(event, checked) => {
                             dispatch(setBright(checked));
                         }}
                     />
                     <CheckboxItem
-                        label="View"
+                        label={t("View")}
                         value={view}
                         onChange={(event, checked) => {
                             dispatch(setView(checked));
                         }}
                     />
                     <CheckboxItem
-                        label="Near Bus Route"
+                        label={t("Near Bus Route")}
                         value={nearBusRoute}
                         onChange={(event, checked) => {
                             dispatch(setNearBusRoute(checked));
                         }}
                     />
                     <CheckboxItem
-                        label="Guestroom"
+                        label={t("Guestroom")}
                         value={guestroom}
                         onChange={(event, checked) => {
                             dispatch(setGuestroom(checked));
                         }}
                     />
                     <CheckboxItem
-                        label="Office"
+                        label={t("Office")}
                         value={office}
                         onChange={(event, checked) => {
                             dispatch(setOffice(checked));
                         }}
                     />
                     <CheckboxItem
-                        label="Home Cinema"
+                        label={t("Home Cinema")}
                         value={homeCinema}
                         onChange={(event, checked) => {
                             dispatch(setHomeCinema(checked));
                         }}
                     />
                     <CheckboxItem
-                        label="Combined Kitchen and Dining Area"
+                        label={t("Combined Kitchen and Dining Area")}
                         value={combinedKitchenAndDiningArea}
                         onChange={(event, checked) => {
                             dispatch(setCombinedKitchenAndDiningArea(checked));
                         }}
                     />
                     <CheckboxItem
-                        label="Sound Insulation"
+                        label={t("Sound Insulation")}
                         value={soundInsulation}
                         onChange={(event, checked) => {
                             dispatch(setSoundInsulation(checked));
                         }}
                     />
                     <CheckboxItem
-                        label="Veranda"
+                        label={t("Veranda")}
                         value={veranda}
                         onChange={(event, checked) => {
                             dispatch(setVeranda(checked));
                         }}
                     />
                     <CheckboxItem
-                        label="Well"
+                        label={t("Well")}
                         value={well}
                         onChange={(event, checked) => {
                             dispatch(setWell(checked));
                         }}
                     />
                     <CheckboxItem
-                        label="Massony Fence"
+                        label={t("Massony Fence")}
                         value={masonryFence}
                         onChange={(event, checked) => {
                             dispatch(setMasonryFence(checked));
                         }}
                     />
                     <CheckboxItem
-                        label="Access for Disable"
+                        label={t("Access for Disable")}
                         value={accessForDisable}
                         onChange={(event, checked) => {
                             dispatch(setAccessForDisable(checked));
                         }}
                     />
                     <CheckboxItem
-                        label="Tents"
+                        label={t("Tents")}
                         value={tents}
                         onChange={(event, checked) => {
                             dispatch(setTents(checked));
                         }}
                     />
                     <CheckboxItem
-                        label="Heated Pool"
+                        label={t("Heated Pool")}
                         value={heatedPool}
                         onChange={(event, checked) => {
                             dispatch(setHeatedPool(checked));
                         }}
                     />
                     <CheckboxItem
-                        label="Alarm System"
+                        label={t("Alarm System")}
                         value={alarmSystem}
                         onChange={(event, checked) => {
                             dispatch(setAlarmSystem(checked));
                         }}
                     />
                     <CheckboxItem
-                        label="Has 24 Hours Security"
+                        label={t("Has 24 Hours Security")}
                         value={has24HoursSecurity}
                         onChange={(event, checked) => {
                             dispatch(setHas24HoursSecurity(checked));
                         }}
                     />
                     <CheckboxItem
-                        label="CCTV"
+                        label={t("CCTV")}
                         value={cctv}
                         onChange={(event, checked) => {
                             dispatch(setCctv(checked));
                         }}
                     />
                     <CheckboxItem
-                        label="Fire Detector"
+                        label={t("Fire Detector")}
                         value={fireDetector}
                         onChange={(event, checked) => {
                             dispatch(setFireDetector(checked));
                         }}
                     />
                     <CheckboxItem
-                        label="Indement Heating Per Room"
+                        label={t("Indement Heating Per Room")}
                         value={independentHeatingPerRoom}
                         onChange={(event, checked) => {
                             dispatch(setIndependentHeatingPerRoom(checked));
                         }}
                     />
                     <CheckboxItem
-                        label="Indoor Pool"
+                        label={t("Indoor Pool")}
                         value={indoorPool}
                         onChange={(event, checked) => {
                             dispatch(setIndoorPool(checked));

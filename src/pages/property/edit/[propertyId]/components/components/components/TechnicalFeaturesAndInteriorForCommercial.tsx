@@ -69,6 +69,7 @@ import { useAllGlobalsQuery } from "src/services/global";
 
 import OnlyNumbersInput from "src/components/OnlyNumbers";
 import CustomNumberField from "./componentsFields/OnlyNumbersWithDot";
+import { useTranslation } from "react-i18next";
 
 const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
     props
@@ -76,7 +77,7 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
     const [rentalPeriodStart, setRentalPeriodStart] = useState<Date | null>(
         new Date()
     );
-
+    const { t } = useTranslation();
     const { data } = useAllGlobalsQuery();
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
     const details = enums?.details as IGlobalPropertyDetails;
@@ -159,7 +160,7 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                 }}
             >
                 <Typography variant="h6">
-                    Technical Features And Interior
+                    {t("Technical Features And Interior")}
                 </Typography>
             </Box>
 
@@ -167,7 +168,7 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
                         <CustomNumberField
-                            label="Display Window Length"
+                            label={t("Display Window Length")}
                             value={displayWindowsLength?.toString() || ""}
                             onChange={(event) =>
                                 handleChange(setDisplayWindowsLength, event)
@@ -179,7 +180,7 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                         <TextField
                             fullWidth
                             id="outlined-controlled"
-                            label="Entrances"
+                            label={t("Entrances")}
                             value={entrances}
                             onChange={handleEntrancesChange}
                             onKeyPress={handleKeyPress}
@@ -195,7 +196,7 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                             fullWidth
                             id="outlined-select-currency"
                             select
-                            label="Floor Type"
+                            label={t("Floor Type")}
                             value={floorType}
                             onChange={(
                                 event: React.ChangeEvent<HTMLInputElement>
@@ -235,7 +236,7 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                             inputProps={{ "aria-label": "Safety Door" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Safety Door
+                            {t("Safety Door")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -258,7 +259,7 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                             inputProps={{ "aria-label": "Alarm System" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Alarm System
+                            {t("Alarm System")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -281,7 +282,7 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                             inputProps={{ "aria-label": "Painted" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Painted
+                            {t("Painted")}
                         </Typography>
                     </Grid>
 
@@ -305,7 +306,7 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                             inputProps={{ "aria-label": "Bright" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Bright
+                            {t("Bright")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -328,7 +329,7 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                             inputProps={{ "aria-label": "Window Screens" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Window Screens
+                            {t("Window Screens")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -351,7 +352,7 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                             inputProps={{ "aria-label": "Double Frontage" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Double Frontage
+                            {t("Double Frontage")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -374,7 +375,7 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                             inputProps={{ "aria-label": "Fireplace" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Fireplace
+                            {t("Fireplace")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -397,7 +398,7 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                             inputProps={{ "aria-label": "Luxurious" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Luxurious
+                            {t("Luxurious")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -420,7 +421,7 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                             inputProps={{ "aria-label": "Satellite TV" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Satellite TV
+                            {t("Satellite TV")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -443,7 +444,7 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                             inputProps={{ "aria-label": "Reception" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Reception
+                            {t("Reception")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -466,7 +467,7 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                             inputProps={{ "aria-label": "Pets Allowed" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Pets Allowed
+                            {t("Pets Allowed")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -494,7 +495,7 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                             }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Electric Car Charging Facilities
+                            {t("Electric Car Charging Facilities")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -517,7 +518,7 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                             inputProps={{ "aria-label": "Wiring" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Wiring
+                            {t("Wiring")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -542,7 +543,7 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                             }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Loading-Unloading Elevator
+                            {t("Loading-Unloading Elevator")}
                         </Typography>
                     </Grid>
                 </Grid>

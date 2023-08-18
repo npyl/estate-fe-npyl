@@ -53,7 +53,7 @@ const HeatingAndEnergyForCommercialSection: React.FC<any> = (props) => {
                     justifyContent: "center",
                 }}
             >
-                <Typography variant="h6">Heating and Energy</Typography>
+                <Typography variant="h6">{t("Heating and Energy")}</Typography>
             </Box>
 
             <Grid item xs={12} padding={1}>
@@ -184,7 +184,7 @@ const HeatingAndEnergyForCommercialSection: React.FC<any> = (props) => {
                             }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Floor Heating
+                            {t("Floor Heating")}
                         </Typography>
                     </Grid>
 
@@ -210,7 +210,7 @@ const HeatingAndEnergyForCommercialSection: React.FC<any> = (props) => {
                             }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            Air-Coditioning
+                            {t("Air-Coditioning")}
                         </Typography>
                     </Grid>
                 </Grid>

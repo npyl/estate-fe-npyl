@@ -5,10 +5,12 @@ import type { FC } from "react";
 import * as Yup from "yup";
 import { useAuth } from "../../hooks/use-auth";
 import { useMounted } from "../../hooks/use-mounted";
+import { useTranslation } from "react-i18next";
 
 export const JWTLogin: FC = (props) => {
     const isMounted = useMounted();
     const router = useRouter();
+    const { t } = useTranslation();
     const { signin } = useAuth();
     const formik = useFormik({
         initialValues: {
@@ -18,10 +20,12 @@ export const JWTLogin: FC = (props) => {
         },
         validationSchema: Yup.object({
             email: Yup.string()
-                .email("Must be a valid email")
+                .email(t("Must be a valid email") || "")
                 .max(255)
-                .required("Email is required"),
-            password: Yup.string().max(255).required("Password is required"),
+                .required(t("Email is required") || ""),
+            password: Yup.string()
+                .max(255)
+                .required(t("Password is required") || ""),
         }),
         onSubmit: async (values, helpers): Promise<void> => {
             try {
@@ -51,7 +55,7 @@ export const JWTLogin: FC = (props) => {
                 error={Boolean(formik.touched.email && formik.errors.email)}
                 fullWidth
                 helperText={formik.touched.email && formik.errors.email}
-                placeholder="Email Address"
+                placeholder={t("Email Address") || ""}
                 margin="normal"
                 name="email"
                 onBlur={formik.handleBlur}
@@ -65,7 +69,7 @@ export const JWTLogin: FC = (props) => {
                 )}
                 fullWidth
                 helperText={formik.touched.password && formik.errors.password}
-                placeholder="Password"
+                placeholder={t("Password") || ""}
                 margin="normal"
                 name="password"
                 onBlur={formik.handleBlur}
@@ -88,7 +92,7 @@ export const JWTLogin: FC = (props) => {
                     type="submit"
                     variant="contained"
                 >
-                    Log In
+                    {t("Log In")}
                 </Button>
             </Box>
         </form>
