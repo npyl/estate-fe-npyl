@@ -5,11 +5,12 @@ const drawCircle = (
     lng: number,
     radius: number,
     map: google.maps.Map,
-    onMove: (s: DrawShape | StopDraw) => void
+    onMove: ((s: DrawShape | StopDraw) => void) | null
 ) => {
     const circle = new google.maps.Circle({
-        editable: true,
-        draggable: true,
+        clickable: true,
+        editable: !!onMove,
+        draggable: !!onMove,
         strokeColor: "#FF0000", // Line color
         strokeOpacity: 0.8, // Line opacity
         strokeWeight: 2, // Line thickness
@@ -21,9 +22,10 @@ const drawCircle = (
     });
 
     // Support shape drag
-    google.maps.event.addListener(circle, "dragend", () =>
-        onMove(circle as DrawShape)
-    );
+    onMove &&
+        google.maps.event.addListener(circle, "dragend", () =>
+            onMove(circle as DrawShape)
+        );
 
     return circle;
 };
@@ -33,7 +35,7 @@ const drawRectangle = (
     swlat: number,
     swlng: number,
     map: google.maps.Map,
-    onMove: (s: DrawShape | StopDraw) => void
+    onMove: ((s: DrawShape | StopDraw) => void) | null
 ) => {
     const rectangleBounds = {
         north: nelat,
@@ -43,8 +45,9 @@ const drawRectangle = (
     };
 
     const rectangle = new google.maps.Rectangle({
-        editable: true,
-        draggable: true,
+        clickable: true,
+        editable: !!onMove,
+        draggable: !!onMove,
         bounds: rectangleBounds,
         strokeColor: "#FF0000",
         strokeOpacity: 0.8,
@@ -55,33 +58,35 @@ const drawRectangle = (
     });
 
     // Support shape drag
-    google.maps.event.addListener(rectangle, "dragend", () =>
-        onMove(rectangle as DrawShape)
-    );
+    onMove &&
+        google.maps.event.addListener(rectangle, "dragend", () =>
+            onMove(rectangle as DrawShape)
+        );
 
     return rectangle;
 };
 const drawPolygon = (
     paths: google.maps.LatLngLiteral[][],
     map: google.maps.Map,
-    onMove: (s: DrawShape | StopDraw) => void
+    onMove: ((s: DrawShape | StopDraw) => void) | null
 ) => {
     const polygon = new google.maps.Polygon({
+        clickable: true,
+        editable: !!onMove,
+        draggable: !!onMove,
         fillColor: "cyan",
         fillOpacity: 0.35,
         strokeWeight: 2,
-        clickable: true,
-        editable: true,
-        draggable: true,
         zIndex: 1,
         paths: paths,
         map: map,
     });
 
     // Support shape drag
-    google.maps.event.addListener(polygon, "dragend", () =>
-        onMove(polygon as DrawShape)
-    );
+    onMove &&
+        google.maps.event.addListener(polygon, "dragend", () =>
+            onMove(polygon as DrawShape)
+        );
 
     return polygon;
 };
@@ -89,22 +94,22 @@ const drawPolygon = (
 export const drawShape = (
     shapeData: ShapeData,
     map: google.maps.Map,
-    handleDraw: (s: DrawShape | StopDraw) => void
+    onMove: ((s: DrawShape | StopDraw) => void) | null
 ): DrawShape | null => {
     switch (shapeData.type) {
         case "Circle":
             const { lat, lng, radius } = shapeData;
             if (!lat || !lng || !radius) return null;
-            return drawCircle(lat, lng, radius, map, handleDraw);
+            return drawCircle(lat, lng, radius, map, onMove);
 
         case "Rectangle":
             const { nelat, nelng, swlat, swlng } = shapeData;
             if (!nelat || !nelng || !swlat || !swlng) return null;
-            return drawRectangle(nelat, nelng, swlat, swlng, map, handleDraw);
+            return drawRectangle(nelat, nelng, swlat, swlng, map, onMove);
 
         case "Polygon":
             if (!shapeData.paths || shapeData.paths.length === 0) return null;
-            return drawPolygon(shapeData.paths, map, handleDraw);
+            return drawPolygon(shapeData.paths, map, onMove);
 
         default:
             // Technically unreachable with the given types, but good for robustness

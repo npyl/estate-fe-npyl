@@ -40,6 +40,7 @@ interface IMapProps {
     onSearchSelect?: (selected: IMapAddress, lat: number, lng: number) => void;
 
     data?: ILocationPOST[];
+    zoom?: number;
     mainMarker?: IMapMarker;
     activeMarker: number | null;
     setActiveMarker: any;
@@ -57,6 +58,7 @@ const Map = ({
     onDraw,
     onSearchSelect,
     data,
+    zoom,
     mainMarker,
     activeMarker,
     setActiveMarker,
@@ -227,7 +229,7 @@ const Map = ({
         <GoogleMap
             mapContainerStyle={containerStyle}
             center={center}
-            zoom={16}
+            zoom={zoom || 16}
             onClick={handleMapClick}
             onLoad={onLoad}
             onUnmount={onUnmount}

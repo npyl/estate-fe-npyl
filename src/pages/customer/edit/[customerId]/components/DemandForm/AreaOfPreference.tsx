@@ -18,6 +18,7 @@ export const AreaOfPreference = () => {
     return (
         <Box height={`calc(100vh - 266px)`} width={"100%"}>
             <Map
+                zoom={7}
                 drawing
                 onDraw={handleDraw}
                 activeMarker={null}

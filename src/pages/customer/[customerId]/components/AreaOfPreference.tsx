@@ -19,14 +19,13 @@ export const AreaOfPreference: React.FC<AreaOfPreferenceProps> = ({
         const shapeData = decodeShape(shape);
         if (!shapeData) return;
 
-        shapeData && drawShape(shapeData, map, handleDraw);
+        shapeData && drawShape(shapeData, map, null);
     }, [shape, map]);
-
-    const handleDraw = (s: any) => {};
 
     return (
         <Box height={`calc(100vh - 266px)`} width={"100%"}>
             <Map
+                zoom={7}
                 onReady={(m) => setMap(m)}
                 drawing={false}
                 activeMarker={null}
