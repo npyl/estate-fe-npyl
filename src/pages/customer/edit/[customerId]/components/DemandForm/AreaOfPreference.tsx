@@ -1,14 +1,20 @@
 import { Box } from "@mui/material";
+import { useMemo, useState } from "react";
+import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import Map from "src/components/Map/Map";
 import { DrawShape, StopDraw } from "src/components/Map/types";
-import { encodeShape } from "src/components/Map/util";
-import { setShape } from "src/slices/customer";
+import { decodeShape, encodeShape } from "src/components/Map/util";
+import { selectShape, setShape } from "src/slices/customer";
 
 export const AreaOfPreference = () => {
     const dispatch = useDispatch();
 
-    // TODO: getting and showing shape from BE
+    const shape = useSelector(selectShape);
+    const shapeData = useMemo(
+        () => (shape ? decodeShape(shape) : null),
+        [shape]
+    );
 
     const handleDraw = (s: DrawShape | StopDraw) => {
         const encoded = s ? encodeShape(s) : null;
@@ -20,6 +26,7 @@ export const AreaOfPreference = () => {
             <Map
                 zoom={7}
                 drawing
+                shape={shapeData || undefined}
                 onDraw={handleDraw}
                 activeMarker={null}
                 setActiveMarker={() => {}}

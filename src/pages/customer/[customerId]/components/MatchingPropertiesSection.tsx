@@ -46,6 +46,17 @@ const STATUS_COLORS: StatusColors = {
     UNDER_MAINTENANCE: "#E0067C",
 };
 
+const filterPropertiesInShape = (
+    properties: IProperties[],
+    shapeData: ShapeData
+): IProperties[] =>
+    properties.filter(
+        (p) =>
+            p.location?.lat &&
+            p.location?.lng &&
+            isPointInsideShapeData(p.location.lat, p.location.lng, shapeData)
+    );
+
 const MatchingPropertiesSection: React.FC = () => {
     const router = useRouter();
     const { t } = useTranslation();
@@ -53,13 +64,13 @@ const MatchingPropertiesSection: React.FC = () => {
 
     const [parentCategory, setParentCategory] = useState("");
 
-    const shape = useSelector(selectShape);
-    const shapeData = useMemo(() => (shape ? decodeShape(shape) : ""), [shape]);
-
     const { data: customer, isSuccess } = useGetCustomerByIdQuery(+customerId!);
     const { data: propertiesPage } = useSuggestForCustomerQuery(+customerId!, {
         skip: !parentCategory,
     });
+
+    const shape = useMemo(() => customer?.demand?.shape, [customer]);
+    const shapeData = useMemo(() => (shape ? decodeShape(shape) : ""), [shape]);
 
     const properties = useMemo(() => {
         if (!propertiesPage?.content) return [];
@@ -75,21 +86,6 @@ const MatchingPropertiesSection: React.FC = () => {
 
         setParentCategory(customer?.demand?.filters?.parentCategory);
     }, [customer, isSuccess]);
-
-    const filterPropertiesInShape = (
-        properties: IProperties[],
-        shapeData: ShapeData
-    ): IProperties[] =>
-        properties.filter(
-            (p) =>
-                p.location?.lat &&
-                p.location?.lng &&
-                isPointInsideShapeData(
-                    p.location.lat,
-                    p.location.lng,
-                    shapeData
-                )
-        );
 
     function statusColor(params: GridCellParams) {
         if (!params.value) {

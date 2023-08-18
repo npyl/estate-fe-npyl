@@ -2,7 +2,7 @@ import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import { CustomDrawingComponent } from "./Draw";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { ILocationPOST } from "src/types/location";
-import { DrawShape, StopDraw } from "./types";
+import { DrawShape, ShapeData, StopDraw } from "./types";
 import SearchOnMap from "./Search";
 
 const containerStyle = {
@@ -41,6 +41,7 @@ interface IMapProps {
 
     data?: ILocationPOST[];
     zoom?: number;
+    shape?: ShapeData;
     mainMarker?: IMapMarker;
     activeMarker: number | null;
     setActiveMarker: any;
@@ -59,6 +60,7 @@ const Map = ({
     onSearchSelect,
     data,
     zoom,
+    shape,
     mainMarker,
     activeMarker,
     setActiveMarker,
@@ -237,6 +239,7 @@ const Map = ({
             {drawing && (
                 <CustomDrawingComponent
                     map={map}
+                    shape={shape}
                     onDraw={(shape) => onDraw && onDraw(shape)}
                 />
             )}

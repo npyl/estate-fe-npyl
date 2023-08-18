@@ -1,20 +1,26 @@
 import { useEffect, useRef, useState } from "react";
 import { Stack, Typography } from "@mui/material";
 import { StyledButton } from "./style";
-import { DrawShape, StopDraw } from "./types";
+import { DrawShape, ShapeData, StopDraw } from "./types";
+import { drawShape } from "./util";
 
 interface DrawingComponentProps {
     map: any;
+    shape?: ShapeData;
     onDraw: (shape: DrawShape | StopDraw) => void;
 }
 
 export const CustomDrawingComponent = ({
     map,
+    shape,
     onDraw,
 }: DrawingComponentProps) => {
     const drawingManagerRef = useRef<any>(null);
     const shapeRef = useRef<any>(null);
     const [drawMode, setDrawMode] = useState(false);
+
+    // drawing manager ready
+    const [ready, setReady] = useState(false);
 
     useEffect(() => {
         // Create a new instance of the DrawingManager
@@ -87,11 +93,20 @@ export const CustomDrawingComponent = ({
         // Store the reference to the DrawingManager
         drawingManagerRef.current = drawingManager;
 
+        setReady(true);
+
         return () => {
             // Cleanup when the component unmounts
             drawingManager.setMap(null);
         };
     }, [map]);
+
+    useEffect(() => {
+        if (!ready || !shape) return;
+
+        // draw any imported shape
+        shapeRef.current = drawShape(shape, map, onDraw);
+    }, [ready]);
 
     const startDrawing = () => {
         if (shapeRef.current?.getMap()) {
