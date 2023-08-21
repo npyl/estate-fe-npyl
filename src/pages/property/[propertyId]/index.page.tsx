@@ -39,6 +39,8 @@ import InitMap from "./components/Map";
 import DescriptionSection from "./components/sections/DescriptionSection";
 import { usePublishTab } from "src/components/Tabs/utils";
 import { useTranslation } from "react-i18next";
+import ConstructionSection from "./components/sections/ConstructionSection";
+import Features from "./components/sections/FeaturesSection";
 
 function a11yProps(index: number) {
     return {
@@ -118,6 +120,8 @@ const SingleProperty: NextPage = () => {
                     SuitableFor={<SuitableFor data={data} />}
                     TechnicalFeatures={<TechnicalFeatures data={data} />}
                     DescriptionSection={<DescriptionSection data={data} />}
+                    ConstructionSection={<ConstructionSection data={data} />}
+                    Features={<Features data={data} />}
                 />
             </TabPanel>
             <TabPanel value={value} index={1}></TabPanel>

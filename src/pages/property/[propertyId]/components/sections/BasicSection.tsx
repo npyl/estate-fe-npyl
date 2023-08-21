@@ -111,6 +111,25 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                                     value={data?.auction}
                                     align="horizontal"
                                 />
+                                <ListItem label={"ROI"}>
+                                    <Button
+                                        sx={{
+                                            flex: 1,
+                                            float: "right",
+                                            height: "22px",
+                                        }}
+                                        variant="outlined"
+                                        onClick={handleOpenPopup}
+                                    >
+                                        ROI
+                                    </Button>
+                                </ListItem>
+
+                                {/* yer build na prosthetei??? */}
+                            </List>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <List>
                                 <ListItem
                                     label={t("Monthly Utilities")}
                                     value={data?.averageUtils + " €"}
@@ -123,11 +142,6 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                                     }
                                     align="horizontal"
                                 />
-                                {/* yer build na prosthetei??? */}
-                            </List>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <List>
                                 <ListItem
                                     label={t("Code")}
                                     value={data?.code}
@@ -158,19 +172,6 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                                     labels={data?.labels}
                                     label={""}
                                 />
-                                <ListItem label={"ROI"}>
-                                    <Button
-                                        sx={{
-                                            flex: 1,
-                                            float: "right",
-                                            height: "22px",
-                                        }}
-                                        variant="outlined"
-                                        onClick={handleOpenPopup}
-                                    >
-                                        ROI
-                                    </Button>
-                                </ListItem>
                             </List>
                         </Grid>
                     </Grid>

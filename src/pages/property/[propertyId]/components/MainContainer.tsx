@@ -16,6 +16,8 @@ interface MainContainerProps {
     VideoSection: JSX.Element;
     SuitableFor: JSX.Element;
     TechnicalFeatures: JSX.Element;
+    ConstructionSection: JSX.Element;
+    Features: JSX.Element;
 }
 
 const MainContainer: React.FC<MainContainerProps> = (props) => {
@@ -35,6 +37,8 @@ const MainContainer: React.FC<MainContainerProps> = (props) => {
         VideoSection,
         SuitableFor,
         TechnicalFeatures,
+        ConstructionSection,
+        Features,
     } = props;
 
     return (
@@ -48,7 +52,13 @@ const MainContainer: React.FC<MainContainerProps> = (props) => {
                         {DetailsSection}
                     </Grid>
                     <Grid item xs={12}>
+                        {ConstructionSection}
+                    </Grid>
+                    <Grid item xs={12}>
                         {TechnicalFeatures}
+                    </Grid>
+                    <Grid item xs={12}>
+                        {Features}
                     </Grid>
                     <Grid item xs={12}>
                         {BlueprintsSection}
