@@ -13,6 +13,8 @@ import React, { useState } from "react";
 import { SliderPicker } from "react-color";
 import { Label } from "src/components/label";
 import { IEditProps } from "./types";
+import { useTranslation } from "react-i18next";
+import { padding } from "@mui/system";
 
 export const Edit = (props: {
     editedLabel: IEditProps;
@@ -20,7 +22,7 @@ export const Edit = (props: {
     editLabel: (editedLabel: IEditProps) => void;
 }) => {
     const { editedLabel, cancelEdit, editLabel } = props;
-
+    const { t } = useTranslation();
     const [pickerColor, setPickerColor] = useState(editedLabel.color);
     const [labelName, setLabelName] = useState(editedLabel.name);
 
@@ -31,7 +33,7 @@ export const Edit = (props: {
 
     const handleCreateLabel = () => {
         if (!labelName) {
-            setError("Το όνομα της ετικέτας είναι υποχρεωτικό");
+            setError(t("The name of the label is mandatory") || "");
             return;
         }
 
@@ -45,91 +47,83 @@ export const Edit = (props: {
 
     return (
         <>
-            <Grid component={Paper} item xs={12} sm={4} p={2}>
-                <Typography variant="h5">Μετατροπή</Typography>
-                <Stack spacing={3} mt={2}>
-                    <Stack spacing={1}>
-                        <FormControl>
-                            <FormLabel id="demo-controlled-radio-buttons-group">
-                                <Typography
-                                    variant="subtitle2"
-                                    sx={{ color: "text.secondary" }}
-                                >
-                                    Εισάγετε όνομα:
-                                </Typography>
-                            </FormLabel>
-                            <Stack direction={"row"} spacing={1}>
-                                <TextField
-                                    id="outlined-select-currency"
-                                    value={labelName}
-                                    placeholder="Νέα Ετικέτα"
-                                    error={!!error}
-                                    helperText={error}
-                                    onFocus={(event) => {
-                                        (event.target.placeholder = ""),
-                                            setError("");
-                                    }}
-                                    onBlur={(event) =>
-                                        (event.target.placeholder =
-                                            "Νέα Ετικέτα")
-                                    }
-                                    onChange={(
-                                        event: React.ChangeEvent<HTMLInputElement>
-                                    ) => {
-                                        setLabelName(event.target.value);
-                                    }}
-                                />
-                            </Stack>
-                            <Box m={4}>
-                                <SliderPicker
-                                    color={pickerColor}
-                                    onChangeComplete={handleChangeComplete}
-                                />
-                            </Box>
-                            <FormControl>
-                                <Stack direction={"row"} spacing={3}>
-                                    <FormLabel id="demo-controlled-radio-buttons-group">
-                                        <Typography
-                                            variant="subtitle2"
-                                            sx={{ color: "text.secondary" }}
-                                        >
-                                            Προεπισκόπιση:
-                                        </Typography>
-                                    </FormLabel>
-                                    <Label
-                                        variant="soft"
-                                        sx={{
-                                            bgcolor: pickerColor,
-                                            borderRadius: 7,
-                                            color: "white",
-                                        }}
-                                    >
-                                        {labelName || "Νέα Ετικέτα"}
-                                    </Label>
-                                </Stack>
-                                <Stack
-                                    direction={"row"}
-                                    spacing={1}
-                                    alignSelf={"center"}
-                                    mt={2}
-                                >
-                                    <Button
-                                        variant="outlined"
-                                        onClick={cancelEdit}
-                                    >
-                                        Ακύρωση
-                                    </Button>
-                                    <Button
-                                        variant="contained"
-                                        onClick={handleCreateLabel}
-                                    >
-                                        Μετατροπή
-                                    </Button>
-                                </Stack>
-                            </FormControl>
-                        </FormControl>
+            <Grid component={Paper} item xs={12} sm={6} p={3} elevation={3}>
+                <Typography variant="h5" gutterBottom>
+                    {t("Edit Label")}
+                </Typography>
+
+                <FormControl fullWidth sx={{ marginTop: 3 }}>
+                    <TextField
+                        fullWidth
+                        label={t("Label's name")}
+                        variant="outlined"
+                        value={labelName}
+                        placeholder="Label's Name"
+                        error={!!error}
+                        helperText={error}
+                        onFocus={(event) => {
+                            event.target.placeholder = "";
+                            setError("");
+                        }}
+                        onBlur={(event) =>
+                            (event.target.placeholder = "Label's Name")
+                        }
+                        onChange={(event) => setLabelName(event.target.value)}
+                    />
+
+                    <Box my={3}>
+                        <SliderPicker
+                            color={pickerColor}
+                            onChangeComplete={handleChangeComplete}
+                        />
+                    </Box>
+
+                    <Box mb={2}>
+                        <FormLabel component="legend">
+                            <Typography
+                                variant="subtitle2"
+                                color="textSecondary"
+                            >
+                                {t("Preview")}
+                            </Typography>
+                        </FormLabel>
+                    </Box>
+                    <Box mb={3}>
+                        <Label
+                            variant="soft"
+                            sx={{
+                                display: "inline-block",
+                                bgcolor: pickerColor,
+                                borderRadius: 7,
+                                color: "white",
+                                padding: "4px 12px",
+                            }}
+                        >
+                            {labelName || t("New Label")}
+                        </Label>
+                    </Box>
+
+                    <Stack
+                        direction={"row"}
+                        spacing={2}
+                        justifyContent="center"
+                    >
+                        <Button
+                            variant="outlined"
+                            onClick={cancelEdit}
+                            color="error"
+                        >
+                            {t("Cancel")}
+                        </Button>
+                        <Button
+                            variant="contained"
+                            onClick={handleCreateLabel}
+                            color="primary"
+                        >
+                            {t("Save")}
+                        </Button>
                     </Stack>
-                </Stack>
+                </FormControl>
             </Grid>
         </>
     );

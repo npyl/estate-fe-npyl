@@ -66,7 +66,7 @@ const LabelCreate = (props: ILabelCreateProps) => {
 
     const createLabel = () => {
         if (!labelName) {
-            setError("Το όνομα της ετικέτας είναι υποχρεωτικό");
+            setError(t("The name of the label is mandatory") || "");
             return;
         }
 
@@ -167,7 +167,7 @@ const LabelCreate = (props: ILabelCreateProps) => {
                 closeAfterTransition={true}
             >
                 <DialogTitle variant="h5">
-                    Προσθήκη Υπάρχουσας
+                    {t("Adding an existing label")}
                     <IconButton
                         aria-label="close"
                         onClick={() => setAddLabelDialog(false)}
@@ -207,23 +207,18 @@ const LabelCreate = (props: ILabelCreateProps) => {
                         })}
                     </Stack>
 
-                    <Typography variant="h5">Δημιουργία νέας</Typography>
+                    <Typography variant="h5">{t("Create Label")}</Typography>
                     <Stack spacing={3} mt={2}>
                         <Stack spacing={1}>
                             <FormControl>
-                                <FormLabel id="demo-controlled-radio-buttons-group">
-                                    <Typography
-                                        variant="subtitle2"
-                                        sx={{ color: "text.secondary" }}
-                                    >
-                                        Εισάγετε όνομα:
-                                    </Typography>
-                                </FormLabel>
+                                <FormLabel id="demo-controlled-radio-buttons-group"></FormLabel>
                                 <Stack direction={"row"} spacing={1}>
                                     <TextField
-                                        id="outlined-select-currency"
+                                        fullWidth
+                                        label={t("Label's name")}
+                                        variant="outlined"
                                         value={labelName}
-                                        placeholder="Νέα Ετικέτα"
+                                        placeholder="Label's Name"
                                         error={!!error}
                                         helperText={error}
                                         onFocus={(event) => {
@@ -232,7 +227,7 @@ const LabelCreate = (props: ILabelCreateProps) => {
                                         }}
                                         onBlur={(event) =>
                                             (event.target.placeholder =
-                                                "Νέα Ετικέτα")
+                                                t("New Label"))
                                         }
                                         onChange={(
                                             event: React.ChangeEvent<HTMLInputElement>
@@ -259,7 +254,7 @@ const LabelCreate = (props: ILabelCreateProps) => {
                                                 variant="subtitle2"
                                                 sx={{ color: "text.secondary" }}
                                             >
-                                                Προεπισκόπιση:
+                                                {t("Preview")}
                                             </Typography>
                                         </FormLabel>
                                         <Label
@@ -270,7 +265,7 @@ const LabelCreate = (props: ILabelCreateProps) => {
                                                 color: "white",
                                             }}
                                         >
-                                            {labelName || "Νέα Ετικέτα"}
+                                            {labelName || t("New Label")}
                                         </Label>
                                     </Stack>
 
@@ -278,7 +273,7 @@ const LabelCreate = (props: ILabelCreateProps) => {
                                         variant="outlined"
                                         onClick={createLabel}
                                     >
-                                        Δημιουργία & Προσθήκη
+                                        {t("Create")}
                                     </Button>
                                 </FormControl>
                             </FormControl>

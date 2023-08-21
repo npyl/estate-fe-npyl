@@ -2,6 +2,7 @@ import { Grid, Stack, Typography, Paper } from "@mui/material";
 import { EditableLabel } from "src/components/label";
 import { ILabel } from "src/types/label";
 import { IEditProps } from "./types";
+import { useTranslation } from "react-i18next";
 
 export const Preview = (props: {
     labelData: Record<string, { label: string; data: ILabel[] }> | null;
@@ -9,12 +10,14 @@ export const Preview = (props: {
     onDelete: (resource: string, labelId: number) => void;
 }) => {
     const { labelData, onEdit, onDelete } = props;
-
+    const { t } = useTranslation();
     return (
         <>
             <Grid component={Paper} item xs={12} sm p={2}>
                 <Stack direction={"column"} spacing={3}>
-                    <Typography variant="h5">Προβολή υπαρχόντων</Typography>
+                    <Typography variant="h5">
+                        {t("Already existing")}
+                    </Typography>
                     {labelData &&
                         Object.entries(labelData).map(([_, value], index) => {
                             return (
