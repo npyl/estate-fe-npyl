@@ -63,6 +63,11 @@ interface IPropertySearchParams {
     page: number;
     pageSize: number;
 }
+interface ISuggestForCustomerParams {
+    customerId: number;
+    page: number;
+    pageSize: number;
+}
 
 export const properties = createApi({
     reducerPath: "properties",
@@ -164,10 +169,13 @@ export const properties = createApi({
                 },
             }),
         }),
-        suggestForCustomer: builder.query<IPage<IProperties>, number>({
-            query: (id: number) => ({
+        suggestForCustomer: builder.query<
+            IPage<IProperties>,
+            ISuggestForCustomerParams
+        >({
+            query: (params: ISuggestForCustomerParams) => ({
                 url: "/customerSuggest",
-                params: { customerId: id },
+                params: params,
             }),
             providesTags: ["SuggestedProperties"],
         }),
