@@ -19,6 +19,7 @@ import { useAllPropertiesQuery } from "src/services/properties";
 import { useAllCustomersQuery } from "src/services/customers";
 import { SliderPicker } from "react-color";
 import { Label } from "src/components/label";
+import { useTranslation } from "react-i18next";
 
 export const Create = (props: {
     createLabel: (
@@ -29,7 +30,7 @@ export const Create = (props: {
     ) => void;
 }) => {
     const { createLabel } = props;
-
+    const { t } = useTranslation();
     const [assigneeType, setAssigneeType] = useState("");
     const [checked, setChecked] = useState(false);
 
@@ -87,11 +88,11 @@ export const Create = (props: {
 
     const handleCreateLabel = () => {
         if (!labelName) {
-            setError("Το όνομα της ετικέτας είναι υποχρεωτικό");
+            setError(t("The name of the label is mandatory") || "");
             return;
         }
         if (checked && !autocompleteValue) {
-            setAutocompleteError("Το code είναι υποχρεωτικό");
+            setAutocompleteError(t("The code field is mandatory") || "");
             return;
         }
 
@@ -99,164 +100,118 @@ export const Create = (props: {
     };
 
     return (
-        <>
-            <Grid component={Paper} item xs={12} sm={4} p={2}>
-                <Typography variant="h5">Δημιουργία νέας</Typography>
-                <Stack spacing={3} mt={2}>
-                    <Stack spacing={1}>
-                        <FormControl>
-                            <FormLabel id="demo-controlled-radio-buttons-group">
-                                <Typography
-                                    variant="subtitle2"
-                                    sx={{ color: "text.secondary" }}
-                                >
-                                    Επιλέξτε ετικέτα για:
-                                </Typography>
-                            </FormLabel>
-                            <RadioGroup
-                                row
-                                aria-labelledby="demo-controlled-radio-buttons-group"
-                                name="controlled-radio-buttons-group"
-                                value={assigneeType}
-                                onChange={handleAssigneeTypeChange}
+        <Grid component={Paper} item xs={12} sm={6} p={3} elevation={3}>
+            <Typography variant="h5" gutterBottom>
+                {t("Create Label")}
+            </Typography>
+
+            <FormControl component={Stack} spacing={2} fullWidth>
+                <FormLabel>
+                    <Typography variant="subtitle2">{t("For")}</Typography>
+                </FormLabel>
+
+                <RadioGroup
+                    row
+                    value={assigneeType}
+                    onChange={handleAssigneeTypeChange}
+                >
+                    <FormControlLabel
+                        value="property"
+                        control={<Radio />}
+                        label={t("Property")}
+                    />
+                    <FormControlLabel
+                        value="customer"
+                        control={<Radio />}
+                        label={t("Customer")}
+                    />
+                </RadioGroup>
+
+                {assigneeType && (
+                    <>
+                        <TextField
+                            fullWidth
+                            label={t("Label's name")}
+                            variant="outlined"
+                            value={labelName}
+                            placeholder="Label's Name"
+                            error={!!error}
+                            helperText={error}
+                            onChange={(event) =>
+                                setLabelName(event.target.value)
+                            }
+                        />
+
+                        <SliderPicker
+                            color={pickerColor}
+                            onChangeComplete={handleChangeComplete}
+                        />
+
+                        <Box my={2}>
+                            <Typography
+                                variant="subtitle2"
+                                sx={{ marginBottom: 1 }}
                             >
-                                <FormControlLabel
-                                    value="property"
-                                    control={<Radio />}
-                                    label="Ακίνητο"
+                                {t("Preview")}
+                            </Typography>
+                            <Label
+                                variant="soft"
+                                sx={{
+                                    bgcolor: pickerColor,
+                                    borderRadius: "7px",
+                                    color: "white",
+                                    display: "block",
+                                    textAlign: "center",
+                                    padding: "4px 8px",
+                                }}
+                            >
+                                {labelName || t("New Label")}
+                            </Label>
+                        </Box>
+
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={checked}
+                                    onChange={handleCheck}
                                 />
-                                <FormControlLabel
-                                    value="customer"
-                                    control={<Radio />}
-                                    label="Πελάτης"
-                                />
-                            </RadioGroup>
-                        </FormControl>
-                        {assigneeType && (
-                            <FormControl>
-                                <FormLabel id="demo-controlled-radio-buttons-group">
-                                    <Typography
-                                        variant="subtitle2"
-                                        sx={{ color: "text.secondary" }}
-                                    >
-                                        Εισάγετε όνομα:
-                                    </Typography>
-                                </FormLabel>
-                                <Stack direction={"row"} spacing={1}>
+                            }
+                            label={t("Label assignment")}
+                        />
+
+                        {checked && (
+                            <Autocomplete
+                                disablePortal
+                                id="combo-box-demo"
+                                value={autocompleteValue}
+                                onChange={autocompleteChange}
+                                options={
+                                    assigneeType === "property"
+                                        ? properties
+                                        : customers
+                                }
+                                sx={{ width: "100%", marginBottom: 2 }}
+                                renderInput={(params) => (
                                     <TextField
-                                        id="outlined-select-currency"
-                                        value={labelName}
-                                        placeholder="Νέα Ετικέτα"
-                                        error={!!error}
-                                        helperText={error}
-                                        onFocus={(event) => {
-                                            (event.target.placeholder = ""),
-                                                setError("");
-                                        }}
-                                        onBlur={(event) =>
-                                            (event.target.placeholder =
-                                                "Νέα Ετικέτα")
-                                        }
-                                        onChange={(
-                                            event: React.ChangeEvent<HTMLInputElement>
-                                        ) => {
-                                            setLabelName(event.target.value);
-                                        }}
+                                        error={!!autocompleteError}
+                                        helperText={autocompleteError}
+                                        {...params}
                                     />
-                                </Stack>
-                                <Box m={4}>
-                                    <SliderPicker
-                                        color={pickerColor}
-                                        onChangeComplete={handleChangeComplete}
-                                    />
-                                </Box>
-                                <FormControl>
-                                    <Stack
-                                        direction={"row"}
-                                        paddingTop={2}
-                                        spacing={3}
-                                    >
-                                        <FormLabel id="demo-controlled-radio-buttons-group">
-                                            <Typography
-                                                variant="subtitle2"
-                                                sx={{ color: "text.secondary" }}
-                                            >
-                                                Προεπισκόπιση:
-                                            </Typography>
-                                        </FormLabel>
-                                        <Label
-                                            variant="soft"
-                                            sx={{
-                                                bgcolor: pickerColor,
-                                                borderRadius: 7,
-                                                color: "white",
-                                            }}
-                                        >
-                                            {labelName || "Νέα Ετικέτα"}
-                                        </Label>
-                                    </Stack>
-                                    <Stack
-                                        paddingTop={1}
-                                        direction={"row"}
-                                        alignItems={"center"}
-                                    >
-                                        <FormLabel id="demo-controlled-radio-buttons-group">
-                                            <Typography
-                                                variant="subtitle2"
-                                                sx={{ color: "text.secondary" }}
-                                            >
-                                                Επιθυμείτε ανάθεση τώρα;
-                                            </Typography>
-                                        </FormLabel>
-                                        <Checkbox
-                                            checked={checked}
-                                            onChange={handleCheck}
-                                            inputProps={{
-                                                "aria-label": "controlled",
-                                            }}
-                                        />
-                                    </Stack>
-                                    {checked && (
-                                        <Autocomplete
-                                            disablePortal
-                                            id="combo-box-demo"
-                                            value={autocompleteValue}
-                                            onChange={autocompleteChange}
-                                            options={
-                                                assigneeType === "property"
-                                                    ? properties
-                                                    : customers
-                                            }
-                                            sx={{
-                                                width: "50%",
-                                                marginBottom: 2,
-                                            }}
-                                            renderInput={(params) => (
-                                                <TextField
-                                                    error={!!autocompleteError}
-                                                    helperText={
-                                                        autocompleteError
-                                                    }
-                                                    onFocus={(event) =>
-                                                        setAutocompleteError("")
-                                                    }
-                                                    {...params}
-                                                />
-                                            )}
-                                        />
-                                    )}
-                                    <Button
-                                        variant="outlined"
-                                        onClick={handleCreateLabel}
-                                    >
-                                        Δημιουργία
-                                    </Button>
-                                </FormControl>
-                            </FormControl>
+                                )}
+                            />
                         )}
-                    </Stack>
-                </Stack>
-            </Grid>
-        </>
+
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            size="large"
+                            onClick={handleCreateLabel}
+                        >
+                            {t("Create")}
+                        </Button>
+                    </>
+                )}
+            </FormControl>
+        </Grid>
     );
 };

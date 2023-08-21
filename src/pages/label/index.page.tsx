@@ -24,10 +24,12 @@ import { Create } from "./components/Create";
 import { Edit } from "./components/Edit";
 import { IEditProps } from "./components/types";
 import { usePublishTab } from "src/components/Tabs/utils";
+import { useTranslation } from "react-i18next";
 
 const SingleProperty: NextPage = () => {
-    const propertySectionLabel = "Ακίνητα: ";
-    const customerSectionLabel = "Πελάτες: ";
+    const { t } = useTranslation();
+    const propertySectionLabel = t("Property Labels");
+    const customerSectionLabel = t("Customer labels");
 
     usePublishTab({ title: "Labels", path: "/label" });
 

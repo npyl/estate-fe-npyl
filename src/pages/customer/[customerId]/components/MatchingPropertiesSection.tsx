@@ -6,7 +6,11 @@ import {
     Paper,
     Typography,
 } from "@mui/material";
-import { GridCellParams, GridColDef } from "@mui/x-data-grid";
+import {
+    GridCellParams,
+    GridColDef,
+    GridPaginationModel,
+} from "@mui/x-data-grid";
 import { useSuggestForCustomerQuery } from "src/services/properties";
 import DataGridTable from "src/components/DataGrid";
 import { useRouter } from "next/router";
@@ -15,8 +19,6 @@ import * as React from "react";
 import Image from "src/components/image";
 import { useGetCustomerByIdQuery } from "src/services/customers";
 import { useState, useEffect, useMemo } from "react";
-import { useSelector } from "react-redux";
-import { selectShape } from "src/slices/customer";
 import { decodeShape, isPointInsideShapeData } from "src/components/Map/util";
 import { IProperties } from "src/types/properties";
 import { ShapeData } from "src/components/Map/types";
@@ -57,20 +59,32 @@ const filterPropertiesInShape = (
             isPointInsideShapeData(p.location.lat, p.location.lng, shapeData)
     );
 
+const pageSize = 5;
+
 const MatchingPropertiesSection: React.FC = () => {
     const router = useRouter();
     const { t } = useTranslation();
+
     const { customerId } = router.query;
 
+    const [page, setPage] = useState(0);
     const [parentCategory, setParentCategory] = useState("");
 
     const { data: customer, isSuccess } = useGetCustomerByIdQuery(+customerId!);
-    const { data: propertiesPage } = useSuggestForCustomerQuery(+customerId!, {
-        skip: !parentCategory,
-    });
+    const { data: propertiesPage } = useSuggestForCustomerQuery(
+        { customerId: +customerId!, page, pageSize },
+        {
+            skip: !parentCategory,
+        }
+    );
 
     const shape = useMemo(() => customer?.demand?.shape, [customer]);
     const shapeData = useMemo(() => (shape ? decodeShape(shape) : ""), [shape]);
+
+    const totalRows = useMemo(
+        () => propertiesPage?.totalElements,
+        [propertiesPage?.totalElements]
+    );
 
     const properties = useMemo(() => {
         if (!propertiesPage?.content) return [];
@@ -185,6 +199,9 @@ const MatchingPropertiesSection: React.FC = () => {
         },
     ];
 
+    const handlePaginationChange = (model: GridPaginationModel) =>
+        setPage(model.page);
+
     if (!parentCategory) return null;
     if (properties?.length === 0) {
         // !propertiesPage ||
@@ -252,9 +269,10 @@ const MatchingPropertiesSection: React.FC = () => {
                             resource={"property"}
                             sortingBy={"firstName"}
                             sortingOrder={"asc"}
-                            page={0}
-                            pageSize={10}
-                            totalRows={10}
+                            page={page}
+                            pageSize={pageSize}
+                            totalRows={totalRows}
+                            onPaginationModelChange={handlePaginationChange}
                         />
                     </Paper>
                 </Grid>

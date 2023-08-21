@@ -59,7 +59,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                             align="horizontal"
                         />
                         <ListItem
-                            label={"W/C"}
+                            label={t("W/C")}
                             value={details?.wc}
                             align="horizontal"
                         />

@@ -72,11 +72,6 @@ const DistanceSection: React.FC<DistanceSectionProps> = (props) => {
                             value={distances?.publicTransport}
                             align="horizontal"
                         />
-                        <ListItem
-                            label={t("Entertainment")}
-                            value={distances?.entertainment}
-                            align="horizontal"
-                        />
                     </List>
                 </Grid>
             </Grid>

@@ -8,6 +8,8 @@ import { X as XIcon } from "../icons/x";
 import LightThemeIcon from "../components/light-theme.svg";
 // @ts-ignore
 import DarkThemeIcon from "../components/dark-theme.svg";
+import { useTranslation } from "react-i18next";
+import { t } from "i18next";
 
 interface SettingsDrawerProps {
     onClose?: () => void;
@@ -16,12 +18,12 @@ interface SettingsDrawerProps {
 
 const themes = [
     {
-        label: "Light",
+        label: t("Light"),
         value: "light",
         icon: LightThemeIcon,
     },
     {
-        label: "Dark",
+        label: t("Dark"),
         value: "dark",
         icon: DarkThemeIcon,
     },
@@ -37,7 +39,7 @@ export const SettingsDrawer: FC<SettingsDrawerProps> = (props) => {
     const { open, onClose, ...other } = props;
     const { settings, saveSettings } = useSettings();
     const [values, setValues] = useState<Settings>(getValues(settings));
-
+    const { t } = useTranslation();
     useEffect(() => {
         setValues(getValues(settings));
     }, [settings]);
@@ -72,7 +74,7 @@ export const SettingsDrawer: FC<SettingsDrawerProps> = (props) => {
                 }}
             >
                 <Typography color="inherit" variant="h6">
-                    Theme settings
+                    {t("Theme settings")}
                 </Typography>
                 <IconButton color="inherit" onClick={onClose}>
                     <XIcon fontSize="small" />
@@ -92,7 +94,7 @@ export const SettingsDrawer: FC<SettingsDrawerProps> = (props) => {
                     }}
                     variant="overline"
                 >
-                    Color Scheme
+                    {t("Color Scheme")}
                 </Typography>
                 <Box
                     sx={{
