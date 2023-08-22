@@ -21,35 +21,39 @@ export const ViewLocation = ({ location }: ViewLocationProps) => {
     const { t } = useTranslation();
 
     const { data: regions } = useGetRegionsQuery();
-    const { data: municips } = useGetMunicipalitiesQuery(+location?.region);
-    const { data: neighbs } = useGetNeighbourhoodsQuery(+location?.city);
+    const { data: municips } = useGetMunicipalitiesQuery(+location?.region, {
+        skip: !isNumberString(location?.region),
+    });
+    const { data: neighbs } = useGetNeighbourhoodsQuery(+location?.city, {
+        skip: !isNumberString(location?.city),
+    });
 
     // region is most of the types a code; translate to human readable form; otherwise just return the string
     const region: string = useMemo(() => {
-        if (!location?.region || !regions) return "";
+        if (!location?.region) return "";
 
         return isNumberString(location.region)
-            ? regions.filter((r) => r.areaID === +location.region)[0]?.nameGR ||
-                  ""
+            ? regions?.filter((r) => r.areaID === +location.region)[0]
+                  ?.nameGR || ""
             : location.region;
     }, [location?.region, regions]);
 
     // city is most of the types a code; translate to human readable form; otherwise just return the string
     const city = useMemo(() => {
-        if (!location?.city || !municips) return "";
+        if (!location?.city) return "";
 
         return isNumberString(location.city)
-            ? municips.filter((m) => m.areaID === +location.city)[0]?.nameGR ||
+            ? municips?.filter((m) => m.areaID === +location.city)[0]?.nameGR ||
                   ""
             : location.city;
     }, [location?.city]);
 
     // neighb is most of the types a code; translate to human readable form; otherwise just return the string
     const neighb = useMemo(() => {
-        if (!location?.complex || !neighbs) return "";
+        if (!location?.complex) return "";
 
         return isNumberString(location.complex)
-            ? neighbs.filter((n) => n.areaID === +location.complex)[0]
+            ? neighbs?.filter((n) => n.areaID === +location.complex)[0]
                   ?.nameGR || ""
             : location.complex;
     }, [location?.complex]);

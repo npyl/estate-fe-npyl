@@ -5,6 +5,8 @@ import {
     selectStreet,
     setStreet,
     setNumber,
+    setCity,
+    selectCity,
 } from "src/slices/customer";
 
 import { useSelector } from "react-redux";
@@ -18,6 +20,7 @@ const AddressDetails: React.FC<any> = () => {
     const dispatch = useDispatch();
 
     const street = useSelector(selectStreet);
+    const city = useSelector(selectCity);
     const number = useSelector(selectNumber);
 
     const handleChange = (
@@ -59,6 +62,14 @@ const AddressDetails: React.FC<any> = () => {
                         label={t("Number")}
                         value={number}
                         onChange={(event) => handleChange(setNumber, event)}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        fullWidth
+                        label={t("City")}
+                        value={city}
+                        onChange={(event) => handleChange(setCity, event)}
                     />
                 </Grid>
             </Grid>
