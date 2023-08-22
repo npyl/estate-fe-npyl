@@ -46,13 +46,15 @@ const Customers: NextPage = () => {
                 const firstName = params.row.firstName;
                 const lastName = params.row.lastName;
 
-                return firstName && lastName ? (
+                return (firstName && lastName) || firstName || lastName ? (
                     <Avatar>
                         {firstName[0]}
                         {lastName[0]}
                     </Avatar>
                 ) : (
-                    <UserCircle />
+                    <Avatar>
+                        <UserCircle />
+                    </Avatar>
                 );
             },
         },

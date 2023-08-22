@@ -15,6 +15,7 @@ export const StyledLabel = styled(Box)(
         ownerState: {
             color: LabelColor;
             variant: LabelVariant;
+            opacity?: number;
         };
     }) => {
         const isLight = theme.palette.mode === "light";
@@ -70,24 +71,27 @@ export const StyledLabel = styled(Box)(
         };
 
         return {
-            height: 24,
-            minWidth: 22,
-            lineHeight: 0,
-            borderRadius: 6,
+            height: 28, // Increased height
+            minWidth: 28, // Increased minWidth
+            lineHeight: "24px", // Specified line height for better alignment
+            borderRadius: 8, // Increased border-radius
             cursor: "default",
             alignItems: "center",
             whiteSpace: "nowrap",
             display: "inline-flex",
             justifyContent: "center",
             textTransform: "capitalize",
-            padding: theme.spacing(0, 1),
+            padding: theme.spacing(0, 1.5), // Increased padding
             color: theme.palette.grey[800],
-            fontSize: theme.typography.pxToRem(12),
+            fontSize: theme.typography.pxToRem(14), // Increased font size
             fontFamily: theme.typography.fontFamily,
             backgroundColor: theme.palette.grey[300],
             fontWeight: theme.typography.fontWeightBold,
+            boxShadow: "0 2px 5px rgba(0,0,0,0.1)", // Subtle shadow
+            transition: "all 0.3s ease", // Smooth transitions
             ...colorStyle,
             ...defaultStyle,
+            opacity: ownerState.opacity || 1,
         };
     }
 );

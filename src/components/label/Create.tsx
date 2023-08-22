@@ -17,7 +17,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Close as CloseIcon } from "@mui/icons-material";
 
 import * as React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Label from "src/components/label/Label";
 
@@ -63,8 +63,16 @@ const LabelCreate = (props: ILabelCreateProps) => {
     const handleChangeComplete = (color: any) => {
         setPickerColor(color.hex);
     };
+    const [unavailableLabels, setUnavailableLabels] = useState<string[]>([]);
+    const handleLabelClick = (label: ILabel) => {
+        onLabelClick(label); // Call the prop's handler
+        setUnavailableLabels((prev) => [...prev, label.name]); // Add the clicked label's name to the unavailable list
+    };
+    const [dialogKey, setDialogKey] = useState(0);
 
     const createLabel = () => {
+        setDialogKey((prevKey) => prevKey + 1);
+
         if (!labelName) {
             setError(t("The name of the label is mandatory") || "");
             return;
@@ -72,7 +80,12 @@ const LabelCreate = (props: ILabelCreateProps) => {
 
         onLabelCreate({ color: pickerColor, name: labelName });
 
-        /* close dialog */
+        // After creating a label, reset the states
+        setPickerColor("#22194d");
+        setLabelName("");
+        setError("");
+
+        // close dialog
         setAddLabelDialog(false);
     };
 
@@ -160,6 +173,7 @@ const LabelCreate = (props: ILabelCreateProps) => {
             )}
 
             <Dialog
+                key={dialogKey}
                 fullWidth
                 maxWidth="xs"
                 open={addLabelDialog}
@@ -189,16 +203,27 @@ const LabelCreate = (props: ILabelCreateProps) => {
                     </DialogContentText>
                     <Stack direction={"row"} flexWrap={"wrap"} spacing={1}>
                         {existingLabels.map((label, index) => {
+                            const isAssigned = assignedLabels.some(
+                                (assignedLabel) =>
+                                    assignedLabel.name === label.name
+                            );
                             return (
                                 <Label
                                     key={index}
                                     variant="soft"
-                                    onClick={() => onLabelClick(label)}
+                                    onClick={
+                                        isAssigned
+                                            ? undefined
+                                            : () => onLabelClick(label)
+                                    }
+                                    opacity={isAssigned ? 0.4 : 1} // Pass opacity directly here
                                     sx={{
                                         bgcolor: label.color,
                                         borderRadius: 7,
                                         color: "white",
-                                        "&:hover": { cursor: "pointer" },
+                                        "&:hover": isAssigned
+                                            ? undefined
+                                            : { cursor: "pointer" },
                                     }}
                                 >
                                     {label.name}
