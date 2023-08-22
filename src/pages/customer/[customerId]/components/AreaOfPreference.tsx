@@ -25,7 +25,7 @@ export const AreaOfPreference: React.FC<AreaOfPreferenceProps> = ({
     return (
         <Box height={`calc(100vh - 266px)`} width={"100%"}>
             <Map
-                zoom={7}
+                zoom={12}
                 onReady={(m) => setMap(m)}
                 drawing={false}
                 activeMarker={null}
