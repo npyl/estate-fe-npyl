@@ -16,7 +16,7 @@ export const Preview = (props: {
             <Grid component={Paper} item xs={12} sm p={2}>
                 <Stack direction={"column"} spacing={3}>
                     <Typography variant="h5">
-                        {t("Already existing")}
+                        {t("Already Existing")}
                     </Typography>
                     {labelData &&
                         Object.entries(labelData).map(([_, value], index) => {

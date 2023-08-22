@@ -10,7 +10,7 @@ import { Close as CloseIcon } from "@mui/icons-material";
 
 // ----------------------------------------------------------------------
 
-const Label = forwardRef<HTMLSpanElement, LabelProps>(
+const Label = forwardRef<HTMLSpanElement, LabelProps & { opacity?: number }>(
     (
         {
             children,
@@ -18,6 +18,7 @@ const Label = forwardRef<HTMLSpanElement, LabelProps>(
             variant = "soft",
             opaque = false,
             onClose,
+            opacity, // Add this line
             sx,
             ...other
         },
@@ -36,7 +37,7 @@ const Label = forwardRef<HTMLSpanElement, LabelProps>(
             <StyledLabel
                 ref={ref}
                 // component="span"
-                ownerState={{ color, variant }}
+                ownerState={{ color, variant, opacity }} // Pass opacity here
                 sx={{
                     pl: 0.75,
                     pr: 0.75,
