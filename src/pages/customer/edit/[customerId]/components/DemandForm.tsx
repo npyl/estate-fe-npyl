@@ -35,10 +35,12 @@ import {
     selectMinPrice,
     selectMinYearOfConstruction,
     selectParentCategory,
+    selectCategory,
     selectState,
     selectTimeFrame,
     // setters
     setFurnished,
+    setCategory,
     setMaxBathrooms,
     setMaxBedrooms,
     setMaxCovered,
@@ -98,6 +100,7 @@ const DemandForm: FC = () => {
     const minFloor = useSelector(selectMinFloor) || 0;
     const maxFloor = useSelector(selectMaxFloor) || 0;
     const parentCategory = useSelector(selectParentCategory) || "";
+    const category = useSelector(selectCategory) || "";
     const state = useSelector(selectState) || "";
     const minPrice = useSelector(selectMinPrice) || 0;
     const maxPrice = useSelector(selectMaxPrice) || 0;
@@ -110,6 +113,15 @@ const DemandForm: FC = () => {
     const buyer = useSelector(selectBuyer);
 
     const [autocompleteValue, setAutocompleteValue] = useState("");
+
+    const subCategoriesMap: {
+        [key: string]: string[];
+    } = {
+        Residential: propertyEnums?.residentialCategory ?? [],
+        Commercial: propertyEnums?.commercialCategory ?? [],
+        Land: propertyEnums?.landCategory ?? [],
+        Other: propertyEnums?.otherCategory ?? [],
+    };
 
     const propertyCodes: string[] =
         useAllPropertiesQuery(undefined, {
@@ -131,6 +143,7 @@ const DemandForm: FC = () => {
         if (!propertyForCode) return;
 
         dispatch(setParentCategory(propertyForCode.parentCategory));
+        dispatch(setCategory(propertyForCode.category));
         dispatch(setFurnished(propertyForCode.technicalFeatures.furnished));
         dispatch(setState(propertyForCode.state));
         dispatch(setMinBedrooms(propertyForCode.details.bedrooms));
@@ -296,6 +309,38 @@ const DemandForm: FC = () => {
                                 })}
                             </Select>
                         </FormControl>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <TextField
+                            disabled={parentCategory === ""}
+                            fullWidth
+                            select
+                            label={t("Category")}
+                            value={category}
+                            onChange={(
+                                event: React.ChangeEvent<HTMLInputElement>
+                            ) => {
+                                console.log(
+                                    "Category changed:",
+                                    event.target.value
+                                );
+                                dispatch(setCategory(event.target.value));
+                            }}
+                        >
+                            {subCategoriesMap[parentCategory] ? (
+                                subCategoriesMap[parentCategory].map(
+                                    (item, index) => {
+                                        return (
+                                            <MenuItem key={index} value={item}>
+                                                {item}
+                                            </MenuItem>
+                                        );
+                                    }
+                                )
+                            ) : (
+                                <MenuItem></MenuItem>
+                            )}
+                        </TextField>
                     </Grid>
                     <Grid item xs={6}>
                         <FormControl fullWidth>
