@@ -32,6 +32,7 @@ export interface IGlobalPropertyDetails {
 
 export interface IGlobalProperty {
     parentCategory: string[];
+    category: string[];
     residentialCategory: string[];
     residentialFeatures: string[];
     commercialCategory: string[];
