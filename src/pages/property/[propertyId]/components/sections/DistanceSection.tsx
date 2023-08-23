@@ -35,22 +35,22 @@ const DistanceSection: React.FC<DistanceSectionProps> = (props) => {
                     <List>
                         <ListItem
                             label={t("Schools")}
-                            value={distances?.schools}
+                            value={distances?.schools || "" + " km"}
                             align="horizontal"
                         />
                         <ListItem
                             label={t("Supermarket")}
-                            value={distances?.supermarket}
+                            value={distances?.supermarket || "" + " km"}
                             align="horizontal"
                         />
                         <ListItem
                             label={t("Cafe Restaurant")}
-                            value={distances?.cafeRestaurant}
+                            value={distances?.cafeRestaurant || "" + " km"}
                             align="horizontal"
                         />
                         <ListItem
                             label={t("Hospital")}
-                            value={distances?.hospital}
+                            value={distances?.hospital || "" + " km"}
                             align="horizontal"
                         />
                     </List>
@@ -59,17 +59,17 @@ const DistanceSection: React.FC<DistanceSectionProps> = (props) => {
                     <List>
                         <ListItem
                             label={t("Airport")}
-                            value={distances?.airport}
+                            value={distances?.airport || "" + " km"}
                             align="horizontal"
                         />
                         <ListItem
                             label={t("From Sea")}
-                            value={distances?.sea}
+                            value={distances?.sea || "" + " km"}
                             align="horizontal"
                         />
                         <ListItem
                             label={t("From Public Transport")}
-                            value={distances?.publicTransport}
+                            value={distances?.publicTransport || "" + " km"}
                             align="horizontal"
                         />
                     </List>

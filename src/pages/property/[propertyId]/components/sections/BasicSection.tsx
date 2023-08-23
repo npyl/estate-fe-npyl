@@ -101,14 +101,14 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                                     value={data?.currentRentPrice}
                                     align="horizontal"
                                 />
-                                <ListItem
+                                <ListBooleanItem
                                     label={t("Debatable Price")}
-                                    value={data?.debatablePrice}
+                                    status={data?.debatablePrice}
                                     align="horizontal"
                                 />
-                                <ListItem
+                                <ListBooleanItem
                                     label={t("Auction")}
-                                    value={data?.auction}
+                                    status={data?.auction}
                                     align="horizontal"
                                 />
                                 <ListItem label={"ROI"}>

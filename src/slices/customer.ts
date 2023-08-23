@@ -319,6 +319,9 @@ const slice = createSlice({
         setParentCategory(state: customerState, action): void {
             state.demand.filters.parentCategory = action.payload;
         },
+        setCategory(state: customerState, action): void {
+            state.demand.filters.category = action.payload;
+        },
 
         setState(state: customerState, action): void {
             state.demand.filters.state = action.payload;
@@ -517,6 +520,7 @@ export const {
     setMinFloor,
     setMaxFloor,
     setParentCategory,
+    setCategory,
     setState,
     setMinPrice,
     setMaxPrice,
@@ -636,6 +640,8 @@ export const selectMaxFloor = ({ customer }: RootState) =>
 
 export const selectParentCategory = ({ customer }: RootState) =>
     customer.demand.filters.parentCategory;
+export const selectCategory = ({ customer }: RootState) =>
+    customer.demand.filters.category;
 
 export const selectState = ({ customer }: RootState) =>
     customer.demand.filters.state;
