@@ -106,11 +106,12 @@ const BasicSection: React.FC<any> = () => {
     const area = useSelector(selectArea);
     const plotArea = useSelector(selectPlotArea);
     const rented = useSelector(selectRented);
+    const debatablePrice = useSelector(selectDebatablePrice);
     const availableAfter = useSelector(selectAvailableAfter);
     const rentalPeriodStart = useSelector(selectRentalPeriodStart);
     const rentalPeriodEnd = useSelector(selectRentalPeriodEnd);
     const auction = useSelector(selectAuction);
-    const debatablePrice = useSelector(selectDebatablePrice);
+
     const state = useSelector(selectState);
     const stateEnum = enums?.state;
 
@@ -378,57 +379,7 @@ const BasicSection: React.FC<any> = () => {
                             adornment="€"
                         />
                     </Grid>
-                    <Grid
-                        item
-                        xs={2.7}
-                        flexDirection="row"
-                        sx={{ display: "inline-flex", alignItems: "center" }}
-                    >
-                        <Checkbox
-                            value={debatablePrice}
-                            checked={debatablePrice}
-                            onChange={(
-                                event: React.ChangeEvent<unknown>,
-                                checked: boolean
-                            ) => {
-                                dispatch(setDebatablePrice(checked));
-                            }}
-                            sx={{ cursor: "default" }}
-                            color="primary"
-                            inputProps={{
-                                "aria-label": "Floor Heating Checkbox",
-                            }}
-                        />
-                        <Typography variant="body1" sx={{ ml: 0 }}>
-                            {t("Debatable Price")}
-                        </Typography>
-                    </Grid>
 
-                    <Grid
-                        item
-                        xs={1.5}
-                        flexDirection="row"
-                        sx={{ display: "inline-flex", alignItems: "center" }}
-                    >
-                        <Checkbox
-                            value={auction}
-                            checked={auction}
-                            onChange={(
-                                event: React.ChangeEvent<unknown>,
-                                checked: boolean
-                            ) => {
-                                dispatch(setAuction(checked));
-                            }}
-                            sx={{ cursor: "default" }}
-                            color="primary"
-                            inputProps={{
-                                "aria-label": "Floor Heating Checkbox",
-                            }}
-                        />
-                        <Typography variant="body1" sx={{ ml: 0 }}>
-                            {t("Auction")}
-                        </Typography>
-                    </Grid>
                     <Grid
                         item
                         xs={1.5}
@@ -538,6 +489,57 @@ const BasicSection: React.FC<any> = () => {
                             </Grid>
                         </Grid>
                     </Grid>
+                </Grid>
+                <Grid
+                    item
+                    xs={3.5}
+                    flexDirection="row"
+                    sx={{ display: "inline-flex", alignItems: "center" }}
+                >
+                    <Checkbox
+                        value={debatablePrice}
+                        checked={debatablePrice}
+                        onChange={(
+                            event: React.ChangeEvent<unknown>,
+                            checked: boolean
+                        ) => {
+                            dispatch(setDebatablePrice(checked));
+                        }}
+                        sx={{ cursor: "default" }}
+                        color="primary"
+                        inputProps={{
+                            "aria-label": "Floor Heating Checkbox",
+                        }}
+                    />
+                    <Typography variant="body1" sx={{ ml: 0 }}>
+                        {t("Debatable Price")}
+                    </Typography>
+                </Grid>
+
+                <Grid
+                    item
+                    xs={2.5}
+                    flexDirection="row"
+                    sx={{ display: "inline-flex", alignItems: "center" }}
+                >
+                    <Checkbox
+                        value={auction}
+                        checked={auction}
+                        onChange={(
+                            event: React.ChangeEvent<unknown>,
+                            checked: boolean
+                        ) => {
+                            dispatch(setAuction(checked));
+                        }}
+                        sx={{ cursor: "default" }}
+                        color="primary"
+                        inputProps={{
+                            "aria-label": "Floor Heating Checkbox",
+                        }}
+                    />
+                    <Typography variant="body1" sx={{ ml: 0 }}>
+                        {t("Auction")}
+                    </Typography>
                 </Grid>
             </Grid>
         </Paper>

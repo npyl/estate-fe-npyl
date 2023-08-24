@@ -40,6 +40,8 @@ import {
     setStoreroomBool,
     setViewType,
     setZoneType,
+    setFloorApartment,
+    selectFloorApartment,
 } from "src/slices/property";
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 
@@ -57,7 +59,7 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
     const viewType = useSelector(selectViewType);
     const accessibility = useSelector(selectAccessibility);
     const zoneType = useSelector(selectZoneType);
-
+    const floorApartment = useSelector(selectFloorApartment);
     const kitchens = useSelector(selectKitchens);
     const layers = useSelector(selectLayers);
     const bathrooms = useSelector(selectBathrooms);
@@ -516,6 +518,30 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
                             {t("Penthouse")}
+                        </Typography>
+                    </Grid>
+                    <Grid
+                        item
+                        xs={3}
+                        flexDirection="row"
+                        sx={{ display: "inline-flex", alignItems: "center" }}
+                    >
+                        <Checkbox
+                            id="outlined-controlled"
+                            value={floorApartment}
+                            placeholder="Floor Apartment"
+                            onChange={(
+                                event: React.ChangeEvent<unknown>,
+                                checked: boolean
+                            ) => {
+                                dispatch(setFloorApartment(checked));
+                            }}
+                            sx={{ cursor: "default" }}
+                            color="primary"
+                            inputProps={{ "aria-label": "Elevator" }}
+                        />
+                        <Typography variant="body1" sx={{ ml: 0 }}>
+                            {t("Floor Apartment")}
                         </Typography>
                     </Grid>
                 </Grid>

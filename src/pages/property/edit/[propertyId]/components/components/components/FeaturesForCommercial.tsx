@@ -110,29 +110,6 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                             {t("Organized Garden")}
                         </Typography>
                     </Grid>
-                    <Grid
-                        item
-                        xs={3}
-                        flexDirection="row"
-                        sx={{ display: "inline-flex", alignItems: "center" }}
-                    >
-                        <Checkbox
-                            value={alarmSystem}
-                            checked={alarmSystem}
-                            onChange={(
-                                event: React.ChangeEvent<unknown>,
-                                checked: boolean
-                            ) => {
-                                dispatch(setAlarmSystem(checked));
-                            }}
-                            sx={{ cursor: "default" }}
-                            color="primary"
-                            inputProps={{ "aria-label": "Alarm System" }}
-                        />
-                        <Typography variant="body1" sx={{ ml: 0 }}>
-                            {t("Alarm System")}
-                        </Typography>
-                    </Grid>
 
                     <Grid
                         item
@@ -350,30 +327,6 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                             {t("Indepent Heating Per Room")}
                         </Typography>
                     </Grid>
-                    <Grid
-                        item
-                        xs={3}
-                        flexDirection="row"
-                        sx={{ display: "inline-flex", alignItems: "center" }}
-                    >
-                        <Checkbox
-                            value={bright}
-                            checked={bright}
-                            onChange={(
-                                event: React.ChangeEvent<unknown>,
-                                checked: boolean
-                            ) => {
-                                dispatch(setBright(checked));
-                            }}
-                            sx={{ cursor: "default" }}
-                            color="primary"
-                            inputProps={{ "aria-label": "Bright" }}
-                        />
-                        <Typography variant="body1" sx={{ ml: 0 }}>
-                            {t("Bright")}
-                        </Typography>
-                    </Grid>
-
                     <Grid
                         item
                         xs={3}

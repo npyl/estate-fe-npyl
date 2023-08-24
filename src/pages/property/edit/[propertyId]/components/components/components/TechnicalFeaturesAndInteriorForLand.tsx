@@ -1,4 +1,4 @@
-import { Grid, Paper, Box } from "@mui/material";
+import { Grid, Paper, Box, Checkbox } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
@@ -12,6 +12,8 @@ import {
     setCoverageFactor,
     setFacadeLength,
     setFloorToAreaRatio,
+    setAlarmSystem,
+    selectAlarmSystem,
 } from "src/slices/property";
 
 const TechnicalFeaturesAndInteriorForLandSection: React.FC<any> = () => {
@@ -20,7 +22,7 @@ const TechnicalFeaturesAndInteriorForLandSection: React.FC<any> = () => {
     const floorToAreaRatio = useSelector(selectFloorToAreaRatio);
     const coverageFactor = useSelector(selectCoverageFactor);
     const facadeLength = useSelector(selectFacadeLength);
-
+    const alarmSystem = useSelector(selectAlarmSystem);
     const handleFloorToAreaRatioChange = (value: string) =>
         dispatch(setFloorToAreaRatio(value));
     const handleCoverageFactorChange = (value: string) =>
@@ -117,29 +119,30 @@ const TechnicalFeaturesAndInteriorForLandSection: React.FC<any> = () => {
               Considerations
             </Typography>
           </Grid> */}
-                    {/* <Grid
-            item
-            xs={3}
-            flexDirection="row"
-            sx={{ display: "inline-flex", alignItems: "center" }}
-          >
-            <Checkbox
-              value={alarmSystem}
-              checked={alarmSystem}
-              onChange={(
-                event: React.ChangeEvent<unknown>,
-                checked: boolean
-              ) => {
-                dispatch(setAlarmSystem(checked));
-              }}
-              sx={{ cursor: "default" }}
-              color="primary"
-              inputProps={{ "aria-label": "Alarm System" }}
-            />
-            <Typography variant="body1" sx={{ ml: 0 }}>
-              Alarm System
-            </Typography>
-          </Grid>
+                    <Grid
+                        item
+                        xs={3}
+                        flexDirection="row"
+                        sx={{ display: "inline-flex", alignItems: "center" }}
+                    >
+                        <Checkbox
+                            value={alarmSystem}
+                            checked={alarmSystem}
+                            onChange={(
+                                event: React.ChangeEvent<unknown>,
+                                checked: boolean
+                            ) => {
+                                dispatch(setAlarmSystem(checked));
+                            }}
+                            sx={{ cursor: "default" }}
+                            color="primary"
+                            inputProps={{ "aria-label": "Alarm System" }}
+                        />
+                        <Typography variant="body1" sx={{ ml: 0 }}>
+                            {t("Alarm System")}
+                        </Typography>
+                    </Grid>
+                    {/*
           <Grid
             item
             xs={3}

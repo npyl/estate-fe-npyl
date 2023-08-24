@@ -72,9 +72,9 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
                             status={heating?.solarBoiler}
                             align="horizontal"
                         />
-                        <ListItem
-                            label={t("Economy Electricity")}
-                            value={heating?.offPeakElectricity}
+                        <ListBooleanItem
+                            label={t("Off Peak Electricity")}
+                            status={heating?.offPeakElectricity}
                             align="horizontal"
                         />
                     </List>

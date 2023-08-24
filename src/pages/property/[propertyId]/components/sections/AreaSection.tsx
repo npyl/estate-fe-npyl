@@ -33,51 +33,41 @@ const AreaSection: React.FC<AreaSectionProps> = (props) => {
             <Grid container>
                 <Grid item xs={6}>
                     <List>
-                        {areas?.groundFloor && (
-                            <ListItem
-                                label={t("Ground Floor")}
-                                value={areas?.groundFloor}
-                                align="horizontal"
-                            />
-                        )}
-                        {areas?.first && (
-                            <ListItem
-                                label={t("First")}
-                                value={areas?.first}
-                                align="horizontal"
-                            />
-                        )}
-                        {areas?.second && (
-                            <ListItem
-                                label={t("Second")}
-                                value={areas?.second}
-                                align="horizontal"
-                            />
-                        )}
-                        {areas?.third && (
-                            <ListItem
-                                label={t("Third")}
-                                value={areas?.third}
-                                align="horizontal"
-                            />
-                        )}
-                        {areas?.fourth && (
-                            <ListItem
-                                label={t("Fourth")}
-                                value={areas?.fourth}
-                                align="horizontal"
-                            />
-                        )}
-                        {areas?.fifth && (
-                            <ListItem
-                                label={t("Fifth")}
-                                value={areas?.fifth}
-                                align="horizontal"
-                            />
-                        )}
+                        {/* {areas?.groundFloor && ( */}
                         <ListItem
-                            label={t("Plot")}
-                            value={areas?.plot}
+                            label={t("Ground Floor")}
+                            value={areas?.groundFloor || "" + "m²"}
+                            align="horizontal"
+                        />
+                        {/* // )} */}
+
+                        <ListItem
+                            label={t("First")}
+                            value={areas?.first || "" + "m²"}
+                            align="horizontal"
+                        />
+
+                        <ListItem
+                            label={t("Second")}
+                            value={areas?.second || "" + "m²"}
+                            align="horizontal"
+                        />
+
+                        <ListItem
+                            label={t("Third")}
+                            value={areas?.third || "" + "m²"}
+                            align="horizontal"
+                        />
+
+                        <ListItem
+                            label={t("Fourth")}
+                            value={areas?.fourth || "" + "m²"}
+                            align="horizontal"
+                        />
+
+                        <ListItem
+                            label={t("Fifth")}
+                            value={areas?.fifth || "" + "m²"}
                             align="horizontal"
                         />
                     </List>
@@ -86,44 +76,39 @@ const AreaSection: React.FC<AreaSectionProps> = (props) => {
                     <List>
                         <ListItem
                             label={t("Covered")}
-                            value={areas?.covered}
+                            value={areas?.covered || "" + "m²"}
                             align="horizontal"
                         />
-                        {areas?.basement && (
-                            <ListItem
-                                label={t("Basement")}
-                                value={areas?.basement}
-                                align="horizontal"
-                            />
-                        )}
-                        {areas?.attic && (
-                            <ListItem
-                                label={t("Attic")}
-                                value={areas?.attic}
-                                align="horizontal"
-                            />
-                        )}
-                        {areas?.garden && (
-                            <ListItem
-                                label={t("Garden")}
-                                value={areas?.garden}
-                                align="horizontal"
-                            />
-                        )}
-                        {areas?.balconies && (
-                            <ListItem
-                                label={t("Balconies")}
-                                value={areas?.balconies}
-                                align="horizontal"
-                            />
-                        )}
-                        {areas?.storeroom && (
-                            <ListItem
-                                label={t("Storeroom")}
-                                value={areas?.storeroom}
-                                align="horizontal"
-                            />
-                        )}
+
+                        <ListItem
+                            label={t("Basement")}
+                            value={areas?.basement || "" + "m²"}
+                            align="horizontal"
+                        />
+
+                        <ListItem
+                            label={t("Attic")}
+                            value={areas?.attic || "" + "m²"}
+                            align="horizontal"
+                        />
+
+                        <ListItem
+                            label={t("Garden")}
+                            value={areas?.garden || "" + "m²"}
+                            align="horizontal"
+                        />
+
+                        <ListItem
+                            label={t("Balconies")}
+                            value={areas?.balconies || "" + "m²"}
+                            align="horizontal"
+                        />
+
+                        <ListItem
+                            label={t("Storeroom")}
+                            value={areas?.storeroom || "" + "m²"}
+                            align="horizontal"
+                        />
                     </List>
                 </Grid>
             </Grid>

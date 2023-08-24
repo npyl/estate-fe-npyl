@@ -73,10 +73,40 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                             align="horizontal"
                         />
                         <ListItem
+                            label={t("View Type")}
+                            value={details?.viewType}
+                            align="horizontal"
+                        />
+                        <ListItem
+                            label={t("Zone Type")}
+                            value={details?.zoneType}
+                            align="horizontal"
+                        />
+                        <ListItem
+                            label={t("Land Use")}
+                            value={details?.landUse}
+                            align="horizontal"
+                        />
+                        <ListItem
+                            label={t("Accessibility")}
+                            value={details?.accessibility}
+                            align="horizontal"
+                        />
+                        <ListItem
+                            label={t("Rooms")}
+                            value={details?.rooms}
+                            align="horizontal"
+                        />
+                    </List>
+                </Grid>
+                <Grid item xs={4}>
+                    <List>
+                        <ListItem
                             label={t("Orientation")}
                             value={details?.orientation}
                             align="horizontal"
                         />
+
                         <ListBooleanItem
                             label={t("Floor Apartment")}
                             status={details?.floorApartment}
@@ -98,33 +128,9 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                             status={details?.attic}
                             align="horizontal"
                         />
-                    </List>
-                </Grid>
-                <Grid item xs={4}>
-                    <List>
                         <ListBooleanItem
                             label={t("Playroom")}
                             status={details?.playroom}
-                            align="horizontal"
-                        />
-                        <ListItem
-                            label={t("View Type")}
-                            value={details?.viewType}
-                            align="horizontal"
-                        />
-                        <ListItem
-                            label={t("Zone Type")}
-                            value={details?.zoneType}
-                            align="horizontal"
-                        />
-                        <ListItem
-                            label={t("Land Use")}
-                            value={details?.landUse}
-                            align="horizontal"
-                        />
-                        <ListItem
-                            label={t("Accessibility")}
-                            value={details?.accessibility}
                             align="horizontal"
                         />
                     </List>

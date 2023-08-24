@@ -70,6 +70,11 @@ const SuitableFor: React.FC<SuitableForProps> = (props) => {
                             status={suitableFor?.renovation}
                             align="horizontal"
                         />
+                        <ListBooleanItem
+                            label={t("Argiciltural Use")}
+                            status={suitableFor?.agriculturalUse}
+                            align="horizontal"
+                        />
                     </List>
                 </Grid>
             </Grid>
