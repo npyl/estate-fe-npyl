@@ -327,7 +327,6 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
                             {t("Indepent Heating Per Room")}
                         </Typography>
                     </Grid>
-
                     <Grid
                         item
                         xs={3}
