@@ -141,11 +141,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                             status={features?.walkableDistanceToBeach}
                             align="horizontal"
                         />
-                        <ListBooleanItem
-                            label={t("Bright")}
-                            status={features?.bright}
-                            align="horizontal"
-                        />
+
                         <ListBooleanItem
                             label={t("Near Bus Route")}
                             status={features?.nearBusRoute}

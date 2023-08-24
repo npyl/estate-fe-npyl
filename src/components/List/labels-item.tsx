@@ -1,4 +1,4 @@
-import { ListItemProps, Typography } from "@mui/material";
+import { ListItemProps, Typography, Box } from "@mui/material";
 import type { FC } from "react";
 import Label from "../label/Label";
 
@@ -18,13 +18,17 @@ const ListLabelsItem: FC<ListLabelsItemProps> = (props) => {
 
     return (
         <ListItem label={label} {...other}>
-            {labels.map((label, index) => {
-                return (
-                    <Label key={index} sx={{ bgcolor: label.color, mr: 1 }}>
-                        {label.name}
-                    </Label>
-                );
-            })}
+            <Box paddingLeft={1} margin={0} display="flex" flexWrap="wrap">
+                {" "}
+                {/* Added a container with margin-top */}
+                {labels.map((label, index) => {
+                    return (
+                        <Label key={index} sx={{ bgcolor: label.color, mr: 1 }}>
+                            {label.name}
+                        </Label>
+                    );
+                })}
+            </Box>
         </ListItem>
     );
 };
