@@ -71,7 +71,7 @@ const FeaturesForOtherSection: React.FC<any> = (props) => {
                         </Typography>
                     </Grid>
 
-                    <Grid
+                    {/* <Grid
                         item
                         xs={3}
                         flexDirection="row"
@@ -93,7 +93,7 @@ const FeaturesForOtherSection: React.FC<any> = (props) => {
                         <Typography variant="body1" sx={{ ml: 0 }}>
                             {t("Alarm System")}
                         </Typography>
-                    </Grid>
+                    </Grid> */}
                     <Grid
                         item
                         xs={3}

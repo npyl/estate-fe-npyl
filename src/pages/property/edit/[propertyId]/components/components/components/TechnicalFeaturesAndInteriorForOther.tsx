@@ -34,6 +34,7 @@ import {
     selectWindowScreens,
     selectWiring,
     selectWithEquipment,
+    setAlarmSystem,
     setDoubleFrontage,
     setFalseCeiling,
     setLoadingUnloadingElevator,
@@ -301,6 +302,29 @@ const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = (props) => {
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
                             {t("With Eqipment")}
+                        </Typography>
+                    </Grid>
+                    <Grid
+                        item
+                        xs={3}
+                        flexDirection="row"
+                        sx={{ display: "inline-flex", alignItems: "center" }}
+                    >
+                        <Checkbox
+                            value={alarmSystem}
+                            checked={alarmSystem}
+                            onChange={(
+                                event: React.ChangeEvent<unknown>,
+                                checked: boolean
+                            ) => {
+                                dispatch(setAlarmSystem(checked));
+                            }}
+                            sx={{ cursor: "default" }}
+                            color="primary"
+                            inputProps={{ "aria-label": "Alarm System" }}
+                        />
+                        <Typography variant="body1" sx={{ ml: 0 }}>
+                            {t("Alarm System")}
                         </Typography>
                     </Grid>
                 </Grid>

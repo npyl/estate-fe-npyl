@@ -68,19 +68,20 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
 
                                 <ListItem
                                     label={t("Area")}
-                                    value={data?.area}
+                                    value={data?.area + "m²"}
+                                    align="horizontal"
+                                />
+                                <ListItem
+                                    label={t("Plot Area")}
+                                    value={data?.plotArea + "m²"}
                                     align="horizontal"
                                 />
                                 <ListItem
                                     label={t("Estimated Rend Price")}
-                                    value={data?.estimatedRentPrice}
+                                    value={data?.estimatedRentPrice + "€"}
                                     align="horizontal"
                                 />
-                                <ListBooleanItem
-                                    label={t("Rented")}
-                                    status={data?.rented}
-                                    align="horizontal"
-                                />
+
                                 <ListItem
                                     label={t("Available After")}
                                     value={data?.availableAfter}
@@ -98,19 +99,14 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                                 />
                                 <ListItem
                                     label={t("Current Rent Price")}
-                                    value={data?.currentRentPrice}
+                                    value={data?.currentRentPrice + "€"}
                                     align="horizontal"
                                 />
-                                <ListBooleanItem
-                                    label={t("Debatable Price")}
-                                    status={data?.debatablePrice}
-                                    align="horizontal"
+                                <ListLabelsItem
+                                    labels={data?.labels}
+                                    label={t("Labels")}
                                 />
-                                <ListBooleanItem
-                                    label={t("Auction")}
-                                    status={data?.auction}
-                                    align="horizontal"
-                                />
+
                                 <ListItem label={"ROI"}>
                                     <Button
                                         sx={{
@@ -131,7 +127,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                         <Grid item xs={6}>
                             <List>
                                 <ListItem
-                                    label={t("Monthly Utilities")}
+                                    label={t("Average Utilities")}
                                     value={data?.averageUtils + " €"}
                                     align="horizontal"
                                 />
@@ -149,7 +145,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                                 />
                                 <ListItem
                                     label={t("Price")}
-                                    value={data?.price + " € / m^2"}
+                                    value={data?.price + "€"}
                                     align="horizontal"
                                 />
 
@@ -167,10 +163,25 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                                     value={data?.state}
                                     align="horizontal"
                                 />
-
-                                <ListLabelsItem
-                                    labels={data?.labels}
-                                    label={""}
+                                <ListBooleanItem
+                                    label={t("Rented")}
+                                    status={data?.rented}
+                                    align="horizontal"
+                                />
+                                <ListBooleanItem
+                                    label={t("Debatable Price")}
+                                    status={data?.debatablePrice}
+                                    align="horizontal"
+                                />
+                                <ListBooleanItem
+                                    label={t("Auction")}
+                                    status={data?.auction}
+                                    align="horizontal"
+                                />
+                                <ListBooleanItem
+                                    label={t("Buildable")}
+                                    status={data?.buildable}
+                                    align="horizontal"
                                 />
                             </List>
                         </Grid>

@@ -297,13 +297,7 @@ const FeaturesSection: React.FC<any> = (props) => {
                             dispatch(setQuietArea(checked));
                         }}
                     />
-                    <CheckboxItem
-                        label={t("Bright")}
-                        value={bright}
-                        onChange={(event, checked) => {
-                            dispatch(setBright(checked));
-                        }}
-                    />
+
                     <CheckboxItem
                         label={t("View")}
                         value={view}
@@ -368,7 +362,7 @@ const FeaturesSection: React.FC<any> = (props) => {
                         }}
                     />
                     <CheckboxItem
-                        label={t("Massony Fence")}
+                        label={t("Masonry Fence")}
                         value={masonryFence}
                         onChange={(event, checked) => {
                             dispatch(setMasonryFence(checked));
@@ -395,13 +389,7 @@ const FeaturesSection: React.FC<any> = (props) => {
                             dispatch(setHeatedPool(checked));
                         }}
                     />
-                    <CheckboxItem
-                        label={t("Alarm System")}
-                        value={alarmSystem}
-                        onChange={(event, checked) => {
-                            dispatch(setAlarmSystem(checked));
-                        }}
-                    />
+
                     <CheckboxItem
                         label={t("Has 24 Hours Security")}
                         value={has24HoursSecurity}

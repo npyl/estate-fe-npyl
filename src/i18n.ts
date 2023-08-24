@@ -493,7 +493,7 @@ const resources = {
             Attic: "Σοφίτα",
             Playroom: "Playroom",
             Storeroom: "Αποθήκη",
-            Penthouse: "Οροφοδιαμέρισμα",
+            Penthouse: "Ρετιρέ",
             Construction: "Κατασκευή",
             "Year of Construction": "Έτος Κατασκευής",
             "Year of Renovation": "Έτος Ανακαίνισης",
