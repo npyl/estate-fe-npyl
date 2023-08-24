@@ -216,11 +216,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                             status={features?.tents}
                             align="horizontal"
                         />
-                        <ListBooleanItem
-                            label={t("Alarm System")}
-                            status={features?.alarmSystem}
-                            align="horizontal"
-                        />
+
                         <ListBooleanItem
                             label={t("CCTV")}
                             status={features?.cctv}

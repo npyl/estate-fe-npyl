@@ -107,6 +107,11 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                             status={details?.playroom}
                             align="horizontal"
                         />
+                        <ListBooleanItem
+                            label={t("Floor Apartment")}
+                            status={details?.floorApartment}
+                            align="horizontal"
+                        />
                         <ListItem
                             label={t("View Type")}
                             value={details?.viewType}
