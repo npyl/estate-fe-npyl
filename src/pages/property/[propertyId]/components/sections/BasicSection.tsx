@@ -61,6 +61,11 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                         <Grid item xs={6}>
                             <List>
                                 <ListItem
+                                    label={t("Parent Category")}
+                                    value={data?.parentCategory}
+                                    align="horizontal"
+                                />
+                                <ListItem
                                     label={t("Category")}
                                     value={data?.category}
                                     align="horizontal"

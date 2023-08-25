@@ -242,17 +242,6 @@ const LocationSection = (props: ILocationSectionProps) => {
                 </Box>
 
                 <Grid container spacing={2}>
-                    <Grid item xs={4}>
-                        <TextField
-                            fullWidth
-                            label={t("Country")}
-                            value={country}
-                            onChange={(event) =>
-                                handleChange(setCountry, event)
-                            }
-                        />
-                    </Grid>
-
                     <Grid item xs={12}>
                         <Grid container direction={"row"} spacing={2}>
                             <Grid item xs={4}>
@@ -299,6 +288,16 @@ const LocationSection = (props: ILocationSectionProps) => {
                             label={t("Zip Code")}
                             value={zipCode || ""}
                             onChange={(value) => dispatch(setZipCode(value))}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <TextField
+                            fullWidth
+                            label={t("Country")}
+                            value={country}
+                            onChange={(event) =>
+                                handleChange(setCountry, event)
+                            }
                         />
                     </Grid>
                 </Grid>

@@ -121,7 +121,7 @@ const SingleProperty: NextPage = () => {
                     TechnicalFeatures={<TechnicalFeatures data={data} />}
                     DescriptionSection={<DescriptionSection data={data} />}
                     ConstructionSection={<ConstructionSection data={data} />}
-                    Features={<Features data={data} />}
+                    Features={<Features data={data as any} />}
                 />
             </TabPanel>
             <TabPanel value={value} index={1}></TabPanel>
