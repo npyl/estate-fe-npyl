@@ -317,3 +317,6 @@ export interface IProperties {
     blueprints: IPropertyBlueprint[];
     labels: ILabel[];
 }
+// propertyTypes.ts
+
+export type ParentCategory = "Residential" | "Commercial" | "Land" | "Other";
