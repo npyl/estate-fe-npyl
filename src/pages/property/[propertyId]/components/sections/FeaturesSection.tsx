@@ -3,6 +3,7 @@ import { IProperties } from "src/types/properties";
 import { Typography, Box, Paper, Divider, Grid } from "@mui/material";
 import { List, ListBooleanItem, ListItem } from "src/components/List";
 import { useTranslation } from "react-i18next";
+import { ParentCategory } from "src/types/properties";
 
 interface FeaturesProps {
     data: {
@@ -11,7 +12,7 @@ interface FeaturesProps {
     };
 }
 
-type ParentCategory = "Residential" | "Commercial" | "Land" | "Other";
+// export type ParentCategory = "Residential" | "Commercial" | "Land" | "Other";
 
 const FEATURE_SETS: { [key in ParentCategory]: string[] } = {
     Residential: [
