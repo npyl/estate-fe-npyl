@@ -3,28 +3,35 @@ import { useMemo } from "react";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { CollapsibleTable, createRow } from "./components/CollapsibleTable";
-import { useGetNotificationByIdQuery } from "src/services/notification";
+import {
+    useGetNotificationByIdQuery,
+    useGetNotificationsQuery,
+} from "src/services/notification";
 import { Paper } from "@mui/material";
 import { usePublishTab } from "src/components/Tabs/utils";
+import { ContactNotification } from "src/types/notification";
 
 const NotificationPage: NextPage = () => {
     usePublishTab({ title: "Notifications", path: "/notification" });
 
-    // const { data: notifications } = useGetNotificationsQuery();
+    const { data: notifications } = useGetNotificationsQuery();
 
-    // TODO: test data; remove
-    const { data: notification1 } = useGetNotificationByIdQuery(1);
-    const { data: notification2 } = useGetNotificationByIdQuery(2);
+    // // TODO: test data; remove
+    // const { data: notification1 } = useGetNotificationByIdQuery(1);
+    // const { data: notification2 } = useGetNotificationByIdQuery(2);
 
-    const notifications = useMemo(() => {
-        if (!notification1 && !notification2) return [];
-        if (notification1 && !notification2) return [notification1];
-        if (!notification1 && notification2) return [notification2];
-        return [notification1, notification2];
-    }, [notification1, notification2]);
+    // const notifications = useMemo(() => {
+    //     if (!notification1 && !notification2) return [];
+    //     if (notification1 && !notification2) return [notification1];
+    //     if (!notification1 && notification2) return [notification2];
+    //     return [notification1, notification2];
+    // }, [notification1, notification2]);
 
     const rows = useMemo(
-        () => notifications.map((notification) => createRow(notification!)),
+        () =>
+            notifications?.map((notification: ContactNotification) =>
+                createRow(notification)
+            ) || [],
         [notifications]
     );
 

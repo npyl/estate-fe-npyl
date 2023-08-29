@@ -120,12 +120,14 @@ export const BookingItem = ({ item, activeMarker }: BookingItemProps) => {
         >
             {state === "Sale" && <ForSaleLabel />}
 
-            <Box sx={{ position: "relative" }}>
-                <CarouselSimple
-                    onImageClick={() => router.push(`property/${id}`)}
-                    data={_carouselImages}
-                />
-            </Box>
+            {_carouselImages.length > 0 && (
+                <Box sx={{ position: "relative" }}>
+                    <CarouselSimple
+                        onImageClick={() => router.push(`property/${id}`)}
+                        data={_carouselImages}
+                    />
+                </Box>
+            )}
 
             <Stack
                 direction="column"

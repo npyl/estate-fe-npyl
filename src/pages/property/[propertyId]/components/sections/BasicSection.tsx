@@ -132,242 +132,210 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
         setShowPopup((prevShowPopup) => !prevShowPopup);
     };
 
+    const renderHalfOfFields = (fields: string[], from: number, to: number) => (
+        <Grid item xs={6}>
+            <List>
+                {fields
+                    .slice(from, to)
+                    .map((field) => renderBasicDetailItem(field))}
+            </List>
+        </Grid>
+    );
+
     const renderBasicDetails = (category: ParentCategory) => {
         const fieldsForCategory = BASIC_DETAIL_FIELDS[category];
         if (!fieldsForCategory) return null;
 
-        return fieldsForCategory.map((field) => renderBasicDetailItem(field));
+        const half = Math.ceil(fieldsForCategory.length / 2);
+
+        return (
+            <Grid container>
+                {renderHalfOfFields(fieldsForCategory, 0, half)}
+                {renderHalfOfFields(
+                    fieldsForCategory,
+                    half,
+                    fieldsForCategory.length
+                )}
+            </Grid>
+        );
     };
     const renderBasicDetailItem = (field: string) => {
         switch (field) {
             case "ParentCategory":
                 return (
-                    <Grid item xs={6}>
-                        <ListItem
-                            label={t("Parent Category")}
-                            value={data?.parentCategory}
-                            align="horizontal"
-                        />
-                    </Grid>
+                    <ListItem
+                        label={t("Parent Category")}
+                        value={data?.parentCategory}
+                        align="horizontal"
+                    />
                 );
             case "Category":
                 return (
-                    <Grid item xs={6}>
-                        <ListItem
-                            label={t("Category")}
-                            value={data?.category}
-                            align="horizontal"
-                        />
-                    </Grid>
+                    <ListItem
+                        label={t("Category")}
+                        value={data?.category}
+                        align="horizontal"
+                    />
                 );
             case "Area":
                 return (
-                    <Grid item xs={6}>
-                        <ListItem
-                            label={t("Area")}
-                            value={data?.area + "m²"}
-                            align="horizontal"
-                        />
-                    </Grid>
+                    <ListItem
+                        label={t("Area")}
+                        value={data?.area + "m²"}
+                        align="horizontal"
+                    />
                 );
             case "Plot Area":
                 return (
-                    <Grid item xs={6}>
-                        <ListItem
-                            label={t("Plot Area")}
-                            value={data?.plotArea + "m²"}
-                            align="horizontal"
-                        />
-                    </Grid>
+                    <ListItem
+                        label={t("Plot Area")}
+                        value={data?.plotArea + "m²"}
+                        align="horizontal"
+                    />
                 );
             case "Estimated Rend Price":
                 return (
-                    <Grid item xs={6}>
-                        <ListItem
-                            label={t("Estimated Rend Price")}
-                            value={data?.estimatedRentPrice + "€"}
-                            align="horizontal"
-                        />
-                    </Grid>
+                    <ListItem
+                        label={t("Estimated Rend Price")}
+                        value={data?.estimatedRentPrice + "€"}
+                        align="horizontal"
+                    />
                 );
             case "Available After":
                 return (
-                    <Grid item xs={6}>
-                        <ListItem
-                            label={t("Available After")}
-                            value={data?.availableAfter}
-                            align="horizontal"
-                        />
-                    </Grid>
+                    <ListItem
+                        label={t("Available After")}
+                        value={data?.availableAfter}
+                        align="horizontal"
+                    />
                 );
             case "Rental Period Start":
                 return (
-                    <Grid item xs={6}>
-                        <ListItem
-                            label={t("Rental Period Start")}
-                            value={data?.rentalStart}
-                            align="horizontal"
-                        />
-                    </Grid>
+                    <ListItem
+                        label={t("Rental Period Start")}
+                        value={data?.rentalStart}
+                        align="horizontal"
+                    />
                 );
             case "Rental Period End":
                 return (
-                    <Grid item xs={6}>
-                        <ListItem
-                            label={t("Rental Period End")}
-                            value={data?.rentalEnd}
-                            align="horizontal"
-                        />
-                    </Grid>
+                    <ListItem
+                        label={t("Rental Period End")}
+                        value={data?.rentalEnd}
+                        align="horizontal"
+                    />
                 );
             case "Current Rent Price":
                 return (
-                    <Grid item xs={6}>
-                        <ListItem
-                            label={t("Current Rent Price")}
-                            value={data?.currentRentPrice + "€"}
-                            align="horizontal"
-                        />
-                    </Grid>
+                    <ListItem
+                        label={t("Current Rent Price")}
+                        value={data?.currentRentPrice + "€"}
+                        align="horizontal"
+                    />
                 );
             case "Labels":
                 return (
-                    <Grid item xs={6}>
-                        <ListLabelsItem
-                            labels={data?.labels}
-                            label={t("Labels")}
-                        />
-                    </Grid>
+                    <ListLabelsItem labels={data?.labels} label={t("Labels")} />
                 );
             case "ROI":
                 return (
-                    <Grid item xs={6}>
-                        <ListItem label={"ROI"}>
-                            <Button
-                                sx={{ flex: 1, float: "right", height: "22px" }}
-                                variant="outlined"
-                                onClick={handleOpenPopup}
-                            >
-                                ROI
-                            </Button>
-                        </ListItem>
-                    </Grid>
+                    <ListItem label={"ROI"}>
+                        <Button
+                            sx={{ flex: 1, float: "right", height: "22px" }}
+                            variant="outlined"
+                            onClick={handleOpenPopup}
+                        >
+                            ROI
+                        </Button>
+                    </ListItem>
                 );
             case "Average Utilities":
                 return (
-                    <Grid item xs={6}>
-                        <ListItem
-                            label={t("Average Utilities")}
-                            value={data?.averageUtils + " €"}
-                            align="horizontal"
-                        />
-                    </Grid>
+                    <ListItem
+                        label={t("Average Utilities")}
+                        value={data?.averageUtils + " €"}
+                        align="horizontal"
+                    />
                 );
             case "Year of Construction":
                 return (
-                    <Grid item xs={6}>
-                        <ListItem
-                            label={t("Year of Construction")}
-                            value={data.construction?.yearOfConstruction}
-                            align="horizontal"
-                        />
-                    </Grid>
+                    <ListItem
+                        label={t("Year of Construction")}
+                        value={data.construction?.yearOfConstruction}
+                        align="horizontal"
+                    />
                 );
             case "Code":
                 return (
-                    <Grid item xs={6}>
-                        <ListItem
-                            label={t("Code")}
-                            value={data?.code}
-                            align="horizontal"
-                        />
-                    </Grid>
+                    <ListItem
+                        label={t("Code")}
+                        value={data?.code}
+                        align="horizontal"
+                    />
                 );
             case "Price":
                 return (
-                    <Grid item xs={6}>
-                        <ListItem
-                            label={t("Price")}
-                            value={data?.price + "€"}
-                            align="horizontal"
-                        />
-                    </Grid>
+                    <ListItem
+                        label={t("Price")}
+                        value={data?.price + "€"}
+                        align="horizontal"
+                    />
                 );
             case "Key Code":
                 return (
-                    <Grid item xs={6}>
-                        <ListItem
-                            label={t("Key Code")}
-                            value={data?.keyCode}
-                            align="horizontal"
-                        />
-                    </Grid>
+                    <ListItem
+                        label={t("Key Code")}
+                        value={data?.keyCode}
+                        align="horizontal"
+                    />
                 );
 
             case "Manager":
-                return (
-                    <Grid item xs={6}>
-                        <ListManagerItem manager={manager} />
-                    </Grid>
-                );
+                return <ListManagerItem manager={manager} />;
 
             case "State":
                 return (
-                    <Grid item xs={6}>
-                        <ListItem
-                            label={t("State")}
-                            value={data?.state}
-                            align="horizontal"
-                        />
-                    </Grid>
+                    <ListItem
+                        label={t("State")}
+                        value={data?.state}
+                        align="horizontal"
+                    />
                 );
 
             case "Rented":
                 return (
-                    <Grid item xs={6}>
-                        <ListBooleanItem
-                            label={t("Rented")}
-                            status={data?.rented}
-                            align="horizontal"
-                        />
-                    </Grid>
+                    <ListBooleanItem
+                        label={t("Rented")}
+                        status={data?.rented}
+                        align="horizontal"
+                    />
                 );
             case "Debatable Price":
                 return (
-                    <Grid item xs={6}>
-                        <ListBooleanItem
-                            label={t("Debatable Price")}
-                            status={data?.debatablePrice}
-                            align="horizontal"
-                        />
-                    </Grid>
+                    <ListBooleanItem
+                        label={t("Debatable Price")}
+                        status={data?.debatablePrice}
+                        align="horizontal"
+                    />
                 );
             case "Auction":
                 return (
-                    <Grid item xs={6}>
-                        <ListBooleanItem
-                            label={t("Auction")}
-                            status={data?.auction}
-                            align="horizontal"
-                        />
-                    </Grid>
+                    <ListBooleanItem
+                        label={t("Auction")}
+                        status={data?.auction}
+                        align="horizontal"
+                    />
                 );
             case "Buildable":
                 return (
-                    <Grid item xs={6}>
-                        <ListBooleanItem
-                            label={t("Buildable")}
-                            status={data?.buildable}
-                            align="horizontal"
-                        />
-                    </Grid>
+                    <ListBooleanItem
+                        label={t("Buildable")}
+                        status={data?.buildable}
+                        align="horizontal"
+                    />
                 );
             case "Owner":
-                return (
-                    <Grid item xs={6}>
-                        <ListOwnerItem owner={owner} />
-                    </Grid>
-                );
+                return <ListOwnerItem owner={owner} />;
             default:
                 return null;
         }
