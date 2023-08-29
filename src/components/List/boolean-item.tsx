@@ -3,13 +3,13 @@ import { Typography } from "@mui/material";
 import type { FC } from "react";
 
 import ListItem from "./item";
-
+import type { ListItemProps as MuiListItemProps } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
 import DoneIcon from "@mui/icons-material/Done";
 
 type Direction = "horizontal" | "vertical";
 
-interface ListBooleanItemProps extends ListItemProps {
+interface ListBooleanItemProps extends MuiListItemProps {
     align?: Direction;
     label: string;
     status: boolean;
@@ -27,7 +27,22 @@ const ListBooleanItem: FC<ListBooleanItemProps> = (props) => {
     } = props;
 
     return (
-        <ListItem label={label} {...other}>
+        <ListItem
+            label={label}
+            sx={{
+                px: disableGutters ? 0 : 3,
+
+                flex: 1,
+
+                "&:nth-of-type(odd)": {
+                    backgroundColor: "white",
+                },
+                "&:nth-of-type(even)": {
+                    backgroundColor: "#fcfcfc",
+                },
+            }}
+            {...other}
+        >
             <Typography
                 color="textSecondary"
                 variant="body2"
