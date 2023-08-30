@@ -14,7 +14,6 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Bedrooms",
         "Layers",
         "Kitchens",
-        "Kitchens",
         "Living Rooms",
         "Number of WC",
         "Bathrooms",
@@ -60,7 +59,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
     const { data } = props;
     const { t } = useTranslation();
     const details = data?.details;
-
+    const distances = data?.distances;
     const renderThirdOfFields = (
         fields: string[],
         from: number,
@@ -79,20 +78,25 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
         const fieldsForCategory = BASIC_DETAIL_FIELDS[category];
         if (!fieldsForCategory) return null;
 
-        const third = Math.ceil(fieldsForCategory.length / 3);
+        const total = fieldsForCategory.length;
+        const third = Math.floor(total / 3);
+
+        // Calculate remaining items after dividing into thirds
+        const remaining = total - third * 3;
+
+        // Indices to divide fieldsForCategory
+        const firstEnd = third + (remaining > 0 ? 1 : 0);
+        const secondEnd = firstEnd + third + (remaining > 1 ? 1 : 0);
 
         return (
             <Grid container>
-                {renderThirdOfFields(fieldsForCategory, 0, third)}
-                {renderThirdOfFields(fieldsForCategory, third, 2 * third)}
-                {renderThirdOfFields(
-                    fieldsForCategory,
-                    2 * third,
-                    fieldsForCategory.length
-                )}
+                {renderThirdOfFields(fieldsForCategory, 0, firstEnd)}
+                {renderThirdOfFields(fieldsForCategory, firstEnd, secondEnd)}
+                {renderThirdOfFields(fieldsForCategory, secondEnd, total)}
             </Grid>
         );
     };
+
     const renderPropertyDescriptionItem = (field: string) => {
         switch (field) {
             case "Floor":
@@ -241,10 +245,41 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                         align="horizontal"
                     />
                 );
+
+            case "Distance From Sea":
+                return (
+                    <ListItem
+                        label={t("Distance From Sea")}
+                        value={distances?.sea}
+                        align="horizontal"
+                    />
+                );
+            case "Number of WC":
+                return (
+                    <ListItem
+                        label={t("Number of WC")}
+                        value={details?.wc}
+                        align="horizontal"
+                    />
+                );
+            case "Zone":
+                return (
+                    <ListItem
+                        label={t("Zone")}
+                        value={details?.zoneType}
+                        align="horizontal"
+                    />
+                );
+            case "View":
+                return (
+                    <ListItem
+                        label={t("View")}
+                        value={details?.viewType}
+                        align="horizontal"
+                    />
+                );
         }
     };
-
-    // ... (your existing logic for renderPropertyDescriptionItem)
 
     return (
         <Grid container spacing={1}>

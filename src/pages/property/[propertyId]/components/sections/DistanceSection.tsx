@@ -1,5 +1,5 @@
 import React from "react";
-import { IProperties } from "src/types/properties";
+import { IProperties, ParentCategory } from "src/types/properties";
 
 import { Typography, Box, Paper, Divider, Grid } from "@mui/material";
 
@@ -10,72 +10,172 @@ interface DistanceSectionProps {
     data: IProperties;
 }
 
+const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
+    Residential: [
+        "Public Transportation",
+        "Sea",
+        "Schools",
+        "Supermarket",
+        "Cafe-Restaurant",
+        "Hospital",
+        "Airport",
+    ],
+    Commercial: [
+        "Public Transportation",
+        "Sea",
+        "Schools",
+        "Supermarket",
+        "Cafe-Restaurant",
+        "Hospital",
+        "Airport",
+    ],
+    Land: [],
+    Other: [],
+};
 const DistanceSection: React.FC<DistanceSectionProps> = (props) => {
     const { data } = props;
     const { t } = useTranslation();
-    if (!data) return null;
     const distances = data?.distances;
-    if (!distances) return null;
-
-    return (
-        <Paper elevation={10} sx={{ overflow: "auto" }}>
-            <Box
-                sx={{
-                    px: 3,
-                    py: 1.5,
-                    display: "flex",
-                    justifyContent: "left",
-                }}
-            >
-                <Typography variant="h6">{t("Distances")}</Typography>
-            </Box>
-            <Divider></Divider>
-            <Grid container spacing={1}>
-                <Grid item xs={6} order={"row"} padding={0}>
-                    <List>
-                        <ListItem
-                            label={t("Schools")}
-                            value={distances?.schools || "" + " km"}
-                            align="horizontal"
-                        />
-                        <ListItem
-                            label={t("Supermarket")}
-                            value={distances?.supermarket || "" + " km"}
-                            align="horizontal"
-                        />
-                        <ListItem
-                            label={t("Cafe Restaurant")}
-                            value={distances?.cafeRestaurant || "" + " km"}
-                            align="horizontal"
-                        />
-                        <ListItem
-                            label={t("Hospital")}
-                            value={distances?.hospital || "" + " km"}
-                            align="horizontal"
-                        />
-                    </List>
-                </Grid>
-                <Grid item xs={6}>
-                    <List>
-                        <ListItem
-                            label={t("Airport")}
-                            value={distances?.airport || "" + " km"}
-                            align="horizontal"
-                        />
-                        <ListItem
-                            label={t("From Sea")}
-                            value={distances?.sea || "" + " km"}
-                            align="horizontal"
-                        />
-                        <ListItem
-                            label={t("From Public Transport")}
-                            value={distances?.publicTransport || "" + " km"}
-                            align="horizontal"
-                        />
-                    </List>
-                </Grid>
+    if (data.parentCategory == "Land" || data.parentCategory == "Other")
+        return null;
+    const renderHalfOfFields = (fields: string[], from: number, to: number) => {
+        return (
+            <Grid item xs={6}>
+                <List>
+                    {fields
+                        .slice(from, to)
+                        .map((field) => renderDistancesItem(field))}
+                </List>
             </Grid>
-        </Paper>
+        );
+    };
+
+    const renderDistances = (category: ParentCategory) => {
+        const fieldsForCategory = BASIC_DETAIL_FIELDS[category];
+        if (!fieldsForCategory) return null;
+        const firstHalfCount = Math.ceil(fieldsForCategory.length / 2);
+        const secondHalfCount = fieldsForCategory.length - firstHalfCount;
+
+        return (
+            <Grid container>
+                {renderHalfOfFields(fieldsForCategory, 0, firstHalfCount)}
+                {renderHalfOfFields(
+                    fieldsForCategory,
+                    firstHalfCount,
+                    fieldsForCategory.length
+                )}
+            </Grid>
+        );
+    };
+
+    const renderDistancesItem = (field: string) => {
+        switch (field) {
+            case "Schools":
+                return (
+                    <ListItem
+                        label={t("Schools")}
+                        value={
+                            distances?.schools
+                                ? `${distances.schools} m²`
+                                : "- m²"
+                        }
+                        align="horizontal"
+                    />
+                );
+            case "Supermarket":
+                return (
+                    <ListItem
+                        label={t("Supermarket")}
+                        value={
+                            distances?.supermarket
+                                ? `${distances.supermarket} m²`
+                                : "- m²"
+                        }
+                        align="horizontal"
+                    />
+                );
+            case "Cafe-Restaurant":
+                return (
+                    <ListItem
+                        label={t("Cafe-Restaurant")}
+                        value={
+                            distances?.cafeRestaurant
+                                ? `${distances.cafeRestaurant} m²`
+                                : "- m²"
+                        }
+                        align="horizontal"
+                    />
+                );
+            case "Hospital":
+                return (
+                    <ListItem
+                        label={t("Hospital")}
+                        value={
+                            distances?.hospital
+                                ? `${distances.hospital} m²`
+                                : "- m²"
+                        }
+                        align="horizontal"
+                    />
+                );
+
+            case "Sea":
+                return (
+                    <ListItem
+                        label={t("From Sea")}
+                        value={distances?.sea ? `${distances.sea} m²` : "- m²"}
+                        align="horizontal"
+                    />
+                );
+            case "Public Transportation":
+                return (
+                    <ListItem
+                        label={t("Public Transportation")}
+                        value={
+                            distances?.publicTransport
+                                ? `${distances.publicTransport}  m²`
+                                : "-  m²"
+                        }
+                        align="horizontal"
+                    />
+                );
+            case "Airport":
+                return (
+                    <ListItem
+                        label={t("Airport")}
+                        value={
+                            distances?.airport
+                                ? `${distances.airport}  m²`
+                                : "-  m²"
+                        }
+                        align="horizontal"
+                    />
+                );
+        }
+    };
+    return (
+        <Grid container spacing={1}>
+            <Grid item xs={12}>
+                <Paper elevation={10} sx={{ overflow: "auto" }}>
+                    <Box
+                        sx={{
+                            px: 2.5,
+                            py: 1,
+                            display: "flex",
+                            justifyContent: "left",
+                        }}
+                    >
+                        <Typography variant="h6">{t("Distances")}</Typography>
+                    </Box>
+                    <Divider></Divider>
+                    <Grid container>
+                        {renderDistances(
+                            data?.parentCategory as ParentCategory
+                        )}
+                    </Grid>
+                </Paper>
+            </Grid>
+        </Grid>
     );
 };
 

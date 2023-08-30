@@ -14,60 +14,68 @@ const ParkingsSection: React.FC<ParkingsSectionProps> = (props) => {
     const { data } = props;
     const parkings = data.details?.parkings;
     const { t } = useTranslation();
-    return parkings && parkings.length > 0 ? (
-        <Box
-            sx={{
-                border: 1,
-                borderColor: "divider",
-                borderRadius: 1,
-                width: { md: "100%", sm: "100%" },
-            }}
-        >
-            {parkings?.map((parking, index) => {
-                return (
-                    <Paper elevation={10} sx={{ overflow: "auto" }} key={index}>
-                        <Grid
-                            sx={{
-                                border: 1,
-                                borderColor: "divider",
-                                borderRadius: 1,
-                            }}
-                            item
-                        >
-                            <Box
-                                sx={{
-                                    px: 3,
-                                    py: 1.5,
-                                    display: "flex",
-                                    justifyContent: "left",
-                                }}
+    if (data.parentCategory == "Residential") {
+        return parkings && parkings.length > 0 ? (
+            <>
+                <Box
+                    sx={{
+                        border: 1,
+                        borderColor: "divider",
+                        borderRadius: 1,
+                        width: { md: "100%", sm: "100%" },
+                    }}
+                >
+                    {parkings?.map((parking, index) => {
+                        return (
+                            <Paper
+                                elevation={10}
+                                sx={{ overflow: "auto" }}
+                                key={index}
                             >
-                                <Typography variant="h6">
-                                    {t("Parking No.")}
-                                    {index + 1}
-                                </Typography>
-                            </Box>
-                            <Divider></Divider>
-                            <List>
-                                <ListItem
-                                    label={t("Parking Type")}
-                                    value={parking?.parkingType}
-                                    align="horizontal"
-                                />
-                                <ListItem
-                                    label={t("Spots")}
-                                    value={parking?.spots}
-                                    align="horizontal"
-                                />
-                            </List>
-                        </Grid>
-                    </Paper>
-                );
-            })}
-        </Box>
-    ) : (
-        <></>
-    );
+                                <Grid
+                                    sx={{
+                                        border: 1,
+                                        borderColor: "divider",
+                                        borderRadius: 1,
+                                    }}
+                                    item
+                                >
+                                    <Box
+                                        sx={{
+                                            px: 3,
+                                            py: 1.5,
+                                            display: "flex",
+                                            justifyContent: "left",
+                                        }}
+                                    >
+                                        <Typography variant="h6">
+                                            {t("Parking No.")}
+                                            {index + 1}
+                                        </Typography>
+                                    </Box>
+                                    <Divider></Divider>
+                                    <List>
+                                        <ListItem
+                                            label={t("Parking Type")}
+                                            value={parking?.parkingType}
+                                            align="horizontal"
+                                        />
+                                        <ListItem
+                                            label={t("Spots")}
+                                            value={parking?.spots}
+                                            align="horizontal"
+                                        />
+                                    </List>
+                                </Grid>
+                            </Paper>
+                        );
+                    })}
+                </Box>
+            </>
+        ) : (
+            <></>
+        );
+    } else return null;
 };
 
 export default ParkingsSection;
