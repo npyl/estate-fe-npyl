@@ -47,12 +47,7 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Wiring",
         "Loading-Unloading Elevator",
     ],
-    Land: [
-        "Floor To Area Ratio",
-        "Coverage Factor",
-        "Facade Length",
-        "Alarm System",
-    ],
+    Land: ["Floor To Area Ratio", "Coverage Factor", "Facade Length"],
     Other: [
         "Safety Door",
         "Double Frontage",
@@ -291,7 +286,7 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                         align="horizontal"
                     />
                 );
-            case "Floor to Area Ratio":
+            case "Floor To Area Ratio":
                 return (
                     <ListItem
                         label={t("Floor to Area Ratio")}
