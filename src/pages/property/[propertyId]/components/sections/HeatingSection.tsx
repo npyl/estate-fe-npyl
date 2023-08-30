@@ -44,6 +44,7 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
     if (!data) return null;
     const heating = data?.heatingAndEnergy;
     if (!heating) return null;
+    if (data.parentCategory == "Land") return null;
     const renderHalfOfFields = (fields: string[], from: number, to: number) => (
         <Grid item xs={6}>
             <List>
