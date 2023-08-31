@@ -1,13 +1,8 @@
 import {
-    LabelImportant,
-    ManageAccounts,
-    Handshake,
+    CircleNotifications,
     ConfirmationNumber,
     Email,
-    JoinRight,
-    EventNote,
-    AdminPanelSettings,
-    CircleNotifications,
+    LabelImportant,
 } from "@mui/icons-material";
 
 import {
@@ -74,13 +69,16 @@ const getSections = (t: TFunction): Section[] => [
                 icon: <CircleNotifications fontSize="small" />,
             },
 
-            // dummies
             {
-                // ULTRA_DUMMY_DEVIDER
-                title: "",
-                path: "",
+                title: t("Tickets"),
+                path: "/tickets",
+                icon: <ConfirmationNumber fontSize="small" />,
             },
-
+            {
+                title: t("Mail"),
+                path: "/email",
+                icon: <Email fontSize="small" />,
+            },
             // {
             //     title: t("Developers"),
             //     path: "/",
@@ -96,16 +94,7 @@ const getSections = (t: TFunction): Section[] => [
             //     path: "/",
             //     icon: <Handshake fontSize="small" />,
             // },
-            // {
-            //     title: t("Tickets"),
-            //     path: "/",
-            //     icon: <ConfirmationNumber fontSize="small" />,
-            // },
-            // {
-            //     title: t("Mail"),
-            //     path: "/",
-            //     icon: <Email fontSize="small" />,
-            // },
+
             // {
             //     title: t("Activities"),
             //     path: "/",

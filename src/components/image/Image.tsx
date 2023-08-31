@@ -30,8 +30,8 @@ const Image = forwardRef<HTMLSpanElement, ImageProps>(
                 effect={disabledEffect ? undefined : effect}
                 placeholderSrc={
                     disabledEffect
-                        ? "/assets/transparent.png"
-                        : "/assets/placeholder.svg"
+                        ? "/static/transparent.png"
+                        : "/static/placeholder.svg"
                 }
                 width={size.width}
                 height={size.height}

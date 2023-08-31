@@ -12,7 +12,9 @@ const resources = {
             Properties: "Properties",
             Clear: "Clear",
             Customers: "Customers",
-
+            Notification: "Notification",
+            Email: "Email",
+            Tickets: "Tickets",
             "Label Keys": "Label Keys",
             Create: "Create",
             "Create Property": "Create Property",
@@ -346,7 +348,7 @@ const resources = {
             "Customer Information": "Customer Information",
             "First Name": "First Name",
             "Last Name": "Last Name",
-            Email: "Email",
+
             "Managed By": "Managed By",
             "Mobile Phone": "Mobile Phone",
             "Home Phone": "Home Phone",
@@ -377,6 +379,9 @@ const resources = {
             "Search with a keyword": "Αναζήτηση με λέξη-κλειδί",
             Categories: "Κατηγορίες",
             Properties: "Ακίνητα",
+            Notification: "Ειδοποιήσεις",
+            Email: "Email",
+            Tickets: "Tickets",
             Clear: "Καθαρισμός",
             Customers: "Πελάτες",
             "Label Keys": "Κλειδιά ετικετών",
@@ -708,7 +713,7 @@ const resources = {
             "Customer Information": "Πληροφορίες Πελάτη",
             "First Name": "Όνομα",
             "Last Name": "Επώνυμο",
-            Email: "Email",
+
             "Managed By": "Διαχειρίζεται Από",
             "Mobile Phone": "Κινητό Τηλέφωνο",
             "Home Phone": "Σταθερό Τηλέφωνο",
