@@ -206,7 +206,7 @@ const FeaturesSection: React.FC<any> = (props) => {
                         }}
                     />
                     <CheckboxItem
-                        label={t("Driling")}
+                        label={t("Drilling")}
                         value={drilling}
                         onChange={(event, checked) => {
                             dispatch(setDrilling(checked));
@@ -334,7 +334,7 @@ const FeaturesSection: React.FC<any> = (props) => {
                         }}
                     />
                     <CheckboxItem
-                        label={t("Combined Kitchen and Dining Area")}
+                        label={t("Combined Kitchen and Dinning Area")}
                         value={combinedKitchenAndDiningArea}
                         onChange={(event, checked) => {
                             dispatch(setCombinedKitchenAndDiningArea(checked));
@@ -369,7 +369,7 @@ const FeaturesSection: React.FC<any> = (props) => {
                         }}
                     />
                     <CheckboxItem
-                        label={t("Access for Disable")}
+                        label={t("Access for disabled")}
                         value={accessForDisable}
                         onChange={(event, checked) => {
                             dispatch(setAccessForDisable(checked));
@@ -412,7 +412,7 @@ const FeaturesSection: React.FC<any> = (props) => {
                         }}
                     />
                     <CheckboxItem
-                        label={t("Indement Heating Per Room")}
+                        label={t("Independent Heating Per Room")}
                         value={independentHeatingPerRoom}
                         onChange={(event, checked) => {
                             dispatch(setIndependentHeatingPerRoom(checked));

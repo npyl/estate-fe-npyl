@@ -106,36 +106,36 @@ const InformationSection: React.FC = (props) => {
                     <List>
                         <ListItem
                             label={t("First Name")}
-                            value={data?.firstName}
+                            value={data?.firstName || "-"}
                             align="horizontal"
                         />
                         <ListItem
                             label={t("Last Name")}
-                            value={data?.lastName}
+                            value={data?.lastName || "-"}
                             align="horizontal"
                         />
                         <ListItem
                             label={t("email")}
-                            value={data?.email}
+                            value={data?.email || "-"}
                             align="horizontal"
                         />
                         <ListManagerItem
                             label={t("Managed By")}
-                            manager={data?.managedBy}
+                            manager={data?.managedBy || "-"}
                         />
                         <ListItem
                             label={t("Mobile Phone")}
-                            value={data?.mobilePhone}
+                            value={data?.mobilePhone || "-"}
                             align="horizontal"
                         />
                         <ListItem
                             label={t("Home Phone")}
-                            value={data?.homePhone}
+                            value={data?.homePhone || "-"}
                             align="horizontal"
                         />
                         <ListItem
                             label={t("Fax")}
-                            value={data?.fax}
+                            value={data?.fax || "-"}
                             align="horizontal"
                         />
 
@@ -154,44 +154,44 @@ const InformationSection: React.FC = (props) => {
                     <List>
                         <ListItem
                             label={t("Nationality")}
-                            value={data?.nationality}
+                            value={data?.nationality || "-"}
                             align="horizontal"
                         />
                         <ListItem
                             label={t("ID Number")}
-                            value={data?.idNumber}
+                            value={data?.idNumber || "-"}
                             align="horizontal"
                         />
                         <ListItem
                             label={t("Date of Birth")}
-                            value={data?.dateOfBirth}
+                            value={data?.dateOfBirth || "-"}
                             align="horizontal"
                         />
                         <ListItem
                             label={t("Passport Number")}
-                            value={data?.passportNumber}
+                            value={data?.passportNumber || "-"}
                             align="horizontal"
                         />
                         <ListItem
                             label={t("Preferred Language")}
-                            value={data?.preferredLanguage}
+                            value={data?.preferredLanguage || "-"}
                             align="horizontal"
                         />
                         <ListItem
                             label={t("Lead Source")}
-                            value={leadSource}
+                            value={leadSource || "-"}
                             align="horizontal"
                         />
                         {leadSource === "Customer" && (
                             <ListItem
                                 label={t("Suggested by")}
-                                value={data?.suggestedBy}
+                                value={data?.suggestedBy || "-"}
                                 align="horizontal"
                             />
                         )}
                         <ListLabelsItem
                             label={t("Labels")}
-                            labels={data?.labels}
+                            labels={data?.labels || "-"}
                         />
                     </List>
                 </Grid>

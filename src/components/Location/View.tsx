@@ -65,19 +65,13 @@ export const ViewLocation = ({ location }: ViewLocationProps) => {
                     <List>
                         <ListItem
                             label={t("Street")}
-                            value={location?.street}
+                            value={location?.street || "-"}
                             align="horizontal"
                         />
 
                         <ListItem
                             label={t("Number")}
-                            value={location?.number}
-                            align="horizontal"
-                        />
-
-                        <ListItem
-                            label={t("City")}
-                            value={city}
+                            value={location?.number || "-"}
                             align="horizontal"
                         />
                     </List>
@@ -86,23 +80,8 @@ export const ViewLocation = ({ location }: ViewLocationProps) => {
                 <Grid item xs={6} padding={0}>
                     <List>
                         <ListItem
-                            label={t("Zip Code")}
-                            value={location?.zipCode}
-                            align="horizontal"
-                        />
-                        <ListItem
-                            label={t("Region")}
-                            value={region}
-                            align="horizontal"
-                        />
-                        <ListItem
-                            label={t("Country")}
-                            value={location?.country}
-                            align="horizontal"
-                        />
-                        <ListItem
-                            label={t("Neighbourhood")}
-                            value={neighb}
+                            label={t("City")}
+                            value={city || "-"}
                             align="horizontal"
                         />
                     </List>

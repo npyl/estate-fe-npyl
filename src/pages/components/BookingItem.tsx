@@ -9,6 +9,7 @@ import RoomIcon from "@mui/icons-material/Room";
 import { Label } from "src/components/label";
 import { IPropertyResultResponse } from "src/types/properties";
 import { Bathroom, House } from "@mui/icons-material";
+import { useTranslation } from "react-i18next";
 
 // ----------------------------------------------------------------------
 
@@ -18,6 +19,7 @@ type BookingItemProps = {
 };
 
 const ForSaleLabel = () => {
+    const { t } = useTranslation();
     return (
         <Box
             borderRadius={1}
@@ -33,7 +35,7 @@ const ForSaleLabel = () => {
             textAlign={"center"}
             height={40}
         >
-            <Typography>For Sale</Typography>
+            <Typography>{t("For Sale")}</Typography>
         </Box>
     );
 };
@@ -69,7 +71,7 @@ const PriceLabel = ({ value }: { value: number }) => {
         </Box>
     );
 };
-
+const defaultImage = "/static/monoAekReMounia.png";
 export const BookingItem = ({ item, activeMarker }: BookingItemProps) => {
     const {
         details,
@@ -85,15 +87,25 @@ export const BookingItem = ({ item, activeMarker }: BookingItemProps) => {
     const router = useRouter();
 
     const _carouselImages: ICarouselImage[] = useMemo(() => {
-        return images && images.length > 0
-            ? images.map((image, index) => ({
-                  id: `${index}`,
-                  title: "Image",
-                  image: image,
-                  description: "",
-                  path: "/repository",
-              }))
-            : [];
+        if (images && images.length > 0) {
+            return images.map((image, index) => ({
+                id: `${index}`,
+                title: "Image",
+                image: image,
+                description: "",
+                path: "/repository",
+            }));
+        } else {
+            return [
+                {
+                    id: "default",
+                    title: "Default Image",
+                    image: defaultImage,
+                    description: "Default image description",
+                    path: "/repository",
+                },
+            ];
+        }
     }, [images]);
 
     return (
