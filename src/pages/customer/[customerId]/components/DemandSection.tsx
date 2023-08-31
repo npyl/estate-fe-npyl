@@ -33,7 +33,28 @@ const DemandSection: React.FC = () => {
             ) || [],
         [propertyLabels, demandFilterLabelIDs]
     );
-
+    const getDisplayValue = (value: string | number | null | undefined) => {
+        if (value === null || value === undefined) {
+            return typeof value === "number" ? "0" : "-";
+        }
+        return value;
+    };
+    const getRangeDisplayValue = (
+        min: number | null | undefined,
+        max: number | null | undefined
+    ) => {
+        const minValue = min !== null && min !== undefined ? min : 0;
+        const maxValue = max !== null && max !== undefined ? max : 0;
+        return `${minValue} - ${maxValue}`;
+    };
+    const getRangeDisplayValueString = (
+        min: string | null | undefined,
+        max: string | null | undefined
+    ): string => {
+        const minValue = min !== null && min !== undefined ? min : "0";
+        const maxValue = max !== null && max !== undefined ? max : "0";
+        return `${minValue} - ${maxValue}`;
+    };
     if (
         demandFilters?.parentCategory === null &&
         demandFilters?.minYearOfConstruction === null &&
@@ -83,12 +104,14 @@ const DemandSection: React.FC = () => {
                     <List>
                         <ListItem
                             label={t("Parent Category")}
-                            value={demandFilters?.parentCategory}
+                            value={getDisplayValue(
+                                demandFilters?.parentCategory
+                            )}
                             align="horizontal"
                         />
                         <ListItem
                             label={t("Furnished")}
-                            value={demandFilters?.furnished}
+                            value={getDisplayValue(demandFilters?.furnished)}
                             align="horizontal"
                         />
                         <ListLabelsItem
@@ -96,25 +119,40 @@ const DemandSection: React.FC = () => {
                             labels={selectedLabels}
                             align="horizontal"
                         />
-
                         <ListItem
                             label={t("Construction")}
-                            value={` ${demandFilters?.minYearOfConstruction} - ${demandFilters?.maxYearOfConstruction}`}
+                            value={getRangeDisplayValue(
+                                demandFilters?.minYearOfConstruction,
+                                demandFilters?.maxYearOfConstruction
+                            )}
                             align="horizontal"
                         />
                         <ListItem
                             label={t("Bedrooms")}
-                            value={` ${demandFilters?.minBedrooms} - ${demandFilters?.maxBedrooms}`}
+                            value={getRangeDisplayValue(
+                                demandFilters?.minBedrooms,
+                                demandFilters?.maxBedrooms
+                            )}
                             align="horizontal"
                         />
                         <ListItem
                             label={t("Covered")}
-                            value={`${demandFilters?.minCovered} - ${demandFilters?.maxCovered} (m²)`}
+                            value={
+                                getRangeDisplayValue(
+                                    demandFilters?.minCovered,
+                                    demandFilters?.maxCovered
+                                ) + " m²"
+                            }
                             align="horizontal"
                         />
                         <ListItem
                             label={t("Price")}
-                            value={`${demandFilters?.minPrice} - ${demandFilters?.maxPrice} (€)`}
+                            value={
+                                getRangeDisplayValue(
+                                    demandFilters?.minPrice,
+                                    demandFilters?.maxPrice
+                                ) + " €"
+                            }
                             align="horizontal"
                         />
                     </List>
@@ -124,35 +162,43 @@ const DemandSection: React.FC = () => {
                     <List>
                         <ListItem
                             label={t("Category")}
-                            value={demandFilters?.category}
+                            value={getDisplayValue(demandFilters?.category)}
                             align="horizontal"
                         />
-
                         <ListItem
                             label={t("State")}
-                            value={demandFilters?.state}
+                            value={getDisplayValue(demandFilters?.state)}
                             align="horizontal"
                         />
-
                         <ListItem
                             label={t("Time Frame")}
-                            value={data?.demand?.timeframe}
+                            value={getDisplayValue(data?.demand?.timeframe)}
                             align="horizontal"
                         />
-
                         <ListItem
                             label={t("Bathrooms")}
-                            value={`${demandFilters?.minBathrooms} - ${demandFilters?.maxBathrooms}`}
+                            value={getRangeDisplayValue(
+                                demandFilters?.minBathrooms,
+                                demandFilters?.maxBathrooms
+                            )}
                             align="horizontal"
                         />
                         <ListItem
                             label={t("Plot")}
-                            value={`${demandFilters?.minPlot} - ${demandFilters?.maxPlot} (m²)`}
+                            value={
+                                getRangeDisplayValue(
+                                    demandFilters?.minPlot,
+                                    demandFilters?.maxPlot
+                                ) + " (m²)"
+                            }
                             align="horizontal"
                         />
                         <ListItem
                             label={t("Floor")}
-                            value={`${demandFilters?.minFloor} - ${demandFilters?.maxFloor}`}
+                            value={getRangeDisplayValueString(
+                                demandFilters?.minFloor,
+                                demandFilters?.maxFloor
+                            )}
                             align="horizontal"
                         />
                     </List>

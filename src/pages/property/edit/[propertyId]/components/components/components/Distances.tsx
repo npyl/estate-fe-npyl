@@ -63,7 +63,7 @@ const DistancesSection: React.FC<any> = (props) => {
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
                         <OnlyNumbersWithDot
-                            label={t("Public Trasportation")}
+                            label={t("Public Transportation")}
                             value={publicTransportation?.toString() || ""}
                             onChange={(event) =>
                                 handleChange(setPublicTransportation, event)
