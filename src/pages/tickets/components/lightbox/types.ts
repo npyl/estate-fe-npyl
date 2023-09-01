@@ -6,5 +6,6 @@ export interface LightBoxProps extends ILightBoxProps {
     open: boolean;
     images: string[];
     photoIndex: number;
+    mainSrc: string;
     setPhotoIndex: (index: number) => void;
 }
