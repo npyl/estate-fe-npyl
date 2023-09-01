@@ -35,7 +35,7 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Guestroom",
         "Office",
         "Home Cinema",
-        "Combined Kitchen and Dining Area",
+        "Combined Kitchen and Dinning Area",
         "Sound Insulation",
         "Veranda",
         "Well",
@@ -294,10 +294,10 @@ const Features: React.FC<FeaturesProps> = (props) => {
                         align="horizontal"
                     />
                 );
-            case "Combined Kitchen and Dining Area":
+            case "Combined Kitchen and Dinning Area":
                 return (
                     <ListBooleanItem
-                        label={t("Combined Kitchen and Dining Area")}
+                        label={t("Combined Kitchen and Dinning Area")}
                         status={features?.combinedKitchenAndDiningArea}
                         align="horizontal"
                     />

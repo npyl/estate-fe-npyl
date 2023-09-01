@@ -38,38 +38,42 @@ const AreaSection: React.FC<AreaSectionProps> = (props) => {
                         {/* {areas?.groundFloor && ( */}
                         <ListItem
                             label={t("Ground Floor")}
-                            value={areas?.groundFloor + "m²" || "" + "m²"}
+                            value={
+                                areas?.groundFloor
+                                    ? areas.groundFloor + "m²"
+                                    : "- m²"
+                            }
                             align="horizontal"
                         />
                         {/* // )} */}
 
                         <ListItem
                             label={t("First")}
-                            value={areas?.first + "m²" || "" + "m²"}
+                            value={areas?.first ? areas.first + "m²" : "- m²"}
                             align="horizontal"
                         />
 
                         <ListItem
                             label={t("Second")}
-                            value={areas?.second + "m²" || "" + "m²"}
+                            value={areas?.second ? areas.second + "m²" : "- m²"}
                             align="horizontal"
                         />
 
                         <ListItem
                             label={t("Third")}
-                            value={areas?.third + "m²" || "" + "m²"}
+                            value={areas?.third ? areas.third + "m²" : "- m²"}
                             align="horizontal"
                         />
 
                         <ListItem
                             label={t("Fourth")}
-                            value={areas?.fourth + "m²" || "" + "m²"}
+                            value={areas?.fourth ? areas.fourth + "m²" : "- m²"}
                             align="horizontal"
                         />
 
                         <ListItem
                             label={t("Fifth")}
-                            value={areas?.fifth + "m²" || "" + "m²"}
+                            value={areas?.fifth ? areas.fifth + "m²" : "- m²"}
                             align="horizontal"
                         />
                     </List>
@@ -78,37 +82,49 @@ const AreaSection: React.FC<AreaSectionProps> = (props) => {
                     <List>
                         <ListItem
                             label={t("Covered")}
-                            value={areas?.covered + "m²" || "" + "m²"}
+                            value={
+                                areas?.covered ? areas.covered + "m²" : "- m²"
+                            }
                             align="horizontal"
                         />
 
                         <ListItem
                             label={t("Basement")}
-                            value={areas?.basement + "m²" || "" + "m²"}
+                            value={
+                                areas?.basement ? areas.basement + "m²" : "- m²"
+                            }
                             align="horizontal"
                         />
 
                         <ListItem
                             label={t("Attic")}
-                            value={areas?.attic + "m²" || "" + "m²"}
+                            value={areas?.attic ? areas.attic + "m²" : "- m²"}
                             align="horizontal"
                         />
 
                         <ListItem
                             label={t("Garden")}
-                            value={areas?.garden + "m²" || "" + "m²"}
+                            value={areas?.garden ? areas.garden + "m²" : "- m²"}
                             align="horizontal"
                         />
 
                         <ListItem
                             label={t("Balconies")}
-                            value={areas?.balconies + "m²" || "" + "m²"}
+                            value={
+                                areas?.balconies
+                                    ? areas.balconies + "m²"
+                                    : "- m²"
+                            }
                             align="horizontal"
                         />
 
                         <ListItem
                             label={t("Storeroom")}
-                            value={areas?.storeroom + "m²" || "" + "m²"}
+                            value={
+                                areas?.storeroom
+                                    ? areas.storeroom + "m²"
+                                    : "- m²"
+                            }
                             align="horizontal"
                         />
                     </List>

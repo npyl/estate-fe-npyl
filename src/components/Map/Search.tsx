@@ -1,5 +1,6 @@
 import { MenuItem, Paper, Popper, Stack, TextField } from "@mui/material";
 import { FC, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import usePlacesAutocomplete, {
     getGeocode,
@@ -28,7 +29,7 @@ const SearchOnMap: FC<SearchOnMapProps> = ({ onSearchSelect }) => {
     const [anchorEl, setAnchorEl] = useState(null);
 
     const open = useMemo(() => !!anchorEl, [anchorEl]);
-
+    const { t } = useTranslation();
     const handleClick = async (
         o: google.maps.places.AutocompletePrediction
     ) => {
@@ -65,9 +66,9 @@ const SearchOnMap: FC<SearchOnMapProps> = ({ onSearchSelect }) => {
                     if (e.target.value.length > 3)
                         setAnchorEl(textFieldRef.current);
                 }}
-                placeholder="Search on map..."
+                placeholder={t("Search on map...") || ""}
                 sx={{
-                    ml: 3,
+                    ml: 11.5,
                     width: "50%",
                     position: "absolute",
                     top: 11,
