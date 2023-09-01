@@ -1,4 +1,3 @@
-import { useState } from "react";
 // @mui
 import { Avatar, Stack, Typography } from "@mui/material";
 // utils
@@ -7,7 +6,6 @@ import { fToNow } from "../../../../utils/formatTime";
 import { IKanbanComment } from "src/types/kanban";
 // components
 import Image from "../../../../components/image";
-import Lightbox from "../lightbox/Lightbox";
 
 // ----------------------------------------------------------------------
 
@@ -16,25 +14,9 @@ type Props = {
 };
 
 export default function KanbanDetailsCommentList({ comments }: Props) {
-    const [openLightbox, setOpenLightbox] = useState(false);
-
-    const [selectedImage, setSelectedImage] = useState<number>(0);
-
     const imagesLightbox = comments
         .filter((comment) => comment.messageType === "image")
         .map((item) => item.message);
-
-    const handleOpenLightbox = (url: string) => {
-        const selectedImage = imagesLightbox.findIndex(
-            (index) => index === url
-        );
-        setOpenLightbox(true);
-        setSelectedImage(selectedImage);
-    };
-
-    const handleCloseLightbox = () => {
-        setOpenLightbox(false);
-    };
 
     return (
         <>
@@ -73,9 +55,6 @@ export default function KanbanDetailsCommentList({ comments }: Props) {
                                 <Image
                                     alt={comment.message}
                                     src={comment.message}
-                                    onClick={() =>
-                                        handleOpenLightbox(comment.message)
-                                    }
                                     sx={{
                                         mt: 1,
                                         borderRadius: 1,
@@ -90,15 +69,6 @@ export default function KanbanDetailsCommentList({ comments }: Props) {
                     </Stack>
                 ))}
             </Stack>
-
-            <Lightbox
-                images={imagesLightbox}
-                mainSrc={imagesLightbox[selectedImage]}
-                photoIndex={selectedImage}
-                setPhotoIndex={setSelectedImage}
-                open={openLightbox}
-                onCloseRequest={handleCloseLightbox}
-            />
         </>
     );
 }
