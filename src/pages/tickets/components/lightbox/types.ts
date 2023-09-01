@@ -8,4 +8,5 @@ export interface LightBoxProps extends ILightBoxProps {
     photoIndex: number;
     mainSrc: string;
     setPhotoIndex: (index: number) => void;
+    onCloseRequest: () => void;
 }
