@@ -1,9 +1,8 @@
+import { Box, Divider, Grid, Paper, Typography } from "@mui/material";
 import React from "react";
-import { IProperties } from "src/types/properties";
-import { Typography, Box, Paper, Divider, Grid } from "@mui/material";
-import { List, ListBooleanItem, ListItem } from "src/components/List";
 import { useTranslation } from "react-i18next";
-import { ParentCategory } from "src/types/properties";
+import { List, ListBooleanItem } from "src/components/List";
+import { IProperties, ParentCategory } from "src/types/properties";
 
 interface FeaturesProps {
     data: IProperties;

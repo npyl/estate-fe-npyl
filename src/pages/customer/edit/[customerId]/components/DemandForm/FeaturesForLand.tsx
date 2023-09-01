@@ -1,17 +1,12 @@
 import { Grid } from "@mui/material";
-import CheckboxItem from "./components/CheckboxItem";
-import * as React from "react";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import {
-    selectPriorityFeatures,
     selectNonPriorityFeatures,
-    setPriorityFeature,
-    setNonPriorityFeature,
-    selectLeaser,
-    selectBuyer,
+    selectPriorityFeatures,
 } from "src/slices/customer";
+import CheckboxItem from "./components/CheckboxItem";
 import { IFeatureSectionProps } from "./types/FeatureSectionProps";
-import { useTranslation } from "react-i18next";
 
 const FeaturesForLandSection = (props: IFeatureSectionProps) => {
     const { priorityFeaturesMode, onChange: handleChange } = props;
@@ -27,31 +22,31 @@ const FeaturesForLandSection = (props: IFeatureSectionProps) => {
             <Grid container spacing={2}>
                 <CheckboxItem
                     label={t("Panoramic View")}
-                    value={features.panoramicView}
+                    value={!!features?.panoramicView}
                     sliceKey="panoramicView"
                     onChange={handleChange}
                 />
                 <CheckboxItem
                     label={t("Corner")}
-                    value={features.corner}
+                    value={!!features?.corner}
                     sliceKey="corner"
                     onChange={handleChange}
                 />
                 <CheckboxItem
                     label={t("Facade")}
-                    value={features.facade}
+                    value={!!features?.facade}
                     sliceKey="facade"
                     onChange={handleChange}
                 />
                 <CheckboxItem
                     label={t("Within City Plan")}
-                    value={features.withinCityPlan}
+                    value={!!features?.withinCityPlan}
                     sliceKey="withinCityPlan"
                     onChange={handleChange}
                 />
                 <CheckboxItem
                     label={t("Within Residential Zone")}
-                    value={features.withinResidentialZone}
+                    value={!!features?.withinResidentialZone}
                     sliceKey="withinResidentialZone"
                     onChange={handleChange}
                 />

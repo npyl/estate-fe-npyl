@@ -56,7 +56,7 @@ const DemandSection: React.FC = () => {
         return `${minValue} - ${maxValue}`;
     };
     if (
-        demandFilters?.parentCategory === null &&
+        demandFilters?.parentCategories === null &&
         demandFilters?.minYearOfConstruction === null &&
         demandFilters?.furnished === null &&
         demandFilters?.maxYearOfConstruction === null &&
@@ -66,8 +66,8 @@ const DemandSection: React.FC = () => {
         demandFilters?.maxCovered === null &&
         demandFilters?.minPrice === null &&
         demandFilters?.maxPrice === null &&
-        demandFilters?.category === null &&
-        demandFilters?.state === null &&
+        demandFilters?.categories === null &&
+        demandFilters?.states === null &&
         data?.demand?.timeframe === null &&
         demandFilters?.minBathrooms === null &&
         demandFilters?.maxBathrooms === null &&
@@ -105,13 +105,15 @@ const DemandSection: React.FC = () => {
                         <ListItem
                             label={t("Parent Category")}
                             value={getDisplayValue(
-                                demandFilters?.parentCategory
+                                demandFilters?.parentCategories.join(",")
                             )}
                             align="horizontal"
                         />
                         <ListItem
                             label={t("Furnished")}
-                            value={getDisplayValue(demandFilters?.furnished)}
+                            value={getDisplayValue(
+                                demandFilters?.furnished.join(",")
+                            )}
                             align="horizontal"
                         />
                         <ListLabelsItem
@@ -162,12 +164,16 @@ const DemandSection: React.FC = () => {
                     <List>
                         <ListItem
                             label={t("Category")}
-                            value={getDisplayValue(demandFilters?.category)}
+                            value={getDisplayValue(
+                                demandFilters?.categories.join(",")
+                            )}
                             align="horizontal"
                         />
                         <ListItem
                             label={t("State")}
-                            value={getDisplayValue(demandFilters?.state)}
+                            value={getDisplayValue(
+                                demandFilters?.states.join(",")
+                            )}
                             align="horizontal"
                         />
                         <ListItem

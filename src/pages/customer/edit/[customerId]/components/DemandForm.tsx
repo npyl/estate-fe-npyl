@@ -14,32 +14,24 @@ import {
 } from "@mui/material";
 
 import * as React from "react";
+import { FC, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useAllGlobalsQuery } from "src/services/global";
 import {
-    selectStreet,
-    selectNumber,
+    useAllPropertiesQuery,
+    useGetPropertyByCodeQuery,
+} from "src/services/properties";
+import {
+    selectBuyer,
+    selectCategory,
     selectCity,
-    selectZipCode,
-    selectRegion,
-    selectCountry,
-    selectLatitude,
-    selectLongitude,
     selectComplex,
-    // setters
-    setStreet,
-    setNumber,
-    setCity,
-    setZipCode,
-    setComplex,
-    setRegion,
-    setCountry,
-    setLatitude,
-    setLongitude,
-} from "src/slices/customer";
-import {
+    selectCountry,
+    selectFurnished,
+    selectLatitude,
     // getters
     selectLeaser,
-    selectBuyer,
-    selectFurnished,
+    selectLongitude,
     selectMaxBathrooms,
     selectMaxBedrooms,
     selectMaxCovered,
@@ -54,13 +46,22 @@ import {
     selectMinPlot,
     selectMinPrice,
     selectMinYearOfConstruction,
+    selectNumber,
     selectParentCategory,
-    selectCategory,
+    selectRegion,
     selectState,
+    selectStreet,
     selectTimeFrame,
+    selectZipCode,
+    setCategory,
+    setCity,
+    setComplex,
+    setCountry,
+    setDemandLabels,
     // setters
     setFurnished,
-    setCategory,
+    setLatitude,
+    setLongitude,
     setMaxBathrooms,
     setMaxBedrooms,
     setMaxCovered,
@@ -75,22 +76,19 @@ import {
     setMinPlot,
     setMinPrice,
     setMinYearOfConstruction,
+    setNumber,
     setParentCategory,
+    setRegion,
     setState,
+    // setters
+    setStreet,
     setTimeFrame,
-    setDemandLabels,
+    setZipCode,
 } from "src/slices/customer";
-import { useDispatch, useSelector } from "react-redux";
-import { FC, useEffect, useState } from "react";
-import { useAllGlobalsQuery } from "src/services/global";
-import {
-    useAllPropertiesQuery,
-    useGetPropertyByCodeQuery,
-} from "src/services/properties";
 
-import { LabelSelect } from "./LabelSelect";
 import { useTranslation } from "react-i18next";
 import { AreaOfPreference } from "./DemandForm/AreaOfPreference";
+import { LabelSelect } from "./LabelSelect";
 
 const DemandForm: FC = () => {
     const { t } = useTranslation();
@@ -337,38 +335,47 @@ const DemandForm: FC = () => {
                             </Select>
                         </FormControl>
                     </Grid>
-                    <Grid item xs={6}>
-                        <TextField
-                            disabled={parentCategory === ""}
-                            fullWidth
-                            select
-                            label={t("Category")}
-                            value={category}
-                            onChange={(
-                                event: React.ChangeEvent<HTMLInputElement>
-                            ) => {
-                                console.log(
-                                    "Category changed:",
-                                    event.target.value
-                                );
-                                dispatch(setCategory(event.target.value));
-                            }}
-                        >
-                            {subCategoriesMap[parentCategory] ? (
-                                subCategoriesMap[parentCategory].map(
-                                    (item, index) => {
-                                        return (
-                                            <MenuItem key={index} value={item}>
-                                                {item}
-                                            </MenuItem>
+                    {parentCategory &&
+                        parentCategory.length > 0 &&
+                        parentCategory.map((e, index) => (
+                            <Grid key={index} item xs={6}>
+                                <TextField
+                                    disabled={e === ""}
+                                    fullWidth
+                                    select
+                                    label={t("Category")}
+                                    value={category}
+                                    onChange={(
+                                        event: React.ChangeEvent<HTMLInputElement>
+                                    ) => {
+                                        console.log(
+                                            "Category changed:",
+                                            event.target.value
                                         );
-                                    }
-                                )
-                            ) : (
-                                <MenuItem></MenuItem>
-                            )}
-                        </TextField>
-                    </Grid>
+                                        dispatch(
+                                            setCategory(event.target.value)
+                                        );
+                                    }}
+                                >
+                                    {subCategoriesMap[e] ? (
+                                        subCategoriesMap[e].map(
+                                            (item, index) => {
+                                                return (
+                                                    <MenuItem
+                                                        key={index}
+                                                        value={item}
+                                                    >
+                                                        {item}
+                                                    </MenuItem>
+                                                );
+                                            }
+                                        )
+                                    ) : (
+                                        <MenuItem></MenuItem>
+                                    )}
+                                </TextField>
+                            </Grid>
+                        ))}
                     <Grid item xs={6}>
                         <FormControl fullWidth>
                             <InputLabel>{t("Furnishing")}</InputLabel>

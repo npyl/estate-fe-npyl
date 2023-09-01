@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ICustomer, ICustomerPOST } from "src/types/customer";
-import { ILabel } from "src/types/label";
-import type { RootState } from "../store";
 import { IDemand, IDemandFilters } from "src/types/demand";
 import { IPropertyFeatures } from "src/types/features";
+import { ILabel } from "src/types/label";
+import type { RootState } from "../store";
 
 interface customerState extends ICustomerPOST {}
 
@@ -317,14 +317,14 @@ const slice = createSlice({
         },
 
         setParentCategory(state: customerState, action): void {
-            state.demand.filters.parentCategory = action.payload;
+            state.demand.filters.parentCategories = action.payload;
         },
         setCategory(state: customerState, action): void {
-            state.demand.filters.category = action.payload;
+            state.demand.filters.categories = action.payload;
         },
 
         setState(state: customerState, action): void {
-            state.demand.filters.state = action.payload;
+            state.demand.filters.states = action.payload;
         },
 
         setMinPrice(state: customerState, action): void {
@@ -436,13 +436,13 @@ const slice = createSlice({
                 demandFilters?.maxYearOfConstruction ||
                 initialStateFilters.maxYearOfConstruction;
 
-            state.demand.filters.parentCategory =
-                demandFilters?.parentCategory ||
-                initialStateFilters.parentCategory;
-            state.demand.filters.category =
-                demandFilters?.category || initialStateFilters.category;
-            state.demand.filters.state =
-                demandFilters?.state || initialStateFilters.state;
+            state.demand.filters.parentCategories =
+                demandFilters?.parentCategories ||
+                initialStateFilters.parentCategories;
+            state.demand.filters.categories =
+                demandFilters?.categories || initialStateFilters.categories;
+            state.demand.filters.states =
+                demandFilters?.states || initialStateFilters.states;
             state.demand.filters.minPrice =
                 demandFilters?.minPrice || initialStateFilters.minPrice;
             state.demand.filters.maxPrice =
@@ -639,12 +639,12 @@ export const selectMaxFloor = ({ customer }: RootState) =>
     customer.demand.filters.maxFloor;
 
 export const selectParentCategory = ({ customer }: RootState) =>
-    customer.demand.filters.parentCategory;
+    customer.demand.filters.parentCategories;
 export const selectCategory = ({ customer }: RootState) =>
-    customer.demand.filters.category;
+    customer.demand.filters.categories;
 
 export const selectState = ({ customer }: RootState) =>
-    customer.demand.filters.state;
+    customer.demand.filters.states;
 
 export const selectMinPrice = ({ customer }: RootState) =>
     customer.demand.filters.minPrice;

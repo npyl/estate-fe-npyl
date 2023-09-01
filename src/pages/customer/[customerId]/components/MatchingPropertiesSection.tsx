@@ -11,17 +11,17 @@ import {
     GridColDef,
     GridPaginationModel,
 } from "@mui/x-data-grid";
-import { useSuggestForCustomerQuery } from "src/services/properties";
-import DataGridTable from "src/components/DataGrid";
 import { useRouter } from "next/router";
-import { useTranslation } from "react-i18next";
 import * as React from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import DataGridTable from "src/components/DataGrid";
+import { ShapeData } from "src/components/Map/types";
+import { decodeShape, isPointInsideShapeData } from "src/components/Map/util";
 import Image from "src/components/image";
 import { useGetCustomerByIdQuery } from "src/services/customers";
-import { useState, useEffect, useMemo } from "react";
-import { decodeShape, isPointInsideShapeData } from "src/components/Map/util";
+import { useSuggestForCustomerQuery } from "src/services/properties";
 import { IProperties } from "src/types/properties";
-import { ShapeData } from "src/components/Map/types";
 
 type PropertyStatus =
     | "SOLD"
@@ -68,7 +68,7 @@ const MatchingPropertiesSection: React.FC = () => {
     const { customerId } = router.query;
 
     const [page, setPage] = useState(0);
-    const [parentCategory, setParentCategory] = useState("");
+    const [parentCategory, setParentCategory] = useState<string[]>([]);
 
     const { data: customer, isSuccess } = useGetCustomerByIdQuery(+customerId!);
     const { data: propertiesPage } = useSuggestForCustomerQuery(
@@ -98,7 +98,7 @@ const MatchingPropertiesSection: React.FC = () => {
     useEffect(() => {
         if (!customer || !isSuccess) return;
 
-        setParentCategory(customer?.demand?.filters?.parentCategory);
+        setParentCategory(customer?.demand?.filters?.parentCategories);
     }, [customer, isSuccess]);
 
     function statusColor(params: GridCellParams) {
