@@ -28,7 +28,7 @@ export interface IMapAddress {
 
 interface IMapProps {
     onReady?: (m: google.maps.Map) => void;
-
+    hideMainMarker?: boolean;
     onClick?: (lat: number, lng: number, address: IMapAddress) => void;
     onDragEnd?: (
         marker: IMapMarker,
@@ -64,6 +64,7 @@ const Map = ({
     mainMarker,
     activeMarker,
     setActiveMarker,
+    hideMainMarker = false,
     drawing = true,
     search = false,
 }: IMapProps) => {
@@ -247,7 +248,9 @@ const Map = ({
 
             {markers.map((marker, ind) => {
                 const { address, lat, lng, main } = marker;
-
+                if (hideMainMarker && main) {
+                    return null; // Skip rendering main marker
+                }
                 return (
                     <Marker
                         key={ind}

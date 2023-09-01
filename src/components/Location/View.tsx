@@ -10,6 +10,8 @@ import {
     useGetNeighbourhoodsQuery,
     useGetRegionsQuery,
 } from "src/services/location";
+import { useGetCustomerByIdQuery } from "src/services/customers";
+import router from "next/router";
 
 interface ViewLocationProps {
     location: ILocation;
@@ -19,7 +21,8 @@ const isNumberString = (input: string): boolean => !isNaN(Number(input));
 
 export const ViewLocation = ({ location }: ViewLocationProps) => {
     const { t } = useTranslation();
-
+    const { customerId } = router.query;
+    // const { data } = useGetCustomerByIdQuery(parseInt(customerId as string)); // basic details
     const { data: regions } = useGetRegionsQuery();
     const { data: municips } = useGetMunicipalitiesQuery(+location?.region, {
         skip: !isNumberString(location?.region),
@@ -57,36 +60,91 @@ export const ViewLocation = ({ location }: ViewLocationProps) => {
                   ?.nameGR || ""
             : location.complex;
     }, [location?.complex]);
+    console.log(customerId);
+    if (customerId !== undefined) {
+        return (
+            <>
+                <Grid container>
+                    <Grid item xs={6} padding={0}>
+                        <List>
+                            <ListItem
+                                label={t("Street")}
+                                value={location?.street}
+                                align="horizontal"
+                            />
 
-    return (
-        <>
-            <Grid container>
-                <Grid item xs={6} padding={0}>
-                    <List>
-                        <ListItem
-                            label={t("Street")}
-                            value={location?.street || "-"}
-                            align="horizontal"
-                        />
+                            <ListItem
+                                label={t("Number")}
+                                value={location?.number}
+                                align="horizontal"
+                            />
+                        </List>
+                    </Grid>
 
-                        <ListItem
-                            label={t("Number")}
-                            value={location?.number || "-"}
-                            align="horizontal"
-                        />
-                    </List>
+                    <Grid item xs={6} padding={0}>
+                        <List>
+                            <ListItem
+                                label={t("City")}
+                                value={city}
+                                align="horizontal"
+                            />
+                        </List>
+                    </Grid>
                 </Grid>
+            </>
+        );
+    } else {
+        return (
+            <>
+                <Grid container>
+                    <Grid item xs={6} padding={0}>
+                        <List>
+                            <ListItem
+                                label={t("Street")}
+                                value={location?.street}
+                                align="horizontal"
+                            />
 
-                <Grid item xs={6} padding={0}>
-                    <List>
-                        <ListItem
-                            label={t("City")}
-                            value={city || "-"}
-                            align="horizontal"
-                        />
-                    </List>
+                            <ListItem
+                                label={t("Number")}
+                                value={location?.number}
+                                align="horizontal"
+                            />
+
+                            <ListItem
+                                label={t("City")}
+                                value={city}
+                                align="horizontal"
+                            />
+                        </List>
+                    </Grid>
+
+                    <Grid item xs={6} padding={0}>
+                        <List>
+                            <ListItem
+                                label={t("Zip Code")}
+                                value={location?.zipCode}
+                                align="horizontal"
+                            />
+                            <ListItem
+                                label={t("Region")}
+                                value={region}
+                                align="horizontal"
+                            />
+                            <ListItem
+                                label={t("Country")}
+                                value={location?.country}
+                                align="horizontal"
+                            />
+                            <ListItem
+                                label={t("Neighbourhood")}
+                                value={neighb}
+                                align="horizontal"
+                            />
+                        </List>
+                    </Grid>
                 </Grid>
-            </Grid>
-        </>
-    );
+            </>
+        );
+    }
 };

@@ -183,7 +183,7 @@ const ViewAll: FC = () => {
         },
         {
             field: "code",
-            headerName: t("Reference ID") as string,
+            headerName: t("Code") as string,
             width: 180,
             headerAlign: "center",
             align: "center",
@@ -193,14 +193,14 @@ const ViewAll: FC = () => {
             width: 180,
             align: "center",
             headerAlign: "center",
-            headerName: t("Category") as string,
+            headerName: t("Parent Category") as string,
         },
         {
             field: "category",
             width: 180,
             align: "center",
             headerAlign: "center",
-            headerName: t("Subcategory") as string,
+            headerName: t("Category") as string,
         },
         {
             field: "price",

@@ -44,7 +44,7 @@ export const RegionSelect = (props: IRegionSelectProps) => {
                     );
                     return option ? option.nameGR : "";
                 }}
-                input={<OutlinedInput label={t("Area")} />}
+                input={<OutlinedInput label={t("Prefecture")} />}
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
                 {regions.map((region, index) => (

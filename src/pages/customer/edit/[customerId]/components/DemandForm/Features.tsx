@@ -128,7 +128,7 @@ const FeaturesSection = (props: IFeatureSectionProps) => {
                     onChange={handleChange}
                 />
                 <CheckboxItem
-                    label={t("Combined Kitchen and Dining Area")}
+                    label={t("Combined Kitchen and Dinning Area")}
                     value={features.combinedKitchenAndDiningArea}
                     sliceKey={"combinedKitchenAndDiningArea"}
                     onChange={handleChange}

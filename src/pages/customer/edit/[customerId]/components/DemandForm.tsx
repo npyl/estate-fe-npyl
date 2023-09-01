@@ -14,7 +14,27 @@ import {
 } from "@mui/material";
 
 import * as React from "react";
-
+import {
+    selectStreet,
+    selectNumber,
+    selectCity,
+    selectZipCode,
+    selectRegion,
+    selectCountry,
+    selectLatitude,
+    selectLongitude,
+    selectComplex,
+    // setters
+    setStreet,
+    setNumber,
+    setCity,
+    setZipCode,
+    setComplex,
+    setRegion,
+    setCountry,
+    setLatitude,
+    setLongitude,
+} from "src/slices/customer";
 import {
     // getters
     selectLeaser,
@@ -105,10 +125,17 @@ const DemandForm: FC = () => {
     const minPrice = useSelector(selectMinPrice) || 0;
     const maxPrice = useSelector(selectMaxPrice) || 0;
     const timeFrame = useSelector(selectTimeFrame) || "";
-
+    const lat = useSelector(selectLatitude);
+    const lng = useSelector(selectLongitude);
     const minFloorsArray = minFloors;
     const maxFloorsArray = maxFloors;
-
+    const street = useSelector(selectStreet);
+    const number = useSelector(selectNumber);
+    const city = useSelector(selectCity);
+    const zipCode = useSelector(selectZipCode);
+    const complex = useSelector(selectComplex);
+    const region = useSelector(selectRegion);
+    const country = useSelector(selectCountry);
     const leaser = useSelector(selectLeaser);
     const buyer = useSelector(selectBuyer);
 
@@ -882,7 +909,27 @@ const DemandForm: FC = () => {
                     <Typography variant="h6" mb={2}>
                         {t("Area of Preference")}
                     </Typography>
-                    <AreaOfPreference />
+                    <AreaOfPreference
+                        street={street}
+                        number={number}
+                        city={city}
+                        zipCode={zipCode}
+                        region={region}
+                        country={country}
+                        complex={complex}
+                        lat={lat}
+                        lng={lng}
+                        // setters
+                        setStreet={setStreet}
+                        setNumber={setNumber}
+                        setCity={setCity}
+                        setZipCode={setZipCode}
+                        setComplex={setComplex}
+                        setRegion={setRegion}
+                        setCountry={setCountry}
+                        setLatitude={setLatitude}
+                        setLongitude={setLongitude}
+                    />
                 </Grid>
             </Grid>
         </Paper>
