@@ -196,7 +196,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
             case "Estimated Rend Price":
                 return (
                     <ListItem
-                        label={t("Estimated Rend Price")}
+                        label={t("Estimated Rent Price")}
                         value={data?.estimatedRentPrice + "€"}
                         align="horizontal"
                     />

@@ -1,13 +1,16 @@
 import {
     Autocomplete,
     Box,
+    Checkbox,
     FormControl,
     Grid,
     InputAdornment,
     InputLabel,
     MenuItem,
+    OutlinedInput,
     Paper,
     Select,
+    SelectChangeEvent,
     Slider,
     TextField,
     Typography,
@@ -108,7 +111,7 @@ const DemandForm: FC = () => {
     const maxBedrooms = useSelector(selectMaxBedrooms) || 0;
     const minBathrooms = useSelector(selectMinBathrooms) || 0;
     const maxBathrooms = useSelector(selectMaxBathrooms) || 0;
-    const furnished = useSelector(selectFurnished) || "";
+    const furnished = useSelector(selectFurnished) || [];
     const maxCovered = useSelector(selectMaxCovered) || 0;
     const minCovered = useSelector(selectMinCovered) || 0;
     const minPlot = useSelector(selectMinPlot) || 0;
@@ -117,12 +120,12 @@ const DemandForm: FC = () => {
     const maxYearOfConstruction = useSelector(selectMaxYearOfConstruction) || 0;
     const minFloor = useSelector(selectMinFloor) || 0;
     const maxFloor = useSelector(selectMaxFloor) || 0;
-    const parentCategory = useSelector(selectParentCategory) || "";
-    const category = useSelector(selectCategory) || "";
-    const state = useSelector(selectState) || "";
+    const parentCategory = useSelector(selectParentCategory) || [];
+    const category = useSelector(selectCategory) || [];
+    const state = useSelector(selectState) || [];
     const minPrice = useSelector(selectMinPrice) || 0;
     const maxPrice = useSelector(selectMaxPrice) || 0;
-    const timeFrame = useSelector(selectTimeFrame) || "";
+    const timeFrame = useSelector(selectTimeFrame) || [];
     const lat = useSelector(selectLatitude);
     const lng = useSelector(selectLongitude);
     const minFloorsArray = minFloors;
@@ -189,7 +192,21 @@ const DemandForm: FC = () => {
             setDemandLabels(propertyForCode.labels.map((label) => label.id))
         );
     }, [propertyForCode, isPropertyForCodeSuccess]);
+    const handleChange10 = (
+        event: SelectChangeEvent<typeof parentCategory>
+    ) => {
+        const {
+            target: { value },
+        } = event;
+        console.log(parentCategory);
+        dispatch(
+            setParentCategory(
+                // On autofill we get a stringified value.
 
+                typeof value === "string" ? value.split(",") : value
+            )
+        );
+    };
     const handleChange = (
         setter: any,
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -316,7 +333,7 @@ const DemandForm: FC = () => {
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <FormControl fullWidth>
+                        {/* <FormControl fullWidth>
                             <InputLabel>{t("Parent Category")}</InputLabel>
                             <Select
                                 value={parentCategory}
@@ -333,9 +350,42 @@ const DemandForm: FC = () => {
                                     );
                                 })}
                             </Select>
+                        </FormControl> */}
+                        <FormControl sx={{ minWidth: "130px" }}>
+                            <InputLabel id="demo-simple-select-label">
+                                {t("Parent Category")}
+                            </InputLabel>
+                            <Select
+                                multiple
+                                labelId="demo-simple-select-label"
+                                value={parentCategory}
+                                onChange={handleChange10}
+                                renderValue={(selected) => selected.join(", ")}
+                                input={<OutlinedInput label="Κατάσταση" />}
+                                MenuProps={{
+                                    PaperProps: { sx: { maxHeight: "60vh" } },
+                                }}
+                            >
+                                {parentCategoryEnum.map((option) => {
+                                    return (
+                                        <MenuItem key={option} value={option}>
+                                            <Checkbox
+                                                checked={
+                                                    parentCategory.indexOf(
+                                                        option
+                                                    ) > -1
+                                                }
+                                            />
+
+                                            {option}
+                                        </MenuItem>
+                                    );
+                                })}
+                            </Select>
                         </FormControl>
                     </Grid>
-                    {parentCategory &&
+
+                    {Array.isArray(parentCategory) &&
                         parentCategory.length > 0 &&
                         parentCategory.map((e, index) => (
                             <Grid key={index} item xs={6}>

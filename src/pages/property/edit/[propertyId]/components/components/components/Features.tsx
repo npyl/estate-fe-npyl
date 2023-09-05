@@ -366,7 +366,7 @@ const FeaturesSection: React.FC<any> = (props) => {
                         }}
                     />
                     <CheckboxItem
-                        label={t("Access for disabled")}
+                        label={t("Access for Disabled")}
                         value={accessForDisable}
                         onChange={(event, checked) => {
                             dispatch(setAccessForDisable(checked));
