@@ -81,144 +81,166 @@ const DemandSection: React.FC = () => {
         return null; // don't show anything
 
     return (
-        <Paper
-            elevation={10}
-            sx={{
-                overflow: "auto",
-                padding: 0,
-            }}
-        >
-            <Box
+        <>
+            <Paper
+                elevation={10}
                 sx={{
-                    px: 3,
-                    py: 1.5,
-                    display: "flex",
-                    justifyContent: "left",
+                    overflow: "auto",
+                    padding: 0,
                 }}
             >
-                <Typography variant="h6">{t("Demand")}</Typography>
-            </Box>
-            <Divider></Divider>
-            <Grid container>
-                <Grid item xs={6} padding={0}>
-                    <List>
-                        <ListItem
-                            label={t("Parent Category")}
-                            value={getDisplayValue(
-                                demandFilters?.parentCategories.join(",")
-                            )}
-                            align="horizontal"
-                        />
-                        <ListItem
-                            label={t("Furnished")}
-                            value={getDisplayValue(
-                                demandFilters?.furnished.join(",")
-                            )}
-                            align="horizontal"
-                        />
-                        <ListLabelsItem
-                            label={t("Labels")}
-                            labels={selectedLabels}
-                            align="horizontal"
-                        />
-                        <ListItem
-                            label={t("Construction")}
-                            value={getRangeDisplayValue(
-                                demandFilters?.minYearOfConstruction,
-                                demandFilters?.maxYearOfConstruction
-                            )}
-                            align="horizontal"
-                        />
-                        <ListItem
-                            label={t("Bedrooms")}
-                            value={getRangeDisplayValue(
-                                demandFilters?.minBedrooms,
-                                demandFilters?.maxBedrooms
-                            )}
-                            align="horizontal"
-                        />
-                        <ListItem
-                            label={t("Covered")}
-                            value={
-                                getRangeDisplayValue(
-                                    demandFilters?.minCovered,
-                                    demandFilters?.maxCovered
-                                ) + " m²"
-                            }
-                            align="horizontal"
-                        />
-                        <ListItem
-                            label={t("Price")}
-                            value={
-                                getRangeDisplayValue(
-                                    demandFilters?.minPrice,
-                                    demandFilters?.maxPrice
-                                ) + " €"
-                            }
-                            align="horizontal"
-                        />
-                    </List>
-                </Grid>
-
-                <Grid item xs={6} padding={0}>
-                    <List>
-                        <ListItem
-                            label={t("Category")}
-                            value={getDisplayValue(
-                                demandFilters?.categories.join(",")
-                            )}
-                            align="horizontal"
-                        />
-                        <ListItem
-                            label={t("State")}
-                            value={getDisplayValue(
-                                demandFilters?.states.join(",")
-                            )}
-                            align="horizontal"
-                        />
-                        <ListItem
-                            label={t("Time Frame")}
-                            value={getDisplayValue(data?.demand?.timeframe)}
-                            align="horizontal"
-                        />
-                        <ListItem
-                            label={t("Bathrooms")}
-                            value={getRangeDisplayValue(
-                                demandFilters?.minBathrooms,
-                                demandFilters?.maxBathrooms
-                            )}
-                            align="horizontal"
-                        />
-                        <ListItem
-                            label={t("Plot")}
-                            value={
-                                getRangeDisplayValue(
-                                    demandFilters?.minPlot,
-                                    demandFilters?.maxPlot
-                                ) + " (m²)"
-                            }
-                            align="horizontal"
-                        />
-                        <ListItem
-                            label={t("Floor")}
-                            value={getRangeDisplayValueString(
-                                demandFilters?.minFloor,
-                                demandFilters?.maxFloor
-                            )}
-                            align="horizontal"
-                        />
-                    </List>
-                </Grid>
-                {shape && (
-                    <Grid item xs={12}>
-                        <Typography variant="h6" mb={2}>
-                            {t("Area of Preference")}
-                        </Typography>
-                        <AreaOfPreference shape={shape} />
+                <Box
+                    sx={{
+                        px: 3,
+                        py: 1.5,
+                        display: "flex",
+                        justifyContent: "left",
+                    }}
+                >
+                    <Typography variant="h6">{t("Demand")}</Typography>
+                </Box>
+                <Divider></Divider>
+                <Grid container>
+                    <Grid item xs={6} padding={0}>
+                        <List>
+                            <ListItem
+                                label={t("Parent Category")}
+                                value={getDisplayValue(
+                                    demandFilters?.parentCategories.join(",")
+                                )}
+                                align="horizontal"
+                            />
+                            <ListItem
+                                label={t("Furnished")}
+                                value={getDisplayValue(
+                                    demandFilters?.furnished.join(",")
+                                )}
+                                align="horizontal"
+                            />
+                            <ListLabelsItem
+                                label={t("Labels")}
+                                labels={selectedLabels}
+                                align="horizontal"
+                            />
+                            <ListItem
+                                label={t("Construction")}
+                                value={getRangeDisplayValue(
+                                    demandFilters?.minYearOfConstruction,
+                                    demandFilters?.maxYearOfConstruction
+                                )}
+                                align="horizontal"
+                            />
+                            <ListItem
+                                label={t("Bedrooms")}
+                                value={getRangeDisplayValue(
+                                    demandFilters?.minBedrooms,
+                                    demandFilters?.maxBedrooms
+                                )}
+                                align="horizontal"
+                            />
+                            <ListItem
+                                label={t("Covered")}
+                                value={
+                                    getRangeDisplayValue(
+                                        demandFilters?.minCovered,
+                                        demandFilters?.maxCovered
+                                    ) + " m²"
+                                }
+                                align="horizontal"
+                            />
+                            <ListItem
+                                label={t("Price")}
+                                value={
+                                    getRangeDisplayValue(
+                                        demandFilters?.minPrice,
+                                        demandFilters?.maxPrice
+                                    ) + " €"
+                                }
+                                align="horizontal"
+                            />
+                        </List>
                     </Grid>
-                )}
-            </Grid>
-        </Paper>
+
+                    <Grid item xs={6} padding={0}>
+                        <List>
+                            <ListItem
+                                label={t("Category")}
+                                value={getDisplayValue(
+                                    demandFilters?.categories.join(",")
+                                )}
+                                align="horizontal"
+                            />
+                            <ListItem
+                                label={t("State")}
+                                value={getDisplayValue(
+                                    demandFilters?.states.join(",")
+                                )}
+                                align="horizontal"
+                            />
+                            <ListItem
+                                label={t("Time Frame")}
+                                value={getDisplayValue(data?.demand?.timeframe)}
+                                align="horizontal"
+                            />
+                            <ListItem
+                                label={t("Bathrooms")}
+                                value={getRangeDisplayValue(
+                                    demandFilters?.minBathrooms,
+                                    demandFilters?.maxBathrooms
+                                )}
+                                align="horizontal"
+                            />
+                            <ListItem
+                                label={t("Plot")}
+                                value={
+                                    getRangeDisplayValue(
+                                        demandFilters?.minPlot,
+                                        demandFilters?.maxPlot
+                                    ) + " (m²)"
+                                }
+                                align="horizontal"
+                            />
+                            <ListItem
+                                label={t("Floor")}
+                                value={getRangeDisplayValueString(
+                                    demandFilters?.minFloor,
+                                    demandFilters?.maxFloor
+                                )}
+                                align="horizontal"
+                            />
+                        </List>
+                    </Grid>
+                </Grid>
+            </Paper>
+            <Paper
+                elevation={10}
+                sx={{
+                    overflow: "auto",
+                    padding: 0,
+                }}
+            >
+                <Box
+                    sx={{
+                        px: 3,
+                        py: 1.5,
+                        display: "flex",
+                        justifyContent: "left",
+                    }}
+                >
+                    <Typography variant="h6">
+                        {t("Area of Preference")}
+                    </Typography>
+                </Box>
+                <Divider></Divider>
+                <Grid container>
+                    <Grid item xs={12} padding={0}>
+                        <Grid item xs={12}>
+                            <AreaOfPreference />
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Paper>
+        </>
     );
 };
 
