@@ -34,7 +34,7 @@ export const RegionSelect = (props: IRegionSelectProps) => {
 
     return (
         <FormControl fullWidth>
-            <InputLabel>{t("Area")}</InputLabel>
+            <InputLabel>{t("Prefecture")}</InputLabel>
             <Select
                 value={regionCode}
                 onChange={(event) => handleChange(event)}

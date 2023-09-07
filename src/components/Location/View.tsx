@@ -137,7 +137,7 @@ export const ViewLocation = ({ location }: ViewLocationProps) => {
                                 align="horizontal"
                             />
                             <ListItem
-                                label={t("Neighbourhood")}
+                                label={t("Neighborhood")}
                                 value={neighb}
                                 align="horizontal"
                             />

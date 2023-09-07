@@ -25,12 +25,12 @@ const Form = ({ performUpload, resetState, handleCancel }: FormProps) => {
     const leaser = useSelector(selectLeaser);
     const buyer = useSelector(selectBuyer);
 
-    const parentCategory = demand?.filters?.parentCategories;
+    const parentCategories = demand?.filters?.parentCategories;
 
     const handleClick = async () => {
         performUpload && performUpload();
     };
-
+    console.log("parentCategories: ", parentCategories);
     return (
         <Grid paddingTop={1} paddingRight={0} container spacing={1}>
             <Grid container item paddingTop={1} paddingRight={1} spacing={1}>
@@ -45,9 +45,9 @@ const Form = ({ performUpload, resetState, handleCancel }: FormProps) => {
                     <Stack spacing={1}>
                         <DemandForm />
                         {(leaser || buyer) &&
-                            parentCategory &&
-                            parentCategory.length > 0 &&
-                            parentCategory.map((e) => (
+                            parentCategories &&
+                            parentCategories.length > 0 &&
+                            parentCategories.map((e) => (
                                 <>
                                     <PriorityFeatures parentCategory={e} />
                                     <NonPriorityFeatures parentCategory={e} />

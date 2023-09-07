@@ -1,13 +1,16 @@
 import {
     Autocomplete,
     Box,
+    Checkbox,
     FormControl,
     Grid,
     InputAdornment,
     InputLabel,
     MenuItem,
+    OutlinedInput,
     Paper,
     Select,
+    SelectChangeEvent,
     Slider,
     TextField,
     Typography,
@@ -99,6 +102,7 @@ const DemandForm: FC = () => {
     const stateEnum = propertyEnums?.state;
     const detailsEnum = propertyEnums?.details;
     const parentCategoryEnum = propertyEnums?.parentCategory;
+    const subCategoryEnum = propertyEnums?.category;
     const furnishingEnum = detailsEnum?.furnished;
     const timeframeEnum = enums?.customer?.timeframe;
     const minFloors = detailsEnum?.floors;
@@ -108,7 +112,7 @@ const DemandForm: FC = () => {
     const maxBedrooms = useSelector(selectMaxBedrooms) || 0;
     const minBathrooms = useSelector(selectMinBathrooms) || 0;
     const maxBathrooms = useSelector(selectMaxBathrooms) || 0;
-    const furnished = useSelector(selectFurnished) || "";
+    const furnished = useSelector(selectFurnished) || [];
     const maxCovered = useSelector(selectMaxCovered) || 0;
     const minCovered = useSelector(selectMinCovered) || 0;
     const minPlot = useSelector(selectMinPlot) || 0;
@@ -117,12 +121,12 @@ const DemandForm: FC = () => {
     const maxYearOfConstruction = useSelector(selectMaxYearOfConstruction) || 0;
     const minFloor = useSelector(selectMinFloor) || 0;
     const maxFloor = useSelector(selectMaxFloor) || 0;
-    const parentCategory = useSelector(selectParentCategory) || "";
-    const category = useSelector(selectCategory) || "";
-    const state = useSelector(selectState) || "";
+    const parentCategories = useSelector(selectParentCategory) || [];
+    const category = useSelector(selectCategory) || [];
+    const state = useSelector(selectState) || [];
     const minPrice = useSelector(selectMinPrice) || 0;
     const maxPrice = useSelector(selectMaxPrice) || 0;
-    const timeFrame = useSelector(selectTimeFrame) || "";
+    const timeFrame = useSelector(selectTimeFrame) || [];
     const lat = useSelector(selectLatitude);
     const lng = useSelector(selectLongitude);
     const minFloorsArray = minFloors;
@@ -167,10 +171,10 @@ const DemandForm: FC = () => {
     useEffect(() => {
         if (!propertyForCode) return;
 
-        dispatch(setParentCategory(propertyForCode.parentCategory));
-        dispatch(setCategory(propertyForCode.category));
-        dispatch(setFurnished(propertyForCode.technicalFeatures.furnished));
-        dispatch(setState(propertyForCode.state));
+        dispatch(setParentCategory([propertyForCode.parentCategory]));
+        dispatch(setCategory([propertyForCode.category]));
+        dispatch(setFurnished([propertyForCode.technicalFeatures.furnished]));
+        dispatch(setState([propertyForCode.state]));
         dispatch(setMinBedrooms(propertyForCode.details.bedrooms));
         dispatch(setMinBathrooms(propertyForCode.details.bathrooms));
         dispatch(
@@ -189,7 +193,57 @@ const DemandForm: FC = () => {
             setDemandLabels(propertyForCode.labels.map((label) => label.id))
         );
     }, [propertyForCode, isPropertyForCodeSuccess]);
+    const handleChange10 = (
+        event: SelectChangeEvent<typeof parentCategories>
+    ) => {
+        const {
+            target: { value },
+        } = event;
+        dispatch(
+            setParentCategory(
+                // On autofill we get a stringified value.
 
+                typeof value === "string" ? value.split(",") : value
+            )
+        );
+    };
+    const handleChange11 = (event: SelectChangeEvent<typeof category>) => {
+        const {
+            target: { value },
+        } = event;
+        dispatch(
+            setCategory(
+                // On autofill we get a stringified value.
+
+                typeof value === "string" ? value.split(",") : value
+            )
+        );
+    };
+    const handleChange12 = (event: SelectChangeEvent<typeof furnished>) => {
+        const {
+            target: { value },
+        } = event;
+        dispatch(
+            setFurnished(
+                // On autofill we get a stringified value.
+
+                typeof value === "string" ? value.split(",") : value
+            )
+        );
+    };
+
+    const handleChange13 = (event: SelectChangeEvent<typeof state>) => {
+        const {
+            target: { value },
+        } = event;
+        dispatch(
+            setState(
+                // On autofill we get a stringified value.
+
+                typeof value === "string" ? value.split(",") : value
+            )
+        );
+    };
     const handleChange = (
         setter: any,
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -317,79 +371,116 @@ const DemandForm: FC = () => {
                     </Grid>
                     <Grid item xs={6}>
                         <FormControl fullWidth>
-                            <InputLabel>{t("Parent Category")}</InputLabel>
+                            <InputLabel id="demo-simple-select-label">
+                                {t("Parent Category")}
+                            </InputLabel>
                             <Select
-                                value={parentCategory}
-                                label="Parent Category"
-                                onChange={(e) => {
-                                    dispatch(setParentCategory(e.target.value));
+                                multiple
+                                labelId="demo-simple-select-label"
+                                value={parentCategories}
+                                onChange={handleChange10}
+                                renderValue={(selected) => selected.join(", ")}
+                                input={<OutlinedInput label="Κατάσταση" />}
+                                MenuProps={{
+                                    PaperProps: { sx: { maxHeight: "60vh" } },
                                 }}
                             >
-                                {parentCategoryEnum.map((item, index) => {
+                                {parentCategoryEnum.map((option) => {
                                     return (
-                                        <MenuItem key={index} value={item}>
-                                            {item}
+                                        <MenuItem key={option} value={option}>
+                                            <Checkbox
+                                                checked={
+                                                    parentCategories.indexOf(
+                                                        option
+                                                    ) > -1
+                                                }
+                                            />
+
+                                            {option}
                                         </MenuItem>
                                     );
                                 })}
                             </Select>
                         </FormControl>
                     </Grid>
-                    {parentCategory &&
-                        parentCategory.length > 0 &&
-                        parentCategory.map((e, index) => (
+
+                    {Array.isArray(parentCategories) &&
+                        parentCategories.length > 0 &&
+                        parentCategories.map((e, index) => (
                             <Grid key={index} item xs={6}>
-                                <TextField
-                                    disabled={e === ""}
-                                    fullWidth
-                                    select
-                                    label={t("Category")}
-                                    value={category}
-                                    onChange={(
-                                        event: React.ChangeEvent<HTMLInputElement>
-                                    ) => {
-                                        console.log(
-                                            "Category changed:",
-                                            event.target.value
-                                        );
-                                        dispatch(
-                                            setCategory(event.target.value)
-                                        );
-                                    }}
-                                >
-                                    {subCategoriesMap[e] ? (
-                                        subCategoriesMap[e].map(
-                                            (item, index) => {
-                                                return (
-                                                    <MenuItem
-                                                        key={index}
-                                                        value={item}
-                                                    >
-                                                        {item}
-                                                    </MenuItem>
-                                                );
-                                            }
-                                        )
-                                    ) : (
-                                        <MenuItem></MenuItem>
-                                    )}
-                                </TextField>
+                                <FormControl fullWidth>
+                                    <InputLabel id="demo-simple-select-label">
+                                        {t("Category")}
+                                    </InputLabel>
+                                    <Select
+                                        multiple
+                                        labelId="demo-simple-select-label"
+                                        value={category}
+                                        onChange={handleChange11}
+                                        renderValue={(selected) =>
+                                            selected.join(", ")
+                                        }
+                                        input={
+                                            <OutlinedInput label="Κατάσταση" />
+                                        }
+                                        MenuProps={{
+                                            PaperProps: {
+                                                sx: { maxHeight: "60vh" },
+                                            },
+                                        }}
+                                    >
+                                        {subCategoriesMap[e] ? (
+                                            subCategoriesMap[e].map(
+                                                (option) => {
+                                                    return (
+                                                        <MenuItem
+                                                            key={option}
+                                                            value={option}
+                                                        >
+                                                            <Checkbox
+                                                                checked={
+                                                                    parentCategories.indexOf(
+                                                                        option
+                                                                    ) > -1
+                                                                }
+                                                            />
+                                                            {option}
+                                                        </MenuItem>
+                                                    );
+                                                }
+                                            )
+                                        ) : (
+                                            <MenuItem></MenuItem>
+                                        )}
+                                    </Select>
+                                </FormControl>
                             </Grid>
                         ))}
                     <Grid item xs={6}>
                         <FormControl fullWidth>
                             <InputLabel>{t("Furnishing")}</InputLabel>
                             <Select
+                                multiple
+                                labelId="demo-simple-select-label"
                                 value={furnished}
-                                label="Furnishing"
-                                onChange={(e) => {
-                                    dispatch(setFurnished(e.target.value));
+                                onChange={handleChange12}
+                                renderValue={(selected) => selected.join(", ")}
+                                input={<OutlinedInput label="Κατάσταση" />}
+                                MenuProps={{
+                                    PaperProps: { sx: { maxHeight: "60vh" } },
                                 }}
                             >
-                                {furnishingEnum.map((item, index) => {
+                                {furnishingEnum.map((option) => {
                                     return (
-                                        <MenuItem key={index} value={item}>
-                                            {item}
+                                        <MenuItem key={option} value={option}>
+                                            <Checkbox
+                                                checked={
+                                                    furnished.indexOf(option) >
+                                                    -1
+                                                }
+                                            />
+
+                                            {option}
                                         </MenuItem>
                                     );
                                 })}
@@ -400,16 +491,28 @@ const DemandForm: FC = () => {
                         <FormControl fullWidth>
                             <InputLabel>{t("State")}</InputLabel>
                             <Select
+                                multiple
+                                labelId="demo-simple-select-label"
                                 value={state}
-                                label={t("State")}
-                                onChange={(e) => {
-                                    dispatch(setState(e.target.value));
+                                onChange={handleChange13}
+                                renderValue={(selected) => selected.join(", ")}
+                                input={<OutlinedInput label="Κατάσταση" />}
+                                MenuProps={{
+                                    PaperProps: {
+                                        sx: { maxHeight: "60vh" },
+                                    },
                                 }}
                             >
-                                {stateEnum.map((item, index) => {
+                                {stateEnum.map((option) => {
                                     return (
-                                        <MenuItem key={index} value={item}>
-                                            {item}
+                                        <MenuItem key={option} value={option}>
+                                            <Checkbox
+                                                checked={
+                                                    state.indexOf(option) > -1
+                                                }
+                                            />
+
+                                            {option}
                                         </MenuItem>
                                     );
                                 })}
