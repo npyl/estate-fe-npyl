@@ -142,6 +142,34 @@ export const AreaOfPreference = (props: ILocationSectionProps) => {
                 .catch((reason) => console.log("getHierarchy: ", reason));
         }
     }, [closest]);
+
+    // useEffect(() => {
+    //     if (shapeData) {
+    //         // Center the map to the first point in the shape
+    //         if (shapeData.type === "Polygon") {
+    //             if (
+    //                 shapeData.paths.length > 0 &&
+    //                 shapeData.paths[0].length > 0
+    //             ) {
+    //                 const [firstPath] = shapeData.paths;
+    //                 const [firstCoord] = firstPath;
+    //                 const { lat, lng } = firstCoord;
+    //                 setX(lat);
+    //                 setY(lng);
+    //             }
+    //         } else if (shapeData.type === "Circle") {
+    //             const { lat, lng } = shapeData;
+    //             setX(lat);
+    //             setY(lng);
+    //         } else if (shapeData.type === "Rectangle") {
+    //             const { nelat, nelng } = shapeData;
+    //             setX(nelat);
+    //             setY(nelng);
+    //         }
+    //     } else {
+    //         if (!regions[0] || !cities[0]) return;
+    //     }
+    // }, [shapeData, regions[0], cities[0], complexes[0]]);
     const handleRegionChange = (
         regionCode: string,
         lat: number,
