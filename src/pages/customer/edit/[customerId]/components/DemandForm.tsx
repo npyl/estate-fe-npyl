@@ -25,16 +25,11 @@ import {
     useGetPropertyByCodeQuery,
 } from "src/services/properties";
 import {
+    // getters
     selectBuyer,
     selectCategory,
-    selectCity,
-    selectComplex,
-    selectCountry,
     selectFurnished,
-    selectLatitude,
-    // getters
     selectLeaser,
-    selectLongitude,
     selectMaxBathrooms,
     selectMaxBedrooms,
     selectMaxCovered,
@@ -49,22 +44,17 @@ import {
     selectMinPlot,
     selectMinPrice,
     selectMinYearOfConstruction,
-    selectNumber,
     selectParentCategory,
-    selectRegion,
     selectState,
-    selectStreet,
     selectTimeFrame,
-    selectZipCode,
     setCategory,
-    setCity,
-    setComplex,
-    setCountry,
-    setDemandLabels,
+    //location
+    selectDemandCities,
+    selectDemandComplexes,
+    selectDemandRegions,
+
     // setters
     setFurnished,
-    setLatitude,
-    setLongitude,
     setMaxBathrooms,
     setMaxBedrooms,
     setMaxCovered,
@@ -79,14 +69,14 @@ import {
     setMinPlot,
     setMinPrice,
     setMinYearOfConstruction,
-    setNumber,
     setParentCategory,
-    setRegion,
+    setDemandLabels,
     setState,
-    // setters
-    setStreet,
     setTimeFrame,
-    setZipCode,
+    //Demand Location
+    setDemandCities,
+    setDemandComplexes,
+    setDemandRegions,
 } from "src/slices/customer";
 
 import { useTranslation } from "react-i18next";
@@ -127,19 +117,14 @@ const DemandForm: FC = () => {
     const minPrice = useSelector(selectMinPrice) || 0;
     const maxPrice = useSelector(selectMaxPrice) || 0;
     const timeFrame = useSelector(selectTimeFrame) || [];
-    const lat = useSelector(selectLatitude);
-    const lng = useSelector(selectLongitude);
-    const minFloorsArray = minFloors;
-    const maxFloorsArray = maxFloors;
-    const street = useSelector(selectStreet);
-    const number = useSelector(selectNumber);
-    const city = useSelector(selectCity);
-    const zipCode = useSelector(selectZipCode);
-    const complex = useSelector(selectComplex);
-    const region = useSelector(selectRegion);
-    const country = useSelector(selectCountry);
     const leaser = useSelector(selectLeaser);
     const buyer = useSelector(selectBuyer);
+    const minFloorsArray = minFloors;
+    const maxFloorsArray = maxFloors;
+    //Lacation
+    const cities = useSelector(selectDemandCities) || [];
+    const complexes = useSelector(selectDemandComplexes) || [];
+    const regions = useSelector(selectDemandRegions) || [];
 
     const [autocompleteValue, setAutocompleteValue] = useState("");
 
@@ -1020,25 +1005,13 @@ const DemandForm: FC = () => {
                         {t("Area of Preference")}
                     </Typography>
                     <AreaOfPreference
-                        street={street}
-                        number={number}
-                        city={city}
-                        zipCode={zipCode}
-                        region={region}
-                        country={country}
-                        complex={complex}
-                        lat={lat}
-                        lng={lng}
+                        cities={cities}
+                        regions={regions}
+                        complexes={complexes}
                         // setters
-                        setStreet={setStreet}
-                        setNumber={setNumber}
-                        setCity={setCity}
-                        setZipCode={setZipCode}
-                        setComplex={setComplex}
-                        setRegion={setRegion}
-                        setCountry={setCountry}
-                        setLatitude={setLatitude}
-                        setLongitude={setLongitude}
+                        setCities={setDemandCities}
+                        setComplexes={setDemandComplexes}
+                        setRegions={setDemandRegions}
                     />
                 </Grid>
             </Grid>

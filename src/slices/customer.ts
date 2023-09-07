@@ -345,6 +345,15 @@ const slice = createSlice({
         setShape(state: customerState, action): void {
             state.demand.shape = action.payload;
         },
+        //Demand Location
+
+        setDemandComplexes(state: customerState, action): void {},
+        setDemandCities(state: customerState, action): void {
+            state.demand.filters.cities = action.payload;
+        },
+        setDemandRegions(state: customerState, action): void {
+            state.demand.filters.regions = action.payload;
+        },
 
         setInitialState: (state: customerState, action): void => {
             const payload: ICustomer = action.payload;
@@ -459,6 +468,12 @@ const slice = createSlice({
             state.demand.timeframe =
                 demand?.timeframe || initialState.demand.timeframe;
             state.demand.shape = demand?.shape || initialState.demand.shape;
+            state.demand.filters.cities =
+                demandFilters?.cities || initialStateFilters.cities;
+            //TO DO complexe// state.demand.filters.cities =
+            // demandFilters?.cities || initialStateFilters.cities;
+            state.demand.filters.regions =
+                demandFilters?.regions || initialStateFilters.regions;
         },
 
         resetState: () => {
@@ -527,6 +542,11 @@ export const {
     setDemandLabels,
     setTimeFrame,
     setShape,
+    //Demand Location
+
+    setDemandComplexes,
+    setDemandCities,
+    setDemandRegions,
 
     // priority features
     setPriorityFeature,
@@ -658,5 +678,13 @@ export const selectDemandLabels = ({ customer }: RootState) =>
 export const selectTimeFrame = ({ customer }: RootState) =>
     customer.demand.timeframe;
 export const selectShape = ({ customer }: RootState) => customer.demand.shape;
+
+//Demand Location
+
+export const selectDemandComplexes = ({ customer }: RootState) => []; //here will  do thw complexes
+export const selectDemandCities = ({ customer }: RootState) =>
+    customer.demand.filters.cities;
+export const selectDemandRegions = ({ customer }: RootState) =>
+    customer.demand.filters.regions;
 
 export const { reducer } = slice;

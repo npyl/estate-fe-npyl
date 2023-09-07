@@ -21,41 +21,18 @@ import {
 import { selectShape, setShape } from "src/slices/customer";
 import { ILocationPOST } from "src/types/location";
 
-interface ILocationSectionProps extends ILocationPOST {
+interface ILocationSectionProps {
+    cities: string[];
+    complexes: string[];
+    regions: string[];
     // redux setters
-
-    setStreet: ActionCreatorWithPayload<any, string>;
-    setNumber: ActionCreatorWithPayload<any, string>;
-    setCity: ActionCreatorWithPayload<any, string>;
-    setZipCode: ActionCreatorWithPayload<any, string>;
-    setComplex: ActionCreatorWithPayload<any, string>;
-    setRegion: ActionCreatorWithPayload<any, string>;
-    setCountry: ActionCreatorWithPayload<any, string>;
-    setLatitude: ActionCreatorWithPayload<any, string>;
-    setLongitude: ActionCreatorWithPayload<any, string>;
+    setCities: ActionCreatorWithPayload<any, string>;
+    setComplexes: ActionCreatorWithPayload<any, string>;
+    setRegions: ActionCreatorWithPayload<any, string>;
 }
 export const AreaOfPreference = (props: ILocationSectionProps) => {
-    const {
-        street,
-        number,
-        city,
-        zipCode,
-        complex,
-        region,
-        country,
-        lat,
-        lng,
-
-        setStreet,
-        setNumber,
-        setCity,
-        setZipCode,
-        setComplex,
-        setRegion,
-        setCountry,
-        setLatitude,
-        setLongitude,
-    } = props;
+    const { cities, complexes, regions, setCities, setComplexes, setRegions } =
+        props;
     const dispatch = useDispatch();
 
     const shape = useSelector(selectShape);
@@ -70,13 +47,13 @@ export const AreaOfPreference = (props: ILocationSectionProps) => {
     const [getHierarchy] = useLazyGetHierarchyByAreaIdQuery();
 
     // Fields
-    const [x, setX] = useState<number>(lat || -1);
-    const [y, setY] = useState<number>(lng || -1);
+    const [x, setX] = useState<number>(-1);
+    const [y, setY] = useState<number>(-1);
 
     const [activeMarker, setActiveMarker] = useState(null);
     const [mainMarker, setMainMarker] = useState<IMapMarker>({
-        lat: lat ? lat : 37.98381,
-        lng: lng ? lng : 23.727539,
+        lat: x ? x : 37.98381,
+        lng: y ? y : 23.727539,
         address: "",
         main: true,
     });
@@ -99,10 +76,6 @@ export const AreaOfPreference = (props: ILocationSectionProps) => {
         newMarker.lat = lat;
         newMarker.lng = lng;
         setMainMarker(newMarker);
-
-        // update slice
-        dispatch(setLatitude(lat));
-        dispatch(setLongitude(lng));
 
         // show x, y
         setX(lat);
@@ -148,14 +121,14 @@ export const AreaOfPreference = (props: ILocationSectionProps) => {
 
         // update slice
         if (closest.level === 2) {
-            dispatch(setRegion(closest.parentID.toString()));
-            dispatch(setCity(closest.areaID.toString()));
+            dispatch(setRegions([closest.parentID.toString()]));
+            dispatch(setCities([closest.areaID.toString()]));
         } else if (closest.level === 3) {
             const neighbId = closest.areaID;
             const municipId = closest.parentID;
 
-            dispatch(setComplex(neighbId.toString()));
-            dispatch(setCity(municipId.toString()));
+            dispatch(setComplexes([neighbId.toString()]));
+            dispatch(setCities([municipId.toString()]));
 
             // For region
             getHierarchy(municipId)
@@ -164,7 +137,7 @@ export const AreaOfPreference = (props: ILocationSectionProps) => {
                     const regionId = municipHierarchy.parentID;
                     if (!regionId) return;
 
-                    dispatch(setRegion(regionId.toString()));
+                    dispatch(setRegions([regionId.toString()]));
                 })
                 .catch((reason) => console.log("getHierarchy: ", reason));
         }
@@ -177,7 +150,7 @@ export const AreaOfPreference = (props: ILocationSectionProps) => {
         updateMainMarkerCoordinates(lat, lng);
 
         // update slice
-        dispatch(setRegion(regionCode));
+        dispatch(setRegions([regionCode]));
     };
     const handleMunicipChange = (
         municipCode: string,
@@ -187,7 +160,7 @@ export const AreaOfPreference = (props: ILocationSectionProps) => {
         updateMainMarkerCoordinates(lat, lng);
 
         // update slice
-        dispatch(setCity(municipCode));
+        dispatch(setCities([municipCode]));
     };
     const handleNeighbourChange = (
         neighbourCode: string,
@@ -197,7 +170,7 @@ export const AreaOfPreference = (props: ILocationSectionProps) => {
         updateMainMarkerCoordinates(lat, lng);
 
         // update slice
-        dispatch(setComplex(neighbourCode));
+        dispatch(setComplexes([neighbourCode]));
     };
     return (
         <Grid item xs={12} padding={1}>
@@ -222,21 +195,21 @@ export const AreaOfPreference = (props: ILocationSectionProps) => {
                     <Grid container direction={"row"} spacing={2}>
                         <Grid item xs={4}>
                             <RegionSelect
-                                regionCode={region}
+                                regionCode={regions[0]}
                                 onChange={handleRegionChange}
                             />
                         </Grid>
                         <Grid item xs={4}>
                             <MunicipSelect
-                                regionCode={region}
-                                municipCode={city}
+                                regionCode={regions[0]}
+                                municipCode={cities[0]}
                                 onChange={handleMunicipChange}
                             />
                         </Grid>
                         <Grid item xs={4}>
                             <NeighbourSelect
-                                municipCode={city}
-                                neighbourCode={complex}
+                                municipCode={cities[0]}
+                                neighbourCode={complexes[0]}
                                 onChange={handleNeighbourChange}
                             />
                         </Grid>
