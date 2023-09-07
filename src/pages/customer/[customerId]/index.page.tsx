@@ -25,6 +25,7 @@ import ViewHeader from "src/pages/components/ViewHeader";
 import { deleteTabWithPath } from "src/slices/tabs";
 import { usePublishTab } from "src/components/Tabs/utils";
 import { useTranslation } from "react-i18next";
+import { AreaOfPreference } from "./components/AreaOfPreference";
 
 function a11yProps(index: number) {
     return {
