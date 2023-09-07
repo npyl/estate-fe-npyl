@@ -4,17 +4,29 @@ import { useSelector } from "react-redux";
 
 import Map from "src/components/Map/Map";
 import { decodeShape, drawShape } from "src/components/Map/util";
-import { selectCity, selectShape, setCity } from "src/slices/customer";
+import { useGetMunicipalitiesQuery } from "src/services/location";
+import {
+    selectCity,
+    selectDemandCities,
+    selectDemandRegions,
+    selectShape,
+    setCity,
+} from "src/slices/customer";
 
 interface AreaOfPreferenceProps {
     // shape: string;
 }
+const isNumberString = (input: string): boolean => !isNaN(Number(input));
 
 export const AreaOfPreference: React.FC<AreaOfPreferenceProps> = ({}) => {
     const [map, setMap] = useState<google.maps.Map>();
     const shape = useSelector(selectShape); // Get shape from Redux
-    const city = useSelector(selectCity);
-    console.log("Map is initialized"); // Debug line
+    const regions = useSelector(selectDemandRegions) || [];
+    const cities = useSelector(selectDemandCities) || [];
+
+    const { data: municips } = useGetMunicipalitiesQuery(+regions[0], {
+        skip: !regions[0] && !isNumberString(regions[0]),
+    });
     useEffect(() => {
         if (!map) return;
 
@@ -47,8 +59,12 @@ export const AreaOfPreference: React.FC<AreaOfPreferenceProps> = ({}) => {
                 return;
             }
         } else {
+            if (!cities[0]) return;
+            const city = municips?.filter((m) => m.areaID === +cities[0])[0];
             // Debug lines to ensure that the map should be visible
-            map.setCenter(new google.maps.LatLng(37.7749, -122.4194)); // Centering on San Francisco for example
+            map.setCenter(
+                new google.maps.LatLng(city?.latitude!, city?.longitude!)
+            ); // Centering on San Francisco for example
             map.setZoom(12);
         }
     }, [shape, map]);

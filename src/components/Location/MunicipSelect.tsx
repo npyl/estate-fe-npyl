@@ -20,7 +20,9 @@ interface IMunicipSelectProps {
 export const MunicipSelect = (props: IMunicipSelectProps) => {
     const { municipCode, regionCode, onChange } = props;
     const { t } = useTranslation();
-    const municips = useGetMunicipalitiesQuery(+regionCode).data;
+    const municips =
+        useGetMunicipalitiesQuery(+regionCode, { skip: !regionCode }).data ||
+        [];
 
     const handleChange = (event: SelectChangeEvent<string>) => {
         const municipCode = event.target.value;
