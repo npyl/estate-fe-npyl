@@ -20,7 +20,10 @@ interface NeighbourSelectProps {
 export const NeighbourSelect = (props: NeighbourSelectProps) => {
     const { municipCode, neighbourCode, onChange } = props;
     const { t } = useTranslation();
-    const neighbours = useGetNeighbourhoodsQuery(+municipCode).data;
+    const neighbours =
+        useGetNeighbourhoodsQuery(+municipCode, {
+            skip: !municipCode,
+        }).data || [];
 
     const handleChange = (event: SelectChangeEvent<string>) => {
         const neighbourCode = event.target.value;

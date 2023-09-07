@@ -47,8 +47,8 @@ export const AreaOfPreference = (props: ILocationSectionProps) => {
     const [getHierarchy] = useLazyGetHierarchyByAreaIdQuery();
 
     // Fields
-    const [x, setX] = useState<number>(-1);
-    const [y, setY] = useState<number>(-1);
+    const [x, setX] = useState<number>();
+    const [y, setY] = useState<number>();
 
     const [activeMarker, setActiveMarker] = useState(null);
     const [mainMarker, setMainMarker] = useState<IMapMarker>({
@@ -195,21 +195,21 @@ export const AreaOfPreference = (props: ILocationSectionProps) => {
                     <Grid container direction={"row"} spacing={2}>
                         <Grid item xs={4}>
                             <RegionSelect
-                                regionCode={regions[0]}
+                                regionCode={regions[0] || ""}
                                 onChange={handleRegionChange}
                             />
                         </Grid>
                         <Grid item xs={4}>
                             <MunicipSelect
-                                regionCode={regions[0]}
-                                municipCode={cities[0]}
+                                regionCode={regions[0] || ""}
+                                municipCode={cities[0] || ""}
                                 onChange={handleMunicipChange}
                             />
                         </Grid>
                         <Grid item xs={4}>
                             <NeighbourSelect
-                                municipCode={cities[0]}
-                                neighbourCode={complexes[0]}
+                                municipCode={cities[0] || ""}
+                                neighbourCode={complexes[0] || ""}
                                 onChange={handleNeighbourChange}
                             />
                         </Grid>
