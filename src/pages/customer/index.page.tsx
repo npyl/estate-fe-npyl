@@ -1,7 +1,9 @@
 import { Box, Paper, Skeleton, Avatar } from "@mui/material";
 import {
+    GridCallbackDetails,
     GridCellParams,
     GridColDef,
+    GridPaginationModel,
     GridRowSelectionModel,
 } from "@mui/x-data-grid";
 import type { NextPage } from "next";
@@ -22,7 +24,59 @@ import { DeleteDialog } from "src/components/Dialog/Delete";
 import { BulkEdit } from "./components/BulkEdit/BulkEdit";
 import { usePublishTab } from "src/components/Tabs/utils";
 import { useTranslation } from "react-i18next";
+import { Label, LabelColor } from "src/components/label";
+import ListLabelsItem from "src/components/List/labels-item";
+interface TypeProps {
+    seller: boolean;
+    lessor: boolean;
+    leaser: boolean;
+    buyer: boolean;
+}
 
+const TypeLabels = ({ seller, lessor, leaser, buyer }: TypeProps) => {
+    const { t } = useTranslation();
+
+    const map = useMemo(
+        () => ({
+            ["Seller"]: {
+                value: seller,
+                color: "success",
+            },
+            ["Lessor"]: {
+                value: lessor,
+                color: "error",
+            },
+            ["Leaser"]: {
+                value: leaser,
+                color: "warning",
+            },
+            ["Buyer"]: {
+                value: buyer,
+                color: "info",
+            },
+        }),
+        [seller, lessor, leaser, buyer]
+    );
+
+    return (
+        <>
+            {Object.entries(map).map(([type, { value, color }]) =>
+                value ? (
+                    <Label
+                        key={type}
+                        variant="soft"
+                        opaque
+                        color={color as LabelColor}
+                    >
+                        {t(type)}
+                    </Label>
+                ) : null
+            )}
+        </>
+    );
+};
+{
+}
 const Customers: NextPage = () => {
     usePublishTab({ title: "Customers", path: "/customer" });
 
@@ -32,12 +86,58 @@ const Customers: NextPage = () => {
     const [bulkDeleteDialogOpen, setBulkDeleteDialogOpen] = useState(false);
     const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
     const { t } = useTranslation();
+    const [sortingOrder, setSortingOrder] = useState("asc");
     // page
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(25);
-
+    // const { labels, label = "Labels", ...other } = props;
     const [deleteCustomer] = useDeleteCustomerMutation();
     const [filterCustomers, { isLoading, data }] = useFilterCustomersMutation();
+    const totalRows = useMemo(
+        () => (data?.totalElements ? data?.totalElements : 100000),
+        [data?.totalElements]
+    );
+    const revalidate = () => {
+        filterCustomers({
+            filter: allFilters,
+            page: page,
+            pageSize: pageSize,
+        });
+    };
+    useEffect(() => {
+        revalidate();
+    }, [allFilters, page, pageSize]);
+
+    const handlePaginationModelChange = (
+        model: GridPaginationModel,
+        details: GridCallbackDetails
+    ) => {
+        setPageSize(model.pageSize);
+        setPage(model.page);
+    };
+    function statusColor(params: GridCellParams) {
+        const labels = (
+            <TypeLabels
+                seller={params.row.seller}
+                lessor={params.row.lessor}
+                leaser={params.row.leaser}
+                buyer={params.row.buyer}
+            />
+        );
+
+        return <div>{labels}</div>;
+    }
+
+    function labels(params: GridCellParams) {
+        const label = (
+            <ListLabelsItem
+                labels={params.row.labels || "-"}
+                label={""}
+            ></ListLabelsItem>
+        );
+        return <div>{label}</div>;
+    }
+
     const columns: GridColDef[] = [
         {
             field: "image",
@@ -63,21 +163,30 @@ const Customers: NextPage = () => {
             field: "firstName",
             headerName: t("First Name") || "",
             width: 180,
+            headerAlign: "center",
+            align: "center",
         },
         {
             field: "lastName",
             headerName: t("Last Name") || "",
             width: 180,
+            headerAlign: "center",
+            align: "center",
         },
         {
             field: "mobilePhone",
             headerName: t("Mobile Phone") || "",
             width: 180,
+            headerAlign: "center",
+            align: "center",
         },
+
         {
             field: "city",
             headerName: t("City") || "",
             width: 180,
+            headerAlign: "center",
+            align: "center",
             renderCell: (params: GridCellParams) => {
                 const city = useMemo(() => {
                     if (!params.row.city) return "";
@@ -92,20 +201,28 @@ const Customers: NextPage = () => {
                 return <div>{city}</div>;
             },
         },
+        {
+            field: "category",
+            width: 180,
+            headerAlign: "center",
+            align: "center",
+            headerName: t("Category") || "",
+            renderCell: statusColor,
+        },
+        {
+            field: "labels",
+            width: 180,
+            headerAlign: "center",
+            align: "center",
+            headerName: t("Labels") || "",
+            // renderCell: labels,
+        },
     ];
     useEffect(() => {
         revalidate();
     }, [allFilters, page, pageSize]);
 
     const rows = useMemo(() => data?.content || [], [data?.content]);
-
-    const revalidate = () => {
-        filterCustomers({
-            filter: allFilters,
-            page: page,
-            pageSize: pageSize,
-        });
-    };
 
     const renderSkeletonCell = () => <Skeleton width={150} animation="wave" />;
     const skeletonRows = Array.from({ length: 2 }, (_, index) => ({
@@ -146,17 +263,18 @@ const Customers: NextPage = () => {
                 }}
             />
 
-            <Paper sx={{ mt: 1, marginRight: bulkEditOpen ? 40 : 0 }}>
+            <Paper sx={{ mt: 1, marginRight: bulkEditOpen ? 320 : 0 }}>
                 {rows ? (
                     <DataGridTable
                         rows={rows}
                         columns={columns}
                         resource={"customer"}
                         sortingBy={"firstName"}
-                        sortingOrder={"asc"}
-                        page={0}
-                        pageSize={25}
-                        totalRows={25}
+                        sortingOrder={sortingOrder}
+                        page={page}
+                        pageSize={pageSize}
+                        totalRows={totalRows}
+                        onPaginationModelChange={handlePaginationModelChange}
                         onBulkEdit={openBulkEdit}
                         onBulkDelete={openBulkDeleteDialog}
                     />
@@ -168,10 +286,11 @@ const Customers: NextPage = () => {
                             renderCell: renderSkeletonCell,
                         }))}
                         sortingBy={""}
-                        sortingOrder={"asc"}
-                        page={0}
-                        pageSize={25}
-                        totalRows={25}
+                        sortingOrder={sortingOrder}
+                        page={page}
+                        pageSize={pageSize}
+                        totalRows={totalRows}
+                        onPaginationModelChange={handlePaginationModelChange}
                     />
                 )}
             </Paper>

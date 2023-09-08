@@ -152,7 +152,7 @@ const ViewAll: FC = () => {
         }
         const status = (params.value as string).trim();
         const statusUpper = status.toUpperCase() as PropertyStatus;
-        // console.log("statusUpper:", statusUpper); // add this to debug the value
+
         const color = STATUS_COLORS[statusUpper] || "#537f91"; // default color if status is not recognized
 
         return (

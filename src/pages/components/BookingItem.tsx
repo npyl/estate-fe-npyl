@@ -50,13 +50,14 @@ const TypeLabel = ({ value }: { value: string }) => {
             }}
         >
             <Label opaque color="warning">
-                {value} €
+                {value}
             </Label>
         </Box>
     );
 };
 
 const PriceLabel = ({ value }: { value: number }) => {
+    if (!value) return null;
     return (
         <Box
             sx={{
