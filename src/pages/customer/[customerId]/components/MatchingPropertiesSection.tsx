@@ -66,7 +66,7 @@ const MatchingPropertiesSection: React.FC = () => {
     const router = useRouter();
     const { t } = useTranslation();
 
-    const { isLoaded } = useLoadApi();  // google maps api
+    const { isLoaded } = useLoadApi(); // google maps api
     const { customerId } = router.query;
 
     const [page, setPage] = useState(0);

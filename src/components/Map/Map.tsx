@@ -51,7 +51,13 @@ interface IMapProps {
 
 const apiKey = "AIzaSyCW6oijpbC0JhlXRwPBtNIxy9e4sn7NnwU";
 const athensLatLng = { lat: 37.98381, lng: 23.727539 };
-
+export const useLoadApi = () => {
+    return useJsApiLoader({
+        id: "google-map-script",
+        googleMapsApiKey: apiKey,
+        libraries: ["drawing", "places", "geometry"],
+    });
+};
 const Map = ({
     onReady,
     onClick,
@@ -68,11 +74,7 @@ const Map = ({
     drawing = true,
     search = false,
 }: IMapProps) => {
-    const { isLoaded } = useJsApiLoader({
-        id: "google-map-script",
-        googleMapsApiKey: apiKey,
-        libraries: ["drawing", "places", "geometry"],
-    });
+    const { isLoaded } = useLoadApi();
     const [geocoder, setGeocoder] = useState<google.maps.Geocoder>();
 
     const [map, setMap] = React.useState(null);
