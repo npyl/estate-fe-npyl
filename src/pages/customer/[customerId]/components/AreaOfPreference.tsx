@@ -1,32 +1,32 @@
 import { Box } from "@mui/material";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 import Map from "src/components/Map/Map";
 import { decodeShape, drawShape } from "src/components/Map/util";
 import { useGetMunicipalitiesQuery } from "src/services/location";
 import {
-    selectCity,
     selectDemandCities,
     selectDemandRegions,
     selectShape,
-    setCity,
 } from "src/slices/customer";
 
-interface AreaOfPreferenceProps {
-    // shape: string;
-}
+interface AreaOfPreferenceProps {}
+
 const isNumberString = (input: string): boolean => !isNaN(Number(input));
 
 export const AreaOfPreference: React.FC<AreaOfPreferenceProps> = ({}) => {
     const [map, setMap] = useState<google.maps.Map>();
+    
     const shape = useSelector(selectShape); // Get shape from Redux
+    
     const regions = useSelector(selectDemandRegions) || [];
     const cities = useSelector(selectDemandCities) || [];
 
     const { data: municips } = useGetMunicipalitiesQuery(+regions[0], {
         skip: !regions[0] && !isNumberString(regions[0]),
     });
+
     useEffect(() => {
         if (!map) return;
 

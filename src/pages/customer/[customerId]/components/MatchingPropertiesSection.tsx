@@ -16,6 +16,7 @@ import * as React from "react";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import DataGridTable from "src/components/DataGrid";
+import { useLoadApi } from "src/components/Map/Map";
 import { ShapeData } from "src/components/Map/types";
 import { decodeShape, isPointInsideShapeData } from "src/components/Map/util";
 import Image from "src/components/image";
@@ -65,6 +66,7 @@ const MatchingPropertiesSection: React.FC = () => {
     const router = useRouter();
     const { t } = useTranslation();
 
+    const { isLoaded } = useLoadApi();  // google maps api
     const { customerId } = router.query;
 
     const [page, setPage] = useState(0);
@@ -87,13 +89,14 @@ const MatchingPropertiesSection: React.FC = () => {
     );
 
     const properties = useMemo(() => {
+        if (!isLoaded) return [];
         if (!propertiesPage?.content) return [];
         return (
             (shapeData
                 ? filterPropertiesInShape(propertiesPage?.content, shapeData)
                 : propertiesPage?.content) || []
         );
-    }, [shapeData, propertiesPage]);
+    }, [isLoaded, shapeData, propertiesPage]);
 
     useEffect(() => {
         if (!customer || !isSuccess) return;

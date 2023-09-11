@@ -12,6 +12,10 @@ export interface ICustomerResultResponse {
     email: string;
     mobilePhone: string;
     city: string;
+    leaser: boolean;
+    lessor: boolean;
+    seller: boolean;
+    buyer: boolean;
 }
 
 export interface ICustomerFilter {
