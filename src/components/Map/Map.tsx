@@ -71,7 +71,7 @@ const Map = ({
     const { isLoaded } = useJsApiLoader({
         id: "google-map-script",
         googleMapsApiKey: apiKey,
-        libraries: ["drawing", "places"],
+        libraries: ["drawing", "places", "geometry"],
     });
     const [geocoder, setGeocoder] = useState<google.maps.Geocoder>();
 

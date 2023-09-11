@@ -1,8 +1,6 @@
 import { Box, Grid, Stack, Tab, Tabs } from "@mui/material";
-
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -11,7 +9,6 @@ import {
     useDeleteCustomerMutation,
     useGetCustomerByIdQuery,
 } from "src/services/customers";
-
 import AddressSection from "./components/AddressSection";
 import InformationSection from "./components/InformationSection";
 import DemandSection from "./components/DemandSection";
@@ -25,7 +22,6 @@ import ViewHeader from "src/pages/components/ViewHeader";
 import { deleteTabWithPath } from "src/slices/tabs";
 import { usePublishTab } from "src/components/Tabs/utils";
 import { useTranslation } from "react-i18next";
-import { AreaOfPreference } from "./components/AreaOfPreference";
 
 function a11yProps(index: number) {
     return {
@@ -33,6 +29,10 @@ function a11yProps(index: number) {
         "aria-controls": `simple-tabpanel-${index}`,
     };
 }
+type TabConfig = {
+    label: string;
+    content: JSX.Element;
+};
 
 const CustomerView: NextPage = () => {
     // customer
@@ -40,13 +40,10 @@ const CustomerView: NextPage = () => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
     const { customerId } = router.query;
-
     const [value, setValue] = useState(0);
-
     const { data } = useGetCustomerByIdQuery(+customerId!);
     const [deleteCustomer, { isSuccess: isDeleteSuccess }] =
         useDeleteCustomerMutation();
-
     usePublishTab(
         {
             title: data?.firstName && data?.lastName ? "" : "Customer",
@@ -56,54 +53,27 @@ const CustomerView: NextPage = () => {
             ? `${data?.firstName} ${data?.lastName}`
             : `${data?.id}`
     );
-
     const handleChange = (event: React.SyntheticEvent, newValue: number) =>
         setValue(newValue);
     const handleEdit = () => router.push(`/customer/edit/${customerId}`);
     const handleDelete = () => deleteCustomer(+customerId!);
-
+    const isSellerOrLessor = data?.seller || data?.lessor;
+    const isBuyerOrLeaser = data?.buyer || data?.leaser;
     if (isDeleteSuccess) {
         router.push("/customer");
         // delete tab
         dispatch(deleteTabWithPath(`/customer/${customerId}`));
     }
-    //     <TypeLabels
-    //     seller={data?.seller}
-    //     lessor={data?.lessor}
-    //     leaser={data?.leaser}
-    //     buyer={data?.buyer}
-    // />
-    const isSellerOrLessor = data?.seller || data?.lessor;
-    const isBuyerOrLeaser = data?.buyer || data?.leaser;
-    return (
-        <Box sx={{ width: "100%", paddingY: 1 }}>
-            <ViewHeader onEdit={handleEdit} onDelete={handleDelete}>
-                <Tabs
-                    value={value}
-                    onChange={handleChange}
-                    aria-label="View Property Tabs"
-                >
-                    <Tab label={t("Customer Information")} {...a11yProps(0)} />
-                    {isSellerOrLessor && (
-                        <Tab label={t("Owned Properties")} {...a11yProps(1)} />
-                    )}
-                    {isBuyerOrLeaser && (
-                        <Tab
-                            label={t("Matching Properties")}
-                            {...a11yProps(2)}
-                        />
-                    )}
-                </Tabs>
-            </ViewHeader>
-
-            {/* customer info */}
-            <TabPanel value={value} index={0}>
+    const tabsConfig = [
+        {
+            label: t("Customer Information"),
+            content: (
                 <Grid container spacing={1}>
                     <Grid item xs={6} order={"row"}>
                         <Stack spacing={1}>
                             <InformationSection />
                             <AddressSection />
-                            <DemandSection />
+                            {isBuyerOrLeaser && <DemandSection />}
                             <NotesCustomerSection />
                         </Stack>
                     </Grid>
@@ -116,19 +86,40 @@ const CustomerView: NextPage = () => {
                         </Stack>
                     </Grid>
                 </Grid>
-            </TabPanel>
+            ),
+        },
+        isSellerOrLessor && {
+            label: t("Owned Properties"),
+            content: <OwnedCustomerPropertiesSection />,
+        },
+        isBuyerOrLeaser && {
+            label: t("Matching Properties"),
+            content: <MatchingPropertiesSection />,
+        },
+    ].filter((tab): tab is TabConfig => Boolean(tab));
+    return (
+        <Box sx={{ width: "100%", paddingY: 1 }}>
+            <ViewHeader onEdit={handleEdit} onDelete={handleDelete}>
+                <Tabs
+                    value={value}
+                    onChange={handleChange}
+                    aria-label="View Property Tabs"
+                >
+                    {tabsConfig.map((tab, index) => (
+                        <Tab
+                            key={index}
+                            label={tab!.label}
+                            {...a11yProps(index)}
+                        />
+                    ))}
+                </Tabs>
+            </ViewHeader>
 
-            {isSellerOrLessor && (
-                <TabPanel value={value} index={1}>
-                    <OwnedCustomerPropertiesSection />
+            {tabsConfig.map((tab, index) => (
+                <TabPanel key={index} value={value} index={index}>
+                    {tab!.content}
                 </TabPanel>
-            )}
-
-            {isBuyerOrLeaser && (
-                <TabPanel value={value} index={2}>
-                    <MatchingPropertiesSection />
-                </TabPanel>
-            )}
+            ))}
         </Box>
     );
 };
