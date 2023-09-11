@@ -111,9 +111,9 @@ const ChosenFilters = () => {
         <Grid container direction="row">
             {ids.map((key, index) => {
                 const values = changedProps[key];
-                console.log(key);
-                console.log("filterTags:", filterTags);
-                console.log("key:", key);
+                // console.log(key);
+                // console.log("filterTags:", filterTags);
+                // console.log("key:", key);
                 let label = filterTags[key].label;
 
                 if (values === 0 || values == undefined) {

@@ -9,6 +9,7 @@ import {
     sumOfChangedProperties,
 } from "src/slices/customer/filters";
 import FilterStatus from "./FilterStatus";
+import FilterBuyerLeaserAndMore from "src/pages/components/Filters/FilterBuyerLeaserAndMore";
 
 export const FilterSection: React.FC<PaperProps> = ({ ...props }) => {
     const changedCustomerFilters = useSelector(sumOfChangedProperties);
@@ -17,6 +18,10 @@ export const FilterSection: React.FC<PaperProps> = ({ ...props }) => {
     return (
         <Stack spacing={3} component={Paper} p={1} mt={2} {...props}>
             <Stack flexWrap={"wrap"} direction={"row"} gap={1}>
+                <FilterBuyerLeaserAndMore
+                    variant={"property"}
+                    setRoles={undefined}
+                ></FilterBuyerLeaserAndMore>
                 <FilterLabels
                     variant="customer"
                     labels={labels}

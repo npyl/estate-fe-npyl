@@ -184,43 +184,49 @@ export default function CarouselThumbnail({ data }: Props) {
     );
 
     const renderThumbnails = (
-        <StyledThumbnailsContainer length={data.length}>
-            <Carousel {...carouselSettings2} asNavFor={nav1} ref={carousel2}>
-                {data.map((item, index) =>
-                    item.image ? (
-                        <Image
-                            key={item.id}
-                            disabledEffect
-                            alt={item.title}
-                            src={item.image}
-                            sx={{
-                                width: THUMB_SIZE,
-                                height: THUMB_SIZEy,
-                                borderRadius: 0,
-                                cursor: "pointer",
-                                ...(currentIndex === index && {
-                                    border: (theme) =>
-                                        `solid 2px ${theme.palette.primary.main}`,
-                                }),
-                            }}
-                        />
-                    ) : (
-                        <PreviewImage
-                            sx={{
-                                width: THUMB_SIZE,
-                                height: THUMB_SIZEy,
-                                borderRadius: 0,
-                                cursor: "pointer",
-                                ...(currentIndex === index && {
-                                    border: (theme) =>
-                                        `solid 2px ${theme.palette.primary.main}`,
-                                }),
-                            }}
-                        />
-                    )
-                )}
-            </Carousel>
-        </StyledThumbnailsContainer>
+        <Box sx={{ overflowX: "hidden", maxWidth: "100%" }}>
+            <StyledThumbnailsContainer length={data.length}>
+                <Carousel
+                    {...carouselSettings2}
+                    asNavFor={nav1}
+                    ref={carousel2}
+                >
+                    {data.map((item, index) =>
+                        item.image ? (
+                            <Image
+                                key={item.id}
+                                disabledEffect
+                                alt={item.title}
+                                src={item.image}
+                                sx={{
+                                    width: THUMB_SIZE,
+                                    height: THUMB_SIZEy,
+                                    borderRadius: 0,
+                                    cursor: "pointer",
+                                    ...(currentIndex === index && {
+                                        border: (theme) =>
+                                            `solid 2px ${theme.palette.primary.main}`,
+                                    }),
+                                }}
+                            />
+                        ) : (
+                            <PreviewImage
+                                sx={{
+                                    width: THUMB_SIZE,
+                                    height: THUMB_SIZEy,
+                                    borderRadius: 0,
+                                    cursor: "pointer",
+                                    ...(currentIndex === index && {
+                                        border: (theme) =>
+                                            `solid 2px ${theme.palette.primary.main}`,
+                                    }),
+                                }}
+                            />
+                        )
+                    )}
+                </Carousel>
+            </StyledThumbnailsContainer>
+        </Box>
     );
 
     const _images = data.map((item, index) => {
