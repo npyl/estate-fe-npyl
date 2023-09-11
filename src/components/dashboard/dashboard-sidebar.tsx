@@ -70,6 +70,12 @@ const getSections = (t: TFunction): Section[] => [
             },
 
             {
+                title: t("Security"),
+                path: "/security",
+                icon: <CircleNotifications fontSize="small" />,
+            },
+
+            {
                 title: t("Tickets"),
                 path: "/tickets",
                 icon: <ConfirmationNumber fontSize="small" />,

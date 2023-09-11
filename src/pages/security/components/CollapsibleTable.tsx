@@ -1,0 +1,177 @@
+import {
+    Box,
+    Collapse,
+    IconButton,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Typography,
+} from "@mui/material";
+
+import {
+    KeyboardArrowUp as KeyboardArrowUpIcon,
+    KeyboardArrowDown as KeyboardArrowDownIcon,
+} from "@mui/icons-material";
+
+import { Fragment, useState } from "react";
+
+import Iconify from "src/components/iconify";
+import { useTranslation } from "react-i18next";
+import {Security} from "../../../types/security";
+
+export function createRow(props: Security) {
+    const {
+        parentCategory,
+        category,
+        state
+    } = props;
+
+    return {
+        parentCategory,
+        category,
+        state,
+        history: [
+            {
+                date: "2020-01-05",
+                customerId: "11091700",
+                amount: 3,
+            },
+            {
+                date: "2020-01-02",
+                customerId: "Anonymous",
+                amount: 1,
+            },
+        ],
+    };
+}
+
+function Row(props: {
+    row: ReturnType<typeof createRow>;
+    onRemove: () => void;
+}) {
+    const { row, onRemove } = props;
+
+    const { t } = useTranslation();
+    const [open, setOpen] = useState(false);
+
+    return (
+        <Fragment>
+            <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
+                <TableCell>
+                    <IconButton
+                        aria-label="expand row"
+                        size="small"
+                        onClick={() => setOpen(!open)}
+                    >
+                        {open ? (
+                            <KeyboardArrowUpIcon />
+                        ) : (
+                            <KeyboardArrowDownIcon />
+                        )}
+                    </IconButton>
+                </TableCell>
+                <TableCell component="th" scope="row">
+                    {"rent"}
+                </TableCell>
+                <TableCell align="right">{row.parentCategory}</TableCell>
+                <TableCell align="right">{row.category}</TableCell>
+                <TableCell align="right">{row.state}</TableCell>
+
+                <TableCell align="right">
+                    <IconButton onClick={onRemove}>
+                        <Iconify icon={"eva:trash-2-outline"} />
+                    </IconButton>
+                </TableCell>
+            </TableRow>
+            <TableRow>
+                <TableCell
+                    style={{ paddingBottom: 0, paddingTop: 0 }}
+                    colSpan={6}
+                >
+                    <Collapse in={open} timeout="auto" unmountOnExit>
+                        <Box sx={{ margin: 1 }}>
+                            <Typography
+                                variant="h6"
+                                gutterBottom
+                                component="div"
+                            >
+                                {t("History")}
+                            </Typography>
+                            <Table size="small" aria-label="purchases">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell> {t("Date")}</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {row.history.map((historyRow) => (
+                                        <TableRow key={historyRow.date}>
+                                            <TableCell
+                                                component="th"
+                                                scope="row"
+                                            >
+                                                {historyRow.date}
+                                            </TableCell>
+                                            <TableCell>
+                                                {historyRow.customerId}
+                                            </TableCell>
+                                            <TableCell align="right">
+                                                {historyRow.amount}
+                                            </TableCell>
+                                            <TableCell align="right">
+                                                {Math.round(
+                                                    historyRow.amount * -1 * 100
+                                                ) / 100}
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </Box>
+                    </Collapse>
+                </TableCell>
+            </TableRow>
+        </Fragment>
+    );
+}
+
+export const CollapsibleTable = (props: {
+    rows: ReturnType<typeof createRow>[];
+    onRemove: (index: number) => void;
+}) => {
+    const { rows, onRemove } = props;
+    const { t } = useTranslation();
+
+    return (
+        <TableContainer component={Paper}>
+            <Table aria-label="collapsible table">
+                <TableHead>
+                    <TableRow>
+                        <TableCell />
+                        <TableCell> {t("Privilege")}</TableCell>
+                        <TableCell align="right"> {t("Iherited from")}</TableCell>
+                        <TableCell align="right"> {t("Scope")}</TableCell>
+                        <TableCell align="right">
+                            {" "}
+                            {t("Notification Date")}
+                        </TableCell>
+                        <TableCell />
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {rows.map((row, index) => (
+                        <Row
+                            key={row.parentCategory}
+                            row={row}
+                            onRemove={() => onRemove(index)}
+                        />
+                    ))}
+                </TableBody>
+            </Table>
+        </TableContainer>
+    );
+};
