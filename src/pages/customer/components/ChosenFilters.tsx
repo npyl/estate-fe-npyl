@@ -18,6 +18,15 @@ const ChosenFilters = () => {
         labels: {
             label: "Labels",
         },
+        roles: {
+            label: "Roles",
+        },
+        categories: {
+            label: "Categories",
+        },
+        subcategory: {
+            label: "Subcategory",
+        },
     };
 
     return (

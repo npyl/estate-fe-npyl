@@ -19,8 +19,7 @@ interface IRegionSelectProps {
 export const RegionSelect = (props: IRegionSelectProps) => {
     const { regionCode, onChange } = props;
     const { t } = useTranslation();
-    const regions =
-        useGetRegionsQuery(undefined, { skip: !regionCode }).data || [];
+    const regions = useGetRegionsQuery(undefined).data || [];
 
     const handleChange = (event: SelectChangeEvent<string>) => {
         const areaID = event.target.value;
