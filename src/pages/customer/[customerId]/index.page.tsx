@@ -53,17 +53,22 @@ const CustomerView: NextPage = () => {
             ? `${data?.firstName} ${data?.lastName}`
             : `${data?.id}`
     );
+
+    const isSellerOrLessor = data?.seller || data?.lessor;
+    const isBuyerOrLeaser = data?.buyer || data?.leaser;
+    const demands = data?.demands;
+
     const handleChange = (event: React.SyntheticEvent, newValue: number) =>
         setValue(newValue);
     const handleEdit = () => router.push(`/customer/edit/${customerId}`);
     const handleDelete = () => deleteCustomer(+customerId!);
-    const isSellerOrLessor = data?.seller || data?.lessor;
-    const isBuyerOrLeaser = data?.buyer || data?.leaser;
+
     if (isDeleteSuccess) {
         router.push("/customer");
         // delete tab
         dispatch(deleteTabWithPath(`/customer/${customerId}`));
     }
+
     const tabsConfig = [
         {
             label: t("Customer Information"),
@@ -73,7 +78,10 @@ const CustomerView: NextPage = () => {
                         <Stack spacing={1}>
                             <InformationSection />
                             <AddressSection />
-                            {isBuyerOrLeaser && <DemandSection />}
+                            {isBuyerOrLeaser &&
+                                demands?.map((d, i) => (
+                                    <DemandSection index={i} />
+                                ))}
                             <NotesCustomerSection />
                         </Stack>
                     </Grid>

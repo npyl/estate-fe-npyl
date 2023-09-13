@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { ICustomer, ICustomerFilter, ICustomerPOST } from "src/types/customer";
+import { ICustomer, ICustomerPOST } from "src/types/customer";
 import { IDemand, IDemandFilters, IDemandPOST } from "src/types/demand";
 import { IPropertyFeatures } from "src/types/features";
 import { ILabel } from "src/types/label";
@@ -7,9 +7,6 @@ import type { RootState } from "../store";
 
 interface customerState extends ICustomerPOST {}
 
-interface IFeatureKey {
-    key: keyof IPropertyFeatures;
-}
 interface ISetFeatureAction {
     payload: {
         index: number;
@@ -22,6 +19,99 @@ interface ISetDemandFilterAction {
         value: any;
     };
 }
+
+const initialDemandState: IDemandPOST = {
+    filters: {
+        labels: [],
+    },
+    priorityFeatures: {
+        panoramicView: false,
+        seaView: false,
+        mountainView: false,
+        seaFront: false,
+        walkableDistanceToBeach: false,
+        quietArea: false,
+        bright: false,
+        nearBusRoute: false,
+        smartHome: false,
+        guestroom: false,
+        office: false,
+        homeCinema: false,
+        combinedKitchenAndDiningArea: false,
+        soundInsulation: false,
+        thermalInsulation: false,
+        heatedPool: false,
+        indoorPool: false,
+        organizedGarden: false,
+        jacuzzi: false,
+        well: false,
+        drilling: false,
+        masonryFence: false,
+        accessForDisabled: false,
+        alarmSystem: false,
+        has24HoursSecurity: false,
+        cctv: false,
+        internet: false,
+        fireDetector: false,
+        independentHeatingPerRoom: false,
+        adaptingToTheGround: false,
+        barbeque: false,
+        pool: false,
+        view: false,
+        facade: false,
+        corner: false,
+        veranda: false,
+        tents: false,
+        withinResidentialZone: false,
+        withinCityPlan: false,
+        loadingDock: false,
+    },
+    nonPriorityFeatures: {
+        panoramicView: false,
+        seaView: false,
+        mountainView: false,
+        seaFront: false,
+        walkableDistanceToBeach: false,
+        quietArea: false,
+        bright: false,
+        nearBusRoute: false,
+        smartHome: false,
+        guestroom: false,
+        office: false,
+        homeCinema: false,
+        combinedKitchenAndDiningArea: false,
+        soundInsulation: false,
+        thermalInsulation: false,
+        heatedPool: false,
+        indoorPool: false,
+        organizedGarden: false,
+        jacuzzi: false,
+        well: false,
+        drilling: false,
+        masonryFence: false,
+        accessForDisabled: false,
+        alarmSystem: false,
+        has24HoursSecurity: false,
+        cctv: false,
+        internet: false,
+        fireDetector: false,
+        independentHeatingPerRoom: false,
+        adaptingToTheGround: false,
+        barbeque: false,
+        pool: false,
+        view: false,
+        facade: false,
+        corner: false,
+        veranda: false,
+        tents: false,
+        withinResidentialZone: false,
+        withinCityPlan: false,
+        loadingDock: false,
+    },
+    timeframe: "",
+    shape: "",
+};
+
 const initialState: customerState = {
     id: undefined,
     firstName: "",
@@ -52,99 +142,7 @@ const initialState: customerState = {
     },
     ownedProperties: [],
     labelIDs: [],
-    demands: [
-        {
-            filters: {
-                labels: [],
-            },
-            priorityFeatures: {
-                panoramicView: false,
-                seaView: false,
-                mountainView: false,
-                seaFront: false,
-                walkableDistanceToBeach: false,
-                quietArea: false,
-                bright: false,
-                nearBusRoute: false,
-                smartHome: false,
-                guestroom: false,
-                office: false,
-                homeCinema: false,
-                combinedKitchenAndDiningArea: false,
-                soundInsulation: false,
-                thermalInsulation: false,
-                heatedPool: false,
-                indoorPool: false,
-                organizedGarden: false,
-                jacuzzi: false,
-                well: false,
-                drilling: false,
-                masonryFence: false,
-                accessForDisabled: false,
-                alarmSystem: false,
-                has24HoursSecurity: false,
-                cctv: false,
-                internet: false,
-                fireDetector: false,
-                independentHeatingPerRoom: false,
-                adaptingToTheGround: false,
-                barbeque: false,
-                pool: false,
-                view: false,
-                facade: false,
-                corner: false,
-                veranda: false,
-                tents: false,
-                withinResidentialZone: false,
-                withinCityPlan: false,
-                loadingDock: false,
-            },
-            nonPriorityFeatures: {
-                panoramicView: false,
-                seaView: false,
-                mountainView: false,
-                seaFront: false,
-                walkableDistanceToBeach: false,
-                quietArea: false,
-                bright: false,
-                nearBusRoute: false,
-                smartHome: false,
-                guestroom: false,
-                office: false,
-                homeCinema: false,
-                combinedKitchenAndDiningArea: false,
-                soundInsulation: false,
-                thermalInsulation: false,
-                heatedPool: false,
-                indoorPool: false,
-                organizedGarden: false,
-                jacuzzi: false,
-                well: false,
-                drilling: false,
-                masonryFence: false,
-                accessForDisabled: false,
-                alarmSystem: false,
-                has24HoursSecurity: false,
-                cctv: false,
-                internet: false,
-                fireDetector: false,
-                independentHeatingPerRoom: false,
-                adaptingToTheGround: false,
-                barbeque: false,
-                pool: false,
-                view: false,
-                facade: false,
-                corner: false,
-                veranda: false,
-                tents: false,
-                withinResidentialZone: false,
-                withinCityPlan: false,
-                loadingDock: false,
-            },
-            timeframe: "",
-            shape: "",
-        },
-    ],
+    demands: [initialDemandState],
 };
 
 const slice = createSlice({
@@ -556,78 +554,11 @@ const slice = createSlice({
                       })
                 : [];
 
-            const initialStateFilters = initialState.demands[0]?.filters;
-            payload.demands.forEach((demand, index) => {
-                state.demands.push(initialStateFilters as IDemandPOST);
-                const demandFilters: IDemandFilters = demand?.filters;
-
-                state.demands[index].filters.minBedrooms =
-                    demandFilters?.minBedrooms ||
-                    initialStateFilters.minBedrooms;
-                state.demands[index].filters.maxBedrooms =
-                    demandFilters?.maxBedrooms ||
-                    initialStateFilters.maxBedrooms;
-                state.demands[index].filters.minBathrooms =
-                    demandFilters?.minBathrooms ||
-                    initialStateFilters.minBathrooms;
-                state.demands[index].filters.maxBathrooms =
-                    demandFilters?.maxBathrooms ||
-                    initialStateFilters.maxBathrooms;
-                state.demands[index].filters.furnished =
-                    demandFilters?.furnished || initialStateFilters.furnished;
-                state.demands[index].filters.maxCovered =
-                    demandFilters?.maxCovered || initialStateFilters.maxCovered;
-                state.demands[index].filters.minCovered =
-                    demandFilters?.minCovered || initialStateFilters.minCovered;
-                state.demands[index].filters.minPlot =
-                    demandFilters?.minPlot || initialStateFilters.minPlot;
-                state.demands[index].filters.maxPlot =
-                    demandFilters?.maxPlot || initialStateFilters.maxPlot;
-                state.demands[index].filters.minFloor =
-                    demandFilters?.minFloor || initialStateFilters.minFloor;
-                state.demands[index].filters.maxFloor =
-                    demandFilters?.maxFloor || initialStateFilters.maxFloor;
-                state.demands[index].filters.minYearOfConstruction =
-                    demandFilters?.minYearOfConstruction ||
-                    initialStateFilters.minYearOfConstruction;
-                state.demands[index].filters.maxYearOfConstruction =
-                    demandFilters?.maxYearOfConstruction ||
-                    initialStateFilters.maxYearOfConstruction;
-                state.demands[index].filters.parentCategories =
-                    demandFilters?.parentCategories ||
-                    initialStateFilters.parentCategories;
-                state.demands[index].filters.categories =
-                    demandFilters?.categories || initialStateFilters.categories;
-                state.demands[index].filters.states =
-                    demandFilters?.states || initialStateFilters.states;
-                state.demands[index].filters.minPrice =
-                    demandFilters?.minPrice || initialStateFilters.minPrice;
-                state.demands[index].filters.maxPrice =
-                    demandFilters?.maxPrice || initialStateFilters.maxPrice;
-                state.demands[index].filters.labels =
-                    demandFilters?.labels || initialStateFilters.labels;
-
-                state.demands[index].nonPriorityFeatures =
-                    demand?.nonPriorityFeatures ||
-                    initialState.demands[0].nonPriorityFeatures;
-                state.demands[index].priorityFeatures =
-                    demand?.priorityFeatures ||
-                    initialState.demands[0].priorityFeatures;
-
-                state.demands[index].timeframe =
-                    demand?.timeframe || initialState.demands[0].timeframe;
-
-                state.demands[index].shape =
-                    demand?.shape || initialState.demands[0].shape;
-
-                state.demands[index].filters.cities =
-                    demandFilters?.cities || initialStateFilters.cities;
-
-                //TODO complexes
-
-                state.demands[index].filters.regions =
-                    demandFilters?.regions || initialStateFilters.regions;
-            });
+            // Demands
+            const initialDemand = initialState.demands[0];
+            state.demands = payload.demands.map(
+                (demand) => demand || initialDemand
+            );
         },
         resetState: () => {
             return initialState;
@@ -772,61 +703,61 @@ export const selectNonPriorityFeatures = ({ customer }: RootState) =>
     customer.demands.map((d) => d.nonPriorityFeatures);
 
 export const selectMinBedrooms = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters.minBedrooms);
+    customer.demands.map((d) => d.filters?.minBedrooms);
 
 export const selectMaxBedrooms = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters.maxBedrooms);
+    customer.demands.map((d) => d.filters?.maxBedrooms);
 
 export const selectMinBathrooms = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters.minBathrooms);
+    customer.demands.map((d) => d.filters?.minBathrooms);
 
 export const selectMaxBathrooms = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters.maxBathrooms);
+    customer.demands.map((d) => d.filters?.maxBathrooms);
 
 export const selectFurnished = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters.furnished);
+    customer.demands.map((d) => d.filters?.furnished);
 
 export const selectMaxCovered = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters.maxCovered);
+    customer.demands.map((d) => d.filters?.maxCovered);
 
 export const selectMinCovered = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters.minCovered);
+    customer.demands.map((d) => d.filters?.minCovered);
 
 export const selectMinPlot = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters.minPlot);
+    customer.demands.map((d) => d.filters?.minPlot);
 
 export const selectMaxPlot = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters.maxPlot);
+    customer.demands.map((d) => d.filters?.maxPlot);
 
 export const selectMinYearOfConstruction = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters.minYearOfConstruction);
+    customer.demands.map((d) => d.filters?.minYearOfConstruction);
 
 export const selectMaxYearOfConstruction = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters.maxYearOfConstruction);
+    customer.demands.map((d) => d.filters?.maxYearOfConstruction);
 
 export const selectMinFloor = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters.minFloor);
+    customer.demands.map((d) => d.filters?.minFloor);
 
 export const selectMaxFloor = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters.maxFloor);
+    customer.demands.map((d) => d.filters?.maxFloor);
 
 export const selectParentCategory = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters.parentCategories);
+    customer.demands.map((d) => d.filters?.parentCategories);
 
 export const selectCategory = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters.categories);
+    customer.demands.map((d) => d.filters?.categories);
 
 export const selectState = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters.states);
+    customer.demands.map((d) => d.filters?.states);
 
 export const selectMinPrice = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters.minPrice);
+    customer.demands.map((d) => d.filters?.minPrice);
 
 export const selectMaxPrice = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters.maxPrice);
+    customer.demands.map((d) => d.filters?.maxPrice);
 
 export const selectDemandLabels = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters.labels);
+    customer.demands.map((d) => d.filters?.labels);
 
 export const selectTimeFrame = ({ customer }: RootState) =>
     customer.demands.map((d) => d.timeframe);
@@ -838,9 +769,9 @@ export const selectShape = ({ customer }: RootState) =>
 
 export const selectDemandComplexes = ({ customer }: RootState) => []; //here will  do thw complexes
 export const selectDemandCities = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters.cities);
+    customer.demands.map((d) => d.filters?.cities);
 
 export const selectDemandRegions = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters.regions);
+    customer.demands.map((d) => d.filters?.regions);
 
 export const { reducer } = slice;

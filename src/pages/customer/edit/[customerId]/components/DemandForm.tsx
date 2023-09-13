@@ -349,7 +349,9 @@ const DemandForm: FC<DemandFormProps> = (props) => {
                     justifyContent: "left",
                 }}
             >
-                <Typography variant="h6">{t("Demand Form")}</Typography>
+                <Typography variant="h6">
+                    {t("Demand Form")} No.{index + 1}
+                </Typography>
             </Box>
 
             <Grid item xs={12} padding={1}>

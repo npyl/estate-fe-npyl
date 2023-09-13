@@ -9,9 +9,12 @@ import ListLabelsItem from "src/components/List/labels-item";
 import { useGetCustomerByIdQuery } from "src/services/customers";
 import { useGetLabelsQuery } from "src/services/labels";
 import { AreaOfPreference } from "./AreaOfPreference";
-import { de } from "date-fns/locale";
 
-const DemandSection: React.FC = () => {
+interface DemandSectionProps {
+    index: number;
+}
+
+const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
     const router = useRouter();
     const { t } = useTranslation();
 
@@ -21,9 +24,11 @@ const DemandSection: React.FC = () => {
     const { data: allLabels } = useGetLabelsQuery();
 
     const propertyLabels = allLabels?.propertyLabels;
-    const demandFilters = data?.demand?.filters;
+
+    const demand = data?.demands[index];
+    const demandFilters = demand?.filters;
     const demandFilterLabelIDs = demandFilters?.labels;
-    const shape = data?.demand?.shape;
+    const shape = demand?.shape;
 
     const selectedLabels = useMemo(
         () =>
@@ -92,7 +97,7 @@ const DemandSection: React.FC = () => {
         !demandFilters?.maxFloor &&
         demandFilters?.labels.length === 0 &&
         !shape &&
-        !data?.demand?.timeframe &&
+        !demand?.timeframe &&
         isEmptyOrComma(demandFilters?.parentCategories) &&
         isEmptyOrComma(demandFilters?.furnished) &&
         isEmptyOrComma(demandFilters?.categories) &&
@@ -117,7 +122,9 @@ const DemandSection: React.FC = () => {
                             justifyContent: "left",
                         }}
                     >
-                        <Typography variant="h6">{t("Demand")}</Typography>
+                        <Typography variant="h6">
+                            {t("Demand")} No.{index + 1}
+                        </Typography>
                     </Box>
                     <Divider></Divider>
                     <Grid container>
@@ -193,7 +200,7 @@ const DemandSection: React.FC = () => {
                                 />
                                 <ListItem
                                     label={t("Time Frame")}
-                                    value={data?.demand?.timeframe}
+                                    value={demand?.timeframe}
                                     align="horizontal"
                                 />
                                 <ListItem
