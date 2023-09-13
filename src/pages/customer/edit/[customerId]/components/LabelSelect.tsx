@@ -14,10 +14,14 @@ import { Label } from "src/components/label";
 import { useGetLabelsQuery } from "src/services/labels";
 import { selectDemandLabels, setDemandLabels } from "src/slices/customer";
 
-export const LabelSelect: React.FC = () => {
+interface LabelSelectProps {
+    index: number;
+}
+
+export const LabelSelect: React.FC<LabelSelectProps> = ({ index }) => {
     const dispatch = useDispatch();
 
-    const labels: number[] = useSelector(selectDemandLabels) || [];
+    const labels: number[] = useSelector(selectDemandLabels)[index] || [];
     const { data } = useGetLabelsQuery();
     const labelOptions = data?.propertyLabels;
 
@@ -28,10 +32,12 @@ export const LabelSelect: React.FC = () => {
             target: { value },
         } = event;
         dispatch(
-            setDemandLabels(
-                // On autofill we get a stringified value.
-                typeof value === "string" ? value.split(",") : value
-            )
+            setDemandLabels({
+                index,
+                value:
+                    // On autofill we get a stringified value.
+                    typeof value === "string" ? value.split(",") : value,
+            })
         );
     };
 

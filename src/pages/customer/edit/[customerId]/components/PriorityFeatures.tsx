@@ -8,17 +8,21 @@ import FeaturesForOtherSection from "./DemandForm/FeaturesForOther";
 import { useDispatch } from "react-redux";
 import { setPriorityFeature } from "src/slices/customer";
 import { useTranslation } from "react-i18next";
+import { IPropertyFeatures } from "src/types/features";
 
 interface PriorityFeaturesProps {
+    index: number;
     parentCategory: string;
 }
 
-const PriorityFeatures = ({ parentCategory }: PriorityFeaturesProps) => {
+const PriorityFeatures = ({ index, parentCategory }: PriorityFeaturesProps) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
     const handleChange = (key: string, checked: boolean) => {
-        dispatch(setPriorityFeature({ key }));
+        dispatch(
+            setPriorityFeature({ index, key: key as keyof IPropertyFeatures })
+        );
     };
 
     return (
@@ -44,24 +48,28 @@ const PriorityFeatures = ({ parentCategory }: PriorityFeaturesProps) => {
                 <Grid container spacing={2}>
                     {parentCategory === "Residential" && (
                         <FeaturesSection
+                            index={index}
                             priorityFeaturesMode
                             onChange={handleChange}
                         />
                     )}
                     {parentCategory === "Land" && (
                         <FeaturesForLandSection
+                            index={index}
                             priorityFeaturesMode
                             onChange={handleChange}
                         />
                     )}
                     {parentCategory === "Commercial" && (
                         <FeaturesForCommercialSection
+                            index={index}
                             priorityFeaturesMode
                             onChange={handleChange}
                         />
                     )}
                     {parentCategory === "Other" && (
                         <FeaturesForOtherSection
+                            index={index}
                             priorityFeaturesMode
                             onChange={handleChange}
                         />

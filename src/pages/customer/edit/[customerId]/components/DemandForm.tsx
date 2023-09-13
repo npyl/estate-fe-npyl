@@ -522,7 +522,7 @@ const DemandForm: FC<DemandFormProps> = (props) => {
                         </FormControl>
                     </Grid>
                     <Grid item xs={6}>
-                        <LabelSelect />
+                        <LabelSelect index={index} />
                     </Grid>
                     <Grid item xs={6}>
                         <FormControl fullWidth>
@@ -1060,8 +1060,8 @@ const DemandForm: FC<DemandFormProps> = (props) => {
                 parentCategories.length > 0 &&
                 parentCategories.map((e) => (
                     <>
-                        <PriorityFeatures parentCategory={e} />
-                        <NonPriorityFeatures parentCategory={e} />
+                        <PriorityFeatures index={index} parentCategory={e} />
+                        <NonPriorityFeatures index={index} parentCategory={e} />
                     </>
                 ))}
         </Paper>
