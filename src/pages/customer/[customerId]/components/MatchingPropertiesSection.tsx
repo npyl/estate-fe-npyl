@@ -80,7 +80,8 @@ const MatchingPropertiesSection: React.FC = () => {
         }
     );
 
-    const shape = useMemo(() => customer?.demand?.shape, [customer]);
+    const demand = useMemo(() => customer?.demands[0], [customer?.demands]); // TODO: support only one for now
+    const shape = useMemo(() => demand?.shape, [customer]);
     const shapeData = useMemo(() => (shape ? decodeShape(shape) : ""), [shape]);
 
     const totalRows = useMemo(
@@ -101,7 +102,7 @@ const MatchingPropertiesSection: React.FC = () => {
     useEffect(() => {
         if (!customer || !isSuccess) return;
 
-        setParentCategory(customer?.demand?.filters?.parentCategories);
+        setParentCategory(demand?.filters?.parentCategories || []);
     }, [customer, isSuccess]);
 
     function statusColor(params: GridCellParams) {

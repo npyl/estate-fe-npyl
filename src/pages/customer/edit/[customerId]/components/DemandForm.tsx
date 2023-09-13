@@ -1043,6 +1043,8 @@ const DemandForm: FC<DemandFormProps> = (props) => {
                         {t("Area of Preference")}
                     </Typography>
                     <AreaOfPreference
+                        index={index}
+                        // getters
                         cities={cities}
                         regions={regions}
                         complexes={complexes}

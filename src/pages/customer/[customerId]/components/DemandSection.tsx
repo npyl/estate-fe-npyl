@@ -257,7 +257,7 @@ const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
                     <Grid container>
                         <Grid item xs={12} padding={0}>
                             <Grid item xs={12}>
-                                <AreaOfPreference />
+                                <AreaOfPreference index={index} />
                             </Grid>
                         </Grid>
                     </Grid>
