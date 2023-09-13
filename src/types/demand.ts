@@ -20,6 +20,7 @@ export interface IDemandFilters {
     labels: number[];
     cities: string[];
     regions: string[];
+    complexes: string[];
     categories: string[];
     parentCategories: string[];
 }
