@@ -67,7 +67,8 @@ import CustomerTypeSelect from "./CustomerTypeSelect";
 import { useTranslation } from "react-i18next";
 import { useLazyGetCustomerLabelsQuery } from "src/services/customers";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
+import DateFieldStyled from "src/pages/property/edit/[propertyId]/components/components/components/DateFieldStyled";
 
 const CustomerInformation: React.FC<any> = () => {
     const dispatch = useDispatch();
@@ -100,7 +101,17 @@ const CustomerInformation: React.FC<any> = () => {
 
     const { data: labels } = useGetLabelsQuery();
     const customerLabels = labels?.customerLabels;
+    const [showPopup, setShowPopup] = useState(false);
 
+    // const handleChange = (e: { target: { value: string } }) => {
+    //     setEmail(e.target.value);
+
+    //     if (e.target.value && !email.test(e.target.value)) {
+    //         setShowPopup(true);
+    //     } else {
+    //         setShowPopup(false);
+    //     }
+    // };
     // labels
     const [getLabels, { data: assignedLabels }] =
         useLazyGetCustomerLabelsQuery();
@@ -117,7 +128,23 @@ const CustomerInformation: React.FC<any> = () => {
         // TODO: improve this by revalidating automatically (invalidating a tag)
         getLabels(+customerId!);
     };
+    const currentDate = new Date();
+    // const [popupVisible, setPopupVisible] = useState(false); // Changed variable name
 
+    // // Explicitly define the type for the ref
+    // const emailInputRef = useRef<HTMLInputElement>(null);
+
+    // const handleInputChange = () => {
+    //     // Check if the ref's current value exists
+    //     if (emailInputRef.current) {
+    //         // Use the validity property safely
+    //         if (emailInputRef.current.validity!.typeMismatch) {
+    //             setPopupVisible(true);
+    //         } else {
+    //             setPopupVisible(false);
+    //         }
+    //     }
+    // };
     const handleLabelClick = (label: ILabel) =>
         label.id &&
         assignLabel({ customerId: +customerId!, labelId: label.id }).then(() =>
@@ -175,7 +202,9 @@ const CustomerInformation: React.FC<any> = () => {
                             label={t("First Name")}
                             value={firstName}
                             onChange={(e) => {
-                                dispatch(setFirstName(e.target.value));
+                                if (e.target.value.match(/^[a-zA-Z]*$/)) {
+                                    dispatch(setFirstName(e.target.value));
+                                }
                             }}
                         />
                     </Grid>
@@ -185,7 +214,9 @@ const CustomerInformation: React.FC<any> = () => {
                             label={t("Last Name")}
                             value={lastName}
                             onChange={(e) => {
-                                dispatch(setLastName(e.target.value));
+                                if (e.target.value.match(/^[a-zA-Z]*$/)) {
+                                    dispatch(setLastName(e.target.value));
+                                }
                             }}
                         />
                     </Grid>
@@ -193,6 +224,7 @@ const CustomerInformation: React.FC<any> = () => {
                         <TextField
                             fullWidth
                             label={t("Email")}
+                            type="email"
                             value={email}
                             onChange={(e) => {
                                 dispatch(setEmail(e.target.value));
@@ -272,12 +304,11 @@ const CustomerInformation: React.FC<any> = () => {
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <TextField
-                            fullWidth
+                        <DateFieldStyled
                             label={t("Date of Birth")}
-                            value={dateOfBirth}
+                            value={dateOfBirth || currentDate}
                             onChange={(e) => {
-                                dispatch(setDateOfBirth(e.target.value));
+                                dispatch(setDateOfBirth);
                             }}
                         />
                     </Grid>

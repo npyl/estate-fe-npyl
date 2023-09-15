@@ -1,4 +1,4 @@
-import { Box, Grid, TextField } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
@@ -13,15 +13,15 @@ import Map, {
 } from "src/components/Map/Map";
 import { DrawShape, StopDraw } from "src/components/Map/types";
 import { decodeShape, encodeShape } from "src/components/Map/util";
-import OnlyNumbersInput from "src/components/OnlyNumbers";
 import {
     useGetClosestQuery,
     useLazyGetHierarchyByAreaIdQuery,
 } from "src/services/location";
 import { selectShape, setShape } from "src/slices/customer";
-import { ILocationPOST } from "src/types/location";
 
 interface ILocationSectionProps {
+    index: number;
+    // redux getters
     cities: string[];
     complexes: string[];
     regions: string[];
@@ -31,18 +31,25 @@ interface ILocationSectionProps {
     setRegions: ActionCreatorWithPayload<any, string>;
 }
 export const AreaOfPreference = (props: ILocationSectionProps) => {
-    const { cities, complexes, regions, setCities, setComplexes, setRegions } =
-        props;
+    const {
+        index,
+        cities,
+        complexes,
+        regions,
+        setCities,
+        setComplexes,
+        setRegions,
+    } = props;
     const dispatch = useDispatch();
 
-    const shape = useSelector(selectShape);
+    const shape = useSelector(selectShape)[index];
     const shapeData = useMemo(
         () => (shape ? decodeShape(shape) : null),
         [shape]
     );
     const handleDraw = (s: DrawShape | StopDraw) => {
         const encoded = s ? encodeShape(s) : null;
-        dispatch(setShape(encoded));
+        dispatch(setShape({ index, value: encoded }));
     };
     const [getHierarchy] = useLazyGetHierarchyByAreaIdQuery();
 

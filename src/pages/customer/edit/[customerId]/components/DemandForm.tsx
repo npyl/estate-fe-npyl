@@ -15,7 +15,6 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
-
 import * as React from "react";
 import { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -27,32 +26,8 @@ import {
 import {
     // getters
     selectBuyer,
-    selectCategory,
-    selectFurnished,
     selectLeaser,
-    selectMaxBathrooms,
-    selectMaxBedrooms,
-    selectMaxCovered,
-    selectMaxFloor,
-    selectMaxPlot,
-    selectMaxPrice,
-    selectMaxYearOfConstruction,
-    selectMinBathrooms,
-    selectMinBedrooms,
-    selectMinCovered,
-    selectMinFloor,
-    selectMinPlot,
-    selectMinPrice,
-    selectMinYearOfConstruction,
-    selectParentCategory,
-    selectState,
-    selectTimeFrame,
     setCategory,
-    //location
-    selectDemandCities,
-    selectDemandComplexes,
-    selectDemandRegions,
-
     // setters
     setFurnished,
     setMaxBathrooms,
@@ -77,13 +52,19 @@ import {
     setDemandCities,
     setDemandComplexes,
     setDemandRegions,
+    selectDemands,
 } from "src/slices/customer";
 
 import { useTranslation } from "react-i18next";
 import { AreaOfPreference } from "./DemandForm/AreaOfPreference";
 import { LabelSelect } from "./LabelSelect";
-
-const DemandForm: FC = () => {
+import { RootState } from "src/store";
+import PriorityFeatures from "./PriorityFeatures";
+import NonPriorityFeatures from "./NonPriorityFeatures";
+interface DemandFormProps {
+    index: number;
+}
+const DemandForm: FC<DemandFormProps> = (props) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
@@ -98,33 +79,40 @@ const DemandForm: FC = () => {
     const minFloors = detailsEnum?.floors;
     const maxFloors = detailsEnum?.floors;
 
-    const minBedrooms = useSelector(selectMinBedrooms) || 0;
-    const maxBedrooms = useSelector(selectMaxBedrooms) || 0;
-    const minBathrooms = useSelector(selectMinBathrooms) || 0;
-    const maxBathrooms = useSelector(selectMaxBathrooms) || 0;
-    const furnished = useSelector(selectFurnished) || [];
-    const maxCovered = useSelector(selectMaxCovered) || 0;
-    const minCovered = useSelector(selectMinCovered) || 0;
-    const minPlot = useSelector(selectMinPlot) || 0;
-    const maxPlot = useSelector(selectMaxPlot) || 0;
-    const minYearOfConstruction = useSelector(selectMinYearOfConstruction) || 0;
-    const maxYearOfConstruction = useSelector(selectMaxYearOfConstruction) || 0;
-    const minFloor = useSelector(selectMinFloor) || 0;
-    const maxFloor = useSelector(selectMaxFloor) || 0;
-    const parentCategories = useSelector(selectParentCategory) || [];
-    const category = useSelector(selectCategory) || [];
-    const state = useSelector(selectState) || [];
-    const minPrice = useSelector(selectMinPrice) || 0;
-    const maxPrice = useSelector(selectMaxPrice) || 0;
-    const timeFrame = useSelector(selectTimeFrame) || [];
+    const demands = useSelector(selectDemands);
+
+    // Assuming you want to work with the first demand
+    const { index } = props;
+    const demand = demands[index] || {};
+    const minBedrooms = demand.filters?.minBedrooms || 0;
+    const maxBedrooms = demand.filters?.maxBedrooms || 0;
+    const minBathrooms = demand.filters?.minBathrooms || 0;
+    const maxBathrooms = demand.filters?.maxBathrooms || 0;
+    const furnished = demand.filters?.furnished || [];
+    const maxCovered = demand.filters?.maxCovered || 0;
+    const minCovered = demand.filters?.minCovered || 0;
+    const minPlot = demand.filters?.minPlot || 0;
+    const maxPlot = demand.filters?.maxPlot || 0;
+    const minYearOfConstruction = demand.filters?.minYearOfConstruction || 0;
+    const maxYearOfConstruction = demand.filters?.maxYearOfConstruction || 0;
+    const minFloor = demand.filters?.minFloor || 0;
+    const maxFloor = demand.filters?.maxFloor || 0;
+    const parentCategories = demand.filters?.parentCategories || [];
+    const category = demand.filters?.categories || [];
+    const state = demand.filters?.states || [];
+    const minPrice = demand.filters?.minPrice || 0;
+    const maxPrice = demand.filters?.maxPrice || 0;
+    const timeFrame = demand.timeframe || [];
     const leaser = useSelector(selectLeaser);
     const buyer = useSelector(selectBuyer);
+
     const minFloorsArray = minFloors;
     const maxFloorsArray = maxFloors;
-    //Lacation
-    const cities = useSelector(selectDemandCities) || [];
-    const complexes = useSelector(selectDemandComplexes) || [];
-    const regions = useSelector(selectDemandRegions) || [];
+
+    // Location
+    const cities = demand.filters?.cities || [];
+    const complexes = demand.filters?.complexes || [];
+    const regions = demand.filters?.regions || [];
 
     const [autocompleteValue, setAutocompleteValue] = useState("");
 
@@ -156,26 +144,53 @@ const DemandForm: FC = () => {
     useEffect(() => {
         if (!propertyForCode) return;
 
-        dispatch(setParentCategory([propertyForCode.parentCategory]));
-        dispatch(setCategory([propertyForCode.category]));
-        dispatch(setFurnished([propertyForCode.technicalFeatures.furnished]));
-        dispatch(setState([propertyForCode.state]));
-        dispatch(setMinBedrooms(propertyForCode.details.bedrooms));
-        dispatch(setMinBathrooms(propertyForCode.details.bathrooms));
         dispatch(
-            setMinCovered(propertyForCode.technicalFeatures.coverageFactor)
+            setParentCategory({
+                index,
+                value: [propertyForCode.parentCategory],
+            })
         );
-        dispatch(setMinPlot(propertyForCode.plotArea));
-        dispatch(setMinPrice(propertyForCode.price));
-        dispatch(setMinFloor(propertyForCode.details.floor));
+        dispatch(setCategory({ index, value: [propertyForCode.category] }));
         dispatch(
-            setMinYearOfConstruction(
-                propertyForCode.construction.yearOfConstruction
-            )
+            setFurnished({
+                index,
+                value: [propertyForCode.technicalFeatures.furnished],
+            })
+        );
+        dispatch(setState({ index, value: [propertyForCode.state] }));
+        dispatch(
+            setMinBedrooms({
+                index,
+                value: propertyForCode.details.bedrooms,
+            })
+        );
+        dispatch(
+            setMinBathrooms({
+                index,
+                value: propertyForCode.details.bathrooms,
+            })
+        );
+        dispatch(
+            setMinCovered({
+                index,
+                value: propertyForCode.technicalFeatures.coverageFactor,
+            })
+        );
+        dispatch(setMinPlot({ index, value: propertyForCode.plotArea }));
+        dispatch(setMinPrice({ index, value: propertyForCode.price }));
+        dispatch(setMinFloor({ index, value: propertyForCode.details.floor }));
+        dispatch(
+            setMinYearOfConstruction({
+                index,
+                value: propertyForCode.construction.yearOfConstruction,
+            })
         );
 
         dispatch(
-            setDemandLabels(propertyForCode.labels.map((label) => label.id))
+            setDemandLabels({
+                index,
+                value: propertyForCode.labels.map((label) => label.id),
+            })
         );
     }, [propertyForCode, isPropertyForCodeSuccess]);
     const handleChange10 = (
@@ -185,23 +200,23 @@ const DemandForm: FC = () => {
             target: { value },
         } = event;
         dispatch(
-            setParentCategory(
-                // On autofill we get a stringified value.
-
-                typeof value === "string" ? value.split(",") : value
-            )
+            setParentCategory({
+                index,
+                value: typeof value === "string" ? value.split(",") : value,
+            })
         );
     };
+
     const handleChange11 = (event: SelectChangeEvent<typeof category>) => {
         const {
             target: { value },
         } = event;
         dispatch(
-            setCategory(
+            setCategory({
                 // On autofill we get a stringified value.
-
-                typeof value === "string" ? value.split(",") : value
-            )
+                index,
+                value: typeof value === "string" ? value.split(",") : value,
+            })
         );
     };
     const handleChange12 = (event: SelectChangeEvent<typeof furnished>) => {
@@ -209,11 +224,11 @@ const DemandForm: FC = () => {
             target: { value },
         } = event;
         dispatch(
-            setFurnished(
+            setFurnished({
                 // On autofill we get a stringified value.
-
-                typeof value === "string" ? value.split(",") : value
-            )
+                index,
+                value: typeof value === "string" ? value.split(",") : value,
+            })
         );
     };
 
@@ -222,11 +237,11 @@ const DemandForm: FC = () => {
             target: { value },
         } = event;
         dispatch(
-            setState(
+            setState({
                 // On autofill we get a stringified value.
-
-                typeof value === "string" ? value.split(",") : value
-            )
+                index,
+                value: typeof value === "string" ? value.split(",") : value,
+            })
         );
     };
     const handleChange = (
@@ -244,8 +259,8 @@ const DemandForm: FC = () => {
     ) => {
         const newValues = newValue;
         const [minValue, maxValue] = newValues;
-        dispatch(setMinBedrooms(minValue)); // Set minBedrooms variable
-        dispatch(setMaxBedrooms(maxValue)); // Set maxBedrooms variable
+        dispatch(setMinBedrooms({ index, value: minValue }));
+        dispatch(setMaxBedrooms({ index, value: maxValue }));
     };
     const handleSliderChange1 = (
         event: any,
@@ -254,8 +269,8 @@ const DemandForm: FC = () => {
     ) => {
         const newValues = newValue;
         const [minValue, maxValue] = newValues;
-        dispatch(setMinBathrooms(minValue)); // Set minBedrooms variable
-        dispatch(setMaxBathrooms(maxValue)); // Set maxBedrooms variable
+        dispatch(setMinBathrooms({ index, value: minValue }));
+        dispatch(setMaxBathrooms({ index, value: maxValue }));
     };
     const handleSliderChange2 = (
         event: any,
@@ -264,8 +279,8 @@ const DemandForm: FC = () => {
     ) => {
         const newValues = newValue;
         const [minValue, maxValue] = newValues;
-        dispatch(setMinCovered(minValue)); // Set minBedrooms variable
-        dispatch(setMaxCovered(maxValue)); // Set maxBedrooms variable
+        dispatch(setMinCovered({ index, value: minValue }));
+        dispatch(setMaxCovered({ index, value: maxValue }));
     };
     const handleSliderChange3 = (
         event: any,
@@ -274,8 +289,8 @@ const DemandForm: FC = () => {
     ) => {
         const newValues = newValue;
         const [minValue, maxValue] = newValues;
-        dispatch(setMinPlot(minValue)); // Set minBedrooms variable
-        dispatch(setMaxPlot(maxValue)); // Set maxBedrooms variable
+        dispatch(setMinPlot({ index, value: minValue }));
+        dispatch(setMaxPlot({ index, value: maxValue }));
     };
     const handleSliderChange4 = (
         event: any,
@@ -284,8 +299,8 @@ const DemandForm: FC = () => {
     ) => {
         const newValues = newValue;
         const [minValue, maxValue] = newValues;
-        dispatch(setMinPrice(minValue)); // Set minBedrooms variable
-        dispatch(setMaxPrice(maxValue)); // Set maxBedrooms variable
+        dispatch(setMinPrice({ index, value: minValue }));
+        dispatch(setMaxPrice({ index, value: maxValue }));
     };
     const handleSliderChange5 = (
         event: any,
@@ -294,8 +309,8 @@ const DemandForm: FC = () => {
     ) => {
         const newValues = newValue;
         const [minValue, maxValue] = newValues;
-        dispatch(setMinFloor(minValue)); // Set minBedrooms variable
-        dispatch(setMaxFloor(maxValue)); // Set maxBedrooms variable
+        dispatch(setMinFloor({ index, value: minValue }));
+        dispatch(setMaxFloor({ index, value: maxValue }));
     };
     const handleSliderChange6 = (
         event: any,
@@ -304,8 +319,8 @@ const DemandForm: FC = () => {
     ) => {
         const newValues = newValue;
         const [minValue, maxValue] = newValues;
-        dispatch(setMinYearOfConstruction(minValue)); // Set minBedrooms variable
-        dispatch(setMaxYearOfConstruction(maxValue)); // Set maxBedrooms variable
+        dispatch(setMinYearOfConstruction({ index, value: minValue }));
+        dispatch(setMaxYearOfConstruction({ index, value: maxValue }));
     };
 
     if (
@@ -334,7 +349,9 @@ const DemandForm: FC = () => {
                     justifyContent: "left",
                 }}
             >
-                <Typography variant="h6">{t("Demand Form")}</Typography>
+                <Typography variant="h6">
+                    {t("Demand Form")} No.{index + 1}
+                </Typography>
             </Box>
 
             <Grid item xs={12} padding={1}>
@@ -505,7 +522,7 @@ const DemandForm: FC = () => {
                         </FormControl>
                     </Grid>
                     <Grid item xs={6}>
-                        <LabelSelect />
+                        <LabelSelect index={index} />
                     </Grid>
                     <Grid item xs={6}>
                         <FormControl fullWidth>
@@ -514,7 +531,12 @@ const DemandForm: FC = () => {
                                 value={timeFrame}
                                 label={t("Time Frame")}
                                 onChange={(e) => {
-                                    dispatch(setTimeFrame(e.target.value));
+                                    dispatch(
+                                        setTimeFrame({
+                                            index,
+                                            value: e.target.value,
+                                        })
+                                    );
                                 }}
                             >
                                 {timeframeEnum.map((item, index) => {
@@ -925,8 +947,18 @@ const DemandForm: FC = () => {
                                                 minFloorsArray[newValue[0]];
                                             const max =
                                                 maxFloorsArray[newValue[1]];
-                                            dispatch(setMinFloor(min));
-                                            dispatch(setMaxFloor(max));
+                                            dispatch(
+                                                setMinFloor({
+                                                    index,
+                                                    value: min,
+                                                })
+                                            );
+                                            dispatch(
+                                                setMaxFloor({
+                                                    index,
+                                                    value: max,
+                                                })
+                                            );
                                         }
                                     }}
                                     valueLabelDisplay="auto"
@@ -951,7 +983,10 @@ const DemandForm: FC = () => {
                                         label="Min floor"
                                         onChange={(e) => {
                                             dispatch(
-                                                setMinFloor(e.target.value)
+                                                setMinFloor({
+                                                    index,
+                                                    value: e.target.value,
+                                                })
                                             );
                                         }}
                                     >
@@ -978,7 +1013,10 @@ const DemandForm: FC = () => {
                                         label="Max floor"
                                         onChange={(e) => {
                                             dispatch(
-                                                setMaxFloor(e.target.value)
+                                                setMaxFloor({
+                                                    index,
+                                                    value: e.target.value,
+                                                })
                                             );
                                         }}
                                     >
@@ -1005,6 +1043,8 @@ const DemandForm: FC = () => {
                         {t("Area of Preference")}
                     </Typography>
                     <AreaOfPreference
+                        index={index}
+                        // getters
                         cities={cities}
                         regions={regions}
                         complexes={complexes}
@@ -1015,6 +1055,15 @@ const DemandForm: FC = () => {
                     />
                 </Grid>
             </Grid>
+
+            {parentCategories &&
+                parentCategories.length > 0 &&
+                parentCategories.map((e) => (
+                    <>
+                        <PriorityFeatures index={index} parentCategory={e} />
+                        <NonPriorityFeatures index={index} parentCategory={e} />
+                    </>
+                ))}
         </Paper>
     ) : (
         <></>

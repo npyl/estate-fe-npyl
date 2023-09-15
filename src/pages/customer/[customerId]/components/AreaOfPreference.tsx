@@ -11,17 +11,21 @@ import {
     selectShape,
 } from "src/slices/customer";
 
-interface AreaOfPreferenceProps {}
+interface AreaOfPreferenceProps {
+    index: number; // index of demand
+}
 
 const isNumberString = (input: string): boolean => !isNaN(Number(input));
 
-export const AreaOfPreference: React.FC<AreaOfPreferenceProps> = ({}) => {
+export const AreaOfPreference: React.FC<AreaOfPreferenceProps> = ({
+    index,
+}) => {
     const [map, setMap] = useState<google.maps.Map>();
-    
-    const shape = useSelector(selectShape); // Get shape from Redux
-    
-    const regions = useSelector(selectDemandRegions) || [];
-    const cities = useSelector(selectDemandCities) || [];
+
+    const shape = useSelector(selectShape)[index]; // Get shape from Redux
+
+    const regions = useSelector(selectDemandRegions)[index] || [];
+    const cities = useSelector(selectDemandCities)[index] || [];
 
     const { data: municips } = useGetMunicipalitiesQuery(+regions[0], {
         skip: !regions[0] && !isNumberString(regions[0]),

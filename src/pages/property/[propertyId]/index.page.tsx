@@ -42,6 +42,7 @@ import { useTranslation } from "react-i18next";
 import ConstructionSection from "./components/sections/ConstructionSection";
 import Features from "./components/sections/FeaturesSection";
 import { features } from "process";
+import MatchingCustomersSection from "./components/sections/MatchingCustomers";
 
 function a11yProps(index: number) {
     return {
@@ -98,7 +99,7 @@ const SingleProperty: NextPage = () => {
                     <Tab label={t("Overview")} {...a11yProps(0)} />
                     <Tab label={t("Quick View")} {...a11yProps(1)} />
                     <Tab label={t("Tickets")} {...a11yProps(2)} />
-                    <Tab label={t("Activities")} {...a11yProps(3)} />
+                    <Tab label={t("Matching Customers")} {...a11yProps(3)} />
                     <Tab label={t("Storage")} {...a11yProps(4)} />
                     <Tab label={t("Connections")} {...a11yProps(5)} />
                     <Tab label={t("Map")} {...a11yProps(6)} />
@@ -127,7 +128,9 @@ const SingleProperty: NextPage = () => {
             </TabPanel>
             <TabPanel value={value} index={1}></TabPanel>
             <TabPanel value={value} index={2}></TabPanel>
-            <TabPanel value={value} index={3}></TabPanel>
+            <TabPanel value={value} index={3}>
+                <MatchingCustomersSection />
+            </TabPanel>
             <TabPanel value={value} index={4}></TabPanel>
             <TabPanel value={value} index={5}></TabPanel>
             <TabPanel value={value} index={6}>

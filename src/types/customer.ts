@@ -48,7 +48,7 @@ export interface ICustomer {
     notes: INote[];
     ownedProperties: IProperties[];
     labels: ILabel[];
-    demand: IDemand;
+    demands: IDemand[];
 }
 
 export interface ICustomerPOST {
@@ -75,7 +75,7 @@ export interface ICustomerPOST {
     location: ILocationPOST;
     ownedProperties: IProperties[];
     labelIDs: number[];
-    demand: IDemandPOST;
+    demands: IDemandPOST[];
 }
 
 export type { IDemand };

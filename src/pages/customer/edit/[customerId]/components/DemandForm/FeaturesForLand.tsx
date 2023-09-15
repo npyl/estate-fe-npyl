@@ -9,10 +9,13 @@ import CheckboxItem from "./components/CheckboxItem";
 import { IFeatureSectionProps } from "./types/FeatureSectionProps";
 
 const FeaturesForLandSection = (props: IFeatureSectionProps) => {
-    const { priorityFeaturesMode, onChange: handleChange } = props;
+    const { index, priorityFeaturesMode, onChange: handleChange } = props;
+
     const { t } = useTranslation();
-    const priorityFeatures = useSelector(selectPriorityFeatures);
-    const nonPriorityFeatures = useSelector(selectNonPriorityFeatures);
+
+    const priorityFeatures = useSelector(selectPriorityFeatures)[index];
+    const nonPriorityFeatures = useSelector(selectNonPriorityFeatures)[index];
+
     const features = priorityFeaturesMode
         ? priorityFeatures
         : nonPriorityFeatures;
