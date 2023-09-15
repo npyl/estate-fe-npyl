@@ -8,33 +8,29 @@ import {
     SelectChangeEvent,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import {
-    selectParentCategories,
-    setParentCategories,
-} from "src/slices/filters";
 
 import { useAllGlobalsQuery } from "src/services/global";
 import { useTranslation } from "react-i18next";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
+import {
+    selectParentCategories,
+    setParentCategories,
+} from "src/slices/customer/filters";
 type FilterVariant = "property" | "customer";
 interface FilterCategoryProps {
     variant: FilterVariant;
     parentCategories: string[];
     setParentCategories: ActionCreatorWithPayload<any, string>;
 }
-export default function CategoryForCustomerSelect(props: FilterCategoryProps) {
-    const {
-        variant = "customer",
-        parentCategories,
-        setParentCategories,
-    } = props;
+export default function CategoryForCustomerSelect() {
     const dispatch = useDispatch();
     const { t } = useTranslation();
-    const categories = useSelector(selectParentCategories);
+    const parentCategories = useSelector(selectParentCategories);
 
     const { data } = useAllGlobalsQuery();
+
     const propertyEnums = data?.property;
-    const categoryEnums = propertyEnums?.parentCategory;
+    const parentCategoryEnums = propertyEnums?.parentCategory;
 
     if (!data) return null;
 
@@ -60,20 +56,20 @@ export default function CategoryForCustomerSelect(props: FilterCategoryProps) {
             <Select
                 multiple
                 labelId="demo-simple-select-label"
-                value={categories}
+                value={parentCategories}
                 onChange={handleChange}
                 renderValue={(selected) => selected.join(", ")}
                 input={<OutlinedInput label={t("Categories")} />}
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
-                {categoryEnums!.map((option) => {
+                {parentCategoryEnums!.map((option) => {
                     return (
                         <MenuItem key={option} value={option}>
                             <Checkbox
                                 checked={
-                                    categories &&
-                                    categories.length > 0 &&
-                                    categories.indexOf(option) > -1
+                                    parentCategories &&
+                                    parentCategories.length > 0 &&
+                                    parentCategories.indexOf(option) > -1
                                 }
                             />
 

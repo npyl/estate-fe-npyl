@@ -21,10 +21,10 @@ export interface ICustomerResultResponse {
 export interface ICustomerFilter {
     labels?: number[]; // ids
     status?: number;
-    // leaser?: boolean;
-    // lessor?: boolean;
-    // seller?: boolean;
-    // buyer?: boolean;
+    leaser?: boolean;
+    lessor?: boolean;
+    seller?: boolean;
+    buyer?: boolean;
     parentCategories?: string[];
     categories?: string[];
 }

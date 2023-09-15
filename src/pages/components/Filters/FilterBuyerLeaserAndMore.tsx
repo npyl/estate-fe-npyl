@@ -9,56 +9,69 @@ import {
 } from "@mui/material";
 import { useDispatch } from "src/store";
 import { useTranslation } from "react-i18next";
-import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
-import { useState } from "react";
+import { useSelector } from "react-redux";
+import {
+    selectBuyer,
+    selectLeaser,
+    selectLessor,
+    selectSeller,
+    setBuyer,
+    setLeaser,
+    setLessor,
+    setSeller,
+} from "src/slices/customer/filters";
 
-type FilterVariant = "property" | "customer";
-
-interface FilterBuyerLeaserAndMoreProps {
-    variant: FilterVariant;
-    setRoles?: ActionCreatorWithPayload<any, string>;
-}
-
-export default function FilterBuyerLeaserAndMore(
-    props: FilterBuyerLeaserAndMoreProps
-) {
-    const { variant = "property", setRoles } = props;
+export default function FilterBuyerLeaserAndMore() {
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
-    const [selectedRoles, setSelectedRoles] = useState<string[]>([]);
+    const leaser = useSelector(selectLeaser);
+    const buyer = useSelector(selectBuyer);
+    const seller = useSelector(selectSeller);
+    const lessor = useSelector(selectLessor);
 
-    const roles = ["buyer", "seller", "leaser", "owner"];
+    // Create a representation of the selected values
+    const selectedRoles = [];
+    if (leaser) selectedRoles.push("leaser");
+    if (buyer) selectedRoles.push("buyer");
+    if (seller) selectedRoles.push("seller");
+    if (lessor) selectedRoles.push("lessor");
 
     const handleChange = (event: SelectChangeEvent<string[]>) => {
-        const {
-            target: { value },
-        } = event;
-        setSelectedRoles(typeof value === "string" ? value.split(",") : value);
-        if (setRoles) {
-            dispatch(setRoles(value));
-        }
+        const selected = event.target.value;
+        dispatch(setLeaser(selected.includes("leaser")));
+        dispatch(setBuyer(selected.includes("buyer")));
+        dispatch(setSeller(selected.includes("seller")));
+        dispatch(setLessor(selected.includes("lessor")));
     };
 
     return (
         <FormControl sx={{ minWidth: "130px" }}>
-            <InputLabel id="demo-multiple-select-label">
-                {t("Roles")}
-            </InputLabel>
+            <InputLabel id="roles-label">{t("Roles")}</InputLabel>
             <Select
+                labelId="roles-label"
                 multiple
-                labelId="demo-multiple-select-label"
                 value={selectedRoles}
                 onChange={handleChange}
-                renderValue={(selected) => (selected as string[]).join(", ")}
+                renderValue={(selected) => selected.join(", ")}
                 input={<OutlinedInput label={t("Roles")} />}
             >
-                {roles.map((role) => (
-                    <MenuItem key={role} value={role}>
-                        <Checkbox checked={selectedRoles.indexOf(role) > -1} />
-                        {t(role.charAt(0).toUpperCase() + role.slice(1))}
-                    </MenuItem>
-                ))}
+                <MenuItem value={"leaser"}>
+                    <Checkbox checked={leaser} />
+                    {t("Leaser")}
+                </MenuItem>
+                <MenuItem value={"buyer"}>
+                    <Checkbox checked={buyer} />
+                    {t("Buyer")}
+                </MenuItem>
+                <MenuItem value={"seller"}>
+                    <Checkbox checked={seller} />
+                    {t("Seller")}
+                </MenuItem>
+                <MenuItem value={"lessor"}>
+                    <Checkbox checked={lessor} />
+                    {t("Lessor")}
+                </MenuItem>
             </Select>
         </FormControl>
     );

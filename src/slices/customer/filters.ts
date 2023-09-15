@@ -27,6 +27,22 @@ const slice = createSlice({
             state.filters.status = payload;
             !state.ids.includes("status") && state.ids.push("status");
         },
+        setLeaser(state, { payload }) {
+            state.filters.leaser = payload;
+            !state.ids.includes("leaser") && state.ids.push("leaser");
+        },
+        setLessor(state, { payload }) {
+            state.filters.lessor = payload;
+            !state.ids.includes("lessor") && state.ids.push("lessor");
+        },
+        setSeller(state, { payload }) {
+            state.filters.seller = payload;
+            !state.ids.includes("seller") && state.ids.push("seller");
+        },
+        setBuyer(state, { payload }) {
+            state.filters.buyer = payload;
+            !state.ids.includes("buyer") && state.ids.push("buyer");
+        },
 
         // multiple
         setLabels(state, { payload }) {
@@ -66,6 +82,10 @@ const slice = createSlice({
 
 export const {
     setStatus,
+    setBuyer,
+    setLeaser,
+    setLessor,
+    setSeller,
     // multiple
     setLabels,
     setCategories,
@@ -79,6 +99,14 @@ export const {
 
 export const selectStatus = ({ customerFilters }: RootState) =>
     customerFilters.filters.status;
+export const selectBuyer = ({ customerFilters }: RootState) =>
+    customerFilters.filters.buyer;
+export const selectLeaser = ({ customerFilters }: RootState) =>
+    customerFilters.filters.leaser;
+export const selectLessor = ({ customerFilters }: RootState) =>
+    customerFilters.filters.lessor;
+export const selectSeller = ({ customerFilters }: RootState) =>
+    customerFilters.filters.seller;
 export const selectLabels = ({ customerFilters }: RootState) =>
     customerFilters.filters.labels;
 export const selectParentCategories = ({ customerFilters }: RootState) =>
@@ -96,6 +124,10 @@ export const sumOfChangedProperties = createSelector(
     (filter) => {
         const propertiesToInclude = [
             "status",
+            "buyer",
+            "leaser",
+            "seller",
+            "lessor",
             // multiple
             "labels",
             "parentCategories",
