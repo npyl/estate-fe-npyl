@@ -15,8 +15,19 @@ import {
 
 import { useAllGlobalsQuery } from "src/services/global";
 import { useTranslation } from "react-i18next";
-
-export default function CategoryForCustomerSelect() {
+import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
+type FilterVariant = "property" | "customer";
+interface FilterCategoryProps {
+    variant: FilterVariant;
+    parentCategories: string[];
+    setParentCategories: ActionCreatorWithPayload<any, string>;
+}
+export default function CategoryForCustomerSelect(props: FilterCategoryProps) {
+    const {
+        variant = "customer",
+        parentCategories,
+        setParentCategories,
+    } = props;
     const dispatch = useDispatch();
     const { t } = useTranslation();
     const categories = useSelector(selectParentCategories);
@@ -27,7 +38,9 @@ export default function CategoryForCustomerSelect() {
 
     if (!data) return null;
 
-    const handleChange = (event: SelectChangeEvent<typeof categories>) => {
+    const handleChange = (
+        event: SelectChangeEvent<typeof parentCategories>
+    ) => {
         const {
             target: { value },
         } = event;

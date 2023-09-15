@@ -21,10 +21,10 @@ const ChosenFilters = () => {
         roles: {
             label: "Roles",
         },
-        categories: {
+        parentCategories: {
             label: "Categories",
         },
-        subcategory: {
+        categories: {
             label: "Subcategory",
         },
     };

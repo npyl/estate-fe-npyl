@@ -13,6 +13,8 @@ interface IFilterProps {
 const initialState: IFilterProps = {
     filters: {
         labels: [],
+        categories: [],
+        parentCategories: [],
     },
     ids: [],
 };
@@ -30,6 +32,15 @@ const slice = createSlice({
         setLabels(state, { payload }) {
             state.filters.labels = payload;
             !state.ids.includes("labels") && state.ids.push("labels");
+        },
+        setCategories(state, { payload }) {
+            state.filters.categories = payload;
+            !state.ids.includes("categories") && state.ids.push("categories");
+        },
+        setParentCategories(state, { payload }) {
+            state.filters.parentCategories = payload;
+            !state.ids.includes("parentCategories") &&
+                state.ids.push("parentCategories");
         },
 
         // general delete
@@ -57,7 +68,8 @@ export const {
     setStatus,
     // multiple
     setLabels,
-
+    setCategories,
+    setParentCategories,
     // delete
     deleteFilter,
 
@@ -69,6 +81,10 @@ export const selectStatus = ({ customerFilters }: RootState) =>
     customerFilters.filters.status;
 export const selectLabels = ({ customerFilters }: RootState) =>
     customerFilters.filters.labels;
+export const selectParentCategories = ({ customerFilters }: RootState) =>
+    customerFilters.filters.parentCategories;
+export const selectCategories = ({ customerFilters }: RootState) =>
+    customerFilters.filters.categories;
 export const selectIds = ({ customerFilters }: RootState) =>
     customerFilters.ids;
 
@@ -82,6 +98,8 @@ export const sumOfChangedProperties = createSelector(
             "status",
             // multiple
             "labels",
+            "parentCategories",
+            "categories",
         ];
 
         return propertiesToInclude.reduce(
