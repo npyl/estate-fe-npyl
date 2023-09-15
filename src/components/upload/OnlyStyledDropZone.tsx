@@ -1,29 +1,17 @@
 import { useDropzone } from "react-dropzone";
 // @mui
-import {
-    Box,
-    Stack,
-    Button,
-    IconButton,
-    Typography,
-    StackProps,
-} from "@mui/material";
+import { Box, Stack, Typography, StackProps } from "@mui/material";
 import { styled, alpha } from "@mui/material/styles";
 // assets
 import { UploadIllustration } from "../../assets/illustrations";
-//
-import Iconify from "../iconify";
-//
 import { UploadPropertyImageProps } from "./types";
-import RejectionFiles from "./errors/RejectionFiles";
-import MultiFilePreviewReorder from "./preview/MultiFilePreviewReorder";
 import SingleFilePreview from "./preview/SingleFilePreview";
 import { useTranslation } from "react-i18next";
 import { t } from "i18next";
 
 // ----------------------------------------------------------------------
 
-export const StyledDropZone = styled("div")(({ theme }) => ({
+export const OnlyStyledDropZone = styled("div")(({ theme }) => ({
     outline: "none",
     cursor: "pointer",
     overflow: "hidden",
@@ -40,7 +28,7 @@ export const StyledDropZone = styled("div")(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function UploadDnd({
+export default function OnlyStyledUploadDnd({
     disabled,
     multiple = false,
     error,
@@ -75,12 +63,12 @@ export default function UploadDnd({
     const { t } = useTranslation();
 
     const hasFile = !!file && !multiple;
-    const hasFiles = files && multiple && files.length > 0;
+
     const isError = isDragReject || !!error;
 
     return (
         <Box sx={{ width: 1, position: "relative", ...sx }}>
-            {/* <StyledDropZone
+            <OnlyStyledDropZone
                 {...getRootProps()}
                 sx={{
                     ...(isDragActive && {
@@ -111,76 +99,7 @@ export default function UploadDnd({
                 />
 
                 {hasFile && <SingleFilePreview file={file} />}
-            </StyledDropZone> */}
-
-            <RejectionFiles fileRejections={fileRejections} />
-
-            {hasFile && onDelete && (
-                <IconButton
-                    size="small"
-                    onClick={onDelete}
-                    sx={{
-                        top: 16,
-                        right: 16,
-                        zIndex: 9,
-                        position: "absolute",
-                        color: (theme) =>
-                            alpha(theme.palette.common.white, 0.8),
-                        bgcolor: (theme) =>
-                            alpha(theme.palette.grey[900], 0.72),
-                        "&:hover": {
-                            bgcolor: (theme) =>
-                                alpha(theme.palette.grey[900], 0.48),
-                        },
-                    }}
-                >
-                    <Iconify icon="eva:close-fill" width={18} />
-                </IconButton>
-            )}
-
-            {hasFiles && (
-                <>
-                    <Box sx={{ my: 4 }}>
-                        <MultiFilePreviewReorder
-                            files={files}
-                            thumbnail={false}
-                            setFiles={setFiles}
-                            onImageClick={onImageClick}
-                            onReorder={onReorder}
-                            onRemove={onRemove}
-                        />
-                    </Box>
-
-                    <Stack
-                        direction="row"
-                        justifyContent="flex-end"
-                        spacing={1.5}
-                    >
-                        {onRemoveAll && (
-                            <Button
-                                color="inherit"
-                                variant="outlined"
-                                size="small"
-                                onClick={onRemoveAll}
-                            >
-                                {t("Remove all")}
-                            </Button>
-                        )}
-
-                        {onUpload && (
-                            <Button
-                                size="small"
-                                variant="contained"
-                                onClick={onUpload}
-                            >
-                                {t("Upload files")}
-                            </Button>
-                        )}
-                    </Stack>
-                </>
-            )}
-
-            {helperText && helperText}
+            </OnlyStyledDropZone>
         </Box>
     );
 }
@@ -193,22 +112,15 @@ function Placeholder({ sx, ...other }: StackProps) {
             spacing={2}
             alignItems="center"
             justifyContent="center"
-            direction={{
-                xs: "column",
-                md: "row",
-            }}
+            direction="column" // Changed to "column" to ensure the Box appears above the Illustration on all screen sizes
             sx={{
                 width: 1,
-                textAlign: {
-                    xs: "center",
-                    md: "left",
-                },
+                height: "50%", // Set the height to half of its parent container
+                textAlign: "center",
                 ...sx,
             }}
             {...other}
         >
-            <UploadIllustration sx={{ width: 200 }} />
-
             <Box sx={{ p: 3 }}>
                 <Typography gutterBottom variant="h5">
                     {t("Drop or Select file")}
@@ -217,11 +129,13 @@ function Placeholder({ sx, ...other }: StackProps) {
                 <Typography variant="body2" sx={{ color: "text.secondary" }}>
                     <Typography variant="body2" component="span">
                         {t(
-                            "Drop files here or click browse  thorough your machine"
+                            "Drop files here or click browse thorough your machine"
                         )}
                     </Typography>
                 </Typography>
             </Box>
+
+            <UploadIllustration sx={{ width: 200 }} />
         </Stack>
     );
 }

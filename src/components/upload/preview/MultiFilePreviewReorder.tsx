@@ -42,6 +42,7 @@ export default function MultiFilePreviewReorder({
                         <ImageList
                             {...provided.droppableProps}
                             ref={provided.innerRef}
+                            cols={4} // <- Add this line
                         >
                             {files.map((file, index) => (
                                 <ImageListItem key={index}>

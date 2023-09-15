@@ -1,7 +1,18 @@
-import { Card, CardContent, CardHeader } from "@mui/material";
+import {
+    Box,
+    Button,
+    Card,
+    CardContent,
+    CardHeader,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    Typography,
+} from "@mui/material";
 import { useCallback, useState } from "react";
 
-import UploadDnd from "src/components/upload/UploadDnd";
+import UploadDnd, { StyledDropZone } from "src/components/upload/UploadDnd";
 import GalleryManager from "src/components/GalleryManager";
 import { SoftButton } from "src/components/SoftButton";
 import {
@@ -13,6 +24,8 @@ import {
 import { useRouter } from "next/router";
 import { IPropertyImage, IPropertyImagePOST } from "src/types/file";
 import { useTranslation } from "react-i18next";
+import OnlyStyledDropZone from "src/components/upload/OnlyStyledDropZone";
+import OnlyStyledUploadDnd from "src/components/upload/OnlyStyledDropZone";
 
 interface IImageSectionProps {
     files: IPropertyImage[];
@@ -40,7 +53,15 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
     const [setThumbnail] = useSetPropertyThumbailMutation();
     const [reorderImages] = useReorderPropertyImagesMutation();
     const [deleteImage] = useDeletePropertyImageMutation();
+    const [uploadDndOpen, setUploadDndOpen] = useState(false);
 
+    const handleOpenUploadDnd = () => {
+        setUploadDndOpen(true);
+    };
+
+    const handleCloseUploadDnd = () => {
+        setUploadDndOpen(false);
+    };
     const uploadFile = async (
         image: File
     ): Promise<{ cdnUrl: string; key: string }> => {
@@ -172,16 +193,44 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
                     }}
                 />
                 <CardContent>
-                    <UploadDnd
-                        multiple
-                        thumbnail={true}
-                        files={files}
-                        setFiles={setFiles}
-                        onDrop={handleDropMultiFile}
-                        onReorder={handleReorder}
-                        onRemove={handleRemoveFile}
-                        onRemoveAll={handleRemoveAllFiles}
-                    />
+                    <Box display="flex">
+                        <Box
+                            width="50%"
+                            display="flex"
+                            justifyContent="flex-start"
+                        >
+                            <OnlyStyledUploadDnd
+                                multiple
+                                thumbnail={true}
+                                files={files}
+                                setFiles={setFiles}
+                                onDrop={handleDropMultiFile}
+                                onReorder={handleReorder}
+                                onRemove={handleRemoveFile}
+                                onRemoveAll={handleRemoveAllFiles}
+                            ></OnlyStyledUploadDnd>
+                        </Box>
+
+                        <Box
+                            width="50%"
+                            display="flex"
+                            justifyContent="flex-end"
+                        >
+                            <Typography mx="auto" my="auto">
+                                εδω θα μπει το carousel
+                            </Typography>
+                        </Box>
+                    </Box>
+
+                    {/* Wrapping the Button with Box component */}
+                    <Box display="flex" justifyContent="flex-end" mt={2}>
+                        <Button
+                            variant="contained"
+                            onClick={handleOpenUploadDnd}
+                        >
+                            See More
+                        </Button>
+                    </Box>
                 </CardContent>
             </Card>
 
@@ -195,6 +244,36 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
                     }}
                 />
             )}
+
+            {/* Dialog containing UploadDnd */}
+            <Dialog
+                open={uploadDndOpen}
+                onClose={handleCloseUploadDnd}
+                aria-labelledby="upload-dnd-dialog-title"
+                fullWidth
+                maxWidth="lg" // You can set this to 'xs', 'sm', 'md', 'lg', or 'xl'
+            >
+                <DialogTitle id="upload-dnd-dialog-title">
+                    Upload Images
+                </DialogTitle>
+                <DialogContent>
+                    <UploadDnd
+                        multiple
+                        thumbnail={true}
+                        files={files}
+                        setFiles={setFiles}
+                        onDrop={handleDropMultiFile}
+                        onReorder={handleReorder}
+                        onRemove={handleRemoveFile}
+                        onRemoveAll={handleRemoveAllFiles}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseUploadDnd} color="primary">
+                        Close
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </>
     );
 };
