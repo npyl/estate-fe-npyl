@@ -40,6 +40,7 @@ export const createStore = (
                 labels.middleware,
                 location.middleware,
                 notification.middleware,
+                // security.middleware,
                 rtkQueryErrorLogger
             ),
         ...options,
