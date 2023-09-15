@@ -33,6 +33,10 @@ export const rootReducer = combineReducers({
     [labels.reducerPath]: labels.reducer,
     [notification.reducerPath]: notification.reducer,
     [exports.reducerPath]: exports.reducer,
+    // [security.reducerPath]: security.reducer,
+
+    //leo1
+
     // property
     property: propertyReducer,
     propertyFiles: propertyFilesReducer,
