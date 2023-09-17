@@ -19,6 +19,7 @@ import {useGetNotificationsQuery,} from "src/services/notification";
 import {Checkbox, Paper, Stack} from "@mui/material";
 import {usePublishTab} from "src/components/Tabs/utils";
 import {useState} from "react";
+import {log} from "util";
 
 function createTestData() {
     return [
@@ -427,8 +428,22 @@ function Category(props) {
     }
 
     const [isChecked, setIsChecked] = useState(false);
+    const [isChildChecked, setIsChildChecked] = useState(
+        Array(subcategories.length).fill(false)
+    );
+
+    // Handle the first checkbox change
     const handleCheckboxChange = () => {
-        setIsChecked(prevChecked => !prevChecked);
+        const newState = !isChecked;
+        setIsChecked(newState);
+        setIsChildChecked(Array(subcategories.length).fill(newState));
+    };
+
+    // Handle individual child checkbox change
+    const handleChildCheckboxChange = (index) => {
+        const newChildCheckboxState = [...isChildChecked];
+        newChildCheckboxState[index] = !newChildCheckboxState[index];
+        setIsChildChecked(newChildCheckboxState);
     };
 
     return (
@@ -444,8 +459,7 @@ function Category(props) {
                             {open ? <KeyboardArrowUpIcon/> : <KeyboardArrowDownIcon/>}
                         </IconButton>
                         <Typography variant={'h6'}>{row}</Typography>
-                        <Checkbox onChange={handleCheckboxChange}
-                        />
+                        <Checkbox onChange={handleCheckboxChange} checked={isChecked} />
                     </Stack>
                 </TableCell>
             </TableRow>
@@ -470,7 +484,10 @@ function Category(props) {
                                             }
                                             {Array(actions.length).fill().map((_, index) => (
                                                 <TableCell align="center" key={index}>
-                                                    <Checkbox checked = "true"
+                                                    {console.log("AAAAAA")}
+                                                    <Checkbox
+                                                        onChange={() => handleChildCheckboxChange(index)}
+                                                        checked={isChildChecked[index]}
                                                     />
                                                 </TableCell>
                                             ))}
