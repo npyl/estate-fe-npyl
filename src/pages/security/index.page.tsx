@@ -484,7 +484,6 @@ function Category(props) {
                                             }
                                             {Array(actions.length).fill().map((_, index) => (
                                                 <TableCell align="center" key={index}>
-                                                    {console.log("AAAAAA")}
                                                     <Checkbox
                                                         onChange={() => handleChildCheckboxChange(index)}
                                                         checked={isChildChecked[index]}
@@ -515,8 +514,38 @@ const NotificationPage: NextPage = () => {
         <TableContainer component={Paper} style={{width: '1500px'}}>
             <Table aria-label="collapsible table">
                 <TableHead>
-                    <TableRow sx={{background: 'grey'}}>
-                        <TableCell sx={{width: '10%'}} align="left"></TableCell>
+                    <TableRow sx={{background: '#f5f5dc'}}>
+                        <TableCell sx={{width: '10%'}} align="left"><Typography variant={'h6'}>Sale</Typography></TableCell>
+                        {actions.map(s =>
+                            <TableCell sx={{width: '10%'}} align="left" key={s}> {s} </TableCell>
+                        )}
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {categories.map((s) => {
+                        return <Category key={s} row={s}/>;
+                    })}
+                </TableBody>
+            </Table>
+            <Table aria-label="collapsible table">
+                <TableHead>
+                    <TableRow sx={{background: '#f5f5dc'}}>
+                        <TableCell sx={{width: '10%'}} align="left"><Typography variant={'h6'}>Rent</Typography></TableCell>
+                        {actions.map(s =>
+                            <TableCell sx={{width: '10%'}} align="left" key={s}> {s} </TableCell>
+                        )}
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {categories.map((s) => {
+                        return <Category key={s} row={s}/>;
+                    })}
+                </TableBody>
+            </Table>
+            <Table aria-label="collapsible table">
+                <TableHead>
+                    <TableRow sx={{background: '#f5f5dc'}}>
+                        <TableCell sx={{width: '10%'}} align="left"><Typography variant={'h6'}>Sold/Rented</Typography></TableCell>
                         {actions.map(s =>
                             <TableCell sx={{width: '10%'}} align="left" key={s}> {s} </TableCell>
                         )}
