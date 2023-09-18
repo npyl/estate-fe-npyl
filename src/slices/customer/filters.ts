@@ -13,6 +13,8 @@ interface IFilterProps {
 const initialState: IFilterProps = {
     filters: {
         labels: [],
+        categories: [],
+        parentCategories: [],
     },
     ids: [],
 };
@@ -25,11 +27,36 @@ const slice = createSlice({
             state.filters.status = payload;
             !state.ids.includes("status") && state.ids.push("status");
         },
+        setLeaser(state, { payload }) {
+            state.filters.leaser = payload;
+            !state.ids.includes("leaser") && state.ids.push("leaser");
+        },
+        setLessor(state, { payload }) {
+            state.filters.lessor = payload;
+            !state.ids.includes("lessor") && state.ids.push("lessor");
+        },
+        setSeller(state, { payload }) {
+            state.filters.seller = payload;
+            !state.ids.includes("seller") && state.ids.push("seller");
+        },
+        setBuyer(state, { payload }) {
+            state.filters.buyer = payload;
+            !state.ids.includes("buyer") && state.ids.push("buyer");
+        },
 
         // multiple
         setLabels(state, { payload }) {
             state.filters.labels = payload;
             !state.ids.includes("labels") && state.ids.push("labels");
+        },
+        setCategories(state, { payload }) {
+            state.filters.categories = payload;
+            !state.ids.includes("categories") && state.ids.push("categories");
+        },
+        setParentCategories(state, { payload }) {
+            state.filters.parentCategories = payload;
+            !state.ids.includes("parentCategories") &&
+                state.ids.push("parentCategories");
         },
 
         // general delete
@@ -55,9 +82,14 @@ const slice = createSlice({
 
 export const {
     setStatus,
+    setBuyer,
+    setLeaser,
+    setLessor,
+    setSeller,
     // multiple
     setLabels,
-
+    setCategories,
+    setParentCategories,
     // delete
     deleteFilter,
 
@@ -67,8 +99,20 @@ export const {
 
 export const selectStatus = ({ customerFilters }: RootState) =>
     customerFilters.filters.status;
+export const selectBuyer = ({ customerFilters }: RootState) =>
+    customerFilters.filters.buyer;
+export const selectLeaser = ({ customerFilters }: RootState) =>
+    customerFilters.filters.leaser;
+export const selectLessor = ({ customerFilters }: RootState) =>
+    customerFilters.filters.lessor;
+export const selectSeller = ({ customerFilters }: RootState) =>
+    customerFilters.filters.seller;
 export const selectLabels = ({ customerFilters }: RootState) =>
     customerFilters.filters.labels;
+export const selectParentCategories = ({ customerFilters }: RootState) =>
+    customerFilters.filters.parentCategories;
+export const selectCategories = ({ customerFilters }: RootState) =>
+    customerFilters.filters.categories;
 export const selectIds = ({ customerFilters }: RootState) =>
     customerFilters.ids;
 
@@ -80,8 +124,14 @@ export const sumOfChangedProperties = createSelector(
     (filter) => {
         const propertiesToInclude = [
             "status",
+            "buyer",
+            "leaser",
+            "seller",
+            "lessor",
             // multiple
             "labels",
+            "parentCategories",
+            "categories",
         ];
 
         return propertiesToInclude.reduce(

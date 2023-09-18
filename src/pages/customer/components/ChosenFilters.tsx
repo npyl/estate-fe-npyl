@@ -18,13 +18,22 @@ const ChosenFilters = () => {
         labels: {
             label: "Labels",
         },
-        roles: {
-            label: "Roles",
+        leaser: {
+            label: "leaser",
         },
-        categories: {
+        buyer: {
+            label: "buyer",
+        },
+        lessor: {
+            label: "lessor",
+        },
+        seller: {
+            label: "seller",
+        },
+        parentCategories: {
             label: "Categories",
         },
-        subcategory: {
+        categories: {
             label: "Subcategory",
         },
     };

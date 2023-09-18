@@ -7,20 +7,22 @@ import {
     Select,
     SelectChangeEvent,
 } from "@mui/material";
+import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { useTranslation } from "react-i18next";
 import { useAllGlobalsQuery } from "src/services/global";
 import {
+    selectCategories,
     selectParentCategories,
-    selectSubCategories,
-    setSubCategories,
-} from "src/slices/filters";
+    setCategories,
+} from "src/slices/customer/filters";
+
 import { useDispatch, useSelector } from "src/store";
 import { IGlobalProperty } from "src/types/global";
 
 export default function SubCategoryForCustomerSelect() {
     const dispatch = useDispatch();
-    const parentCategories = useSelector(selectParentCategories);
-    const subCategories = useSelector(selectSubCategories);
+    const parentCategories = useSelector(selectParentCategories) || [];
+    const subCategories = useSelector(selectCategories) || [];
     const { t } = useTranslation();
     const { data } = useAllGlobalsQuery();
     const propertyEnums = data?.property;
@@ -37,7 +39,7 @@ export default function SubCategoryForCustomerSelect() {
             target: { value },
         } = event;
         dispatch(
-            setSubCategories(
+            setCategories(
                 // On autofill we get a stringified value.
                 typeof value === "string" ? value.split(",") : value
             )
