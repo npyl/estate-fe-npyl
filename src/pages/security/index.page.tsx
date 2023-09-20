@@ -532,15 +532,14 @@ function Category(props) {
 
     const actions = ["allowDelete", "allowEdit", "accessOwner", "accessLocation", "accessPrice", "accessActive", "accessHidden", "accessInactive"]
 
+    const categories = ["Residential","Commercial","Land","Other"];
     const subcategories1 = ["Apartment", "Studio", "Maisonette", "Detached house", "Villa", "Loft", "Bungalow", "Building", "Apartment complex", "Farm", "Houseboat", "Other categories"]
     const subcategories2 = ["Office", "Store", "Warehouse", "Industrial space", "Craft space", "Hotel", "Business building", "Hall", "Showroom", "Other Categories"]
     const subcategories3 = ["Land plot", "Parcels", "Island", "Other Categories"]
     const subcategories4 = ["Parking", "Business", "Prefabricated", "Detachable", "Air", "Other"]
     let category = resolveCategory(row, subcategories1, subcategories2, subcategories3, subcategories4);
 
-    // const handleCheckboxChange = (e) => {
     const handleCheckboxChange = ( ) => {
-        // e.stopPropagation();
         const newState = !isChecked;
         setIsChecked(newState);
         const newData = { ...data };
@@ -555,9 +554,24 @@ function Category(props) {
             }
         }
         setData(newData);
-        console.log(data)
         return data;
     };
+
+    const isParentCategoryChecked = () => {
+        for (const category of Object.values(data)) {
+            const actions = category?.actions;
+            if (actions && Object.values(actions).some((value) => value === false)) {
+                return false;
+            }
+        }
+        return true;
+    };
+
+    const isActionChecked = (rowLiteral, columnIndex) : boolean => {
+        const rowIndex = resolveSubCategory(rowLiteral);
+        const action = actions[columnIndex];
+        return !!data[rowIndex]?.actions[action]
+    }
 
 
     // Handle individual child checkbox change
@@ -567,37 +581,10 @@ function Category(props) {
 
         const updatedData = { ...data };
 
-        switch (action){
-            case "allowDelete":
-                updatedData[rowIndex].actions.allowDelete = !data[rowIndex].actions.allowDelete;
-                break;
-            case "allowEdit":
-                updatedData[rowIndex].actions.allowEdit = !data[rowIndex].actions.allowEdit;
-                break;
-            case "accessOwner":
-                updatedData[rowIndex].actions.accessOwner = !data[rowIndex].actions.accessOwner;
-                break;
-            case "accessLocation":
-                updatedData[rowIndex].actions.accessLocation = !data[rowIndex].actions.accessLocation;
-                break;
-            case "accessPrice":
-                updatedData[rowIndex].actions.accessPrice = !data[rowIndex].actions.accessPrice;
-                break;
-            case "accessActive":
-                updatedData[rowIndex].actions.accessActive = !data[rowIndex].actions.accessActive;
-                break;
-            case "accessHidden":
-                updatedData[rowIndex].actions.accessHidden = !data[rowIndex].actions.accessHidden;
-                break;
-            case "accessInactive":
-                updatedData[rowIndex].actions.accessInactive = !data[rowIndex].actions.accessInactive;
-                break;
-        }
+        updatedData[rowIndex].actions[action] = !data[rowIndex].actions[action];
 
         setData(updatedData);
-        console.log('SKATASKATA')
         console.log(updatedData)
-        return data;
     }
 
     return (
@@ -615,6 +602,7 @@ function Category(props) {
                         <Typography variant={'h6'}>{row}</Typography>
                         <Checkbox
                             onChange={() => handleCheckboxChange()}
+                            checked = {isParentCategoryChecked()}
                         />
                     </Stack>
                 </TableCell>
@@ -634,14 +622,11 @@ function Category(props) {
                                             </TableCell>
                                             {Array(actions.length).fill().map((_, index) => (
                                                 <TableCell align="center" key={index}>
-                                                    {/*{console.log("SKATA")}*/}
-                                                    {/*{console.log(data[resolveSubCategory(s)])}*/}
-                                                    {/*{console.log(data[resolveSubCategory(s)]?.actions[index])}*/}
-                                                    {/*{console.log(data[resolveSubCategory(s)]?.actions?.[actions[index]])}*/}
-
                                                     <Checkbox
-                                                        // checked={data[resolveSubCategory(s)]?.actions?.[actions[index]] === 'true'}
-                                                        onChange={() => handleChildCheckboxChange(s, index)}
+                                                        onChange={() => {
+                                                            handleChildCheckboxChange(s, index);
+                                                        }}
+                                                        checked = {isActionChecked(s, index)}
                                                     />
                                                 </TableCell>
                                             ))}
