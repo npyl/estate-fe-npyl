@@ -10,7 +10,7 @@ const resources = {
             Thumbnail: "Thumbnail",
             "Reference ID": "Reference ID",
             "Rows per page": "Rows per page",
-            "Search with a keyword": "Seatch with a keyword",
+            "Search with a keyword": "Search with a keyword",
             Categories: "Categories",
 
             Clear: "Clear",

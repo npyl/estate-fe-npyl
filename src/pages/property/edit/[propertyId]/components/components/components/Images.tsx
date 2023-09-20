@@ -62,6 +62,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
     const handleCloseUploadDnd = () => {
         setUploadDndOpen(false);
     };
+
     const uploadFile = async (
         image: File
     ): Promise<{ cdnUrl: string; key: string }> => {
@@ -213,12 +214,25 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 
                         <Box
                             width="50%"
-                            display="flex"
-                            justifyContent="flex-end"
+                            sx={{
+                                paddingTop: "0",
+                                height: "383px",
+                                paddingLeft: 1,
+                                paddingRight: 1,
+                                display: "flex",
+                                justifyContent: "flex-end",
+                                overflowY: "auto",
+                            }}
                         >
-                            <Typography mx="auto" my="auto">
-                                εδω θα μπει το carousel
-                            </Typography>
+                            <UploadDnd
+                                multiple
+                                thumbnail={true}
+                                files={files}
+                                setFiles={setFiles}
+                                onDrop={handleDropMultiFile}
+                                onReorder={handleReorder}
+                                onRemove={handleRemoveFile}
+                            />
                         </Box>
                     </Box>
 

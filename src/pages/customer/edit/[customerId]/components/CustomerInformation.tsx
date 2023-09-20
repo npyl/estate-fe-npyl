@@ -69,12 +69,13 @@ import { useLazyGetCustomerLabelsQuery } from "src/services/customers";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import DateFieldStyled from "src/pages/property/edit/[propertyId]/components/components/components/DateFieldStyled";
+import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 
 const CustomerInformation: React.FC<any> = () => {
     const dispatch = useDispatch();
     const router = useRouter();
     const { t } = useTranslation();
-
+    const currentDate = new Date();
     const { customerId } = router.query;
 
     const enums = useAllGlobalsQuery().data;
@@ -98,7 +99,8 @@ const CustomerInformation: React.FC<any> = () => {
     const leadSource = useSelector(selectLeadSource) as LeadSource;
     const suggestedBy = useSelector(selectSuggestedBy);
     const status = useSelector(selectStatus);
-
+    const [emailError, setEmailError] = React.useState(false);
+    const [helperText, setHelperText] = React.useState("");
     const { data: labels } = useGetLabelsQuery();
     const customerLabels = labels?.customerLabels;
     const [showPopup, setShowPopup] = useState(false);
@@ -128,7 +130,7 @@ const CustomerInformation: React.FC<any> = () => {
         // TODO: improve this by revalidating automatically (invalidating a tag)
         getLabels(+customerId!);
     };
-    const currentDate = new Date();
+
     // const [popupVisible, setPopupVisible] = useState(false); // Changed variable name
 
     // // Explicitly define the type for the ref
@@ -145,6 +147,21 @@ const CustomerInformation: React.FC<any> = () => {
     //         }
     //     }
     // };
+    const handleDateChange = (
+        setter: ActionCreatorWithPayload<any, string>,
+        newDate: Date | null,
+        dateOfBirth: string | null
+    ) => {
+        if (!newDate || !setter) return;
+        const updatedDate = newDate.toISOString();
+        dispatch(setter(updatedDate));
+        // Convert the strings back to Date objects for comparison
+        setter === setDateOfBirth
+            ? newDate
+            : dateOfBirth
+            ? new Date(dateOfBirth)
+            : null;
+    };
     const handleLabelClick = (label: ILabel) =>
         label.id &&
         assignLabel({ customerId: +customerId!, labelId: label.id }).then(() =>
@@ -202,7 +219,7 @@ const CustomerInformation: React.FC<any> = () => {
                             label={t("First Name")}
                             value={firstName}
                             onChange={(e) => {
-                                if (e.target.value.match(/^[a-zA-Z]*$/)) {
+                                if (e.target.value.match(/^[a-zA-Zα-ωΑ-Ω]*$/)) {
                                     dispatch(setFirstName(e.target.value));
                                 }
                             }}
@@ -214,7 +231,7 @@ const CustomerInformation: React.FC<any> = () => {
                             label={t("Last Name")}
                             value={lastName}
                             onChange={(e) => {
-                                if (e.target.value.match(/^[a-zA-Z]*$/)) {
+                                if (e.target.value.match(/^[a-zA-Zα-ωΑ-Ω]*$/)) {
                                     dispatch(setLastName(e.target.value));
                                 }
                             }}
@@ -229,8 +246,24 @@ const CustomerInformation: React.FC<any> = () => {
                             onChange={(e) => {
                                 dispatch(setEmail(e.target.value));
                             }}
+                            onBlur={(e) => {
+                                const regex = /\S+@\S+\.\S+/;
+                                if (
+                                    regex.test(e.target.value) ||
+                                    e.target.value === ""
+                                ) {
+                                    setEmailError(false);
+                                    setHelperText("");
+                                } else {
+                                    setEmailError(true);
+                                    setHelperText("Please enter a valid email");
+                                }
+                            }}
+                            error={emailError}
+                            helperText={helperText}
                         />
                     </Grid>
+
                     <Grid item xs={6}>
                         <FormControl fullWidth>
                             <InputLabel>{t("Managed By")}</InputLabel>
@@ -306,10 +339,19 @@ const CustomerInformation: React.FC<any> = () => {
                     <Grid item xs={6}>
                         <DateFieldStyled
                             label={t("Date of Birth")}
-                            value={dateOfBirth || currentDate}
-                            onChange={(e) => {
-                                dispatch(setDateOfBirth);
+                            value={
+                                dateOfBirth
+                                    ? new Date(dateOfBirth)
+                                    : currentDate
+                            }
+                            onChange={(value: any) => {
+                                handleDateChange(
+                                    setDateOfBirth,
+                                    value,
+                                    dateOfBirth
+                                );
                             }}
+                            sx={{ width: "100%" }}
                         />
                     </Grid>
                     <Grid item xs={6}>
@@ -323,14 +365,27 @@ const CustomerInformation: React.FC<any> = () => {
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <TextField
-                            fullWidth
-                            label={t("Preferred Language")}
-                            value={preferredLanguage}
-                            onChange={(e) => {
-                                dispatch(setPreferredLanguage(e.target.value));
-                            }}
-                        />
+                        <FormControl fullWidth>
+                            <InputLabel>{t("Preferred Language")}</InputLabel>
+                            <Select
+                                value={preferredLanguage}
+                                onChange={(e) => {
+                                    dispatch(
+                                        setPreferredLanguage(
+                                            e.target.value as string
+                                        )
+                                    );
+                                }}
+                                label={t("Preferred Language")}
+                            >
+                                <MenuItem value={"English"}>
+                                    {t("English")}
+                                </MenuItem>
+                                <MenuItem value={"Greek"}>
+                                    {t("Greek")}
+                                </MenuItem>
+                            </Select>
+                        </FormControl>
                     </Grid>
                     <Grid item xs={6}>
                         <FormControl fullWidth>

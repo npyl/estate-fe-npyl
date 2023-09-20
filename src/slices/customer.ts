@@ -214,6 +214,14 @@ const slice = createSlice({
         addLabelID(state: customerState, { payload }): void {
             if (!state.labelIDs.includes(payload)) state.labelIDs.push(payload);
         },
+        setDemands(state: customerState, { payload }): void {
+            if (!state.demands.includes(payload)) state.demands.push(payload);
+        },
+        removeDemands(state: customerState, { payload }): void {
+            // INFO: removes based on array index (contrary to addLabelID)
+            const index = payload;
+            state.demands = state.demands.filter((_, i) => i !== index);
+        },
         removeLabel(state: customerState, { payload }): void {
             // INFO: removes based on array index (contrary to addLabelID)
             const index = payload;
@@ -571,6 +579,9 @@ export const {
     toggleLessor,
     toggleSeller,
     toggleBuyer,
+    //demands
+    removeDemands,
+    setDemands,
 
     setId,
     setManagedBy,
