@@ -1,11 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IUser } from "src/types/user";
+import {IDetails, IPreset} from "../interfaces/roles";
 
-//leo2
 export const security = createApi({
     reducerPath: "security",
     baseQuery: fetchBaseQuery({
-        baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/security`,
+        baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/permissions`,
         prepareHeaders: (headers) => {
             // By default, if we have a token in the store, let's use that for authenticated requests
 
@@ -17,31 +17,30 @@ export const security = createApi({
             return headers;
         },
     }),
-    tagTypes: ["Users", "Profile"],
+    tagTypes: ["Presets"],
     endpoints: (builder) => ({
 
         // get
-
-        // profile: builder.query<IUser, any>({
-        //     query: () => ({
-        //         url: "profile/",
-        //     }),
-        //     providesTags: ["Profile"],
-        // }),
+        getPresets: builder.query<IPreset, any>({
+            query: () => ({
+                url: "presets",
+            }),
+            providesTags: ["Presets"],
+        }),
 
         //post,put...
-
-        // updateProfile: builder.mutation<any, any>({
-        //     query: (data) => ({
-        //         url: "",
-        //         method: "POST",
-        //         body: data,
-        //     }),
-        //     invalidatesTags: ["Profile"],
-        // }),
+        savePreset: builder.mutation<any, IPreset>({
+            query: (data) => ({
+                url: "presets",
+                method: "POST",
+                body: data,
+            }),
+            invalidatesTags: ["Presets"],
+        }),
 
     }),
 });
 
-export const { useProfileQuery } =
+export const { useGetPresetsQuery, useSavePresetMutation } =
     security;
+
