@@ -9,6 +9,7 @@ import { global } from "../services/global";
 import { location } from "../services/location";
 import { properties } from "../services/properties";
 import { user } from "../services/user";
+import { security } from "../services/security";
 
 import { reducer as customerReducer } from "../slices/customer";
 import { reducer as customerFiltersReducer } from "../slices/customer/filters";
@@ -31,9 +32,7 @@ export const rootReducer = combineReducers({
     [note.reducerPath]: note.reducer,
     [labels.reducerPath]: labels.reducer,
     [notification.reducerPath]: notification.reducer,
-    // [security.reducerPath]: security.reducer,
-
-    //leo1
+    [security.reducerPath]: security.reducer,
 
     // property
     property: propertyReducer,

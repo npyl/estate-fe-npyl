@@ -22,6 +22,7 @@ import {useEffect, useState} from "react";
 import {log} from "util";
 import {boolean} from "yup";
 import {audioToolbarAction} from "@syncfusion/ej2-react-richtexteditor";
+import {useGetPresetsQuery} from "../../services/security";
 
 function createTestData() {
     return [
@@ -543,18 +544,15 @@ function Category(props) {
         const newState = !isChecked;
         setIsChecked(newState);
         const newData = { ...data };
-        for (const category in newData) {
-            const categoryData = newData[category];
-            for (const subcategory in categoryData) {
-                if (subcategory === "actions") {
-                    for (const action in categoryData[subcategory]) {
-                        categoryData[subcategory][action] = newState;
-                    }
-                }
+        Object.values(newData).forEach((categoryData) => {
+            const actions = categoryData.actions;
+            if (actions) {
+                Object.keys(actions).forEach((action) => {
+                    actions[action] = newState;
+                });
             }
-        }
+        });
         setData(newData);
-        return data;
     };
 
     const isParentCategoryChecked = () => {
@@ -645,7 +643,7 @@ function Category(props) {
 const NotificationPage: NextPage = () => {
     usePublishTab({title: "Notifications", path: "/notification"});
 
-    // const { data: data } = useAllGlobalsQuery();
+    // const { data: data } = useGetPresetsQuery();
     const actions = ["allowDelete", "allowEdit", "accessOwner", "accessLocation", "accessPrice", "accessActive", "accessHidden", "accessInactive"]
 
     const categories = ["Residential", "Commercial", "Land", "Other"]
