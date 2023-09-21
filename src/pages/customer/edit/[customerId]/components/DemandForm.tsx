@@ -371,27 +371,6 @@ const DemandForm: FC<DemandFormProps> = (props) => {
                         {t("Demand Form")} No.{index + 1}
                     </Typography>
                 </Box>
-                <div>
-                    <AppBar position="static">
-                        <Tabs value={activeTab} onChange={handleTabChange}>
-                            {demands.map((demand, index) => (
-                                <Tab
-                                    label={`Demand ${index + 1}`}
-                                    key={index}
-                                />
-                            ))}
-                        </Tabs>
-                    </AppBar>
-
-                    {demands.map(
-                        (demand, index) =>
-                            activeTab === index && (
-                                <DemandForm index={index} key={index} />
-                            )
-                    )}
-
-                    <Button onClick={addNewDemand}>Add New Demand</Button>
-                </div>
                 <Grid item xs={12} padding={1}>
                     <Grid container spacing={2}>
                         <Grid item xs={6}>

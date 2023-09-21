@@ -568,6 +568,9 @@ const slice = createSlice({
                 (demand) => demand || initialDemand
             );
         },
+        addDemand: (state: customerState, action) => {
+            state.demands.push(initialDemandState);
+        },
         resetState: () => {
             return initialState;
         },
@@ -582,6 +585,7 @@ export const {
     //demands
     removeDemands,
     setDemands,
+    addDemand,
 
     setId,
     setManagedBy,

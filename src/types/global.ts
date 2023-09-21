@@ -48,6 +48,7 @@ export interface IGlobalProperty {
 export interface IGlobalCustomer {
     leadSource: string[];
     timeframe: string[];
+    // nationalities: string[];
 }
 
 export interface IGlobal {

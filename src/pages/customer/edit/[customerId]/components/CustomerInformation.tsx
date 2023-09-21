@@ -80,6 +80,8 @@ const CustomerInformation: React.FC<any> = () => {
 
     const enums = useAllGlobalsQuery().data;
     const propertyEnums = enums?.property;
+    // const nationalitiesEnum = enums?.customer?.nationalities;
+
     const managers = useAllUsersQuery().data;
 
     const leadSourceEnum = enums?.customer?.leadSource;
@@ -187,6 +189,7 @@ const CustomerInformation: React.FC<any> = () => {
         !propertyEnums ||
         !leadSourceEnum ||
         !managers
+        // !nationalitiesEnum
     )
         return null;
 
@@ -325,6 +328,13 @@ const CustomerInformation: React.FC<any> = () => {
                                 dispatch(setNationality(e.target.value));
                             }}
                         />
+                        {/* {nationalitiesEnum.map((nationality, index) => {
+                            return (
+                                <MenuItem key={index} value={nationality}>
+                                    {nationality}
+                                </MenuItem>
+                            );
+                        })} */}
                     </Grid>
                     <Grid item xs={6}>
                         <TextField

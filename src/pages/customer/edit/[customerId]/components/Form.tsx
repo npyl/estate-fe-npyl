@@ -9,6 +9,7 @@ import AddressDetails from "./AddressDetails";
 import CustomerInformation from "./CustomerInformation";
 import DemandForm from "./DemandForm";
 import NotesSection from "./NotesSection";
+import DemandSection from "../DemandSection";
 
 interface FormProps {
     performUpload: () => void;
@@ -38,7 +39,7 @@ const Form = ({ performUpload, resetState, handleCancel }: FormProps) => {
                 <Grid item xs={6}>
                     <Stack spacing={1}>
                         {demands.length === 0 ? (
-                            <DemandForm index={0} />
+                            <DemandSection />
                         ) : (
                             demands.map((d, i) => (
                                 <DemandForm key={i} index={i} />
