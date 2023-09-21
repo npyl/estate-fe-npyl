@@ -1,6 +1,6 @@
 import { Button, Paper, Tab, Tabs } from "@mui/material";
 import { Box } from "@mui/system";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,28 +29,35 @@ const DemandSection: FC = () => {
         dispatch(addDemand({}));
     };
 
-    if (leaser == true || buyer == true)
-        return (
-            <Paper
-                elevation={10}
-                sx={{
-                    overflow: "auto",
-                    padding: 0.5,
-                }}
-            >
-                <Button onClick={handleCreateTab}>create</Button>
+    useEffect(() => {
+        // NOTE: when a customer is first created, its demands array is empty; create one
+        if (!leaser && !buyer) return;
+        if (demands.length === 0) dispatch(addDemand({}));
+    }, [leaser, buyer, demands.length]);
 
-                <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                    <Tabs value={index} onChange={handleTabChange}>
-                        {demands.map((d, i) => (
-                            <Tab label={`Demand ${i + 1}`} key={index} />
-                        ))}
-                    </Tabs>
-                </Box>
+    // show DemandSection only if leaser or buyer
+    if (!leaser && !buyer) return null;
 
-                <DemandForm index={index} />
-            </Paper>
-        );
-    else return null;
+    return (
+        <Paper
+            elevation={10}
+            sx={{
+                overflow: "auto",
+                padding: 0.5,
+            }}
+        >
+            <Button onClick={handleCreateTab}>create</Button>
+
+            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                <Tabs value={index} onChange={handleTabChange}>
+                    {demands.map((d, i) => (
+                        <Tab label={`Demand ${i + 1}`} key={i} />
+                    ))}
+                </Tabs>
+            </Box>
+
+            <DemandForm index={index} />
+        </Paper>
+    );
 };
 export default DemandSection;
