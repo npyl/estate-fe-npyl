@@ -235,10 +235,23 @@ const DemandForm: FC<DemandFormProps> = (props) => {
             })
         );
     };
+
     const handleChange = (
         setter: any,
+        index: number,
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => dispatch(setter(event.target.value));
+    ) => {
+        let value: string | number = event.target.value;
+
+        if (
+            event.target instanceof HTMLInputElement &&
+            event.target.type === "number"
+        ) {
+            value = event.target.valueAsNumber;
+        }
+
+        dispatch(setter({ index, value }));
+    };
 
     const autocompleteChange = (_event: any, value: string | null) =>
         setAutocompleteValue(value || "");
@@ -562,11 +575,13 @@ const DemandForm: FC<DemandFormProps> = (props) => {
                                     <TextField
                                         label="Min"
                                         type="number"
-                                        value={
-                                            minBedrooms === 0 ? "" : minBedrooms
-                                        }
+                                        value={minBedrooms}
                                         onChange={(event) =>
-                                            handleChange(setMinBedrooms, event)
+                                            handleChange(
+                                                setMinBedrooms,
+                                                index,
+                                                event
+                                            )
                                         }
                                     />
                                 </Grid>
@@ -574,11 +589,13 @@ const DemandForm: FC<DemandFormProps> = (props) => {
                                     <TextField
                                         label="Max"
                                         type="number"
-                                        value={
-                                            maxBedrooms === 0 ? "" : maxBedrooms
-                                        }
+                                        value={maxBedrooms}
                                         onChange={(event) =>
-                                            handleChange(setMaxBedrooms, event)
+                                            handleChange(
+                                                setMaxBedrooms,
+                                                index,
+                                                event
+                                            )
                                         }
                                     />
                                 </Grid>
@@ -617,7 +634,11 @@ const DemandForm: FC<DemandFormProps> = (props) => {
                                                 : minBathrooms
                                         }
                                         onChange={(event) =>
-                                            handleChange(setMinBathrooms, event)
+                                            handleChange(
+                                                setMinBathrooms,
+                                                index,
+                                                event
+                                            )
                                         }
                                     />
                                 </Grid>
@@ -631,7 +652,11 @@ const DemandForm: FC<DemandFormProps> = (props) => {
                                                 : maxBathrooms
                                         }
                                         onChange={(event) =>
-                                            handleChange(setMaxBathrooms, event)
+                                            handleChange(
+                                                setMaxBathrooms,
+                                                index,
+                                                event
+                                            )
                                         }
                                     />
                                 </Grid>
@@ -667,7 +692,11 @@ const DemandForm: FC<DemandFormProps> = (props) => {
                                             minCovered === 0 ? "" : minCovered
                                         }
                                         onChange={(event) =>
-                                            handleChange(setMinCovered, event)
+                                            handleChange(
+                                                setMinCovered,
+                                                index,
+                                                event
+                                            )
                                         }
                                         InputProps={{
                                             endAdornment: (
@@ -690,7 +719,11 @@ const DemandForm: FC<DemandFormProps> = (props) => {
                                             maxCovered === 0 ? "" : maxCovered
                                         }
                                         onChange={(event) =>
-                                            handleChange(setMaxCovered, event)
+                                            handleChange(
+                                                setMaxCovered,
+                                                index,
+                                                event
+                                            )
                                         }
                                         InputProps={{
                                             endAdornment: (
@@ -735,7 +768,11 @@ const DemandForm: FC<DemandFormProps> = (props) => {
                                         type="number"
                                         value={minPlot === 0 ? "" : minPlot}
                                         onChange={(event) =>
-                                            handleChange(setMinPlot, event)
+                                            handleChange(
+                                                setMinPlot,
+                                                index,
+                                                event
+                                            )
                                         }
                                         InputProps={{
                                             endAdornment: (
@@ -756,7 +793,11 @@ const DemandForm: FC<DemandFormProps> = (props) => {
                                         type="number"
                                         value={maxPlot === 0 ? "" : maxPlot}
                                         onChange={(event) =>
-                                            handleChange(setMaxPlot, event)
+                                            handleChange(
+                                                setMaxPlot,
+                                                index,
+                                                event
+                                            )
                                         }
                                         InputProps={{
                                             endAdornment: (
@@ -801,7 +842,11 @@ const DemandForm: FC<DemandFormProps> = (props) => {
                                         type="number"
                                         value={minPrice === 0 ? "" : minPrice}
                                         onChange={(event) =>
-                                            handleChange(setMinPrice, event)
+                                            handleChange(
+                                                setMinPrice,
+                                                index,
+                                                event
+                                            )
                                         }
                                         InputProps={{
                                             endAdornment: (
@@ -822,7 +867,11 @@ const DemandForm: FC<DemandFormProps> = (props) => {
                                         type="number"
                                         value={maxPrice === 0 ? "" : maxPrice}
                                         onChange={(event) =>
-                                            handleChange(setMaxPrice, event)
+                                            handleChange(
+                                                setMaxPrice,
+                                                index,
+                                                event
+                                            )
                                         }
                                         InputProps={{
                                             endAdornment: (
@@ -879,6 +928,7 @@ const DemandForm: FC<DemandFormProps> = (props) => {
                                         onChange={(event) =>
                                             handleChange(
                                                 setMinYearOfConstruction,
+                                                index,
                                                 event
                                             )
                                         }
@@ -896,6 +946,7 @@ const DemandForm: FC<DemandFormProps> = (props) => {
                                         onChange={(event) =>
                                             handleChange(
                                                 setMaxYearOfConstruction,
+                                                index,
                                                 event
                                             )
                                         }
