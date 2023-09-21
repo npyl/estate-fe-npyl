@@ -18,6 +18,7 @@ import { rtkQueryErrorLogger } from "../services/error";
 import { rootReducer } from "./root-reducer";
 import { notification } from "src/services/notification";
 import { exports } from "src/services/exports";
+import {security} from "../services/security";
 
 export const createStore = (
     options?: ConfigureStoreOptions["preloadedState"] | undefined
@@ -41,6 +42,7 @@ export const createStore = (
                 labels.middleware,
                 location.middleware,
                 notification.middleware,
+                security.middleware,
                 exports.middleware,
                 rtkQueryErrorLogger
             ),

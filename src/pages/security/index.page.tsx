@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useState} from 'react';
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
@@ -15,453 +16,241 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import type {NextPage} from "next";
 import {AuthGuard} from "src/components/authentication/auth-guard";
 import {DashboardLayout} from "src/components/dashboard/dashboard-layout";
-import {useGetNotificationsQuery,} from "src/services/notification";
-import {Checkbox, Paper, Stack} from "@mui/material";
+import {Button, Checkbox, Grid, MenuItem, Paper, Select, Stack} from "@mui/material";
 import {usePublishTab} from "src/components/Tabs/utils";
-import {useEffect, useState} from "react";
-import {log} from "util";
-import {boolean} from "yup";
-import {audioToolbarAction} from "@syncfusion/ej2-react-richtexteditor";
-import {useGetPresetsQuery} from "../../services/security";
+import {useGetPresetsQuery, useSavePresetMutation} from "../../services/security";
+import {
+    actions,
+    categories,
+    initRoles,
+    subcategories1,
+    subcategories2,
+    subcategories3,
+    subcategories4
+} from "./constants";
+import SendIcon from "@mui/icons-material/Send";
+import {useTranslation} from "react-i18next";
 
-function createTestData() {
-    return [
-        {
-            "category": "Residential",
-            "subcategory": "Apartment",
-            "actions": {
-                "allowDelete": false,
-                "allowEdit": false,
-                "accessOwner": false,
-                "accessLocation": false,
-                "accessPrice": false,
-                "accessActive": false,
-                "accessHidden": false,
-                "accessInactive": false
+function Category(props) {
+    const {row, data, setData} = props;
+    const [open, setOpen] = useState(false);
+    const [isChecked, setIsChecked] = useState(false);
+
+    console.log(props)
+
+    let category = resolveCategory(row, subcategories1, subcategories2, subcategories3, subcategories4);
+
+    const handleCheckboxChange = () => {
+        const newState = !isChecked;
+        setIsChecked(newState);
+        const newData = {...data};
+        Object.values(newData).forEach((categoryData) => {
+            const actions = categoryData.actions;
+            if (actions) {
+                Object.keys(actions).forEach((action) => {
+                    actions[action] = newState;
+                });
             }
-        },
-        {
-            "category": "Residential",
-            "subcategory": "Studio",
-            "actions": {
-                "allowDelete": false,
-                "allowEdit": false,
-                "accessOwner": false,
-                "accessLocation": false,
-                "accessPrice": false,
-                "accessActive": false,
-                "accessHidden": false,
-                "accessInactive": false
-            }
-        },
-        {
-            "category": "Residential",
-            "subcategory": "Maisonette",
-            "actions": {
-                "allowDelete": false,
-                "allowEdit": false,
-                "accessOwner": false,
-                "accessLocation": false,
-                "accessPrice": false,
-                "accessActive": false,
-                "accessHidden": false,
-                "accessInactive": false
-            }
-        },
-        {
-            "category": "Residential",
-            "subcategory": "Detached house",
-            "actions": {
-                "allowDelete": false,
-                "allowEdit": false,
-                "accessOwner": false,
-                "accessLocation": false,
-                "accessPrice": false,
-                "accessActive": false,
-                "accessHidden": false,
-                "accessInactive": false
-            }
-        },
-        {
-            "category": "Residential",
-            "subcategory": "Villa",
-            "actions": {
-                "allowDelete": false,
-                "allowEdit": false,
-                "accessOwner": false,
-                "accessLocation": false,
-                "accessPrice": false,
-                "accessActive": false,
-                "accessHidden": false,
-                "accessInactive": false
-            }
-        },
-        {
-            "category": "Residential",
-            "subcategory": "Loft",
-            "actions": {
-                "allowDelete": false,
-                "allowEdit": false,
-                "accessOwner": false,
-                "accessLocation": false,
-                "accessPrice": false,
-                "accessActive": false,
-                "accessHidden": false,
-                "accessInactive": false
-            }
-        },
-        {
-            "category": "Residential",
-            "subcategory": "Bungalow",
-            "actions": {
-                "allowDelete": false,
-                "allowEdit": false,
-                "accessOwner": false,
-                "accessLocation": false,
-                "accessPrice": false,
-                "accessActive": false,
-                "accessHidden": false,
-                "accessInactive": false
-            }
-        },
-        {
-            "category": "Residential",
-            "subcategory": "Building",
-            "actions": {
-                "allowDelete": false,
-                "allowEdit": false,
-                "accessOwner": false,
-                "accessLocation": false,
-                "accessPrice": false,
-                "accessActive": false,
-                "accessHidden": false,
-                "accessInactive": false
-            }
-        },
-        {
-            "category": "Residential",
-            "subcategory": "Apartment complex",
-            "actions": {
-                "allowDelete": false,
-                "allowEdit": false,
-                "accessOwner": false,
-                "accessLocation": false,
-                "accessPrice": false,
-                "accessActive": false,
-                "accessHidden": false,
-                "accessInactive": false
-            }
-        },
-        {
-            "category": "Residential",
-            "subcategory": "Farm",
-            "actions": {
-                "allowDelete": false,
-                "allowEdit": false,
-                "accessOwner": false,
-                "accessLocation": false,
-                "accessPrice": false,
-                "accessActive": false,
-                "accessHidden": false,
-                "accessInactive": false
-            }
-        },
-        {
-            "category": "Residential",
-            "subcategory": "Houseboat",
-            "actions": {
-                "allowDelete": false,
-                "allowEdit": false,
-                "accessOwner": false,
-                "accessLocation": false,
-                "accessPrice": false,
-                "accessActive": false,
-                "accessHidden": false,
-                "accessInactive": false
-            }
-        },
-        {
-            "category": "Residential",
-            "subcategory": "Other categories",
-            "actions": {
-                "allowDelete": false,
-                "allowEdit": false,
-                "accessOwner": false,
-                "accessLocation": false,
-                "accessPrice": false,
-                "accessActive": false,
-                "accessHidden": false,
-                "accessInactive": false
-            }
-        },
-        {
-            "category": "Commercial",
-            "subcategory": "Office",
-            "actions": {
-                "allowDelete": false,
-                "allowEdit": false,
-                "accessOwner": false,
-                "accessLocation": false,
-                "accessPrice": false,
-                "accessActive": false,
-                "accessHidden": false,
-                "accessInactive": false
-            }
-        },
-        {
-            "category": "Commercial",
-            "subcategory": "Store",
-            "actions": {
-                "allowDelete": false,
-                "allowEdit": false,
-                "accessOwner": false,
-                "accessLocation": false,
-                "accessPrice": false,
-                "accessActive": false,
-                "accessHidden": false,
-                "accessInactive": false
-            }
-        },
-        {
-            "category": "Commercial",
-            "subcategory": "Warehouse",
-            "actions": {
-                "allowDelete": false,
-                "allowEdit": false,
-                "accessOwner": false,
-                "accessLocation": false,
-                "accessPrice": false,
-                "accessActive": false,
-                "accessHidden": false,
-                "accessInactive": false
-            }
-        },
-        {
-            "category": "Commercial",
-            "subcategory": "Industrial space",
-            "actions": {
-                "allowDelete": false,
-                "allowEdit": false,
-                "accessOwner": false,
-                "accessLocation": false,
-                "accessPrice": false,
-                "accessActive": false,
-                "accessHidden": false,
-                "accessInactive": false
-            }
-        },
-        {
-            "category": "Commercial",
-            "subcategory": "Craft space",
-            "actions": {
-                "allowDelete": false,
-                "allowEdit": false,
-                "accessOwner": false,
-                "accessLocation": false,
-                "accessPrice": false,
-                "accessActive": false,
-                "accessHidden": false,
-                "accessInactive": false
-            }
-        },
-        {
-            "category": "Commercial",
-            "subcategory": "Hotel",
-            "actions": {
-                "allowDelete": false,
-                "allowEdit": false,
-                "accessOwner": false,
-                "accessLocation": false,
-                "accessPrice": false,
-                "accessActive": false,
-                "accessHidden": false,
-                "accessInactive": false
-            }
-        },
-        {
-            "category": "Commercial",
-            "subcategory": "Business building",
-            "actions": {
-                "allowDelete": false,
-                "allowEdit": false,
-                "accessOwner": false,
-                "accessLocation": false,
-                "accessPrice": false,
-                "accessActive": false,
-                "accessHidden": false,
-                "accessInactive": false
-            }
-        },
-        {
-            "category": "Commercial",
-            "subcategory": "Hall",
-            "actions": {
-                "allowDelete": false,
-                "allowEdit": false,
-                "accessOwner": false,
-                "accessLocation": false,
-                "accessPrice": false,
-                "accessActive": false,
-                "accessHidden": false,
-                "accessInactive": false
-            }
-        },
-        {
-            "category": "Commercial",
-            "subcategory": "Showroom",
-            "actions": {
-                "allowDelete": false,
-                "allowEdit": false,
-                "accessOwner": false,
-                "accessLocation": false,
-                "accessPrice": false,
-                "accessActive": false,
-                "accessHidden": false,
-                "accessInactive": false
-            }
-        },
-        {
-            "category": "Commercial",
-            "subcategory": "Other Categories",
-            "actions": {
-                "allowDelete": false,
-                "allowEdit": false,
-                "accessOwner": false,
-                "accessLocation": false,
-                "accessPrice": false,
-                "accessActive": false,
-                "accessHidden": false,
-                "accessInactive": false
-            }
-        },
-        {
-            "category": "Land",
-            "subcategory": "Land plot",
-            "actions": {
-                "allowDelete": false,
-                "allowEdit": false,
-                "accessOwner": false,
-                "accessLocation": false,
-                "accessPrice": false,
-                "accessActive": false,
-                "accessHidden": false,
-                "accessInactive": false
-            }
-        },
-        {
-            "category": "Land",
-            "subcategory": "Parcels",
-            "actions": {
-                "allowDelete": false,
-                "allowEdit": false,
-                "accessOwner": false,
-                "accessLocation": false,
-                "accessPrice": false,
-                "accessActive": false,
-                "accessHidden": false,
-                "accessInactive": false
-            }
-        },
-        {
-            "category": "Land",
-            "subcategory": "Island",
-            "actions": {
-                "allowDelete": false,
-                "allowEdit": false,
-                "accessOwner": false,
-                "accessLocation": false,
-                "accessPrice": false,
-                "accessActive": false,
-                "accessHidden": false,
-                "accessInactive": false
-            }
-        },
-        {
-            "category": "Other",
-            "subcategory": "Parking",
-            "actions": {
-                "allowDelete": false,
-                "allowEdit": false,
-                "accessOwner": false,
-                "accessLocation": false,
-                "accessPrice": false,
-                "accessActive": false,
-                "accessHidden": false,
-                "accessInactive": false
-            }
-        },
-        {
-            "category": "Other",
-            "subcategory": "Business",
-            "actions": {
-                "allowDelete": false,
-                "allowEdit": false,
-                "accessOwner": false,
-                "accessLocation": false,
-                "accessPrice": false,
-                "accessActive": false,
-                "accessHidden": false,
-                "accessInactive": false
-            }
-        },
-        {
-            "category": "Other",
-            "subcategory": "Prefabricated",
-            "actions": {
-                "allowDelete": false,
-                "allowEdit": false,
-                "accessOwner": false,
-                "accessLocation": false,
-                "accessPrice": false,
-                "accessActive": false,
-                "accessHidden": false,
-                "accessInactive": false
-            }
-        },
-        {
-            "category": "Other",
-            "subcategory": "Detachable",
-            "actions": {
-                "allowDelete": false,
-                "allowEdit": false,
-                "accessOwner": false,
-                "accessLocation": false,
-                "accessPrice": false,
-                "accessActive": false,
-                "accessHidden": false,
-                "accessInactive": false
-            }
-        },
-        {
-            "category": "Other",
-            "subcategory": "Air",
-            "actions": {
-                "allowDelete": false,
-                "allowEdit": false,
-                "accessOwner": false,
-                "accessLocation": false,
-                "accessPrice": false,
-                "accessActive": false,
-                "accessHidden": false,
-                "accessInactive": false
-            }
-        },
-        {
-            "category": "Other",
-            "subcategory": "Other",
-            "actions": {
-                "allowDelete": false,
-                "allowEdit": false,
-                "accessOwner": false,
-                "accessLocation": false,
-                "accessPrice": false,
-                "accessActive": false,
-                "accessHidden": false,
-                "accessInactive": false
+        });
+        setData(newData);
+    };
+
+    const isParentCategoryChecked = () => {
+        for (const category of Object.values(data)) {
+            const actions = category?.actions;
+            if (actions && Object.values(actions).some((value) => value === false)) {
+                return false;
             }
         }
-    ]
+        return true;
+    };
+
+    const isActionChecked = (rowLiteral, columnIndex): boolean => {
+        const rowIndex = resolveSubCategory(rowLiteral);
+        const action = actions[columnIndex];
+        return !!data[rowIndex]?.actions[action]
+    }
+
+
+    // Handle individual child checkbox change
+    const handleChildCheckboxChange = (rowLiteral, columnIndex) => {
+        let rowIndex = resolveSubCategory(rowLiteral);
+        let action = actions[columnIndex];
+
+        const updatedData = {...data};
+
+        updatedData[rowIndex].actions[action] = !data[rowIndex].actions[action];
+
+        setData(updatedData);
+        // console.log(updatedData)
+    }
+
+    return (
+        <React.Fragment>
+            <TableRow sx={{'& > *': {borderBottom: 'unset'}}}>
+                <TableCell colSpan={9}>
+                    <Stack direction={'row'} alignItems={'center'}>
+                        <IconButton
+                            aria-label="expand row"
+                            size="small"
+                            onClick={() => setOpen(!open)}
+                        >
+                            {open ? <KeyboardArrowUpIcon/> : <KeyboardArrowDownIcon/>}
+                        </IconButton>
+                        <Typography variant={'h6'}>{row}</Typography>
+                        <Checkbox
+                            onChange={() => handleCheckboxChange()}
+                            checked={isParentCategoryChecked()}
+                        />
+                    </Stack>
+                </TableCell>
+            </TableRow>
+
+            <TableRow>
+                <TableCell style={{paddingBottom: 0, paddingTop: 0, padding: 0}} colSpan={actions.length + 1}>
+                    <Collapse in={open} timeout="auto" unmountOnExit>
+                        <Box>
+                            <Table size="small" aria-label="purchases">
+                                <TableBody>
+                                    {category.map((s) => (
+                                        <TableRow align="left" key={s}>
+                                            <TableCell sx={{width: '10%', paddingLeft: '50px'}} component="th"
+                                                       scope="row">
+                                                {s}
+                                            </TableCell>
+                                            {Array(actions.length).fill().map((_, index) => (
+                                                <TableCell align="center" key={index}>
+                                                    <Checkbox
+                                                        onChange={() => {
+                                                            handleChildCheckboxChange(s, index);
+                                                        }}
+                                                        checked={isActionChecked(s, index)}
+                                                    />
+                                                </TableCell>
+                                            ))}
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </Box>
+                    </Collapse>
+                </TableCell>
+            </TableRow>
+        </React.Fragment>
+    );
 }
+
+const SecurityPage: NextPage = () => {
+    const [selectedPreset, setSelectedPreset] = useState("")
+    usePublishTab({title: "Presets", path: "/security"});
+    const {data: presets} = useGetPresetsQuery();
+    // console.log(presets)
+    const {t} = useTranslation();
+
+    const [savePreset] = useSavePresetMutation();
+
+    const [data, setData] = useState(initRoles);
+
+    return (
+        <>
+            <Box display={"flex"} alignItems={"center"}>
+                <Typography
+                    variant={'h6'}>Select from presets:</Typography>
+                <Select
+                    value={selectedPreset??""}
+                    onChange={(event) =>
+                        setSelectedPreset(
+                            event.target.value
+                        )
+                    }
+                >
+                    <MenuItem value={''}>{t("No Preset")}</MenuItem>
+                    {presets&&presets.map((preset) =>
+                        <MenuItem value={preset.id.toString()} key={preset.id}>
+                            {preset.name}
+                        </MenuItem>)}
+                </Select>
+            </Box>
+            <TableContainer component={Paper}>
+                <Table aria-label="collapsible table">
+                    <TableHead>
+                        <TableRow sx={{background: '#f5f5dc'}}>
+                            <TableCell sx={{width: '10%'}} align="left"><Typography
+                                variant={'h6'}>Sale</Typography></TableCell>
+                            {actions.map(s =>
+                                <TableCell sx={{width: '10%'}} align="left" key={s}> {s} </TableCell>
+                            )}
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {data && categories.map((s) => {
+                            return <Category key={s} row={s} data={data} setData={setData}/>;
+                        })}
+                    </TableBody>
+                </Table>
+                <Table aria-label="collapsible table">
+                    <TableHead>
+                        <TableRow sx={{background: '#f5f5dc'}}>
+                            <TableCell sx={{width: '10%'}} align="left"><Typography
+                                variant={'h6'}>Rent</Typography></TableCell>
+                            {actions.map(s =>
+                                <TableCell sx={{width: '10%'}} align="left" key={s}> {s} </TableCell>
+                            )}
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {data && categories.map((s) => {
+                            return <Category key={s} row={s} data={data} setData={setData}/>;
+                        })}
+                    </TableBody>
+                </Table>
+                <Table aria-label="collapsible table">
+                    <TableHead>
+                        <TableRow sx={{background: '#f5f5dc'}}>
+                            <TableCell sx={{width: '10%'}} align="left"><Typography
+                                variant={'h6'}>Sold/Rented</Typography></TableCell>
+                            {actions.map(s =>
+                                <TableCell sx={{width: '10%'}} align="left" key={s}> {s} </TableCell>
+                            )}
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {data && categories.map((s) => {
+                            return <Category key={s} row={s} data={data} setData={setData}/>;
+                        })}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+            <Grid container display={'block'}>
+                <Stack py={2} spacing={2} direction={"row"} sx={{float: "right"}}>
+                    <Button
+                        variant="outlined"
+                        endIcon={<SendIcon/>}
+                        onClick={() => savePreset(data)}
+                    >
+                        {t("Save")}
+                    </Button>
+                    <Button
+                        variant="contained"
+                        endIcon={<SendIcon/>}
+                        onClick={() => savePreset(data)}
+                    >
+                        {t("Apply Changes")}
+                    </Button>
+                </Stack>
+            </Grid>
+        </>
+    );
+}
+
+SecurityPage.getLayout = (page) => (
+    <AuthGuard>
+        <DashboardLayout>{page}</DashboardLayout>
+    </AuthGuard>
+);
+
+export default SecurityPage;
+
 
 function resolveCategory(row, category1: string[], category2: string[], category3: string[], category4: string[]) {
     let category;
@@ -524,186 +313,4 @@ function resolveSubCategory(rowLiteral) {
     }
     return rowIndex;
 }
-
-function Category(props) {
-    const {row} = props;
-    const [open, setOpen] = useState(false);
-    const [isChecked, setIsChecked] = useState(false);
-    const [data, setData] = useState(createTestData());
-
-    const actions = ["allowDelete", "allowEdit", "accessOwner", "accessLocation", "accessPrice", "accessActive", "accessHidden", "accessInactive"]
-
-    const categories = ["Residential","Commercial","Land","Other"];
-    const subcategories1 = ["Apartment", "Studio", "Maisonette", "Detached house", "Villa", "Loft", "Bungalow", "Building", "Apartment complex", "Farm", "Houseboat", "Other categories"]
-    const subcategories2 = ["Office", "Store", "Warehouse", "Industrial space", "Craft space", "Hotel", "Business building", "Hall", "Showroom", "Other Categories"]
-    const subcategories3 = ["Land plot", "Parcels", "Island", "Other Categories"]
-    const subcategories4 = ["Parking", "Business", "Prefabricated", "Detachable", "Air", "Other"]
-    let category = resolveCategory(row, subcategories1, subcategories2, subcategories3, subcategories4);
-
-    const handleCheckboxChange = ( ) => {
-        const newState = !isChecked;
-        setIsChecked(newState);
-        const newData = { ...data };
-        Object.values(newData).forEach((categoryData) => {
-            const actions = categoryData.actions;
-            if (actions) {
-                Object.keys(actions).forEach((action) => {
-                    actions[action] = newState;
-                });
-            }
-        });
-        setData(newData);
-    };
-
-    const isParentCategoryChecked = () => {
-        for (const category of Object.values(data)) {
-            const actions = category?.actions;
-            if (actions && Object.values(actions).some((value) => value === false)) {
-                return false;
-            }
-        }
-        return true;
-    };
-
-    const isActionChecked = (rowLiteral, columnIndex) : boolean => {
-        const rowIndex = resolveSubCategory(rowLiteral);
-        const action = actions[columnIndex];
-        return !!data[rowIndex]?.actions[action]
-    }
-
-
-    // Handle individual child checkbox change
-    const handleChildCheckboxChange = (rowLiteral, columnIndex) => {
-        let rowIndex = resolveSubCategory(rowLiteral);
-        let action = actions[columnIndex];
-
-        const updatedData = { ...data };
-
-        updatedData[rowIndex].actions[action] = !data[rowIndex].actions[action];
-
-        setData(updatedData);
-        console.log(updatedData)
-    }
-
-    return (
-        <React.Fragment>
-            <TableRow sx={{'& > *': {borderBottom: 'unset'}}}>
-                <TableCell colSpan={9}>
-                    <Stack direction={'row'} alignItems={'center'}>
-                        <IconButton
-                            aria-label="expand row"
-                            size="small"
-                            onClick={() => setOpen(!open)}
-                        >
-                            {open ? <KeyboardArrowUpIcon/> : <KeyboardArrowDownIcon/>}
-                        </IconButton>
-                        <Typography variant={'h6'}>{row}</Typography>
-                        <Checkbox
-                            onChange={() => handleCheckboxChange()}
-                            checked = {isParentCategoryChecked()}
-                        />
-                    </Stack>
-                </TableCell>
-            </TableRow>
-
-            <TableRow>
-                <TableCell style={{paddingBottom: 0, paddingTop: 0, padding: 0}} colSpan={actions.length + 1}>
-                    <Collapse in={open} timeout="auto" unmountOnExit>
-                        <Box>
-                            <Table size="small" aria-label="purchases">
-                                <TableBody>
-                                    {category.map((s) => (
-                                        <TableRow align="left" key={s}>
-                                            <TableCell sx={{width: '10%', paddingLeft: '50px'}} component="th"
-                                                       scope="row">
-                                                {s}
-                                            </TableCell>
-                                            {Array(actions.length).fill().map((_, index) => (
-                                                <TableCell align="center" key={index}>
-                                                    <Checkbox
-                                                        onChange={() => {
-                                                            handleChildCheckboxChange(s, index);
-                                                        }}
-                                                        checked = {isActionChecked(s, index)}
-                                                    />
-                                                </TableCell>
-                                            ))}
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </Box>
-                    </Collapse>
-                </TableCell>
-            </TableRow>
-        </React.Fragment>
-    );
-}
-
-const NotificationPage: NextPage = () => {
-    usePublishTab({title: "Notifications", path: "/notification"});
-
-    // const { data: data } = useGetPresetsQuery();
-    const actions = ["allowDelete", "allowEdit", "accessOwner", "accessLocation", "accessPrice", "accessActive", "accessHidden", "accessInactive"]
-
-    const categories = ["Residential", "Commercial", "Land", "Other"]
-
-    return (
-        <TableContainer component={Paper} style={{width: '1500px'}}>
-            <Table aria-label="collapsible table">
-                <TableHead>
-                    <TableRow sx={{background: '#f5f5dc'}}>
-                        <TableCell sx={{width: '10%'}} align="left"><Typography variant={'h6'}>Sale</Typography></TableCell>
-                        {actions.map(s =>
-                            <TableCell sx={{width: '10%'}} align="left" key={s}> {s} </TableCell>
-                        )}
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {categories.map((s) => {
-                        return <Category key={s} row={s}/>;
-                    })}
-                </TableBody>
-            </Table>
-            <Table aria-label="collapsible table">
-                <TableHead>
-                    <TableRow sx={{background: '#f5f5dc'}}>
-                        <TableCell sx={{width: '10%'}} align="left"><Typography variant={'h6'}>Rent</Typography></TableCell>
-                        {actions.map(s =>
-                            <TableCell sx={{width: '10%'}} align="left" key={s}> {s} </TableCell>
-                        )}
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {categories.map((s) => {
-                        return <Category key={s} row={s}/>;
-                    })}
-                </TableBody>
-            </Table>
-            <Table aria-label="collapsible table">
-                <TableHead>
-                    <TableRow sx={{background: '#f5f5dc'}}>
-                        <TableCell sx={{width: '10%'}} align="left"><Typography variant={'h6'}>Sold/Rented</Typography></TableCell>
-                        {actions.map(s =>
-                            <TableCell sx={{width: '10%'}} align="left" key={s}> {s} </TableCell>
-                        )}
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {categories.map((s) => {
-                        return <Category key={s} row={s}/>;
-                    })}
-                </TableBody>
-            </Table>
-        </TableContainer>
-    );
-}
-
-NotificationPage.getLayout = (page) => (
-    <AuthGuard>
-        <DashboardLayout>{page}</DashboardLayout>
-    </AuthGuard>
-);
-
-export default NotificationPage;
 

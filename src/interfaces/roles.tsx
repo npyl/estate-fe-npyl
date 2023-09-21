@@ -1,6 +1,7 @@
 export interface IPreset {
     id: number;
-    details: IDetails[]
+    details: IDetails[];
+    name:string;
 };
 
 export interface IDetails {
