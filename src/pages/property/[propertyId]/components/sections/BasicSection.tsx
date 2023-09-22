@@ -19,104 +19,132 @@ interface BasicSectionProps {
     data: IProperties;
 }
 
-type ParentCategory = "Residential" | "Commercial" | "Land" | "Other";
-
-const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
-    Residential: [
-        "ParentCategory",
-        "Category",
-        "Area",
-        "Plot Area",
-        "Estimated Rend Price",
-        "Available After",
-        "Rental Period Start",
-        "Rental Period End",
-        "Current Rent Price",
-        "Labels",
-        "ROI",
-        "Average Utilities",
-        "Year of Construction",
-        "Code",
-        "Price",
-        "Key Code",
-        "Owner",
-        "State",
-        "Manager",
-        "Rented",
-        "Debatable Price",
-        "Auction",
-    ],
-    Commercial: [
-        "ParentCategory",
-        "Category",
-        "Area",
-        "Plot Area",
-        "Estimated Rend Price",
-        "Available After",
-        "Rental Period Start",
-        "Rental Period End",
-        "Current Rent Price",
-        "Labels",
-        "ROI",
-        "Average Utilities",
-        "Year of Construction",
-        "Code",
-        "Price",
-        "Key Code",
-        "Owner",
-        "State",
-        "Manager",
-        "Rented",
-        "Debatable Price",
-        "Auction",
-    ],
-    Land: [
-        "ParentCategory",
-        "Category",
-        "Area",
-        "Plot Area",
-        "Estimated Rend Price",
-        "Available After",
-        "Rental Period Start",
-        "Rental Period End",
-        "Current Rent Price",
-        "Labels",
-        "ROI",
-        "Code",
-        "Price",
-        "Key Code",
-        "Owner",
-        "State",
-        "Manager",
-        "Rented",
-        "Debatable Price",
-        "Auction",
-        "Buildable",
-    ],
-    Other: [
-        "ParentCategory",
-        "Category",
-        "Area",
-        "Plot Area",
-        "Estimated Rend Price",
-        "Available After",
-        "Rental Period Start",
-        "Rental Period End",
-        "Current Rent Price",
-        "Labels",
-        "ROI",
-        "Average Utilities",
-        "Code",
-        "Price",
-        "Key Code",
-        "Manager",
-        "State",
-        "Owner",
-        "Rented",
-        "Debatable Price",
-        "Auction",
-    ],
+type ParentCategoryObject = {
+    key: "Residential" | "Commercial" | "Land" | "Other";
+    value: string;
 };
+const parentCategoryArray: ParentCategoryObject[] = [
+    {
+        key: "Residential",
+        value: "Κατοικία",
+    },
+    {
+        key: "Commercial",
+        value: "Επαγγελματική Στέγη",
+    },
+    {
+        key: "Land",
+        value: "Γη",
+    },
+    {
+        key: "Other",
+        value: "Άλλο",
+    },
+];
+
+const BASIC_DETAIL_FIELDS: { [key: string]: string[] } = {};
+
+parentCategoryArray.forEach((category) => {
+    if (category.key === "Residential" || category.key === "Commercial") {
+        BASIC_DETAIL_FIELDS[category.key] = [
+            "ParentCategory",
+            "Category",
+            "Area",
+            "Plot Area",
+            "Estimated Rend Price",
+            "Available After",
+            "Rental Period Start",
+            "Rental Period End",
+            "Current Rent Price",
+            "Labels",
+            "ROI",
+            "Average Utilities",
+            "Year of Construction",
+            "Code",
+            "Price",
+            "Key Code",
+            "Owner",
+            "State",
+            "Manager",
+            "Rented",
+            "Debatable Price",
+            "Auction",
+        ];
+        // ,
+        // Commercial: [
+        //     "ParentCategory",
+        //     "Category",
+        //     "Area",
+        //     "Plot Area",
+        //     "Estimated Rend Price",
+        //     "Available After",
+        //     "Rental Period Start",
+        //     "Rental Period End",
+        //     "Current Rent Price",
+        //     "Labels",
+        //     "ROI",
+        //     "Average Utilities",
+        //     "Year of Construction",
+        //     "Code",
+        //     "Price",
+        //     "Key Code",
+        //     "Owner",
+        //     "State",
+        //     "Manager",
+        //     "Rented",
+        //     "Debatable Price",
+        //     "Auction",
+        // ]
+    } else if (category.key === "Land") {
+        BASIC_DETAIL_FIELDS[category.key] = [
+            "ParentCategory",
+            "Category",
+            "Area",
+            "Plot Area",
+            "Estimated Rend Price",
+            "Available After",
+            "Rental Period Start",
+            "Rental Period End",
+            "Current Rent Price",
+            "Labels",
+            "ROI",
+            "Code",
+            "Price",
+            "Key Code",
+            "Owner",
+            "State",
+            "Manager",
+            "Rented",
+            "Debatable Price",
+            "Auction",
+            "Buildable",
+        ];
+    } else if (category.key === "Other") {
+        [
+            "ParentCategory",
+            "Category",
+            "Area",
+            "Plot Area",
+            "Estimated Rend Price",
+            "Available After",
+            "Rental Period Start",
+            "Rental Period End",
+            "Current Rent Price",
+            "Labels",
+            "ROI",
+            "Average Utilities",
+            "Code",
+            "Price",
+            "Key Code",
+            "Manager",
+            "State",
+            "Owner",
+            "Rented",
+            "Debatable Price",
+            "Auction",
+        ];
+    }
+});
 
 const BasicSection: React.FC<BasicSectionProps> = (props) => {
     const { data } = props;
@@ -142,8 +170,8 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
         </Grid>
     );
 
-    const renderBasicDetails = (category: ParentCategory) => {
-        const fieldsForCategory = BASIC_DETAIL_FIELDS[category];
+    const renderBasicDetails = (categoryObj: ParentCategoryObject) => {
+        const fieldsForCategory = BASIC_DETAIL_FIELDS[categoryObj.key];
         if (!fieldsForCategory) return null;
 
         const half = Math.ceil(fieldsForCategory.length / 2);
@@ -159,6 +187,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
             </Grid>
         );
     };
+
     const renderBasicDetailItem = (field: string) => {
         switch (field) {
             case "ParentCategory":
@@ -362,7 +391,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                     <Divider></Divider>
                     <Grid container>
                         {renderBasicDetails(
-                            data?.parentCategory as ParentCategory
+                            data?.parentCategory as unknown as ParentCategoryObject
                         )}
                     </Grid>
                 </Paper>
@@ -394,106 +423,3 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
 };
 
 export default BasicSection;
-
-// import React from "react";
-// import { IProperties } from "src/types/properties";
-// import { Typography, Box, Paper, Divider, Grid } from "@mui/material";
-// import { List, ListBooleanItem, ListItem } from "src/components/List";
-// import { useTranslation } from "react-i18next";
-// import { ParentCategory } from "src/types/properties";
-
-// interface FeaturesProps {
-//     data: {
-//         features: any; // adjust this according to your data structure
-//         parentCategory: ParentCategory;
-//     };
-// }
-
-// // export type ParentCategory = "Residential" | "Commercial" | "Land" | "Other";
-
-// const FEATURE_SETS: { [key in ParentCategory]: string[] } = {
-//     Residential: [
-//         "Category",
-//         "Area",
-//         "Plot Area",
-//         "Estimated Rend Price",
-//         "Available After",
-//         "Rental Period Start",
-//         "Rental Period End",
-//         "Current Rent Price",
-
-//         "Labels",
-//         "ROI",
-//         "Average Utilities",
-//         "Year of Construction",
-//         "Code",
-//         "Price",
-//         "Key Code",
-//         "Manager",
-//         "Owner",
-//         "State",
-//         "Rented",
-//         "Debatable Price",
-//         "Auction",
-//         "Buildable",
-//     ],
-//     Commercial: [],
-//     Land: [],
-//     Other: [],
-// };
-
-// const Features: React.FC<FeaturesProps> = (props) => {
-//     const { data } = props;
-//     const { t } = useTranslation();
-//     const features = data?.features;
-//     const parentCategory = data?.parentCategory;
-
-//     const renderFeatures = (category: ParentCategory) => {
-//         const allowedFeatures = FEATURE_SETS[category];
-//         if (!allowedFeatures) return null;
-
-//         return allowedFeatures.map((feature) => (
-//             <Grid item xs={4} key={feature}>
-//                 <List>
-//                     <ListBooleanItem
-//                         label={t(feature)}
-//                         status={features[convertFeatureToKey(feature)]}
-//                         align="horizontal"
-//                     />
-//                 </List>
-//             </Grid>
-//         ));
-//     };
-
-//     function convertFeatureToKey(feature: string) {
-//         return feature
-//             .split(" ")
-//             .map((word, index) =>
-//                 index === 0
-//                     ? word.toLowerCase()
-//                     : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-//             )
-//             .join("");
-//     }
-
-//     if (!data || !features) return null;
-
-//     return (
-//         <Paper elevation={10} sx={{ overflow: "auto" }}>
-//             <Box
-//                 sx={{
-//                     px: 3,
-//                     py: 1.5,
-//                     display: "flex",
-//                     justifyContent: "left",
-//                 }}
-//             >
-//                 <Typography variant="h6">{t("Features")}</Typography>
-//             </Box>
-//             <Divider />
-//             <Grid container>{renderFeatures(parentCategory)}</Grid>
-//         </Paper>
-//     );
-// };
-
-// export default Features;

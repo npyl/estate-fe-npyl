@@ -43,8 +43,27 @@ export default function Form({ performUpload }: IFormProps) {
     if (!enums || !parentCategoryEnum || parentCategoryEnum.length === 0)
         return null;
 
+    const enumsKeys = {
+        residentialCategory: [
+            { key: "house", value: "House" },
+            { key: "apartment", value: "Apartment" },
+        ],
+        commercialCategory: [
+            { key: "office", value: "Office" },
+            { key: "shop", value: "Shop" },
+        ],
+        landCategory: [
+            { key: "farm", value: "Farm" },
+            { key: "plot", value: "Plot" },
+        ],
+        otherCategory: [
+            { key: "garage", value: "Garage" },
+            { key: "storage", value: "Storage" },
+        ],
+    };
+    type CategoryObject = { key: string; value: string };
     const subCategoriesMap: {
-        [key: string]: string[];
+        [key: string]: CategoryObject[];
     } = {
         Residential: enums.residentialCategory,
         Commercial: enums.commercialCategory,
@@ -73,10 +92,13 @@ export default function Form({ performUpload }: IFormProps) {
                                 dispatch(setParentCategory(e.target.value));
                             }}
                         >
-                            {parentCategoryEnum.map((item, index) => {
+                            {parentCategoryEnum.map((parentCategory, index) => {
                                 return (
-                                    <MenuItem key={index} value={item}>
-                                        {item}
+                                    <MenuItem
+                                        key={index}
+                                        value={parentCategory.key}
+                                    >
+                                        {parentCategory.value}
                                     </MenuItem>
                                 );
                             })}
@@ -97,19 +119,13 @@ export default function Form({ performUpload }: IFormProps) {
                             dispatch(setCategory(event.target.value));
                         }}
                     >
-                        {subCategoriesMap[parentCategory] ? (
-                            subCategoriesMap[parentCategory].map(
-                                (item, index) => {
-                                    return (
-                                        <MenuItem key={index} value={item}>
-                                            {item}
-                                        </MenuItem>
-                                    );
-                                }
+                        {subCategoriesMap[parentCategory]?.map(
+                            (category, index) => (
+                                <MenuItem key={index} value={category.key}>
+                                    {category.value}
+                                </MenuItem>
                             )
-                        ) : (
-                            <MenuItem></MenuItem>
-                        )}
+                        ) || <MenuItem></MenuItem>}
                     </TextField>
                 </Grid>
             </Grid>

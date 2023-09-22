@@ -126,9 +126,9 @@ const PropertyDescriptionForLandSection: React.FC<any> = (props) => {
                                 },
                             }}
                         >
-                            {details?.orientation?.map((option) => (
-                                <MenuItem key={option} value={option}>
-                                    {option}
+                            {details?.orientation?.map((orientation, index) => (
+                                <MenuItem key={index} value={orientation.key}>
+                                    {orientation.value}
                                 </MenuItem>
                             ))}
                         </TextField>
@@ -152,11 +152,16 @@ const PropertyDescriptionForLandSection: React.FC<any> = (props) => {
                                 },
                             }}
                         >
-                            {details?.accessibility?.map((option) => (
-                                <MenuItem key={option} value={option}>
-                                    {option}
-                                </MenuItem>
-                            ))}
+                            {details?.accessibility?.map(
+                                (accessibility, index) => (
+                                    <MenuItem
+                                        key={index}
+                                        value={accessibility.key}
+                                    >
+                                        {accessibility.value}
+                                    </MenuItem>
+                                )
+                            )}
                         </TextField>
                     </Grid>
                     <Grid item xs={6}>
@@ -177,9 +182,9 @@ const PropertyDescriptionForLandSection: React.FC<any> = (props) => {
                                 },
                             }}
                         >
-                            {details?.landUse?.map((option) => (
-                                <MenuItem key={option} value={option}>
-                                    {option}
+                            {details?.landUse?.map((landUse, index) => (
+                                <MenuItem key={index} value={landUse.key}>
+                                    {landUse.value}
                                 </MenuItem>
                             ))}
                         </TextField>

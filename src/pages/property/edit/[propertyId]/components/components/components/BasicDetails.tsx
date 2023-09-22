@@ -297,10 +297,10 @@ const BasicSection: React.FC<any> = () => {
                                     dispatch(setState(e.target.value));
                                 }}
                             >
-                                {stateEnum.map((item, index) => {
+                                {stateEnum.map((state, index) => {
                                     return (
-                                        <MenuItem key={index} value={item}>
-                                            {item}
+                                        <MenuItem key={index} value={state.key}>
+                                            {state.value}
                                         </MenuItem>
                                     );
                                 })}

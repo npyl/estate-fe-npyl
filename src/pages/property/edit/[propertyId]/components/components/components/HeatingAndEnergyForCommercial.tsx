@@ -76,9 +76,9 @@ const HeatingAndEnergyForCommercialSection: React.FC<any> = (props) => {
                                 },
                             }}
                         >
-                            {details?.heatingType?.map((option) => (
-                                <MenuItem key={option} value={option}>
-                                    {option}
+                            {details?.heatingType?.map((heatingType, index) => (
+                                <MenuItem key={index} value={heatingType.key}>
+                                    {heatingType.value}
                                 </MenuItem>
                             ))}
                         </TextField>
@@ -102,9 +102,9 @@ const HeatingAndEnergyForCommercialSection: React.FC<any> = (props) => {
                                 },
                             }}
                         >
-                            {details?.energyClass?.map((option) => (
-                                <MenuItem key={option} value={option}>
-                                    {option}
+                            {details?.energyClass?.map((energyClass, index) => (
+                                <MenuItem key={index} value={energyClass.key}>
+                                    {energyClass.value}
                                 </MenuItem>
                             ))}
                         </TextField>
@@ -127,11 +127,16 @@ const HeatingAndEnergyForCommercialSection: React.FC<any> = (props) => {
                                 },
                             }}
                         >
-                            {details?.heatingSystem?.map((option) => (
-                                <MenuItem key={option} value={option}>
-                                    {option}
-                                </MenuItem>
-                            ))}
+                            {details?.heatingSystem?.map(
+                                (heatingSystem, index) => (
+                                    <MenuItem
+                                        key={index}
+                                        value={heatingSystem.key}
+                                    >
+                                        {heatingSystem.value}
+                                    </MenuItem>
+                                )
+                            )}
                         </TextField>
                     </Grid>
 
@@ -155,11 +160,16 @@ const HeatingAndEnergyForCommercialSection: React.FC<any> = (props) => {
                                 },
                             }}
                         >
-                            {details?.electricityType?.map((option) => (
-                                <MenuItem key={option} value={option}>
-                                    {option}
-                                </MenuItem>
-                            ))}
+                            {details?.electricityType?.map(
+                                (electricityType, index) => (
+                                    <MenuItem
+                                        key={index}
+                                        value={electricityType.key}
+                                    >
+                                        {electricityType.value}
+                                    </MenuItem>
+                                )
+                            )}
                         </TextField>
                     </Grid>
                     <Grid

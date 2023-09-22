@@ -145,9 +145,9 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
                                 },
                             }}
                         >
-                            {details?.furnished?.map((option) => (
-                                <MenuItem key={option} value={option}>
-                                    {option}
+                            {details?.furnished?.map((furnished, index) => (
+                                <MenuItem key={index} value={furnished.key}>
+                                    {furnished.value}
                                 </MenuItem>
                             ))}
                         </TextField>
@@ -170,9 +170,9 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
                                 },
                             }}
                         >
-                            {details?.frameType?.map((option) => (
-                                <MenuItem key={option} value={option}>
-                                    {option}
+                            {details?.frameType?.map((frameType, index) => (
+                                <MenuItem key={index} value={frameType.key}>
+                                    {frameType.value}
                                 </MenuItem>
                             ))}
                         </TextField>
@@ -195,11 +195,16 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
                                 },
                             }}
                         >
-                            {details?.panelGlassType?.map((option) => (
-                                <MenuItem key={option} value={option}>
-                                    {option}
-                                </MenuItem>
-                            ))}
+                            {details?.panelGlassType?.map(
+                                (paneGlassType, index) => (
+                                    <MenuItem
+                                        key={index}
+                                        value={paneGlassType.key}
+                                    >
+                                        {paneGlassType.value}
+                                    </MenuItem>
+                                )
+                            )}
                         </TextField>
                     </Grid>
                     <Grid item xs={6}>
@@ -220,9 +225,9 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = (
                                 },
                             }}
                         >
-                            {details?.floorType?.map((option) => (
-                                <MenuItem key={option} value={option}>
-                                    {option}
+                            {details?.floorType?.map((floorType, index) => (
+                                <MenuItem key={index} value={floorType.key}>
+                                    {floorType.value}
                                 </MenuItem>
                             ))}
                         </TextField>

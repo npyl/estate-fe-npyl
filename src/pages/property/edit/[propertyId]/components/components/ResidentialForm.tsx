@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import Stack from "@mui/material/Stack";
 import * as React from "react";
 import AreasSection from "./components/Areas";
