@@ -8,6 +8,7 @@ import TabPanel from "../../components/Tabs/Tabs";
 import SecurityPage from "./components/permission";
 import UserPage from "./components/user";
 import {useRouter} from "next/router";
+import Box from "@mui/material/Box";
 
 const User: NextPage = () => {
     const [value, setValue] = useState(0);
@@ -19,19 +20,50 @@ const User: NextPage = () => {
 
     return (
        <>
-           <Tabs
-               value={value}
-               onChange={handleChange}
-               aria-label="View Property Tabs"
-               sx={{padding:2}}
+           <Box
+               sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: 224 }}
            >
-               <Tab label={t("User")} {...a11yProps(0)} />
-               <Tab label={t("" +
-                   "Permissions")} {...a11yProps(1)} />
-           </Tabs>
-
-           <TabPanel value={value} index={0}><UserPage/></TabPanel>
-           <TabPanel value={value} index={1}><SecurityPage/></TabPanel>
+               <Tabs
+                   orientation="vertical"
+                   variant="scrollable"
+                   value={value}
+                   onChange={handleChange}
+                   aria-label="Vertical tabs example"
+                   sx={{ borderRight: 1, borderColor: 'divider' }}
+               >
+                   <Tab label="Item One" {...a11yProps(0)} />
+                   <Tab label="Item Two" {...a11yProps(1)} />
+                   <Tab label="Item Three" {...a11yProps(2)} />
+                   <Tab label="Item Four" {...a11yProps(3)} />
+                   <Tab label="Item Five" {...a11yProps(4)} />
+                   <Tab label="Item Six" {...a11yProps(5)} />
+                   <Tab label="Item Seven" {...a11yProps(6)} />
+               </Tabs>
+               <TabPanel value={value} index={0}>
+                   Item One
+                   <>
+                       <TabPanel value={value} index={0}><SecurityPage/></TabPanel>
+                   </>
+               </TabPanel>
+               <TabPanel value={value} index={1}>
+                   Item Two
+               </TabPanel>
+               <TabPanel value={value} index={2}>
+                   Item Three
+               </TabPanel>
+               <TabPanel value={value} index={3}>
+                   Item Four
+               </TabPanel>
+               <TabPanel value={value} index={4}>
+                   Item Five
+               </TabPanel>
+               <TabPanel value={value} index={5}>
+                   Item Six
+               </TabPanel>
+               <TabPanel value={value} index={6}>
+                   Item Seven
+               </TabPanel>
+           </Box>
        </>
     );
 };
