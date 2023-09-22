@@ -113,6 +113,7 @@
         "use-debounce": "^9.0.4",
         "use-places-autocomplete": "^4.0.0",
         "uuid": "^9.0.0",
+        "validator": "^13.11.0",
         "yet-another-react-lightbox": "^3.5.0",
         "yup": "^1.0.2"
     },
