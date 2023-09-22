@@ -85,6 +85,11 @@ const getSections = (t: TFunction): Section[] => [
                 path: "/email",
                 icon: <Email fontSize="small" />,
             },
+            {
+                title: t("User Management"),
+                path: "/security",
+                icon: <UsersIcon fontSize="small" />,
+            },
             // {
             //     title: t("Developers"),
             //     path: "/",
