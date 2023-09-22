@@ -18,7 +18,7 @@ import {AuthGuard} from "src/components/authentication/auth-guard";
 import {DashboardLayout} from "src/components/dashboard/dashboard-layout";
 import {Button, Checkbox, Divider, Grid, MenuItem, Paper, Select, Stack} from "@mui/material";
 import {usePublishTab} from "src/components/Tabs/utils";
-import {useGetPresetsQuery, useSavePresetMutation} from "../../services/security";
+
 import {
     actions,
     categories,
@@ -30,6 +30,7 @@ import {
 } from "./constants";
 import SendIcon from "@mui/icons-material/Send";
 import {useTranslation} from "react-i18next";
+import {useGetPresetsQuery, useSavePresetMutation} from "../../../../services/security";
 
 function Category(props) {
     const {row, data, setData} = props;
@@ -140,7 +141,7 @@ function Category(props) {
     );
 }
 
-const SecurityPage: NextPage = () => {
+const SecurityPage = () => {
     const [selectedPreset, setSelectedPreset] = useState("")
     const [selectedPreset1, setSelectedPreset1] = useState("")
     usePublishTab({title: "Presets", path: "/security"});
@@ -302,12 +303,6 @@ const SecurityPage: NextPage = () => {
         </>
     );
 }
-
-SecurityPage.getLayout = (page) => (
-    <AuthGuard>
-        <DashboardLayout>{page}</DashboardLayout>
-    </AuthGuard>
-);
 
 export default SecurityPage;
 
