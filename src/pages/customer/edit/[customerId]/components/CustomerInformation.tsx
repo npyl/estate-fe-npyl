@@ -80,7 +80,7 @@ const CustomerInformation: React.FC<any> = () => {
 
     const enums = useAllGlobalsQuery().data;
     const propertyEnums = enums?.property;
-    // const nationalitiesEnum = enums?.customer?.nationalities;
+    const nationalitiesEnum = enums?.customer?.nationality;
 
     const managers = useAllUsersQuery().data;
 
@@ -184,11 +184,10 @@ const CustomerInformation: React.FC<any> = () => {
         }).then(() => revalidate());
 
     if (
-        !enums ||
-        !customerLabels ||
-        !propertyEnums ||
-        !leadSourceEnum ||
-        !managers
+        !customerLabels
+        // !propertyEnums ||
+        // !leadSourceEnum ||
+        // !managers ||
         // !nationalitiesEnum
     )
         return null;
@@ -277,7 +276,7 @@ const CustomerInformation: React.FC<any> = () => {
                                     dispatch(setManagedBy(e.target.value));
                                 }}
                             >
-                                {managers.map((manager, index) => {
+                                {managers?.map((manager, index) => {
                                     return (
                                         <MenuItem
                                             key={index}
@@ -319,22 +318,31 @@ const CustomerInformation: React.FC<any> = () => {
                             }}
                         />
                     </Grid>
+
                     <Grid item xs={6}>
-                        <TextField
-                            fullWidth
-                            label={t("Nationality")}
-                            value={nationality}
-                            onChange={(e) => {
-                                dispatch(setNationality(e.target.value));
-                            }}
-                        />
-                        {/* {nationalitiesEnum.map((nationality, index) => {
-                            return (
-                                <MenuItem key={index} value={nationality}>
-                                    {nationality}
-                                </MenuItem>
-                            );
-                        })} */}
+                        <FormControl fullWidth>
+                            <InputLabel>{t("Nationality")}</InputLabel>
+                            <Select
+                                value={nationality}
+                                label={t("Nationality")}
+                                onChange={(e) => {
+                                    dispatch(setNationality(e.target.value));
+                                }}
+                            >
+                                {nationalitiesEnum?.map(
+                                    (nationality, index) => {
+                                        return (
+                                            <MenuItem
+                                                key={index}
+                                                value={nationality.key}
+                                            >
+                                                {nationality.value}
+                                            </MenuItem>
+                                        );
+                                    }
+                                )}
+                            </Select>
+                        </FormControl>
                     </Grid>
                     <Grid item xs={6}>
                         <TextField
@@ -407,13 +415,13 @@ const CustomerInformation: React.FC<any> = () => {
                                     dispatch(setLeadSource(e.target.value));
                                 }}
                             >
-                                {leadSourceEnum.map((leadSource, index) => {
+                                {leadSourceEnum?.map((leadSource, index) => {
                                     return (
                                         <MenuItem
                                             key={index}
-                                            value={leadSource}
+                                            value={leadSource.key}
                                         >
-                                            {leadSource}
+                                            {leadSource.value}
                                         </MenuItem>
                                     );
                                 })}
