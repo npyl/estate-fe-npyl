@@ -7,12 +7,16 @@ import {useTranslation} from "react-i18next";
 import TabPanel from "../../components/Tabs/Tabs";
 import SecurityPage from "./components/permission";
 import UserPage from "./components/user";
+import {useRouter} from "next/router";
 
 const User: NextPage = () => {
     const [value, setValue] = useState(0);
     const handleChange = (event: React.SyntheticEvent, newValue: number) =>
         setValue(newValue);
     const { t } = useTranslation();
+
+    const router = useRouter(); // Initialize useRouter
+
     return (
        <>
            <Tabs
