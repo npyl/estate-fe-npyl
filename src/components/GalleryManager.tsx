@@ -21,13 +21,14 @@ import { LanguageButton } from "./Language/LanguageButton";
 
 interface IGalleryManager {
     open: boolean;
+    currentImage?: IPropertyImage;
     images: IPropertyImage[];
     onDelete: (file: IPropertyImage) => void;
     onClose: () => void;
 }
 
 const GalleryManager: React.FC<IGalleryManager> = (props) => {
-    const { open, images, onDelete, onClose } = props;
+    const { open, currentImage, images, onDelete, onClose } = props;
 
     const router = useRouter();
     const dialogTitleRef = useRef(null);
@@ -36,6 +37,7 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
     const { propertyId } = router.query;
 
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [carouselInitialIndex, setCarouselInitialIndex] = useState<number>();
     const [language, setLanguage] = useState("");
 
     // default values
@@ -89,6 +91,17 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
             images[currentIndex].hidden,
         ]
     );
+
+    useEffect(() => {
+        // INFO: if we have currentImage, it means GalleryManager was opened with a specific image as interest
+        if (!currentImage) return;
+        console.log("got a current image!");
+        const newIndex = _carouselImages.findIndex(
+            (carouselImage) => carouselImage.image === currentImage.url
+        );
+        setCurrentIndex(newIndex);
+        setCarouselInitialIndex(newIndex);
+    }, [currentImage?.url]);
 
     const reload = () => {
         // default values
@@ -168,6 +181,7 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
                             onImageChange={handleImageChange}
                             mainLabel="main"
                             data={_carouselImages}
+                            initialIndex={carouselInitialIndex}
                         />
                     </Grid>
                     <Grid item xs={4} mt={1}>

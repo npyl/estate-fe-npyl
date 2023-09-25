@@ -46,6 +46,8 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
     const { propertyId } = router.query;
 
     const [galleryManagerOpen, setGalleryManagerOpen] = useState(false);
+    const [currentGalleryImage, setCurrentGalleryImage] =
+        useState<IPropertyImage>();
     const [moreOpen, setMoreOpen] = useState(false);
 
     const [addImage] = useAddPropertyImageMutation();
@@ -157,7 +159,8 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
     const handleOpenMore = () => setMoreOpen(true);
     const handleCloseMore = () => setMoreOpen(false);
 
-    const handleImageClick = () => {
+    const handleImageClick = (image: IPropertyImage) => {
+        setCurrentGalleryImage(image);
         setMoreOpen(false);
         setGalleryManagerOpen(true);
     };
@@ -212,6 +215,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
             {files && files.length > 0 && (
                 <GalleryManager
                     open={galleryManagerOpen}
+                    currentImage={currentGalleryImage}
                     images={files}
                     onClose={handleCloseGalleryManager}
                     onDelete={(file: IPropertyImage) => {
