@@ -23,7 +23,7 @@ export default function Form({
 
     // enums
     const parentCategory = useSelector(selectParentCategory);
-    console.log(parentCategory);
+    console.log("From the form:", parentCategory);
     const handleClick = () => {
         // create our property draft
         performUpload();

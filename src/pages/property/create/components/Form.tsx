@@ -70,7 +70,8 @@ export default function Form({ performUpload }: IFormProps) {
         Land: enums.landCategory,
         Other: enums.otherCategory,
     };
-
+    console.log(parentCategoryEnum);
+    console.log(parentCategory);
     return (
         <Grid container spacing={1} paddingLeft={2} paddingTop={3}>
             <Grid
@@ -89,7 +90,8 @@ export default function Form({ performUpload }: IFormProps) {
                             value={parentCategory}
                             label="Parent Category"
                             onChange={(e) => {
-                                dispatch(setParentCategory(e.target.value));
+                                const selectedKey = e.target.value; // This should be the key, not the value
+                                dispatch(setParentCategory(selectedKey));
                             }}
                         >
                             {parentCategoryEnum.map((parentCategory, index) => {
@@ -116,7 +118,13 @@ export default function Form({ performUpload }: IFormProps) {
                         onChange={(
                             event: React.ChangeEvent<HTMLInputElement>
                         ) => {
-                            dispatch(setCategory(event.target.value));
+                            const selectedKey = event.target.value;
+                            const selectedItem = subCategoriesMap[
+                                parentCategory
+                            ]?.find((item) => item.key === selectedKey);
+                            if (selectedItem) {
+                                dispatch(setCategory(selectedItem.key));
+                            }
                         }}
                     >
                         {subCategoriesMap[parentCategory]?.map(
