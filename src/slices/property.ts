@@ -824,7 +824,54 @@ const slice = createSlice({
             state.video = payload.video || state.video;
             state.description = payload.description || state.description;
 
-            state.details = payload.details || initialState.details;
+            state.details.floor =
+                payload.details.floor || initialState.details.floor;
+            state.details.bedrooms =
+                payload.details.bedrooms || initialState.details.bedrooms;
+            state.details.kitchens =
+                payload.details.kitchens || initialState.details.kitchens;
+            state.details.wc = payload.details.wc || initialState.details.wc;
+            state.details.layers =
+                payload.details.layers || initialState.details.layers;
+            state.details.livingrooms =
+                payload.details.livingrooms || initialState.details.livingrooms;
+            state.details.bathrooms =
+                payload.details.bathrooms || initialState.details.bathrooms;
+            state.details.rooms =
+                payload.details.rooms || initialState.details.rooms;
+            state.details.attic =
+                payload.details.attic || initialState.details.attic;
+            state.details.storeroom =
+                payload.details.storeroom || initialState.details.storeroom;
+            state.details.playroom =
+                payload.details.playroom || initialState.details.playroom;
+            state.details.floorApartment =
+                payload.details.floorApartment ||
+                initialState.details.floorApartment;
+            state.details.penthouse =
+                payload.details.penthouse || initialState.details.penthouse;
+            state.details.orientation =
+                payload.details.orientation || initialState.details.orientation;
+            state.details.viewType =
+                payload.details.viewType || initialState.details.viewType;
+            state.details.accessibility =
+                payload.details.accessibility ||
+                initialState.details.accessibility;
+            state.details.landUse =
+                payload.details.landUse || initialState.details.landUse;
+            state.details.zoneType =
+                payload.details.zoneType || initialState.details.zoneType;
+            state.details.parkings =
+                payload.details.parkings.map((parking) => ({
+                    spots: parking.spots,
+                    parkingType: parking.parkingType.key,
+                })) || initialState.details.parkings;
+            state.details.balconies =
+                payload.details.balconies.map((balcony) => ({
+                    area: balcony.area,
+                    side: balcony.side.key,
+                })) || initialState.details.balconies;
+
             state.heatingAndEnergy =
                 payload.heatingAndEnergy || initialState.heatingAndEnergy;
             state.suitableFor = payload.suitableFor || initialState.suitableFor;
