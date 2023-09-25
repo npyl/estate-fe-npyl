@@ -297,7 +297,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("State")}
-                        value={data?.state}
+                        value={data?.state.value}
                         align="horizontal"
                     />
                 );
