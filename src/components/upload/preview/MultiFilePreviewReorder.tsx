@@ -1,5 +1,4 @@
 import { ImageList, ImageListItem } from "@mui/material";
-import Image from "src/components/image/Image";
 
 import { UploadPropertyImageProps } from "../types";
 import {
@@ -16,6 +15,7 @@ export default function MultiFilePreviewReorder({
     files,
     setFiles,
     onImageClick,
+    onImageDoubleClick,
     onReorder,
 }: UploadPropertyImageProps) {
     if (!files || !files?.length) return null;
