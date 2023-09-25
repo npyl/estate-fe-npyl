@@ -21,7 +21,6 @@ const UserPage: FC<Props> = ({changeTab}) => {
         { id: 1, username: 'ΠΑΝΑΓΙΩΤΗΣ', firstName: 'John', lastName: 'Doe', status: 'Active', email: 'user1@example.com' },
         { id: 2, username: 'ΜΙΛΙ', firstName: 'Jane', lastName: 'Smith', status: 'Inactive', email: 'user2@example.com' },
         { id: 2, username: 'ΓΙΩΡΓΟΣ-ΝΕΟΠΑΣ', firstName: 'Jane', lastName: 'Smith', status: 'Inactive', email: 'user2@example.com' },
-        // Add more user data here
     ];
 
     const [isCreateUserModalOpen, setIsCreateUserModalOpen] = useState(false);
@@ -32,12 +31,7 @@ const UserPage: FC<Props> = ({changeTab}) => {
     const [isUpdateUserModalOpen, setIsUpdateUserModalOpen] = useState(false);
     const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] = useState(false);
 
-
-
-
-    // Define a placeholder function for edit action
     const handleEdit = (userId) => {
-        // Implement your edit logic here
         console.log(`Edit user with ID ${userId}`);
     };
 
@@ -50,20 +44,10 @@ const UserPage: FC<Props> = ({changeTab}) => {
     };
 
     const handleCreateUser = () => {
-        // Check if the email is valid
         if (!validator.isEmail(email)) {
             alert('Please enter a valid email address.');
             return;
         }
-
-        // Implement your logic to create the user here
-        console.log('Creating user...');
-        console.log('Status:', status);
-        console.log('First Name:', firstName);
-        console.log('Last Name:', lastName);
-        console.log('Email:', email);
-
-        // Close the modal
         handleCloseCreateUserModal();
     };
 
@@ -111,10 +95,6 @@ const UserPage: FC<Props> = ({changeTab}) => {
 
     const handleCloseDeleteConfirmation = () => {
         setIsDeleteConfirmationOpen(false);
-    };
-
-    const navigateToPermissionsTab = () => {
-        router.push("/your-second-tab-url"); // Replace with the actual URL of your second tab
     };
 
     return (
