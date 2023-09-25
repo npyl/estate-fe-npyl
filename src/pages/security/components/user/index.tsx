@@ -1,27 +1,51 @@
 import React, {FC, useState} from 'react';
 import {
     Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    IconButton,
+    MenuItem,
+    Paper,
     Table,
     TableBody,
     TableCell,
     TableContainer,
     TableHead,
     TableRow,
-    Paper,
-    IconButton,
-    Dialog, DialogTitle, TextField, DialogActions, DialogContent, MenuItem, Box, DialogContentText
+    TextField
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit'; // Make sure to import EditIcon
 import validator from 'validator';
-type Props = {changeTab:(event: React.SyntheticEvent, newValue: number) => void;}
+// type Props = {changeTab:(event: React.SyntheticEvent, newValue: number) => void;}
+type Props = {
+    changeTab: (event: React.SyntheticEvent, newValue: number
+    ) => void;
+    setSelectedUser: (value: (((prevState: number) => number) | number)) => void;
+};
 
-const UserPage: FC<Props> = ({changeTab}) => {
+const UserPage: FC<Props> = ({changeTab, setSelectedUser}) => {
 
     const users = [
-        { id: 1, username: 'ΠΑΝΑΓΙΩΤΗΣ', firstName: 'John', lastName: 'Doe', status: 'Active', email: 'user1@example.com' },
-        { id: 2, username: 'ΜΙΛΙ', firstName: 'Jane', lastName: 'Smith', status: 'Inactive', email: 'user2@example.com' },
-        { id: 2, username: 'ΓΙΩΡΓΟΣ-ΝΕΟΠΑΣ', firstName: 'Jane', lastName: 'Smith', status: 'Inactive', email: 'user2@example.com' },
-        // Add more user data here
+        {
+            id: 1,
+            username: 'ΠΑΝΑΓΙΩΤΗΣ',
+            firstName: 'John',
+            lastName: 'Doe',
+            status: 'Active',
+            email: 'user1@example.com'
+        },
+        {id: 2, username: 'ΜΙΛΙ', firstName: 'Jane', lastName: 'Smith', status: 'Inactive', email: 'user2@example.com'},
+        {
+            id: 3,
+            username: 'ΓΙΩΡΓΟΣ-ΝΕΟΠΑΣ',
+            firstName: 'Jane',
+            lastName: 'Smith',
+            status: 'Inactive',
+            email: 'user2@example.com'
+        },
     ];
 
     const [isCreateUserModalOpen, setIsCreateUserModalOpen] = useState(false);
@@ -32,12 +56,7 @@ const UserPage: FC<Props> = ({changeTab}) => {
     const [isUpdateUserModalOpen, setIsUpdateUserModalOpen] = useState(false);
     const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] = useState(false);
 
-
-
-
-    // Define a placeholder function for edit action
     const handleEdit = (userId) => {
-        // Implement your edit logic here
         console.log(`Edit user with ID ${userId}`);
     };
 
@@ -50,20 +69,10 @@ const UserPage: FC<Props> = ({changeTab}) => {
     };
 
     const handleCreateUser = () => {
-        // Check if the email is valid
         if (!validator.isEmail(email)) {
             alert('Please enter a valid email address.');
             return;
         }
-
-        // Implement your logic to create the user here
-        console.log('Creating user...');
-        console.log('Status:', status);
-        console.log('First Name:', firstName);
-        console.log('Last Name:', lastName);
-        console.log('Email:', email);
-
-        // Close the modal
         handleCloseCreateUserModal();
     };
 
@@ -76,31 +85,19 @@ const UserPage: FC<Props> = ({changeTab}) => {
     };
 
     const handleUpdateUser = () => {
-        // Check if the email is valid
         if (!validator.isEmail(email)) {
             alert('Please enter a valid email address.');
             return;
         }
-
-        // Implement your logic to update the user here
-        console.log('Updating user...');
-        console.log('Status:', status);
-        console.log('First Name:', firstName);
-        console.log('Last Name:', lastName);
-        console.log('Email:', email);
-
-        // Close the modal
         handleCloseUpdateUserModal();
     };
 
     const handleResetPassword = () => {
-        // Implement your logic to reset the user's password here
         console.log('Resetting user password...');
         console.log('User ID:', userId); // You can pass the user ID here
     };
 
     const handleDeleteUser = () => {
-        // Implement your logic to delete the user here
         console.log('Deleting user...');
         console.log('User ID:', userId); // You can pass the user ID here
     };
@@ -113,18 +110,14 @@ const UserPage: FC<Props> = ({changeTab}) => {
         setIsDeleteConfirmationOpen(false);
     };
 
-    const navigateToPermissionsTab = () => {
-        router.push("/your-second-tab-url"); // Replace with the actual URL of your second tab
-    };
-
     return (
         <div>
-            <Button variant="contained" color="primary" style={{ marginBottom: '20px' }} onClick={handleCreateUserClick}>
+            <Button variant="contained" color="primary" style={{marginBottom: '20px'}} onClick={handleCreateUserClick}>
                 Create User
             </Button>
             <TableContainer component={Paper}>
                 <Table>
-                    <TableHead sx={{ background: '#f5f5dc' }}>
+                    <TableHead sx={{background: '#f5f5dc'}}>
                         <TableRow>
                             <TableCell>Username</TableCell>
                             <TableCell>First Name</TableCell>
@@ -144,15 +137,18 @@ const UserPage: FC<Props> = ({changeTab}) => {
                                 <TableCell>{user.status}</TableCell>
                                 <TableCell>{user.email}</TableCell>
                                 <TableCell>
-                                    <IconButton size="small" onClick={handleUpdateUserClick} sx={{ ml: 1, mr: -1 }}>
-                                        <EditIcon fontSize="small" />
+                                    <IconButton size="small" onClick={handleUpdateUserClick} sx={{ml: 1, mr: -1}}>
+                                        <EditIcon fontSize="small"/>
                                     </IconButton>
                                 </TableCell>
                                 <TableCell>
                                     <Button
                                         variant="text"
                                         color="success"
-                                        onClick={ (e) => changeTab(e, 1)}
+                                        onClick={(e) => {
+                                            changeTab(e, 1);
+                                            setSelectedUser(user.id)
+                                        }}
                                     >
                                         Set
                                     </Button>
@@ -173,7 +169,7 @@ const UserPage: FC<Props> = ({changeTab}) => {
                         variant="outlined"
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value.replace(/[^a-zA-Z]/g, ''))}
-                        inputProps={{ maxLength: 50 }}
+                        inputProps={{maxLength: 50}}
                     />
                     <TextField
                         label="Last Name"
@@ -182,7 +178,7 @@ const UserPage: FC<Props> = ({changeTab}) => {
                         variant="outlined"
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value.replace(/[^a-zA-Z]/g, ''))}
-                        inputProps={{ maxLength: 50 }}
+                        inputProps={{maxLength: 50}}
                     />
                     <TextField
                         label="Email"
@@ -225,7 +221,7 @@ const UserPage: FC<Props> = ({changeTab}) => {
                         variant="outlined"
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value.replace(/[^a-zA-Z]/g, ''))}
-                        inputProps={{ maxLength: 50 }}
+                        inputProps={{maxLength: 50}}
                     />
                     <TextField
                         label="Last Name"
@@ -234,7 +230,7 @@ const UserPage: FC<Props> = ({changeTab}) => {
                         variant="outlined"
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value.replace(/[^a-zA-Z]/g, ''))}
-                        inputProps={{ maxLength: 50 }}
+                        inputProps={{maxLength: 50}}
                     />
                     <TextField
                         label="Email"
@@ -264,7 +260,7 @@ const UserPage: FC<Props> = ({changeTab}) => {
                     <Button
                         onClick={handleOpenDeleteConfirmation}
                         color="secondary"
-                        sx={{ backgroundColor: 'red', color: 'white' }}
+                        sx={{backgroundColor: 'red', color: 'white'}}
                     >
                         Delete User
                     </Button>
