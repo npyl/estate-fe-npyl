@@ -4,7 +4,7 @@ import SendIcon from "@mui/icons-material/Send";
 import { Button, Grid, Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { selectDemands } from "src/slices/customer";
+import { selectDemands, setDemands } from "src/slices/customer";
 import AddressDetails from "./AddressDetails";
 import CustomerInformation from "./CustomerInformation";
 import DemandForm from "./DemandForm";
@@ -37,9 +37,13 @@ const Form = ({ performUpload, resetState, handleCancel }: FormProps) => {
                 </Grid>
                 <Grid item xs={6}>
                     <Stack spacing={1}>
-                        {demands.map((d, i) => (
-                            <DemandForm index={i} />
-                        ))}
+                        {demands.length === 0 ? (
+                            <DemandForm index={0} />
+                        ) : (
+                            demands.map((d, i) => (
+                                <DemandForm key={i} index={i} />
+                            ))
+                        )}
                     </Stack>
                 </Grid>
             </Grid>
