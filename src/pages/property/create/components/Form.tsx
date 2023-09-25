@@ -7,6 +7,7 @@ import {
     MenuItem,
     Select,
     Button,
+    SelectChangeEvent,
 } from "@mui/material";
 
 import * as React from "react";
@@ -53,6 +54,23 @@ export default function Form({ performUpload }: IFormProps) {
         Other: enums.otherCategory,
     };
 
+    const handleParentCategorySelect = (e: SelectChangeEvent<string>) => {
+        const selectedKey = e.target.value;
+        dispatch(setParentCategory(selectedKey));
+    };
+
+    const handleCategorySelect = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        const selectedKey = event.target.value;
+        const selectedItem = subCategoriesMap[parentCategory]?.find(
+            (item) => item.key === selectedKey
+        );
+        if (selectedItem) {
+            dispatch(setCategory(selectedItem.key));
+        }
+    };
+
     return (
         <Grid container spacing={1} paddingLeft={2} paddingTop={3}>
             <Grid
@@ -63,17 +81,11 @@ export default function Form({ performUpload }: IFormProps) {
             >
                 <Grid item xs={6}>
                     <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">
-                            {t("Parent Category")}
-                        </InputLabel>
+                        <InputLabel>{t("Parent Category")}</InputLabel>
                         <Select
-                            labelId="demo-simple-select-label"
                             value={parentCategory}
                             label="Parent Category"
-                            onChange={(e) => {
-                                const selectedKey = e.target.value; // This should be the key, not the value
-                                dispatch(setParentCategory(selectedKey));
-                            }}
+                            onChange={handleParentCategorySelect}
                         >
                             {parentCategoryEnum.map((parentCategory, index) => {
                                 return (
@@ -96,25 +108,15 @@ export default function Form({ performUpload }: IFormProps) {
                         select
                         label={t("Category")}
                         value={category}
-                        onChange={(
-                            event: React.ChangeEvent<HTMLInputElement>
-                        ) => {
-                            const selectedKey = event.target.value;
-                            const selectedItem = subCategoriesMap[
-                                parentCategory
-                            ]?.find((item) => item.key === selectedKey);
-                            if (selectedItem) {
-                                dispatch(setCategory(selectedItem.key));
-                            }
-                        }}
+                        onChange={handleCategorySelect}
                     >
                         {subCategoriesMap[parentCategory]?.map(
-                            (category, index) => (
-                                <MenuItem key={index} value={category.key}>
-                                    {category.value}
+                            ({ key, value }) => (
+                                <MenuItem key={key} value={key}>
+                                    {value}
                                 </MenuItem>
                             )
-                        ) || <MenuItem></MenuItem>}
+                        ) || <MenuItem />}
                     </TextField>
                 </Grid>
             </Grid>

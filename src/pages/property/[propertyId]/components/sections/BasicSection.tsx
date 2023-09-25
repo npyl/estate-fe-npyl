@@ -173,7 +173,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Category")}
-                        value={data?.category}
+                        value={data?.category.value}
                         align="horizontal"
                     />
                 );

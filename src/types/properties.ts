@@ -283,9 +283,9 @@ export interface IProperties {
     title: string;
     manager: IUser;
     owner: ICustomer;
-    state: string;
+    state: KeyValue;
     parentCategory: KeyValue;
-    category: string;
+    category: KeyValue;
     area: number;
     plotArea: number;
     price: number;

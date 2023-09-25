@@ -799,10 +799,10 @@ const slice = createSlice({
             state.title = payload.title || state.title;
             state.managerId = payload.manager?.id || state.managerId;
             state.ownerId = payload.owner?.id || state.ownerId;
-            state.state = payload.state || state.state;
+            state.state = payload.state.key || state.state;
             state.parentCategory =
                 payload.parentCategory.key || state.parentCategory;
-            state.category = payload.category || state.category;
+            state.category = payload.category.key || state.category;
             state.area = payload.area || state.area;
             state.plotArea = payload.plotArea || state.plotArea;
             state.price = payload.price || state.price;
