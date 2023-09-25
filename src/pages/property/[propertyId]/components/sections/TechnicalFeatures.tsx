@@ -10,7 +10,7 @@ interface TechnicalFeaturesProps {
     data: IProperties;
 }
 const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
-    Residential: [
+    RESIDENTIAL: [
         "Furnished",
         "Frame Type",
         "Pane Glass Type",
@@ -28,7 +28,7 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Pets Allowed",
         "Electric Car Charging Facilities",
     ],
-    Commercial: [
+    COMMERCIAL: [
         "Display Window Length",
         "Entrances",
         "Floor Type",
@@ -47,8 +47,8 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Wiring",
         "Loading-Unloading Elevator",
     ],
-    Land: ["Floor To Area Ratio", "Coverage Factor", "Facade Length"],
-    Other: [
+    LAND: ["Floor To Area Ratio", "Coverage Factor", "Facade Length"],
+    OTHER: [
         "Safety Door",
         "Double Frontage",
         "Satellite TV",
@@ -339,7 +339,7 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                     <Divider></Divider>
                     <Grid container>
                         {technicalFeatures1(
-                            data?.parentCategory as ParentCategory
+                            data?.parentCategory.key as ParentCategory
                         )}
                     </Grid>
                 </Paper>

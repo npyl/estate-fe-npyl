@@ -1,3 +1,4 @@
+import { KeyValue } from "./KeyValue";
 import { ICustomer } from "./customer";
 import { IPropertyDetails, IPropertyDetailsPOST } from "./details";
 import { IPropertyFeatures } from "./features";
@@ -283,7 +284,7 @@ export interface IProperties {
     manager: IUser;
     owner: ICustomer;
     state: string;
-    parentCategory: string;
+    parentCategory: KeyValue;
     category: string;
     area: number;
     plotArea: number;
@@ -317,6 +318,5 @@ export interface IProperties {
     blueprints: IPropertyBlueprint[];
     labels: ILabel[];
 }
-// propertyTypes.ts
 
-export type ParentCategory = "Residential" | "Commercial" | "Land" | "Other";
+export type ParentCategory = "RESIDENTIAL" | "COMMERCIAL" | "LAND" | "OTHER";

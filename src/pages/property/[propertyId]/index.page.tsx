@@ -1,7 +1,7 @@
 import { Box, Tab, Tabs } from "@mui/material";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import {
     useDeletePropertyMutation,
@@ -41,7 +41,6 @@ import { usePublishTab } from "src/components/Tabs/utils";
 import { useTranslation } from "react-i18next";
 import ConstructionSection from "./components/sections/ConstructionSection";
 import Features from "./components/sections/FeaturesSection";
-import { features } from "process";
 import MatchingCustomersSection from "./components/sections/MatchingCustomers";
 
 function a11yProps(index: number) {

@@ -5,10 +5,9 @@ import {
     ListBooleanItem,
     ListItem,
     ListManagerItem,
-    ListStatusItem,
 } from "src/components/List";
 import ListLabelsItem from "src/components/List/labels-item";
-import { IProperties } from "src/types/properties";
+import { IProperties, ParentCategory } from "src/types/properties";
 import { IUser } from "src/types/user";
 import PopupWindow from "./PopopWindowROI";
 import { ICustomer } from "src/types/customer";
@@ -19,34 +18,8 @@ interface BasicSectionProps {
     data: IProperties;
 }
 
-type ParentCategory = "Residential" | "Commercial" | "Land" | "Other";
-
-type IncomingParentCategory =
-    | ParentCategory
-    | "Κατοικία"
-    | "Επαγγελματική Στέγη"
-    | "Γη"
-    | "'Αλλο";
-
-const mapToEnglishParentCategory = (
-    category: IncomingParentCategory
-): ParentCategory => {
-    switch (category) {
-        case "Κατοικία":
-            return "Residential";
-        case "Επαγγελματική Στέγη":
-            return "Commercial";
-        case "Γη":
-            return "Land";
-        case "'Αλλο":
-            return "Other";
-        default:
-            return category;
-    }
-};
-
 const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
-    Residential: [
+    RESIDENTIAL: [
         "ParentCategory",
         "Category",
         "Area",
@@ -70,7 +43,7 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Debatable Price",
         "Auction",
     ],
-    Commercial: [
+    COMMERCIAL: [
         "ParentCategory",
         "Category",
         "Area",
@@ -94,7 +67,7 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Debatable Price",
         "Auction",
     ],
-    Land: [
+    LAND: [
         "ParentCategory",
         "Category",
         "Area",
@@ -117,7 +90,7 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Auction",
         "Buildable",
     ],
-    Other: [
+    OTHER: [
         "ParentCategory",
         "Category",
         "Area",
@@ -144,11 +117,13 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
 
 const BasicSection: React.FC<BasicSectionProps> = (props) => {
     const { data } = props;
-    const [showPopup, setShowPopup] = useState(false);
     const { t } = useTranslation();
+
+    const [showPopup, setShowPopup] = useState(false);
+
     const manager: IUser = data?.manager;
     const owner: ICustomer = data?.owner;
-    console.log(data?.parentCategory);
+
     const handleClosePopup = () => {
         setShowPopup(false);
     };
@@ -168,8 +143,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
     );
 
     const renderBasicDetails = (category: ParentCategory) => {
-        const englishCategory = mapToEnglishParentCategory(category);
-        const fieldsForCategory = BASIC_DETAIL_FIELDS[englishCategory];
+        const fieldsForCategory = BASIC_DETAIL_FIELDS[category];
         if (!fieldsForCategory) return null;
 
         const half = Math.ceil(fieldsForCategory.length / 2);
@@ -191,7 +165,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Parent Category")}
-                        value={data?.parentCategory}
+                        value={data?.parentCategory.value}
                         align="horizontal"
                     />
                 );
@@ -367,8 +341,6 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
         }
     };
 
-    //... The rest of your component code remains unchanged
-
     return (
         <Grid container spacing={1}>
             <Grid item xs={12}>
@@ -385,10 +357,10 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                             {t("Basic Details")}
                         </Typography>
                     </Box>
-                    <Divider></Divider>
+                    <Divider />
                     <Grid container>
                         {renderBasicDetails(
-                            data?.parentCategory as ParentCategory
+                            data?.parentCategory.key as ParentCategory
                         )}
                     </Grid>
                 </Paper>
@@ -420,106 +392,3 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
 };
 
 export default BasicSection;
-
-// import React from "react";
-// import { IProperties } from "src/types/properties";
-// import { Typography, Box, Paper, Divider, Grid } from "@mui/material";
-// import { List, ListBooleanItem, ListItem } from "src/components/List";
-// import { useTranslation } from "react-i18next";
-// import { ParentCategory } from "src/types/properties";
-
-// interface FeaturesProps {
-//     data: {
-//         features: any; // adjust this according to your data structure
-//         parentCategory: ParentCategory;
-//     };
-// }
-
-// // export type ParentCategory = "Residential" | "Commercial" | "Land" | "Other";
-
-// const FEATURE_SETS: { [key in ParentCategory]: string[] } = {
-//     Residential: [
-//         "Category",
-//         "Area",
-//         "Plot Area",
-//         "Estimated Rend Price",
-//         "Available After",
-//         "Rental Period Start",
-//         "Rental Period End",
-//         "Current Rent Price",
-
-//         "Labels",
-//         "ROI",
-//         "Average Utilities",
-//         "Year of Construction",
-//         "Code",
-//         "Price",
-//         "Key Code",
-//         "Manager",
-//         "Owner",
-//         "State",
-//         "Rented",
-//         "Debatable Price",
-//         "Auction",
-//         "Buildable",
-//     ],
-//     Commercial: [],
-//     Land: [],
-//     Other: [],
-// };
-
-// const Features: React.FC<FeaturesProps> = (props) => {
-//     const { data } = props;
-//     const { t } = useTranslation();
-//     const features = data?.features;
-//     const parentCategory = data?.parentCategory;
-
-//     const renderFeatures = (category: ParentCategory) => {
-//         const allowedFeatures = FEATURE_SETS[category];
-//         if (!allowedFeatures) return null;
-
-//         return allowedFeatures.map((feature) => (
-//             <Grid item xs={4} key={feature}>
-//                 <List>
-//                     <ListBooleanItem
-//                         label={t(feature)}
-//                         status={features[convertFeatureToKey(feature)]}
-//                         align="horizontal"
-//                     />
-//                 </List>
-//             </Grid>
-//         ));
-//     };
-
-//     function convertFeatureToKey(feature: string) {
-//         return feature
-//             .split(" ")
-//             .map((word, index) =>
-//                 index === 0
-//                     ? word.toLowerCase()
-//                     : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-//             )
-//             .join("");
-//     }
-
-//     if (!data || !features) return null;
-
-//     return (
-//         <Paper elevation={10} sx={{ overflow: "auto" }}>
-//             <Box
-//                 sx={{
-//                     px: 3,
-//                     py: 1.5,
-//                     display: "flex",
-//                     justifyContent: "left",
-//                 }}
-//             >
-//                 <Typography variant="h6">{t("Features")}</Typography>
-//             </Box>
-//             <Divider />
-//             <Grid container>{renderFeatures(parentCategory)}</Grid>
-//         </Paper>
-//     );
-// };
-
-// export default Features;

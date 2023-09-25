@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React from "react";
 import { IProperties, ParentCategory } from "src/types/properties";
 import { Box, Divider, Grid, Paper, Typography } from "@mui/material";
 import { List, ListBooleanItem, ListItem } from "src/components/List";
@@ -9,7 +9,7 @@ interface DetailsSectionProps {
 }
 
 const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
-    Residential: [
+    RESIDENTIAL: [
         "Floor",
         "Bedrooms",
         "Layers",
@@ -29,7 +29,7 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Penthouse",
         "Floor Apartment",
     ],
-    Commercial: [
+    COMMERCIAL: [
         "Floor",
         "Layers",
         "Number of WC",
@@ -40,8 +40,8 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Rooms",
         "Storeroom",
     ],
-    Land: ["Orientation", "Accessibility", "Land Use", "Distance From Sea"],
-    Other: [
+    LAND: ["Orientation", "Accessibility", "Land Use", "Distance From Sea"],
+    OTHER: [
         "Floor",
         "Layers",
         "Bathrooms",
@@ -297,10 +297,10 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                             {t("Property Description")}
                         </Typography>
                     </Box>
-                    <Divider></Divider>
+                    <Divider />
                     <Grid container>
                         {propertyDescription(
-                            data?.parentCategory as ParentCategory
+                            data?.parentCategory.key as ParentCategory
                         )}
                     </Grid>
                 </Paper>

@@ -9,7 +9,7 @@ interface ConstructionSectionProps {
     data: IProperties;
 }
 const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
-    Residential: [
+    RESIDENTIAL: [
         "Year of Construction",
         "Year of Renovation",
         "Total Floor Number",
@@ -23,7 +23,7 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Neoclassical",
         "Preserved",
     ],
-    Commercial: [
+    COMMERCIAL: [
         "Year of Construction",
         "Year of Renovation",
         "Total Floor Number",
@@ -36,8 +36,8 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Neoclassical",
         "Preserved",
     ],
-    Land: [],
-    Other: [
+    LAND: [],
+    OTHER: [
         "Year of Construction",
         "Under Construction",
         "Internal Stairs",
@@ -49,7 +49,7 @@ const ConstructionSection: React.FC<ConstructionSectionProps> = (props) => {
     const { data } = props;
     const { t } = useTranslation();
     const construction = data?.construction;
-    if (data.parentCategory == "Land") return null;
+    if (data.parentCategory.key === "LAND") return null;
     const renderThirdOfFields = (
         fields: string[],
         from: number,
@@ -205,7 +205,7 @@ const ConstructionSection: React.FC<ConstructionSectionProps> = (props) => {
                     <Divider></Divider>
                     <Grid container>
                         {propertyConstruction(
-                            data?.parentCategory as ParentCategory
+                            data?.parentCategory.key as ParentCategory
                         )}
                     </Grid>
                 </Paper>

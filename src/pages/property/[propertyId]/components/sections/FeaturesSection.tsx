@@ -8,10 +8,8 @@ interface FeaturesProps {
     data: IProperties;
 }
 
-// export type ParentCategory = "Residential" | "Commercial" | "Land" | "Other";
-
 const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
-    Residential: [
+    RESIDENTIAL: [
         "Panoramic View",
         "Corner",
         "Facade",
@@ -48,7 +46,7 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Independent Heating Per Room",
         "Indoor Pool",
     ],
-    Commercial: [
+    COMMERCIAL: [
         "Organized Garden",
         "Has 24 Hours Security",
         "CCTV",
@@ -66,21 +64,20 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Corner",
         "Facade",
     ],
-    Land: [
+    LAND: [
         "Panoramic View",
         "Corner",
         "Facade",
         "Within City Plan",
         "Within Residential Zone",
     ],
-    Other: ["Panoramic View", "Facade", "Loading Dock", "Veranda", "View"],
+    OTHER: ["Panoramic View", "Facade", "Loading Dock", "Veranda", "View"],
 };
 
 const Features: React.FC<FeaturesProps> = (props) => {
     const { data } = props;
     const { t } = useTranslation();
     const features = data?.features;
-    const parentCategory = data?.parentCategory;
 
     const renderThirdOfFields = (
         fields: string[],
@@ -441,7 +438,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <Divider></Divider>
                     <Grid container>
                         {propertyFeatures(
-                            data?.parentCategory as ParentCategory
+                            data?.parentCategory.key as ParentCategory
                         )}
                     </Grid>
                 </Paper>

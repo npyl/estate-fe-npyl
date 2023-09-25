@@ -801,7 +801,7 @@ const slice = createSlice({
             state.ownerId = payload.owner?.id || state.ownerId;
             state.state = payload.state || state.state;
             state.parentCategory =
-                payload.parentCategory || state.parentCategory;
+                payload.parentCategory.key || state.parentCategory;
             state.category = payload.category || state.category;
             state.area = payload.area || state.area;
             state.plotArea = payload.plotArea || state.plotArea;

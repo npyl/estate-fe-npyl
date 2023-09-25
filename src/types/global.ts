@@ -1,3 +1,5 @@
+import { KeyValue } from "./KeyValue";
+
 export type LeadSource =
     | "Facebook"
     | "Instagram"
@@ -44,10 +46,7 @@ export interface IGlobalProperty {
     state: KeyValue[];
     details: IGlobalPropertyDetails;
 }
-interface KeyValue {
-    key: string;
-    value: string;
-}
+
 export interface IGlobalCustomer {
     leadSource: KeyValue[];
     timeframe: KeyValue[];
