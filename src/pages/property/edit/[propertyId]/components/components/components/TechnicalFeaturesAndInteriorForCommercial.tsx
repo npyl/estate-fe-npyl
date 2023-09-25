@@ -209,9 +209,9 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                                 },
                             }}
                         >
-                            {details?.floorType?.map((option) => (
-                                <MenuItem key={option} value={option}>
-                                    {option}
+                            {details?.floorType?.map(({ key, value }) => (
+                                <MenuItem key={key} value={key}>
+                                    {value}
                                 </MenuItem>
                             ))}
                         </TextField>
