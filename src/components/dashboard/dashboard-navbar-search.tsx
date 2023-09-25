@@ -28,7 +28,7 @@ export const DashboardNavbarSearch: FC = () => {
     });
 
     const handleSearch = useDebouncedCallback((value) => {
-        setDebouncedText(value);
+        if (searchText != "") setDebouncedText(value);
     }, 50);
 
     const handleInputChange = (event: any) => {
@@ -56,27 +56,43 @@ export const DashboardNavbarSearch: FC = () => {
                 value={searchText}
                 onChange={handleInputChange}
                 placeholder={t("Search with a keyword") || ""}
+                sx={{
+                    input: {
+                        paddingLeft: "30px", // adjust this as needed
+                    },
+                    "input::placeholder": {
+                        textIndent: "0px", // adjust this as needed
+                    },
+                }}
+                startAdornment={
+                    <IconButton
+                        disabled
+                        sx={{
+                            borderRight: "1px solid",
+                            borderColor: "divider",
+                            borderRadius: 0,
+                        }}
+                        color={"primary"}
+                        disableFocusRipple
+                        disableRipple
+                        onClick={handleSearch}
+                    >
+                        <SearchIcon />
+                    </IconButton>
+                }
                 endAdornment={
                     <InputAdornment
-                        sx={{ display: { xs: "none", md: "flex" } }}
+                        sx={{
+                            paddingLeft: "100px",
+                            display: { xs: "none", md: "flex" },
+                        }}
                         position="end"
                     >
-                        <IconButton
-                            sx={{
-                                borderRight: "1px solid",
-                                borderColor: "divider",
-                                borderRadius: 0,
-                            }}
-                            color={"primary"}
-                            disableFocusRipple
-                            disableRipple
-                            onClick={handleSearch}
-                        >
-                            <SearchIcon />
-                        </IconButton>
-
                         <Select
                             sx={{
+                                borderLeft: "1px solid",
+                                borderColor: "divider",
+                                borderRadius: 0,
                                 width: "150px",
                                 ".MuiOutlinedInput-notchedOutline": {
                                     border: 0,

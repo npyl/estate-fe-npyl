@@ -51,7 +51,7 @@ const EditPropertyPage: NextPage = () => {
 
     usePublishTab(
         {
-            title: "Edit Property",
+            title: "Create Property",
             path: `/property/edit/${propertyId}`,
         },
         data?.code || `${data?.id}`

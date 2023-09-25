@@ -1,6 +1,7 @@
 import { Chip, Grid, Stack, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { useGetLabelsQuery } from "src/services/labels";
 import { deleteFilter, getChangedFields, selectIds } from "src/slices/filters";
 
 const ChosenFilters = () => {
@@ -106,14 +107,22 @@ const ChosenFilters = () => {
             changedProps.hasOwnProperty(maxKey)
         );
     };
-
+    const { data } = useGetLabelsQuery();
+    const allLabels = data?.propertyLabels || [];
+    const getLabelNames = (labelIds: any[]) => {
+        return labelIds
+            .map((id) => {
+                const label = allLabels.find((label) => label.id === id);
+                return label ? label.name : "Unknown";
+            })
+            .join(", ");
+    };
     return (
         <Grid container direction="row">
             {ids.map((key, index) => {
                 const values = changedProps[key];
-                // console.log(key);
-                // console.log("filterTags:", filterTags);
-                // console.log("key:", key);
+                let valuesToDisplay =
+                    key === "labels" ? getLabelNames(values) : values;
                 let label = filterTags[key].label;
 
                 if (values === 0 || values == undefined) {
@@ -139,12 +148,11 @@ const ChosenFilters = () => {
                             label={
                                 <Stack direction="row">
                                     <Typography
-                                        sx={{
-                                            fontWeight: "medium",
-                                            paddingRight: 1,
-                                        }}
+                                        sx={{ textTransform: "lowercase" }}
                                     >
-                                        {label}:
+                                        {Array.isArray(valuesToDisplay)
+                                            ? valuesToDisplay.join(", ")
+                                            : valuesToDisplay}
                                     </Typography>
                                     <Typography
                                         sx={{
