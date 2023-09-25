@@ -23,6 +23,7 @@ import { IGlobalProperty } from "src/types/global";
 
 import { Send as SendIcon } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
+import { KeyValue } from "src/types/KeyValue";
 
 interface IFormProps {
     performUpload?: () => void;
@@ -43,35 +44,15 @@ export default function Form({ performUpload }: IFormProps) {
     if (!enums || !parentCategoryEnum || parentCategoryEnum.length === 0)
         return null;
 
-    const enumsKeys = {
-        residentialCategory: [
-            { key: "house", value: "House" },
-            { key: "apartment", value: "Apartment" },
-        ],
-        commercialCategory: [
-            { key: "office", value: "Office" },
-            { key: "shop", value: "Shop" },
-        ],
-        landCategory: [
-            { key: "farm", value: "Farm" },
-            { key: "plot", value: "Plot" },
-        ],
-        otherCategory: [
-            { key: "garage", value: "Garage" },
-            { key: "storage", value: "Storage" },
-        ],
-    };
-    type CategoryObject = { key: string; value: string };
     const subCategoriesMap: {
-        [key: string]: CategoryObject[];
+        [key: string]: KeyValue[];
     } = {
         Residential: enums.residentialCategory,
         Commercial: enums.commercialCategory,
         Land: enums.landCategory,
         Other: enums.otherCategory,
     };
-    console.log(parentCategoryEnum);
-    console.log(parentCategory);
+
     return (
         <Grid container spacing={1} paddingLeft={2} paddingTop={3}>
             <Grid

@@ -44,12 +44,12 @@ export default function SaleSelect() {
                 input={<OutlinedInput label="Κατάσταση" />}
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
-                {stateEnum.map((option) => {
+                {stateEnum.map(({ key, value }) => {
                     return (
-                        <MenuItem key={option} value={option}>
-                            <Checkbox checked={states.indexOf(option) > -1} />
+                        <MenuItem key={key} value={key}>
+                            <Checkbox checked={states.indexOf(key) > -1} />
 
-                            {option}
+                            {value}
                         </MenuItem>
                     );
                 })}

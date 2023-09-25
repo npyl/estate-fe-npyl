@@ -152,8 +152,8 @@ export const EditState = ({ data, setData }: EditProps<string>) => {
                 {stateEnum ? (
                     stateEnum.map((item, index) => {
                         return (
-                            <MenuItem key={index} value={item}>
-                                {item}
+                            <MenuItem key={index} value={item.key}>
+                                {item.value}
                             </MenuItem>
                         );
                     })

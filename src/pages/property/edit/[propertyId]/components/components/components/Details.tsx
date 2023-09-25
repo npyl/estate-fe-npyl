@@ -162,14 +162,15 @@ const DetailsSection: React.FC<any> = (props) => {
                                                         }}
                                                     >
                                                         {details?.furnished?.map(
-                                                            (option) => (
+                                                            ({
+                                                                key,
+                                                                value,
+                                                            }) => (
                                                                 <MenuItem
-                                                                    key={option}
-                                                                    value={
-                                                                        option
-                                                                    }
+                                                                    key={key}
+                                                                    value={key}
                                                                 >
-                                                                    {option}
+                                                                    {value}
                                                                 </MenuItem>
                                                             )
                                                         )}
@@ -195,14 +196,15 @@ const DetailsSection: React.FC<any> = (props) => {
                                                         }}
                                                     >
                                                         {details?.orientation?.map(
-                                                            (option) => (
+                                                            ({
+                                                                key,
+                                                                value,
+                                                            }) => (
                                                                 <MenuItem
-                                                                    key={option}
-                                                                    value={
-                                                                        option
-                                                                    }
+                                                                    key={key}
+                                                                    value={key}
                                                                 >
-                                                                    {option}
+                                                                    {value}
                                                                 </MenuItem>
                                                             )
                                                         )}
@@ -228,14 +230,15 @@ const DetailsSection: React.FC<any> = (props) => {
                                                         }}
                                                     >
                                                         {details?.floorType?.map(
-                                                            (option) => (
+                                                            ({
+                                                                key,
+                                                                value,
+                                                            }) => (
                                                                 <MenuItem
-                                                                    key={option}
-                                                                    value={
-                                                                        option
-                                                                    }
+                                                                    key={key}
+                                                                    value={key}
                                                                 >
-                                                                    {option}
+                                                                    {value}
                                                                 </MenuItem>
                                                             )
                                                         )}
@@ -260,14 +263,15 @@ const DetailsSection: React.FC<any> = (props) => {
                                                         }}
                                                     >
                                                         {details?.viewType?.map(
-                                                            (option) => (
+                                                            ({
+                                                                key,
+                                                                value,
+                                                            }) => (
                                                                 <MenuItem
-                                                                    key={option}
-                                                                    value={
-                                                                        option
-                                                                    }
+                                                                    key={key}
+                                                                    value={key}
                                                                 >
-                                                                    {option}
+                                                                    {value}
                                                                 </MenuItem>
                                                             )
                                                         )}
@@ -293,14 +297,15 @@ const DetailsSection: React.FC<any> = (props) => {
                                                         }}
                                                     >
                                                         {details?.frameType?.map(
-                                                            (option) => (
+                                                            ({
+                                                                key,
+                                                                value,
+                                                            }) => (
                                                                 <MenuItem
-                                                                    key={option}
-                                                                    value={
-                                                                        option
-                                                                    }
+                                                                    key={key}
+                                                                    value={key}
                                                                 >
-                                                                    {option}
+                                                                    {value}
                                                                 </MenuItem>
                                                             )
                                                         )}
@@ -326,14 +331,15 @@ const DetailsSection: React.FC<any> = (props) => {
                                                         }}
                                                     >
                                                         {details?.accessibility?.map(
-                                                            (option) => (
+                                                            ({
+                                                                key,
+                                                                value,
+                                                            }) => (
                                                                 <MenuItem
-                                                                    key={option}
-                                                                    value={
-                                                                        option
-                                                                    }
+                                                                    key={key}
+                                                                    value={key}
                                                                 >
-                                                                    {option}
+                                                                    {value}
                                                                 </MenuItem>
                                                             )
                                                         )}
@@ -359,14 +365,15 @@ const DetailsSection: React.FC<any> = (props) => {
                                                         }}
                                                     >
                                                         {details?.energyClass?.map(
-                                                            (option) => (
+                                                            ({
+                                                                key,
+                                                                value,
+                                                            }) => (
                                                                 <MenuItem
-                                                                    key={option}
-                                                                    value={
-                                                                        option
-                                                                    }
+                                                                    key={key}
+                                                                    value={key}
                                                                 >
-                                                                    {option}
+                                                                    {value}
                                                                 </MenuItem>
                                                             )
                                                         )}
@@ -391,14 +398,15 @@ const DetailsSection: React.FC<any> = (props) => {
                                                         }}
                                                     >
                                                         {details?.zoneType?.map(
-                                                            (option) => (
+                                                            ({
+                                                                key,
+                                                                value,
+                                                            }) => (
                                                                 <MenuItem
-                                                                    key={option}
-                                                                    value={
-                                                                        option
-                                                                    }
+                                                                    key={key}
+                                                                    value={key}
                                                                 >
-                                                                    {option}
+                                                                    {value}
                                                                 </MenuItem>
                                                             )
                                                         )}
@@ -423,14 +431,15 @@ const DetailsSection: React.FC<any> = (props) => {
                                                         }}
                                                     >
                                                         {details?.electricityType?.map(
-                                                            (option) => (
+                                                            ({
+                                                                key,
+                                                                value,
+                                                            }) => (
                                                                 <MenuItem
-                                                                    key={option}
-                                                                    value={
-                                                                        option
-                                                                    }
+                                                                    key={key}
+                                                                    value={key}
                                                                 >
-                                                                    {option}
+                                                                    {value}
                                                                 </MenuItem>
                                                             )
                                                         )}
@@ -673,14 +682,15 @@ const DetailsSection: React.FC<any> = (props) => {
                                                         }}
                                                     >
                                                         {details?.heatingType?.map(
-                                                            (option) => (
+                                                            ({
+                                                                key,
+                                                                value,
+                                                            }) => (
                                                                 <MenuItem
-                                                                    key={option}
-                                                                    value={
-                                                                        option
-                                                                    }
+                                                                    key={key}
+                                                                    value={key}
                                                                 >
-                                                                    {option}
+                                                                    {value}
                                                                 </MenuItem>
                                                             )
                                                         )}
@@ -705,14 +715,15 @@ const DetailsSection: React.FC<any> = (props) => {
                                                         }}
                                                     >
                                                         {details?.heatingSystem?.map(
-                                                            (option) => (
+                                                            ({
+                                                                key,
+                                                                value,
+                                                            }) => (
                                                                 <MenuItem
-                                                                    key={option}
-                                                                    value={
-                                                                        option
-                                                                    }
+                                                                    key={key}
+                                                                    value={key}
                                                                 >
-                                                                    {option}
+                                                                    {value}
                                                                 </MenuItem>
                                                             )
                                                         )}

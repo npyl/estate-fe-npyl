@@ -53,18 +53,18 @@ export default function CategorySelect() {
                 input={<OutlinedInput label={t("Categories")} />}
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
-                {categoryEnums!.map((option) => {
+                {categoryEnums!.map(({ key, value }) => {
                     return (
-                        <MenuItem key={option} value={option}>
+                        <MenuItem key={key} value={key}>
                             <Checkbox
                                 checked={
                                     categories &&
                                     categories.length > 0 &&
-                                    categories.indexOf(option) > -1
+                                    categories.indexOf(key) > -1
                                 }
                             />
 
-                            {option}
+                            {value}
                         </MenuItem>
                     );
                 })}

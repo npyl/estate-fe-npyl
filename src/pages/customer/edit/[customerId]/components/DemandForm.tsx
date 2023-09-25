@@ -54,6 +54,7 @@ import { AreaOfPreference } from "./DemandForm/AreaOfPreference";
 import { LabelSelect } from "./LabelSelect";
 import PriorityFeatures from "./PriorityFeatures";
 import NonPriorityFeatures from "./NonPriorityFeatures";
+import { KeyValue } from "src/types/KeyValue";
 
 interface DemandFormProps {
     index: number;
@@ -108,7 +109,7 @@ const DemandForm: FC<DemandFormProps> = (props) => {
     const [autocompleteValue, setAutocompleteValue] = useState("");
 
     const subCategoriesMap: {
-        [key: string]: string[];
+        [key: string]: KeyValue[];
     } = {
         Residential: propertyEnums?.residentialCategory ?? [],
         Commercial: propertyEnums?.commercialCategory ?? [],
@@ -387,18 +388,18 @@ const DemandForm: FC<DemandFormProps> = (props) => {
                                     },
                                 }}
                             >
-                                {parentCategoryEnum.map((option) => {
+                                {parentCategoryEnum.map(({ key, value }) => {
                                     return (
-                                        <MenuItem key={option} value={option}>
+                                        <MenuItem key={key} value={key}>
                                             <Checkbox
                                                 checked={
                                                     parentCategories.indexOf(
-                                                        option
+                                                        key
                                                     ) > -1
                                                 }
                                             />
 
-                                            {option}
+                                            {value}
                                         </MenuItem>
                                     );
                                 })}
@@ -433,20 +434,20 @@ const DemandForm: FC<DemandFormProps> = (props) => {
                                     >
                                         {subCategoriesMap[e] ? (
                                             subCategoriesMap[e].map(
-                                                (option) => {
+                                                ({ key, value }) => {
                                                     return (
                                                         <MenuItem
-                                                            key={option}
-                                                            value={option}
+                                                            key={key}
+                                                            value={key}
                                                         >
                                                             <Checkbox
                                                                 checked={
                                                                     parentCategories.indexOf(
-                                                                        option
+                                                                        key
                                                                     ) > -1
                                                                 }
                                                             />
-                                                            {option}
+                                                            {value}
                                                         </MenuItem>
                                                     );
                                                 }
@@ -474,17 +475,16 @@ const DemandForm: FC<DemandFormProps> = (props) => {
                                     },
                                 }}
                             >
-                                {furnishingEnum.map((option) => {
+                                {furnishingEnum.map(({ key, value }) => {
                                     return (
-                                        <MenuItem key={option} value={option}>
+                                        <MenuItem key={key} value={key}>
                                             <Checkbox
                                                 checked={
-                                                    furnished.indexOf(option) >
-                                                    -1
+                                                    furnished.indexOf(key) > -1
                                                 }
                                             />
 
-                                            {option}
+                                            {value}
                                         </MenuItem>
                                     );
                                 })}
@@ -507,16 +507,16 @@ const DemandForm: FC<DemandFormProps> = (props) => {
                                     },
                                 }}
                             >
-                                {stateEnum.map((option) => {
+                                {stateEnum.map(({ key, value }) => {
                                     return (
-                                        <MenuItem key={option} value={option}>
+                                        <MenuItem key={key} value={key}>
                                             <Checkbox
                                                 checked={
-                                                    state.indexOf(option) > -1
+                                                    state.indexOf(key) > -1
                                                 }
                                             />
 
-                                            {option}
+                                            {value}
                                         </MenuItem>
                                     );
                                 })}
@@ -541,10 +541,10 @@ const DemandForm: FC<DemandFormProps> = (props) => {
                                     );
                                 }}
                             >
-                                {timeframeEnum.map((item, index) => {
+                                {timeframeEnum.map(({ key, value }) => {
                                     return (
-                                        <MenuItem key={index} value={item}>
-                                            {item}
+                                        <MenuItem key={key} value={key}>
+                                            {value}
                                         </MenuItem>
                                     );
                                 })}
@@ -969,14 +969,14 @@ const DemandForm: FC<DemandFormProps> = (props) => {
                                 <Slider
                                     getAriaLabel={() => "Floor Slider"}
                                     orientation="horizontal"
-                                    value={[
-                                        minFloorsArray.indexOf(
-                                            minFloor as string
-                                        ),
-                                        maxFloorsArray.indexOf(
-                                            maxFloor as string
-                                        ),
-                                    ]}
+                                    // value={[
+                                    //     minFloorsArray.indexOf(
+                                    //         minFloor as string
+                                    //     ),
+                                    //     maxFloorsArray.indexOf(
+                                    //         maxFloor as string
+                                    //     ),
+                                    // ]}
                                     onChange={(
                                         _event: any,
                                         newValue: number | number[],
@@ -1002,14 +1002,14 @@ const DemandForm: FC<DemandFormProps> = (props) => {
                                         }
                                     }}
                                     valueLabelDisplay="auto"
-                                    valueLabelFormat={(
-                                        value: number,
-                                        index: number
-                                    ) =>
-                                        index === 0
-                                            ? minFloorsArray[value]
-                                            : maxFloorsArray[value]
-                                    }
+                                    // valueLabelFormat={(
+                                    //     value: number,
+                                    //     index: number
+                                    // ) =>
+                                    //     index === 0
+                                    //         ? minFloorsArray[value]
+                                    //         : maxFloorsArray[value]
+                                    // }
                                     min={0}
                                     max={maxFloorsArray.length - 41}
                                 />
@@ -1031,16 +1031,18 @@ const DemandForm: FC<DemandFormProps> = (props) => {
                                         }}
                                     >
                                         {minFloors
-                                            ? minFloors.map((item, index) => {
-                                                  return (
-                                                      <MenuItem
-                                                          key={index}
-                                                          value={item}
-                                                      >
-                                                          {item}
-                                                      </MenuItem>
-                                                  );
-                                              })
+                                            ? minFloors.map(
+                                                  ({ key, value }) => {
+                                                      return (
+                                                          <MenuItem
+                                                              key={key}
+                                                              value={key}
+                                                          >
+                                                              {value}
+                                                          </MenuItem>
+                                                      );
+                                                  }
+                                              )
                                             : null}
                                     </Select>
                                 </FormControl>{" "}
@@ -1061,16 +1063,18 @@ const DemandForm: FC<DemandFormProps> = (props) => {
                                         }}
                                     >
                                         {maxFloors
-                                            ? maxFloors.map((item, index) => {
-                                                  return (
-                                                      <MenuItem
-                                                          key={index}
-                                                          value={item}
-                                                      >
-                                                          {item}
-                                                      </MenuItem>
-                                                  );
-                                              })
+                                            ? maxFloors.map(
+                                                  ({ key, value }) => {
+                                                      return (
+                                                          <MenuItem
+                                                              key={key}
+                                                              value={key}
+                                                          >
+                                                              {value}
+                                                          </MenuItem>
+                                                      );
+                                                  }
+                                              )
                                             : null}
                                     </Select>
                                 </FormControl>{" "}

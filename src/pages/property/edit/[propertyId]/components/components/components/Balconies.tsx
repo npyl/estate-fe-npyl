@@ -95,11 +95,13 @@ const BalconiesSection: React.FC<any> = (props) => {
                                         );
                                     }}
                                 >
-                                    {details?.balconySide?.map((option) => (
-                                        <MenuItem key={option} value={option}>
-                                            {option}
-                                        </MenuItem>
-                                    ))}
+                                    {details?.balconySide?.map(
+                                        ({ key, value }) => (
+                                            <MenuItem key={key} value={key}>
+                                                {value}
+                                            </MenuItem>
+                                        )
+                                    )}
                                 </TextField>
                             </Grid>
 

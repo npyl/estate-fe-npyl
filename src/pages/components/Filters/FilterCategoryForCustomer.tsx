@@ -11,17 +11,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { useAllGlobalsQuery } from "src/services/global";
 import { useTranslation } from "react-i18next";
-import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import {
     selectParentCategories,
     setParentCategories,
 } from "src/slices/customer/filters";
-type FilterVariant = "property" | "customer";
-interface FilterCategoryProps {
-    variant: FilterVariant;
-    parentCategories: string[];
-    setParentCategories: ActionCreatorWithPayload<any, string>;
-}
+
 export default function CategoryForCustomerSelect() {
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -62,18 +56,18 @@ export default function CategoryForCustomerSelect() {
                 input={<OutlinedInput label={t("Categories")} />}
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
-                {parentCategoryEnums!.map((option) => {
+                {parentCategoryEnums!.map(({ key, value }) => {
                     return (
-                        <MenuItem key={option} value={option}>
+                        <MenuItem key={key} value={key}>
                             <Checkbox
                                 checked={
                                     parentCategories &&
                                     parentCategories.length > 0 &&
-                                    parentCategories.indexOf(option) > -1
+                                    parentCategories.indexOf(key) > -1
                                 }
                             />
 
-                            {option}
+                            {value}
                         </MenuItem>
                     );
                 })}

@@ -97,11 +97,13 @@ const ParkingSection: React.FC<any> = () => {
                                         );
                                     }}
                                 >
-                                    {details?.parkingType?.map((option) => (
-                                        <MenuItem key={option} value={option}>
-                                            {option}
-                                        </MenuItem>
-                                    ))}
+                                    {details?.parkingType?.map(
+                                        ({ key, value }) => (
+                                            <MenuItem key={key} value={key}>
+                                                {value}
+                                            </MenuItem>
+                                        )
+                                    )}
                                 </TextField>
                             </Grid>
 
