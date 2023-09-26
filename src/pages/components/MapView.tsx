@@ -205,7 +205,7 @@ export function HorizontalCard({ item, activeMarker }: BookingItemProps) {
                     spacing={1}
                 >
                     <Typography variant="h5" width={"100%"}>
-                        {parentCategory}
+                        {parentCategory.value}
                     </Typography>
 
                     <Stack direction={"row"} spacing={1}>
@@ -237,7 +237,7 @@ export function HorizontalCard({ item, activeMarker }: BookingItemProps) {
                     <Stack direction={"row"} spacing={1}>
                         <Iconify icon={"ph:bed"} />
                         <Typography variant="body2">
-                            {details?.floor}
+                            {details?.floor.value}
                         </Typography>
                     </Stack>
 
@@ -255,7 +255,7 @@ export function HorizontalCard({ item, activeMarker }: BookingItemProps) {
                         </Typography>
                     </Stack>
 
-                    {parentCategory === "Land" && (
+                    {parentCategory.key === "LAND" && (
                         <Stack direction={"row"} spacing={1}>
                             <Typography variant="body1">Οικόπεδο: </Typography>
                             <Typography variant="body1">
