@@ -16,7 +16,7 @@ const CreatePropertyPage: NextPage = () => {
     const router = useRouter();
     const dispatch = useDispatch();
 
-    usePublishTab({ title: "Create Property", path: "/property/create" });
+    usePublishTab({ title: "Create Draft Property", path: "/property/create" });
 
     const [
         create,

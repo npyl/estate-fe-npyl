@@ -72,7 +72,7 @@ const PriceLabel = ({ value }: { value: number }) => {
         </Box>
     );
 };
-const defaultImage = "/static/monoAekReMounia.png";
+const defaultImage = "/static/noImage.png";
 export const BookingItem = ({ item, activeMarker }: BookingItemProps) => {
     const {
         details,

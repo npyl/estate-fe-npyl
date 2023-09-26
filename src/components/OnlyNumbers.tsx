@@ -20,8 +20,17 @@ const OnlyNumbersInput: React.FC<OnlyNumbersInputProps> = ({
     ...props
 }) => {
     const [localValue, setLocalValue] = useState<string | number>(value || "");
+    const [displayValue, setDisplayValue] = useState<string | number>(
+        value || ""
+    );
+
     useEffect(() => {
         setLocalValue(value || "");
+        if (value !== null && value !== undefined) {
+            setDisplayValue(formatNumberWithPeriod(value));
+        } else {
+            setDisplayValue("");
+        }
     }, [value]);
 
     const debouncedOnChange = useDebouncedCallback(
@@ -29,19 +38,29 @@ const OnlyNumbersInput: React.FC<OnlyNumbersInputProps> = ({
         50
     );
 
+    const formatNumberWithPeriod = (num: string | number) => {
+        if (num === null || num === undefined) {
+            return "";
+        }
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    };
+
     const handleCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const input = event.target.value;
         const numericValue = input.replace(/[^0-9]/g, "");
 
         setLocalValue(numericValue); // set local value immediately
         debouncedOnChange(numericValue); // set store with debounce
+
+        const formattedValue = formatNumberWithPeriod(numericValue);
+        setDisplayValue(formattedValue); // set display value
     };
 
     return (
         <TextField
             fullWidth
             label={label}
-            value={localValue}
+            value={displayValue}
             onChange={handleCodeChange}
             {...props}
             disabled={disabled}

@@ -7,7 +7,7 @@ import {
     ListManagerItem,
 } from "src/components/List";
 import ListLabelsItem from "src/components/List/labels-item";
-import { IProperties, ParentCategory } from "src/types/properties";
+import { IProperties } from "src/types/properties";
 import { IUser } from "src/types/user";
 import PopupWindow from "./PopopWindowROI";
 import { ICustomer } from "src/types/customer";
@@ -95,7 +95,7 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Category",
         "Area",
         "Plot Area",
-        "Estimated Rend Price",
+        "Estimated Rent Price",
         "Available After",
         "Rental Period Start",
         "Rental Period End",
@@ -165,7 +165,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Parent Category")}
-                        value={data?.parentCategory.value}
+                        value={data?.parentCategory.value || "-"}
                         align="horizontal"
                     />
                 );
@@ -173,7 +173,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Category")}
-                        value={data?.category.value}
+                        value={data?.category.value || "-"}
                         align="horizontal"
                     />
                 );
@@ -181,7 +181,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Area")}
-                        value={data?.area + "m²"}
+                        value={data?.area ? `${data?.area}m²` : "-"}
                         align="horizontal"
                     />
                 );
@@ -189,15 +189,19 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Plot Area")}
-                        value={data?.plotArea + "m²"}
+                        value={data?.plotArea ? `${data?.plotArea}m²` : "-"}
                         align="horizontal"
                     />
                 );
-            case "Estimated Rend Price":
+            case "Estimated Rent Price":
                 return (
                     <ListItem
                         label={t("Estimated Rent Price")}
-                        value={data?.estimatedRentPrice + "€"}
+                        value={
+                            data?.estimatedRentPrice
+                                ? `${data?.estimatedRentPrice}€`
+                                : "-"
+                        }
                         align="horizontal"
                     />
                 );
@@ -205,7 +209,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Available After")}
-                        value={data?.availableAfter}
+                        value={data?.availableAfter || "-"}
                         align="horizontal"
                     />
                 );
@@ -213,7 +217,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Rental Period Start")}
-                        value={data?.rentalStart}
+                        value={data?.rentalStart || "-"}
                         align="horizontal"
                     />
                 );
@@ -221,7 +225,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Rental Period End")}
-                        value={data?.rentalEnd}
+                        value={data?.rentalEnd || "-"}
                         align="horizontal"
                     />
                 );
@@ -229,13 +233,20 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Current Rent Price")}
-                        value={data?.currentRentPrice + "€"}
+                        value={
+                            data?.currentRentPrice
+                                ? `${data?.currentRentPrice}€`
+                                : "-"
+                        }
                         align="horizontal"
                     />
                 );
             case "Labels":
                 return (
-                    <ListLabelsItem labels={data?.labels} label={t("Labels")} />
+                    <ListLabelsItem
+                        labels={data?.labels || []}
+                        label={t("Labels")}
+                    />
                 );
             case "ROI":
                 return (
@@ -253,7 +264,9 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Average Utilities")}
-                        value={data?.averageUtils + " €"}
+                        value={
+                            data?.averageUtils ? `${data?.averageUtils} €` : "-"
+                        }
                         align="horizontal"
                     />
                 );
@@ -261,7 +274,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Year of Construction")}
-                        value={data.construction?.yearOfConstruction}
+                        value={data?.construction?.yearOfConstruction || "-"}
                         align="horizontal"
                     />
                 );
@@ -269,7 +282,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Code")}
-                        value={data?.code}
+                        value={data?.code || "-"}
                         align="horizontal"
                     />
                 );
@@ -277,7 +290,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Price")}
-                        value={data?.price + "€"}
+                        value={data?.price ? `${data?.price}€` : "-"}
                         align="horizontal"
                     />
                 );
@@ -285,7 +298,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Key Code")}
-                        value={data?.keyCode}
+                        value={data?.keyCode || "-"}
                         align="horizontal"
                     />
                 );
@@ -297,16 +310,15 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("State")}
-                        value={data?.state.value}
+                        value={data?.state.value || "-"}
                         align="horizontal"
                     />
                 );
-
             case "Rented":
                 return (
                     <ListBooleanItem
                         label={t("Rented")}
-                        status={data?.rented}
+                        status={data?.rented ?? "-"}
                         align="horizontal"
                     />
                 );
@@ -314,7 +326,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Debatable Price")}
-                        status={data?.debatablePrice}
+                        status={data?.debatablePrice ?? "-"}
                         align="horizontal"
                     />
                 );
@@ -322,7 +334,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Auction")}
-                        status={data?.auction}
+                        status={data?.auction ?? "-"}
                         align="horizontal"
                     />
                 );
@@ -330,7 +342,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Buildable")}
-                        status={data?.buildable}
+                        status={data?.buildable ?? "-"}
                         align="horizontal"
                     />
                 );

@@ -55,6 +55,15 @@ const ViewAll: FC = () => {
 
     const changedPropertyFilters = useSelector(sumOfChangedProperties);
 
+    //format value number with dots
+    const formatNumberWithPeriod = (num: any) => {
+        if (num === null || num === undefined) {
+            return "";
+        }
+        const numericValue = num.toString().replace(/[^0-9]/g, "");
+        return numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    };
+
     // sorting
     const [sortingBy, setSortingBy] = useState("");
     const [sortingOrder, setSortingOrder] = useState("asc");
@@ -108,17 +117,27 @@ const ViewAll: FC = () => {
             label: "Map",
         },
     ];
-
+    const defaultImage = "/static/noImage.png";
     function renderImage(params: GridCellParams) {
-        return (
-            <>
+        if (params.formattedValue) {
+            return (
+                <>
+                    <Image
+                        src={`${params.formattedValue}` || ""}
+                        alt=""
+                        ratio="16/9"
+                    />
+                </>
+            );
+        } else {
+            return (
                 <Image
-                    src={`${params.formattedValue}` || ""}
-                    alt=""
+                    src={defaultImage} // Make sure 'defaultImage' is imported or defined in your file
+                    alt="Default image description"
                     ratio="16/9"
                 />
-            </>
-        );
+            );
+        }
     }
 
     type PropertyStatus =
@@ -209,7 +228,8 @@ const ViewAll: FC = () => {
             align: "center",
             headerName: t("Price") as string,
             renderCell: (params: GridCellParams) => {
-                return params.value ? `${params.value} €` : "";
+                const formattedPrice = formatNumberWithPeriod(params.value);
+                return formattedPrice ? `${formattedPrice} €` : "";
             },
         },
         {
@@ -406,3 +426,6 @@ const ViewAll: FC = () => {
 };
 
 export default ViewAll;
+function formatedPriceWithDots(value: unknown) {
+    throw new Error("Function not implemented.");
+}
