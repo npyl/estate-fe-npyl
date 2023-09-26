@@ -13,6 +13,7 @@ import { LeadSource } from "src/types/global";
 
 import { Label, LabelColor } from "src/components/label";
 import { useMemo } from "react";
+import { useAllGlobalsQuery } from "src/services/global";
 
 interface TypeProps {
     seller: boolean;
@@ -70,6 +71,28 @@ const InformationSection: React.FC = (props) => {
     const { t } = useTranslation();
     const { data } = useGetCustomerByIdQuery(parseInt(customerId as string)); // basic details
     const leadSource = data?.leadSource as LeadSource;
+    const enums = useAllGlobalsQuery().data;
+    const nationalitiesEnum = enums?.customer?.nationality;
+    const leadSourceEnum = enums?.customer?.leadSource;
+    let displayNationality = "-";
+    if (nationalitiesEnum && data?.nationality !== undefined) {
+        const foundNationality = nationalitiesEnum.find(
+            (item) =>
+                item.value === data?.nationality ||
+                item.key === data?.nationality
+        );
+
+        displayNationality = foundNationality
+            ? foundNationality.value
+            : "Unknown";
+    }
+    let displayLeadSource = "-";
+    if (leadSourceEnum && leadSource !== undefined) {
+        const foundLeadSource = leadSourceEnum.find(
+            (item) => item.value === leadSource || item.key === leadSource
+        );
+        displayLeadSource = foundLeadSource ? foundLeadSource.value : "Unknown";
+    }
 
     if (!data) return null;
 
@@ -154,7 +177,7 @@ const InformationSection: React.FC = (props) => {
                     <List>
                         <ListItem
                             label={t("Nationality")}
-                            value={data?.nationality || "-"}
+                            value={displayNationality || "-"}
                             align="horizontal"
                         />
                         <ListItem
@@ -179,10 +202,10 @@ const InformationSection: React.FC = (props) => {
                         />
                         <ListItem
                             label={t("Lead Source")}
-                            value={leadSource || "-"}
+                            value={displayLeadSource}
                             align="horizontal"
                         />
-                        {leadSource === "Customer" && (
+                        {displayLeadSource === "Customer" && (
                             <ListItem
                                 label={t("Suggested by")}
                                 value={data?.suggestedBy || "-"}

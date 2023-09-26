@@ -144,9 +144,9 @@ const PropertyDescriptionForCommercialSection: React.FC<any> = (props) => {
                                 },
                             }}
                         >
-                            {details?.floors?.map((option) => (
-                                <MenuItem key={option} value={option}>
-                                    {option}
+                            {details?.floors?.map((floor, index) => (
+                                <MenuItem key={index} value={floor.key}>
+                                    {floor.value}
                                 </MenuItem>
                             ))}
                         </TextField>
@@ -222,11 +222,16 @@ const PropertyDescriptionForCommercialSection: React.FC<any> = (props) => {
                                 },
                             }}
                         >
-                            {details?.accessibility?.map((option) => (
-                                <MenuItem key={option} value={option}>
-                                    {option}
-                                </MenuItem>
-                            ))}
+                            {details?.accessibility?.map(
+                                (accessibility, index) => (
+                                    <MenuItem
+                                        key={index}
+                                        value={accessibility.key}
+                                    >
+                                        {accessibility.value}
+                                    </MenuItem>
+                                )
+                            )}
                         </TextField>
                     </Grid>
                     <Grid item xs={6}>
@@ -247,9 +252,9 @@ const PropertyDescriptionForCommercialSection: React.FC<any> = (props) => {
                                 },
                             }}
                         >
-                            {details?.landUse?.map((option) => (
-                                <MenuItem key={option} value={option}>
-                                    {option}
+                            {details?.landUse?.map((landUse, index) => (
+                                <MenuItem key={index} value={landUse.key}>
+                                    {landUse.value}
                                 </MenuItem>
                             ))}
                         </TextField>
@@ -273,9 +278,9 @@ const PropertyDescriptionForCommercialSection: React.FC<any> = (props) => {
                                 },
                             }}
                         >
-                            {details?.zoneType?.map((option) => (
-                                <MenuItem key={option} value={option}>
-                                    {option}
+                            {details?.zoneType?.map((zoneType, index) => (
+                                <MenuItem key={index} value={zoneType.key}>
+                                    {zoneType.value}
                                 </MenuItem>
                             ))}
                         </TextField>

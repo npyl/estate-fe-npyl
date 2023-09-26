@@ -43,15 +43,35 @@ export default function Form({ performUpload }: IFormProps) {
     if (!enums || !parentCategoryEnum || parentCategoryEnum.length === 0)
         return null;
 
+    const enumsKeys = {
+        residentialCategory: [
+            { key: "house", value: "House" },
+            { key: "apartment", value: "Apartment" },
+        ],
+        commercialCategory: [
+            { key: "office", value: "Office" },
+            { key: "shop", value: "Shop" },
+        ],
+        landCategory: [
+            { key: "farm", value: "Farm" },
+            { key: "plot", value: "Plot" },
+        ],
+        otherCategory: [
+            { key: "garage", value: "Garage" },
+            { key: "storage", value: "Storage" },
+        ],
+    };
+    type CategoryObject = { key: string; value: string };
     const subCategoriesMap: {
-        [key: string]: string[];
+        [key: string]: CategoryObject[];
     } = {
         Residential: enums.residentialCategory,
         Commercial: enums.commercialCategory,
         Land: enums.landCategory,
         Other: enums.otherCategory,
     };
-
+    console.log(parentCategoryEnum);
+    console.log(parentCategory);
     return (
         <Grid container spacing={1} paddingLeft={2} paddingTop={3}>
             <Grid
@@ -70,13 +90,17 @@ export default function Form({ performUpload }: IFormProps) {
                             value={parentCategory}
                             label="Parent Category"
                             onChange={(e) => {
-                                dispatch(setParentCategory(e.target.value));
+                                const selectedKey = e.target.value; // This should be the key, not the value
+                                dispatch(setParentCategory(selectedKey));
                             }}
                         >
-                            {parentCategoryEnum.map((item, index) => {
+                            {parentCategoryEnum.map((parentCategory, index) => {
                                 return (
-                                    <MenuItem key={index} value={item}>
-                                        {item}
+                                    <MenuItem
+                                        key={index}
+                                        value={parentCategory.key}
+                                    >
+                                        {parentCategory.value}
                                     </MenuItem>
                                 );
                             })}
@@ -94,22 +118,22 @@ export default function Form({ performUpload }: IFormProps) {
                         onChange={(
                             event: React.ChangeEvent<HTMLInputElement>
                         ) => {
-                            dispatch(setCategory(event.target.value));
+                            const selectedKey = event.target.value;
+                            const selectedItem = subCategoriesMap[
+                                parentCategory
+                            ]?.find((item) => item.key === selectedKey);
+                            if (selectedItem) {
+                                dispatch(setCategory(selectedItem.key));
+                            }
                         }}
                     >
-                        {subCategoriesMap[parentCategory] ? (
-                            subCategoriesMap[parentCategory].map(
-                                (item, index) => {
-                                    return (
-                                        <MenuItem key={index} value={item}>
-                                            {item}
-                                        </MenuItem>
-                                    );
-                                }
+                        {subCategoriesMap[parentCategory]?.map(
+                            (category, index) => (
+                                <MenuItem key={index} value={category.key}>
+                                    {category.value}
+                                </MenuItem>
                             )
-                        ) : (
-                            <MenuItem></MenuItem>
-                        )}
+                        ) || <MenuItem></MenuItem>}
                     </TextField>
                 </Grid>
             </Grid>

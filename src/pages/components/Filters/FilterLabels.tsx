@@ -36,7 +36,16 @@ export default function FilterLabels(props: FilterLabelsProps) {
                     : data?.customerLabels,
             [data]
         ) || [];
-
+    const renderLabelNames = (selectedIds: number[]) => {
+        return selectedIds
+            .map((id) => {
+                const labelOption = labelOptions.find(
+                    (option) => option.id === id
+                );
+                return labelOption ? labelOption.name : "Unknown";
+            })
+            .join(", ");
+    };
     const handleChange = (event: SelectChangeEvent<typeof labels>) => {
         const {
             target: { value },
@@ -57,7 +66,9 @@ export default function FilterLabels(props: FilterLabelsProps) {
                 labelId="demo-simple-select-label"
                 value={labels}
                 onChange={handleChange}
-                renderValue={(selected) => selected.join(", ")}
+                renderValue={(selected) =>
+                    renderLabelNames(selected as number[])
+                }
                 input={<OutlinedInput label="Ετικέτες" />}
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >

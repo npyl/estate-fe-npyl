@@ -11,6 +11,7 @@ import ICarouselImage from "./carousel/types";
 // ----------------------------------------------------------------------
 
 type Props = {
+    initialIndex?: number;
     ratio?: string;
     data: ICarouselImage[];
     mainLabel?: string;
@@ -22,6 +23,7 @@ type Props = {
 
 export default function CarouselSimple({
     data,
+    initialIndex,
     onImageChange,
     onImageClick,
     mainLabel,
@@ -50,6 +52,11 @@ export default function CarouselSimple({
             setNav1(carousel1.current);
         }
     }, []);
+
+    useEffect(() => {
+        if (!initialIndex) return;
+        carousel1.current?.slickGoTo(initialIndex, false);
+    }, [initialIndex]);
 
     const handlePrev = () => {
         carousel1.current?.slickPrev();

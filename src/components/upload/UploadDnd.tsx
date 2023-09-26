@@ -79,39 +79,41 @@ export default function UploadDnd({
     const isError = isDragReject || !!error;
 
     return (
-        <Box sx={{ width: 1, position: "relative", ...sx }}>
-            {/* <StyledDropZone
-                {...getRootProps()}
-                sx={{
-                    ...(isDragActive && {
-                        opacity: 0.72,
-                    }),
-                    ...(isError && {
-                        color: "error.main",
-                        bgcolor: "error.lighter",
-                        borderColor: "error.light",
-                    }),
-                    ...(disabled && {
-                        opacity: 0.48,
-                        pointerEvents: "none",
-                    }),
-                    ...(hasFile && {
-                        padding: "12% 0",
-                    }),
-                }}
-            >
-                <input {...getInputProps()} />
-
-                <Placeholder
+        <Box sx={{ width: 1, position: "relative", ...sx, display: "flex" }}>
+            <Box width="50%" display="flex" justifyContent="flex-start">
+                <StyledDropZone
+                    {...getRootProps()}
                     sx={{
+                        ...(isDragActive && {
+                            opacity: 0.72,
+                        }),
+                        ...(isError && {
+                            color: "error.main",
+                            bgcolor: "error.lighter",
+                            borderColor: "error.light",
+                        }),
+                        ...(disabled && {
+                            opacity: 0.48,
+                            pointerEvents: "none",
+                        }),
                         ...(hasFile && {
-                            opacity: 0,
+                            padding: "12% 0",
                         }),
                     }}
-                />
+                >
+                    <input {...getInputProps()} />
 
-                {hasFile && <SingleFilePreview file={file} />}
-            </StyledDropZone> */}
+                    <Placeholder
+                        sx={{
+                            ...(hasFile && {
+                                opacity: 0,
+                            }),
+                        }}
+                    />
+
+                    {hasFile && <SingleFilePreview file={file} />}
+                </StyledDropZone>
+            </Box>
 
             <RejectionFiles fileRejections={fileRejections} />
 
@@ -140,7 +142,17 @@ export default function UploadDnd({
 
             {hasFiles && (
                 <>
-                    <Box sx={{ my: 4 }}>
+                    <Box
+                        width="50%"
+                        sx={{
+                            paddingTop: "0",
+                            paddingLeft: 1,
+                            paddingRight: 1,
+                            display: "flex",
+                            justifyContent: "flex-end",
+                            overflowY: "auto",
+                        }}
+                    >
                         <MultiFilePreviewReorder
                             files={files}
                             thumbnail={false}
