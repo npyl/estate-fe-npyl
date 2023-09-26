@@ -39,12 +39,7 @@ const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
             ) || [],
         [propertyLabels, demandFilterLabelIDs]
     );
-    const getDisplayValue = (value: string | number | null | undefined) => {
-        if (value === null || value === undefined) {
-            return typeof value === "number" ? "0" : "-";
-        }
-        return value;
-    };
+
     const getRangeDisplayValue = (
         min: number | null | undefined,
         max: number | null | undefined
