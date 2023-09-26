@@ -791,6 +791,7 @@ const slice = createSlice({
 
         setInitialState: (state: propertyState, action): void => {
             const payload: IProperties = action.payload;
+            const { details, heatingAndEnergy, technicalFeatures } = payload;
 
             // INFO: we don't get a valid value, use the one on the initialState which is non-null but always means "unset";
             //        this way we prevent nulls and at the same time show the values as empty
@@ -824,79 +825,76 @@ const slice = createSlice({
             state.video = payload.video || state.video;
             state.description = payload.description || state.description;
 
+            // Details
             state.details.floor =
-                payload.details.floor.key || initialState.details.floor;
+                details?.floor.key || initialState.details.floor;
             state.details.bedrooms =
-                payload.details.bedrooms || initialState.details.bedrooms;
+                details?.bedrooms || initialState.details.bedrooms;
             state.details.kitchens =
-                payload.details.kitchens || initialState.details.kitchens;
-            state.details.wc = payload.details.wc || initialState.details.wc;
+                details?.kitchens || initialState.details.kitchens;
+            state.details.wc = details?.wc || initialState.details.wc;
             state.details.layers =
-                payload.details.layers || initialState.details.layers;
+                details?.layers || initialState.details.layers;
             state.details.livingrooms =
-                payload.details.livingrooms || initialState.details.livingrooms;
+                details?.livingrooms || initialState.details.livingrooms;
             state.details.bathrooms =
-                payload.details.bathrooms || initialState.details.bathrooms;
-            state.details.rooms =
-                payload.details.rooms || initialState.details.rooms;
-            state.details.attic =
-                payload.details.attic || initialState.details.attic;
+                details?.bathrooms || initialState.details.bathrooms;
+            state.details.rooms = details?.rooms || initialState.details.rooms;
+            state.details.attic = details?.attic || initialState.details.attic;
             state.details.storeroom =
-                payload.details.storeroom || initialState.details.storeroom;
+                details?.storeroom || initialState.details.storeroom;
             state.details.playroom =
-                payload.details.playroom || initialState.details.playroom;
+                details?.playroom || initialState.details.playroom;
             state.details.floorApartment =
-                payload.details.floorApartment ||
-                initialState.details.floorApartment;
+                details?.floorApartment || initialState.details.floorApartment;
             state.details.penthouse =
-                payload.details.penthouse || initialState.details.penthouse;
+                details?.penthouse || initialState.details.penthouse;
             state.details.orientation =
-                payload.details.orientation.key ||
-                initialState.details.orientation;
+                details?.orientation.key || initialState.details.orientation;
             state.details.viewType =
-                payload.details.viewType.key || initialState.details.viewType;
+                details?.viewType.key || initialState.details.viewType;
             state.details.accessibility =
-                payload.details.accessibility.key ||
+                details?.accessibility.key ||
                 initialState.details.accessibility;
             state.details.landUse =
-                payload.details.landUse.key || initialState.details.landUse;
+                details?.landUse.key || initialState.details.landUse;
             state.details.zoneType =
-                payload.details.zoneType.key || initialState.details.zoneType;
+                details?.zoneType.key || initialState.details.zoneType;
             state.details.parkings =
-                payload.details.parkings.map((parking) => ({
+                details?.parkings.map((parking) => ({
                     spots: parking.spots,
                     parkingType: parking.parkingType.key,
                 })) || initialState.details.parkings;
             state.details.balconies =
-                payload.details.balconies.map((balcony) => ({
+                details?.balconies.map((balcony) => ({
                     area: balcony.area,
                     side: balcony.side.key,
                 })) || initialState.details.balconies;
 
             // Heating & Energy
             state.heatingAndEnergy.energyClass =
-                payload.heatingAndEnergy.energyClass.key ||
+                heatingAndEnergy?.energyClass.key ||
                 initialState.heatingAndEnergy.energyClass;
             state.heatingAndEnergy.heatingType =
-                payload.heatingAndEnergy.heatingType.key ||
+                heatingAndEnergy?.heatingType.key ||
                 initialState.heatingAndEnergy.heatingType;
             state.heatingAndEnergy.heatingSystem =
-                payload.heatingAndEnergy.heatingSystem.key ||
+                heatingAndEnergy?.heatingSystem.key ||
                 initialState.heatingAndEnergy.heatingSystem;
             state.heatingAndEnergy.electricityType =
-                payload.heatingAndEnergy.electricityType.key ||
+                heatingAndEnergy?.electricityType.key ||
                 initialState.heatingAndEnergy.electricityType;
             state.heatingAndEnergy.floorHeating =
-                payload.heatingAndEnergy.floorHeating ||
+                heatingAndEnergy?.floorHeating ||
                 initialState.heatingAndEnergy.floorHeating;
             state.heatingAndEnergy.airConditioning =
-                payload.heatingAndEnergy.airConditioning ||
+                heatingAndEnergy?.airConditioning ||
                 initialState.heatingAndEnergy.airConditioning;
             state.heatingAndEnergy.solarBoiler =
-                payload.heatingAndEnergy.solarBoiler ||
+                heatingAndEnergy?.solarBoiler ||
                 initialState.heatingAndEnergy.solarBoiler;
             state.heatingAndEnergy.offPeakElectricity =
-                payload.heatingAndEnergy.offPeakElectricity ||
+                heatingAndEnergy?.offPeakElectricity ||
                 initialState.heatingAndEnergy.offPeakElectricity;
             // Suitable For
             state.suitableFor = payload.suitableFor || initialState.suitableFor;
@@ -909,85 +907,85 @@ const slice = createSlice({
             state.features = payload.features || initialState.features;
             // Technical Features
             state.technicalFeatures.entrances =
-                payload.technicalFeatures.entrances ||
+                technicalFeatures?.entrances ||
                 initialState.technicalFeatures.entrances;
             state.technicalFeatures.displayWindowsLength =
-                payload.technicalFeatures.displayWindowsLength ||
+                technicalFeatures?.displayWindowsLength ||
                 initialState.technicalFeatures.displayWindowsLength;
             state.technicalFeatures.safetyDoor =
-                payload.technicalFeatures.safetyDoor ||
+                technicalFeatures?.safetyDoor ||
                 initialState.technicalFeatures.safetyDoor;
             state.technicalFeatures.alarmSystem =
-                payload.technicalFeatures.alarmSystem ||
+                technicalFeatures?.alarmSystem ||
                 initialState.technicalFeatures.alarmSystem;
             state.technicalFeatures.painted =
-                payload.technicalFeatures.painted ||
+                technicalFeatures?.painted ||
                 initialState.technicalFeatures.painted;
             state.technicalFeatures.furnished =
-                payload.technicalFeatures.furnished.key ||
+                technicalFeatures?.furnished.key ||
                 initialState.technicalFeatures.furnished;
             state.technicalFeatures.frameType =
-                payload.technicalFeatures.frameType.key ||
+                technicalFeatures?.frameType.key ||
                 initialState.technicalFeatures.frameType;
             state.technicalFeatures.paneGlassType =
-                payload.technicalFeatures.paneGlassType.key ||
+                technicalFeatures?.paneGlassType.key ||
                 initialState.technicalFeatures.paneGlassType;
             state.technicalFeatures.windowScreens =
-                payload.technicalFeatures.windowScreens ||
+                technicalFeatures?.windowScreens ||
                 initialState.technicalFeatures.windowScreens;
             state.technicalFeatures.fireplace =
-                payload.technicalFeatures.fireplace ||
+                technicalFeatures?.fireplace ||
                 initialState.technicalFeatures.fireplace;
             state.technicalFeatures.bright =
-                payload.technicalFeatures.bright ||
+                technicalFeatures?.bright ||
                 initialState.technicalFeatures.bright;
             state.technicalFeatures.luxurious =
-                payload.technicalFeatures.luxurious ||
+                technicalFeatures?.luxurious ||
                 initialState.technicalFeatures.luxurious;
             state.technicalFeatures.electricCarChargingFacilities =
-                payload.technicalFeatures.electricCarChargingFacilities ||
+                technicalFeatures?.electricCarChargingFacilities ||
                 initialState.technicalFeatures.electricCarChargingFacilities;
             state.technicalFeatures.reception =
-                payload.technicalFeatures.reception ||
+                technicalFeatures?.reception ||
                 initialState.technicalFeatures.reception;
             state.technicalFeatures.petsAllowed =
-                payload.technicalFeatures.petsAllowed ||
+                technicalFeatures?.petsAllowed ||
                 initialState.technicalFeatures.petsAllowed;
             state.technicalFeatures.floorType =
-                payload.technicalFeatures.floorType.key ||
+                technicalFeatures?.floorType.key ||
                 initialState.technicalFeatures.floorType;
             state.technicalFeatures.satelliteTV =
-                payload.technicalFeatures.satelliteTV ||
+                technicalFeatures?.satelliteTV ||
                 initialState.technicalFeatures.satelliteTV;
             state.technicalFeatures.wiring =
-                payload.technicalFeatures.wiring ||
+                technicalFeatures?.wiring ||
                 initialState.technicalFeatures.wiring;
             state.technicalFeatures.loadingUnloadingElevator =
-                payload.technicalFeatures.loadingUnloadingElevator ||
+                technicalFeatures?.loadingUnloadingElevator ||
                 initialState.technicalFeatures.loadingUnloadingElevator;
             state.technicalFeatures.falseCeiling =
-                payload.technicalFeatures.falseCeiling ||
+                technicalFeatures?.falseCeiling ||
                 initialState.technicalFeatures.falseCeiling;
             state.technicalFeatures.withEquipment =
-                payload.technicalFeatures.withEquipment ||
+                technicalFeatures?.withEquipment ||
                 initialState.technicalFeatures.withEquipment;
             state.technicalFeatures.doubleFrontage =
-                payload.technicalFeatures.doubleFrontage ||
+                technicalFeatures?.doubleFrontage ||
                 initialState.technicalFeatures.doubleFrontage;
             state.technicalFeatures.consideration =
-                payload.technicalFeatures.consideration ||
+                technicalFeatures?.consideration ||
                 initialState.technicalFeatures.consideration;
             state.technicalFeatures.floorToAreaRatio =
-                payload.technicalFeatures.floorToAreaRatio ||
+                technicalFeatures?.floorToAreaRatio ||
                 initialState.technicalFeatures.floorToAreaRatio;
             state.technicalFeatures.coverageFactor =
-                payload.technicalFeatures.coverageFactor ||
+                technicalFeatures?.coverageFactor ||
                 initialState.technicalFeatures.coverageFactor;
             state.technicalFeatures.facadeLength =
-                payload.technicalFeatures.facadeLength ||
+                technicalFeatures?.facadeLength ||
                 initialState.technicalFeatures.facadeLength;
             state.technicalFeatures.inclination =
-                payload.technicalFeatures.inclination.key ||
+                technicalFeatures?.inclination.key ||
                 initialState.technicalFeatures.inclination;
 
             // areas
