@@ -63,7 +63,7 @@ export default function Form({ performUpload }: IFormProps) {
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
         const selectedKey = event.target.value;
-        const selectedItem = subCategoriesMap[parentCategory]?.find(
+        const selectedItem = subCategoriesMap[parentCategory!]?.find(
             (item) => item.key === selectedKey
         );
         if (selectedItem) {
@@ -103,14 +103,14 @@ export default function Form({ performUpload }: IFormProps) {
 
                 <Grid item xs={6}>
                     <TextField
-                        disabled={parentCategory === ""}
+                        disabled={!parentCategory}
                         fullWidth
                         select
                         label={t("Category")}
                         value={category}
                         onChange={handleCategorySelect}
                     >
-                        {subCategoriesMap[parentCategory]?.map(
+                        {subCategoriesMap[parentCategory!]?.map(
                             ({ key, value }) => (
                                 <MenuItem key={key} value={key}>
                                     {value}

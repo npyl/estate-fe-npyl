@@ -153,9 +153,9 @@ export interface IPropertyTechnicalFeaturesPOST {
     safetyDoor: boolean;
     alarmSystem: boolean;
     painted: boolean;
-    furnished: string;
-    frameType: string;
-    paneGlassType: string;
+    furnished?: string;
+    frameType?: string;
+    paneGlassType?: string;
     windowScreens: boolean;
     fireplace: boolean;
     bright: boolean;
@@ -163,7 +163,7 @@ export interface IPropertyTechnicalFeaturesPOST {
     electricCarChargingFacilities: boolean;
     reception: boolean;
     petsAllowed: boolean;
-    floorType: string;
+    floorType?: string;
     satelliteTV: boolean;
     wiring: boolean;
     loadingUnloadingElevator: boolean;
@@ -219,10 +219,10 @@ export interface IPropertyHeatingAndEnergy {
 }
 
 export interface IPropertyHeatingAndEnergyPOST {
-    energyClass: string;
-    heatingType: string;
-    heatingSystem: string;
-    electricityType: string;
+    energyClass?: string;
+    heatingType?: string;
+    heatingSystem?: string;
+    electricityType?: string;
     floorHeating: boolean;
     airConditioning: boolean;
     solarBoiler: boolean;
@@ -257,9 +257,9 @@ export interface IPropertiesPOST {
     title: string;
     managerId?: number;
     ownerId?: number;
-    state: string;
-    parentCategory: string;
-    category: string;
+    state?: string;
+    parentCategory?: string;
+    category?: string;
     area?: number;
     plotArea?: number;
     price?: number;
