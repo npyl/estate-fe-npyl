@@ -98,8 +98,8 @@ const DemandForm: FC<DemandFormProps> = (props) => {
     const maxPrice = demand.filters?.maxPrice || 0;
     const timeFrame = demand.timeframe || [];
 
-    const minFloorsArray = minFloors;
-    const maxFloorsArray = maxFloors;
+    const minFloorsArray = minFloors?.map((i) => i.key);
+    const maxFloorsArray = maxFloors?.map((i) => i.key);
 
     // Location
     const cities = demand.filters?.cities || [];
@@ -969,14 +969,14 @@ const DemandForm: FC<DemandFormProps> = (props) => {
                                 <Slider
                                     getAriaLabel={() => "Floor Slider"}
                                     orientation="horizontal"
-                                    // value={[
-                                    //     minFloorsArray.indexOf(
-                                    //         minFloor as string
-                                    //     ),
-                                    //     maxFloorsArray.indexOf(
-                                    //         maxFloor as string
-                                    //     ),
-                                    // ]}
+                                    value={[
+                                        minFloorsArray.indexOf(
+                                            minFloor as string
+                                        ),
+                                        maxFloorsArray.indexOf(
+                                            maxFloor as string
+                                        ),
+                                    ]}
                                     onChange={(
                                         _event: any,
                                         newValue: number | number[],
@@ -1002,14 +1002,14 @@ const DemandForm: FC<DemandFormProps> = (props) => {
                                         }
                                     }}
                                     valueLabelDisplay="auto"
-                                    // valueLabelFormat={(
-                                    //     value: number,
-                                    //     index: number
-                                    // ) =>
-                                    //     index === 0
-                                    //         ? minFloorsArray[value]
-                                    //         : maxFloorsArray[value]
-                                    // }
+                                    valueLabelFormat={(
+                                        value: number,
+                                        index: number
+                                    ) =>
+                                        index === 0
+                                            ? minFloorsArray[value]
+                                            : maxFloorsArray[value]
+                                    }
                                     min={0}
                                     max={maxFloorsArray.length - 41}
                                 />
