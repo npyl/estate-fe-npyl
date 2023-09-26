@@ -111,10 +111,10 @@ const DemandForm: FC<DemandFormProps> = (props) => {
     const subCategoriesMap: {
         [key: string]: KeyValue[];
     } = {
-        Residential: propertyEnums?.residentialCategory ?? [],
-        Commercial: propertyEnums?.commercialCategory ?? [],
-        Land: propertyEnums?.landCategory ?? [],
-        Other: propertyEnums?.otherCategory ?? [],
+        RESIDENTIAL: propertyEnums?.residentialCategory ?? [],
+        COMMERCIAL: propertyEnums?.commercialCategory ?? [],
+        LAND: propertyEnums?.landCategory ?? [],
+        OTHER: propertyEnums?.otherCategory ?? [],
     };
 
     const propertyCodes: string[] =

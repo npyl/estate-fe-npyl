@@ -48,10 +48,10 @@ export default function Form({ performUpload }: IFormProps) {
     const subCategoriesMap: {
         [key: string]: KeyValue[];
     } = {
-        Residential: enums.residentialCategory,
-        Commercial: enums.commercialCategory,
-        Land: enums.landCategory,
-        Other: enums.otherCategory,
+        RESIDENTIAL: enums.residentialCategory,
+        COMMERCIAL: enums.commercialCategory,
+        LAND: enums.landCategory,
+        OTHER: enums.otherCategory,
     };
 
     const handleParentCategorySelect = (e: SelectChangeEvent<string>) => {
