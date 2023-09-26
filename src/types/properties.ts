@@ -12,14 +12,14 @@ export interface IPropertyResultResponse {
     id: number;
     code: string;
     keyCode: string;
-    category: string;
-    state: string;
+    category: KeyValue;
+    state: KeyValue;
     area: number;
     plotArea: number;
     description: string;
-    details: IPropertyDetailsPOST;
+    details: IPropertyDetails;
     price: number;
-    parentCategory: string;
+    parentCategory: KeyValue;
     propertyImage: string; // url only
     images: string[]; // urls only
     location: ILocationPOST;
