@@ -26,6 +26,31 @@ export interface IDemandFilters {
     parentCategories: KeyValue[];
 }
 
+export interface IDemandFiltersPOST {
+    minBedrooms: number;
+    maxBedrooms: number;
+    minBathrooms: number;
+    maxBathrooms: number;
+    furnished: string[];
+    maxCovered: number;
+    minCovered: number;
+    minPlot: number;
+    maxPlot: number;
+    minYearOfConstruction: number;
+    maxYearOfConstruction: number;
+    minFloor: string;
+    maxFloor: string;
+    states: string[];
+    minPrice: number;
+    maxPrice: number;
+    labels: number[];
+    cities: string[];
+    regions: string[];
+    complexes: string[];
+    categories: string[];
+    parentCategories: string[];
+}
+
 export interface IDemand {
     filters: IDemandFilters;
     priorityFeatures: IPropertyFeatures;
@@ -35,7 +60,7 @@ export interface IDemand {
 }
 
 export interface IDemandPOST {
-    filters: Partial<IDemandFilters>;
+    filters: Partial<IDemandFiltersPOST>;
     priorityFeatures: IPropertyFeatures;
     nonPriorityFeatures: IPropertyFeatures;
     timeframe: string;
