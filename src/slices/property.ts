@@ -21,6 +21,7 @@ const initialState: propertyState = {
     buildable: false,
     video: "",
     description: "",
+    descriptionText: "",
     suitableFor: {
         student: false,
         cottage: false,
@@ -206,6 +207,9 @@ const slice = createSlice({
         },
         setDescription(state: propertyState, action): void {
             state.description = action.payload;
+        },
+        setDescriptionText(state: propertyState, action): void {
+            state.descriptionText = action.payload;
         },
 
         // Location
@@ -824,6 +828,8 @@ const slice = createSlice({
             state.buildable = payload.buildable || state.buildable;
             state.video = payload.video || state.video;
             state.description = payload.description || state.description;
+            state.descriptionText =
+                payload.descriptionText || state.descriptionText;
 
             // Details
             state.details.floor =
@@ -1146,6 +1152,7 @@ export const {
     setRegion,
     setCountry,
     setDescription,
+    setDescriptionText,
     setLatitude,
     setLongitude,
 
@@ -1247,6 +1254,8 @@ export const selectKeyCode = ({ property }: RootState) => property.keyCode;
 export const selectBuildable = ({ property }: RootState) => property.buildable;
 export const selectDescription = ({ property }: RootState) =>
     property.description;
+export const selectDescriptionText = ({ property }: RootState) =>
+    property.descriptionText;
 export const selectAvailableAfter = ({ property }: RootState) =>
     property.availableAfter;
 export const selectVideo = ({ property }: RootState) => property.video;

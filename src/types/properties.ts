@@ -276,6 +276,7 @@ export interface IPropertiesPOST {
     buildable: boolean;
     video: string;
     description: string;
+    descriptionText: string;
     suitableFor: IPropertySuitableFor;
     heatingAndEnergy: IPropertyHeatingAndEnergyPOST;
     distances: IPropertyDistancesPOST;
@@ -313,6 +314,7 @@ export interface IProperties {
     buildable: boolean;
     video: string;
     description: string;
+    descriptionText: string;
     propertyImage: IPropertyImage;
     suitableFor: IPropertySuitableFor;
     heatingAndEnergy: IPropertyHeatingAndEnergy;
