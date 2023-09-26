@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
 import { ILocation } from "src/types/location";
-import { IProperties, IPropertiesPostRequest } from "src/types/properties";
+import { IProperties, IPropertiesPOST } from "src/types/properties";
 
-type propertyState = IPropertiesPostRequest;
+type propertyState = IPropertiesPOST;
 
 const initialState: propertyState = {
     code: "",

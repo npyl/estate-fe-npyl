@@ -251,7 +251,7 @@ export interface IPropertyDistances {
     entertainment: number;
 }
 
-export interface IPropertiesPostRequest {
+export interface IPropertiesPOST {
     id?: number;
     code: string;
     title: string;
