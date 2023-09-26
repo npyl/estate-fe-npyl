@@ -6,24 +6,24 @@ export interface IDemandFilters {
     maxBedrooms: number;
     minBathrooms: number;
     maxBathrooms: number;
-    furnished: string[];
+    furnished: KeyValue[];
     maxCovered: number;
     minCovered: number;
     minPlot: number;
     maxPlot: number;
     minYearOfConstruction: number;
     maxYearOfConstruction: number;
-    minFloor: string;
-    maxFloor: string;
-    states: string[];
+    minFloor: KeyValue;
+    maxFloor: KeyValue;
+    states: KeyValue[];
     minPrice: number;
     maxPrice: number;
     labels: number[];
     cities: string[];
     regions: string[];
     complexes: string[];
-    categories: string[];
-    parentCategories: string[];
+    categories: KeyValue[];
+    parentCategories: KeyValue[];
 }
 
 export interface IDemand {

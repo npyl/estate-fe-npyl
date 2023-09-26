@@ -396,10 +396,10 @@ const CustomerInformation: React.FC<any> = () => {
                                 }}
                                 label={t("Preferred Language")}
                             >
-                                <MenuItem value={"English"}>
+                                <MenuItem value={"ENGLISH"}>
                                     {t("English")}
                                 </MenuItem>
-                                <MenuItem value={"Greek"}>
+                                <MenuItem value={"GREEK"}>
                                     {t("Greek")}
                                 </MenuItem>
                             </Select>

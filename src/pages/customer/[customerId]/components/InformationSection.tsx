@@ -198,7 +198,7 @@ const InformationSection: React.FC = () => {
                         />
                         <ListItem
                             label={t("Preferred Language")}
-                            value={data?.preferredLanguage || "-"}
+                            value={data?.preferredLanguage.value || "-"}
                             align="horizontal"
                         />
                         <ListItem

@@ -93,10 +93,10 @@ const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
         demandFilters?.labels.length === 0 &&
         !shape &&
         !demand?.timeframe &&
-        isEmptyOrComma(demandFilters?.parentCategories) &&
-        isEmptyOrComma(demandFilters?.furnished) &&
-        isEmptyOrComma(demandFilters?.categories) &&
-        isEmptyOrComma(demandFilters?.states)
+        isEmptyOrComma(demandFilters?.parentCategories.map((i) => i.key)) &&
+        isEmptyOrComma(demandFilters?.furnished.map((i) => i.key)) &&
+        isEmptyOrComma(demandFilters?.categories.map((i) => i.key)) &&
+        isEmptyOrComma(demandFilters?.states.map((i) => i.key))
     )
         return null;
     else
@@ -127,14 +127,16 @@ const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
                             <List>
                                 <ListItem
                                     label={t("Parent Category")}
-                                    value={demandFilters?.parentCategories.join(
-                                        ","
-                                    )}
+                                    value={demandFilters?.parentCategories
+                                        ?.map((i) => i.value)
+                                        ?.join(", ")}
                                     align="horizontal"
                                 />
                                 <ListItem
                                     label={t("Furnished")}
-                                    value={demandFilters?.furnished.join(",")}
+                                    value={demandFilters?.furnished
+                                        ?.map((i) => i.value)
+                                        ?.join(", ")}
                                     align="horizontal"
                                 />
                                 <ListLabelsItem
@@ -185,17 +187,21 @@ const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
                             <List>
                                 <ListItem
                                     label={t("Category")}
-                                    value={demandFilters?.categories.join(",")}
+                                    value={demandFilters?.categories
+                                        ?.map((i) => i.value)
+                                        ?.join(", ")}
                                     align="horizontal"
                                 />
                                 <ListItem
                                     label={t("State")}
-                                    value={demandFilters?.states.join(",")}
+                                    value={demandFilters?.states
+                                        ?.map((i) => i.value)
+                                        ?.join(", ")}
                                     align="horizontal"
                                 />
                                 <ListItem
                                     label={t("Time Frame")}
-                                    value={demand?.timeframe}
+                                    value={demand?.timeframe.value}
                                     align="horizontal"
                                 />
                                 <ListItem
@@ -220,8 +226,8 @@ const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
                                 <ListItem
                                     label={t("Floor")}
                                     value={getRangeDisplayValueString(
-                                        demandFilters?.minFloor,
-                                        demandFilters?.maxFloor
+                                        demandFilters?.minFloor.value,
+                                        demandFilters?.maxFloor.value
                                     )}
                                     align="horizontal"
                                 />
