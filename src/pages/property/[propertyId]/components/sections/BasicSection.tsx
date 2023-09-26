@@ -7,7 +7,7 @@ import {
     ListManagerItem,
 } from "src/components/List";
 import ListLabelsItem from "src/components/List/labels-item";
-import { IProperties } from "src/types/properties";
+import { IProperties, ParentCategory } from "src/types/properties";
 import { IUser } from "src/types/user";
 import PopupWindow from "./PopopWindowROI";
 import { ICustomer } from "src/types/customer";
