@@ -825,7 +825,7 @@ const slice = createSlice({
             state.description = payload.description || state.description;
 
             state.details.floor =
-                payload.details.floor || initialState.details.floor;
+                payload.details.floor.key || initialState.details.floor;
             state.details.bedrooms =
                 payload.details.bedrooms || initialState.details.bedrooms;
             state.details.kitchens =
@@ -851,16 +851,17 @@ const slice = createSlice({
             state.details.penthouse =
                 payload.details.penthouse || initialState.details.penthouse;
             state.details.orientation =
-                payload.details.orientation || initialState.details.orientation;
+                payload.details.orientation.key ||
+                initialState.details.orientation;
             state.details.viewType =
-                payload.details.viewType || initialState.details.viewType;
+                payload.details.viewType.key || initialState.details.viewType;
             state.details.accessibility =
-                payload.details.accessibility ||
+                payload.details.accessibility.key ||
                 initialState.details.accessibility;
             state.details.landUse =
-                payload.details.landUse || initialState.details.landUse;
+                payload.details.landUse.key || initialState.details.landUse;
             state.details.zoneType =
-                payload.details.zoneType || initialState.details.zoneType;
+                payload.details.zoneType.key || initialState.details.zoneType;
             state.details.parkings =
                 payload.details.parkings.map((parking) => ({
                     spots: parking.spots,
@@ -879,8 +880,88 @@ const slice = createSlice({
             state.construction =
                 payload.construction || initialState.construction;
             state.features = payload.features || initialState.features;
-            state.technicalFeatures =
-                payload.technicalFeatures || initialState.technicalFeatures;
+
+            state.technicalFeatures.entrances =
+                payload.technicalFeatures.entrances ||
+                initialState.technicalFeatures.entrances;
+            state.technicalFeatures.displayWindowsLength =
+                payload.technicalFeatures.displayWindowsLength ||
+                initialState.technicalFeatures.displayWindowsLength;
+            state.technicalFeatures.safetyDoor =
+                payload.technicalFeatures.safetyDoor ||
+                initialState.technicalFeatures.safetyDoor;
+            state.technicalFeatures.alarmSystem =
+                payload.technicalFeatures.alarmSystem ||
+                initialState.technicalFeatures.alarmSystem;
+            state.technicalFeatures.painted =
+                payload.technicalFeatures.painted ||
+                initialState.technicalFeatures.painted;
+            state.technicalFeatures.furnished =
+                payload.technicalFeatures.furnished.key ||
+                initialState.technicalFeatures.furnished;
+            state.technicalFeatures.frameType =
+                payload.technicalFeatures.frameType.key ||
+                initialState.technicalFeatures.frameType;
+            state.technicalFeatures.paneGlassType =
+                payload.technicalFeatures.paneGlassType.key ||
+                initialState.technicalFeatures.paneGlassType;
+            state.technicalFeatures.windowScreens =
+                payload.technicalFeatures.windowScreens ||
+                initialState.technicalFeatures.windowScreens;
+            state.technicalFeatures.fireplace =
+                payload.technicalFeatures.fireplace ||
+                initialState.technicalFeatures.fireplace;
+            state.technicalFeatures.bright =
+                payload.technicalFeatures.bright ||
+                initialState.technicalFeatures.bright;
+            state.technicalFeatures.luxurious =
+                payload.technicalFeatures.luxurious ||
+                initialState.technicalFeatures.luxurious;
+            state.technicalFeatures.electricCarChargingFacilities =
+                payload.technicalFeatures.electricCarChargingFacilities ||
+                initialState.technicalFeatures.electricCarChargingFacilities;
+            state.technicalFeatures.reception =
+                payload.technicalFeatures.reception ||
+                initialState.technicalFeatures.reception;
+            state.technicalFeatures.petsAllowed =
+                payload.technicalFeatures.petsAllowed ||
+                initialState.technicalFeatures.petsAllowed;
+            state.technicalFeatures.floorType =
+                payload.technicalFeatures.floorType.key ||
+                initialState.technicalFeatures.floorType;
+            state.technicalFeatures.satelliteTV =
+                payload.technicalFeatures.satelliteTV ||
+                initialState.technicalFeatures.satelliteTV;
+            state.technicalFeatures.wiring =
+                payload.technicalFeatures.wiring ||
+                initialState.technicalFeatures.wiring;
+            state.technicalFeatures.loadingUnloadingElevator =
+                payload.technicalFeatures.loadingUnloadingElevator ||
+                initialState.technicalFeatures.loadingUnloadingElevator;
+            state.technicalFeatures.falseCeiling =
+                payload.technicalFeatures.falseCeiling ||
+                initialState.technicalFeatures.falseCeiling;
+            state.technicalFeatures.withEquipment =
+                payload.technicalFeatures.withEquipment ||
+                initialState.technicalFeatures.withEquipment;
+            state.technicalFeatures.doubleFrontage =
+                payload.technicalFeatures.doubleFrontage ||
+                initialState.technicalFeatures.doubleFrontage;
+            state.technicalFeatures.consideration =
+                payload.technicalFeatures.consideration ||
+                initialState.technicalFeatures.consideration;
+            state.technicalFeatures.floorToAreaRatio =
+                payload.technicalFeatures.floorToAreaRatio ||
+                initialState.technicalFeatures.floorToAreaRatio;
+            state.technicalFeatures.coverageFactor =
+                payload.technicalFeatures.coverageFactor ||
+                initialState.technicalFeatures.coverageFactor;
+            state.technicalFeatures.facadeLength =
+                payload.technicalFeatures.facadeLength ||
+                initialState.technicalFeatures.facadeLength;
+            state.technicalFeatures.inclination =
+                payload.technicalFeatures.inclination.key ||
+                initialState.technicalFeatures.inclination;
 
             // areas
             state.areas = payload.areas || initialState.areas;

@@ -183,9 +183,9 @@ export interface IPropertyTechnicalFeatures {
     safetyDoor: boolean;
     alarmSystem: boolean;
     painted: boolean;
-    furnished: string;
-    frameType: string;
-    paneGlassType: string;
+    furnished: KeyValue;
+    frameType: KeyValue;
+    paneGlassType: KeyValue;
     windowScreens: boolean;
     fireplace: boolean;
     bright: boolean;
@@ -193,7 +193,7 @@ export interface IPropertyTechnicalFeatures {
     electricCarChargingFacilities: boolean;
     reception: boolean;
     petsAllowed: boolean;
-    floorType: string;
+    floorType: KeyValue;
     satelliteTV: boolean;
     wiring: boolean;
     loadingUnloadingElevator: boolean;
@@ -204,7 +204,7 @@ export interface IPropertyTechnicalFeatures {
     floorToAreaRatio: number;
     coverageFactor: number;
     facadeLength: number;
-    inclination: string;
+    inclination: KeyValue;
 }
 
 export interface IPropertyHeatingAndEnergy {
