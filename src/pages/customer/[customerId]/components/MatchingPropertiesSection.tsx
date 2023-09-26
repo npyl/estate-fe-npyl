@@ -102,7 +102,9 @@ const MatchingPropertiesSection: React.FC = () => {
     useEffect(() => {
         if (!customer || !isSuccess) return;
 
-        setParentCategory(demand?.filters?.parentCategories || []);
+        setParentCategory(
+            demand?.filters?.parentCategories.map((i) => i.key) || []
+        );
     }, [customer, isSuccess]);
 
     function statusColor(params: GridCellParams) {

@@ -37,9 +37,6 @@ import "yet-another-react-lightbox/styles.css";
 import { FullscreenRef } from "yet-another-react-lightbox";
 import PreviewImage from "./image/PreviewImage";
 
-// zip files
-import JSZip from "jszip";
-import { saveAs } from "file-saver";
 // ----------------------------------------------------------------------
 
 const THUMB_SIZE = 150;

@@ -393,9 +393,9 @@ const DemandForm: FC<DemandFormProps> = (props) => {
                                         <MenuItem key={key} value={key}>
                                             <Checkbox
                                                 checked={
-                                                    parentCategories.indexOf(
-                                                        key
-                                                    ) > -1
+                                                    parentCategories
+                                                        .map((i) => i.key)
+                                                        .indexOf(key) > -1
                                                 }
                                             />
 
@@ -432,8 +432,8 @@ const DemandForm: FC<DemandFormProps> = (props) => {
                                             },
                                         }}
                                     >
-                                        {subCategoriesMap[e] ? (
-                                            subCategoriesMap[e].map(
+                                        {subCategoriesMap[e.key] ? (
+                                            subCategoriesMap[e.key].map(
                                                 ({ key, value }) => {
                                                     return (
                                                         <MenuItem
@@ -442,9 +442,16 @@ const DemandForm: FC<DemandFormProps> = (props) => {
                                                         >
                                                             <Checkbox
                                                                 checked={
-                                                                    parentCategories.indexOf(
-                                                                        key
-                                                                    ) > -1
+                                                                    parentCategories
+                                                                        .map(
+                                                                            (
+                                                                                i
+                                                                            ) =>
+                                                                                i.key
+                                                                        )
+                                                                        .indexOf(
+                                                                            key
+                                                                        ) > -1
                                                                 }
                                                             />
                                                             {value}
@@ -480,7 +487,9 @@ const DemandForm: FC<DemandFormProps> = (props) => {
                                         <MenuItem key={key} value={key}>
                                             <Checkbox
                                                 checked={
-                                                    furnished.indexOf(key) > -1
+                                                    furnished
+                                                        .map((i) => i.key)
+                                                        .indexOf(key) > -1
                                                 }
                                             />
 
@@ -512,7 +521,9 @@ const DemandForm: FC<DemandFormProps> = (props) => {
                                         <MenuItem key={key} value={key}>
                                             <Checkbox
                                                 checked={
-                                                    state.indexOf(key) > -1
+                                                    state
+                                                        .map((i) => i.key)
+                                                        .indexOf(key) > -1
                                                 }
                                             />
 
@@ -969,14 +980,14 @@ const DemandForm: FC<DemandFormProps> = (props) => {
                                 <Slider
                                     getAriaLabel={() => "Floor Slider"}
                                     orientation="horizontal"
-                                    value={[
-                                        minFloorsArray.indexOf(
-                                            minFloor as string
-                                        ),
-                                        maxFloorsArray.indexOf(
-                                            maxFloor as string
-                                        ),
-                                    ]}
+                                    // value={[
+                                    //     minFloorsArray.indexOf(
+                                    //         minFloor.key as string
+                                    //     ),
+                                    //     maxFloorsArray.indexOf(
+                                    //         maxFloor.key as string
+                                    //     ),
+                                    // ]}
                                     onChange={(
                                         _event: any,
                                         newValue: number | number[],
@@ -1104,8 +1115,14 @@ const DemandForm: FC<DemandFormProps> = (props) => {
                 parentCategories.length > 0 &&
                 parentCategories.map((e) => (
                     <>
-                        <PriorityFeatures index={index} parentCategory={e} />
-                        <NonPriorityFeatures index={index} parentCategory={e} />
+                        <PriorityFeatures
+                            index={index}
+                            parentCategory={e.key}
+                        />
+                        <NonPriorityFeatures
+                            index={index}
+                            parentCategory={e.key}
+                        />
                     </>
                 ))}
         </>
