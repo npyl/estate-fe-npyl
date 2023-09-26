@@ -8,7 +8,7 @@ interface SuitableForProps {
     data: IProperties;
 }
 const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
-    Residential: [
+    RESIDENTIAL: [
         "Student",
         "Cottage",
         "Renovation",
@@ -17,9 +17,9 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Doctor's Office",
         "Professional Use",
     ],
-    Commercial: ["Renovation", "Investment", "Doctor's Office"],
-    Land: ["Agricultural Use", "Investment"],
-    Other: ["Investment"],
+    COMMERCIAL: ["Renovation", "Investment", "Doctor's Office"],
+    LAND: ["Agricultural Use", "Investment"],
+    OTHER: ["Investment"],
 };
 const SuitableFor: React.FC<SuitableForProps> = (props) => {
     const { data } = props;
@@ -166,7 +166,7 @@ const SuitableFor: React.FC<SuitableForProps> = (props) => {
                     <Divider></Divider>
                     <Grid container>
                         {renderSuitableFor(
-                            data?.parentCategory as ParentCategory
+                            data?.parentCategory.key as ParentCategory
                         )}
                     </Grid>
                 </Paper>

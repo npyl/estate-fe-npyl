@@ -11,7 +11,7 @@ interface DistanceSectionProps {
 }
 
 const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
-    Residential: [
+    RESIDENTIAL: [
         "Public Transportation",
         "Sea",
         "Schools",
@@ -20,7 +20,7 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Hospital",
         "Airport",
     ],
-    Commercial: [
+    COMMERCIAL: [
         "Public Transportation",
         "Sea",
         "Schools",
@@ -29,15 +29,21 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Hospital",
         "Airport",
     ],
-    Land: [],
-    Other: [],
+    LAND: [],
+    OTHER: [],
 };
 const DistanceSection: React.FC<DistanceSectionProps> = (props) => {
     const { data } = props;
     const { t } = useTranslation();
+
     const distances = data?.distances;
-    if (data.parentCategory == "Land" || data.parentCategory == "Other")
+
+    if (
+        data.parentCategory.key === "LAND" ||
+        data.parentCategory.key === "OTHER"
+    )
         return null;
+
     const renderHalfOfFields = (fields: string[], from: number, to: number) => {
         return (
             <Grid item xs={6}>
@@ -170,7 +176,7 @@ const DistanceSection: React.FC<DistanceSectionProps> = (props) => {
                     <Divider></Divider>
                     <Grid container>
                         {renderDistances(
-                            data?.parentCategory as ParentCategory
+                            data?.parentCategory.key as ParentCategory
                         )}
                     </Grid>
                 </Paper>

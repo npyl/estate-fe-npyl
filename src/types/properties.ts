@@ -1,3 +1,4 @@
+import { KeyValue } from "./KeyValue";
 import { ICustomer } from "./customer";
 import { IPropertyDetails, IPropertyDetailsPOST } from "./details";
 import { IPropertyFeatures } from "./features";
@@ -11,14 +12,14 @@ export interface IPropertyResultResponse {
     id: number;
     code: string;
     keyCode: string;
-    category: string;
-    state: string;
+    category: KeyValue;
+    state: KeyValue;
     area: number;
     plotArea: number;
     description: string;
-    details: IPropertyDetailsPOST;
+    details: IPropertyDetails;
     price: number;
-    parentCategory: string;
+    parentCategory: KeyValue;
     propertyImage: string; // url only
     images: string[]; // urls only
     location: ILocationPOST;
@@ -152,9 +153,9 @@ export interface IPropertyTechnicalFeaturesPOST {
     safetyDoor: boolean;
     alarmSystem: boolean;
     painted: boolean;
-    furnished: string;
-    frameType: string;
-    paneGlassType: string;
+    furnished?: string;
+    frameType?: string;
+    paneGlassType?: string;
     windowScreens: boolean;
     fireplace: boolean;
     bright: boolean;
@@ -162,7 +163,7 @@ export interface IPropertyTechnicalFeaturesPOST {
     electricCarChargingFacilities: boolean;
     reception: boolean;
     petsAllowed: boolean;
-    floorType: string;
+    floorType?: string;
     satelliteTV: boolean;
     wiring: boolean;
     loadingUnloadingElevator: boolean;
@@ -182,9 +183,9 @@ export interface IPropertyTechnicalFeatures {
     safetyDoor: boolean;
     alarmSystem: boolean;
     painted: boolean;
-    furnished: string;
-    frameType: string;
-    paneGlassType: string;
+    furnished: KeyValue;
+    frameType: KeyValue;
+    paneGlassType: KeyValue;
     windowScreens: boolean;
     fireplace: boolean;
     bright: boolean;
@@ -192,7 +193,7 @@ export interface IPropertyTechnicalFeatures {
     electricCarChargingFacilities: boolean;
     reception: boolean;
     petsAllowed: boolean;
-    floorType: string;
+    floorType: KeyValue;
     satelliteTV: boolean;
     wiring: boolean;
     loadingUnloadingElevator: boolean;
@@ -203,14 +204,25 @@ export interface IPropertyTechnicalFeatures {
     floorToAreaRatio: number;
     coverageFactor: number;
     facadeLength: number;
-    inclination: string;
+    inclination: KeyValue;
 }
 
 export interface IPropertyHeatingAndEnergy {
-    energyClass: string;
-    heatingType: string;
-    heatingSystem: string;
-    electricityType: string;
+    energyClass: KeyValue;
+    heatingType: KeyValue;
+    heatingSystem: KeyValue;
+    electricityType: KeyValue;
+    floorHeating: boolean;
+    airConditioning: boolean;
+    solarBoiler: boolean;
+    offPeakElectricity: boolean;
+}
+
+export interface IPropertyHeatingAndEnergyPOST {
+    energyClass?: string;
+    heatingType?: string;
+    heatingSystem?: string;
+    electricityType?: string;
     floorHeating: boolean;
     airConditioning: boolean;
     solarBoiler: boolean;
@@ -239,15 +251,15 @@ export interface IPropertyDistances {
     entertainment: number;
 }
 
-export interface IPropertiesPostRequest {
+export interface IPropertiesPOST {
     id?: number;
     code: string;
     title: string;
     managerId?: number;
     ownerId?: number;
-    state: string;
-    parentCategory: string;
-    category: string;
+    state?: string;
+    parentCategory?: string;
+    category?: string;
     area?: number;
     plotArea?: number;
     price?: number;
@@ -264,8 +276,9 @@ export interface IPropertiesPostRequest {
     buildable: boolean;
     video: string;
     description: string;
+    descriptionText: string;
     suitableFor: IPropertySuitableFor;
-    heatingAndEnergy: IPropertyHeatingAndEnergy;
+    heatingAndEnergy: IPropertyHeatingAndEnergyPOST;
     distances: IPropertyDistancesPOST;
     areas: IPropertyAreasPOST;
     construction: IPropertyConstructionPOST;
@@ -282,9 +295,9 @@ export interface IProperties {
     title: string;
     manager: IUser;
     owner: ICustomer;
-    state: string;
-    parentCategory: string;
-    category: string;
+    state: KeyValue;
+    parentCategory: KeyValue;
+    category: KeyValue;
     area: number;
     plotArea: number;
     price: number;
@@ -301,6 +314,7 @@ export interface IProperties {
     buildable: boolean;
     video: string;
     description: string;
+    descriptionText: string;
     propertyImage: IPropertyImage;
     suitableFor: IPropertySuitableFor;
     heatingAndEnergy: IPropertyHeatingAndEnergy;
@@ -317,6 +331,5 @@ export interface IProperties {
     blueprints: IPropertyBlueprint[];
     labels: ILabel[];
 }
-// propertyTypes.ts
 
-export type ParentCategory = "Residential" | "Commercial" | "Land" | "Other";
+export type ParentCategory = "RESIDENTIAL" | "COMMERCIAL" | "LAND" | "OTHER";

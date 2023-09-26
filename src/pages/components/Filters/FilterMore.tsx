@@ -341,15 +341,17 @@ export default function FilterMore({
                             field.options.map((e) => (
                                 <Button
                                     variant={
-                                        field.values.includes(e)
+                                        field.values.includes(e.key)
                                             ? "contained"
                                             : "outlined"
                                     }
                                     color={"primary"}
-                                    key={e}
-                                    onClick={() => dispatch(field.onClick(e))}
+                                    key={e.key}
+                                    onClick={() =>
+                                        dispatch(field.onClick(e.key))
+                                    }
                                 >
-                                    {e}
+                                    {e.value}
                                 </Button>
                             ))}
                     </Stack>

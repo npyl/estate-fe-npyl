@@ -4,10 +4,9 @@ import {
     InputAdornment,
     Checkbox,
     Typography,
-    Divider,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
     selectPrice,
     selectEstimatedRentPrice,
@@ -17,9 +16,6 @@ import {
     setPrice,
 } from "src/slices/property";
 
-import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
-import { useAllUsersQuery } from "src/services/user";
-import { useAllGlobalsQuery } from "src/services/global";
 import { useTranslation } from "react-i18next";
 const PopupWindow: React.FC<any> = (props) => {
     const dispatch = useDispatch();

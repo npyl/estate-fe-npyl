@@ -15,8 +15,8 @@ const AreaSection: React.FC<AreaSectionProps> = (props) => {
     const { t } = useTranslation();
     if (!data) return null;
     const areas = data?.areas;
-    const category = data?.parentCategory;
-    if (category == "Land" || category == "Other") return null;
+    const parentCategory = data?.parentCategory.key;
+    if (parentCategory === "LAND" || parentCategory === "OTHER") return null;
     if (!areas) return null;
 
     return (
@@ -35,7 +35,6 @@ const AreaSection: React.FC<AreaSectionProps> = (props) => {
             <Grid container>
                 <Grid item xs={6}>
                     <List>
-                        {/* {areas?.groundFloor && ( */}
                         <ListItem
                             label={t("Ground Floor")}
                             value={
@@ -45,7 +44,6 @@ const AreaSection: React.FC<AreaSectionProps> = (props) => {
                             }
                             align="horizontal"
                         />
-                        {/* // )} */}
 
                         <ListItem
                             label={t("First")}

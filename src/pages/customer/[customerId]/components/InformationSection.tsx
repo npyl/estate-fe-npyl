@@ -65,21 +65,22 @@ const TypeLabels = ({ seller, lessor, leaser, buyer }: TypeProps) => {
     );
 };
 
-const InformationSection: React.FC = (props) => {
+const InformationSection: React.FC = () => {
     const router = useRouter();
-    const { customerId } = router.query;
     const { t } = useTranslation();
-    const { data } = useGetCustomerByIdQuery(parseInt(customerId as string)); // basic details
-    const leadSource = data?.leadSource as LeadSource;
+
+    const { customerId } = router.query;
+    const { data } = useGetCustomerByIdQuery(+customerId!);
     const enums = useAllGlobalsQuery().data;
+
+    const leadSource = data?.leadSource?.key as LeadSource;
     const nationalitiesEnum = enums?.customer?.nationality;
     const leadSourceEnum = enums?.customer?.leadSource;
+
     let displayNationality = "-";
     if (nationalitiesEnum && data?.nationality !== undefined) {
         const foundNationality = nationalitiesEnum.find(
-            (item) =>
-                item.value === data?.nationality ||
-                item.key === data?.nationality
+            ({ key, value }) => key === data?.nationality.key
         );
 
         displayNationality = foundNationality
@@ -89,7 +90,7 @@ const InformationSection: React.FC = (props) => {
     let displayLeadSource = "-";
     if (leadSourceEnum && leadSource !== undefined) {
         const foundLeadSource = leadSourceEnum.find(
-            (item) => item.value === leadSource || item.key === leadSource
+            ({ key, value }) => key === leadSource
         );
         displayLeadSource = foundLeadSource ? foundLeadSource.value : "Unknown";
     }
@@ -197,7 +198,7 @@ const InformationSection: React.FC = (props) => {
                         />
                         <ListItem
                             label={t("Preferred Language")}
-                            value={data?.preferredLanguage || "-"}
+                            value={data?.preferredLanguage.value || "-"}
                             align="horizontal"
                         />
                         <ListItem

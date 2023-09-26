@@ -1,8 +1,19 @@
+import { KeyValue } from "./KeyValue";
+
 export interface IPropertyDetailsParking {
-    parkingType: string;
+    parkingType: KeyValue;
     spots: number;
 }
 export interface IPropertyDetailsBalcony {
+    side: KeyValue;
+    area: number;
+}
+
+export interface IPropertyDetailsParkingPOST {
+    parkingType: string;
+    spots: number;
+}
+export interface IPropertyDetailsBalconyPOST {
     side: string;
     area: number;
 }
@@ -26,12 +37,12 @@ export interface IPropertyDetailsPOST {
     accessibility?: string;
     landUse?: string;
     zoneType?: string;
-    parkings: IPropertyDetailsParking[];
-    balconies: IPropertyDetailsBalcony[];
+    parkings: IPropertyDetailsParkingPOST[];
+    balconies: IPropertyDetailsBalconyPOST[];
 }
 
 export interface IPropertyDetails {
-    floor: string;
+    floor: KeyValue;
     bedrooms: number;
     kitchens: number;
     wc: number;
@@ -44,11 +55,11 @@ export interface IPropertyDetails {
     playroom: boolean;
     floorApartment: boolean;
     penthouse: boolean;
-    orientation: string;
-    viewType: string;
-    accessibility: string;
-    landUse: string;
-    zoneType: string;
+    orientation: KeyValue;
+    viewType: KeyValue;
+    accessibility: KeyValue;
+    landUse: KeyValue;
+    zoneType: KeyValue;
     parkings: IPropertyDetailsParking[];
     balconies: IPropertyDetailsBalcony[];
 }

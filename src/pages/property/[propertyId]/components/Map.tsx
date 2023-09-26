@@ -14,17 +14,18 @@ import {
     Typography,
     useTheme,
 } from "@mui/material";
-import { useJsApiLoader } from "@react-google-maps/api";
 import { useRouter } from "next/router";
-import React, { useMemo, useReducer, useState } from "react";
+import React, { useEffect, useMemo, useReducer, useRef, useState } from "react";
 import { useGetPropertyByIdQuery } from "src/services/properties";
 import { useDebouncedCallback } from "use-debounce";
 import RelatedPlaces from "./RelatedPlaces";
+import { useLoadApi } from "src/components/Map/Map";
+
 const containerStyle = {
     width: "100%",
     height: "65vh",
 };
-const libraries = ["places"];
+
 const initialState: any[] = [];
 
 const actionTypes = {
@@ -44,26 +45,51 @@ const reducer = (state: any, action: any) => {
 };
 
 function MyComponent() {
-    const { isLoaded, loadError } = useJsApiLoader({
-        googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
-        libraries: libraries as any,
-    });
     const theme = useTheme();
     const router = useRouter();
+    const { isLoaded, loadError } = useLoadApi();
+
     const { propertyId } = router.query;
+
+    const { data } = useGetPropertyByIdQuery(+propertyId!);
+
+    const [alignment, setAlignment] = useState("hospital");
     const [radius, setRadius] = useState<number | number[]>(1);
-    const { data } = useGetPropertyByIdQuery(parseInt(propertyId as string)); // basic details
-    const [alignment, setAlignment] = React.useState("hospital");
     const [places, setPlaces] = useState<any>([]);
     const [state, dispatch] = useReducer(reducer, initialState);
+
     const center = useMemo(() => {
         return {
-            lat: data?.location.lat!,
-            lng: data?.location.lng!,
+            lat: data?.location.lat || 37.98381,
+            lng: data?.location.lng || 23.727539,
         };
-    }, [data]);
-    const mapRef = React.useRef<any>(null);
-    const serviceRef = React.useRef<any>(null);
+    }, [data?.location?.lat, data?.location?.lng]);
+
+    const mapRef = useRef<any>(null);
+    const serviceRef = useRef<any>(null);
+
+    useEffect(() => {
+        if (isLoaded) {
+            mapRef.current = new window.google.maps.Map(
+                document.getElementById("map")!,
+                {
+                    center,
+                    zoom: 15 - +radius * 0.6,
+                }
+            );
+            new google.maps.Marker({
+                position: center,
+                map: mapRef.current,
+                icon: "/static/img/home.png",
+                zIndex: 50,
+            });
+            serviceRef.current = new window.google.maps.places.PlacesService(
+                mapRef.current
+            );
+
+            searchNearbyHospitals();
+        }
+    }, [isLoaded, radius, alignment]);
 
     const searchNearbyHospitals = () => {
         if (mapRef.current && serviceRef.current) {
@@ -152,33 +178,6 @@ function MyComponent() {
         }
     };
 
-    React.useEffect(() => {
-        if (isLoaded) {
-            mapRef.current = new window.google.maps.Map(
-                document.getElementById("map")!,
-                {
-                    center,
-                    zoom: 15 - +radius * 0.6,
-                }
-            );
-            new google.maps.Marker({
-                position: center,
-                map: mapRef.current,
-                icon: "/static/img/home.png",
-                zIndex: 50,
-            });
-            serviceRef.current = new window.google.maps.places.PlacesService(
-                mapRef.current
-            );
-
-            searchNearbyHospitals();
-        }
-    }, [isLoaded, radius, alignment]);
-
-    if (loadError) {
-        return <div>Error loading maps</div>;
-    }
-
     const handleSliderRadius = useDebouncedCallback((e) => {
         setRadius(e);
     }, 300);
@@ -189,6 +188,10 @@ function MyComponent() {
     ) => {
         setAlignment(newAlignment);
     };
+
+    if (loadError) {
+        return <div>Error loading maps</div>;
+    }
 
     return (
         <Box display={"flex"} gap={2}>

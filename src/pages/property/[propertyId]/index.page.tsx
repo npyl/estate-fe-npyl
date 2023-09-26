@@ -1,7 +1,7 @@
 import { Box, Tab, Tabs } from "@mui/material";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import {
     useDeletePropertyMutation,
@@ -41,8 +41,8 @@ import { usePublishTab } from "src/components/Tabs/utils";
 import { useTranslation } from "react-i18next";
 import ConstructionSection from "./components/sections/ConstructionSection";
 import Features from "./components/sections/FeaturesSection";
-import { features } from "process";
 import MatchingCustomersSection from "./components/sections/MatchingCustomers";
+import PhotosOnly from "./components/sections/PhotosOnly";
 
 function a11yProps(index: number) {
     return {
@@ -100,7 +100,7 @@ const SingleProperty: NextPage = () => {
                     <Tab label={t("Quick View")} {...a11yProps(1)} />
                     <Tab label={t("Tickets")} {...a11yProps(2)} />
                     <Tab label={t("Matching Customers")} {...a11yProps(3)} />
-                    <Tab label={t("Storage")} {...a11yProps(4)} />
+                    <Tab label={t("Photos")} {...a11yProps(4)} />
                     <Tab label={t("Connections")} {...a11yProps(5)} />
                     <Tab label={t("Map")} {...a11yProps(6)} />
                 </Tabs>
@@ -131,7 +131,9 @@ const SingleProperty: NextPage = () => {
             <TabPanel value={value} index={3}>
                 <MatchingCustomersSection />
             </TabPanel>
-            <TabPanel value={value} index={4}></TabPanel>
+            <TabPanel value={value} index={4}>
+                <PhotosOnly data={data as any}></PhotosOnly>
+            </TabPanel>
             <TabPanel value={value} index={5}></TabPanel>
             <TabPanel value={value} index={6}>
                 <Box height={"400px"} width={"100%"}>

@@ -1,16 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
 import { ILocation } from "src/types/location";
-import { IProperties, IPropertiesPostRequest } from "src/types/properties";
+import { IProperties, IPropertiesPOST } from "src/types/properties";
 
-type propertyState = IPropertiesPostRequest;
+type propertyState = IPropertiesPOST;
 
 const initialState: propertyState = {
     code: "",
     title: "",
-    state: "",
-    parentCategory: "",
-    category: "",
+    // state: "",
+    // parentCategory: "",
+    // category: "",
     rented: false,
     rentalStart: "",
     rentalEnd: "",
@@ -21,6 +21,7 @@ const initialState: propertyState = {
     buildable: false,
     video: "",
     description: "",
+    descriptionText: "",
     suitableFor: {
         student: false,
         cottage: false,
@@ -32,10 +33,10 @@ const initialState: propertyState = {
         agriculturalUse: false,
     },
     heatingAndEnergy: {
-        energyClass: "",
-        heatingType: "",
-        heatingSystem: "",
-        electricityType: "",
+        // energyClass: "",
+        // heatingType: "",
+        // heatingSystem: "",
+        // electricityType: "",
         floorHeating: false,
         airConditioning: false,
         solarBoiler: false,
@@ -58,9 +59,9 @@ const initialState: propertyState = {
         safetyDoor: false,
         alarmSystem: false,
         painted: false,
-        furnished: "",
-        frameType: "",
-        paneGlassType: "",
+        // furnished: "",
+        // frameType: "",
+        // paneGlassType: "",
         windowScreens: false,
         fireplace: false,
         bright: false,
@@ -68,7 +69,7 @@ const initialState: propertyState = {
         electricCarChargingFacilities: false,
         reception: false,
         petsAllowed: false,
-        floorType: "",
+        // floorType: "",
         satelliteTV: false,
         wiring: false,
         loadingUnloadingElevator: false,
@@ -79,17 +80,17 @@ const initialState: propertyState = {
         inclination: "",
     },
     details: {
-        floor: "",
+        // floor: "",
         attic: false,
         storeroom: false,
         playroom: false,
         floorApartment: false,
         penthouse: false,
-        orientation: "",
-        viewType: "",
-        accessibility: "",
-        landUse: "",
-        zoneType: "",
+        // orientation: "",
+        // viewType: "",
+        // accessibility: "",
+        // landUse: "",
+        // zoneType: "",
         balconies: [],
         parkings: [],
     },
@@ -206,6 +207,9 @@ const slice = createSlice({
         },
         setDescription(state: propertyState, action): void {
             state.description = action.payload;
+        },
+        setDescriptionText(state: propertyState, action): void {
+            state.descriptionText = action.payload;
         },
 
         // Location
@@ -791,6 +795,7 @@ const slice = createSlice({
 
         setInitialState: (state: propertyState, action): void => {
             const payload: IProperties = action.payload;
+            const { details, heatingAndEnergy, technicalFeatures } = payload;
 
             // INFO: we don't get a valid value, use the one on the initialState which is non-null but always means "unset";
             //        this way we prevent nulls and at the same time show the values as empty
@@ -799,10 +804,10 @@ const slice = createSlice({
             state.title = payload.title || state.title;
             state.managerId = payload.manager?.id || state.managerId;
             state.ownerId = payload.owner?.id || state.ownerId;
-            state.state = payload.state || state.state;
+            state.state = payload.state.key || state.state;
             state.parentCategory =
-                payload.parentCategory || state.parentCategory;
-            state.category = payload.category || state.category;
+                payload.parentCategory.key || state.parentCategory;
+            state.category = payload.category.key || state.category;
             state.area = payload.area || state.area;
             state.plotArea = payload.plotArea || state.plotArea;
             state.price = payload.price || state.price;
@@ -823,17 +828,171 @@ const slice = createSlice({
             state.buildable = payload.buildable || state.buildable;
             state.video = payload.video || state.video;
             state.description = payload.description || state.description;
+            state.descriptionText =
+                payload.descriptionText || state.descriptionText;
 
-            state.details = payload.details || initialState.details;
-            state.heatingAndEnergy =
-                payload.heatingAndEnergy || initialState.heatingAndEnergy;
+            // Details
+            state.details.floor =
+                details?.floor.key || initialState.details.floor;
+            state.details.bedrooms =
+                details?.bedrooms || initialState.details.bedrooms;
+            state.details.kitchens =
+                details?.kitchens || initialState.details.kitchens;
+            state.details.wc = details?.wc || initialState.details.wc;
+            state.details.layers =
+                details?.layers || initialState.details.layers;
+            state.details.livingrooms =
+                details?.livingrooms || initialState.details.livingrooms;
+            state.details.bathrooms =
+                details?.bathrooms || initialState.details.bathrooms;
+            state.details.rooms = details?.rooms || initialState.details.rooms;
+            state.details.attic = details?.attic || initialState.details.attic;
+            state.details.storeroom =
+                details?.storeroom || initialState.details.storeroom;
+            state.details.playroom =
+                details?.playroom || initialState.details.playroom;
+            state.details.floorApartment =
+                details?.floorApartment || initialState.details.floorApartment;
+            state.details.penthouse =
+                details?.penthouse || initialState.details.penthouse;
+            state.details.orientation =
+                details?.orientation.key || initialState.details.orientation;
+            state.details.viewType =
+                details?.viewType.key || initialState.details.viewType;
+            state.details.accessibility =
+                details?.accessibility.key ||
+                initialState.details.accessibility;
+            state.details.landUse =
+                details?.landUse.key || initialState.details.landUse;
+            state.details.zoneType =
+                details?.zoneType.key || initialState.details.zoneType;
+            state.details.parkings =
+                details?.parkings.map((parking) => ({
+                    spots: parking.spots,
+                    parkingType: parking.parkingType.key,
+                })) || initialState.details.parkings;
+            state.details.balconies =
+                details?.balconies.map((balcony) => ({
+                    area: balcony.area,
+                    side: balcony.side.key,
+                })) || initialState.details.balconies;
+
+            // Heating & Energy
+            state.heatingAndEnergy.energyClass =
+                heatingAndEnergy?.energyClass.key ||
+                initialState.heatingAndEnergy.energyClass;
+            state.heatingAndEnergy.heatingType =
+                heatingAndEnergy?.heatingType.key ||
+                initialState.heatingAndEnergy.heatingType;
+            state.heatingAndEnergy.heatingSystem =
+                heatingAndEnergy?.heatingSystem.key ||
+                initialState.heatingAndEnergy.heatingSystem;
+            state.heatingAndEnergy.electricityType =
+                heatingAndEnergy?.electricityType.key ||
+                initialState.heatingAndEnergy.electricityType;
+            state.heatingAndEnergy.floorHeating =
+                heatingAndEnergy?.floorHeating ||
+                initialState.heatingAndEnergy.floorHeating;
+            state.heatingAndEnergy.airConditioning =
+                heatingAndEnergy?.airConditioning ||
+                initialState.heatingAndEnergy.airConditioning;
+            state.heatingAndEnergy.solarBoiler =
+                heatingAndEnergy?.solarBoiler ||
+                initialState.heatingAndEnergy.solarBoiler;
+            state.heatingAndEnergy.offPeakElectricity =
+                heatingAndEnergy?.offPeakElectricity ||
+                initialState.heatingAndEnergy.offPeakElectricity;
+            // Suitable For
             state.suitableFor = payload.suitableFor || initialState.suitableFor;
+            // Distances
             state.distances = payload.distances || initialState.distances;
+            // Construction
             state.construction =
                 payload.construction || initialState.construction;
+            // Features
             state.features = payload.features || initialState.features;
-            state.technicalFeatures =
-                payload.technicalFeatures || initialState.technicalFeatures;
+            // Technical Features
+            state.technicalFeatures.entrances =
+                technicalFeatures?.entrances ||
+                initialState.technicalFeatures.entrances;
+            state.technicalFeatures.displayWindowsLength =
+                technicalFeatures?.displayWindowsLength ||
+                initialState.technicalFeatures.displayWindowsLength;
+            state.technicalFeatures.safetyDoor =
+                technicalFeatures?.safetyDoor ||
+                initialState.technicalFeatures.safetyDoor;
+            state.technicalFeatures.alarmSystem =
+                technicalFeatures?.alarmSystem ||
+                initialState.technicalFeatures.alarmSystem;
+            state.technicalFeatures.painted =
+                technicalFeatures?.painted ||
+                initialState.technicalFeatures.painted;
+            state.technicalFeatures.furnished =
+                technicalFeatures?.furnished.key ||
+                initialState.technicalFeatures.furnished;
+            state.technicalFeatures.frameType =
+                technicalFeatures?.frameType.key ||
+                initialState.technicalFeatures.frameType;
+            state.technicalFeatures.paneGlassType =
+                technicalFeatures?.paneGlassType.key ||
+                initialState.technicalFeatures.paneGlassType;
+            state.technicalFeatures.windowScreens =
+                technicalFeatures?.windowScreens ||
+                initialState.technicalFeatures.windowScreens;
+            state.technicalFeatures.fireplace =
+                technicalFeatures?.fireplace ||
+                initialState.technicalFeatures.fireplace;
+            state.technicalFeatures.bright =
+                technicalFeatures?.bright ||
+                initialState.technicalFeatures.bright;
+            state.technicalFeatures.luxurious =
+                technicalFeatures?.luxurious ||
+                initialState.technicalFeatures.luxurious;
+            state.technicalFeatures.electricCarChargingFacilities =
+                technicalFeatures?.electricCarChargingFacilities ||
+                initialState.technicalFeatures.electricCarChargingFacilities;
+            state.technicalFeatures.reception =
+                technicalFeatures?.reception ||
+                initialState.technicalFeatures.reception;
+            state.technicalFeatures.petsAllowed =
+                technicalFeatures?.petsAllowed ||
+                initialState.technicalFeatures.petsAllowed;
+            state.technicalFeatures.floorType =
+                technicalFeatures?.floorType.key ||
+                initialState.technicalFeatures.floorType;
+            state.technicalFeatures.satelliteTV =
+                technicalFeatures?.satelliteTV ||
+                initialState.technicalFeatures.satelliteTV;
+            state.technicalFeatures.wiring =
+                technicalFeatures?.wiring ||
+                initialState.technicalFeatures.wiring;
+            state.technicalFeatures.loadingUnloadingElevator =
+                technicalFeatures?.loadingUnloadingElevator ||
+                initialState.technicalFeatures.loadingUnloadingElevator;
+            state.technicalFeatures.falseCeiling =
+                technicalFeatures?.falseCeiling ||
+                initialState.technicalFeatures.falseCeiling;
+            state.technicalFeatures.withEquipment =
+                technicalFeatures?.withEquipment ||
+                initialState.technicalFeatures.withEquipment;
+            state.technicalFeatures.doubleFrontage =
+                technicalFeatures?.doubleFrontage ||
+                initialState.technicalFeatures.doubleFrontage;
+            state.technicalFeatures.consideration =
+                technicalFeatures?.consideration ||
+                initialState.technicalFeatures.consideration;
+            state.technicalFeatures.floorToAreaRatio =
+                technicalFeatures?.floorToAreaRatio ||
+                initialState.technicalFeatures.floorToAreaRatio;
+            state.technicalFeatures.coverageFactor =
+                technicalFeatures?.coverageFactor ||
+                initialState.technicalFeatures.coverageFactor;
+            state.technicalFeatures.facadeLength =
+                technicalFeatures?.facadeLength ||
+                initialState.technicalFeatures.facadeLength;
+            state.technicalFeatures.inclination =
+                technicalFeatures?.inclination.key ||
+                initialState.technicalFeatures.inclination;
 
             // areas
             state.areas = payload.areas || initialState.areas;
@@ -993,6 +1152,7 @@ export const {
     setRegion,
     setCountry,
     setDescription,
+    setDescriptionText,
     setLatitude,
     setLongitude,
 
@@ -1094,6 +1254,8 @@ export const selectKeyCode = ({ property }: RootState) => property.keyCode;
 export const selectBuildable = ({ property }: RootState) => property.buildable;
 export const selectDescription = ({ property }: RootState) =>
     property.description;
+export const selectDescriptionText = ({ property }: RootState) =>
+    property.descriptionText;
 export const selectAvailableAfter = ({ property }: RootState) =>
     property.availableAfter;
 export const selectVideo = ({ property }: RootState) => property.video;

@@ -1,4 +1,9 @@
-import { selectDescription, setDescription } from "src/slices/property";
+import {
+    selectDescription,
+    selectDescriptionText,
+    setDescription,
+    setDescriptionText,
+} from "src/slices/property";
 import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
@@ -14,6 +19,7 @@ const DescriptionSection: React.FC = () => {
     const dispatch = useDispatch();
 
     const description = useSelector(selectDescription);
+    const descriptionText = useSelector(selectDescriptionText);
 
     const [editorState, setEditorState] = useState<EditorState>(
         EditorState.createEmpty()
@@ -38,6 +44,8 @@ const DescriptionSection: React.FC = () => {
             debounce((newEditorState: EditorState) => {
                 // convert currentState (JSON) to string (=> stringify) for description
                 const contentState = newEditorState.getCurrentContent();
+                const plainText = contentState.getPlainText();
+                dispatch(setDescriptionText(plainText));
                 const contentStateJSON = JSON.stringify(
                     convertToRaw(contentState)
                 );

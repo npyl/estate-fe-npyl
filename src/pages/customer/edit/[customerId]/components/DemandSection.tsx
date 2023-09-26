@@ -46,7 +46,7 @@ const DemandSection: FC = () => {
                 padding: 0.5,
             }}
         >
-            <Button onClick={handleCreateTab}>create</Button>
+            <Button onClick={handleCreateTab}>Create</Button>
 
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
                 <Tabs value={index} onChange={handleTabChange}>

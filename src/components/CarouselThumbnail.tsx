@@ -1,6 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 // @mui
-import { Box, Grid } from "@mui/material";
+import {
+    Box,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    Divider,
+    Grid,
+} from "@mui/material";
 import { alpha, styled } from "@mui/material/styles";
 // utils
 import { bgGradient } from "src/utils/cssStyles";
@@ -100,7 +110,7 @@ const StyledThumbnailsContainer = styled("div", {
 
 export default function CarouselThumbnail({ data }: Props) {
     const [currentIndex, setCurrentIndex] = useState(0);
-
+    const [clickedImageIndex, setClickedImageIndex] = useState(0);
     const [nav1, setNav1] = useState<Carousel | undefined>(undefined);
 
     const [nav2, setNav2] = useState<Carousel | undefined>(undefined);
@@ -159,14 +169,17 @@ export default function CarouselThumbnail({ data }: Props) {
             }}
         >
             <Carousel {...carouselSettings1} asNavFor={nav2} ref={carousel1}>
-                {data.map((item) =>
+                {data.map((item, index) =>
                     item.image ? (
                         <Image
                             key={item.id}
                             alt={item.title}
                             src={item.image}
                             ratio="16/9"
-                            onClick={() => setGalleryOpen(true)}
+                            onClick={() => {
+                                setClickedImageIndex(index);
+                                setGalleryOpen(true);
+                            }}
                         />
                     ) : (
                         <PreviewImage />
@@ -272,7 +285,9 @@ export default function CarouselThumbnail({ data }: Props) {
             <Lightbox
                 open={galleryOpen}
                 close={() => setGalleryOpen(false)}
-                slides={_images}
+                slides={_images
+                    .slice(clickedImageIndex)
+                    .concat(_images.slice(0, clickedImageIndex))} // Re-order images so clicked image is first
                 plugins={plugins}
                 carousel={{ finite: true }}
                 fullscreen={{ ref: fullscreenRef }}
@@ -295,6 +310,180 @@ export default function CarouselThumbnail({ data }: Props) {
                     },
                 }}
             />
+        </Box>
+    );
+}
+
+///////////////////////////////// only Photos
+export function OnlyPhotosCarousel({ data }: Props) {
+    const [nav1, setNav1] = useState<Carousel | undefined>(undefined);
+
+    const [nav2, setNav2] = useState<Carousel | undefined>(undefined);
+
+    const [clickedImageIndex, setClickedImageIndex] = useState(0);
+
+    const carousel1 = useRef<Carousel | null>(null);
+
+    const carousel2 = useRef<Carousel | null>(null);
+
+    const [galleryOpen, setGalleryOpen] = useState(false);
+
+    const [openDialog, setOpenDialog] = useState(false);
+
+    useEffect(() => {
+        if (carousel1.current) {
+            setNav1(carousel1.current);
+        }
+        if (carousel2.current) {
+            setNav2(carousel2.current);
+        }
+    }, []);
+
+    const renderAllImages = (
+        <Box
+            sx={{
+                display: "grid",
+                gridTemplateColumns: "repeat(5, 1fr)", // 5 images per row
+                gap: "16px",
+                mb: 1,
+                zIndex: 0,
+                overflow: "hidden",
+                position: "relative",
+            }}
+        >
+            {data.map(
+                (
+                    item,
+                    index // Here is the inclusion of the index
+                ) =>
+                    item.image ? (
+                        <Image
+                            key={item.id}
+                            alt={item.title}
+                            src={item.image}
+                            ratio="16/9"
+                            onClick={() => {
+                                setClickedImageIndex(index);
+                                setGalleryOpen(true);
+                            }}
+                        />
+                    ) : (
+                        <PreviewImage />
+                    )
+            )}
+        </Box>
+    );
+
+    const _images = data.map((item, index) => {
+        return { src: item.image };
+    });
+
+    const fullscreenRef = useRef<FullscreenRef>(null);
+    const thumbnailsRef = useRef<ThumbnailsRef>(null);
+
+    const initialPluginList = [
+        Captions,
+        Fullscreen,
+        Thumbnails,
+        Video,
+        Zoom,
+        Counter,
+    ];
+
+    const pluginListWithHideGallery = [
+        Captions,
+        Fullscreen,
+        Thumbnails,
+        Video,
+        Zoom,
+        Counter,
+        HideGallery,
+    ];
+
+    const [plugins, setPlugins] = useState(initialPluginList);
+
+    const handleDownload = () => {
+        setOpenDialog(true);
+    };
+
+    return (
+        <Box
+            sx={{
+                "& .slick-slide": {
+                    float: (theme) =>
+                        theme.direction === "rtl" ? "right" : "left",
+                },
+            }}
+        >
+            <Grid>{renderAllImages}</Grid>
+            <Divider></Divider>
+            <Button
+                sx={{ position: "flex", left: "90%" }}
+                onClick={handleDownload}
+            >
+                download images
+            </Button>
+            <Lightbox
+                open={galleryOpen}
+                close={() => setGalleryOpen(false)}
+                slides={_images
+                    .slice(clickedImageIndex)
+                    .concat(_images.slice(0, clickedImageIndex))} // Re-order images so clicked image is first
+                plugins={plugins}
+                carousel={{ finite: true }}
+                fullscreen={{ ref: fullscreenRef }}
+                thumbnails={{ ref: thumbnailsRef }}
+                on={{
+                    fullscreen() {
+                        // add HideGallery to the plugins
+                        setPlugins(pluginListWithHideGallery);
+                    },
+                    fullscreenExit() {
+                        // remove HideGallery
+                        setPlugins(initialPluginList);
+                    },
+
+                    hideGalleryEntered() {
+                        thumbnailsRef.current?.hide();
+                    },
+                    hideGalleryExited() {
+                        thumbnailsRef.current?.show();
+                    },
+                }}
+            />
+            <Dialog
+                open={openDialog}
+                onClose={() => setOpenDialog(false)}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {"Choose download option"}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Please select which photos you want to download.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button>
+                        {/* onClick={() => handleDownload("all")} color="primary" */}
+                        All photos
+                    </Button>
+                    <Button
+                        // onClick={() => handleDownload("private")}
+                        color="primary"
+                    >
+                        Private photos
+                    </Button>
+                    <Button
+                        // onClick={() => handleDownload("public")}
+                        color="primary"
+                    >
+                        Public photos
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Box>
     );
 }

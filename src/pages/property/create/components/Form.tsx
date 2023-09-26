@@ -7,6 +7,7 @@ import {
     MenuItem,
     Select,
     Button,
+    SelectChangeEvent,
 } from "@mui/material";
 
 import * as React from "react";
@@ -23,6 +24,7 @@ import { IGlobalProperty } from "src/types/global";
 
 import { Send as SendIcon } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
+import { KeyValue } from "src/types/KeyValue";
 
 interface IFormProps {
     performUpload?: () => void;
@@ -43,35 +45,32 @@ export default function Form({ performUpload }: IFormProps) {
     if (!enums || !parentCategoryEnum || parentCategoryEnum.length === 0)
         return null;
 
-    const enumsKeys = {
-        residentialCategory: [
-            { key: "house", value: "House" },
-            { key: "apartment", value: "Apartment" },
-        ],
-        commercialCategory: [
-            { key: "office", value: "Office" },
-            { key: "shop", value: "Shop" },
-        ],
-        landCategory: [
-            { key: "farm", value: "Farm" },
-            { key: "plot", value: "Plot" },
-        ],
-        otherCategory: [
-            { key: "garage", value: "Garage" },
-            { key: "storage", value: "Storage" },
-        ],
-    };
-    type CategoryObject = { key: string; value: string };
     const subCategoriesMap: {
-        [key: string]: CategoryObject[];
+        [key: string]: KeyValue[];
     } = {
-        Residential: enums.residentialCategory,
-        Commercial: enums.commercialCategory,
-        Land: enums.landCategory,
-        Other: enums.otherCategory,
+        RESIDENTIAL: enums.residentialCategory,
+        COMMERCIAL: enums.commercialCategory,
+        LAND: enums.landCategory,
+        OTHER: enums.otherCategory,
     };
-    console.log(parentCategoryEnum);
-    console.log(parentCategory);
+
+    const handleParentCategorySelect = (e: SelectChangeEvent<string>) => {
+        const selectedKey = e.target.value;
+        dispatch(setParentCategory(selectedKey));
+    };
+
+    const handleCategorySelect = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        const selectedKey = event.target.value;
+        const selectedItem = subCategoriesMap[parentCategory!]?.find(
+            (item) => item.key === selectedKey
+        );
+        if (selectedItem) {
+            dispatch(setCategory(selectedItem.key));
+        }
+    };
+
     return (
         <Grid container spacing={1} paddingLeft={2} paddingTop={3}>
             <Grid
@@ -82,17 +81,11 @@ export default function Form({ performUpload }: IFormProps) {
             >
                 <Grid item xs={6}>
                     <FormControl fullWidth>
-                        <InputLabel id="demo-simple-select-label">
-                            {t("Parent Category")}
-                        </InputLabel>
+                        <InputLabel>{t("Parent Category")}</InputLabel>
                         <Select
-                            labelId="demo-simple-select-label"
                             value={parentCategory}
                             label="Parent Category"
-                            onChange={(e) => {
-                                const selectedKey = e.target.value; // This should be the key, not the value
-                                dispatch(setParentCategory(selectedKey));
-                            }}
+                            onChange={handleParentCategorySelect}
                         >
                             {parentCategoryEnum.map((parentCategory, index) => {
                                 return (
@@ -110,30 +103,20 @@ export default function Form({ performUpload }: IFormProps) {
 
                 <Grid item xs={6}>
                     <TextField
-                        disabled={parentCategory === ""}
+                        disabled={!parentCategory}
                         fullWidth
                         select
                         label={t("Category")}
                         value={category}
-                        onChange={(
-                            event: React.ChangeEvent<HTMLInputElement>
-                        ) => {
-                            const selectedKey = event.target.value;
-                            const selectedItem = subCategoriesMap[
-                                parentCategory
-                            ]?.find((item) => item.key === selectedKey);
-                            if (selectedItem) {
-                                dispatch(setCategory(selectedItem.key));
-                            }
-                        }}
+                        onChange={handleCategorySelect}
                     >
-                        {subCategoriesMap[parentCategory]?.map(
-                            (category, index) => (
-                                <MenuItem key={index} value={category.key}>
-                                    {category.value}
+                        {subCategoriesMap[parentCategory!]?.map(
+                            ({ key, value }) => (
+                                <MenuItem key={key} value={key}>
+                                    {value}
                                 </MenuItem>
                             )
-                        ) || <MenuItem></MenuItem>}
+                        ) || <MenuItem />}
                     </TextField>
                 </Grid>
             </Grid>

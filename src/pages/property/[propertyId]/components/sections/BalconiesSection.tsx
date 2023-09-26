@@ -50,7 +50,7 @@ const BalconiesSection: React.FC<BalconiesSectionProps> = (props) => {
                                     />
                                     <ListItem
                                         label={t("Side")}
-                                        value={balcony?.side}
+                                        value={balcony?.side.value}
                                         align="horizontal"
                                     />
                                 </List>

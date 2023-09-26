@@ -10,7 +10,7 @@ interface HeatingSectionProps {
     data: IProperties;
 }
 const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
-    Residential: [
+    RESIDENTIAL: [
         "Heating Type",
         "Energy Class",
         "Heating System",
@@ -20,7 +20,7 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Solar Boiler",
         "Off Peak Electricity",
     ],
-    Commercial: [
+    COMMERCIAL: [
         "Heating Type",
         "Energy Class",
         "Heating System",
@@ -28,8 +28,8 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Floor Heating",
         "Air-Coditioning",
     ],
-    Land: [],
-    Other: [
+    LAND: [],
+    OTHER: [
         "Heating Type",
         "Energy Class",
         "Heating System",
@@ -41,10 +41,12 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
 const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
     const { data } = props;
     const { t } = useTranslation();
+
     if (!data) return null;
     const heating = data?.heatingAndEnergy;
     if (!heating) return null;
-    if (data.parentCategory == "Land") return null;
+    if (data.parentCategory.key === "Land") return null;
+
     const renderHalfOfFields = (fields: string[], from: number, to: number) => (
         <Grid item xs={6}>
             <List>
@@ -79,7 +81,7 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Energy Class")}
-                        value={heating?.energyClass}
+                        value={heating?.energyClass.value}
                         align="horizontal"
                     />
                 );
@@ -87,7 +89,7 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Heating Type")}
-                        value={heating?.heatingType}
+                        value={heating?.heatingType.value}
                         align="horizontal"
                     />
                 );
@@ -95,7 +97,7 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Heating System")}
-                        value={heating?.heatingSystem}
+                        value={heating?.heatingSystem.value}
                         align="horizontal"
                     />
                 );
@@ -103,7 +105,7 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Electricity Type")}
-                        value={heating?.electricityType}
+                        value={heating?.electricityType.value}
                         align="horizontal"
                     />
                 );
@@ -162,7 +164,7 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
                     <Divider></Divider>
                     <Grid container>
                         {propertyDescription(
-                            data?.parentCategory as ParentCategory
+                            data?.parentCategory.key as ParentCategory
                         )}
                     </Grid>
                 </Paper>

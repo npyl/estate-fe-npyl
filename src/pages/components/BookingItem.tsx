@@ -131,7 +131,7 @@ export const BookingItem = ({ item, activeMarker }: BookingItemProps) => {
                 },
             }}
         >
-            {state === "Sale" && <ForSaleLabel />}
+            {state.key === "SALE" && <ForSaleLabel />}
 
             {_carouselImages.length > 0 && (
                 <Box sx={{ position: "relative" }}>
@@ -178,7 +178,7 @@ export const BookingItem = ({ item, activeMarker }: BookingItemProps) => {
                 <Divider />
             </Stack>
 
-            <TypeLabel value={parentCategory} />
+            <TypeLabel value={parentCategory.value} />
             <PriceLabel value={price} />
         </Paper>
     );

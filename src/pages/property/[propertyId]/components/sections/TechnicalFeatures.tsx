@@ -10,7 +10,7 @@ interface TechnicalFeaturesProps {
     data: IProperties;
 }
 const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
-    Residential: [
+    RESIDENTIAL: [
         "Furnished",
         "Frame Type",
         "Pane Glass Type",
@@ -28,7 +28,7 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Pets Allowed",
         "Electric Car Charging Facilities",
     ],
-    Commercial: [
+    COMMERCIAL: [
         "Display Window Length",
         "Entrances",
         "Floor Type",
@@ -47,8 +47,8 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Wiring",
         "Loading-Unloading Elevator",
     ],
-    Land: ["Floor To Area Ratio", "Coverage Factor", "Facade Length"],
-    Other: [
+    LAND: ["Floor To Area Ratio", "Coverage Factor", "Facade Length"],
+    OTHER: [
         "Safety Door",
         "Double Frontage",
         "Satellite TV",
@@ -64,6 +64,7 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
     const { data } = props;
     const { t } = useTranslation();
     const technicalFeatures = data?.technicalFeatures;
+
     const renderThirdOfFields = (
         fields: string[],
         from: number,
@@ -142,7 +143,7 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Furnished")}
-                        value={technicalFeatures?.furnished}
+                        value={technicalFeatures?.furnished?.value}
                         align="horizontal"
                     />
                 );
@@ -150,7 +151,7 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Frame Type")}
-                        value={technicalFeatures?.frameType}
+                        value={technicalFeatures?.frameType?.value}
                         align="horizontal"
                     />
                 );
@@ -158,7 +159,7 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Pane Glass Type")}
-                        value={technicalFeatures?.paneGlassType}
+                        value={technicalFeatures?.paneGlassType?.value}
                         align="horizontal"
                     />
                 );
@@ -224,7 +225,7 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Floor Type")}
-                        value={technicalFeatures?.floorType}
+                        value={technicalFeatures?.floorType?.value}
                         align="horizontal"
                     />
                 );
@@ -339,7 +340,7 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                     <Divider></Divider>
                     <Grid container>
                         {technicalFeatures1(
-                            data?.parentCategory as ParentCategory
+                            data?.parentCategory.key as ParentCategory
                         )}
                     </Grid>
                 </Paper>

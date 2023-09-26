@@ -23,28 +23,24 @@ export default function Form({
 
     // enums
     const parentCategory = useSelector(selectParentCategory);
-    console.log("From the form:", parentCategory);
+
     const handleClick = () => {
         // create our property draft
         performUpload();
     };
+
     return (
         <Grid container spacing={1} paddingLeft={2} paddingTop={3}>
             {parentCategory !== "" && (
                 <Grid container mt={0} spacing={1}>
-                    {(parentCategory === "Κατοικία" ||
-                        parentCategory === "Residential") && (
+                    {parentCategory === "RESIDENTIAL" && (
                         <ResidentialFormSection />
                     )}
-                    {(parentCategory === "Land" || parentCategory === "Γη") && (
-                        <LandFormSection />
-                    )}
-                    {(parentCategory === "Commercial" ||
-                        parentCategory === "Επαγγελματική Στέγη") && (
+                    {parentCategory === "LAND" && <LandFormSection />}
+                    {parentCategory === "COMMERCIAL" && (
                         <CommercialFormSection />
                     )}
-                    {(parentCategory === "Other" ||
-                        parentCategory === "'Αλλο") && <OtherFormSection />}
+                    {parentCategory === "OTHER" && <OtherFormSection />}
                 </Grid>
             )}
             <Grid

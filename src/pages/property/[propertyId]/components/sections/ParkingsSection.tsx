@@ -14,7 +14,8 @@ const ParkingsSection: React.FC<ParkingsSectionProps> = (props) => {
     const { data } = props;
     const parkings = data.details?.parkings;
     const { t } = useTranslation();
-    if (data.parentCategory == "Residential") {
+
+    if (data.parentCategory.key === "RESIDENTIAL") {
         return parkings && parkings.length > 0 ? (
             <>
                 <Box
@@ -57,7 +58,7 @@ const ParkingsSection: React.FC<ParkingsSectionProps> = (props) => {
                                     <List>
                                         <ListItem
                                             label={t("Parking Type")}
-                                            value={parking?.parkingType}
+                                            value={parking?.parkingType.value}
                                             align="horizontal"
                                         />
                                         <ListItem

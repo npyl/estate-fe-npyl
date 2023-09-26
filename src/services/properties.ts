@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import {
     IProperties,
-    IPropertiesPostRequest,
+    IPropertiesPOST,
     IPropertyFilter,
     IPropertyResultResponse,
 } from "src/types/properties";
@@ -38,7 +38,7 @@ interface ICreatePropertyParams {
 }
 interface IEditPropertyProps {
     id: number;
-    body: IPropertiesPostRequest;
+    body: IPropertiesPOST;
 }
 interface IPropertyAddFileParams<T> {
     id: number;

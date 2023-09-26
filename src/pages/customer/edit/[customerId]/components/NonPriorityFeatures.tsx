@@ -53,28 +53,28 @@ const NonPriorityFeatures = ({
 
             <Grid item xs={12} padding={1}>
                 <Grid container spacing={2}>
-                    {parentCategory === "Residential" && (
+                    {parentCategory === "RESIDENTIAL" && (
                         <FeaturesSection
                             index={index}
                             priorityFeaturesMode={false}
                             onChange={handleChange}
                         />
                     )}
-                    {parentCategory === "Land" && (
+                    {parentCategory === "LAND" && (
                         <FeaturesForLandSection
                             index={index}
                             priorityFeaturesMode={false}
                             onChange={handleChange}
                         />
                     )}
-                    {parentCategory === "Commercial" && (
+                    {parentCategory === "COMMERCIAL" && (
                         <FeaturesForCommercialSection
                             index={index}
                             priorityFeaturesMode={false}
                             onChange={handleChange}
                         />
                     )}
-                    {parentCategory === "Other" && (
+                    {parentCategory === "OTHER" && (
                         <FeaturesForOtherSection
                             index={index}
                             priorityFeaturesMode={false}

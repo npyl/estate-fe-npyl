@@ -35,6 +35,7 @@ import { useTranslation } from "react-i18next";
 import { BulkEdit } from "./BulkEdit/BulkEdit";
 import { DeleteDialog } from "src/components/Dialog/Delete";
 import ChosenFilters from "./Filters/ChosenFilters";
+import { KeyValue } from "src/types/KeyValue";
 
 type optionType = "list" | "grid" | "map";
 
@@ -45,6 +46,100 @@ type viewOptionsType = {
     };
     label: string;
 };
+
+const viewOptions: viewOptionsType[] = [
+    {
+        id: "list",
+        icon: Menu,
+        label: "List",
+    },
+    {
+        id: "grid",
+        icon: GridViewIcon,
+        label: "Grid",
+    },
+    {
+        id: "map",
+        icon: MapIcon,
+        label: "Map",
+    },
+];
+
+const defaultImage = "/static/noImage.png";
+
+function renderImage(params: GridCellParams) {
+    if (params.formattedValue) {
+        return (
+            <>
+                <Image
+                    src={`${params.formattedValue}` || ""}
+                    alt=""
+                    ratio="16/9"
+                />
+            </>
+        );
+    } else {
+        return (
+            <Image
+                src={defaultImage} // Make sure 'defaultImage' is imported or defined in your file
+                alt="Default image description"
+                ratio="16/9"
+            />
+        );
+    }
+}
+
+type PropertyStatus =
+    | "SOLD"
+    | "SALE"
+    | "RENTED"
+    | "UNAVAILABLE"
+    | "RENT"
+    | "TAKEN"
+    | "UNDER_CONSTRUCTION"
+    | "UNDER_MAINTENANCE";
+
+type Color = string;
+
+type StatusColors = Record<PropertyStatus, Color>;
+
+const STATUS_COLORS: StatusColors = {
+    SOLD: "#79798a",
+    SALE: "#57825e",
+    RENT: "#bd9e39",
+    RENTED: "#3e78c2",
+    UNAVAILABLE: "#c72c2e",
+    TAKEN: "#7d673e",
+    UNDER_CONSTRUCTION: "#A300D8",
+    UNDER_MAINTENANCE: "#E0067C",
+};
+
+function statusColor(params: GridCellParams) {
+    if (!params.value) return <></>;
+
+    const value = params.value as KeyValue;
+    const status = (value.key as string)?.trim();
+    const statusUpper = status?.toUpperCase() as PropertyStatus;
+
+    const color = STATUS_COLORS[statusUpper] || "#537f91"; // default color if status is not recognized
+
+    return (
+        <Box
+            sx={{
+                width: 150,
+                height: 30,
+                bgcolor: color,
+                color: "white",
+                borderRadius: "20px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+            }}
+        >
+            {status}
+        </Box>
+    );
+}
 
 const ViewAll: FC = () => {
     const { t } = useTranslation();
@@ -100,97 +195,6 @@ const ViewAll: FC = () => {
         [data?.totalElements]
     );
 
-    const viewOptions: viewOptionsType[] = [
-        {
-            id: "list",
-            icon: Menu,
-            label: "List",
-        },
-        {
-            id: "grid",
-            icon: GridViewIcon,
-            label: "Grid",
-        },
-        {
-            id: "map",
-            icon: MapIcon,
-            label: "Map",
-        },
-    ];
-    const defaultImage = "/static/noImage.png";
-    function renderImage(params: GridCellParams) {
-        if (params.formattedValue) {
-            return (
-                <>
-                    <Image
-                        src={`${params.formattedValue}` || ""}
-                        alt=""
-                        ratio="16/9"
-                    />
-                </>
-            );
-        } else {
-            return (
-                <Image
-                    src={defaultImage} // Make sure 'defaultImage' is imported or defined in your file
-                    alt="Default image description"
-                    ratio="16/9"
-                />
-            );
-        }
-    }
-
-    type PropertyStatus =
-        | "SOLD"
-        | "SALE"
-        | "RENTED"
-        | "UNAVAILABLE"
-        | "RENT"
-        | "TAKEN"
-        | "UNDER_CONSTRUCTION"
-        | "UNDER_MAINTENANCE";
-
-    type Color = string;
-
-    type StatusColors = Record<PropertyStatus, Color>;
-
-    const STATUS_COLORS: StatusColors = {
-        SOLD: "#79798a",
-        SALE: "#57825e",
-        RENT: "#bd9e39",
-        RENTED: "#3e78c2",
-        UNAVAILABLE: "#c72c2e",
-        TAKEN: "#7d673e",
-        UNDER_CONSTRUCTION: "#A300D8",
-        UNDER_MAINTENANCE: "#E0067C",
-    };
-
-    function statusColor(params: GridCellParams) {
-        if (!params.value) {
-            return <></>;
-        }
-        const status = (params.value as string).trim();
-        const statusUpper = status.toUpperCase() as PropertyStatus;
-
-        const color = STATUS_COLORS[statusUpper] || "#537f91"; // default color if status is not recognized
-
-        return (
-            <Box
-                sx={{
-                    width: 150,
-                    height: 30,
-                    bgcolor: color,
-                    color: "white",
-                    borderRadius: "20px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                }}
-            >
-                {status}
-            </Box>
-        );
-    }
     const columns: GridColDef[] = [
         {
             field: "propertyImage",
@@ -213,13 +217,14 @@ const ViewAll: FC = () => {
             align: "center",
             headerAlign: "center",
             headerName: t("Parent Category") as string,
+            renderCell: (params) => (params.value as KeyValue)?.key,
         },
         {
             field: "category",
             width: 180,
             align: "center",
             headerAlign: "center",
-            headerName: t("Category") as string,
+            renderCell: (params) => (params.value as KeyValue)?.key,
         },
         {
             field: "price",
@@ -426,6 +431,3 @@ const ViewAll: FC = () => {
 };
 
 export default ViewAll;
-function formatedPriceWithDots(value: unknown) {
-    throw new Error("Function not implemented.");
-}

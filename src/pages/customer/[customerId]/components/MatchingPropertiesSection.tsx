@@ -22,6 +22,7 @@ import { decodeShape, isPointInsideShapeData } from "src/components/Map/util";
 import Image from "src/components/image";
 import { useGetCustomerByIdQuery } from "src/services/customers";
 import { useSuggestForCustomerQuery } from "src/services/properties";
+import { KeyValue } from "src/types/KeyValue";
 import { IProperties } from "src/types/properties";
 
 type PropertyStatus =
@@ -59,6 +60,37 @@ const filterPropertiesInShape = (
             p.location?.lng &&
             isPointInsideShapeData(p.location.lat, p.location.lng, shapeData)
     );
+
+function statusColor(params: GridCellParams) {
+    if (!params.value) {
+        return <></>;
+    }
+    const value = params.value as KeyValue;
+    const status = value?.key?.trim();
+    const statusUpper = status?.toUpperCase() as PropertyStatus;
+    const color = STATUS_COLORS[statusUpper] || "#537f91"; // default color if status is not recognized
+
+    return (
+        <Box
+            sx={{
+                width: 150,
+                height: 30,
+                bgcolor: color,
+                color: "white",
+                borderRadius: "20px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+            }}
+        >
+            {status}
+        </Box>
+    );
+}
+
+const renderImage = (params: GridCellParams) => (
+    <Image src={`${params.formattedValue}` || ""} alt="" ratio="16/9" />
+);
 
 const pageSize = 5;
 
@@ -102,45 +134,10 @@ const MatchingPropertiesSection: React.FC = () => {
     useEffect(() => {
         if (!customer || !isSuccess) return;
 
-        setParentCategory(demand?.filters?.parentCategories || []);
+        setParentCategory(
+            demand?.filters?.parentCategories.map((i) => i.key) || []
+        );
     }, [customer, isSuccess]);
-
-    function statusColor(params: GridCellParams) {
-        if (!params.value) {
-            return <></>;
-        }
-        const status = (params.value as string).trim();
-        const statusUpper = status.toUpperCase() as PropertyStatus;
-        const color = STATUS_COLORS[statusUpper] || "#537f91"; // default color if status is not recognized
-
-        return (
-            <Box
-                sx={{
-                    width: 150,
-                    height: 30,
-                    bgcolor: color,
-                    color: "white",
-                    borderRadius: "20px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                }}
-            >
-                {status}
-            </Box>
-        );
-    }
-    function renderImage(params: GridCellParams) {
-        return (
-            <>
-                <Image
-                    src={`${params.formattedValue}` || ""}
-                    alt=""
-                    ratio="16/9"
-                />
-            </>
-        );
-    }
 
     const columns: GridColDef[] = [
         {
@@ -165,6 +162,7 @@ const MatchingPropertiesSection: React.FC = () => {
             width: 180,
             align: "center",
             headerAlign: "center",
+            renderCell: (params) => params.value?.key,
         },
         {
             field: "category",
@@ -172,6 +170,7 @@ const MatchingPropertiesSection: React.FC = () => {
             width: 180,
             align: "center",
             headerAlign: "center",
+            renderCell: (params) => params.value?.key,
         },
         {
             field: "price",

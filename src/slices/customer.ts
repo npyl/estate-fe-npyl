@@ -1,6 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { ICustomer, ICustomerPOST } from "src/types/customer";
-import { IDemand, IDemandFilters, IDemandPOST } from "src/types/demand";
+import {
+    IDemand,
+    IDemandFilters,
+    IDemandFiltersPOST,
+    IDemandPOST,
+} from "src/types/demand";
 import { IPropertyFeatures } from "src/types/features";
 import { ILabel } from "src/types/label";
 import type { RootState } from "../store";
@@ -108,7 +113,7 @@ const initialDemandState: IDemandPOST = {
         withinCityPlan: false,
         loadingDock: false,
     },
-    timeframe: "",
+    // timeframe: "",
     shape: "",
 };
 
@@ -121,12 +126,12 @@ const initialState: customerState = {
     homePhone: "",
     status: 0,
     fax: "",
-    nationality: "",
+    // nationality: "",
     idNumber: "",
     passportNumber: "",
     dateOfBirth: "",
-    leadSource: "",
-    preferredLanguage: "",
+    // leadSource: "",
+    // preferredLanguage: "",
     suggestedBy: "",
     leaser: false,
     lessor: false,
@@ -507,6 +512,44 @@ const slice = createSlice({
         },
         setInitialState: (state: customerState, action): void => {
             const payload: ICustomer = action.payload;
+            const initialDemand = initialState.demands[0];
+
+            // Mappers
+            const demandFiltersMapper = (
+                demandFilters: IDemandFilters
+            ): IDemandFiltersPOST => ({
+                minBedrooms: demandFilters.minBedrooms,
+                maxBedrooms: demandFilters.minBedrooms,
+                minBathrooms: demandFilters.minBedrooms,
+                maxBathrooms: demandFilters.minBedrooms,
+                furnished: demandFilters.furnished.map((i) => i.key),
+                maxCovered: demandFilters.maxCovered,
+                minCovered: demandFilters.minCovered,
+                minPlot: demandFilters.minPlot,
+                maxPlot: demandFilters.maxPlot,
+                minYearOfConstruction: demandFilters.minYearOfConstruction,
+                maxYearOfConstruction: demandFilters.maxYearOfConstruction,
+                minFloor: demandFilters.minFloor.key,
+                maxFloor: demandFilters.maxFloor.key,
+                states: demandFilters.states.map((i) => i.key),
+                minPrice: demandFilters.minPrice,
+                maxPrice: demandFilters.maxPrice,
+                labels: demandFilters.labels,
+                cities: demandFilters.cities,
+                regions: demandFilters.regions,
+                complexes: demandFilters.complexes,
+                categories: demandFilters.categories.map((i) => i.key),
+                parentCategories: demandFilters.parentCategories.map(
+                    (i) => i.key
+                ),
+            });
+            const demandMapper = (demand: IDemand): IDemandPOST => ({
+                filters: demandFiltersMapper(demand.filters),
+                priorityFeatures: demand.priorityFeatures,
+                nonPriorityFeatures: demand.nonPriorityFeatures,
+                timeframe: demand.timeframe.key,
+                shape: demand.shape,
+            });
 
             state.leaser = payload.leaser || initialState.leaser;
             state.lessor = payload.lessor || initialState.lessor;
@@ -523,14 +566,16 @@ const slice = createSlice({
             state.homePhone = payload.homePhone || initialState.homePhone;
             state.status = payload.status || initialState.status;
             state.fax = payload.fax || initialState.fax;
-            state.nationality = payload.nationality || initialState.nationality;
+            state.nationality =
+                payload.nationality.key || initialState.nationality;
             state.idNumber = payload.idNumber || initialState.idNumber;
             state.passportNumber =
                 payload.passportNumber || initialState.passportNumber;
             state.dateOfBirth = payload.dateOfBirth || initialState.dateOfBirth;
-            state.leadSource = payload.leadSource || initialState.leadSource;
+            state.leadSource =
+                payload.leadSource.key || initialState.leadSource;
             state.preferredLanguage =
-                payload.preferredLanguage || initialState.preferredLanguage;
+                payload.preferredLanguage.key || initialState.preferredLanguage;
 
             // location
             state.location.street =
@@ -563,9 +608,8 @@ const slice = createSlice({
                 : [];
 
             // Demands
-            const initialDemand = initialState.demands[0];
             state.demands = payload.demands.map(
-                (demand) => demand || initialDemand
+                (demand) => demandMapper(demand) || initialDemand
             );
         },
         addDemand: (state: customerState, action) => {
