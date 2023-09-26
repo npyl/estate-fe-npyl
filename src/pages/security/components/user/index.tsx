@@ -19,7 +19,6 @@ import {
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit'; // Make sure to import EditIcon
 import validator from 'validator';
-// type Props = {changeTab:(event: React.SyntheticEvent, newValue: number) => void;}
 type Props = {
     changeTab: (event: React.SyntheticEvent, newValue: number
     ) => void;
@@ -29,23 +28,17 @@ type Props = {
 const UserPage: FC<Props> = ({changeTab, setSelectedUser}) => {
 
     const users = [
-        {
-            id: 1,
-            username: 'ΠΑΝΑΓΙΩΤΗΣ',
-            firstName: 'John',
-            lastName: 'Doe',
-            status: 'Active',
-            email: 'user1@example.com'
-        },
-        {id: 2, username: 'ΜΙΛΙ', firstName: 'Jane', lastName: 'Smith', status: 'Inactive', email: 'user2@example.com'},
-        {
-            id: 3,
-            username: 'ΓΙΩΡΓΟΣ-ΝΕΟΠΑΣ',
-            firstName: 'Jane',
-            lastName: 'Smith',
-            status: 'Inactive',
-            email: 'user2@example.com'
-        },
+        { id: 1, username: 'ADMIN', firstName: 'ADMIN', lastName: 'ADMIN', status: 'Active', email: 'admin1@example.com' },
+        { id: 2, username: 'Panagiotis', firstName: 'Panagiotis', lastName: 'Athanasopoulos', status: 'Active', email: 'user1@example.com' },
+        { id: 3, username: 'Leo', firstName: 'Leonidas', lastName: 'Panagiotou', status: 'Inactive', email: 'user2@example.com' },
+        { id: 4, username: 'Vagelis', firstName: 'Vagelis', lastName: 'Kleitsas', status: 'Inactive', email: 'user2@example.com' },
+        { id: 5, username: 'Athanasios', firstName: 'Athanasios', lastName: 'Kalatheris', status: 'Inactive', email: 'user2@example.com' },
+        { id: 6, username: 'Taxi', firstName: 'Taxiarxis', lastName: 'Zarwnis', status: 'Inactive', email: 'user2@example.com' },
+        { id: 7, username: 'George', firstName: 'George', lastName: 'Katrougkalos', status: 'Inactive', email: 'user2@example.com' },
+        { id: 8, username: 'Kostas', firstName: 'Kostas', lastName: 'Mermelas', status: 'Inactive', email: 'user2@example.com' },
+        { id: 9, username: 'Omiros', firstName: 'Omiros', lastName: 'Panagiotoskilopoulos', status: 'Inactive', email: 'user2@example.com' },
+        { id: 10, username: 'Mili', firstName: 'Mili', lastName: 'Kopanitsanoskilopoylou', status: 'Inactive', email: 'user2@example.com' },
+        { id: 11, username: 'Pete', firstName: 'Pete', lastName: 'Marakos', status: 'Inactive', email: 'user2@example.com' },
     ];
 
     const [isCreateUserModalOpen, setIsCreateUserModalOpen] = useState(false);

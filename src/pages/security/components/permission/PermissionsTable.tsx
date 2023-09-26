@@ -13,7 +13,6 @@ import Typography from '@mui/material/Typography';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import {Button, Checkbox, Divider, Grid, MenuItem, Paper, Select, Stack} from "@mui/material";
-import {usePublishTab} from "src/components/Tabs/utils";
 
 import {
     actions,
@@ -33,7 +32,7 @@ function Category(props) {
     const [open, setOpen] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
 
-    console.log(props)
+    // console.log("props => ", props)
 
     let category = resolveCategory(row, subcategories1, subcategories2, subcategories3, subcategories4);
 
@@ -85,7 +84,7 @@ function Category(props) {
     return (
 
         <React.Fragment>
-            <TableRow sx={{'& > *': {borderBottom: 'unset'}}}>
+            <TableRow sx={{'& > *': {borderBottom: 'unset'}, width: '100%'}}>
                 <TableCell colSpan={9}>
                     <Stack direction={'row'} alignItems={'center'}>
                         <IconButton
@@ -139,13 +138,13 @@ function Category(props) {
         ;
 }
 
-const SecurityPage = () => {
+interface SecurityPageProps{user: string;}
+
+const SecurityPage: FC<SecurityPageProps> = ({user}) => {
 
     const [selectedPreset, setSelectedPreset] = useState("")
     const [selectedPreset1, setSelectedPreset1] = useState("")
-    usePublishTab({title: "Presets", path: "/security"});
     const {data: presets} = useGetPresetsQuery();
-    // console.log(presets)
     const {t} = useTranslation();
 
     const [savePreset] = useSavePresetMutation();
@@ -163,16 +162,17 @@ const SecurityPage = () => {
     };
 
     return (
-        <>
-            <Divider sx={{my: 2.5}}/>
-            <TableContainer component={Paper}>
+
+        <Box sx={{ overflowX: 'auto', width: '100%' }}>
+            <Typography variant='h6' sx={{textAlign: 'center', marginBottom: 2}}>{user}</Typography>
+            <TableContainer component={Paper} sx={{ overflowX: 'auto', width: '100%' }}>
                 <Table aria-label="collapsible table">
                     <TableHead>
                         <TableRow sx={{background: '#f5f5dc'}}>
                             <TableCell sx={{width: '10%'}} align="left"><Typography
                                 variant={'h6'}>Sale</Typography></TableCell>
                             {actions.map(s =>
-                                <TableCell sx={{width: '10%'}} align="left" key={s}> {s} </TableCell>
+                                <TableCell sx={{width: '10%'}} align="center" key={s}> {s} </TableCell>
                             )}
                         </TableRow>
                     </TableHead>
@@ -233,7 +233,7 @@ const SecurityPage = () => {
                     </Button>
                 </Stack>
             </Grid>
-        </>
+            </Box>
     );
 }
 
