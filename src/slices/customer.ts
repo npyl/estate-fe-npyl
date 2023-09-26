@@ -507,6 +507,16 @@ const slice = createSlice({
         },
         setInitialState: (state: customerState, action): void => {
             const payload: ICustomer = action.payload;
+            const initialDemand = initialState.demands[0];
+
+            // Mappers
+            const demandMapper = (demand: IDemand): IDemandPOST => ({
+                filters: demand.filters,
+                priorityFeatures: demand.priorityFeatures,
+                nonPriorityFeatures: demand.nonPriorityFeatures,
+                timeframe: demand.timeframe.key,
+                shape: demand.shape,
+            });
 
             state.leaser = payload.leaser || initialState.leaser;
             state.lessor = payload.lessor || initialState.lessor;
@@ -523,14 +533,16 @@ const slice = createSlice({
             state.homePhone = payload.homePhone || initialState.homePhone;
             state.status = payload.status || initialState.status;
             state.fax = payload.fax || initialState.fax;
-            state.nationality = payload.nationality || initialState.nationality;
+            state.nationality =
+                payload.nationality.key || initialState.nationality;
             state.idNumber = payload.idNumber || initialState.idNumber;
             state.passportNumber =
                 payload.passportNumber || initialState.passportNumber;
             state.dateOfBirth = payload.dateOfBirth || initialState.dateOfBirth;
-            state.leadSource = payload.leadSource || initialState.leadSource;
+            state.leadSource =
+                payload.leadSource.key || initialState.leadSource;
             state.preferredLanguage =
-                payload.preferredLanguage || initialState.preferredLanguage;
+                payload.preferredLanguage.key || initialState.preferredLanguage;
 
             // location
             state.location.street =
@@ -563,9 +575,8 @@ const slice = createSlice({
                 : [];
 
             // Demands
-            const initialDemand = initialState.demands[0];
             state.demands = payload.demands.map(
-                (demand) => demand || initialDemand
+                (demand) => demandMapper(demand) || initialDemand
             );
         },
         addDemand: (state: customerState, action) => {

@@ -1,3 +1,4 @@
+import { KeyValue } from "./KeyValue";
 import { IDemand, IDemandPOST } from "./demand";
 import { ILabel } from "./label";
 import { ILocation, ILocationPOST } from "./location";
@@ -43,12 +44,12 @@ export interface ICustomer {
     seller: boolean;
     buyer: boolean;
     fax: string;
-    nationality: string;
+    nationality: KeyValue;
     idNumber: string;
     passportNumber: string;
     dateOfBirth: string;
-    leadSource: string;
-    preferredLanguage: string;
+    leadSource: KeyValue;
+    preferredLanguage: KeyValue;
     suggestedBy: string;
     location: ILocation;
     notes: INote[];

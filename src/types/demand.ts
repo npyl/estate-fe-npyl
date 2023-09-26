@@ -1,3 +1,4 @@
+import { KeyValue } from "./KeyValue";
 import { IPropertyFeatures } from "./features";
 
 export interface IDemandFilters {
@@ -29,7 +30,7 @@ export interface IDemand {
     filters: IDemandFilters;
     priorityFeatures: IPropertyFeatures;
     nonPriorityFeatures: IPropertyFeatures;
-    timeframe: string;
+    timeframe: KeyValue;
     shape: string; // map shape
 }
 
