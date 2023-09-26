@@ -78,6 +78,7 @@ const TypeLabels = ({ seller, lessor, leaser, buyer }: TypeProps) => {
 {
 }
 const Customers: NextPage = () => {
+    const { t } = useTranslation();
     usePublishTab({ title: "Customers", path: "/customer" });
 
     const allFilters = useSelector(selectAll);
@@ -85,7 +86,6 @@ const Customers: NextPage = () => {
     const [bulkEditOpen, setBulkEditOpen] = useState(false);
     const [bulkDeleteDialogOpen, setBulkDeleteDialogOpen] = useState(false);
     const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
-    const { t } = useTranslation();
     const [sortingOrder, setSortingOrder] = useState("asc");
     // page
     const [page, setPage] = useState(0);
@@ -97,6 +97,11 @@ const Customers: NextPage = () => {
         () => (data?.totalElements ? data?.totalElements : 100000),
         [data?.totalElements]
     );
+
+    useEffect(() => {
+        revalidate();
+    }, [allFilters, page, pageSize]);
+
     const revalidate = () => {
         filterCustomers({
             filter: allFilters,
@@ -104,9 +109,6 @@ const Customers: NextPage = () => {
             pageSize: pageSize,
         });
     };
-    useEffect(() => {
-        revalidate();
-    }, [allFilters, page, pageSize]);
 
     const handlePaginationModelChange = (
         model: GridPaginationModel,
