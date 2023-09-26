@@ -208,6 +208,17 @@ export interface IPropertyTechnicalFeatures {
 }
 
 export interface IPropertyHeatingAndEnergy {
+    energyClass: KeyValue;
+    heatingType: KeyValue;
+    heatingSystem: KeyValue;
+    electricityType: KeyValue;
+    floorHeating: boolean;
+    airConditioning: boolean;
+    solarBoiler: boolean;
+    offPeakElectricity: boolean;
+}
+
+export interface IPropertyHeatingAndEnergyPOST {
     energyClass: string;
     heatingType: string;
     heatingSystem: string;
@@ -266,7 +277,7 @@ export interface IPropertiesPostRequest {
     video: string;
     description: string;
     suitableFor: IPropertySuitableFor;
-    heatingAndEnergy: IPropertyHeatingAndEnergy;
+    heatingAndEnergy: IPropertyHeatingAndEnergyPOST;
     distances: IPropertyDistancesPOST;
     areas: IPropertyAreasPOST;
     construction: IPropertyConstructionPOST;

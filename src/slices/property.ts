@@ -873,14 +873,41 @@ const slice = createSlice({
                     side: balcony.side.key,
                 })) || initialState.details.balconies;
 
-            state.heatingAndEnergy =
-                payload.heatingAndEnergy || initialState.heatingAndEnergy;
+            // Heating & Energy
+            state.heatingAndEnergy.energyClass =
+                payload.heatingAndEnergy.energyClass.key ||
+                initialState.heatingAndEnergy.energyClass;
+            state.heatingAndEnergy.heatingType =
+                payload.heatingAndEnergy.heatingType.key ||
+                initialState.heatingAndEnergy.heatingType;
+            state.heatingAndEnergy.heatingSystem =
+                payload.heatingAndEnergy.heatingSystem.key ||
+                initialState.heatingAndEnergy.heatingSystem;
+            state.heatingAndEnergy.electricityType =
+                payload.heatingAndEnergy.electricityType.key ||
+                initialState.heatingAndEnergy.electricityType;
+            state.heatingAndEnergy.floorHeating =
+                payload.heatingAndEnergy.floorHeating ||
+                initialState.heatingAndEnergy.floorHeating;
+            state.heatingAndEnergy.airConditioning =
+                payload.heatingAndEnergy.airConditioning ||
+                initialState.heatingAndEnergy.airConditioning;
+            state.heatingAndEnergy.solarBoiler =
+                payload.heatingAndEnergy.solarBoiler ||
+                initialState.heatingAndEnergy.solarBoiler;
+            state.heatingAndEnergy.offPeakElectricity =
+                payload.heatingAndEnergy.offPeakElectricity ||
+                initialState.heatingAndEnergy.offPeakElectricity;
+            // Suitable For
             state.suitableFor = payload.suitableFor || initialState.suitableFor;
+            // Distances
             state.distances = payload.distances || initialState.distances;
+            // Construction
             state.construction =
                 payload.construction || initialState.construction;
+            // Features
             state.features = payload.features || initialState.features;
-
+            // Technical Features
             state.technicalFeatures.entrances =
                 payload.technicalFeatures.entrances ||
                 initialState.technicalFeatures.entrances;
