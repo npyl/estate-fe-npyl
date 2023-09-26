@@ -63,6 +63,6 @@ export interface IDemandPOST {
     filters: Partial<IDemandFiltersPOST>;
     priorityFeatures: IPropertyFeatures;
     nonPriorityFeatures: IPropertyFeatures;
-    timeframe: string;
+    timeframe?: string;
     shape: string; // map shape
 }

@@ -72,12 +72,12 @@ export interface ICustomerPOST {
     seller: boolean;
     buyer: boolean;
     fax: string;
-    nationality: string;
+    nationality?: string;
     idNumber: string;
     passportNumber: string;
     dateOfBirth: string;
-    leadSource: string;
-    preferredLanguage: string;
+    leadSource?: string;
+    preferredLanguage?: string;
     suggestedBy: string;
     location: ILocationPOST;
     ownedProperties: IProperties[];

@@ -9,7 +9,6 @@ import {
 import { IPropertyFeatures } from "src/types/features";
 import { ILabel } from "src/types/label";
 import type { RootState } from "../store";
-import { de } from "date-fns/locale";
 
 interface customerState extends ICustomerPOST {}
 
@@ -114,7 +113,7 @@ const initialDemandState: IDemandPOST = {
         withinCityPlan: false,
         loadingDock: false,
     },
-    timeframe: "",
+    // timeframe: "",
     shape: "",
 };
 
@@ -127,12 +126,12 @@ const initialState: customerState = {
     homePhone: "",
     status: 0,
     fax: "",
-    nationality: "",
+    // nationality: "",
     idNumber: "",
     passportNumber: "",
     dateOfBirth: "",
-    leadSource: "",
-    preferredLanguage: "",
+    // leadSource: "",
+    // preferredLanguage: "",
     suggestedBy: "",
     leaser: false,
     lessor: false,
