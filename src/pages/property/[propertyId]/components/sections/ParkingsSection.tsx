@@ -58,7 +58,7 @@ const ParkingsSection: React.FC<ParkingsSectionProps> = (props) => {
                                     <List>
                                         <ListItem
                                             label={t("Parking Type")}
-                                            value={parking?.parkingType}
+                                            value={parking?.parkingType.value}
                                             align="horizontal"
                                         />
                                         <ListItem
