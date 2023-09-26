@@ -7,6 +7,64 @@ import { useRouter } from "next/router";
 import DataGridTable from "src/components/DataGrid";
 import Image from "src/components/image";
 import { useTranslation } from "react-i18next";
+import { KeyValue } from "src/types/KeyValue";
+
+type PropertyStatus =
+    | "SOLD"
+    | "SALE"
+    | "RENTED"
+    | "UNAVAILABLE"
+    | "RENT"
+    | "TAKEN"
+    | "UNDER_CONSTRUCTION"
+    | "UNDER_MAINTENANCE";
+
+type Color = string;
+
+type StatusColors = Record<PropertyStatus, Color>;
+
+const STATUS_COLORS: StatusColors = {
+    SOLD: "#79798a",
+    SALE: "#57825e",
+    RENT: "#bd9e39",
+    RENTED: "#3e78c2",
+    UNAVAILABLE: "#c72c2e",
+    TAKEN: "#7d673e",
+    UNDER_CONSTRUCTION: "#A300D8",
+    UNDER_MAINTENANCE: "#E0067C",
+};
+function statusColor(params: GridCellParams) {
+    if (!params.value) return <></>;
+
+    const value = params.value as KeyValue;
+    const status = value?.key?.trim();
+    const statusUpper = status?.toUpperCase() as PropertyStatus;
+    const color = STATUS_COLORS[statusUpper] || "#537f91"; // default color if status is not recognized
+
+    return (
+        <Box
+            sx={{
+                width: 150,
+                height: 30,
+                bgcolor: color,
+                color: "white",
+                borderRadius: "20px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+            }}
+        >
+            {status}
+        </Box>
+    );
+}
+function renderImage(params: GridCellParams) {
+    return (
+        <>
+            <Image src={`${params.formattedValue}` || ""} alt="" ratio="16/9" />
+        </>
+    );
+}
 
 const OwnedCustomerPropertiesSection: React.FC = () => {
     const router = useRouter();
@@ -56,66 +114,6 @@ const OwnedCustomerPropertiesSection: React.FC = () => {
         ...property,
         propertyImageUrl: property.propertyImage?.url,
     }));
-    type PropertyStatus =
-        | "SOLD"
-        | "SALE"
-        | "RENTED"
-        | "UNAVAILABLE"
-        | "RENT"
-        | "TAKEN"
-        | "UNDER_CONSTRUCTION"
-        | "UNDER_MAINTENANCE";
-
-    type Color = string;
-
-    type StatusColors = Record<PropertyStatus, Color>;
-
-    const STATUS_COLORS: StatusColors = {
-        SOLD: "#79798a",
-        SALE: "#57825e",
-        RENT: "#bd9e39",
-        RENTED: "#3e78c2",
-        UNAVAILABLE: "#c72c2e",
-        TAKEN: "#7d673e",
-        UNDER_CONSTRUCTION: "#A300D8",
-        UNDER_MAINTENANCE: "#E0067C",
-    };
-    function statusColor(params: GridCellParams) {
-        if (!params.value) {
-            return <></>;
-        }
-        const status = (params.value as string).trim();
-        const statusUpper = status.toUpperCase() as PropertyStatus;
-        const color = STATUS_COLORS[statusUpper] || "#537f91"; // default color if status is not recognized
-
-        return (
-            <Box
-                sx={{
-                    width: 150,
-                    height: 30,
-                    bgcolor: color,
-                    color: "white",
-                    borderRadius: "20px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                }}
-            >
-                {status}
-            </Box>
-        );
-    }
-    function renderImage(params: GridCellParams) {
-        return (
-            <>
-                <Image
-                    src={`${params.formattedValue}` || ""}
-                    alt=""
-                    ratio="16/9"
-                />
-            </>
-        );
-    }
 
     const columns: GridColDef[] = [
         {
@@ -140,6 +138,7 @@ const OwnedCustomerPropertiesSection: React.FC = () => {
             width: 180,
             align: "center",
             headerAlign: "center",
+            renderCell: (params) => params.value?.key,
         },
         {
             field: "category",
@@ -147,6 +146,7 @@ const OwnedCustomerPropertiesSection: React.FC = () => {
             width: 180,
             align: "center",
             headerAlign: "center",
+            renderCell: (params) => params.value?.key,
         },
         {
             field: "price",
