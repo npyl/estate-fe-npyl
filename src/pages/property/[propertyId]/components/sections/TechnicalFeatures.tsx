@@ -64,6 +64,7 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
     const { data } = props;
     const { t } = useTranslation();
     const technicalFeatures = data?.technicalFeatures;
+
     const renderThirdOfFields = (
         fields: string[],
         from: number,
@@ -142,7 +143,7 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Furnished")}
-                        value={technicalFeatures?.furnished}
+                        value={technicalFeatures?.furnished?.value}
                         align="horizontal"
                     />
                 );
@@ -150,7 +151,7 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Frame Type")}
-                        value={technicalFeatures?.frameType}
+                        value={technicalFeatures?.frameType?.value}
                         align="horizontal"
                     />
                 );
@@ -158,7 +159,7 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Pane Glass Type")}
-                        value={technicalFeatures?.paneGlassType}
+                        value={technicalFeatures?.paneGlassType?.value}
                         align="horizontal"
                     />
                 );
@@ -224,7 +225,7 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Floor Type")}
-                        value={technicalFeatures?.floorType}
+                        value={technicalFeatures?.floorType?.value}
                         align="horizontal"
                     />
                 );

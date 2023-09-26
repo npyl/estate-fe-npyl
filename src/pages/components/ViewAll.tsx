@@ -115,12 +115,11 @@ const STATUS_COLORS: StatusColors = {
 };
 
 function statusColor(params: GridCellParams) {
-    if (!params.value) {
-        return <></>;
-    }
+    if (!params.value) return <></>;
+
     const value = params.value as KeyValue;
-    const status = (value.key as string).trim();
-    const statusUpper = status.toUpperCase() as PropertyStatus;
+    const status = (value.key as string)?.trim();
+    const statusUpper = status?.toUpperCase() as PropertyStatus;
 
     const color = STATUS_COLORS[statusUpper] || "#537f91"; // default color if status is not recognized
 
@@ -218,14 +217,14 @@ const ViewAll: FC = () => {
             align: "center",
             headerAlign: "center",
             headerName: t("Parent Category") as string,
-            renderCell: (params) => (params.value as KeyValue).key,
+            renderCell: (params) => (params.value as KeyValue)?.key,
         },
         {
             field: "category",
             width: 180,
             align: "center",
             headerAlign: "center",
-            renderCell: (params) => (params.value as KeyValue).key,
+            renderCell: (params) => (params.value as KeyValue)?.key,
         },
         {
             field: "price",
