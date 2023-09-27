@@ -1,5 +1,5 @@
 import { Grid } from "@mui/material";
-import OnlyNumbersInput from "../../../../../../../components/OnlyNumbers";
+import OnlyNumbersInput from "src/components/OnlyNumbers";
 
 import { useSelector, useDispatch } from "react-redux";
 
@@ -37,6 +37,7 @@ const FloorAreasInput = () => {
                     <OnlyNumbersInput
                         label={t("Ground Floor")}
                         value={groundFloor}
+                        formatThousands
                         onChange={(value) => {
                             dispatch(setGroundFloor(value));
                         }}
@@ -46,6 +47,7 @@ const FloorAreasInput = () => {
                     <OnlyNumbersInput
                         label={t("1st")}
                         value={first}
+                        formatThousands
                         onChange={(value) => {
                             dispatch(setFirst(value));
                         }}
@@ -55,6 +57,7 @@ const FloorAreasInput = () => {
                     <OnlyNumbersInput
                         label={t("2nd")}
                         value={second}
+                        formatThousands
                         onChange={(value) => {
                             dispatch(setSecond(value));
                         }}
@@ -64,6 +67,7 @@ const FloorAreasInput = () => {
                     <OnlyNumbersInput
                         label={t("3rd")}
                         value={third}
+                        formatThousands
                         onChange={(value) => {
                             dispatch(setThird(value));
                         }}
@@ -73,6 +77,7 @@ const FloorAreasInput = () => {
                     <OnlyNumbersInput
                         label={t("4th")}
                         value={fourth}
+                        formatThousands
                         onChange={(value) => {
                             dispatch(setFourth(value));
                         }}
@@ -82,6 +87,7 @@ const FloorAreasInput = () => {
                     <OnlyNumbersInput
                         label={t("5th")}
                         value={fifth}
+                        formatThousands
                         onChange={(value) => {
                             dispatch(setFifth(value));
                         }}

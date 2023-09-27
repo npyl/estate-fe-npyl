@@ -8,13 +8,11 @@ import { useSelector } from "react-redux";
 
 import { useDispatch } from "react-redux";
 import {
-    selectAlarmSystem,
     selectFacade,
     selectLoadingDock,
     selectPanoramicView,
     selectVeranda,
     selectView,
-    setAlarmSystem,
     setFacade,
     setLoadingDock,
     setPanoramicView,
@@ -25,7 +23,7 @@ import {
 const FeaturesForOtherSection: React.FC<any> = (props) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
-    const alarmSystem = useSelector(selectAlarmSystem);
+
     const panoramicView = useSelector(selectPanoramicView);
     const loadingDock = useSelector(selectLoadingDock);
     const view = useSelector(selectView);

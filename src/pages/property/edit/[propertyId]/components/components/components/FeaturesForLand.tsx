@@ -4,7 +4,6 @@ import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
 import * as React from "react";
 import { useSelector } from "react-redux";
-import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 
 import { useDispatch } from "react-redux";
 import {
@@ -24,6 +23,7 @@ import { useTranslation } from "react-i18next";
 const FeaturesForLandSection: React.FC<any> = (props) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
+
     const panoramicView = useSelector(selectPanoramicView);
     const facade = useSelector(selectFacade);
     const corner = useSelector(selectCorner);
