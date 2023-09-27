@@ -17,7 +17,6 @@ export const CustomDrawingComponent = ({
 }: DrawingComponentProps) => {
     const drawingManagerRef = useRef<any>(null);
     const shapeRef = useRef<DrawShape | StopDraw>(null);
-    const [drawMode, setDrawMode] = useState(false);
 
     // drawing manager ready
     const [ready, setReady] = useState(false);
@@ -102,19 +101,19 @@ export const CustomDrawingComponent = ({
     }, [map]);
 
     useEffect(() => {
-        if (!ready || !shape) return;
+        if (!ready) return;
 
         // draw any imported shape
         shapeRef.current?.setMap(null);
-        shapeRef.current = drawShape(shape, map, onDraw);
+        shapeRef.current = shape ? drawShape(shape, map, onDraw) : null;
+
+        // INFO: we need to support null/undefined shape, because it can mean user cleared the shape OR we loaded a new map on a new demand form
     }, [ready, shape]);
 
     const startDrawing = () => {
         if (shapeRef.current?.getMap()) {
             shapeRef.current.setMap(null);
         }
-
-        setDrawMode(true);
 
         if (drawingManagerRef.current) {
             drawingManagerRef.current.setDrawingMode(
@@ -126,7 +125,7 @@ export const CustomDrawingComponent = ({
         if (shapeRef.current?.getMap()) {
             shapeRef.current.setMap(null);
         }
-        setDrawMode(true);
+
         if (drawingManagerRef.current) {
             drawingManagerRef.current.setDrawingMode(
                 google.maps.drawing.OverlayType.RECTANGLE
@@ -137,7 +136,7 @@ export const CustomDrawingComponent = ({
         if (shapeRef.current?.getMap()) {
             shapeRef.current.setMap(null);
         }
-        setDrawMode(true);
+
         if (drawingManagerRef.current) {
             drawingManagerRef.current.setDrawingMode(
                 google.maps.drawing.OverlayType.CIRCLE
@@ -146,8 +145,6 @@ export const CustomDrawingComponent = ({
     };
 
     const stopDrawing = () => {
-        setDrawMode(false);
-
         if (shapeRef.current?.getMap()) {
             shapeRef.current.setMap(null);
         }
