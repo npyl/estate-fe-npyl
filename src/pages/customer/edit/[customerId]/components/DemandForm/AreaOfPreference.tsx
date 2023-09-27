@@ -17,11 +17,7 @@ import {
     useGetClosestQuery,
     useLazyGetHierarchyByAreaIdQuery,
 } from "src/services/location";
-import {
-    ISetDemandFilterAction,
-    selectShape,
-    setShape,
-} from "src/slices/customer";
+import { selectShape, setShape } from "src/slices/customer";
 
 interface ILocationSectionProps {
     index: number;
@@ -59,7 +55,7 @@ export const AreaOfPreference = (props: ILocationSectionProps) => {
     );
     const handleDraw = (s: DrawShape | StopDraw) => {
         const encoded = s ? encodeShape(s) : null;
-        dispatch(setShape({ index, value: encoded }));
+        dispatch(setShape(indexedData(index, encoded)));
     };
     const [getHierarchy] = useLazyGetHierarchyByAreaIdQuery();
 

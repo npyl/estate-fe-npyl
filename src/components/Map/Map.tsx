@@ -79,8 +79,6 @@ const Map = ({
 
     const [map, setMap] = React.useState(null);
     const [mapRef, setMapRef] = useState<any>();
-    const [isOpen, setIsOpen] = useState(false);
-    const [infoWindowData, setInfoWindowData] = useState<any>();
 
     const [markers, setMarkers] = useState<IMapMarker[]>([]);
 
@@ -189,8 +187,6 @@ const Map = ({
     //
     const handleMarkerClick = (id: any, lat: any, lng: any, address: any) => {
         mapRef?.panTo({ lat, lng });
-        setInfoWindowData({ id, address });
-        setIsOpen(true);
     };
     const handleMarkerMouseOver = (marker: any) => {
         setActiveMarker(marker);
