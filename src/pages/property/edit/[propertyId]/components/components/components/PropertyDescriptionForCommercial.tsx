@@ -7,27 +7,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useAllGlobalsQuery } from "src/services/global";
 import {
     selectAccessibility,
-    selectAttic,
     selectBathrooms,
-    selectBedrooms,
-    selectElectricityType,
-    selectEnergyClass,
     selectFloor,
-    selectFloorApartment,
-    selectFloorType,
-    selectFrameType,
-    selectFurnished,
-    selectKitchens,
     selectLandUse,
     selectLayers,
-    selectLivingRooms,
     selectNumOfWC,
-    selectOrientation,
-    selectPenthouse,
-    selectPlayRoom,
     selectRooms,
     selectStoreroomBool,
-    selectViewType,
     selectZoneType,
     setAccessibility,
     setBathrooms,
@@ -35,42 +21,29 @@ import {
     setLandUse,
     setLayers,
     setNumOfWC,
-    setPlayRoom,
     setRooms,
     setZoneType,
     setStoreroomBool,
 } from "src/slices/property";
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
-const ariaLabel = { "aria-label": "description" };
+
 const PropertyDescriptionForCommercialSection: React.FC<any> = (props) => {
+    const { t } = useTranslation();
+    const dispatch = useDispatch();
+
     const { data } = useAllGlobalsQuery();
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
     const details = enums?.details as IGlobalPropertyDetails;
-    const { t } = useTranslation();
-    const dispatch = useDispatch();
-    const furnished = useSelector(selectFurnished);
-    const atttic = useSelector(selectAttic);
-    const playroom = useSelector(selectPlayRoom);
-    const floorApartment = useSelector(selectFloorApartment);
-    const penthouse = useSelector(selectPenthouse);
-    const landUse = useSelector(selectLandUse);
-    const floorType = useSelector(selectFloorType);
-    const viewType = useSelector(selectViewType);
-    const frameType = useSelector(selectFrameType);
-    const accessibility = useSelector(selectAccessibility);
-    const energyClass = useSelector(selectEnergyClass);
-    const zoneType = useSelector(selectZoneType);
-    const electricityType = useSelector(selectElectricityType);
 
-    const kitchens = useSelector(selectKitchens);
+    const landUse = useSelector(selectLandUse);
+    const accessibility = useSelector(selectAccessibility);
+    const zoneType = useSelector(selectZoneType);
+
     const layers = useSelector(selectLayers);
     const bathrooms = useSelector(selectBathrooms);
     const numOfWC = useSelector(selectNumOfWC);
-    const livingRooms = useSelector(selectLivingRooms);
-    const bedrooms = useSelector(selectBedrooms);
     const storeroomBool = useSelector(selectStoreroomBool);
     const rooms = useSelector(selectRooms);
-    const orientation = useSelector(selectOrientation);
     const floor = useSelector(selectFloor);
 
     if (!details) return null;

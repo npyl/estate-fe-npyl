@@ -13,8 +13,6 @@ import {
     selectFloorHeating,
     selectHeatingSystem,
     selectHeatingType,
-    selectOffPeakElectricity,
-    selectSolarBoiler,
     setAirConditioning,
     setElectricityType,
     setEnergyClass,
@@ -26,19 +24,18 @@ import { useAllGlobalsQuery } from "src/services/global";
 import { useTranslation } from "react-i18next";
 
 const HeatingAndEnergyForCommercialSection: React.FC<any> = (props) => {
+    const { t } = useTranslation();
+    const dispatch = useDispatch();
+
     const { data } = useAllGlobalsQuery();
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
     const details = enums?.details as IGlobalPropertyDetails;
-    const { t } = useTranslation();
-    const dispatch = useDispatch();
 
     const heatingType = useSelector(selectHeatingType);
     const heatingSystem = useSelector(selectHeatingSystem);
     const floorHeating = useSelector(selectFloorHeating);
     const airConditioning = useSelector(selectAirConditioning);
     const energyClass = useSelector(selectEnergyClass);
-    const offPeakElectricity = useSelector(selectOffPeakElectricity);
-    const solarBoiler = useSelector(selectSolarBoiler);
     const electricityType = useSelector(selectElectricityType);
 
     if (!details || !details.heatingSystem || !details.heatingType) return null;

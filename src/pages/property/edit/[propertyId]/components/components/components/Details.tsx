@@ -16,10 +16,7 @@ import { floor } from "lodash";
 import {
     selectAccessibility,
     selectAirConditioning,
-    selectArea,
     selectAvgUtils,
-    selectBalconies,
-    selectBasement,
     selectBathrooms,
     selectBedrooms,
     selectCovered,
@@ -30,8 +27,6 @@ import {
     selectFloorType,
     selectFrameType,
     selectFurnished,
-    selectGarden,
-    selectHasAttic,
     selectHeatingSystem,
     selectHeatingType,
     selectKitchens,
@@ -39,8 +34,6 @@ import {
     selectLivingRooms,
     selectNumOfWC,
     selectOrientation,
-    selectPublicTransportation,
-    selectSea,
     selectStoreroom,
     selectViewType,
     selectZoneType,
@@ -72,10 +65,10 @@ import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 const ariaLabel = { "aria-label": "description" };
 
 const DetailsSection: React.FC<any> = (props) => {
+    const dispatch = useDispatch();
+
     const enums = props.enums as IGlobalProperty;
     const details = enums?.details as IGlobalPropertyDetails;
-
-    const dispatch = useDispatch();
 
     const furnished = useSelector(selectFurnished);
     const orientation = useSelector(selectOrientation);
@@ -100,18 +93,6 @@ const DetailsSection: React.FC<any> = (props) => {
     const heatingSystem = useSelector(selectHeatingSystem);
     const floorHeating = useSelector(selectFloorHeating);
     const airConditioning = useSelector(selectAirConditioning);
-    // const parkingType = useSelector(selectParkingType);
-    // const spots = useSelector(selectSpots);
-    // const balconySide = useSelector(selectBalconySide);
-    const area = useSelector(selectArea);
-    // const plot = useSelector(selectPlot);
-    const basement = useSelector(selectBasement);
-    const hasAttic = useSelector(selectHasAttic);
-    const garden = useSelector(selectGarden);
-    const balconies = useSelector(selectBalconies);
-    const Storeroom = useSelector(selectStoreroom);
-    const publicTransportation = useSelector(selectPublicTransportation);
-    const toSea = useSelector(selectSea);
 
     if (!details) return null;
 

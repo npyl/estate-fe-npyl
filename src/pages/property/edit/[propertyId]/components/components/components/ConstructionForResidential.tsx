@@ -1,4 +1,4 @@
-import { Grid, MenuItem, Paper, TextField } from "@mui/material";
+import { Grid, Paper } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
@@ -35,6 +35,7 @@ import {
 } from "src/slices/property";
 import { useAllGlobalsQuery } from "src/services/global";
 import { useTranslation } from "react-i18next";
+import OnlyNumbersInput from "src/components/OnlyNumbers";
 
 const ConstructionForResidentialSection: React.FC<any> = (props) => {
     const dispatch = useDispatch();
@@ -59,39 +60,6 @@ const ConstructionForResidentialSection: React.FC<any> = (props) => {
 
     if (!details || !details.heatingSystem || !details.heatingType) return null;
 
-    //set the values for BE
-    const handleYearOfConstructionChange = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        const input = event.target.value;
-        const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
-        dispatch(setYearOfConstruction(numericValue));
-    };
-    const handleYearOfRenovationChange = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        const input = event.target.value;
-        const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
-        dispatch(setYearOfRenovation(numericValue));
-    };
-    const handleTotalFloorNumberChange = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        const input = event.target.value;
-        const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
-        dispatch(setTotalFloorNumber(numericValue));
-    };
-
-    //handle onlynumbers
-    const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        const keyCode = event.keyCode || event.which;
-        const keyValue = String.fromCharCode(keyCode);
-        const regex = /[0-9]/;
-        if (!regex.test(keyValue)) {
-            event.preventDefault(); // Prevent entering non-numeric characters
-        }
-    };
-
     return (
         <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
             <Box
@@ -108,48 +76,33 @@ const ConstructionForResidentialSection: React.FC<any> = (props) => {
             <Grid item xs={12} padding={1}>
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
-                        <TextField
+                        <OnlyNumbersInput
                             fullWidth
-                            id="outlined-controlled"
                             label={t("Year of Construction")}
                             value={yearOfConstruction}
-                            onChange={handleYearOfConstructionChange}
-                            onKeyPress={handleKeyPress}
-                            inputProps={{
-                                style: {
-                                    height: "8px",
-                                },
-                            }}
+                            onChange={(value) =>
+                                dispatch(setYearOfConstruction(value))
+                            }
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <TextField
+                        <OnlyNumbersInput
                             fullWidth
-                            id="outlined-controlled"
                             label={t("Year of Renovation")}
                             value={yearOfRenovation}
-                            onChange={handleYearOfRenovationChange}
-                            onKeyPress={handleKeyPress}
-                            inputProps={{
-                                style: {
-                                    height: "8px",
-                                },
-                            }}
+                            onChange={(value) =>
+                                dispatch(setYearOfRenovation(value))
+                            }
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <TextField
+                        <OnlyNumbersInput
                             fullWidth
-                            id="outlined-controlled"
                             label={t("Total Floor Number")}
                             value={totalFloorNumber}
-                            onChange={handleTotalFloorNumberChange}
-                            onKeyPress={handleKeyPress}
-                            inputProps={{
-                                style: {
-                                    height: "8px",
-                                },
-                            }}
+                            onChange={(value) =>
+                                dispatch(setTotalFloorNumber(value))
+                            }
                         />
                     </Grid>
                     <Grid

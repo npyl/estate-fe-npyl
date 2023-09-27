@@ -67,9 +67,10 @@ import CustomerTypeSelect from "./CustomerTypeSelect";
 import { useTranslation } from "react-i18next";
 import { useLazyGetCustomerLabelsQuery } from "src/services/customers";
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 import DateFieldStyled from "src/pages/property/edit/[propertyId]/components/components/components/DateFieldStyled";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
+import OnlyLettersInput from "src/components/OnlyLetters";
 
 const CustomerInformation: React.FC<any> = () => {
     const dispatch = useDispatch();
@@ -79,12 +80,10 @@ const CustomerInformation: React.FC<any> = () => {
     const { customerId } = router.query;
 
     const enums = useAllGlobalsQuery().data;
-    const propertyEnums = enums?.property;
     const nationalitiesEnum = enums?.customer?.nationality;
+    const leadSourceEnum = enums?.customer?.leadSource;
 
     const managers = useAllUsersQuery().data;
-
-    const leadSourceEnum = enums?.customer?.leadSource;
 
     const firstName = useSelector(selectFirstName);
     const lastName = useSelector(selectLastName);
@@ -105,17 +104,7 @@ const CustomerInformation: React.FC<any> = () => {
     const [helperText, setHelperText] = React.useState("");
     const { data: labels } = useGetLabelsQuery();
     const customerLabels = labels?.customerLabels;
-    const [showPopup, setShowPopup] = useState(false);
 
-    // const handleChange = (e: { target: { value: string } }) => {
-    //     setEmail(e.target.value);
-
-    //     if (e.target.value && !email.test(e.target.value)) {
-    //         setShowPopup(true);
-    //     } else {
-    //         setShowPopup(false);
-    //     }
-    // };
     // labels
     const [getLabels, { data: assignedLabels }] =
         useLazyGetCustomerLabelsQuery();
@@ -133,22 +122,6 @@ const CustomerInformation: React.FC<any> = () => {
         getLabels(+customerId!);
     };
 
-    // const [popupVisible, setPopupVisible] = useState(false); // Changed variable name
-
-    // // Explicitly define the type for the ref
-    // const emailInputRef = useRef<HTMLInputElement>(null);
-
-    // const handleInputChange = () => {
-    //     // Check if the ref's current value exists
-    //     if (emailInputRef.current) {
-    //         // Use the validity property safely
-    //         if (emailInputRef.current.validity!.typeMismatch) {
-    //             setPopupVisible(true);
-    //         } else {
-    //             setPopupVisible(false);
-    //         }
-    //     }
-    // };
     const handleDateChange = (
         setter: ActionCreatorWithPayload<any, string>,
         newDate: Date | null,
@@ -183,14 +156,7 @@ const CustomerInformation: React.FC<any> = () => {
             labelId: assignedLabels[index].id!,
         }).then(() => revalidate());
 
-    if (
-        !customerLabels
-        // !propertyEnums ||
-        // !leadSourceEnum ||
-        // !managers ||
-        // !nationalitiesEnum
-    )
-        return null;
+    if (!customerLabels) return null;
 
     return (
         <Paper
@@ -216,27 +182,19 @@ const CustomerInformation: React.FC<any> = () => {
             <Grid item xs={12} padding={1}>
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
-                        <TextField
+                        <OnlyLettersInput
                             fullWidth
                             label={t("First Name")}
                             value={firstName}
-                            onChange={(e) => {
-                                if (e.target.value.match(/^[a-zA-Zα-ωΑ-Ω]*$/)) {
-                                    dispatch(setFirstName(e.target.value));
-                                }
-                            }}
+                            onChange={(value) => dispatch(setFirstName(value))}
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <TextField
+                        <OnlyLettersInput
                             fullWidth
                             label={t("Last Name")}
                             value={lastName}
-                            onChange={(e) => {
-                                if (e.target.value.match(/^[a-zA-Zα-ωΑ-Ω]*$/)) {
-                                    dispatch(setLastName(e.target.value));
-                                }
-                            }}
+                            onChange={(value) => dispatch(setLastName(value))}
                         />
                     </Grid>
                     <Grid item xs={6}>

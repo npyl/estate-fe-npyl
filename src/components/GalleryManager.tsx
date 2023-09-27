@@ -95,7 +95,7 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
     useEffect(() => {
         // INFO: if we have currentImage, it means GalleryManager was opened with a specific image as interest
         if (!currentImage) return;
-        console.log("got a current image!");
+
         const newIndex = _carouselImages.findIndex(
             (carouselImage) => carouselImage.image === currentImage.url
         );

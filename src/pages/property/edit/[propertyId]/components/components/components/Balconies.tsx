@@ -19,7 +19,7 @@ import {
     removeBalcony,
 } from "src/slices/property";
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
-import OnlyNumbersInput from "../../../../../../../components/OnlyNumbers";
+import OnlyNumbersInput from "src/components/OnlyNumbers";
 import { useTranslation } from "react-i18next";
 
 const BalconiesSection: React.FC<any> = (props) => {
