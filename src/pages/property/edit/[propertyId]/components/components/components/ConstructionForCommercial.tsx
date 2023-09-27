@@ -8,7 +8,6 @@ import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 
 import { useDispatch } from "react-redux";
 import {
-    selectElevator,
     selectIncomplete,
     selectInternalStairs,
     selectNeedsRenovation,
@@ -37,11 +36,12 @@ import { useTranslation } from "react-i18next";
 import OnlyNumbersInput from "src/components/OnlyNumbers";
 
 const ConstructionForCommercialSection: React.FC<any> = (props) => {
+    const { t } = useTranslation();
+    const dispatch = useDispatch();
+
     const { data } = useAllGlobalsQuery();
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
     const details = enums?.details as IGlobalPropertyDetails;
-    const { t } = useTranslation();
-    const dispatch = useDispatch();
 
     const yearOfConstruction = useSelector(selectYearOfConstruction);
     const underConstruction = useSelector(selectUnderConstruction);

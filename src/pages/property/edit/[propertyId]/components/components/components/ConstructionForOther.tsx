@@ -1,4 +1,4 @@
-import { Grid, Paper, TextField } from "@mui/material";
+import { Grid, Paper } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
@@ -8,18 +8,11 @@ import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 
 import { useDispatch } from "react-redux";
 import {
-    selectElevator,
     selectIncomplete,
     selectInternalStairs,
-    selectNeedsRenovation,
-    selectNeoclassical,
     selectNewlyBuilt,
-    selectPreserved,
-    selectRenovated,
-    selectTotalFloorNumber,
     selectUnderConstruction,
     selectYearOfConstruction,
-    selectYearOfRenovation,
     setIncomplete,
     setInternalStairs,
     setNewlyBuilt,
@@ -28,47 +21,24 @@ import {
 } from "src/slices/property";
 import { useAllGlobalsQuery } from "src/services/global";
 import { useTranslation } from "react-i18next";
+import OnlyNumbersInput from "src/components/OnlyNumbers";
 
 const ConstructionForOtherSection: React.FC<any> = (props) => {
+    const { t } = useTranslation();
+    const dispatch = useDispatch();
+
     const { data } = useAllGlobalsQuery();
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
     const details = enums?.details as IGlobalPropertyDetails;
-    const { t } = useTranslation();
-    const dispatch = useDispatch();
+
     const yearOfConstruction = useSelector(selectYearOfConstruction);
     const underConstruction = useSelector(selectUnderConstruction);
     const newlyBuilt = useSelector(selectNewlyBuilt);
     const incomplete = useSelector(selectIncomplete);
-    const totalFloorNumber = useSelector(selectTotalFloorNumber);
-    const elevator = useSelector(selectElevator);
     const internalStairs = useSelector(selectInternalStairs);
-    const neoclassical = useSelector(selectNeoclassical);
-    const yearOfRenovation = useSelector(selectYearOfRenovation);
-    const renovated = useSelector(selectRenovated);
-    const needsRenovation = useSelector(selectNeedsRenovation);
-    const preserved = useSelector(selectPreserved);
-    // const [selectYearOfConstruction, setYearOfConstruction] =
-    //   useState<Date | null>(new Date());
 
     if (!details || !details.heatingSystem || !details.heatingType) return null;
 
-    //set the values for BE
-    const handleYearOfConstructionChange = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        const input = event.target.value;
-        const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
-        dispatch(setYearOfConstruction(numericValue));
-    };
-    //handle onlynumbers
-    const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        const keyCode = event.keyCode || event.which;
-        const keyValue = String.fromCharCode(keyCode);
-        const regex = /[0-9]/;
-        if (!regex.test(keyValue)) {
-            event.preventDefault(); // Prevent entering non-numeric characters
-        }
-    };
     return (
         <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
             <Box
@@ -85,18 +55,13 @@ const ConstructionForOtherSection: React.FC<any> = (props) => {
             <Grid item xs={12} padding={1}>
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
-                        <TextField
+                        <OnlyNumbersInput
                             fullWidth
-                            id="outlined-controlled"
                             label={t("Year of Construction")}
                             value={yearOfConstruction}
-                            onChange={handleYearOfConstructionChange}
-                            onKeyPress={handleKeyPress}
-                            inputProps={{
-                                style: {
-                                    height: "8px",
-                                },
-                            }}
+                            onChange={(value) =>
+                                dispatch(setYearOfConstruction(value))
+                            }
                         />
                     </Grid>
 
