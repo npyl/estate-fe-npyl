@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import { IProperties, ParentCategory } from "src/types/properties";
 
 import { Typography, Box, Paper, Divider, Grid } from "@mui/material";
@@ -9,6 +9,10 @@ import { useTranslation } from "react-i18next";
 interface TechnicalFeaturesProps {
     data: IProperties;
 }
+interface TechnicalFeaturesItemProps {
+    field: string;
+}
+
 const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
     RESIDENTIAL: [
         "Furnished",
@@ -72,9 +76,9 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
     ) => (
         <Grid item xs={4}>
             <List>
-                {fields
-                    .slice(from, to)
-                    .map((field) => renderTechnicalFeatureItem(field))}
+                {fields.slice(from, to).map((field, i) => (
+                    <TechnicalFeatureItem field={field} key={i} />
+                ))}
             </List>
         </Grid>
     );
@@ -97,7 +101,9 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
             </Grid>
         );
     };
-    const renderTechnicalFeatureItem = (field: string) => {
+    const TechnicalFeatureItem: FC<TechnicalFeaturesItemProps> = ({
+        field,
+    }) => {
         switch (field) {
             case "Entrances":
                 return (
