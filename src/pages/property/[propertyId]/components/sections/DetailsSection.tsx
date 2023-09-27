@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import { IProperties, ParentCategory } from "src/types/properties";
 import { Box, Divider, Grid, Paper, Typography } from "@mui/material";
 import { List, ListBooleanItem, ListItem } from "src/components/List";
@@ -6,6 +6,9 @@ import { useTranslation } from "react-i18next";
 
 interface DetailsSectionProps {
     data: IProperties;
+}
+interface PropertyDescriptionItem {
+    field: string;
 }
 
 const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
@@ -58,8 +61,10 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
 const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
     const { data } = props;
     const { t } = useTranslation();
+
     const details = data?.details;
     const distances = data?.distances;
+
     const renderThirdOfFields = (
         fields: string[],
         from: number,
@@ -67,9 +72,9 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
     ) => (
         <Grid item xs={4}>
             <List>
-                {fields
-                    .slice(from, to)
-                    .map((field) => renderPropertyDescriptionItem(field))}
+                {fields.slice(from, to).map((field, index) => (
+                    <PropertyDescriptionItem field={field} key={index} />
+                ))}
             </List>
         </Grid>
     );
@@ -97,7 +102,9 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
         );
     };
 
-    const renderPropertyDescriptionItem = (field: string) => {
+    const PropertyDescriptionItem: FC<PropertyDescriptionItem> = ({
+        field,
+    }) => {
         switch (field) {
             case "Floor":
                 return (

@@ -1105,10 +1105,18 @@ const DemandForm: FC<DemandFormProps> = (props) => {
 
             {parentCategories &&
                 parentCategories.length > 0 &&
-                parentCategories.map((e) => (
+                parentCategories.map((e, i) => (
                     <>
-                        <PriorityFeatures index={index} parentCategory={e} />
-                        <NonPriorityFeatures index={index} parentCategory={e} />
+                        <PriorityFeatures
+                            key={i}
+                            index={index}
+                            parentCategory={e}
+                        />
+                        <NonPriorityFeatures
+                            key={i}
+                            index={index}
+                            parentCategory={e}
+                        />
                     </>
                 ))}
         </>

@@ -76,7 +76,7 @@ const CustomerInformation: React.FC<any> = () => {
     const dispatch = useDispatch();
     const router = useRouter();
     const { t } = useTranslation();
-    const currentDate = new Date();
+
     const { customerId } = router.query;
 
     const enums = useAllGlobalsQuery().data;
@@ -84,26 +84,7 @@ const CustomerInformation: React.FC<any> = () => {
     const leadSourceEnum = enums?.customer?.leadSource;
 
     const managers = useAllUsersQuery().data;
-
-    const firstName = useSelector(selectFirstName);
-    const lastName = useSelector(selectLastName);
-    const email = useSelector(selectEmail);
-    const managedBy = useSelector(selectManagedBy);
-    const mobilePhone = useSelector(selectMobilePhone);
-    const homePhone = useSelector(selectHomePhone);
-    const fax = useSelector(selectFax);
-    const nationality = useSelector(selectNationality);
-    const idNumber = useSelector(selectIdNumber);
-    const dateOfBirth = useSelector(selectDateOfBirth);
-    const passportNumber = useSelector(selectPassportNumber);
-    const preferredLanguage = useSelector(selectPreferredLanguage);
-    const leadSource = useSelector(selectLeadSource) as LeadSource;
-    const suggestedBy = useSelector(selectSuggestedBy);
-    const status = useSelector(selectStatus);
-    const [emailError, setEmailError] = React.useState(false);
-    const [helperText, setHelperText] = React.useState("");
     const { data: labels } = useGetLabelsQuery();
-    const customerLabels = labels?.customerLabels;
 
     // labels
     const [getLabels, { data: assignedLabels }] =
@@ -111,6 +92,28 @@ const CustomerInformation: React.FC<any> = () => {
     const [assignLabel] = useAssignLabelToCustomerWithIDMutation();
     const [createAndAssignLabel] = useCreateLabelForCustomerWithIDMutation();
     const [deleteLabel] = useDeleteLabelForCustomerWithIdMutation();
+
+    const firstName = useSelector(selectFirstName) || "";
+    const lastName = useSelector(selectLastName) || "";
+    const email = useSelector(selectEmail) || "";
+    const managedBy = useSelector(selectManagedBy) || "";
+    const mobilePhone = useSelector(selectMobilePhone) || "";
+    const homePhone = useSelector(selectHomePhone) || "";
+    const fax = useSelector(selectFax) || "";
+    const nationality = useSelector(selectNationality) || "";
+    const idNumber = useSelector(selectIdNumber) || "";
+    const dateOfBirth = useSelector(selectDateOfBirth) || "";
+    const passportNumber = useSelector(selectPassportNumber) || "";
+    const preferredLanguage = useSelector(selectPreferredLanguage) || "";
+    const leadSource = (useSelector(selectLeadSource) as LeadSource) || "";
+    const suggestedBy = useSelector(selectSuggestedBy) || "";
+    const status = useSelector(selectStatus) || 0;
+
+    const [emailError, setEmailError] = React.useState(false);
+    const [helperText, setHelperText] = React.useState("");
+
+    const customerLabels = labels?.customerLabels;
+    const currentDate = new Date();
 
     useEffect(() => {
         if (!customerId) return;

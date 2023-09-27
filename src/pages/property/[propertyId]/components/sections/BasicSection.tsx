@@ -1,6 +1,6 @@
 import { Button, Divider, Grid, List, Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { useState } from "react";
+import { FC, useState } from "react";
 import {
     ListBooleanItem,
     ListItem,
@@ -16,6 +16,9 @@ import { useTranslation } from "react-i18next";
 
 interface BasicSectionProps {
     data: IProperties;
+}
+interface BasicDetailItemProps {
+    field: string;
 }
 
 const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
@@ -135,9 +138,9 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
     const renderHalfOfFields = (fields: string[], from: number, to: number) => (
         <Grid item xs={6}>
             <List>
-                {fields
-                    .slice(from, to)
-                    .map((field) => renderBasicDetailItem(field))}
+                {fields.slice(from, to).map((field, i) => (
+                    <BasicDetailItem field={field} key={i} />
+                ))}
             </List>
         </Grid>
     );
@@ -159,7 +162,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
             </Grid>
         );
     };
-    const renderBasicDetailItem = (field: string) => {
+    const BasicDetailItem: FC<BasicDetailItemProps> = ({ field }) => {
         switch (field) {
             case "ParentCategory":
                 return (
