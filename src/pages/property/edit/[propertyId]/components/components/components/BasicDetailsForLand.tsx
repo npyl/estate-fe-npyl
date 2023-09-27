@@ -74,7 +74,6 @@ import { CodeField } from "./components/CodeField";
 import { KeyCodeField } from "./components/KeyCodeField";
 import { ICustomer } from "src/types/customer";
 import { useTranslation } from "react-i18next";
-import { label } from "yet-another-react-lightbox/core";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 
 const BasicForLandSection: React.FC<any> = () => {
@@ -299,6 +298,7 @@ const BasicForLandSection: React.FC<any> = () => {
                         <OnlyNumbersInput
                             label={t("Area")}
                             value={area}
+                            formatThousands
                             adornment="m²"
                             onChange={(value) => {
                                 dispatch(setArea(value));
@@ -309,6 +309,7 @@ const BasicForLandSection: React.FC<any> = () => {
                         <OnlyNumbersInput
                             label={t("Plot Area")}
                             value={plotArea}
+                            formatThousands
                             adornment="m²"
                             onChange={(value) => {
                                 dispatch(setPlotArea(value));
@@ -319,6 +320,7 @@ const BasicForLandSection: React.FC<any> = () => {
                         <OnlyNumbersInput
                             label={t("Price")}
                             value={price}
+                            formatThousands
                             adornment="€"
                             onChange={(value) => {
                                 dispatch(setPrice(value));
@@ -339,6 +341,7 @@ const BasicForLandSection: React.FC<any> = () => {
                         <OnlyNumbersInput
                             label={t("Estimated Rent Price")}
                             value={estimatedRentPrice}
+                            formatThousands
                             adornment="€"
                             onChange={(value) => {
                                 dispatch(setEstimatedRentPrice(value));
@@ -493,6 +496,7 @@ const BasicForLandSection: React.FC<any> = () => {
                                         <OnlyNumbersInput
                                             label={t("Current Rent Price")}
                                             value={currentRentPrice}
+                                            formatThousands
                                             onChange={(value) => {
                                                 dispatch(
                                                     setCurrentRentPrice(value)
