@@ -17,7 +17,11 @@ import {
     useGetClosestQuery,
     useLazyGetHierarchyByAreaIdQuery,
 } from "src/services/location";
-import { selectShape, setShape } from "src/slices/customer";
+import {
+    ISetDemandFilterAction,
+    selectShape,
+    setShape,
+} from "src/slices/customer";
 
 interface ILocationSectionProps {
     index: number;
@@ -30,6 +34,12 @@ interface ILocationSectionProps {
     setComplexes: ActionCreatorWithPayload<any, string>;
     setRegions: ActionCreatorWithPayload<any, string>;
 }
+
+const indexedData = (index: number, value: any) => ({
+    index,
+    value,
+});
+
 export const AreaOfPreference = (props: ILocationSectionProps) => {
     const {
         index,
@@ -78,6 +88,39 @@ export const AreaOfPreference = (props: ILocationSectionProps) => {
         }
     ).data;
 
+    useEffect(() => {
+        if (!closest) return;
+
+        // update slice
+        if (closest.level === 2) {
+            dispatch(
+                setRegions(indexedData(index, [closest.parentID.toString()]))
+            );
+            dispatch(
+                setCities(indexedData(index, [closest.areaID.toString()]))
+            );
+        } else if (closest.level === 3) {
+            const neighbId = closest.areaID;
+            const municipId = closest.parentID;
+
+            dispatch(setComplexes(indexedData(index, [neighbId.toString()])));
+            dispatch(setCities(indexedData(index, [municipId.toString()])));
+
+            // For region
+            getHierarchy(municipId)
+                .unwrap()
+                .then((municipHierarchy) => {
+                    const regionId = municipHierarchy.parentID;
+                    if (!regionId) return;
+
+                    dispatch(
+                        setRegions(indexedData(index, [regionId.toString()]))
+                    );
+                })
+                .catch((reason) => console.log("getHierarchy: ", reason));
+        }
+    }, [closest]);
+
     const updateMainMarkerCoordinates = (lat: number, lng: number) => {
         let newMarker = mainMarker;
         newMarker.lat = lat;
@@ -123,60 +166,7 @@ export const AreaOfPreference = (props: ILocationSectionProps) => {
         setOnDragEndCoord({ lat, lng });
         updateMainMarkerCoordinates(lat, lng);
     };
-    useEffect(() => {
-        if (!closest) return;
 
-        // update slice
-        if (closest.level === 2) {
-            dispatch(setRegions([closest.parentID.toString()]));
-            dispatch(setCities([closest.areaID.toString()]));
-        } else if (closest.level === 3) {
-            const neighbId = closest.areaID;
-            const municipId = closest.parentID;
-
-            dispatch(setComplexes([neighbId.toString()]));
-            dispatch(setCities([municipId.toString()]));
-
-            // For region
-            getHierarchy(municipId)
-                .unwrap()
-                .then((municipHierarchy) => {
-                    const regionId = municipHierarchy.parentID;
-                    if (!regionId) return;
-
-                    dispatch(setRegions([regionId.toString()]));
-                })
-                .catch((reason) => console.log("getHierarchy: ", reason));
-        }
-    }, [closest]);
-
-    // useEffect(() => {
-    //     if (shapeData) {
-    //         // Center the map to the first point in the shape
-    //         if (shapeData.type === "Polygon") {
-    //             if (
-    //                 shapeData.paths.length > 0 &&
-    //                 shapeData.paths[0].length > 0
-    //             ) {
-    //                 const [firstPath] = shapeData.paths;
-    //                 const [firstCoord] = firstPath;
-    //                 const { lat, lng } = firstCoord;
-    //                 setX(lat);
-    //                 setY(lng);
-    //             }
-    //         } else if (shapeData.type === "Circle") {
-    //             const { lat, lng } = shapeData;
-    //             setX(lat);
-    //             setY(lng);
-    //         } else if (shapeData.type === "Rectangle") {
-    //             const { nelat, nelng } = shapeData;
-    //             setX(nelat);
-    //             setY(nelng);
-    //         }
-    //     } else {
-    //         if (!regions[0] || !cities[0]) return;
-    //     }
-    // }, [shapeData, regions[0], cities[0], complexes[0]]);
     const handleRegionChange = (
         regionCode: string,
         lat: number,
@@ -185,7 +175,7 @@ export const AreaOfPreference = (props: ILocationSectionProps) => {
         updateMainMarkerCoordinates(lat, lng);
 
         // update slice
-        dispatch(setRegions([regionCode]));
+        dispatch(setRegions(indexedData(index, [regionCode])));
     };
     const handleMunicipChange = (
         municipCode: string,
@@ -195,7 +185,7 @@ export const AreaOfPreference = (props: ILocationSectionProps) => {
         updateMainMarkerCoordinates(lat, lng);
 
         // update slice
-        dispatch(setCities([municipCode]));
+        dispatch(setCities(indexedData(index, [municipCode])));
     };
     const handleNeighbourChange = (
         neighbourCode: string,
@@ -205,7 +195,7 @@ export const AreaOfPreference = (props: ILocationSectionProps) => {
         updateMainMarkerCoordinates(lat, lng);
 
         // update slice
-        dispatch(setComplexes([neighbourCode]));
+        dispatch(setComplexes(indexedData(index, [neighbourCode])));
     };
     return (
         <Grid item xs={12} padding={1}>
@@ -230,21 +220,21 @@ export const AreaOfPreference = (props: ILocationSectionProps) => {
                     <Grid container direction={"row"} spacing={2}>
                         <Grid item xs={4}>
                             <RegionSelect
-                                regionCode={regions[0] || ""}
+                                regionCode={regions[index] || ""}
                                 onChange={handleRegionChange}
                             />
                         </Grid>
                         <Grid item xs={4}>
                             <MunicipSelect
-                                regionCode={regions[0] || ""}
-                                municipCode={cities[0] || ""}
+                                regionCode={regions[index] || ""}
+                                municipCode={cities[index] || ""}
                                 onChange={handleMunicipChange}
                             />
                         </Grid>
                         <Grid item xs={4}>
                             <NeighbourSelect
-                                municipCode={cities[0] || ""}
-                                neighbourCode={complexes[0] || ""}
+                                municipCode={cities[index] || ""}
+                                neighbourCode={complexes[index] || ""}
                                 onChange={handleNeighbourChange}
                             />
                         </Grid>

@@ -18,7 +18,7 @@ interface ISetFeatureAction {
         key: keyof IPropertyFeatures;
     };
 }
-interface ISetDemandFilterAction {
+export interface ISetDemandFilterAction {
     payload: {
         index: number;
         value: any;
