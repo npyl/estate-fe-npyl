@@ -22,6 +22,7 @@ export interface IPropertyResultResponse {
     parentCategory: KeyValue;
     propertyImage: string; // url only
     images: string[]; // urls only
+    labels: ILabel[];
     location: ILocationPOST;
 }
 
