@@ -15,7 +15,6 @@ import {
 import { useSelector } from "react-redux";
 import { useDispatch } from "src/store";
 
-import { useAllGlobalsQuery } from "src/services/global";
 import {
     selectFrameType,
     selectFurnished,
@@ -51,8 +50,8 @@ import {
 
 import ChosenFilters from "./ChosenFilters";
 import SaleSelect from "./FilterSale";
-import CategorySelect from "./FilterCategory";
-import SubCategorySelect from "./FilterSubCategory";
+import CategorySelect from "./FilterParentCategory";
+import SubCategorySelect from "./FilterCategory";
 import PriceSelect from "./FilterPrice";
 import FilterLabels from "./FilterLabels";
 import CodeSelect from "./FilterCode";
@@ -61,6 +60,7 @@ import ManagerIdSelect from "./FilterManagerId";
 import { ClearableDialogContent } from "./components/ClearableDialogContent";
 import { StyledDialogContent } from "./styles";
 import { useTranslation } from "react-i18next";
+import { useGlobals } from "src/hooks/useGlobals";
 
 // ----------------------------------------------------------------------
 
@@ -79,8 +79,9 @@ export default function FilterMore({
     onResetFilter,
 }: Props) {
     const dispatch = useDispatch();
-    const { data } = useAllGlobalsQuery();
+    const data = useGlobals();
     const { t } = useTranslation();
+
     const changedPropsCount = useSelector(sumOfChangedProperties);
 
     const frameType = useSelector(selectFrameType);

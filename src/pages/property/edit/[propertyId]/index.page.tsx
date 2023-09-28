@@ -4,7 +4,7 @@ import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import Form from "./components/Form";
+import Form from "./Form";
 import {
     useEditPropertyMutation,
     useLazyGetPropertyBlueprintsQuery,

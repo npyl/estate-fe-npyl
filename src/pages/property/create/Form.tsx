@@ -12,7 +12,7 @@ import {
 
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useAllGlobalsQuery } from "src/services/global";
+import { useGlobals } from "src/hooks/useGlobals";
 import {
     selectCategory,
     selectParentCategory,
@@ -35,12 +35,12 @@ export default function Form({ performUpload }: IFormProps) {
     const { t } = useTranslation();
 
     // enums
-    const { data } = useAllGlobalsQuery();
+    const data = useGlobals();
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
     const parentCategoryEnum = enums?.parentCategory;
 
-    const category = useSelector(selectCategory);
-    const parentCategory = useSelector(selectParentCategory);
+    const category = useSelector(selectCategory) || "";
+    const parentCategory = useSelector(selectParentCategory) || "";
 
     if (!enums || !parentCategoryEnum || parentCategoryEnum.length === 0)
         return null;

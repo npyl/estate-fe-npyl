@@ -5,6 +5,7 @@ import { Box } from "@mui/system";
 import * as React from "react";
 import { useSelector } from "react-redux";
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
+
 import { useDispatch } from "react-redux";
 import {
     selectAirConditioning,
@@ -13,30 +14,37 @@ import {
     selectFloorHeating,
     selectHeatingSystem,
     selectHeatingType,
+    selectOffPeakElectricity,
+    selectSolarBoiler,
     setAirConditioning,
     setElectricityType,
     setEnergyClass,
     setFloorHeating,
     setHeatingSystem,
     setHeatingType,
+    setOffPeakElectricity,
+    setSolarBoiler,
 } from "src/slices/property";
-import { useAllGlobalsQuery } from "src/services/global";
+import { useGlobals } from "src/hooks/useGlobals";
 import { useTranslation } from "react-i18next";
 
-const HeatingAndEnergyForCommercialSection: React.FC<any> = (props) => {
-    const { t } = useTranslation();
+const HeatingAndEnergySection: React.FC<any> = (props) => {
     const dispatch = useDispatch();
+    const { t } = useTranslation();
 
-    const { data } = useAllGlobalsQuery();
+    const data = useGlobals();
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
     const details = enums?.details as IGlobalPropertyDetails;
 
-    const heatingType = useSelector(selectHeatingType);
-    const heatingSystem = useSelector(selectHeatingSystem);
+    const heatingType = useSelector(selectHeatingType) || "";
+    const heatingSystem = useSelector(selectHeatingSystem) || "";
+    const energyClass = useSelector(selectEnergyClass) || "";
+    const electricityType = useSelector(selectElectricityType) || "";
+
     const floorHeating = useSelector(selectFloorHeating);
     const airConditioning = useSelector(selectAirConditioning);
-    const energyClass = useSelector(selectEnergyClass);
-    const electricityType = useSelector(selectElectricityType);
+    const offPeakElectricity = useSelector(selectOffPeakElectricity);
+    const solarBoiler = useSelector(selectSolarBoiler);
 
     if (!details || !details.heatingSystem || !details.heatingType) return null;
 
@@ -47,7 +55,7 @@ const HeatingAndEnergyForCommercialSection: React.FC<any> = (props) => {
                     px: 3,
                     py: 1.5,
                     display: "flex",
-                    justifyContent: "center",
+                    justifyContent: "left",
                 }}
             >
                 <Typography variant="h6">{t("Heating and Energy")}</Typography>
@@ -169,6 +177,7 @@ const HeatingAndEnergyForCommercialSection: React.FC<any> = (props) => {
                             )}
                         </TextField>
                     </Grid>
+
                     <Grid
                         item
                         xs={3}
@@ -220,9 +229,61 @@ const HeatingAndEnergyForCommercialSection: React.FC<any> = (props) => {
                             {t("Air-Coditioning")}
                         </Typography>
                     </Grid>
+
+                    <Grid
+                        item
+                        xs={3}
+                        flexDirection="row"
+                        sx={{ display: "inline-flex", alignItems: "center" }}
+                    >
+                        <Checkbox
+                            value={solarBoiler}
+                            checked={solarBoiler}
+                            onChange={(
+                                event: React.ChangeEvent<unknown>,
+                                checked: boolean
+                            ) => {
+                                dispatch(setSolarBoiler(checked));
+                            }}
+                            sx={{ cursor: "default" }}
+                            color="primary"
+                            inputProps={{
+                                "aria-label": "Floor Heating Checkbox",
+                            }}
+                        />
+                        <Typography variant="body1" sx={{ ml: 0 }}>
+                            {t("Solar Boiler")}
+                        </Typography>
+                    </Grid>
+
+                    <Grid
+                        item
+                        xs={3}
+                        flexDirection="row"
+                        sx={{ display: "inline-flex", alignItems: "center" }}
+                    >
+                        <Checkbox
+                            value={offPeakElectricity}
+                            checked={offPeakElectricity}
+                            onChange={(
+                                event: React.ChangeEvent<unknown>,
+                                checked: boolean
+                            ) => {
+                                dispatch(setOffPeakElectricity(checked));
+                            }}
+                            sx={{ cursor: "default" }}
+                            color="primary"
+                            inputProps={{
+                                "aria-label": "Floor Heating Checkbox",
+                            }}
+                        />
+                        <Typography variant="body1" sx={{ ml: 0 }}>
+                            {t("Off Peak Electricity")}
+                        </Typography>
+                    </Grid>
                 </Grid>
             </Grid>
         </Paper>
     );
 };
-export default HeatingAndEnergyForCommercialSection;
+export default HeatingAndEnergySection;

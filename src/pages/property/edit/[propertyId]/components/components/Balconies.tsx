@@ -10,7 +10,7 @@ import {
 import { AddCircle, Cancel } from "@mui/icons-material";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useAllGlobalsQuery } from "src/services/global";
+import { useGlobals } from "src/hooks/useGlobals";
 import {
     selectBalconies,
     setBalconySide,
@@ -25,8 +25,8 @@ import { useTranslation } from "react-i18next";
 const BalconiesSection: React.FC<any> = (props) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
+    const data = useGlobals();
 
-    const { data } = useAllGlobalsQuery();
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
     const details = enums?.details as IGlobalPropertyDetails;
 

@@ -11,7 +11,7 @@ import {
 import TabPanel from "src/components/Tabs/Tabs";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-import MainContainer from "./components/MainContainer";
+import MainContainer from "./MainContainer";
 
 import { deleteTabWithPath } from "src/slices/tabs";
 
@@ -30,19 +30,20 @@ import {
     SuitableFor,
     TechnicalFeatures,
     VideoSection,
-} from "./components/sections";
+} from "./sections";
 
 import ViewHeader from "src/pages/components/ViewHeader";
 
 import "photoswipe/dist/photoswipe.css";
-import InitMap from "./components/Map";
-import DescriptionSection from "./components/sections/DescriptionSection";
+import InitMap from "./Map";
+import DescriptionSection from "./sections/DescriptionSection";
+import ConstructionSection from "./sections/ConstructionSection";
+import Features from "./sections/FeaturesSection";
+import MatchingCustomersSection from "./sections/MatchingCustomers";
+import PhotosOnly from "./sections/PhotosOnly";
+
 import { usePublishTab } from "src/components/Tabs/utils";
 import { useTranslation } from "react-i18next";
-import ConstructionSection from "./components/sections/ConstructionSection";
-import Features from "./components/sections/FeaturesSection";
-import MatchingCustomersSection from "./components/sections/MatchingCustomers";
-import PhotosOnly from "./components/sections/PhotosOnly";
 
 function a11yProps(index: number) {
     return {

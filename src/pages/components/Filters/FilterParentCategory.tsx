@@ -8,29 +8,27 @@ import {
     SelectChangeEvent,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-
-import { useAllGlobalsQuery } from "src/services/global";
-import { useTranslation } from "react-i18next";
 import {
     selectParentCategories,
     setParentCategories,
-} from "src/slices/customer/filters";
+} from "src/slices/filters";
 
-export default function CategoryForCustomerSelect() {
+import { useTranslation } from "react-i18next";
+import { useGlobals } from "src/hooks/useGlobals";
+
+export default function FilterParentCategory() {
     const dispatch = useDispatch();
     const { t } = useTranslation();
-    const parentCategories = useSelector(selectParentCategories);
+    const data = useGlobals();
 
-    const { data } = useAllGlobalsQuery();
+    const categories = useSelector(selectParentCategories);
 
     const propertyEnums = data?.property;
-    const parentCategoryEnums = propertyEnums?.parentCategory;
+    const categoryEnums = propertyEnums?.parentCategory;
 
     if (!data) return null;
 
-    const handleChange = (
-        event: SelectChangeEvent<typeof parentCategories>
-    ) => {
+    const handleChange = (event: SelectChangeEvent<typeof categories>) => {
         const {
             target: { value },
         } = event;
@@ -44,26 +42,23 @@ export default function CategoryForCustomerSelect() {
 
     return (
         <FormControl sx={{ minWidth: "130px", maxWidth: "130px" }}>
-            <InputLabel id="demo-simple-select-label">
-                {t("Categories")}
-            </InputLabel>
+            <InputLabel>{t("Parent Category")}</InputLabel>
             <Select
                 multiple
-                labelId="demo-simple-select-label"
-                value={parentCategories}
+                value={categories}
                 onChange={handleChange}
                 renderValue={(selected) => selected.join(", ")}
-                input={<OutlinedInput label={t("Categories")} />}
+                input={<OutlinedInput label={t("Parent Category")} />}
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
-                {parentCategoryEnums!.map(({ key, value }) => {
+                {categoryEnums!.map(({ key, value }) => {
                     return (
                         <MenuItem key={key} value={key}>
                             <Checkbox
                                 checked={
-                                    parentCategories &&
-                                    parentCategories.length > 0 &&
-                                    parentCategories.indexOf(key) > -1
+                                    categories &&
+                                    categories.length > 0 &&
+                                    categories.indexOf(key) > -1
                                 }
                             />
 

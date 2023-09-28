@@ -8,9 +8,9 @@ import {
     StyledTextField,
     StyledSelect,
 } from "src/pages/components/BulkEditDrawer/style";
-import { useAllGlobalsQuery } from "src/services/global";
 import { EditProps } from "./types";
 import { DefaultOrEdit } from "./DefaultOrEdit";
+import { useGlobals } from "src/hooks/useGlobals";
 
 export const EditManager = ({ data, setData }: EditProps<string>) => {
     const { t } = useTranslation();
@@ -140,7 +140,7 @@ export const EditBedrooms = ({ data, setData }: EditProps<string>) => {
 export const EditState = ({ data, setData }: EditProps<string>) => {
     const { t } = useTranslation();
 
-    const enums = useAllGlobalsQuery().data;
+    const enums = useGlobals();
     const stateEnum = enums?.property?.state;
 
     return (

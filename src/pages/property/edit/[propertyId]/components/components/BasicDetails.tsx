@@ -11,7 +11,7 @@ import {
     Typography,
 } from "@mui/material";
 import { useDebouncedCallback } from "use-debounce";
-import DateFieldStyled from "./DateFieldStyled"; // adjust the path based on your directory structure
+import DateFieldStyled from "src/components/DateFieldStyled";
 
 import * as React from "react";
 
@@ -62,7 +62,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { LabelCreate } from "src/components/label";
-import { useAllGlobalsQuery } from "src/services/global";
+import { useGlobals } from "src/hooks/useGlobals";
 import {
     useAssignLabelToPropertyWithIDMutation,
     useCreateLabelForPropertyWithIDMutation,
@@ -85,7 +85,7 @@ const BasicSection: React.FC<any> = () => {
     const dispatch = useDispatch();
 
     const { propertyId } = router.query;
-    const { data } = useAllGlobalsQuery();
+    const data = useGlobals();
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
 
     // get list of owners, managers & labels
@@ -96,7 +96,7 @@ const BasicSection: React.FC<any> = () => {
 
     const currentDate = new Date();
     const code = useSelector(selectCode);
-    const owner = useSelector(selectOwner);
+    const owner = useSelector(selectOwner) || "";
     const manager = useSelector(selectManager);
     const currentRentPrice = useSelector(selectCurrentRentPrice);
     const estimatedRentPrice = useSelector(selectEstimatedRentPrice);
@@ -112,7 +112,7 @@ const BasicSection: React.FC<any> = () => {
     const rentalPeriodEnd = useSelector(selectRentalPeriodEnd);
     const auction = useSelector(selectAuction);
 
-    const state = useSelector(selectState);
+    const state = useSelector(selectState) || "";
     const stateEnum = enums?.state;
 
     // labels

@@ -14,28 +14,34 @@ import {
     selectRenovation,
     selectStudent,
     selectTouristRental,
+    setCottage,
     setDoctorsOffice,
     setInvestment,
+    setProfessionalUse,
     setRenovation,
+    setStudent,
+    setTouristRental,
 } from "src/slices/property";
 
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 
 import { useState } from "react";
 import { useAllUsersQuery } from "src/services/user";
-import { useAllGlobalsQuery } from "src/services/global";
+import { useGlobals } from "src/hooks/useGlobals";
 import { useTranslation } from "react-i18next";
 
-const SuitableForForCommercialSection: React.FC<any> = (props) => {
+const SuitableForForResidentialSection: React.FC<any> = (props) => {
+    const dispatch = useDispatch();
+    const { t } = useTranslation();
+
     const [rentalPeriodStart, setRentalPeriodStart] = useState<Date | null>(
         new Date()
     );
 
-    const { data } = useAllGlobalsQuery();
+    const data = useGlobals();
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
     const details = enums?.details as IGlobalPropertyDetails;
-    const dispatch = useDispatch();
-    const { t } = useTranslation();
+
     const student = useSelector(selectStudent);
 
     const cottage = useSelector(selectCottage);
@@ -46,7 +52,8 @@ const SuitableForForCommercialSection: React.FC<any> = (props) => {
     const renovation = useSelector(selectRenovation);
 
     // get list of owners & managers
-
+    const { data: owners } = useAllCustomersQuery();
+    const { data: managers } = useAllUsersQuery();
     if (!enums) return null;
     return (
         <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
@@ -55,7 +62,7 @@ const SuitableForForCommercialSection: React.FC<any> = (props) => {
                     px: 3,
                     py: 1.5,
                     display: "flex",
-                    justifyContent: "center",
+                    justifyContent: "left",
                 }}
             >
                 <Typography variant="h6">{t("Suitable For")}</Typography>
@@ -63,6 +70,52 @@ const SuitableForForCommercialSection: React.FC<any> = (props) => {
 
             <Grid item xs={12} padding={1}>
                 <Grid container spacing={2}>
+                    <Grid
+                        item
+                        xs={3}
+                        flexDirection="row"
+                        sx={{ display: "inline-flex", alignItems: "center" }}
+                    >
+                        <Checkbox
+                            value={student}
+                            checked={student}
+                            onChange={(
+                                event: React.ChangeEvent<unknown>,
+                                checked: boolean
+                            ) => {
+                                dispatch(setStudent(checked));
+                            }}
+                            sx={{ cursor: "default" }}
+                            color="primary"
+                            inputProps={{ "aria-label": "Student" }}
+                        />
+                        <Typography variant="body1" sx={{ ml: 0 }}>
+                            {t("Student")}
+                        </Typography>
+                    </Grid>
+                    <Grid
+                        item
+                        xs={3}
+                        flexDirection="row"
+                        sx={{ display: "inline-flex", alignItems: "center" }}
+                    >
+                        <Checkbox
+                            value={cottage}
+                            checked={cottage}
+                            onChange={(
+                                event: React.ChangeEvent<unknown>,
+                                checked: boolean
+                            ) => {
+                                dispatch(setCottage(checked));
+                            }}
+                            sx={{ cursor: "default" }}
+                            color="primary"
+                            inputProps={{ "aria-label": "Cottage" }}
+                        />
+                        <Typography variant="body1" sx={{ ml: 0 }}>
+                            {t("Cottage")}
+                        </Typography>
+                    </Grid>
                     <Grid
                         item
                         xs={3}
@@ -109,7 +162,29 @@ const SuitableForForCommercialSection: React.FC<any> = (props) => {
                             {t("Investment")}
                         </Typography>
                     </Grid>
-
+                    <Grid
+                        item
+                        xs={3}
+                        flexDirection="row"
+                        sx={{ display: "inline-flex", alignItems: "center" }}
+                    >
+                        <Checkbox
+                            value={touristRental}
+                            checked={touristRental}
+                            onChange={(
+                                event: React.ChangeEvent<unknown>,
+                                checked: boolean
+                            ) => {
+                                dispatch(setTouristRental(checked));
+                            }}
+                            sx={{ cursor: "default" }}
+                            color="primary"
+                            inputProps={{ "aria-label": "Tourist Rental" }}
+                        />
+                        <Typography variant="body1" sx={{ ml: 0 }}>
+                            {t("Tourist Rental")}
+                        </Typography>
+                    </Grid>
                     <Grid
                         item
                         xs={3}
@@ -133,10 +208,33 @@ const SuitableForForCommercialSection: React.FC<any> = (props) => {
                             {t("Doctor's Office")}
                         </Typography>
                     </Grid>
+                    <Grid
+                        item
+                        xs={3}
+                        flexDirection="row"
+                        sx={{ display: "inline-flex", alignItems: "center" }}
+                    >
+                        <Checkbox
+                            value={professionalUse}
+                            checked={professionalUse}
+                            onChange={(
+                                event: React.ChangeEvent<unknown>,
+                                checked: boolean
+                            ) => {
+                                dispatch(setProfessionalUse(checked));
+                            }}
+                            sx={{ cursor: "default" }}
+                            color="primary"
+                            inputProps={{ "aria-label": " Professional Use" }}
+                        />
+                        <Typography variant="body1" sx={{ ml: 0 }}>
+                            {t("Professional Use")}
+                        </Typography>
+                    </Grid>
                 </Grid>
             </Grid>
         </Paper>
     );
 };
 
-export default SuitableForForCommercialSection;
+export default SuitableForForResidentialSection;

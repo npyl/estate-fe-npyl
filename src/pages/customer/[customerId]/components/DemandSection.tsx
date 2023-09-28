@@ -20,7 +20,7 @@ const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
 
     const { customerId } = router.query;
 
-    const { data } = useGetCustomerByIdQuery(parseInt(customerId as string)); // basic details
+    const { data } = useGetCustomerByIdQuery(+customerId!); // basic details
     const { data: allLabels } = useGetLabelsQuery();
 
     const propertyLabels = allLabels?.propertyLabels;
@@ -101,169 +101,141 @@ const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
         return null;
     else
         return (
-            <>
-                <Paper
-                    elevation={10}
+            <Paper
+                elevation={10}
+                sx={{
+                    overflow: "auto",
+                    padding: 0,
+                }}
+            >
+                <Box
                     sx={{
-                        overflow: "auto",
-                        padding: 0,
+                        px: 3,
+                        py: 1.5,
+                        display: "flex",
+                        justifyContent: "left",
                     }}
                 >
-                    <Box
-                        sx={{
-                            px: 3,
-                            py: 1.5,
-                            display: "flex",
-                            justifyContent: "left",
-                        }}
-                    >
-                        <Typography variant="h6">
-                            {t("Demand")} No.{index + 1}
-                        </Typography>
-                    </Box>
-                    <Divider></Divider>
-                    <Grid container>
-                        <Grid item xs={6} padding={0}>
-                            <List>
-                                <ListItem
-                                    label={t("Parent Category")}
-                                    value={demandFilters?.parentCategories
-                                        ?.map((i) => i.value)
-                                        ?.join(", ")}
-                                    align="horizontal"
-                                />
-                                <ListItem
-                                    label={t("Furnished")}
-                                    value={demandFilters?.furnished
-                                        ?.map((i) => i.value)
-                                        ?.join(", ")}
-                                    align="horizontal"
-                                />
-                                <ListLabelsItem
-                                    label={t("Labels")}
-                                    labels={selectedLabels}
-                                    align="horizontal"
-                                />
-                                <ListItem
-                                    label={t("Construction")}
-                                    value={getRangeDisplayValue(
-                                        demandFilters?.minYearOfConstruction,
-                                        demandFilters?.maxYearOfConstruction
-                                    )}
-                                    align="horizontal"
-                                />
-                                <ListItem
-                                    label={t("Bedrooms")}
-                                    value={getRangeDisplayValue(
-                                        demandFilters?.minBedrooms,
-                                        demandFilters?.maxBedrooms
-                                    )}
-                                    align="horizontal"
-                                />
-                                <ListItem
-                                    label={t("Covered")}
-                                    value={
-                                        getRangeDisplayValue(
-                                            demandFilters?.minCovered,
-                                            demandFilters?.maxCovered
-                                        ) + " m²"
-                                    }
-                                    align="horizontal"
-                                />
-                                <ListItem
-                                    label={t("Price")}
-                                    value={
-                                        getRangeDisplayValue(
-                                            demandFilters?.minPrice,
-                                            demandFilters?.maxPrice
-                                        ) + " €"
-                                    }
-                                    align="horizontal"
-                                />
-                            </List>
-                        </Grid>
-
-                        <Grid item xs={6} padding={0}>
-                            <List>
-                                <ListItem
-                                    label={t("Category")}
-                                    value={demandFilters?.categories
-                                        ?.map((i) => i.value)
-                                        ?.join(", ")}
-                                    align="horizontal"
-                                />
-                                <ListItem
-                                    label={t("State")}
-                                    value={demandFilters?.states
-                                        ?.map((i) => i.value)
-                                        ?.join(", ")}
-                                    align="horizontal"
-                                />
-                                <ListItem
-                                    label={t("Time Frame")}
-                                    value={demand?.timeframe.value}
-                                    align="horizontal"
-                                />
-                                <ListItem
-                                    label={t("Bathrooms")}
-                                    value={getRangeDisplayValue(
-                                        demandFilters?.minBathrooms,
-                                        demandFilters?.maxBathrooms
-                                    )}
-                                    align="horizontal"
-                                />
-                                <ListItem
-                                    label={t("Plot")}
-                                    value={
-                                        getRangeDisplayValue(
-                                            demandFilters?.minPlot,
-                                            demandFilters?.maxPlot
-                                        ) + " m²"
-                                    }
-                                    align="horizontal"
-                                />
-
-                                <ListItem
-                                    label={t("Floor")}
-                                    value={getRangeDisplayValueString(
-                                        demandFilters?.minFloor.value,
-                                        demandFilters?.maxFloor.value
-                                    )}
-                                    align="horizontal"
-                                />
-                            </List>
-                        </Grid>
+                    <Typography variant="h6">
+                        {t("Demand")} No.{index + 1}
+                    </Typography>
+                </Box>
+                <Divider />
+                <Grid container>
+                    <Grid item xs={6} padding={0}>
+                        <List>
+                            <ListItem
+                                label={t("Parent Category")}
+                                value={demandFilters?.parentCategories
+                                    ?.map((i) => i.value)
+                                    ?.join(", ")}
+                                align="horizontal"
+                            />
+                            <ListItem
+                                label={t("Furnished")}
+                                value={demandFilters?.furnished
+                                    ?.map((i) => i.value)
+                                    ?.join(", ")}
+                                align="horizontal"
+                            />
+                            <ListLabelsItem
+                                label={t("Labels")}
+                                labels={selectedLabels}
+                                align="horizontal"
+                            />
+                            <ListItem
+                                label={t("Construction")}
+                                value={getRangeDisplayValue(
+                                    demandFilters?.minYearOfConstruction,
+                                    demandFilters?.maxYearOfConstruction
+                                )}
+                                align="horizontal"
+                            />
+                            <ListItem
+                                label={t("Bedrooms")}
+                                value={getRangeDisplayValue(
+                                    demandFilters?.minBedrooms,
+                                    demandFilters?.maxBedrooms
+                                )}
+                                align="horizontal"
+                            />
+                            <ListItem
+                                label={t("Covered")}
+                                value={
+                                    getRangeDisplayValue(
+                                        demandFilters?.minCovered,
+                                        demandFilters?.maxCovered
+                                    ) + " m²"
+                                }
+                                align="horizontal"
+                            />
+                            <ListItem
+                                label={t("Price")}
+                                value={
+                                    getRangeDisplayValue(
+                                        demandFilters?.minPrice,
+                                        demandFilters?.maxPrice
+                                    ) + " €"
+                                }
+                                align="horizontal"
+                            />
+                        </List>
                     </Grid>
-                </Paper>
-                <Paper
-                    elevation={10}
-                    sx={{
-                        overflow: "auto",
-                        padding: 0,
-                    }}
-                >
-                    <Box
-                        sx={{
-                            px: 3,
-                            py: 1.5,
-                            display: "flex",
-                            justifyContent: "left",
-                        }}
-                    >
-                        <Typography variant="h6">
-                            {t("Area of Preference")}
-                        </Typography>
-                    </Box>
-                    <Divider></Divider>
-                    <Grid container>
-                        <Grid item xs={12} padding={0}>
-                            <Grid item xs={12}>
-                                <AreaOfPreference index={index} />
-                            </Grid>
-                        </Grid>
+
+                    <Grid item xs={6} padding={0}>
+                        <List>
+                            <ListItem
+                                label={t("Category")}
+                                value={demandFilters?.categories
+                                    ?.map((i) => i.value)
+                                    ?.join(", ")}
+                                align="horizontal"
+                            />
+                            <ListItem
+                                label={t("State")}
+                                value={demandFilters?.states
+                                    ?.map((i) => i.value)
+                                    ?.join(", ")}
+                                align="horizontal"
+                            />
+                            <ListItem
+                                label={t("Time Frame")}
+                                value={demand?.timeframe.value}
+                                align="horizontal"
+                            />
+                            <ListItem
+                                label={t("Bathrooms")}
+                                value={getRangeDisplayValue(
+                                    demandFilters?.minBathrooms,
+                                    demandFilters?.maxBathrooms
+                                )}
+                                align="horizontal"
+                            />
+                            <ListItem
+                                label={t("Plot")}
+                                value={
+                                    getRangeDisplayValue(
+                                        demandFilters?.minPlot,
+                                        demandFilters?.maxPlot
+                                    ) + " m²"
+                                }
+                                align="horizontal"
+                            />
+
+                            <ListItem
+                                label={t("Floor")}
+                                value={getRangeDisplayValueString(
+                                    demandFilters?.minFloor.value,
+                                    demandFilters?.maxFloor.value
+                                )}
+                                align="horizontal"
+                            />
+                        </List>
                     </Grid>
-                </Paper>
-            </>
+                </Grid>
+
+                <AreaOfPreference index={index} />
+            </Paper>
         );
 };
 

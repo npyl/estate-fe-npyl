@@ -6,37 +6,38 @@ import {
     selectIds,
 } from "src/slices/customer/filters";
 
+const filterTags: Record<string, { label: string }> = {
+    status: {
+        label: "Status",
+    },
+    labels: {
+        label: "Labels",
+    },
+    leaser: {
+        label: "leaser",
+    },
+    buyer: {
+        label: "buyer",
+    },
+    lessor: {
+        label: "lessor",
+    },
+    seller: {
+        label: "seller",
+    },
+    parentCategories: {
+        label: "Parent Categories",
+    },
+    categories: {
+        label: "Categories",
+    },
+};
+
 const ChosenFilters = () => {
     const dispatch = useDispatch();
 
     const changedProps = useSelector(getChangedFields);
     const ids = useSelector(selectIds);
-    const filterTags: Record<string, { label: string }> = {
-        status: {
-            label: "Status",
-        },
-        labels: {
-            label: "Labels",
-        },
-        leaser: {
-            label: "leaser",
-        },
-        buyer: {
-            label: "buyer",
-        },
-        lessor: {
-            label: "lessor",
-        },
-        seller: {
-            label: "seller",
-        },
-        parentCategories: {
-            label: "Categories",
-        },
-        categories: {
-            label: "Subcategory",
-        },
-    };
 
     return (
         <Grid container direction="row">

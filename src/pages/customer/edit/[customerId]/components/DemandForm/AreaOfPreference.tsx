@@ -1,6 +1,6 @@
 import { Box, Grid } from "@mui/material";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
-import { useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { MunicipSelect } from "src/components/Location/MunicipSelect";
@@ -36,27 +36,27 @@ const indexedData = (index: number, value: any) => ({
     value,
 });
 
-export const AreaOfPreference = (props: ILocationSectionProps) => {
-    const {
-        index,
-        cities,
-        complexes,
-        regions,
-        setCities,
-        setComplexes,
-        setRegions,
-    } = props;
+export const AreaOfPreference: FC<ILocationSectionProps> = ({
+    index,
+    cities,
+    complexes,
+    regions,
+    setCities,
+    setComplexes,
+    setRegions,
+}) => {
     const dispatch = useDispatch();
 
-    const shape = useSelector(selectShape)[index];
+    const shapes = useSelector(selectShape); // returns every demand's shape
+    const shape = useMemo(
+        () => shapes && shapes.length && shapes[index],
+        [shapes, index]
+    );
     const shapeData = useMemo(
         () => (shape ? decodeShape(shape) : null),
         [shape]
     );
-    const handleDraw = (s: DrawShape | StopDraw) => {
-        const encoded = s ? encodeShape(s) : null;
-        dispatch(setShape(indexedData(index, encoded)));
-    };
+
     const [getHierarchy] = useLazyGetHierarchyByAreaIdQuery();
 
     // Fields
@@ -85,7 +85,7 @@ export const AreaOfPreference = (props: ILocationSectionProps) => {
     ).data;
 
     useEffect(() => {
-        if (!closest) return;
+        if (!closest || !index) return;
 
         // update slice
         if (closest.level === 2) {
@@ -115,7 +115,15 @@ export const AreaOfPreference = (props: ILocationSectionProps) => {
                 })
                 .catch((reason) => console.log("getHierarchy: ", reason));
         }
-    }, [closest]);
+    }, [index, closest]);
+
+    const handleDraw = useCallback(
+        (s: DrawShape | StopDraw) => {
+            const encoded = s ? encodeShape(s) : null;
+            dispatch(setShape(indexedData(index, encoded)));
+        },
+        [index]
+    );
 
     const updateMainMarkerCoordinates = (lat: number, lng: number) => {
         let newMarker = mainMarker;
@@ -193,10 +201,12 @@ export const AreaOfPreference = (props: ILocationSectionProps) => {
         // update slice
         dispatch(setComplexes(indexedData(index, [neighbourCode])));
     };
+
     return (
         <Grid item xs={12} padding={1}>
             <Box height={`calc(100vh - 266px)`} width={"100%"}>
                 <Map
+                    key={index}
                     zoom={12}
                     drawing
                     search

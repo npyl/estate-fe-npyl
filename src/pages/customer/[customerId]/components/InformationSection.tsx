@@ -13,7 +13,7 @@ import { LeadSource } from "src/types/global";
 
 import { Label, LabelColor } from "src/components/label";
 import { useMemo } from "react";
-import { useAllGlobalsQuery } from "src/services/global";
+import { useGlobals } from "src/hooks/useGlobals";
 
 interface TypeProps {
     seller: boolean;
@@ -66,12 +66,13 @@ const TypeLabels = ({ seller, lessor, leaser, buyer }: TypeProps) => {
 };
 
 const InformationSection: React.FC = () => {
-    const router = useRouter();
     const { t } = useTranslation();
+    const router = useRouter();
+    const enums = useGlobals();
 
     const { customerId } = router.query;
+
     const { data } = useGetCustomerByIdQuery(+customerId!);
-    const enums = useAllGlobalsQuery().data;
 
     const leadSource = data?.leadSource?.key as LeadSource;
     const nationalitiesEnum = enums?.customer?.nationality;

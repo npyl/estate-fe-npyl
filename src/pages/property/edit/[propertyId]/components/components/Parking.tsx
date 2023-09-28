@@ -18,16 +18,15 @@ import {
     addParking,
     removeParking,
 } from "src/slices/property";
-import { useAllGlobalsQuery } from "src/services/global";
-import OnlyNumbersInput from "../../../../../../../components/OnlyNumbers";
+import { useGlobals } from "src/hooks/useGlobals";
+import OnlyNumbersInput from "src/components/OnlyNumbers";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
 
 const ParkingSection: React.FC<any> = () => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const { data } = useAllGlobalsQuery();
+    const data = useGlobals();
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
     const details = enums?.details as IGlobalPropertyDetails;
 

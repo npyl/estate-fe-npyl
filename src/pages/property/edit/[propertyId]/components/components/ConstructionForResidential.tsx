@@ -1,103 +1,66 @@
-import { Checkbox, Grid, Paper } from "@mui/material";
+import { Grid, Paper } from "@mui/material";
+import Checkbox from "@mui/material/Checkbox";
 import Typography from "@mui/material/Typography";
-import * as React from "react";
-
 import { Box } from "@mui/system";
-
-import { useDispatch, useSelector } from "react-redux";
-import { useAllCustomersQuery } from "src/services/customers";
-import {
-    selectAlarmSystem,
-    selectBright,
-    selectConsideration,
-    selectCoverageFactor,
-    selectDisplayWindowsLength,
-    selectDoubleFrontage,
-    selectElectricCarChargingFacilities,
-    selectEntrances,
-    selectFacadeLength,
-    selectFalseCeiling,
-    selectFireplace,
-    selectFloorToAreaRatio,
-    selectFloorType,
-    selectFrameType,
-    selectFurnished,
-    selectInclination,
-    selectLoadingUnloadingElevator,
-    selectLuxurious,
-    selectPainted,
-    selectPaneGlassType,
-    selectPetsAllowed,
-    selectReception,
-    selectSafetyDoor,
-    selectSatelliteTV,
-    selectWindowScreens,
-    selectWiring,
-    selectWithEquipment,
-    setAlarmSystem,
-    setDoubleFrontage,
-    setFalseCeiling,
-    setLoadingUnloadingElevator,
-    setPetsAllowed,
-    setReception,
-    setSafetyDoor,
-    setSatelliteTV,
-    setWithEquipment,
-} from "src/slices/property";
-
+import * as React from "react";
+import { useSelector } from "react-redux";
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 
-import { useState } from "react";
-import { useAllUsersQuery } from "src/services/user";
-import { useAllGlobalsQuery } from "src/services/global";
+import { useDispatch } from "react-redux";
+import {
+    selectElevator,
+    selectIncomplete,
+    selectInternalStairs,
+    selectNeedsRenovation,
+    selectNeoclassical,
+    selectNewlyBuilt,
+    selectPreserved,
+    selectRenovated,
+    selectTotalFloorNumber,
+    selectUnderConstruction,
+    selectYearOfConstruction,
+    selectYearOfRenovation,
+    setElevator,
+    setIncomplete,
+    setInternalStairs,
+    setNeedsRenovation,
+    setNeoclassical,
+    setNewlyBuilt,
+    setPreserved,
+    setRenovated,
+    setTotalFloorNumber,
+    setUnderConstruction,
+    setYearOfConstruction,
+    setYearOfRenovation,
+} from "src/slices/property";
+import { useGlobals } from "src/hooks/useGlobals";
 import { useTranslation } from "react-i18next";
+import OnlyNumbersInput from "src/components/OnlyNumbers";
 
-const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = (props) => {
-    const [rentalPeriodStart, setRentalPeriodStart] = useState<Date | null>(
-        new Date()
-    );
-
-    const { data } = useAllGlobalsQuery();
-    const enums: IGlobalProperty = data?.property as IGlobalProperty;
-    const details = enums?.details as IGlobalPropertyDetails;
+const ConstructionForResidentialSection: React.FC<any> = (props) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
-    const entrances = useSelector(selectEntrances);
-    const displayWindowsLength = useSelector(selectDisplayWindowsLength);
-    const safetyDoor = useSelector(selectSafetyDoor);
-    const alarmSystem = useSelector(selectAlarmSystem);
-    const painted = useSelector(selectPainted);
-    const furnished = useSelector(selectFurnished);
-    const frameType = useSelector(selectFrameType);
-    const paneGlassType = useSelector(selectPaneGlassType);
-    const windowScreens = useSelector(selectWindowScreens);
-    const fireplace = useSelector(selectFireplace);
-    const bright = useSelector(selectBright);
-    const luxurious = useSelector(selectLuxurious);
-    const electricCarChargingFacilities = useSelector(
-        selectElectricCarChargingFacilities
-    );
-    const reception = useSelector(selectReception);
-    const petsAllowed = useSelector(selectPetsAllowed);
-    const floorType = useSelector(selectFloorType);
-    const satelliteTV = useSelector(selectSatelliteTV);
-    const wiring = useSelector(selectWiring);
-    const loadingUnloadingElevator = useSelector(
-        selectLoadingUnloadingElevator
-    );
-    const falseCeiling = useSelector(selectFalseCeiling);
-    const withEquipment = useSelector(selectWithEquipment);
-    const doubleFrontage = useSelector(selectDoubleFrontage);
-    const consideration = useSelector(selectConsideration);
-    const floorToAreaRatio = useSelector(selectFloorToAreaRatio);
-    const coverageFactor = useSelector(selectCoverageFactor);
-    const facadeLength = useSelector(selectFacadeLength);
-    const inclination = useSelector(selectInclination);
 
-    // get list of owners & managers
-    const { data: owners } = useAllCustomersQuery();
-    const { data: managers } = useAllUsersQuery();
-    if (!enums) return null;
+    const data = useGlobals();
+    const enums: IGlobalProperty = data?.property as IGlobalProperty;
+    const details = enums?.details as IGlobalPropertyDetails;
+
+    const totalFloorNumber = useSelector(selectTotalFloorNumber) || "";
+
+    const yearOfConstruction = useSelector(selectYearOfConstruction);
+    const underConstruction = useSelector(selectUnderConstruction);
+    const newlyBuilt = useSelector(selectNewlyBuilt);
+    const incomplete = useSelector(selectIncomplete);
+    const elevator = useSelector(selectElevator);
+    const internalStairs = useSelector(selectInternalStairs);
+    const neoclassical = useSelector(selectNeoclassical);
+    const yearOfRenovation = useSelector(selectYearOfRenovation);
+    const renovated = useSelector(selectRenovated);
+    const needsRenovation = useSelector(selectNeedsRenovation);
+    const preserved = useSelector(selectPreserved);
+
+    if (!details || !details.heatingSystem || !details.heatingType) return null;
+
     return (
         <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
             <Box
@@ -105,16 +68,44 @@ const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = (props) => {
                     px: 3,
                     py: 1.5,
                     display: "flex",
-                    justifyContent: "center",
+                    justifyContent: "left",
                 }}
             >
-                <Typography variant="h6">
-                    {t("Technical Features And Interior")}
-                </Typography>
+                <Typography variant="h6">{t("Construction")}</Typography>
             </Box>
 
             <Grid item xs={12} padding={1}>
                 <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                        <OnlyNumbersInput
+                            fullWidth
+                            label={t("Year of Construction")}
+                            value={yearOfConstruction}
+                            onChange={(value) =>
+                                dispatch(setYearOfConstruction(value))
+                            }
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <OnlyNumbersInput
+                            fullWidth
+                            label={t("Year of Renovation")}
+                            value={yearOfRenovation}
+                            onChange={(value) =>
+                                dispatch(setYearOfRenovation(value))
+                            }
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <OnlyNumbersInput
+                            fullWidth
+                            label={t("Total Floor Number")}
+                            value={totalFloorNumber}
+                            onChange={(value) =>
+                                dispatch(setTotalFloorNumber(value))
+                            }
+                        />
+                    </Grid>
                     <Grid
                         item
                         xs={3}
@@ -122,20 +113,66 @@ const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = (props) => {
                         sx={{ display: "inline-flex", alignItems: "center" }}
                     >
                         <Checkbox
-                            value={safetyDoor}
-                            checked={safetyDoor}
+                            value={underConstruction}
+                            checked={underConstruction}
                             onChange={(
                                 event: React.ChangeEvent<unknown>,
                                 checked: boolean
                             ) => {
-                                dispatch(setSafetyDoor(checked));
+                                dispatch(setUnderConstruction(checked));
                             }}
                             sx={{ cursor: "default" }}
                             color="primary"
-                            inputProps={{ "aria-label": "Safety Door" }}
+                            inputProps={{ "aria-label": "Under Construction" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            {t("Safety Door")}
+                            {t("Under Construction")}
+                        </Typography>
+                    </Grid>
+                    <Grid
+                        item
+                        xs={3}
+                        flexDirection="row"
+                        sx={{ display: "inline-flex", alignItems: "center" }}
+                    >
+                        <Checkbox
+                            value={renovated}
+                            checked={renovated}
+                            onChange={(
+                                event: React.ChangeEvent<unknown>,
+                                checked: boolean
+                            ) => {
+                                dispatch(setRenovated(checked));
+                            }}
+                            sx={{ cursor: "default" }}
+                            color="primary"
+                            inputProps={{ "aria-label": "Rrenovated" }}
+                        />
+                        <Typography variant="body1" sx={{ ml: 0 }}>
+                            {t("Renovated")}
+                        </Typography>
+                    </Grid>
+                    <Grid
+                        item
+                        xs={3}
+                        flexDirection="row"
+                        sx={{ display: "inline-flex", alignItems: "center" }}
+                    >
+                        <Checkbox
+                            value={needsRenovation}
+                            checked={needsRenovation}
+                            onChange={(
+                                event: React.ChangeEvent<unknown>,
+                                checked: boolean
+                            ) => {
+                                dispatch(setNeedsRenovation(checked));
+                            }}
+                            sx={{ cursor: "default" }}
+                            color="primary"
+                            inputProps={{ "aria-label": "Needs Renivation" }}
+                        />
+                        <Typography variant="body1" sx={{ ml: 0 }}>
+                            {t("Needs Renovation")}
                         </Typography>
                     </Grid>
 
@@ -146,44 +183,20 @@ const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = (props) => {
                         sx={{ display: "inline-flex", alignItems: "center" }}
                     >
                         <Checkbox
-                            value={doubleFrontage}
-                            checked={doubleFrontage}
+                            value={elevator}
+                            checked={elevator}
                             onChange={(
                                 event: React.ChangeEvent<unknown>,
                                 checked: boolean
                             ) => {
-                                dispatch(setDoubleFrontage(checked));
+                                dispatch(setElevator(checked));
                             }}
                             sx={{ cursor: "default" }}
                             color="primary"
-                            inputProps={{ "aria-label": "Double Frontage" }}
+                            inputProps={{ "aria-label": "Elevator" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            {t("Double Frontage")}
-                        </Typography>
-                    </Grid>
-
-                    <Grid
-                        item
-                        xs={3}
-                        flexDirection="row"
-                        sx={{ display: "inline-flex", alignItems: "center" }}
-                    >
-                        <Checkbox
-                            value={satelliteTV}
-                            checked={satelliteTV}
-                            onChange={(
-                                event: React.ChangeEvent<unknown>,
-                                checked: boolean
-                            ) => {
-                                dispatch(setSatelliteTV(checked));
-                            }}
-                            sx={{ cursor: "default" }}
-                            color="primary"
-                            inputProps={{ "aria-label": "Satellite TV" }}
-                        />
-                        <Typography variant="body1" sx={{ ml: 0 }}>
-                            {t("Satellite TV")}
+                            {t("Elevator")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -193,20 +206,20 @@ const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = (props) => {
                         sx={{ display: "inline-flex", alignItems: "center" }}
                     >
                         <Checkbox
-                            value={reception}
-                            checked={reception}
+                            value={internalStairs}
+                            checked={internalStairs}
                             onChange={(
                                 event: React.ChangeEvent<unknown>,
                                 checked: boolean
                             ) => {
-                                dispatch(setReception(checked));
+                                dispatch(setInternalStairs(checked));
                             }}
                             sx={{ cursor: "default" }}
                             color="primary"
-                            inputProps={{ "aria-label": "Reception" }}
+                            inputProps={{ "aria-label": "Internal stairs" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            {t("Reception")}
+                            {t("Internal Stairs")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -216,46 +229,20 @@ const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = (props) => {
                         sx={{ display: "inline-flex", alignItems: "center" }}
                     >
                         <Checkbox
-                            value={petsAllowed}
-                            checked={petsAllowed}
+                            value={newlyBuilt}
+                            checked={newlyBuilt}
                             onChange={(
                                 event: React.ChangeEvent<unknown>,
                                 checked: boolean
                             ) => {
-                                dispatch(setPetsAllowed(checked));
+                                dispatch(setNewlyBuilt(checked));
                             }}
                             sx={{ cursor: "default" }}
                             color="primary"
-                            inputProps={{ "aria-label": "Pets Allowed" }}
+                            inputProps={{ "aria-label": "Newly Build" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            {t("Pets Allowed")}
-                        </Typography>
-                    </Grid>
-
-                    <Grid
-                        item
-                        xs={3}
-                        flexDirection="row"
-                        sx={{ display: "inline-flex", alignItems: "center" }}
-                    >
-                        <Checkbox
-                            value={loadingUnloadingElevator}
-                            checked={loadingUnloadingElevator}
-                            onChange={(
-                                event: React.ChangeEvent<unknown>,
-                                checked: boolean
-                            ) => {
-                                dispatch(setLoadingUnloadingElevator(checked));
-                            }}
-                            sx={{ cursor: "default" }}
-                            color="primary"
-                            inputProps={{
-                                "aria-label": "Loading-Unloading Elevator",
-                            }}
-                        />
-                        <Typography variant="body1" sx={{ ml: 0 }}>
-                            {t("Loading-Unloading Elevator")}
+                            {t("Newly Build")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -265,20 +252,20 @@ const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = (props) => {
                         sx={{ display: "inline-flex", alignItems: "center" }}
                     >
                         <Checkbox
-                            value={falseCeiling}
-                            checked={falseCeiling}
+                            value={incomplete}
+                            checked={incomplete}
                             onChange={(
                                 event: React.ChangeEvent<unknown>,
                                 checked: boolean
                             ) => {
-                                dispatch(setFalseCeiling(checked));
+                                dispatch(setIncomplete(checked));
                             }}
                             sx={{ cursor: "default" }}
                             color="primary"
-                            inputProps={{ "aria-label": "False Ceiling" }}
+                            inputProps={{ "aria-label": "Incomplete" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            {t("False Ceiling")}
+                            {t("Incomplete")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -288,20 +275,20 @@ const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = (props) => {
                         sx={{ display: "inline-flex", alignItems: "center" }}
                     >
                         <Checkbox
-                            value={withEquipment}
-                            checked={withEquipment}
+                            value={neoclassical}
+                            checked={neoclassical}
                             onChange={(
                                 event: React.ChangeEvent<unknown>,
                                 checked: boolean
                             ) => {
-                                dispatch(setWithEquipment(checked));
+                                dispatch(setNeoclassical(checked));
                             }}
                             sx={{ cursor: "default" }}
                             color="primary"
-                            inputProps={{ "aria-label": "With Equipment" }}
+                            inputProps={{ "aria-label": "Neoclassical" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            {t("With Eqipment")}
+                            {t("Neoclassical")}
                         </Typography>
                     </Grid>
                     <Grid
@@ -311,20 +298,20 @@ const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = (props) => {
                         sx={{ display: "inline-flex", alignItems: "center" }}
                     >
                         <Checkbox
-                            value={alarmSystem}
-                            checked={alarmSystem}
+                            value={preserved}
+                            checked={preserved}
                             onChange={(
                                 event: React.ChangeEvent<unknown>,
                                 checked: boolean
                             ) => {
-                                dispatch(setAlarmSystem(checked));
+                                dispatch(setPreserved(checked));
                             }}
                             sx={{ cursor: "default" }}
                             color="primary"
-                            inputProps={{ "aria-label": "Alarm System" }}
+                            inputProps={{ "aria-label": "Preserved" }}
                         />
                         <Typography variant="body1" sx={{ ml: 0 }}>
-                            {t("Alarm System")}
+                            {t("Preserved")}
                         </Typography>
                     </Grid>
                 </Grid>
@@ -332,5 +319,4 @@ const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = (props) => {
         </Paper>
     );
 };
-
-export default TechnicalFeaturesAndInteriorForOtherSection;
+export default ConstructionForResidentialSection;

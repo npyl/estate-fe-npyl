@@ -1,16 +1,16 @@
 import TuneIcon from "@mui/icons-material/Tune";
-import { Badge, Box, Grid, Paper, Stack } from "@mui/material";
+import { Badge, Stack } from "@mui/material";
 import { useState } from "react";
 import { useDispatch, useSelector } from "src/store";
-import ChosenFilters from "./ChosenFilters";
-import CategorySelect from "./FilterCategory";
+
 // import CountrySelect from "./FilterCities";
+// import SubAreas from "./FilterSubAreas";
+import FilterParentCategory from "./FilterParentCategory";
+import FilterCategory from "./FilterCategory";
 import FilterLabels from "./FilterLabels";
 import FilterMore from "./FilterMore";
 import PriceSelect from "./FilterPrice";
 import SaleSelect from "./FilterSale";
-// import SubAreas from "./FilterSubAreas";
-import SubCategorySelect from "./FilterSubCategory";
 import { StyledPriceButton } from "./styles";
 
 import {
@@ -48,8 +48,8 @@ export const FilterSection = () => {
         <>
             <Stack direction={"row"} minWidth={"350px"} flex={1} spacing={1}>
                 <SaleSelect />
-                <CategorySelect />
-                <SubCategorySelect />
+                <FilterParentCategory />
+                <FilterCategory />
 
                 <PriceSelect type={"price"} />
                 <PriceSelect type={"area"} />

@@ -1,11 +1,4 @@
-import {
-    Checkbox,
-    Grid,
-    InputAdornment,
-    MenuItem,
-    Paper,
-    TextField,
-} from "@mui/material";
+import { Checkbox, Grid, MenuItem, Paper, TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 
@@ -53,7 +46,6 @@ import {
     setLuxurious,
     setPainted,
     setPetsAllowed,
-    setPublicTransportation,
     setReception,
     setSafetyDoor,
     setSatelliteTV,
@@ -65,20 +57,18 @@ import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 
 import { useState } from "react";
 import { useAllUsersQuery } from "src/services/user";
-import { useAllGlobalsQuery } from "src/services/global";
+import { useGlobals } from "src/hooks/useGlobals";
 
-import OnlyNumbersInput from "src/components/OnlyNumbers";
 import CustomNumberField from "./componentsFields/OnlyNumbersWithDot";
 import { useTranslation } from "react-i18next";
+import OnlyNumbersInput from "src/components/OnlyNumbers";
 
 const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
     props
 ) => {
-    const [rentalPeriodStart, setRentalPeriodStart] = useState<Date | null>(
-        new Date()
-    );
     const { t } = useTranslation();
-    const { data } = useAllGlobalsQuery();
+    const data = useGlobals();
+
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
     const details = enums?.details as IGlobalPropertyDetails;
     const dispatch = useDispatch();
@@ -88,9 +78,6 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
     const safetyDoor = useSelector(selectSafetyDoor);
     const alarmSystem = useSelector(selectAlarmSystem);
     const painted = useSelector(selectPainted);
-    const furnished = useSelector(selectFurnished);
-    const frameType = useSelector(selectFrameType);
-    const paneGlassType = useSelector(selectPaneGlassType);
     const windowScreens = useSelector(selectWindowScreens);
     const fireplace = useSelector(selectFireplace);
     const bright = useSelector(selectBright);
@@ -100,55 +87,24 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
     );
     const reception = useSelector(selectReception);
     const petsAllowed = useSelector(selectPetsAllowed);
-    const floorType = useSelector(selectFloorType);
     const satelliteTV = useSelector(selectSatelliteTV);
     const wiring = useSelector(selectWiring);
     const loadingUnloadingElevator = useSelector(
         selectLoadingUnloadingElevator
     );
-    const falseCeiling = useSelector(selectFalseCeiling);
-    const withEquipment = useSelector(selectWithEquipment);
     const doubleFrontage = useSelector(selectDoubleFrontage);
-    const consideration = useSelector(selectConsideration);
-    const floorToAreaRatio = useSelector(selectFloorToAreaRatio);
-    const coverageFactor = useSelector(selectCoverageFactor);
-    const facadeLength = useSelector(selectFacadeLength);
-    const inclination = useSelector(selectInclination);
+
+    const floorType = useSelector(selectFloorType) || "";
+
+    if (!enums) return null;
+
     const handleChange = (
         setter: any,
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
         dispatch(setter(event.target.value));
     };
-    // get list of owners & managers
-    const { data: owners } = useAllCustomersQuery();
-    const { data: managers } = useAllUsersQuery();
-    if (!enums) return null;
 
-    //set the values for BE
-    // const handleDisplayWindowsLengthChange = (
-    //   event: React.ChangeEvent<HTMLInputElement>
-    // ) => {
-    //   const input = event.target.value;
-    //   const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
-    //   dispatch(setDisplayWindowsLength(numericValue));
-    // };
-    const handleEntrancesChange = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        const input = event.target.value;
-        const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
-        dispatch(setEntrances(numericValue));
-    };
-    //handle onlynumbers
-    const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        const keyCode = event.keyCode || event.which;
-        const keyValue = String.fromCharCode(keyCode);
-        const regex = /[0-9]/;
-        if (!regex.test(keyValue)) {
-            event.preventDefault(); // Prevent entering non-numeric characters
-        }
-    };
     return (
         <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
             <Box
@@ -177,24 +133,16 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <TextField
+                        <OnlyNumbersInput
                             fullWidth
-                            id="outlined-controlled"
                             label={t("Entrances")}
                             value={entrances}
-                            onChange={handleEntrancesChange}
-                            onKeyPress={handleKeyPress}
-                            inputProps={{
-                                style: {
-                                    height: "8px",
-                                },
-                            }}
+                            onChange={(value) => dispatch(setEntrances(value))}
                         />
                     </Grid>
                     <Grid item xs={6}>
                         <TextField
                             fullWidth
-                            id="outlined-select-currency"
                             select
                             label={t("Floor Type")}
                             value={floorType}
@@ -202,11 +150,6 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                                 event: React.ChangeEvent<HTMLInputElement>
                             ) => {
                                 dispatch(setFloorType(event.target.value));
-                            }}
-                            inputProps={{
-                                style: {
-                                    height: "8px",
-                                },
                             }}
                         >
                             {details?.floorType?.map(({ key, value }) => (

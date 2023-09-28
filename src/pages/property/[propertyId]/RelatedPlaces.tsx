@@ -13,7 +13,7 @@ import {
 import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
 import { Label } from "src/components/label";
 import { Place } from "src/types/googleMap";
-import { Scrollbar } from "../../../../components/scrollbar";
+import { Scrollbar } from "src/components/scrollbar";
 // ----------------------------------------------------------------------
 
 interface Props extends CardProps {

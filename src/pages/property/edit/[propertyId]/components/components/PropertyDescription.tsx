@@ -4,7 +4,8 @@ import { Box } from "@mui/system";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { useAllGlobalsQuery } from "src/services/global";
+import OnlyNumbersInput from "src/components/OnlyNumbers";
+import { useGlobals } from "src/hooks/useGlobals";
 import {
     selectAccessibility,
     selectHasAttic,
@@ -49,16 +50,13 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
-    const { data } = useAllGlobalsQuery();
+    const data = useGlobals();
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
     const details = enums?.details as IGlobalPropertyDetails;
+
     const hasAttic = useSelector(selectHasAttic);
     const playroom = useSelector(selectPlayRoom);
     const penthouse = useSelector(selectPenthouse);
-    const landUse = useSelector(selectLandUse);
-    const viewType = useSelector(selectViewType);
-    const accessibility = useSelector(selectAccessibility);
-    const zoneType = useSelector(selectZoneType);
     const floorApartment = useSelector(selectFloorApartment);
     const kitchens = useSelector(selectKitchens);
     const layers = useSelector(selectLayers);
@@ -68,67 +66,16 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
     const bedrooms = useSelector(selectBedrooms);
     const storeroomBool = useSelector(selectStoreroomBool);
     const rooms = useSelector(selectRooms);
-    const orientation = useSelector(selectOrientation);
-    const floor = useSelector(selectFloor);
+
+    const landUse = useSelector(selectLandUse) || "";
+    const viewType = useSelector(selectViewType) || "";
+    const accessibility = useSelector(selectAccessibility) || "";
+    const zoneType = useSelector(selectZoneType) || "";
+    const orientation = useSelector(selectOrientation) || "";
+    const floor = useSelector(selectFloor) || "";
 
     if (!enums || !details) return null;
 
-    //set the values for BE
-    const handleBedroomsChange = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        const input = event.target.value;
-        const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
-        dispatch(setBedrooms(numericValue));
-    };
-    const handleLayersChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const input = event.target.value;
-        const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
-        dispatch(setLayers(numericValue));
-    };
-    const handleKitchensChange = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        const input = event.target.value;
-        const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
-        dispatch(setKitchens(numericValue));
-    };
-    const handleLivingRoomsChange = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        const input = event.target.value;
-        const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
-        dispatch(setLivingRooms(numericValue));
-    };
-    const handleNumOfWCChange = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        const input = event.target.value;
-        const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
-        dispatch(setNumOfWC(numericValue));
-    };
-    const handleBathroomsChange = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        const input = event.target.value;
-        const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
-        dispatch(setBathrooms(numericValue));
-    };
-    const handleRoomsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const input = event.target.value;
-        const numericValue = input.replace(/[^0-9]/g, ""); // Remove non-numeric characters from the input
-        dispatch(setRooms(numericValue));
-    };
-
-    //handle onlynumbers
-    const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        const keyCode = event.keyCode || event.which;
-        const keyValue = String.fromCharCode(keyCode);
-        const regex = /[0-9]/;
-        if (!regex.test(keyValue)) {
-            event.preventDefault(); // Prevent entering non-numeric characters
-        }
-    };
     return (
         <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
             <Box
@@ -147,7 +94,6 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
                     <Grid item xs={6}>
                         <TextField
                             fullWidth
-                            id="outlined-select-currency"
                             select
                             label={t("Floor")}
                             value={floor}
@@ -155,11 +101,6 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
                                 event: React.ChangeEvent<HTMLInputElement>
                             ) => {
                                 dispatch(setFloor(event.target.value));
-                            }}
-                            inputProps={{
-                                style: {
-                                    height: "8px",
-                                },
                             }}
                         >
                             {details?.floors?.map((floor, index) => (
@@ -171,116 +112,75 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
                     </Grid>
 
                     <Grid item xs={6}>
-                        <TextField
+                        <OnlyNumbersInput
                             type="number"
                             fullWidth
-                            id="outlined-controlled"
                             label={t("Bedrooms")}
                             placeholder="1,2,3..."
                             value={bedrooms}
-                            onChange={handleBedroomsChange}
-                            onKeyPress={handleKeyPress}
-                            InputProps={{
-                                style: {
-                                    height: "38px",
-                                },
-                            }}
+                            onChange={(value) => dispatch(setBedrooms(value))}
                         />
                     </Grid>
 
                     <Grid item xs={6}>
-                        <TextField
+                        <OnlyNumbersInput
                             type="number"
                             fullWidth
-                            id="outlined-controlled"
                             label={t("Layers")}
                             value={layers}
                             placeholder="1,2,3..."
-                            onChange={handleLayersChange}
-                            onKeyPress={handleKeyPress}
-                            inputProps={{
-                                style: {
-                                    height: "8px",
-                                },
-                            }}
+                            onChange={(value) => dispatch(setLayers(value))}
                         />
                     </Grid>
 
                     <Grid item xs={6}>
-                        <TextField
+                        <OnlyNumbersInput
                             type="number"
                             fullWidth
-                            id="outlined-controlled"
                             label={t("Kitchens")}
                             value={kitchens}
                             placeholder="1,2,3..."
-                            onChange={handleKitchensChange}
-                            onKeyPress={handleKeyPress}
-                            inputProps={{
-                                style: {
-                                    height: "8px",
-                                },
-                            }}
+                            onChange={(value) => dispatch(setKitchens(value))}
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <TextField
+                        <OnlyNumbersInput
                             type="number"
                             fullWidth
-                            id="outlined-controlled"
                             label={t("Living Rooms")}
                             value={livingRooms}
                             placeholder="1,2,3..."
-                            onChange={handleLivingRoomsChange}
-                            onKeyPress={handleKeyPress}
-                            inputProps={{
-                                style: {
-                                    height: "8px",
-                                },
-                            }}
+                            onChange={(value) =>
+                                dispatch(setLivingRooms(value))
+                            }
                         />
                     </Grid>
 
                     <Grid item xs={6}>
-                        <TextField
+                        <OnlyNumbersInput
                             type="number"
                             fullWidth
-                            id="outlined-controlled"
                             label={t("Number of WC")}
                             value={numOfWC}
                             placeholder="1,2,3..."
-                            onChange={handleNumOfWCChange}
-                            onKeyPress={handleKeyPress}
-                            inputProps={{
-                                style: {
-                                    height: "8px",
-                                },
-                            }}
+                            onChange={(value) => dispatch(setNumOfWC(value))}
                         />
                     </Grid>
 
                     <Grid item xs={6}>
-                        <TextField
+                        <OnlyNumbersInput
                             type="number"
                             fullWidth
-                            id="outlined-controlled"
                             label={t("Bathrooms")}
                             value={bathrooms}
                             placeholder="1,2,3..."
-                            onChange={handleBathroomsChange}
-                            onKeyPress={handleKeyPress}
-                            inputProps={{
-                                style: {
-                                    height: "8px",
-                                },
-                            }}
+                            onChange={(value) => dispatch(setBathrooms(value))}
                         />
                     </Grid>
 
                     <Grid item xs={6}>
                         <TextField
                             fullWidth
-                            id="outlined-select-currency"
                             select
                             label={t("View")}
                             value={viewType}
@@ -288,11 +188,6 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
                                 event: React.ChangeEvent<HTMLInputElement>
                             ) => {
                                 dispatch(setViewType(event.target.value));
-                            }}
-                            inputProps={{
-                                style: {
-                                    height: "8px",
-                                },
                             }}
                         >
                             {details?.viewType?.map((viewType, index) => (
@@ -305,7 +200,6 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
                     <Grid item xs={6}>
                         <TextField
                             fullWidth
-                            id="outlined-select-currency"
                             select
                             label={t("Accessibility")}
                             value={accessibility}
@@ -313,11 +207,6 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
                                 event: React.ChangeEvent<HTMLInputElement>
                             ) => {
                                 dispatch(setAccessibility(event.target.value));
-                            }}
-                            inputProps={{
-                                style: {
-                                    height: "8px",
-                                },
                             }}
                         >
                             {details?.accessibility?.map(
@@ -335,7 +224,6 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
                     <Grid item xs={6}>
                         <TextField
                             fullWidth
-                            id="outlined-select-currency"
                             select
                             label={t("Land Use")}
                             value={landUse}
@@ -343,11 +231,6 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
                                 event: React.ChangeEvent<HTMLInputElement>
                             ) => {
                                 dispatch(setLandUse(event.target.value));
-                            }}
-                            inputProps={{
-                                style: {
-                                    height: "8px",
-                                },
                             }}
                         >
                             {details?.landUse?.map((landUse, index) => (
@@ -361,7 +244,6 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
                     <Grid item xs={6}>
                         <TextField
                             fullWidth
-                            id="outlined-select-currency"
                             select
                             label={t("Zone")}
                             value={zoneType}
@@ -369,11 +251,6 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
                                 event: React.ChangeEvent<HTMLInputElement>
                             ) => {
                                 dispatch(setZoneType(event.target.value));
-                            }}
-                            inputProps={{
-                                style: {
-                                    height: "8px",
-                                },
                             }}
                         >
                             {details?.zoneType?.map((zoneType, index) => (
@@ -385,26 +262,18 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
                     </Grid>
 
                     <Grid item xs={6}>
-                        <TextField
+                        <OnlyNumbersInput
                             type="number"
                             fullWidth
-                            id="outlined-controlled"
                             label={t("Rooms")}
                             value={rooms}
                             placeholder="1,2,3..."
-                            onChange={handleRoomsChange}
-                            onKeyPress={handleKeyPress}
-                            inputProps={{
-                                style: {
-                                    height: "8px",
-                                },
-                            }}
+                            onChange={(value) => dispatch(setRooms(value))}
                         />
                     </Grid>
                     <Grid item xs={6}>
                         <TextField
                             fullWidth
-                            id="outlined-select-currency"
                             select
                             label={t("Orientation")}
                             value={orientation}
@@ -412,11 +281,6 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
                                 event: React.ChangeEvent<HTMLInputElement>
                             ) => {
                                 dispatch(setOrientation(event.target.value));
-                            }}
-                            inputProps={{
-                                style: {
-                                    height: "8px",
-                                },
                             }}
                         >
                             {details?.orientation?.map((orientation, index) => (
