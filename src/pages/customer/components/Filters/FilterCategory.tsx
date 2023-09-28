@@ -1,7 +1,9 @@
 import {
+    Box,
     Checkbox,
     FormControl,
     InputLabel,
+    ListSubheader,
     MenuItem,
     OutlinedInput,
     Select,
@@ -16,30 +18,34 @@ import {
 } from "src/slices/customer/filters";
 
 import { useDispatch, useSelector } from "src/store";
-import { IGlobalProperty } from "src/types/global";
+import { KeyValue } from "src/types/KeyValue";
 
-export default function SubCategoryForCustomerSelect() {
+export default function FilterCategory() {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
     const { data } = useAllGlobalsQuery();
+    const propertyEnums = data?.property;
 
     const parentCategories = useSelector(selectParentCategories) || [];
     const subCategories = useSelector(selectCategories) || [];
 
-    const propertyEnums = data?.property;
-    if (!propertyEnums || parentCategories.length === 0) return null;
+    const subCategoriesMap: {
+        [key: string]: KeyValue[];
+    } = {
+        RESIDENTIAL: propertyEnums?.residentialCategory ?? [],
+        COMMERCIAL: propertyEnums?.commercialCategory ?? [],
+        LAND: propertyEnums?.landCategory ?? [],
+        OTHER: propertyEnums?.otherCategory ?? [],
+    };
 
-    const options = parentCategories.map((category) => {
-        return propertyEnums![
-            `${category.toLowerCase()}Category` as keyof IGlobalProperty
-        ];
-    });
+    if (!propertyEnums || parentCategories.length === 0) return null;
 
     const handleChange = (event: SelectChangeEvent<typeof subCategories>) => {
         const {
             target: { value },
         } = event;
+
         dispatch(
             setCategories(
                 // On autofill we get a stringified value.
@@ -59,17 +65,24 @@ export default function SubCategoryForCustomerSelect() {
                 input={<OutlinedInput label={t("Category")} />}
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
-                {options.flat(1)!.map((option: any) => {
-                    return (
-                        <MenuItem key={option} value={option}>
-                            <Checkbox
-                                checked={subCategories.indexOf(option) > -1}
-                            />
-
-                            {option}
-                        </MenuItem>
-                    );
-                })}
+                {parentCategories.map((parentCategory) => [
+                    <ListSubheader key={`header_${parentCategory}`}>
+                        {parentCategory}
+                    </ListSubheader>,
+                    ...subCategoriesMap[parentCategory].map(
+                        ({ key, value }) => (
+                            <MenuItem
+                                key={`${parentCategory}_${key}`}
+                                value={key}
+                            >
+                                <Checkbox
+                                    checked={subCategories.indexOf(key) > -1}
+                                />
+                                {value}
+                            </MenuItem>
+                        )
+                    ),
+                ])}
             </Select>
         </FormControl>
     );
