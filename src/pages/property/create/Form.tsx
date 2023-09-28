@@ -39,8 +39,8 @@ export default function Form({ performUpload }: IFormProps) {
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
     const parentCategoryEnum = enums?.parentCategory;
 
-    const category = useSelector(selectCategory);
-    const parentCategory = useSelector(selectParentCategory);
+    const category = useSelector(selectCategory) || "";
+    const parentCategory = useSelector(selectParentCategory) || "";
 
     if (!enums || !parentCategoryEnum || parentCategoryEnum.length === 0)
         return null;
