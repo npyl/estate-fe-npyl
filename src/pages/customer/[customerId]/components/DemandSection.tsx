@@ -20,7 +20,7 @@ const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
 
     const { customerId } = router.query;
 
-    const { data } = useGetCustomerByIdQuery(parseInt(customerId as string)); // basic details
+    const { data } = useGetCustomerByIdQuery(+customerId!); // basic details
     const { data: allLabels } = useGetLabelsQuery();
 
     const propertyLabels = allLabels?.propertyLabels;

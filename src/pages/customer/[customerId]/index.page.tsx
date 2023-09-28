@@ -39,11 +39,15 @@ const CustomerView: NextPage = () => {
     const router = useRouter();
     const dispatch = useDispatch();
     const { t } = useTranslation();
+
     const { customerId } = router.query;
     const [value, setValue] = useState(0);
+
     const { data } = useGetCustomerByIdQuery(+customerId!);
+
     const [deleteCustomer, { isSuccess: isDeleteSuccess }] =
         useDeleteCustomerMutation();
+
     usePublishTab(
         {
             title: data?.firstName && data?.lastName ? "" : "Customer",
@@ -80,7 +84,7 @@ const CustomerView: NextPage = () => {
                             <AddressSection />
                             {isBuyerOrLeaser &&
                                 demands?.map((d, i) => (
-                                    <DemandSection index={i} />
+                                    <DemandSection key={i} index={i} />
                                 ))}
                             <NotesCustomerSection />
                         </Stack>
@@ -105,6 +109,7 @@ const CustomerView: NextPage = () => {
             content: <MatchingPropertiesSection />,
         },
     ].filter((tab): tab is TabConfig => Boolean(tab));
+
     return (
         <Box sx={{ width: "100%", paddingY: 1 }}>
             <ViewHeader onEdit={handleEdit} onDelete={handleDelete}>

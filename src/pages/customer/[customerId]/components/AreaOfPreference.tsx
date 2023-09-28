@@ -1,15 +1,11 @@
 import { Box } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useRouter } from "next/router";
+import { useEffect, useMemo, useState } from "react";
 
 import Map from "src/components/Map/Map";
 import { decodeShape, drawShape } from "src/components/Map/util";
+import { useGetCustomerByIdQuery } from "src/services/customers";
 import { useGetMunicipalitiesQuery } from "src/services/location";
-import {
-    selectDemandCities,
-    selectDemandRegions,
-    selectShape,
-} from "src/slices/customer";
 
 interface AreaOfPreferenceProps {
     index: number; // index of demand
@@ -20,26 +16,38 @@ const isNumberString = (input: string): boolean => !isNaN(Number(input));
 export const AreaOfPreference: React.FC<AreaOfPreferenceProps> = ({
     index,
 }) => {
-    const [map, setMap] = useState<google.maps.Map>();
+    const router = useRouter();
+    const { customerId } = router.query;
 
-    const shape = useSelector(selectShape)[index]; // Get shape from Redux
+    const { data } = useGetCustomerByIdQuery(+customerId!);
 
-    const regions = useSelector(selectDemandRegions)[index] || [];
-    const cities = useSelector(selectDemandCities)[index] || [];
+    const demand = useMemo(() => data?.demands[index], [data?.demands[index]]);
+    const demandFilters = useMemo(() => demand?.filters, [demand?.filters]);
+
+    const regions = useMemo(
+        () => demandFilters?.regions || [],
+        [demandFilters?.regions]
+    );
+    const cities = useMemo(
+        () => demandFilters?.cities || [],
+        [demandFilters?.cities]
+    );
+    const shape = useMemo(() => demand?.shape, [demand?.shape]);
+    const shapeData = useMemo(
+        () => (shape ? decodeShape(shape) : null),
+        [shape]
+    );
 
     const { data: municips } = useGetMunicipalitiesQuery(+regions[0], {
         skip: !regions[0] && !isNumberString(regions[0]),
     });
 
+    const [map, setMap] = useState<google.maps.Map>();
+
     useEffect(() => {
         if (!map) return;
 
-        if (shape) {
-            // Decode the shape string to get the shape data
-            const shapeData = decodeShape(shape);
-            if (!shapeData) return;
-
-            // Draw the shape on the map
+        if (shapeData) {
             drawShape(shapeData, map, null);
 
             // Center the map to the first point in the shape
@@ -71,12 +79,14 @@ export const AreaOfPreference: React.FC<AreaOfPreferenceProps> = ({
             ); // Centering on San Francisco for example
             map.setZoom(12);
         }
-    }, [shape, map]);
+    }, [shapeData, index, map]);
 
     return (
         <Box height={`calc(100vh - 266px)`} width={"100%"}>
             <Map
+                key={index}
                 zoom={12}
+                // shape={shapeData || undefined}
                 onReady={(m) => setMap(m)}
                 drawing={false}
                 activeMarker={null}
