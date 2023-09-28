@@ -9,6 +9,9 @@ import SecurityPage from "./PermissionsTable";
 import Stack from "@mui/material/Stack";
 import Select from "@mui/material/Select";
 import {FormControl, Input, MenuItem} from "@mui/material";
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import InfoIcon from '@mui/icons-material/Info';
 
 type Props = { changeTab: (event: React.SyntheticEvent, newValue: number) => void; selectedUser: number }
 
@@ -16,7 +19,7 @@ function TabPanel(props) {
     const {children, value, index, selectedUser, ...other} = props;
     console.log(selectedUser)
     return (
-        <div
+        <Box
             role="tabpanel"
             hidden={value !== index}
             id={`vertical-tabpanel-${index}`}
@@ -28,7 +31,7 @@ function TabPanel(props) {
                     <Typography>{children}</Typography>
                 </Box>
             )}
-        </div>
+        </Box>
     );
 }
 
@@ -46,12 +49,23 @@ function a11yProps(index) {
 }
 
 const PermissionPage: FC<Props> = ({selectedUser}) => {
+    console.log("skataskataskata")
     console.log(selectedUser)
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
+
+    // const profile = useProfileQuery({}).data;
+    const profile = {
+        id: 1,
+        username: 'ADMIN',
+        firstName: 'ADMIN',
+        lastName: 'ADMIN',
+        status: 'Active',
+        email: 'admin1@example.com'
+    }
 
     const users = [
         {
@@ -64,7 +78,7 @@ const PermissionPage: FC<Props> = ({selectedUser}) => {
         },
         {
             id: 2,
-            username: 'Panagiotis Athanasopoulos',
+            username: 'Panagiotis',
             firstName: 'Panagiotis',
             lastName: 'Athanasopoulos',
             status: 'Active',
@@ -144,14 +158,19 @@ const PermissionPage: FC<Props> = ({selectedUser}) => {
         },
     ];
 
+    const [selectedUserMenu, setSelectedUserMenu] = useState(() => {
+        const selectedUserObject = users.find((user) => user.id === selectedUser);
+        return selectedUserObject ? selectedUserObject.username : profile.username;
+    });
+
+
     const [tabIndex, setTabIndex] = useState(0);
 
-    // const [selectedUserMenu, setSelectedUserMenu] = useState(selectedUser?? '');
-    const [selectedUserMenu, setSelectedUserMenu] = useState(users.filter(s=>s.id===selectedUser).map(s=>s.username) ?? '');
     const handleSelectChange = (e) => {
-        console.log(e)
+        // console.log(e)
         setSelectedUserMenu(e.target.value);
     };
+
 
     return (
 
@@ -181,16 +200,53 @@ const PermissionPage: FC<Props> = ({selectedUser}) => {
                                 PaperProps: {sx: {maxHeight: "60vh"}},
                             }}
                         >
-                            {users.map((option) => (
+                            {users.map((user) => (
                                 <MenuItem
-                                    key={option.username}
-                                    value={option.username}
+                                    key={user.username}
+                                    value={user.username}
                                 >
-                                    <Typography>{option.username}</Typography>
+                                    <Typography>{user.username}</Typography>
                                 </MenuItem>
                             ))}
                         </Select>
+
+                        <Tooltip title={
+                            <Box>
+                                <Box>
+                                    <span style={{fontStyle: 'italic'}}>
+                                      In {selectedUserMenu}'s tab, you can establish permissions that are applicable to all properties within the system.
+                                    </span>
+                                </Box>
+                                <Box>
+                                    <span style={{fontStyle: 'italic'}}>
+                                    In the tabs for other users, you have the ability to include or remove permissions specifically for the user {selectedUserMenu}.
+                                    </span>
+                                </Box>
+                            </Box>
+                        }>
+                            <IconButton>
+                                <InfoIcon/>
+                            </IconButton>
+
+                        </Tooltip>
+
                     </Stack>
+
+
+                    {/*<Snackbar open={open} onClose={handleClose}>*/}
+                    {/*    <Alert onClose={handleClose} severity="info">*/}
+                    {/*        <Typography variant={"h7"}>*/}
+                    {/*            <span style={{fontStyle: 'italic'}}>*/}
+                    {/*              In {selectedUserMenu}'s tab, you can establish permissions that are applicable to all properties within the system.*/}
+                    {/*            </span>*/}
+                    {/*        </Typography>*/}
+                    {/*        <Typography variant={"h7"}>*/}
+                    {/*            <span style={{fontStyle: 'italic'}}>*/}
+                    {/*              In the tabs for other users, you have the ability to include or remove permissions specifically for the user {selectedUserMenu}.*/}
+                    {/*            </span>*/}
+                    {/*        </Typography>*/}
+                    {/*    </Alert>*/}
+                    {/*</Snackbar>*/}
                 </FormControl>
             </Box>
 
