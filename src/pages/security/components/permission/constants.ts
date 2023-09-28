@@ -1,443 +1,2712 @@
-export const actions = ["view", "edit", "delete", "owner", "location", "price", "active", "inactive", "hidden"]
+export const actions = ["all", "create", "view", "edit", "delete", "owner", "location", "price", "active", "inactive", "hidden"]
 export const categories = ["Residential", "Commercial", "Land", "Other"]
 export const subcategories1 = ["Apartment", "Studio", "Maisonette", "Detached house", "Villa", "Loft", "Bungalow", "Building", "Apartment complex", "Farm", "Houseboat", "Other categories"]
-export const subcategories2 = ["Office", "Store", "Warehouse", "Industrial space", "Craft space", "Hotel", "Business building", "Hall", "Showroom", "Other Categories"]
-export const subcategories3 = ["Land plot", "Parcels", "Island", "Other Categories"]
+export const subcategories2 = ["Office", "Store", "Warehouse", "Industrial space", "Craft space", "Hotel", "Business building", "Hall", "Showroom", "Other Commercial categories"]
+export const subcategories3 = ["Land plot", "Parcels", "Island", "Other Land categories"]
 export const subcategories4 = ["Parking", "Business", "Prefabricated", "Detachable", "Air", "Other"]
 
 export const initRoles = [
     {
+        "parentCategory": "Sale",
         "category": "Residential",
         "subcategory": "Apartment",
         "actions": {
-            "allowDelete": false,
-            "allowEdit": false,
-            "accessOwner": false,
-            "accessLocation": false,
-            "accessPrice": false,
-            "accessActive": false,
-            "accessHidden": false,
-            "accessInactive": false
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
         }
-    },
-    {
+    }, {
+        "parentCategory": "Sale",
         "category": "Residential",
         "subcategory": "Studio",
         "actions": {
-            "allowDelete": false,
-            "allowEdit": false,
-            "accessOwner": false,
-            "accessLocation": false,
-            "accessPrice": false,
-            "accessActive": false,
-            "accessHidden": false,
-            "accessInactive": false
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
         }
-    },
-    {
+    }, {
+        "parentCategory": "Sale",
         "category": "Residential",
         "subcategory": "Maisonette",
         "actions": {
-            "allowDelete": false,
-            "allowEdit": false,
-            "accessOwner": false,
-            "accessLocation": false,
-            "accessPrice": false,
-            "accessActive": false,
-            "accessHidden": false,
-            "accessInactive": false
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
         }
-    },
-    {
+    }, {
+        "parentCategory": "Sale",
         "category": "Residential",
         "subcategory": "Detached house",
         "actions": {
-            "allowDelete": false,
-            "allowEdit": false,
-            "accessOwner": false,
-            "accessLocation": false,
-            "accessPrice": false,
-            "accessActive": false,
-            "accessHidden": false,
-            "accessInactive": false
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
         }
-    },
-    {
+    }, {
+        "parentCategory": "Sale",
         "category": "Residential",
         "subcategory": "Villa",
         "actions": {
-            "allowDelete": false,
-            "allowEdit": false,
-            "accessOwner": false,
-            "accessLocation": false,
-            "accessPrice": false,
-            "accessActive": false,
-            "accessHidden": false,
-            "accessInactive": false
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
         }
-    },
-    {
+    }, {
+        "parentCategory": "Sale",
         "category": "Residential",
         "subcategory": "Loft",
         "actions": {
-            "allowDelete": false,
-            "allowEdit": false,
-            "accessOwner": false,
-            "accessLocation": false,
-            "accessPrice": false,
-            "accessActive": false,
-            "accessHidden": false,
-            "accessInactive": false
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
         }
-    },
-    {
+    }, {
+        "parentCategory": "Sale",
         "category": "Residential",
         "subcategory": "Bungalow",
         "actions": {
-            "allowDelete": false,
-            "allowEdit": false,
-            "accessOwner": false,
-            "accessLocation": false,
-            "accessPrice": false,
-            "accessActive": false,
-            "accessHidden": false,
-            "accessInactive": false
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
         }
-    },
-    {
+    }, {
+        "parentCategory": "Sale",
         "category": "Residential",
         "subcategory": "Building",
         "actions": {
-            "allowDelete": false,
-            "allowEdit": false,
-            "accessOwner": false,
-            "accessLocation": false,
-            "accessPrice": false,
-            "accessActive": false,
-            "accessHidden": false,
-            "accessInactive": false
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
         }
-    },
-    {
+    }, {
+        "parentCategory": "Sale",
         "category": "Residential",
         "subcategory": "Apartment complex",
         "actions": {
-            "allowDelete": false,
-            "allowEdit": false,
-            "accessOwner": false,
-            "accessLocation": false,
-            "accessPrice": false,
-            "accessActive": false,
-            "accessHidden": false,
-            "accessInactive": false
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
         }
-    },
-    {
+    }, {
+        "parentCategory": "Sale",
         "category": "Residential",
         "subcategory": "Farm",
         "actions": {
-            "allowDelete": false,
-            "allowEdit": false,
-            "accessOwner": false,
-            "accessLocation": false,
-            "accessPrice": false,
-            "accessActive": false,
-            "accessHidden": false,
-            "accessInactive": false
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
         }
-    },
-    {
+    }, {
+        "parentCategory": "Sale",
         "category": "Residential",
         "subcategory": "Houseboat",
         "actions": {
-            "allowDelete": false,
-            "allowEdit": false,
-            "accessOwner": false,
-            "accessLocation": false,
-            "accessPrice": false,
-            "accessActive": false,
-            "accessHidden": false,
-            "accessInactive": false
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
         }
-    },
-    {
+    }, {
+        "parentCategory": "Sale",
         "category": "Residential",
         "subcategory": "Other categories",
         "actions": {
-            "allowDelete": false,
-            "allowEdit": false,
-            "accessOwner": false,
-            "accessLocation": false,
-            "accessPrice": false,
-            "accessActive": false,
-            "accessHidden": false,
-            "accessInactive": false
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
         }
-    },
-    {
+    }, {
+        "parentCategory": "Sale",
         "category": "Commercial",
         "subcategory": "Office",
         "actions": {
-            "allowDelete": false,
-            "allowEdit": false,
-            "accessOwner": false,
-            "accessLocation": false,
-            "accessPrice": false,
-            "accessActive": false,
-            "accessHidden": false,
-            "accessInactive": false
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
         }
-    },
-    {
+    }, {
+        "parentCategory": "Sale",
         "category": "Commercial",
         "subcategory": "Store",
         "actions": {
-            "allowDelete": false,
-            "allowEdit": false,
-            "accessOwner": false,
-            "accessLocation": false,
-            "accessPrice": false,
-            "accessActive": false,
-            "accessHidden": false,
-            "accessInactive": false
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
         }
-    },
-    {
+    }, {
+        "parentCategory": "Sale",
         "category": "Commercial",
         "subcategory": "Warehouse",
         "actions": {
-            "allowDelete": false,
-            "allowEdit": false,
-            "accessOwner": false,
-            "accessLocation": false,
-            "accessPrice": false,
-            "accessActive": false,
-            "accessHidden": false,
-            "accessInactive": false
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
         }
-    },
-    {
+    }, {
+        "parentCategory": "Sale",
         "category": "Commercial",
         "subcategory": "Industrial space",
         "actions": {
-            "allowDelete": false,
-            "allowEdit": false,
-            "accessOwner": false,
-            "accessLocation": false,
-            "accessPrice": false,
-            "accessActive": false,
-            "accessHidden": false,
-            "accessInactive": false
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
         }
-    },
-    {
+    }, {
+        "parentCategory": "Sale",
         "category": "Commercial",
         "subcategory": "Craft space",
         "actions": {
-            "allowDelete": false,
-            "allowEdit": false,
-            "accessOwner": false,
-            "accessLocation": false,
-            "accessPrice": false,
-            "accessActive": false,
-            "accessHidden": false,
-            "accessInactive": false
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
         }
-    },
-    {
+    }, {
+        "parentCategory": "Sale",
         "category": "Commercial",
         "subcategory": "Hotel",
         "actions": {
-            "allowDelete": false,
-            "allowEdit": false,
-            "accessOwner": false,
-            "accessLocation": false,
-            "accessPrice": false,
-            "accessActive": false,
-            "accessHidden": false,
-            "accessInactive": false
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
         }
-    },
-    {
+    }, {
+        "parentCategory": "Sale",
         "category": "Commercial",
         "subcategory": "Business building",
         "actions": {
-            "allowDelete": false,
-            "allowEdit": false,
-            "accessOwner": false,
-            "accessLocation": false,
-            "accessPrice": false,
-            "accessActive": false,
-            "accessHidden": false,
-            "accessInactive": false
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
         }
-    },
-    {
+    }, {
+        "parentCategory": "Sale",
         "category": "Commercial",
         "subcategory": "Hall",
         "actions": {
-            "allowDelete": false,
-            "allowEdit": false,
-            "accessOwner": false,
-            "accessLocation": false,
-            "accessPrice": false,
-            "accessActive": false,
-            "accessHidden": false,
-            "accessInactive": false
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
         }
-    },
-    {
+    }, {
+        "parentCategory": "Sale",
         "category": "Commercial",
         "subcategory": "Showroom",
         "actions": {
-            "allowDelete": false,
-            "allowEdit": false,
-            "accessOwner": false,
-            "accessLocation": false,
-            "accessPrice": false,
-            "accessActive": false,
-            "accessHidden": false,
-            "accessInactive": false
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
         }
-    },
-    {
+    }, {
+        "parentCategory": "Sale",
         "category": "Commercial",
-        "subcategory": "Other Categories",
+        "subcategory": "Other Commercial categories",
         "actions": {
-            "allowDelete": false,
-            "allowEdit": false,
-            "accessOwner": false,
-            "accessLocation": false,
-            "accessPrice": false,
-            "accessActive": false,
-            "accessHidden": false,
-            "accessInactive": false
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
         }
-    },
-    {
+    }, {
+        "parentCategory": "Sale",
         "category": "Land",
         "subcategory": "Land plot",
         "actions": {
-            "allowDelete": false,
-            "allowEdit": false,
-            "accessOwner": false,
-            "accessLocation": false,
-            "accessPrice": false,
-            "accessActive": false,
-            "accessHidden": false,
-            "accessInactive": false
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
         }
-    },
-    {
+    }, {
+        "parentCategory": "Sale",
         "category": "Land",
         "subcategory": "Parcels",
         "actions": {
-            "allowDelete": false,
-            "allowEdit": false,
-            "accessOwner": false,
-            "accessLocation": false,
-            "accessPrice": false,
-            "accessActive": false,
-            "accessHidden": false,
-            "accessInactive": false
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
         }
-    },
-    {
+    }, {
+        "parentCategory": "Sale",
         "category": "Land",
         "subcategory": "Island",
         "actions": {
-            "allowDelete": false,
-            "allowEdit": false,
-            "accessOwner": false,
-            "accessLocation": false,
-            "accessPrice": false,
-            "accessActive": false,
-            "accessHidden": false,
-            "accessInactive": false
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
         }
-    },
-    {
+    }, {
+        "parentCategory": "Sale",
+        "category": "Land",
+        "subcategory": "Other Land categories",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sale",
         "category": "Other",
         "subcategory": "Parking",
         "actions": {
-            "allowDelete": false,
-            "allowEdit": false,
-            "accessOwner": false,
-            "accessLocation": false,
-            "accessPrice": false,
-            "accessActive": false,
-            "accessHidden": false,
-            "accessInactive": false
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
         }
-    },
-    {
+    }, {
+        "parentCategory": "Sale",
         "category": "Other",
         "subcategory": "Business",
         "actions": {
-            "allowDelete": false,
-            "allowEdit": false,
-            "accessOwner": false,
-            "accessLocation": false,
-            "accessPrice": false,
-            "accessActive": false,
-            "accessHidden": false,
-            "accessInactive": false
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
         }
-    },
-    {
+    }, {
+        "parentCategory": "Sale",
         "category": "Other",
         "subcategory": "Prefabricated",
         "actions": {
-            "allowDelete": false,
-            "allowEdit": false,
-            "accessOwner": false,
-            "accessLocation": false,
-            "accessPrice": false,
-            "accessActive": false,
-            "accessHidden": false,
-            "accessInactive": false
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
         }
-    },
-    {
+    }, {
+        "parentCategory": "Sale",
         "category": "Other",
         "subcategory": "Detachable",
         "actions": {
-            "allowDelete": false,
-            "allowEdit": false,
-            "accessOwner": false,
-            "accessLocation": false,
-            "accessPrice": false,
-            "accessActive": false,
-            "accessHidden": false,
-            "accessInactive": false
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
         }
-    },
-    {
+    }, {
+        "parentCategory": "Sale",
         "category": "Other",
         "subcategory": "Air",
         "actions": {
-            "allowDelete": false,
-            "allowEdit": false,
-            "accessOwner": false,
-            "accessLocation": false,
-            "accessPrice": false,
-            "accessActive": false,
-            "accessHidden": false,
-            "accessInactive": false
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
         }
-    },
-    {
+    }, {
+        "parentCategory": "Sale",
         "category": "Other",
         "subcategory": "Other",
         "actions": {
-            "allowDelete": false,
-            "allowEdit": false,
-            "accessOwner": false,
-            "accessLocation": false,
-            "accessPrice": false,
-            "accessActive": false,
-            "accessHidden": false,
-            "accessInactive": false
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Residential",
+        "subcategory": "Apartment",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Residential",
+        "subcategory": "Studio",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Residential",
+        "subcategory": "Maisonette",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Residential",
+        "subcategory": "Detached house",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Residential",
+        "subcategory": "Villa",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Residential",
+        "subcategory": "Loft",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Residential",
+        "subcategory": "Bungalow",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Residential",
+        "subcategory": "Building",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Residential",
+        "subcategory": "Apartment complex",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Residential",
+        "subcategory": "Farm",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Residential",
+        "subcategory": "Houseboat",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Residential",
+        "subcategory": "Other categories",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Commercial",
+        "subcategory": "Office",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Commercial",
+        "subcategory": "Store",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Commercial",
+        "subcategory": "Warehouse",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Commercial",
+        "subcategory": "Industrial space",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Commercial",
+        "subcategory": "Craft space",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Commercial",
+        "subcategory": "Hotel",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Commercial",
+        "subcategory": "Business building",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Commercial",
+        "subcategory": "Hall",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Commercial",
+        "subcategory": "Showroom",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Commercial",
+        "subcategory": "Other Commercial categories",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Land",
+        "subcategory": "Land plot",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Land",
+        "subcategory": "Parcels",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Land",
+        "subcategory": "Island",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Land",
+        "subcategory": "Other Land categories",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Other",
+        "subcategory": "Parking",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Other",
+        "subcategory": "Business",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Other",
+        "subcategory": "Prefabricated",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Other",
+        "subcategory": "Detachable",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Other",
+        "subcategory": "Air",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Other",
+        "subcategory": "Other",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Residential",
+        "subcategory": "Apartment",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Residential",
+        "subcategory": "Studio",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Residential",
+        "subcategory": "Maisonette",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Residential",
+        "subcategory": "Detached house",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Residential",
+        "subcategory": "Villa",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Residential",
+        "subcategory": "Loft",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Residential",
+        "subcategory": "Bungalow",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Residential",
+        "subcategory": "Building",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Residential",
+        "subcategory": "Apartment complex",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Residential",
+        "subcategory": "Farm",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Residential",
+        "subcategory": "Houseboat",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Residential",
+        "subcategory": "Other categories",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Commercial",
+        "subcategory": "Office",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Commercial",
+        "subcategory": "Store",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Commercial",
+        "subcategory": "Warehouse",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Commercial",
+        "subcategory": "Industrial space",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Commercial",
+        "subcategory": "Craft space",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Commercial",
+        "subcategory": "Hotel",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Commercial",
+        "subcategory": "Business building",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Commercial",
+        "subcategory": "Hall",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Commercial",
+        "subcategory": "Showroom",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Commercial",
+        "subcategory": "Other Commercial categories",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Land",
+        "subcategory": "Land plot",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Land",
+        "subcategory": "Parcels",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Land",
+        "subcategory": "Island",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Land",
+        "subcategory": "Other Land categories",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Other",
+        "subcategory": "Parking",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Other",
+        "subcategory": "Business",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Other",
+        "subcategory": "Prefabricated",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Other",
+        "subcategory": "Detachable",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Other",
+        "subcategory": "Air",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Other",
+        "subcategory": "Other",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
         }
     }
 ]
+
+export const initSaleRoles = [
+    {
+        "parentCategory": "Sale",
+        "category": "Residential",
+        "subcategory": "Apartment",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sale",
+        "category": "Residential",
+        "subcategory": "Studio",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sale",
+        "category": "Residential",
+        "subcategory": "Maisonette",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sale",
+        "category": "Residential",
+        "subcategory": "Detached house",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sale",
+        "category": "Residential",
+        "subcategory": "Villa",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sale",
+        "category": "Residential",
+        "subcategory": "Loft",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sale",
+        "category": "Residential",
+        "subcategory": "Bungalow",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sale",
+        "category": "Residential",
+        "subcategory": "Building",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sale",
+        "category": "Residential",
+        "subcategory": "Apartment complex",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sale",
+        "category": "Residential",
+        "subcategory": "Farm",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sale",
+        "category": "Residential",
+        "subcategory": "Houseboat",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sale",
+        "category": "Residential",
+        "subcategory": "Other categories",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sale",
+        "category": "Commercial",
+        "subcategory": "Office",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sale",
+        "category": "Commercial",
+        "subcategory": "Store",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sale",
+        "category": "Commercial",
+        "subcategory": "Warehouse",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sale",
+        "category": "Commercial",
+        "subcategory": "Industrial space",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sale",
+        "category": "Commercial",
+        "subcategory": "Craft space",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sale",
+        "category": "Commercial",
+        "subcategory": "Hotel",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sale",
+        "category": "Commercial",
+        "subcategory": "Business building",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sale",
+        "category": "Commercial",
+        "subcategory": "Hall",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sale",
+        "category": "Commercial",
+        "subcategory": "Showroom",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sale",
+        "category": "Commercial",
+        "subcategory": "Other Commercial categories",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sale",
+        "category": "Land",
+        "subcategory": "Land plot",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sale",
+        "category": "Land",
+        "subcategory": "Parcels",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sale",
+        "category": "Land",
+        "subcategory": "Island",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sale",
+        "category": "Land",
+        "subcategory": "Other Land categories",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sale",
+        "category": "Other",
+        "subcategory": "Parking",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sale",
+        "category": "Other",
+        "subcategory": "Business",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sale",
+        "category": "Other",
+        "subcategory": "Prefabricated",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sale",
+        "category": "Other",
+        "subcategory": "Detachable",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sale",
+        "category": "Other",
+        "subcategory": "Air",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sale",
+        "category": "Other",
+        "subcategory": "Other",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }
+]
+
+export const initRentRoles = [
+    {
+        "parentCategory": "Rent",
+        "category": "Residential",
+        "subcategory": "Apartment",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Residential",
+        "subcategory": "Studio",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Residential",
+        "subcategory": "Maisonette",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Residential",
+        "subcategory": "Detached house",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Residential",
+        "subcategory": "Villa",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Residential",
+        "subcategory": "Loft",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Residential",
+        "subcategory": "Bungalow",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Residential",
+        "subcategory": "Building",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Residential",
+        "subcategory": "Apartment complex",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Residential",
+        "subcategory": "Farm",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Residential",
+        "subcategory": "Houseboat",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Residential",
+        "subcategory": "Other categories",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Commercial",
+        "subcategory": "Office",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Commercial",
+        "subcategory": "Store",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Commercial",
+        "subcategory": "Warehouse",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Commercial",
+        "subcategory": "Industrial space",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Commercial",
+        "subcategory": "Craft space",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Commercial",
+        "subcategory": "Hotel",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Commercial",
+        "subcategory": "Business building",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Commercial",
+        "subcategory": "Hall",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Commercial",
+        "subcategory": "Showroom",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Commercial",
+        "subcategory": "Other Commercial categories",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Land",
+        "subcategory": "Land plot",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Land",
+        "subcategory": "Parcels",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Land",
+        "subcategory": "Island",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Land",
+        "subcategory": "Other Land categories",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Other",
+        "subcategory": "Parking",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Other",
+        "subcategory": "Business",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Other",
+        "subcategory": "Prefabricated",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Other",
+        "subcategory": "Detachable",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Other",
+        "subcategory": "Air",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Rent",
+        "category": "Other",
+        "subcategory": "Other",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }
+]
+
+export const initSoldRentedRoles = [
+    {
+        "parentCategory": "Sold/Rented",
+        "category": "Residential",
+        "subcategory": "Apartment",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Residential",
+        "subcategory": "Studio",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Residential",
+        "subcategory": "Maisonette",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Residential",
+        "subcategory": "Detached house",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Residential",
+        "subcategory": "Villa",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Residential",
+        "subcategory": "Loft",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Residential",
+        "subcategory": "Bungalow",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Residential",
+        "subcategory": "Building",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Residential",
+        "subcategory": "Apartment complex",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Residential",
+        "subcategory": "Farm",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Residential",
+        "subcategory": "Houseboat",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Residential",
+        "subcategory": "Other categories",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Commercial",
+        "subcategory": "Office",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Commercial",
+        "subcategory": "Store",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Commercial",
+        "subcategory": "Warehouse",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Commercial",
+        "subcategory": "Industrial space",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Commercial",
+        "subcategory": "Craft space",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Commercial",
+        "subcategory": "Hotel",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Commercial",
+        "subcategory": "Business building",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Commercial",
+        "subcategory": "Hall",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Commercial",
+        "subcategory": "Showroom",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Commercial",
+        "subcategory": "Other Commercial categories",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Land",
+        "subcategory": "Land plot",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Land",
+        "subcategory": "Parcels",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Land",
+        "subcategory": "Island",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Land",
+        "subcategory": "Other Land categories",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Other",
+        "subcategory": "Parking",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Other",
+        "subcategory": "Business",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Other",
+        "subcategory": "Prefabricated",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Other",
+        "subcategory": "Detachable",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Other",
+        "subcategory": "Air",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }, {
+        "parentCategory": "Sold/Rented",
+        "category": "Other",
+        "subcategory": "Other",
+        "actions": {
+            "create": false,
+            "view": false,
+            "edit": false,
+            "delete": false,
+            "owner": false,
+            "location": false,
+            "price": false,
+            "active": false, "inactive": false, "hidden": false
+        }
+    }
+]
+
+

@@ -1,8 +1,8 @@
-export const actions = ["    view", "allowEdit", "accessOwner", "accessLocation", "accessPrice", "accessActive", "accessHidden", "accessInactive"]
+export const actions = ["view", "allowEdit", "accessOwner", "accessLocation", "accessPrice", "accessActive", "accessHidden", "accessInactive"]
 export const categories = ["Residential", "Commercial", "Land", "Other"]
 export const subcategories1 = ["Apartment", "Studio", "Maisonette", "Detached house", "Villa", "Loft", "Bungalow", "Building", "Apartment complex", "Farm", "Houseboat", "Other categories"]
-export const subcategories2 = ["Office", "Store", "Warehouse", "Industrial space", "Craft space", "Hotel", "Business building", "Hall", "Showroom", "Other Categories"]
-export const subcategories3 = ["Land plot", "Parcels", "Island", "Other Categories"]
+export const subcategories2 = ["Office", "Store", "Warehouse", "Industrial space", "Craft space", "Hotel", "Business building", "Hall", "Showroom", "Other categories"]
+export const subcategories3 = ["Land plot", "Parcels", "Island", "Other categories"]
 export const subcategories4 = ["Parking", "Business", "Prefabricated", "Detachable", "Air", "Other"]
 
 export const initRoles = [
@@ -302,7 +302,7 @@ export const initRoles = [
     },
     {
         "category": "Commercial",
-        "subcategory": "Other Categories",
+        "subcategory": "Other categories",
         "actions": {
             "allowDelete": false,
             "allowEdit": false,
@@ -345,6 +345,20 @@ export const initRoles = [
     {
         "category": "Land",
         "subcategory": "Island",
+        "actions": {
+            "allowDelete": false,
+            "allowEdit": false,
+            "accessOwner": false,
+            "accessLocation": false,
+            "accessPrice": false,
+            "accessActive": false,
+            "accessHidden": false,
+            "accessInactive": false
+        }
+    },
+    {
+        "category": "Land",
+        "subcategory": "Other categories",
         "actions": {
             "allowDelete": false,
             "allowEdit": false,

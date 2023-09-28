@@ -7,6 +7,7 @@ import TabPanel from "../../components/Tabs/Tabs";
 import SecurityPage from "./components/permission";
 import UserPage from "./components/user";
 import {UserDashboardLayout} from "../../components/dashboard/user-dashboard-layout";
+import PermissionPage from "./components/permission";
 
 const User: NextPage = () => {
     const [value, setValue] = useState(0);
@@ -34,7 +35,7 @@ const User: NextPage = () => {
 
             <TabPanel value={value} index={0}><UserPage changeTab={handleChange}
                                                         setSelectedUser={setSelectedUser}/></TabPanel>
-            <TabPanel value={value} index={1}><SecurityPage selectedUser={selectedUser}/></TabPanel>
+            <TabPanel value={value} index={1}><PermissionPage selectedUser={selectedUser}/></TabPanel>
         </>
     );
 };

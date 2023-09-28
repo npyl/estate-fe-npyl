@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {FC, useState} from 'react';
+import {FC, useEffect, useState} from 'react';
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
@@ -12,12 +12,15 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import {Button, Checkbox, Divider, Grid, MenuItem, Paper, Select, Stack} from "@mui/material";
+import {Button, Checkbox, Grid, Paper, Stack} from "@mui/material";
 
 import {
     actions,
     categories,
+    initRentRoles,
     initRoles,
+    initSaleRoles,
+    initSoldRentedRoles,
     subcategories1,
     subcategories2,
     subcategories3,
@@ -28,11 +31,9 @@ import {useTranslation} from "react-i18next";
 import {useGetPresetsQuery, useSavePresetMutation} from "../../../../services/security";
 
 function Category(props) {
-    const {row, data, setData} = props;
+    const {row, data, parentCategory, setData} = props;
     const [open, setOpen] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
-
-    // console.log("props => ", props)
 
     let category = resolveCategory(row, subcategories1, subcategories2, subcategories3, subcategories4);
 
@@ -40,21 +41,30 @@ function Category(props) {
         const newState = !isChecked;
         setIsChecked(newState);
         const newData = {...data};
-        Object.values(newData).forEach((categoryData) => {
-            const actions = categoryData.actions;
-            if (actions) {
-                Object.keys(actions).forEach((action) => {
-                    actions[action] = newState;
-                });
+        for (const key in newData) {
+            if (newData[key].category === row) {
+                newData[key].actions = {
+                    create: newState,
+                    view: newState,
+                    edit: newState,
+                    delete: newState,
+                    owner: newState,
+                    location: newState,
+                    price: newState,
+                    active: newState,
+                    inactive: newState,
+                    hidden: newState,
+                };
             }
-        });
+        }
         setData(newData);
     };
 
-    const isParentCategoryChecked = () => {
+    const isParentCategoryChecked = (row) => {
+        console.log(row)
         for (const category of Object.values(data)) {
             const actions = category?.actions;
-            if (actions && Object.values(actions).some((value) => value === false)) {
+            if (category.category === row && actions && Object.values(actions).some((value) => value === false)) {
                 return false;
             }
         }
@@ -67,18 +77,12 @@ function Category(props) {
         return !!data[rowIndex]?.actions[action]
     }
 
-
-    // Handle individual child checkbox change
     const handleChildCheckboxChange = (rowLiteral, columnIndex) => {
         let rowIndex = resolveSubCategory(rowLiteral);
         let action = actions[columnIndex];
-
         const updatedData = {...data};
-
         updatedData[rowIndex].actions[action] = !data[rowIndex].actions[action];
-
         setData(updatedData);
-        // console.log(updatedData)
     }
 
     return (
@@ -97,7 +101,7 @@ function Category(props) {
                         <Typography variant={'h6'}>{row}</Typography>
                         <Checkbox
                             onChange={() => handleCheckboxChange()}
-                            checked={isParentCategoryChecked()}
+                            checked={isParentCategoryChecked(row)}
                         />
                     </Stack>
                 </TableCell>
@@ -138,83 +142,88 @@ function Category(props) {
         ;
 }
 
-interface SecurityPageProps{user: string;}
+interface SecurityPageProps {
+    user: string;
+}
 
 const SecurityPage: FC<SecurityPageProps> = ({user}) => {
 
-    const [selectedPreset, setSelectedPreset] = useState("")
-    const [selectedPreset1, setSelectedPreset1] = useState("")
     const {data: presets} = useGetPresetsQuery();
     const {t} = useTranslation();
 
     const [savePreset] = useSavePresetMutation();
 
     const [data, setData] = useState(initRoles);
+    const [saleData, setSaleData] = useState(initSaleRoles);
+    const [rentData, setRentData] = useState(initRentRoles);
+    const [soldRentedData, setSoldRentedData] = useState(initSoldRentedRoles);
 
-    const [selectedUsers, setSelectedUsers] = useState([]);
+    useEffect(() => {
 
-    const handleUserToggle = (userId) => {
-        if (selectedUsers.includes(userId)) {
-            setSelectedUsers(selectedUsers.filter((id) => id !== userId));
-        } else {
-            setSelectedUsers([...selectedUsers, userId]);
-        }
-    };
+        let concatenatedData = {};
+        concatenatedData = {saleData, rentData, soldRentedData};
+        setData(concatenatedData);
+        console.log("The new data are updated => ", data)
+    }, [saleData, rentData, soldRentedData]);
 
     return (
 
-        <Box sx={{ overflowX: 'auto', width: '100%' }}>
+        <Box sx={{overflowX: 'auto', width: '100%'}}>
             <Typography variant='h6' sx={{textAlign: 'center', marginBottom: 2}}>{user}</Typography>
-            <TableContainer component={Paper} sx={{ overflowX: 'auto', width: '100%' }}>
+            <TableContainer component={Paper} sx={{overflowX: 'auto', width: '100%'}}>
                 <Table aria-label="collapsible table">
                     <TableHead>
                         <TableRow sx={{background: '#f5f5dc'}}>
-                            <TableCell sx={{width: '10%'}} align="left"><Typography
+                            <TableCell sx={{minWidth: 134}} align="left"><Typography
                                 variant={'h6'}>Sale</Typography></TableCell>
                             {actions.map(s =>
-                                <TableCell sx={{width: '10%'}} align="center" key={s}> {s} </TableCell>
+                                <TableCell sx={{width: '9%'}} align="center" key={s}> {s} </TableCell>
                             )}
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {data && categories.map((s) => {
-                            return <Category key={s} row={s} data={data} setData={setData}/>;
+                            return <Category key={s} row={s} data={saleData} setData={setSaleData}/>;
                         })}
                     </TableBody>
                 </Table>
+
                 <Table aria-label="collapsible table">
                     <TableHead>
                         <TableRow sx={{background: '#f5f5dc'}}>
-                            <TableCell sx={{width: '10%'}} align="left"><Typography
+                            <TableCell sx={{minWidth: 134}} align="left"><Typography
                                 variant={'h6'}>Rent</Typography></TableCell>
                             {actions.map(s =>
-                                <TableCell sx={{width: '10%'}} align="left" key={s}> {s} </TableCell>
+                                <TableCell sx={{width: '9%'}} align="center" key={s}> {s} </TableCell>
                             )}
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {data && categories.map((s) => {
-                            return <Category key={s} row={s} data={data} setData={setData}/>;
+                            return <Category key={s} row={s} data={rentData} setData={setRentData}/>;
                         })}
                     </TableBody>
                 </Table>
+
                 <Table aria-label="collapsible table">
                     <TableHead>
                         <TableRow sx={{background: '#f5f5dc'}}>
-                            <TableCell sx={{width: '10%'}} align="left"><Typography
+                            <TableCell sx={{minWidth: 134}} align="left"><Typography
                                 variant={'h6'}>Sold/Rented</Typography></TableCell>
                             {actions.map(s =>
-                                <TableCell sx={{width: '10%'}} align="left" key={s}> {s} </TableCell>
+                                <TableCell sx={{width: '9%'}} align="center" key={s}> {s} </TableCell>
                             )}
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {data && categories.map((s) => {
-                            return <Category key={s} row={s} data={data} setData={setData}/>;
+                            return <Category key={s} row={s} data={soldRentedData}
+                                             setData={setSoldRentedData}/>;
                         })}
                     </TableBody>
                 </Table>
             </TableContainer>
+
             <Grid container display={'block'}>
                 <Stack py={2} spacing={2} direction={"row"} sx={{float: "right"}}>
                     <Button
@@ -233,7 +242,7 @@ const SecurityPage: FC<SecurityPageProps> = ({user}) => {
                     </Button>
                 </Stack>
             </Grid>
-            </Box>
+        </Box>
     );
 }
 
@@ -297,6 +306,66 @@ function resolveSubCategory(rowLiteral) {
             break;
         case "Other categories":
             rowIndex = 11;
+            break;
+        case "Office":
+            rowIndex = 12;
+            break;
+        case "Store":
+            rowIndex = 13;
+            break;
+        case "Warehouse":
+            rowIndex = 14;
+            break;
+        case "Industrial space":
+            rowIndex = 15;
+            break;
+        case "Craft space":
+            rowIndex = 16;
+            break;
+        case "Hotel":
+            rowIndex = 17;
+            break;
+        case "Business building":
+            rowIndex = 18;
+            break;
+        case "Hall":
+            rowIndex = 19;
+            break;
+        case "Showroom":
+            rowIndex = 20;
+            break;
+        case "Other Commercial categories":
+            rowIndex = 21;
+            break;
+        case "Land plot":
+            rowIndex = 22;
+            break;
+        case "Parcels":
+            rowIndex = 23;
+            break;
+        case "Island":
+            rowIndex = 24;
+            break;
+        case "Other Land categories":
+            rowIndex = 25;
+            break;
+        case "Parking":
+            rowIndex = 26;
+            break;
+        case "Business":
+            rowIndex = 27;
+            break;
+        case "Prefabricated":
+            rowIndex = 28;
+            break;
+        case "Detachable":
+            rowIndex = 29;
+            break;
+        case "Air":
+            rowIndex = 30;
+            break;
+        case "Other":
+            rowIndex = 31;
             break;
     }
     return rowIndex;
