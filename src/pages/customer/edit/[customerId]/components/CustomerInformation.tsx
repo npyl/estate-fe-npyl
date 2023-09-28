@@ -93,21 +93,22 @@ const CustomerInformation: React.FC<any> = () => {
     const [createAndAssignLabel] = useCreateLabelForCustomerWithIDMutation();
     const [deleteLabel] = useDeleteLabelForCustomerWithIdMutation();
 
-    const firstName = useSelector(selectFirstName) || "";
-    const lastName = useSelector(selectLastName) || "";
-    const email = useSelector(selectEmail) || "";
+    const firstName = useSelector(selectFirstName);
+    const lastName = useSelector(selectLastName);
+    const email = useSelector(selectEmail);
+    const mobilePhone = useSelector(selectMobilePhone);
+    const homePhone = useSelector(selectHomePhone);
+    const fax = useSelector(selectFax);
+    const idNumber = useSelector(selectIdNumber);
+    const passportNumber = useSelector(selectPassportNumber);
+    const status = useSelector(selectStatus) || 0;
+
     const managedBy = useSelector(selectManagedBy) || "";
-    const mobilePhone = useSelector(selectMobilePhone) || "";
-    const homePhone = useSelector(selectHomePhone) || "";
-    const fax = useSelector(selectFax) || "";
+    const suggestedBy = useSelector(selectSuggestedBy) || "";
     const nationality = useSelector(selectNationality) || "";
-    const idNumber = useSelector(selectIdNumber) || "";
     const dateOfBirth = useSelector(selectDateOfBirth) || "";
-    const passportNumber = useSelector(selectPassportNumber) || "";
     const preferredLanguage = useSelector(selectPreferredLanguage) || "";
     const leadSource = (useSelector(selectLeadSource) as LeadSource) || "";
-    const suggestedBy = useSelector(selectSuggestedBy) || "";
-    const status = useSelector(selectStatus) || 0;
 
     const [emailError, setEmailError] = React.useState(false);
     const [helperText, setHelperText] = React.useState("");
@@ -140,6 +141,7 @@ const CustomerInformation: React.FC<any> = () => {
             ? new Date(dateOfBirth)
             : null;
     };
+
     const handleLabelClick = (label: ILabel) =>
         label.id &&
         assignLabel({ customerId: +customerId!, labelId: label.id }).then(() =>
@@ -422,7 +424,6 @@ const CustomerInformation: React.FC<any> = () => {
                                 }}
                             >
                                 <Typography variant="h6">
-                                    {" "}
                                     {t("Status")}
                                 </Typography>
                             </Box>
