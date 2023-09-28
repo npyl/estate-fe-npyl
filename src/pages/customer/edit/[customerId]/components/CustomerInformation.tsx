@@ -68,7 +68,7 @@ import { useTranslation } from "react-i18next";
 import { useLazyGetCustomerLabelsQuery } from "src/services/customers";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import DateFieldStyled from "src/pages/property/edit/[propertyId]/components/components/components/DateFieldStyled";
+import DateFieldStyled from "src/components/DateFieldStyled";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import OnlyLettersInput from "src/components/OnlyLetters";
 

@@ -19,9 +19,8 @@ import {
     removeParking,
 } from "src/slices/property";
 import { useAllGlobalsQuery } from "src/services/global";
-import OnlyNumbersInput from "../../../../../../../components/OnlyNumbers";
+import OnlyNumbersInput from "src/components/OnlyNumbers";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
 
 const ParkingSection: React.FC<any> = () => {
     const dispatch = useDispatch();

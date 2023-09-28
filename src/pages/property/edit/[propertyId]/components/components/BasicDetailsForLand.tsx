@@ -50,7 +50,7 @@ import {
     setRented,
     setState,
 } from "src/slices/property";
-import DateFieldStyled from "./DateFieldStyled";
+import DateFieldStyled from "../../../../../../components/DateFieldStyled";
 
 import { LabelCreate } from "src/components/label";
 import { useAllGlobalsQuery } from "src/services/global";
