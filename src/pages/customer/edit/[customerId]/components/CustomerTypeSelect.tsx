@@ -24,8 +24,7 @@ const CustomerTypeSelect = () => {
     const lessor = useSelector(selectLessor);
     const leaser = useSelector(selectLeaser);
     const buyer = useSelector(selectBuyer);
-    console.log(leaser);
-    console.log(buyer);
+
     return (
         <Box
             sx={{
