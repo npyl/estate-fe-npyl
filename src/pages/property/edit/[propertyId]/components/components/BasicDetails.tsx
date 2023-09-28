@@ -11,7 +11,7 @@ import {
     Typography,
 } from "@mui/material";
 import { useDebouncedCallback } from "use-debounce";
-import DateFieldStyled from "../../../../../../components/DateFieldStyled"; // adjust the path based on your directory structure
+import DateFieldStyled from "src/components/DateFieldStyled";
 
 import * as React from "react";
 
@@ -96,7 +96,7 @@ const BasicSection: React.FC<any> = () => {
 
     const currentDate = new Date();
     const code = useSelector(selectCode);
-    const owner = useSelector(selectOwner);
+    const owner = useSelector(selectOwner) || "";
     const manager = useSelector(selectManager);
     const currentRentPrice = useSelector(selectCurrentRentPrice);
     const estimatedRentPrice = useSelector(selectEstimatedRentPrice);
@@ -112,7 +112,7 @@ const BasicSection: React.FC<any> = () => {
     const rentalPeriodEnd = useSelector(selectRentalPeriodEnd);
     const auction = useSelector(selectAuction);
 
-    const state = useSelector(selectState);
+    const state = useSelector(selectState) || "";
     const stateEnum = enums?.state;
 
     // labels

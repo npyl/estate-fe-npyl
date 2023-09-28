@@ -50,7 +50,8 @@ import {
     setRented,
     setState,
 } from "src/slices/property";
-import DateFieldStyled from "../../../../../../components/DateFieldStyled";
+
+import DateFieldStyled from "src/components/DateFieldStyled";
 
 import { LabelCreate } from "src/components/label";
 import { useAllGlobalsQuery } from "src/services/global";
@@ -80,25 +81,34 @@ const BasicForLandSection: React.FC<any> = () => {
     const router = useRouter();
     const dispatch = useDispatch();
     const { t } = useTranslation();
+
     const { propertyId } = router.query;
-    if (!propertyId) return null;
+
     const { data } = useAllGlobalsQuery();
-    const enums: IGlobalProperty = data?.property as IGlobalProperty;
+
+    // get list of owners & managers
+    const { data: owners } = useAllCustomersQuery();
+    const { data: managers } = useAllUsersQuery();
+    // labels
     const { data: labels } = useGetLabelsQuery();
+
+    const enums: IGlobalProperty = data?.property as IGlobalProperty;
     const propertyLabels = labels?.propertyLabels || [];
+
     // labels
     const [getLabels, { data: assignedLabels }] =
         useLazyGetPropertyLabelsQuery();
     const [assignLabel] = useAssignLabelToPropertyWithIDMutation();
     const [createAndAssignLabel] = useCreateLabelForPropertyWithIDMutation();
     const [deleteLabel] = useDeleteLabelForPropertyWithIdMutation();
+
     const currentDate = new Date();
     const code = useSelector(selectCode);
-    const owner = useSelector(selectOwner);
+    const owner = useSelector(selectOwner) || "";
     const manager = useSelector(selectManager);
     const currentRentPrice = useSelector(selectCurrentRentPrice);
     const estimatedRentPrice = useSelector(selectEstimatedRentPrice);
-    const state = useSelector(selectState);
+    const state = useSelector(selectState) || "";
     const price = useSelector(selectPrice);
     const keyCode = useSelector(selectKeyCode);
     const area = useSelector(selectArea);
@@ -146,9 +156,6 @@ const BasicForLandSection: React.FC<any> = () => {
             labelId: assignedLabels[index].id!,
         }).then(() => revalidate());
 
-    // get list of owners & managers
-    const { data: owners } = useAllCustomersQuery();
-    const { data: managers } = useAllUsersQuery();
     const handleDateChange = (
         setter: ActionCreatorWithPayload<any, string>,
         newDate: Date | null,
