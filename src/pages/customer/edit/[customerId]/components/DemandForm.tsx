@@ -309,16 +309,6 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
         dispatch(setMinPrice({ index, value: minValue }));
         dispatch(setMaxPrice({ index, value: maxValue }));
     };
-    const handleSliderChange5 = (
-        event: any,
-        newValue: any,
-        activeThumb: any
-    ) => {
-        const newValues = newValue;
-        const [minValue, maxValue] = newValues;
-        dispatch(setMinFloor({ index, value: minValue }));
-        dispatch(setMaxFloor({ index, value: maxValue }));
-    };
     const handleSliderChange6 = (
         event: any,
         newValue: any,
@@ -444,25 +434,21 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                                                 (
                                                     { key, value },
                                                     subCategoriesIndex
-                                                ) => {
-                                                    return (
-                                                        <MenuItem
-                                                            key={
-                                                                subCategoriesIndex
+                                                ) => (
+                                                    <MenuItem
+                                                        key={subCategoriesIndex}
+                                                        value={key}
+                                                    >
+                                                        <Checkbox
+                                                            checked={
+                                                                category.indexOf(
+                                                                    key
+                                                                ) > -1
                                                             }
-                                                            value={key}
-                                                        >
-                                                            <Checkbox
-                                                                checked={
-                                                                    category.indexOf(
-                                                                        key
-                                                                    ) > -1
-                                                                }
-                                                            />
-                                                            {value}
-                                                        </MenuItem>
-                                                    );
-                                                }
+                                                        />
+                                                        {value}
+                                                    </MenuItem>
+                                                )
                                             )
                                         ) : (
                                             <MenuItem />
@@ -488,23 +474,20 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                                 }}
                             >
                                 {furnishingEnum.map(
-                                    ({ key, value }, furnishedSelectIndex) => {
-                                        return (
-                                            <MenuItem
-                                                key={furnishedSelectIndex}
-                                                value={key}
-                                            >
-                                                <Checkbox
-                                                    checked={
-                                                        furnished.indexOf(key) >
-                                                        -1
-                                                    }
-                                                />
+                                    ({ key, value }, furnishedSelectIndex) => (
+                                        <MenuItem
+                                            key={furnishedSelectIndex}
+                                            value={key}
+                                        >
+                                            <Checkbox
+                                                checked={
+                                                    furnished.indexOf(key) > -1
+                                                }
+                                            />
 
-                                                {value}
-                                            </MenuItem>
-                                        );
-                                    }
+                                            {value}
+                                        </MenuItem>
+                                    )
                                 )}
                             </Select>
                         </FormControl>
@@ -577,7 +560,7 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                                     }
                                 )}
                             </Select>
-                        </FormControl>{" "}
+                        </FormControl>
                     </Grid>
                     <Grid item xs={6}>
                         <Typography variant="h6">{t("Bedrooms")}</Typography>
@@ -1072,7 +1055,7 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                                               )
                                             : null}
                                     </Select>
-                                </FormControl>{" "}
+                                </FormControl>
                             </Grid>
                             <Grid item xs={6}>
                                 <FormControl fullWidth>
@@ -1109,7 +1092,7 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                                               )
                                             : null}
                                     </Select>
-                                </FormControl>{" "}
+                                </FormControl>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -1137,12 +1120,12 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                 parentCategories.map((e, featuresIndex) => (
                     <>
                         <PriorityFeatures
-                            key={featuresIndex}
+                            key={`${featuresIndex}_1`}
                             index={index}
                             parentCategory={e}
                         />
                         <NonPriorityFeatures
-                            key={featuresIndex}
+                            key={`${featuresIndex}_2`}
                             index={index}
                             parentCategory={e}
                         />
