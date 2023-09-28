@@ -1,5 +1,5 @@
 import { TextField, TextFieldProps } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
 export interface OnlyNumbersInputProps
@@ -13,6 +13,8 @@ export interface OnlyNumbersInputProps
 
 const onlyLettersRegex = /^[a-zA-Zα-ωΑ-ΩάέήίόύώΆΈΉΊΌΎΏ]*$/;
 
+const isValid = (value: string) => value.match(onlyLettersRegex);
+
 const OnlyLettersInput: React.FC<OnlyNumbersInputProps> = ({
     label,
     value,
@@ -21,20 +23,25 @@ const OnlyLettersInput: React.FC<OnlyNumbersInputProps> = ({
     disabled = false,
     ...props
 }) => {
-    const [displayValue, setDisplayValue] = useState<string>(value || "");
+    const [displayValue, setDisplayValue] = useState<string>("");
 
     const debouncedOnChange = useDebouncedCallback(
         (value: string) => onChange(value),
         50
     );
 
-    const handleCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    useEffect(() => {
+        if (!value) return;
+        if (isValid(value)) setDisplayValue(value);
+    }, [value]);
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const input = event.target.value;
 
-        if (input.match(onlyLettersRegex)) {
-            debouncedOnChange(input); // set store with debounce
-            setDisplayValue(input);
-        }
+        if (!isValid(input)) return;
+
+        debouncedOnChange(input); // set store with debounce
+        setDisplayValue(input);
     };
 
     return (
@@ -42,7 +49,7 @@ const OnlyLettersInput: React.FC<OnlyNumbersInputProps> = ({
             fullWidth
             label={label}
             value={displayValue}
-            onChange={handleCodeChange}
+            onChange={handleChange}
             {...props}
             disabled={disabled}
         />
