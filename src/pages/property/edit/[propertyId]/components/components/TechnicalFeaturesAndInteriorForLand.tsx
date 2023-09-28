@@ -1,4 +1,4 @@
-import { Grid, Paper, Box, Checkbox } from "@mui/material";
+import { Grid, Paper, Box } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
@@ -12,17 +12,16 @@ import {
     setCoverageFactor,
     setFacadeLength,
     setFloorToAreaRatio,
-    setAlarmSystem,
-    selectAlarmSystem,
 } from "src/slices/property";
 
 const TechnicalFeaturesAndInteriorForLandSection: React.FC<any> = () => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
+
     const floorToAreaRatio = useSelector(selectFloorToAreaRatio);
     const coverageFactor = useSelector(selectCoverageFactor);
     const facadeLength = useSelector(selectFacadeLength);
-    const alarmSystem = useSelector(selectAlarmSystem);
+
     const handleFloorToAreaRatioChange = (value: string) =>
         dispatch(setFloorToAreaRatio(value));
     const handleCoverageFactorChange = (value: string) =>

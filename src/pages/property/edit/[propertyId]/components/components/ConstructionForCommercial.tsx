@@ -43,11 +43,12 @@ const ConstructionForCommercialSection: React.FC<any> = (props) => {
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
     const details = enums?.details as IGlobalPropertyDetails;
 
+    const totalFloorNumber = useSelector(selectTotalFloorNumber) || "";
+
     const yearOfConstruction = useSelector(selectYearOfConstruction);
     const underConstruction = useSelector(selectUnderConstruction);
     const newlyBuilt = useSelector(selectNewlyBuilt);
     const incomplete = useSelector(selectIncomplete);
-    const totalFloorNumber = useSelector(selectTotalFloorNumber);
     const internalStairs = useSelector(selectInternalStairs);
     const neoclassical = useSelector(selectNeoclassical);
     const yearOfRenovation = useSelector(selectYearOfRenovation);

@@ -31,12 +31,13 @@ const HeatingAndEnergyForCommercialSection: React.FC<any> = (props) => {
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
     const details = enums?.details as IGlobalPropertyDetails;
 
-    const heatingType = useSelector(selectHeatingType);
-    const heatingSystem = useSelector(selectHeatingSystem);
+    const heatingType = useSelector(selectHeatingType) || "";
+    const heatingSystem = useSelector(selectHeatingSystem) || "";
+    const energyClass = useSelector(selectEnergyClass) || "";
+    const electricityType = useSelector(selectElectricityType) || "";
+
     const floorHeating = useSelector(selectFloorHeating);
     const airConditioning = useSelector(selectAirConditioning);
-    const energyClass = useSelector(selectEnergyClass);
-    const electricityType = useSelector(selectElectricityType);
 
     if (!details || !details.heatingSystem || !details.heatingType) return null;
 
