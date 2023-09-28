@@ -18,13 +18,16 @@ export const global = createApi({
     }),
     tagTypes: ["Global"],
     endpoints: (builder) => ({
-        allGlobals: builder.query<IGlobal, void>({
-            query: () => ({
+        allGlobals: builder.query<IGlobal, string>({
+            query: (language: string) => ({
                 url: "",
+                headers: {
+                    "Accept-Language": language,
+                },
             }),
             providesTags: ["Global"],
         }),
     }),
 });
 
-export const { useAllGlobalsQuery } = global;
+export const { useAllGlobalsQuery, useLazyAllGlobalsQuery } = global;

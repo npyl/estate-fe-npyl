@@ -57,7 +57,7 @@ import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 
 import { useState } from "react";
 import { useAllUsersQuery } from "src/services/user";
-import { useAllGlobalsQuery } from "src/services/global";
+import { useGlobals } from "src/hooks/useGlobals";
 
 import CustomNumberField from "./componentsFields/OnlyNumbersWithDot";
 import { useTranslation } from "react-i18next";
@@ -67,7 +67,7 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
     props
 ) => {
     const { t } = useTranslation();
-    const { data } = useAllGlobalsQuery();
+    const data = useGlobals();
 
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
     const details = enums?.details as IGlobalPropertyDetails;

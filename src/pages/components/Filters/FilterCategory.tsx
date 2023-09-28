@@ -9,7 +9,7 @@ import {
     SelectChangeEvent,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useAllGlobalsQuery } from "src/services/global";
+import { useGlobals } from "src/hooks/useGlobals";
 import {
     selectParentCategories,
     selectSubCategories,
@@ -22,7 +22,7 @@ export default function FilterCategory() {
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
-    const { data } = useAllGlobalsQuery();
+    const data = useGlobals();
 
     const parentCategories = useSelector(selectParentCategories);
     const subCategories = useSelector(selectSubCategories);

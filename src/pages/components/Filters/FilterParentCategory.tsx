@@ -13,14 +13,13 @@ import {
     setParentCategories,
 } from "src/slices/filters";
 
-import { useAllGlobalsQuery } from "src/services/global";
 import { useTranslation } from "react-i18next";
+import { useGlobals } from "src/hooks/useGlobals";
 
 export default function FilterParentCategory() {
     const dispatch = useDispatch();
     const { t } = useTranslation();
-
-    const { data } = useAllGlobalsQuery();
+    const data = useGlobals();
 
     const categories = useSelector(selectParentCategories);
 

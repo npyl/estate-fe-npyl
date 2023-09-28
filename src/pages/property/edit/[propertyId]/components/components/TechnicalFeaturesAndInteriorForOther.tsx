@@ -25,14 +25,14 @@ import {
 
 import { IGlobalProperty } from "src/types/global";
 
-import { useAllGlobalsQuery } from "src/services/global";
+import { useGlobals } from "src/hooks/useGlobals";
 import { useTranslation } from "react-i18next";
 
 const TechnicalFeaturesAndInteriorForOtherSection: React.FC<any> = () => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const { data } = useAllGlobalsQuery();
+    const data = useGlobals();
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
 
     const safetyDoor = useSelector(selectSafetyDoor);

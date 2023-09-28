@@ -62,7 +62,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { LabelCreate } from "src/components/label";
-import { useAllGlobalsQuery } from "src/services/global";
+import { useGlobals } from "src/hooks/useGlobals";
 import {
     useAssignLabelToPropertyWithIDMutation,
     useCreateLabelForPropertyWithIDMutation,
@@ -85,7 +85,7 @@ const BasicSection: React.FC<any> = () => {
     const dispatch = useDispatch();
 
     const { propertyId } = router.query;
-    const { data } = useAllGlobalsQuery();
+    const data = useGlobals();
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
 
     // get list of owners, managers & labels

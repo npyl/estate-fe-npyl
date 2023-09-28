@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 
-import { useAllGlobalsQuery } from "src/services/global";
+import { useGlobals } from "src/hooks/useGlobals";
 import { useTranslation } from "react-i18next";
 import {
     selectParentCategories,
@@ -19,8 +19,7 @@ import {
 export default function FilterParentCategory() {
     const dispatch = useDispatch();
     const { t } = useTranslation();
-
-    const { data } = useAllGlobalsQuery();
+    const data = useGlobals();
 
     const parentCategories = useSelector(selectParentCategories);
 

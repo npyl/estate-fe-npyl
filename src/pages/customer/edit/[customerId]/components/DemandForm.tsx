@@ -17,7 +17,7 @@ import {
 import * as React from "react";
 import { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useAllGlobalsQuery } from "src/services/global";
+import { useGlobals } from "src/hooks/useGlobals";
 import {
     useAllPropertiesQuery,
     useGetPropertyByCodeQuery,
@@ -63,7 +63,7 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
-    const enums = useAllGlobalsQuery().data;
+    const enums = useGlobals();
     const propertyEnums = enums?.property;
     const stateEnum = propertyEnums?.state;
     const detailsEnum = propertyEnums?.details;

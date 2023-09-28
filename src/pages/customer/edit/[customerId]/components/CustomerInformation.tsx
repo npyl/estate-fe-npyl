@@ -11,7 +11,7 @@ import {
     Typography,
 } from "@mui/material";
 import * as React from "react";
-import { useAllGlobalsQuery } from "src/services/global";
+import { useGlobals } from "src/hooks/useGlobals";
 import { useAllUsersQuery } from "src/services/user";
 
 import { LabelCreate } from "src/components/label";
@@ -76,10 +76,10 @@ const CustomerInformation: React.FC<any> = () => {
     const dispatch = useDispatch();
     const router = useRouter();
     const { t } = useTranslation();
+    const enums = useGlobals();
 
     const { customerId } = router.query;
 
-    const enums = useAllGlobalsQuery().data;
     const nationalitiesEnum = enums?.customer?.nationality;
     const leadSourceEnum = enums?.customer?.leadSource;
 

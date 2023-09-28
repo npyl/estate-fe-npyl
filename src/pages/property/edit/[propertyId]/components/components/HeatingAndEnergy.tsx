@@ -25,14 +25,14 @@ import {
     setOffPeakElectricity,
     setSolarBoiler,
 } from "src/slices/property";
-import { useAllGlobalsQuery } from "src/services/global";
+import { useGlobals } from "src/hooks/useGlobals";
 import { useTranslation } from "react-i18next";
 
 const HeatingAndEnergySection: React.FC<any> = (props) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const { data } = useAllGlobalsQuery();
+    const data = useGlobals();
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
     const details = enums?.details as IGlobalPropertyDetails;
 

@@ -31,15 +31,15 @@ import {
     setYearOfConstruction,
     setYearOfRenovation,
 } from "src/slices/property";
-import { useAllGlobalsQuery } from "src/services/global";
+import { useGlobals } from "src/hooks/useGlobals";
 import { useTranslation } from "react-i18next";
 import OnlyNumbersInput from "src/components/OnlyNumbers";
 
 const ConstructionForCommercialSection: React.FC<any> = (props) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
+    const data = useGlobals();
 
-    const { data } = useAllGlobalsQuery();
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
     const details = enums?.details as IGlobalPropertyDetails;
 

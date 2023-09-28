@@ -8,16 +8,18 @@ import {
     SelectChangeEvent,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useAllGlobalsQuery } from "src/services/global";
+import { useGlobals } from "src/hooks/useGlobals";
 import { selectStates, setStates } from "src/slices/filters";
 import { useDispatch, useSelector } from "src/store";
 
 export default function SaleSelect() {
     const dispatch = useDispatch();
-    const states = useSelector(selectStates);
-    const { data } = useAllGlobalsQuery();
-    const stateEnum = data?.property?.state;
+    const data = useGlobals();
     const { t } = useTranslation();
+
+    const states = useSelector(selectStates);
+
+    const stateEnum = data?.property?.state;
     if (!stateEnum) return null;
 
     const handleChange = (event: SelectChangeEvent<typeof states>) => {

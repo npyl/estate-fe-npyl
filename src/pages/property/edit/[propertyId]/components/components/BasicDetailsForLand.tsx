@@ -54,7 +54,7 @@ import {
 import DateFieldStyled from "src/components/DateFieldStyled";
 
 import { LabelCreate } from "src/components/label";
-import { useAllGlobalsQuery } from "src/services/global";
+import { useGlobals } from "src/hooks/useGlobals";
 import { useAllUsersQuery } from "src/services/user";
 import { IGlobalProperty } from "src/types/global";
 
@@ -81,10 +81,9 @@ const BasicForLandSection: React.FC<any> = () => {
     const router = useRouter();
     const dispatch = useDispatch();
     const { t } = useTranslation();
+    const data = useGlobals();
 
     const { propertyId } = router.query;
-
-    const { data } = useAllGlobalsQuery();
 
     // get list of owners & managers
     const { data: owners } = useAllCustomersQuery();

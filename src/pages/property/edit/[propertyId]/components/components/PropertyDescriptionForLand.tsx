@@ -5,7 +5,7 @@ import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import OnlyNumbersInput from "src/components/OnlyNumbers";
-import { useAllGlobalsQuery } from "src/services/global";
+import { useGlobals } from "src/hooks/useGlobals";
 import {
     selectAccessibility,
     selectLandUse,
@@ -22,7 +22,7 @@ const PropertyDescriptionForLandSection: React.FC<any> = () => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
-    const { data } = useAllGlobalsQuery();
+    const data = useGlobals();
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
     const details = enums?.details as IGlobalPropertyDetails;
 
