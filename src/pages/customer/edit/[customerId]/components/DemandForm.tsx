@@ -88,8 +88,8 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
     const maxPlot = demandFilters?.maxPlot || 0;
     const minYearOfConstruction = demandFilters?.minYearOfConstruction || 0;
     const maxYearOfConstruction = demandFilters?.maxYearOfConstruction || 0;
-    const minFloor = demandFilters?.minFloor || 0;
-    const maxFloor = demandFilters?.maxFloor || 0;
+    const minFloor = demandFilters?.minFloor || "";
+    const maxFloor = demandFilters?.maxFloor || "";
     const parentCategories = demandFilters?.parentCategories || [];
     const category = demandFilters?.categories || [];
     const state = demandFilters?.states || [];
@@ -974,37 +974,32 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                                 <Slider
                                     getAriaLabel={() => "Floor Slider"}
                                     orientation="horizontal"
-                                    // value={[
-                                    //     minFloorsArray.indexOf(
-                                    //         minFloor.key as string
-                                    //     ),
-                                    //     maxFloorsArray.indexOf(
-                                    //         maxFloor.key as string
-                                    //     ),
-                                    // ]}
+                                    value={[
+                                        minFloorsArray.indexOf(minFloor),
+                                        maxFloorsArray.indexOf(maxFloor),
+                                    ]}
                                     onChange={(
                                         _event: any,
                                         newValue: number | number[],
                                         _activeThumb: number
                                     ) => {
-                                        if (Array.isArray(newValue)) {
-                                            const min =
-                                                minFloorsArray[newValue[0]];
-                                            const max =
-                                                maxFloorsArray[newValue[1]];
-                                            dispatch(
-                                                setMinFloor({
-                                                    index,
-                                                    value: min,
-                                                })
-                                            );
-                                            dispatch(
-                                                setMaxFloor({
-                                                    index,
-                                                    value: max,
-                                                })
-                                            );
-                                        }
+                                        if (!Array.isArray(newValue)) return;
+
+                                        const min = minFloorsArray[newValue[0]];
+                                        const max = maxFloorsArray[newValue[1]];
+
+                                        dispatch(
+                                            setMinFloor({
+                                                index,
+                                                value: min,
+                                            })
+                                        );
+                                        dispatch(
+                                            setMaxFloor({
+                                                index,
+                                                value: max,
+                                            })
+                                        );
                                     }}
                                     valueLabelDisplay="auto"
                                     valueLabelFormat={(
@@ -1012,8 +1007,8 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                                         index: number
                                     ) =>
                                         index === 0
-                                            ? minFloorsArray[value]
-                                            : maxFloorsArray[value]
+                                            ? minFloors![value].value
+                                            : maxFloors![value].value
                                     }
                                     min={0}
                                     max={maxFloorsArray.length - 41}
@@ -1040,18 +1035,16 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                                                   (
                                                       { key, value },
                                                       minFloorsSelectIndex
-                                                  ) => {
-                                                      return (
-                                                          <MenuItem
-                                                              key={
-                                                                  minFloorsSelectIndex
-                                                              }
-                                                              value={key}
-                                                          >
-                                                              {value}
-                                                          </MenuItem>
-                                                      );
-                                                  }
+                                                  ) => (
+                                                      <MenuItem
+                                                          key={
+                                                              minFloorsSelectIndex
+                                                          }
+                                                          value={key}
+                                                      >
+                                                          {value}
+                                                      </MenuItem>
+                                                  )
                                               )
                                             : null}
                                     </Select>
@@ -1077,18 +1070,16 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                                                   (
                                                       { key, value },
                                                       maxFloorsSelectIndex
-                                                  ) => {
-                                                      return (
-                                                          <MenuItem
-                                                              key={
-                                                                  maxFloorsSelectIndex
-                                                              }
-                                                              value={key}
-                                                          >
-                                                              {value}
-                                                          </MenuItem>
-                                                      );
-                                                  }
+                                                  ) => (
+                                                      <MenuItem
+                                                          key={
+                                                              maxFloorsSelectIndex
+                                                          }
+                                                          value={key}
+                                                      >
+                                                          {value}
+                                                      </MenuItem>
+                                                  )
                                               )
                                             : null}
                                     </Select>
