@@ -1,11 +1,14 @@
 import { Box, Divider, Grid, Paper, Typography } from "@mui/material";
-import React from "react";
+import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { List, ListBooleanItem } from "src/components/List";
 import { IProperties, ParentCategory } from "src/types/properties";
 
 interface FeaturesProps {
     data: IProperties;
+}
+interface PropertyFeaturesItemProps {
+    field: string;
 }
 
 const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
@@ -86,9 +89,9 @@ const Features: React.FC<FeaturesProps> = (props) => {
     ) => (
         <Grid item xs={4}>
             <List>
-                {fields
-                    .slice(from, to)
-                    .map((field) => renderPropertyFeaturesItem(field))}
+                {fields.slice(from, to).map((field, i) => (
+                    <PropertyFeaturesItem field={field} key={i} />
+                ))}
             </List>
         </Grid>
     );
@@ -112,7 +115,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
         );
     };
 
-    const renderPropertyFeaturesItem = (field: string) => {
+    const PropertyFeaturesItem: FC<PropertyFeaturesItemProps> = ({ field }) => {
         switch (field) {
             case "Panoramic View":
                 return (

@@ -36,6 +36,10 @@ import "yet-another-react-lightbox/styles.css";
 
 import { FullscreenRef } from "yet-another-react-lightbox";
 import PreviewImage from "./image/PreviewImage";
+import { useLazyDownloadImagesQuery } from "src/services/exports";
+import { useRouter } from "next/router";
+import { CloseIcon } from "yet-another-react-lightbox/core";
+import { padding } from "@mui/system";
 
 // ----------------------------------------------------------------------
 
@@ -314,21 +318,67 @@ export default function CarouselThumbnail({ data }: Props) {
     );
 }
 
+const downloadBlob = (blob: Blob, hidden: boolean): void => {
+    const filename = hidden ? "AllImages.zip" : "PublicImages.zip";
+
+    // Convert the blob to a URL
+    const blobUrl = URL.createObjectURL(blob);
+
+    // Create an anchor element and attach the blob URL to it
+    const anchor = document.createElement("a");
+    anchor.href = blobUrl;
+    anchor.download = filename;
+
+    // Append the anchor to the document and trigger a click on it
+    document.body.appendChild(anchor);
+    anchor.click();
+
+    // Clean up by removing the anchor and revoking the blob URL
+    document.body.removeChild(anchor);
+    URL.revokeObjectURL(blobUrl);
+};
+
 ///////////////////////////////// only Photos
 export function OnlyPhotosCarousel({ data }: Props) {
-    const [nav1, setNav1] = useState<Carousel | undefined>(undefined);
+    const router = useRouter();
+    const { propertyId } = router.query;
 
+    const initialPluginList = [
+        Captions,
+        Fullscreen,
+        Thumbnails,
+        Video,
+        Zoom,
+        Counter,
+    ];
+
+    const pluginListWithHideGallery = [
+        Captions,
+        Fullscreen,
+        Thumbnails,
+        Video,
+        Zoom,
+        Counter,
+        HideGallery,
+    ];
+
+    const [nav1, setNav1] = useState<Carousel | undefined>(undefined);
     const [nav2, setNav2] = useState<Carousel | undefined>(undefined);
 
     const [clickedImageIndex, setClickedImageIndex] = useState(0);
 
     const carousel1 = useRef<Carousel | null>(null);
-
     const carousel2 = useRef<Carousel | null>(null);
 
     const [galleryOpen, setGalleryOpen] = useState(false);
-
     const [openDialog, setOpenDialog] = useState(false);
+
+    const [plugins, setPlugins] = useState(initialPluginList);
+
+    const fullscreenRef = useRef<FullscreenRef>(null);
+    const thumbnailsRef = useRef<ThumbnailsRef>(null);
+
+    const [downloadZip] = useLazyDownloadImagesQuery();
 
     useEffect(() => {
         if (carousel1.current) {
@@ -378,29 +428,14 @@ export function OnlyPhotosCarousel({ data }: Props) {
         return { src: item.image };
     });
 
-    const fullscreenRef = useRef<FullscreenRef>(null);
-    const thumbnailsRef = useRef<ThumbnailsRef>(null);
-
-    const initialPluginList = [
-        Captions,
-        Fullscreen,
-        Thumbnails,
-        Video,
-        Zoom,
-        Counter,
-    ];
-
-    const pluginListWithHideGallery = [
-        Captions,
-        Fullscreen,
-        Thumbnails,
-        Video,
-        Zoom,
-        Counter,
-        HideGallery,
-    ];
-
-    const [plugins, setPlugins] = useState(initialPluginList);
+    const handleExport = async (hidden: boolean) => {
+        downloadZip({
+            propertyId: +propertyId!,
+            hidden,
+        })
+            .unwrap()
+            .then((e) => downloadBlob(e, hidden));
+    };
 
     const handleDownload = () => {
         setOpenDialog(true);
@@ -457,7 +492,27 @@ export function OnlyPhotosCarousel({ data }: Props) {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">
+                <Box
+                    style={{
+                        position: "absolute",
+                        top: -1,
+                        left: 363,
+                        paddingTop: "3px",
+                    }}
+                >
+                    <Button
+                        color="primary"
+                        onClick={() => setOpenDialog(false)}
+                    >
+                        <CloseIcon />
+                    </Button>
+                </Box>
+                <DialogTitle
+                    sx={{
+                        paddingTop: "30px",
+                    }}
+                    id="alert-dialog-title"
+                >
                     {"Choose download option"}
                 </DialogTitle>
                 <DialogContent>
@@ -466,20 +521,10 @@ export function OnlyPhotosCarousel({ data }: Props) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button>
-                        {/* onClick={() => handleDownload("all")} color="primary" */}
+                    <Button color="primary" onClick={() => handleExport(true)}>
                         All photos
                     </Button>
-                    <Button
-                        // onClick={() => handleDownload("private")}
-                        color="primary"
-                    >
-                        Private photos
-                    </Button>
-                    <Button
-                        // onClick={() => handleDownload("public")}
-                        color="primary"
-                    >
+                    <Button color="primary" onClick={() => handleExport(false)}>
                         Public photos
                     </Button>
                 </DialogActions>

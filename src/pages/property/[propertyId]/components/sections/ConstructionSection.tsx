@@ -4,10 +4,15 @@ import { Box, Divider, Grid, Paper, Typography } from "@mui/material";
 
 import { List, ListBooleanItem, ListItem } from "src/components/List";
 import { useTranslation } from "react-i18next";
+import { FC } from "react";
 
 interface ConstructionSectionProps {
     data: IProperties;
 }
+interface ConstuctionItemProps {
+    field: string;
+}
+
 const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
     RESIDENTIAL: [
         "Year of Construction",
@@ -45,11 +50,14 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Incomplete",
     ],
 };
-const ConstructionSection: React.FC<ConstructionSectionProps> = (props) => {
-    const { data } = props;
+
+const ConstructionSection: React.FC<ConstructionSectionProps> = ({ data }) => {
     const { t } = useTranslation();
+
     const construction = data?.construction;
+
     if (data.parentCategory.key === "LAND") return null;
+
     const renderThirdOfFields = (
         fields: string[],
         from: number,
@@ -57,9 +65,9 @@ const ConstructionSection: React.FC<ConstructionSectionProps> = (props) => {
     ) => (
         <Grid item xs={4}>
             <List>
-                {fields
-                    .slice(from, to)
-                    .map((field) => renderConstuctionItem(field))}
+                {fields.slice(from, to).map((field, i) => (
+                    <ConstuctionItem field={field} key={i} />
+                ))}
             </List>
         </Grid>
     );
@@ -86,7 +94,8 @@ const ConstructionSection: React.FC<ConstructionSectionProps> = (props) => {
             </Grid>
         );
     };
-    const renderConstuctionItem = (field: string) => {
+
+    const ConstuctionItem: FC<ConstuctionItemProps> = ({ field }) => {
         switch (field) {
             case "Year of Construction":
                 return (

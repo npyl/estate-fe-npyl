@@ -139,17 +139,17 @@ const DemandForm: FC<DemandFormProps> = (props) => {
         dispatch(
             setParentCategory({
                 index,
-                value: [propertyForCode.parentCategory],
+                value: [propertyForCode.parentCategory.key],
             })
         );
-        dispatch(setCategory({ index, value: [propertyForCode.category] }));
+        dispatch(setCategory({ index, value: [propertyForCode.category.key] }));
         dispatch(
             setFurnished({
                 index,
-                value: [propertyForCode.technicalFeatures.furnished],
+                value: [propertyForCode.technicalFeatures.furnished.key],
             })
         );
-        dispatch(setState({ index, value: [propertyForCode.state] }));
+        dispatch(setState({ index, value: [propertyForCode.state.key] }));
         dispatch(
             setMinBedrooms({
                 index,
@@ -170,7 +170,9 @@ const DemandForm: FC<DemandFormProps> = (props) => {
         );
         dispatch(setMinPlot({ index, value: propertyForCode.plotArea }));
         dispatch(setMinPrice({ index, value: propertyForCode.price }));
-        dispatch(setMinFloor({ index, value: propertyForCode.details.floor }));
+        dispatch(
+            setMinFloor({ index, value: propertyForCode.details.floor.key })
+        );
         dispatch(
             setMinYearOfConstruction({
                 index,
@@ -185,6 +187,7 @@ const DemandForm: FC<DemandFormProps> = (props) => {
             })
         );
     }, [propertyForCode, isPropertyForCodeSuccess]);
+
     const handleChange10 = (
         event: SelectChangeEvent<typeof parentCategories>
     ) => {
@@ -1102,10 +1105,18 @@ const DemandForm: FC<DemandFormProps> = (props) => {
 
             {parentCategories &&
                 parentCategories.length > 0 &&
-                parentCategories.map((e) => (
+                parentCategories.map((e, i) => (
                     <>
-                        <PriorityFeatures index={index} parentCategory={e} />
-                        <NonPriorityFeatures index={index} parentCategory={e} />
+                        <PriorityFeatures
+                            key={i}
+                            index={index}
+                            parentCategory={e}
+                        />
+                        <NonPriorityFeatures
+                            key={i}
+                            index={index}
+                            parentCategory={e}
+                        />
                     </>
                 ))}
         </>

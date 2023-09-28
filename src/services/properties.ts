@@ -94,6 +94,7 @@ export const properties = createApi({
         "PropertyByIdImages",
         "PropertyByIdLabels",
         "PropertyByIdBlueprints",
+        "PropertyByIdZip",
     ],
     endpoints: (builder) => ({
         allProperties: builder.query<IProperties[], void>({
@@ -297,7 +298,6 @@ export const {
     useGetPropertyByCodeQuery,
     useGetPropertyAttributeQuery,
     useLazyGetPropertyLabelsQuery,
-
     // mutations
     useEditPropertyMutation,
     useCreatePropertyMutation,

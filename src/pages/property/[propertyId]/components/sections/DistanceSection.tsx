@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import { IProperties, ParentCategory } from "src/types/properties";
 
 import { Typography, Box, Paper, Divider, Grid } from "@mui/material";
@@ -8,6 +8,9 @@ import { useTranslation } from "react-i18next";
 
 interface DistanceSectionProps {
     data: IProperties;
+}
+interface DistancesItemProps {
+    field: string;
 }
 
 const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
@@ -32,6 +35,7 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
     LAND: [],
     OTHER: [],
 };
+
 const DistanceSection: React.FC<DistanceSectionProps> = (props) => {
     const { data } = props;
     const { t } = useTranslation();
@@ -48,9 +52,9 @@ const DistanceSection: React.FC<DistanceSectionProps> = (props) => {
         return (
             <Grid item xs={6}>
                 <List>
-                    {fields
-                        .slice(from, to)
-                        .map((field) => renderDistancesItem(field))}
+                    {fields.slice(from, to).map((field, i) => (
+                        <DistancesItem field={field} key={i} />
+                    ))}
                 </List>
             </Grid>
         );
@@ -60,7 +64,6 @@ const DistanceSection: React.FC<DistanceSectionProps> = (props) => {
         const fieldsForCategory = BASIC_DETAIL_FIELDS[category];
         if (!fieldsForCategory) return null;
         const firstHalfCount = Math.ceil(fieldsForCategory.length / 2);
-        const secondHalfCount = fieldsForCategory.length - firstHalfCount;
 
         return (
             <Grid container>
@@ -74,7 +77,7 @@ const DistanceSection: React.FC<DistanceSectionProps> = (props) => {
         );
     };
 
-    const renderDistancesItem = (field: string) => {
+    const DistancesItem: FC<DistancesItemProps> = ({ field }) => {
         switch (field) {
             case "Schools":
                 return (

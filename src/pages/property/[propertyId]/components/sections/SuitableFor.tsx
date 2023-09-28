@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import { IProperties, ParentCategory } from "src/types/properties";
 import { Typography, Box, Paper, Divider, Grid } from "@mui/material";
 import { List, ListBooleanItem } from "src/components/List";
@@ -7,6 +7,10 @@ import { useTranslation } from "react-i18next";
 interface SuitableForProps {
     data: IProperties;
 }
+interface SuitableForItemProps {
+    field: string;
+}
+
 const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
     RESIDENTIAL: [
         "Student",
@@ -21,6 +25,7 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
     LAND: ["Agricultural Use", "Investment"],
     OTHER: ["Investment"],
 };
+
 const SuitableFor: React.FC<SuitableForProps> = (props) => {
     const { data } = props;
     const { t } = useTranslation();
@@ -29,9 +34,9 @@ const SuitableFor: React.FC<SuitableForProps> = (props) => {
         return (
             <Grid item xs={6}>
                 <List>
-                    {fields
-                        .slice(from, to)
-                        .map((field) => renderSuitableForItem(field))}
+                    {fields.slice(from, to).map((field, i) => (
+                        <SuitableForItem field={field} key={i} />
+                    ))}
                 </List>
             </Grid>
         );
@@ -40,7 +45,6 @@ const SuitableFor: React.FC<SuitableForProps> = (props) => {
         const fieldsForCategory = BASIC_DETAIL_FIELDS[category];
         if (!fieldsForCategory) return null;
         const firstHalfCount = Math.ceil(fieldsForCategory.length / 2);
-        const secondHalfCount = fieldsForCategory.length - firstHalfCount;
 
         return (
             <Grid container>
@@ -54,7 +58,7 @@ const SuitableFor: React.FC<SuitableForProps> = (props) => {
         );
     };
 
-    const renderSuitableForItem = (field: string) => {
+    const SuitableForItem: FC<SuitableForItemProps> = ({ field }) => {
         switch (field) {
             case "Student":
                 return (

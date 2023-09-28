@@ -1,14 +1,16 @@
-import React from "react";
+import React, { FC } from "react";
 import { IProperties, ParentCategory } from "src/types/properties";
-
 import { Typography, Box, Paper, Divider, Grid } from "@mui/material";
-
 import { List, ListItem, ListBooleanItem } from "src/components/List";
 import { useTranslation } from "react-i18next";
 
 interface HeatingSectionProps {
     data: IProperties;
 }
+interface HeatingItemProps {
+    field: string;
+}
+
 const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
     RESIDENTIAL: [
         "Heating Type",
@@ -50,9 +52,9 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
     const renderHalfOfFields = (fields: string[], from: number, to: number) => (
         <Grid item xs={6}>
             <List>
-                {fields
-                    .slice(from, to)
-                    .map((field) => renderHeatingItem(field))}
+                {fields.slice(from, to).map((field, i) => (
+                    <HeatingItem field={field} key={i} />
+                ))}
             </List>
         </Grid>
     );
@@ -75,7 +77,7 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
         );
     };
 
-    const renderHeatingItem = (field: string) => {
+    const HeatingItem: FC<HeatingItemProps> = ({ field }) => {
         switch (field) {
             case "Energy Class":
                 return (
