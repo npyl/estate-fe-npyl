@@ -10,9 +10,11 @@ import { useTranslation } from "react-i18next";
 
 export default function CodeSelect() {
     const dispatch = useDispatch();
-    const propertyCode = useSelector(selectCode);
     const { t } = useTranslation();
+
+    const propertyCode = useSelector(selectCode);
     const [autocompleteValue, setAutocompleteValue] = useState("");
+
     useEffect(
         () => setAutocompleteValue(propertyCode?.toString() || ""),
         [propertyCode]

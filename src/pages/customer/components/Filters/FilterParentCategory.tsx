@@ -7,40 +7,36 @@ import {
     Select,
     SelectChangeEvent,
 } from "@mui/material";
-import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+
 import { useAllGlobalsQuery } from "src/services/global";
+import { useTranslation } from "react-i18next";
 import {
     selectParentCategories,
-    selectSubCategories,
-    setSubCategories,
-} from "src/slices/filters";
-import { useDispatch, useSelector } from "src/store";
-import { IGlobalProperty } from "src/types/global";
+    setParentCategories,
+} from "src/slices/customer/filters";
 
-export default function FilterCategory() {
-    const { t } = useTranslation();
+export default function FilterParentCategory() {
     const dispatch = useDispatch();
+    const { t } = useTranslation();
 
     const { data } = useAllGlobalsQuery();
 
     const parentCategories = useSelector(selectParentCategories);
-    const subCategories = useSelector(selectSubCategories);
+
     const propertyEnums = data?.property;
+    const parentCategoryEnums = propertyEnums?.parentCategory;
 
-    if (!propertyEnums || parentCategories.length === 0) return null;
+    if (!data) return null;
 
-    const options = parentCategories.map((category) => {
-        return propertyEnums![
-            `${category.toLowerCase()}Category` as keyof IGlobalProperty
-        ];
-    });
-
-    const handleChange = (event: SelectChangeEvent<typeof subCategories>) => {
+    const handleChange = (
+        event: SelectChangeEvent<typeof parentCategories>
+    ) => {
         const {
             target: { value },
         } = event;
         dispatch(
-            setSubCategories(
+            setParentCategories(
                 // On autofill we get a stringified value.
                 typeof value === "string" ? value.split(",") : value
             )
@@ -49,23 +45,27 @@ export default function FilterCategory() {
 
     return (
         <FormControl sx={{ minWidth: "130px", maxWidth: "130px" }}>
-            <InputLabel>{t("Category")}</InputLabel>
+            <InputLabel>{t("Parent Category")}</InputLabel>
             <Select
                 multiple
-                value={subCategories}
+                value={parentCategories}
                 onChange={handleChange}
                 renderValue={(selected) => selected.join(", ")}
-                input={<OutlinedInput label={t("Category")} />}
+                input={<OutlinedInput label={t("Parent Category")} />}
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
-                {options.flat(1)!.map((option: any) => {
+                {parentCategoryEnums!.map(({ key, value }) => {
                     return (
-                        <MenuItem key={option} value={option}>
+                        <MenuItem key={key} value={key}>
                             <Checkbox
-                                checked={subCategories.indexOf(option) > -1}
+                                checked={
+                                    parentCategories &&
+                                    parentCategories.length > 0 &&
+                                    parentCategories.indexOf(key) > -1
+                                }
                             />
 
-                            {option}
+                            {value}
                         </MenuItem>
                     );
                 })}

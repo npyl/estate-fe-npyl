@@ -51,8 +51,8 @@ import {
 
 import ChosenFilters from "./ChosenFilters";
 import SaleSelect from "./FilterSale";
-import CategorySelect from "./FilterCategory";
-import SubCategorySelect from "./FilterSubCategory";
+import CategorySelect from "./FilterParentCategory";
+import SubCategorySelect from "./FilterCategory";
 import PriceSelect from "./FilterPrice";
 import FilterLabels from "./FilterLabels";
 import CodeSelect from "./FilterCode";

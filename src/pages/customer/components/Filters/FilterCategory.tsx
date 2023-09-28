@@ -7,7 +7,6 @@ import {
     Select,
     SelectChangeEvent,
 } from "@mui/material";
-import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { useTranslation } from "react-i18next";
 import { useAllGlobalsQuery } from "src/services/global";
 import {
@@ -21,10 +20,13 @@ import { IGlobalProperty } from "src/types/global";
 
 export default function SubCategoryForCustomerSelect() {
     const dispatch = useDispatch();
+    const { t } = useTranslation();
+
+    const { data } = useAllGlobalsQuery();
+
     const parentCategories = useSelector(selectParentCategories) || [];
     const subCategories = useSelector(selectCategories) || [];
-    const { t } = useTranslation();
-    const { data } = useAllGlobalsQuery();
+
     const propertyEnums = data?.property;
     if (!propertyEnums || parentCategories.length === 0) return null;
 
@@ -45,18 +47,16 @@ export default function SubCategoryForCustomerSelect() {
             )
         );
     };
+
     return (
         <FormControl sx={{ minWidth: "130px", maxWidth: "130px" }}>
-            <InputLabel id="demo-simple-select-label">
-                {t("Subcategory")}
-            </InputLabel>
+            <InputLabel>{t("Category")}</InputLabel>
             <Select
                 multiple
-                labelId="demo-simple-select-label"
                 value={subCategories}
                 onChange={handleChange}
                 renderValue={(selected) => selected.join(", ")}
-                input={<OutlinedInput label="Υποκατηγορίες" />}
+                input={<OutlinedInput label={t("Category")} />}
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
                 {options.flat(1)!.map((option: any) => {
