@@ -239,7 +239,7 @@ export const properties = createApi({
                 method: "POST",
                 body: params.body,
             }),
-            invalidatesTags: ["PropertyByIdImages"],
+            invalidatesTags: ["PropertyByIdImages", "PropertyById"],
         }),
         setPropertyThumbail: builder.mutation<void, IPropertySetThumbnailProps>(
             {

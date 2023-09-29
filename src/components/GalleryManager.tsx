@@ -7,10 +7,11 @@ import {
     Stack,
     TextField,
     MenuItem,
+    DialogActions,
 } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { SoftButton } from "./SoftButton";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useEditPropertyImageMutation } from "src/services/properties";
 
 import CarouselSimple from "./CarouselSimple";
@@ -32,33 +33,36 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
 
     const router = useRouter();
 
-    const [editImage] = useEditPropertyImageMutation();
+    const [editImage, { isLoading }] = useEditPropertyImageMutation();
 
     const { propertyId } = router.query;
 
-    const [currentIndex, setCurrentIndex] = useState(0);
-    const [carouselInitialIndex, setCarouselInitialIndex] = useState<number>();
-    const [language, setLanguage] = useState("");
+    const [currentIndex, setCurrentIndex] = useState(currentImage?.id || 0);
+    const [showControl, setShowControl] = useState(false);
 
     // default values
-    const [initialTitle, setInitialTitle] = useState(
-        images[currentIndex]?.title
+    const initialTitle = useMemo(
+        () => images.find((e) => e.id === currentIndex)?.title,
+        [currentIndex, images]
     );
-    const [initialDescription, setInitialDescription] = useState(
-        images[currentIndex]?.description
+    const initialDescription = useMemo(
+        () => images.find((e) => e.id === currentIndex)?.description,
+        [currentIndex, images]
     );
-    const [initialHidden, setInitialHidden] = useState(
-        images[currentIndex]?.hidden
+    const initialHidden = useMemo(
+        () => images.find((e) => e.id === currentIndex)?.hidden,
+        [currentIndex, images]
     );
 
-    const [title, setTitle] = useState(initialTitle);
-    const [description, setDescription] = useState(initialDescription);
-    const [hidden, setHidden] = useState(initialHidden);
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
+    const [hidden, setHidden] = useState<boolean>();
+    const [language, setLanguage] = useState("");
 
     const _carouselImages: ICarouselImage[] = useMemo(
         () =>
-            images.map((image, index) => ({
-                id: `${index}`,
+            images.map((image) => ({
+                id: image.id.toString(),
                 title: "Image",
                 image: image.url,
                 description: "",
@@ -67,65 +71,18 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
         [images]
     );
 
-    const propertyWasChanged = useMemo(
-        () =>
-            title !== initialTitle ||
-            description !== initialDescription ||
-            hidden !== initialHidden,
-        [
-            initialTitle,
-            initialDescription,
-            initialHidden,
-            title,
-            description,
-            hidden,
-        ]
-    );
-
-    useEffect(
-        () => reload(),
-        [
-            currentIndex,
-            images[currentIndex].title,
-            images[currentIndex].description,
-            images[currentIndex].hidden,
-        ]
-    );
-
-    useEffect(() => {
-        // INFO: if we have currentImage, it means GalleryManager was opened with a specific image as interest
-        if (!currentImage) return;
-
-        const newIndex = _carouselImages.findIndex(
-            (carouselImage) => carouselImage.image === currentImage.url
-        );
-
-        setCurrentIndex(newIndex);
-        setCarouselInitialIndex(newIndex);
-    }, [currentImage?.url]);
-
-    const reload = () => {
-        // default values
-        setInitialTitle(images[currentIndex].title);
-        setInitialDescription(images[currentIndex].description);
-        setInitialHidden(images[currentIndex].hidden);
-
-        setTitle(images[currentIndex].title);
-        setDescription(images[currentIndex].description);
-        setHidden(images[currentIndex].hidden);
-    };
-
     const handleImageChange = (newImage: ICarouselImage) => {
         /*
         INFO: the indexes used inside the carousel are not updated in a consistent manner,
                 this is why we receive the currentImage on "afterChange", and we get the index that
                 translates to our array.
         */
+        handleClear();
         setCurrentIndex(+newImage.id);
     };
 
     const handleUpdate = () => {
-        const { key } = images[currentIndex];
+        const key = images.find((e) => e.id == currentIndex)?.key;
 
         // update
         editImage({
@@ -137,20 +94,22 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
                 hidden,
             },
         });
+
+        setShowControl(false);
     };
 
     const handleClear = () => {
-        setTitle(initialTitle);
-        setDescription(initialDescription);
-        setHidden(initialHidden);
+        setTitle("");
+        setDescription("");
+        setHidden(false);
+        setShowControl(false);
     };
 
     return (
         <Dialog
             fullWidth
-            open
+            open={open}
             sx={{
-                display: open ? "block" : "none",
                 "& .MuiDialog-container": {
                     "& .MuiPaper-root": {
                         minWidth: "80vw",
@@ -178,12 +137,14 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
             </DialogTitle>
             <DialogContent>
                 <Grid container spacing={1}>
-                    <Grid item xs={8}>
+                    <Grid item xs={8} position={"relative"}>
                         <CarouselSimple
                             onImageChange={handleImageChange}
                             mainLabel="main"
                             data={_carouselImages}
-                            initialIndex={carouselInitialIndex}
+                            initialIndex={_carouselImages.findIndex(
+                                (e) => currentIndex === +e.id
+                            )}
                         />
                     </Grid>
                     <Grid item xs={4} mt={1}>
@@ -191,40 +152,65 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
                             <TextField
                                 fullWidth
                                 label="Title"
-                                value={title || ""}
-                                onChange={(event) =>
-                                    setTitle(event.target.value)
-                                }
+                                value={title || initialTitle || ""}
+                                onChange={(event) => {
+                                    !showControl && setShowControl(true);
+                                    setTitle(event.target.value);
+                                    setDescription(
+                                        description || initialDescription || ""
+                                    );
+                                    setHidden(hidden || initialHidden);
+                                }}
                             />
 
                             <TextField
+                                sx={{
+                                    "& .MuiInputBase-root": {
+                                        height: "auto!important",
+                                    },
+                                    "& .MuiInputBase-input.MuiOutlinedInput-input":
+                                        {
+                                            padding: 1,
+                                        },
+                                }}
                                 fullWidth
                                 label="Description"
-                                value={description || ""}
+                                value={description || initialDescription || ""}
                                 multiline
-                                onChange={(event) =>
-                                    setDescription(event.target.value)
-                                }
+                                rows={5}
+                                onChange={(event) => {
+                                    !showControl && setShowControl(true);
+                                    setTitle(title || initialTitle || "");
+                                    setDescription(event.target.value);
+                                    setHidden(hidden || initialHidden);
+                                }}
                             />
 
                             <TextField
                                 fullWidth
                                 select
                                 label="Visibility"
-                                value={hidden ? "private" : "public"}
+                                value={
+                                    hidden || undefined ? "private" : "public"
+                                }
                                 onChange={(event) => {
+                                    setTitle(title || initialTitle || "");
+                                    setDescription(
+                                        description || initialDescription || ""
+                                    );
                                     setHidden(
                                         event.target.value === "public"
                                             ? false
                                             : true
                                     );
+                                    !showControl && setShowControl(true);
                                 }}
                             >
                                 <MenuItem value={"public"}>Public</MenuItem>
                                 <MenuItem value={"private"}>Private</MenuItem>
                             </TextField>
                         </Grid>
-                        {propertyWasChanged && (
+                        {showControl && (
                             <Stack
                                 direction={"row"}
                                 justifyContent={"right"}
@@ -235,6 +221,7 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
                                     variant="outlined"
                                     color="secondary"
                                     onClick={handleClear}
+                                    disabled={isLoading}
                                 >
                                     Clear
                                 </Button>
@@ -242,6 +229,7 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
                                     variant="contained"
                                     color="secondary"
                                     onClick={handleUpdate}
+                                    disabled={isLoading}
                                 >
                                     Update
                                 </Button>
@@ -250,18 +238,16 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
                     </Grid>
                 </Grid>
             </DialogContent>
-            <DialogContent
+            <DialogActions
                 sx={{
-                    position: "absolute",
-                    bottom: 0,
-                    right: 0,
+                    float: "right",
                 }}
             >
                 <Stack direction={"row"} justifyContent={"right"} spacing={1}>
                     <SoftButton
                         color="error"
                         onClick={() => {
-                            onDelete(images[currentIndex]);
+                            onDelete(images.find((e) => e.id == currentIndex)!);
                         }}
                     >
                         <Delete />
@@ -274,7 +260,7 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
                         Close
                     </Button>
                 </Stack>
-            </DialogContent>
+            </DialogActions>
         </Dialog>
     );
 };
