@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { SoftButton } from "./SoftButton";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useEditPropertyImageMutation } from "src/services/properties";
 
 import CarouselSimple from "./CarouselSimple";
@@ -31,7 +31,7 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
     const { open, currentImage, images, onDelete, onClose } = props;
 
     const router = useRouter();
-    const dialogTitleRef = useRef(null);
+
     const [editImage] = useEditPropertyImageMutation();
 
     const { propertyId } = router.query;
@@ -99,6 +99,7 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
         const newIndex = _carouselImages.findIndex(
             (carouselImage) => carouselImage.image === currentImage.url
         );
+
         setCurrentIndex(newIndex);
         setCarouselInitialIndex(newIndex);
     }, [currentImage?.url]);
@@ -147,8 +148,9 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
     return (
         <Dialog
             fullWidth
-            open={open}
+            open
             sx={{
+                display: open ? "block" : "none",
                 "& .MuiDialog-container": {
                     "& .MuiPaper-root": {
                         minWidth: "80vw",
@@ -158,7 +160,7 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
             onClose={onClose}
             closeAfterTransition={true}
         >
-            <DialogTitle ref={dialogTitleRef}>
+            <DialogTitle>
                 Gallery Manager
                 <LanguageButton
                     updatesGlobalLanguage={false}
