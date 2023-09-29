@@ -37,9 +37,7 @@ import { DeleteDialog } from "src/components/Dialog/Delete";
 import ChosenFilters from "./Filters/ChosenFilters";
 import { KeyValue } from "src/types/KeyValue";
 import { ILabel } from "src/types/label";
-import { IPropertyResultResponse } from "src/types/properties";
 import ListLabelsItem from "src/components/List/labels-item";
-import { Label } from "src/components/label";
 
 type optionType = "list" | "grid" | "map";
 
@@ -153,6 +151,15 @@ function showLabel(params: GridCellParams) {
     return <ListLabelsItem labels={labels} label={""} />;
 }
 
+//format value number with dots
+const formatNumberWithPeriod = (num: any) => {
+    if (num === null || num === undefined) {
+        return "";
+    }
+    const numericValue = num.toString().replace(/[^0-9]/g, "");
+    return numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+};
+
 const ViewAll: FC = () => {
     const { t } = useTranslation();
 
@@ -161,15 +168,6 @@ const ViewAll: FC = () => {
     const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
 
     const changedPropertyFilters = useSelector(sumOfChangedProperties);
-
-    //format value number with dots
-    const formatNumberWithPeriod = (num: any) => {
-        if (num === null || num === undefined) {
-            return "";
-        }
-        const numericValue = num.toString().replace(/[^0-9]/g, "");
-        return numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    };
 
     // sorting
     const [sortingBy, setSortingBy] = useState("");
@@ -273,8 +271,24 @@ const ViewAll: FC = () => {
             headerAlign: "center",
             width: 180,
             align: "center",
-            headerName: t("labels") as string,
+            headerName: t("Labels") as string,
             renderCell: showLabel,
+        },
+        {
+            field: "createdAt",
+            headerAlign: "center",
+            width: 180,
+            align: "center",
+            headerName: t("Creation Date") as string,
+            renderCell: (params) => new Date(params.value).toDateString(),
+        },
+        {
+            field: "updatedAt",
+            headerAlign: "center",
+            width: 180,
+            align: "center",
+            headerName: t("Updated At") as string,
+            renderCell: (params) => new Date(params.value).toDateString(),
         },
     ];
 
