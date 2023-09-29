@@ -15,7 +15,6 @@ import { KanbanColumn, KanbanColumnAdd } from "./components";
 import { useGetBoardQuery, useCreateBoardMutation } from "src/services/tickets";
 import { SkeletonKanbanColumn } from "src/components/skeleton";
 import { useEffect } from "react";
-import { Box } from "@mui/system";
 
 KanbanPage.getLayout = (page: React.ReactElement) => (
     <DashboardLayout>{page}</DashboardLayout>
@@ -48,9 +47,9 @@ export default function KanbanPage() {
             return;
 
         if (type === "column") {
-            const newColumnOrder: string[] = Array.from(board.columnOrder);
+            const newColumnOrder = Array.from(board.columnOrder);
             newColumnOrder.splice(source.index, 1);
-            newColumnOrder.splice(destination.index, 0, draggableId);
+            newColumnOrder.splice(destination.index, 0, +draggableId);
 
             // dispatch(persistColumn(newColumnOrder));
             return;
@@ -62,7 +61,7 @@ export default function KanbanPage() {
         if (start.id === finish.id) {
             const updatedCardIds = [...start.cardIds];
             updatedCardIds.splice(source.index, 1);
-            updatedCardIds.splice(destination.index, 0, draggableId);
+            updatedCardIds.splice(destination.index, 0, +draggableId);
 
             const updatedColumn = {
                 ...start,
@@ -87,7 +86,7 @@ export default function KanbanPage() {
         };
 
         const finishCardIds = [...finish.cardIds];
-        finishCardIds.splice(destination.index, 0, draggableId);
+        finishCardIds.splice(destination.index, 0, +draggableId);
 
         const updatedFinish = {
             ...finish,
@@ -140,7 +139,7 @@ export default function KanbanPage() {
                                                 index={index}
                                                 key={columnId}
                                                 column={board.columns[index]}
-                                                // cards={board.cards}
+                                                cards={board.cards}
                                             />
                                         )
                                     )

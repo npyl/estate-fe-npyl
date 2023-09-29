@@ -49,7 +49,7 @@ const _contacts = [
 
         email: "nannie_abernathy70@yahoo.com",
 
-        lastActivity: new Date("2023-08-30T16:08:50.000Z"),
+        lastActivity: new Date("2023-08-30T16:08:50.000Z").toISOString(),
 
         status: "offline",
 
@@ -71,7 +71,7 @@ const _contacts = [
 
         email: "ashlynn_ohara62@gmail.com",
 
-        lastActivity: new Date("2023-08-29T15:08:50.000Z"),
+        lastActivity: new Date("2023-08-29T15:08:50.000Z").toISOString(),
 
         status: "away",
 
@@ -93,7 +93,7 @@ const _contacts = [
 
         email: "milo.farrell@hotmail.com",
 
-        lastActivity: new Date("2023-08-28T14:08:50.000Z"),
+        lastActivity: new Date("2023-08-28T14:08:50.000Z").toISOString(),
 
         status: "away",
 
@@ -115,7 +115,7 @@ const _contacts = [
 
         email: "violet.ratke86@yahoo.com",
 
-        lastActivity: new Date("2023-08-27T13:08:50.000Z"),
+        lastActivity: new Date("2023-08-27T13:08:50.000Z").toISOString(),
 
         status: "online",
 
@@ -137,7 +137,7 @@ const _contacts = [
 
         email: "letha_lubowitz24@yahoo.com",
 
-        lastActivity: new Date("2023-08-26T12:08:50.000Z"),
+        lastActivity: new Date("2023-08-26T12:08:50.000Z").toISOString(),
 
         status: "busy",
 
@@ -159,7 +159,7 @@ const _contacts = [
 
         email: "aditya_greenfelder31@gmail.com",
 
-        lastActivity: new Date("2023-08-25T11:08:50.000Z"),
+        lastActivity: new Date("2023-08-25T11:08:50.000Z").toISOString(),
 
         status: "offline",
 
@@ -181,7 +181,7 @@ const _contacts = [
 
         email: "lenna_bergnaum27@hotmail.com",
 
-        lastActivity: new Date("2023-08-24T10:08:50.000Z"),
+        lastActivity: new Date("2023-08-24T10:08:50.000Z").toISOString(),
 
         status: "away",
 
@@ -203,7 +203,7 @@ const _contacts = [
 
         email: "luella.ryan33@gmail.com",
 
-        lastActivity: new Date("2023-08-23T09:08:50.000Z"),
+        lastActivity: new Date("2023-08-23T09:08:50.000Z").toISOString(),
 
         status: "busy",
 
@@ -225,7 +225,7 @@ const _contacts = [
 
         email: "joana.simonis84@gmail.com",
 
-        lastActivity: new Date("2023-08-22T08:08:50.000Z"),
+        lastActivity: new Date("2023-08-22T08:08:50.000Z").toISOString(),
 
         status: "away",
 
@@ -247,7 +247,7 @@ const _contacts = [
 
         email: "marjolaine_white94@gmail.com",
 
-        lastActivity: new Date("2023-08-21T07:08:50.000Z"),
+        lastActivity: new Date("2023-08-21T07:08:50.000Z").toISOString(),
 
         status: "away",
 
@@ -269,7 +269,7 @@ const _contacts = [
 
         email: "vergie_block82@hotmail.com",
 
-        lastActivity: new Date("2023-08-20T06:08:50.000Z"),
+        lastActivity: new Date("2023-08-20T06:08:50.000Z").toISOString(),
 
         status: "offline",
 
@@ -291,7 +291,7 @@ const _contacts = [
 
         email: "vito.hudson@hotmail.com",
 
-        lastActivity: new Date("2023-08-19T05:08:50.000Z"),
+        lastActivity: new Date("2023-08-19T05:08:50.000Z").toISOString(),
 
         status: "away",
 
@@ -313,7 +313,7 @@ const _contacts = [
 
         email: "tyrel_greenholt@gmail.com",
 
-        lastActivity: new Date("2023-08-18T04:08:50.000Z"),
+        lastActivity: new Date("2023-08-18T04:08:50.000Z").toISOString(),
 
         status: "away",
 
@@ -335,7 +335,7 @@ const _contacts = [
 
         email: "dwight.block85@yahoo.com",
 
-        lastActivity: new Date("2023-08-17T03:08:50.000Z"),
+        lastActivity: new Date("2023-08-17T03:08:50.000Z").toISOString(),
 
         status: "online",
 
@@ -357,7 +357,7 @@ const _contacts = [
 
         email: "mireya13@hotmail.com",
 
-        lastActivity: new Date("2023-08-16T02:08:50.000Z"),
+        lastActivity: new Date("2023-08-16T02:08:50.000Z").toISOString(),
 
         status: "away",
 
@@ -379,7 +379,7 @@ const _contacts = [
 
         email: "dasia_jenkins@hotmail.com",
 
-        lastActivity: new Date("2023-08-15T01:08:50.000Z"),
+        lastActivity: new Date("2023-08-15T01:08:50.000Z").toISOString(),
 
         status: "online",
 
@@ -401,7 +401,7 @@ const _contacts = [
 
         email: "benny89@yahoo.com",
 
-        lastActivity: new Date("2023-08-14T00:08:50.000Z"),
+        lastActivity: new Date("2023-08-14T00:08:50.000Z").toISOString(),
 
         status: "online",
 
@@ -423,7 +423,7 @@ const _contacts = [
 
         email: "dawn.goyette@gmail.com",
 
-        lastActivity: new Date("2023-08-12T23:08:50.000Z"),
+        lastActivity: new Date("2023-08-12T23:08:50.000Z").toISOString(),
 
         status: "offline",
 
@@ -445,7 +445,7 @@ const _contacts = [
 
         email: "zella_hickle4@yahoo.com",
 
-        lastActivity: new Date("2023-08-11T22:08:50.000Z"),
+        lastActivity: new Date("2023-08-11T22:08:50.000Z").toISOString(),
 
         status: "offline",
 
@@ -467,13 +467,14 @@ const _contacts = [
 
         email: "avery43@hotmail.com",
 
-        lastActivity: new Date("2023-08-10T21:08:50.000Z"),
+        lastActivity: new Date("2023-08-10T21:08:50.000Z").toISOString(),
 
         status: "online",
 
         role: "backend developer",
     },
 ];
+
 export default function KanbanContactsDialog({
     assignee = [],
     open,
@@ -481,11 +482,8 @@ export default function KanbanContactsDialog({
 }: Props) {
     const [searchContacts, setSearchContacts] = useState("");
 
-    const handleSearchContacts = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
+    const handleSearchContacts = (event: React.ChangeEvent<HTMLInputElement>) =>
         setSearchContacts(event.target.value);
-    };
 
     const dataFiltered = applyFilter({
         inputData: _contacts,

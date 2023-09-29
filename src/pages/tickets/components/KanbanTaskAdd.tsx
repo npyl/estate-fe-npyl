@@ -10,10 +10,9 @@ import {
     Stack,
     Tooltip,
 } from "@mui/material";
-// utils
-import uuidv4 from "src/utils/uuidv4";
+
 // @types
-import { IKanbanCard } from "src/types/kanban";
+import { IKanbanCardPOST } from "src/types/kanban";
 // components
 import DateRangePicker, {
     useDateRangePicker,
@@ -28,12 +27,12 @@ const defaultTask = {
     attachments: [],
     comments: [],
     description: "",
-    due: [null, null],
+    due: [],
     assignee: [],
 };
 
 type Props = {
-    onAddTask: (task: IKanbanCard) => void;
+    onAddTask: (task: IKanbanCardPOST) => void;
     onCloseAddTask: VoidFunction;
 };
 
@@ -57,13 +56,8 @@ export default function KanbanTaskAdd({ onAddTask, onCloseAddTask }: Props) {
         shortLabel,
     } = useDateRangePicker(new Date(), new Date());
 
-    const handleOpenContacts = () => {
-        setOpenContacts(true);
-    };
-
-    const handleCloseContacts = () => {
-        setOpenContacts(false);
-    };
+    const handleOpenContacts = () => setOpenContacts(true);
+    const handleCloseContacts = () => setOpenContacts(false);
 
     const handleKeyUpAddTask = (
         event: React.KeyboardEvent<HTMLInputElement>
@@ -72,9 +66,11 @@ export default function KanbanTaskAdd({ onAddTask, onCloseAddTask }: Props) {
             if (name.trim() !== "") {
                 onAddTask({
                     ...defaultTask,
-                    id: uuidv4(),
                     name,
-                    due: [startDate, endDate],
+                    due: [
+                        startDate?.toDateString() || "",
+                        endDate?.toDateString() || "",
+                    ],
                     completed,
                 });
             }
@@ -85,9 +81,11 @@ export default function KanbanTaskAdd({ onAddTask, onCloseAddTask }: Props) {
         if (name) {
             onAddTask({
                 ...defaultTask,
-                id: uuidv4(),
                 name,
-                due: [startDate, endDate],
+                due: [
+                    startDate?.toDateString() || "",
+                    endDate?.toDateString() || "",
+                ],
                 completed,
             });
         } else {

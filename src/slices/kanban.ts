@@ -96,17 +96,16 @@ const slice = createSlice({
 
         // DELETE COLUMN
         deleteColumnSuccess(state, action) {
-            const { columnId } = action.payload;
-            const deletedColumn = state.board.columns[columnId];
-
-            state.isLoading = false;
-            state.board.columns = omit(state.board.columns, [columnId]);
-            state.board.cards = omit(state.board.cards, [
-                ...deletedColumn.cardIds,
-            ]);
-            state.board.columnOrder = state.board.columnOrder.filter(
-                (c) => c !== columnId
-            );
+            // const { columnId } = action.payload;
+            // const deletedColumn = state.board.columns[columnId];
+            // state.isLoading = false;
+            // state.board.columns = omit(state.board.columns, [columnId]);
+            // state.board.cards = omit(state.board.cards, [
+            //     ...deletedColumn.cardIds,
+            // ]);
+            // state.board.columnOrder = state.board.columnOrder.filter(
+            //     (c) => c !== columnId
+            // );
         },
     },
 });

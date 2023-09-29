@@ -59,15 +59,10 @@ export default function KanbanDetails({
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const [liked, setLiked] = useState(false);
-
     const [prioritize, setPrioritize] = useState("low");
-
     const [taskName, setTaskName] = useState(task.name);
-
     const [openContacts, setOpenContacts] = useState(false);
-
     const [completed, setCompleted] = useState(task.completed);
-
     const [taskDescription, setTaskDescription] = useState(task.description);
 
     const {
@@ -81,45 +76,22 @@ export default function KanbanDetails({
         isSelected: isSelectedValuePicker,
         isError,
         shortLabel,
-    } = useDateRangePicker(task.due[0], task.due[1]);
+    } = useDateRangePicker(new Date(task.due[0]), new Date(task.due[1]));
 
-    const handleLiked = () => {
-        setLiked(!liked);
-    };
+    const handleLiked = () => setLiked(!liked);
+    const handleCompleted = () => setCompleted(!completed);
+    const handleOpenContacts = () => setOpenContacts(true);
+    const handleCloseContacts = () => setOpenContacts(false);
+    const handleClickAttach = () => fileInputRef.current?.click();
 
-    const handleCompleted = () => {
-        setCompleted(!completed);
-    };
-
-    const handleOpenContacts = () => {
-        setOpenContacts(true);
-    };
-
-    const handleCloseContacts = () => {
-        setOpenContacts(false);
-    };
-
-    const handleClickAttach = () => {
-        fileInputRef.current?.click();
-    };
-
-    const handleChangeTaskName = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
+    const handleChangeTaskName = (event: React.ChangeEvent<HTMLInputElement>) =>
         setTaskName(event.target.value);
-    };
-
     const handleChangeTaskDescription = (
         event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        setTaskDescription(event.target.value);
-    };
-
+    ) => setTaskDescription(event.target.value);
     const handleChangePrioritize = (
         event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        setPrioritize((event.target as HTMLInputElement).value);
-    };
+    ) => setPrioritize((event.target as HTMLInputElement).value);
 
     return (
         <Drawer

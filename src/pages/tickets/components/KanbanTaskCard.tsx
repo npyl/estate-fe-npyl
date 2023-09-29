@@ -15,7 +15,7 @@ import KanbanDetails from "./details/KanbanDetails";
 type Props = {
     index: number;
     card: IKanbanCard;
-    onDeleteTask: (id: string) => void;
+    onDeleteTask: (id: number) => void;
 };
 
 export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
@@ -25,21 +25,15 @@ export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
 
     const [openDetails, setOpenDetails] = useState(false);
 
-    const handleOpenDetails = () => {
-        setOpenDetails(true);
-    };
+    const handleOpenDetails = () => setOpenDetails(true);
+    const handleCloseDetails = () => setOpenDetails(false);
 
-    const handleCloseDetails = () => {
-        setOpenDetails(false);
-    };
-
-    const handleChangeComplete = (event: ChangeEvent<HTMLInputElement>) => {
+    const handleChangeComplete = (event: ChangeEvent<HTMLInputElement>) =>
         setCompleted(event.target.checked);
-    };
 
     return (
         <>
-            <Draggable draggableId={card.id} index={index}>
+            <Draggable draggableId={card.id.toString()} index={index}>
                 {(provided) => (
                     <Paper
                         {...provided.draggableProps}

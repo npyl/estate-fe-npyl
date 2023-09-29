@@ -4,7 +4,7 @@ export type IKanbanComment = {
     id: string;
     avatar: string;
     name: string;
-    createdAt: Date | string | number;
+    createdAt: string;
     messageType: "image" | "text";
     message: string;
 };
@@ -17,36 +17,36 @@ export type IKanbanAssignee = {
     address: string;
     phone: string;
     email: string;
-    lastActivity: Date | string;
+    lastActivity: string;
     status: string;
     role: string;
 };
 
 export type IKanbanCard = {
-    id: string;
+    id: number;
+    priority: number;
     name: string;
-    description?: string;
+    description: string;
     assignee: IKanbanAssignee[];
-    due: [Date | null, Date | null];
+    due: string[];
     attachments: string[];
     comments: IKanbanComment[];
     completed: boolean;
 };
+export type IKanbanCardPOST = Partial<IKanbanCard>;
 
 export type IKanbanColumn = {
     id: number;
     name: string;
-    cardIds: string[];
+    cardIds: number[];
+    cardOrder: number[];
 };
-export type IKanbanColumnPOST = {
-    id?: number;
-    name: string;
-};
+export type IKanbanColumnPOST = Partial<IKanbanColumn>;
 
 export type IKanbanBoard = {
     cards: IKanbanCard[];
     columns: IKanbanColumn[];
-    columnOrder: string[];
+    columnOrder: number[];
 };
 
 // ----------------------------------------------------------------------
@@ -57,6 +57,6 @@ export type IKanbanState = {
     board: {
         cards: Record<string, IKanbanCard>;
         columns: Record<string, IKanbanColumn>;
-        columnOrder: string[];
+        columnOrder: number[];
     };
 };

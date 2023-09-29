@@ -1,5 +1,14 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { IKanbanBoard, IKanbanColumnPOST } from "src/types/kanban";
+import {
+    IKanbanBoard,
+    IKanbanColumnPOST,
+    IKanbanCardPOST,
+} from "src/types/kanban";
+
+interface EditColumnProps {
+    id: number;
+    name: string;
+}
 
 export const tickets = createApi({
     reducerPath: "tickets",
@@ -43,9 +52,34 @@ export const tickets = createApi({
             }),
             invalidatesTags: ["Board"],
         }),
+        editColumn: builder.mutation<void, EditColumnProps>({
+            query: (body: EditColumnProps) => ({
+                url: "/column",
+                method: "PUT",
+                body,
+            }),
+            invalidatesTags: ["Board"],
+        }),
         deleteColumn: builder.mutation<void, number>({
             query: (columnId: number) => ({
                 url: `/column/${columnId}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Board"],
+        }),
+
+        // Cards
+        addCard: builder.mutation<void, IKanbanCardPOST>({
+            query: (body: IKanbanCardPOST) => ({
+                url: "/card",
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["Board"],
+        }),
+        deleteCard: builder.mutation<void, number>({
+            query: (cardId: number) => ({
+                url: `/card/${cardId}`,
                 method: "DELETE",
             }),
             invalidatesTags: ["Board"],
@@ -60,5 +94,10 @@ export const {
 
     // Columns
     useAddColumnMutation,
+    useEditColumnMutation,
     useDeleteColumnMutation,
+
+    // Cards
+    useAddCardMutation,
+    useDeleteCardMutation,
 } = tickets;
