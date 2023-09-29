@@ -12,7 +12,7 @@ import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import {Button, Checkbox, Grid, Paper, Stack} from "@mui/material";
+import {Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, Paper, Stack} from "@mui/material";
 
 import {
     actions,
@@ -34,75 +34,26 @@ function Category(props) {
     const {row, data, parentCategory, setData} = props;
     const [open, setOpen] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
-    const [isGenericCheckboxChecked, setIsGenericCheckboxChecked] = useState(setInitialGenericCheckboxCheckedState);
-    // const [isAllActionChecked, setIsAllActionChecked] = useState();
 
     let category = resolveCategory(row, subcategories1, subcategories2, subcategories3, subcategories4);
 
-    const setInitialGenericCheckboxCheckedState = () => {
+    const handleChildCheckboxChange = (subCategory, columnIndex) => {
+        let rowIndex = resolveSubCategory(subCategory);
+        let action = actions[columnIndex];
+        const updatedData = {...data};
+        updatedData[rowIndex].actions[action] = !data[rowIndex].actions[action];
+        setData(updatedData);
+    }
 
-
-
-
-    };
-
-
-    const [checkboxStates, setCheckboxStates] = useState(
-        {
-            create: false,
-            view: false,
-            edit: false,
-            delete: false,
-            owner: false,
-            location: false,
-            price: false,
-            active: false,
-            inactive: false,
-            hidden: false,
+    const handleAllCheckboxChange = (subCategory) => {
+        const rowIndex = resolveSubCategory(subCategory);
+        console.log(data[rowIndex])
+        const updatedData = {...data};
+        for (const action of actions) {
+            updatedData[rowIndex].actions[action] = !data[rowIndex].actions[action];
         }
-    );
-
-    const handleAllCheckboxChange = (rowIndex) => {
-        // console.log("Im in")
-        // console.log("rowIndex => ", rowIndex)
-        // console.log("checkboxStates => ", checkboxStates)
-        // const updatedCheckboxStates = [checkboxStates];
-        // console.log(updatedCheckboxStates)
-        // // updatedCheckboxStates[rowIndex] = updatedCheckboxStates[rowIndex].map(() => !updatedCheckboxStates[rowIndex][0]);
-        //
-        // const newActions = {
-        //     create: newState,
-        //     view: newState,
-        //     edit: newState,
-        //     delete: newState,
-        //     owner: newState,
-        //     location: newState,
-        //     price: newState,
-        //     active: newState,
-        //     inactive: newState,
-        //     hidden: newState,
-        // };
-        //
-        // setCheckboxStates(newActions);
+        setData(updatedData);
     };
-
-
-    const isAllActionChecked = (s, index) => {
-        // console.log("new shit")
-        // console.log(s)
-        const rowIndex = resolveSubCategory(s);
-        // console.log(rowIndex)
-        // console.log(index)
-        // console.log(data[rowIndex])
-        // console.log(data[rowIndex].actions)
-        // console.log(Object.values(data[rowIndex].actions))
-        // console.log("old shit")
-        const skata = Object.values(data[rowIndex].actions)
-        const isFirstObjectTrue = skata.every((value) => value === true);
-        // console.log(isFirstObjectTrue);
-        // return checkboxStates[rowIndex].every((isChecked, index) => isChecked || index === 0);
-    };
-
 
     const handleCheckboxChange = () => {
         const newState = !isChecked;
@@ -137,18 +88,20 @@ function Category(props) {
         return true;
     };
 
-    const isActionChecked = (rowLiteral, columnIndex): boolean => {
-        const rowIndex = resolveSubCategory(rowLiteral);
+    const isSubCategoryChecked = (subCategory) => {
+        let rowIndex = resolveSubCategory(subCategory);
+        for (const action of Object.values(data[rowIndex].actions)) {
+            if (action === false) {
+                return false;
+            }
+        }
+        return true;
+    };
+
+    const isActionChecked = (subCategory, columnIndex): boolean => {
+        const rowIndex = resolveSubCategory(subCategory);
         const action = actions[columnIndex];
         return !!data[rowIndex]?.actions[action]
-    }
-
-    const handleChildCheckboxChange = (rowLiteral, columnIndex) => {
-        let rowIndex = resolveSubCategory(rowLiteral);
-        let action = actions[columnIndex];
-        const updatedData = {...data};
-        updatedData[rowIndex].actions[action] = !data[rowIndex].actions[action];
-        setData(updatedData);
     }
 
     return (
@@ -179,27 +132,25 @@ function Category(props) {
                         <Box>
                             <Table size="small" aria-label="purchases">
                                 <TableBody>
-                                    {category.map((s) => (
-                                        <TableRow align="left" key={s}>
-                                            <TableCell sx={{width: '10%', paddingLeft: '50px'}} component="th"
+                                    {category.map((subCategory) => (
+                                        <TableRow align="left" key={subCategory}>
+                                            <TableCell sx={{width: '15%'}} component="th"
                                                        scope="row">
-                                                {s}
+                                                {subCategory}
+                                                <Checkbox
+                                                    size="small"
+                                                    onChange={() => handleAllCheckboxChange(subCategory)}
+                                                    checked={isSubCategoryChecked(subCategory)}
+                                                />
                                             </TableCell>
                                             {Array(actions.length).fill().map((_, index) => (
-                                                <TableCell align="center" key={index}>
-                                                    {index === 0 ? (
-                                                        <Checkbox
-                                                            onChange={() => handleAllCheckboxChange(index)}
-                                                            checked={isAllActionChecked(s, index)}
-                                                        />
-                                                    ) : (
-                                                        <Checkbox
-                                                            onChange={() => {
-                                                                handleChildCheckboxChange(s, index);
-                                                            }}
-                                                            checked={isActionChecked(s, index)}
-                                                        />
-                                                    )}
+                                                <TableCell sx={{width: '8%'}} align="center" key={index}>
+                                                    <Checkbox
+                                                        onChange={() => {
+                                                            handleChildCheckboxChange(subCategory, index);
+                                                        }}
+                                                        checked={isActionChecked(subCategory, index)}
+                                                    />
                                                 </TableCell>
                                             ))}
                                         </TableRow>
@@ -241,16 +192,25 @@ const SecurityPage: FC<SecurityPageProps> = ({user}) => {
 
     return (
 
-        <Box sx={{overflowX: 'auto', width: '100%'}}>
-            <Typography variant='h6' sx={{textAlign: 'center', marginBottom: 2}}>{user}</Typography>
+        <Box sx={{overflowX: 'auto', width: '100%', textAlign: 'center', marginBottom: 2}}>
+            <FormControl component="fieldset">
+                <FormGroup aria-label="position" row>
+                    <FormControlLabel
+                        value="start"
+                        control={<Checkbox />}
+                        label={<Typography variant='h6' sx={{textAlign: 'center'}}>{user}</Typography>}
+                        labelPlacement="start"
+                    />
+                </FormGroup>
+            </FormControl>
             <TableContainer component={Paper} sx={{overflowX: 'auto', width: '100%'}}>
                 <Table aria-label="collapsible table">
                     <TableHead>
                         <TableRow sx={{background: '#f5f5dc'}}>
-                            <TableCell sx={{minWidth: 134}} align="left"><Typography
+                            <TableCell sx={{width: '15%'}} align="left"><Typography
                                 variant={'h6'}>Sale</Typography></TableCell>
                             {actions.map(s =>
-                                <TableCell sx={{width: '9%'}} align="center" key={s}> {s} </TableCell>
+                                <TableCell sx={{width: '8%'}} align="center" key={s}> {s} </TableCell>
                             )}
                         </TableRow>
                     </TableHead>
@@ -264,10 +224,10 @@ const SecurityPage: FC<SecurityPageProps> = ({user}) => {
                 <Table aria-label="collapsible table">
                     <TableHead>
                         <TableRow sx={{background: '#f5f5dc'}}>
-                            <TableCell sx={{minWidth: 134}} align="left"><Typography
+                            <TableCell sx={{width: '15%'}} align="left"><Typography
                                 variant={'h6'}>Rent</Typography></TableCell>
                             {actions.map(s =>
-                                <TableCell sx={{width: '9%'}} align="center" key={s}> {s} </TableCell>
+                                <TableCell sx={{width: '8%'}} align="center" key={s}> {s} </TableCell>
                             )}
                         </TableRow>
                     </TableHead>
@@ -281,10 +241,10 @@ const SecurityPage: FC<SecurityPageProps> = ({user}) => {
                 <Table aria-label="collapsible table">
                     <TableHead>
                         <TableRow sx={{background: '#f5f5dc'}}>
-                            <TableCell sx={{minWidth: 134}} align="left"><Typography
+                            <TableCell sx={{width: '15%'}} align="left"><Typography
                                 variant={'h6'}>Sold/Rented</Typography></TableCell>
                             {actions.map(s =>
-                                <TableCell sx={{width: '9%'}} align="center" key={s}> {s} </TableCell>
+                                <TableCell sx={{width: '8%'}} align="center" key={s}> {s} </TableCell>
                             )}
                         </TableRow>
                     </TableHead>

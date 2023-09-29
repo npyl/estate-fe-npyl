@@ -8,7 +8,7 @@ import Box from '@mui/material/Box';
 import SecurityPage from "./PermissionsTable";
 import Stack from "@mui/material/Stack";
 import Select from "@mui/material/Select";
-import {FormControl, Input, MenuItem} from "@mui/material";
+import {Divider, FormControl, Input, MenuItem} from "@mui/material";
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import InfoIcon from '@mui/icons-material/Info';
@@ -65,9 +65,6 @@ const PermissionPage: FC<Props> = ({selectedUser}) => {
     }
 
     const [selectedUserMenu, setSelectedUserMenu] = useState(() => {
-        // console.log("[[[[[[[[[[]]]]]]]]]]]]]]]]]")
-        // console.log(selectedUser)
-        // if (selectedUser === -1) return ''
         const selectedUserObject = users.find((user) => user.id === selectedUser);
         return selectedUserObject ? selectedUserObject.username : profile.username;
     });
@@ -85,7 +82,7 @@ const PermissionPage: FC<Props> = ({selectedUser}) => {
             <Box py={3}>
                 <FormControl>
                     <Stack direction={"row"} alignItems={"center"} spacing={1}>
-                        <Typography variant={"h5"}>Select User: </Typography>
+                        <Typography variant={"h5"}>Select Source User: </Typography>
                         <Select
                             variant={"standard"}
                             sx={{
@@ -140,14 +137,15 @@ const PermissionPage: FC<Props> = ({selectedUser}) => {
                     </Stack>
                 </FormControl>
             </Box>
-
+            <Divider sx={{ mt: 2, mb: 1 }} />
+            <Typography variant={"h5"}>Select Target Users: </Typography>
             <Stack direction={"row"} sx={{display: 'flex', alignItems: 'flex-start'}}>
                 <Tabs
                     orientation="vertical"
                     variant="scrollable"
                     value={value}
                     onChange={handleChange}
-                    sx={{borderRight: 1, borderColor: 'divider', marginRight: '16px', marginTop: 7}}
+                    sx={{borderRight: 1, borderColor: 'divider', marginRight: '6px', marginTop: 7}}
                     style={{minWidth: '200px'}}
                 >
                     {users.map((user, tabIndex) => (
