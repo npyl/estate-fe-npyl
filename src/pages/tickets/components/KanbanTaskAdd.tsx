@@ -24,11 +24,12 @@ import KanbanContactsDialog from "./KanbanContactsDialog";
 // ----------------------------------------------------------------------
 
 const defaultTask = {
-    attachments: [],
-    comments: [],
     description: "",
     due: [],
-    assignee: [],
+
+    // assignee: [],
+    // attachments: [],
+    // comments: [],
 };
 
 type Props = {
@@ -59,45 +60,31 @@ export default function KanbanTaskAdd({ onAddTask, onCloseAddTask }: Props) {
     const handleOpenContacts = () => setOpenContacts(true);
     const handleCloseContacts = () => setOpenContacts(false);
 
+    const handleAddTask = () =>
+        onAddTask({
+            ...defaultTask,
+            name,
+            due: [
+                startDate?.toDateString() || "",
+                endDate?.toDateString() || "",
+            ],
+            completed,
+        });
+
     const handleKeyUpAddTask = (
         event: React.KeyboardEvent<HTMLInputElement>
     ) => {
-        if (event.key === "Enter") {
-            if (name.trim() !== "") {
-                onAddTask({
-                    ...defaultTask,
-                    name,
-                    due: [
-                        startDate?.toDateString() || "",
-                        endDate?.toDateString() || "",
-                    ],
-                    completed,
-                });
-            }
-        }
+        if (event.key === "Enter" && name.trim() !== "") handleAddTask();
     };
 
     const handleClickAddTask = () => {
-        if (name) {
-            onAddTask({
-                ...defaultTask,
-                name,
-                due: [
-                    startDate?.toDateString() || "",
-                    endDate?.toDateString() || "",
-                ],
-                completed,
-            });
-        } else {
-            onCloseAddTask();
-        }
+        if (!name) handleAddTask();
+        else onCloseAddTask();
     };
 
     const handleChangeCompleted = (
         event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        setCompleted(event.target.checked);
-    };
+    ) => setCompleted(event.target.checked);
 
     return (
         <ClickAwayListener onClickAway={handleClickAddTask}>

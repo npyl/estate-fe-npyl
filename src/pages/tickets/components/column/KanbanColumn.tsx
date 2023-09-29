@@ -44,7 +44,9 @@ export default function KanbanColumn({ column, cards, index }: Props) {
     const handleCloseAddTask = () => setOpenAddTask(false);
     const handleDeleteTask = (cardId: number) => deleteCard(cardId);
     const handleAddTask = (task: IKanbanCardPOST) =>
-        addCard(task).then(() => handleCloseAddTask());
+        addCard({ ...task, columnId: column.id }).then(() =>
+            handleCloseAddTask()
+        );
 
     // NOTE: backend doesn't delete columnOrder when a column is deleted!
     if (!column) return null;

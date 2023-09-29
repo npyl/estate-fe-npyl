@@ -19,6 +19,8 @@ type Props = {
 };
 
 export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
+    if (!card) return null;
+
     const { name, attachments } = card;
 
     const [completed, setCompleted] = useState(card.completed);

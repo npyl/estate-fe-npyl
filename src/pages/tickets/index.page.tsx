@@ -26,14 +26,12 @@ export default function KanbanPage() {
     const [createBoard, { isSuccess: isBoardCreated }] =
         useCreateBoardMutation();
 
-    const { data: board } = useGetBoardQuery(undefined, {
-        skip: !isBoardCreated,
-    });
+    const { data: board } = useGetBoardQuery();
 
-    // TODO: remove; temporary
-    useEffect(() => {
-        createBoard();
-    }, []);
+    // // TODO: remove; temporary
+    // useEffect(() => {
+    //     createBoard();
+    // }, []);
 
     const onDragEnd = (result: DropResult) => {
         const { destination, source, draggableId, type } = result;
