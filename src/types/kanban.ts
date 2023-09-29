@@ -34,9 +34,13 @@ export type IKanbanCard = {
 };
 
 export type IKanbanColumn = {
-    id: string;
+    id: number;
     name: string;
     cardIds: string[];
+};
+export type IKanbanColumnPOST = {
+    id?: number;
+    name: string;
 };
 
 export type IKanbanBoard = {

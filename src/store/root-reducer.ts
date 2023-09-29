@@ -10,6 +10,7 @@ import { location } from "../services/location";
 import { properties } from "../services/properties";
 import { user } from "../services/user";
 import { exports } from "../services/exports";
+import { tickets } from "src/services/tickets"; // a.k.a. kanban
 
 import { reducer as customerReducer } from "../slices/customer";
 import { reducer as customerFiltersReducer } from "../slices/customer/filters";
@@ -33,6 +34,7 @@ export const rootReducer = combineReducers({
     [labels.reducerPath]: labels.reducer,
     [notification.reducerPath]: notification.reducer,
     [exports.reducerPath]: exports.reducer,
+    [tickets.reducerPath]: tickets.reducer,
     // property
     property: propertyReducer,
     propertyFiles: propertyFilesReducer,

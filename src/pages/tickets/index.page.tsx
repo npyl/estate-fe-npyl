@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 // next
 import Head from "next/head";
 // @mui
@@ -10,14 +9,13 @@ import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
 import { hideScrollbarX } from "../../utils/cssStyles";
 // layouts
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-// components
-import { SkeletonKanbanColumn } from "../../components/skeleton";
 // sections
 import { KanbanColumn, KanbanColumnAdd } from "./components";
 
-import { useDispatch, useSelector } from "src/store";
-// ----------------------------------------------------------------------
-import { getBoard, persistCard, persistColumn } from "src/slices/kanban";
+import { useGetBoardQuery, useCreateBoardMutation } from "src/services/tickets";
+import { SkeletonKanbanColumn } from "src/components/skeleton";
+import { useEffect } from "react";
+import { Box } from "@mui/system";
 
 KanbanPage.getLayout = (page: React.ReactElement) => (
     <DashboardLayout>{page}</DashboardLayout>
@@ -26,19 +24,23 @@ KanbanPage.getLayout = (page: React.ReactElement) => (
 // ----------------------------------------------------------------------
 
 export default function KanbanPage() {
-    const dispatch = useDispatch();
+    const [createBoard, { isSuccess: isBoardCreated }] =
+        useCreateBoardMutation();
 
-    const { board } = useSelector((state) => state.kanban);
+    const { data: board } = useGetBoardQuery(undefined, {
+        skip: !isBoardCreated,
+    });
 
+    // TODO: remove; temporary
     useEffect(() => {
-        dispatch(getBoard());
-    }, [dispatch]);
+        createBoard();
+    }, []);
 
     const onDragEnd = (result: DropResult) => {
         const { destination, source, draggableId, type } = result;
 
+        if (!board) return;
         if (!destination) return;
-
         if (
             destination.droppableId === source.droppableId &&
             destination.index === source.index
@@ -47,23 +49,19 @@ export default function KanbanPage() {
 
         if (type === "column") {
             const newColumnOrder: string[] = Array.from(board.columnOrder);
-
             newColumnOrder.splice(source.index, 1);
-
             newColumnOrder.splice(destination.index, 0, draggableId);
 
-            dispatch(persistColumn(newColumnOrder));
+            // dispatch(persistColumn(newColumnOrder));
             return;
         }
 
-        const start = board.columns[source.droppableId];
-        const finish = board.columns[destination.droppableId];
+        const start = board.columns[+source.droppableId];
+        const finish = board.columns[+destination.droppableId];
 
         if (start.id === finish.id) {
             const updatedCardIds = [...start.cardIds];
-
             updatedCardIds.splice(source.index, 1);
-
             updatedCardIds.splice(destination.index, 0, draggableId);
 
             const updatedColumn = {
@@ -71,17 +69,16 @@ export default function KanbanPage() {
                 cardIds: updatedCardIds,
             };
 
-            dispatch(
-                persistCard({
-                    ...board.columns,
-                    [updatedColumn.id]: updatedColumn,
-                })
-            );
+            // dispatch(
+            //     persistCard({
+            //         ...board.columns,
+            //         [updatedColumn.id]: updatedColumn,
+            //     })
+            // );
             return;
         }
 
         const startCardIds = [...start.cardIds];
-
         startCardIds.splice(source.index, 1);
 
         const updatedStart = {
@@ -90,7 +87,6 @@ export default function KanbanPage() {
         };
 
         const finishCardIds = [...finish.cardIds];
-
         finishCardIds.splice(destination.index, 0, draggableId);
 
         const updatedFinish = {
@@ -98,15 +94,17 @@ export default function KanbanPage() {
             cardIds: finishCardIds,
         };
 
-        dispatch(
-            persistCard({
-                ...board.columns,
-                [updatedStart.id]: updatedStart,
-                [updatedFinish.id]: updatedFinish,
-            })
-        );
+        // dispatch(
+        //     persistCard({
+        //         ...board.columns,
+        //         [updatedStart.id]: updatedStart,
+        //         [updatedFinish.id]: updatedFinish,
+        //     })
+        // );
     };
+
     console.log(board);
+
     return (
         <>
             <Head>
@@ -133,17 +131,19 @@ export default function KanbanPage() {
                                     ...hideScrollbarX,
                                 }}
                             >
-                                {!board.columnOrder?.length ? (
+                                {!board?.columnOrder?.length ? (
                                     <SkeletonKanbanColumn />
                                 ) : (
-                                    board.columnOrder.map((columnId, index) => (
-                                        <KanbanColumn
-                                            index={index}
-                                            key={columnId}
-                                            column={board.columns[columnId]}
-                                            cards={board.cards}
-                                        />
-                                    ))
+                                    board?.columnOrder.map(
+                                        (columnId, index) => (
+                                            <KanbanColumn
+                                                index={index}
+                                                key={columnId}
+                                                column={board.columns[index]}
+                                                // cards={board.cards}
+                                            />
+                                        )
+                                    )
                                 )}
 
                                 {provided.placeholder}
