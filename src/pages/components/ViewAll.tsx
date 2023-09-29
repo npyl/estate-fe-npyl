@@ -36,6 +36,10 @@ import { BulkEdit } from "./BulkEdit/BulkEdit";
 import { DeleteDialog } from "src/components/Dialog/Delete";
 import ChosenFilters from "./Filters/ChosenFilters";
 import { KeyValue } from "src/types/KeyValue";
+import { ILabel } from "src/types/label";
+import { IPropertyResultResponse } from "src/types/properties";
+import ListLabelsItem from "src/components/List/labels-item";
+import { Label } from "src/components/label";
 
 type optionType = "list" | "grid" | "map";
 
@@ -102,7 +106,6 @@ type PropertyStatus =
 type Color = string;
 
 type StatusColors = Record<PropertyStatus, Color>;
-
 const STATUS_COLORS: StatusColors = {
     SOLD: "#79798a",
     SALE: "#57825e",
@@ -118,8 +121,9 @@ function statusColor(params: GridCellParams) {
     if (!params.value) return <></>;
 
     const value = params.value as KeyValue;
-    const status = (value.key as string)?.trim();
-    const statusUpper = status?.toUpperCase() as PropertyStatus;
+    const status = (value.value as string)?.trim();
+    const statusForColor = (value.key as string)?.trim();
+    const statusUpper = statusForColor?.toUpperCase() as PropertyStatus;
 
     const color = STATUS_COLORS[statusUpper] || "#537f91"; // default color if status is not recognized
 
@@ -139,6 +143,14 @@ function statusColor(params: GridCellParams) {
             {status}
         </Box>
     );
+}
+
+function showLabel(params: GridCellParams) {
+    if (!params.value || !Array.isArray(params.value)) return <></>;
+
+    const labels: ILabel[] = params.value as ILabel[];
+
+    return <ListLabelsItem labels={labels} label={""} />;
 }
 
 const ViewAll: FC = () => {
@@ -217,14 +229,15 @@ const ViewAll: FC = () => {
             align: "center",
             headerAlign: "center",
             headerName: t("Parent Category") as string,
-            renderCell: (params) => (params.value as KeyValue)?.key,
+            renderCell: (params) => (params.value as KeyValue)?.value,
         },
         {
             field: "category",
             width: 180,
             align: "center",
             headerAlign: "center",
-            renderCell: (params) => (params.value as KeyValue)?.key,
+            headerName: t("Category") as string,
+            renderCell: (params) => (params.value as KeyValue)?.value,
         },
         {
             field: "price",
@@ -242,7 +255,7 @@ const ViewAll: FC = () => {
             headerAlign: "center",
             width: 180,
             align: "center",
-            headerName: t("Status") as string,
+            headerName: t("State") as string,
             renderCell: statusColor,
         },
         {
@@ -254,6 +267,14 @@ const ViewAll: FC = () => {
             renderCell: (params: GridCellParams) => {
                 return params.value ? `${params.value} m²` : "";
             },
+        },
+        {
+            field: "labels",
+            headerAlign: "center",
+            width: 180,
+            align: "center",
+            headerName: t("labels") as string,
+            renderCell: showLabel,
         },
     ];
 
