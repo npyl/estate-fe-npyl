@@ -78,17 +78,20 @@ const EditPropertyPage: NextPage = () => {
     }, [everythingIsClear, images, blueprints]);
 
     useEffect(() => {
-        // clear store before getting data
-        resetEverything();
-        setEverythingIsClear(true); // prevent race condition between reset and setInitialState
-
         getImages(+propertyId!)
             .unwrap()
             .then((response) => setImages(response));
         getBlueprints(+propertyId!)
             .unwrap()
             .then((response) => setBluprints(response));
+    }, [propertyId]);
+
+    useEffect(() => {
+        // clear store before getting data
+        resetEverything();
+        setEverythingIsClear(true); // prevent race condition between reset and setInitialState
     }, []);
+
     useEffect(() => {
         if (isEditSuccess) {
             router.push(`/property/${propertyId}`);

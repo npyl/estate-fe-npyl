@@ -4,7 +4,7 @@ import { RootState } from "src/store";
 import { v5 as uuid } from "uuid";
 import crypto from "crypto";
 
-interface ITabsProps {
+export interface ITabsProps {
     title: string;
     path: string;
     uuid: string;
