@@ -170,7 +170,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
     // };
 
     if (!propertyId) return null;
-
+    console.log("edw2", files);
     return (
         <>
             <Card>
@@ -212,7 +212,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
                 </CardContent>
             </Card>
 
-            {files && files.length > 0 && (
+            {files && files.length > 0 && galleryManagerOpen && (
                 <GalleryManager
                     open={galleryManagerOpen}
                     currentImage={currentGalleryImage}

@@ -1,4 +1,3 @@
-import type { ListItemProps } from "@mui/material";
 import { Typography } from "@mui/material";
 import type { FC } from "react";
 

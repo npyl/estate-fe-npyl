@@ -406,6 +406,9 @@ const resources = {
             "Rental Period Start": "Rental Period Start",
             "Rental Period End": "Rental Period End",
             All: "All",
+
+            "Creation Date": "Creation Date",
+            "Updated At": "Updated At",
         },
     },
     gr: {
@@ -823,6 +826,9 @@ const resources = {
             "Matching system enabled": "Ενεργοποιημένο Σύστημα Αντιστοίχισης",
             Cancel: "Ακύρωση",
             Save: "Αποθήκευση",
+
+            "Creation Date": "Ημ/νία Δημιουργίας",
+            "Updated At": "Ημ/νία Ενημέρωσης",
         },
     },
 };

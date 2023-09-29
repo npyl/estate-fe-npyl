@@ -25,7 +25,6 @@ import { useGetPropertyByIdQuery } from "src/services/properties";
 
 import { useDispatch } from "react-redux";
 import { LogoProgressIndicator } from "src/components/LogoProgressIndicator";
-import { IPropertyBlueprint, IPropertyImage } from "src/types/file";
 import { usePublishTab } from "src/components/Tabs/utils";
 
 const EditPropertyPage: NextPage = () => {
@@ -41,9 +40,6 @@ const EditPropertyPage: NextPage = () => {
     const [getBlueprints] = useLazyGetPropertyBlueprintsQuery(); // *
     const [edit, { isSuccess: isEditSuccess, isLoading: isEditLoading }] =
         useEditPropertyMutation();
-
-    const [images, setImages] = useState<IPropertyImage[]>();
-    const [blueprints, setBluprints] = useState<IPropertyBlueprint[]>();
 
     const body = useSelector(selectAll);
     // everythingIsClear; we can now setInitialState
@@ -63,27 +59,17 @@ const EditPropertyPage: NextPage = () => {
 
         dispatch(setInitialNotesState(data.notes));
         dispatch(setInitialState(data));
+        dispatch(
+            setInitialFilesState({
+                propertyImages: data?.images,
+                propertyBlueprints: data?.blueprints,
+            })
+        );
     }, [everythingIsClear, data]);
 
     useEffect(() => {
-        if (!everythingIsClear) return;
-        if (!images || !blueprints) return;
-
-        dispatch(
-            setInitialFilesState({
-                propertyImages: images,
-                propertyBlueprints: blueprints,
-            })
-        );
-    }, [everythingIsClear, images, blueprints]);
-
-    useEffect(() => {
-        getImages(+propertyId!)
-            .unwrap()
-            .then((response) => setImages(response));
-        getBlueprints(+propertyId!)
-            .unwrap()
-            .then((response) => setBluprints(response));
+        getImages(+propertyId!);
+        getBlueprints(+propertyId!);
     }, [propertyId]);
 
     useEffect(() => {

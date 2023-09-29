@@ -24,6 +24,9 @@ export interface IPropertyResultResponse {
     images: string[]; // urls only
     labels: ILabel[];
     location: ILocationPOST;
+
+    createdAt: string;
+    updatedAt: string;
 }
 
 export interface IPropertyFilter {
@@ -331,6 +334,9 @@ export interface IProperties {
     documents: IPropertyDocument[];
     blueprints: IPropertyBlueprint[];
     labels: ILabel[];
+
+    createdAt: string;
+    updatedAt: string;
 }
 
 export type ParentCategory = "RESIDENTIAL" | "COMMERCIAL" | "LAND" | "OTHER";
