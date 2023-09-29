@@ -2,17 +2,39 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { Button, Divider, IconButton } from "@mui/material";
 import { Stack } from "@mui/system";
 import { useRouter } from "next/router";
-import { Fragment } from "react";
+import { Fragment, useMemo } from "react";
 import { useSelector } from "react-redux";
-import { deleteSectionData, deleteTab, selectTabs } from "src/slices/tabs";
+import {
+    ITabsProps,
+    deleteSectionData,
+    deleteTab,
+    selectTabs,
+} from "src/slices/tabs";
 import { useDispatch } from "src/store";
 import { ScrollBox } from "../ScrollBox";
+
+import { resetState as resetPropertyState } from "src/slices/property";
+import { resetState as resetPropertyFilesState } from "src/slices/property/files";
+import { resetState as resetLabelsState } from "src/slices/labels";
+import { resetState as resetNotesState } from "src/slices/notes";
+import { resetState as resetCustomerState } from "src/slices/customer";
 
 const Subbar = () => {
     const dispatch = useDispatch();
     const router = useRouter();
     const tabs = useSelector(selectTabs);
-    const currentPath = router.asPath;
+
+    const currentPath = useMemo(() => router.asPath, [router.asPath]);
+
+    const handleSelectTab = (tab: ITabsProps) => {
+        resetPropertyState();
+        resetPropertyFilesState();
+        resetCustomerState();
+        resetLabelsState();
+        resetNotesState();
+
+        router.push(tab.path);
+    };
 
     const handleDeleteTab = (tabUuid: string, tabIndex: number) => {
         // Dispatch the delete actions
@@ -34,6 +56,7 @@ const Subbar = () => {
         // Redirect to the new tab
         router.push(newTab.path);
     };
+
     return (
         <ScrollBox sx={{ overflowX: "auto" }}>
             <Stack direction={"row"} spacing={1}>
@@ -80,7 +103,7 @@ const Subbar = () => {
                                 }}
                                 variant="text"
                                 id={tab.title}
-                                onClick={() => router.push(tab.path)}
+                                onClick={() => handleSelectTab(tab)}
                             >
                                 <span
                                     style={{
