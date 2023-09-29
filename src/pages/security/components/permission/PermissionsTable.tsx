@@ -33,7 +33,8 @@ import {useGetPresetsQuery, useSavePresetMutation} from "../../../../services/se
 function Category(props) {
     const {row, data, parentCategory, setData} = props;
     const [open, setOpen] = useState(false);
-    const [isChecked, setIsChecked] = useState(false);
+    const [isParentCategoryChecked, setIsParentCategoryChecked] = useState(false);
+    const [isSubCategoryChecked, setIsSubCategoryChecked] = useState(false);
 
     let category = resolveCategory(row, subcategories1, subcategories2, subcategories3, subcategories4);
 
@@ -45,19 +46,9 @@ function Category(props) {
         setData(updatedData);
     }
 
-    const handleAllCheckboxChange = (subCategory) => {
-        const rowIndex = resolveSubCategory(subCategory);
-        console.log(data[rowIndex])
-        const updatedData = {...data};
-        for (const action of actions) {
-            updatedData[rowIndex].actions[action] = !data[rowIndex].actions[action];
-        }
-        setData(updatedData);
-    };
-
-    const handleCheckboxChange = () => {
-        const newState = !isChecked;
-        setIsChecked(newState);
+    const handleParentCategoryCheckboxChange = () => {
+        const newState = !isParentCategoryChecked;
+        setIsParentCategoryChecked(newState);
         const newData = {...data};
         for (const key in newData) {
             if (newData[key].category === row) {
@@ -78,7 +69,7 @@ function Category(props) {
         setData(newData);
     };
 
-    const isParentCategoryChecked = (row) => {
+    const isParentCategoryCheckboxChecked = (row) => {
         for (const category of Object.values(data)) {
             const actions = category?.actions;
             if (category.category === row && actions && Object.values(actions).some((value) => value === false)) {
@@ -88,10 +79,21 @@ function Category(props) {
         return true;
     };
 
-    const isSubCategoryChecked = (subCategory) => {
-        let rowIndex = resolveSubCategory(subCategory);
-        for (const action of Object.values(data[rowIndex].actions)) {
-            if (action === false) {
+    const handleSubCategoryCheckboxChange = (subCategory) => {
+        const newState = !isSubCategoryChecked;
+        setIsSubCategoryChecked(newState)
+        const rowIndex = resolveSubCategory(subCategory);
+        const newData = {...data};
+        for (const action of actions) {
+            newData[rowIndex].actions[action] = newState;
+        }
+        setData(newData);
+    };
+
+    const isSubCategoryCheckboxChecked = (subCategory) => {
+        const rowIndex = resolveSubCategory(subCategory);
+        for (const action of actions) {
+            if (data[rowIndex].actions[action] === false) {
                 return false;
             }
         }
@@ -119,8 +121,8 @@ function Category(props) {
                         </IconButton>
                         <Typography variant={'h6'}>{row}</Typography>
                         <Checkbox
-                            onChange={() => handleCheckboxChange()}
-                            checked={isParentCategoryChecked(row)}
+                            onChange={() => handleParentCategoryCheckboxChange()}
+                            checked={isParentCategoryCheckboxChecked(row)}
                         />
                     </Stack>
                 </TableCell>
@@ -139,8 +141,8 @@ function Category(props) {
                                                 {subCategory}
                                                 <Checkbox
                                                     size="small"
-                                                    onChange={() => handleAllCheckboxChange(subCategory)}
-                                                    checked={isSubCategoryChecked(subCategory)}
+                                                    onChange={() => handleSubCategoryCheckboxChange(subCategory)}
+                                                    checked={isSubCategoryCheckboxChecked(subCategory)}
                                                 />
                                             </TableCell>
                                             {Array(actions.length).fill().map((_, index) => (
