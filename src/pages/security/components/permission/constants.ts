@@ -1,4 +1,4 @@
-export const actions = ["all", "create", "view", "edit", "delete", "owner", "location", "price", "active", "inactive", "hidden"]
+export const actions = ["create", "view", "edit", "delete", "owner", "location", "price", "active", "inactive", "hidden"]
 export const categories = ["Residential", "Commercial", "Land", "Other"]
 export const subcategories1 = ["Apartment", "Studio", "Maisonette", "Detached house", "Villa", "Loft", "Bungalow", "Building", "Apartment complex", "Farm", "Houseboat", "Other categories"]
 export const subcategories2 = ["Office", "Store", "Warehouse", "Industrial space", "Craft space", "Hotel", "Business building", "Hall", "Showroom", "Other Commercial categories"]

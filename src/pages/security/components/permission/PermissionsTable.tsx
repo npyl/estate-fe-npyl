@@ -34,8 +34,75 @@ function Category(props) {
     const {row, data, parentCategory, setData} = props;
     const [open, setOpen] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
+    const [isGenericCheckboxChecked, setIsGenericCheckboxChecked] = useState(setInitialGenericCheckboxCheckedState);
+    // const [isAllActionChecked, setIsAllActionChecked] = useState();
 
     let category = resolveCategory(row, subcategories1, subcategories2, subcategories3, subcategories4);
+
+    const setInitialGenericCheckboxCheckedState = () => {
+
+
+
+
+    };
+
+
+    const [checkboxStates, setCheckboxStates] = useState(
+        {
+            create: false,
+            view: false,
+            edit: false,
+            delete: false,
+            owner: false,
+            location: false,
+            price: false,
+            active: false,
+            inactive: false,
+            hidden: false,
+        }
+    );
+
+    const handleAllCheckboxChange = (rowIndex) => {
+        // console.log("Im in")
+        // console.log("rowIndex => ", rowIndex)
+        // console.log("checkboxStates => ", checkboxStates)
+        // const updatedCheckboxStates = [checkboxStates];
+        // console.log(updatedCheckboxStates)
+        // // updatedCheckboxStates[rowIndex] = updatedCheckboxStates[rowIndex].map(() => !updatedCheckboxStates[rowIndex][0]);
+        //
+        // const newActions = {
+        //     create: newState,
+        //     view: newState,
+        //     edit: newState,
+        //     delete: newState,
+        //     owner: newState,
+        //     location: newState,
+        //     price: newState,
+        //     active: newState,
+        //     inactive: newState,
+        //     hidden: newState,
+        // };
+        //
+        // setCheckboxStates(newActions);
+    };
+
+
+    const isAllActionChecked = (s, index) => {
+        // console.log("new shit")
+        // console.log(s)
+        const rowIndex = resolveSubCategory(s);
+        // console.log(rowIndex)
+        // console.log(index)
+        // console.log(data[rowIndex])
+        // console.log(data[rowIndex].actions)
+        // console.log(Object.values(data[rowIndex].actions))
+        // console.log("old shit")
+        const skata = Object.values(data[rowIndex].actions)
+        const isFirstObjectTrue = skata.every((value) => value === true);
+        // console.log(isFirstObjectTrue);
+        // return checkboxStates[rowIndex].every((isChecked, index) => isChecked || index === 0);
+    };
+
 
     const handleCheckboxChange = () => {
         const newState = !isChecked;
@@ -61,7 +128,6 @@ function Category(props) {
     };
 
     const isParentCategoryChecked = (row) => {
-        console.log(row)
         for (const category of Object.values(data)) {
             const actions = category?.actions;
             if (category.category === row && actions && Object.values(actions).some((value) => value === false)) {
@@ -121,12 +187,19 @@ function Category(props) {
                                             </TableCell>
                                             {Array(actions.length).fill().map((_, index) => (
                                                 <TableCell align="center" key={index}>
-                                                    <Checkbox
-                                                        onChange={() => {
-                                                            handleChildCheckboxChange(s, index);
-                                                        }}
-                                                        checked={isActionChecked(s, index)}
-                                                    />
+                                                    {index === 0 ? (
+                                                        <Checkbox
+                                                            onChange={() => handleAllCheckboxChange(index)}
+                                                            checked={isAllActionChecked(s, index)}
+                                                        />
+                                                    ) : (
+                                                        <Checkbox
+                                                            onChange={() => {
+                                                                handleChildCheckboxChange(s, index);
+                                                            }}
+                                                            checked={isActionChecked(s, index)}
+                                                        />
+                                                    )}
                                                 </TableCell>
                                             ))}
                                         </TableRow>
