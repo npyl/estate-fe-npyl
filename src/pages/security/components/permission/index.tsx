@@ -49,15 +49,12 @@ function a11yProps(index) {
 }
 
 const PermissionPage: FC<Props> = ({selectedUser}) => {
-    console.log("skataskataskata")
-    console.log(selectedUser)
-    const [value, setValue] = React.useState(0);
-
+    const [value, setValue] = React.useState(selectedUser < 0 ? 0 : selectedUser-1);
+    const [tabIndex, setTabIndex] = useState(0);
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
 
-    // const profile = useProfileQuery({}).data;
     const profile = {
         id: 1,
         username: 'ADMIN',
@@ -67,110 +64,20 @@ const PermissionPage: FC<Props> = ({selectedUser}) => {
         email: 'admin1@example.com'
     }
 
-    const users = [
-        {
-            id: 1,
-            username: 'ADMIN',
-            firstName: 'ADMIN',
-            lastName: 'ADMIN',
-            status: 'Active',
-            email: 'admin1@example.com'
-        },
-        {
-            id: 2,
-            username: 'Panagiotis',
-            firstName: 'Panagiotis',
-            lastName: 'Athanasopoulos',
-            status: 'Active',
-            email: 'user1@example.com'
-        },
-        {
-            id: 3,
-            username: 'Leo',
-            firstName: 'Leonidas',
-            lastName: 'Panagiotou',
-            status: 'Inactive',
-            email: 'user2@example.com'
-        },
-        {
-            id: 4,
-            username: 'Vagelis',
-            firstName: 'Vagelis',
-            lastName: 'Kleitsas',
-            status: 'Inactive',
-            email: 'user2@example.com'
-        },
-        {
-            id: 5,
-            username: 'Athanasios',
-            firstName: 'Athanasios',
-            lastName: 'Kalatheris',
-            status: 'Inactive',
-            email: 'user2@example.com'
-        },
-        {
-            id: 6,
-            username: 'Taxi',
-            firstName: 'Taxiarxis',
-            lastName: 'Zarwnis',
-            status: 'Inactive',
-            email: 'user2@example.com'
-        },
-        {
-            id: 7,
-            username: 'George',
-            firstName: 'George',
-            lastName: 'Katrougkalos',
-            status: 'Inactive',
-            email: 'user2@example.com'
-        },
-        {
-            id: 8,
-            username: 'Kostas',
-            firstName: 'Kostas',
-            lastName: 'Mermelas',
-            status: 'Inactive',
-            email: 'user2@example.com'
-        },
-        {
-            id: 9,
-            username: 'Omiros',
-            firstName: 'Omiros',
-            lastName: 'Panagiotoskilopoulos',
-            status: 'Inactive',
-            email: 'user2@example.com'
-        },
-        {
-            id: 10,
-            username: 'Mili',
-            firstName: 'Mili',
-            lastName: 'Kopanitsanoskilopoylou',
-            status: 'Inactive',
-            email: 'user2@example.com'
-        },
-        {
-            id: 11,
-            username: 'Pete',
-            firstName: 'Pete',
-            lastName: 'Marakos',
-            status: 'Inactive',
-            email: 'user2@example.com'
-        },
-    ];
-
     const [selectedUserMenu, setSelectedUserMenu] = useState(() => {
+        // console.log("[[[[[[[[[[]]]]]]]]]]]]]]]]]")
+        // console.log(selectedUser)
+        // if (selectedUser === -1) return ''
         const selectedUserObject = users.find((user) => user.id === selectedUser);
         return selectedUserObject ? selectedUserObject.username : profile.username;
     });
 
-
-    const [tabIndex, setTabIndex] = useState(0);
-
     const handleSelectChange = (e) => {
-        // console.log(e)
-        setSelectedUserMenu(e.target.value);
+        const selectedValue = e.target.value;
+        setSelectedUserMenu(selectedValue);
+        const userIndex = users.findIndex((user) => user.username === selectedValue);
+        setValue(userIndex);
     };
-
 
     return (
 
@@ -231,28 +138,8 @@ const PermissionPage: FC<Props> = ({selectedUser}) => {
                         </Tooltip>
 
                     </Stack>
-
-
-                    {/*<Snackbar open={open} onClose={handleClose}>*/}
-                    {/*    <Alert onClose={handleClose} severity="info">*/}
-                    {/*        <Typography variant={"h7"}>*/}
-                    {/*            <span style={{fontStyle: 'italic'}}>*/}
-                    {/*              In {selectedUserMenu}'s tab, you can establish permissions that are applicable to all properties within the system.*/}
-                    {/*            </span>*/}
-                    {/*        </Typography>*/}
-                    {/*        <Typography variant={"h7"}>*/}
-                    {/*            <span style={{fontStyle: 'italic'}}>*/}
-                    {/*              In the tabs for other users, you have the ability to include or remove permissions specifically for the user {selectedUserMenu}.*/}
-                    {/*            </span>*/}
-                    {/*        </Typography>*/}
-                    {/*    </Alert>*/}
-                    {/*</Snackbar>*/}
                 </FormControl>
             </Box>
-
-            {/*<Typography variant="h4" style={{ marginBottom: '16px', fontWeight: 'bold' }}>*/}
-            {/*    {users.filter(s => s.id === selectedUser).map(s => s.username + ' ' + s.lastName)}*/}
-            {/*</Typography>*/}
 
             <Stack direction={"row"} sx={{display: 'flex', alignItems: 'flex-start'}}>
                 <Tabs
@@ -268,7 +155,8 @@ const PermissionPage: FC<Props> = ({selectedUser}) => {
                             key={tabIndex}
                             label={user.username}
                             {...a11yProps(tabIndex)}
-                            onClick={() => setTabIndex(tabIndex)}
+                            // onClick={() => setTabIndex(tabIndex)}
+                            onClick={() => setTabIndex(tabIndex < 0 ? 0 : tabIndex)}
                             style={{marginBottom: '8px'}}
                         />
                     ))}
@@ -276,7 +164,6 @@ const PermissionPage: FC<Props> = ({selectedUser}) => {
 
                 <Box sx={{marginTop: -1, width: '100%'}}>
                     {users.map((user, tabIndex) => {
-                        // console.log("my user => ", user);
                         return (
                             <TabPanel value={value} index={tabIndex} key={tabIndex}>
                                 <SecurityPage user={user.username}/>
@@ -291,3 +178,94 @@ const PermissionPage: FC<Props> = ({selectedUser}) => {
 }
 
 export default PermissionPage;
+
+const users = [
+    {
+        id: 1,
+        username: 'ADMIN',
+        firstName: 'ADMIN',
+        lastName: 'ADMIN',
+        status: 'Active',
+        email: 'admin1@example.com'
+    },
+    {
+        id: 2,
+        username: 'Panagiotis',
+        firstName: 'Panagiotis',
+        lastName: 'Athanasopoulos',
+        status: 'Active',
+        email: 'user1@example.com'
+    },
+    {
+        id: 3,
+        username: 'Leo',
+        firstName: 'Leonidas',
+        lastName: 'Panagiotou',
+        status: 'Inactive',
+        email: 'user2@example.com'
+    },
+    {
+        id: 4,
+        username: 'Vagelis',
+        firstName: 'Vagelis',
+        lastName: 'Kleitsas',
+        status: 'Inactive',
+        email: 'user2@example.com'
+    },
+    {
+        id: 5,
+        username: 'Athanasios',
+        firstName: 'Athanasios',
+        lastName: 'Kalatheris',
+        status: 'Inactive',
+        email: 'user2@example.com'
+    },
+    {
+        id: 6,
+        username: 'Taxi',
+        firstName: 'Taxiarxis',
+        lastName: 'Zarwnis',
+        status: 'Inactive',
+        email: 'user2@example.com'
+    },
+    {
+        id: 7,
+        username: 'George',
+        firstName: 'George',
+        lastName: 'Katrougkalos',
+        status: 'Inactive',
+        email: 'user2@example.com'
+    },
+    {
+        id: 8,
+        username: 'Kostas',
+        firstName: 'Kostas',
+        lastName: 'Mermelas',
+        status: 'Inactive',
+        email: 'user2@example.com'
+    },
+    {
+        id: 9,
+        username: 'Omiros',
+        firstName: 'Omiros',
+        lastName: 'Panagiotoskilopoulos',
+        status: 'Inactive',
+        email: 'user2@example.com'
+    },
+    {
+        id: 10,
+        username: 'Mili',
+        firstName: 'Mili',
+        lastName: 'Kopanitsanoskilopoylou',
+        status: 'Inactive',
+        email: 'user2@example.com'
+    },
+    {
+        id: 11,
+        username: 'Pete',
+        firstName: 'Pete',
+        lastName: 'Marakos',
+        status: 'Inactive',
+        email: 'user2@example.com'
+    },
+];
