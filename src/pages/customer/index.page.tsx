@@ -26,6 +26,7 @@ import { usePublishTab } from "src/components/Tabs/utils";
 import { useTranslation } from "react-i18next";
 import { Label, LabelColor } from "src/components/label";
 import ListLabelsItem from "src/components/List/labels-item";
+import { ILabel } from "src/types/label";
 interface TypeProps {
     seller: boolean;
     lessor: boolean;
@@ -109,7 +110,13 @@ const Customers: NextPage = () => {
             pageSize: pageSize,
         });
     };
+    function showLabel(params: GridCellParams) {
+        if (!params.value || !Array.isArray(params.value)) return <></>;
 
+        const labels: ILabel[] = params.value as ILabel[];
+
+        return <ListLabelsItem labels={labels} label={""} />;
+    }
     const handlePaginationModelChange = (
         model: GridPaginationModel,
         details: GridCallbackDetails
@@ -217,7 +224,7 @@ const Customers: NextPage = () => {
             headerAlign: "center",
             align: "center",
             headerName: t("Labels") || "",
-            // renderCell: labels,
+            renderCell: showLabel,
         },
     ];
     useEffect(() => {

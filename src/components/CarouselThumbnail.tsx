@@ -456,7 +456,7 @@ export function OnlyPhotosCarousel({ data }: Props) {
                 sx={{ position: "flex", left: "90%" }}
                 onClick={handleDownload}
             >
-                download images
+                Download images
             </Button>
             <Lightbox
                 open={galleryOpen}
