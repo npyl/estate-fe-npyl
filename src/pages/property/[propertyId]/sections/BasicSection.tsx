@@ -13,6 +13,7 @@ import PopupWindow from "./PopopWindowROI";
 import { ICustomer } from "src/types/customer";
 import ListOwnerItem from "src/components/List/owner-item";
 import { useTranslation } from "react-i18next";
+import ListDateItem from "src/components/List/date-item";
 
 interface BasicSectionProps {
     data: IProperties;
@@ -210,25 +211,25 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 );
             case "Available After":
                 return (
-                    <ListItem
+                    <ListDateItem
                         label={t("Available After")}
-                        value={data?.availableAfter || "-"}
+                        value={data?.availableAfter}
                         align="horizontal"
                     />
                 );
             case "Rental Period Start":
                 return (
-                    <ListItem
+                    <ListDateItem
                         label={t("Rental Period Start")}
-                        value={data?.rentalStart || "-"}
+                        value={data?.rentalStart}
                         align="horizontal"
                     />
                 );
             case "Rental Period End":
                 return (
-                    <ListItem
+                    <ListDateItem
                         label={t("Rental Period End")}
-                        value={data?.rentalEnd || "-"}
+                        value={data?.rentalEnd}
                         align="horizontal"
                     />
                 );
