@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {FC, useEffect, useState} from 'react';
+import {FC, useCallback, useEffect, useState,useMemo} from 'react';
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
@@ -31,10 +31,10 @@ import {useTranslation} from "react-i18next";
 import {useGetPresetsQuery, useSavePresetMutation} from "../../../../services/security";
 
 function Category(props) {
-    const {row, data, parentCategory, setData} = props;
+    const {row, data,setData} = props;
     const [open, setOpen] = useState(false);
-    const [isParentCategoryChecked, setIsParentCategoryChecked] = useState(false);
-    const [isSubCategoryChecked, setIsSubCategoryChecked] = useState(false);
+    // const [isParentCategoryChecked, setIsParentCategoryChecked] = useState(false);
+    // const [isSubCategoryChecked, setIsSubCategoryChecked] = useState(false);
 
     let category = resolveCategory(row, subcategories1, subcategories2, subcategories3, subcategories4);
 
@@ -46,12 +46,24 @@ function Category(props) {
         setData(updatedData);
     }
 
-    const handleParentCategoryCheckboxChange = () => {
-        const newState = !isParentCategoryChecked;
-        setIsParentCategoryChecked(newState);
-        const newData = {...data};
-        for (const key in newData) {
+    const handleParentCategoryCheckboxChange = (e, row) => {
+        const newState = e.target.checked;
+        const newData = JSON.parse(JSON.stringify(data));
+        for (const key in data) {
+
             if (newData[key].category === row) {
+                console.log(newData[key].actions, {
+                    create: newState,
+                    view: newState,
+                    edit: newState,
+                    delete: newState,
+                    owner: newState,
+                    location: newState,
+                    price: newState,
+                    active: newState,
+                    inactive: newState,
+                    hidden: newState,
+                })
                 newData[key].actions = {
                     create: newState,
                     view: newState,
@@ -66,10 +78,10 @@ function Category(props) {
                 };
             }
         }
-        setData(newData);
+       setData(newData)
     };
 
-    const isParentCategoryCheckboxChecked = (row) => {
+    const isParentCategoryCheckboxChecked = useCallback((row) => {
         for (const category of Object.values(data)) {
             const actions = category?.actions;
             if (category.category === row && actions && Object.values(actions).some((value) => value === false)) {
@@ -77,20 +89,20 @@ function Category(props) {
             }
         }
         return true;
-    };
 
-    const handleSubCategoryCheckboxChange = (subCategory) => {
-        const newState = !isSubCategoryChecked;
-        setIsSubCategoryChecked(newState)
+    },[data,row]);
+
+    const handleSubCategoryCheckboxChange = (e,subCategory) => {
+        const newData = JSON.parse(JSON.stringify(data));
         const rowIndex = resolveSubCategory(subCategory);
-        const newData = {...data};
+
         for (const action of actions) {
-            newData[rowIndex].actions[action] = newState;
+            newData[rowIndex].actions[action] = e.target.checked;
         }
         setData(newData);
     };
 
-    const isSubCategoryCheckboxChecked = (subCategory) => {
+    const isSubCategoryCheckboxChecked = useCallback((subCategory) => {
         const rowIndex = resolveSubCategory(subCategory);
         for (const action of actions) {
             if (data[rowIndex].actions[action] === false) {
@@ -98,7 +110,7 @@ function Category(props) {
             }
         }
         return true;
-    };
+    },[data]);
 
     const isActionChecked = (subCategory, columnIndex): boolean => {
         const rowIndex = resolveSubCategory(subCategory);
@@ -121,7 +133,7 @@ function Category(props) {
                         </IconButton>
                         <Typography variant={'h6'}>{row}</Typography>
                         <Checkbox
-                            onChange={() => handleParentCategoryCheckboxChange()}
+                            onChange={(e) => handleParentCategoryCheckboxChange(e, row)}
                             checked={isParentCategoryCheckboxChecked(row)}
                         />
                     </Stack>
@@ -141,7 +153,7 @@ function Category(props) {
                                                 {subCategory}
                                                 <Checkbox
                                                     size="small"
-                                                    onChange={() => handleSubCategoryCheckboxChange(subCategory)}
+                                                    onChange={(e) => handleSubCategoryCheckboxChange(e,subCategory)}
                                                     checked={isSubCategoryCheckboxChecked(subCategory)}
                                                 />
                                             </TableCell>
@@ -173,25 +185,11 @@ interface SecurityPageProps {
 }
 
 const SecurityPage: FC<SecurityPageProps> = ({user}) => {
-
     const {data: presets} = useGetPresetsQuery();
     const {t} = useTranslation();
-
     const [savePreset] = useSavePresetMutation();
-
-    const [data, setData] = useState(initRoles);
-    const [saleData, setSaleData] = useState(initSaleRoles);
-    const [rentData, setRentData] = useState(initRentRoles);
-    const [soldRentedData, setSoldRentedData] = useState(initSoldRentedRoles);
-
-    useEffect(() => {
-
-        let concatenatedData = {};
-        concatenatedData = {saleData, rentData, soldRentedData};
-        setData(concatenatedData);
-        console.log("The new data are updated => ", data)
-    }, [saleData, rentData, soldRentedData]);
-
+    const [data, setData] = useState(JSON.parse(JSON.stringify({...initSaleRoles,...initSoldRentedRoles,...initRentRoles})));
+    console.log(data)
     return (
 
         <Box sx={{overflowX: 'auto', width: '100%', textAlign: 'center', marginBottom: 2}}>
@@ -199,7 +197,7 @@ const SecurityPage: FC<SecurityPageProps> = ({user}) => {
                 <FormGroup aria-label="position" row>
                     <FormControlLabel
                         value="start"
-                        control={<Checkbox />}
+                        control={<Checkbox/>}
                         label={<Typography variant='h6' sx={{textAlign: 'center'}}>{user}</Typography>}
                         labelPlacement="start"
                     />
@@ -218,7 +216,7 @@ const SecurityPage: FC<SecurityPageProps> = ({user}) => {
                     </TableHead>
                     <TableBody>
                         {data && categories.map((s) => {
-                            return <Category key={s} row={s} data={saleData} setData={setSaleData}/>;
+                            return <Category key={s} row={s} data={data} setData={setData}/>;
                         })}
                     </TableBody>
                 </Table>
@@ -235,7 +233,7 @@ const SecurityPage: FC<SecurityPageProps> = ({user}) => {
                     </TableHead>
                     <TableBody>
                         {data && categories.map((s) => {
-                            return <Category key={s} row={s} data={rentData} setData={setRentData}/>;
+                            // return <Category key={s} row={s} data={rentData} setData={setRentData}/>;
                         })}
                     </TableBody>
                 </Table>
@@ -251,10 +249,10 @@ const SecurityPage: FC<SecurityPageProps> = ({user}) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {data && categories.map((s) => {
-                            return <Category key={s} row={s} data={soldRentedData}
-                                             setData={setSoldRentedData}/>;
-                        })}
+                        {/*{data && categories.map((s) => {*/}
+                        {/*    return <Category key={s} row={s} data={soldRentedData}*/}
+                        {/*                     setData={setSoldRentedData}/>;*/}
+                        {/*})}*/}
                     </TableBody>
                 </Table>
             </TableContainer>
@@ -271,8 +269,10 @@ const SecurityPage: FC<SecurityPageProps> = ({user}) => {
                     <Button
                         variant="contained"
                         endIcon={<SendIcon/>}
-                        onClick={() => savePreset(data)}
+                        // onClick={() => savePreset(data)}
+                        onClick={()=>console.log(data)}
                     >
+
                         {t("Apply Changes")}
                     </Button>
                 </Stack>
