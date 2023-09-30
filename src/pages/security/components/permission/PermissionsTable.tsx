@@ -78,7 +78,7 @@ function Category(props) {
                 };
             }
         }
-       setData(newData)
+        setData(newData)
     };
 
     const isParentCategoryCheckboxChecked = useCallback((row) => {
