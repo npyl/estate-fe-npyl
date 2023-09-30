@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import EditIcon from "@mui/icons-material/Edit"; // Make sure to import EditIcon
 import {
     Button,
     Dialog,
@@ -15,51 +15,127 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    TextField
-} from '@mui/material';
-import EditIcon from '@mui/icons-material/Edit'; // Make sure to import EditIcon
-import validator from 'validator';
+    TextField,
+} from "@mui/material";
+import React, { FC, useState } from "react";
+import validator from "validator";
 type Props = {
-    changeTab: (event: React.SyntheticEvent, newValue: number
-    ) => void;
-    setSelectedUser: (value: (((prevState: number) => number) | number)) => void;
+    changeTab: (event: React.SyntheticEvent, newValue: number) => void;
+    setSelectedUser: (value: ((prevState: number) => number) | number) => void;
 };
 
-const UserPage: FC<Props> = ({changeTab, setSelectedUser}) => {
-
+const UserPage: FC<Props> = ({ changeTab, setSelectedUser }) => {
     const users = [
-        { id: 1, username: 'ADMIN', firstName: 'ADMIN', lastName: 'ADMIN', status: 'Active', email: 'admin1@example.com' },
-        { id: 2, username: 'Panagiotis', firstName: 'Panagiotis', lastName: 'Athanasopoulos', status: 'Active', email: 'user1@example.com' },
-        { id: 3, username: 'Leo', firstName: 'Leonidas', lastName: 'Panagiotou', status: 'Inactive', email: 'user2@example.com' },
-        { id: 4, username: 'Vagelis', firstName: 'Vagelis', lastName: 'Kleitsas', status: 'Inactive', email: 'user2@example.com' },
-        { id: 5, username: 'Athanasios', firstName: 'Athanasios', lastName: 'Kalatheris', status: 'Inactive', email: 'user2@example.com' },
-        { id: 6, username: 'Taxi', firstName: 'Taxiarxis', lastName: 'Zarwnis', status: 'Inactive', email: 'user2@example.com' },
-        { id: 7, username: 'George', firstName: 'George', lastName: 'Katrougkalos', status: 'Inactive', email: 'user2@example.com' },
-        { id: 8, username: 'Kostas', firstName: 'Kostas', lastName: 'Mermelas', status: 'Inactive', email: 'user2@example.com' },
-        { id: 9, username: 'Omiros', firstName: 'Omiros', lastName: 'Panagiotoskilopoulos', status: 'Inactive', email: 'user2@example.com' },
-        { id: 10, username: 'Mili', firstName: 'Mili', lastName: 'Kopanitsanoskilopoylou', status: 'Inactive', email: 'user2@example.com' },
-        { id: 11, username: 'Pete', firstName: 'Pete', lastName: 'Marakos', status: 'Inactive', email: 'user2@example.com' },
+        {
+            id: 1,
+            username: "ADMIN",
+            firstName: "ADMIN",
+            lastName: "ADMIN",
+            status: "Active",
+            email: "admin1@example.com",
+        },
+        {
+            id: 2,
+            username: "Panagiotis",
+            firstName: "Panagiotis",
+            lastName: "Athanasopoulos",
+            status: "Active",
+            email: "user1@example.com",
+        },
+        {
+            id: 3,
+            username: "Leo",
+            firstName: "Leonidas",
+            lastName: "Panagiotou",
+            status: "Inactive",
+            email: "user2@example.com",
+        },
+        {
+            id: 4,
+            username: "Vagelis",
+            firstName: "Vagelis",
+            lastName: "Kleitsas",
+            status: "Inactive",
+            email: "user2@example.com",
+        },
+        {
+            id: 5,
+            username: "Athanasios",
+            firstName: "Athanasios",
+            lastName: "Kalatheris",
+            status: "Inactive",
+            email: "user2@example.com",
+        },
+        {
+            id: 6,
+            username: "Taxi",
+            firstName: "Taxiarxis",
+            lastName: "Zarwnis",
+            status: "Inactive",
+            email: "user2@example.com",
+        },
+        {
+            id: 7,
+            username: "George",
+            firstName: "George",
+            lastName: "Katrougkalos",
+            status: "Inactive",
+            email: "user2@example.com",
+        },
+        {
+            id: 8,
+            username: "Kostas",
+            firstName: "Kostas",
+            lastName: "Mermelas",
+            status: "Inactive",
+            email: "user2@example.com",
+        },
+        {
+            id: 9,
+            username: "Omiros",
+            firstName: "Omiros",
+            lastName: "Panagiotoskilopoulos",
+            status: "Inactive",
+            email: "user2@example.com",
+        },
+        {
+            id: 10,
+            username: "Mili",
+            firstName: "Mili",
+            lastName: "Kopanitsanoskilopoylou",
+            status: "Inactive",
+            email: "user2@example.com",
+        },
+        {
+            id: 11,
+            username: "Pete",
+            firstName: "Pete",
+            lastName: "Marakos",
+            status: "Inactive",
+            email: "user2@example.com",
+        },
     ];
 
     const [isCreateUserModalOpen, setIsCreateUserModalOpen] = useState(false);
-    const [status, setStatus] = useState('Active');
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [mobilePhone, setMobilePhone] = useState('');
-    const [homePhone, setHomePhone] = useState('');
-    const [businessPhone, setBusinessPhone] = useState('');
-    const [officePhone, setOfficePhone] = useState('');
-    const [callCenterNumber, setCallCenterNumber] = useState('');
-    const [address, setAddress] = useState('');
-    const [zipCode, setZipCode] = useState('');
-    const [city, setCity] = useState('');
-    const [region, setRegion] = useState('');
-    const [afm, setAfm] = useState('');
-    const [doy, setDoy] = useState('');
-    const [gemh, setGemh] = useState('');
-    const [email, setEmail] = useState('');
+    const [status, setStatus] = useState("Active");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [mobilePhone, setMobilePhone] = useState("");
+    const [homePhone, setHomePhone] = useState("");
+    const [businessPhone, setBusinessPhone] = useState("");
+    const [officePhone, setOfficePhone] = useState("");
+    const [callCenterNumber, setCallCenterNumber] = useState("");
+    const [address, setAddress] = useState("");
+    const [zipCode, setZipCode] = useState("");
+    const [city, setCity] = useState("");
+    const [region, setRegion] = useState("");
+    const [afm, setAfm] = useState("");
+    const [doy, setDoy] = useState("");
+    const [gemh, setGemh] = useState("");
+    const [email, setEmail] = useState("");
     const [isUpdateUserModalOpen, setIsUpdateUserModalOpen] = useState(false);
-    const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] = useState(false);
+    const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] =
+        useState(false);
 
     const handleEdit = (userId) => {
         console.log(`Edit user with ID ${userId}`);
@@ -75,7 +151,7 @@ const UserPage: FC<Props> = ({changeTab, setSelectedUser}) => {
 
     const handleCreateUser = () => {
         if (!validator.isEmail(email)) {
-            alert('Please enter a valid email address.');
+            alert("Please enter a valid email address.");
             return;
         }
         handleCloseCreateUserModal();
@@ -91,20 +167,20 @@ const UserPage: FC<Props> = ({changeTab, setSelectedUser}) => {
 
     const handleUpdateUser = () => {
         if (!validator.isEmail(email)) {
-            alert('Please enter a valid email address.');
+            alert("Please enter a valid email address.");
             return;
         }
         handleCloseUpdateUserModal();
     };
 
     const handleResetPassword = () => {
-        console.log('Resetting user password...');
-        console.log('User ID:', userId); // You can pass the user ID here
+        console.log("Resetting user password...");
+        console.log("User ID:", userId); // You can pass the user ID here
     };
 
     const handleDeleteUser = () => {
-        console.log('Deleting user...');
-        console.log('User ID:', userId); // You can pass the user ID here
+        console.log("Deleting user...");
+        console.log("User ID:", userId); // You can pass the user ID here
     };
 
     const handleOpenDeleteConfirmation = () => {
@@ -117,12 +193,17 @@ const UserPage: FC<Props> = ({changeTab, setSelectedUser}) => {
 
     return (
         <div>
-            <Button variant="contained" color="primary" style={{marginBottom: '20px'}} onClick={handleCreateUserClick}>
+            <Button
+                variant="contained"
+                color="primary"
+                style={{ marginBottom: "20px" }}
+                onClick={handleCreateUserClick}
+            >
                 Create User
             </Button>
             <TableContainer component={Paper}>
                 <Table>
-                    <TableHead sx={{background: '#f5f5dc'}}>
+                    <TableHead>
                         <TableRow>
                             <TableCell>Username</TableCell>
                             <TableCell>First Name</TableCell>
@@ -132,7 +213,6 @@ const UserPage: FC<Props> = ({changeTab, setSelectedUser}) => {
                             <TableCell>status</TableCell>
                             <TableCell>Update</TableCell>
                             <TableCell>Permissions</TableCell>
-
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -145,8 +225,12 @@ const UserPage: FC<Props> = ({changeTab, setSelectedUser}) => {
                                 <TableCell>{user.email}</TableCell>
                                 <TableCell>{user.status}</TableCell>
                                 <TableCell>
-                                    <IconButton size="small" onClick={handleUpdateUserClick} sx={{ml: 1, mr: -1}}>
-                                        <EditIcon fontSize="small"/>
+                                    <IconButton
+                                        size="small"
+                                        onClick={handleUpdateUserClick}
+                                        sx={{ ml: 1, mr: -1 }}
+                                    >
+                                        <EditIcon fontSize="small" />
                                     </IconButton>
                                 </TableCell>
                                 <TableCell>
@@ -155,7 +239,7 @@ const UserPage: FC<Props> = ({changeTab, setSelectedUser}) => {
                                         color="success"
                                         onClick={(e) => {
                                             changeTab(e, 1);
-                                            setSelectedUser(user.id)
+                                            setSelectedUser(user.id);
                                         }}
                                     >
                                         Set
@@ -167,7 +251,10 @@ const UserPage: FC<Props> = ({changeTab, setSelectedUser}) => {
                 </Table>
             </TableContainer>
 
-            <Dialog open={isCreateUserModalOpen} onClose={handleCloseCreateUserModal}>
+            <Dialog
+                open={isCreateUserModalOpen}
+                onClose={handleCloseCreateUserModal}
+            >
                 <DialogTitle>Create User</DialogTitle>
                 <DialogContent>
                     <TextField
@@ -176,8 +263,12 @@ const UserPage: FC<Props> = ({changeTab, setSelectedUser}) => {
                         margin="normal"
                         variant="outlined"
                         value={firstName}
-                        onChange={(e) => setFirstName(e.target.value.replace(/[^a-zA-Z]/g, ''))}
-                        inputProps={{maxLength: 50}}
+                        onChange={(e) =>
+                            setFirstName(
+                                e.target.value.replace(/[^a-zA-Z]/g, "")
+                            )
+                        }
+                        inputProps={{ maxLength: 50 }}
                     />
                     <TextField
                         label="Last Name"
@@ -185,8 +276,12 @@ const UserPage: FC<Props> = ({changeTab, setSelectedUser}) => {
                         margin="normal"
                         variant="outlined"
                         value={lastName}
-                        onChange={(e) => setLastName(e.target.value.replace(/[^a-zA-Z]/g, ''))}
-                        inputProps={{maxLength: 50}}
+                        onChange={(e) =>
+                            setLastName(
+                                e.target.value.replace(/[^a-zA-Z]/g, "")
+                            )
+                        }
+                        inputProps={{ maxLength: 50 }}
                     />
                     <TextField
                         label="Email"
@@ -309,13 +404,19 @@ const UserPage: FC<Props> = ({changeTab, setSelectedUser}) => {
                     <Button onClick={handleCreateUser} color="primary">
                         Create
                     </Button>
-                    <Button onClick={handleCloseCreateUserModal} color="secondary">
+                    <Button
+                        onClick={handleCloseCreateUserModal}
+                        color="secondary"
+                    >
                         Cancel
                     </Button>
                 </DialogActions>
             </Dialog>
 
-            <Dialog open={isUpdateUserModalOpen} onClose={handleCloseUpdateUserModal}>
+            <Dialog
+                open={isUpdateUserModalOpen}
+                onClose={handleCloseUpdateUserModal}
+            >
                 <DialogTitle>Update User</DialogTitle>
                 <DialogContent>
                     <TextField
@@ -324,8 +425,12 @@ const UserPage: FC<Props> = ({changeTab, setSelectedUser}) => {
                         margin="normal"
                         variant="outlined"
                         value={firstName}
-                        onChange={(e) => setFirstName(e.target.value.replace(/[^a-zA-Z]/g, ''))}
-                        inputProps={{maxLength: 50}}
+                        onChange={(e) =>
+                            setFirstName(
+                                e.target.value.replace(/[^a-zA-Z]/g, "")
+                            )
+                        }
+                        inputProps={{ maxLength: 50 }}
                     />
                     <TextField
                         label="Last Name"
@@ -333,8 +438,12 @@ const UserPage: FC<Props> = ({changeTab, setSelectedUser}) => {
                         margin="normal"
                         variant="outlined"
                         value={lastName}
-                        onChange={(e) => setLastName(e.target.value.replace(/[^a-zA-Z]/g, ''))}
-                        inputProps={{maxLength: 50}}
+                        onChange={(e) =>
+                            setLastName(
+                                e.target.value.replace(/[^a-zA-Z]/g, "")
+                            )
+                        }
+                        inputProps={{ maxLength: 50 }}
                     />
                     <TextField
                         label="Email"
@@ -436,13 +545,16 @@ const UserPage: FC<Props> = ({changeTab, setSelectedUser}) => {
                     <Button
                         onClick={handleOpenDeleteConfirmation}
                         color="secondary"
-                        sx={{backgroundColor: 'red', color: 'white'}}
+                        sx={{ backgroundColor: "red", color: "white" }}
                     >
                         Delete User
                     </Button>
                 </DialogActions>
                 <DialogActions>
-                    <Button onClick={handleCloseUpdateUserModal} color="secondary">
+                    <Button
+                        onClick={handleCloseUpdateUserModal}
+                        color="secondary"
+                    >
                         Cancel
                     </Button>
                     <Button onClick={handleUpdateUser} color="primary">
@@ -461,7 +573,10 @@ const UserPage: FC<Props> = ({changeTab, setSelectedUser}) => {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={handleCloseDeleteConfirmation} color="primary">
+                    <Button
+                        onClick={handleCloseDeleteConfirmation}
+                        color="primary"
+                    >
                         Cancel
                     </Button>
                     <Button onClick={handleDeleteUser} color="secondary">
@@ -469,7 +584,6 @@ const UserPage: FC<Props> = ({changeTab, setSelectedUser}) => {
                     </Button>
                 </DialogActions>
             </Dialog>
-
         </div>
     );
 };

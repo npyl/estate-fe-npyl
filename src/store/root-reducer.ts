@@ -5,12 +5,12 @@ import { note } from "src/services/note";
 import { notification } from "src/services/notification";
 import { auth } from "../services/auth";
 import { customers } from "../services/customers";
+import { exports } from "../services/exports";
 import { global } from "../services/global";
 import { location } from "../services/location";
 import { properties } from "../services/properties";
-import { user } from "../services/user";
-import { exports } from "../services/exports";
 import { security } from "../services/security";
+import { user } from "../services/user";
 
 import { reducer as customerReducer } from "../slices/customer";
 import { reducer as customerFiltersReducer } from "../slices/customer/filters";
@@ -21,6 +21,7 @@ import { reducer as notesReducer } from "../slices/notes";
 import { reducer as notificationReducer } from "../slices/notification";
 import { reducer as propertyReducer } from "../slices/property";
 import { reducer as propertyFilesReducer } from "../slices/property/files";
+import { reducer as securityReducer } from "../slices/security";
 import { reducer as tabsReducer } from "../slices/tabs";
 
 export const rootReducer = combineReducers({
@@ -49,4 +50,5 @@ export const rootReducer = combineReducers({
     tabs: tabsReducer,
     notification: notificationReducer,
     kanban: kanbanReducer,
+    securitySlice: securityReducer,
 });

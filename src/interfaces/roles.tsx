@@ -1,21 +1,32 @@
 export interface IPreset {
     id: number;
-    details: IDetails[];
-    name:string;
-};
+    details: IRoles[];
+    name: string;
+}
 
-export interface IDetails {
-    state: string;
+export interface IRolesReq {
+    details: IRoles[];
+    preset?: number;
+    source: string;
+    target: string[];
+}
+
+export interface IRoles {
+    parentCategory: string;
     category: string;
     subcategory: string;
-    actions: {
-        allowDelete: boolean;
-        allowEdit: boolean;
-        accessOwner: boolean;
-        accessLocation: boolean;
-        accessPrice: boolean;
-        accessActive: boolean;
-        accessHidden: boolean;
-        accessInactive: boolean;
-    };
-};
+    actions: IActions;
+}
+
+export interface IActions {
+    create: boolean;
+    view: boolean;
+    edit: boolean;
+    delete: boolean;
+    accessOwner: boolean;
+    accessLocation: boolean;
+    accessPrice: boolean;
+    accessActive: boolean;
+    accessHidden: boolean;
+    accessInactive: boolean;
+}
