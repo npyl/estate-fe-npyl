@@ -45,6 +45,18 @@ const UserPage: FC<Props> = ({changeTab, setSelectedUser}) => {
     const [status, setStatus] = useState('Active');
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
+    const [mobilePhone, setMobilePhone] = useState('');
+    const [homePhone, setHomePhone] = useState('');
+    const [businessPhone, setBusinessPhone] = useState('');
+    const [officePhone, setOfficePhone] = useState('');
+    const [callCenterNumber, setCallCenterNumber] = useState('');
+    const [address, setAddress] = useState('');
+    const [zipCode, setZipCode] = useState('');
+    const [city, setCity] = useState('');
+    const [region, setRegion] = useState('');
+    const [afm, setAfm] = useState('');
+    const [doy, setDoy] = useState('');
+    const [gemh, setGemh] = useState('');
     const [email, setEmail] = useState('');
     const [isUpdateUserModalOpen, setIsUpdateUserModalOpen] = useState(false);
     const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] = useState(false);
@@ -117,8 +129,10 @@ const UserPage: FC<Props> = ({changeTab, setSelectedUser}) => {
                             <TableCell>Last Name</TableCell>
                             <TableCell>Status</TableCell>
                             <TableCell>Email</TableCell>
+                            <TableCell>status</TableCell>
                             <TableCell>Update</TableCell>
                             <TableCell>Permissions</TableCell>
+
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -129,6 +143,7 @@ const UserPage: FC<Props> = ({changeTab, setSelectedUser}) => {
                                 <TableCell>{user.lastName}</TableCell>
                                 <TableCell>{user.status}</TableCell>
                                 <TableCell>{user.email}</TableCell>
+                                <TableCell>{user.status}</TableCell>
                                 <TableCell>
                                     <IconButton size="small" onClick={handleUpdateUserClick} sx={{ml: 1, mr: -1}}>
                                         <EditIcon fontSize="small"/>
@@ -182,6 +197,102 @@ const UserPage: FC<Props> = ({changeTab, setSelectedUser}) => {
                         onChange={(e) => setEmail(e.target.value)}
                     />
                     <TextField
+                        label="Mobile Phone"
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                        value={mobilePhone}
+                        onChange={(e) => setMobilePhone(e.target.value)}
+                    />
+                    <TextField
+                        label="Home Phone"
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                        value={homePhone}
+                        onChange={(e) => setHomePhone(e.target.value)}
+                    />
+                    <TextField
+                        label="Business Phone"
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                        value={businessPhone}
+                        onChange={(e) => setBusinessPhone(e.target.value)}
+                    />
+                    <TextField
+                        label="Office Phone"
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                        value={officePhone}
+                        onChange={(e) => setOfficePhone(e.target.value)}
+                    />
+                    <TextField
+                        label="Call Center Number"
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                        value={callCenterNumber}
+                        onChange={(e) => setCallCenterNumber(e.target.value)}
+                    />
+                    <TextField
+                        label="Address"
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                    />
+                    <TextField
+                        label="Zip code"
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                        value={zipCode}
+                        onChange={(e) => setZipCode(e.target.value)}
+                    />
+                    <TextField
+                        label="City"
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
+                    />
+                    <TextField
+                        label="Region"
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                        value={region}
+                        onChange={(e) => setRegion(e.target.value)}
+                    />
+                    <TextField
+                        label="ΑΦΜ"
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                        value={afm}
+                        onChange={(e) => setAfm(e.target.value)}
+                    />
+                    <TextField
+                        label="ΔΟΥ"
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                        value={doy}
+                        onChange={(e) => setDoy(e.target.value)}
+                    />
+                    <TextField
+                        label="ΓΕΜΥ"
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                        value={gemh}
+                        onChange={(e) => setGemh(e.target.value)}
+                    />
+                    <TextField
                         select
                         label="Status"
                         fullWidth
@@ -231,7 +342,79 @@ const UserPage: FC<Props> = ({changeTab, setSelectedUser}) => {
                         margin="normal"
                         variant="outlined"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e) => setMobilePhone(e.target.value)}
+                    />
+                    <TextField
+                        label="Home Phone"
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                        value={homePhone}
+                        onChange={(e) => setHomePhone(e.target.value)}
+                    />
+                    <TextField
+                        label="Business Phone"
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                        value={businessPhone}
+                        onChange={(e) => setBusinessPhone(e.target.value)}
+                    />
+                    <TextField
+                        label="Call Center Number"
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                        value={callCenterNumber}
+                        onChange={(e) => setCallCenterNumber(e.target.value)}
+                    />
+                    <TextField
+                        label="Address"
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                    />
+                    <TextField
+                        label="Zip Code"
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                        value={zipCode}
+                        onChange={(e) => setZipCode(e.target.value)}
+                    />
+                    <TextField
+                        label="City"
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
+                    />
+                    <TextField
+                        label="Afm"
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                        value={afm}
+                        onChange={(e) => setAfm(e.target.value)}
+                    />
+                    <TextField
+                        label="Doy"
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                        value={doy}
+                        onChange={(e) => setDoy(e.target.value)}
+                    />
+                    <TextField
+                        label="Gemh"
+                        fullWidth
+                        margin="normal"
+                        variant="outlined"
+                        value={gemh}
+                        onChange={(e) => setGemh(e.target.value)}
                     />
                     <TextField
                         select
