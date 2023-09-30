@@ -83,7 +83,6 @@ export const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
                         sx={{
                             marginTop: 2,
                             padding: 1,
-                            overflowX: "auto",
                         }}
                     >
                         <Grid container flex={1}>
@@ -103,7 +102,6 @@ export const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
                                     display: "flex",
                                     justifyContent: "center", // This centers horizontally in case of flex direction row (which is default)
                                     alignItems: "center", // This centers vertically in case of flex direction row
-                                    height: "100%", // Ensures that the flex container takes up the whole height of its parent
                                 }}
                             >
                                 <Button
