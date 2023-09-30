@@ -389,7 +389,7 @@ const ViewAll: FC = () => {
                     </Stack>
                 </Stack>
                 {changedPropertyFilters > 0 && (
-                    <Box overflow={"auto"}>
+                    <Box overflow={"auto"} mt={1}>
                         <ChosenFilters />
                     </Box>
                 )}

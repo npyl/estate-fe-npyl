@@ -18,7 +18,6 @@ import StyledMenu from "../StyledMenu";
 import { DashboardNavbar } from "./dashboard-navbar";
 import { DashboardSidebar } from "./dashboard-sidebar";
 import Subbar from "./dashboard-subbar";
-import { alpha } from "@mui/material/styles";
 
 import { Users as UsersIcon } from "../../icons/users";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
@@ -33,7 +32,7 @@ const DashboardLayoutRoot = styled("div")(({ theme }) => ({
     display: "flex",
     flex: "1 1 auto",
     maxWidth: "100%",
-    paddingTop: 60,
+    marginTop: 60,
     marginRight: "0",
     [theme.breakpoints.up("md")]: {
         paddingLeft: 200,
@@ -84,23 +83,25 @@ export const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
                         sx={{
                             marginTop: 2,
                             padding: 1,
-                            overflowX: "auto",
                         }}
                     >
-                        <Grid container>
-                            <Grid item xs={10.5} marginTop={1}>
+                        <Grid container flex={1}>
+                            <Grid
+                                item
+                                flex={1}
+                                overflow={"hidden"}
+                                paddingLeft={1}
+                                paddingRight={1}
+                            >
                                 <Subbar />
                             </Grid>
 
                             <Grid
                                 item
-                                xs={1.5}
                                 sx={{
                                     display: "flex",
                                     justifyContent: "center", // This centers horizontally in case of flex direction row (which is default)
                                     alignItems: "center", // This centers vertically in case of flex direction row
-                                    height: "100%", // Ensures that the flex container takes up the whole height of its parent
-                                    marginTop: "10px",
                                 }}
                             >
                                 <Button

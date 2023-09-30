@@ -1,14 +1,20 @@
 import { Chip, Grid, Stack, Typography } from "@mui/material";
+import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useGetLabelsQuery } from "src/services/labels";
 import { deleteFilter, getChangedFields, selectIds } from "src/slices/filters";
+import { aborted } from "util";
 
 const ChosenFilters = () => {
+    const { t } = useTranslation();
     const dispatch = useDispatch();
+
+    const { data } = useGetLabelsQuery();
+
     const changedProps = useSelector(getChangedFields);
     const ids = useSelector(selectIds);
-    const { t } = useTranslation();
+
     const filterTags: Record<string, { label: string }> = {
         parentLocation: {
             label: t("Location"),
@@ -107,31 +113,41 @@ const ChosenFilters = () => {
             changedProps.hasOwnProperty(maxKey)
         );
     };
-    const { data } = useGetLabelsQuery();
-    const allLabels = data?.propertyLabels || [];
-    const getLabelNames = (labelIds: any[]) => {
-        return labelIds
-            .map((id) => {
-                const label = allLabels.find((label) => label.id === id);
-                return label ? label.name : "Unknown";
-            })
-            .join(", ");
-    };
+
+    const allLabels = useMemo(
+        () => data?.propertyLabels || [],
+        [data?.propertyLabels]
+    );
+
+    const getLabelNames = useCallback(
+        (labelIds: number[]) =>
+            labelIds
+                .map((id) => {
+                    const label = allLabels.find((label) => label.id === id);
+                    return label ? label.name : "Unknown";
+                })
+                .join(", "),
+        [allLabels]
+    );
+
     return (
         <Grid container direction="row">
             {ids.map((key, index) => {
                 const values = changedProps[key];
-                let valuesToDisplay =
-                    key === "labels" ? getLabelNames(values) : values;
                 let label = filterTags[key].label;
 
-                if (values === 0 || values == undefined) {
+                if (
+                    values === 0 ||
+                    values == undefined ||
+                    (Array.isArray(values) && values.length === 0)
+                )
                     return null;
-                }
+
                 const suffix =
                     key.includes("min") || key.includes("max")
                         ? key.slice(3)
                         : null;
+
                 // If we have min-max pair, make sure we ignore one of them (don't show the same chip twice)
                 if (hasMinMaxPair(suffix) && key === `max${suffix}`)
                     return <></>;
@@ -148,11 +164,12 @@ const ChosenFilters = () => {
                             label={
                                 <Stack direction="row">
                                     <Typography
-                                        sx={{ textTransform: "lowercase" }}
+                                        sx={{
+                                            fontWeight: "medium",
+                                            paddingRight: 1,
+                                        }}
                                     >
-                                        {Array.isArray(valuesToDisplay)
-                                            ? valuesToDisplay.join(", ")
-                                            : valuesToDisplay}
+                                        {label}:
                                     </Typography>
                                     <Typography
                                         sx={{
@@ -185,6 +202,9 @@ const ChosenFilters = () => {
                         />
                     );
                 } else {
+                    const valuesToDisplay =
+                        key === "labels" ? getLabelNames(values) : values;
+
                     return (
                         <Chip
                             key={index}
@@ -201,15 +221,13 @@ const ChosenFilters = () => {
                                     <Typography
                                         sx={{ textTransform: "lowercase" }}
                                     >
-                                        {Array.isArray(values)
-                                            ? values.join(", ")
-                                            : values}
+                                        {Array.isArray(valuesToDisplay)
+                                            ? valuesToDisplay.join(", ")
+                                            : valuesToDisplay}
                                     </Typography>
                                 </Stack>
                             }
-                            onDelete={() => {
-                                dispatch(deleteFilter(key));
-                            }}
+                            onDelete={() => dispatch(deleteFilter(key))}
                             sx={{ m: 0.5 }}
                         />
                     );

@@ -19,7 +19,7 @@ export const FilterSection: React.FC<PaperProps> = ({ ...props }) => {
     const labels = useSelector(selectLabels) || [];
 
     return (
-        <Stack spacing={3} component={Paper} p={1} mt={2} {...props}>
+        <Stack spacing={1} component={Paper} p={1} mt={2} {...props}>
             <Stack flexWrap={"wrap"} direction={"row"} gap={1}>
                 <FilterBuyerLeaserAndMore />
                 <FilterParentCategory />

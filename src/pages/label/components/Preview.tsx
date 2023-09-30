@@ -11,64 +11,64 @@ export const Preview = (props: {
 }) => {
     const { labelData, onEdit, onDelete } = props;
     const { t } = useTranslation();
+
     return (
-        <>
-            <Grid component={Paper} item xs={12} sm p={2}>
-                <Stack direction={"column"} spacing={3}>
-                    <Typography variant="h5">
-                        {t("Already Existing")}
-                    </Typography>
-                    {labelData &&
-                        Object.entries(labelData).map(([_, value], index) => {
-                            return (
-                                <Grid
-                                    key={index}
-                                    gap={1}
-                                    container
-                                    flex={1}
-                                    direction={"column"}
+        <Grid component={Paper} item xs={12} sm p={2}>
+            <Stack direction={"column"} spacing={3}>
+                <Typography variant="h5">{t("Already Existing")}</Typography>
+                {labelData &&
+                    Object.entries(labelData).map(([_, value], index) => {
+                        return (
+                            <Grid
+                                key={index}
+                                gap={1}
+                                container
+                                flex={1}
+                                direction={"column"}
+                            >
+                                <Typography
+                                    variant="h6"
+                                    color={"text.secondary"}
                                 >
-                                    <Typography
-                                        variant="h6"
-                                        color={"text.secondary"}
-                                    >
-                                        {value.label}
-                                    </Typography>
-                                    <Stack direction={"row"} flexWrap={"wrap"}>
-                                        {value.data &&
-                                            value.data.map((label: ILabel) => (
-                                                <EditableLabel
-                                                    key={label.id}
-                                                    variant="soft"
-                                                    sx={{
-                                                        borderRadius: 7,
-                                                        color: "white",
-                                                        bgcolor: label.color,
-                                                    }}
-                                                    onClose={() =>
-                                                        label.id &&
-                                                        onDelete(
-                                                            value.label,
-                                                            label.id
-                                                        )
-                                                    }
-                                                    onEdit={() =>
-                                                        onEdit({
-                                                            ...label,
-                                                            resource:
-                                                                value.label,
-                                                        })
-                                                    }
-                                                >
-                                                    {label.name}
-                                                </EditableLabel>
-                                            ))}
-                                    </Stack>
-                                </Grid>
-                            );
-                        })}
-                </Stack>
-            </Grid>
-        </>
+                                    {value.label}
+                                </Typography>
+                                <Stack
+                                    direction={"row"}
+                                    flexWrap={"wrap"}
+                                    gap={0.5}
+                                >
+                                    {value.data &&
+                                        value.data.map((label: ILabel) => (
+                                            <EditableLabel
+                                                key={label.id}
+                                                variant="soft"
+                                                sx={{
+                                                    borderRadius: 7,
+                                                    color: "white",
+                                                    bgcolor: label.color,
+                                                }}
+                                                onClose={() =>
+                                                    label.id &&
+                                                    onDelete(
+                                                        value.label,
+                                                        label.id
+                                                    )
+                                                }
+                                                onEdit={() =>
+                                                    onEdit({
+                                                        ...label,
+                                                        resource: value.label,
+                                                    })
+                                                }
+                                            >
+                                                {label.name}
+                                            </EditableLabel>
+                                        ))}
+                                </Stack>
+                            </Grid>
+                        );
+                    })}
+            </Stack>
+        </Grid>
     );
 };

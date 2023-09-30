@@ -156,7 +156,7 @@ const PriceSelect = ({ type }: { type: string }) => {
                                             }
                                         >
                                             <ListItemText
-                                                primary={"Indifferent"}
+                                                primary={t("Indifferent")}
                                             />
                                         </ListItem>
                                         {values.map((option) => (
@@ -219,7 +219,7 @@ const PriceSelect = ({ type }: { type: string }) => {
                                             }
                                         >
                                             <ListItemText
-                                                primary={"Indifferent"}
+                                                primary={t("Indifferent")}
                                             />
                                         </ListItem>
                                         {values.map((option) => (
