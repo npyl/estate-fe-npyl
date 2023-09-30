@@ -1,5 +1,5 @@
-import { Box, ButtonProps, IconButton } from "@mui/material";
-import { useRef, useState } from "react";
+import { ButtonProps, IconButton } from "@mui/material";
+import { useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Image from "../image/Image";
 import { LanguagePopover } from "./LanguagePopover";
@@ -26,18 +26,21 @@ export const LanguageButton = ({
     const [language, setLanguage] = useState<Language>("en");
     const [openPopover, setOpenPopover] = useState<boolean>(false);
 
-    const handleOpenPopover = (): void => {
-        setOpenPopover(true);
-    };
-
-    const handleClosePopover = (): void => {
-        setOpenPopover(false);
-    };
+    const handleOpenPopover = (): void => setOpenPopover(true);
+    const handleClosePopover = (): void => setOpenPopover(false);
 
     const handleChange = (language: Language) => {
         setLanguage(language);
         onLanguageChange?.(language);
     };
+
+    const imageSrc = useMemo(
+        () =>
+            languages[
+                updatesGlobalLanguage ? (i18n.language as Language) : language
+            ],
+        [updatesGlobalLanguage, i18n.language, language]
+    );
 
     return (
         <>
@@ -47,28 +50,7 @@ export const LanguageButton = ({
                 sx={{ ml: 1 }}
                 {...props}
             >
-                <Box
-                    sx={{
-                        display: "flex",
-                        height: 20,
-                        width: 20,
-                        "& img": {
-                            width: "100%",
-                        },
-                        position: "relative",
-                    }}
-                >
-                    <Image
-                        alt=""
-                        src={
-                            languages[
-                                updatesGlobalLanguage
-                                    ? (i18n.language as Language)
-                                    : language
-                            ]
-                        }
-                    />
-                </Box>
+                <Image alt="" src={imageSrc} width={20} height={20} />
             </IconButton>
             <LanguagePopover
                 updatesGlobalLanguage={updatesGlobalLanguage}
