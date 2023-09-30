@@ -409,6 +409,7 @@ const resources = {
 
             "Creation Date": "Creation Date",
             "Updated At": "Updated At",
+            Indifferent: "Indifferent",
         },
     },
     gr: {
@@ -829,6 +830,7 @@ const resources = {
 
             "Creation Date": "Ημ/νία Δημιουργίας",
             "Updated At": "Ημ/νία Ενημέρωσης",
+            Indifferent: "Αδιάφορο",
         },
     },
 };

@@ -192,7 +192,7 @@ export default function FilterMore({
                         }}
                     >
                         <MenuItem value={0}>
-                            <ListItemText primary={"Indifferent"} />
+                            <ListItemText primary={t("Indifferent")} />
                         </MenuItem>
                         {generateNumbers().map((option) => (
                             <MenuItem
@@ -231,7 +231,7 @@ export default function FilterMore({
                         }}
                     >
                         <MenuItem value={0}>
-                            <ListItemText primary={"Indifferent"} />
+                            <ListItemText primary={t("Indifferent")} />
                         </MenuItem>
                         {generateNumbers().map((option) => (
                             <MenuItem
@@ -274,7 +274,7 @@ export default function FilterMore({
                         }}
                     >
                         <MenuItem value={0}>
-                            <ListItemText primary={"Indifferent"} />
+                            <ListItemText primary={t("Indifferent")} />
                         </MenuItem>
                         {generateNumbers().map((option) => (
                             <MenuItem
@@ -313,7 +313,7 @@ export default function FilterMore({
                         }}
                     >
                         <MenuItem value={0}>
-                            <ListItemText primary={"Indifferent"} />
+                            <ListItemText primary={t("Indifferent")} />
                         </MenuItem>
                         {generateNumbers().map((option) => (
                             <MenuItem
