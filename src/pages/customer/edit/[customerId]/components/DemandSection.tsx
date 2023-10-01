@@ -1,4 +1,4 @@
-import { Button, Paper, Tab, Tabs } from "@mui/material";
+import { Button, Paper, Tab, Tabs, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
 import { FC } from "react";
@@ -46,10 +46,21 @@ const DemandSection: FC = () => {
                 padding: 0.5,
             }}
         >
-            <Button onClick={handleCreateTab}>Create</Button>
+            <Box
+                sx={{
+                    display: "flex",
+                    justifyContent: "left",
+                }}
+            >
+                <Typography variant="h6" flex={1} mt={1.5} ml={3}>
+                    {t("Demand Forms")}
+                </Typography>
+
+                <Button onClick={handleCreateTab}>Create</Button>
+            </Box>
 
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                <Tabs value={index} onChange={handleTabChange}>
+                <Tabs value={index} onChange={handleTabChange} sx={{ ml: 1 }}>
                     {demands.map((d, i) => (
                         <Tab label={`Demand ${i + 1}`} key={i} />
                     ))}
