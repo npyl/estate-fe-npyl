@@ -22,6 +22,7 @@ const StyledRoot = styled(Box)(({ theme }) => ({
     bottom: theme.spacing(2),
     right: theme.spacing(2),
     padding: theme.spacing(0.25),
+    paddingTop: theme.spacing(0.1),
     color: theme.palette.common.white,
     borderRadius: theme.shape.borderRadius,
 }));
