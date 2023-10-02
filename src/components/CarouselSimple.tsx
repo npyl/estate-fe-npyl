@@ -67,16 +67,16 @@ export default function CarouselSimple({
     };
 
     const renderLargeImg = (
-        <>
+        <Box
+            sx={{
+                zIndex: 0,
+                overflow: "hidden",
+                position: "relative",
+            }}
+        >
             <Box
                 onClick={() => {
                     onImageClick && onImageClick();
-                }}
-                sx={{
-                    mb: 1,
-                    zIndex: 0,
-                    overflow: "hidden",
-                    position: "relative",
                 }}
             >
                 <Carousel
@@ -98,15 +98,13 @@ export default function CarouselSimple({
                     ))}
                 </Carousel>
             </Box>
-            <Box>
-                <CarouselArrowIndex
-                    index={currentIndex}
-                    total={data.length}
-                    onNext={handleNext}
-                    onPrevious={handlePrev}
-                />
-            </Box>
-        </>
+            <CarouselArrowIndex
+                index={currentIndex}
+                total={data.length}
+                onNext={handleNext}
+                onPrevious={handlePrev}
+            />
+        </Box>
     );
 
     return (

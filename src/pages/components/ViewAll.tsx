@@ -120,6 +120,9 @@ function statusColor(params: GridCellParams) {
 
     const value = params.value as KeyValue;
     const status = (value.value as string)?.trim();
+
+    if (!value || !status) return <></>;
+
     const statusForColor = (value.key as string)?.trim();
     const statusUpper = statusForColor?.toUpperCase() as PropertyStatus;
 

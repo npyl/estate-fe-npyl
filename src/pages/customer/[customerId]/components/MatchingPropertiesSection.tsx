@@ -62,11 +62,13 @@ const filterPropertiesInShape = (
     );
 
 function statusColor(params: GridCellParams) {
-    if (!params.value) {
-        return <></>;
-    }
+    if (!params.value) return <></>;
+
     const value = params.value as KeyValue;
     const status = value?.key?.trim();
+
+    if (!value || !status) return <></>;
+
     const statusUpper = status?.toUpperCase() as PropertyStatus;
     const color = STATUS_COLORS[statusUpper] || "#537f91"; // default color if status is not recognized
 
