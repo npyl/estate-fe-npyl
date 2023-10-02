@@ -104,6 +104,14 @@ export const customers = createApi({
             }),
             invalidatesTags: ["Customers", "CustomerById"],
         }),
+        bulkDeleteCustomers: builder.mutation<void, number[]>({
+            query: (customerIds: number[]) => ({
+                url: `/delete/bulk`,
+                method: "DELETE",
+                body: customerIds,
+            }),
+            invalidatesTags: ["Customers", "CustomerById"],
+        }),
         bulkEditCustomers: builder.mutation<void, BulkEditRequest>({
             query: (body: BulkEditRequest) => ({
                 url: `/edit/bulk`,
@@ -145,4 +153,5 @@ export const {
     useEditCustomerMutation,
     useDeleteCustomerMutation,
     useBulkEditCustomersMutation,
+    useBulkDeleteCustomersMutation,
 } = customers;

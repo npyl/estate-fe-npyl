@@ -16,10 +16,12 @@ export const DefaultOrEdit = ({
     children,
     onDisable,
 }: DefaultOrEditProps) => {
+    const { t } = useTranslation();
+
     const [checked, setChecked] = useState(true);
 
     useMemo(() => checked && onDisable(), [checked]);
-    const { t } = useTranslation();
+
     return (
         <Stack>
             <InputLabel>{label}</InputLabel>

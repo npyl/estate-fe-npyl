@@ -12,7 +12,7 @@ import DataGridTable from "src/components/DataGrid";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import {
-    useDeleteCustomerMutation,
+    useBulkDeleteCustomersMutation,
     useFilterCustomersMutation,
 } from "src/services/customers";
 import { FilterSection } from "./components";
@@ -91,9 +91,10 @@ const Customers: NextPage = () => {
     // page
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(25);
-    // const { labels, label = "Labels", ...other } = props;
-    const [deleteCustomer] = useDeleteCustomerMutation();
+
+    const [bulkDeleteCustomers] = useBulkDeleteCustomersMutation();
     const [filterCustomers, { isLoading, data }] = useFilterCustomersMutation();
+
     const totalRows = useMemo(
         () => (data?.totalElements ? data?.totalElements : 100000),
         [data?.totalElements]
@@ -245,8 +246,8 @@ const Customers: NextPage = () => {
     const closeBulkDeleteDialog = () => setBulkDeleteDialogOpen(false);
     const handleBulkDelete = () => {
         closeBulkDeleteDialog();
-
-        Promise.all(selectedRows.map((id) => deleteCustomer(+id))).then(() =>
+        // INFO: bulk delete rows; By default the DataGrid looks for a customer named `id` when getting the rows, so selectedRow = id
+        bulkDeleteCustomers(selectedRows.map((row) => +row)).then(() =>
             revalidate()
         );
     };
