@@ -27,9 +27,7 @@ const EditCustomer: NextPage = () => {
 
     const [everythingIsClear, setEverythingIsClear] = useState(false);
 
-    const { data, isSuccess: fetchedCustomer } = useGetCustomerByIdQuery(
-        +customerId!
-    );
+    const { data } = useGetCustomerByIdQuery(+customerId!);
     const [
         edit,
         {
@@ -53,11 +51,11 @@ const EditCustomer: NextPage = () => {
     );
 
     useEffect(() => {
-        if (everythingIsClear && fetchedCustomer) {
-            dispatch(setInitialNotesState(data.notes));
-            dispatch(setInitialState(data));
-        }
-    }, [everythingIsClear, fetchedCustomer]);
+        if (!everythingIsClear || !data) return;
+
+        dispatch(setInitialNotesState(data.notes));
+        dispatch(setInitialState(data));
+    }, [everythingIsClear, data]);
 
     useEffect(() => {
         if (isEditedSuccess && editedCustomer) {
