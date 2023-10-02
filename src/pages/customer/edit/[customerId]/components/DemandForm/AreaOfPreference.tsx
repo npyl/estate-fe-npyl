@@ -11,13 +11,13 @@ import Map, {
     IMapCoordinates,
     IMapMarker,
 } from "src/components/Map/Map";
-import { DrawShape, StopDraw } from "src/components/Map/types";
+import { DrawShape, ShapeData, StopDraw } from "src/components/Map/types";
 import { decodeShape, encodeShape } from "src/components/Map/util";
 import {
     useGetClosestQuery,
     useLazyGetHierarchyByAreaIdQuery,
 } from "src/services/location";
-import { selectShape, setShape } from "src/slices/customer";
+import { selectShapes, setShapes } from "src/slices/customer";
 
 interface ILocationSectionProps {
     index: number;
@@ -47,14 +47,17 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
 }) => {
     const dispatch = useDispatch();
 
-    const shapes = useSelector(selectShape); // returns every demand's shape
-    const shape = useMemo(
-        () => shapes && shapes.length && shapes[index],
-        [shapes, index]
+    const allShapes = useSelector(selectShapes); // all demands' shapes
+    const shapes = useMemo(
+        () => (allShapes && allShapes.length && allShapes[index]) || [], // current demand's shapes (by demand index)
+        [allShapes, index]
     );
     const shapeData = useMemo(
-        () => (shape ? decodeShape(shape) : null),
-        [shape]
+        () =>
+            shapes
+                .map((shape) => decodeShape(shape))
+                .filter((decoded) => !!decoded) as ShapeData[],
+        [shapes] // current demand's decoded shapes
     );
 
     const [getHierarchy] = useLazyGetHierarchyByAreaIdQuery();
@@ -119,8 +122,17 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
 
     const handleDraw = useCallback(
         (s: DrawShape | StopDraw) => {
-            const encoded = s ? encodeShape(s) : null;
-            dispatch(setShape(indexedData(index, encoded)));
+            console.log("here!");
+
+            if (!s) dispatch(setShapes(indexedData(index, [])));
+            else {
+                const oldShapes = shapes;
+                const encoded = encodeShape(s);
+
+                dispatch(
+                    setShapes(indexedData(index, [...oldShapes, encoded]))
+                );
+            }
         },
         [index]
     );
@@ -211,7 +223,7 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
                     drawing
                     search
                     mainMarker={mainMarker}
-                    shape={shapeData || undefined}
+                    shapes={shapeData}
                     onDraw={handleDraw}
                     onDragEnd={handleMarkerDragEnd}
                     onClick={handleMapClick}

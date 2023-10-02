@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { ILocationPOST } from "src/types/location";
 import { DrawShape, ShapeData, StopDraw } from "./types";
 import SearchOnMap from "./Search";
+import { DrawMultiple } from "./DrawMultiple";
 
 const containerStyle = {
     width: "100%",
@@ -42,6 +43,7 @@ interface IMapProps {
     data?: ILocationPOST[];
     zoom?: number;
     shape?: ShapeData;
+    shapes?: ShapeData[];
     mainMarker?: IMapMarker;
     activeMarker: number | null;
     setActiveMarker: any;
@@ -68,6 +70,7 @@ const Map = ({
     data,
     zoom,
     shape,
+    shapes,
     mainMarker,
     activeMarker,
     setActiveMarker,
@@ -236,10 +239,17 @@ const Map = ({
             onLoad={onLoad}
             onUnmount={onUnmount}
         >
-            {drawing && (
+            {drawing && shape && (
                 <CustomDrawingComponent
                     map={map}
                     shape={shape}
+                    onDraw={(shape) => onDraw && onDraw(shape)}
+                />
+            )}
+            {drawing && shapes && (
+                <DrawMultiple
+                    map={map}
+                    shapes={shapes}
                     onDraw={(shape) => onDraw && onDraw(shape)}
                 />
             )}

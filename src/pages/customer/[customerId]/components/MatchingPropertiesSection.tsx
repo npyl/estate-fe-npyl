@@ -115,8 +115,8 @@ const MatchingPropertiesSection: React.FC = () => {
     );
 
     const demand = useMemo(() => customer?.demands[0], [customer?.demands]); // TODO: support only one for now
-    const shape = useMemo(() => demand?.shape, [customer]);
-    const shapeData = useMemo(() => (shape ? decodeShape(shape) : ""), [shape]);
+    const shapes = useMemo(() => demand?.shapes, [customer]);
+    // const shapeData = [];
 
     const totalRows = useMemo(
         () => propertiesPage?.totalElements,
@@ -126,12 +126,13 @@ const MatchingPropertiesSection: React.FC = () => {
     const properties = useMemo(() => {
         if (!isLoaded) return [];
         if (!propertiesPage?.content) return [];
-        return (
-            (shapeData
-                ? filterPropertiesInShape(propertiesPage?.content, shapeData)
-                : propertiesPage?.content) || []
-        );
-    }, [isLoaded, shapeData, propertiesPage]);
+        return [];
+        // return (
+        //     (shapeData
+        //         ? filterPropertiesInShape(propertiesPage?.content, shapeData)
+        //         : propertiesPage?.content) || []
+        // );
+    }, [isLoaded, propertiesPage]);
 
     useEffect(() => {
         if (!customer || !isSuccess) return;
