@@ -1,6 +1,13 @@
-import { Button, Icon, IconButton, Paper, Tab, Tabs } from "@mui/material";
-import { Button, Paper, Tab, Tabs, Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import {
+    Icon,
+    IconButton,
+    Paper,
+    Tab,
+    Tabs,
+    Button,
+    Typography,
+    Box,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
@@ -97,7 +104,7 @@ const DemandSection: FC = () => {
                             <Box display="flex" alignItems="center">
                                 <AddCircleOutlineOutlinedIcon
                                     sx={{ fontSize: "large" }}
-                                ></AddCircleOutlineOutlinedIcon>
+                                />
                             </Box>
                         }
                     />
