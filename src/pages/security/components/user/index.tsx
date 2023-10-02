@@ -21,7 +21,6 @@ import React, { FC, useState } from "react";
 import OnlyEmailInput from "src/components/OnlyEmailInput";
 import OnlyLettersInput from "src/components/OnlyLetters";
 import OnlyNumbersInput from "src/components/OnlyNumbers";
-import validator from "validator";
 
 type Props = {
     changeTab: (event: React.SyntheticEvent, newValue: number) => void;
@@ -154,10 +153,6 @@ const UserPage: FC<Props> = ({ changeTab, setSelectedUser }) => {
     };
 
     const handleCreateUser = () => {
-        if (!validator.isEmail(email)) {
-            alert("Please enter a valid email address.");
-            return;
-        }
         handleCloseCreateUserModal();
     };
 
@@ -165,10 +160,6 @@ const UserPage: FC<Props> = ({ changeTab, setSelectedUser }) => {
     const handleCloseUpdateUserModal = () => setIsUpdateUserModalOpen(false);
 
     const handleUpdateUser = () => {
-        if (!validator.isEmail(email)) {
-            alert("Please enter a valid email address.");
-            return;
-        }
         handleCloseUpdateUserModal();
     };
 
