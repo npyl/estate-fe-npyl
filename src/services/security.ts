@@ -1,6 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { IUser } from "src/types/user";
-import {IDetails, IPreset} from "../interfaces/roles";
+import { IPreset } from "../interfaces/roles";
 
 export const security = createApi({
     reducerPath: "security",
@@ -19,7 +18,6 @@ export const security = createApi({
     }),
     tagTypes: ["Presets"],
     endpoints: (builder) => ({
-
         // get
         getPresets: builder.query<IPreset, any>({
             query: () => ({
@@ -37,10 +35,7 @@ export const security = createApi({
             }),
             invalidatesTags: ["Presets"],
         }),
-
     }),
 });
 
-export const { useGetPresetsQuery, useSavePresetMutation } =
-    security;
-
+export const { useGetPresetsQuery, useSavePresetMutation } = security;

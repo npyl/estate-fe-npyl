@@ -137,9 +137,9 @@ const UserPage: FC<Props> = ({ changeTab, setSelectedUser }) => {
     const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] =
         useState(false);
 
-    const handleEdit = (userId) => {
-        console.log(`Edit user with ID ${userId}`);
-    };
+    // const handleEdit = (userId) => {
+    //     console.log(`Edit user with ID ${userId}`);
+    // };
 
     const handleCreateUserClick = () => {
         setIsCreateUserModalOpen(true);
@@ -175,12 +175,12 @@ const UserPage: FC<Props> = ({ changeTab, setSelectedUser }) => {
 
     const handleResetPassword = () => {
         console.log("Resetting user password...");
-        console.log("User ID:", userId); // You can pass the user ID here
+        // console.log("User ID:", userId); // You can pass the user ID here
     };
 
     const handleDeleteUser = () => {
         console.log("Deleting user...");
-        console.log("User ID:", userId); // You can pass the user ID here
+        // console.log("User ID:", userId); // You can pass the user ID here
     };
 
     const handleOpenDeleteConfirmation = () => {
