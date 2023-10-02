@@ -6,6 +6,9 @@ const resources = {
         translation: {
             ID: "ID",
             Properties: "Properties",
+            Notifications: "Notifications",
+            Tickets: "Tickets",
+            Mail: "Mail",
             "Edit Property": "Edit Property",
             Thumbnail: "Thumbnail",
             "Reference ID": "Reference ID",
@@ -415,8 +418,10 @@ const resources = {
     gr: {
         translation: {
             ID: "Κωδικός Ακινήτου",
-            All: "Όλα",
             Properties: "Ακίνητα",
+            Notifications: "Ενημερώσεις",
+            Tickets: "Tickets",
+            Mail: "Αλληλογραφία",
             "Edit Property": "Επεξεργασία Ακινήτου",
             "Newly Build": "Νεόδμητο",
             "Property Description": "Περιγραφή ακινήτου",
@@ -827,6 +832,7 @@ const resources = {
             "Matching system enabled": "Ενεργοποιημένο Σύστημα Αντιστοίχισης",
             Cancel: "Ακύρωση",
             Save: "Αποθήκευση",
+            All: "Όλα",
 
             "Creation Date": "Ημ/νία Δημιουργίας",
             "Updated At": "Ημ/νία Ενημέρωσης",
