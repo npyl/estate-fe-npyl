@@ -392,7 +392,7 @@ const CustomerInformation: React.FC<any> = () => {
                         </FormControl>
                     </Grid>
                     <Grid item xs={6}>
-                        {leadSource === "Customer" && (
+                        {leadSource === "CUSTOMER" && (
                             <TextField
                                 fullWidth
                                 label={t("Suggested by")}
