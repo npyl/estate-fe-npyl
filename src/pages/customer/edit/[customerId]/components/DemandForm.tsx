@@ -4,7 +4,6 @@ import {
     Checkbox,
     FormControl,
     Grid,
-    InputAdornment,
     InputLabel,
     MenuItem,
     OutlinedInput,
@@ -14,7 +13,6 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
-import * as React from "react";
 import { FC, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useGlobals } from "src/hooks/useGlobals";
@@ -55,10 +53,13 @@ import { LabelSelect } from "./LabelSelect";
 import PriorityFeatures from "./PriorityFeatures";
 import NonPriorityFeatures from "./NonPriorityFeatures";
 import { KeyValue } from "src/types/KeyValue";
+import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
+import { DemandFormSlider } from "./DemandForm/components/DemandFormSlider";
 
 interface DemandFormProps {
     index: number;
 }
+
 const DemandForm: FC<DemandFormProps> = ({ index }) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
@@ -187,6 +188,9 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
         );
     }, [propertyForCode, isPropertyForCodeSuccess]);
 
+    const autocompleteChange = (_event: any, value: string | null) =>
+        setAutocompleteValue(value || "");
+
     const handleChange10 = (
         event: SelectChangeEvent<typeof parentCategories>
     ) => {
@@ -200,7 +204,6 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
             })
         );
     };
-
     const handleChange11 = (event: SelectChangeEvent<typeof category>) => {
         const {
             target: { value },
@@ -225,7 +228,6 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
             })
         );
     };
-
     const handleChange13 = (event: SelectChangeEvent<typeof state>) => {
         const {
             target: { value },
@@ -239,86 +241,36 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
         );
     };
 
-    const handleChange = (
-        setter: any,
-        index: number,
-        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    // Sliders
+    const handleSliderChange = (
+        newValue: [number, number],
+        minSetter: ActionCreatorWithPayload<any, string>,
+        maxSetter: ActionCreatorWithPayload<any, string>
     ) => {
-        let value: string | number = event.target.value;
+        const [minValue, maxValue] = newValue;
 
-        if (
-            event.target instanceof HTMLInputElement &&
-            event.target.type === "number"
-        ) {
-            value = event.target.valueAsNumber;
-        }
+        if (minValue > maxValue) return;
 
-        dispatch(setter({ index, value }));
+        dispatch(minSetter({ index, value: minValue }));
+        dispatch(maxSetter({ index, value: maxValue }));
     };
 
-    const autocompleteChange = (_event: any, value: string | null) =>
-        setAutocompleteValue(value || "");
-
-    const handleSliderChange0 = (
-        event: any,
-        newValue: any,
-        activeThumb: any
-    ) => {
-        const newValues = newValue;
-        const [minValue, maxValue] = newValues;
-        dispatch(setMinBedrooms({ index, value: minValue }));
-        dispatch(setMaxBedrooms({ index, value: maxValue }));
-    };
-    const handleSliderChange1 = (
-        event: any,
-        newValue: any,
-        activeThumb: any
-    ) => {
-        const newValues = newValue;
-        const [minValue, maxValue] = newValues;
-        dispatch(setMinBathrooms({ index, value: minValue }));
-        dispatch(setMaxBathrooms({ index, value: maxValue }));
-    };
-    const handleSliderChange2 = (
-        event: any,
-        newValue: any,
-        activeThumb: any
-    ) => {
-        const newValues = newValue;
-        const [minValue, maxValue] = newValues;
-        dispatch(setMinCovered({ index, value: minValue }));
-        dispatch(setMaxCovered({ index, value: maxValue }));
-    };
-    const handleSliderChange3 = (
-        event: any,
-        newValue: any,
-        activeThumb: any
-    ) => {
-        const newValues = newValue;
-        const [minValue, maxValue] = newValues;
-        dispatch(setMinPlot({ index, value: minValue }));
-        dispatch(setMaxPlot({ index, value: maxValue }));
-    };
-    const handleSliderChange4 = (
-        event: any,
-        newValue: any,
-        activeThumb: any
-    ) => {
-        const newValues = newValue;
-        const [minValue, maxValue] = newValues;
-        dispatch(setMinPrice({ index, value: minValue }));
-        dispatch(setMaxPrice({ index, value: maxValue }));
-    };
-    const handleSliderChange6 = (
-        event: any,
-        newValue: any,
-        activeThumb: any
-    ) => {
-        const newValues = newValue;
-        const [minValue, maxValue] = newValues;
-        dispatch(setMinYearOfConstruction({ index, value: minValue }));
-        dispatch(setMaxYearOfConstruction({ index, value: maxValue }));
-    };
+    const handleSliderChange0 = (event: any, newValue: any, activeThumb: any) =>
+        handleSliderChange(newValue, setMinBedrooms, setMaxBedrooms);
+    const handleSliderChange1 = (event: any, newValue: any, activeThumb: any) =>
+        handleSliderChange(newValue, setMinBathrooms, setMaxBathrooms);
+    const handleSliderChange2 = (event: any, newValue: any, activeThumb: any) =>
+        handleSliderChange(newValue, setMinCovered, setMaxCovered);
+    const handleSliderChange3 = (event: any, newValue: any, activeThumb: any) =>
+        handleSliderChange(newValue, setMinPlot, setMaxPlot);
+    const handleSliderChange4 = (event: any, newValue: any, activeThumb: any) =>
+        handleSliderChange(newValue, setMinPrice, setMaxPrice);
+    const handleSliderChange5 = (event: any, newValue: any, activeThumb: any) =>
+        handleSliderChange(
+            newValue,
+            setMinYearOfConstruction,
+            setMaxYearOfConstruction
+        );
 
     if (
         !propertyEnums ||
@@ -563,402 +515,88 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                         </FormControl>
                     </Grid>
                     <Grid item xs={6}>
-                        <Typography variant="h6">{t("Bedrooms")}</Typography>
-                        <Grid
-                            container
-                            direction={"row"}
-                            spacing={1}
-                            paddingTop={2}
-                            paddingLeft={3}
-                            paddingRight={3}
-                        >
-                            <Slider
-                                getAriaLabel={() => "Bedrooms Slider"}
-                                orientation="horizontal"
-                                value={[minBedrooms, maxBedrooms]}
-                                onChange={handleSliderChange0}
-                                valueLabelDisplay="auto"
-                                min={0}
-                                max={10}
-                            />
-                            <Grid container spacing={2}>
-                                <Grid item xs={6}>
-                                    <TextField
-                                        label="Min"
-                                        type="number"
-                                        value={minBedrooms}
-                                        onChange={(event) =>
-                                            handleChange(
-                                                setMinBedrooms,
-                                                index,
-                                                event
-                                            )
-                                        }
-                                    />
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <TextField
-                                        label="Max"
-                                        type="number"
-                                        value={maxBedrooms}
-                                        onChange={(event) =>
-                                            handleChange(
-                                                setMaxBedrooms,
-                                                index,
-                                                event
-                                            )
-                                        }
-                                    />
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-
-                    <Grid item xs={6}>
-                        <Typography variant="h6">{t("Bathrooms")}</Typography>
-
-                        <Grid
-                            container
-                            direction={"row"}
-                            spacing={1}
-                            paddingTop={2}
-                            paddingLeft={3}
-                            paddingRight={3}
-                        >
-                            <Slider
-                                getAriaLabel={() => "Bathrooms Slider"}
-                                orientation="horizontal"
-                                value={[minBathrooms, maxBathrooms]}
-                                onChange={handleSliderChange1}
-                                valueLabelDisplay="auto"
-                                min={0}
-                                max={10}
-                            />
-                            <Grid container spacing={2}>
-                                <Grid item xs={6}>
-                                    <TextField
-                                        label="Min"
-                                        type="number"
-                                        value={
-                                            minBathrooms === 0
-                                                ? ""
-                                                : minBathrooms
-                                        }
-                                        onChange={(event) =>
-                                            handleChange(
-                                                setMinBathrooms,
-                                                index,
-                                                event
-                                            )
-                                        }
-                                    />
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <TextField
-                                        label="Max"
-                                        type="number"
-                                        value={
-                                            maxBathrooms === 0
-                                                ? ""
-                                                : maxBathrooms
-                                        }
-                                        onChange={(event) =>
-                                            handleChange(
-                                                setMaxBathrooms,
-                                                index,
-                                                event
-                                            )
-                                        }
-                                    />
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-
-                    <Grid item xs={6}>
-                        <Typography variant="h6">{t("Covered")} </Typography>
-                        <Grid
-                            container
-                            direction={"row"}
-                            spacing={1}
-                            paddingTop={2}
-                            paddingLeft={3}
-                            paddingRight={3}
-                        >
-                            <Slider
-                                getAriaLabel={() => "Covered Slider"}
-                                orientation="horizontal"
-                                value={[minCovered, maxCovered]}
-                                onChange={handleSliderChange2}
-                                valueLabelDisplay="auto"
-                                min={0}
-                                max={300}
-                            />
-                            <Grid container spacing={2}>
-                                <Grid item xs={6}>
-                                    <TextField
-                                        label="Min"
-                                        type="number"
-                                        value={
-                                            minCovered === 0 ? "" : minCovered
-                                        }
-                                        onChange={(event) =>
-                                            handleChange(
-                                                setMinCovered,
-                                                index,
-                                                event
-                                            )
-                                        }
-                                        InputProps={{
-                                            endAdornment: (
-                                                <InputAdornment position="end">
-                                                    m²
-                                                </InputAdornment>
-                                            ),
-                                            inputProps: {
-                                                step: 10,
-                                            },
-                                        }}
-                                    />
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <TextField
-                                        label="Max"
-                                        type="number"
-                                        value={
-                                            maxCovered === 0 ? "" : maxCovered
-                                        }
-                                        onChange={(event) =>
-                                            handleChange(
-                                                setMaxCovered,
-                                                index,
-                                                event
-                                            )
-                                        }
-                                        InputProps={{
-                                            endAdornment: (
-                                                <InputAdornment position="end">
-                                                    m²
-                                                </InputAdornment>
-                                            ),
-                                            inputProps: {
-                                                step: 10,
-                                            },
-                                        }}
-                                    />
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-
-                    <Grid item xs={6}>
-                        <Typography variant="h6">{t("Plot")} </Typography>
-                        <Grid
-                            container
-                            direction={"row"}
-                            spacing={1}
-                            paddingTop={2}
-                            paddingLeft={3}
-                            paddingRight={3}
-                        >
-                            <Slider
-                                getAriaLabel={() => "Plot Slider"}
-                                orientation="horizontal"
-                                value={[minPlot, maxPlot]}
-                                onChange={handleSliderChange3}
-                                valueLabelDisplay="auto"
-                                min={0}
-                                max={500}
-                            />
-                            <Grid container spacing={2}>
-                                <Grid item xs={6}>
-                                    <TextField
-                                        label="Min"
-                                        type="number"
-                                        value={minPlot === 0 ? "" : minPlot}
-                                        onChange={(event) =>
-                                            handleChange(
-                                                setMinPlot,
-                                                index,
-                                                event
-                                            )
-                                        }
-                                        InputProps={{
-                                            endAdornment: (
-                                                <InputAdornment position="end">
-                                                    m²
-                                                </InputAdornment>
-                                            ),
-                                            inputProps: {
-                                                step: 10,
-                                            },
-                                        }}
-                                    />
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <TextField
-                                        label="Max"
-                                        type="number"
-                                        value={maxPlot === 0 ? "" : maxPlot}
-                                        onChange={(event) =>
-                                            handleChange(
-                                                setMaxPlot,
-                                                index,
-                                                event
-                                            )
-                                        }
-                                        InputProps={{
-                                            endAdornment: (
-                                                <InputAdornment position="end">
-                                                    m²
-                                                </InputAdornment>
-                                            ),
-                                            inputProps: {
-                                                step: 10,
-                                            },
-                                        }}
-                                    />
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-
-                    <Grid item xs={6}>
-                        <Typography variant="h6">{t("Price")} </Typography>
-                        <Grid
-                            container
-                            direction={"row"}
-                            spacing={1}
-                            paddingTop={2}
-                            paddingLeft={3}
-                            paddingRight={3}
-                        >
-                            <Slider
-                                getAriaLabel={() => "Price Slider"}
-                                orientation="horizontal"
-                                value={[minPrice, maxPrice]}
-                                onChange={handleSliderChange4}
-                                valueLabelDisplay="auto"
-                                min={0}
-                                max={1000000}
-                            />
-                            <Grid container spacing={2}>
-                                <Grid item xs={6}>
-                                    <TextField
-                                        label="Min"
-                                        type="number"
-                                        value={minPrice === 0 ? "" : minPrice}
-                                        onChange={(event) =>
-                                            handleChange(
-                                                setMinPrice,
-                                                index,
-                                                event
-                                            )
-                                        }
-                                        InputProps={{
-                                            endAdornment: (
-                                                <InputAdornment position="end">
-                                                    €
-                                                </InputAdornment>
-                                            ),
-                                            inputProps: {
-                                                step: 50,
-                                            },
-                                        }}
-                                    />
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <TextField
-                                        label="Max"
-                                        type="number"
-                                        value={maxPrice === 0 ? "" : maxPrice}
-                                        onChange={(event) =>
-                                            handleChange(
-                                                setMaxPrice,
-                                                index,
-                                                event
-                                            )
-                                        }
-                                        InputProps={{
-                                            endAdornment: (
-                                                <InputAdornment position="end">
-                                                    €
-                                                </InputAdornment>
-                                            ),
-                                            inputProps: {
-                                                step: 50,
-                                            },
-                                        }}
-                                    />
-                                </Grid>
-                            </Grid>
-                        </Grid>
+                        <DemandFormSlider
+                            label={t("Bedrooms")}
+                            min={minBedrooms}
+                            max={maxBedrooms}
+                            defaultMin={0}
+                            defaultMax={10}
+                            demandIndex={index}
+                            handleChange={handleSliderChange0}
+                            setterMin={setMinBedrooms}
+                            setterMax={setMaxBedrooms}
+                        />
                     </Grid>
                     <Grid item xs={6}>
-                        <Typography variant="h6">
-                            {t("Year of Construction")}
-                        </Typography>
-                        <Grid
-                            container
-                            direction={"row"}
-                            spacing={1}
-                            paddingTop={2}
-                            paddingLeft={3}
-                            paddingRight={3}
-                        >
-                            <Slider
-                                getAriaLabel={() =>
-                                    "Year Of Constuction Slider"
-                                }
-                                orientation="horizontal"
-                                value={[
-                                    minYearOfConstruction,
-                                    maxYearOfConstruction,
-                                ]}
-                                onChange={handleSliderChange6}
-                                valueLabelDisplay="auto"
-                                min={1960}
-                                max={2023}
-                            />
-                            <Grid container spacing={2}>
-                                <Grid item xs={6}>
-                                    <TextField
-                                        label="Min"
-                                        type="number"
-                                        value={
-                                            minYearOfConstruction === 0
-                                                ? ""
-                                                : minYearOfConstruction
-                                        }
-                                        onChange={(event) =>
-                                            handleChange(
-                                                setMinYearOfConstruction,
-                                                index,
-                                                event
-                                            )
-                                        }
-                                    />
-                                </Grid>
-                                <Grid item xs={6}>
-                                    <TextField
-                                        label="Max"
-                                        type="number"
-                                        value={
-                                            maxYearOfConstruction === 0
-                                                ? ""
-                                                : maxYearOfConstruction
-                                        }
-                                        onChange={(event) =>
-                                            handleChange(
-                                                setMaxYearOfConstruction,
-                                                index,
-                                                event
-                                            )
-                                        }
-                                    />
-                                </Grid>
-                            </Grid>
-                        </Grid>
+                        <DemandFormSlider
+                            label={t("Bathrooms")}
+                            min={minBathrooms}
+                            max={maxBathrooms}
+                            defaultMin={0}
+                            defaultMax={10}
+                            demandIndex={index}
+                            handleChange={handleSliderChange1}
+                            setterMin={setMinBathrooms}
+                            setterMax={setMaxBathrooms}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <DemandFormSlider
+                            label={t("Covered")}
+                            min={minCovered}
+                            max={maxCovered}
+                            defaultMin={0}
+                            defaultMax={300}
+                            demandIndex={index}
+                            handleChange={handleSliderChange2}
+                            setterMin={setMinCovered}
+                            setterMax={setMaxCovered}
+                            adornment="m²"
+                            step={10}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <DemandFormSlider
+                            label={t("Plot")}
+                            min={minPlot}
+                            max={maxPlot}
+                            defaultMin={0}
+                            defaultMax={500}
+                            demandIndex={index}
+                            handleChange={handleSliderChange3}
+                            setterMin={setMinPlot}
+                            setterMax={setMaxPlot}
+                            adornment="m²"
+                            step={10}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <DemandFormSlider
+                            label={t("Price")}
+                            min={minPrice}
+                            max={maxPrice}
+                            defaultMin={0}
+                            defaultMax={1000000}
+                            demandIndex={index}
+                            handleChange={handleSliderChange4}
+                            setterMin={setMinPrice}
+                            setterMax={setMaxPrice}
+                            adornment="€"
+                            step={50}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <DemandFormSlider
+                            label={t("Year of Construction")}
+                            min={minYearOfConstruction}
+                            max={maxYearOfConstruction}
+                            defaultMin={1960}
+                            defaultMax={new Date().getFullYear()}
+                            demandIndex={index}
+                            handleChange={handleSliderChange5}
+                            setterMin={setMinYearOfConstruction}
+                            setterMax={setMaxYearOfConstruction}
+                        />
                     </Grid>
                     <Grid item xs={6}>
                         <Typography variant="h6">{t("Floor")}</Typography>
