@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useGetLabelsQuery } from "src/services/labels";
 import { deleteFilter, getChangedFields, selectIds } from "src/slices/filters";
-import { aborted } from "util";
 
 const ChosenFilters = () => {
     const { t } = useTranslation();
