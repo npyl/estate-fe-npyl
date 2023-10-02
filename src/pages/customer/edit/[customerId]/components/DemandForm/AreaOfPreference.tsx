@@ -217,8 +217,8 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
                 <Map
                     key={index}
                     zoom={12}
-                    drawing
                     search
+                    multipleShapes
                     mainMarker={mainMarker}
                     shapes={shapeData}
                     onDraw={handleDraw}

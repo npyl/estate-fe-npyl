@@ -52,8 +52,6 @@ export const AreaOfPreference: React.FC<AreaOfPreferenceProps> = ({
     useEffect(() => {
         if (!map) return;
 
-        shapeData?.map((shapeDatum) => drawShape(shapeDatum, map, null));
-
         if (shapeData0) {
             // Center the map to the first point in the shape
             if (shapeData0.type === "Polygon") {
@@ -78,22 +76,24 @@ export const AreaOfPreference: React.FC<AreaOfPreferenceProps> = ({
         } else {
             if (!cities[0]) return;
             const city = municips?.filter((m) => m.areaID === +cities[0])[0];
-            // Debug lines to ensure that the map should be visible
+
             map.setCenter(
                 new google.maps.LatLng(city?.latitude!, city?.longitude!)
-            ); // Centering on San Francisco for example
+            );
+
             map.setZoom(12);
         }
-    }, [shapeData, shapeData0, index, map]);
+    }, [shapeData0, index, map]);
 
     return (
         <Box height={`calc(100vh - 266px)`} width={"100%"}>
             <Map
                 key={index}
                 zoom={12}
+                multipleShapes
+                drawing={false}
                 shapes={shapeData}
                 onReady={(m) => setMap(m)}
-                drawing={false}
                 activeMarker={null}
                 setActiveMarker={() => {}}
             />

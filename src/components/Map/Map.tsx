@@ -48,6 +48,7 @@ interface IMapProps {
     activeMarker: number | null;
     setActiveMarker: any;
     drawing?: boolean;
+    multipleShapes?: boolean;
     search?: boolean;
 }
 
@@ -75,6 +76,7 @@ const Map = ({
     activeMarker,
     setActiveMarker,
     hideMainMarker = false,
+    multipleShapes = false,
     drawing = true,
     search = false,
 }: IMapProps) => {
@@ -239,16 +241,18 @@ const Map = ({
             onLoad={onLoad}
             onUnmount={onUnmount}
         >
-            {drawing && shape && (
+            {!multipleShapes && (
                 <CustomDrawingComponent
                     map={map}
+                    drawing={drawing}
                     shape={shape}
                     onDraw={(shape) => onDraw && onDraw(shape)}
                 />
             )}
-            {drawing && shapes && shapes.length > 0 && (
+            {multipleShapes && (
                 <DrawMultiple
                     map={map}
+                    drawing={drawing}
                     shapes={shapes}
                     onDraw={(shape) => onDraw && onDraw(shape)}
                 />

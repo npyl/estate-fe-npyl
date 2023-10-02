@@ -6,13 +6,19 @@ import { drawShape } from "./util";
 
 interface DrawMultipleProps {
     map: any;
+    drawing: boolean;
     shapes?: ShapeData[];
     onDraw: (shape: DrawShape | StopDraw) => void;
 }
 
-export const DrawMultiple = ({ map, shapes, onDraw }: DrawMultipleProps) => {
+export const DrawMultiple = ({
+    map,
+    drawing,
+    shapes,
+    onDraw,
+}: DrawMultipleProps) => {
     const drawingManagerRef = useRef<any>(null);
-    const shapeRefs = useRef<(DrawShape | StopDraw)[]>(null);
+    const shapeRefs = useRef<(DrawShape | StopDraw)[]>([]);
 
     // drawing manager ready
     const [ready, setReady] = useState(false);
@@ -98,11 +104,11 @@ export const DrawMultiple = ({ map, shapes, onDraw }: DrawMultipleProps) => {
         shapeRefs.current?.forEach((shape) => shape?.setMap(null));
 
         // draw any imported shape
-        shapes?.forEach((shape) => {
+        shapes?.forEach((shape) =>
             shapeRefs.current?.push(
                 shape ? drawShape(shape, map, onDraw) : null
-            );
-        });
+            )
+        );
         // INFO: we need to support null/undefined shape, because it can mean user cleared the shape OR we loaded a new map on a new demand form
     }, [ready, shapes]);
 
@@ -124,7 +130,7 @@ export const DrawMultiple = ({ map, shapes, onDraw }: DrawMultipleProps) => {
         onDraw(null);
     };
 
-    return (
+    return drawing ? (
         <Stack
             style={{
                 position: "absolute",
@@ -180,5 +186,7 @@ export const DrawMultiple = ({ map, shapes, onDraw }: DrawMultipleProps) => {
                 <Typography fontSize={10}>Clear</Typography>
             </StyledButton>
         </Stack>
+    ) : (
+        <></>
     );
 };

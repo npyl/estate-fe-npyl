@@ -6,12 +6,14 @@ import { drawShape } from "./util";
 
 interface DrawingComponentProps {
     map: any;
+    drawing: boolean;
     shape?: ShapeData;
     onDraw: (shape: DrawShape | StopDraw) => void;
 }
 
 export const CustomDrawingComponent = ({
     map,
+    drawing,
     shape,
     onDraw,
 }: DrawingComponentProps) => {
@@ -152,7 +154,7 @@ export const CustomDrawingComponent = ({
         onDraw(null);
     };
 
-    return (
+    return drawing ? (
         <Stack
             style={{
                 position: "absolute",
@@ -208,5 +210,7 @@ export const CustomDrawingComponent = ({
                 <Typography fontSize={10}>Clear</Typography>
             </StyledButton>
         </Stack>
+    ) : (
+        <></>
     );
 };
