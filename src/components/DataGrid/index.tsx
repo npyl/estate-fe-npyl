@@ -97,8 +97,8 @@ const DataGridTable: FC<GridProps> = ({
 
                 {selectedRows && selectedRows.length > 0 && (
                     <>
-                        <BulkDeleteButton />
-                        <BulkEditButton />
+                        {onBulkDelete && <BulkDeleteButton />}
+                        {onBulkEdit && <BulkEditButton />}
                     </>
                 )}
             </GridToolbarContainer>
