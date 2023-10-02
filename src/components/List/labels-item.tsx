@@ -16,15 +16,18 @@ interface ListLabelsItemProps extends ListItemProps {
 const ListLabelsItem: FC<ListLabelsItemProps> = (props) => {
     const { labels, label = "Labels", ...other } = props;
 
+    // This function truncates the label name if it's more than 16 characters
+    const truncateLabelName = (name: string) => {
+        return name.length > 19 ? name.substring(0, 19) + "..." : name;
+    };
+
     return (
         <ListItem label={label} {...other}>
-            <Box paddingLeft={1} margin={0} display="flex" flexWrap="wrap">
-                {" "}
-                {/* Added a container with margin-top */}
+            <Box paddingLeft={0} margin={0} display="flex" flexWrap="wrap">
                 {labels.map((label, index) => {
                     return (
                         <Label key={index} sx={{ bgcolor: label.color, mr: 1 }}>
-                            {label.name}
+                            {truncateLabelName(label.name)}
                         </Label>
                     );
                 })}

@@ -28,15 +28,31 @@ const ChosenFilters = () => {
         leaser: {
             label: t("Leaser"),
         },
+        seller: {
+            label: t("Seller"),
+        },
         buyer: {
             label: t("Buyer"),
         },
         lessor: {
             label: t("Lessor"),
         },
-        seller: {
-            label: t("Seller"),
+        minPrice: {
+            label: t("Minimum Price"),
         },
+        maxPrice: {
+            label: t("Maximun Price"),
+        },
+        minArea: {
+            label: t("Minimum Covered Area"),
+        },
+        maxArea: {
+            label: t("Maximun Covered Area"),
+        },
+        managerId: {
+            label: t("Manager ID"),
+        },
+
         parentCategories: {
             label: t("Parent Categories"),
         },
@@ -44,7 +60,25 @@ const ChosenFilters = () => {
             label: t("Categories"),
         },
     };
+    const pairFilterTags: Record<string, { label: string }> = {
+        minMaxPrice: {
+            label: t("Price (€)"),
+        },
+        minMaxArea: {
+            label: t("Area (m²)"),
+        },
+    };
+    const hasMinMaxPair = (suffix: string | null): boolean => {
+        if (!suffix) return false;
 
+        const minKey = `min${suffix}`;
+        const maxKey = `max${suffix}`;
+
+        return (
+            changedProps.hasOwnProperty(minKey) &&
+            changedProps.hasOwnProperty(maxKey)
+        );
+    };
     const allLabels = useMemo(
         () => data?.customerLabels || [],
         [data?.customerLabels]
@@ -77,32 +111,92 @@ const ChosenFilters = () => {
 
                 let valuesToDisplay =
                     key === "labels" ? getLabelNames(values) : values;
+                const suffix =
+                    key.includes("min") || key.includes("max")
+                        ? key.slice(3)
+                        : null;
 
-                return (
-                    <Chip
-                        key={index}
-                        label={
-                            <Stack direction="row">
-                                <Typography
-                                    sx={{
-                                        fontWeight: "medium",
-                                        paddingRight: 1,
-                                    }}
-                                >
-                                    {label}
-                                    {isRole ? "" : ":"}
-                                </Typography>
-                                <Typography sx={{ textTransform: "lowercase" }}>
-                                    {Array.isArray(valuesToDisplay)
-                                        ? valuesToDisplay.join(", ")
-                                        : valuesToDisplay}
-                                </Typography>
-                            </Stack>
-                        }
-                        onDelete={() => dispatch(deleteFilter(key))}
-                        sx={{ m: 0.5 }}
-                    />
-                );
+                if (hasMinMaxPair(suffix) && key === `max${suffix}`)
+                    return <></>;
+
+                // If we have min-max pair show chip differently
+                if (hasMinMaxPair(suffix)) {
+                    label = pairFilterTags[`minMax${suffix}`].label;
+                    const minValue = changedProps[`min${suffix}`];
+                    const maxValue = changedProps[`max${suffix}`];
+
+                    return (
+                        <Chip
+                            key={index}
+                            label={
+                                <Stack direction="row">
+                                    <Typography
+                                        sx={{
+                                            fontWeight: "medium",
+                                            paddingRight: 1,
+                                        }}
+                                    >
+                                        {label}:
+                                    </Typography>
+                                    <Typography
+                                        sx={{
+                                            textTransform: "lowercase",
+                                            paddingRight: 1,
+                                        }}
+                                    >
+                                        {minValue}
+                                    </Typography>
+                                    <Typography
+                                        sx={{
+                                            fontWeight: "medium",
+                                            paddingRight: 1,
+                                        }}
+                                    >
+                                        -
+                                    </Typography>
+                                    <Typography
+                                        sx={{ textTransform: "lowercase" }}
+                                    >
+                                        {maxValue}
+                                    </Typography>
+                                </Stack>
+                            }
+                            onDelete={() => {
+                                dispatch(deleteFilter(`min${suffix}`));
+                                dispatch(deleteFilter(`max${suffix}`));
+                            }}
+                            sx={{ m: 0.5 }}
+                        />
+                    );
+                } else {
+                    return (
+                        <Chip
+                            key={index}
+                            label={
+                                <Stack direction="row">
+                                    <Typography
+                                        sx={{
+                                            fontWeight: "medium",
+                                            paddingRight: 1,
+                                        }}
+                                    >
+                                        {label}
+                                        {isRole ? "" : ":"}
+                                    </Typography>
+                                    <Typography
+                                        sx={{ textTransform: "lowercase" }}
+                                    >
+                                        {Array.isArray(valuesToDisplay)
+                                            ? valuesToDisplay.join(", ")
+                                            : valuesToDisplay}
+                                    </Typography>
+                                </Stack>
+                            }
+                            onDelete={() => dispatch(deleteFilter(key))}
+                            sx={{ m: 0.5 }}
+                        />
+                    );
+                }
             })}
         </Grid>
     );

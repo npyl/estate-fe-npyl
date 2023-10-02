@@ -43,6 +43,10 @@ const slice = createSlice({
             state.filters.buyer = payload;
             !state.ids.includes("buyer") && state.ids.push("buyer");
         },
+        setManagerId(state, { payload }) {
+            state.filters.managerId = payload;
+            !state.ids.includes("managerId") && state.ids.push("managerId");
+        },
 
         // multiple
         setLabels(state, { payload }) {
@@ -58,7 +62,49 @@ const slice = createSlice({
             !state.ids.includes("parentCategories") &&
                 state.ids.push("parentCategories");
         },
+        //min-max
+        setMaxPrice(state, { payload }) {
+            state.filters.maxPrice = payload;
+            !state.ids.includes("maxPrice") && state.ids.push("maxPrice");
+        },
+        setMinPrice(state, { payload }) {
+            state.filters.minPrice = payload;
+            !state.ids.includes("minPrice") && state.ids.push("minPrice");
+        },
+        setMinArea(state, { payload }) {
+            state.filters.minCovered = payload;
+            !state.ids.includes("minArea") && state.ids.push("minArea");
+        },
+        setMaxArea(state, { payload }) {
+            state.filters.maxCovered = payload;
+            !state.ids.includes("maxArea") && state.ids.push("maxArea");
+        },
+        // resetBasic: (state) => {
+        //     state.filters.managerId = initialState.filters.managerId;
 
+        //     state.filters.parentCategories =
+        //         initialState.filters.parentCategories;
+        //     state.filters.categories = initialState.filters.categories;
+        //     state.filters.minPrice = initialState.filters.minPrice;
+        //     state.filters.maxPrice = initialState.filters.maxPrice;
+        //     state.filters.minArea = initialState.filters.minArea;
+        //     state.filters.maxArea = initialState.filters.maxArea;
+        //     state.filters.labels = initialState.filters.labels;
+
+        //     state.ids = state.ids.filter((id) => id !== "minArea");
+        //     state.ids = state.ids.filter((id) => id !== "maxPrice");
+        //     state.ids = state.ids.filter((id) => id !== "minPrice");
+        //     state.ids = state.ids.filter((id) => id !== "categories");
+        //     state.ids = state.ids.filter((id) => id !== "parentCategory");
+        //     state.ids = state.ids.filter((id) => id !== "states");
+        //     state.ids = state.ids.filter((id) => id !== "managerId");
+        //     state.ids = state.ids.filter((id) => id !== "code");
+        //     state.ids = state.ids.filter((id) => id !== "labels");
+        // },
+        setStates(state, { payload }) {
+            state.filters.states = payload;
+            !state.ids.includes("states") && state.ids.push("states");
+        },
         // general delete
         deleteFilter(state, { payload }) {
             const key = payload;
@@ -81,6 +127,8 @@ const slice = createSlice({
 });
 
 export const {
+    setManagerId,
+    setStates,
     setStatus,
     setBuyer,
     setLeaser,
@@ -92,13 +140,21 @@ export const {
     setParentCategories,
     // delete
     deleteFilter,
-
+    //min-max
+    setMaxPrice,
+    setMinPrice,
+    setMinArea,
+    setMaxArea,
     // reset
     resetState,
 } = slice.actions;
 
 export const selectStatus = ({ customerFilters }: RootState) =>
     customerFilters.filters.status;
+export const selectManagerId = ({ customerFilters }: RootState) =>
+    customerFilters.filters.managerId;
+export const selectStates = ({ customerFilters }: RootState) =>
+    customerFilters.filters.states;
 export const selectBuyer = ({ customerFilters }: RootState) =>
     customerFilters.filters.buyer;
 export const selectLeaser = ({ customerFilters }: RootState) =>
@@ -115,7 +171,15 @@ export const selectCategories = ({ customerFilters }: RootState) =>
     customerFilters.filters.categories;
 export const selectIds = ({ customerFilters }: RootState) =>
     customerFilters.ids;
-
+//min-max
+export const selectMaxPrice = ({ customerFilters }: RootState) =>
+    customerFilters.filters.maxPrice;
+export const selectMinPrice = ({ customerFilters }: RootState) =>
+    customerFilters.filters.minPrice;
+export const selectMinArea = ({ customerFilters }: RootState) =>
+    customerFilters.filters.minCovered;
+export const selectMaxArea = ({ customerFilters }: RootState) =>
+    customerFilters.filters.maxCovered;
 export const selectAll = ({ customerFilters }: RootState) =>
     customerFilters.filters;
 
@@ -123,6 +187,7 @@ export const sumOfChangedProperties = createSelector(
     (state: RootState) => state.customerFilters,
     (filter) => {
         const propertiesToInclude = [
+            "managerId",
             "status",
             "buyer",
             "leaser",
@@ -132,6 +197,11 @@ export const sumOfChangedProperties = createSelector(
             "labels",
             "parentCategories",
             "categories",
+            //min-max
+            "minArea",
+            "maxArea",
+            "minPrice",
+            "maxPrice",
         ];
 
         return propertiesToInclude.reduce(

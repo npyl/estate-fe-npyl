@@ -1,3 +1,4 @@
+import { Button, Icon, IconButton, Paper, Tab, Tabs } from "@mui/material";
 import { Button, Paper, Tab, Tabs, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useEffect, useState } from "react";
@@ -7,10 +8,13 @@ import { useDispatch, useSelector } from "react-redux";
 import DemandForm from "./DemandForm";
 import {
     addDemand,
+    removeDemands,
     selectBuyer,
     selectDemands,
     selectLeaser,
 } from "src/slices/customer";
+import { CloseIcon } from "yet-another-react-lightbox/core";
+import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 
 const DemandSection: FC = () => {
     const { t } = useTranslation();
@@ -22,13 +26,21 @@ const DemandSection: FC = () => {
     const leaser = useSelector(selectLeaser);
     const buyer = useSelector(selectBuyer);
 
-    const handleTabChange = (event: React.SyntheticEvent, newValue: number) =>
-        setIndex(newValue);
-
+    const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+        if (newValue === demands.length) {
+            // check if "Create" tab is clicked
+            handleCreateTab();
+        } else {
+            setIndex(newValue);
+        }
+    };
     const handleCreateTab = () => {
         dispatch(addDemand({}));
     };
-
+    const handleDeleteTab = (i: number, event: React.MouseEvent) => {
+        event.stopPropagation(); // This will prevent the tab change event
+        dispatch(removeDemands(i)); // Assuming this removes the demand at a given index
+    };
     useEffect(() => {
         // NOTE: when a customer is first created, its demands array is empty; create one
         if (!leaser && !buyer) return;
@@ -62,8 +74,33 @@ const DemandSection: FC = () => {
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
                 <Tabs value={index} onChange={handleTabChange} sx={{ ml: 1 }}>
                     {demands.map((d, i) => (
-                        <Tab label={`Demand ${i + 1}`} key={i} />
+                        <Tab
+                            label={
+                                <Box display="flex" alignItems="center">
+                                    {`Demand ${i + 1}`}
+                                    <IconButton
+                                        size="small"
+                                        onClick={(e) => handleDeleteTab(i, e)}
+                                    >
+                                        <CloseIcon
+                                            style={{ transform: "scale(0.5)" }}
+                                        />
+                                    </IconButton>
+                                </Box>
+                            }
+                            key={i}
+                            style={{ marginRight: "-20px" }}
+                        />
                     ))}
+                    <Tab
+                        label={
+                            <Box display="flex" alignItems="center">
+                                <AddCircleOutlineOutlinedIcon
+                                    sx={{ fontSize: "large" }}
+                                ></AddCircleOutlineOutlinedIcon>
+                            </Box>
+                        }
+                    />
                 </Tabs>
             </Box>
 

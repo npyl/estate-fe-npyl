@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { ICustomer, ICustomerPOST } from "src/types/customer";
 import {
     IDemand,
@@ -615,6 +615,7 @@ const slice = createSlice({
         addDemand: (state: customerState, action) => {
             state.demands.push(initialDemandState);
         },
+
         resetState: () => {
             return initialState;
         },
@@ -628,6 +629,7 @@ export const {
     toggleBuyer,
     //demands
     removeDemands,
+
     setDemands,
     addDemand,
 

@@ -116,7 +116,11 @@ const Customers: NextPage = () => {
 
         const labels: ILabel[] = params.value as ILabel[];
 
-        return <ListLabelsItem labels={labels} label={""} />;
+        return (
+            <div style={{ display: "flex", justifyContent: "center" }}>
+                <ListLabelsItem labels={labels} label={""} />
+            </div>
+        );
     }
     const handlePaginationModelChange = (
         model: GridPaginationModel,
