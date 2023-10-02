@@ -28,6 +28,11 @@ export interface ICustomerFilter {
     buyer?: boolean;
     parentCategories?: string[];
     categories?: string[];
+    minPrice?: number;
+    maxPrice?: number;
+    minCovered?: number;
+    maxCovered?: number;
+    managerId?: number;
 }
 
 export interface ICustomer {

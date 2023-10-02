@@ -1,16 +1,16 @@
 import { KeyValue } from "./KeyValue";
 
 export type LeadSource =
-    | "Facebook"
-    | "Instagram"
-    | "Google"
-    | "Customer"
-    | "Website"
-    | "spitogatos.gr"
-    | "plot.gr"
-    | "xe.gr"
-    | "Street Sign"
-    | "Other";
+    | "FACEBOOK"
+    | "INSTAGRAM"
+    | "GOOGLE"
+    | "CUSTOMER"
+    | "WEBSITE"
+    | "SPITOGATOS_GR"
+    | "PLOT_GR"
+    | "XE_GR"
+    | "STREET_SIGN"
+    | "OTHER";
 
 export interface IGlobalPropertyDetails {
     accessibility: KeyValue[];

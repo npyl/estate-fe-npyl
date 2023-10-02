@@ -27,6 +27,9 @@ export interface BulkEditRequest {
     bedrooms?: number;
     state?: string;
 }
+interface BulkDeleteRequest {
+    propertyIds: number[];
+}
 
 interface IGetPropertyAttributeProps {
     propertyId: number;
@@ -152,7 +155,15 @@ export const properties = createApi({
             query: (body: BulkEditRequest) => ({
                 url: `/edit/bulk`,
                 method: "POST",
-                body: body,
+                body,
+            }),
+            invalidatesTags: ["Properties", "PropertyById"],
+        }),
+        bulkDeleteProperties: builder.mutation<void, number[]>({
+            query: (propertyIds: number[]) => ({
+                url: `/delete/bulk`,
+                method: "DELETE",
+                body: propertyIds,
             }),
             invalidatesTags: ["Properties", "PropertyById"],
         }),
@@ -305,6 +316,7 @@ export const {
     useFilterPropertiesMutation,
     useSuggestForCustomerQuery,
     useBulkEditPropertiesMutation,
+    useBulkDeletePropertiesMutation,
 
     // check
     useLazyCheckCodeExistsQuery,

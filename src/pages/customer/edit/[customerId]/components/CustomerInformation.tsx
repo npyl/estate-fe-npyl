@@ -71,6 +71,7 @@ import { useEffect } from "react";
 import DateFieldStyled from "src/components/DateFieldStyled";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import OnlyLettersInput from "src/components/OnlyLetters";
+import OnlyEmailInput from "src/components/OnlyEmailInput";
 
 const CustomerInformation: React.FC<any> = () => {
     const dispatch = useDispatch();
@@ -109,9 +110,6 @@ const CustomerInformation: React.FC<any> = () => {
     const dateOfBirth = useSelector(selectDateOfBirth) || "";
     const preferredLanguage = useSelector(selectPreferredLanguage) || "";
     const leadSource = (useSelector(selectLeadSource) as LeadSource) || "";
-
-    const [emailError, setEmailError] = React.useState(false);
-    const [helperText, setHelperText] = React.useState("");
 
     const customerLabels = labels?.customerLabels;
     const currentDate = new Date();
@@ -203,32 +201,12 @@ const CustomerInformation: React.FC<any> = () => {
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <TextField
-                            fullWidth
+                        <OnlyEmailInput
                             label={t("Email")}
-                            type="email"
                             value={email}
-                            onChange={(e) => {
-                                dispatch(setEmail(e.target.value));
-                            }}
-                            onBlur={(e) => {
-                                const regex = /\S+@\S+\.\S+/;
-                                if (
-                                    regex.test(e.target.value) ||
-                                    e.target.value === ""
-                                ) {
-                                    setEmailError(false);
-                                    setHelperText("");
-                                } else {
-                                    setEmailError(true);
-                                    setHelperText("Please enter a valid email");
-                                }
-                            }}
-                            error={emailError}
-                            helperText={helperText}
+                            onChange={(value) => dispatch(setEmail(value))}
                         />
                     </Grid>
-
                     <Grid item xs={6}>
                         <FormControl fullWidth>
                             <InputLabel>{t("Managed By")}</InputLabel>
@@ -392,7 +370,7 @@ const CustomerInformation: React.FC<any> = () => {
                         </FormControl>
                     </Grid>
                     <Grid item xs={6}>
-                        {leadSource === "Customer" && (
+                        {leadSource === "CUSTOMER" && (
                             <TextField
                                 fullWidth
                                 label={t("Suggested by")}

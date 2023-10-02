@@ -170,7 +170,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
     // };
 
     if (!propertyId) return null;
-    console.log("edw2", files);
+
     return (
         <>
             <Card>
@@ -178,7 +178,13 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
                     title={t("Upload Images")}
                     action={
                         files.length > 0 && (
-                            <SoftButton onClick={handleOpenGalleryManager}>
+                            <SoftButton
+                                onClick={handleOpenGalleryManager}
+                                sx={{
+                                    mt: -1,
+                                    mr: 1,
+                                }}
+                            >
                                 {t("Edit")}
                             </SoftButton>
                         )
@@ -230,7 +236,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
                 onClose={handleCloseMore}
                 aria-labelledby="upload-dnd-dialog-title"
                 fullWidth
-                maxWidth="lg" // You can set this to 'xs', 'sm', 'md', 'lg', or 'xl'
+                maxWidth="lg"
             >
                 <DialogTitle id="upload-dnd-dialog-title">
                     Upload Images

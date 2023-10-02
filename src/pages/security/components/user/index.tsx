@@ -18,7 +18,11 @@ import {
     TextField,
 } from "@mui/material";
 import React, { FC, useState } from "react";
+import OnlyEmailInput from "src/components/OnlyEmailInput";
+import OnlyLettersInput from "src/components/OnlyLetters";
+import OnlyNumbersInput from "src/components/OnlyNumbers";
 import validator from "validator";
+
 type Props = {
     changeTab: (event: React.SyntheticEvent, newValue: number) => void;
     setSelectedUser: (value: ((prevState: number) => number) | number) => void;
@@ -157,13 +161,8 @@ const UserPage: FC<Props> = ({ changeTab, setSelectedUser }) => {
         handleCloseCreateUserModal();
     };
 
-    const handleUpdateUserClick = () => {
-        setIsUpdateUserModalOpen(true);
-    };
-
-    const handleCloseUpdateUserModal = () => {
-        setIsUpdateUserModalOpen(false);
-    };
+    const handleUpdateUserClick = () => setIsUpdateUserModalOpen(true);
+    const handleCloseUpdateUserModal = () => setIsUpdateUserModalOpen(false);
 
     const handleUpdateUser = () => {
         if (!validator.isEmail(email)) {
@@ -183,13 +182,10 @@ const UserPage: FC<Props> = ({ changeTab, setSelectedUser }) => {
         // console.log("User ID:", userId); // You can pass the user ID here
     };
 
-    const handleOpenDeleteConfirmation = () => {
+    const handleOpenDeleteConfirmation = () =>
         setIsDeleteConfirmationOpen(true);
-    };
-
-    const handleCloseDeleteConfirmation = () => {
+    const handleCloseDeleteConfirmation = () =>
         setIsDeleteConfirmationOpen(false);
-    };
 
     return (
         <div>
@@ -257,79 +253,71 @@ const UserPage: FC<Props> = ({ changeTab, setSelectedUser }) => {
             >
                 <DialogTitle>Create User</DialogTitle>
                 <DialogContent>
-                    <TextField
+                    <OnlyLettersInput
                         label="First Name"
                         fullWidth
                         margin="normal"
                         variant="outlined"
                         value={firstName}
-                        onChange={(e) =>
-                            setFirstName(
-                                e.target.value.replace(/[^a-zA-Z]/g, "")
-                            )
-                        }
+                        onChange={(value) => setFirstName(value)}
                         inputProps={{ maxLength: 50 }}
                     />
-                    <TextField
+                    <OnlyLettersInput
                         label="Last Name"
                         fullWidth
                         margin="normal"
                         variant="outlined"
                         value={lastName}
-                        onChange={(e) =>
-                            setLastName(
-                                e.target.value.replace(/[^a-zA-Z]/g, "")
-                            )
-                        }
+                        onChange={(value) => setLastName(value)}
                         inputProps={{ maxLength: 50 }}
                     />
-                    <TextField
+                    <OnlyEmailInput
                         label="Email"
                         fullWidth
                         margin="normal"
                         variant="outlined"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(value) => setEmail(value)}
                     />
-                    <TextField
+                    <OnlyNumbersInput
                         label="Mobile Phone"
                         fullWidth
                         margin="normal"
                         variant="outlined"
                         value={mobilePhone}
-                        onChange={(e) => setMobilePhone(e.target.value)}
+                        onChange={(value) => setMobilePhone(value)}
                     />
-                    <TextField
+                    <OnlyNumbersInput
                         label="Home Phone"
                         fullWidth
                         margin="normal"
                         variant="outlined"
                         value={homePhone}
-                        onChange={(e) => setHomePhone(e.target.value)}
+                        onChange={(value) => setHomePhone(value)}
                     />
-                    <TextField
+                    <OnlyNumbersInput
                         label="Business Phone"
                         fullWidth
                         margin="normal"
                         variant="outlined"
                         value={businessPhone}
-                        onChange={(e) => setBusinessPhone(e.target.value)}
+                        onChange={(value) => setBusinessPhone(value)}
                     />
-                    <TextField
+                    <OnlyNumbersInput
                         label="Office Phone"
                         fullWidth
                         margin="normal"
                         variant="outlined"
                         value={officePhone}
-                        onChange={(e) => setOfficePhone(e.target.value)}
+                        onChange={(value) => setOfficePhone(value)}
                     />
-                    <TextField
+                    <OnlyNumbersInput
                         label="Call Center Number"
                         fullWidth
                         margin="normal"
                         variant="outlined"
                         value={callCenterNumber}
-                        onChange={(e) => setCallCenterNumber(e.target.value)}
+                        onChange={(value) => setCallCenterNumber(value)}
                     />
                     <TextField
                         label="Address"
@@ -339,53 +327,53 @@ const UserPage: FC<Props> = ({ changeTab, setSelectedUser }) => {
                         value={address}
                         onChange={(e) => setAddress(e.target.value)}
                     />
-                    <TextField
+                    <OnlyNumbersInput
                         label="Zip code"
                         fullWidth
                         margin="normal"
                         variant="outlined"
                         value={zipCode}
-                        onChange={(e) => setZipCode(e.target.value)}
+                        onChange={(value) => setZipCode(value)}
                     />
-                    <TextField
+                    <OnlyLettersInput
                         label="City"
                         fullWidth
                         margin="normal"
                         variant="outlined"
                         value={city}
-                        onChange={(e) => setCity(e.target.value)}
+                        onChange={(value) => setCity(value)}
                     />
-                    <TextField
+                    <OnlyLettersInput
                         label="Region"
                         fullWidth
                         margin="normal"
                         variant="outlined"
                         value={region}
-                        onChange={(e) => setRegion(e.target.value)}
+                        onChange={(value) => setRegion(value)}
                     />
-                    <TextField
+                    <OnlyNumbersInput
                         label="ΑΦΜ"
                         fullWidth
                         margin="normal"
                         variant="outlined"
                         value={afm}
-                        onChange={(e) => setAfm(e.target.value)}
+                        onChange={(value) => setAfm(value)}
                     />
-                    <TextField
+                    <OnlyNumbersInput
                         label="ΔΟΥ"
                         fullWidth
                         margin="normal"
                         variant="outlined"
                         value={doy}
-                        onChange={(e) => setDoy(e.target.value)}
+                        onChange={(value) => setDoy(value)}
                     />
-                    <TextField
+                    <OnlyNumbersInput
                         label="ΓΕΜΥ"
                         fullWidth
                         margin="normal"
                         variant="outlined"
                         value={gemh}
-                        onChange={(e) => setGemh(e.target.value)}
+                        onChange={(value) => setGemh(value)}
                     />
                     <TextField
                         select

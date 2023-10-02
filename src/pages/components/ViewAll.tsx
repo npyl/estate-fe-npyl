@@ -21,7 +21,7 @@ import { FC, SetStateAction, useEffect, useMemo, useState } from "react";
 import Image from "src/components/image";
 import { Menu } from "src/icons/menu";
 import {
-    useDeletePropertyMutation,
+    useBulkDeletePropertiesMutation,
     useFilterPropertiesMutation,
 } from "src/services/properties";
 import DataGridTable from "../../components/DataGrid";
@@ -183,7 +183,7 @@ const ViewAll: FC = () => {
 
     const allFilters = useSelector(selectAll);
 
-    const [deleteProperty] = useDeletePropertyMutation();
+    const [bulkDeleteProperties] = useBulkDeletePropertiesMutation();
     const [filterProperties, { isLoading, data }] =
         useFilterPropertiesMutation();
 
@@ -324,8 +324,8 @@ const ViewAll: FC = () => {
     const closeBulkDeleteDialog = () => setBulkDeleteDialogOpen(false);
     const handleBulkDelete = () => {
         closeBulkDeleteDialog();
-        // delete each row; By default the DataGrid looks for a property named `id` when getting the rows, so selectedRow = id
-        Promise.all(selectedRows.map((id) => deleteProperty(+id))).then(() =>
+        // INFO: bulk delete rows; By default the DataGrid looks for a property named `id` when getting the rows, so selectedRow = id
+        bulkDeleteProperties(selectedRows.map((row) => +row)).then(() =>
             revalidate()
         );
     };
@@ -334,7 +334,7 @@ const ViewAll: FC = () => {
         <Box
             sx={{
                 position: "relative",
-                height: "100%", // make sure height is full so that bulk edit is full even if DataGrid is small
+                height: "100%", // WARN: make sure height is full so that bulk edit is full even if DataGrid is small
             }}
         >
             <Paper

@@ -13,6 +13,7 @@ import FilterCategory from "./Filters/FilterCategory";
 import FilterParentCategory from "./Filters/FilterParentCategory";
 import FilterLabels from "src/pages/components/Filters/FilterLabels";
 import ChosenFilters from "./Filters/ChosenFilters";
+import PriceSelect from "./Filters/FilterPrice";
 
 export const FilterSection: React.FC<PaperProps> = ({ ...props }) => {
     const changedCustomerFilters = useSelector(sumOfChangedProperties);
@@ -29,7 +30,8 @@ export const FilterSection: React.FC<PaperProps> = ({ ...props }) => {
                     labels={labels}
                     setLabels={setLabels}
                 />
-
+                <PriceSelect type={"price"}></PriceSelect>
+                <PriceSelect type={"area"}></PriceSelect>
                 <FilterStatus />
             </Stack>
             {changedCustomerFilters > 0 && (
