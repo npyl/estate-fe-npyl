@@ -334,7 +334,7 @@ const ViewAll: FC = () => {
         <Box
             sx={{
                 position: "relative",
-                height: "100%", // make sure height is full so that bulk edit is full even if DataGrid is small
+                height: "100%", // WARN: make sure height is full so that bulk edit is full even if DataGrid is small
             }}
         >
             <Paper

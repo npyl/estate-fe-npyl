@@ -261,9 +261,8 @@ const Customers: NextPage = () => {
     return (
         <Box
             sx={{
-                flexGrow: 1,
                 position: "relative",
-                height: "100%", // make sure height is full so that bulk edit is full even if DataGrid is small
+                height: "100%", // WARN: make sure height is full so that bulk edit is full even if DataGrid is small
             }}
         >
             <FilterSection
@@ -272,7 +271,7 @@ const Customers: NextPage = () => {
                 }}
             />
 
-            <Paper sx={{ mt: 1, marginRight: bulkEditOpen ? 320 : 0 }}>
+            <Paper sx={{ mt: 1, marginRight: bulkEditOpen ? 40 : 0 }}>
                 {rows ? (
                     <DataGridTable
                         rows={rows}
