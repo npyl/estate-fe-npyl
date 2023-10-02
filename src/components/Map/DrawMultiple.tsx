@@ -127,6 +127,7 @@ export const DrawMultiple = ({
 
     const stopDrawing = () => {
         shapeRefs.current?.forEach((shape) => shape?.setMap(null));
+        shapeRefs.current = [];
         onDraw(null);
     };
 

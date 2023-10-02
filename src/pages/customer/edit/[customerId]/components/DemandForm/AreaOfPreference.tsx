@@ -48,6 +48,9 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
     const dispatch = useDispatch();
 
     const allShapes = useSelector(selectShapes); // all demands' shapes
+
+    console.log("allShapes: ", allShapes);
+
     const shapes = useMemo(
         () => (allShapes && allShapes.length && allShapes[index]) || [], // current demand's shapes (by demand index)
         [allShapes, index]
