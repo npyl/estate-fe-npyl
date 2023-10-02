@@ -122,19 +122,16 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
 
     const handleDraw = useCallback(
         (s: DrawShape | StopDraw) => {
-            console.log("here!");
-
-            if (!s) dispatch(setShapes(indexedData(index, [])));
+            if (!s) dispatch(setShapes(indexedData(index, []))); // clear
             else {
                 const oldShapes = shapes;
                 const encoded = encodeShape(s);
-
                 dispatch(
                     setShapes(indexedData(index, [...oldShapes, encoded]))
                 );
             }
         },
-        [index]
+        [index, shapes]
     );
 
     const updateMainMarkerCoordinates = (lat: number, lng: number) => {

@@ -60,7 +60,7 @@ export const ViewLocation = ({ location }: ViewLocationProps) => {
                   ?.nameGR || ""
             : location.complex;
     }, [location?.complex]);
-    console.log(customerId);
+
     if (customerId !== undefined) {
         return (
             <>

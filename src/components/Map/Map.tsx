@@ -246,7 +246,7 @@ const Map = ({
                     onDraw={(shape) => onDraw && onDraw(shape)}
                 />
             )}
-            {drawing && shapes && (
+            {drawing && shapes && shapes.length > 0 && (
                 <DrawMultiple
                     map={map}
                     shapes={shapes}

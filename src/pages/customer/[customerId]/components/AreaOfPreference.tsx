@@ -25,15 +25,6 @@ export const AreaOfPreference: React.FC<AreaOfPreferenceProps> = ({
     const demand = useMemo(() => data?.demands[index], [data?.demands[index]]);
     const demandFilters = useMemo(() => demand?.filters, [demand?.filters]);
 
-    const regions = useMemo(
-        () => demandFilters?.regions || [],
-        [demandFilters?.regions]
-    );
-    const cities = useMemo(
-        () => demandFilters?.cities || [],
-        [demandFilters?.cities]
-    );
-
     const shapes = useMemo(() => demand?.shapes, [demand?.shapes]);
     const shapeData = useMemo(
         () =>
@@ -44,6 +35,14 @@ export const AreaOfPreference: React.FC<AreaOfPreferenceProps> = ({
     );
     const shapeData0 = useMemo(() => shapeData[0], [shapeData[0]]); // take shapeData with index 0 as reference
 
+    const regions = useMemo(
+        () => demandFilters?.regions || [],
+        [demandFilters?.regions]
+    );
+    const cities = useMemo(
+        () => demandFilters?.cities || [],
+        [demandFilters?.cities]
+    );
     const { data: municips } = useGetMunicipalitiesQuery(+regions[0], {
         skip: !regions[0] && !isNumberString(regions[0]),
     });
@@ -52,6 +51,8 @@ export const AreaOfPreference: React.FC<AreaOfPreferenceProps> = ({
 
     useEffect(() => {
         if (!map) return;
+
+        shapeData?.map((shapeDatum) => drawShape(shapeDatum, map, null));
 
         if (shapeData0) {
             // Center the map to the first point in the shape
@@ -83,7 +84,7 @@ export const AreaOfPreference: React.FC<AreaOfPreferenceProps> = ({
             ); // Centering on San Francisco for example
             map.setZoom(12);
         }
-    }, [shapeData0, index, map]);
+    }, [shapeData, shapeData0, index, map]);
 
     return (
         <Box height={`calc(100vh - 266px)`} width={"100%"}>

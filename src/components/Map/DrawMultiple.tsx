@@ -92,15 +92,17 @@ export const DrawMultiple = ({ map, shapes, onDraw }: DrawMultipleProps) => {
     }, [map]);
 
     useEffect(() => {
-        if (!ready) return;
+        if (!ready || !shapes) return;
+
+        // clear map of any shape
+        shapeRefs.current?.forEach((shape) => shape?.setMap(null));
 
         // draw any imported shape
-        shapeRefs.current?.forEach((shape) => shape?.setMap(null));
-        shapes?.forEach((shape) =>
+        shapes?.forEach((shape) => {
             shapeRefs.current?.push(
                 shape ? drawShape(shape, map, onDraw) : null
-            )
-        );
+            );
+        });
         // INFO: we need to support null/undefined shape, because it can mean user cleared the shape OR we loaded a new map on a new demand form
     }, [ready, shapes]);
 
