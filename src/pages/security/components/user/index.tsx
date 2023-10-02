@@ -18,7 +18,10 @@ import {
     TextField,
 } from "@mui/material";
 import React, { FC, useState } from "react";
+import OnlyEmailInput from "src/components/OnlyEmailInput";
+import OnlyLettersInput from "src/components/OnlyLetters";
 import validator from "validator";
+
 type Props = {
     changeTab: (event: React.SyntheticEvent, newValue: number) => void;
     setSelectedUser: (value: ((prevState: number) => number) | number) => void;
@@ -157,13 +160,8 @@ const UserPage: FC<Props> = ({ changeTab, setSelectedUser }) => {
         handleCloseCreateUserModal();
     };
 
-    const handleUpdateUserClick = () => {
-        setIsUpdateUserModalOpen(true);
-    };
-
-    const handleCloseUpdateUserModal = () => {
-        setIsUpdateUserModalOpen(false);
-    };
+    const handleUpdateUserClick = () => setIsUpdateUserModalOpen(true);
+    const handleCloseUpdateUserModal = () => setIsUpdateUserModalOpen(false);
 
     const handleUpdateUser = () => {
         if (!validator.isEmail(email)) {
@@ -183,13 +181,10 @@ const UserPage: FC<Props> = ({ changeTab, setSelectedUser }) => {
         // console.log("User ID:", userId); // You can pass the user ID here
     };
 
-    const handleOpenDeleteConfirmation = () => {
+    const handleOpenDeleteConfirmation = () =>
         setIsDeleteConfirmationOpen(true);
-    };
-
-    const handleCloseDeleteConfirmation = () => {
+    const handleCloseDeleteConfirmation = () =>
         setIsDeleteConfirmationOpen(false);
-    };
 
     return (
         <div>
@@ -257,39 +252,35 @@ const UserPage: FC<Props> = ({ changeTab, setSelectedUser }) => {
             >
                 <DialogTitle>Create User</DialogTitle>
                 <DialogContent>
-                    <TextField
+                    <OnlyLettersInput
                         label="First Name"
                         fullWidth
                         margin="normal"
                         variant="outlined"
                         value={firstName}
-                        onChange={(e) =>
-                            setFirstName(
-                                e.target.value.replace(/[^a-zA-Z]/g, "")
-                            )
+                        onChange={(value) =>
+                            setFirstName(value.replace(/[^a-zA-Z]/g, ""))
                         }
                         inputProps={{ maxLength: 50 }}
                     />
-                    <TextField
+                    <OnlyLettersInput
                         label="Last Name"
                         fullWidth
                         margin="normal"
                         variant="outlined"
                         value={lastName}
-                        onChange={(e) =>
-                            setLastName(
-                                e.target.value.replace(/[^a-zA-Z]/g, "")
-                            )
+                        onChange={(value) =>
+                            setLastName(value.replace(/[^a-zA-Z]/g, ""))
                         }
                         inputProps={{ maxLength: 50 }}
                     />
-                    <TextField
+                    <OnlyEmailInput
                         label="Email"
                         fullWidth
                         margin="normal"
                         variant="outlined"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(value) => setEmail(value)}
                     />
                     <TextField
                         label="Mobile Phone"
