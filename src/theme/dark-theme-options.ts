@@ -22,9 +22,9 @@ const background = {
 const divider = "#2D3748";
 
 const primary = {
-    main: "#7582EB",
-    light: "#909BEF",
-    dark: "#515BA4",
+    main: "#10B981",
+    light: "#3FC79A",
+    dark: "#0B815A",
     contrastText: neutral[900],
 };
 
@@ -67,6 +67,7 @@ const text = {
     primary: "#EDF2F7",
     secondary: "#A0AEC0",
     disabled: "rgba(255, 255, 255, 0.48)",
+    white: "rgba(255,255,255,0.85)",
 };
 
 export const darkThemeOptions: ThemeOptions = {
@@ -153,9 +154,9 @@ export const darkThemeOptions: ThemeOptions = {
         MuiTableHead: {
             styleOverrides: {
                 root: {
-                    backgroundColor: primary.main,
+                    backgroundColor: neutral[800],
                     ".MuiTableCell-root": {
-                        color: neutral[300],
+                        color: text.white,
                     },
                 },
             },

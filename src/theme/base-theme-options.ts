@@ -257,7 +257,7 @@ export const baseThemeOptions: ThemeOptions = {
                         fontWeight: 600,
                         lineHeight: 1,
                         letterSpacing: 0.5,
-                        textTransform: "uppercase",
+                        textTransform: "capitalize",
                     },
                     "& .MuiTableCell-paddingCheckbox": {
                         paddingTop: 4,
