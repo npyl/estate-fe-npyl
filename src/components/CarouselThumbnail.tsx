@@ -10,6 +10,8 @@ import {
     DialogTitle,
     Divider,
     Grid,
+    Tab,
+    Tabs,
 } from "@mui/material";
 import { alpha, styled } from "@mui/material/styles";
 // utils
@@ -40,6 +42,7 @@ import { useLazyDownloadImagesQuery } from "src/services/exports";
 import { useRouter } from "next/router";
 import { CloseIcon } from "yet-another-react-lightbox/core";
 import { padding } from "@mui/system";
+import { IPropertyImage } from "src/types/file";
 
 // ----------------------------------------------------------------------
 
@@ -49,6 +52,7 @@ const THUMB_SIZEy = 100;
 type Props = {
     data: {
         id: string;
+        hidden: boolean;
         title: string;
         image: string;
         description: string;
@@ -388,7 +392,26 @@ export function OnlyPhotosCarousel({ data }: Props) {
             setNav2(carousel2.current);
         }
     }, []);
+    const _images = data.map((item, index) => {
+        return { src: item.image };
+    });
 
+    const handleExport = async (hidden: boolean) => {
+        downloadZip({
+            propertyId: +propertyId!,
+            hidden,
+        })
+            .unwrap()
+            .then((e) => downloadBlob(e, hidden));
+    };
+
+    const handleDownload = () => {
+        setOpenDialog(true);
+    };
+    // {data
+    //     .filter((image) => image.hidden)
+    //     .map(
+    const [selectedTab, setSelectedTab] = useState(0);
     const renderAllImages = (
         <Box
             sx={{
@@ -423,22 +446,83 @@ export function OnlyPhotosCarousel({ data }: Props) {
             )}
         </Box>
     );
-
-    const _images = data.map((item, index) => {
-        return { src: item.image };
-    });
-
-    const handleExport = async (hidden: boolean) => {
-        downloadZip({
-            propertyId: +propertyId!,
-            hidden,
-        })
-            .unwrap()
-            .then((e) => downloadBlob(e, hidden));
-    };
-
-    const handleDownload = () => {
-        setOpenDialog(true);
+    const renderPublicImages = (
+        <Box
+            sx={{
+                display: "grid",
+                gridTemplateColumns: "repeat(5, 1fr)", // 5 images per row
+                gap: "16px",
+                mb: 1,
+                zIndex: 0,
+                overflow: "hidden",
+                position: "relative",
+            }}
+        >
+            {data
+                .filter((image) => !image.hidden)
+                .map(
+                    (
+                        item,
+                        index // Here is the inclusion of the index
+                    ) =>
+                        item.image ? (
+                            <Image
+                                key={item.id}
+                                alt={item.title}
+                                src={item.image}
+                                ratio="16/9"
+                                onClick={() => {
+                                    setClickedImageIndex(index);
+                                    setGalleryOpen(true);
+                                }}
+                            />
+                        ) : (
+                            <PreviewImage />
+                        )
+                )}
+        </Box>
+    );
+    const renderPrivateImages = (
+        <Box
+            sx={{
+                display: "grid",
+                gridTemplateColumns: "repeat(5, 1fr)", // 5 images per row
+                gap: "16px",
+                mb: 1,
+                zIndex: 0,
+                overflow: "hidden",
+                position: "relative",
+            }}
+        >
+            {data
+                .filter((image) => image.hidden)
+                .map(
+                    (
+                        item,
+                        index // Here is the inclusion of the index
+                    ) =>
+                        item.image ? (
+                            <Image
+                                key={item.id}
+                                alt={item.title}
+                                src={item.image}
+                                ratio="16/9"
+                                onClick={() => {
+                                    setClickedImageIndex(index);
+                                    setGalleryOpen(true);
+                                }}
+                            />
+                        ) : (
+                            <PreviewImage />
+                        )
+                )}
+        </Box>
+    );
+    const handleTabChange = (
+        event: React.ChangeEvent<{}>,
+        newValue: number
+    ) => {
+        setSelectedTab(newValue);
     };
 
     return (
@@ -450,7 +534,21 @@ export function OnlyPhotosCarousel({ data }: Props) {
                 },
             }}
         >
-            <Grid>{renderAllImages}</Grid>
+            <Tabs
+                value={selectedTab}
+                onChange={handleTabChange}
+                variant="fullWidth"
+            >
+                <Tab label="All Photos" />
+                <Tab label="Public Photos" />
+                <Tab label="Private Photos" />
+            </Tabs>
+
+            <Grid>
+                {selectedTab === 0 && renderAllImages}
+                {selectedTab === 1 && renderPublicImages}
+                {selectedTab === 2 && renderPrivateImages}
+            </Grid>
             <Divider></Divider>
             <Button
                 sx={{ position: "flex", left: "90%" }}

@@ -49,6 +49,7 @@ const slice = createSlice({
         },
 
         // multiple
+
         setLabels(state, { payload }) {
             state.filters.labels = payload;
             !state.ids.includes("labels") && state.ids.push("labels");
