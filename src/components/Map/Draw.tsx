@@ -108,7 +108,7 @@ export const CustomDrawingComponent = ({
         // draw any imported shape
         shapeRef.current?.setMap(null);
         shapeRef.current = shape
-            ? drawShape(shape, map, !!drawing, onDraw)
+            ? drawShape(shape, map, !!drawing ? onDraw : null)
             : null;
 
         // INFO: we need to support null/undefined shape, because it can mean user cleared the shape OR we loaded a new map on a new demand form

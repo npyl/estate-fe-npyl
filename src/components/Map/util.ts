@@ -94,30 +94,22 @@ const drawPolygon = (
 export const drawShape = (
     shapeData: ShapeData,
     map: google.maps.Map,
-    editable: boolean,
     onMove: ((s: DrawShape | StopDraw) => void) | null
 ): DrawShape | null => {
     switch (shapeData.type) {
         case "Circle":
             const { lat, lng, radius } = shapeData;
             if (!lat || !lng || !radius) return null;
-            return drawCircle(lat, lng, radius, map, editable ? onMove : null);
+            return drawCircle(lat, lng, radius, map, onMove);
 
         case "Rectangle":
             const { nelat, nelng, swlat, swlng } = shapeData;
             if (!nelat || !nelng || !swlat || !swlng) return null;
-            return drawRectangle(
-                nelat,
-                nelng,
-                swlat,
-                swlng,
-                map,
-                editable ? onMove : null
-            );
+            return drawRectangle(nelat, nelng, swlat, swlng, map, onMove);
 
         case "Polygon":
             if (!shapeData.paths || shapeData.paths.length === 0) return null;
-            return drawPolygon(shapeData.paths, map, editable ? onMove : null);
+            return drawPolygon(shapeData.paths, map, onMove);
 
         default:
             // Technically unreachable with the given types, but good for robustness

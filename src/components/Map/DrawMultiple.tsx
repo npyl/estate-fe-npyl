@@ -9,6 +9,7 @@ interface DrawMultipleProps {
     drawing: boolean;
     shapes?: ShapeData[];
     onDraw: (shape: DrawShape | StopDraw) => void;
+    onDrag: (oldShape: DrawShape, newShape: DrawShape) => void;
 }
 
 export const DrawMultiple = ({
@@ -16,10 +17,14 @@ export const DrawMultiple = ({
     drawing,
     shapes,
     onDraw,
+    onDrag,
 }: DrawMultipleProps) => {
     const drawingManagerRef = useRef<any>(null);
     const shapeRefs = useRef<(DrawShape | StopDraw)[]>([]);
     const initialShapes = useMemo(() => shapes, []); // [] => ONLY ONCE
+
+    const [dragStartShape, setDragStartShape] = useState<DrawShape>();
+    const [dragStopShape, setDragStopShape] = useState<DrawShape>();
 
     // drawing manager ready
     const [ready, setReady] = useState(false);
@@ -79,9 +84,12 @@ export const DrawMultiple = ({
                 drawingManagerRef.current.setDrawingMode(null);
 
                 // Support shape drag
-                google.maps.event.addListener(shape, "dragend", () => {
-                    onDraw(shape as DrawShape);
-                });
+                google.maps.event.addListener(shape, "dragend", () =>
+                    setDragStartShape(shape as DrawShape)
+                );
+                google.maps.event.addListener(shape, "dragend", () =>
+                    setDragStopShape(shape as DrawShape)
+                );
 
                 onDraw(shape as DrawShape);
             }
@@ -110,10 +118,23 @@ export const DrawMultiple = ({
             (shape) =>
                 shape &&
                 shapeRefs.current?.push(
-                    drawShape(shape, map, !!drawing, onDraw)
+                    drawShape(shape, map, !!drawing ? onDraw : null)
                 )
         );
     }, [ready, initialShapes]);
+
+    useEffect(() => {
+        if (!dragStartShape || !dragStopShape) return;
+
+        console.log("dragging finished!");
+
+        // call
+        onDrag(dragStartShape, dragStopShape);
+
+        // clear
+        setDragStartShape(undefined);
+        setDragStopShape(undefined);
+    }, [dragStartShape, dragStopShape]);
 
     const startDrawing = () =>
         drawingManagerRef.current?.setDrawingMode(
