@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Stack, Typography } from "@mui/material";
 import { StyledButton } from "./style";
 import { DrawShape, ShapeData, StopDraw } from "./types";
@@ -19,6 +19,7 @@ export const DrawMultiple = ({
 }: DrawMultipleProps) => {
     const drawingManagerRef = useRef<any>(null);
     const shapeRefs = useRef<(DrawShape | StopDraw)[]>([]);
+    const initialShapes = useMemo(() => shapes, []); // [] => ONLY ONCE
 
     // drawing manager ready
     const [ready, setReady] = useState(false);
@@ -102,15 +103,15 @@ export const DrawMultiple = ({
 
         // clear map of any shape
         shapeRefs.current?.forEach((shape) => shape?.setMap(null));
+        shapeRefs.current = [];
 
         // draw any imported shape
-        shapes?.forEach((shape) =>
-            shapeRefs.current?.push(
-                shape ? drawShape(shape, map, onDraw) : null
-            )
+        shapes?.forEach(
+            (shape) =>
+                shape && shapeRefs.current?.push(drawShape(shape, map, onDraw))
         );
         // INFO: we need to support null/undefined shape, because it can mean user cleared the shape OR we loaded a new map on a new demand form
-    }, [ready, shapes]);
+    }, [ready, initialShapes]);
 
     const startDrawing = () =>
         drawingManagerRef.current?.setDrawingMode(
