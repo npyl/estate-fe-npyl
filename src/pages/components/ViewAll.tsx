@@ -173,8 +173,8 @@ const ViewAll: FC = () => {
     const changedPropertyFilters = useSelector(sumOfChangedProperties);
 
     // sorting
-    const [sortingBy, setSortingBy] = useState("");
-    const [sortingOrder, setSortingOrder] = useState("asc");
+    const [sortingBy, setSortingBy] = useState("updatedAt");
+    const [sortingOrder, setSortingOrder] = useState("desc");
     // pagination
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(25);
