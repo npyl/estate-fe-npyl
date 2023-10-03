@@ -1,16 +1,17 @@
-import { DrawShape, ShapeData, StopDraw } from "./types";
+import { DrawShape, ShapeData } from "./types";
+import * as _ from "lodash";
 
 const drawCircle = (
     lat: number,
     lng: number,
     radius: number,
     map: google.maps.Map,
-    onMove: ((s: DrawShape | StopDraw) => void) | null
+    onDrag: ((oldShape: DrawShape, newShape: DrawShape) => void) | null
 ) => {
     const circle = new google.maps.Circle({
         clickable: true,
-        editable: !!onMove,
-        draggable: !!onMove,
+        editable: !!onDrag,
+        draggable: !!onDrag,
         strokeColor: "#FF0000", // Line color
         strokeOpacity: 0.8, // Line opacity
         strokeWeight: 2, // Line thickness
@@ -20,11 +21,12 @@ const drawCircle = (
         center: { lat, lng }, // Center of the circle
         radius: radius, // Radius (in meters)
     });
+    const initialCircle = _.cloneDeep(circle);
 
     // Support shape drag
-    onMove &&
+    onDrag &&
         google.maps.event.addListener(circle, "dragend", () =>
-            onMove(circle as DrawShape)
+            onDrag(initialCircle, circle)
         );
 
     return circle;
@@ -35,7 +37,7 @@ const drawRectangle = (
     swlat: number,
     swlng: number,
     map: google.maps.Map,
-    onMove: ((s: DrawShape | StopDraw) => void) | null
+    onDrag: ((oldShape: DrawShape, newShape: DrawShape) => void) | null
 ) => {
     const rectangleBounds = {
         north: nelat,
@@ -46,8 +48,8 @@ const drawRectangle = (
 
     const rectangle = new google.maps.Rectangle({
         clickable: true,
-        editable: !!onMove,
-        draggable: !!onMove,
+        editable: !!onDrag,
+        draggable: !!onDrag,
         bounds: rectangleBounds,
         strokeColor: "#FF0000",
         strokeOpacity: 0.8,
@@ -56,11 +58,12 @@ const drawRectangle = (
         fillOpacity: 0.35,
         map: map,
     });
+    const initialRectangle = _.cloneDeep(rectangle);
 
     // Support shape drag
-    onMove &&
+    onDrag &&
         google.maps.event.addListener(rectangle, "dragend", () =>
-            onMove(rectangle as DrawShape)
+            onDrag(initialRectangle, rectangle)
         );
 
     return rectangle;
@@ -68,12 +71,12 @@ const drawRectangle = (
 const drawPolygon = (
     paths: google.maps.LatLngLiteral[][],
     map: google.maps.Map,
-    onMove: ((s: DrawShape | StopDraw) => void) | null
+    onDrag: ((oldShape: DrawShape, newShape: DrawShape) => void) | null
 ) => {
     const polygon = new google.maps.Polygon({
         clickable: true,
-        editable: !!onMove,
-        draggable: !!onMove,
+        editable: !!onDrag,
+        draggable: !!onDrag,
         fillColor: "cyan",
         fillOpacity: 0.35,
         strokeWeight: 2,
@@ -81,11 +84,12 @@ const drawPolygon = (
         paths: paths,
         map: map,
     });
+    const initialPolygon = _.cloneDeep(polygon);
 
     // Support shape drag
-    onMove &&
+    onDrag &&
         google.maps.event.addListener(polygon, "dragend", () =>
-            onMove(polygon as DrawShape)
+            onDrag(initialPolygon, polygon)
         );
 
     return polygon;
@@ -94,22 +98,22 @@ const drawPolygon = (
 export const drawShape = (
     shapeData: ShapeData,
     map: google.maps.Map,
-    onMove: ((s: DrawShape | StopDraw) => void) | null
+    onDrag: ((oldShape: DrawShape, newShape: DrawShape) => void) | null
 ): DrawShape | null => {
     switch (shapeData.type) {
         case "Circle":
             const { lat, lng, radius } = shapeData;
             if (!lat || !lng || !radius) return null;
-            return drawCircle(lat, lng, radius, map, onMove);
+            return drawCircle(lat, lng, radius, map, onDrag);
 
         case "Rectangle":
             const { nelat, nelng, swlat, swlng } = shapeData;
             if (!nelat || !nelng || !swlat || !swlng) return null;
-            return drawRectangle(nelat, nelng, swlat, swlng, map, onMove);
+            return drawRectangle(nelat, nelng, swlat, swlng, map, onDrag);
 
         case "Polygon":
             if (!shapeData.paths || shapeData.paths.length === 0) return null;
-            return drawPolygon(shapeData.paths, map, onMove);
+            return drawPolygon(shapeData.paths, map, onDrag);
 
         default:
             // Technically unreachable with the given types, but good for robustness

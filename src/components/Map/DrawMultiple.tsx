@@ -1,24 +1,29 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Stack, Typography } from "@mui/material";
 import { StyledButton } from "./style";
 import { DrawShape, ShapeData, StopDraw } from "./types";
 import { drawShape } from "./util";
 
-interface DrawingComponentProps {
+interface DrawMultipleProps {
     map: any;
     drawing: boolean;
-    shape?: ShapeData;
+    shapes?: ShapeData[];
     onDraw: (shape: DrawShape | StopDraw) => void;
+    onDrag: (oldShape: DrawShape, newShape: DrawShape) => void;
 }
 
-export const CustomDrawingComponent = ({
+export const DrawMultiple = ({
     map,
     drawing,
-    shape,
+    shapes,
     onDraw,
-}: DrawingComponentProps) => {
+    onDrag,
+}: DrawMultipleProps) => {
     const drawingManagerRef = useRef<any>(null);
-    const shapeRef = useRef<DrawShape | StopDraw>(null);
+    const shapeRefs = useRef<(DrawShape | StopDraw)[]>([]);
+
+    const [dragStartShape, setDragStartShape] = useState<DrawShape>();
+    const [dragStopShape, setDragStopShape] = useState<DrawShape>();
 
     // drawing manager ready
     const [ready, setReady] = useState(false);
@@ -73,21 +78,19 @@ export const CustomDrawingComponent = ({
                 if (typeof event.overlay === typeof google.maps.Marker)
                     return null;
 
-                if (shapeRef.current) {
-                    // Remove the previous shape
-                    shapeRef.current.setMap(null);
-                }
-
-                const shape = event.overlay;
-                shapeRef.current = shape as DrawShape;
+                const shape = event.overlay as DrawShape;
+                shapeRefs.current?.push(shape);
                 drawingManagerRef.current.setDrawingMode(null);
 
                 // Support shape drag
-                google.maps.event.addListener(shape, "dragend", () => {
-                    onDraw(shape as DrawShape);
-                });
+                google.maps.event.addListener(shape, "dragend", () =>
+                    setDragStartShape(shape)
+                );
+                google.maps.event.addListener(shape, "dragend", () =>
+                    setDragStopShape(shape)
+                );
 
-                onDraw(shape as DrawShape);
+                onDraw(shape);
             }
         );
 
@@ -103,56 +106,54 @@ export const CustomDrawingComponent = ({
     }, [map]);
 
     useEffect(() => {
-        if (!ready) return;
+        if (!ready || !shapes) return;
+
+        // clear map of any shape
+        shapeRefs.current?.forEach((shape) => shape?.setMap(null));
+        shapeRefs.current = [];
 
         // draw any imported shape
-        shapeRef.current?.setMap(null);
-        shapeRef.current = shape
-            ? drawShape(shape, map, !!drawing ? onDraw : null)
-            : null;
+        shapes?.forEach(
+            (shape) =>
+                shape &&
+                shapeRefs.current?.push(
+                    drawShape(shape, map, !!drawing ? onDrag : null)
+                )
+        );
+    }, [ready, shapes]);
 
-        // INFO: we need to support null/undefined shape, because it can mean user cleared the shape OR we loaded a new map on a new demand form
-    }, [ready, shape]);
+    useEffect(() => {
+        if (!dragStartShape || !dragStopShape) return;
 
-    const startDrawing = () => {
-        if (shapeRef.current?.getMap()) {
-            shapeRef.current.setMap(null);
-        }
+        const updatedShapes = shapeRefs.current?.map((shape) =>
+            shape === dragStartShape ? dragStopShape : shape
+        );
+        shapeRefs.current = updatedShapes;
 
-        if (drawingManagerRef.current) {
-            drawingManagerRef.current.setDrawingMode(
-                google.maps.drawing.OverlayType.POLYGON
-            );
-        }
-    };
-    const startDrawingRect = () => {
-        if (shapeRef.current?.getMap()) {
-            shapeRef.current.setMap(null);
-        }
+        // call
+        onDrag(dragStartShape, dragStopShape);
 
-        if (drawingManagerRef.current) {
-            drawingManagerRef.current.setDrawingMode(
-                google.maps.drawing.OverlayType.RECTANGLE
-            );
-        }
-    };
-    const startDrawingCircle = () => {
-        if (shapeRef.current?.getMap()) {
-            shapeRef.current.setMap(null);
-        }
+        // clear
+        setDragStartShape(undefined);
+        setDragStopShape(undefined);
+    }, [dragStartShape, dragStopShape]);
 
-        if (drawingManagerRef.current) {
-            drawingManagerRef.current.setDrawingMode(
-                google.maps.drawing.OverlayType.CIRCLE
-            );
-        }
-    };
+    const startDrawing = () =>
+        drawingManagerRef.current?.setDrawingMode(
+            google.maps.drawing.OverlayType.POLYGON
+        );
+    const startDrawingRect = () =>
+        drawingManagerRef.current?.setDrawingMode(
+            google.maps.drawing.OverlayType.RECTANGLE
+        );
+    const startDrawingCircle = () =>
+        drawingManagerRef.current?.setDrawingMode(
+            google.maps.drawing.OverlayType.CIRCLE
+        );
 
     const stopDrawing = () => {
-        if (shapeRef.current?.getMap()) {
-            shapeRef.current.setMap(null);
-        }
-
+        shapeRefs.current?.forEach((shape) => shape?.setMap(null));
+        shapeRefs.current = [];
         onDraw(null);
     };
 

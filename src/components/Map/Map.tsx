@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { ILocationPOST } from "src/types/location";
 import { DrawShape, ShapeData, StopDraw } from "./types";
 import SearchOnMap from "./Search";
+import { DrawMultiple } from "./DrawMultiple";
 
 const containerStyle = {
     width: "100%",
@@ -37,15 +38,18 @@ interface IMapProps {
         address: IMapAddress
     ) => void;
     onDraw?: (shape: DrawShape | StopDraw) => void;
+    onDrag?: (oldShape: DrawShape, newShape: DrawShape) => void;
     onSearchSelect?: (selected: IMapAddress, lat: number, lng: number) => void;
 
     data?: ILocationPOST[];
     zoom?: number;
     shape?: ShapeData;
+    shapes?: ShapeData[];
     mainMarker?: IMapMarker;
     activeMarker: number | null;
     setActiveMarker: any;
     drawing?: boolean;
+    multipleShapes?: boolean;
     search?: boolean;
 }
 
@@ -64,14 +68,17 @@ const Map = ({
     onClick,
     onDragEnd,
     onDraw,
+    onDrag,
     onSearchSelect,
     data,
     zoom,
     shape,
+    shapes,
     mainMarker,
     activeMarker,
     setActiveMarker,
     hideMainMarker = false,
+    multipleShapes = false,
     drawing = true,
     search = false,
 }: IMapProps) => {
@@ -236,11 +243,23 @@ const Map = ({
             onLoad={onLoad}
             onUnmount={onUnmount}
         >
-            {drawing && (
+            {!multipleShapes && (
                 <CustomDrawingComponent
                     map={map}
+                    drawing={drawing}
                     shape={shape}
                     onDraw={(shape) => onDraw && onDraw(shape)}
+                />
+            )}
+            {multipleShapes && (
+                <DrawMultiple
+                    map={map}
+                    drawing={drawing}
+                    shapes={shapes}
+                    onDraw={(shape) => onDraw && onDraw(shape)}
+                    onDrag={(oldShape, newShape) =>
+                        onDrag && onDrag(oldShape, newShape)
+                    }
                 />
             )}
             {search && <SearchOnMap onSearchSelect={handleSearchSelect} />}

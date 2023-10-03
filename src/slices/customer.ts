@@ -113,8 +113,7 @@ const initialDemandState: IDemandPOST = {
         withinCityPlan: false,
         loadingDock: false,
     },
-    // timeframe: "",
-    shape: "",
+    shapes: [],
 };
 
 const initialState: customerState = {
@@ -126,12 +125,9 @@ const initialState: customerState = {
     homePhone: "",
     status: 0,
     fax: "",
-    // nationality: "",
     idNumber: "",
     passportNumber: "",
     dateOfBirth: "",
-    // leadSource: "",
-    // preferredLanguage: "",
     suggestedBy: "",
     leaser: false,
     lessor: false,
@@ -482,14 +478,14 @@ const slice = createSlice({
             }
         },
 
-        setShape(state: customerState, action: ISetDemandFilterAction): void {
+        setShapes(state: customerState, action: ISetDemandFilterAction): void {
             const { index, value } = action.payload;
             if (state.demands[index]) {
-                state.demands[index].shape = value;
+                state.demands[index].shapes = value;
             }
         },
-        //Demand Location
 
+        //Demand Location
         setDemandComplexes(state: customerState, action): void {},
         setDemandCities(
             state: customerState,
@@ -548,7 +544,7 @@ const slice = createSlice({
                 priorityFeatures: demand.priorityFeatures,
                 nonPriorityFeatures: demand.nonPriorityFeatures,
                 timeframe: demand.timeframe.key,
-                shape: demand.shape,
+                shapes: demand.shapes,
             });
 
             state.leaser = payload.leaser || initialState.leaser;
@@ -686,7 +682,7 @@ export const {
     setMaxPrice,
     setDemandLabels,
     setTimeFrame,
-    setShape,
+    setShapes,
     //Demand Location
 
     setDemandComplexes,
@@ -823,8 +819,9 @@ export const selectDemandLabels = ({ customer }: RootState) =>
 export const selectTimeFrame = ({ customer }: RootState) =>
     customer.demands.map((d) => d.timeframe);
 
-export const selectShape = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.shape);
+// array of string-arrays a.k.a. string[][]
+export const selectShapes = ({ customer }: RootState) =>
+    customer.demands.map((d) => d.shapes);
 
 //Demand Location
 
