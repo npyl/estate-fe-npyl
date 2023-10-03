@@ -38,6 +38,7 @@ interface IMapProps {
         address: IMapAddress
     ) => void;
     onDraw?: (shape: DrawShape | StopDraw) => void;
+    onDrag?: (oldShape: DrawShape, newShape: DrawShape) => void;
     onSearchSelect?: (selected: IMapAddress, lat: number, lng: number) => void;
 
     data?: ILocationPOST[];
@@ -67,6 +68,7 @@ const Map = ({
     onClick,
     onDragEnd,
     onDraw,
+    onDrag,
     onSearchSelect,
     data,
     zoom,
@@ -255,6 +257,9 @@ const Map = ({
                     drawing={drawing}
                     shapes={shapes}
                     onDraw={(shape) => onDraw && onDraw(shape)}
+                    onDrag={(oldShape, newShape) =>
+                        onDrag && onDrag(oldShape, newShape)
+                    }
                 />
             )}
             {search && <SearchOnMap onSearchSelect={handleSearchSelect} />}

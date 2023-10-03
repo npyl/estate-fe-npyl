@@ -137,6 +137,20 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
         [index, shapes]
     );
 
+    const handleDrag = useCallback(
+        (oldShape: DrawShape, newShape: DrawShape) => {
+            const encodedOldShape = encodeShape(oldShape);
+            const encodedNewShape = encodeShape(newShape);
+
+            const updatedShapes = shapes.map((shapeString) =>
+                shapeString === encodedOldShape ? encodedNewShape : shapeString
+            );
+
+            dispatch(setShapes(indexedData(index, updatedShapes)));
+        },
+        [index, shapes]
+    );
+
     const updateMainMarkerCoordinates = (lat: number, lng: number) => {
         let newMarker = mainMarker;
         newMarker.lat = lat;
@@ -225,6 +239,7 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
                     mainMarker={mainMarker}
                     shapes={shapeData}
                     onDraw={handleDraw}
+                    onDrag={handleDrag}
                     onDragEnd={handleMarkerDragEnd}
                     onClick={handleMapClick}
                     hideMainMarker={true}

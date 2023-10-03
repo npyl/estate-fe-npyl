@@ -12,7 +12,6 @@ import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { floor } from "lodash";
 import {
     selectAccessibility,
     selectAirConditioning,
@@ -428,12 +427,11 @@ const DetailsSection: React.FC<any> = (props) => {
                                                 </Grid>
 
                                                 <Grid item xs={3}>
-                                                    {/* <> */}
                                                     <TextField
                                                         fullWidth
                                                         id="outlined-controlled"
                                                         label="Floors"
-                                                        value={floor}
+                                                        value={floors}
                                                         placeholder="1,2,3..."
                                                         inputProps={ariaLabel}
                                                         onChange={(

@@ -118,7 +118,7 @@ export const DrawMultiple = ({
             (shape) =>
                 shape &&
                 shapeRefs.current?.push(
-                    drawShape(shape, map, !!drawing ? onDraw : null)
+                    drawShape(shape, map, !!drawing ? onDrag : null)
                 )
         );
     }, [ready, initialShapes]);
@@ -127,6 +127,13 @@ export const DrawMultiple = ({
         if (!dragStartShape || !dragStopShape) return;
 
         console.log("dragging finished!");
+
+        console.log("before: ", shapeRefs.current);
+        const updatedShapes = shapeRefs.current?.map((shape) =>
+            shape === dragStartShape ? dragStopShape : shape
+        );
+        shapeRefs.current = updatedShapes;
+        console.log("after: ", shapeRefs.current);
 
         // call
         onDrag(dragStartShape, dragStopShape);
