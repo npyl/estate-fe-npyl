@@ -284,7 +284,7 @@ const MatchingPropertiesSection: React.FC = () => {
                 <Grid item xs={12}>
                     <Paper>
                         <DataGridTable
-                            rows={properties}
+                            rows={properties || []}
                             columns={columns}
                             resource={"property"}
                             sortingBy={"firstName"}
