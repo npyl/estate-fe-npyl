@@ -484,6 +484,12 @@ const slice = createSlice({
                 state.demands[index].shapes = value;
             }
         },
+        addShape(state: customerState, action: ISetDemandFilterAction): void {
+            const { index, value } = action.payload;
+            if (state.demands[index]) {
+                state.demands[index].shapes.push(value);
+            }
+        },
 
         //Demand Location
         setDemandComplexes(state: customerState, action): void {},
@@ -683,8 +689,9 @@ export const {
     setDemandLabels,
     setTimeFrame,
     setShapes,
-    //Demand Location
+    addShape,
 
+    //Demand Location
     setDemandComplexes,
     setDemandCities,
     setDemandRegions,

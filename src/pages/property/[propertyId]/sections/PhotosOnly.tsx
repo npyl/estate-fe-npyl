@@ -19,6 +19,7 @@ const PhotosOnly: React.FC<ImageSectionProps> = (props) => {
         ...images.map((image, index) => ({
             id: index.toString(),
             title: "Image",
+            hidden: image.hidden,
             image: image.url || "",
             description: "One of the images",
             path: "/repository",

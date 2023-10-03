@@ -113,13 +113,13 @@ export const DrawMultiple = ({
         shapeRefs.current = [];
 
         // draw any imported shape
-        shapes?.forEach(
-            (shape) =>
-                shape &&
+        shapes
+            ?.filter((shape) => !!shape)
+            .map((shape) =>
                 shapeRefs.current?.push(
                     drawShape(shape, map, !!drawing ? onDrag : null)
                 )
-        );
+            );
     }, [ready, shapes]);
 
     useEffect(() => {

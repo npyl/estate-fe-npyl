@@ -13,12 +13,14 @@ interface ImageSectionProps {
 const ImageSection: React.FC<ImageSectionProps> = (props) => {
     const { data } = props;
     const images: IPropertyImage[] = data.images;
+
     const carouselImages = [
         ...images.map((image, index) => ({
             id: index.toString(),
             title: "Image",
             image: image.url || "",
             description: "One of the images",
+            hidden: image.hidden,
             path: "/repository",
         })),
     ];

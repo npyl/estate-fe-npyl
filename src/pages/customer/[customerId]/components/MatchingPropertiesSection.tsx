@@ -13,7 +13,7 @@ import {
 } from "@mui/x-data-grid";
 import { useRouter } from "next/router";
 import * as React from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import DataGridTable from "src/components/DataGrid";
 import { useLoadApi } from "src/components/Map/Map";
@@ -104,43 +104,56 @@ const MatchingPropertiesSection: React.FC = () => {
     const { customerId } = router.query;
 
     const [page, setPage] = useState(0);
-    const [parentCategory, setParentCategory] = useState<string[]>([]);
 
-    const { data: customer, isSuccess } = useGetCustomerByIdQuery(+customerId!);
-    const { data: propertiesPage } = useSuggestForCustomerQuery(
-        { customerId: +customerId!, page, pageSize },
-        {
-            skip: !parentCategory,
-        }
-    );
+    const { data: customer } = useGetCustomerByIdQuery(+customerId!);
+    const { data: propertiesPage } = useSuggestForCustomerQuery({
+        customerId: +customerId!,
+        page,
+        pageSize,
+    });
 
-    const demand = useMemo(() => customer?.demands[0], [customer?.demands]); // TODO: support only one for now
-    const shapes = useMemo(() => demand?.shapes, [customer]);
-    // const shapeData = [];
+    const demands = useMemo(() => customer?.demands, [customer?.demands]);
 
     const totalRows = useMemo(
         () => propertiesPage?.totalElements,
         [propertiesPage?.totalElements]
     );
 
+    // TODO: make this not have duplicate properties... (Use a set?)
     const properties = useMemo(() => {
         if (!isLoaded) return [];
         if (!propertiesPage?.content) return [];
-        return [];
-        // return (
-        //     (shapeData
-        //         ? filterPropertiesInShape(propertiesPage?.content, shapeData)
-        //         : propertiesPage?.content) || []
-        // );
-    }, [isLoaded, propertiesPage]);
 
-    useEffect(() => {
-        if (!customer || !isSuccess) return;
+        const haveNoShapes = demands?.every((demand) => {
+            const shapes = demand?.shapes;
+            if (!shapes) return true; // every
+            return shapes.every((shape) => !shape);
+        });
 
-        setParentCategory(
-            demand?.filters?.parentCategories.map((i) => i.key) || []
-        );
-    }, [customer, isSuccess]);
+        // If we have no shapes in our demands; return just the content from the backend
+        if (haveNoShapes) return propertiesPage.content;
+
+        // Otherwise, for every demand
+        return demands
+            ?.map((demand) => {
+                // Get all shapes
+                const shapes = demand?.shapes;
+                return shapes
+                    ?.map((shape) => {
+                        // For every shape
+                        const shapeData = decodeShape(shape);
+                        // Return filtered properties
+                        return shapeData
+                            ? filterPropertiesInShape(
+                                  propertiesPage?.content,
+                                  shapeData
+                              )
+                            : [];
+                    })
+                    .flat();
+            })
+            .flat();
+    }, [isLoaded, propertiesPage, demands]);
 
     const columns: GridColDef[] = [
         {
@@ -208,7 +221,8 @@ const MatchingPropertiesSection: React.FC = () => {
     const handlePaginationChange = (model: GridPaginationModel) =>
         setPage(model.page);
 
-    if (!parentCategory) return null;
+    console.log("properties: ", properties);
+
     if (properties?.length === 0) {
         // !propertiesPage ||
         // !Array.isArray(propertiesPage.content) ||
@@ -270,7 +284,7 @@ const MatchingPropertiesSection: React.FC = () => {
                 <Grid item xs={12}>
                     <Paper>
                         <DataGridTable
-                            rows={properties}
+                            rows={properties || []}
                             columns={columns}
                             resource={"property"}
                             sortingBy={"firstName"}

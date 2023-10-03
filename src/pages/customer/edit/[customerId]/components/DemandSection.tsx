@@ -7,6 +7,7 @@ import {
     Button,
     Typography,
     Box,
+    Stack,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { FC } from "react";
@@ -22,6 +23,7 @@ import {
 } from "src/slices/customer";
 import { CloseIcon } from "yet-another-react-lightbox/core";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
+import { deletePropertyCode } from "src/slices/customer/misc";
 
 const DemandSection: FC = () => {
     const { t } = useTranslation();
@@ -41,12 +43,13 @@ const DemandSection: FC = () => {
             setIndex(newValue);
         }
     };
-    const handleCreateTab = () => {
-        dispatch(addDemand({}));
-    };
+    const handleCreateTab = () => dispatch(addDemand({}));
     const handleDeleteTab = (i: number, event: React.MouseEvent) => {
-        event.stopPropagation(); // This will prevent the tab change event
-        dispatch(removeDemands(i)); // Assuming this removes the demand at a given index
+        if (i === 0 && demands.length === 1) return;
+
+        dispatch(removeDemands(i)); // remove demand at index
+        dispatch(deletePropertyCode(i));
+        setIndex(i - 1);
     };
     useEffect(() => {
         // NOTE: when a customer is first created, its demands array is empty; create one
@@ -74,12 +77,17 @@ const DemandSection: FC = () => {
                 <Typography variant="h6" flex={1} mt={1.5} ml={3}>
                     {t("Demand Forms")}
                 </Typography>
-
-                <Button onClick={handleCreateTab}>Create</Button>
             </Box>
 
-            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                <Tabs value={index} onChange={handleTabChange} sx={{ ml: 1 }}>
+            <Stack
+                sx={{ borderBottom: 1, borderColor: "divider" }}
+                direction={"row"}
+            >
+                <Tabs
+                    value={index}
+                    onChange={handleTabChange}
+                    sx={{ ml: 1, flex: 1 }}
+                >
                     {demands.map((d, i) => (
                         <Tab
                             label={
@@ -99,17 +107,12 @@ const DemandSection: FC = () => {
                             style={{ marginRight: "-20px" }}
                         />
                     ))}
-                    <Tab
-                        label={
-                            <Box display="flex" alignItems="center">
-                                <AddCircleOutlineOutlinedIcon
-                                    sx={{ fontSize: "large" }}
-                                />
-                            </Box>
-                        }
-                    />
                 </Tabs>
-            </Box>
+                <AddCircleOutlineOutlinedIcon
+                    fontSize="medium"
+                    onClick={handleCreateTab}
+                />
+            </Stack>
 
             <DemandForm index={index} />
         </Paper>

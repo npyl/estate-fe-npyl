@@ -3,6 +3,7 @@ import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useGetLabelsQuery } from "src/services/labels";
+import { useAllUsersQuery } from "src/services/user";
 import {
     deleteFilter,
     getChangedFields,
@@ -13,8 +14,8 @@ const ChosenFilters = () => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const { data } = useGetLabelsQuery();
-
+    const { data: labelsQuery } = useGetLabelsQuery();
+    const { data: users } = useAllUsersQuery();
     const changedProps = useSelector(getChangedFields);
     const ids = useSelector(selectIds);
 
@@ -50,7 +51,7 @@ const ChosenFilters = () => {
             label: t("Maximun Covered Area"),
         },
         managerId: {
-            label: t("Manager ID"),
+            label: t("Managed By"),
         },
 
         parentCategories: {
@@ -80,8 +81,8 @@ const ChosenFilters = () => {
         );
     };
     const allLabels = useMemo(
-        () => data?.customerLabels || [],
-        [data?.customerLabels]
+        () => labelsQuery?.customerLabels || [],
+        [labelsQuery?.customerLabels]
     );
 
     const getLabelNames = useCallback(
@@ -95,12 +96,20 @@ const ChosenFilters = () => {
         [allLabels]
     );
 
+    const getManagerName = useCallback(
+        (managerId: number) => {
+            const user = users?.find((user) => user.id === managerId);
+            return `${user?.firstName} ${user?.lastName}`;
+        },
+        [users]
+    );
+
     return (
         <Grid container direction="row">
             {ids.map((key, index) => {
                 const values = changedProps[key];
                 let label = filterTags[key].label;
-
+                let manager = filterTags[key].label;
                 if (!values || !label) return <></>;
 
                 const isRole =
@@ -110,7 +119,12 @@ const ChosenFilters = () => {
                     key === "seller";
 
                 let valuesToDisplay =
-                    key === "labels" ? getLabelNames(values) : values;
+                    key === "labels"
+                        ? getLabelNames(values)
+                        : key === "managerId"
+                        ? getManagerName(values)
+                        : values;
+
                 const suffix =
                     key.includes("min") || key.includes("max")
                         ? key.slice(3)
@@ -122,6 +136,7 @@ const ChosenFilters = () => {
                 // If we have min-max pair show chip differently
                 if (hasMinMaxPair(suffix)) {
                     label = pairFilterTags[`minMax${suffix}`].label;
+                    manager = pairFilterTags[`minMax${suffix}`].label;
                     const minValue = changedProps[`min${suffix}`];
                     const maxValue = changedProps[`max${suffix}`];
 
@@ -137,6 +152,14 @@ const ChosenFilters = () => {
                                         }}
                                     >
                                         {label}:
+                                    </Typography>
+                                    <Typography
+                                        sx={{
+                                            fontWeight: "medium",
+                                            paddingRight: 1,
+                                        }}
+                                    >
+                                        {manager}:
                                     </Typography>
                                     <Typography
                                         sx={{

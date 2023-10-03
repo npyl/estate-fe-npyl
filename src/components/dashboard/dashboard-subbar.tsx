@@ -18,6 +18,7 @@ import { resetState as resetPropertyFilesState } from "src/slices/property/files
 import { resetState as resetLabelsState } from "src/slices/labels";
 import { resetState as resetNotesState } from "src/slices/notes";
 import { resetState as resetCustomerState } from "src/slices/customer";
+import { resetState as resetCustomerMiscState } from "src/slices/customer";
 
 const Subbar = () => {
     const dispatch = useDispatch();
@@ -30,6 +31,7 @@ const Subbar = () => {
         resetPropertyState();
         resetPropertyFilesState();
         resetCustomerState();
+        resetCustomerMiscState();
         resetLabelsState();
         resetNotesState();
 

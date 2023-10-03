@@ -13,7 +13,7 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
-import { FC, useEffect, useState } from "react";
+import { FC, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useGlobals } from "src/hooks/useGlobals";
 import {
@@ -55,6 +55,10 @@ import NonPriorityFeatures from "./NonPriorityFeatures";
 import { KeyValue } from "src/types/KeyValue";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { DemandFormSlider } from "./DemandForm/components/DemandFormSlider";
+import {
+    selectPropertyCode,
+    setPropertyCode as setAutocompleteValue,
+} from "src/slices/customer/misc";
 
 interface DemandFormProps {
     index: number;
@@ -106,7 +110,7 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
     const complexes = demandFilters?.complexes || [];
     const regions = demandFilters?.regions || [];
 
-    const [autocompleteValue, setAutocompleteValue] = useState("");
+    const autocompleteValue = useSelector(selectPropertyCode)[index];
 
     const subCategoriesMap: {
         [key: string]: KeyValue[];
@@ -188,8 +192,12 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
         );
     }, [propertyForCode, isPropertyForCodeSuccess]);
 
-    const autocompleteChange = (_event: any, value: string | null) =>
-        setAutocompleteValue(value || "");
+    const autocompleteChange = useCallback(
+        (_event: any, value: string | null) => {
+            dispatch(setAutocompleteValue({ index, value: value || "" }));
+        },
+        [index]
+    );
 
     const handleChange10 = (
         event: SelectChangeEvent<typeof parentCategories>
@@ -302,7 +310,6 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                     <Grid item xs={6}>
                         <Autocomplete
                             disablePortal
-                            id="combo-box-demo"
                             value={autocompleteValue}
                             onChange={autocompleteChange}
                             options={propertyCodes}

@@ -17,7 +17,7 @@ import {
     useGetClosestQuery,
     useLazyGetHierarchyByAreaIdQuery,
 } from "src/services/location";
-import { selectShapes, setShapes } from "src/slices/customer";
+import { selectShapes, setShapes, addShape } from "src/slices/customer";
 
 interface ILocationSectionProps {
     index: number;
@@ -49,10 +49,8 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
 
     const allShapes = useSelector(selectShapes); // all demands' shapes
 
-    console.log("allShapes: ", allShapes);
-
     const shapes = useMemo(
-        () => (allShapes && allShapes.length && allShapes[index]) || [], // current demand's shapes (by demand index)
+        () => (allShapes && allShapes.length > index && allShapes[index]) || [], // current demand's shapes (by demand index)
         [allShapes, index]
     );
     const shapeData = useMemo(
@@ -125,13 +123,15 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
 
     const handleDraw = useCallback(
         (s: DrawShape | StopDraw) => {
-            if (!s) dispatch(setShapes(indexedData(index, []))); // clear
-            else {
-                const oldShapes = shapes;
+            if (!s) {
+                console.log("called null!");
+                dispatch(setShapes(indexedData(index, []))); // clear
+            } else {
                 const encoded = encodeShape(s);
-                dispatch(
-                    setShapes(indexedData(index, [...oldShapes, encoded]))
-                );
+
+                console.log("got: ", shapes);
+
+                dispatch(addShape(indexedData(index, encoded)));
             }
         },
         [index, shapes]

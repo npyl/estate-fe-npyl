@@ -32,7 +32,7 @@ export interface ICustomerFilter {
     maxPrice?: number;
     minCovered?: number;
     maxCovered?: number;
-    managerId?: number;
+    managerId?: number; //id
 }
 
 export interface ICustomer {
