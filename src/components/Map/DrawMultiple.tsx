@@ -108,9 +108,11 @@ export const DrawMultiple = ({
         // draw any imported shape
         shapes?.forEach(
             (shape) =>
-                shape && shapeRefs.current?.push(drawShape(shape, map, onDraw))
+                shape &&
+                shapeRefs.current?.push(
+                    drawShape(shape, map, !!drawing, onDraw)
+                )
         );
-        // INFO: we need to support null/undefined shape, because it can mean user cleared the shape OR we loaded a new map on a new demand form
     }, [ready, initialShapes]);
 
     const startDrawing = () =>
