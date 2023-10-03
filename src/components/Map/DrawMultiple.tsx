@@ -78,19 +78,19 @@ export const DrawMultiple = ({
                 if (typeof event.overlay === typeof google.maps.Marker)
                     return null;
 
-                const shape = event.overlay;
-                shapeRefs.current?.push(shape as DrawShape);
+                const shape = event.overlay as DrawShape;
+                shapeRefs.current?.push(shape);
                 drawingManagerRef.current.setDrawingMode(null);
 
                 // Support shape drag
                 google.maps.event.addListener(shape, "dragend", () =>
-                    setDragStartShape(shape as DrawShape)
+                    setDragStartShape(shape)
                 );
                 google.maps.event.addListener(shape, "dragend", () =>
-                    setDragStopShape(shape as DrawShape)
+                    setDragStopShape(shape)
                 );
 
-                onDraw(shape as DrawShape);
+                onDraw(shape);
             }
         );
 
