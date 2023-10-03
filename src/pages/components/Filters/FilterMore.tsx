@@ -83,7 +83,11 @@ export default function FilterMore({
     const { t } = useTranslation();
 
     const changedPropsCount = useSelector(sumOfChangedProperties);
-
+    const enums = useGlobals();
+    const propertyEnums = enums?.property;
+    const detailsEnum = propertyEnums?.details;
+    const minFloor = detailsEnum?.floors;
+    const maxFloor = detailsEnum?.floors;
     const frameType = useSelector(selectFrameType);
     const furnished = useSelector(selectFurnished);
     const heatingType = useSelector(selectHeatingType);
@@ -273,22 +277,18 @@ export default function FilterMore({
                             },
                         }}
                     >
-                        <MenuItem value={0}>
-                            <ListItemText primary={t("Indifferent")} />
-                        </MenuItem>
-                        {generateNumbers().map((option) => (
-                            <MenuItem
-                                key={option}
-                                value={option}
-                                onClick={() =>
-                                    option > +maxFloors &&
-                                    maxFloors !== 0 &&
-                                    dispatch(setMaxFloor(0))
-                                }
-                            >
-                                <ListItemText primary={option.toString()} />
-                            </MenuItem>
-                        ))}
+                        {minFloor
+                            ? minFloor.map(
+                                  ({ key, value }, minFloorsSelectIndex) => (
+                                      <MenuItem
+                                          key={minFloorsSelectIndex}
+                                          value={key}
+                                      >
+                                          {value}
+                                      </MenuItem>
+                                  )
+                              )
+                            : null}
                     </Select>
                     <Typography>- {t("to")}</Typography>
                     <Select
@@ -312,21 +312,18 @@ export default function FilterMore({
                             },
                         }}
                     >
-                        <MenuItem value={0}>
-                            <ListItemText primary={t("Indifferent")} />
-                        </MenuItem>
-                        {generateNumbers().map((option) => (
-                            <MenuItem
-                                key={option}
-                                value={option}
-                                onClick={() =>
-                                    option < +minFloors &&
-                                    dispatch(setMinFloor(0))
-                                }
-                            >
-                                <ListItemText primary={option.toString()} />
-                            </MenuItem>
-                        ))}
+                        {maxFloor
+                            ? maxFloor.map(
+                                  ({ key, value }, minFloorsSelectIndex) => (
+                                      <MenuItem
+                                          key={minFloorsSelectIndex}
+                                          value={key}
+                                      >
+                                          {value}
+                                      </MenuItem>
+                                  )
+                              )
+                            : null}
                     </Select>
                 </Stack>
             </ClearableDialogContent>
