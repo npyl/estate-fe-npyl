@@ -110,12 +110,7 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
     const complexes = demandFilters?.complexes || [];
     const regions = demandFilters?.regions || [];
 
-    const propertyCodesForAllDemands = useSelector(selectPropertyCode);
-
-    const autocompleteValue = useMemo(
-        () => propertyCodesForAllDemands[index],
-        [propertyCodesForAllDemands, index]
-    );
+    const autocompleteValue = useSelector(selectPropertyCode)[index];
 
     const subCategoriesMap: {
         [key: string]: KeyValue[];
@@ -315,7 +310,6 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                     <Grid item xs={6}>
                         <Autocomplete
                             disablePortal
-                            id="combo-box-demo"
                             value={autocompleteValue}
                             onChange={autocompleteChange}
                             options={propertyCodes}
