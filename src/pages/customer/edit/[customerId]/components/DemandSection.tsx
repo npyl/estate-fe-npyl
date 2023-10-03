@@ -47,8 +47,7 @@ const DemandSection: FC = () => {
     const handleDeleteTab = (i: number, event: React.MouseEvent) => {
         if (i === 0 && demands.length === 1) return;
 
-        event.stopPropagation(); // This will prevent the tab change event
-        dispatch(removeDemands(i)); // Assuming this removes the demand at a given index
+        dispatch(removeDemands(i)); // remove demand at index
         dispatch(deletePropertyCode(i));
         setIndex(i - 1);
     };
