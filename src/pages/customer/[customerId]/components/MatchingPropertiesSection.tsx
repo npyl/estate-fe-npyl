@@ -13,7 +13,7 @@ import {
 } from "@mui/x-data-grid";
 import { useRouter } from "next/router";
 import * as React from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import DataGridTable from "src/components/DataGrid";
 import { useLoadApi } from "src/components/Map/Map";
@@ -119,15 +119,40 @@ const MatchingPropertiesSection: React.FC = () => {
         [propertiesPage?.totalElements]
     );
 
+    // TODO: make this not have duplicate properties... (Use a set?)
     const properties = useMemo(() => {
         if (!isLoaded) return [];
         if (!propertiesPage?.content) return [];
-        return [];
-        // return (
-        //     (shapeData
-        //         ? filterPropertiesInShape(propertiesPage?.content, shapeData)
-        //         : propertiesPage?.content) || []
-        // );
+
+        const haveNoShapes = demands?.every((demand) => {
+            const shapes = demand?.shapes;
+            if (!shapes) return true; // every
+            return shapes.every((shape) => !shape);
+        });
+
+        // If we have no shapes in our demands; return just the content from the backend
+        if (haveNoShapes) return propertiesPage.content;
+
+        // Otherwise, for every demand
+        return demands
+            ?.map((demand) => {
+                // Get all shapes
+                const shapes = demand?.shapes;
+                return shapes
+                    ?.map((shape) => {
+                        // For every shape
+                        const shapeData = decodeShape(shape);
+                        // Return filtered properties
+                        return shapeData
+                            ? filterPropertiesInShape(
+                                  propertiesPage?.content,
+                                  shapeData
+                              )
+                            : [];
+                    })
+                    .flat();
+            })
+            .flat();
     }, [isLoaded, propertiesPage, demands]);
 
     const columns: GridColDef[] = [
@@ -196,7 +221,8 @@ const MatchingPropertiesSection: React.FC = () => {
     const handlePaginationChange = (model: GridPaginationModel) =>
         setPage(model.page);
 
-    if (!parentCategory) return null;
+    console.log("properties: ", properties);
+
     if (properties?.length === 0) {
         // !propertiesPage ||
         // !Array.isArray(propertiesPage.content) ||
