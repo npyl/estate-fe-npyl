@@ -155,7 +155,7 @@ const Customers: NextPage = () => {
     const columns: GridColDef[] = [
         {
             field: "image",
-            headerName: t("Image") || "",
+            headerName: "",
             renderCell: (params: GridCellParams) => {
                 const firstName = params.row.firstName;
                 const lastName = params.row.lastName;
