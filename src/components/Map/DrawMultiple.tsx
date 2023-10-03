@@ -21,7 +21,6 @@ export const DrawMultiple = ({
 }: DrawMultipleProps) => {
     const drawingManagerRef = useRef<any>(null);
     const shapeRefs = useRef<(DrawShape | StopDraw)[]>([]);
-    const initialShapes = useMemo(() => shapes, []); // [] => ONLY ONCE
 
     const [dragStartShape, setDragStartShape] = useState<DrawShape>();
     const [dragStopShape, setDragStopShape] = useState<DrawShape>();
@@ -121,19 +120,15 @@ export const DrawMultiple = ({
                     drawShape(shape, map, !!drawing ? onDrag : null)
                 )
         );
-    }, [ready, initialShapes]);
+    }, [ready, shapes]);
 
     useEffect(() => {
         if (!dragStartShape || !dragStopShape) return;
 
-        console.log("dragging finished!");
-
-        console.log("before: ", shapeRefs.current);
         const updatedShapes = shapeRefs.current?.map((shape) =>
             shape === dragStartShape ? dragStopShape : shape
         );
         shapeRefs.current = updatedShapes;
-        console.log("after: ", shapeRefs.current);
 
         // call
         onDrag(dragStartShape, dragStopShape);
