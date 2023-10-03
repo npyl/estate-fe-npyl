@@ -50,7 +50,7 @@ const ChosenFilters = () => {
             label: t("Maximun Covered Area"),
         },
         managerId: {
-            label: t("Manager ID"),
+            label: t("Managed By"),
         },
 
         parentCategories: {

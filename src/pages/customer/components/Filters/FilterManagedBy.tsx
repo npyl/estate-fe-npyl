@@ -1,97 +1,68 @@
-// import {
-//     Checkbox,
-//     FormControl,
-//     InputLabel,
-//     MenuItem,
-//     OutlinedInput,
-//     Select,
-//     SelectChangeEvent,
-// } from "@mui/material";
-// import { useDispatch } from "src/store";
-// import Label from "src/components/label/Label";
-// import { useGetLabelsQuery } from "src/services/labels";
-// import { useMemo } from "react";
-// import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
-// import { useTranslation } from "react-i18next";
+import {
+    Checkbox,
+    FormControl,
+    InputLabel,
+    MenuItem,
+    OutlinedInput,
+    Select,
+    SelectChangeEvent,
+} from "@mui/material";
+import { useDispatch } from "src/store";
+import Label from "src/components/label/Label";
+import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
+import { useTranslation } from "react-i18next";
+import { useAllUsersQuery } from "src/services/user";
 
-// type FilterVariant = "property" | "customer";
+interface FilterManagerProps {
+    managers: number[];
+    setManager: ActionCreatorWithPayload<any, string>;
+}
 
-// interface FilterLabelsProps {
-//     variant: FilterVariant;
-//     labels: number[];
-//     setLabels: ActionCreatorWithPayload<any, string>;
-// }
+export default function FilterManager(props: FilterManagerProps) {
+    const { managers, setManager } = props;
+    const { t } = useTranslation();
+    const dispatch = useDispatch();
 
-// export default function FilterManager(props: FilterLabelsProps) {
-//     const { variant = "property", labels, setLabels } = props;
-//     const { t } = useTranslation();
-//     const dispatch = useDispatch();
+    const { data } = useAllUsersQuery();
+    const managerOptions = data || [];
 
-//     const { data } = useGetLabelsQuery();
-//     const labelOptions =
-//         useMemo(
-//             () =>
-//                 variant === "property"
-//                     ? data?.propertyLabels
-//                     : data?.customerLabels,
-//             [data]
-//         ) || [];
-//     const renderLabelNames = (selectedIds: number[]) => {
-//         return selectedIds
-//             .map((id) => {
-//                 const labelOption = labelOptions.find(
-//                     (option) => option.id === id
-//                 );
-//                 return labelOption ? labelOption.name : "Unknown";
-//             })
-//             .join(", ");
-//     };
-//     const handleChange = (event: SelectChangeEvent<typeof labels>) => {
-//         const {
-//             target: { value },
-//         } = event;
-//         dispatch(
-//             setLabels(
-//                 // On autofill we get a stringified value.
-//                 typeof value === "string" ? value.split(",") : value
-//             )
-//         );
-//     };
+    const renderManagerName = (selectedId: number) => {
+        const managerOption = managerOptions.find(
+            (option: { id: number }) => option.id === selectedId
+        );
+        return managerOption
+            ? `${managerOption.firstName} ${managerOption.lastName}`
+            : "Unknown";
+    };
 
-//     return (
-//         <FormControl sx={{ minWidth: "130px" }}>
-//             <InputLabel id="demo-simple-select-label">{t("Labels")}</InputLabel>
-//             <Select
-//                 multiple
-//                 labelId="demo-simple-select-label"
-//                 value={labels}
-//                 onChange={handleChange}
-//                 renderValue={(selected) =>
-//                     renderLabelNames(selected as number[])
-//                 }
-//                 input={<OutlinedInput label="Ετικέτες" />}
-//                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
-//             >
-//                 {labelOptions.map((option) => {
-//                     return (
-//                         <MenuItem key={option.id} value={option.id}>
-//                             <Checkbox
-//                                 checked={labels.indexOf(option.id!) > -1}
-//                             />
-//                             <Label
-//                                 variant="soft"
-//                                 sx={{
-//                                     bgcolor: option.color,
-//                                     borderRadius: 7,
-//                                     color: "white",
-//                                 }}
-//                             >
-//                                 {option.name}
-//                             </Label>
-//                         </MenuItem>
-//                     );
-//                 })}
-//             </Select>
-//         </FormControl>
-//     );
-// }
+    const handleChange = (event: SelectChangeEvent<number>) => {
+        const {
+            target: { value },
+        } = event;
+        dispatch(setManager(value)); // Dispatch the single value directly, not wrapped in an array
+    };
+
+    return (
+        <FormControl sx={{ minWidth: "130px" }}>
+            <InputLabel id="demo-simple-select-label">
+                {t("Managers")}
+            </InputLabel>
+            <Select
+                labelId="demo-simple-select-label"
+                value={managers[0] || ``} // Ensure it's a single value, use the first ID or an empty string
+                onChange={handleChange}
+                renderValue={(selected) =>
+                    renderManagerName(selected as number)
+                }
+                input={<OutlinedInput label="Ετικέτες" />}
+                MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
+            >
+                {managerOptions.map((option) => (
+                    <MenuItem key={option.id} value={option.id}>
+                        {`${option.firstName} ${option.lastName}`}
+                    </MenuItem>
+                ))}
+            </Select>
+        </FormControl>
+    );
+}
