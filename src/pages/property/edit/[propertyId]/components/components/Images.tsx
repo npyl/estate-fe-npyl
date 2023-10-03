@@ -53,7 +53,10 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
     const [addImage] = useAddPropertyImageMutation();
     const [setThumbnail] = useSetPropertyThumbailMutation();
     const [reorderImages] = useReorderPropertyImagesMutation();
-    const [deleteImage] = useDeletePropertyImageMutation();
+    const [deleteImage, { isLoading: isDeleteOnGoing }] =
+        useDeletePropertyImageMutation();
+
+    console.log("Images: ", files);
 
     const uploadFile = async (
         image: File
@@ -140,7 +143,9 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
     );
 
     const handleRemoveFile = (inputFile: IPropertyImage) => {
-        if (!inputFile.key) return;
+        console.log("going to delete: ", inputFile);
+
+        if (!inputFile?.key) return;
 
         deleteImage({ propertyId: +propertyId!, imageKey: inputFile.key })
             .then((response) => deleteFile(inputFile.key))
@@ -221,12 +226,11 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
             {files && files.length > 0 && galleryManagerOpen && (
                 <GalleryManager
                     open={galleryManagerOpen}
+                    deleteOnGoing={isDeleteOnGoing}
                     currentImage={currentGalleryImage}
                     images={files}
                     onClose={handleCloseGalleryManager}
-                    onDelete={(file: IPropertyImage) => {
-                        handleRemoveFile(file);
-                    }}
+                    onDelete={handleRemoveFile}
                 />
             )}
 
