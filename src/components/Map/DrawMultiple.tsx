@@ -78,19 +78,19 @@ export const DrawMultiple = ({
                 if (typeof event.overlay === typeof google.maps.Marker)
                     return null;
 
-                const shape = event.overlay as DrawShape;
-                shapeRefs.current?.push(shape);
+                const shape = event.overlay;
+                shapeRefs.current?.push(shape as DrawShape);
                 drawingManagerRef.current.setDrawingMode(null);
 
                 // Support shape drag
                 google.maps.event.addListener(shape, "dragend", () =>
-                    setDragStartShape(shape)
+                    setDragStartShape(shape as DrawShape)
                 );
                 google.maps.event.addListener(shape, "dragend", () =>
-                    setDragStopShape(shape)
+                    setDragStopShape(shape as DrawShape)
                 );
 
-                onDraw(shape);
+                onDraw(shape as DrawShape);
             }
         );
 
@@ -113,13 +113,13 @@ export const DrawMultiple = ({
         shapeRefs.current = [];
 
         // draw any imported shape
-        shapes?.forEach(
-            (shape) =>
-                shape &&
+        shapes
+            ?.filter((shape) => !!shape)
+            .map((shape) =>
                 shapeRefs.current?.push(
                     drawShape(shape, map, !!drawing ? onDrag : null)
                 )
-        );
+            );
     }, [ready, shapes]);
 
     useEffect(() => {
