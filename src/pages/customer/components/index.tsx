@@ -21,7 +21,7 @@ import FilterManager from "./Filters/FilterManagedBy";
 export const FilterSection: React.FC<PaperProps> = ({ ...props }) => {
     const changedCustomerFilters = useSelector(sumOfChangedProperties);
     const labels = useSelector(selectLabels) || [];
-    const managers = useSelector(selectManagerId) || [];
+    const managers = useSelector(selectManagerId) || 0;
 
     return (
         <Stack spacing={1} component={Paper} p={1} mt={2} {...props}>
@@ -36,7 +36,7 @@ export const FilterSection: React.FC<PaperProps> = ({ ...props }) => {
                 />
                 <PriceSelect type={"price"}></PriceSelect>
                 <PriceSelect type={"area"}></PriceSelect>
-                <FilterManager managers={managers} setManager={setManagerId} />
+                <FilterManager />
                 <FilterStatus />
             </Stack>
             {changedCustomerFilters > 0 && (
