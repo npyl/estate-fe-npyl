@@ -104,19 +104,15 @@ const MatchingPropertiesSection: React.FC = () => {
     const { customerId } = router.query;
 
     const [page, setPage] = useState(0);
-    const [parentCategory, setParentCategory] = useState<string[]>([]);
 
-    const { data: customer, isSuccess } = useGetCustomerByIdQuery(+customerId!);
-    const { data: propertiesPage } = useSuggestForCustomerQuery(
-        { customerId: +customerId!, page, pageSize },
-        {
-            skip: !parentCategory,
-        }
-    );
+    const { data: customer } = useGetCustomerByIdQuery(+customerId!);
+    const { data: propertiesPage } = useSuggestForCustomerQuery({
+        customerId: +customerId!,
+        page,
+        pageSize,
+    });
 
-    const demand = useMemo(() => customer?.demands[0], [customer?.demands]); // TODO: support only one for now
-    const shapes = useMemo(() => demand?.shapes, [customer]);
-    // const shapeData = [];
+    const demands = useMemo(() => customer?.demands, [customer?.demands]);
 
     const totalRows = useMemo(
         () => propertiesPage?.totalElements,
@@ -132,15 +128,7 @@ const MatchingPropertiesSection: React.FC = () => {
         //         ? filterPropertiesInShape(propertiesPage?.content, shapeData)
         //         : propertiesPage?.content) || []
         // );
-    }, [isLoaded, propertiesPage]);
-
-    useEffect(() => {
-        if (!customer || !isSuccess) return;
-
-        setParentCategory(
-            demand?.filters?.parentCategories.map((i) => i.key) || []
-        );
-    }, [customer, isSuccess]);
+    }, [isLoaded, propertiesPage, demands]);
 
     const columns: GridColDef[] = [
         {
