@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 
 import Map from "src/components/Map/Map";
+import { ShapeData } from "src/components/Map/types";
 import { decodeShape, drawShape } from "src/components/Map/util";
 import { useGetCustomerByIdQuery } from "src/services/customers";
 import { useGetMunicipalitiesQuery } from "src/services/location";
@@ -24,6 +25,16 @@ export const AreaOfPreference: React.FC<AreaOfPreferenceProps> = ({
     const demand = useMemo(() => data?.demands[index], [data?.demands[index]]);
     const demandFilters = useMemo(() => demand?.filters, [demand?.filters]);
 
+    const shapes = useMemo(() => demand?.shapes, [demand?.shapes]);
+    const shapeData = useMemo(
+        () =>
+            shapes
+                ?.map((shape) => decodeShape(shape))
+                .filter((decoded) => !!decoded) as ShapeData[],
+        [shapes]
+    );
+    const shapeData0 = useMemo(() => shapeData[0], [shapeData[0]]); // take shapeData with index 0 as reference
+
     const regions = useMemo(
         () => demandFilters?.regions || [],
         [demandFilters?.regions]
@@ -32,12 +43,6 @@ export const AreaOfPreference: React.FC<AreaOfPreferenceProps> = ({
         () => demandFilters?.cities || [],
         [demandFilters?.cities]
     );
-    const shape = useMemo(() => demand?.shape, [demand?.shape]);
-    const shapeData = useMemo(
-        () => (shape ? decodeShape(shape) : null),
-        [shape]
-    );
-
     const { data: municips } = useGetMunicipalitiesQuery(+regions[0], {
         skip: !regions[0] && !isNumberString(regions[0]),
     });
@@ -47,48 +52,48 @@ export const AreaOfPreference: React.FC<AreaOfPreferenceProps> = ({
     useEffect(() => {
         if (!map) return;
 
-        if (shapeData) {
-            drawShape(shapeData, map, null);
-
+        if (shapeData0) {
             // Center the map to the first point in the shape
-            if (shapeData.type === "Polygon") {
+            if (shapeData0.type === "Polygon") {
                 if (
-                    shapeData.paths.length > 0 &&
-                    shapeData.paths[0].length > 0
+                    shapeData0.paths.length > 0 &&
+                    shapeData0.paths[0].length > 0
                 ) {
-                    const [firstPath] = shapeData.paths;
+                    const [firstPath] = shapeData0.paths;
                     const [firstCoord] = firstPath;
                     const { lat, lng } = firstCoord;
                     map.setCenter(new google.maps.LatLng(lat, lng));
                 }
-            } else if (shapeData.type === "Circle") {
-                const { lat, lng } = shapeData;
+            } else if (shapeData0.type === "Circle") {
+                const { lat, lng } = shapeData0;
                 map.setCenter(new google.maps.LatLng(lat, lng));
-            } else if (shapeData.type === "Rectangle") {
-                const { nelat, nelng } = shapeData;
+            } else if (shapeData0.type === "Rectangle") {
+                const { nelat, nelng } = shapeData0;
                 map.setCenter(new google.maps.LatLng(nelat, nelng));
-            } else if (!shapeData) {
+            } else if (!shapeData0) {
                 return;
             }
         } else {
             if (!cities[0]) return;
             const city = municips?.filter((m) => m.areaID === +cities[0])[0];
-            // Debug lines to ensure that the map should be visible
+
             map.setCenter(
                 new google.maps.LatLng(city?.latitude!, city?.longitude!)
-            ); // Centering on San Francisco for example
+            );
+
             map.setZoom(12);
         }
-    }, [shapeData, index, map]);
+    }, [shapeData0, index, map]);
 
     return (
         <Box height={`calc(100vh - 266px)`} width={"100%"}>
             <Map
                 key={index}
                 zoom={12}
-                // shape={shapeData || undefined}
-                onReady={(m) => setMap(m)}
+                multipleShapes
                 drawing={false}
+                shapes={shapeData}
+                onReady={(m) => setMap(m)}
                 activeMarker={null}
                 setActiveMarker={() => {}}
             />

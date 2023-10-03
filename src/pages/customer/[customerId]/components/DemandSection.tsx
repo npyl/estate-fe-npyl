@@ -28,7 +28,7 @@ const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
     const demand = data?.demands[index];
     const demandFilters = demand?.filters;
     const demandFilterLabelIDs = demandFilters?.labels;
-    const shape = demand?.shape;
+    const shapes = demand?.shapes;
 
     const selectedLabels = useMemo(
         () =>
@@ -91,7 +91,7 @@ const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
         !demandFilters?.minFloor &&
         !demandFilters?.maxFloor &&
         demandFilters?.labels.length === 0 &&
-        !shape &&
+        (!shapes || shapes?.length === 0) &&
         !demand?.timeframe &&
         isEmptyOrComma(demandFilters?.parentCategories.map((i) => i.key)) &&
         isEmptyOrComma(demandFilters?.furnished.map((i) => i.key)) &&
