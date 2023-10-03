@@ -359,13 +359,13 @@ const UserPage: FC<Props> = ({ changeTab, setSelectedUser }) => {
                         value={afm}
                         onChange={(value) => setAfm(value)}
                     />
-                    <OnlyNumbersInput
+                    <TextField
                         label="ΔΟΥ"
                         fullWidth
                         margin="normal"
                         variant="outlined"
                         value={doy}
-                        onChange={(value) => setDoy(value)}
+                        onChange={(event) => setDoy(event.target.value)}
                     />
                     <OnlyNumbersInput
                         label="ΓΕΜΥ"
