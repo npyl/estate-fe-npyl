@@ -22,6 +22,7 @@ import {
 } from "src/slices/customer";
 import { CloseIcon } from "yet-another-react-lightbox/core";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
+import { deletePropertyCode } from "src/slices/customer/misc";
 
 const DemandSection: FC = () => {
     const { t } = useTranslation();
@@ -41,12 +42,11 @@ const DemandSection: FC = () => {
             setIndex(newValue);
         }
     };
-    const handleCreateTab = () => {
-        dispatch(addDemand({}));
-    };
+    const handleCreateTab = () => dispatch(addDemand({}));
     const handleDeleteTab = (i: number, event: React.MouseEvent) => {
         event.stopPropagation(); // This will prevent the tab change event
         dispatch(removeDemands(i)); // Assuming this removes the demand at a given index
+        dispatch(deletePropertyCode(i));
     };
     useEffect(() => {
         // NOTE: when a customer is first created, its demands array is empty; create one

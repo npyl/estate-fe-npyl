@@ -13,6 +13,7 @@ import { security } from "../services/security";
 import { user } from "../services/user";
 
 import { reducer as customerReducer } from "../slices/customer";
+import { reducer as customerMiscReducer } from "../slices/customer/misc";
 import { reducer as customerFiltersReducer } from "../slices/customer/filters";
 import { reducer as filtersReducer } from "../slices/filters";
 import kanbanReducer from "../slices/kanban";
@@ -43,6 +44,7 @@ export const rootReducer = combineReducers({
     filters: filtersReducer,
     // customer
     customer: customerReducer,
+    customerMisc: customerMiscReducer,
     customerFilters: customerFiltersReducer,
     // general
     notes: notesReducer,
