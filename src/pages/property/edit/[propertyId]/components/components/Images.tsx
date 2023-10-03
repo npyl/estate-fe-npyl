@@ -143,12 +143,10 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
     );
 
     const handleRemoveFile = (inputFile: IPropertyImage) => {
-        console.log("going to delete: ", inputFile);
-
         if (!inputFile?.key) return;
 
         deleteImage({ propertyId: +propertyId!, imageKey: inputFile.key })
-            .then((response) => deleteFile(inputFile.key))
+            .then(() => deleteFile(inputFile.key))
             .catch((reason) => console.error("deleteImage: ", reason));
     };
     const handleReorder = (items: string[]) => {

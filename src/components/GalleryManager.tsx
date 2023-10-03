@@ -86,8 +86,6 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
     };
 
     const handleUpdate = useCallback(() => {
-        // const key = images.find((e) => e.id == currentIndex)?.key;
-
         // update
         editImage({
             id: +propertyId!,
