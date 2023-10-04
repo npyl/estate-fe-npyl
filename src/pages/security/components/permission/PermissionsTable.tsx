@@ -10,13 +10,11 @@ import Typography from "@mui/material/Typography";
 import { FC } from "react";
 
 import NestedTable from "./NestedTable";
-import { ParentCategoriesTypes, categories } from "./constants";
+import { StateTypes, categories } from "./constants";
 
-interface SecurityPageProps {
-    user: string;
-}
+interface PermissionsTableProps {}
 
-const SecurityPage: FC<SecurityPageProps> = () => {
+const PermissionsTable: FC<PermissionsTableProps> = () => {
     return (
         <Box
             sx={{
@@ -24,7 +22,6 @@ const SecurityPage: FC<SecurityPageProps> = () => {
                 width: "100%",
                 textAlign: "center",
                 marginBottom: 2,
-                paddingTop: 2,
             }}
         >
             <TableContainer
@@ -43,7 +40,7 @@ const SecurityPage: FC<SecurityPageProps> = () => {
                         {categories.map((category) => {
                             return (
                                 <NestedTable
-                                    parentCategory={ParentCategoriesTypes.SALE}
+                                    state={StateTypes.SALE}
                                     key={category}
                                     row={category}
                                 />
@@ -64,7 +61,7 @@ const SecurityPage: FC<SecurityPageProps> = () => {
                         {categories.map((s) => {
                             return (
                                 <NestedTable
-                                    parentCategory={ParentCategoriesTypes.RENT}
+                                    state={StateTypes.RENT}
                                     key={s}
                                     row={s}
                                 />
@@ -87,9 +84,7 @@ const SecurityPage: FC<SecurityPageProps> = () => {
                         {categories.map((s) => {
                             return (
                                 <NestedTable
-                                    parentCategory={
-                                        ParentCategoriesTypes.SOLD_RENTED
-                                    }
+                                    state={StateTypes.SOLD_RENTED}
                                     key={s}
                                     row={s}
                                 />
@@ -102,4 +97,4 @@ const SecurityPage: FC<SecurityPageProps> = () => {
     );
 };
 
-export default SecurityPage;
+export default PermissionsTable;

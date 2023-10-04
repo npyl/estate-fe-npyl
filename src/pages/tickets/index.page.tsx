@@ -106,7 +106,6 @@ export default function KanbanPage() {
             })
         );
     };
-    console.log(board);
     return (
         <>
             <Head>

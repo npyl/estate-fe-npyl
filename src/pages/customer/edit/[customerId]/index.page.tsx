@@ -2,22 +2,22 @@ import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { LogoProgressIndicator } from "src/components/LogoProgressIndicator";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import {
-    useGetCustomerByIdQuery,
     useEditCustomerMutation,
+    useGetCustomerByIdQuery,
 } from "src/services/customers";
-import { setInitialState, selectAll } from "src/slices/customer";
+import { selectAll, setInitialState } from "src/slices/customer";
 import { setInitialState as setInitialNotesState } from "src/slices/notes";
 import { useDispatch } from "src/store";
-import { LogoProgressIndicator } from "src/components/LogoProgressIndicator";
 import Form from "./components/Form";
 
-import { resetState as resetCustomerState } from "src/slices/customer";
-import { resetState as resetNotesState } from "src/slices/notes";
-import { resetState as resetLabelsState } from "src/slices/labels";
 import { usePublishTab } from "src/components/Tabs/utils";
+import { resetState as resetCustomerState } from "src/slices/customer";
+import { resetState as resetLabelsState } from "src/slices/labels";
+import { resetState as resetNotesState } from "src/slices/notes";
 
 const EditCustomer: NextPage = () => {
     const router = useRouter();

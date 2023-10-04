@@ -1,386 +1,365 @@
-import InfoIcon from "@mui/icons-material/Info";
+import ClearIcon from "@mui/icons-material/Clear";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import SaveIcon from "@mui/icons-material/Save";
+import SendIcon from "@mui/icons-material/Send";
 import {
     Button,
-    Checkbox,
-    Chip,
     Divider,
     FormControl,
-    Grid,
-    Input,
+    FormControlLabel,
+    FormLabel,
     MenuItem,
+    Radio,
+    RadioGroup,
 } from "@mui/material";
 import Box from "@mui/material/Box";
-import IconButton from "@mui/material/IconButton";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { FC, useState } from "react";
-import SecurityPage from "./PermissionsTable";
-import { ActionsHeadCells, ActionsHeadCellsLabels, actions } from "./constants";
-
-import SendIcon from "@mui/icons-material/Send";
 import { useTranslation } from "react-i18next";
-import { IActions } from "src/interfaces/roles";
-import { selectData, setData } from "src/slices/security";
-import { useDispatch, useSelector } from "src/store";
-type Props = {
-    selectedUser: number;
-};
+import { useSecurityContext } from "src/contexts/security";
+import {
+    useDeletePresetMutation,
+    useGetPresetsQuery,
+    useSavePresetMutation,
+    useSaveRelationshipMutation,
+} from "src/services/security";
+import { useAllUsersQuery } from "src/services/user";
+import SavePresetDialog from "../PresetModal";
+import PermissionsTable from "./PermissionsTable";
 
-const PermissionPage: FC<Props> = ({ selectedUser }) => {
-    const [checkedUsers, setCheckedUsers] = useState<string[]>([]);
+const PermissionPage: FC = () => {
+    const [openPresetModal, setOpenPresetModal] = useState<boolean>(false);
+    const { data: presets } = useGetPresetsQuery();
     const { t } = useTranslation();
     // const [savePreset] = useSavePresetMutation();
-    const data = useSelector(selectData);
-    const dispatch = useDispatch();
-    const profile = {
-        id: 1,
-        username: "ADMIN",
-        firstName: "ADMIN",
-        lastName: "ADMIN",
-        status: "Active",
-        email: "admin1@example.com",
-    };
+    const [saveRelationship, { isLoading }] = useSaveRelationshipMutation();
+    const [savePreset] = useSavePresetMutation();
+    const [deletePreset] = useDeletePresetMutation();
+    const { data: users } = useAllUsersQuery();
+    const {
+        data,
+        targetUser,
+        setTargetUser,
+        selectedPreset,
+        setSelectedPreset,
+        selectedUser,
+        setSelectedUser,
+        isDirty,
+        preset,
+        isFetching,
+    } = useSecurityContext();
 
-    const [selectedUserMenu, setSelectedUserMenu] = useState(() => {
-        const selectedUserObject = users.find(
-            (user) => user.id === selectedUser
-        );
-        return selectedUserObject
-            ? selectedUserObject.username
-            : profile.username;
-    });
-
-    const handleSelectChange = (e: SelectChangeEvent) => {
-        const selectedValue = e.target.value;
-        setSelectedUserMenu(selectedValue);
-    };
-
-    const handleChange = (user: any) => {
-        const isChecked = checkedUsers.includes(user.username);
-        setCheckedUsers((prevCheckedUsers) => {
-            if (isChecked) {
-                // If the user is already checked, remove them from the list
-                return prevCheckedUsers.filter(
-                    (username) => username !== user.username
-                );
-            } else {
-                // If the user is not checked, add them to the list
-                return [...prevCheckedUsers, user.username];
-            }
+    const handleSave = (name: string) => {
+        savePreset({
+            data: {
+                id: selectedPreset === -1 ? null : preset?.id,
+                name,
+                permissions: data.permissionResponses,
+            },
+            method: !!preset?.id && selectedPreset !== -1 ? "PUT" : "POST",
         });
+        setOpenPresetModal(false);
     };
-
-    const handleCheckboxChange = (
-        e: React.ChangeEvent<HTMLInputElement>,
-        fieldToChange: string
-    ) => {
-        const newData = JSON.parse(JSON.stringify(data));
-        for (const key in data) {
-            for (const actionKey in newData[key].actions) {
-                if (actionKey === fieldToChange) {
-                    newData[key].actions[actionKey] = e.target.checked;
-                }
-            }
-        }
-        dispatch(setData(newData));
-    };
-    const isCheckboxChecked = (field: string) => {
-        return data.every(
-            (item) => item.actions[field as unknown as keyof IActions] === true
-        );
-    };
-    const renderChildren = () => {
-        return (
-            <Box sx={{ display: "flex", flexDirection: "column", ml: 3 }}>
-                {users &&
-                    users.length > 0 &&
-                    users.map((user) => (
-                        <Box
-                            display={"flex"}
-                            alignItems={"center"}
-                            key={user.id}
-                        >
-                            <>
-                                <Checkbox
-                                    checked={checkedUsers.includes(
-                                        user.username
-                                    )}
-                                    onChange={() => handleChange(user)}
-                                />
-                                <Typography sx={{ wordBreak: "break-word" }}>
-                                    {user.username}
-                                </Typography>
-                            </>
-                        </Box>
-                    ))}
-            </Box>
-        );
-    };
-
     return (
-        <Box>
-            <>
-                <FormControl>
-                    <Stack direction={"row"} alignItems={"center"} spacing={1}>
-                        <Typography variant={"h5"}>
-                            Select Source User:
-                        </Typography>
-                        <Select
-                            variant={"standard"}
-                            sx={{
-                                "& .MuiSvgIcon-root": {
-                                    top: "5px",
-                                },
-                                minWidth: 150,
-                            }}
-                            labelId="demo-simple-select-label"
-                            value={selectedUserMenu}
-                            renderValue={(value) => (
-                                <Typography variant="h5">{value}</Typography>
-                            )}
-                            onChange={handleSelectChange}
-                            input={
-                                <Input
-                                    id="user-select"
-                                    sx={{
-                                        fontSize: "2.0rem",
-                                        fontWeight: "bold",
-                                        borderColor: "white",
-                                    }}
-                                />
-                            }
-                            MenuProps={{
-                                PaperProps: { sx: { maxHeight: "60vh" } },
-                            }}
-                        >
-                            {users.map((user) => (
-                                <MenuItem
-                                    key={user.username}
-                                    value={user.username}
-                                >
-                                    <Typography>{user.username}</Typography>
-                                </MenuItem>
-                            ))}
-                        </Select>
-
-                        <Tooltip
-                            title={
-                                <Box>
-                                    <Box>
-                                        <span style={{ fontStyle: "italic" }}>
-                                            In {selectedUserMenu}'s tab, you can
-                                            establish permissions that are
-                                            applicable to all properties within
-                                            the system.
-                                        </span>
-                                    </Box>
-                                    <Box>
-                                        <span style={{ fontStyle: "italic" }}>
-                                            In the tabs for other users, you
-                                            have the ability to include or
-                                            remove permissions specifically for
-                                            the user {selectedUserMenu}.
-                                        </span>
-                                    </Box>
-                                </Box>
-                            }
-                        >
-                            <IconButton>
-                                <InfoIcon />
-                            </IconButton>
-                        </Tooltip>
-                    </Stack>
-                </FormControl>
-            </>
-            <Divider sx={{ mt: 2, mb: 1 }} />
-            <Stack spacing={3} direction={"column"} paddingY={2}>
-                <Box gap={1} display={"flex"}>
-                    <Typography gutterBottom variant={"h6"}>
-                        Selected Target User/s:{" "}
-                    </Typography>
-                    {checkedUsers.map((e, index) => (
-                        <Chip
-                            size="small"
-                            sx={{ mr: 1 }}
-                            key={index}
-                            label={e}
-                            color="primary"
-                        />
-                    ))}
-                </Box>
-                <Box gap={2} display="flex" alignItems={"center"}>
-                    <Typography variant={"h6"}>Quick Actions:</Typography>{" "}
-                    {actions.map((action) => (
-                        <Stack direction={"row"} alignItems={"center"}>
-                            <Typography align="center" key={action}>
-                                {
-                                    ActionsHeadCellsLabels[
-                                        ActionsHeadCells[
-                                            action as keyof typeof ActionsHeadCells
-                                        ] as keyof typeof ActionsHeadCellsLabels
-                                    ]
-                                }
-                            </Typography>
-                            <Checkbox
-                                checked={isCheckboxChecked(action)}
-                                onChange={(e) =>
-                                    handleCheckboxChange(e, action)
-                                }
-                            />
-                        </Stack>
-                    ))}
-                </Box>
-            </Stack>
-            <Divider />
-            <Grid container>
-                <Grid item xs={12} md={2}>
-                    <Box display={"flex"} alignItems={"center"}>
-                        <Checkbox
-                            checked={users.every((user) =>
-                                checkedUsers.includes(user.username)
-                            )}
-                            indeterminate={
-                                checkedUsers.length > 0 &&
-                                checkedUsers.length < users.length
-                            }
-                            onChange={() => {
-                                setCheckedUsers(
-                                    users.length === checkedUsers.length
-                                        ? []
-                                        : users.map((user) => user.username)
-                                );
-                            }}
-                        />
-                        <Typography sx={{ wordBreak: "break-word" }}>
-                            Select all users
-                        </Typography>
-                    </Box>
-                    {renderChildren()}
-                </Grid>
-
-                <Grid item xs={12} md={10}>
-                    <SecurityPage user={"remove"} />
-                </Grid>
-            </Grid>
-            <Grid container display={"block"}>
-                <Stack
-                    py={2}
-                    spacing={2}
-                    direction={"row"}
-                    sx={{ float: "right" }}
+        <>
+            <Box style={{ display: "flex" }} gap={2} position={"relative"}>
+                {/* Left sticky box */}
+                <Box
+                    width="16.6%" // 1/6 of the width
+                    position="sticky"
+                    top={100}
+                    height={"100%"}
+                    paddingRight={2} // Add some padding for better appearance
                 >
-                    <Button
-                        variant="outlined"
-                        endIcon={<SendIcon />}
-                        // onClick={() => savePreset(data)}
-                    >
-                        {t("Save")}
-                    </Button>
-                    <Button
-                        variant="contained"
-                        endIcon={<SendIcon />}
-                        // onClick={() => savePreset(data)}
-                        onClick={() => console.log(data)}
-                    >
-                        {t("Apply Changes")}
-                    </Button>
-                </Stack>
-            </Grid>
-        </Box>
+                    <Stack gap={2}>
+                        <FormControl>
+                            <Stack direction={"column"}>
+                                <Box display="flex" alignItems={"center"}>
+                                    <Typography
+                                        sx={{ display: "flex" }}
+                                        color={"neutral.400"}
+                                        variant={"body2"}
+                                    >
+                                        Source User:{" "}
+                                    </Typography>
+                                    <Tooltip
+                                        title={
+                                            <Box>
+                                                <Box>
+                                                    <span
+                                                        style={{
+                                                            fontStyle: "italic",
+                                                        }}
+                                                    >
+                                                        In {selectedUser}'s tab,
+                                                        you can establish
+                                                        permissions that are
+                                                        applicable to all
+                                                        properties within the
+                                                        system.
+                                                    </span>
+                                                </Box>
+                                                <Box>
+                                                    <span
+                                                        style={{
+                                                            fontStyle: "italic",
+                                                        }}
+                                                    >
+                                                        In the tabs for other
+                                                        users, you have the
+                                                        ability to include or
+                                                        remove permissions
+                                                        specifically for the
+                                                        user {selectedUser}.
+                                                    </span>
+                                                </Box>
+                                            </Box>
+                                        }
+                                    >
+                                        <InfoOutlinedIcon
+                                            color={"info"}
+                                            fontSize="small"
+                                        />
+                                    </Tooltip>
+                                </Box>
+
+                                <Select
+                                    labelId="demo-simple-select-label"
+                                    value={
+                                        selectedUser !== -1 ? selectedUser : ""
+                                    }
+                                    onChange={(e) => {
+                                        selectedPreset !== -1 &&
+                                            setSelectedPreset(-1);
+                                        setSelectedUser(+e.target.value);
+                                    }}
+                                    renderValue={(selected) => (
+                                        <Typography
+                                            sx={{
+                                                whiteSpace: "nowrap",
+                                                overflow: "hidden",
+                                                textOverflow: "ellipsis",
+                                            }}
+                                        >
+                                            {
+                                                users?.find(
+                                                    (e) => e.id === selected
+                                                )?.username
+                                            }
+                                        </Typography>
+                                    )}
+                                >
+                                    {users &&
+                                        users.length > 0 &&
+                                        users.map((user: any) => (
+                                            <MenuItem
+                                                key={user.id}
+                                                value={user.id}
+                                            >
+                                                <Typography>
+                                                    {user.username}
+                                                </Typography>
+                                            </MenuItem>
+                                        ))}
+                                </Select>
+                            </Stack>
+                        </FormControl>
+                        <Divider />
+                        <FormControl>
+                            <FormLabel id="demo-controlled-radio-buttons-group">
+                                <Typography
+                                    color={"neutral.400"}
+                                    variant={"body2"}
+                                >
+                                    Target user:
+                                </Typography>
+                            </FormLabel>
+                            <RadioGroup
+                                aria-labelledby="demo-controlled-radio-buttons-group"
+                                name="controlled-radio-buttons-group"
+                                value={targetUser}
+                                onChange={(e) => {
+                                    selectedPreset !== -1 &&
+                                        setSelectedPreset(-1);
+                                    setTargetUser(+e.target.value);
+                                }}
+                            >
+                                {users &&
+                                    users.length > 0 &&
+                                    users.map((user: any) => (
+                                        <FormControlLabel
+                                            key={user.id}
+                                            value={user.id}
+                                            control={<Radio size="small" />}
+                                            label={
+                                                <Typography
+                                                    sx={{
+                                                        wordBreak: "break-all",
+                                                    }}
+                                                    variant="caption"
+                                                >
+                                                    {user.username}
+                                                </Typography>
+                                            }
+                                        />
+                                    ))}
+                            </RadioGroup>
+                        </FormControl>
+                        <Divider />
+                        <FormControl>
+                            <Stack direction={"column"}>
+                                <Box display="flex" alignItems={"center"}>
+                                    <Typography
+                                        sx={{ display: "flex" }}
+                                        color={"neutral.400"}
+                                        variant={"body2"}
+                                    >
+                                        Select preset:
+                                    </Typography>
+                                    <Tooltip
+                                        title={
+                                            <span>
+                                                You can select a saved preset to
+                                                apply to the releationship
+                                                between source and target user
+                                            </span>
+                                        }
+                                    >
+                                        <InfoOutlinedIcon
+                                            color={"info"}
+                                            fontSize="small"
+                                        />
+                                    </Tooltip>
+                                </Box>
+
+                                <Select
+                                    disabled={presets?.length === 0}
+                                    labelId="demo-simple-select-label"
+                                    placeholder="None"
+                                    value={selectedPreset}
+                                    onChange={(e) =>
+                                        setSelectedPreset(+e.target.value)
+                                    }
+                                    renderValue={(selected) => (
+                                        <Typography
+                                            sx={{
+                                                whiteSpace: "nowrap",
+                                                overflow: "hidden",
+                                                textOverflow: "ellipsis",
+                                            }}
+                                        >
+                                            {presets?.find(
+                                                (e) => e.id === selected
+                                            )?.name ?? "None"}
+                                        </Typography>
+                                    )}
+                                >
+                                    <MenuItem value={-1}>
+                                        <Typography>None</Typography>
+                                    </MenuItem>
+                                    {presets &&
+                                        presets.length > 0 &&
+                                        presets.map((preset) => (
+                                            <MenuItem
+                                                key={preset.id!}
+                                                value={preset.id!}
+                                            >
+                                                <Typography>
+                                                    {preset.name}
+                                                </Typography>
+                                            </MenuItem>
+                                        ))}
+                                </Select>
+                            </Stack>
+
+                            <Stack
+                                sx={{
+                                    flexDirection: { md: "column", lg: "row" },
+                                }}
+                                mt={0.5}
+                                gap={1}
+                            >
+                                <Button
+                                    variant={"contained"}
+                                    fullWidth
+                                    disabled={!isDirty}
+                                    onClick={() => setOpenPresetModal(true)}
+                                >
+                                    <Typography variant={"body2"}>
+                                        Save
+                                    </Typography>
+
+                                    <SaveIcon
+                                        sx={{
+                                            marginLeft: 0.5,
+                                            fontSize: "14px",
+                                        }}
+                                        color={isDirty ? "inherit" : "disabled"}
+                                    />
+                                </Button>
+                                <Button
+                                    variant={"outlined"}
+                                    fullWidth
+                                    color="error"
+                                    disabled={selectedPreset == -1}
+                                    onClick={() => {
+                                        deletePreset(preset?.id!!);
+                                        setSelectedPreset(-1);
+                                    }}
+                                >
+                                    <Typography variant={"body2"}>
+                                        Delete
+                                    </Typography>
+                                    <ClearIcon
+                                        sx={{
+                                            marginLeft: 0.5,
+                                            fontSize: "14px",
+                                        }}
+                                        color={
+                                            selectedPreset !== -1
+                                                ? "error"
+                                                : "disabled"
+                                        }
+                                    />
+                                </Button>
+                            </Stack>
+                        </FormControl>
+                    </Stack>
+                </Box>
+
+                {/* Right PermissionsTable */}
+                <div style={{ flex: "5" }}>
+                    <PermissionsTable />
+                </div>
+            </Box>
+            <Stack py={2} spacing={2} direction={"row"} sx={{ float: "right" }}>
+                <Button
+                    variant="contained"
+                    endIcon={<SendIcon />}
+                    disabled={
+                        selectedUser === -1 ||
+                        targetUser === -1 ||
+                        isFetching ||
+                        isLoading
+                    }
+                    onClick={() => saveRelationship(data!)}
+                >
+                    {t("Apply Changes")}
+                </Button>
+            </Stack>
+            {openPresetModal && (
+                <SavePresetDialog
+                    presetName={selectedPreset === -1 ? "" : preset?.name}
+                    open={openPresetModal}
+                    setOpen={setOpenPresetModal}
+                    handleSave={handleSave}
+                />
+            )}
+        </>
     );
 };
 
 export default PermissionPage;
-
-const users = [
-    {
-        id: 1,
-        username: "ADMIN",
-        firstName: "ADMIN",
-        lastName: "ADMIN",
-        status: "Active",
-        email: "admin1@example.com",
-    },
-    {
-        id: 2,
-        username: "Panagiotis",
-        firstName: "Panagiotis",
-        lastName: "Athanasopoulos",
-        status: "Active",
-        email: "user1@example.com",
-    },
-    {
-        id: 3,
-        username: "Leo",
-        firstName: "Leonidas",
-        lastName: "Panagiotou",
-        status: "Inactive",
-        email: "user2@example.com",
-    },
-    {
-        id: 4,
-        username: "Vagelis",
-        firstName: "Vagelis",
-        lastName: "Kleitsas",
-        status: "Inactive",
-        email: "user2@example.com",
-    },
-    {
-        id: 5,
-        username: "Athanasiosdasdasd",
-        firstName: "Athanasiosdasda",
-        lastName: "Kalatheris",
-        status: "Inactive",
-        email: "user2@example.com",
-    },
-    {
-        id: 6,
-        username: "Taxi",
-        firstName: "Taxiarxis",
-        lastName: "Zarwnis",
-        status: "Inactive",
-        email: "user2@example.com",
-    },
-    {
-        id: 7,
-        username: "George",
-        firstName: "George",
-        lastName: "Katrougkalos",
-        status: "Inactive",
-        email: "user2@example.com",
-    },
-    {
-        id: 8,
-        username: "Kostas",
-        firstName: "Kostas",
-        lastName: "Mermelas",
-        status: "Inactive",
-        email: "user2@example.com",
-    },
-    {
-        id: 9,
-        username: "Omiros",
-        firstName: "Omiros",
-        lastName: "Panagiotoskilopoulos",
-        status: "Inactive",
-        email: "user2@example.com",
-    },
-    {
-        id: 10,
-        username: "Mili",
-        firstName: "Mili",
-        lastName: "Kopanitsanoskilopoylou",
-        status: "Inactive",
-        email: "user2@example.com",
-    },
-    {
-        id: 11,
-        username: "Pete",
-        firstName: "Pete",
-        lastName: "Marakos",
-        status: "Inactive",
-        email: "user2@example.com",
-    },
-];

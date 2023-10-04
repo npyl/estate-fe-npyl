@@ -1,20 +1,32 @@
 export interface IPreset {
-    id: number;
-    details: IRoles[];
+    id?: number | null;
     name: string;
+    permissions?: IRoles[];
+}
+
+export interface IPresetReq {
+    data: IPreset;
+    method: string;
+}
+
+export interface ITargets {
+    firstName: "string";
+    id: 0;
+    lastName: "string";
+    profilePhoto: "string";
 }
 
 export interface IRolesReq {
-    details: IRoles[];
-    preset?: number;
-    source: string;
-    target: string[];
+    id?: number | null;
+    permissionResponses: IRoles[];
+    source: ITargets;
+    target: ITargets;
 }
 
 export interface IRoles {
+    state: string;
     parentCategory: string;
     category: string;
-    subcategory: string;
     actions: IActions;
 }
 

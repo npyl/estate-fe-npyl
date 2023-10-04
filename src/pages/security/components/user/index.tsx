@@ -21,103 +21,16 @@ import React, { FC, useState } from "react";
 import OnlyEmailInput from "src/components/OnlyEmailInput";
 import OnlyLettersInput from "src/components/OnlyLetters";
 import OnlyNumbersInput from "src/components/OnlyNumbers";
+import { useSecurityContext } from "src/contexts/security";
+import { useAllUsersQuery } from "src/services/user";
 
 type Props = {
     changeTab: (event: React.SyntheticEvent, newValue: number) => void;
-    setSelectedUser: (value: ((prevState: number) => number) | number) => void;
 };
 
-const UserPage: FC<Props> = ({ changeTab, setSelectedUser }) => {
-    const users = [
-        {
-            id: 1,
-            username: "ADMIN",
-            firstName: "ADMIN",
-            lastName: "ADMIN",
-            status: "Active",
-            email: "admin1@example.com",
-        },
-        {
-            id: 2,
-            username: "Panagiotis",
-            firstName: "Panagiotis",
-            lastName: "Athanasopoulos",
-            status: "Active",
-            email: "user1@example.com",
-        },
-        {
-            id: 3,
-            username: "Leo",
-            firstName: "Leonidas",
-            lastName: "Panagiotou",
-            status: "Inactive",
-            email: "user2@example.com",
-        },
-        {
-            id: 4,
-            username: "Vagelis",
-            firstName: "Vagelis",
-            lastName: "Kleitsas",
-            status: "Inactive",
-            email: "user2@example.com",
-        },
-        {
-            id: 5,
-            username: "Athanasios",
-            firstName: "Athanasios",
-            lastName: "Kalatheris",
-            status: "Inactive",
-            email: "user2@example.com",
-        },
-        {
-            id: 6,
-            username: "Taxi",
-            firstName: "Taxiarxis",
-            lastName: "Zarwnis",
-            status: "Inactive",
-            email: "user2@example.com",
-        },
-        {
-            id: 7,
-            username: "George",
-            firstName: "George",
-            lastName: "Katrougkalos",
-            status: "Inactive",
-            email: "user2@example.com",
-        },
-        {
-            id: 8,
-            username: "Kostas",
-            firstName: "Kostas",
-            lastName: "Mermelas",
-            status: "Inactive",
-            email: "user2@example.com",
-        },
-        {
-            id: 9,
-            username: "Omiros",
-            firstName: "Omiros",
-            lastName: "Panagiotoskilopoulos",
-            status: "Inactive",
-            email: "user2@example.com",
-        },
-        {
-            id: 10,
-            username: "Mili",
-            firstName: "Mili",
-            lastName: "Kopanitsanoskilopoylou",
-            status: "Inactive",
-            email: "user2@example.com",
-        },
-        {
-            id: 11,
-            username: "Pete",
-            firstName: "Pete",
-            lastName: "Marakos",
-            status: "Inactive",
-            email: "user2@example.com",
-        },
-    ];
+const UserPage: FC<Props> = ({ changeTab }) => {
+    const { data: users } = useAllUsersQuery();
+    const { setSelectedUser } = useSecurityContext();
 
     const [isCreateUserModalOpen, setIsCreateUserModalOpen] = useState(false);
     const [status, setStatus] = useState("Active");
@@ -140,10 +53,6 @@ const UserPage: FC<Props> = ({ changeTab, setSelectedUser }) => {
     const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] =
         useState(false);
 
-    // const handleEdit = (userId) => {
-    //     console.log(`Edit user with ID ${userId}`);
-    // };
-
     const handleCreateUserClick = () => {
         setIsCreateUserModalOpen(true);
     };
@@ -163,15 +72,9 @@ const UserPage: FC<Props> = ({ changeTab, setSelectedUser }) => {
         handleCloseUpdateUserModal();
     };
 
-    const handleResetPassword = () => {
-        console.log("Resetting user password...");
-        // console.log("User ID:", userId); // You can pass the user ID here
-    };
+    const handleResetPassword = () => {};
 
-    const handleDeleteUser = () => {
-        console.log("Deleting user...");
-        // console.log("User ID:", userId); // You can pass the user ID here
-    };
+    const handleDeleteUser = () => {};
 
     const handleOpenDeleteConfirmation = () =>
         setIsDeleteConfirmationOpen(true);
@@ -203,37 +106,38 @@ const UserPage: FC<Props> = ({ changeTab, setSelectedUser }) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {users.map((user) => (
-                            <TableRow key={user.id}>
-                                <TableCell>{user.username}</TableCell>
-                                <TableCell>{user.firstName}</TableCell>
-                                <TableCell>{user.lastName}</TableCell>
-                                <TableCell>{user.status}</TableCell>
-                                <TableCell>{user.email}</TableCell>
-                                <TableCell>{user.status}</TableCell>
-                                <TableCell>
-                                    <IconButton
-                                        size="small"
-                                        onClick={handleUpdateUserClick}
-                                        sx={{ ml: 1, mr: -1 }}
-                                    >
-                                        <EditIcon fontSize="small" />
-                                    </IconButton>
-                                </TableCell>
-                                <TableCell>
-                                    <Button
-                                        variant="text"
-                                        color="success"
-                                        onClick={(e) => {
-                                            changeTab(e, 1);
-                                            setSelectedUser(user.id);
-                                        }}
-                                    >
-                                        Set
-                                    </Button>
-                                </TableCell>
-                            </TableRow>
-                        ))}
+                        {users &&
+                            users.map((user) => (
+                                <TableRow key={user.id}>
+                                    <TableCell>{user.username}</TableCell>
+                                    <TableCell>{user.firstName}</TableCell>
+                                    <TableCell>{user.lastName}</TableCell>
+                                    <TableCell>{user.lastName}</TableCell>
+                                    <TableCell>{user.email}</TableCell>
+                                    <TableCell>{user.lastName}</TableCell>
+                                    <TableCell>
+                                        <IconButton
+                                            size="small"
+                                            onClick={handleUpdateUserClick}
+                                            sx={{ ml: 1, mr: -1 }}
+                                        >
+                                            <EditIcon fontSize="small" />
+                                        </IconButton>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Button
+                                            variant="text"
+                                            color="success"
+                                            onClick={(e) => {
+                                                changeTab(e, 1);
+                                                setSelectedUser(user.id);
+                                            }}
+                                        >
+                                            Set
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
                     </TableBody>
                 </Table>
             </TableContainer>
