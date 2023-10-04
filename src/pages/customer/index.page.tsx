@@ -34,7 +34,7 @@ interface TypeProps {
     buyer: boolean;
 }
 
-const TypeLabels = ({ seller, lessor, leaser, buyer }: TypeProps) => {
+export const TypeLabels = ({ seller, lessor, leaser, buyer }: TypeProps) => {
     const { t } = useTranslation();
 
     const map = useMemo(
