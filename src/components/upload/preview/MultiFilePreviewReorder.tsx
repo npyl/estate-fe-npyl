@@ -83,7 +83,14 @@ const Card = ({ src, label, id, index, moveImage, onClick }: CardProps) => {
     drag(drop(ref));
 
     return (
-        <div ref={ref} style={{ opacity }} className="card">
+        <div
+            ref={ref}
+            style={{
+                opacity,
+                position: "relative" /* INFO: Fixes image size */,
+            }}
+            className="card"
+        >
             {src ? (
                 <LabeledImage
                     src={src}
