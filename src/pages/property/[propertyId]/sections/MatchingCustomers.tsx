@@ -14,22 +14,12 @@ import {
 } from "@mui/x-data-grid";
 import { useRouter } from "next/router";
 import * as React from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import DataGridTable from "src/components/DataGrid";
-import { useLoadApi } from "src/components/Map/Map";
-import { ShapeData } from "src/components/Map/types";
-import { decodeShape, isPointInsideShapeData } from "src/components/Map/util";
-import Image from "src/components/image";
 import { UserCircle } from "src/icons/user-circle";
-import { useGetCustomerByIdQuery } from "src/services/customers";
 import nomoi from "src/json/nomoi.json";
-import {
-    useGetPropertyByIdQuery,
-    useSuggestForCustomerQuery,
-    useSuggestForPropertyQuery,
-} from "src/services/properties";
-import { IProperties } from "src/types/properties";
+import { useSuggestForPropertyQuery } from "src/services/properties";
 import { ILabel } from "src/types/label";
 import ListLabelsItem from "src/components/List/labels-item";
 import { TypeLabels } from "src/pages/customer/index.page";
@@ -41,36 +31,26 @@ const MatchingCustomersSection: React.FC = () => {
     const router = useRouter();
     const { t } = useTranslation();
 
-    const { isLoaded } = useLoadApi(); // google maps api
-    const { customerId } = router.query;
     const { propertyId } = router.query;
-    const [page, setPage] = useState(0);
-    const [parentCategory, setParentCategory] = useState<string[]>([]);
 
-    const { data: property, isSuccess } = useGetPropertyByIdQuery(+propertyId!);
+    const [page, setPage] = useState(0);
 
     const { data: customersPage } = useSuggestForPropertyQuery(
         // εδώ πρέπει να φτιάξω καινούριο query useSuggestForPropertyQuery
-        { propertyId: +propertyId!, page, pageSize },
-        {
-            skip: !parentCategory,
-        }
+        { propertyId: +propertyId!, page, pageSize }
     );
     const totalRows = useMemo(
         () => customersPage?.totalElements,
         [customersPage?.totalElements]
     );
 
-    const customers = useMemo(() => {
-        if (!isLoaded) return [];
-        if (!customersPage?.content) return [];
-        return (
-            // (shapeData
-            //     ? filterPropertiesInShape(propertiesPage?.content, shapeData) // edw den exoume pali shape
-            customersPage?.content || []
-        );
-    }, [isLoaded, customersPage]);
+    const customers = useMemo(
+        () => customersPage?.content || [],
+        [customersPage]
+    );
+
     console.log("customers consoleee:", customers);
+
     //    .?????? xreiazetai`?
     // useEffect(() => {
     //     if (!customer || !isSuccess) return;
@@ -78,6 +58,7 @@ const MatchingCustomersSection: React.FC = () => {
     //     setParentCategory(customer?.demand?.filters?.parentCategories);
     // }, [customer, isSuccess]);
     ////////////////////////////////////////
+
     function showLabel(params: GridCellParams) {
         if (!params.value || !Array.isArray(params.value)) return <></>;
 
@@ -185,7 +166,6 @@ const MatchingCustomersSection: React.FC = () => {
     const handlePaginationChange = (model: GridPaginationModel) =>
         setPage(model.page);
 
-    if (!parentCategory) return null;
     if (customers?.length === 0) {
         // !propertiesPage ||
         // !Array.isArray(propertiesPage.content) ||
