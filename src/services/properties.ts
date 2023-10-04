@@ -16,6 +16,7 @@ import {
 } from "src/types/file";
 
 import { ILabel } from "src/types/label";
+import { ICustomer } from "src/types/customer";
 
 export interface BulkEditRequest {
     propertyIds: number[];
@@ -71,6 +72,11 @@ interface ISuggestForCustomerParams {
     page: number;
     pageSize: number;
 }
+interface ISuggestForPropertyParams {
+    propertyId: number;
+    page: number;
+    pageSize: number;
+}
 
 export const properties = createApi({
     reducerPath: "properties",
@@ -92,6 +98,7 @@ export const properties = createApi({
         "PropertyById",
         "FilterProperties",
         "SuggestedProperties",
+        "SuggestedCustomers",
 
         // attributes
         "PropertyByIdImages",
@@ -190,6 +197,16 @@ export const properties = createApi({
                 params: params,
             }),
             providesTags: ["SuggestedProperties"],
+        }),
+        suggestForProperty: builder.query<
+            IPage<ICustomer>,
+            ISuggestForPropertyParams
+        >({
+            query: (params: ISuggestForPropertyParams) => ({
+                url: "/matchingCustomers",
+                params: params,
+            }),
+            providesTags: ["SuggestedCustomers"],
         }),
         deleteProperty: builder.mutation<IProperties, number>({
             query: (id: number) => ({
@@ -316,6 +333,7 @@ export const {
     useDeletePropertyMutation,
     useFilterPropertiesMutation,
     useSuggestForCustomerQuery,
+    useSuggestForPropertyQuery,
     useBulkEditPropertiesMutation,
     useBulkDeletePropertiesMutation,
 
