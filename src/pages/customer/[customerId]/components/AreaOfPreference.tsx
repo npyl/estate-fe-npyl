@@ -1,6 +1,7 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import Map from "src/components/Map/Map";
 import { ShapeData } from "src/components/Map/types";
@@ -17,6 +18,7 @@ const isNumberString = (input: string): boolean => !isNaN(Number(input));
 export const AreaOfPreference: React.FC<AreaOfPreferenceProps> = ({
     index,
 }) => {
+    const { t } = useTranslation();
     const router = useRouter();
     const { customerId } = router.query;
 
@@ -86,17 +88,29 @@ export const AreaOfPreference: React.FC<AreaOfPreferenceProps> = ({
     }, [shapeData0, index, map]);
 
     return (
-        <Box height={`calc(100vh - 266px)`} width={"100%"}>
-            <Map
-                key={index}
-                zoom={12}
-                multipleShapes
-                drawing={false}
-                shapes={shapeData}
-                onReady={(m) => setMap(m)}
-                activeMarker={null}
-                setActiveMarker={() => {}}
-            />
-        </Box>
+        <>
+            <Box
+                sx={{
+                    px: 3,
+                    py: 1.5,
+                    display: "flex",
+                    justifyContent: "left",
+                }}
+            >
+                <Typography variant="h6">{t("Area of Preference")}</Typography>
+            </Box>
+            <Box height={`calc(100vh - 266px)`} width={"100%"}>
+                <Map
+                    key={index}
+                    zoom={12}
+                    multipleShapes
+                    drawing={false}
+                    shapes={shapeData}
+                    onReady={(m) => setMap(m)}
+                    activeMarker={null}
+                    setActiveMarker={() => {}}
+                />
+            </Box>
+        </>
     );
 };

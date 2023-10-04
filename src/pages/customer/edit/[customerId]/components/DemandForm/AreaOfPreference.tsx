@@ -48,7 +48,6 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
     const dispatch = useDispatch();
 
     const allShapes = useSelector(selectShapes); // all demands' shapes
-
     const shapes = useMemo(
         () => (allShapes && allShapes.length > index && allShapes[index]) || [], // current demand's shapes (by demand index)
         [allShapes, index]
@@ -123,14 +122,9 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
 
     const handleDraw = useCallback(
         (s: DrawShape | StopDraw) => {
-            if (!s) {
-                console.log("called null!");
-                dispatch(setShapes(indexedData(index, []))); // clear
-            } else {
+            if (!s) dispatch(setShapes(indexedData(index, []))); // clear
+            else {
                 const encoded = encodeShape(s);
-
-                console.log("got: ", shapes);
-
                 dispatch(addShape(indexedData(index, encoded)));
             }
         },
@@ -197,36 +191,39 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
         updateMainMarkerCoordinates(lat, lng);
     };
 
-    const handleRegionChange = (
-        regionCode: string,
-        lat: number,
-        lng: number
-    ) => {
-        updateMainMarkerCoordinates(lat, lng);
+    const handleRegionChange = useCallback(
+        (regionCode: string, lat: number, lng: number) => {
+            updateMainMarkerCoordinates(lat, lng);
 
-        // update slice
-        dispatch(setRegions(indexedData(index, [regionCode])));
-    };
-    const handleMunicipChange = (
-        municipCode: string,
-        lat: number,
-        lng: number
-    ) => {
-        updateMainMarkerCoordinates(lat, lng);
+            // update slice
+            dispatch(setRegions(indexedData(index, [regionCode])));
+        },
+        [index]
+    );
+    const handleMunicipChange = useCallback(
+        (municipCode: string, lat: number, lng: number) => {
+            updateMainMarkerCoordinates(lat, lng);
 
-        // update slice
-        dispatch(setCities(indexedData(index, [municipCode])));
-    };
-    const handleNeighbourChange = (
-        neighbourCode: string,
-        lat: number,
-        lng: number
-    ) => {
-        updateMainMarkerCoordinates(lat, lng);
+            // update slice
+            dispatch(setCities(indexedData(index, [municipCode])));
+        },
+        [index]
+    );
+    const handleNeighbourChange = useCallback(
+        (neighbourCode: string, lat: number, lng: number) => {
+            updateMainMarkerCoordinates(lat, lng);
 
-        // update slice
-        dispatch(setComplexes(indexedData(index, [neighbourCode])));
-    };
+            // update slice
+            dispatch(setComplexes(indexedData(index, [neighbourCode])));
+        },
+        [index]
+    );
+
+    const regionCode = useMemo(() => regions.at(index), [regions, index]);
+    const cityCode = useMemo(() => cities.at(index), [cities, index]);
+    const complexCode = useMemo(() => complexes.at(index), [complexes, index]);
+
+    console.log("r: ", regionCode, " c: ", cityCode, " co: ", complexCode);
 
     return (
         <Grid item xs={12} padding={1}>
@@ -253,21 +250,21 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
                     <Grid container direction={"row"} spacing={2}>
                         <Grid item xs={4}>
                             <RegionSelect
-                                regionCode={regions[index] || ""}
+                                regionCode={regionCode || ""}
                                 onChange={handleRegionChange}
                             />
                         </Grid>
                         <Grid item xs={4}>
                             <MunicipSelect
-                                regionCode={regions[index] || ""}
-                                municipCode={cities[index] || ""}
+                                regionCode={regionCode || ""}
+                                municipCode={cityCode || ""}
                                 onChange={handleMunicipChange}
                             />
                         </Grid>
                         <Grid item xs={4}>
                             <NeighbourSelect
-                                municipCode={cities[index] || ""}
-                                neighbourCode={complexes[index] || ""}
+                                municipCode={cityCode || ""}
+                                neighbourCode={complexCode || ""}
                                 onChange={handleNeighbourChange}
                             />
                         </Grid>

@@ -14,6 +14,41 @@ interface DemandSectionProps {
     index: number;
 }
 
+const isEmptyOrComma = (str: string | string[]): boolean => {
+    if (typeof str === "string") {
+        return !str || str.trim() === "" || str.trim() === ",";
+    } else if (Array.isArray(str)) {
+        return (
+            str.length === 0 ||
+            (str.length === 1 &&
+                (str[0].trim() === "" || str[0].trim() === ","))
+        );
+    }
+    return true;
+};
+
+const getRangeDisplayValue = (
+    min: number | null | undefined,
+    max: number | null | undefined
+) => {
+    if (min === null && max === null) return "-";
+
+    const minValue = min !== null && min !== undefined ? min : 0;
+    const maxValue = max !== null && max !== undefined ? max : 0;
+    return `${minValue} - ${maxValue}`;
+};
+
+const getRangeDisplayValueString = (
+    min: string | null | undefined,
+    max: string | null | undefined
+): string => {
+    if (min === null && max === null) return "-";
+
+    const minValue = min !== null && min !== undefined ? min : "0";
+    const maxValue = max !== null && max !== undefined ? max : "0";
+    return `${minValue} - ${maxValue}`;
+};
+
 const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
     const router = useRouter();
     const { t } = useTranslation();
@@ -39,41 +74,6 @@ const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
             ) || [],
         [propertyLabels, demandFilterLabelIDs]
     );
-
-    const getRangeDisplayValue = (
-        min: number | null | undefined,
-        max: number | null | undefined
-    ) => {
-        if (min === null && max === null) return "-";
-
-        const minValue = min !== null && min !== undefined ? min : 0;
-        const maxValue = max !== null && max !== undefined ? max : 0;
-        return `${minValue} - ${maxValue}`;
-    };
-
-    const getRangeDisplayValueString = (
-        min: string | null | undefined,
-        max: string | null | undefined
-    ): string => {
-        if (min === null && max === null) return "-";
-
-        const minValue = min !== null && min !== undefined ? min : "0";
-        const maxValue = max !== null && max !== undefined ? max : "0";
-        return `${minValue} - ${maxValue}`;
-    };
-
-    const isEmptyOrComma = (str: string | string[]): boolean => {
-        if (typeof str === "string") {
-            return !str || str.trim() === "" || str.trim() === ",";
-        } else if (Array.isArray(str)) {
-            return (
-                str.length === 0 ||
-                (str.length === 1 &&
-                    (str[0].trim() === "" || str[0].trim() === ","))
-            );
-        }
-        return true;
-    };
 
     if (
         !demandFilters?.minYearOfConstruction &&

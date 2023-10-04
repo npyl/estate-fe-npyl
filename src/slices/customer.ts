@@ -498,6 +498,8 @@ const slice = createSlice({
             action: ISetDemandFilterAction
         ): void {
             const { index, value } = action.payload;
+            console.log("setting: ", value, " for index: ", index);
+
             if (state.demands[index]) {
                 state.demands[index].filters.cities = value;
             }
@@ -508,6 +510,7 @@ const slice = createSlice({
             action: ISetDemandFilterAction
         ): void {
             const { index, value } = action.payload;
+            console.log("setting: ", value, " for index: ", index);
             if (state.demands[index]) {
                 state.demands[index].filters.regions = value;
             }
