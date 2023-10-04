@@ -20,7 +20,7 @@ export default function FilterSortBy({ onSorting }: IFilterSortByProps) {
         },
         {
             value: t("Ascending_Area"),
-            label: "Rsing Area",
+            label: "Rising Area",
         },
         {
             value: t("Descending_Area"),

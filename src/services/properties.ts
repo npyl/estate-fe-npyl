@@ -16,6 +16,7 @@ import {
 } from "src/types/file";
 
 import { ILabel } from "src/types/label";
+import { ICustomer } from "src/types/customer";
 
 export interface BulkEditRequest {
     propertyIds: number[];
@@ -71,6 +72,11 @@ interface ISuggestForCustomerParams {
     page: number;
     pageSize: number;
 }
+interface ISuggestForPropertyParams {
+    propertyId: number;
+    page: number;
+    pageSize: number;
+}
 
 export const properties = createApi({
     reducerPath: "properties",
@@ -92,6 +98,7 @@ export const properties = createApi({
         "PropertyById",
         "FilterProperties",
         "SuggestedProperties",
+        "SuggestedCustomers",
 
         // attributes
         "PropertyByIdImages",
@@ -191,6 +198,16 @@ export const properties = createApi({
             }),
             providesTags: ["SuggestedProperties"],
         }),
+        suggestForProperty: builder.query<
+            IPage<ICustomer>,
+            ISuggestForPropertyParams
+        >({
+            query: (params: ISuggestForPropertyParams) => ({
+                url: "/matchingCustomers",
+                params: params,
+            }),
+            providesTags: ["SuggestedCustomers"],
+        }),
         deleteProperty: builder.mutation<IProperties, number>({
             query: (id: number) => ({
                 url: `${id}`,
@@ -258,7 +275,7 @@ export const properties = createApi({
                     url: `/${props.propertyId}/thumbnail/${props.imageKey}`,
                     method: "POST",
                 }),
-                invalidatesTags: ["PropertyByIdImages"],
+                invalidatesTags: ["PropertyByIdImages", "PropertyById"],
             }
         ),
         deletePropertyImage: builder.mutation<void, IDeleteImageProps>({
@@ -266,6 +283,7 @@ export const properties = createApi({
                 url: `/${propertyId}/image/${imageKey}`,
                 method: "DELETE",
             }),
+            invalidatesTags: ["PropertyByIdImages", "PropertyById"],
         }),
 
         addPropertyBlueprint: builder.mutation<
@@ -315,6 +333,7 @@ export const {
     useDeletePropertyMutation,
     useFilterPropertiesMutation,
     useSuggestForCustomerQuery,
+    useSuggestForPropertyQuery,
     useBulkEditPropertiesMutation,
     useBulkDeletePropertiesMutation,
 

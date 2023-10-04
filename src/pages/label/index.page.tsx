@@ -31,7 +31,7 @@ const SingleProperty: NextPage = () => {
     const propertySectionLabel = t("Property Labels");
     const customerSectionLabel = t("Customer labels");
 
-    usePublishTab({ title: "Labels", path: "/label" });
+    // usePublishTab({ title: "Labels", path: "/label" });
 
     const [editMode, setEditMode] = useState(false);
     const [editedLabel, setEditedLabel] = useState<IEditProps>();

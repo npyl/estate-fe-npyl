@@ -56,8 +56,6 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
     const [deleteImage, { isLoading: isDeleteOnGoing }] =
         useDeletePropertyImageMutation();
 
-    console.log("Images: ", files);
-
     const uploadFile = async (
         image: File
     ): Promise<{ cdnUrl: string; key: string }> => {

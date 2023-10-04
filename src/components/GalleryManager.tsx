@@ -98,7 +98,7 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
         });
 
         setShowControl(false);
-    }, [currentKey]);
+    }, [currentKey, description, title, hidden]);
 
     const handleClear = () => {
         setTitle("");

@@ -34,7 +34,7 @@ interface TypeProps {
     buyer: boolean;
 }
 
-const TypeLabels = ({ seller, lessor, leaser, buyer }: TypeProps) => {
+export const TypeLabels = ({ seller, lessor, leaser, buyer }: TypeProps) => {
     const { t } = useTranslation();
 
     const map = useMemo(
@@ -80,7 +80,7 @@ const TypeLabels = ({ seller, lessor, leaser, buyer }: TypeProps) => {
 }
 const Customers: NextPage = () => {
     const { t } = useTranslation();
-    usePublishTab({ title: "Customers", path: "/customer" });
+    // usePublishTab({ title: "Customers", path: "/customer" });
 
     const allFilters = useSelector(selectAll);
 

@@ -1,22 +1,110 @@
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
-
+import { useTranslation } from "react-i18next";
 import Map from "src/components/Map/Map";
 import { ShapeData } from "src/components/Map/types";
-import { decodeShape, drawShape } from "src/components/Map/util";
+import { decodeShape } from "src/components/Map/util";
 import { useGetCustomerByIdQuery } from "src/services/customers";
-import { useGetMunicipalitiesQuery } from "src/services/location";
+import {
+    useGetMunicipalitiesQuery,
+    useGetNeighbourhoodsQuery,
+    useGetRegionsQuery,
+} from "src/services/location";
+
+import { Grid, List } from "@mui/material";
+import { ListItem } from "src/components/List";
+import { ILocation } from "src/types/location";
 
 interface AreaOfPreferenceProps {
     index: number; // index of demand
 }
 
+interface ViewLocationMiniProps {
+    regionCode?: string;
+    cityCode?: string;
+    complexCode?: string;
+}
+
 const isNumberString = (input: string): boolean => !isNaN(Number(input));
+
+export const ViewLocationMini = ({
+    regionCode,
+    cityCode,
+    complexCode,
+}: ViewLocationMiniProps) => {
+    const { t } = useTranslation();
+
+    const { data: regions } = useGetRegionsQuery();
+    const { data: municips } = useGetMunicipalitiesQuery(+regionCode!, {
+        skip: !regionCode || !isNumberString(regionCode),
+    });
+    const { data: neighbs } = useGetNeighbourhoodsQuery(+cityCode!, {
+        skip: !cityCode || !isNumberString(cityCode),
+    });
+
+    // region is most of the types a code; translate to human readable form; otherwise just return the string
+    const region: string = useMemo(() => {
+        if (!regionCode) return "";
+
+        return isNumberString(regionCode)
+            ? regions?.filter((r) => r.areaID === +regionCode)[0]?.nameGR || ""
+            : regionCode;
+    }, [regionCode, regions]);
+
+    // city is most of the types a code; translate to human readable form; otherwise just return the string
+    const city = useMemo(() => {
+        if (!cityCode) return "";
+
+        return isNumberString(cityCode)
+            ? municips?.filter((m) => m.areaID === +cityCode)[0]?.nameGR || ""
+            : cityCode;
+    }, [cityCode]);
+
+    // neighb is most of the types a code; translate to human readable form; otherwise just return the string
+    const neighb = useMemo(() => {
+        if (!complexCode) return "";
+
+        return isNumberString(complexCode)
+            ? neighbs?.filter((n) => n.areaID === +complexCode)[0]?.nameGR || ""
+            : complexCode;
+    }, [complexCode]);
+
+    return (
+        <Grid container>
+            <Grid item xs={4}>
+                <List>
+                    {region && (
+                        <ListItem
+                            label={t("Region")}
+                            value={region}
+                            align="horizontal"
+                        />
+                    )}
+                    {city && (
+                        <ListItem
+                            label={t("City")}
+                            value={city}
+                            align="horizontal"
+                        />
+                    )}
+                    {neighb && (
+                        <ListItem
+                            label={t("Neighborhood")}
+                            value={neighb}
+                            align="horizontal"
+                        />
+                    )}
+                </List>
+            </Grid>
+        </Grid>
+    );
+};
 
 export const AreaOfPreference: React.FC<AreaOfPreferenceProps> = ({
     index,
 }) => {
+    const { t } = useTranslation();
     const router = useRouter();
     const { customerId } = router.query;
 
@@ -86,17 +174,30 @@ export const AreaOfPreference: React.FC<AreaOfPreferenceProps> = ({
     }, [shapeData0, index, map]);
 
     return (
-        <Box height={`calc(100vh - 266px)`} width={"100%"}>
-            <Map
-                key={index}
-                zoom={12}
-                multipleShapes
-                drawing={false}
-                shapes={shapeData}
-                onReady={(m) => setMap(m)}
-                activeMarker={null}
-                setActiveMarker={() => {}}
-            />
-        </Box>
+        <>
+            <Box
+                sx={{
+                    px: 3,
+                    py: 1.5,
+                    display: "flex",
+                    justifyContent: "left",
+                }}
+            >
+                <Typography variant="h6">{t("Area of Preference")}</Typography>
+            </Box>
+            <ViewLocationMini regionCode={regions[0]} cityCode={cities[0]} />
+            <Box height={`calc(100vh - 266px)`} width={"100%"}>
+                <Map
+                    key={index}
+                    zoom={12}
+                    multipleShapes
+                    drawing={false}
+                    shapes={shapeData}
+                    onReady={(m) => setMap(m)}
+                    activeMarker={null}
+                    setActiveMarker={() => {}}
+                />
+            </Box>
+        </>
     );
 };
