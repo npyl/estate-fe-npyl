@@ -81,6 +81,8 @@
         "react-big-calendar": "^1.6.9",
         "react-color": "^2.19.3",
         "react-day-picker": "^8.8.0",
+        "react-dnd": "^16.0.1",
+        "react-dnd-html5-backend": "^16.0.1",
         "react-dom": "^18.2.0",
         "react-draft-wysiwyg": "^1.15.0",
         "react-dropzone": "^14.2.3",
