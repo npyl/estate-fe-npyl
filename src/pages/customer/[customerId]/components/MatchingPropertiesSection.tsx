@@ -119,10 +119,11 @@ const MatchingPropertiesSection: React.FC = () => {
         [propertiesPage?.totalElements]
     );
 
-    // TODO: make this not have duplicate properties... (Use a set?)
     const properties = useMemo(() => {
         if (!isLoaded) return [];
         if (!propertiesPage?.content) return [];
+
+        // console.log("pP: ", propertiesPage?.content);
 
         const haveNoShapes = demands?.every((demand) => {
             const shapes = demand?.shapes;
@@ -134,7 +135,7 @@ const MatchingPropertiesSection: React.FC = () => {
         if (haveNoShapes) return propertiesPage.content;
 
         // Otherwise, for every demand
-        return demands
+        const res = demands
             ?.map((demand) => {
                 // Get all shapes
                 const shapes = demand?.shapes;
@@ -142,6 +143,19 @@ const MatchingPropertiesSection: React.FC = () => {
                     ?.map((shape) => {
                         // For every shape
                         const shapeData = decodeShape(shape);
+
+                        // console.log(
+                        //     "Shape: ",
+                        //     shape,
+                        //     " relative: ",
+                        //     shapeData
+                        //         ? filterPropertiesInShape(
+                        //               propertiesPage?.content,
+                        //               shapeData
+                        //           )
+                        //         : []
+                        // );
+
                         // Return filtered properties
                         return shapeData
                             ? filterPropertiesInShape(
@@ -153,6 +167,11 @@ const MatchingPropertiesSection: React.FC = () => {
                     .flat();
             })
             .flat();
+
+        // console.log("res: ", res, " unique: ", [...new Set(res)]);
+
+        // Keep only the unique entries
+        return [...new Set(res)];
     }, [isLoaded, propertiesPage, demands]);
 
     const columns: GridColDef[] = [
@@ -220,8 +239,6 @@ const MatchingPropertiesSection: React.FC = () => {
 
     const handlePaginationChange = (model: GridPaginationModel) =>
         setPage(model.page);
-
-    console.log("properties: ", properties);
 
     if (properties?.length === 0) {
         // !propertiesPage ||
