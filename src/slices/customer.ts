@@ -28,6 +28,8 @@ export interface ISetDemandFilterAction {
 const initialDemandState: IDemandPOST = {
     filters: {
         labels: [],
+        regions: [],
+        cities: [],
     },
     priorityFeatures: {
         panoramicView: false,
@@ -498,23 +500,20 @@ const slice = createSlice({
             action: ISetDemandFilterAction
         ): void {
             const { index, value } = action.payload;
-            console.log("setting: ", value, " for index: ", index);
-
             if (state.demands[index]) {
                 state.demands[index].filters.cities = value;
             }
         },
-
         setDemandRegions(
             state: customerState,
             action: ISetDemandFilterAction
         ): void {
             const { index, value } = action.payload;
-            console.log("setting: ", value, " for index: ", index);
             if (state.demands[index]) {
                 state.demands[index].filters.regions = value;
             }
         },
+
         setInitialState: (state: customerState, action): void => {
             const payload: ICustomer = action.payload;
             const initialDemand = initialState.demands[0];
@@ -527,7 +526,7 @@ const slice = createSlice({
                 maxBedrooms: demandFilters.minBedrooms,
                 minBathrooms: demandFilters.minBedrooms,
                 maxBathrooms: demandFilters.minBedrooms,
-                furnished: demandFilters.furnished.map((i) => i.key),
+                furnished: demandFilters.furnished.map((i) => i.key) || [],
                 maxCovered: demandFilters.maxCovered,
                 minCovered: demandFilters.minCovered,
                 minPlot: demandFilters.minPlot,
@@ -536,17 +535,16 @@ const slice = createSlice({
                 maxYearOfConstruction: demandFilters.maxYearOfConstruction,
                 minFloor: demandFilters.minFloor.key,
                 maxFloor: demandFilters.maxFloor.key,
-                states: demandFilters.states.map((i) => i.key),
+                states: demandFilters.states.map((i) => i.key) || [],
                 minPrice: demandFilters.minPrice,
                 maxPrice: demandFilters.maxPrice,
-                labels: demandFilters.labels,
-                cities: demandFilters.cities,
-                regions: demandFilters.regions,
+                labels: demandFilters.labels || [],
+                cities: demandFilters.cities || [],
+                regions: demandFilters.regions || [],
                 complexes: demandFilters.complexes,
-                categories: demandFilters.categories.map((i) => i.key),
-                parentCategories: demandFilters.parentCategories.map(
-                    (i) => i.key
-                ),
+                categories: demandFilters.categories.map((i) => i.key) || [],
+                parentCategories:
+                    demandFilters.parentCategories.map((i) => i.key) || [],
             });
             const demandMapper = (demand: IDemand): IDemandPOST => ({
                 filters: demandFiltersMapper(demand.filters),
