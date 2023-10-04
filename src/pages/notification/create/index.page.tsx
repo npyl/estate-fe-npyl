@@ -1,11 +1,13 @@
+import { Send as SendIcon } from "@mui/icons-material";
 import { Box, Button, Grid, Paper, TextField, Typography } from "@mui/material";
 import type { NextPage } from "next";
 import { useDispatch, useSelector } from "react-redux";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { useAddNotificationMutation } from "src/services/notification";
-import { Send as SendIcon } from "@mui/icons-material";
 
+import { useTranslation } from "react-i18next";
+import { usePublishTab } from "src/components/Tabs/utils";
 import {
     selectAll,
     selectCustomerEmail,
@@ -19,8 +21,6 @@ import {
     // setter
     setAttribute,
 } from "src/slices/notification";
-import { usePublishTab } from "src/components/Tabs/utils";
-import { useTranslation } from "react-i18next";
 
 const NotificationCreatePage: NextPage = () => {
     const dispatch = useDispatch();

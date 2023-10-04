@@ -36,14 +36,14 @@ import ViewHeader from "src/pages/components/ViewHeader";
 
 import "photoswipe/dist/photoswipe.css";
 import InitMap from "./Map";
-import DescriptionSection from "./sections/DescriptionSection";
 import ConstructionSection from "./sections/ConstructionSection";
+import DescriptionSection from "./sections/DescriptionSection";
 import Features from "./sections/FeaturesSection";
 import MatchingCustomersSection from "./sections/MatchingCustomers";
 import PhotosOnly from "./sections/PhotosOnly";
 
-import { usePublishTab } from "src/components/Tabs/utils";
 import { useTranslation } from "react-i18next";
+import { usePublishTab } from "src/components/Tabs/utils";
 
 function a11yProps(index: number) {
     return {

@@ -1,19 +1,13 @@
+import { Paper } from "@mui/material";
 import type { NextPage } from "next";
 import { useMemo } from "react";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-import { CollapsibleTable, createRow } from "./components/CollapsibleTable";
-import {
-    useGetNotificationByIdQuery,
-    useGetNotificationsQuery,
-} from "src/services/notification";
-import { Paper } from "@mui/material";
-import { usePublishTab } from "src/components/Tabs/utils";
+import { useGetNotificationsQuery } from "src/services/notification";
 import { ContactNotification } from "src/types/notification";
+import { CollapsibleTable, createRow } from "./components/CollapsibleTable";
 
 const NotificationPage: NextPage = () => {
-    // usePublishTab({ title: "Notifications", path: "/notification" });
-
     const { data: notifications } = useGetNotificationsQuery();
 
     // // TODO: test data; remove

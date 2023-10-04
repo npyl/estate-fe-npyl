@@ -5,19 +5,18 @@ import { useCreatePropertyMutation } from "src/services/properties";
 
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { selectCategory, selectParentCategory } from "src/slices/property";
+import { useDispatch, useSelector } from "react-redux";
 import { LogoProgressIndicator } from "src/components/LogoProgressIndicator";
-import { resetState } from "src/slices/property";
-import { usePublishTab } from "src/components/Tabs/utils";
+import {
+    resetState,
+    selectCategory,
+    selectParentCategory,
+} from "src/slices/property";
 import Form from "./Form";
 
 const CreatePropertyPage: NextPage = () => {
     const router = useRouter();
     const dispatch = useDispatch();
-
-    // usePublishTab({ title: "Create Draft Property", path: "/property/create" });
-
     const [
         create,
         { isSuccess, isLoading: isCreateLoading, data: createdPropertyId },

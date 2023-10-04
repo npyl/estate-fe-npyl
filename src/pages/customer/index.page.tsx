@@ -1,4 +1,4 @@
-import { Box, Paper, Skeleton, Avatar } from "@mui/material";
+import { Avatar, Box, Paper, Skeleton } from "@mui/material";
 import {
     GridCallbackDetails,
     GridCellParams,
@@ -8,25 +8,24 @@ import {
 } from "@mui/x-data-grid";
 import type { NextPage } from "next";
 import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import DataGridTable from "src/components/DataGrid";
+import { DeleteDialog } from "src/components/Dialog/Delete";
+import ListLabelsItem from "src/components/List/labels-item";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
+import { Label, LabelColor } from "src/components/label";
+import { UserCircle } from "src/icons/user-circle";
+import nomoi from "src/json/nomoi.json";
 import {
     useBulkDeleteCustomersMutation,
     useFilterCustomersMutation,
 } from "src/services/customers";
-import { FilterSection } from "./components";
-import nomoi from "src/json/nomoi.json";
-import { useSelector } from "react-redux";
 import { selectAll } from "src/slices/customer/filters";
-import { UserCircle } from "src/icons/user-circle";
-import { DeleteDialog } from "src/components/Dialog/Delete";
-import { BulkEdit } from "./components/BulkEdit/BulkEdit";
-import { usePublishTab } from "src/components/Tabs/utils";
-import { useTranslation } from "react-i18next";
-import { Label, LabelColor } from "src/components/label";
-import ListLabelsItem from "src/components/List/labels-item";
 import { ILabel } from "src/types/label";
+import { FilterSection } from "./components";
+import { BulkEdit } from "./components/BulkEdit/BulkEdit";
 interface TypeProps {
     seller: boolean;
     lessor: boolean;
@@ -80,7 +79,6 @@ export const TypeLabels = ({ seller, lessor, leaser, buyer }: TypeProps) => {
 }
 const Customers: NextPage = () => {
     const { t } = useTranslation();
-    // usePublishTab({ title: "Customers", path: "/customer" });
 
     const allFilters = useSelector(selectAll);
 

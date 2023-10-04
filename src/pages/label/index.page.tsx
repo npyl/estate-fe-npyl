@@ -1,38 +1,34 @@
 import { Grid } from "@mui/material";
 import type { NextPage } from "next";
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
+import { useAllCustomersQuery } from "src/services/customers";
 import {
     useCreateLabelForCustomerWithIDMutation,
     useCreateLabelForCustomersMutation,
     useCreateLabelForPropertiesMutation,
     useCreateLabelForPropertyWithIDMutation,
+    useDeleteCustomerLabelMutation,
     // General
     useDeletePropertyLabelMutation,
-    useDeleteCustomerLabelMutation,
     // Get
     useGetLabelsQuery,
 } from "src/services/labels";
 import { useAllPropertiesQuery } from "src/services/properties";
-import { useAllCustomersQuery } from "src/services/customers";
 import { ICustomer } from "src/types/customer";
 import { ILabel } from "src/types/label";
 import { IProperties } from "src/types/properties";
-import { Preview } from "./components/Preview";
 import { Create } from "./components/Create";
 import { Edit } from "./components/Edit";
+import { Preview } from "./components/Preview";
 import { IEditProps } from "./components/types";
-import { usePublishTab } from "src/components/Tabs/utils";
-import { useTranslation } from "react-i18next";
 
 const SingleProperty: NextPage = () => {
     const { t } = useTranslation();
     const propertySectionLabel = t("Property Labels");
     const customerSectionLabel = t("Customer labels");
-
-    // usePublishTab({ title: "Labels", path: "/label" });
-
     const [editMode, setEditMode] = useState(false);
     const [editedLabel, setEditedLabel] = useState<IEditProps>();
 

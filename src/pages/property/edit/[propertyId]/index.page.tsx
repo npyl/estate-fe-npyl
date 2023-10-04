@@ -1,25 +1,25 @@
 import type { NextPage } from "next";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-import { useSelector } from "react-redux";
-import { useRouter } from "next/router";
-import Form from "./Form";
 import {
     useEditPropertyMutation,
     useLazyGetPropertyBlueprintsQuery,
     useLazyGetPropertyImagesQuery,
 } from "src/services/properties";
-import { setInitialState, selectAll, resetState } from "src/slices/property";
-import {
-    resetState as resetFiles,
-    setInitialState as setInitialFilesState,
-} from "src/slices/property/files";
 import { resetState as resetLabels } from "src/slices/labels";
 import {
     resetState as resetNotes,
     setInitialState as setInitialNotesState,
 } from "src/slices/notes";
+import { resetState, selectAll, setInitialState } from "src/slices/property";
+import {
+    resetState as resetFiles,
+    setInitialState as setInitialFilesState,
+} from "src/slices/property/files";
+import Form from "./Form";
 
 import { useGetPropertyByIdQuery } from "src/services/properties";
 

@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { RootState } from "src/store";
 
-import { v5 as uuid } from "uuid";
 import crypto from "crypto";
+import { v5 as uuid } from "uuid";
 
 export interface ITabsProps {
     title: string;
@@ -10,13 +10,7 @@ export interface ITabsProps {
     uuid: string;
 }
 
-const initialState: ITabsProps[] = [
-    {
-        title: "Properties",
-        path: "/",
-        uuid: generateUUIDFromString("/"),
-    },
-];
+const initialState: ITabsProps[] = [];
 
 // Function to generate a UUID based on a given string
 function generateUUIDFromString(inputString: string): string {

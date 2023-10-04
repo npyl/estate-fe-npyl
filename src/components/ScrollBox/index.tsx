@@ -7,7 +7,7 @@ interface ScrollBoxProps {
 export const ScrollBox = styled(Box)<ScrollBoxProps>(
     ({ theme, scrollbarWidth }) => ({
         maxHeight: "90vh",
-        padding: "5px 0", // padding to the top and bottom
+        padding: "5px 5px", // padding to the top and bottom
 
         overflow: "auto",
         "&::-webkit-scrollbar": {
