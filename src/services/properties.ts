@@ -258,7 +258,7 @@ export const properties = createApi({
                     url: `/${props.propertyId}/thumbnail/${props.imageKey}`,
                     method: "POST",
                 }),
-                invalidatesTags: ["PropertyByIdImages"],
+                invalidatesTags: ["PropertyByIdImages", "PropertyById"],
             }
         ),
         deletePropertyImage: builder.mutation<void, IDeleteImageProps>({
@@ -266,6 +266,7 @@ export const properties = createApi({
                 url: `/${propertyId}/image/${imageKey}`,
                 method: "DELETE",
             }),
+            invalidatesTags: ["PropertyByIdImages", "PropertyById"],
         }),
 
         addPropertyBlueprint: builder.mutation<

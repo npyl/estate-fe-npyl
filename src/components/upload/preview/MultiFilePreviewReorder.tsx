@@ -7,7 +7,7 @@ import PreviewImage from "src/components/image/PreviewImage";
 import { LabeledImage } from "src/components/image";
 
 import { IPropertyImage } from "src/types/file";
-import { useCallback, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 
 import React from "react";
 import { Grid } from "@mui/material";
@@ -78,32 +78,27 @@ const Card = ({ src, label, id, index, moveImage, onClick }: CardProps) => {
         collect: (monitor) => ({ isDragging: monitor.isDragging() }),
     });
 
-    const opacity = isDragging ? 0 : 1;
-
     drag(drop(ref));
 
-    return (
+    return src ? (
         <div
             ref={ref}
             style={{
-                opacity,
                 position: "relative" /* INFO: Fixes image size */,
             }}
             className="card"
         >
-            {src ? (
-                <LabeledImage
-                    src={src}
-                    label={label}
-                    sx={{
-                        opacity: isDragging ? 0.5 : 1,
-                    }}
-                    onClick={onClick}
-                />
-            ) : (
-                <PreviewImage animate />
-            )}
+            <LabeledImage
+                src={src}
+                label={label}
+                sx={{
+                    opacity: isDragging ? 0.5 : 1,
+                }}
+                onClick={onClick}
+            />
         </div>
+    ) : (
+        <PreviewImage animate />
     );
 };
 
