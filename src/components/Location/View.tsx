@@ -10,7 +10,6 @@ import {
     useGetNeighbourhoodsQuery,
     useGetRegionsQuery,
 } from "src/services/location";
-import { useGetCustomerByIdQuery } from "src/services/customers";
 import router from "next/router";
 
 interface ViewLocationProps {
