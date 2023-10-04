@@ -11,13 +11,12 @@ import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { memo, useCallback, useMemo, useState } from "react";
+import { useSecurityContext } from "src/contexts/security";
 import { IActions, IRoles } from "src/interfaces/roles";
-import { selectData, setData } from "src/slices/security";
-import { useDispatch, useSelector } from "src/store";
 import {
     ActionsHeadCells,
     ActionsHeadCellsLabels,
-    ParentCategoriesTypes,
+    StateTypes,
     actions,
     subcategories1,
     subcategories2,
@@ -29,68 +28,76 @@ import { resolveCategory } from "./utils";
 type Props = {
     row: string;
 
-    parentCategory: ParentCategoriesTypes;
+    state: StateTypes;
 };
 
-const NestedTable = ({ row, parentCategory }: Props) => {
+const NestedTable = ({ row, state }: Props) => {
     const [open, setOpen] = useState(false);
-    const data = useSelector(selectData);
-    const dispatch = useDispatch();
-    const category = resolveCategory(
-        row,
-        subcategories1,
-        subcategories2,
-        subcategories3,
-        subcategories4
+    const { data, setData, setIsDirty } = useSecurityContext();
+
+    const nestedCategories = useMemo(
+        () =>
+            resolveCategory(
+                row,
+                subcategories1,
+                subcategories2,
+                subcategories3,
+                subcategories4
+            ),
+        [row, subcategories1, subcategories2, subcategories3, subcategories4]
     );
 
     const handleChildCheckboxChange = (
-        subCategory: string,
+        category: string,
         columnIndex: number
     ) => {
-        const rowIndex = data.findIndex(
-            (e) =>
-                e.subcategory === subCategory &&
-                e.parentCategory === parentCategory
+        const rowIndex = data?.permissionResponses.findIndex(
+            (e) => e.category === category && e.state === state
         );
         const action = actions[columnIndex];
-
-        const updatedData: IRoles[] = JSON.parse(JSON.stringify(data));
+        const updatedData: IRoles[] = JSON.parse(
+            JSON.stringify(data?.permissionResponses)
+        );
 
         updatedData[rowIndex as number].actions[
             action as unknown as keyof IActions
         ] =
-            !data[rowIndex as number].actions[
+            !data?.permissionResponses[rowIndex as number].actions[
                 action as unknown as keyof IActions
             ];
-        dispatch(setData(updatedData));
+        setIsDirty(true);
+        setData({ ...data, permissionResponses: updatedData });
     };
 
-    const handleParentCategoryCheckboxChange = (
+    const handleStateCheckboxChange = (
         e: React.ChangeEvent<HTMLInputElement>,
         row: string
     ) => {
-        const newData = JSON.parse(JSON.stringify(data));
-        for (const key in data) {
+        const newData = JSON.parse(JSON.stringify(data?.permissionResponses));
+        for (const key in data?.permissionResponses) {
             if (
-                newData[key].category === row &&
-                newData[key].parentCategory === parentCategory
+                newData[key].parentCategory === row &&
+                newData[key].state === state
             ) {
                 for (const actionKey in newData[key].actions) {
                     newData[key].actions[actionKey] = e.target.checked;
                 }
             }
         }
-        dispatch(setData(newData));
+        setIsDirty(true);
+        setData({ ...data, permissionResponses: newData });
     };
 
-    const isParentCategoryCheckboxChecked = useCallback(
+    const isStateCheckboxChecked = useCallback(
         (row: string) => {
-            for (const category of Object.values(data)) {
+            if (data?.permissionResponses.length === 0) {
+                return false;
+            }
+            for (const category of Object.values(data?.permissionResponses)) {
                 const actions = category?.actions;
                 if (
-                    category.parentCategory === parentCategory &&
-                    category.category === row &&
+                    category.state === state &&
+                    category.parentCategory === row &&
                     actions &&
                     Object.values(actions).some((value) => value === false)
                 ) {
@@ -104,52 +111,84 @@ const NestedTable = ({ row, parentCategory }: Props) => {
 
     const handleSubCategoryCheckboxChange = (
         e: React.ChangeEvent<HTMLInputElement>,
-        subCategory: string
+        category: string
     ) => {
-        const newData: IRoles[] = JSON.parse(JSON.stringify(data));
-        const rowIndex = data.findIndex(
-            (e) =>
-                e.subcategory === subCategory &&
-                e.parentCategory === parentCategory
+        const newData: IRoles[] = JSON.parse(
+            JSON.stringify(data?.permissionResponses)
+        );
+        const rowIndex = data?.permissionResponses.findIndex(
+            (e) => e.category === category && e.state === state
         );
         for (const action of actions) {
             newData[rowIndex].actions[action as keyof IActions] =
                 e.target.checked;
         }
-        dispatch(setData(newData));
+        setIsDirty(true);
+        setData({ ...data, permissionResponses: newData });
     };
 
     const isSubCategoryCheckboxChecked = useCallback(
-        (subCategory: string) => {
-            const rowIndex = data.findIndex(
-                (e) =>
-                    e.subcategory === subCategory &&
-                    e.parentCategory === parentCategory
+        (category: string) => {
+            const rowIndex = data?.permissionResponses.findIndex(
+                (e) => e.category === category && e.state === state
             );
 
             return actions.every(
                 (action) =>
-                    data[rowIndex as number]?.actions[
+                    data?.permissionResponses[rowIndex as number]?.actions[
                         action as unknown as keyof IActions
                     ]
             );
         },
-        [data]
+        [data?.permissionResponses]
     );
     const isActionChecked = useCallback(
-        (subCategory: string, columnIndex: number): boolean => {
-            const rowIndex = data.findIndex(
-                (e) =>
-                    e.subcategory === subCategory &&
-                    e.parentCategory === parentCategory
+        (category: string, columnIndex: number): boolean => {
+            const rowIndex = data?.permissionResponses.findIndex(
+                (e) => e.category === category && e.state === state
             );
             const action = actions[columnIndex];
 
-            return !!data[rowIndex as number]?.actions[
+            return !!data?.permissionResponses[rowIndex as number]?.actions[
                 action as unknown as keyof IActions
             ];
         },
-        [data, parentCategory]
+        [data?.permissionResponses, state]
+    );
+
+    const handleVerticalCheckboxChange = (
+        e: React.ChangeEvent<HTMLInputElement>,
+        action: string,
+        row: string,
+        state: string
+    ) => {
+        const newData: IRoles[] = JSON.parse(
+            JSON.stringify(data?.permissionResponses)
+        );
+        for (const role of newData) {
+            if (row === role.parentCategory && role.state === state) {
+                role.actions[action as unknown as keyof IActions] =
+                    e.target.checked;
+            }
+        }
+        setIsDirty(true);
+        setData({ ...data, permissionResponses: newData });
+    };
+
+    const isVerticalCheckboxChecked = useCallback(
+        (action: string, row: string, state: string) => {
+            for (const role of data.permissionResponses) {
+                if (
+                    !role.actions[action as unknown as keyof IActions] &&
+                    role.parentCategory === row &&
+                    role.state === state
+                ) {
+                    return false;
+                }
+            }
+            return true;
+        },
+        [data?.permissionResponses]
     );
     return useMemo(
         () => (
@@ -173,9 +212,9 @@ const NestedTable = ({ row, parentCategory }: Props) => {
                             <Typography variant={"h6"}>{row}</Typography>
                             <Checkbox
                                 onChange={(e) =>
-                                    handleParentCategoryCheckboxChange(e, row)
+                                    handleStateCheckboxChange(e, row)
                                 }
-                                checked={isParentCategoryCheckboxChecked(row)}
+                                checked={isStateCheckboxChecked(row)}
                             />
                         </Stack>
                     </TableCell>
@@ -210,77 +249,106 @@ const NestedTable = ({ row, parentCategory }: Props) => {
                                                     align="center"
                                                     key={action}
                                                 >
-                                                    {
-                                                        ActionsHeadCellsLabels[
-                                                            ActionsHeadCells[
-                                                                action as keyof typeof ActionsHeadCells
-                                                            ] as keyof typeof ActionsHeadCellsLabels
-                                                        ]
-                                                    }
+                                                    <Box
+                                                        display={"flex"}
+                                                        alignItems={"center"}
+                                                    >
+                                                        {
+                                                            ActionsHeadCellsLabels[
+                                                                ActionsHeadCells[
+                                                                    action as keyof typeof ActionsHeadCells
+                                                                ] as keyof typeof ActionsHeadCellsLabels
+                                                            ]
+                                                        }
+                                                        <Checkbox
+                                                            disableFocusRipple
+                                                            disableRipple
+                                                            checked={isVerticalCheckboxChecked(
+                                                                action,
+                                                                row,
+                                                                state
+                                                            )}
+                                                            onChange={(e) =>
+                                                                handleVerticalCheckboxChange(
+                                                                    e,
+                                                                    action,
+                                                                    row,
+                                                                    state
+                                                                )
+                                                            }
+                                                            sx={{
+                                                                marginLeft:
+                                                                    "-6px",
+                                                                transform:
+                                                                    "scale(0.8)",
+                                                            }}
+                                                        />
+                                                    </Box>
                                                 </TableCell>
                                             ))}
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {category &&
-                                            category.length > 0 &&
-                                            category.map((subCategory) => (
-                                                <TableRow
-                                                    sx={{
-                                                        "& > *": {
-                                                            borderBottom:
-                                                                "unset",
-                                                        },
-                                                        width: "100%",
-                                                    }}
-                                                    key={
-                                                        parentCategory +
-                                                        subCategory
-                                                    }
-                                                >
-                                                    <TableCell colSpan={1}>
-                                                        {subCategory}
-                                                        <Checkbox
-                                                            size="small"
-                                                            onChange={(e) =>
-                                                                handleSubCategoryCheckboxChange(
-                                                                    e,
-                                                                    subCategory
-                                                                )
-                                                            }
-                                                            checked={isSubCategoryCheckboxChecked(
-                                                                subCategory
-                                                            )}
-                                                        />
-                                                    </TableCell>
-                                                    {actions.map(
-                                                        (action, index) => (
-                                                            <TableCell
-                                                                colSpan={1}
-                                                                align="center"
-                                                                key={
-                                                                    parentCategory +
-                                                                    subCategory +
-                                                                    action
+                                        {nestedCategories &&
+                                            nestedCategories.length > 0 &&
+                                            nestedCategories.map(
+                                                (subCategory) => (
+                                                    <TableRow
+                                                        sx={{
+                                                            "& > *": {
+                                                                borderBottom:
+                                                                    "unset",
+                                                            },
+                                                            width: "100%",
+                                                        }}
+                                                        key={
+                                                            state + subCategory
+                                                        }
+                                                    >
+                                                        <TableCell colSpan={1}>
+                                                            {subCategory}
+                                                            <Checkbox
+                                                                size="small"
+                                                                onChange={(e) =>
+                                                                    handleSubCategoryCheckboxChange(
+                                                                        e,
+                                                                        subCategory
+                                                                    )
                                                                 }
-                                                            >
-                                                                <Checkbox
-                                                                    onChange={() => {
-                                                                        handleChildCheckboxChange(
+                                                                checked={isSubCategoryCheckboxChecked(
+                                                                    subCategory
+                                                                )}
+                                                            />
+                                                        </TableCell>
+                                                        {actions.map(
+                                                            (action, index) => (
+                                                                <TableCell
+                                                                    colSpan={1}
+                                                                    align="center"
+                                                                    key={
+                                                                        state +
+                                                                        subCategory +
+                                                                        action
+                                                                    }
+                                                                >
+                                                                    <Checkbox
+                                                                        onChange={() => {
+                                                                            handleChildCheckboxChange(
+                                                                                subCategory,
+                                                                                index
+                                                                            );
+                                                                        }}
+                                                                        checked={isActionChecked(
                                                                             subCategory,
                                                                             index
-                                                                        );
-                                                                    }}
-                                                                    checked={isActionChecked(
-                                                                        subCategory,
-                                                                        index
-                                                                    )}
-                                                                />
-                                                            </TableCell>
-                                                        )
-                                                    )}
-                                                </TableRow>
-                                            ))}
+                                                                        )}
+                                                                    />
+                                                                </TableCell>
+                                                            )
+                                                        )}
+                                                    </TableRow>
+                                                )
+                                            )}
                                     </TableBody>
                                 </Table>
                             </Box>
@@ -289,7 +357,7 @@ const NestedTable = ({ row, parentCategory }: Props) => {
                 </TableRow>
             </React.Fragment>
         ),
-        [!!open, data]
+        [!!open, data?.permissionResponses]
     );
 };
 

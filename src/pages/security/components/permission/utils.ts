@@ -9,7 +9,7 @@ export function resolveSubCategory(rowLiteral: string) {
         case "Maisonette":
             return 2;
 
-        case "Detached house":
+        case "Detached":
             return 3;
 
         case "Villa":
@@ -33,7 +33,7 @@ export function resolveSubCategory(rowLiteral: string) {
         case "Houseboat":
             return 10;
 
-        case "Other categories":
+        case "Other residential":
             return 11;
 
         case "Office":
@@ -63,22 +63,22 @@ export function resolveSubCategory(rowLiteral: string) {
         case "Showroom":
             return 20;
 
-        case "Other Commercial categories":
+        case "Other commercial":
             return 21;
 
-        case "Land plot":
+        case "Plot":
             return 22;
 
-        case "Parcels":
+        case "Parcel":
             return 23;
 
         case "Island":
             return 24;
 
-        case "Other Land categories":
+        case "Other land":
             return 25;
 
-        case "Parking":
+        case "Parking Spot":
             return 26;
 
         case "Business":

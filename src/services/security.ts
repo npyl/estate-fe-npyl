@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { IPreset } from "../interfaces/roles";
+import { IPreset, IPresetReq, IRolesReq } from "../interfaces/roles";
 
 export const security = createApi({
     reducerPath: "security",
@@ -16,26 +16,68 @@ export const security = createApi({
             return headers;
         },
     }),
-    tagTypes: ["Presets"],
+    tagTypes: ["Presets", "Relationship", "PresetById"],
     endpoints: (builder) => ({
         // get
-        getPresets: builder.query<IPreset, any>({
+        getPresets: builder.query<IPreset[], void>({
             query: () => ({
                 url: "presets",
             }),
             providesTags: ["Presets"],
         }),
-
-        //post,put...
-        savePreset: builder.mutation<any, IPreset>({
-            query: (data) => ({
+        getPresetById: builder.query<IPreset, number>({
+            query: (id) => ({
+                url: `presets/${id}`,
+            }),
+            providesTags: ["PresetById"],
+        }),
+        getRelationship: builder.query<
+            IRolesReq,
+            { sourceUserId: number; targetUserId: number }
+        >({
+            query: ({ sourceUserId, targetUserId }) => ({
+                url: `${sourceUserId}/relationship/${targetUserId}`,
+            }),
+            providesTags: ["Relationship"],
+        }),
+        savePreset: builder.mutation<any, IPresetReq>({
+            query: (arg) => ({
                 url: "presets",
+                method: arg.method,
+                body: arg.data,
+            }),
+            invalidatesTags: ["Presets", "PresetById"],
+        }),
+
+        saveRelationship: builder.mutation<any, IRolesReq>({
+            query: (data) => ({
+                url: "",
                 method: "POST",
-                body: data,
+                body: {
+                    id: data.id,
+                    permissions: data.permissionResponses,
+                    source: data.source.id,
+                    target: data.target.id,
+                },
+            }),
+            invalidatesTags: ["Relationship"],
+        }),
+
+        deletePreset: builder.mutation<any, number>({
+            query: (id) => ({
+                url: `presets/${id}`,
+                method: "DELETE",
             }),
             invalidatesTags: ["Presets"],
         }),
     }),
 });
 
-export const { useGetPresetsQuery, useSavePresetMutation } = security;
+export const {
+    useGetPresetsQuery,
+    useSavePresetMutation,
+    useGetRelationshipQuery,
+    useSaveRelationshipMutation,
+    useGetPresetByIdQuery,
+    useDeletePresetMutation,
+} = security;

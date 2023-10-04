@@ -11,19 +11,19 @@ import {
 } from "@mui/material";
 import { useCallback, useState } from "react";
 
-import UploadDnd from "src/components/upload/UploadDnd";
+import { useRouter } from "next/router";
+import { useTranslation } from "react-i18next";
 import GalleryManager from "src/components/GalleryManager";
 import { SoftButton } from "src/components/SoftButton";
+import UploadDnd from "src/components/upload/UploadDnd";
+import MultiFilePreviewReorder from "src/components/upload/preview/MultiFilePreviewReorder";
 import {
     useAddPropertyImageMutation,
-    useSetPropertyThumbailMutation,
-    useReorderPropertyImagesMutation,
     useDeletePropertyImageMutation,
+    useReorderPropertyImagesMutation,
+    useSetPropertyThumbailMutation,
 } from "src/services/properties";
-import { useRouter } from "next/router";
 import { IPropertyImage, IPropertyImagePOST } from "src/types/file";
-import { useTranslation } from "react-i18next";
-import MultiFilePreviewReorder from "src/components/upload/preview/MultiFilePreviewReorder";
 
 interface IImageSectionProps {
     files: IPropertyImage[];
@@ -171,7 +171,6 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
     // };
 
     if (!propertyId) return null;
-
     return (
         <>
             <Card>

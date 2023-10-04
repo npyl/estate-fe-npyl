@@ -2,19 +2,29 @@ import { Container, Tab, Tabs } from "@mui/material";
 import { NextPage } from "next";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import {
+    SecurityProvider,
+    initialData,
+    useSecurityContext,
+} from "src/contexts/security";
 import TabPanel from "../../components/Tabs/Tabs";
 import { AuthGuard } from "../../components/authentication/auth-guard";
 import { UserDashboardLayout } from "../../components/dashboard/user-dashboard-layout";
 import PermissionPage from "./components/permission";
 import UserPage from "./components/user";
 
-const User: NextPage = () => {
+const SecurityPage: NextPage = () => {
     const [value, setValue] = useState(0);
-    const [selectedUser, setSelectedUser] = useState<number>(-1);
-
+    const { setSelectedUser, setSelectedPreset, setTargetUser, setData } =
+        useSecurityContext();
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
-        newValue === 0 && setSelectedUser(-1);
+        if (newValue === 0) {
+            setSelectedUser(-1);
+            setSelectedPreset(-1);
+            setTargetUser(-1);
+            setData(initialData);
+        }
     };
 
     const { t } = useTranslation();
@@ -28,29 +38,28 @@ const User: NextPage = () => {
                 sx={{ padding: 2 }}
             >
                 <Tab label={t("Users")} {...a11yProps(0)} />
-                <Tab label={t("" + "Permissions")} {...a11yProps(1)} />
+                <Tab label={t("Permissions")} {...a11yProps(1)} />
             </Tabs>
 
             <TabPanel value={value} index={0}>
-                <UserPage
-                    changeTab={handleChange}
-                    setSelectedUser={setSelectedUser}
-                />
+                <UserPage changeTab={handleChange} />
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <PermissionPage selectedUser={selectedUser} />
+                <PermissionPage />
             </TabPanel>
         </Container>
     );
 };
 
-User.getLayout = (page) => (
+SecurityPage.getLayout = (page) => (
     <AuthGuard>
-        <UserDashboardLayout>{page}</UserDashboardLayout>
+        <UserDashboardLayout>
+            <SecurityProvider>{page}</SecurityProvider>
+        </UserDashboardLayout>
     </AuthGuard>
 );
 
-export default User;
+export default SecurityPage;
 
 function a11yProps(index: number) {
     return {
