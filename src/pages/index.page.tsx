@@ -7,7 +7,7 @@ import ViewAll from "./components/ViewAll";
 import { usePublishTab } from "src/components/Tabs/utils";
 
 const Home: NextPage = () => {
-    usePublishTab({ title: "Properties", path: "/" });
+    // usePublishTab({ title: "Properties", path: "/" });
 
     return (
         <>

@@ -12,7 +12,7 @@ import { usePublishTab } from "src/components/Tabs/utils";
 import { ContactNotification } from "src/types/notification";
 
 const NotificationPage: NextPage = () => {
-    usePublishTab({ title: "Notifications", path: "/notification" });
+    // usePublishTab({ title: "Notifications", path: "/notification" });
 
     const { data: notifications } = useGetNotificationsQuery();
 

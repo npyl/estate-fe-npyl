@@ -80,7 +80,7 @@ export const TypeLabels = ({ seller, lessor, leaser, buyer }: TypeProps) => {
 }
 const Customers: NextPage = () => {
     const { t } = useTranslation();
-    usePublishTab({ title: "Customers", path: "/customer" });
+    // usePublishTab({ title: "Customers", path: "/customer" });
 
     const allFilters = useSelector(selectAll);
 
