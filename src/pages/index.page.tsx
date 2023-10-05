@@ -12,7 +12,7 @@ const Home: NextPage = () => {
                 component="main"
                 sx={{
                     flexGrow: 1,
-                    pt: 2,
+                    pt: 1,
                 }}
             >
                 <ViewAll />

@@ -3,6 +3,7 @@ import { Stack, Typography } from "@mui/material";
 import { StyledButton } from "./style";
 import { DrawShape, ShapeData, StopDraw } from "./types";
 import { drawShape } from "./util";
+import { IMapMarker } from "./Map";
 
 interface DrawingComponentProps {
     map: any;
@@ -19,7 +20,7 @@ export const CustomDrawingComponent = ({
 }: DrawingComponentProps) => {
     const drawingManagerRef = useRef<any>(null);
     const shapeRef = useRef<DrawShape | StopDraw>(null);
-
+    const [markers, setMarkers] = useState<IMapMarker[]>([]);
     // drawing manager ready
     const [ready, setReady] = useState(false);
 
@@ -75,11 +76,13 @@ export const CustomDrawingComponent = ({
 
                 if (shapeRef.current) {
                     // Remove the previous shape
+
                     shapeRef.current.setMap(null);
                 }
 
                 const shape = event.overlay;
                 shapeRef.current = shape as DrawShape;
+
                 drawingManagerRef.current.setDrawingMode(null);
 
                 // Support shape drag
@@ -115,6 +118,7 @@ export const CustomDrawingComponent = ({
     }, [ready, shape]);
 
     const startDrawing = () => {
+        setMarkers([]);
         if (shapeRef.current?.getMap()) {
             shapeRef.current.setMap(null);
         }
