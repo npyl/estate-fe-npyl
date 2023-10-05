@@ -43,7 +43,7 @@ export default function KanbanColumn({ column, cards, index }: Props) {
     const handleToggleAddTask = () => setOpenAddTask(!openAddTask);
     const handleCloseAddTask = () => setOpenAddTask(false);
     const handleDeleteTask = (cardId: number) => deleteCard(cardId);
-    const handleAddTask = (task: IKanbanCardPOST) =>
+    const handleAddTask = (task: Partial<IKanbanCard>) =>
         addCard({ ...task, columnId: column.id }).then(() =>
             handleCloseAddTask()
         );

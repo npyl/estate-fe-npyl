@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 
 // @types
-import { IKanbanCardPOST } from "src/types/kanban";
+import { IKanbanCard, IKanbanCardPOST } from "src/types/kanban";
 // components
 import DateRangePicker, {
     useDateRangePicker,
@@ -33,7 +33,7 @@ const defaultTask = {
 };
 
 type Props = {
-    onAddTask: (task: IKanbanCardPOST) => void;
+    onAddTask: (task: Partial<IKanbanCard>) => void;
     onCloseAddTask: VoidFunction;
 };
 

@@ -132,7 +132,8 @@ export default function KanbanPage() {
                                     <SkeletonKanbanColumn />
                                 ) : (
                                     board?.columnOrder
-                                        .toReversed()
+                                        .slice()
+                                        .reverse()
                                         .map((columnId, index) => {
                                             // get column for id
                                             const column = board.columns.find(
