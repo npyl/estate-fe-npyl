@@ -86,14 +86,22 @@ export default function KanbanColumn({ column, cards, index }: Props) {
                                     spacing={2}
                                     sx={{ width: 280 }}
                                 >
-                                    {column.cardIds.map((cardId, index) => (
-                                        <KanbanTaskCard
-                                            key={cardId}
-                                            index={index}
-                                            onDeleteTask={handleDeleteTask}
-                                            card={cards[cardId]}
-                                        />
-                                    ))}
+                                    {column.cardOrder.map((cardId, index) => {
+                                        const card = cards.find(
+                                            (c) => c.id === cardId
+                                        );
+
+                                        return card ? (
+                                            <KanbanTaskCard
+                                                key={cardId}
+                                                index={index}
+                                                onDeleteTask={handleDeleteTask}
+                                                card={card}
+                                            />
+                                        ) : (
+                                            <></>
+                                        );
+                                    })}
                                     {provided.placeholder}
                                 </Stack>
                             )}
