@@ -111,7 +111,9 @@ export default function KanbanColumn({ column, cards, index }: Props) {
                                 fullWidth
                                 size="large"
                                 color="inherit"
-                                startIcon={<Iconify icon="eva:plus-fill" />}
+                                startIcon={
+                                    <Iconify icon="eva:plus-fill" mb={2} />
+                                }
                                 onClick={handleToggleAddTask}
                                 sx={{ fontSize: 14 }}
                             >
