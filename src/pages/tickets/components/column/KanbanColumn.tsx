@@ -37,7 +37,7 @@ export default function KanbanColumn({ column, cards, index }: Props) {
     const [openAddTask, setOpenAddTask] = useState(false);
 
     const handleUpdateColumn = async (newName: string) =>
-        editColumn({ id: index, name: newName });
+        editColumn({ id: column.id, name: newName });
     const handleDeleteColumn = async () => deleteColumn(column.id);
 
     const handleToggleAddTask = () => setOpenAddTask(!openAddTask);
