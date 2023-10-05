@@ -32,7 +32,7 @@ import { IUser } from "src/types/user";
 const ITEM_HEIGHT = 64;
 
 type Props = {
-    assignee?: IKanbanAssignee[];
+    assignees?: IKanbanAssignee[];
     open: boolean;
     toggleAssignee: (userId: number) => void;
     onClose: VoidFunction;
@@ -40,16 +40,11 @@ type Props = {
 
 interface AssigneeItemProps {
     user: IUser;
+    assigned: boolean;
     onClick: (userId: number) => void;
 }
 
-const AssigneeItem: FC<AssigneeItemProps> = ({ user, onClick }) => {
-    // const checked = assignee
-    //     .map((person) => person.name)
-    //     .includes(contact.name);
-
-    const checked = true;
-
+const AssigneeItem: FC<AssigneeItemProps> = ({ user, assigned, onClick }) => {
     if (!user.firstName || !user.lastName) return <></>;
 
     return (
@@ -59,17 +54,19 @@ const AssigneeItem: FC<AssigneeItemProps> = ({ user, onClick }) => {
             secondaryAction={
                 <Button
                     size="small"
-                    color={checked ? "primary" : "inherit"}
+                    color={assigned ? "primary" : "inherit"}
                     startIcon={
                         <Iconify
                             icon={
-                                checked ? "eva:checkmark-fill" : "eva:plus-fill"
+                                assigned
+                                    ? "eva:checkmark-fill"
+                                    : "eva:plus-fill"
                             }
                         />
                     }
                     onClick={() => onClick(user.id)}
                 >
-                    {checked ? "assigned" : "assign"}
+                    {assigned ? "assigned" : "assign"}
                 </Button>
             }
             sx={{ height: ITEM_HEIGHT }}
@@ -94,7 +91,7 @@ const AssigneeItem: FC<AssigneeItemProps> = ({ user, onClick }) => {
 };
 
 export default function KanbanContactsDialog({
-    assignee = [],
+    assignees = [],
     open,
     toggleAssignee,
     onClose,
@@ -159,6 +156,10 @@ export default function KanbanContactsDialog({
                     {users?.map((user, i) => (
                         <AssigneeItem
                             key={i}
+                            assigned={
+                                assignees.findIndex((a) => +a.id === user.id) >
+                                0
+                            }
                             user={user}
                             onClick={toggleAssignee}
                         />

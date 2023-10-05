@@ -191,7 +191,7 @@ export default function KanbanDetails({
                             </Tooltip>
 
                             <KanbanContactsDialog
-                                assignee={task.assignee}
+                                assignees={task.assignee}
                                 open={openContacts}
                                 toggleAssignee={handleToggleAssignee}
                                 onClose={handleCloseContacts}
