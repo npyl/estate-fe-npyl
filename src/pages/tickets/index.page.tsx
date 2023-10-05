@@ -1,7 +1,7 @@
 // next
 import Head from "next/head";
 // @mui
-import { Container, Stack } from "@mui/material";
+import { Container, Grid, Stack } from "@mui/material";
 import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
 // redux
 
@@ -116,44 +116,49 @@ export default function KanbanPage() {
                         type="column"
                     >
                         {(provided) => (
-                            <Stack
-                                {...provided.droppableProps}
-                                ref={provided.innerRef}
-                                spacing={3}
-                                direction="row"
-                                alignItems="flex-start"
-                                sx={{
-                                    height: 1,
-                                    overflowY: "hidden",
-                                    ...hideScrollbarX,
-                                }}
-                            >
-                                {!board?.columnOrder?.length ? (
-                                    <SkeletonKanbanColumn />
-                                ) : (
-                                    board?.columnOrder
-                                        .slice()
-                                        .reverse()
-                                        .map((columnId, index) => {
-                                            // get column for id
-                                            const column = board.columns.find(
-                                                (c) => c.id === columnId
-                                            );
+                            <Stack direction={"row"}>
+                                <Grid
+                                    container
+                                    {...provided.droppableProps}
+                                    ref={provided.innerRef}
+                                    gap={3}
+                                    direction={"row"}
+                                    columns={2}
+                                    alignItems="flex-start"
+                                    sx={{
+                                        height: 1,
+                                        overflowY: "hidden",
+                                        ...hideScrollbarX,
+                                    }}
+                                >
+                                    {!board?.columnOrder?.length ? (
+                                        <SkeletonKanbanColumn />
+                                    ) : (
+                                        board?.columnOrder
+                                            .slice()
+                                            .reverse()
+                                            .map((columnId, index) => {
+                                                // get column for id
+                                                const column =
+                                                    board.columns.find(
+                                                        (c) => c.id === columnId
+                                                    );
 
-                                            return column ? (
-                                                <KanbanColumn
-                                                    index={index}
-                                                    key={columnId}
-                                                    column={column}
-                                                    cards={board.cards}
-                                                />
-                                            ) : (
-                                                <></>
-                                            );
-                                        })
-                                )}
+                                                return column ? (
+                                                    <KanbanColumn
+                                                        index={index}
+                                                        key={columnId}
+                                                        column={column}
+                                                        cards={board.cards}
+                                                    />
+                                                ) : (
+                                                    <></>
+                                                );
+                                            })
+                                    )}
 
-                                {provided.placeholder}
+                                    {provided.placeholder}
+                                </Grid>
                                 <KanbanColumnAdd />
                             </Stack>
                         )}

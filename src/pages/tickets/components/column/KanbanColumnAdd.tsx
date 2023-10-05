@@ -31,7 +31,7 @@ export default function KanbanColumnAdd() {
     };
 
     return (
-        <Paper sx={{ minWidth: 280, width: 280 }}>
+        <Paper sx={{ minWidth: 280, width: 280, maxHeight: 38 }}>
             {open ? (
                 <ClickAwayListener onClickAway={handleCreateColumn}>
                     <TextField
