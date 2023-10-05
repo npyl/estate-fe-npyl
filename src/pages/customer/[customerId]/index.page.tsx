@@ -1,27 +1,26 @@
 import { Box, Grid, Stack, Tab, Tabs } from "@mui/material";
-import { AuthGuard } from "src/components/authentication/auth-guard";
-import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { AuthGuard } from "src/components/authentication/auth-guard";
+import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import {
     useDeleteCustomerMutation,
     useGetCustomerByIdQuery,
 } from "src/services/customers";
 import AddressSection from "./components/AddressSection";
-import InformationSection from "./components/InformationSection";
 import DemandSection from "./components/DemandSection";
+import InformationSection from "./components/InformationSection";
 import MatchingPropertiesSection from "./components/MatchingPropertiesSection";
 import NotesCustomerSection from "./components/NotesSection";
 import OwnedCustomerPropertiesSection from "./components/OwnedPropertiesSection";
 
-import TabPanel from "src/components/Tabs/Tabs";
+import TabPanel from "src/components/Tabs";
 import ViewHeader from "src/pages/components/ViewHeader";
 
-import { deleteTabWithPath } from "src/slices/tabs";
-import { usePublishTab } from "src/components/Tabs/utils";
 import { useTranslation } from "react-i18next";
+import { useTabsContext } from "src/contexts/tabs";
 
 function a11yProps(index: number) {
     return {
@@ -39,24 +38,23 @@ const CustomerView: NextPage = () => {
     const router = useRouter();
     const dispatch = useDispatch();
     const { t } = useTranslation();
-
+    const { removeTab, pushTab } = useTabsContext();
     const { customerId } = router.query;
     const [value, setValue] = useState(0);
 
     const { data } = useGetCustomerByIdQuery(+customerId!);
+    useEffect(() => {
+        if (data && customerId) {
+            pushTab({
+                path: `/customer/${customerId}`,
+                id: customerId as string,
+                label: `Customer ${customerId}`,
+            });
+        }
+    }, [data, customerId]);
 
     const [deleteCustomer, { isSuccess: isDeleteSuccess }] =
         useDeleteCustomerMutation();
-
-    usePublishTab(
-        {
-            title: data?.firstName && data?.lastName ? "" : "Customer",
-            path: `/customer/${customerId}`,
-        },
-        data?.firstName && data?.lastName
-            ? `${data?.firstName} ${data?.lastName}`
-            : `${data?.id}`
-    );
 
     const isSellerOrLessor = data?.seller || data?.lessor;
     const isBuyerOrLeaser = data?.buyer || data?.leaser;
@@ -69,8 +67,8 @@ const CustomerView: NextPage = () => {
 
     if (isDeleteSuccess) {
         router.push("/customer");
-        // delete tab
-        dispatch(deleteTabWithPath(`/customer/${customerId}`));
+
+        removeTab(customerId as string);
     }
 
     const tabsConfig = [

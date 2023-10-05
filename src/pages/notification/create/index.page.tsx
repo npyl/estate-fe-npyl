@@ -7,7 +7,6 @@ import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { useAddNotificationMutation } from "src/services/notification";
 
 import { useTranslation } from "react-i18next";
-import { usePublishTab } from "src/components/Tabs/utils";
 import {
     selectAll,
     selectCustomerEmail,
@@ -25,10 +24,6 @@ import {
 const NotificationCreatePage: NextPage = () => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
-    usePublishTab({
-        title: "Create Notifications",
-        path: "/notification/create",
-    });
 
     const [addNotification] = useAddNotificationMutation();
 

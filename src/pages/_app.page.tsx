@@ -25,6 +25,7 @@ import { createTheme } from "../theme";
 import { createEmotionCache } from "../utils/create-emotion-cache";
 
 import "react-lazy-load-image-component/src/effects/blur.css";
+import { TabsProvider } from "src/contexts/tabs";
 
 type EnhancedAppProps = AppProps & {
     Component: NextPage;
@@ -72,20 +73,22 @@ const App: FC<EnhancedAppProps> = (props) => {
                                         })}
                                     >
                                         <CssBaseline />
-                                        <ToastContainer position="top-center" />
-                                        <AuthConsumer>
-                                            {(auth) =>
-                                                !auth.isInitialized ? (
-                                                    <SplashScreen />
-                                                ) : (
-                                                    getLayout(
-                                                        <Component
-                                                            {...pageProps}
-                                                        />
+                                        <TabsProvider>
+                                            <ToastContainer position="top-center" />
+                                            <AuthConsumer>
+                                                {(auth) =>
+                                                    !auth.isInitialized ? (
+                                                        <SplashScreen />
+                                                    ) : (
+                                                        getLayout(
+                                                            <Component
+                                                                {...pageProps}
+                                                            />
+                                                        )
                                                     )
-                                                )
-                                            }
-                                        </AuthConsumer>
+                                                }
+                                            </AuthConsumer>
+                                        </TabsProvider>
                                     </ThemeProvider>
                                 )}
                             </SettingsConsumer>

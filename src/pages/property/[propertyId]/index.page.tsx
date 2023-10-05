@@ -1,19 +1,17 @@
 import { Box, Tab, Tabs } from "@mui/material";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
     useDeletePropertyMutation,
     useGetPropertyByIdQuery,
 } from "src/services/properties";
 
-import TabPanel from "src/components/Tabs/Tabs";
+import TabPanel from "src/components/Tabs";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import MainContainer from "./MainContainer";
-
-import { deleteTabWithPath } from "src/slices/tabs";
 
 import {
     AddressSection,
@@ -43,7 +41,8 @@ import MatchingCustomersSection from "./sections/MatchingCustomers";
 import PhotosOnly from "./sections/PhotosOnly";
 
 import { useTranslation } from "react-i18next";
-import { usePublishTab } from "src/components/Tabs/utils";
+
+import { useTabsContext } from "src/contexts/tabs";
 
 function a11yProps(index: number) {
     return {
@@ -57,7 +56,7 @@ const SingleProperty: NextPage = () => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
     const [value, setValue] = useState(0);
-
+    const { removeTab, pushTab } = useTabsContext();
     const [deleteProperty, { isSuccess: isDeleteSuccess }] =
         useDeletePropertyMutation();
 
@@ -65,13 +64,15 @@ const SingleProperty: NextPage = () => {
 
     const { data } = useGetPropertyByIdQuery(+propertyId!); // basic details
 
-    usePublishTab(
-        {
-            title: "Property",
-            path: `/property/${propertyId}`,
-        },
-        data?.code || `${data?.id}`
-    );
+    useEffect(() => {
+        if (data && propertyId) {
+            pushTab({
+                path: `/property/${propertyId}`,
+                id: propertyId as string,
+                label: `Property ${propertyId}`,
+            });
+        }
+    }, [data, propertyId]);
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) =>
         setValue(newValue);
@@ -83,8 +84,7 @@ const SingleProperty: NextPage = () => {
     if (isDeleteSuccess) {
         router.push("/");
         // remove tab on succesfull delete
-        isDeleteSuccess &&
-            dispatch(deleteTabWithPath(`/property/${propertyId}`));
+        removeTab(propertyId as string);
     }
 
     if (!data) return null;

@@ -25,12 +25,12 @@ import { useGetPropertyByIdQuery } from "src/services/properties";
 
 import { useDispatch } from "react-redux";
 import { LogoProgressIndicator } from "src/components/LogoProgressIndicator";
-import { usePublishTab } from "src/components/Tabs/utils";
+import { useTabsContext } from "src/contexts/tabs";
 
 const EditPropertyPage: NextPage = () => {
     const dispatch = useDispatch();
     const router = useRouter();
-
+    const { removeTab, pushTab } = useTabsContext();
     const { propertyId } = router.query;
 
     // INFO: lazy is used on * because addImage doesn't cause invalidate (in contradiction to editImage)
@@ -41,17 +41,18 @@ const EditPropertyPage: NextPage = () => {
     const [edit, { isSuccess: isEditSuccess, isLoading: isEditLoading }] =
         useEditPropertyMutation();
 
+    useEffect(() => {
+        if (data && propertyId) {
+            pushTab({
+                path: `/property/edit/${propertyId}`,
+                id: (propertyId + "edit") as string,
+                label: `New property ${propertyId}`,
+            });
+        }
+    }, [data, propertyId]);
     const body = useSelector(selectAll);
     // everythingIsClear; we can now setInitialState
     const [everythingIsClear, setEverythingIsClear] = useState(false);
-
-    usePublishTab(
-        {
-            title: "Create Property",
-            path: `/property/edit/${propertyId}`,
-        },
-        data?.code || `${data?.id}`
-    );
 
     useEffect(() => {
         if (!everythingIsClear) return;

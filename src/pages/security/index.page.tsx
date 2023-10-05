@@ -7,7 +7,7 @@ import {
     initialData,
     useSecurityContext,
 } from "src/contexts/security";
-import TabPanel from "../../components/Tabs/Tabs";
+import TabPanel from "../../components/Tabs";
 import { AuthGuard } from "../../components/authentication/auth-guard";
 import { UserDashboardLayout } from "../../components/dashboard/user-dashboard-layout";
 import PermissionPage from "./components/permission";

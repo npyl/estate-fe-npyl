@@ -3,67 +3,32 @@ import { Button, Divider, IconButton } from "@mui/material";
 import { Stack } from "@mui/system";
 import { useRouter } from "next/router";
 import { Fragment, useMemo } from "react";
-import { useSelector } from "react-redux";
-import {
-    ITabsProps,
-    deleteSectionData,
-    deleteTab,
-    selectTabs,
-} from "src/slices/tabs";
-import { useDispatch } from "src/store";
 import { ScrollBox } from "../ScrollBox";
 
-import { resetState as resetPropertyState } from "src/slices/property";
-import { resetState as resetPropertyFilesState } from "src/slices/property/files";
-import { resetState as resetLabelsState } from "src/slices/labels";
-import { resetState as resetNotesState } from "src/slices/notes";
-import { resetState as resetCustomerState } from "src/slices/customer";
-import { resetState as resetCustomerMiscState } from "src/slices/customer";
+import { useTabsContext } from "src/contexts/tabs";
 
 const Subbar = () => {
-    const dispatch = useDispatch();
     const router = useRouter();
-    const tabs = useSelector(selectTabs);
+    const { appTabs, removeTab } = useTabsContext();
 
     const currentPath = useMemo(() => router.asPath, [router.asPath]);
 
-    const handleSelectTab = (tab: ITabsProps) => {
-        resetPropertyState();
-        resetPropertyFilesState();
-        resetCustomerState();
-        resetCustomerMiscState();
-        resetLabelsState();
-        resetNotesState();
+    // const handleSelectTab = (tab: ITabsProps) => {
+    //     resetPropertyState();
+    //     resetPropertyFilesState();
+    //     resetCustomerState();
+    //     resetCustomerMiscState();
+    //     resetLabelsState();
+    //     resetNotesState();
 
-        router.push(tab.path);
-    };
-
-    const handleDeleteTab = (tabUuid: string, tabIndex: number) => {
-        // Dispatch the delete actions
-        dispatch(deleteTab(tabUuid));
-        dispatch(deleteSectionData(tabUuid));
-
-        // Calculate the new tab to move to
-        let newTab;
-        if (tabs.length > 1) {
-            newTab =
-                tabIndex === tabs.length - 1
-                    ? tabs[tabIndex - 1]
-                    : tabs[tabIndex + 1];
-        } else {
-            // Fallback route if there are no more tabs
-            newTab = { path: "/" };
-        }
-
-        // Redirect to the new tab
-        router.push(newTab.path);
-    };
+    //     router.push(tab.path);
+    // };
 
     return (
         <ScrollBox sx={{ overflowX: "auto" }}>
             <Stack direction={"row"} spacing={1}>
-                {tabs.map((tab, index) => (
-                    <Fragment key={index}>
+                {appTabs.map((tab, index) => (
+                    <Fragment key={tab.id}>
                         <Stack
                             sx={{
                                 bgcolor:
@@ -104,8 +69,7 @@ const Subbar = () => {
                                     overflow: "hidden",
                                 }}
                                 variant="text"
-                                id={tab.title}
-                                onClick={() => handleSelectTab(tab)}
+                                onClick={() => router.push(tab.path)}
                             >
                                 <span
                                     style={{
@@ -115,7 +79,7 @@ const Subbar = () => {
                                         textOverflow: "ellipsis",
                                     }}
                                 >
-                                    {tab.title}
+                                    {tab.label}
                                 </span>
                             </Button>
 
@@ -129,12 +93,12 @@ const Subbar = () => {
                                         background: "transparent",
                                     },
                                 }}
-                                onClick={() => handleDeleteTab(tab.uuid, index)}
+                                onClick={() => removeTab(tab.id)}
                             >
                                 <ClearIcon sx={{ fontSize: 12 }} />
                             </IconButton>
                         </Stack>
-                        {index !== tabs.length - 1 && (
+                        {index !== appTabs.length - 1 && (
                             <Divider orientation="vertical" flexItem />
                         )}
                     </Fragment>

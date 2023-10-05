@@ -1,3 +1,5 @@
+import EditNoteIcon from "@mui/icons-material/EditNote";
+import { Button } from "@mui/material";
 import {
     GridCallbackDetails,
     GridColDef,
@@ -11,12 +13,10 @@ import {
     GridToolbarContainer,
     GridToolbarExport,
 } from "@mui/x-data-grid";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { FC, useMemo, useState } from "react";
-import { StyledDataGrid } from "./styles";
-import { Button } from "@mui/material";
-import EditNoteIcon from "@mui/icons-material/EditNote";
 import { useTranslation } from "react-i18next";
+import { StyledDataGrid } from "./styles";
 
 type GridProps = {
     rows: GridRowsProp;

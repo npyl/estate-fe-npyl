@@ -13,8 +13,8 @@ import { security } from "../services/security";
 import { user } from "../services/user";
 
 import { reducer as customerReducer } from "../slices/customer";
-import { reducer as customerMiscReducer } from "../slices/customer/misc";
 import { reducer as customerFiltersReducer } from "../slices/customer/filters";
+import { reducer as customerMiscReducer } from "../slices/customer/misc";
 import { reducer as filtersReducer } from "../slices/filters";
 import kanbanReducer from "../slices/kanban";
 import { reducer as labelsReducer } from "../slices/labels";
@@ -23,7 +23,6 @@ import { reducer as notificationReducer } from "../slices/notification";
 import { reducer as propertyReducer } from "../slices/property";
 import { reducer as propertyFilesReducer } from "../slices/property/files";
 import { reducer as securityReducer } from "../slices/security";
-import { reducer as tabsReducer } from "../slices/tabs";
 
 export const rootReducer = combineReducers({
     [location.reducerPath]: location.reducer,
@@ -49,7 +48,6 @@ export const rootReducer = combineReducers({
     // general
     notes: notesReducer,
     labelsStore: labelsReducer,
-    tabs: tabsReducer,
     notification: notificationReducer,
     kanban: kanbanReducer,
     securitySlice: securityReducer,
