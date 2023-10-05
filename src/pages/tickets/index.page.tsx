@@ -132,14 +132,23 @@ export default function KanbanPage() {
                                     <SkeletonKanbanColumn />
                                 ) : (
                                     board?.columnOrder.map(
-                                        (columnId, index) => (
-                                            <KanbanColumn
-                                                index={index}
-                                                key={columnId}
-                                                column={board.columns[index]}
-                                                cards={board.cards}
-                                            />
-                                        )
+                                        (columnId, index) => {
+                                            // get column for id
+                                            const column = board.columns.find(
+                                                (c) => c.id === columnId
+                                            );
+
+                                            return column ? (
+                                                <KanbanColumn
+                                                    index={index}
+                                                    key={columnId}
+                                                    column={column}
+                                                    cards={board.cards}
+                                                />
+                                            ) : (
+                                                <></>
+                                            );
+                                        }
                                     )
                                 )}
 
