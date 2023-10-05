@@ -99,12 +99,16 @@ export default function KanbanDetails({
     const handleChangePrioritize = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => setPrioritize((event.target as HTMLInputElement).value);
-    const handleToggleAssignee = (customerId: number) => {};
+    const handleToggleAssignee = (userId: number) => {};
 
     useEffect(() => {
         if (!task.id || !taskName) return;
         editCard({ id: task.id, name: taskName });
     }, [task.id, taskName]);
+    useEffect(() => {
+        if (!task.id || !taskDescription) return;
+        editCard({ id: task.id, description: taskDescription });
+    }, [task.id, taskDescription]);
 
     return (
         <Drawer

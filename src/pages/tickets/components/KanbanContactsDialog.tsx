@@ -23,8 +23,9 @@ import { Scrollbar } from "src/components/scrollbar";
 import Iconify from "../../../components/iconify";
 import SearchNotFound from "../../../components/search-not-found";
 import { useTranslation } from "react-i18next";
-import { useAllCustomersQuery } from "src/services/customers";
 import { ICustomer } from "src/types/customer";
+import { useAllUsersQuery } from "src/services/user";
+import { IUser } from "src/types/user";
 
 // ----------------------------------------------------------------------
 
@@ -33,27 +34,27 @@ const ITEM_HEIGHT = 64;
 type Props = {
     assignee?: IKanbanAssignee[];
     open: boolean;
-    toggleAssignee: (customerId: number) => void;
+    toggleAssignee: (userId: number) => void;
     onClose: VoidFunction;
 };
 
 interface AssigneeItemProps {
-    customer: ICustomer;
-    onClick: (customerId: number) => void;
+    user: IUser;
+    onClick: (userId: number) => void;
 }
 
-const AssigneeItem: FC<AssigneeItemProps> = ({ customer, onClick }) => {
+const AssigneeItem: FC<AssigneeItemProps> = ({ user, onClick }) => {
     // const checked = assignee
     //     .map((person) => person.name)
     //     .includes(contact.name);
 
     const checked = true;
 
-    if (!customer.firstName || !customer.lastName) return <></>;
+    if (!user.firstName || !user.lastName) return <></>;
 
     return (
         <ListItem
-            key={customer.id}
+            key={user.id}
             disableGutters
             secondaryAction={
                 <Button
@@ -66,7 +67,7 @@ const AssigneeItem: FC<AssigneeItemProps> = ({ customer, onClick }) => {
                             }
                         />
                     }
-                    onClick={() => onClick(customer.id)}
+                    onClick={() => onClick(user.id)}
                 >
                     {checked ? "assigned" : "assign"}
                 </Button>
@@ -85,8 +86,8 @@ const AssigneeItem: FC<AssigneeItemProps> = ({ customer, onClick }) => {
                 secondaryTypographyProps={{
                     typography: "caption",
                 }}
-                primary={`${customer.firstName} ${customer.lastName}`}
-                secondary={customer.email}
+                primary={`${user.firstName} ${user.lastName}`}
+                secondary={user.email}
             />
         </ListItem>
     );
@@ -105,7 +106,7 @@ export default function KanbanContactsDialog({
     const handleSearchContacts = (event: React.ChangeEvent<HTMLInputElement>) =>
         setSearchContacts(event.target.value);
 
-    const { data: customers } = useAllCustomersQuery();
+    const { data: users } = useAllUsersQuery();
 
     // const dataFiltered = applyFilter({
     //     inputData: _contacts,
@@ -114,13 +115,13 @@ export default function KanbanContactsDialog({
 
     // const isNotFound = !dataFiltered.length && !!searchContacts;
 
-    if (!customers) return null;
+    if (!users) return null;
 
     return (
         <Dialog fullWidth maxWidth="xs" open={open} onClose={onClose}>
             <DialogTitle sx={{ pb: 0 }}>
                 {t("Customers")}
-                <Typography component="span">{` (${customers.length})`}</Typography>
+                <Typography component="span">{` (${users.length})`}</Typography>
             </DialogTitle>
 
             <Box sx={{ px: 3, py: 2.5 }}>
@@ -155,10 +156,10 @@ export default function KanbanContactsDialog({
                         height: ITEM_HEIGHT * 6,
                     }}
                 >
-                    {customers?.map((customer, i) => (
+                    {users?.map((user, i) => (
                         <AssigneeItem
                             key={i}
-                            customer={customer}
+                            user={user}
                             onClick={toggleAssignee}
                         />
                     ))}
