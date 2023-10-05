@@ -131,8 +131,9 @@ export default function KanbanPage() {
                                 {!board?.columnOrder?.length ? (
                                     <SkeletonKanbanColumn />
                                 ) : (
-                                    board?.columnOrder.map(
-                                        (columnId, index) => {
+                                    board?.columnOrder
+                                        .toReversed()
+                                        .map((columnId, index) => {
                                             // get column for id
                                             const column = board.columns.find(
                                                 (c) => c.id === columnId
@@ -148,8 +149,7 @@ export default function KanbanPage() {
                                             ) : (
                                                 <></>
                                             );
-                                        }
-                                    )
+                                        })
                                 )}
 
                                 {provided.placeholder}
