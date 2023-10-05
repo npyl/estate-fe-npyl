@@ -34,7 +34,7 @@ export type IKanbanCard = {
     completed: boolean;
 };
 export type IKanbanCardPOST = Partial<IKanbanCard> & {
-    columnId: number;
+    columnId?: number;
 };
 
 export type IKanbanColumn = {

@@ -33,7 +33,7 @@ const defaultTask = {
 };
 
 type Props = {
-    onAddTask: (task: Partial<IKanbanCard>) => void;
+    onAddTask: (task: IKanbanCardPOST) => void;
     onCloseAddTask: VoidFunction;
 };
 
@@ -160,6 +160,7 @@ export default function KanbanTaskAdd({ onAddTask, onCloseAddTask }: Props) {
 
                 <KanbanContactsDialog
                     open={openContacts}
+                    toggleAssignee={() => {}}
                     onClose={handleCloseContacts}
                 />
 

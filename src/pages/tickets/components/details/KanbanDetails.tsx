@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 // @mui
 import {
     Avatar,
@@ -27,6 +27,7 @@ import KanbanDetailsCommentInput from "./KanbanDetailsCommentInput";
 import KanbanDetailsCommentList from "./KanbanDetailsCommentList";
 import KanbanDetailsPrioritizes from "./KanbanDetailsPrioritizes";
 import KanbanDetailsToolbar from "./KanbanDetailsToolbar";
+import { useEditCardMutation } from "src/services/tickets";
 
 // ----------------------------------------------------------------------
 
@@ -65,24 +66,30 @@ export default function KanbanDetails({
     const [completed, setCompleted] = useState(task.completed);
     const [taskDescription, setTaskDescription] = useState(task.description);
 
-    const {
-        startDate,
-        endDate,
-        onChangeStartDate,
-        onChangeEndDate,
-        open: openPicker,
-        onOpen: onOpenPicker,
-        onClose: onClosePicker,
-        isSelected: isSelectedValuePicker,
-        isError,
-        shortLabel,
-    } = useDateRangePicker(new Date(task.due[0]), new Date(task.due[1]));
+    // console.log("task.due[0]: ", task.due[0], " task.due[1]: ", task.due[1]);
+
+    // TODO:
+    // const {
+    //     startDate,
+    //     endDate,
+    //     onChangeStartDate,
+    //     onChangeEndDate,
+    //     open: openPicker,
+    //     onOpen: onOpenPicker,
+    //     onClose: onClosePicker,
+    //     isSelected: isSelectedValuePicker,
+    //     isError,
+    //     shortLabel,
+    // } = useDateRangePicker(new Date(task.due[0]), new Date(task.due[1]));
+
+    const [editCard] = useEditCardMutation();
 
     const handleLiked = () => setLiked(!liked);
     const handleCompleted = () => setCompleted(!completed);
+    const handleClickAttach = () => fileInputRef.current?.click();
+
     const handleOpenContacts = () => setOpenContacts(true);
     const handleCloseContacts = () => setOpenContacts(false);
-    const handleClickAttach = () => fileInputRef.current?.click();
 
     const handleChangeTaskName = (event: React.ChangeEvent<HTMLInputElement>) =>
         setTaskName(event.target.value);
@@ -92,6 +99,12 @@ export default function KanbanDetails({
     const handleChangePrioritize = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => setPrioritize((event.target as HTMLInputElement).value);
+    const handleToggleAssignee = (customerId: number) => {};
+
+    useEffect(() => {
+        if (!task.id || !taskName) return;
+        editCard({ id: task.id, name: taskName });
+    }, [task.id, taskName]);
 
     return (
         <Drawer
@@ -176,13 +189,14 @@ export default function KanbanDetails({
                             <KanbanContactsDialog
                                 assignee={task.assignee}
                                 open={openContacts}
+                                toggleAssignee={handleToggleAssignee}
                                 onClose={handleCloseContacts}
                             />
                         </Stack>
                     </Stack>
 
                     {/* Due date */}
-                    <Stack direction="row" alignItems="center">
+                    {/* <Stack direction="row" alignItems="center">
                         <StyledLabel> Due date </StyledLabel>
                         <>
                             {isSelectedValuePicker ? (
@@ -230,7 +244,7 @@ export default function KanbanDetails({
                                 isError={isError}
                             />
                         </>
-                    </Stack>
+                    </Stack> */}
 
                     {/* Prioritize */}
                     <Stack direction="row" alignItems="center">

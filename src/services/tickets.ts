@@ -77,6 +77,14 @@ export const tickets = createApi({
             }),
             invalidatesTags: ["Board"],
         }),
+        editCard: builder.mutation<void, IKanbanCardPOST>({
+            query: (body: IKanbanCardPOST) => ({
+                url: "/card",
+                method: "PUT",
+                body,
+            }),
+            invalidatesTags: ["Board"],
+        }),
         deleteCard: builder.mutation<void, number>({
             query: (cardId: number) => ({
                 url: `/card/${cardId}`,
@@ -99,5 +107,6 @@ export const {
 
     // Cards
     useAddCardMutation,
+    useEditCardMutation,
     useDeleteCardMutation,
 } = tickets;
