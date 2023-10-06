@@ -47,7 +47,16 @@ export default function FilterParentCategory() {
                 multiple
                 value={categories}
                 onChange={handleChange}
-                renderValue={(selected) => selected.join(", ")}
+                renderValue={(selected: string[]) => {
+                    return selected
+                        .map(
+                            (key) =>
+                                categoryEnums?.find((item) => item.key === key)
+                                    ?.value
+                        )
+                        .filter(Boolean)
+                        .join(", ");
+                }}
                 input={<OutlinedInput label={t("Parent Category")} />}
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >

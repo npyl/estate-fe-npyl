@@ -42,7 +42,16 @@ export default function SaleSelect() {
                 labelId="demo-simple-select-label"
                 value={states}
                 onChange={handleChange}
-                renderValue={(selected) => selected.join(", ")}
+                renderValue={(selected: string[]) => {
+                    return selected
+                        .map(
+                            (key) =>
+                                stateEnum.find((item) => item.key === key)
+                                    ?.value
+                        )
+                        .filter(Boolean) // Remove any undefined values
+                        .join(", ");
+                }}
                 input={<OutlinedInput label="Κατάσταση" />}
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
