@@ -1,10 +1,13 @@
-import { useEffect, useRef, useState } from "react";
-import { Stack, Typography } from "@mui/material";
+import { ReactNode, useEffect, useRef, useState } from "react";
+import { Button, Stack, SvgIcon, Typography, styled } from "@mui/material";
 import { StyledButton } from "./style";
 import { DrawShape, ShapeData, StopDraw } from "./types";
 import { drawShape } from "./util";
 import { IMapMarker } from "./Map";
-
+interface SvgIconProps {
+    children: ReactNode;
+    [key: string]: any; // for other props you might want to pass
+}
 interface DrawingComponentProps {
     map: any;
     drawing: boolean;
@@ -35,25 +38,26 @@ export const CustomDrawingComponent = ({
             polygonOptions: {
                 // Customize polygon options
                 fillColor: "cyan",
-                fillOpacity: 0.35,
-                strokeWeight: 2,
+                fillOpacity: 0.15,
+                strokeWeight: 1,
                 clickable: true,
                 editable: true,
                 draggable: true,
                 zIndex: 1,
             },
-            polylineOptions: {
-                strokeColor: "#FF0000",
-                strokeWeight: 2,
+            rectangleOptions: {
+                fillColor: "cyan",
+                fillOpacity: 0.15,
+                strokeWeight: 1,
                 clickable: true,
                 editable: true,
                 draggable: true,
                 zIndex: 1,
             },
             circleOptions: {
-                fillColor: "#FF0000",
-                fillOpacity: 0.35,
-                strokeWeight: 2,
+                fillColor: "cyan",
+                fillOpacity: 0.15,
+                strokeWeight: 1,
                 clickable: true,
                 editable: true,
                 draggable: true,
@@ -159,64 +163,72 @@ export const CustomDrawingComponent = ({
 
         onDraw(null);
     };
+    const StyledButton = styled(Button)({
+        margin: "2px",
+        padding: "3px 4px", // Reduced horizontal padding for a narrower look
+        backgroundColor: "#dcdcdc", // Light gray background
+        "& svg": {
+            width: "24px", // A bit smaller icon size for a narrower button
+            height: "24px",
+        },
+        "&:hover": {
+            backgroundColor: "#c7c7c7", // Slightly darker gray for hover
+        },
+    });
+
+    const SvgIcon = ({ children, ...props }: SvgIconProps) => (
+        <svg width="24" height="24" viewBox="0 0 24 24" {...props}>
+            {children}
+        </svg>
+    );
 
     return drawing ? (
         <Stack
             style={{
+                padding: 3,
                 position: "absolute",
                 left: 10,
+
                 top: "15vh",
+                backgroundColor: "rgba(255, 255, 255, 0.7)", // White background with opacity
+                backdropFilter: "blur(10px)",
+                borderRadius: "5px", // Soften the edges
             }}
         >
             <StyledButton onClick={startDrawing}>
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 256 256"
-                    style={{ width: "100%", height: "1.5rem" }}
-                >
+                <SvgIcon>
                     <path
                         fill="currentColor"
-                        d="M230.64 49.36a32 32 0 0 0-45.26 0a31.9 31.9 0 0 0-5.16 6.76L152 48.42a32 32 0 0 0-54.63-23.06a32.06 32.06 0 0 0-5.76 37.41L57.67 93.32a32.05 32.05 0 0 0-40.31 4.05a32 32 0 0 0 42.89 47.41l70 51.36a32 32 0 1 0 47.57-14.69l27.39-77.59q1.38.12 2.76.12a32 32 0 0 0 22.63-54.62Zm-67.87 126.79a32 32 0 0 0-23 7.08l-70-51.36a32.17 32.17 0 0 0-1.34-26.65l33.95-30.55a32 32 0 0 0 45.47-10.81l28.15 7.7a32 32 0 0 0 14.12 27Z"
+                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a.996.996 0 0 0 0-1.41l-2.34-2.34a.996.996 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
                     />
-                </svg>
+                </SvgIcon>
             </StyledButton>
 
             <StyledButton onClick={startDrawingCircle}>
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    style={{ width: "100%", height: "1.5rem" }}
+                <SvgIcon
+                    sx={{
+                        width: "10px",
+                    }}
                 >
                     <path
                         fill="currentColor"
                         d="M12 22q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22Zm0-2q3.35 0 5.675-2.325T20 12q0-3.35-2.325-5.675T12 4Q8.65 4 6.325 6.325T4 12q0 3.35 2.325 5.675T12 20Zm0-8Z"
                     />
-                </svg>
+                </SvgIcon>
             </StyledButton>
+
             <StyledButton onClick={startDrawingRect}>
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    style={{ width: "100%", height: "1.5rem" }}
-                >
+                <SvgIcon>
                     <path
                         fill="currentColor"
                         d="M2 20V4h20v16H2Zm2-2h16V6H4v12Zm0 0V6v12Z"
                     />
-                </svg>
+                </SvgIcon>
             </StyledButton>
 
             <StyledButton onClick={stopDrawing}>
                 <Typography fontSize={10}>Clear</Typography>
             </StyledButton>
         </Stack>
-    ) : (
-        <></>
-    );
+    ) : null;
 };
