@@ -167,6 +167,7 @@ export const CustomDrawingComponent = ({
         margin: "2px",
         padding: "3px 4px", // Reduced horizontal padding for a narrower look
         backgroundColor: "#dcdcdc", // Light gray background
+        color: "#000",
         "& svg": {
             width: "24px", // A bit smaller icon size for a narrower button
             height: "24px",
@@ -188,7 +189,6 @@ export const CustomDrawingComponent = ({
                 padding: 3,
                 position: "absolute",
                 left: 10,
-
                 top: "15vh",
                 backgroundColor: "rgba(255, 255, 255, 0.7)", // White background with opacity
                 backdropFilter: "blur(10px)",

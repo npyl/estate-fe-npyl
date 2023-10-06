@@ -160,6 +160,7 @@ export const DrawMultiple = ({
         margin: "2px",
         padding: "3px 4px", // Reduced horizontal padding for a narrower look
         backgroundColor: "#dcdcdc", // Light gray background
+        color: "#000",
         "& svg": {
             width: "24px", // A bit smaller icon size for a narrower button
             height: "24px",
