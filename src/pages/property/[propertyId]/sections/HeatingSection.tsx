@@ -145,6 +145,7 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
                     />
                 );
         }
+        return null;
     };
 
     return (

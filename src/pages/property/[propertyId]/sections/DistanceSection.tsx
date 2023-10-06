@@ -161,6 +161,7 @@ const DistanceSection: React.FC<DistanceSectionProps> = (props) => {
                     />
                 );
         }
+        return null;
     };
     return (
         <Grid container spacing={1}>

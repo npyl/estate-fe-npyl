@@ -149,6 +149,7 @@ const SuitableFor: React.FC<SuitableForProps> = (props) => {
                     />
                 );
         }
+        return null;
     };
 
     return (

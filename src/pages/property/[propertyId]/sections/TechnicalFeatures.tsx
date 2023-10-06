@@ -326,6 +326,7 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                     />
                 );
         }
+        return null;
     };
     return (
         <Grid container spacing={1}>

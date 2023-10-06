@@ -194,6 +194,7 @@ const ConstructionSection: React.FC<ConstructionSectionProps> = ({ data }) => {
                     />
                 );
         }
+        return null;
     };
     return (
         <Grid container spacing={1}>
