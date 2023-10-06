@@ -422,6 +422,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     />
                 );
         }
+        return null;
     };
 
     return (

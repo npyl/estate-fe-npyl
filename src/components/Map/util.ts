@@ -12,14 +12,14 @@ const drawCircle = (
         clickable: true,
         editable: !!onDrag,
         draggable: !!onDrag,
-        strokeColor: "#FF0000", // Line color
-        strokeOpacity: 0.8, // Line opacity
-        strokeWeight: 2, // Line thickness
-        fillColor: "#FF0000", // Fill color
-        fillOpacity: 0.35, // Fill opacity
         map: map, // Map where to draw the circle
         center: { lat, lng }, // Center of the circle
         radius: radius, // Radius (in meters)
+        fillColor: "cyan",
+        fillOpacity: 0.15,
+        strokeWeight: 1,
+
+        zIndex: 1,
     });
     const initialCircle = _.cloneDeep(circle);
 
@@ -51,12 +51,12 @@ const drawRectangle = (
         editable: !!onDrag,
         draggable: !!onDrag,
         bounds: rectangleBounds,
-        strokeColor: "#FF0000",
-        strokeOpacity: 0.8,
-        strokeWeight: 2,
-        fillColor: "#FF0000",
-        fillOpacity: 0.35,
         map: map,
+        fillColor: "cyan",
+        fillOpacity: 0.15,
+        strokeWeight: 1,
+
+        zIndex: 1,
     });
     const initialRectangle = _.cloneDeep(rectangle);
 
@@ -77,12 +77,12 @@ const drawPolygon = (
         clickable: true,
         editable: !!onDrag,
         draggable: !!onDrag,
-        fillColor: "cyan",
-        fillOpacity: 0.35,
-        strokeWeight: 2,
-        zIndex: 1,
         paths: paths,
         map: map,
+        fillColor: "cyan",
+        fillOpacity: 0.15,
+        strokeWeight: 1,
+        zIndex: 1,
     });
     const initialPolygon = _.cloneDeep(polygon);
 

@@ -31,7 +31,6 @@ interface ILocationSectionProps extends ILocationPOST {
     setLatitude: ActionCreatorWithPayload<any, string>;
     setLongitude: ActionCreatorWithPayload<any, string>;
 }
-
 const LocationSection = (props: ILocationSectionProps) => {
     const {
         street,

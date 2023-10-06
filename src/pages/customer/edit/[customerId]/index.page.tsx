@@ -13,7 +13,6 @@ import { selectAll, setInitialState } from "src/slices/customer";
 import { setInitialState as setInitialNotesState } from "src/slices/notes";
 import { useDispatch } from "src/store";
 import Form from "./components/Form";
-
 import { useRouter } from "next/router";
 import { useTabsContext } from "src/contexts/tabs";
 import { resetState as resetCustomerState } from "src/slices/customer";

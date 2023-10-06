@@ -19,6 +19,7 @@ export interface IMapCoordinates {
 export interface IMapMarker extends IMapCoordinates {
     address: string;
     main: boolean;
+    id?: number; // Add this line if you have an 'id' for each marker.
 }
 
 export interface IMapAddress {
@@ -31,6 +32,7 @@ interface IMapProps {
     onReady?: (m: google.maps.Map) => void;
     hideMainMarker?: boolean;
     onClick?: (lat: number, lng: number, address: IMapAddress) => void;
+    onMarkerClick?: (marker: IMapMarker) => void;
     onDragEnd?: (
         marker: IMapMarker,
         newLat: number,
@@ -66,6 +68,7 @@ export const useLoadApi = () => {
 const Map = ({
     onReady,
     onClick,
+    onMarkerClick,
     onDragEnd,
     onDraw,
     onDrag,
@@ -193,9 +196,14 @@ const Map = ({
     //
     // 	Markers
     //
-    const handleMarkerClick = (id: any, lat: any, lng: any, address: any) => {
-        mapRef?.panTo({ lat, lng });
+    const handleMarkerClick = (marker: IMapMarker) => {
+        setTimeout(() => {
+            mapRef?.panTo({ lat: marker.lat, lng: marker.lng });
+        }, 500);
+
+        if (onMarkerClick) onMarkerClick(marker); // <-- Directly use onMarkerClick
     };
+
     const handleMarkerMouseOver = (marker: any) => {
         setActiveMarker(marker);
     };
@@ -277,11 +285,13 @@ const Map = ({
                         animation={
                             !main && activeMarker === ind
                                 ? google.maps.Animation.BOUNCE
-                                : undefined
+                                : undefined // Set to null when not active
                         }
-                        onClick={() =>
-                            handleMarkerClick(ind, lat, lng, address)
-                        }
+                        onClick={() => {
+                            handleMarkerClick(marker);
+                            // Start the bounce animation, then stop after 2 seconds
+                            setActiveMarker(ind);
+                        }}
                         draggable={main}
                         onDragEnd={(e: google.maps.MapMouseEvent) =>
                             onMarkerDragEnd(e.latLng, ind, markers)

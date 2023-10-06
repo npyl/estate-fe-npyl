@@ -24,7 +24,8 @@ export interface IPropertyResultResponse {
     images: string[]; // urls only
     labels: ILabel[];
     location: ILocationPOST;
-
+    // lat: number;
+    // lng: number;
     createdAt: string;
     updatedAt: string;
 }

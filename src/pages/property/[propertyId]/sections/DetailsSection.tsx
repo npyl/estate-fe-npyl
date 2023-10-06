@@ -286,6 +286,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                     />
                 );
         }
+        return null;
     };
 
     return (

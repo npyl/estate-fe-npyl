@@ -38,6 +38,14 @@ export default function FilterCategory() {
         LAND: propertyEnums?.landCategory ?? [],
         OTHER: propertyEnums?.otherCategory ?? [],
     };
+    const getSubCategoryValue = (key: string) => {
+        for (let parentCategory of parentCategories) {
+            const found = subCategoriesMap[parentCategory].find(
+                (item) => item.key === key
+            );
+            if (found) return found.value;
+        }
+    };
 
     const handleChange = (event: SelectChangeEvent<typeof subCategories>) => {
         const {
@@ -58,7 +66,12 @@ export default function FilterCategory() {
                 multiple
                 value={subCategories}
                 onChange={handleChange}
-                renderValue={(selected) => selected.join(", ")}
+                renderValue={(selected: string[]) => {
+                    return selected
+                        .map(getSubCategoryValue)
+                        .filter(Boolean) // Remove any undefined values
+                        .join(", ");
+                }}
                 input={<OutlinedInput label={t("Category")} />}
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >

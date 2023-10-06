@@ -1,6 +1,10 @@
 import { Button, Box, Grid, Paper, Stack, Typography } from "@mui/material";
-import { useState, useMemo } from "react";
-import Map from "src/components/Map/Map";
+import { useState, useMemo, useEffect } from "react";
+import Map, {
+    IMapAddress,
+    IMapCoordinates,
+    IMapMarker,
+} from "src/components/Map/Map";
 import { BookingItem } from "./BookingItem";
 import { IPropertyResultResponse } from "src/types/properties";
 import { useRouter } from "next/router";
@@ -9,6 +13,7 @@ import ICarouselImage from "src/components/carousel/types";
 import CarouselSimple from "src/components/CarouselSimple";
 import FlipIcon from "@mui/icons-material/Flip";
 import { DrawShape, StopDraw } from "src/components/Map/types";
+import { dispatch } from "src/store";
 
 interface Props {
     data: IPropertyResultResponse[];
@@ -18,13 +23,25 @@ const MapView = ({ data }: Props) => {
     const [properties, setProperties] = useState(data);
     const [activeMarker, setActiveMarker] = useState(null);
     const [orientation, setOrientation] = useState(false); // true -> vertical, false -> horizontal)
+    const [selectedMarker, setSelectedMarker] = useState<IMapMarker | null>(
+        null
+    );
 
     const locations = useMemo(() => {
         return properties.map((property) => property.location);
     }, [properties]);
 
+    const [lat, setLat] = useState<number | null>(null); // you can set an initial value if you have one
+    const [lng, setLng] = useState<number | null>(null);
+    const [markers, setMarkers] = useState<IMapMarker[]>([]);
     const toggleOrientation = () => setOrientation(!orientation);
 
+    const [mainMarker, setMainMarker] = useState<IMapMarker>({
+        lat: lat ? lat : 37.98381,
+        lng: lng ? lng : 23.727539,
+        address: "",
+        main: true,
+    });
     const isPointInsideShape = (
         lat: number,
         lng: number,
@@ -71,16 +88,48 @@ const MapView = ({ data }: Props) => {
                 : data
         );
     };
+    const updateMainMarkerCoordinates = (lat: number, lng: number) => {
+        let newMarker = mainMarker;
+        newMarker.lat = lat;
+        newMarker.lng = lng;
+        setMainMarker(newMarker);
+    };
+    const nullCoord = -1;
+    const [onDragEndCoord, setOnDragEndCoord] = useState<IMapCoordinates>({
+        lat: nullCoord,
+        lng: nullCoord,
+    });
+    const handleSearchSelect = (
+        address: IMapAddress,
+        lat: number,
+        lng: number
+    ) => {
+        if (!lat || !lng) return;
+
+        setOnDragEndCoord({ lat, lng });
+        updateMainMarkerCoordinates(lat, lng);
+    };
 
     return (
         <>
             <Box display={"flex"}>
                 <Box height={`calc(100vh - 266px)`} width={"50%"}>
                     <Map
+                        hideMainMarker
+                        search
+                        mainMarker={mainMarker}
                         activeMarker={activeMarker}
                         setActiveMarker={setActiveMarker}
+                        onMarkerClick={(marker) => {
+                            setSelectedMarker(marker);
+                            console.log(
+                                "Selected Marker set in MapView:",
+                                marker
+                            );
+                        }}
                         data={locations}
                         onDraw={handleDraw}
+                        onSearchSelect={handleSearchSelect}
                     />
                 </Box>
 
@@ -114,6 +163,7 @@ const MapView = ({ data }: Props) => {
                                     <HorizontalCard
                                         activeMarker={activeMarker || -1}
                                         item={item}
+                                        selectedMarker={selectedMarker} // add this line
                                     />
                                 ) : (
                                     <BookingItem
@@ -134,9 +184,14 @@ export default MapView;
 type BookingItemProps = {
     item: IPropertyResultResponse;
     activeMarker?: number;
+    selectedMarker: IMapMarker | null; // add this line
 };
 
-export function HorizontalCard({ item, activeMarker }: BookingItemProps) {
+export function HorizontalCard({
+    item,
+    activeMarker,
+    selectedMarker,
+}: BookingItemProps) {
     const {
         plotArea,
         parentCategory,
@@ -152,7 +207,17 @@ export function HorizontalCard({ item, activeMarker }: BookingItemProps) {
     const pricePerSqm = price / area;
 
     const router = useRouter();
+    const isActive =
+        item.location.lat === selectedMarker?.lat &&
+        item.location.lng === selectedMarker?.lng;
 
+    console.log("IsActive for Item:", item.id, isActive);
+    useEffect(() => {
+        console.log(
+            "Selected Marker changed in HorizontalCard:",
+            selectedMarker
+        );
+    }, [selectedMarker]);
     const _carouselImages: ICarouselImage[] = useMemo(() => {
         return images && images.length > 0
             ? images.map((image, index) => ({
@@ -173,11 +238,10 @@ export function HorizontalCard({ item, activeMarker }: BookingItemProps) {
                 mx: 1.5,
                 border: 0,
                 borderRadius: 1,
-                boxShadow:
-                    item.id === activeMarker
-                        ? `rgba(0, 0, 0, 0.65) 0px 5px 15px`
-                        : `rgba(0, 0, 0, 0.25) 0px 5px 15px`,
-
+                boxShadow: isActive
+                    ? `rgba(0, 0, 0, 0.65) 0px 5px 15px`
+                    : `rgba(0, 0, 0, 0.25) 0px 5px 15px`,
+                fontWeight: isActive ? "bold" : "normal",
                 "&:hover": {
                     cursor: "pointer",
                     boxShadow: `rgba(0, 0, 0, 0.65) 0px 5px 15px`,
@@ -204,12 +268,18 @@ export function HorizontalCard({ item, activeMarker }: BookingItemProps) {
                     alignItems={"center"}
                     spacing={1}
                 >
-                    <Typography variant="h5" width={"100%"}>
+                    <Typography
+                        variant="h5"
+                        width={"100%"}
+                        style={{
+                            fontWeight:
+                                item.id === activeMarker ? "bold" : "normal",
+                        }}
+                    >
                         {parentCategory.value}
                     </Typography>
-
                     <Stack direction={"row"} spacing={1}>
-                        <Typography variant="body1">{area}sqm</Typography>
+                        <Typography variant="body1">{area}m&sup2;</Typography>
                     </Stack>
                 </Stack>
 
@@ -259,7 +329,7 @@ export function HorizontalCard({ item, activeMarker }: BookingItemProps) {
                         <Stack direction={"row"} spacing={1}>
                             <Typography variant="body1">Οικόπεδο: </Typography>
                             <Typography variant="body1">
-                                {plotArea} sqm
+                                {plotArea} m&sup2;
                             </Typography>
                         </Stack>
                     )}
@@ -271,7 +341,7 @@ export function HorizontalCard({ item, activeMarker }: BookingItemProps) {
                         {Number.isInteger(pricePerSqm)
                             ? pricePerSqm
                             : pricePerSqm.toFixed(1)}
-                        €/sqm
+                        €/m&sup2;
                     </Typography>
                 </Stack>
             </Grid>
