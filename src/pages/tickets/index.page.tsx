@@ -1,8 +1,6 @@
-// next
-import Head from "next/head";
 // @mui
 import { Stack } from "@mui/material";
-import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
+import { DropResult } from "react-beautiful-dnd";
 // redux
 
 // utils
@@ -12,19 +10,25 @@ import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 // sections
 import { KanbanColumn, KanbanColumnAdd } from "./components";
 
-import { useGetBoardQuery } from "src/services/tickets";
+import { useGetBoardQuery, useMoveCardMutation } from "src/services/tickets";
 import { SkeletonKanbanColumn } from "src/components/skeleton";
 import { useMemo } from "react";
 import { TwoDimentionsDnd } from "src/components/TwoDimentionsDnd";
+import { DroppableTypeTask } from "./components/column/KanbanColumn";
 
 KanbanPage.getLayout = (page: React.ReactElement) => (
     <DashboardLayout>{page}</DashboardLayout>
 );
 
 // ----------------------------------------------------------------------
+// Λεξιλόγιο που χρησιμοποιείται (Αντιστοιχίες)
+// task = card
+// section = IKanbanColumn = item
+// ----------------------------------------------------------------------
 
 export default function KanbanPage() {
     const { data: board } = useGetBoardQuery();
+    const [moveCard] = useMoveCardMutation();
 
     const items = useMemo(
         () =>
@@ -49,8 +53,28 @@ export default function KanbanPage() {
         [board?.columnOrder, board?.columns]
     );
 
-    const handleDragEnd = (results: DropResult) => {
-        console.log("results: ", results);
+    const handleDragEnd = ({
+        source,
+        destination,
+        type,
+        draggableId,
+    }: DropResult) => {
+        console.log(
+            "source: ",
+            source,
+            " destination: ",
+            destination,
+            " draggableId: ",
+            draggableId,
+            " type: ",
+            type
+        );
+
+        if (type === DroppableTypeTask) {
+            // const sourceCardId = ;
+            // const destinationColumnId = drag;
+            // moveCard({ cardId: sourceCardId, columnId: destinationColumnId })
+        }
     };
 
     return (

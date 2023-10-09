@@ -25,7 +25,7 @@ type Props = {
     index: number;
 };
 
-const DroppableTypeTask = "TASK";
+export const DroppableTypeTask = "TASK";
 
 export default function KanbanColumn({ column, cards, index }: Props) {
     // Columns
@@ -54,7 +54,10 @@ export default function KanbanColumn({ column, cards, index }: Props) {
     if (!column) return null;
 
     return (
-        <Droppable droppableId={column.id.toString()} type={DroppableTypeTask}>
+        <Droppable
+            droppableId={`section-${column.id}`}
+            type={DroppableTypeTask}
+        >
             {(provided) => (
                 <Paper
                     {...provided.droppableProps}
@@ -82,28 +85,11 @@ export default function KanbanColumn({ column, cards, index }: Props) {
                                 const card = cards.find((c) => c.id === cardId);
 
                                 return card ? (
-                                    <Draggable
-                                        draggableId={column.id.toString()}
+                                    <KanbanTaskCard
                                         index={index}
-                                        key={index}
-                                    >
-                                        {(provided) => (
-                                            <div
-                                                ref={provided.innerRef}
-                                                {...provided.dragHandleProps}
-                                                {...provided.draggableProps}
-                                            >
-                                                <KanbanTaskCard
-                                                    key={cardId}
-                                                    index={index}
-                                                    onDeleteTask={
-                                                        handleDeleteTask
-                                                    }
-                                                    card={card}
-                                                />
-                                            </div>
-                                        )}
-                                    </Draggable>
+                                        onDeleteTask={handleDeleteTask}
+                                        card={card}
+                                    />
                                 ) : (
                                     <></>
                                 );

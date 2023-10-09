@@ -9,6 +9,10 @@ interface EditColumnProps {
     id: number;
     name: string;
 }
+interface MoveCardProps {
+    cardId: number;
+    columnId: number;
+}
 
 export const tickets = createApi({
     reducerPath: "tickets",
@@ -85,6 +89,13 @@ export const tickets = createApi({
             }),
             invalidatesTags: ["Board"],
         }),
+        moveCard: builder.mutation<void, MoveCardProps>({
+            query: ({ cardId, columnId }: MoveCardProps) => ({
+                url: `/card/${cardId}/move/${columnId}`,
+                method: "POST",
+            }),
+            invalidatesTags: ["Board"],
+        }),
         deleteCard: builder.mutation<void, number>({
             query: (cardId: number) => ({
                 url: `/card/${cardId}`,
@@ -108,5 +119,6 @@ export const {
     // Cards
     useAddCardMutation,
     useEditCardMutation,
+    useMoveCardMutation,
     useDeleteCardMutation,
 } = tickets;
