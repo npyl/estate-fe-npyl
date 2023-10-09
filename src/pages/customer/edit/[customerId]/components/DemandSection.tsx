@@ -47,9 +47,9 @@ const DemandSection: FC = () => {
     const handleDeleteTab = (i: number, event: React.MouseEvent) => {
         if (i === 0 && demands.length === 1) return;
 
+        setIndex(i - 1);
         dispatch(removeDemands(i)); // remove demand at index
         dispatch(deletePropertyCode(i));
-        setIndex(i - 1);
     };
     useEffect(() => {
         // NOTE: when a customer is first created, its demands array is empty; create one
