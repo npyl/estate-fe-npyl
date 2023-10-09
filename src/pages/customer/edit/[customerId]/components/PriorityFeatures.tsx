@@ -26,13 +26,7 @@ const PriorityFeatures = ({ index, parentCategory }: PriorityFeaturesProps) => {
     };
 
     return (
-        <Paper
-            elevation={10}
-            sx={{
-                overflow: "auto",
-                padding: 0.5,
-            }}
-        >
+        <>
             <Box
                 sx={{
                     px: 3,
@@ -76,7 +70,7 @@ const PriorityFeatures = ({ index, parentCategory }: PriorityFeaturesProps) => {
                     )}
                 </Grid>
             </Grid>
-        </Paper>
+        </>
     );
 };
 export default PriorityFeatures;
