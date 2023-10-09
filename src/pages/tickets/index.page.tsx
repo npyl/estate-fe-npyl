@@ -26,6 +26,17 @@ KanbanPage.getLayout = (page: React.ReactElement) => (
 // section = IKanbanColumn = item
 // ----------------------------------------------------------------------
 
+const cardId = (str?: string) => {
+    if (!str) return null;
+    const match = str.match(/task-(\d+)/);
+    return match ? parseInt(match[1], 10) : null;
+};
+const columnId = (str?: string) => {
+    if (!str) return null;
+    const match = str.match(/section-(\d+)/);
+    return match ? parseInt(match[1], 10) : null;
+};
+
 export default function KanbanPage() {
     const { data: board } = useGetBoardQuery();
     const [moveCard] = useMoveCardMutation();
@@ -71,9 +82,12 @@ export default function KanbanPage() {
         );
 
         if (type === DroppableTypeTask) {
-            // const sourceCardId = ;
-            // const destinationColumnId = drag;
-            // moveCard({ cardId: sourceCardId, columnId: destinationColumnId })
+            const sourceCardId = cardId(draggableId);
+            const destinationColumnId = columnId(destination?.droppableId);
+
+            if (!sourceCardId || !destinationColumnId) return;
+
+            moveCard({ cardId: sourceCardId, columnId: destinationColumnId });
         }
     };
 
