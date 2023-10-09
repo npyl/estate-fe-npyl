@@ -52,10 +52,12 @@ export default function KanbanPage() {
         [board?.columnOrder, board?.columns]
     );
 
-    const handleDragEnd = () => {};
+    const handleDragEnd = (results: DropResult) => {
+        console.log("results: ", results);
+    };
 
     return (
-        <Stack direction={"row"} mt={3} flex={1}>
+        <Stack direction={"row"} mt={3} flex={1} gap={3}>
             <TwoDimentionsDnd
                 items={items || []}
                 columns={4}

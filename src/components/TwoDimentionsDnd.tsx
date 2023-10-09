@@ -1,11 +1,16 @@
 import { Stack } from "@mui/material";
 import { FC, useMemo } from "react";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import {
+    DragDropContext,
+    Draggable,
+    DropResult,
+    Droppable,
+} from "react-beautiful-dnd";
 
 interface TwoDimentionsDndProps {
     items: any[];
     columns: number;
-    onDragEnd: () => void;
+    onDragEnd: (results: DropResult) => void;
 }
 
 const chunks = (arr: any[], size: number) =>
@@ -24,24 +29,25 @@ export const TwoDimentionsDnd: FC<TwoDimentionsDndProps> = ({
 
     return (
         <DragDropContext onDragEnd={onDragEnd}>
-            <Stack direction={"row"} gap={3} mr={-20}>
+            <Stack direction={"column"} gap={3}>
                 {rows.map((row, i) => (
                     <Droppable
                         droppableId={`row-${i}`}
                         type={DroppableTypeItem}
                         key={i}
+                        direction="horizontal"
                     >
                         {(provided) => (
                             <div
                                 {...provided.droppableProps}
                                 ref={provided.innerRef}
                             >
-                                <Stack direction={"column"} gap={3}>
+                                <Stack direction={"row"} gap={3}>
                                     {row.map((item, j) => (
                                         <Draggable
-                                            draggableId={`row-${i}-column-${j}`}
+                                            draggableId={`r${i}-c${j}`}
                                             key={j}
-                                            index={j} // ?
+                                            index={(i + 1) * (j + 1)} // ?
                                         >
                                             {(provided) => (
                                                 <div
