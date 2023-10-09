@@ -63,7 +63,7 @@ export const NeighbourSelect = (props: NeighbourSelectProps) => {
                         value={option.areaID.toString()}
                     >
                         <Checkbox
-                            checked={option.areaID.toString() === municipCode}
+                            checked={option.areaID.toString() === neighbourCode}
                         />
                         {option.nameGR}
                     </MenuItem>
