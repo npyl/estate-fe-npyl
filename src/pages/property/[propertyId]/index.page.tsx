@@ -2,7 +2,6 @@ import { Box, Tab, Tabs } from "@mui/material";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import {
     useDeletePropertyMutation,
     useGetPropertyByIdQuery,
@@ -53,16 +52,17 @@ function a11yProps(index: number) {
 
 const SingleProperty: NextPage = () => {
     const router = useRouter();
-    const dispatch = useDispatch();
     const { t } = useTranslation();
-    const [value, setValue] = useState(0);
     const { removeTab, pushTab } = useTabsContext();
+
     const [deleteProperty, { isSuccess: isDeleteSuccess }] =
         useDeletePropertyMutation();
 
     const { propertyId } = router.query;
 
     const { data } = useGetPropertyByIdQuery(+propertyId!); // basic details
+
+    const [value, setValue] = useState(0);
 
     useEffect(() => {
         if (data && propertyId) {
