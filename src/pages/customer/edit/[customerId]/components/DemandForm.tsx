@@ -110,10 +110,6 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
         minPrice,
         maxPrice,
         timeFrame,
-        // Location
-        cities,
-        complexes,
-        regions,
     } = useMemo(
         () => ({
             minBedrooms: extractOrDefault("minBedrooms", 0),
@@ -135,9 +131,6 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
             minPrice: extractOrDefault("minPrice", 0),
             maxPrice: extractOrDefault("maxPrice", 0),
             timeFrame: extractOrDefault("timeframe", []),
-            cities: extractOrDefault("cities", []),
-            complexes: extractOrDefault("complexes", []),
-            regions: extractOrDefault("regions", []),
         }),
         [demandFilters]
     );
@@ -784,10 +777,6 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                     </Typography>
                     <AreaOfPreference
                         index={index}
-                        // getters
-                        cities={cities}
-                        regions={regions}
-                        complexes={complexes}
                         // setters
                         setCities={setDemandCities}
                         setComplexes={setDemandComplexes}
@@ -798,7 +787,7 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
 
             {parentCategories &&
                 parentCategories.length > 0 &&
-                parentCategories.map((e, featuresIndex) => (
+                (parentCategories as string[]).map((e, featuresIndex) => (
                     <>
                         <PriorityFeatures
                             key={`${featuresIndex}_1`}

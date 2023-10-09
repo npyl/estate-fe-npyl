@@ -17,14 +17,17 @@ import {
     useGetClosestQuery,
     useLazyGetHierarchyByAreaIdQuery,
 } from "src/services/location";
-import { selectShapes, setShapes, addShape } from "src/slices/customer";
+import {
+    selectShapes,
+    setShapes,
+    addShape,
+    selectDemandRegions,
+    selectDemandCities,
+    selectDemandComplexes,
+} from "src/slices/customer";
 
 interface ILocationSectionProps {
     index: number;
-    // redux getters
-    cities: string[];
-    complexes: string[];
-    regions: string[];
     // redux setters
     setCities: ActionCreatorWithPayload<any, string>;
     setComplexes: ActionCreatorWithPayload<any, string>;
@@ -46,14 +49,15 @@ const nullCoord = -1;
 
 export const AreaOfPreference: FC<ILocationSectionProps> = ({
     index,
-    cities,
-    complexes,
-    regions,
     setCities,
     setComplexes,
     setRegions,
 }) => {
     const dispatch = useDispatch();
+
+    const regions = useSelector(selectDemandRegions);
+    const cities = useSelector(selectDemandCities);
+    const complexes = useSelector(selectDemandComplexes);
 
     const allShapes = useSelector(selectShapes); // all demands' shapes
     const shapes = useMemo(
@@ -232,9 +236,18 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
         [index]
     );
 
-    const regionCode = useMemo(() => regions.at(index), [regions, index]);
-    const cityCode = useMemo(() => cities.at(index), [cities, index]);
-    const complexCode = useMemo(() => complexes.at(index), [complexes, index]);
+    const regionCode = useMemo(
+        () => regions?.at(index)?.at(0) || "",
+        [regions, index]
+    );
+    const cityCode = useMemo(
+        () => cities?.at(index)?.at(0) || "",
+        [cities, index]
+    );
+    const complexCode = useMemo(
+        () => complexes?.at(index)?.at(0) || "",
+        [complexes, index]
+    );
 
     console.log("r: ", regionCode, " c: ", cityCode, " co: ", complexCode);
 
