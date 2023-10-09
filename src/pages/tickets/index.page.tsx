@@ -12,9 +12,9 @@ import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 // sections
 import { KanbanColumn, KanbanColumnAdd } from "./components";
 
-import { useGetBoardQuery, useCreateBoardMutation } from "src/services/tickets";
+import { useGetBoardQuery } from "src/services/tickets";
 import { SkeletonKanbanColumn } from "src/components/skeleton";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { TwoDimentionsDnd } from "src/components/TwoDimentionsDnd";
 
 KanbanPage.getLayout = (page: React.ReactElement) => (
@@ -24,9 +24,6 @@ KanbanPage.getLayout = (page: React.ReactElement) => (
 // ----------------------------------------------------------------------
 
 export default function KanbanPage() {
-    const [createBoard, { isSuccess: isBoardCreated }] =
-        useCreateBoardMutation();
-
     const { data: board } = useGetBoardQuery();
 
     const items = useMemo(
@@ -58,11 +55,16 @@ export default function KanbanPage() {
 
     return (
         <Stack direction={"row"} mt={3} flex={1} gap={3}>
-            <TwoDimentionsDnd
-                items={items || []}
-                columns={4}
-                onDragEnd={handleDragEnd}
-            />
+            {items ? (
+                <TwoDimentionsDnd
+                    items={items || []}
+                    columns={3}
+                    onDragEnd={handleDragEnd}
+                />
+            ) : (
+                <SkeletonKanbanColumn />
+            )}
+
             <KanbanColumnAdd />
         </Stack>
     );

@@ -25,6 +25,8 @@ type Props = {
     index: number;
 };
 
+const DroppableTypeTask = "TASK";
+
 export default function KanbanColumn({ column, cards, index }: Props) {
     // Columns
     const [editColumn] = useEditColumnMutation();
@@ -52,10 +54,10 @@ export default function KanbanColumn({ column, cards, index }: Props) {
     if (!column) return null;
 
     return (
-        <Draggable draggableId={column.id.toString()} index={index}>
+        <Droppable droppableId={column.id.toString()} type={DroppableTypeTask}>
             {(provided) => (
                 <Paper
-                    {...provided.draggableProps}
+                    {...provided.droppableProps}
                     ref={provided.innerRef}
                     variant="outlined"
                     sx={{
@@ -68,44 +70,45 @@ export default function KanbanColumn({ column, cards, index }: Props) {
                                 : "background.default",
                     }}
                 >
-                    <Stack spacing={3} {...provided.dragHandleProps}>
+                    <Stack spacing={3}>
                         <KanbanColumnToolBar
                             columnName={column.name}
                             onDelete={handleDeleteColumn}
                             onUpdate={handleUpdateColumn}
                         />
 
-                        <Droppable
-                            droppableId={column.id.toString()}
-                            type="task"
-                        >
-                            {(provided) => (
-                                <Stack
-                                    ref={provided.innerRef}
-                                    {...provided.droppableProps}
-                                    spacing={2}
-                                    sx={{ width: 280 }}
-                                >
-                                    {column.cardOrder.map((cardId, index) => {
-                                        const card = cards.find(
-                                            (c) => c.id === cardId
-                                        );
+                        <Stack spacing={2} sx={{ width: 280 }}>
+                            {column.cardOrder.map((cardId, index) => {
+                                const card = cards.find((c) => c.id === cardId);
 
-                                        return card ? (
-                                            <KanbanTaskCard
-                                                key={cardId}
-                                                index={index}
-                                                onDeleteTask={handleDeleteTask}
-                                                card={card}
-                                            />
-                                        ) : (
-                                            <></>
-                                        );
-                                    })}
-                                    {provided.placeholder}
-                                </Stack>
-                            )}
-                        </Droppable>
+                                return card ? (
+                                    <Draggable
+                                        draggableId={column.id.toString()}
+                                        index={index}
+                                        key={index}
+                                    >
+                                        {(provided) => (
+                                            <div
+                                                ref={provided.innerRef}
+                                                {...provided.dragHandleProps}
+                                                {...provided.draggableProps}
+                                            >
+                                                <KanbanTaskCard
+                                                    key={cardId}
+                                                    index={index}
+                                                    onDeleteTask={
+                                                        handleDeleteTask
+                                                    }
+                                                    card={card}
+                                                />
+                                            </div>
+                                        )}
+                                    </Draggable>
+                                ) : (
+                                    <></>
+                                );
+                            })}
+                        </Stack>
 
                         <Stack spacing={2} sx={{ pb: 3 }}>
                             {openAddTask && (
@@ -131,6 +134,6 @@ export default function KanbanColumn({ column, cards, index }: Props) {
                     </Stack>
                 </Paper>
             )}
-        </Draggable>
+        </Droppable>
     );
 }
