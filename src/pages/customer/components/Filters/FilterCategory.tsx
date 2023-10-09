@@ -61,7 +61,22 @@ export default function FilterCategory() {
                 multiple
                 value={subCategories}
                 onChange={handleChange}
-                renderValue={(selected) => selected.join(", ")}
+                renderValue={(selected: string[]) => {
+                    return selected
+                        .map((key) => {
+                            for (const parentCategory of parentCategories) {
+                                const found = subCategoriesMap[
+                                    parentCategory
+                                ].find((item) => item.key === key);
+                                if (found) {
+                                    return found.value;
+                                }
+                            }
+                            return null;
+                        })
+                        .filter(Boolean)
+                        .join(", ");
+                }}
                 input={<OutlinedInput label={t("Category")} />}
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >

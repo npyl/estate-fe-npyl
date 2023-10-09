@@ -56,9 +56,9 @@ const filterPropertiesInShape = (
 ): IProperties[] =>
     properties.filter(
         (p) =>
-            p.location?.lat &&
-            p.location?.lng &&
-            isPointInsideShapeData(p.location.lat, p.location.lng, shapeData)
+            !p.location?.lat ||
+            !p.location?.lng ||
+            isPointInsideShapeData(p.location?.lat, p.location?.lng, shapeData)
     );
 
 function statusColor(params: GridCellParams) {
@@ -88,6 +88,7 @@ function statusColor(params: GridCellParams) {
             {status}
         </Box>
     );
+    ``;
 }
 
 const renderImage = (params: GridCellParams) => (
@@ -239,7 +240,7 @@ const MatchingPropertiesSection: React.FC = () => {
 
     const handlePaginationChange = (model: GridPaginationModel) =>
         setPage(model.page);
-
+    console.log("eimai malakas:", properties?.length);
     if (properties?.length === 0) {
         // !propertiesPage ||
         // !Array.isArray(propertiesPage.content) ||
