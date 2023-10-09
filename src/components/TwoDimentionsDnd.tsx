@@ -24,7 +24,7 @@ export const TwoDimentionsDnd: FC<TwoDimentionsDndProps> = ({
 
     return (
         <DragDropContext onDragEnd={onDragEnd}>
-            <Stack direction={"row"} gap={3} flex={1}>
+            <Stack direction={"row"} gap={3} mr={-20}>
                 {rows.map((row, i) => (
                     <Droppable
                         droppableId={`row-${i}`}
@@ -36,7 +36,7 @@ export const TwoDimentionsDnd: FC<TwoDimentionsDndProps> = ({
                                 {...provided.droppableProps}
                                 ref={provided.innerRef}
                             >
-                                <Stack direction={"column"} gap={3} flex={1}>
+                                <Stack direction={"column"} gap={3}>
                                     {row.map((item, j) => (
                                         <Draggable
                                             draggableId={`row-${i}-column-${j}`}

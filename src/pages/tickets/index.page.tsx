@@ -1,7 +1,7 @@
 // next
 import Head from "next/head";
 // @mui
-import { Box } from "@mui/material";
+import { Stack } from "@mui/material";
 import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
 // redux
 
@@ -55,12 +55,13 @@ export default function KanbanPage() {
     const handleDragEnd = () => {};
 
     return (
-        <Box mt={3}>
+        <Stack direction={"row"} mt={3} flex={1}>
             <TwoDimentionsDnd
                 items={items || []}
                 columns={4}
                 onDragEnd={handleDragEnd}
             />
-        </Box>
+            <KanbanColumnAdd />
+        </Stack>
     );
 }
