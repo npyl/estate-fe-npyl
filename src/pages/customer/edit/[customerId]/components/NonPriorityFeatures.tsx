@@ -31,13 +31,7 @@ const NonPriorityFeatures = ({
         );
 
     return (
-        <Paper
-            elevation={10}
-            sx={{
-                overflow: "auto",
-                padding: 0.5,
-            }}
-        >
+        <>
             <Box
                 sx={{
                     px: 3,
@@ -83,7 +77,7 @@ const NonPriorityFeatures = ({
                     )}
                 </Grid>
             </Grid>
-        </Paper>
+        </>
     );
 };
 export default NonPriorityFeatures;

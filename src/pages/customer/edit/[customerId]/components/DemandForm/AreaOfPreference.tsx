@@ -17,14 +17,17 @@ import {
     useGetClosestQuery,
     useLazyGetHierarchyByAreaIdQuery,
 } from "src/services/location";
-import { selectShapes, setShapes, addShape } from "src/slices/customer";
+import {
+    selectShapes,
+    setShapes,
+    addShape,
+    selectDemandRegions,
+    selectDemandCities,
+    selectDemandComplexes,
+} from "src/slices/customer";
 
 interface ILocationSectionProps {
     index: number;
-    // redux getters
-    cities: string[];
-    complexes: string[];
-    regions: string[];
     // redux setters
     setCities: ActionCreatorWithPayload<any, string>;
     setComplexes: ActionCreatorWithPayload<any, string>;
@@ -36,16 +39,25 @@ const indexedData = (index: number, value: any) => ({
     value,
 });
 
+enum ZOOM_LEVELS {
+    REGION = 10,
+    MUNICIP = 13,
+    NEIGHB = 16,
+}
+
+const nullCoord = -1;
+
 export const AreaOfPreference: FC<ILocationSectionProps> = ({
     index,
-    cities,
-    complexes,
-    regions,
     setCities,
     setComplexes,
     setRegions,
 }) => {
     const dispatch = useDispatch();
+
+    const regions = useSelector(selectDemandRegions);
+    const cities = useSelector(selectDemandCities);
+    const complexes = useSelector(selectDemandComplexes);
 
     const allShapes = useSelector(selectShapes); // all demands' shapes
     const shapes = useMemo(
@@ -65,6 +77,7 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
     // Fields
     const [x, setX] = useState<number>();
     const [y, setY] = useState<number>();
+    const [zoom, setZoom] = useState<number>(ZOOM_LEVELS.REGION);
 
     const [activeMarker, setActiveMarker] = useState(null);
     const [mainMarker, setMainMarker] = useState<IMapMarker>({
@@ -73,25 +86,27 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
         address: "",
         main: true,
     });
-    const nullCoord = -1;
     const [onDragEndCoord, setOnDragEndCoord] = useState<IMapCoordinates>({
         lat: nullCoord,
         lng: nullCoord,
     });
-    const closest = useGetClosestQuery(
+
+    const { data: closest } = useGetClosestQuery(
         { latitude: onDragEndCoord.lat, longitude: onDragEndCoord.lng },
         {
             skip:
                 onDragEndCoord.lat === nullCoord &&
                 onDragEndCoord.lng === nullCoord,
         }
-    ).data;
+    );
 
     useEffect(() => {
-        if (!closest || !index) return;
+        if (!closest || index === null || index === undefined) return;
 
         // update slice
         if (closest.level === 2) {
+            setZoom(ZOOM_LEVELS.MUNICIP);
+
             dispatch(
                 setRegions(indexedData(index, [closest.parentID.toString()]))
             );
@@ -99,6 +114,8 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
                 setCities(indexedData(index, [closest.areaID.toString()]))
             );
         } else if (closest.level === 3) {
+            setZoom(ZOOM_LEVELS.NEIGHB);
+
             const neighbId = closest.areaID;
             const municipId = closest.parentID;
 
@@ -130,7 +147,6 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
         },
         [index, shapes]
     );
-
     const handleDrag = useCallback(
         (oldShape: DrawShape, newShape: DrawShape) => {
             const encodedOldShape = encodeShape(oldShape);
@@ -164,8 +180,6 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
 
         setOnDragEndCoord({ lat, lng });
         updateMainMarkerCoordinates(lat, lng);
-
-        // update slice
     };
     const handleMarkerDragEnd = (
         marker: IMapMarker,
@@ -194,6 +208,7 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
     const handleRegionChange = useCallback(
         (regionCode: string, lat: number, lng: number) => {
             updateMainMarkerCoordinates(lat, lng);
+            setZoom(ZOOM_LEVELS.REGION);
 
             // update slice
             dispatch(setRegions(indexedData(index, [regionCode])));
@@ -203,6 +218,7 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
     const handleMunicipChange = useCallback(
         (municipCode: string, lat: number, lng: number) => {
             updateMainMarkerCoordinates(lat, lng);
+            setZoom(ZOOM_LEVELS.MUNICIP);
 
             // update slice
             dispatch(setCities(indexedData(index, [municipCode])));
@@ -212,6 +228,7 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
     const handleNeighbourChange = useCallback(
         (neighbourCode: string, lat: number, lng: number) => {
             updateMainMarkerCoordinates(lat, lng);
+            setZoom(ZOOM_LEVELS.NEIGHB);
 
             // update slice
             dispatch(setComplexes(indexedData(index, [neighbourCode])));
@@ -219,9 +236,18 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
         [index]
     );
 
-    const regionCode = useMemo(() => regions.at(index), [regions, index]);
-    const cityCode = useMemo(() => cities.at(index), [cities, index]);
-    const complexCode = useMemo(() => complexes.at(index), [complexes, index]);
+    const regionCode = useMemo(
+        () => regions?.at(index)?.at(0) || "",
+        [regions, index]
+    );
+    const cityCode = useMemo(
+        () => cities?.at(index)?.at(0) || "",
+        [cities, index]
+    );
+    const complexCode = useMemo(
+        () => complexes?.at(index)?.at(0) || "",
+        [complexes, index]
+    );
 
     console.log("r: ", regionCode, " c: ", cityCode, " co: ", complexCode);
 
@@ -230,7 +256,7 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
             <Box height={`calc(100vh - 266px)`} width={"100%"}>
                 <Map
                     key={index}
-                    zoom={12}
+                    zoom={zoom}
                     search
                     multipleShapes
                     mainMarker={mainMarker}

@@ -494,7 +494,12 @@ const slice = createSlice({
         },
 
         //Demand Location
-        setDemandComplexes(state: customerState, action): void {},
+        setDemandComplexes(state: customerState, action): void {
+            const { index, value } = action.payload;
+            if (state.demands[index]) {
+                state.demands[index].filters.complexes = value;
+            }
+        },
         setDemandCities(
             state: customerState,
             action: ISetDemandFilterAction
@@ -541,7 +546,7 @@ const slice = createSlice({
                 labels: demandFilters.labels || [],
                 cities: demandFilters.cities || [],
                 regions: demandFilters.regions || [],
-                complexes: demandFilters.complexes,
+                complexes: demandFilters.complexes || [],
                 categories: demandFilters.categories.map((i) => i.key) || [],
                 parentCategories:
                     demandFilters.parentCategories.map((i) => i.key) || [],
@@ -833,7 +838,8 @@ export const selectShapes = ({ customer }: RootState) =>
 
 //Demand Location
 
-export const selectDemandComplexes = ({ customer }: RootState) => []; //here will  do thw complexes
+export const selectDemandComplexes = ({ customer }: RootState) =>
+    customer.demands.map((d) => d.filters?.complexes);
 export const selectDemandCities = ({ customer }: RootState) =>
     customer.demands.map((d) => d.filters?.cities);
 
