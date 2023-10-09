@@ -27,7 +27,6 @@ import { TypeLabels } from "src/pages/customer/index.page";
 const pageSize = 5;
 
 const MatchingCustomersSection: React.FC = () => {
-    // return <>Im waiting BE nearly made it </>;
     const router = useRouter();
     const { t } = useTranslation();
 
@@ -39,6 +38,7 @@ const MatchingCustomersSection: React.FC = () => {
         // εδώ πρέπει να φτιάξω καινούριο query useSuggestForPropertyQuery
         { propertyId: +propertyId!, page, pageSize }
     );
+
     const totalRows = useMemo(
         () => customersPage?.totalElements,
         [customersPage?.totalElements]
@@ -48,16 +48,6 @@ const MatchingCustomersSection: React.FC = () => {
         () => customersPage?.content || [],
         [customersPage]
     );
-
-    console.log("customers consoleee:", customers);
-
-    //    .?????? xreiazetai`?
-    // useEffect(() => {
-    //     if (!customer || !isSuccess) return;
-
-    //     setParentCategory(customer?.demand?.filters?.parentCategories);
-    // }, [customer, isSuccess]);
-    ////////////////////////////////////////
 
     function showLabel(params: GridCellParams) {
         if (!params.value || !Array.isArray(params.value)) return <></>;
@@ -166,43 +156,43 @@ const MatchingCustomersSection: React.FC = () => {
     const handlePaginationChange = (model: GridPaginationModel) =>
         setPage(model.page);
 
-    if (customers?.length === 0) {
-        // !propertiesPage ||
-        // !Array.isArray(propertiesPage.content) ||
-        // propertiesPage.content.length === 0
-        return (
-            <Container
-                style={{
-                    height: "50vh",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "top",
-                }}
-            >
-                <Grid
-                    container
-                    direction="column"
-                    alignItems="center"
-                    spacing={2}
-                >
-                    <Grid item>
-                        <span style={{ fontSize: "50px" }}>👤</span>
-                    </Grid>
-                    <Grid item>
-                        <Typography
-                            variant="h5"
-                            style={{
-                                textAlign: "center",
-                                color: "rgba(0, 0, 0, 0.7)",
-                            }}
-                        >
-                            {t("There are no matching Customers")}
-                        </Typography>
-                    </Grid>
-                </Grid>
-            </Container>
-        );
-    }
+    // if (customers?.length === 0) {
+    //     // !propertiesPage ||
+    //     // !Array.isArray(propertiesPage.content) ||
+    //     // propertiesPage.content.length === 0
+    //     return (
+    //         <Container
+    //             style={{
+    //                 height: "50vh",
+    //                 display: "flex",
+    //                 alignItems: "center",
+    //                 justifyContent: "top",
+    //             }}
+    //         >
+    //             <Grid
+    //                 container
+    //                 direction="column"
+    //                 alignItems="center"
+    //                 spacing={2}
+    //             >
+    //                 <Grid item>
+    //                     <span style={{ fontSize: "50px" }}>👤</span>
+    //                 </Grid>
+    //                 <Grid item>
+    //                     <Typography
+    //                         variant="h5"
+    //                         style={{
+    //                             textAlign: "center",
+    //                             color: "rgba(0, 0, 0, 0.7)",
+    //                         }}
+    //                     >
+    //                         {t("There are no matching Customers")}
+    //                     </Typography>
+    //                 </Grid>
+    //             </Grid>
+    //         </Container>
+    //     );
+    // }
 
     return (
         <Paper

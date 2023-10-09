@@ -18,7 +18,6 @@ const drawCircle = (
         fillColor: "cyan",
         fillOpacity: 0.15,
         strokeWeight: 1,
-
         zIndex: 1,
     });
     const initialCircle = _.cloneDeep(circle);
@@ -55,7 +54,6 @@ const drawRectangle = (
         fillColor: "cyan",
         fillOpacity: 0.15,
         strokeWeight: 1,
-
         zIndex: 1,
     });
     const initialRectangle = _.cloneDeep(rectangle);

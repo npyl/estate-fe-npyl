@@ -8,7 +8,6 @@ import {
     SelectChangeEvent,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-
 import { useGlobals } from "src/hooks/useGlobals";
 import { useTranslation } from "react-i18next";
 import {
@@ -49,7 +48,17 @@ export default function FilterParentCategory() {
                 multiple
                 value={parentCategories}
                 onChange={handleChange}
-                renderValue={(selected) => selected.join(", ")}
+                renderValue={(selected: string[]) => {
+                    return selected
+                        .map(
+                            (key) =>
+                                parentCategoryEnums?.find(
+                                    (item) => item.key === key
+                                )?.value
+                        )
+                        .filter(Boolean)
+                        .join(", ");
+                }}
                 input={<OutlinedInput label={t("Parent Category")} />}
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
@@ -63,7 +72,6 @@ export default function FilterParentCategory() {
                                     parentCategories.indexOf(key) > -1
                                 }
                             />
-
                             {value}
                         </MenuItem>
                     );
