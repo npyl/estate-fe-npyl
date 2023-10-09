@@ -14,7 +14,6 @@ import {
 
 import { Grid, List } from "@mui/material";
 import { ListItem } from "src/components/List";
-import { ILocation } from "src/types/location";
 
 interface AreaOfPreferenceProps {
     index: number; // index of demand
@@ -72,7 +71,7 @@ export const ViewLocationMini = ({
 
     return (
         <Grid container>
-            <Grid item xs={4}>
+            <Grid item xs={6}>
                 <List>
                     {region && (
                         <ListItem
@@ -81,17 +80,21 @@ export const ViewLocationMini = ({
                             align="horizontal"
                         />
                     )}
-                    {city && (
-                        <ListItem
-                            label={t("City")}
-                            value={city}
-                            align="horizontal"
-                        />
-                    )}
                     {neighb && (
                         <ListItem
                             label={t("Neighborhood")}
                             value={neighb}
+                            align="horizontal"
+                        />
+                    )}
+                </List>
+            </Grid>
+            <Grid item xs={6}>
+                <List>
+                    {city && (
+                        <ListItem
+                            label={t("City")}
+                            value={city}
                             align="horizontal"
                         />
                     )}
@@ -131,6 +134,11 @@ export const AreaOfPreference: React.FC<AreaOfPreferenceProps> = ({
         () => demandFilters?.cities || [],
         [demandFilters?.cities]
     );
+    const complexes = useMemo(
+        () => demandFilters?.complexes || [],
+        [demandFilters?.complexes]
+    );
+
     const { data: municips } = useGetMunicipalitiesQuery(+regions[0], {
         skip: !regions[0] && !isNumberString(regions[0]),
     });
@@ -185,7 +193,11 @@ export const AreaOfPreference: React.FC<AreaOfPreferenceProps> = ({
             >
                 <Typography variant="h6">{t("Area of Preference")}</Typography>
             </Box>
-            <ViewLocationMini regionCode={regions[0]} cityCode={cities[0]} />
+            <ViewLocationMini
+                regionCode={regions[0]}
+                cityCode={cities[0]}
+                complexCode={complexes[0]}
+            />
             <Box height={`calc(100vh - 266px)`} width={"100%"}>
                 <Map
                     key={index}
