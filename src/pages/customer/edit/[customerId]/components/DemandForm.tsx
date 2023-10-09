@@ -13,7 +13,7 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
-import { FC, useCallback, useEffect } from "react";
+import { FC, useCallback, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useGlobals } from "src/hooks/useGlobals";
 import {
@@ -59,6 +59,7 @@ import {
     selectPropertyCode,
     setPropertyCode as setAutocompleteValue,
 } from "src/slices/customer/misc";
+import { IDemandFiltersPOST } from "src/types/demand";
 
 interface DemandFormProps {
     index: number;
@@ -69,7 +70,8 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
     const dispatch = useDispatch();
 
     const enums = useGlobals();
-    const propertyEnums = enums?.property;
+
+    const propertyEnums = useMemo(() => enums?.property, [enums]);
     const stateEnum = propertyEnums?.state;
     const detailsEnum = propertyEnums?.details;
     const parentCategoryEnum = propertyEnums?.parentCategory;
@@ -79,38 +81,81 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
     const maxFloors = detailsEnum?.floors;
 
     const demands = useSelector(selectDemands);
+    const demand = useMemo(() => demands.at(index), [demands, index]);
+    const demandFilters = useMemo(() => demand?.filters, [demand?.filters]);
 
-    const demand = demands[index] || {};
-    const demandFilters = demand?.filters;
-    const minBedrooms = demandFilters?.minBedrooms || 0;
-    const maxBedrooms = demandFilters?.maxBedrooms || 0;
-    const minBathrooms = demandFilters?.minBathrooms || 0;
-    const maxBathrooms = demandFilters?.maxBathrooms || 0;
-    const furnished = demandFilters?.furnished || [];
-    const maxCovered = demandFilters?.maxCovered || 0;
-    const minCovered = demandFilters?.minCovered || 0;
-    const minPlot = demandFilters?.minPlot || 0;
-    const maxPlot = demandFilters?.maxPlot || 0;
-    const minYearOfConstruction = demandFilters?.minYearOfConstruction || 0;
-    const maxYearOfConstruction = demandFilters?.maxYearOfConstruction || 0;
-    const minFloor = demandFilters?.minFloor || "";
-    const maxFloor = demandFilters?.maxFloor || "";
-    const parentCategories = demandFilters?.parentCategories || [];
-    const category = demandFilters?.categories || [];
-    const state = demandFilters?.states || [];
-    const minPrice = demandFilters?.minPrice || 0;
-    const maxPrice = demandFilters?.maxPrice || 0;
-    const timeFrame = demand.timeframe || [];
+    const extractOrDefault = useCallback(
+        (key: string, defaultValue: any) =>
+            (demandFilters as IDemandFiltersPOST)[key] || defaultValue,
+        [demandFilters]
+    );
 
-    const minFloorsArray = minFloors?.map((i) => i.key);
-    const maxFloorsArray = maxFloors?.map((i) => i.key);
+    const {
+        minBedrooms,
+        maxBedrooms,
+        minBathrooms,
+        maxBathrooms,
+        furnished,
+        maxCovered,
+        minCovered,
+        minPlot,
+        maxPlot,
+        minYearOfConstruction,
+        maxYearOfConstruction,
+        minFloor,
+        maxFloor,
+        parentCategories,
+        category,
+        state,
+        minPrice,
+        maxPrice,
+        timeFrame,
+        // Location
+        cities,
+        complexes,
+        regions,
+    } = useMemo(
+        () => ({
+            minBedrooms: extractOrDefault("minBedrooms", 0),
+            maxBedrooms: extractOrDefault("maxBedrooms", 0),
+            minBathrooms: extractOrDefault("minBathrooms", 0),
+            maxBathrooms: extractOrDefault("maxBathrooms", 0),
+            furnished: extractOrDefault("furnished", []),
+            maxCovered: extractOrDefault("maxCovered", 0),
+            minCovered: extractOrDefault("minCovered", 0),
+            minPlot: extractOrDefault("minPlot", 0),
+            maxPlot: extractOrDefault("maxPlot", 0),
+            minYearOfConstruction: extractOrDefault("minYearOfConstruction", 0),
+            maxYearOfConstruction: extractOrDefault("maxYearOfConstruction", 0),
+            minFloor: extractOrDefault("minFloor", ""),
+            maxFloor: extractOrDefault("maxFloor", ""),
+            parentCategories: extractOrDefault("parentCategories", []),
+            category: extractOrDefault("categories", []),
+            state: extractOrDefault("states", []),
+            minPrice: extractOrDefault("minPrice", 0),
+            maxPrice: extractOrDefault("maxPrice", 0),
+            timeFrame: extractOrDefault("timeframe", []),
+            cities: extractOrDefault("cities", []),
+            complexes: extractOrDefault("complexes", []),
+            regions: extractOrDefault("regions", []),
+        }),
+        [demandFilters]
+    );
 
-    // Location
-    const cities = demandFilters?.cities || [];
-    const complexes = demandFilters?.complexes || [];
-    const regions = demandFilters?.regions || [];
+    const minFloorsArray = useMemo(
+        () => detailsEnum?.floors?.map((i) => i.key) || [],
+        [detailsEnum?.floors]
+    );
+    const maxFloorsArray = useMemo(
+        () => detailsEnum?.floors?.map((i) => i.key) || [],
+        [detailsEnum?.floors]
+    );
 
-    const autocompleteValue = useSelector(selectPropertyCode)[index];
+    const propertyCode = useSelector(selectPropertyCode);
+    const autocompleteValue = useMemo(
+        () => propertyCode?.at(index) || "",
+        [propertyCode, index]
+    );
 
     const subCategoriesMap: {
         [key: string]: KeyValue[];

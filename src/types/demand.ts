@@ -49,6 +49,8 @@ export interface IDemandFiltersPOST {
     complexes: string[];
     categories: string[];
     parentCategories: string[];
+
+    [key: string]: any;
 }
 
 export interface IDemand {
