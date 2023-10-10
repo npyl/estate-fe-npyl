@@ -14,6 +14,7 @@ import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
 import { Label } from "src/components/label";
 import { Place } from "src/types/googleMap";
 import { Scrollbar } from "src/components/scrollbar";
+import { relative } from "path";
 // ----------------------------------------------------------------------
 
 interface Props extends CardProps {
@@ -93,8 +94,14 @@ function ApplicationItem({ app, duration }: ApplicationItemProps) {
                     <Label
                         variant="soft"
                         color={opening_hours?.open_now ? "success" : "error"}
+                        style={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            height: "YOUR_LABEL_HEIGHT_HERE",
+                        }}
                     >
-                        {opening_hours?.open_now ? "Ανοιχτό τώρα" : "Κλειστό"}
+                        {opening_hours?.open_now ? "Open" : "Closed"}
                     </Label>
                 </Stack>
             </Box>
