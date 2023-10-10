@@ -93,6 +93,11 @@ const EditPropertyPage: NextPage = () => {
     };
 
     const performUpload = () => {
+        if (!body.code) {
+            alert("Property code is required!");
+            return;
+        }
+
         edit({ id: +propertyId!, body: body });
     };
 
