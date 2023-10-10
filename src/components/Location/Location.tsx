@@ -67,8 +67,6 @@ const LocationSection = (props: ILocationSectionProps) => {
     const [mainMarker, setMainMarker] = useState<IMapMarker>({
         lat: lat ? lat : 37.98381,
         lng: lng ? lng : 23.727539,
-        address: "",
-        main: true,
     });
 
     const nullCoord = -1;
@@ -230,6 +228,7 @@ const LocationSection = (props: ILocationSectionProps) => {
                         <Map
                             drawing={false}
                             search
+                            markers={[mainMarker]}
                             mainMarker={mainMarker}
                             onDragEnd={handleMarkerDragEnd}
                             onClick={handleMapClick}
