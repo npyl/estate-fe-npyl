@@ -175,11 +175,11 @@ export default function KanbanDetails({
                             flexWrap="wrap"
                             alignItems="center"
                         >
-                            {task.assignee.map((user) => (
+                            {task.user.map((user) => (
                                 <Avatar
                                     key={user.id}
-                                    alt={user.name}
-                                    src={user.avatar}
+                                    alt={user.username}
+                                    src={user.profilePhoto}
                                     sx={{ m: 0.5 }}
                                 />
                             ))}
@@ -204,7 +204,7 @@ export default function KanbanDetails({
                             </Tooltip>
 
                             <KanbanContactsDialog
-                                assignees={task.assignee}
+                                assignees={task.user}
                                 open={openContacts}
                                 toggleAssignee={handleToggleAssignee}
                                 onClose={handleCloseContacts}

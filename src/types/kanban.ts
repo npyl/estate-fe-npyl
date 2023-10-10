@@ -1,5 +1,7 @@
 // ----------------------------------------------------------------------
 
+import { IUser } from "./user";
+
 export type IKanbanComment = {
     id: string;
     avatar: string;
@@ -9,32 +11,20 @@ export type IKanbanComment = {
     message: string;
 };
 
-export type IKanbanAssignee = {
-    id: string;
-    name: string;
-    username: string;
-    avatar: string;
-    address: string;
-    phone: string;
-    email: string;
-    lastActivity: string;
-    status: string;
-    role: string;
-};
-
 export type IKanbanCard = {
     id: number;
     priority: number;
     name: string;
     description: string;
-    assignee: IKanbanAssignee[];
+    user: IUser[]; // assignees
     due: string[];
     attachments: string[];
     comments: IKanbanComment[];
     completed: boolean;
 };
-export type IKanbanCardPOST = Partial<IKanbanCard> & {
+export type IKanbanCardPOST = Partial<Omit<IKanbanCard, "user">> & {
     columnId?: number;
+    userIds?: number[];
 };
 
 export type IKanbanColumn = {
