@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 
 // @types
-import { IKanbanCard, IKanbanCardPOST } from "src/types/kanban";
+import { IKanbanCardPOST } from "src/types/kanban";
 // components
 import DateRangePicker, {
     useDateRangePicker,
@@ -26,10 +26,6 @@ import KanbanContactsDialog from "./KanbanContactsDialog";
 const defaultTask = {
     description: "",
     due: [],
-
-    // assignee: [],
-    // attachments: [],
-    // comments: [],
 };
 
 type Props = {

@@ -86,6 +86,7 @@ export default function KanbanColumn({ column, cards, index }: Props) {
 
                                 return card ? (
                                     <KanbanTaskCard
+                                        key={index}
                                         index={index}
                                         onDeleteTask={handleDeleteTask}
                                         card={card}
