@@ -12,7 +12,9 @@ type Props = TextFieldProps & {
 
 export default function RHFSelect({ name, children, ...other }: Props) {
     const { control } = useFormContext();
-
+    if (!children) {
+        return null;
+    }
     return (
         <Controller
             name={name}
@@ -22,7 +24,7 @@ export default function RHFSelect({ name, children, ...other }: Props) {
                     {...field}
                     select
                     fullWidth
-                    SelectProps={{ native: true }}
+                    // SelectProps={{ native: true }}
                     error={!!error}
                     helperText={error?.message}
                     {...other}
