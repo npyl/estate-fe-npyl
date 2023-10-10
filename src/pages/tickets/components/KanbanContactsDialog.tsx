@@ -112,7 +112,7 @@ export default function KanbanContactsDialog({
     return (
         <Dialog fullWidth maxWidth="xs" open={open} onClose={onClose}>
             <DialogTitle sx={{ pb: 0 }}>
-                {t("Customers")}
+                {t("Users")}
                 <Typography component="span">{` (${users.length})`}</Typography>
             </DialogTitle>
 
@@ -152,8 +152,8 @@ export default function KanbanContactsDialog({
                         <AssigneeItem
                             key={i}
                             assigned={
-                                assignees.findIndex((a) => +a.id === user.id) >
-                                0
+                                assignees.findIndex((a) => a.id === user.id) !==
+                                -1
                             }
                             user={user}
                             onClick={toggleAssignee}
