@@ -94,8 +94,17 @@ export const BookingItem = ({
     const router = useRouter();
     const itemRef = useRef<HTMLDivElement | null>(null);
     const isActive =
-        item.location?.lat === selectedMarker?.lat &&
-        item.location?.lng === selectedMarker?.lng;
+        item.location?.lat !== null &&
+        item.location?.lat !== undefined &&
+        item.location.lng !== null &&
+        item.location.lng !== undefined &&
+        selectedMarker?.lat !== null &&
+        selectedMarker?.lat !== undefined &&
+        selectedMarker?.lng !== null &&
+        selectedMarker?.lng !== undefined &&
+        item.location.lat === selectedMarker?.lat &&
+        item.location.lng === selectedMarker?.lng;
+
     useMemo(() => {
         if (isActive && itemRef.current) {
             itemRef.current.scrollIntoView({ behavior: "smooth" });

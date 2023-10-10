@@ -195,6 +195,9 @@ export function HorizontalCard({
               }))
             : [];
     }, [images]);
+    function truncate(str: string, n: number) {
+        return str.length > n ? str.substr(0, n - 1) + "..." : str;
+    }
 
     return (
         <Grid
@@ -262,7 +265,9 @@ export function HorizontalCard({
                     spacing={1}
                     mb={3}
                 >
-                    <Typography variant="body2">{description}</Typography>
+                    <Typography variant="body2" sx={{ fontSize: "0.8rem" }}>
+                        {truncate(description, 40)}
+                    </Typography>
                 </Stack>
 
                 <Stack
