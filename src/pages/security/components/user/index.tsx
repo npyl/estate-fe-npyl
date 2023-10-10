@@ -17,22 +17,37 @@ import {
     TableRow,
     TextField,
 } from "@mui/material";
-import React, { FC, useState } from "react";
+import React, { FC, useMemo, useState } from "react";
 import OnlyEmailInput from "src/components/OnlyEmailInput";
 import OnlyLettersInput from "src/components/OnlyLetters";
 import OnlyNumbersInput from "src/components/OnlyNumbers";
 import { useSecurityContext } from "src/contexts/security";
 import { useAllUsersQuery } from "src/services/user";
+import { IUser } from "src/types/user";
 
 type Props = {
     changeTab: (event: React.SyntheticEvent, newValue: number) => void;
 };
 
-const UserPage: FC<Props> = ({ changeTab }) => {
-    const { data: users } = useAllUsersQuery();
-    const { setSelectedUser } = useSecurityContext();
+interface UserFormProps {
+    open: boolean;
+    user?: IUser;
+    onClose: () => void;
+}
 
-    const [isCreateUserModalOpen, setIsCreateUserModalOpen] = useState(false);
+const UserForm = ({ open, onClose }: UserFormProps) => {
+    const { data: users } = useAllUsersQuery();
+    const { selectedUser } = useSecurityContext();
+
+    const user = useMemo(
+        () =>
+            (users &&
+                selectedUser &&
+                (users.find((u) => u.id === selectedUser) as IUser)) ||
+            undefined,
+        [users, selectedUser]
+    );
+
     const [status, setStatus] = useState("Active");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -49,104 +64,20 @@ const UserPage: FC<Props> = ({ changeTab }) => {
     const [doy, setDoy] = useState("");
     const [gemh, setGemh] = useState("");
     const [email, setEmail] = useState("");
-    const [isUpdateUserModalOpen, setIsUpdateUserModalOpen] = useState(false);
-    const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] =
-        useState(false);
 
-    const handleCreateUserClick = () => {
-        setIsCreateUserModalOpen(true);
-    };
+    // Delete Dialog
+    const [openDelete, setOpenDelete] = useState(false);
+    const handleOpenDelete = () => setOpenDelete(true);
+    const handleCloseDelete = () => setOpenDelete(false);
 
-    const handleCloseCreateUserModal = () => {
-        setIsCreateUserModalOpen(false);
-    };
-
-    const handleCreateUser = () => {
-        handleCloseCreateUserModal();
-    };
-
-    const handleUpdateUserClick = () => setIsUpdateUserModalOpen(true);
-    const handleCloseUpdateUserModal = () => setIsUpdateUserModalOpen(false);
-
-    const handleUpdateUser = () => {
-        handleCloseUpdateUserModal();
-    };
-
+    const handleCreate = () => {};
+    const handleDelete = () => {};
     const handleResetPassword = () => {};
 
-    const handleDeleteUser = () => {};
-
-    const handleOpenDeleteConfirmation = () =>
-        setIsDeleteConfirmationOpen(true);
-    const handleCloseDeleteConfirmation = () =>
-        setIsDeleteConfirmationOpen(false);
-
     return (
-        <div>
-            <Button
-                variant="contained"
-                color="primary"
-                style={{ marginBottom: "20px" }}
-                onClick={handleCreateUserClick}
-            >
-                Create User
-            </Button>
-            <TableContainer component={Paper}>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Username</TableCell>
-                            <TableCell>First Name</TableCell>
-                            <TableCell>Last Name</TableCell>
-                            <TableCell>Status</TableCell>
-                            <TableCell>Email</TableCell>
-                            <TableCell>status</TableCell>
-                            <TableCell>Update</TableCell>
-                            <TableCell>Permissions</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {users &&
-                            users.map((user) => (
-                                <TableRow key={user.id}>
-                                    <TableCell>{user.username}</TableCell>
-                                    <TableCell>{user.firstName}</TableCell>
-                                    <TableCell>{user.lastName}</TableCell>
-                                    <TableCell>{user.lastName}</TableCell>
-                                    <TableCell>{user.email}</TableCell>
-                                    <TableCell>{user.lastName}</TableCell>
-                                    <TableCell>
-                                        <IconButton
-                                            size="small"
-                                            onClick={handleUpdateUserClick}
-                                            sx={{ ml: 1, mr: -1 }}
-                                        >
-                                            <EditIcon fontSize="small" />
-                                        </IconButton>
-                                    </TableCell>
-                                    <TableCell>
-                                        <Button
-                                            variant="text"
-                                            color="success"
-                                            onClick={(e) => {
-                                                changeTab(e, 1);
-                                                setSelectedUser(user.id);
-                                            }}
-                                        >
-                                            Set
-                                        </Button>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-
-            <Dialog
-                open={isCreateUserModalOpen}
-                onClose={handleCloseCreateUserModal}
-            >
-                <DialogTitle>Create User</DialogTitle>
+        <>
+            <Dialog open={open} onClose={onClose}>
+                <DialogTitle>{user ? "Update" : "Create"} User</DialogTitle>
                 <DialogContent>
                     <OnlyLettersInput
                         label="First Name"
@@ -283,172 +214,31 @@ const UserPage: FC<Props> = ({ changeTab }) => {
                         <MenuItem value="Inactive">Inactive</MenuItem>
                     </TextField>
                 </DialogContent>
+                {user && (
+                    <DialogActions>
+                        <Button onClick={handleResetPassword} color="primary">
+                            Reset Password
+                        </Button>
+                        <Button
+                            onClick={handleOpenDelete}
+                            color="secondary"
+                            sx={{ backgroundColor: "red", color: "white" }}
+                        >
+                            Delete User
+                        </Button>
+                    </DialogActions>
+                )}
                 <DialogActions>
-                    <Button onClick={handleCreateUser} color="primary">
-                        Create
+                    <Button onClick={handleCreate} color="primary">
+                        {user ? "Update" : "Create"}
                     </Button>
-                    <Button
-                        onClick={handleCloseCreateUserModal}
-                        color="secondary"
-                    >
+                    <Button onClick={onClose} color="secondary">
                         Cancel
                     </Button>
                 </DialogActions>
             </Dialog>
-
-            <Dialog
-                open={isUpdateUserModalOpen}
-                onClose={handleCloseUpdateUserModal}
-            >
-                <DialogTitle>Update User</DialogTitle>
-                <DialogContent>
-                    <TextField
-                        label="First Name"
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
-                        value={firstName}
-                        onChange={(e) =>
-                            setFirstName(
-                                e.target.value.replace(/[^a-zA-Z]/g, "")
-                            )
-                        }
-                        inputProps={{ maxLength: 50 }}
-                    />
-                    <TextField
-                        label="Last Name"
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
-                        value={lastName}
-                        onChange={(e) =>
-                            setLastName(
-                                e.target.value.replace(/[^a-zA-Z]/g, "")
-                            )
-                        }
-                        inputProps={{ maxLength: 50 }}
-                    />
-                    <TextField
-                        label="Email"
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
-                        value={email}
-                        onChange={(e) => setMobilePhone(e.target.value)}
-                    />
-                    <TextField
-                        label="Home Phone"
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
-                        value={homePhone}
-                        onChange={(e) => setHomePhone(e.target.value)}
-                    />
-                    <TextField
-                        label="Business Phone"
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
-                        value={businessPhone}
-                        onChange={(e) => setBusinessPhone(e.target.value)}
-                    />
-                    <TextField
-                        label="Call Center Number"
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
-                        value={callCenterNumber}
-                        onChange={(e) => setCallCenterNumber(e.target.value)}
-                    />
-                    <TextField
-                        label="Address"
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
-                        value={address}
-                        onChange={(e) => setAddress(e.target.value)}
-                    />
-                    <TextField
-                        label="Zip Code"
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
-                        value={zipCode}
-                        onChange={(e) => setZipCode(e.target.value)}
-                    />
-                    <TextField
-                        label="City"
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
-                        value={city}
-                        onChange={(e) => setCity(e.target.value)}
-                    />
-                    <TextField
-                        label="Afm"
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
-                        value={afm}
-                        onChange={(e) => setAfm(e.target.value)}
-                    />
-                    <TextField
-                        label="Doy"
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
-                        value={doy}
-                        onChange={(e) => setDoy(e.target.value)}
-                    />
-                    <TextField
-                        label="Gemh"
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
-                        value={gemh}
-                        onChange={(e) => setGemh(e.target.value)}
-                    />
-                    <TextField
-                        select
-                        label="Status"
-                        fullWidth
-                        margin="normal"
-                        variant="outlined"
-                        value={status}
-                        onChange={(e) => setStatus(e.target.value)}
-                    >
-                        <MenuItem value="Active">Active</MenuItem>
-                        <MenuItem value="Inactive">Inactive</MenuItem>
-                    </TextField>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleResetPassword} color="primary">
-                        Reset Password
-                    </Button>
-                    <Button
-                        onClick={handleOpenDeleteConfirmation}
-                        color="secondary"
-                        sx={{ backgroundColor: "red", color: "white" }}
-                    >
-                        Delete User
-                    </Button>
-                </DialogActions>
-                <DialogActions>
-                    <Button
-                        onClick={handleCloseUpdateUserModal}
-                        color="secondary"
-                    >
-                        Cancel
-                    </Button>
-                    <Button onClick={handleUpdateUser} color="primary">
-                        Update
-                    </Button>
-                </DialogActions>
-            </Dialog>
-            <Dialog
-                open={isDeleteConfirmationOpen}
-                onClose={handleCloseDeleteConfirmation}
-            >
+            {/* Delete Dialog */}
+            <Dialog open={openDelete} onClose={handleCloseDelete}>
                 <DialogTitle>Confirm Deletion</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
@@ -456,17 +246,95 @@ const UserPage: FC<Props> = ({ changeTab }) => {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button
-                        onClick={handleCloseDeleteConfirmation}
-                        color="primary"
-                    >
+                    <Button onClick={handleCloseDelete} color="primary">
                         Cancel
                     </Button>
-                    <Button onClick={handleDeleteUser} color="secondary">
+                    <Button onClick={handleDelete} color="secondary">
                         Delete
                     </Button>
                 </DialogActions>
             </Dialog>
+        </>
+    );
+};
+
+const UserPage: FC<Props> = ({ changeTab }) => {
+    const { data: users } = useAllUsersQuery();
+    const { setSelectedUser } = useSecurityContext();
+
+    const [openUserForm, setOpenUserForm] = useState(false);
+
+    const handleOpenUserForm = () => setOpenUserForm(true);
+    const handleCloseUserForm = () => {
+        setOpenUserForm(false);
+        setSelectedUser(-1);
+    };
+
+    return (
+        <div>
+            <Button
+                variant="contained"
+                color="primary"
+                style={{ marginBottom: "20px" }}
+                onClick={handleOpenUserForm}
+            >
+                Create User
+            </Button>
+            <TableContainer component={Paper}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Username</TableCell>
+                            <TableCell>First Name</TableCell>
+                            <TableCell>Last Name</TableCell>
+                            <TableCell>Status</TableCell>
+                            <TableCell>Email</TableCell>
+                            <TableCell>status</TableCell>
+                            <TableCell>Update</TableCell>
+                            <TableCell>Permissions</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {users?.map((user) => (
+                            <TableRow key={user.id}>
+                                <TableCell>{user.username}</TableCell>
+                                <TableCell>{user.firstName}</TableCell>
+                                <TableCell>{user.lastName}</TableCell>
+                                <TableCell>{user.lastName}</TableCell>
+                                <TableCell>{user.email}</TableCell>
+                                <TableCell>{user.lastName}</TableCell>
+                                <TableCell>
+                                    <IconButton
+                                        size="small"
+                                        onClick={(e) => {
+                                            setSelectedUser(user.id);
+                                            handleOpenUserForm();
+                                        }}
+                                        sx={{ ml: 1, mr: -1 }}
+                                    >
+                                        <EditIcon fontSize="small" />
+                                    </IconButton>
+                                </TableCell>
+                                <TableCell>
+                                    <Button
+                                        variant="text"
+                                        color="success"
+                                        onClick={(e) => {
+                                            changeTab(e, 1);
+                                            setSelectedUser(user.id);
+                                        }}
+                                    >
+                                        Set
+                                    </Button>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+            {openUserForm && (
+                <UserForm open={openUserForm} onClose={handleCloseUserForm} />
+            )}
         </div>
     );
 };
