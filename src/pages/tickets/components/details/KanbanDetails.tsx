@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 // @mui
 import {
     Avatar,
@@ -59,14 +59,14 @@ export default function KanbanDetails({
 }: Props) {
     const fileInputRef = useRef<HTMLInputElement>(null);
 
+    const completed = useMemo(() => task?.completed, [task?.completed]);
+    const priority = useMemo(() => task?.priority, [task?.priority]);
+
     const [liked, setLiked] = useState(false);
-    const [prioritize, setPrioritize] = useState("low");
     const [taskName, setTaskName] = useState(task.name);
-    const [openContacts, setOpenContacts] = useState(false);
-    const [completed, setCompleted] = useState(task.completed);
     const [taskDescription, setTaskDescription] = useState(task.description);
 
-    // console.log("task.due[0]: ", task.due[0], " task.due[1]: ", task.due[1]);
+    const [openAssignees, setOpenAssignees] = useState(false);
 
     // TODO:
     // const {
@@ -85,20 +85,19 @@ export default function KanbanDetails({
     const [editCard] = useEditCardMutation();
 
     const handleLiked = () => setLiked(!liked);
-    const handleCompleted = () => setCompleted(!completed);
     const handleClickAttach = () => fileInputRef.current?.click();
-
-    const handleOpenContacts = () => setOpenContacts(true);
-    const handleCloseContacts = () => setOpenContacts(false);
 
     const handleChangeTaskName = (event: React.ChangeEvent<HTMLInputElement>) =>
         setTaskName(event.target.value);
     const handleChangeTaskDescription = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => setTaskDescription(event.target.value);
-    const handleChangePrioritize = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => setPrioritize((event.target as HTMLInputElement).value);
+
+    const toggleCompleted = () =>
+        editCard({ id: task.id, completed: !task?.completed });
+
+    const handleChangePriority = (event: React.ChangeEvent<HTMLInputElement>) =>
+        editCard({ id: task.id, priority: +event.target.value });
 
     const handleToggleAssignee = (userId: number) => {
         const oldUserIds = task.user.map((u) => u.id);
@@ -109,27 +108,8 @@ export default function KanbanDetails({
         editCard({ id: task.id, userIds: newUserIds });
     };
 
-    useEffect(() => {
-        if (
-            !task.id ||
-            !taskName ||
-            taskName === task.name // default value
-        )
-            return;
-
-        editCard({ id: task.id, name: taskName });
-    }, [task.id, taskName]);
-
-    useEffect(() => {
-        if (
-            !task.id ||
-            !taskDescription ||
-            taskDescription === task.description // default value
-        )
-            return;
-
-        editCard({ id: task.id, description: taskDescription });
-    }, [task.id, taskDescription]);
+    const handleOpenAssignees = () => setOpenAssignees(true);
+    const handleCloseAssignees = () => setOpenAssignees(false);
 
     return (
         <Drawer
@@ -155,7 +135,7 @@ export default function KanbanDetails({
                 onLike={handleLiked}
                 onAttach={handleClickAttach}
                 onDelete={onDeleteTask}
-                onCompleted={handleCompleted}
+                onCompleted={toggleCompleted}
                 onCloseDetails={onCloseDetails}
             />
 
@@ -194,7 +174,7 @@ export default function KanbanDetails({
 
                             <Tooltip title="Add assignee">
                                 <IconButton
-                                    onClick={handleOpenContacts}
+                                    onClick={handleOpenAssignees}
                                     sx={{
                                         p: 1,
                                         ml: 0.5,
@@ -213,9 +193,9 @@ export default function KanbanDetails({
 
                             <KanbanContactsDialog
                                 assignees={task.user}
-                                open={openContacts}
+                                open={openAssignees}
                                 toggleAssignee={handleToggleAssignee}
-                                onClose={handleCloseContacts}
+                                onClose={handleCloseAssignees}
                             />
                         </Stack>
                     </Stack>
@@ -271,13 +251,13 @@ export default function KanbanDetails({
                         </>
                     </Stack> */}
 
-                    {/* Prioritize */}
+                    {/* Priority */}
                     <Stack direction="row" alignItems="center">
-                        <StyledLabel>Prioritize</StyledLabel>
+                        <StyledLabel>Priority</StyledLabel>
 
                         <KanbanDetailsPrioritizes
-                            prioritize={prioritize}
-                            onChangePrioritize={handleChangePrioritize}
+                            priority={priority}
+                            onChangePrioritize={handleChangePriority}
                         />
                     </Stack>
 
