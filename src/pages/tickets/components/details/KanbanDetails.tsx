@@ -102,11 +102,24 @@ export default function KanbanDetails({
     const handleToggleAssignee = (userId: number) => {};
 
     useEffect(() => {
-        if (!task.id || !taskName) return;
+        if (
+            !task.id ||
+            !taskName ||
+            taskName === task.name // default value
+        )
+            return;
+
         editCard({ id: task.id, name: taskName });
     }, [task.id, taskName]);
+
     useEffect(() => {
-        if (!task.id || !taskDescription) return;
+        if (
+            !task.id ||
+            !taskDescription ||
+            taskDescription === task.description // default value
+        )
+            return;
+
         editCard({ id: task.id, description: taskDescription });
     }, [task.id, taskDescription]);
 

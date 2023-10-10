@@ -38,8 +38,8 @@ const columnId = (str?: string) => {
 };
 
 export default function KanbanPage() {
-    const { data: board } = useGetBoardQuery();
-    const [moveCard] = useMoveCardMutation();
+    const { data: board, isFetching: isBoardFetching } = useGetBoardQuery();
+    const [moveCard, { isLoading: isMoveLoading }] = useMoveCardMutation();
 
     const items = useMemo(
         () =>
@@ -93,7 +93,7 @@ export default function KanbanPage() {
 
     return (
         <Stack direction={"row"} mt={3} flex={1} gap={3}>
-            {items ? (
+            {!(isMoveLoading || isBoardFetching) && items ? (
                 <TwoDimentionsDnd
                     items={items || []}
                     columns={3}
