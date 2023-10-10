@@ -1,4 +1,4 @@
-import { Box, Grid, Paper, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 
 import FeaturesSection from "./DemandForm/Features";
 import FeaturesForCommercialSection from "./DemandForm/FeaturesForCommercial";
@@ -35,7 +35,7 @@ const PriorityFeatures = ({ index, parentCategory }: PriorityFeaturesProps) => {
                     justifyContent: "left",
                 }}
             >
-                <Typography variant="h6">{t("Priority Feautures")}</Typography>
+                <Typography variant="h6">{t("Feautures")}</Typography>
             </Box>
 
             <Grid item xs={12} padding={1}>
@@ -43,28 +43,24 @@ const PriorityFeatures = ({ index, parentCategory }: PriorityFeaturesProps) => {
                     {parentCategory === "RESIDENTIAL" && (
                         <FeaturesSection
                             index={index}
-                            priorityFeaturesMode
                             onChange={handleChange}
                         />
                     )}
                     {parentCategory === "LAND" && (
                         <FeaturesForLandSection
                             index={index}
-                            priorityFeaturesMode
                             onChange={handleChange}
                         />
                     )}
                     {parentCategory === "COMMERCIAL" && (
                         <FeaturesForCommercialSection
                             index={index}
-                            priorityFeaturesMode
                             onChange={handleChange}
                         />
                     )}
                     {parentCategory === "OTHER" && (
                         <FeaturesForOtherSection
                             index={index}
-                            priorityFeaturesMode
                             onChange={handleChange}
                         />
                     )}

@@ -391,8 +391,6 @@ const resources = {
             Leaser: "Leaser",
             Buyer: "Buyer",
             "Address Details": "Address Details",
-            "Priority Feautures": "Priority Feautures",
-            "Non-priority Feautures": "Non-priority Feautures",
             "Matching system enabled": "Matching system enabled",
             Edit: "Edit",
 
@@ -865,8 +863,7 @@ const resources = {
             Leaser: "Ενοικιαστής",
             Buyer: "Αγοραστής",
             "Address Details": "Λεπτομέρειες Διεύθυνσης",
-            "Priority Feautures": "Αναγκαία Χαρακτηριστικά",
-            "Non-priority Feautures": "Προαιρετικά Χαρακτηριστικά",
+            Feautures: "Χαρακτηριστικά",
             "Matching system enabled": "Ενεργοποιημένο Σύστημα Αντιστοίχισης",
             Cancel: "Ακύρωση",
             Save: "Αποθήκευση",
