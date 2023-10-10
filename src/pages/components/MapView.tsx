@@ -1,5 +1,5 @@
 import { Button, Box, Grid, Paper, Stack, Typography } from "@mui/material";
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import Map, { IMapAddress, IMapMarker } from "src/components/Map/Map";
 import { BookingItem } from "./BookingItem";
 import { IPropertyResultResponse } from "src/types/properties";
@@ -91,10 +91,6 @@ const MapView = ({ data }: Props) => {
                         setActiveMarker={setActiveMarker}
                         onMarkerClick={(marker) => {
                             setSelectedMarker(marker);
-                            console.log(
-                                "Selected Marker set in MapView:",
-                                marker
-                            );
                         }}
                         markers={markers}
                         onDraw={handleDraw}
@@ -138,6 +134,7 @@ const MapView = ({ data }: Props) => {
                                     <BookingItem
                                         activeMarker={activeMarker || -1}
                                         item={item}
+                                        selectedMarker={selectedMarker}
                                     />
                                 )}
                             </Grid>
@@ -176,17 +173,17 @@ export function HorizontalCard({
     const pricePerSqm = price / area;
 
     const router = useRouter();
+    const itemRef = useRef<HTMLDivElement | null>(null);
     const isActive =
         item.location.lat === selectedMarker?.lat &&
         item.location.lng === selectedMarker?.lng;
 
-    console.log("IsActive for Item:", item.id, isActive);
-    useEffect(() => {
-        console.log(
-            "Selected Marker changed in HorizontalCard:",
-            selectedMarker
-        );
-    }, [selectedMarker]);
+    useMemo(() => {
+        if (isActive && itemRef.current) {
+            itemRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [isActive]);
+
     const _carouselImages: ICarouselImage[] = useMemo(() => {
         return images && images.length > 0
             ? images.map((image, index) => ({
@@ -201,7 +198,9 @@ export function HorizontalCard({
 
     return (
         <Grid
+            padding={2}
             component={Paper}
+            ref={itemRef}
             sx={{
                 mt: 2,
                 mx: 1.5,
