@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 // @mui
 import { Button, Paper, Stack } from "@mui/material";
@@ -14,6 +14,7 @@ import {
     useDeleteCardMutation,
     useDeleteColumnMutation,
     useEditColumnMutation,
+    useGetBoardQuery,
 } from "src/services/tickets";
 import KanbanTaskCard from "../KanbanTaskCard";
 
@@ -21,13 +22,14 @@ import KanbanTaskCard from "../KanbanTaskCard";
 
 type Props = {
     column: IKanbanColumn;
-    cards: IKanbanCard[];
-    index: number;
 };
 
 export const DroppableTypeTask = "TASK";
 
-export default function KanbanColumn({ column, cards, index }: Props) {
+export default function KanbanColumn({ column }: Props) {
+    const { data: board } = useGetBoardQuery();
+    const cards = useMemo(() => board?.cards, [board]);
+
     // Columns
     const [editColumn] = useEditColumnMutation();
     const [deleteColumn] = useDeleteColumnMutation();
@@ -82,7 +84,9 @@ export default function KanbanColumn({ column, cards, index }: Props) {
 
                         <Stack spacing={2} sx={{ width: 280 }}>
                             {column.cardOrder.map((cardId, index) => {
-                                const card = cards.find((c) => c.id === cardId);
+                                const card = cards?.find(
+                                    (c) => c.id === cardId
+                                );
 
                                 return card ? (
                                     <KanbanTaskCard

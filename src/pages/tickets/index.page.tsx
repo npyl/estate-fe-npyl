@@ -48,15 +48,12 @@ export default function KanbanPage() {
                 .reverse()
                 .map((columnId, index) => {
                     // get column for id
-                    const column = board.columns.find((c) => c.id === columnId);
+                    const column = board.columns?.find(
+                        (c) => c.id === columnId
+                    );
 
                     return column ? (
-                        <KanbanColumn
-                            index={index}
-                            key={columnId}
-                            column={column}
-                            cards={board.cards}
-                        />
+                        <KanbanColumn key={columnId} column={column} />
                     ) : (
                         <></>
                     );
