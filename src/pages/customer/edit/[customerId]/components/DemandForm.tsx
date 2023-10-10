@@ -368,7 +368,17 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                                 labelId="demo-simple-select-label"
                                 value={parentCategories}
                                 onChange={handleChange10}
-                                renderValue={(selected) => selected.join(", ")}
+                                renderValue={(selected: string[]) => {
+                                    return selected
+                                        .map(
+                                            (key) =>
+                                                parentCategoryEnum?.find(
+                                                    (item) => item.key === key
+                                                )?.value
+                                        )
+                                        .filter(Boolean)
+                                        .join(", ");
+                                }}
                                 input={<OutlinedInput label="Κατάσταση" />}
                                 MenuProps={{
                                     PaperProps: {
@@ -413,9 +423,23 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                                         labelId="demo-simple-select-label"
                                         value={category}
                                         onChange={handleChange11}
-                                        renderValue={(selected) =>
-                                            selected.join(", ")
-                                        }
+                                        renderValue={(selected: string[]) => {
+                                            return selected
+                                                .map((key) => {
+                                                    // Find the corresponding category from subCategoriesMap using the key
+                                                    const category =
+                                                        subCategoriesMap[
+                                                            e
+                                                        ]?.find(
+                                                            (item) =>
+                                                                item.key === key
+                                                        );
+                                                    // Return the value of the category or undefined
+                                                    return category?.value;
+                                                })
+                                                .filter(Boolean) // Remove any undefined or null values
+                                                .join(", "); // Join the values with a comma
+                                        }}
                                         input={
                                             <OutlinedInput label="Κατάσταση" />
                                         }
@@ -461,7 +485,17 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                                 labelId="demo-simple-select-label"
                                 value={furnished}
                                 onChange={handleChange12}
-                                renderValue={(selected) => selected.join(", ")}
+                                renderValue={(selected: string[]) => {
+                                    return selected
+                                        .map(
+                                            (key) =>
+                                                furnishingEnum?.find(
+                                                    (item) => item.key === key
+                                                )?.value
+                                        )
+                                        .filter(Boolean)
+                                        .join(", ");
+                                }}
                                 input={<OutlinedInput label="Κατάσταση" />}
                                 MenuProps={{
                                     PaperProps: {
@@ -496,7 +530,17 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                                 labelId="demo-simple-select-label"
                                 value={state}
                                 onChange={handleChange13}
-                                renderValue={(selected) => selected.join(", ")}
+                                renderValue={(selected: string[]) => {
+                                    return selected
+                                        .map(
+                                            (key) =>
+                                                stateEnum?.find(
+                                                    (item) => item.key === key
+                                                )?.value
+                                        )
+                                        .filter(Boolean)
+                                        .join(", ");
+                                }}
                                 input={<OutlinedInput label="Κατάσταση" />}
                                 MenuProps={{
                                     PaperProps: {
@@ -541,6 +585,12 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                                             value: e.target.value,
                                         })
                                     );
+                                }}
+                                renderValue={(selected) => {
+                                    const item = timeframeEnum?.find(
+                                        (item) => item.key === selected
+                                    );
+                                    return item?.value || "";
                                 }}
                             >
                                 {timeframeEnum.map(

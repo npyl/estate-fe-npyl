@@ -57,7 +57,32 @@ function MyComponent() {
     const [radius, setRadius] = useState<number | number[]>(1);
     const [places, setPlaces] = useState<any>([]);
     const [state, dispatch] = useReducer(reducer, initialState);
-
+    const handleChange = (
+        event: React.MouseEvent<HTMLElement>,
+        newAlignment: string
+    ) => {
+        setAlignment(newAlignment);
+    };
+    const getIconPathForType = (type: string) => {
+        switch (type) {
+            case "hospital":
+                return "https://img.icons8.com/external-nawicon-flat-nawicon/64/external-hospital-location-nawicon-flat-nawicon.png";
+            case "supermarket":
+                return "https://img.icons8.com/external-nawicon-flat-nawicon/64/external-supermarket-location-nawicon-flat-nawicon.png";
+            case "restaurant":
+                return "https://img.icons8.com/external-nawicon-flat-nawicon/64/external-restaurant-location-nawicon-flat-nawicon.png";
+            case "bar":
+                return "https://img.icons8.com/external-bearicons-flat-bearicons/64/000000/external-Pub-location-bearicons-flat-bearicons.png";
+            case "school":
+                return "https://img.icons8.com/external-bearicons-flat-bearicons/64/external-School-location-bearicons-flat-bearicons.png";
+            case "airport":
+                return "https://img.icons8.com/external-bearicons-flat-bearicons/64/external-Airport-location-bearicons-flat-bearicons.png";
+            case "transit_station":
+                return "https://img.icons8.com/external-bearicons-flat-bearicons/64/external-Bus-location-bearicons-flat-bearicons.png";
+            default:
+                return "/static/img/default.png";
+        }
+    };
     const center = useMemo(() => {
         return {
             lat: data?.location.lat || 37.98381,
@@ -169,7 +194,7 @@ function MyComponent() {
                             new google.maps.Marker({
                                 position: result.geometry.location,
                                 map: mapRef.current,
-                                icon: "/static/img/hospital.png",
+                                icon: getIconPathForType(alignment),
                             });
                         });
                     }
@@ -181,13 +206,6 @@ function MyComponent() {
     const handleSliderRadius = useDebouncedCallback((e) => {
         setRadius(e);
     }, 300);
-
-    const handleChange = (
-        event: React.MouseEvent<HTMLElement>,
-        newAlignment: string
-    ) => {
-        setAlignment(newAlignment);
-    };
 
     if (loadError) {
         return <div>Error loading maps</div>;
