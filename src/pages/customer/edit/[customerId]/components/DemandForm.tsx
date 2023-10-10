@@ -51,7 +51,6 @@ import { useTranslation } from "react-i18next";
 import { AreaOfPreference } from "./DemandForm/AreaOfPreference";
 import { LabelSelect } from "./LabelSelect";
 import PriorityFeatures from "./PriorityFeatures";
-import NonPriorityFeatures from "./NonPriorityFeatures";
 import { KeyValue } from "src/types/KeyValue";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { DemandFormSlider } from "./DemandForm/components/DemandFormSlider";
@@ -788,18 +787,11 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
             {parentCategories &&
                 parentCategories.length > 0 &&
                 (parentCategories as string[]).map((e, featuresIndex) => (
-                    <>
-                        <PriorityFeatures
-                            key={`${featuresIndex}_1`}
-                            index={index}
-                            parentCategory={e}
-                        />
-                        <NonPriorityFeatures
-                            key={`${featuresIndex}_2`}
-                            index={index}
-                            parentCategory={e}
-                        />
-                    </>
+                    <PriorityFeatures
+                        key={`${featuresIndex}_1`}
+                        index={index}
+                        parentCategory={e}
+                    />
                 ))}
         </>
     );

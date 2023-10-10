@@ -1,4 +1,4 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import { ICustomer, ICustomerPOST } from "src/types/customer";
 import {
     IDemand,
@@ -32,48 +32,6 @@ const initialDemandState: IDemandPOST = {
         cities: [],
     },
     priorityFeatures: {
-        panoramicView: false,
-        seaView: false,
-        mountainView: false,
-        seaFront: false,
-        walkableDistanceToBeach: false,
-        quietArea: false,
-        bright: false,
-        nearBusRoute: false,
-        smartHome: false,
-        guestroom: false,
-        office: false,
-        homeCinema: false,
-        combinedKitchenAndDiningArea: false,
-        soundInsulation: false,
-        thermalInsulation: false,
-        heatedPool: false,
-        indoorPool: false,
-        organizedGarden: false,
-        jacuzzi: false,
-        well: false,
-        drilling: false,
-        masonryFence: false,
-        accessForDisabled: false,
-        alarmSystem: false,
-        has24HoursSecurity: false,
-        cctv: false,
-        internet: false,
-        fireDetector: false,
-        independentHeatingPerRoom: false,
-        adaptingToTheGround: false,
-        barbeque: false,
-        pool: false,
-        view: false,
-        facade: false,
-        corner: false,
-        veranda: false,
-        tents: false,
-        withinResidentialZone: false,
-        withinCityPlan: false,
-        loadingDock: false,
-    },
-    nonPriorityFeatures: {
         panoramicView: false,
         seaView: false,
         mountainView: false,
@@ -274,19 +232,6 @@ const slice = createSlice({
             state.demands[index].priorityFeatures[key] =
                 state.demands[index].priorityFeatures[key] !== null
                     ? !state.demands[index].priorityFeatures[key]
-                    : true;
-        },
-
-        // non-priority features
-        setNonPriorityFeature(
-            state: customerState,
-            action: ISetFeatureAction
-        ): void {
-            const { index, key } = action.payload;
-            if (state.demands[index] === undefined) return;
-            state.demands[index].nonPriorityFeatures[key] =
-                state.demands[index].nonPriorityFeatures[key] !== null
-                    ? !state.demands[index].nonPriorityFeatures[key]
                     : true;
         },
 
@@ -554,7 +499,6 @@ const slice = createSlice({
             const demandMapper = (demand: IDemand): IDemandPOST => ({
                 filters: demandFiltersMapper(demand.filters),
                 priorityFeatures: demand.priorityFeatures,
-                nonPriorityFeatures: demand.nonPriorityFeatures,
                 timeframe: demand.timeframe.key,
                 shapes: demand.shapes,
             });
@@ -704,8 +648,6 @@ export const {
 
     // priority features
     setPriorityFeature,
-    // non-priority features
-    setNonPriorityFeature,
 
     setInitialState,
     resetState,
@@ -768,9 +710,6 @@ export const selectLongitude = ({ customer }: RootState) =>
 // Priority Features
 export const selectPriorityFeatures = ({ customer }: RootState) =>
     customer.demands.map((d) => d.priorityFeatures);
-
-export const selectNonPriorityFeatures = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.nonPriorityFeatures);
 
 export const selectMinBedrooms = ({ customer }: RootState) =>
     customer.demands.map((d) => d.filters?.minBedrooms);

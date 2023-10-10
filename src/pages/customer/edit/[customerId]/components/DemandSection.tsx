@@ -49,6 +49,7 @@ const DemandSection: FC = () => {
         dispatch(removeDemands(i)); // remove demand at index
         dispatch(deletePropertyCode(i));
     };
+
     useEffect(() => {
         // NOTE: when a customer is first created, its demands array is empty; create one
         if (!leaser && !buyer) return;
@@ -112,7 +113,9 @@ const DemandSection: FC = () => {
                 />
             </Stack>
 
-            <DemandForm index={index} />
+            {demands.length > index && ( // prevent loading DemandForm too fast
+                <DemandForm index={index} />
+            )}
         </Paper>
     );
 };

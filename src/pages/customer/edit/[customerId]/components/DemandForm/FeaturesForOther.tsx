@@ -1,24 +1,16 @@
 import { Grid } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import {
-    selectNonPriorityFeatures,
-    selectPriorityFeatures,
-} from "src/slices/customer";
+import { selectPriorityFeatures } from "src/slices/customer";
 import CheckboxItem from "./components/CheckboxItem";
 import { IFeatureSectionProps } from "./types/FeatureSectionProps";
 
 const FeaturesForOtherSection = (props: IFeatureSectionProps) => {
-    const { index, priorityFeaturesMode, onChange: handleChange } = props;
+    const { index, onChange: handleChange } = props;
 
     const { t } = useTranslation();
 
-    const priorityFeatures = useSelector(selectPriorityFeatures)[index];
-    const nonPriorityFeatures = useSelector(selectNonPriorityFeatures)[index];
-
-    const features = priorityFeaturesMode
-        ? priorityFeatures
-        : nonPriorityFeatures;
+    const features = useSelector(selectPriorityFeatures)[index];
 
     return (
         <Grid item xs={12} padding={1}>
