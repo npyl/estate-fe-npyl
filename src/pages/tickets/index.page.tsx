@@ -89,22 +89,16 @@ export default function KanbanPage() {
             const srcColumnId = columnId(source?.droppableId);
             const dstColumnId = columnId(destination?.droppableId);
 
-            console.log(
-                "srcCardId: ",
-                sourceCardId,
-                " srcColId: ",
-                srcColumnId,
-                " dstColumnId: ",
-                dstColumnId
-            );
-
-            if (!sourceCardId || !dstColumnId || !srcColumnId) return;
+            if (
+                sourceCardId === null ||
+                dstColumnId === null ||
+                srcColumnId === null
+            )
+                return;
 
             if (srcColumnId === dstColumnId) {
                 const newIndex = destination?.index;
-                if (!newIndex) return;
-
-                console.log("Reorder");
+                if (newIndex === null || newIndex === undefined) return;
 
                 // reorder inside same column
                 reorderCard({
@@ -113,8 +107,6 @@ export default function KanbanPage() {
                     columnId: dstColumnId,
                 });
             } else {
-                console.log("Move");
-
                 // move to different column
                 moveCard({ cardId: sourceCardId, columnId: dstColumnId });
             }
