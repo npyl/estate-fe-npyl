@@ -66,19 +66,19 @@ function MyComponent() {
     const getIconPathForType = (type: string) => {
         switch (type) {
             case "hospital":
-                return "https://img.icons8.com/external-nawicon-flat-nawicon/64/external-hospital-location-nawicon-flat-nawicon.png";
+                return "https://img.icons8.com/external-bearicons-flat-bearicons/40/000000/external-Hospital-location-bearicons-flat-bearicons.png";
             case "supermarket":
-                return "https://img.icons8.com/external-nawicon-flat-nawicon/64/external-supermarket-location-nawicon-flat-nawicon.png";
+                return "https://img.icons8.com/external-bearicons-flat-bearicons/40/external-Market-location-bearicons-flat-bearicons.png";
             case "restaurant":
-                return "https://img.icons8.com/external-nawicon-flat-nawicon/64/external-restaurant-location-nawicon-flat-nawicon.png";
+                return "https://img.icons8.com/external-bearicons-flat-bearicons/40/external-Restaurant-location-bearicons-flat-bearicons.png";
             case "bar":
-                return "https://img.icons8.com/external-bearicons-flat-bearicons/64/000000/external-Pub-location-bearicons-flat-bearicons.png";
+                return "https://img.icons8.com/external-bearicons-flat-bearicons/40/000000/external-Pub-location-bearicons-flat-bearicons.png";
             case "school":
-                return "https://img.icons8.com/external-bearicons-flat-bearicons/64/external-School-location-bearicons-flat-bearicons.png";
+                return "https://img.icons8.com/external-bearicons-flat-bearicons/40/000000/external-School-location-bearicons-flat-bearicons.png";
             case "airport":
-                return "https://img.icons8.com/external-bearicons-flat-bearicons/64/external-Airport-location-bearicons-flat-bearicons.png";
+                return "https://img.icons8.com/external-bearicons-flat-bearicons/40/000000/external-Airport-location-bearicons-flat-bearicons.png";
             case "transit_station":
-                return "https://img.icons8.com/external-bearicons-flat-bearicons/64/external-Bus-location-bearicons-flat-bearicons.png";
+                return "https://img.icons8.com/external-bearicons-flat-bearicons/40/000000/external-Bus-location-bearicons-flat-bearicons.png";
             default:
                 return "/static/img/default.png";
         }
@@ -289,7 +289,7 @@ function MyComponent() {
             </div>
             <Box width={"40vw"} height={"65vh"} overflow={"auto"}>
                 <RelatedPlaces
-                    title="Κοντινότερα σημεία"
+                    title="Closest points"
                     list={places}
                     duration={state}
                 />
