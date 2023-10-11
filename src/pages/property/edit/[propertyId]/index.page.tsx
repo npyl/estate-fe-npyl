@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
@@ -24,22 +24,24 @@ import Form from "./Form";
 import { useGetPropertyByIdQuery } from "src/services/properties";
 
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 import { LogoProgressIndicator } from "src/components/LogoProgressIndicator";
 import { useTabsContext } from "src/contexts/tabs";
 
 const EditPropertyPage: NextPage = () => {
     const dispatch = useDispatch();
     const router = useRouter();
-    const { removeTab, pushTab } = useTabsContext();
+    const { pushTab } = useTabsContext();
     const { propertyId } = router.query;
 
     // INFO: lazy is used on * because addImage doesn't cause invalidate (in contradiction to editImage)
 
     const { data } = useGetPropertyByIdQuery(+propertyId!);
-    const [getImages] = useLazyGetPropertyImagesQuery(); // *
-    const [getBlueprints] = useLazyGetPropertyBlueprintsQuery(); // *
-    const [edit, { isSuccess: isEditSuccess, isLoading: isEditLoading }] =
-        useEditPropertyMutation();
+    const [getImages, { isSuccess: isNotesSuccess }] =
+        useLazyGetPropertyImagesQuery(); // *
+    const [getBlueprints, { isSuccess: isBluePrintsSuccess }] =
+        useLazyGetPropertyBlueprintsQuery(); // *
+    const [edit, { isLoading: isEditLoading }] = useEditPropertyMutation();
 
     useEffect(() => {
         if (data && propertyId) {
@@ -48,42 +50,26 @@ const EditPropertyPage: NextPage = () => {
                 id: (propertyId + "edit") as string,
                 label: `New property ${propertyId}`,
             });
+            getImages(+propertyId!);
+            getBlueprints(+propertyId!);
         }
     }, [data, propertyId]);
+
     const body = useSelector(selectAll);
-    // everythingIsClear; we can now setInitialState
-    const [everythingIsClear, setEverythingIsClear] = useState(false);
+    const bodyRef = useRef(body);
 
     useEffect(() => {
-        if (!everythingIsClear) return;
-        if (!data) return;
-
-        dispatch(setInitialNotesState(data.notes));
-        dispatch(setInitialState(data));
-        dispatch(
-            setInitialFilesState({
-                propertyImages: data?.images,
-                propertyBlueprints: data?.blueprints,
-            })
-        );
-    }, [everythingIsClear, data]);
-
-    useEffect(() => {
-        getImages(+propertyId!);
-        getBlueprints(+propertyId!);
-    }, [propertyId]);
-
-    useEffect(() => {
-        // clear store before getting data
-        resetEverything();
-        setEverythingIsClear(true); // prevent race condition between reset and setInitialState
-    }, []);
-
-    useEffect(() => {
-        if (isEditSuccess) {
-            router.push(`/property/${propertyId}`);
+        if (isNotesSuccess && isBluePrintsSuccess && data) {
+            dispatch(setInitialNotesState(data.notes));
+            dispatch(setInitialState(data));
+            dispatch(
+                setInitialFilesState({
+                    propertyImages: data?.images,
+                    propertyBlueprints: data?.blueprints,
+                })
+            );
         }
-    }, [isEditSuccess]);
+    }, [isNotesSuccess, isBluePrintsSuccess, data, propertyId]);
 
     const resetEverything = () => {
         dispatch(resetFiles());
@@ -92,28 +78,34 @@ const EditPropertyPage: NextPage = () => {
         dispatch(resetState());
     };
 
-    const performUpload = () => {
-        if (!body.code) {
-            alert("Property code is required!");
-            return;
-        }
-
-        edit({ id: +propertyId!, body: body });
-    };
-
-    isEditSuccess && router.push("/");
-
-    const handleCancel = () => {
+    const handleRedirect = () => {
         router.push(`/property/${propertyId}`);
     };
 
+    useEffect(() => {
+        bodyRef.current = body;
+    }, [body]);
+
+    useEffect(() => {
+        return () => {
+            if (!bodyRef.current.code) {
+                toast.error("Edit operation canceled. Code ID is required");
+            } else {
+                edit({ id: +propertyId!, body: bodyRef.current }).then(() => {
+                    // removeTab(propertyId as string);
+                    resetEverything();
+                });
+            }
+        };
+    }, []);
+
     return (
         <>
-            {everythingIsClear && (
+            {data && (
                 <Form
-                    performUpload={performUpload}
+                    performUpload={handleRedirect}
                     resetEverything={resetEverything}
-                    handleCancel={handleCancel}
+                    handleCancel={handleRedirect}
                 />
             )}
 
