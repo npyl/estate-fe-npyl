@@ -13,6 +13,11 @@ interface MoveCardProps {
     cardId: number;
     columnId: number;
 }
+interface ReorderCardProps {
+    cardId: number;
+    columnId: number;
+    position: number;
+}
 
 export const tickets = createApi({
     reducerPath: "tickets",
@@ -96,6 +101,14 @@ export const tickets = createApi({
             }),
             invalidatesTags: ["Board"],
         }),
+        reorderCard: builder.mutation<void, ReorderCardProps>({
+            query: ({ cardId, position, columnId }: ReorderCardProps) => ({
+                url: `/card/reorder/column/${columnId}`,
+                method: "POST",
+                params: { card: cardId, position: position },
+            }),
+            invalidatesTags: ["Board"],
+        }),
         deleteCard: builder.mutation<void, number>({
             query: (cardId: number) => ({
                 url: `/card/${cardId}`,
@@ -120,5 +133,6 @@ export const {
     useAddCardMutation,
     useEditCardMutation,
     useMoveCardMutation,
+    useReorderCardMutation,
     useDeleteCardMutation,
 } = tickets;

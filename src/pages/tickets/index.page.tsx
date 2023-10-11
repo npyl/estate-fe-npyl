@@ -10,7 +10,11 @@ import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 // sections
 import { KanbanColumn, KanbanColumnAdd } from "./components";
 
-import { useGetBoardQuery, useMoveCardMutation } from "src/services/tickets";
+import {
+    useGetBoardQuery,
+    useMoveCardMutation,
+    useReorderCardMutation,
+} from "src/services/tickets";
 import { SkeletonKanbanColumn } from "src/components/skeleton";
 import { useMemo } from "react";
 import { TwoDimentionsDnd } from "src/components/TwoDimentionsDnd";
@@ -40,6 +44,8 @@ const columnId = (str?: string) => {
 export default function KanbanPage() {
     const { data: board, isFetching: isBoardFetching } = useGetBoardQuery();
     const [moveCard, { isLoading: isMoveLoading }] = useMoveCardMutation();
+    const [reorderCard, { isLoading: isReorderLoading }] =
+        useReorderCardMutation();
 
     const items = useMemo(
         () =>
@@ -80,17 +86,45 @@ export default function KanbanPage() {
 
         if (type === DroppableTypeTask) {
             const sourceCardId = cardId(draggableId);
-            const destinationColumnId = columnId(destination?.droppableId);
+            const srcColumnId = columnId(source?.droppableId);
+            const dstColumnId = columnId(destination?.droppableId);
 
-            if (!sourceCardId || !destinationColumnId) return;
+            console.log(
+                "srcCardId: ",
+                sourceCardId,
+                " srcColId: ",
+                srcColumnId,
+                " dstColumnId: ",
+                dstColumnId
+            );
 
-            moveCard({ cardId: sourceCardId, columnId: destinationColumnId });
+            if (!sourceCardId || !dstColumnId || !srcColumnId) return;
+
+            if (srcColumnId === dstColumnId) {
+                const newIndex = destination?.index;
+                if (!newIndex) return;
+
+                console.log("Reorder");
+
+                // reorder inside same column
+                reorderCard({
+                    cardId: sourceCardId,
+                    position: newIndex,
+                    columnId: dstColumnId,
+                });
+            } else {
+                console.log("Move");
+
+                // move to different column
+                moveCard({ cardId: sourceCardId, columnId: dstColumnId });
+            }
         }
     };
 
     return (
         <Stack direction={"row"} mt={3} flex={1} gap={3}>
-            {!(isMoveLoading || isBoardFetching) && items ? (
+            {!(isMoveLoading || isReorderLoading || isBoardFetching) &&
+            items ? (
                 <TwoDimentionsDnd
                     items={items || []}
                     columns={3}

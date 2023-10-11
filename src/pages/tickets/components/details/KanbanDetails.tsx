@@ -108,6 +108,17 @@ export default function KanbanDetails({
         editCard({ id: task.id, userIds: newUserIds });
     };
 
+    useEffect(() => {
+        if (
+            !task.id ||
+            !taskName ||
+            taskName === task.name // default value
+        )
+            return;
+
+        editCard({ id: task.id, name: taskName });
+    }, [task.id, taskName]);
+
     const handleOpenAssignees = () => setOpenAssignees(true);
     const handleCloseAssignees = () => setOpenAssignees(false);
 
