@@ -7,7 +7,7 @@ import PreviewImage from "src/components/image/PreviewImage";
 import { LabeledImage } from "src/components/image";
 
 import { IPropertyImage } from "src/types/file";
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useRef } from "react";
 
 import React from "react";
 import { Grid } from "@mui/material";
