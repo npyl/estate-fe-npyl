@@ -2,7 +2,6 @@ import { Box, Grid, Stack, Tab, Tabs } from "@mui/material";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import {
@@ -34,15 +33,18 @@ type TabConfig = {
 };
 
 const CustomerView: NextPage = () => {
-    // customer
     const router = useRouter();
-    const dispatch = useDispatch();
     const { t } = useTranslation();
     const { removeTab, pushTab } = useTabsContext();
+
     const { customerId } = router.query;
-    const [value, setValue] = useState(0);
 
     const { data } = useGetCustomerByIdQuery(+customerId!);
+    const [deleteCustomer, { isSuccess: isDeleteSuccess }] =
+        useDeleteCustomerMutation();
+
+    const [value, setValue] = useState(0);
+
     useEffect(() => {
         if (data && customerId) {
             pushTab({
@@ -53,8 +55,12 @@ const CustomerView: NextPage = () => {
         }
     }, [data, customerId]);
 
-    const [deleteCustomer, { isSuccess: isDeleteSuccess }] =
-        useDeleteCustomerMutation();
+    useEffect(() => {
+        if (isDeleteSuccess) {
+            router.push("/customer");
+            removeTab(customerId as string);
+        }
+    }, [isDeleteSuccess]);
 
     const isSellerOrLessor = data?.seller || data?.lessor;
     const isBuyerOrLeaser = data?.buyer || data?.leaser;
@@ -64,12 +70,6 @@ const CustomerView: NextPage = () => {
         setValue(newValue);
     const handleEdit = () => router.push(`/customer/edit/${customerId}`);
     const handleDelete = () => deleteCustomer(+customerId!);
-
-    if (isDeleteSuccess) {
-        router.push("/customer");
-
-        removeTab(customerId as string);
-    }
 
     const tabsConfig = [
         {
