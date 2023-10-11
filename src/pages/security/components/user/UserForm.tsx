@@ -18,14 +18,13 @@ import {
     DialogTitle,
     Grid,
     MenuItem,
-    TextField,
 } from "@mui/material";
 import { useMemo, useState } from "react";
 import { useSecurityContext } from "src/contexts/security";
 import { useAllUsersQuery } from "src/services/user";
 import { IUser } from "src/types/user";
 import { FormProvider, useForm } from "react-hook-form";
-import { RHFTextField } from "src/components/hook-form";
+import { RHFSelect, RHFTextField } from "src/components/hook-form";
 
 interface UserFormProps {
     open: boolean;
@@ -162,19 +161,26 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
                         {...methods}
                         // handleSubmit={handleSubmit(onSubmit)}
                     >
-                        <Grid container flex={1} direction={"row"}>
-                            <Grid xs={6}>
-                                <Grid container>
+                        <Grid
+                            container
+                            flex={1}
+                            direction={"row"}
+                            p={1}
+                            spacing={2}
+                        >
+                            <Grid item xs={6}>
+                                <Grid container direction={"column"} gap={2}>
                                     <RHFTextField
+                                        fullWidth={false}
                                         name="firstName"
                                         label="First Name"
-                                        margin="normal"
                                         value={firstName}
                                         onChange={(e) =>
                                             setFirstName(e.target.value)
                                         }
                                     />
                                     <RHFTextField
+                                        fullWidth={false}
                                         name="email"
                                         label="Email"
                                         variant="outlined"
@@ -184,27 +190,27 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
                                         }
                                     />
                                     <RHFTextField
+                                        fullWidth={false}
+                                        name="businessPhone"
                                         label="Business Phone"
-                                        margin="normal"
                                         value={businessPhone}
                                         onChange={(e) =>
                                             setBusinessPhone(e.target.value)
                                         }
                                     />
                                     <RHFTextField
+                                        fullWidth={false}
+                                        name="businessPhone"
                                         label="Office Phone"
-                                        margin="normal"
                                         value={officePhone}
                                         onChange={(e) =>
                                             setOfficePhone(e.target.value)
                                         }
-                                        onChange={(value) =>
-                                            setOfficePhone(value)
-                                        }
                                     />
-                                    <TextField
+                                    <RHFTextField
+                                        fullWidth={false}
+                                        name="businessPhone"
                                         label="Address"
-                                        margin="normal"
                                         variant="outlined"
                                         value={address}
                                         onChange={(e) =>
@@ -212,22 +218,27 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
                                         }
                                     />
                                     <RHFTextField
+                                        fullWidth={false}
+                                        name="zipCode"
                                         label="Zip code"
-                                        margin="normal"
                                         variant="outlined"
                                         value={zipCode}
-                                        onChange={(value) => setZipCode(value)}
+                                        onChange={(e) =>
+                                            setZipCode(e.target.value)
+                                        }
                                     />
                                     <RHFTextField
+                                        fullWidth={false}
+                                        name="afm"
                                         label="ΑΦΜ"
-                                        margin="normal"
                                         variant="outlined"
                                         value={afm}
-                                        onChange={(value) => setAfm(value)}
+                                        onChange={(e) => setAfm(e.target.value)}
                                     />
-                                    <TextField
+                                    <RHFTextField
+                                        fullWidth={false}
+                                        name="doy"
                                         label="ΔΟΥ"
-                                        margin="normal"
                                         variant="outlined"
                                         value={doy}
                                         onChange={(event) =>
@@ -235,69 +246,84 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
                                         }
                                     />
                                     <RHFTextField
+                                        fullWidth={false}
+                                        name="gemh"
                                         label="ΓΕΜΥ"
-                                        margin="normal"
                                         variant="outlined"
                                         value={gemh}
-                                        onChange={(value) => setGemh(value)}
+                                        onChange={(e) =>
+                                            setGemh(e.target.value)
+                                        }
                                     />
                                 </Grid>
                             </Grid>
-                            <Grid xs={6}>
-                                <Grid container>
+                            <Grid item xs={6}>
+                                <Grid container direction={"column"} gap={2}>
                                     <RHFTextField
+                                        fullWidth={false}
+                                        name="lastName"
                                         label="Last Name"
-                                        margin="normal"
                                         variant="outlined"
                                         value={lastName}
-                                        onChange={(value) => setLastName(value)}
-                                        inputProps={{ maxLength: 50 }}
+                                        onChange={(e) =>
+                                            setLastName(e.target.value)
+                                        }
                                     />
                                     <RHFTextField
+                                        fullWidth={false}
+                                        name="mobilePhone"
                                         label="Mobile Phone"
-                                        margin="normal"
                                         variant="outlined"
                                         value={mobilePhone}
-                                        onChange={(value) =>
-                                            setMobilePhone(value)
+                                        onChange={(e) =>
+                                            setMobilePhone(e.target.value)
                                         }
                                     />
                                     <RHFTextField
+                                        fullWidth={false}
+                                        name="homePhone"
                                         label="Home Phone"
-                                        margin="normal"
                                         variant="outlined"
                                         value={homePhone}
-                                        onChange={(value) =>
-                                            setHomePhone(value)
+                                        onChange={(e) =>
+                                            setHomePhone(e.target.value)
                                         }
                                     />
                                     <RHFTextField
+                                        fullWidth={false}
+                                        name="callCenterNumber"
                                         label="Call Center Number"
-                                        margin="normal"
                                         variant="outlined"
                                         value={callCenterNumber}
-                                        onChange={(value) =>
-                                            setCallCenterNumber(value)
+                                        onChange={(e) =>
+                                            setCallCenterNumber(e.target.value)
                                         }
                                     />
                                     <RHFTextField
+                                        fullWidth={false}
+                                        name="city"
                                         label="City"
-                                        margin="normal"
                                         variant="outlined"
                                         value={city}
-                                        onChange={(value) => setCity(value)}
+                                        onChange={(e) =>
+                                            setCity(e.target.value)
+                                        }
                                     />
                                     <RHFTextField
+                                        fullWidth={false}
+                                        name="region"
                                         label="Region"
-                                        margin="normal"
                                         variant="outlined"
                                         value={region}
-                                        onChange={(value) => setRegion(value)}
+                                        onChange={(e) =>
+                                            setRegion(e.target.value)
+                                        }
                                     />
-                                    <TextField
+                                    <RHFSelect
                                         select
+                                        fullWidth={false}
+                                        name="status"
                                         label="Status"
-                                        margin="normal"
                                         variant="outlined"
                                         value={status}
                                         onChange={(e) =>
@@ -310,7 +336,7 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
                                         <MenuItem value="Inactive">
                                             Inactive
                                         </MenuItem>
-                                    </TextField>
+                                    </RHFSelect>
                                 </Grid>
                             </Grid>
                         </Grid>
