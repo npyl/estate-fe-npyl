@@ -168,7 +168,7 @@ const FeaturesSection: React.FC<any> = (props) => {
                     justifyContent: "center",
                 }}
             >
-                <Typography variant="h6">{t("Feautures")}</Typography>
+                <Typography variant="h6">{t("Features")}</Typography>
             </Box>
 
             <Grid item xs={12} padding={1}>

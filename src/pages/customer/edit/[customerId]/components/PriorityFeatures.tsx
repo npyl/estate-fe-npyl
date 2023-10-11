@@ -35,7 +35,7 @@ const PriorityFeatures = ({ index, parentCategory }: PriorityFeaturesProps) => {
                     justifyContent: "left",
                 }}
             >
-                <Typography variant="h6">{t("Feautures")}</Typography>
+                <Typography variant="h6">{t("Features")}</Typography>
             </Box>
 
             <Grid item xs={12} padding={1}>
