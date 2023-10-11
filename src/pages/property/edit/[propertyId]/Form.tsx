@@ -1,13 +1,13 @@
-import { Grid, Button } from "@mui/material";
+import { Delete as DeleteIcon, Send as SendIcon } from "@mui/icons-material";
 import CancelIcon from "@mui/icons-material/Cancel";
+import { Button, Grid } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { selectParentCategory } from "src/slices/property";
 import CommercialFormSection from "./components/CommercialForm";
 import LandFormSection from "./components/LandForm";
 import OtherFormSection from "./components/OtherForm";
 import ResidentialFormSection from "./components/ResidentialForm";
-import { Delete as DeleteIcon, Send as SendIcon } from "@mui/icons-material";
-import { useTranslation } from "react-i18next";
 
 interface IFormProps {
     resetEverything: () => void;
@@ -28,7 +28,7 @@ export default function Form({
         // create our property draft
         performUpload();
     };
-
+    console.log(parentCategory);
     return (
         <Grid container spacing={1} paddingLeft={2} paddingTop={3}>
             {parentCategory !== "" && (

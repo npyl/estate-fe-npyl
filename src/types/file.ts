@@ -7,6 +7,7 @@ export interface IFileResponse {
 export interface IPropertyImagePOST {
     id?: number;
     filename?: string;
+    size?: number;
     contentType?: string;
     hidden?: boolean;
     description?: string;

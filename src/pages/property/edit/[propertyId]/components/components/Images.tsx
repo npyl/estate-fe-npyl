@@ -62,12 +62,14 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
     ): Promise<{ cdnUrl: string; key: string }> => {
         const filename = image.name;
         const contentType = image.type;
+        const size = image.size;
 
         if (!filename || !contentType)
             throw new Error("filename or contentType cannot be null");
 
         const body: IPropertyImagePOST = {
             filename,
+            // size, TODO
             contentType,
         };
 
