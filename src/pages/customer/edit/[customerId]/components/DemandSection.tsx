@@ -41,7 +41,7 @@ const DemandSection: FC = () => {
             setIndex(newValue);
         }
     };
-    const handleCreateTab = () => dispatch(addDemand({}));
+    const handleCreateTab = () => dispatch(addDemand());
     const handleDeleteTab = (i: number, event: React.MouseEvent) => {
         if (i === 0 && demands.length === 1) return;
 
@@ -53,7 +53,10 @@ const DemandSection: FC = () => {
     useEffect(() => {
         // NOTE: when a customer is first created, its demands array is empty; create one
         if (!leaser && !buyer) return;
-        if (demands.length === 0) dispatch(addDemand({}));
+        if (demands.length === 0) {
+            dispatch(addDemand());
+            setIndex(0);
+        }
     }, [leaser, buyer, demands.length]);
 
     // show DemandSection only if leaser or buyer
