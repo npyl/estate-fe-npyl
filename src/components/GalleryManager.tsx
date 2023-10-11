@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { SoftButton } from "./SoftButton";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useEditPropertyImageMutation } from "src/services/properties";
 
 import CarouselSimple from "./CarouselSimple";
@@ -25,13 +25,21 @@ interface IGalleryManager {
     deleteOnGoing: boolean;
     currentImage?: IPropertyImage;
     images: IPropertyImage[];
+    onChange: (image: ICarouselImage) => void;
     onDelete: (file: IPropertyImage) => void;
     onClose: () => void;
 }
 
 const GalleryManager: React.FC<IGalleryManager> = (props) => {
-    const { open, deleteOnGoing, currentImage, images, onDelete, onClose } =
-        props;
+    const {
+        open,
+        deleteOnGoing,
+        currentImage,
+        images,
+        onChange,
+        onDelete,
+        onClose,
+    } = props;
 
     const router = useRouter();
 
@@ -39,9 +47,11 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
 
     const { propertyId } = router.query;
 
-    const [currentKey, setCurrentKey] = useState(
-        currentImage?.key || images[0].key
+    const currentKey = useMemo(
+        () => currentImage?.key || images[0].key,
+        [currentImage?.key, images[0].key]
     );
+
     const [showControl, setShowControl] = useState(false);
 
     // default values
@@ -75,16 +85,6 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
         [images]
     );
 
-    const handleImageChange = (newImage: ICarouselImage) => {
-        /*
-        INFO: the indexes used inside the carousel are not updated in a consistent manner,
-                this is why we receive the currentImage on "afterChange", and we get the index that
-                translates to our array.
-        */
-        handleClear();
-        setCurrentKey(newImage.id);
-    };
-
     const handleUpdate = useCallback(() => {
         // update
         editImage({
@@ -99,6 +99,11 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
 
         setShowControl(false);
     }, [currentKey, description, title, hidden]);
+
+    const handleImageChange = (i: ICarouselImage) => {
+        handleClear();
+        onChange(i);
+    };
 
     const handleClear = () => {
         setTitle("");
