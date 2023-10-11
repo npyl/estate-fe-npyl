@@ -7,18 +7,23 @@ import {
     Droppable,
 } from "react-beautiful-dnd";
 
+export interface TwoDimentionsDndItem {
+    id: number;
+    value: any;
+}
+
 interface TwoDimentionsDndProps {
-    items: any[];
+    items: TwoDimentionsDndItem[];
     columns: number;
     onDragEnd: (results: DropResult) => void;
 }
 
-const chunks = (arr: any[], size: number) =>
+const chunks = (arr: TwoDimentionsDndItem[], size: number) =>
     Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
         arr.slice(i * size, i * size + size)
     );
 
-const DroppableTypeItem = "ITEM";
+export const DroppableTypeItem = "ITEM";
 
 export const TwoDimentionsDnd: FC<TwoDimentionsDndProps> = ({
     items,
@@ -45,9 +50,9 @@ export const TwoDimentionsDnd: FC<TwoDimentionsDndProps> = ({
                                 <Stack direction={"row"} gap={3}>
                                     {row.map((item, j) => (
                                         <Draggable
-                                            draggableId={`r${i}-c${j}`}
+                                            draggableId={`item-${item.id}`}
                                             key={j}
-                                            index={(i + 1) * (j + 1)} // ?
+                                            index={j}
                                         >
                                             {(provided) => (
                                                 <div
@@ -55,7 +60,7 @@ export const TwoDimentionsDnd: FC<TwoDimentionsDndProps> = ({
                                                     {...provided.dragHandleProps}
                                                     ref={provided.innerRef}
                                                 >
-                                                    {item}
+                                                    {item.value}
                                                 </div>
                                             )}
                                         </Draggable>

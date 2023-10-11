@@ -9,6 +9,11 @@ interface EditColumnProps {
     id: number;
     name: string;
 }
+interface ReorderColumnProps {
+    columnId: number;
+    position: number;
+}
+
 interface MoveCardProps {
     cardId: number;
     columnId: number;
@@ -66,6 +71,14 @@ export const tickets = createApi({
                 url: "/column",
                 method: "PUT",
                 body,
+            }),
+            invalidatesTags: ["Board"],
+        }),
+        reorderColumn: builder.mutation<void, ReorderColumnProps>({
+            query: ({ columnId, position }: ReorderColumnProps) => ({
+                url: "/column/reorder",
+                method: "POST",
+                params: { column: columnId, position },
             }),
             invalidatesTags: ["Board"],
         }),
@@ -127,6 +140,7 @@ export const {
     // Columns
     useAddColumnMutation,
     useEditColumnMutation,
+    useReorderColumnMutation,
     useDeleteColumnMutation,
 
     // Cards
