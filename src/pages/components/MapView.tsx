@@ -1,10 +1,6 @@
 import { Button, Box, Grid, Paper, Stack, Typography } from "@mui/material";
-import { useState, useMemo, useEffect } from "react";
-import Map, {
-    IMapAddress,
-    IMapCoordinates,
-    IMapMarker,
-} from "src/components/Map/Map";
+import { useState, useMemo, useEffect, useRef } from "react";
+import Map, { IMapAddress, IMapMarker } from "src/components/Map/Map";
 import { BookingItem } from "./BookingItem";
 import { IPropertyResultResponse } from "src/types/properties";
 import { useRouter } from "next/router";
@@ -13,69 +9,25 @@ import ICarouselImage from "src/components/carousel/types";
 import CarouselSimple from "src/components/CarouselSimple";
 import FlipIcon from "@mui/icons-material/Flip";
 import { DrawShape, StopDraw } from "src/components/Map/types";
-import { dispatch } from "src/store";
+import { isPointInsideShape } from "src/components/Map/util";
 
 interface Props {
     data: IPropertyResultResponse[];
 }
 
 const MapView = ({ data }: Props) => {
-    const [properties, setProperties] = useState(data);
+    const [shape, setShape] = useState<DrawShape | StopDraw>();
+
     const [activeMarker, setActiveMarker] = useState(null);
     const [orientation, setOrientation] = useState(false); // true -> vertical, false -> horizontal)
     const [selectedMarker, setSelectedMarker] = useState<IMapMarker | null>(
         null
     );
 
-    const locations = useMemo(() => {
-        return properties.map((property) => property.location);
-    }, [properties]);
-
-    const [lat, setLat] = useState<number | null>(null); // you can set an initial value if you have one
-    const [lng, setLng] = useState<number | null>(null);
-    const [markers, setMarkers] = useState<IMapMarker[]>([]);
-    const toggleOrientation = () => setOrientation(!orientation);
-
-    const [mainMarker, setMainMarker] = useState<IMapMarker>({
-        lat: lat ? lat : 37.98381,
-        lng: lng ? lng : 23.727539,
-        address: "",
-        main: true,
-    });
-    const isPointInsideShape = (
-        lat: number,
-        lng: number,
-        shape: google.maps.Polygon | google.maps.Circle | google.maps.Rectangle
-    ): boolean => {
-        const point = new google.maps.LatLng(lat, lng);
-
-        if (shape instanceof google.maps.Polygon) {
-            return google.maps.geometry.poly.containsLocation(point, shape);
-        }
-
-        if (shape instanceof google.maps.Circle) {
-            const center = shape.getCenter();
-            if (center) {
-                const distance =
-                    google.maps.geometry.spherical.computeDistanceBetween(
-                        center,
-                        point
-                    );
-                return distance <= shape.getRadius();
-            }
-        }
-
-        if (shape instanceof google.maps.Rectangle) {
-            return shape.getBounds()!.contains(point);
-        }
-
-        return false;
-    };
-
-    const handleDraw = (shape: DrawShape | StopDraw) => {
-        setProperties(
+    const properties = useMemo(
+        () =>
             shape
-                ? properties.filter(
+                ? data.filter(
                       (property) =>
                           property.location?.lat &&
                           property.location?.lng &&
@@ -85,20 +37,39 @@ const MapView = ({ data }: Props) => {
                               shape
                           )
                   )
-                : data
-        );
+                : data.filter(
+                      (p) => p.location?.lat && p.location?.lng // filter nulls
+                  ),
+        [data, shape]
+    );
+
+    const markers: IMapMarker[] = useMemo(
+        () =>
+            properties.map(({ location }) => ({
+                lat: location?.lat!,
+                lng: location?.lng!,
+            })),
+        [properties]
+    );
+
+    const toggleOrientation = () => setOrientation(!orientation);
+
+    const [mainMarker, setMainMarker] = useState<IMapMarker>({
+        lat: 37.98381,
+        lng: 23.727539,
+    });
+
+    const handleDraw = (shape: DrawShape | StopDraw) => {
+        setShape(shape);
     };
+
     const updateMainMarkerCoordinates = (lat: number, lng: number) => {
         let newMarker = mainMarker;
         newMarker.lat = lat;
         newMarker.lng = lng;
         setMainMarker(newMarker);
     };
-    const nullCoord = -1;
-    const [onDragEndCoord, setOnDragEndCoord] = useState<IMapCoordinates>({
-        lat: nullCoord,
-        lng: nullCoord,
-    });
+
     const handleSearchSelect = (
         address: IMapAddress,
         lat: number,
@@ -106,7 +77,6 @@ const MapView = ({ data }: Props) => {
     ) => {
         if (!lat || !lng) return;
 
-        setOnDragEndCoord({ lat, lng });
         updateMainMarkerCoordinates(lat, lng);
     };
 
@@ -115,19 +85,14 @@ const MapView = ({ data }: Props) => {
             <Box display={"flex"}>
                 <Box height={`calc(100vh - 266px)`} width={"50%"}>
                     <Map
-                        hideMainMarker
                         search
                         mainMarker={mainMarker}
                         activeMarker={activeMarker}
                         setActiveMarker={setActiveMarker}
                         onMarkerClick={(marker) => {
                             setSelectedMarker(marker);
-                            console.log(
-                                "Selected Marker set in MapView:",
-                                marker
-                            );
                         }}
-                        data={locations}
+                        markers={markers}
                         onDraw={handleDraw}
                         onSearchSelect={handleSearchSelect}
                     />
@@ -169,6 +134,7 @@ const MapView = ({ data }: Props) => {
                                     <BookingItem
                                         activeMarker={activeMarker || -1}
                                         item={item}
+                                        selectedMarker={selectedMarker}
                                     />
                                 )}
                             </Grid>
@@ -207,17 +173,17 @@ export function HorizontalCard({
     const pricePerSqm = price / area;
 
     const router = useRouter();
+    const itemRef = useRef<HTMLDivElement | null>(null);
     const isActive =
         item.location.lat === selectedMarker?.lat &&
         item.location.lng === selectedMarker?.lng;
 
-    console.log("IsActive for Item:", item.id, isActive);
-    useEffect(() => {
-        console.log(
-            "Selected Marker changed in HorizontalCard:",
-            selectedMarker
-        );
-    }, [selectedMarker]);
+    useMemo(() => {
+        if (isActive && itemRef.current) {
+            itemRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [isActive]);
+
     const _carouselImages: ICarouselImage[] = useMemo(() => {
         return images && images.length > 0
             ? images.map((image, index) => ({
@@ -229,10 +195,15 @@ export function HorizontalCard({
               }))
             : [];
     }, [images]);
+    function truncate(str: string, n: number) {
+        return str.length > n ? str.substr(0, n - 1) + "..." : str;
+    }
 
     return (
         <Grid
+            padding={2}
             component={Paper}
+            ref={itemRef}
             sx={{
                 mt: 2,
                 mx: 1.5,
@@ -294,7 +265,9 @@ export function HorizontalCard({
                     spacing={1}
                     mb={3}
                 >
-                    <Typography variant="body2">{description}</Typography>
+                    <Typography variant="body2" sx={{ fontSize: "0.8rem" }}>
+                        {truncate(description, 40)}
+                    </Typography>
                 </Stack>
 
                 <Stack

@@ -83,8 +83,6 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
     const [mainMarker, setMainMarker] = useState<IMapMarker>({
         lat: x ? x : 37.98381,
         lng: y ? y : 23.727539,
-        address: "",
-        main: true,
     });
     const [onDragEndCoord, setOnDragEndCoord] = useState<IMapCoordinates>({
         lat: nullCoord,
@@ -191,8 +189,6 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
 
         setOnDragEndCoord({ lat: newLat, lng: newLng });
         updateMainMarkerCoordinates(newLat, newLng);
-
-        // update slice
     };
     const handleSearchSelect = (
         address: IMapAddress,
@@ -259,15 +255,14 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
                     zoom={zoom}
                     search
                     multipleShapes
+                    activeMarker={activeMarker}
                     mainMarker={mainMarker}
                     shapes={shapeData}
                     onDraw={handleDraw}
                     onDrag={handleDrag}
                     onDragEnd={handleMarkerDragEnd}
                     onClick={handleMapClick}
-                    hideMainMarker={true}
                     onSearchSelect={handleSearchSelect}
-                    activeMarker={activeMarker}
                     setActiveMarker={setActiveMarker}
                 />
             </Box>

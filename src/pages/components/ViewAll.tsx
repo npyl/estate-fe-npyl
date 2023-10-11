@@ -54,6 +54,7 @@ const viewOptions: viewOptionsType[] = [
         id: "list",
         icon: Menu,
         label: "List",
+        // url:
     },
     {
         id: "grid",

@@ -14,9 +14,13 @@ import PermissionPage from "./components/permission";
 import UserPage from "./components/user";
 
 const SecurityPage: NextPage = () => {
-    const [value, setValue] = useState(0);
+    const { t } = useTranslation();
+
     const { setSelectedUser, setSelectedPreset, setTargetUser, setData } =
         useSecurityContext();
+
+    const [value, setValue] = useState(0);
+
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
         if (newValue === 0) {
@@ -26,8 +30,6 @@ const SecurityPage: NextPage = () => {
             setData(initialData);
         }
     };
-
-    const { t } = useTranslation();
 
     return (
         <Container maxWidth={"xl"}>

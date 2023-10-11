@@ -1,7 +1,7 @@
 "use client";
 import { Box, Divider, Paper, Stack, Typography } from "@mui/material";
 import { useRouter } from "next/router";
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import ICarouselImage from "src/components/carousel/types";
 import CarouselSimple from "src/components/CarouselSimple";
 import BedIcon from "@mui/icons-material/Bed";
@@ -10,12 +10,14 @@ import { Label } from "src/components/label";
 import { IPropertyResultResponse } from "src/types/properties";
 import { Bathroom, House } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
+import { IMapMarker } from "src/components/Map/Map";
 
 // ----------------------------------------------------------------------
 
 type BookingItemProps = {
     item: IPropertyResultResponse;
     activeMarker?: number;
+    selectedMarker: IMapMarker | null; // add this line
 };
 
 const ForSaleLabel = () => {
@@ -73,7 +75,11 @@ const PriceLabel = ({ value }: { value: number }) => {
     );
 };
 const defaultImage = "/static/noImage.png";
-export const BookingItem = ({ item, activeMarker }: BookingItemProps) => {
+export const BookingItem = ({
+    item,
+    activeMarker,
+    selectedMarker,
+}: BookingItemProps) => {
     const {
         details,
         price,
@@ -86,6 +92,24 @@ export const BookingItem = ({ item, activeMarker }: BookingItemProps) => {
     } = item;
 
     const router = useRouter();
+    const itemRef = useRef<HTMLDivElement | null>(null);
+    const isActive =
+        item.location?.lat !== null &&
+        item.location?.lat !== undefined &&
+        item.location.lng !== null &&
+        item.location.lng !== undefined &&
+        selectedMarker?.lat !== null &&
+        selectedMarker?.lat !== undefined &&
+        selectedMarker?.lng !== null &&
+        selectedMarker?.lng !== undefined &&
+        item.location.lat === selectedMarker?.lat &&
+        item.location.lng === selectedMarker?.lng;
+
+    useMemo(() => {
+        if (isActive && itemRef.current) {
+            itemRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [isActive]);
 
     const _carouselImages: ICarouselImage[] = useMemo(() => {
         if (images && images.length > 0) {
@@ -111,6 +135,7 @@ export const BookingItem = ({ item, activeMarker }: BookingItemProps) => {
 
     return (
         <Paper
+            ref={itemRef}
             sx={{
                 position: "relative",
 
@@ -120,14 +145,13 @@ export const BookingItem = ({ item, activeMarker }: BookingItemProps) => {
                 border: 0,
                 borderRadius: 1,
 
-                boxShadow:
-                    item.id === activeMarker
-                        ? `rgba(0, 0, 0, 0.30) 0px 5px 15px`
-                        : `rgba(0, 0, 0, 0.10) 0px 5px 15px`,
-
+                boxShadow: isActive
+                    ? `rgba(0, 0, 0, 0.65) 0px 5px 15px`
+                    : `rgba(0, 0, 0, 0.25) 0px 5px 15px`,
+                fontWeight: isActive ? "bold" : "normal",
                 "&:hover": {
                     cursor: "pointer",
-                    boxShadow: `rgba(0, 0, 0, 0.30) 0px 5px 15px`,
+                    boxShadow: `rgba(0, 0, 0, 0.65) 0px 5px 15px`,
                 },
             }}
         >

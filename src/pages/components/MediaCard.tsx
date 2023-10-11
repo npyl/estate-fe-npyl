@@ -16,7 +16,7 @@ export default function MediaCard({ data, sx, ...other }: Props) {
         <Grid container sx={{ pb: 2, ...sx }}>
             {data.map((item, index) => (
                 <Grid item key={index} xs={12} sm={4}>
-                    <BookingItem item={item} />
+                    <BookingItem item={item} selectedMarker={null} />
                 </Grid>
             ))}
         </Grid>

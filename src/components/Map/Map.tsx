@@ -1,7 +1,6 @@
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import { CustomDrawingComponent } from "./Draw";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { ILocationPOST } from "src/types/location";
+import React, { useCallback, useMemo, useState } from "react";
 import { DrawShape, ShapeData, StopDraw } from "./types";
 import SearchOnMap from "./Search";
 import { DrawMultiple } from "./DrawMultiple";
@@ -16,11 +15,7 @@ export interface IMapCoordinates {
     lng: number;
 }
 
-export interface IMapMarker extends IMapCoordinates {
-    address: string;
-    main: boolean;
-    id?: number; // Add this line if you have an 'id' for each marker.
-}
+export type IMapMarker = IMapCoordinates;
 
 export interface IMapAddress {
     street: string;
@@ -30,7 +25,6 @@ export interface IMapAddress {
 
 interface IMapProps {
     onReady?: (m: google.maps.Map) => void;
-    hideMainMarker?: boolean;
     onClick?: (lat: number, lng: number, address: IMapAddress) => void;
     onMarkerClick?: (marker: IMapMarker) => void;
     onDragEnd?: (
@@ -43,13 +37,14 @@ interface IMapProps {
     onDrag?: (oldShape: DrawShape, newShape: DrawShape) => void;
     onSearchSelect?: (selected: IMapAddress, lat: number, lng: number) => void;
 
-    data?: ILocationPOST[];
+    markers?: IMapMarker[];
     zoom?: number;
     shape?: ShapeData;
     shapes?: ShapeData[];
     mainMarker?: IMapMarker;
     activeMarker: number | null;
     setActiveMarker: any;
+
     drawing?: boolean;
     multipleShapes?: boolean;
     search?: boolean;
@@ -65,6 +60,18 @@ export const useLoadApi = () => {
         libraries: ["drawing", "places", "geometry"],
     });
 };
+
+//--------------------------------------------------------
+//
+//  markers: ...
+//  activeMarker:
+//      The marker clicked; show a bouncing animation
+//  mainMarker: ...
+//      If set, centering is based on mainMarker
+//      NOTE: mainMarker must be contained in markers prop if you wish for it to be visible
+//
+//--------------------------------------------------------
+
 const Map = ({
     onReady,
     onClick,
@@ -73,14 +80,13 @@ const Map = ({
     onDraw,
     onDrag,
     onSearchSelect,
-    data,
+    markers,
     zoom,
     shape,
     shapes,
     mainMarker,
     activeMarker,
     setActiveMarker,
-    hideMainMarker = false,
     multipleShapes = false,
     drawing = true,
     search = false,
@@ -91,36 +97,12 @@ const Map = ({
     const [map, setMap] = React.useState(null);
     const [mapRef, setMapRef] = useState<any>();
 
-    const [markers, setMarkers] = useState<IMapMarker[]>([]);
-
     // center is based on mainMarker's latLng
     const center = useMemo(() => {
         return mainMarker
             ? { lat: mainMarker.lat, lng: mainMarker.lng }
             : athensLatLng;
     }, [mainMarker?.lat, mainMarker?.lng]);
-
-    useEffect(() => {
-        if (!data) return;
-
-        setMarkers([
-            ...markers,
-            ...data
-                .filter((location) => location !== null) // some properties are dummies
-                .map((location) => ({
-                    address: location.street + " " + location.number,
-                    lat: location.lat!,
-                    lng: location.lng!,
-                    main: false,
-                })),
-        ]);
-    }, [data]);
-
-    useEffect(() => {
-        if (!markers || !mainMarker) return;
-
-        setMarkers([...markers, mainMarker]);
-    }, []);
 
     const onLoad = useCallback((map: any) => {
         const bounds = new window.google.maps.LatLngBounds(center);
@@ -187,7 +169,7 @@ const Map = ({
 
         if (!lat || !lng) return;
 
-        if (onClick)
+        onClick &&
             getAddressFromLatLng(lat, lng).then((response) =>
                 onClick(lat, lng, response)
             );
@@ -201,7 +183,7 @@ const Map = ({
             mapRef?.panTo({ lat: marker.lat, lng: marker.lng });
         }, 500);
 
-        if (onMarkerClick) onMarkerClick(marker); // <-- Directly use onMarkerClick
+        onMarkerClick && onMarkerClick(marker); // <-- Directly use onMarkerClick
     };
 
     const handleMarkerMouseOver = (marker: any) => {
@@ -214,12 +196,9 @@ const Map = ({
     ) => {
         const lat = latLng.lat();
         const lng = latLng.lng();
-        markers[index].lat = lat;
-        markers[index].lng = lng;
-        setMarkers([...markers]);
 
         // also call parent callback
-        if (onDragEnd)
+        onDragEnd &&
             getAddressFromLatLng(lat, lng).then((response) =>
                 onDragEnd(markers[index], lat, lng, response)
             );
@@ -272,18 +251,18 @@ const Map = ({
             )}
             {search && <SearchOnMap onSearchSelect={handleSearchSelect} />}
 
-            {markers.map((marker, ind) => {
-                const { address, lat, lng, main } = marker;
-                if (hideMainMarker && main) {
-                    return null; // Skip rendering main marker
-                }
+            {markers?.map((marker, ind) => {
+                const { lat, lng } = marker;
+
+                if (!lat || !lng) return <></>;
+
                 return (
                     <Marker
                         key={ind}
                         position={{ lat, lng }}
                         onMouseUp={() => handleMarkerMouseOver(ind)}
                         animation={
-                            !main && activeMarker === ind
+                            marker !== mainMarker && activeMarker === ind
                                 ? google.maps.Animation.BOUNCE
                                 : undefined // Set to null when not active
                         }
@@ -292,7 +271,7 @@ const Map = ({
                             // Start the bounce animation, then stop after 2 seconds
                             setActiveMarker(ind);
                         }}
-                        draggable={main}
+                        draggable={marker === mainMarker}
                         onDragEnd={(e: google.maps.MapMouseEvent) =>
                             onMarkerDragEnd(e.latLng, ind, markers)
                         }
