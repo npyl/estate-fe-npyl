@@ -146,8 +146,15 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
     const handleRemoveFile = (inputFile: IPropertyImage) => {
         if (!inputFile?.key) return;
 
+        // Prepare Next Image to avoid jumping
+        const index = files.findIndex((f) => f === inputFile);
+        if (index < 0) return;
+        const nextIndex = index + 1 < files.length ? index + 1 : index;
+        const nextImage = files.at(nextIndex);
+
         deleteImage({ propertyId: +propertyId!, imageKey: inputFile.key })
             .then(() => deleteFile(inputFile.key))
+            .then(() => setCurrentGalleryImage(nextImage))
             .catch((reason) => console.error("deleteImage: ", reason));
     };
     const handleReorder = (items: string[]) => {
