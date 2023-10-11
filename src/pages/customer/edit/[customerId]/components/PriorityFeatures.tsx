@@ -27,17 +27,6 @@ const PriorityFeatures = ({ index, parentCategory }: PriorityFeaturesProps) => {
 
     return (
         <>
-            <Box
-                sx={{
-                    px: 3,
-                    py: 1.5,
-                    display: "flex",
-                    justifyContent: "left",
-                }}
-            >
-                <Typography variant="h6">{t("Features")}</Typography>
-            </Box>
-
             <Grid item xs={12} padding={1}>
                 <Grid container spacing={2}>
                     {parentCategory === "RESIDENTIAL" && (

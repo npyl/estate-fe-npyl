@@ -1,5 +1,6 @@
-import { Box, Grid } from "@mui/material";
+import { Box, Divider, Grid, Typography } from "@mui/material";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
+import { t } from "i18next";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -245,53 +246,68 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
         [complexes, index]
     );
 
-    console.log("r: ", regionCode, " c: ", cityCode, " co: ", complexCode);
-
     return (
-        <Grid item xs={12} padding={1}>
-            <Box height={`calc(100vh - 266px)`} width={"100%"}>
-                <Map
-                    key={index}
-                    zoom={zoom}
-                    search
-                    multipleShapes
-                    activeMarker={activeMarker}
-                    mainMarker={mainMarker}
-                    shapes={shapeData}
-                    onDraw={handleDraw}
-                    onDrag={handleDrag}
-                    onDragEnd={handleMarkerDragEnd}
-                    onClick={handleMapClick}
-                    onSearchSelect={handleSearchSelect}
-                    setActiveMarker={setActiveMarker}
-                />
+        <>
+            <Divider
+                style={{
+                    width: "100%",
+                }}
+            />
+            <Box
+                sx={{
+                    px: 3,
+                    py: 1.5,
+                    display: "flex",
+                    justifyContent: "left",
+                }}
+            >
+                <Typography variant="h6">{t("Area of Preference")}</Typography>
             </Box>
-            <Grid container spacing={2} padding={1} paddingTop={3}>
-                <Grid item xs={12}>
-                    <Grid container direction={"row"} spacing={2}>
-                        <Grid item xs={4}>
-                            <RegionSelect
-                                regionCode={regionCode || ""}
-                                onChange={handleRegionChange}
-                            />
-                        </Grid>
-                        <Grid item xs={4}>
-                            <MunicipSelect
-                                regionCode={regionCode || ""}
-                                municipCode={cityCode || ""}
-                                onChange={handleMunicipChange}
-                            />
-                        </Grid>
-                        <Grid item xs={4}>
-                            <NeighbourSelect
-                                municipCode={cityCode || ""}
-                                neighbourCode={complexCode || ""}
-                                onChange={handleNeighbourChange}
-                            />
+            <Grid item xs={12} padding={1} marginBottom={2}>
+                <Box height={`calc(100vh - 266px)`} width={"100%"}>
+                    <Map
+                        key={index}
+                        zoom={zoom}
+                        search
+                        multipleShapes
+                        activeMarker={activeMarker}
+                        mainMarker={mainMarker}
+                        shapes={shapeData}
+                        onDraw={handleDraw}
+                        onDrag={handleDrag}
+                        onDragEnd={handleMarkerDragEnd}
+                        onClick={handleMapClick}
+                        onSearchSelect={handleSearchSelect}
+                        setActiveMarker={setActiveMarker}
+                    />
+                </Box>
+                <Grid container spacing={2} padding={1} paddingTop={3}>
+                    <Grid item xs={12}>
+                        <Grid container direction={"row"} spacing={2}>
+                            <Grid item xs={4}>
+                                <RegionSelect
+                                    regionCode={regionCode || ""}
+                                    onChange={handleRegionChange}
+                                />
+                            </Grid>
+                            <Grid item xs={4}>
+                                <MunicipSelect
+                                    regionCode={regionCode || ""}
+                                    municipCode={cityCode || ""}
+                                    onChange={handleMunicipChange}
+                                />
+                            </Grid>
+                            <Grid item xs={4}>
+                                <NeighbourSelect
+                                    municipCode={cityCode || ""}
+                                    neighbourCode={complexCode || ""}
+                                    onChange={handleNeighbourChange}
+                                />
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Grid>
             </Grid>
-        </Grid>
+        </>
     );
 };
