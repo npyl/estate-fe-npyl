@@ -47,7 +47,9 @@ import {
     selectWell,
     setAccessForDisable,
     setAdaptingToTheGround,
+    setAlarmSystem,
     setBarbeque,
+    setBright,
     setCctv,
     setCombinedKitchenAndDiningArea,
     setCorner,
@@ -356,6 +358,20 @@ const FeaturesSection: React.FC<any> = (props) => {
                         value={well}
                         onChange={(event, checked) => {
                             dispatch(setWell(checked));
+                        }}
+                    />
+                    <CheckboxItem
+                        label={t("Alarm System")}
+                        value={alarmSystem}
+                        onChange={(event, checked) => {
+                            dispatch(setAlarmSystem(checked));
+                        }}
+                    />
+                    <CheckboxItem
+                        label={t("Bright")}
+                        value={bright}
+                        onChange={(event, checked) => {
+                            dispatch(setBright(checked));
                         }}
                     />
                     <CheckboxItem

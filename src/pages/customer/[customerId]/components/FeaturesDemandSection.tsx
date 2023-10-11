@@ -2,10 +2,10 @@ import { Box, Divider, Grid, Paper, Typography } from "@mui/material";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { List, ListBooleanItem } from "src/components/List";
-import { IProperties, ParentCategory } from "src/types/properties";
+import { IDemand, ParentCategory } from "src/types/demand";
 
 interface FeaturesProps {
-    data: IProperties;
+    data: IDemand;
 }
 interface PropertyFeaturesItemProps {
     field: string;
@@ -82,7 +82,7 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
 const Features: React.FC<FeaturesProps> = (props) => {
     const { data } = props;
     const { t } = useTranslation();
-    const features = data?.features;
+    const features = data?.priorityFeatures;
 
     const renderThirdOfFields = (
         fields: string[],
@@ -460,9 +460,16 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     </Box>
                     <Divider></Divider>
                     <Grid container>
-                        {propertyFeatures(
-                            data?.parentCategory.key as ParentCategory
-                        )}
+                        {Array.isArray(data?.filters?.parentCategories) &&
+                            data.filters.parentCategories.map(
+                                (category, index) => (
+                                    <React.Fragment key={index}>
+                                        {propertyFeatures(
+                                            category as unknown as ParentCategory
+                                        )}
+                                    </React.Fragment>
+                                )
+                            )}
                     </Grid>
                 </Paper>
             </Grid>

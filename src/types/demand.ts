@@ -1,6 +1,5 @@
-import { KeyValue } from "./KeyValue";
 import { IPropertyFeatures } from "./features";
-
+import { KeyValue } from "./KeyValue";
 export interface IDemandFilters {
     minBedrooms: number;
     maxBedrooms: number;
@@ -66,3 +65,4 @@ export interface IDemandPOST {
     timeframe?: string;
     shapes: string[];
 }
+export type ParentCategory = "RESIDENTIAL" | "COMMERCIAL" | "LAND" | "OTHER";
