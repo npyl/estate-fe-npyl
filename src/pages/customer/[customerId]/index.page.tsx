@@ -40,8 +40,7 @@ const CustomerView: NextPage = () => {
     const { customerId } = router.query;
 
     const { data } = useGetCustomerByIdQuery(+customerId!);
-    const [deleteCustomer, { isSuccess: isDeleteSuccess }] =
-        useDeleteCustomerMutation();
+    const [deleteCustomer] = useDeleteCustomerMutation();
 
     const [value, setValue] = useState(0);
 
@@ -55,13 +54,6 @@ const CustomerView: NextPage = () => {
         }
     }, [data, customerId]);
 
-    useEffect(() => {
-        if (isDeleteSuccess) {
-            router.push("/customer");
-            removeTab(customerId as string);
-        }
-    }, [isDeleteSuccess]);
-
     const isSellerOrLessor = data?.seller || data?.lessor;
     const isBuyerOrLeaser = data?.buyer || data?.leaser;
     const demands = data?.demands;
@@ -69,7 +61,11 @@ const CustomerView: NextPage = () => {
     const handleChange = (event: React.SyntheticEvent, newValue: number) =>
         setValue(newValue);
     const handleEdit = () => router.push(`/customer/edit/${customerId}`);
-    const handleDelete = () => deleteCustomer(+customerId!);
+    const handleDelete = () =>
+        deleteCustomer(+customerId!).then(() => {
+            router.push("/customer");
+            removeTab(customerId as string);
+        });
 
     const tabsConfig = [
         {

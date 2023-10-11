@@ -58,8 +58,7 @@ const SingleProperty: NextPage = () => {
     const { propertyId } = router.query;
 
     const { data } = useGetPropertyByIdQuery(+propertyId!); // basic details
-    const [deleteProperty, { isSuccess: isDeleteSuccess }] =
-        useDeletePropertyMutation();
+    const [deleteProperty] = useDeletePropertyMutation();
 
     const [value, setValue] = useState(0);
 
@@ -73,18 +72,15 @@ const SingleProperty: NextPage = () => {
         }
     }, [data, propertyId]);
 
-    useEffect(() => {
-        if (isDeleteSuccess) {
-            router.push("/");
-            removeTab(propertyId as string);
-        }
-    }, [isDeleteSuccess]);
-
     const handleChange = (event: React.SyntheticEvent, newValue: number) =>
         setValue(newValue);
 
     const handleEdit = () => router.push(`/property/edit/${propertyId}`);
-    const handleDelete = () => deleteProperty(+propertyId!);
+    const handleDelete = () =>
+        deleteProperty(+propertyId!).then(() => {
+            router.push("/");
+            removeTab(propertyId as string);
+        });
 
     if (!data) return null;
 
