@@ -3,5 +3,6 @@ export default interface ICarouselImage {
     title: string;
     image: string;
     description: string;
+    hidden?: boolean;
     path: string;
 }

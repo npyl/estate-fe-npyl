@@ -85,6 +85,7 @@ export default function CarouselSimple({
                             key={item.id}
                             alt={item.title}
                             src={item.image}
+                            hidden={item.hidden}
                             label={mainLabel && index === 0 ? mainLabel : ""}
                             onClick={() => {
                                 onImageClick && onImageClick();

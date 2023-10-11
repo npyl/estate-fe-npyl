@@ -25,4 +25,5 @@ export interface ImageProps extends IProps {
 
 export interface LabeledImageProps extends ImageProps {
     label?: string;
+    hidden?: boolean;
 }

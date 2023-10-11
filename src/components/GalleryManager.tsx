@@ -80,6 +80,7 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
                 title: "Image",
                 image: image.url,
                 description: "",
+                hidden: image.hidden,
                 path: "/repository",
             })),
         [images]
