@@ -90,12 +90,17 @@ const EditPropertyPage: NextPage = () => {
         return () => {
             if (!bodyRef.current.code) {
                 toast.error("Edit operation canceled. Code ID is required");
-            } else {
-                edit({ id: +propertyId!, body: bodyRef.current }).then(() => {
-                    // removeTab(propertyId as string);
-                    resetEverything();
-                });
+                return;
             }
+            if (!bodyRef.current.state) {
+                toast.error("Edit operation canceled. State is required");
+                return;
+            }
+
+            edit({ id: +propertyId!, body: bodyRef.current }).then(() => {
+                // removeTab(propertyId as string);
+                resetEverything();
+            });
         };
     }, []);
 
