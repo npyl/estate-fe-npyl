@@ -51,7 +51,7 @@ export const TwoDimentionsDnd: FC<TwoDimentionsDndProps> = ({
                                     {row.map((item, j) => (
                                         <Draggable
                                             draggableId={`item-${item.id}`}
-                                            key={j}
+                                            key={`item-${item.id}`}
                                             index={j}
                                         >
                                             {(provided) => (
@@ -66,6 +66,7 @@ export const TwoDimentionsDnd: FC<TwoDimentionsDndProps> = ({
                                         </Draggable>
                                     ))}
                                 </Stack>
+                                {provided.placeholder}
                             </div>
                         )}
                     </Droppable>

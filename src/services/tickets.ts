@@ -24,6 +24,22 @@ interface ReorderCardProps {
     position: number;
 }
 
+function moveItem(arr: number[], columnId: number, position: number): number[] {
+    // Find the current index of the columnId
+    const index = arr.indexOf(columnId);
+
+    // If columnId is not in the array, just return the original array
+    if (index === -1) return arr;
+
+    // Remove the columnId from its current position
+    arr.splice(index, 1);
+
+    // Insert the columnId at the desired position
+    arr.splice(position, 0, columnId);
+
+    return arr;
+}
+
 export const tickets = createApi({
     reducerPath: "tickets",
     baseQuery: fetchBaseQuery({
@@ -80,6 +96,29 @@ export const tickets = createApi({
                 method: "POST",
                 params: { column: columnId, position },
             }),
+            onQueryStarted: async (
+                { columnId, position },
+                { dispatch, queryFulfilled }
+            ) => {
+                const patchResult = dispatch(
+                    tickets.util.updateQueryData(
+                        "getBoard",
+                        undefined,
+                        (draft) => {
+                            draft.columnOrder = moveItem(
+                                draft.columnOrder,
+                                columnId,
+                                position
+                            );
+                        }
+                    )
+                );
+                try {
+                    await queryFulfilled;
+                } catch {
+                    patchResult.undo();
+                }
+            },
             invalidatesTags: ["Board"],
         }),
         deleteColumn: builder.mutation<void, number>({

@@ -60,6 +60,7 @@ const rowId = (str?: string) => {
 
 export default function KanbanPage() {
     const { data: board, isFetching: isBoardFetching } = useGetBoardQuery();
+
     const [moveCard, { isLoading: isMoveLoading }] = useMoveCardMutation();
     const [reorderCard, { isLoading: isReorderLoading }] =
         useReorderCardMutation();
@@ -153,12 +154,7 @@ export default function KanbanPage() {
 
     return (
         <Stack direction={"row"} mt={3} flex={1} gap={3}>
-            {!(
-                isMoveLoading ||
-                isReorderLoading ||
-                isBoardFetching ||
-                isReorderColumnLoading
-            ) && items ? (
+            {items ? (
                 <TwoDimentionsDnd
                     items={items}
                     columns={COLUMNS}
