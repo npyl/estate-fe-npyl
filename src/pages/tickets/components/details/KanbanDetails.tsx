@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 // @mui
 import {
     Avatar,
@@ -57,14 +57,17 @@ export default function KanbanDetails({
     onCloseDetails,
     onDeleteTask,
 }: Props) {
-    const fileInputRef = useRef<HTMLInputElement>(null);
-
-    const completed = useMemo(() => task?.completed, [task?.completed]);
-    const priority = useMemo(() => task?.priority, [task?.priority]);
+    const { id, completed, priority, name, description, user } = useMemo(
+        () => task,
+        [task]
+    );
 
     const [liked, setLiked] = useState(false);
+
     const [taskName, setTaskName] = useState(task.name);
     const [taskDescription, setTaskDescription] = useState(task.description);
+
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     const [openAssignees, setOpenAssignees] = useState(false);
 
@@ -93,31 +96,47 @@ export default function KanbanDetails({
         event: React.ChangeEvent<HTMLInputElement>
     ) => setTaskDescription(event.target.value);
 
-    const toggleCompleted = () =>
-        editCard({ id: task.id, completed: !task?.completed });
+    const toggleCompleted = useCallback(
+        () =>
+            editCard({
+                id,
+                name,
+                priority,
+                completed: !completed,
+                userIds: user.map((u) => u.id),
+            }),
+        [id, name, priority, completed, user]
+    );
 
-    const handleChangePriority = (event: React.ChangeEvent<HTMLInputElement>) =>
-        editCard({ id: task.id, priority: +event.target.value });
+    const handleChangePriority = useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>) =>
+            editCard({
+                id,
+                name,
+                priority: +event.target.value,
+                completed,
+                userIds: user.map((u) => u.id),
+            }),
+        [id, name, completed, user]
+    );
 
-    const handleToggleAssignee = (userId: number) => {
-        const oldUserIds = task.user.map((u) => u.id);
-        const newUserIds = oldUserIds.includes(userId)
-            ? oldUserIds.filter((id) => id !== userId) // remove
-            : [...oldUserIds, userId]; // add
+    const handleToggleAssignee = useCallback(
+        (userId: number) => {
+            const oldUserIds = user.map((u) => u.id);
+            const newUserIds = oldUserIds.includes(userId)
+                ? oldUserIds.filter((id) => id !== userId) // remove
+                : [...oldUserIds, userId]; // add
 
-        editCard({ id: task.id, userIds: newUserIds });
-    };
-
-    // useEffect(() => {
-    //     if (
-    //         !task.id ||
-    //         !taskName ||
-    //         taskName === task.name // default value
-    //     )
-    //         return;
-
-    //     editCard({ id: task.id, name: taskName });
-    // }, [task.id, taskName]);
+            editCard({
+                id,
+                name,
+                priority,
+                completed,
+                userIds: newUserIds,
+            });
+        },
+        [id, name, priority, completed, user]
+    );
 
     const handleOpenAssignees = () => setOpenAssignees(true);
     const handleCloseAssignees = () => setOpenAssignees(false);
