@@ -31,7 +31,7 @@ const ForSaleLabel = () => {
                 left: 4,
                 backgroundColor: "rgb(235, 0, 0)",
                 color: "white",
-                zIndex: 9999,
+                zIndex: 1,
                 p: 1,
             }}
             textAlign={"center"}

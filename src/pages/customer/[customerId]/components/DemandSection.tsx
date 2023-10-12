@@ -9,6 +9,8 @@ import ListLabelsItem from "src/components/List/labels-item";
 import { useGetCustomerByIdQuery } from "src/services/customers";
 import { useGetLabelsQuery } from "src/services/labels";
 import { AreaOfPreference } from "./AreaOfPreference";
+import FeaturesSection from "src/pages/property/[propertyId]/sections/FeaturesSection";
+import FeaturesDemandSection from "./FeaturesDemandSection";
 
 interface DemandSectionProps {
     index: number;
@@ -121,7 +123,7 @@ const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
                     </Typography>
                 </Box>
                 <Divider />
-                <Grid container>
+                <Grid container marginBottom={1}>
                     <Grid item xs={6} padding={0}>
                         <List>
                             <ListItem
@@ -233,8 +235,11 @@ const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
                         </List>
                     </Grid>
                 </Grid>
-
+                <Divider sx={{ width: "maxWidth" }} />
                 <AreaOfPreference index={index} />
+                <FeaturesDemandSection
+                    data={data as any}
+                ></FeaturesDemandSection>
             </Paper>
         );
 };

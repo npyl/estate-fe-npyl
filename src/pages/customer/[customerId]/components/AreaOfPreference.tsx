@@ -193,11 +193,11 @@ export const AreaOfPreference: React.FC<AreaOfPreferenceProps> = ({
             >
                 <Typography variant="h6">{t("Area of Preference")}</Typography>
             </Box>
-            <ViewLocationMini
+            {/* <ViewLocationMini
                 regionCode={regions[0]}
                 cityCode={cities[0]}
                 complexCode={complexes[0]}
-            />
+            /> */}
             <Box height={`calc(100vh - 266px)`} width={"100%"}>
                 <Map
                     key={index}

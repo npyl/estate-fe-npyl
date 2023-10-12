@@ -168,9 +168,8 @@ const resources = {
             fileData: "fileData",
             ROI: "ROI",
 
-            //Feautures
+            //Features
 
-            Feautures: "Feautures",
             "Panoramic View": "Panoramic View",
             "Sea View": "Sea View",
             "Mountain View": "Mountain View",
@@ -304,11 +303,11 @@ const resources = {
             Left: "Left",
             Right: "Right",
 
-            //Technical Feautures And Interior
+            //Technical Features And Interior
             "Display Window Length": "Display Window Length",
             Entrances: "Entrances",
-            "Technical Feautures And Interior":
-                "Technical Feautures And Interior",
+            "Technical Features And Interior":
+                "Technical Features And Interior",
             Furnished: "Furnished",
 
             Partial: "Partial",
@@ -628,7 +627,7 @@ const resources = {
             fileData: "Αρχεία",
             ROI: "Απόδοση",
 
-            //Feautures
+            //Features
 
             "Panoramic View": "Πανοραμική Θέα",
             "Sea View": "Θέα στη Θάλασσα",
@@ -773,11 +772,11 @@ const resources = {
             Left: "Αριστερά",
             Right: "Δεξιά",
 
-            //Technical Feautures And Interior
+            //Technical Features And Interior
 
             "Display Window Length": "Μήκος Βιτρίνας",
             Entrances: "Εισόδοι",
-            "Technical Feautures And Interior":
+            "Technical Features And Interior":
                 "Τεχνικά Χαρακτηριστικά και Εσωτερικό",
             Furnished: "Επιπλωμένο",
 
@@ -863,7 +862,7 @@ const resources = {
             Leaser: "Ενοικιαστής",
             Buyer: "Αγοραστής",
             "Address Details": "Λεπτομέρειες Διεύθυνσης",
-            Feautures: "Χαρακτηριστικά",
+            Features: "Χαρακτηριστικά",
             "Matching system enabled": "Ενεργοποιημένο Σύστημα Αντιστοίχισης",
             Cancel: "Ακύρωση",
             Save: "Αποθήκευση",
@@ -906,7 +905,6 @@ const resources = {
             Private: "Ιδιωτικό",
             Close: "Κλείσιμο",
             "Gallery Manager": " Γκαλερί",
-            Features: "Χαρακτηριστικά",
             Neighborhood: "Γειτονιά",
             "Edit Label": "Επεξεργασία Ετικέτας",
             "Label's name": "Όνομα Ετικέτας",

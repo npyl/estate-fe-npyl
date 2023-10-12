@@ -19,7 +19,6 @@ import { relative } from "path";
 
 interface Props extends CardProps {
     title?: string;
-
     list: Place[];
     duration: any;
 }
@@ -35,9 +34,7 @@ export default function RelatedPlaces({
         <Card {...other}>
             <CardHeader title={title} />
             {list.length == 0 && (
-                <Typography textAlign={"center"}>
-                    Δεν βρέθηκαν αποτελέσματα
-                </Typography>
+                <Typography textAlign={"center"}>No results</Typography>
             )}
             <Scrollbar>
                 <Stack spacing={3} sx={{ p: 3, pr: 0 }}>
@@ -62,7 +59,7 @@ type ApplicationItemProps = {
 };
 
 function ApplicationItem({ app, duration }: ApplicationItemProps) {
-    const { vicinity, rating, opening_hours, name } = app;
+    const { vicinity, rating, name } = app;
 
     return (
         <Stack direction="row" alignItems="center" spacing={2}>
@@ -74,11 +71,13 @@ function ApplicationItem({ app, duration }: ApplicationItemProps) {
                     sx={{ mt: 0.5, color: "text.secondary" }}
                 >
                     <Typography variant="caption" sx={{ ml: 0.5, mr: 1 }}>
-                        Απόσταση: {duration?.distance?.text}
+                        Distance: {duration?.distance?.text}
                     </Typography>
-                    <DirectionsWalkIcon sx={{ fontSize: "14px" }} />
+
                     <Typography variant="caption" sx={{ ml: 0.5, mr: 1 }}>
-                        {duration?.duration?.text} με τα πόδια
+                        Walking time:{" "}
+                        <DirectionsWalkIcon sx={{ fontSize: "13px" }} />{" "}
+                        {duration?.duration?.text}
                     </Typography>
                 </Stack>
 
@@ -90,19 +89,6 @@ function ApplicationItem({ app, duration }: ApplicationItemProps) {
                     <Typography variant="caption" sx={{ ml: 0.5, mr: 1 }}>
                         {vicinity}
                     </Typography>
-
-                    <Label
-                        variant="soft"
-                        color={opening_hours?.open_now ? "success" : "error"}
-                        style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            height: "YOUR_LABEL_HEIGHT_HERE",
-                        }}
-                    >
-                        {opening_hours?.open_now ? "Open" : "Closed"}
-                    </Label>
                 </Stack>
             </Box>
 
