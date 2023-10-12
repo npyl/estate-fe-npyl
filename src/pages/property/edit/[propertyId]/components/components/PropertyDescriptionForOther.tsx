@@ -226,6 +226,7 @@ const PropertyDescriptionForOtherSection: React.FC<any> = (props) => {
                     >
                         <Checkbox
                             value={storeroomBool}
+                            checked={storeroomBool}
                             placeholder={t("Play Room") || ""}
                             onChange={(
                                 event: React.ChangeEvent<unknown>,
