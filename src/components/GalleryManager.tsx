@@ -167,7 +167,7 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
                                     setDescription(
                                         description || initialDescription || ""
                                     );
-                                    setHidden(hidden || initialHidden);
+                                    setHidden(hidden || initialHidden || false);
                                 }}
                             />
 
@@ -190,7 +190,7 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
                                     !showControl && setShowControl(true);
                                     setTitle(title || initialTitle || "");
                                     setDescription(event.target.value);
-                                    setHidden(hidden || initialHidden);
+                                    setHidden(hidden || initialHidden || false);
                                 }}
                             />
 
@@ -199,7 +199,13 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
                                 select
                                 label="Visibility"
                                 value={
-                                    hidden || undefined ? "private" : "public"
+                                    (
+                                        hidden !== undefined
+                                            ? hidden
+                                            : initialHidden
+                                    )
+                                        ? "private"
+                                        : "public"
                                 }
                                 onChange={(event) => {
                                     setTitle(title || initialTitle || "");
