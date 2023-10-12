@@ -112,7 +112,7 @@ const CustomerView: NextPage = () => {
     ].filter((tab): tab is TabConfig => Boolean(tab));
 
     return (
-        <Box sx={{ width: "100%", paddingY: 1 }}>
+        <Box sx={{ width: "100%", paddingTop: 1 }}>
             <ViewHeader onEdit={handleEdit} onDelete={handleDelete}>
                 <Tabs
                     value={value}

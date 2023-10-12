@@ -25,7 +25,7 @@ const ViewHeader = (props: IViewHeaderProps) => {
     const { t } = useTranslation();
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     return (
-        <Paper sx={{ borderBottom: 1, borderColor: "divider", paddingX: 2 }}>
+        <Paper sx={{ borderColor: "divider", paddingX: 2 }}>
             <Grid container direction={"row"}>
                 <Grid item flex={1}>
                     {children}
