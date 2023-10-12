@@ -42,6 +42,7 @@ import {
     setAuction,
     setAvailableAfter,
     setAvgUtils,
+    setCategory,
     setCode,
     setCurrentRentPrice,
     setDebatablePrice,
@@ -59,7 +60,7 @@ import {
 
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { LabelCreate } from "src/components/label";
 import { useGlobals } from "src/hooks/useGlobals";
@@ -78,6 +79,8 @@ import { ILabel } from "src/types/label";
 
 import { CodeField } from "./componentsFields/CodeField";
 import { KeyCodeField } from "./componentsFields/KeyCodeField";
+import { selectCategory, selectParentCategory } from "src/slices/property";
+import { KeyValue } from "src/types/KeyValue";
 
 const BasicSection: React.FC<any> = () => {
     const router = useRouter();
@@ -115,12 +118,30 @@ const BasicSection: React.FC<any> = () => {
     const state = useSelector(selectState) || "";
     const stateEnum = enums?.state;
 
+    const parentCategory = useSelector(selectParentCategory) || "";
+    const category = useSelector(selectCategory) || "";
+
     // labels
     const [getLabels, { data: assignedLabels }] =
         useLazyGetPropertyLabelsQuery();
     const [assignLabel] = useAssignLabelToPropertyWithIDMutation();
     const [createAndAssignLabel] = useCreateLabelForPropertyWithIDMutation();
     const [deleteLabel] = useDeleteLabelForPropertyWithIdMutation();
+
+    const subCategoriesMap: {
+        [key: string]: KeyValue[];
+    } = useMemo(
+        () =>
+            enums
+                ? {
+                      RESIDENTIAL: enums.residentialCategory,
+                      COMMERCIAL: enums.commercialCategory,
+                      LAND: enums.landCategory,
+                      OTHER: enums.otherCategory,
+                  }
+                : {},
+        [enums]
+    );
 
     useEffect(() => {
         if (!propertyId) return;
@@ -231,31 +252,22 @@ const BasicSection: React.FC<any> = () => {
                     </Grid>
                     <Grid item xs={6}>
                         <TextField
+                            disabled={!parentCategory}
                             fullWidth
-                            id="outlined-start-adornment"
                             select
-                            label={t("Owner")}
-                            value={owner}
-                            onChange={(
-                                event: React.ChangeEvent<HTMLInputElement>
-                            ) => {
-                                dispatch(setOwner(event.target.value));
-                            }}
+                            label={t("Category")}
+                            value={category}
+                            onChange={(e) =>
+                                dispatch(setCategory(e.target.value))
+                            }
                         >
-                            {owners && owners.length > 0 ? (
-                                owners
-                                    .filter(
-                                        (option: ICustomer) =>
-                                            option.seller || option.lessor
-                                    ) // Filtering based on sellers or lessors being true
-                                    .map((option: ICustomer, index: number) => (
-                                        <MenuItem key={index} value={option.id}>
-                                            {`${option.firstName} ${option.lastName}`}
-                                        </MenuItem>
-                                    ))
-                            ) : (
-                                <MenuItem value={""}></MenuItem>
-                            )}
+                            {subCategoriesMap[parentCategory!]?.map(
+                                ({ key, value }) => (
+                                    <MenuItem key={key} value={key}>
+                                        {value}
+                                    </MenuItem>
+                                )
+                            ) || <MenuItem />}
                         </TextField>
                     </Grid>
 
@@ -284,6 +296,46 @@ const BasicSection: React.FC<any> = () => {
                         </TextField>
                     </Grid>
                     <Grid item xs={6}>
+                        <TextField
+                            fullWidth
+                            id="outlined-start-adornment"
+                            select
+                            label={t("Owner")}
+                            value={owner}
+                            onChange={(
+                                event: React.ChangeEvent<HTMLInputElement>
+                            ) => {
+                                dispatch(setOwner(event.target.value));
+                            }}
+                        >
+                            {owners && owners.length > 0 ? (
+                                owners
+                                    .filter(
+                                        (option: ICustomer) =>
+                                            option.seller || option.lessor
+                                    ) // Filtering based on sellers or lessors being true
+                                    .map((option: ICustomer, index: number) => (
+                                        <MenuItem key={index} value={option.id}>
+                                            {`${option.firstName} ${option.lastName}`}
+                                        </MenuItem>
+                                    ))
+                            ) : (
+                                <MenuItem value={""}></MenuItem>
+                            )}
+                        </TextField>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <OnlyNumbersInput
+                            label={t("Area")}
+                            value={area}
+                            formatThousands
+                            onChange={(value) => {
+                                dispatch(setArea(value));
+                            }}
+                            adornment="m²"
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
                         <FormControl fullWidth>
                             <InputLabel id="demo-simple-select-label">
                                 {t("State")}
@@ -309,28 +361,6 @@ const BasicSection: React.FC<any> = () => {
                     </Grid>
                     <Grid item xs={6}>
                         <OnlyNumbersInput
-                            label={t("Area")}
-                            value={area}
-                            formatThousands
-                            onChange={(value) => {
-                                dispatch(setArea(value));
-                            }}
-                            adornment="m²"
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <OnlyNumbersInput
-                            label={t("Plot Area")}
-                            value={plotArea}
-                            formatThousands
-                            onChange={(value) => {
-                                dispatch(setPlotArea(value));
-                            }}
-                            adornment="m²"
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <OnlyNumbersInput
                             label={t("Price")}
                             value={price}
                             formatThousands
@@ -343,12 +373,13 @@ const BasicSection: React.FC<any> = () => {
 
                     <Grid item xs={6}>
                         <OnlyNumbersInput
-                            label={t("Average Utils")}
-                            value={avgUtils}
+                            label={t("Plot Area")}
+                            value={plotArea}
+                            formatThousands
                             onChange={(value) => {
-                                dispatch(setAvgUtils(value));
+                                dispatch(setPlotArea(value));
                             }}
-                            adornment="€/Month"
+                            adornment="m²"
                         />
                     </Grid>
                     <Grid item xs={6}>
@@ -364,11 +395,13 @@ const BasicSection: React.FC<any> = () => {
                     </Grid>
 
                     <Grid item xs={6}>
-                        <KeyCodeField
-                            keyCode={keyCode}
-                            onChange={(event) =>
-                                dispatch(setKeyCode(event.target.value))
-                            }
+                        <OnlyNumbersInput
+                            label={t("Average Utils")}
+                            value={avgUtils}
+                            onChange={(value) => {
+                                dispatch(setAvgUtils(value));
+                            }}
+                            adornment="€/Month"
                         />
                     </Grid>
 
@@ -386,34 +419,50 @@ const BasicSection: React.FC<any> = () => {
 
                     <Grid
                         item
-                        xs={1.5}
+                        xs={6}
                         flexDirection="row"
                         sx={{
                             display: "inline-flex",
                             alignItems: "center",
                         }}
                     >
-                        <Checkbox
-                            id="outlined-controlled"
-                            value={rented}
-                            checked={rented}
-                            onChange={(
-                                event: React.ChangeEvent<unknown>,
-                                checked: boolean
-                            ) => {
-                                dispatch(setRented(checked));
-                            }}
-                            sx={{ cursor: "default" }}
-                            color="primary"
-                            inputProps={{ "aria-label": "Elevator" }}
+                        <KeyCodeField
+                            keyCode={keyCode}
+                            onChange={(event) =>
+                                dispatch(setKeyCode(event.target.value))
+                            }
                         />
-                        <Typography variant="body1" sx={{ ml: 0 }}>
-                            {t("Rented")}
-                        </Typography>
                     </Grid>
                 </Grid>
             </Grid>
-            <Grid item xs={12} padding={1}>
+            <Grid item xs={12} p={1}>
+                <Grid
+                    container
+                    flexDirection="row"
+                    sx={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                    }}
+                >
+                    <Checkbox
+                        id="outlined-controlled"
+                        value={rented}
+                        checked={rented}
+                        onChange={(
+                            event: React.ChangeEvent<unknown>,
+                            checked: boolean
+                        ) => {
+                            dispatch(setRented(checked));
+                        }}
+                        sx={{ cursor: "default" }}
+                        color="primary"
+                        inputProps={{ "aria-label": "Elevator" }}
+                    />
+                    <Typography variant="body1" sx={{ ml: 0 }}>
+                        {t("Rented")}
+                    </Typography>
+                </Grid>
+
                 <Grid
                     container
                     spacing={0}
