@@ -1,44 +1,28 @@
 import { useState } from "react";
 // @mui
 import { Button, ClickAwayListener, Paper, TextField } from "@mui/material";
-// redux
-import { createColumn } from "src/slices/kanban";
-import { useDispatch } from "src/store";
 // components
 import Iconify from "../../../../components/iconify";
+
+import { useAddColumnMutation } from "src/services/tickets";
 
 // ----------------------------------------------------------------------
 
 export default function KanbanColumnAdd() {
-    const dispatch = useDispatch();
-
     const [name, setName] = useState("");
 
     const [open, setOpen] = useState(false);
 
-    const handleOpen = () => {
-        setOpen(true);
-    };
+    const [addColumn] = useAddColumnMutation();
 
-    const handleClose = () => {
-        setOpen(false);
-    };
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
-    const handleChangeName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChangeName = (event: React.ChangeEvent<HTMLInputElement>) =>
         setName(event.target.value);
-    };
 
-    const handleCreateColumn = async () => {
-        try {
-            if (name) {
-                dispatch(createColumn({ name }));
-                setName("");
-            }
-            handleClose();
-        } catch (error) {
-            console.error(error);
-        }
-    };
+    const handleCreateColumn = async () =>
+        addColumn({ name }).then((res) => handleClose());
 
     const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter") {
@@ -47,7 +31,7 @@ export default function KanbanColumnAdd() {
     };
 
     return (
-        <Paper sx={{ minWidth: 280, width: 280 }}>
+        <Paper sx={{ minWidth: 280, width: 280, maxHeight: 38 }}>
             {open ? (
                 <ClickAwayListener onClickAway={handleCreateColumn}>
                     <TextField
@@ -68,7 +52,7 @@ export default function KanbanColumnAdd() {
                     size="large"
                     color="inherit"
                     variant="outlined"
-                    startIcon={<Iconify icon="eva:plus-fill" />}
+                    startIcon={<Iconify icon="eva:plus-fill" mb={2} />}
                     onClick={handleOpen}
                 >
                     Add section

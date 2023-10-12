@@ -11,7 +11,7 @@ export interface OnlyNumbersInputProps
     disabled?: boolean;
 }
 
-const onlyLettersRegex = /^[a-zA-Zα-ωΑ-ΩάέήίόύώΆΈΉΊΌΎΏ]*$/;
+const onlyLettersRegex = /^[a-zA-Zα-ωΑ-ΩάέήίόύώΆΈΉΊΌΎΏ-ϊϋ]*$/;
 
 const isValid = (value: string) => value.match(onlyLettersRegex);
 

@@ -1,157 +1,168 @@
-import { useEffect } from "react";
-// next
-import Head from "next/head";
 // @mui
-import { Container, Stack } from "@mui/material";
-import { DragDropContext, DropResult, Droppable } from "react-beautiful-dnd";
+import { Stack } from "@mui/material";
+import { DropResult } from "react-beautiful-dnd";
 // redux
 
 // utils
 import { hideScrollbarX } from "../../utils/cssStyles";
 // layouts
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-// components
-import { SkeletonKanbanColumn } from "../../components/skeleton";
 // sections
 import { KanbanColumn, KanbanColumnAdd } from "./components";
 
-import { useDispatch, useSelector } from "src/store";
-// ----------------------------------------------------------------------
-import { getBoard, persistCard, persistColumn } from "src/slices/kanban";
+import {
+    useGetBoardQuery,
+    useMoveCardMutation,
+    useReorderCardMutation,
+    useReorderColumnMutation,
+} from "src/services/tickets";
+import { SkeletonKanbanColumn } from "src/components/skeleton";
+import { useMemo } from "react";
+import {
+    DroppableTypeItem,
+    TwoDimentionsDnd,
+    TwoDimentionsDndItem,
+} from "src/components/TwoDimentionsDnd";
+import { DroppableTypeTask } from "./components/column/KanbanColumn";
 
 KanbanPage.getLayout = (page: React.ReactElement) => (
     <DashboardLayout>{page}</DashboardLayout>
 );
 
 // ----------------------------------------------------------------------
+// Λεξιλόγιο που χρησιμοποιείται (Αντιστοιχίες)
+// task = card
+// section = IKanbanColumn = item
+// ----------------------------------------------------------------------
+
+const COLUMNS = 3;
+
+const cardId = (str?: string) => {
+    if (!str) return null;
+    const match = str.match(/task-(\d+)/);
+    return match ? parseInt(match[1], 10) : null;
+};
+const columnId = (str?: string) => {
+    if (!str) return null;
+    const match = str.match(/section-(\d+)/);
+    return match ? parseInt(match[1], 10) : null;
+};
+const itemId = (str?: string) => {
+    if (!str) return null;
+    const match = str.match(/item-(\d+)/);
+    return match ? parseInt(match[1], 10) : null;
+};
+const rowId = (str?: string) => {
+    if (!str) return null;
+    const match = str.match(/row-(\d+)/);
+    return match ? parseInt(match[1], 10) : null;
+};
 
 export default function KanbanPage() {
-    const dispatch = useDispatch();
+    const { data: board } = useGetBoardQuery();
 
-    const { board } = useSelector((state) => state.kanban);
+    const [moveCard] = useMoveCardMutation();
+    const [reorderCard] = useReorderCardMutation();
+    const [reorderColumn] = useReorderColumnMutation();
 
-    useEffect(() => {
-        dispatch(getBoard());
-    }, [dispatch]);
+    const items: TwoDimentionsDndItem[] = useMemo(
+        () =>
+            (board?.columnOrder
+                .map((columnId) => {
+                    // get column for id
+                    const column = board.columns?.find(
+                        (c) => c.id === columnId
+                    );
 
-    const onDragEnd = (result: DropResult) => {
-        const { destination, source, draggableId, type } = result;
-
-        if (!destination) return;
-
-        if (
-            destination.droppableId === source.droppableId &&
-            destination.index === source.index
-        )
-            return;
-
-        if (type === "column") {
-            const newColumnOrder: string[] = Array.from(board.columnOrder);
-
-            newColumnOrder.splice(source.index, 1);
-
-            newColumnOrder.splice(destination.index, 0, draggableId);
-
-            dispatch(persistColumn(newColumnOrder));
-            return;
-        }
-
-        const start = board.columns[source.droppableId];
-        const finish = board.columns[destination.droppableId];
-
-        if (start.id === finish.id) {
-            const updatedCardIds = [...start.cardIds];
-
-            updatedCardIds.splice(source.index, 1);
-
-            updatedCardIds.splice(destination.index, 0, draggableId);
-
-            const updatedColumn = {
-                ...start,
-                cardIds: updatedCardIds,
-            };
-
-            dispatch(
-                persistCard({
-                    ...board.columns,
-                    [updatedColumn.id]: updatedColumn,
+                    return column
+                        ? {
+                              id: columnId,
+                              value: (
+                                  <KanbanColumn
+                                      key={columnId}
+                                      column={column}
+                                  />
+                              ),
+                          }
+                        : null;
                 })
-            );
-            return;
+                .filter((i) => !!i) as TwoDimentionsDndItem[]) || [], // filter nulls
+        [board?.columnOrder, board?.columns]
+    );
+
+    const handleDragEnd = ({
+        source,
+        destination,
+        type,
+        draggableId,
+    }: DropResult) => {
+        if (type === DroppableTypeItem) {
+            const draggedItemId = itemId(draggableId);
+            const dstRow = rowId(destination?.droppableId);
+            const dstCol = destination?.index;
+
+            if (
+                draggedItemId === null ||
+                dstRow === null ||
+                dstCol === null ||
+                dstCol === undefined
+            )
+                return;
+
+            let oneDimentionArrayDstIndex = dstRow * COLUMNS + dstCol;
+
+            /* NOTE: compensate for when user moves a section at the end of the board */
+            if (oneDimentionArrayDstIndex === items.length)
+                oneDimentionArrayDstIndex -= 1;
+
+            reorderColumn({
+                columnId: draggedItemId,
+                position: oneDimentionArrayDstIndex,
+            });
         }
 
-        const startCardIds = [...start.cardIds];
+        if (type === DroppableTypeTask) {
+            const sourceCardId = cardId(draggableId);
+            const srcColumnId = columnId(source?.droppableId);
+            const dstColumnId = columnId(destination?.droppableId);
 
-        startCardIds.splice(source.index, 1);
+            if (
+                sourceCardId === null ||
+                dstColumnId === null ||
+                srcColumnId === null
+            )
+                return;
 
-        const updatedStart = {
-            ...start,
-            cardIds: startCardIds,
-        };
+            if (srcColumnId === dstColumnId) {
+                const newIndex = destination?.index;
+                if (newIndex === null || newIndex === undefined) return;
 
-        const finishCardIds = [...finish.cardIds];
-
-        finishCardIds.splice(destination.index, 0, draggableId);
-
-        const updatedFinish = {
-            ...finish,
-            cardIds: finishCardIds,
-        };
-
-        dispatch(
-            persistCard({
-                ...board.columns,
-                [updatedStart.id]: updatedStart,
-                [updatedFinish.id]: updatedFinish,
-            })
-        );
+                // reorder inside same column
+                reorderCard({
+                    cardId: sourceCardId,
+                    position: newIndex,
+                    columnId: dstColumnId,
+                });
+            } else {
+                // move to different column
+                moveCard({ cardId: sourceCardId, srcColumnId, dstColumnId });
+            }
+        }
     };
+
     return (
-        <>
-            <Head>
-                <title>Tickets</title>
-            </Head>
+        <Stack direction={"row"} mt={3} flex={1} gap={3}>
+            {board && items ? (
+                <TwoDimentionsDnd
+                    items={items}
+                    columns={COLUMNS}
+                    onDragEnd={handleDragEnd}
+                />
+            ) : (
+                <SkeletonKanbanColumn />
+            )}
 
-            <Container maxWidth={"xl"} sx={{ height: 1, mt: 4 }}>
-                <DragDropContext onDragEnd={onDragEnd}>
-                    <Droppable
-                        droppableId="all-columns"
-                        direction="horizontal"
-                        type="column"
-                    >
-                        {(provided) => (
-                            <Stack
-                                {...provided.droppableProps}
-                                ref={provided.innerRef}
-                                spacing={3}
-                                direction="row"
-                                alignItems="flex-start"
-                                sx={{
-                                    height: 1,
-                                    overflowY: "hidden",
-                                    ...hideScrollbarX,
-                                }}
-                            >
-                                {!board.columnOrder?.length ? (
-                                    <SkeletonKanbanColumn />
-                                ) : (
-                                    board.columnOrder.map((columnId, index) => (
-                                        <KanbanColumn
-                                            index={index}
-                                            key={columnId}
-                                            column={board.columns[columnId]}
-                                            cards={board.cards}
-                                        />
-                                    ))
-                                )}
-
-                                {provided.placeholder}
-                                <KanbanColumnAdd />
-                            </Stack>
-                        )}
-                    </Droppable>
-                </DragDropContext>
-            </Container>
-        </>
+            <KanbanColumnAdd />
+        </Stack>
     );
 }

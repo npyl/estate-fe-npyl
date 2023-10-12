@@ -25,8 +25,8 @@ interface IGalleryManager {
     deleteOnGoing: boolean;
     currentImage?: IPropertyImage;
     images: IPropertyImage[];
-    onChange: (image: ICarouselImage) => void;
-    onDelete: (file: IPropertyImage) => void;
+    onChange: (key: string) => void;
+    onDelete: (key?: string) => void;
     onClose: () => void;
 }
 
@@ -42,37 +42,29 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
     } = props;
 
     const router = useRouter();
+    const { propertyId } = router.query;
 
     const [editImage, { isLoading }] = useEditPropertyImageMutation();
 
-    const { propertyId } = router.query;
-
-    const currentKey = useMemo(
-        () => currentImage?.key || images[0].key,
-        [currentImage?.key, images[0].key]
-    );
-
-    const [showControl, setShowControl] = useState(false);
-
     // default values
-    const initialTitle = useMemo(
-        () => images.find((e) => e.key === currentKey)?.title,
-        [currentKey, images]
-    );
+    const initialTitle = useMemo(() => currentImage?.title, [currentImage]);
     const initialDescription = useMemo(
-        () => images.find((e) => e.key === currentKey)?.description,
-        [currentKey, images]
+        () => currentImage?.description,
+        [currentImage]
     );
-    const initialHidden = useMemo(
-        () => images.find((e) => e.key === currentKey)?.hidden,
-        [currentKey, images]
-    );
+    const initialHidden = useMemo(() => currentImage?.hidden, [currentImage]);
 
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [hidden, setHidden] = useState<boolean>();
     const [language, setLanguage] = useState("");
 
+    const [showControl, setShowControl] = useState(false);
+
+    //
+    //  Carousel
+    //
+    const [carouselIndex, setCarouselIndex] = useState<number>(0);
     const _carouselImages: ICarouselImage[] = useMemo(
         () =>
             images.map((image) => ({
@@ -91,7 +83,7 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
         editImage({
             id: +propertyId!,
             body: {
-                key: currentKey,
+                key: currentImage?.key,
                 description,
                 title,
                 hidden,
@@ -99,17 +91,27 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
         });
 
         setShowControl(false);
-    }, [currentKey, description, title, hidden]);
+    }, [currentImage?.key, description, title, hidden]);
+
+    // Update Carousel Index *ONLY* if we have a seriously valid index
+    useEffect(() => {
+        const index = _carouselImages.findIndex(
+            (e) => e.id === currentImage?.key
+        );
+        if (index < 0) return;
+
+        setCarouselIndex(index);
+    }, [currentImage, _carouselImages]);
 
     const handleImageChange = (i: ICarouselImage) => {
         handleClear();
-        onChange(i);
+        onChange(i.id);
     };
 
     const handleClear = () => {
         setTitle("");
         setDescription("");
-        setHidden(false);
+        setHidden(undefined);
         setShowControl(false);
     };
 
@@ -150,9 +152,7 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
                             onImageChange={handleImageChange}
                             mainLabel="main"
                             data={_carouselImages}
-                            initialIndex={_carouselImages.findIndex(
-                                (e) => currentKey === e.id
-                            )}
+                            initialIndex={carouselIndex}
                         />
                     </Grid>
                     <Grid item xs={4} mt={1}>
@@ -261,9 +261,7 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
                     <SoftButton
                         color="error"
                         disabled={deleteOnGoing}
-                        onClick={() => {
-                            onDelete(images.find((e) => e.key == currentKey)!);
-                        }}
+                        onClick={() => onDelete(currentImage?.key)}
                     >
                         <Delete />
                     </SoftButton>

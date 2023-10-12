@@ -23,7 +23,7 @@ export default function KanbanColumnToolBar({
 }: Props) {
     const renameRef = useRef<HTMLInputElement>(null);
 
-    const [value, setValue] = useState(columnName);
+    const [value, setValue] = useState("");
 
     const [openConfirm, setOpenConfirm] = useState(false);
 
@@ -39,31 +39,18 @@ export default function KanbanColumnToolBar({
         }
     }, [openPopover]);
 
-    const handleOpenConfirm = () => {
-        setOpenConfirm(true);
-    };
+    const handleOpenConfirm = () => setOpenConfirm(true);
+    const handleCloseConfirm = () => setOpenConfirm(false);
 
-    const handleCloseConfirm = () => {
-        setOpenConfirm(false);
-    };
-
-    const handleOpenPopover = (event: React.MouseEvent<HTMLElement>) => {
+    const handleOpenPopover = (event: React.MouseEvent<HTMLElement>) =>
         setOpenPopover(event.currentTarget);
-    };
+    const handleClosePopover = () => setOpenPopover(null);
 
-    const handleClosePopover = () => {
-        setOpenPopover(null);
-    };
-
-    const handleClickRename = () => {
-        handleClosePopover();
-    };
+    const handleClickRename = () => handleClosePopover();
 
     const handleChangeColumnName = (
         event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        setValue(event.target.value);
-    };
+    ) => setValue(event.target.value);
 
     const handleUpdateColumn = (
         event: React.KeyboardEvent<HTMLInputElement>
@@ -86,7 +73,7 @@ export default function KanbanColumnToolBar({
                 <KanbanInputName
                     inputRef={renameRef}
                     placeholder="Section name"
-                    value={value}
+                    value={value || columnName}
                     onChange={handleChangeColumnName}
                     onKeyUp={handleUpdateColumn}
                 />

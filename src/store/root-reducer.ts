@@ -5,12 +5,13 @@ import { note } from "src/services/note";
 import { notification } from "src/services/notification";
 import { auth } from "../services/auth";
 import { customers } from "../services/customers";
-import { exports } from "../services/exports";
 import { global } from "../services/global";
 import { location } from "../services/location";
 import { properties } from "../services/properties";
 import { security } from "../services/security";
 import { user } from "../services/user";
+import { exports } from "../services/exports";
+import { tickets } from "src/services/tickets"; // a.k.a. kanban
 
 import { reducer as customerReducer } from "../slices/customer";
 import { reducer as customerFiltersReducer } from "../slices/customer/filters";
@@ -36,6 +37,7 @@ export const rootReducer = combineReducers({
     [notification.reducerPath]: notification.reducer,
     [security.reducerPath]: security.reducer,
     [exports.reducerPath]: exports.reducer,
+    [tickets.reducerPath]: tickets.reducer,
 
     // property
     property: propertyReducer,

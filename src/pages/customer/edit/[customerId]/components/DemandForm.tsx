@@ -11,15 +11,14 @@ import {
     SelectChangeEvent,
     Slider,
     TextField,
-    Tooltip,
     Typography,
 } from "@mui/material";
-import { FC, useCallback, useEffect, useMemo } from "react";
+import { FC, useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useGlobals } from "src/hooks/useGlobals";
 import {
     useAllPropertiesQuery,
-    useGetPropertyByCodeQuery,
+    useLazyGetPropertyByCodeQuery,
 } from "src/services/properties";
 import {
     setCategory, // setters
@@ -60,6 +59,7 @@ import {
     setPropertyCode as setAutocompleteValue,
 } from "src/slices/customer/misc";
 import { IDemandFiltersPOST } from "src/types/demand";
+import { IProperties } from "src/types/properties";
 
 interface DemandFormProps {
     index: number;
@@ -170,69 +170,72 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
             }),
         }).data || [];
 
-    const { data: propertyForCode, isSuccess: isPropertyForCodeSuccess } =
-        useGetPropertyByCodeQuery(autocompleteValue, {
-            skip: !autocompleteValue,
-        });
+    const [getPropertyByCode] = useLazyGetPropertyByCodeQuery();
 
-    useEffect(() => {
-        if (!propertyForCode) return;
+    const fillFromPropertyForCode = useCallback(
+        (p: IProperties) => {
+            if (!p) return;
 
-        dispatch(
-            setParentCategory({
-                index,
-                value: [propertyForCode.parentCategory.key],
-            })
-        );
-        dispatch(setCategory({ index, value: [propertyForCode.category.key] }));
-        dispatch(
-            setFurnished({
-                index,
-                value: [propertyForCode.technicalFeatures.furnished.key],
-            })
-        );
-        dispatch(setState({ index, value: [propertyForCode.state.key] }));
-        dispatch(
-            setMinBedrooms({
-                index,
-                value: propertyForCode.details.bedrooms,
-            })
-        );
-        dispatch(
-            setMinBathrooms({
-                index,
-                value: propertyForCode.details.bathrooms,
-            })
-        );
-        dispatch(
-            setMinCovered({
-                index,
-                value: propertyForCode.technicalFeatures.coverageFactor,
-            })
-        );
-        dispatch(setMinPlot({ index, value: propertyForCode.plotArea }));
-        dispatch(setMinPrice({ index, value: propertyForCode.price }));
-        dispatch(
-            setMinFloor({ index, value: propertyForCode.details.floor.key })
-        );
-        dispatch(
-            setMinYearOfConstruction({
-                index,
-                value: propertyForCode.construction.yearOfConstruction,
-            })
-        );
+            dispatch(
+                setParentCategory({
+                    index,
+                    value: [p.parentCategory.key],
+                })
+            );
+            dispatch(setCategory({ index, value: [p.category.key] }));
+            dispatch(
+                setFurnished({
+                    index,
+                    value: [p.technicalFeatures.furnished.key],
+                })
+            );
+            dispatch(setState({ index, value: [p.state.key] }));
+            dispatch(
+                setMinBedrooms({
+                    index,
+                    value: p.details.bedrooms,
+                })
+            );
+            dispatch(
+                setMinBathrooms({
+                    index,
+                    value: p.details.bathrooms,
+                })
+            );
+            dispatch(
+                setMinCovered({
+                    index,
+                    value: p.technicalFeatures.coverageFactor,
+                })
+            );
+            dispatch(setMinPlot({ index, value: p.plotArea }));
+            dispatch(setMinPrice({ index, value: p.price }));
+            dispatch(setMinFloor({ index, value: p.details.floor.key }));
+            dispatch(
+                setMinYearOfConstruction({
+                    index,
+                    value: p.construction.yearOfConstruction,
+                })
+            );
 
-        dispatch(
-            setDemandLabels({
-                index,
-                value: propertyForCode.labels.map((label) => label.id),
-            })
-        );
-    }, [propertyForCode, isPropertyForCodeSuccess]);
+            dispatch(
+                setDemandLabels({
+                    index,
+                    value: p.labels.map((label) => label.id),
+                })
+            );
+        },
+        [index]
+    );
 
     const autocompleteChange = useCallback(
         (_event: any, value: string | null) => {
             dispatch(setAutocompleteValue({ index, value: value || "" }));
+
+            value &&
+                getPropertyByCode(value)
+                    .unwrap()
+                    .then((p) => fillFromPropertyForCode(p));
         },
         [index]
     );

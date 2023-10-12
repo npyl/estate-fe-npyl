@@ -1,48 +1,44 @@
 // ----------------------------------------------------------------------
 
+import { IUser } from "./user";
+
 export type IKanbanComment = {
     id: string;
     avatar: string;
     name: string;
-    createdAt: Date | string | number;
+    createdAt: string;
     messageType: "image" | "text";
     message: string;
 };
 
-export type IKanbanAssignee = {
-    id: string;
-    name: string;
-    username: string;
-    avatar: string;
-    address: string;
-    phone: string;
-    email: string;
-    lastActivity: Date | string;
-    status: string;
-    role: string;
-};
-
 export type IKanbanCard = {
-    id: string;
+    id: number;
+    priority: number;
     name: string;
-    description?: string;
-    assignee: IKanbanAssignee[];
-    due: [Date | null, Date | null];
+    description: string;
+    user: IUser[]; // assignees
+    due: string[];
     attachments: string[];
     comments: IKanbanComment[];
     completed: boolean;
 };
+export type IKanbanCardPOST = Partial<Omit<IKanbanCard, "user">> & {
+    columnId?: number;
+    userIds?: number[];
+};
 
 export type IKanbanColumn = {
-    id: string;
+    id: number;
     name: string;
-    cardIds: string[];
+    cardIds: number[];
+    cardOrder: number[];
 };
+export type IKanbanColumnPOST = Partial<IKanbanColumn>;
 
 export type IKanbanBoard = {
     cards: IKanbanCard[];
     columns: IKanbanColumn[];
-    columnOrder: string[];
+    columnOrder: number[];
 };
 
 // ----------------------------------------------------------------------
@@ -53,6 +49,6 @@ export type IKanbanState = {
     board: {
         cards: Record<string, IKanbanCard>;
         columns: Record<string, IKanbanColumn>;
-        columnOrder: string[];
+        columnOrder: number[];
     };
 };

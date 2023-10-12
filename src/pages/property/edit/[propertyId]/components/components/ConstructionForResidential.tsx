@@ -111,6 +111,18 @@ const ConstructionForResidentialSection: React.FC<any> = (props) => {
                         xs={3}
                         flexDirection="row"
                         sx={{ display: "inline-flex", alignItems: "center" }}
+                    />
+                    <Grid
+                        item
+                        xs={3}
+                        flexDirection="row"
+                        sx={{ display: "inline-flex", alignItems: "center" }}
+                    />
+                    <Grid
+                        item
+                        xs={3}
+                        flexDirection="row"
+                        sx={{ display: "inline-flex", alignItems: "center" }}
                     >
                         <Checkbox
                             value={underConstruction}

@@ -237,9 +237,7 @@ const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
                 </Grid>
                 <Divider sx={{ width: "maxWidth" }} />
                 <AreaOfPreference index={index} />
-                <FeaturesDemandSection
-                    data={data as any}
-                ></FeaturesDemandSection>
+                <FeaturesDemandSection index={index}></FeaturesDemandSection>
             </Paper>
         );
 };
