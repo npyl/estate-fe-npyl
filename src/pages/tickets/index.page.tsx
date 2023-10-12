@@ -145,7 +145,7 @@ export default function KanbanPage() {
                 });
             } else {
                 // move to different column
-                moveCard({ cardId: sourceCardId, columnId: dstColumnId });
+                moveCard({ cardId: sourceCardId, srcColumnId, dstColumnId });
             }
         }
     };

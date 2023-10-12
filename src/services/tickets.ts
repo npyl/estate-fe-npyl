@@ -16,7 +16,8 @@ interface ReorderColumnProps {
 
 interface MoveCardProps {
     cardId: number;
-    columnId: number;
+    srcColumnId: number;
+    dstColumnId: number;
 }
 interface ReorderCardProps {
     cardId: number;
@@ -41,6 +42,9 @@ function moveItem(arr: number[], id: number, position: number): number[] {
     arr.splice(position, 0, id);
 
     return arr;
+}
+function removeItem(arr: number[], numberToRemove: number): number[] {
+    return arr.filter((item) => item !== numberToRemove);
 }
 
 export const tickets = createApi({
@@ -150,10 +154,54 @@ export const tickets = createApi({
             invalidatesTags: ["Board"],
         }),
         moveCard: builder.mutation<void, MoveCardProps>({
-            query: ({ cardId, columnId }: MoveCardProps) => ({
-                url: `/card/${cardId}/move/${columnId}`,
+            query: ({ cardId, dstColumnId }: MoveCardProps) => ({
+                url: `/card/${cardId}/move/${dstColumnId}`,
                 method: "POST",
             }),
+            onQueryStarted: async (
+                { cardId, srcColumnId, dstColumnId },
+                { dispatch, queryFulfilled }
+            ) => {
+                const patchResult = dispatch(
+                    tickets.util.updateQueryData(
+                        "getBoard",
+                        undefined,
+                        (draft) => {
+                            const srcColumnIndex = draft.columns.findIndex(
+                                (c) => c.id === srcColumnId
+                            );
+                            if (srcColumnIndex < 0) return;
+
+                            const dstColumnIndex = draft.columns.findIndex(
+                                (c) => c.id === dstColumnId
+                            );
+                            if (dstColumnIndex < 0) return;
+
+                            // remove from old column
+                            draft.columns[srcColumnIndex].cardIds = removeItem(
+                                draft.columns[srcColumnIndex].cardIds,
+                                cardId
+                            );
+                            draft.columns[srcColumnIndex].cardOrder =
+                                removeItem(
+                                    draft.columns[srcColumnIndex].cardOrder,
+                                    cardId
+                                );
+
+                            // add to new column
+                            draft.columns[dstColumnIndex].cardIds.push(cardId);
+                            draft.columns[dstColumnIndex].cardOrder.push(
+                                cardId
+                            );
+                        }
+                    )
+                );
+                try {
+                    await queryFulfilled;
+                } catch {
+                    patchResult.undo();
+                }
+            },
             invalidatesTags: ["Board"],
         }),
         reorderCard: builder.mutation<void, ReorderCardProps>({
