@@ -152,7 +152,7 @@ export default function KanbanPage() {
 
     return (
         <Stack direction={"row"} mt={3} flex={1} gap={3}>
-            {items ? (
+            {board && items ? (
                 <TwoDimentionsDnd
                     items={items}
                     columns={COLUMNS}
