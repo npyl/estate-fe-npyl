@@ -61,7 +61,7 @@ const MainContainer: React.FC<MainContainerProps> = (props) => {
                         {Features}
                     </Grid>
                     <Grid item xs={12}>
-                        {BlueprintsSection}
+                        {DescriptionSection}
                     </Grid>
                     <Grid item xs={12}>
                         {AddressSection}
@@ -98,7 +98,7 @@ const MainContainer: React.FC<MainContainerProps> = (props) => {
                         {NotesSection}
                     </Grid>
                     <Grid item xs={12}>
-                        {DescriptionSection}
+                        {BlueprintsSection}
                     </Grid>
                 </Stack>
             </Grid>

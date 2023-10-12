@@ -290,7 +290,18 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
                             ))}
                         </TextField>
                     </Grid>
-
+                    <Grid
+                        item
+                        xs={3}
+                        flexDirection="row"
+                        sx={{ display: "inline-flex", alignItems: "center" }}
+                    />
+                    <Grid
+                        item
+                        xs={3}
+                        flexDirection="row"
+                        sx={{ display: "inline-flex", alignItems: "center" }}
+                    ></Grid>
                     <Grid
                         item
                         xs={3}
@@ -299,6 +310,7 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
                     >
                         <Checkbox
                             id="outlined-controlled"
+                            checked={hasAttic}
                             value={hasAttic}
                             placeholder="Attic"
                             onChange={(
@@ -323,6 +335,7 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
                     >
                         <Checkbox
                             id="outlined-controlled"
+                            checked={playroom}
                             value={playroom}
                             placeholder="Play Room"
                             onChange={(
@@ -348,6 +361,7 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
                     >
                         <Checkbox
                             id="outlined-controlled"
+                            checked={storeroomBool}
                             value={storeroomBool}
                             placeholder="storer room"
                             onChange={(
@@ -373,6 +387,7 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
                     >
                         <Checkbox
                             id="outlined-controlled"
+                            checked={penthouse}
                             value={penthouse}
                             placeholder="Penthouse"
                             onChange={(

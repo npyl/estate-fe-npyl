@@ -197,6 +197,7 @@ const PropertyDescriptionForCommercialSection: React.FC<any> = (props) => {
                     >
                         <Checkbox
                             value={storeroomBool}
+                            checked={storeroomBool}
                             onChange={(
                                 event: React.ChangeEvent<unknown>,
                                 checked: boolean

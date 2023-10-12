@@ -97,7 +97,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
             </List>
         </Grid>
     );
-
     const propertyFeatures = (category: ParentCategory) => {
         const fieldsForCategory = BASIC_DETAIL_FIELDS[category];
         if (!fieldsForCategory) return null;
