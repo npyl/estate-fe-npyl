@@ -143,20 +143,6 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
         [files]
     );
 
-    const handleRemoveFile = (inputFile: IPropertyImage) => {
-        if (!inputFile?.key) return;
-
-        // Prepare Next Image to avoid jumping
-        const index = files.findIndex((f) => f === inputFile);
-        if (index < 0) return;
-        const nextIndex = index + 1 < files.length ? index + 1 : index;
-        const nextImage = files.at(nextIndex);
-
-        deleteImage({ propertyId: +propertyId!, imageKey: inputFile.key })
-            .then(() => deleteFile(inputFile.key))
-            .then(() => setCurrentGalleryImage(nextImage))
-            .catch((reason) => console.error("deleteImage: ", reason));
-    };
     const handleReorder = (items: string[]) => {
         // INFO: backend requires a list with reordered keys like:  [key, key, ...]
         reorderImages({ id: +propertyId!, body: items }).then(() =>
@@ -170,26 +156,49 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
     const handleOpenMore = () => setMoreOpen(true);
     const handleCloseMore = () => setMoreOpen(false);
 
-    const handleImageChange = (i: ICarouselImage) => {
-        /*
-        INFO: the indexes used inside the carousel are not updated in a consistent manner,
-                this is why we receive the currentImage on "afterChange", and we get the index that
-                translates to our array.
-        */
-        setCurrentGalleryImage(files.find((f) => f.key === i.id));
-    };
-
     const handleImageClick = (image: IPropertyImage) => {
         setCurrentGalleryImage(image);
         setMoreOpen(false);
         setGalleryManagerOpen(true);
     };
+    const handleImageChange = useCallback(
+        (key: string) => {
+            /*
+        INFO: the indexes used inside the carousel are not updated in a consistent manner,
+                this is why we receive the currentImage on "afterChange", and we get the index that
+                translates to our array.
+        */
+            setCurrentGalleryImage(files.find((f) => f.key === key));
+        },
+        [files]
+    );
+    const handleImageDelete = useCallback(
+        (key?: string) => {
+            if (!key) return;
+
+            // Prepare Next Image to avoid jumping
+            const index = files.findIndex((f) => f.key === key);
+            if (index < 0) return;
+
+            // Normalize if we are hitting last index
+            const nextIndex =
+                index === files.length - 1 ? files.length - 2 : index + 1;
+            const nextImage = files.at(nextIndex);
+
+            deleteImage({ propertyId: +propertyId!, imageKey: key })
+                .then(() => deleteFile(key))
+                .then(() => setCurrentGalleryImage(nextImage))
+                .catch((reason) => console.error("deleteImage: ", reason));
+        },
+        [files]
+    );
 
     // const handleRemoveAllFiles = () => {
     //     files.forEach((file) => handleRemoveFile(file));
     // };
 
     if (!propertyId) return null;
+
     return (
         <>
             <Card>
@@ -226,7 +235,6 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
                         onImageClick={handleImageClick}
                         onDrop={handleDropMultiFile}
                         onReorder={handleReorder}
-                        onRemove={handleRemoveFile}
                     />
 
                     <Box display="flex" justifyContent="flex-end" mt={2}>
@@ -245,7 +253,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
                     images={files}
                     onChange={handleImageChange}
                     onClose={handleCloseGalleryManager}
-                    onDelete={handleRemoveFile}
+                    onDelete={handleImageDelete}
                 />
             )}
 
