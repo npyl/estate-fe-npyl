@@ -1,11 +1,14 @@
 import { Box, Divider, Grid, Paper, Typography } from "@mui/material";
+import router from "next/router";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { List, ListBooleanItem } from "src/components/List";
+import { useGetCustomerByIdQuery } from "src/services/customers";
+import { ICustomer } from "src/types/customer";
 import { IDemand, ParentCategory } from "src/types/demand";
 
 interface FeaturesProps {
-    data: IDemand;
+    index: number;
 }
 interface PropertyFeaturesItemProps {
     field: string;
@@ -79,10 +82,12 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
     OTHER: ["Panoramic View", "Facade", "Loading Dock", "Veranda", "View"],
 };
 
-const Features: React.FC<FeaturesProps> = (props) => {
-    const { data } = props;
+const Features: React.FC<FeaturesProps> = ({ index }) => {
     const { t } = useTranslation();
-    const features = data?.priorityFeatures;
+    const { customerId } = router.query;
+    const { data } = useGetCustomerByIdQuery(+customerId!);
+    const demands = data?.demands[index];
+    const features = demands?.priorityFeatures;
 
     const renderThirdOfFields = (
         fields: string[],
@@ -98,6 +103,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
         </Grid>
     );
 
+    console.log("the data is:", features);
     const propertyFeatures = (category: ParentCategory) => {
         const fieldsForCategory = BASIC_DETAIL_FIELDS[category];
         if (!fieldsForCategory) return null;
@@ -123,15 +129,16 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Panoramic View")}
-                        status={features?.panoramicView}
+                        status={features?.panoramicView ?? false}
                         align="horizontal"
                     />
                 );
+
             case "Corner":
                 return (
                     <ListBooleanItem
                         label={t("Corner")}
-                        status={features?.corner}
+                        status={features?.corner ?? false}
                         align="horizontal"
                     />
                 );
@@ -139,7 +146,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Facade")}
-                        status={features?.facade}
+                        status={features?.facade ?? false}
                         align="horizontal"
                     />
                 );
@@ -147,7 +154,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Organized Garden")}
-                        status={features?.organizedGarden}
+                        status={features?.organizedGarden ?? false}
                         align="horizontal"
                     />
                 );
@@ -155,7 +162,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Drilling")}
-                        status={features?.drilling}
+                        status={features?.drilling ?? false}
                         align="horizontal"
                     />
                 );
@@ -163,7 +170,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Adapting to the Ground")}
-                        status={features?.adaptingToTheGround}
+                        status={features?.adaptingToTheGround ?? false}
                         align="horizontal"
                     />
                 );
@@ -171,7 +178,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Pool")}
-                        status={features?.pool}
+                        status={features?.pool ?? false}
                         align="horizontal"
                     />
                 );
@@ -179,7 +186,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Barbeque")}
-                        status={features?.barbeque}
+                        status={features?.barbeque ?? false}
                         align="horizontal"
                     />
                 );
@@ -187,7 +194,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Sea View")}
-                        status={features?.seaView}
+                        status={features?.seaView ?? false}
                         align="horizontal"
                     />
                 );
@@ -195,7 +202,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Mountain View")}
-                        status={features?.mountainView}
+                        status={features?.mountainView ?? false}
                         align="horizontal"
                     />
                 );
@@ -203,7 +210,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Sea Front")}
-                        status={features?.seaFront}
+                        status={features?.seaFront ?? false}
                         align="horizontal"
                     />
                 );
@@ -211,7 +218,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Smart Home")}
-                        status={features?.smartHome}
+                        status={features?.smartHome ?? false}
                         align="horizontal"
                     />
                 );
@@ -219,7 +226,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Thermal Insulation")}
-                        status={features?.thermalInsulation}
+                        status={features?.thermalInsulation ?? false}
                         align="horizontal"
                     />
                 );
@@ -227,7 +234,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Jacuzzi")}
-                        status={features?.jacuzzi}
+                        status={features?.jacuzzi ?? false}
                         align="horizontal"
                     />
                 );
@@ -235,7 +242,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Internet")}
-                        status={features?.internet}
+                        status={features?.internet ?? false}
                         align="horizontal"
                     />
                 );
@@ -243,7 +250,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Walkable Distance to Beach")}
-                        status={features?.walkableDistanceToBeach}
+                        status={features?.walkableDistanceToBeach ?? false}
                         align="horizontal"
                     />
                 );
@@ -251,7 +258,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Quiet Area")}
-                        status={features?.quietArea}
+                        status={features?.quietArea ?? false}
                         align="horizontal"
                     />
                 );
@@ -259,7 +266,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("View")}
-                        status={features?.view}
+                        status={features?.view ?? false}
                         align="horizontal"
                     />
                 );
@@ -267,7 +274,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Near Bus Route")}
-                        status={features?.nearBusRoute}
+                        status={features?.nearBusRoute ?? false}
                         align="horizontal"
                     />
                 );
@@ -275,7 +282,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Guestroom")}
-                        status={features?.guestroom}
+                        status={features?.guestroom ?? false}
                         align="horizontal"
                     />
                 );
@@ -284,7 +291,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Bright")}
-                        status={features?.bright}
+                        status={features?.bright ?? false}
                         align="horizontal"
                     />
                 );
@@ -292,7 +299,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Alarm System")}
-                        status={features?.alarmSystem}
+                        status={features?.alarmSystem ?? false}
                         align="horizontal"
                     />
                 );
@@ -300,7 +307,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Office")}
-                        status={features?.office}
+                        status={features?.office ?? false}
                         align="horizontal"
                     />
                 );
@@ -308,7 +315,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Home Cinema")}
-                        status={features?.homeCinema}
+                        status={features?.homeCinema ?? false}
                         align="horizontal"
                     />
                 );
@@ -316,7 +323,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Combined Kitchen and Dinning Area")}
-                        status={features?.combinedKitchenAndDiningArea}
+                        status={features?.combinedKitchenAndDiningArea ?? false}
                         align="horizontal"
                     />
                 );
@@ -324,7 +331,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Sound Insulation")}
-                        status={features?.soundInsulation}
+                        status={features?.soundInsulation ?? false}
                         align="horizontal"
                     />
                 );
@@ -332,7 +339,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Veranda")}
-                        status={features?.veranda}
+                        status={features?.veranda ?? false}
                         align="horizontal"
                     />
                 );
@@ -340,7 +347,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Well")}
-                        status={features?.well}
+                        status={features?.well ?? false}
                         align="horizontal"
                     />
                 );
@@ -348,7 +355,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Masonry Fence")}
-                        status={features?.masonryFence}
+                        status={features?.masonryFence ?? false}
                         align="horizontal"
                     />
                 );
@@ -356,7 +363,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Access for Disabled")}
-                        status={features?.accessForDisabled}
+                        status={features?.accessForDisabled ?? false}
                         align="horizontal"
                     />
                 );
@@ -364,7 +371,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Tents")}
-                        status={features?.tents}
+                        status={features?.tents ?? false}
                         align="horizontal"
                     />
                 );
@@ -372,7 +379,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Heated Pool")}
-                        status={features?.heatedPool}
+                        status={features?.heatedPool ?? false}
                         align="horizontal"
                     />
                 );
@@ -380,7 +387,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Has 24 Hours Security")}
-                        status={features?.has24HoursSecurity}
+                        status={features?.has24HoursSecurity ?? false}
                         align="horizontal"
                     />
                 );
@@ -388,7 +395,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("CCTV")}
-                        status={features?.cctv}
+                        status={features?.cctv ?? false}
                         align="horizontal"
                     />
                 );
@@ -396,7 +403,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Fire Detector")}
-                        status={features?.fireDetector}
+                        status={features?.fireDetector ?? false}
                         align="horizontal"
                     />
                 );
@@ -404,7 +411,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Independent Heating Per Room")}
-                        status={features?.independentHeatingPerRoom}
+                        status={features?.independentHeatingPerRoom ?? false}
                         align="horizontal"
                     />
                 );
@@ -412,7 +419,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Indoor Pool")}
-                        status={features?.indoorPool}
+                        status={features?.indoorPool ?? false}
                         align="horizontal"
                     />
                 );
@@ -420,7 +427,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Within City Plan")}
-                        status={features?.withinCityPlan}
+                        status={features?.withinCityPlan ?? false}
                         align="horizontal"
                     />
                 );
@@ -428,7 +435,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Within Residential Zone")}
-                        status={features?.withinResidentialZone}
+                        status={features?.withinResidentialZone ?? false}
                         align="horizontal"
                     />
                 );
@@ -436,7 +443,7 @@ const Features: React.FC<FeaturesProps> = (props) => {
                 return (
                     <ListBooleanItem
                         label={t("Loading Dock")}
-                        status={features?.loadingDock}
+                        status={features?.loadingDock ?? false}
                         align="horizontal"
                     />
                 );
@@ -460,12 +467,12 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     </Box>
                     <Divider></Divider>
                     <Grid container>
-                        {Array.isArray(data?.filters?.parentCategories) &&
-                            data.filters.parentCategories.map(
-                                (category, index) => (
+                        {Array.isArray(demands?.filters?.parentCategories) &&
+                            demands?.filters.parentCategories.map(
+                                (categoryObj, index) => (
                                     <React.Fragment key={index}>
                                         {propertyFeatures(
-                                            category as unknown as ParentCategory
+                                            categoryObj.key as ParentCategory
                                         )}
                                     </React.Fragment>
                                 )

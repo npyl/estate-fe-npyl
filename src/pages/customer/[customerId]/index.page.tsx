@@ -76,10 +76,6 @@ const CustomerView: NextPage = () => {
                         <Stack spacing={1}>
                             <InformationSection />
                             <AddressSection />
-                            {isBuyerOrLeaser &&
-                                demands?.map((d, i) => (
-                                    <DemandSection key={i} index={i} />
-                                ))}
                             <NotesCustomerSection />
                         </Stack>
                     </Grid>
@@ -92,6 +88,17 @@ const CustomerView: NextPage = () => {
                         </Stack>
                     </Grid>
                 </Grid>
+            ),
+        },
+        // Add this new tab configuration for DemandSection
+        isBuyerOrLeaser && {
+            label: t("Demands"),
+            content: (
+                <Stack spacing={1}>
+                    {demands?.map((d, i) => (
+                        <DemandSection key={i} index={i} />
+                    ))}
+                </Stack>
             ),
         },
         isSellerOrLessor && {
