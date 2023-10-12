@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 // @mui
 import {
     Avatar,
-    Box,
     Divider,
     Drawer,
     IconButton,
@@ -68,6 +67,8 @@ export default function KanbanDetails({
     const [taskDescription, setTaskDescription] = useState(task.description);
 
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const renameRef = useRef<HTMLInputElement>(null);
+    const descriptionRef = useRef<HTMLInputElement>(null);
 
     const [openAssignees, setOpenAssignees] = useState(false);
 
@@ -96,16 +97,53 @@ export default function KanbanDetails({
         event: React.ChangeEvent<HTMLInputElement>
     ) => setTaskDescription(event.target.value);
 
+    const handleUpdateTaskName = useCallback(
+        (event: React.KeyboardEvent<HTMLInputElement>) => {
+            if (event.key === "Enter" && renameRef.current) {
+                renameRef.current.blur();
+
+                editCard({
+                    id,
+                    name: taskName,
+                    description,
+                    priority,
+                    completed,
+                    userIds: user.map((u) => u.id),
+                });
+            }
+        },
+        [id, taskName, description, priority, completed, user]
+    );
+
+    const handleUpdateTaskDescription = useCallback(
+        (event: React.KeyboardEvent<HTMLInputElement>) => {
+            if (event.key === "Enter" && descriptionRef.current) {
+                descriptionRef.current.blur();
+
+                editCard({
+                    id,
+                    name,
+                    description: taskDescription,
+                    priority,
+                    completed,
+                    userIds: user.map((u) => u.id),
+                });
+            }
+        },
+        [id, name, taskDescription, priority, completed, user]
+    );
+
     const toggleCompleted = useCallback(
         () =>
             editCard({
                 id,
                 name,
+                description,
                 priority,
                 completed: !completed,
                 userIds: user.map((u) => u.id),
             }),
-        [id, name, priority, completed, user]
+        [id, name, description, priority, completed, user]
     );
 
     const handleChangePriority = useCallback(
@@ -113,11 +151,12 @@ export default function KanbanDetails({
             editCard({
                 id,
                 name,
+                description,
                 priority: +event.target.value,
                 completed,
                 userIds: user.map((u) => u.id),
             }),
-        [id, name, completed, user]
+        [id, name, description, completed, user]
     );
 
     const handleToggleAssignee = useCallback(
@@ -130,12 +169,13 @@ export default function KanbanDetails({
             editCard({
                 id,
                 name,
+                description,
                 priority,
                 completed,
                 userIds: newUserIds,
             });
         },
-        [id, name, priority, completed, user]
+        [id, name, description, priority, completed, user]
     );
 
     const handleOpenAssignees = () => setOpenAssignees(true);
@@ -175,9 +215,11 @@ export default function KanbanDetails({
                 <Stack spacing={3} sx={{ px: 2.5, pt: 3, pb: 5 }}>
                     {/* Task name */}
                     <KanbanInputName
+                        inputRef={renameRef}
                         placeholder="Task name"
-                        value={taskName}
+                        value={taskName || name}
                         onChange={handleChangeTaskName}
+                        onKeyUp={handleUpdateTaskName}
                     />
 
                     {/* Assignee */}
@@ -299,8 +341,11 @@ export default function KanbanDetails({
                             fullWidth
                             multiline
                             size="small"
-                            value={taskDescription}
+                            rows={5}
+                            ref={descriptionRef}
+                            value={taskDescription || description}
                             onChange={handleChangeTaskDescription}
+                            onKeyUp={handleUpdateTaskDescription}
                             InputProps={{
                                 sx: {
                                     typography: "body2",
