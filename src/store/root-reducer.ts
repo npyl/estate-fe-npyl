@@ -5,7 +5,6 @@ import { note } from "src/services/note";
 import { notification } from "src/services/notification";
 import { auth } from "../services/auth";
 import { customers } from "../services/customers";
-import { exports } from "../services/exports";
 import { global } from "../services/global";
 import { location } from "../services/location";
 import { properties } from "../services/properties";
