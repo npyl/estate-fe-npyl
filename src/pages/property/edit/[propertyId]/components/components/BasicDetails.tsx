@@ -130,16 +130,20 @@ const BasicSection: React.FC<any> = () => {
 
     const subCategoriesMap: {
         [key: string]: KeyValue[];
-    } = useMemo(
+    } | null = useMemo(
         () =>
-            enums
+            enums &&
+            enums.residentialCategory &&
+            enums.commercialCategory &&
+            enums.landCategory &&
+            enums.otherCategory
                 ? {
                       RESIDENTIAL: enums.residentialCategory,
                       COMMERCIAL: enums.commercialCategory,
                       LAND: enums.landCategory,
                       OTHER: enums.otherCategory,
                   }
-                : {},
+                : null,
         [enums]
     );
 
@@ -225,7 +229,8 @@ const BasicSection: React.FC<any> = () => {
         }
     };
 
-    if (!enums || !propertyLabels || !propertyId) return null;
+    if (!enums || !propertyLabels || !propertyId || !subCategoriesMap)
+        return null;
 
     return (
         <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
