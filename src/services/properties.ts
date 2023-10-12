@@ -325,6 +325,7 @@ export const {
     useAllPropertiesQuery,
     useGetPropertyByIdQuery,
     useGetPropertyByCodeQuery,
+    useLazyGetPropertyByCodeQuery,
     useGetPropertyAttributeQuery,
     useLazyGetPropertyLabelsQuery,
     // mutations
