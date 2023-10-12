@@ -35,7 +35,11 @@ export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
 
     return (
         <>
-            <Draggable draggableId={`task-${card.id}`} index={index}>
+            <Draggable
+                draggableId={`task-${card.id}`}
+                key={`task-${card.id}`}
+                index={index}
+            >
                 {(provided) => (
                     <Paper
                         {...provided.draggableProps}

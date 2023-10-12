@@ -24,18 +24,21 @@ interface ReorderCardProps {
     position: number;
 }
 
-function moveItem(arr: number[], columnId: number, position: number): number[] {
-    // Find the current index of the columnId
-    const index = arr.indexOf(columnId);
+// array is columnOrder or cardOrder
+// id refers to column or card id
+// position is the new position that a column / card is to be moved
+function moveItem(arr: number[], id: number, position: number): number[] {
+    // Find the current index of the id
+    const index = arr.indexOf(id);
 
-    // If columnId is not in the array, just return the original array
+    // If id is not in the array, just return the original array
     if (index === -1) return arr;
 
-    // Remove the columnId from its current position
+    // Remove the id from its current position
     arr.splice(index, 1);
 
-    // Insert the columnId at the desired position
-    arr.splice(position, 0, columnId);
+    // Insert the id at the desired position
+    arr.splice(position, 0, id);
 
     return arr;
 }
@@ -159,6 +162,34 @@ export const tickets = createApi({
                 method: "POST",
                 params: { card: cardId, position: position },
             }),
+            onQueryStarted: async (
+                { cardId, columnId, position },
+                { dispatch, queryFulfilled }
+            ) => {
+                const patchResult = dispatch(
+                    tickets.util.updateQueryData(
+                        "getBoard",
+                        undefined,
+                        (draft) => {
+                            const columnIndex = draft.columns.findIndex(
+                                (c) => c.id === columnId
+                            );
+                            if (columnIndex < 0) return;
+
+                            draft.columns[columnIndex].cardOrder = moveItem(
+                                draft.columns[columnIndex].cardOrder,
+                                cardId,
+                                position
+                            );
+                        }
+                    )
+                );
+                try {
+                    await queryFulfilled;
+                } catch {
+                    patchResult.undo();
+                }
+            },
             invalidatesTags: ["Board"],
         }),
         deleteCard: builder.mutation<void, number>({

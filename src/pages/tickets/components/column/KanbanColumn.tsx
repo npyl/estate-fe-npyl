@@ -123,6 +123,7 @@ export default function KanbanColumn({ column }: Props) {
                             </Button>
                         </Stack>
                     </Stack>
+                    {provided.placeholder}
                 </Paper>
             )}
         </Droppable>

@@ -59,13 +59,11 @@ const rowId = (str?: string) => {
 };
 
 export default function KanbanPage() {
-    const { data: board, isFetching: isBoardFetching } = useGetBoardQuery();
+    const { data: board } = useGetBoardQuery();
 
-    const [moveCard, { isLoading: isMoveLoading }] = useMoveCardMutation();
-    const [reorderCard, { isLoading: isReorderLoading }] =
-        useReorderCardMutation();
-    const [reorderColumn, { isLoading: isReorderColumnLoading }] =
-        useReorderColumnMutation();
+    const [moveCard] = useMoveCardMutation();
+    const [reorderCard] = useReorderCardMutation();
+    const [reorderColumn] = useReorderColumnMutation();
 
     const items: TwoDimentionsDndItem[] = useMemo(
         () =>
