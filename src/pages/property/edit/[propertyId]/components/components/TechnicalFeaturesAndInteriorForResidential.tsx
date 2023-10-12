@@ -87,7 +87,7 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC<any> = () => {
                 }}
             >
                 <Typography variant="h6">
-                    {t("Technical Feautures And Interior")}
+                    {t("Technical Features And Interior")}
                 </Typography>
             </Box>
 

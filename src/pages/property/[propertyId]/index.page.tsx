@@ -55,12 +55,10 @@ const SingleProperty: NextPage = () => {
     const { t } = useTranslation();
     const { removeTab, pushTab } = useTabsContext();
 
-    const [deleteProperty, { isSuccess: isDeleteSuccess }] =
-        useDeletePropertyMutation();
-
     const { propertyId } = router.query;
 
     const { data } = useGetPropertyByIdQuery(+propertyId!); // basic details
+    const [deleteProperty] = useDeletePropertyMutation();
 
     const [value, setValue] = useState(0);
 
@@ -78,14 +76,11 @@ const SingleProperty: NextPage = () => {
         setValue(newValue);
 
     const handleEdit = () => router.push(`/property/edit/${propertyId}`);
-    const handleDelete = () => deleteProperty(+propertyId!);
-
-    // upon successful delete
-    if (isDeleteSuccess) {
-        router.push("/");
-        // remove tab on succesfull delete
-        removeTab(propertyId as string);
-    }
+    const handleDelete = () =>
+        deleteProperty(+propertyId!).then(() => {
+            router.push("/");
+            removeTab(propertyId as string);
+        });
 
     if (!data) return null;
 

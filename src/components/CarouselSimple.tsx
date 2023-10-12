@@ -55,16 +55,12 @@ export default function CarouselSimple({
 
     useEffect(() => {
         if (!initialIndex) return;
+        console.log("changing to: ", initialIndex);
         carousel1.current?.slickGoTo(initialIndex, false);
     }, [initialIndex]);
 
-    const handlePrev = () => {
-        carousel1.current?.slickPrev();
-    };
-
-    const handleNext = () => {
-        carousel1.current?.slickNext();
-    };
+    const handlePrev = () => carousel1.current?.slickPrev();
+    const handleNext = () => carousel1.current?.slickNext();
 
     const renderLargeImg = (
         <Box
@@ -89,6 +85,7 @@ export default function CarouselSimple({
                             key={item.id}
                             alt={item.title}
                             src={item.image}
+                            hidden={item.hidden}
                             label={mainLabel && index === 0 ? mainLabel : ""}
                             onClick={() => {
                                 onImageClick && onImageClick();

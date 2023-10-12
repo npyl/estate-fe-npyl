@@ -11,6 +11,7 @@ import {
     SelectChangeEvent,
     Slider,
     TextField,
+    Tooltip,
     Typography,
 } from "@mui/material";
 import { FC, useCallback, useEffect, useMemo } from "react";
@@ -342,82 +343,87 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                 </Typography>
             </Box>
 
-            <Grid item xs={12} padding={1}>
-                <Grid container spacing={2}>
-                    <Grid item xs={6}>
-                        <Autocomplete
-                            disablePortal
-                            value={autocompleteValue}
-                            onChange={autocompleteChange}
-                            options={propertyCodes}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    label={t("Property Code")}
-                                />
+            <Grid container spacing={2} padding={1} marginBottom={2}>
+                <Grid item xs={6}>
+                    <Autocomplete
+                        disablePortal
+                        value={autocompleteValue}
+                        onChange={autocompleteChange}
+                        options={propertyCodes}
+                        renderInput={(params) => (
+                            <TextField {...params} label={t("Property Code")} />
+                        )}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <FormControl fullWidth>
+                        <InputLabel id="demo-simple-select-label">
+                            {t("Parent Category")}
+                        </InputLabel>
+                        <Select
+                            multiple
+                            labelId="demo-simple-select-label"
+                            value={parentCategories}
+                            onChange={handleChange10}
+                            renderValue={(selected: string[]) => {
+                                return selected
+                                    .map(
+                                        (key) =>
+                                            parentCategoryEnum?.find(
+                                                (item) => item.key === key
+                                            )?.value
+                                    )
+                                    .filter(Boolean)
+                                    .join(", ");
+                            }}
+                            input={<OutlinedInput label="Κατάσταση" />}
+                            MenuProps={{
+                                PaperProps: {
+                                    sx: { maxHeight: "60vh" },
+                                },
+                            }}
+                        >
+                            {parentCategoryEnum.map(
+                                ({ key, value }, labelSelectIndex) => {
+                                    return (
+                                        <MenuItem
+                                            key={labelSelectIndex}
+                                            value={key}
+                                        >
+                                            <Checkbox
+                                                checked={
+                                                    parentCategories.indexOf(
+                                                        key
+                                                    ) > -1
+                                                }
+                                            />
+
+                                            {value}
+                                        </MenuItem>
+                                    );
+                                }
                             )}
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <FormControl fullWidth>
-                            <InputLabel id="demo-simple-select-label">
-                                {t("Parent Category")}
-                            </InputLabel>
-                            <Select
-                                multiple
-                                labelId="demo-simple-select-label"
-                                value={parentCategories}
-                                onChange={handleChange10}
-                                renderValue={(selected: string[]) => {
-                                    return selected
-                                        .map(
-                                            (key) =>
-                                                parentCategoryEnum?.find(
-                                                    (item) => item.key === key
-                                                )?.value
-                                        )
-                                        .filter(Boolean)
-                                        .join(", ");
-                                }}
-                                input={<OutlinedInput label="Κατάσταση" />}
-                                MenuProps={{
-                                    PaperProps: {
-                                        sx: { maxHeight: "60vh" },
-                                    },
-                                }}
-                            >
-                                {parentCategoryEnum.map(
-                                    ({ key, value }, labelSelectIndex) => {
-                                        return (
-                                            <MenuItem
-                                                key={labelSelectIndex}
-                                                value={key}
-                                            >
-                                                <Checkbox
-                                                    checked={
-                                                        parentCategories.indexOf(
-                                                            key
-                                                        ) > -1
-                                                    }
-                                                />
+                        </Select>
+                    </FormControl>
+                </Grid>
 
-                                                {value}
-                                            </MenuItem>
-                                        );
-                                    }
-                                )}
-                            </Select>
-                        </FormControl>
-                    </Grid>
+                {Array.isArray(parentCategories) &&
+                    parentCategories.length > 0 &&
+                    parentCategories.map((e, parentCategoriesIndex) => {
+                        // Find the name (value) of the selected parent category using its key (e)
+                        const parentCategoryName = parentCategoryEnum.find(
+                            (item) => item.key === e
+                        )?.value;
 
-                    {Array.isArray(parentCategories) &&
-                        parentCategories.length > 0 &&
-                        parentCategories.map((e, parentCategoriesIndex) => (
+                        return (
                             <Grid key={parentCategoriesIndex} item xs={6}>
-                                <FormControl fullWidth>
+                                <FormControl fullWidth variant="outlined">
                                     <InputLabel id="demo-simple-select-label">
-                                        {t("Category")}
+                                        {`${t(
+                                            "Category"
+                                        )} (${parentCategoryName})`}
                                     </InputLabel>
+
                                     <Select
                                         multiple
                                         labelId="demo-simple-select-label"
@@ -476,363 +482,355 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                                     </Select>
                                 </FormControl>
                             </Grid>
-                        ))}
-                    <Grid item xs={6}>
-                        <FormControl fullWidth>
-                            <InputLabel>{t("Furnishing")}</InputLabel>
-                            <Select
-                                multiple
-                                labelId="demo-simple-select-label"
-                                value={furnished}
-                                onChange={handleChange12}
-                                renderValue={(selected: string[]) => {
-                                    return selected
-                                        .map(
-                                            (key) =>
-                                                furnishingEnum?.find(
-                                                    (item) => item.key === key
-                                                )?.value
-                                        )
-                                        .filter(Boolean)
-                                        .join(", ");
-                                }}
-                                input={<OutlinedInput label="Κατάσταση" />}
-                                MenuProps={{
-                                    PaperProps: {
-                                        sx: { maxHeight: "60vh" },
-                                    },
-                                }}
-                            >
-                                {furnishingEnum.map(
-                                    ({ key, value }, furnishedSelectIndex) => (
+                        );
+                    })}
+                <Grid item xs={6}>
+                    <FormControl fullWidth>
+                        <InputLabel>{t("Furnishing")}</InputLabel>
+                        <Select
+                            multiple
+                            labelId="demo-simple-select-label"
+                            value={furnished}
+                            onChange={handleChange12}
+                            renderValue={(selected: string[]) => {
+                                return selected
+                                    .map(
+                                        (key) =>
+                                            furnishingEnum?.find(
+                                                (item) => item.key === key
+                                            )?.value
+                                    )
+                                    .filter(Boolean)
+                                    .join(", ");
+                            }}
+                            input={<OutlinedInput label="Κατάσταση" />}
+                            MenuProps={{
+                                PaperProps: {
+                                    sx: { maxHeight: "60vh" },
+                                },
+                            }}
+                        >
+                            {furnishingEnum.map(
+                                ({ key, value }, furnishedSelectIndex) => (
+                                    <MenuItem
+                                        key={furnishedSelectIndex}
+                                        value={key}
+                                    >
+                                        <Checkbox
+                                            checked={
+                                                furnished.indexOf(key) > -1
+                                            }
+                                        />
+
+                                        {value}
+                                    </MenuItem>
+                                )
+                            )}
+                        </Select>
+                    </FormControl>
+                </Grid>
+                <Grid item xs={6}>
+                    <FormControl fullWidth>
+                        <InputLabel>{t("State")}</InputLabel>
+                        <Select
+                            multiple
+                            labelId="demo-simple-select-label"
+                            value={state}
+                            onChange={handleChange13}
+                            renderValue={(selected: string[]) => {
+                                return selected
+                                    .map(
+                                        (key) =>
+                                            stateEnum?.find(
+                                                (item) => item.key === key
+                                            )?.value
+                                    )
+                                    .filter(Boolean)
+                                    .join(", ");
+                            }}
+                            input={<OutlinedInput label="Κατάσταση" />}
+                            MenuProps={{
+                                PaperProps: {
+                                    sx: { maxHeight: "60vh" },
+                                },
+                            }}
+                        >
+                            {stateEnum.map(
+                                ({ key, value }, stateSelectIndex) => {
+                                    return (
                                         <MenuItem
-                                            key={furnishedSelectIndex}
+                                            key={stateSelectIndex}
                                             value={key}
                                         >
                                             <Checkbox
                                                 checked={
-                                                    furnished.indexOf(key) > -1
+                                                    state.indexOf(key) > -1
                                                 }
                                             />
 
                                             {value}
                                         </MenuItem>
-                                    )
-                                )}
-                            </Select>
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <FormControl fullWidth>
-                            <InputLabel>{t("State")}</InputLabel>
-                            <Select
-                                multiple
-                                labelId="demo-simple-select-label"
-                                value={state}
-                                onChange={handleChange13}
-                                renderValue={(selected: string[]) => {
-                                    return selected
-                                        .map(
-                                            (key) =>
-                                                stateEnum?.find(
-                                                    (item) => item.key === key
-                                                )?.value
-                                        )
-                                        .filter(Boolean)
-                                        .join(", ");
-                                }}
-                                input={<OutlinedInput label="Κατάσταση" />}
-                                MenuProps={{
-                                    PaperProps: {
-                                        sx: { maxHeight: "60vh" },
-                                    },
-                                }}
-                            >
-                                {stateEnum.map(
-                                    ({ key, value }, stateSelectIndex) => {
-                                        return (
-                                            <MenuItem
-                                                key={stateSelectIndex}
-                                                value={key}
-                                            >
-                                                <Checkbox
-                                                    checked={
-                                                        state.indexOf(key) > -1
-                                                    }
-                                                />
+                                    );
+                                }
+                            )}
+                        </Select>
+                    </FormControl>
+                </Grid>
+                <Grid item xs={6}>
+                    <LabelSelect index={index} />
+                </Grid>
+                <Grid item xs={6}>
+                    <FormControl fullWidth>
+                        <InputLabel>{t("Time Frame")}</InputLabel>
+                        <Select
+                            value={timeFrame}
+                            label={t("Time Frame")}
+                            onChange={(e) => {
+                                dispatch(
+                                    setTimeFrame({
+                                        index,
+                                        value: e.target.value,
+                                    })
+                                );
+                            }}
+                            renderValue={(selected) => {
+                                const item = timeframeEnum?.find(
+                                    (item) => item.key === selected
+                                );
+                                return item?.value || "";
+                            }}
+                        >
+                            {timeframeEnum.map(
+                                ({ key, value }, timeFrameSelectIndex) => {
+                                    return (
+                                        <MenuItem
+                                            key={timeFrameSelectIndex}
+                                            value={key}
+                                        >
+                                            {value}
+                                        </MenuItem>
+                                    );
+                                }
+                            )}
+                        </Select>
+                    </FormControl>
+                </Grid>
+                <Grid item xs={6}>
+                    <DemandFormSlider
+                        label={t("Bedrooms")}
+                        min={minBedrooms}
+                        max={maxBedrooms}
+                        defaultMin={0}
+                        defaultMax={10}
+                        demandIndex={index}
+                        handleChange={handleSliderChange0}
+                        setterMin={setMinBedrooms}
+                        setterMax={setMaxBedrooms}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <DemandFormSlider
+                        label={t("Bathrooms")}
+                        min={minBathrooms}
+                        max={maxBathrooms}
+                        defaultMin={0}
+                        defaultMax={10}
+                        demandIndex={index}
+                        handleChange={handleSliderChange1}
+                        setterMin={setMinBathrooms}
+                        setterMax={setMaxBathrooms}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <DemandFormSlider
+                        label={t("Covered")}
+                        min={minCovered}
+                        max={maxCovered}
+                        defaultMin={0}
+                        defaultMax={300}
+                        demandIndex={index}
+                        handleChange={handleSliderChange2}
+                        setterMin={setMinCovered}
+                        setterMax={setMaxCovered}
+                        adornment="m²"
+                        step={10}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <DemandFormSlider
+                        label={t("Plot")}
+                        min={minPlot}
+                        max={maxPlot}
+                        defaultMin={0}
+                        defaultMax={500}
+                        demandIndex={index}
+                        handleChange={handleSliderChange3}
+                        setterMin={setMinPlot}
+                        setterMax={setMaxPlot}
+                        adornment="m²"
+                        step={10}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <DemandFormSlider
+                        label={t("Price")}
+                        min={minPrice}
+                        max={maxPrice}
+                        defaultMin={0}
+                        defaultMax={1000000}
+                        demandIndex={index}
+                        handleChange={handleSliderChange4}
+                        setterMin={setMinPrice}
+                        setterMax={setMaxPrice}
+                        adornment="€"
+                        step={50}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <DemandFormSlider
+                        label={t("Year of Construction")}
+                        min={minYearOfConstruction}
+                        max={maxYearOfConstruction}
+                        defaultMin={1960}
+                        defaultMax={new Date().getFullYear()}
+                        demandIndex={index}
+                        handleChange={handleSliderChange5}
+                        setterMin={setMinYearOfConstruction}
+                        setterMax={setMaxYearOfConstruction}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <Typography variant="h6">{t("Floor")}</Typography>
+                    <Grid
+                        container
+                        direction={"row"}
+                        spacing={2}
+                        paddingTop={2}
+                        paddingLeft={3}
+                        paddingRight={3}
+                    >
+                        {minFloorsArray && maxFloorsArray && (
+                            <Slider
+                                getAriaLabel={() => "Floor Slider"}
+                                orientation="horizontal"
+                                value={[
+                                    minFloorsArray.indexOf(minFloor),
+                                    maxFloorsArray.indexOf(maxFloor),
+                                ]}
+                                onChange={(
+                                    _event: any,
+                                    newValue: number | number[],
+                                    _activeThumb: number
+                                ) => {
+                                    if (!Array.isArray(newValue)) return;
 
-                                                {value}
-                                            </MenuItem>
-                                        );
-                                    }
-                                )}
-                            </Select>
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <LabelSelect index={index} />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <FormControl fullWidth>
-                            <InputLabel>{t("Time Frame")}</InputLabel>
-                            <Select
-                                value={timeFrame}
-                                label={t("Time Frame")}
-                                onChange={(e) => {
+                                    const min = minFloorsArray[newValue[0]];
+                                    const max = maxFloorsArray[newValue[1]];
+
                                     dispatch(
-                                        setTimeFrame({
+                                        setMinFloor({
                                             index,
-                                            value: e.target.value,
+                                            value: min,
+                                        })
+                                    );
+                                    dispatch(
+                                        setMaxFloor({
+                                            index,
+                                            value: max,
                                         })
                                     );
                                 }}
-                                renderValue={(selected) => {
-                                    const item = timeframeEnum?.find(
-                                        (item) => item.key === selected
-                                    );
-                                    return item?.value || "";
-                                }}
-                            >
-                                {timeframeEnum.map(
-                                    ({ key, value }, timeFrameSelectIndex) => {
-                                        return (
-                                            <MenuItem
-                                                key={timeFrameSelectIndex}
-                                                value={key}
-                                            >
-                                                {value}
-                                            </MenuItem>
-                                        );
-                                    }
-                                )}
-                            </Select>
-                        </FormControl>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <DemandFormSlider
-                            label={t("Bedrooms")}
-                            min={minBedrooms}
-                            max={maxBedrooms}
-                            defaultMin={0}
-                            defaultMax={10}
-                            demandIndex={index}
-                            handleChange={handleSliderChange0}
-                            setterMin={setMinBedrooms}
-                            setterMax={setMaxBedrooms}
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <DemandFormSlider
-                            label={t("Bathrooms")}
-                            min={minBathrooms}
-                            max={maxBathrooms}
-                            defaultMin={0}
-                            defaultMax={10}
-                            demandIndex={index}
-                            handleChange={handleSliderChange1}
-                            setterMin={setMinBathrooms}
-                            setterMax={setMaxBathrooms}
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <DemandFormSlider
-                            label={t("Covered")}
-                            min={minCovered}
-                            max={maxCovered}
-                            defaultMin={0}
-                            defaultMax={300}
-                            demandIndex={index}
-                            handleChange={handleSliderChange2}
-                            setterMin={setMinCovered}
-                            setterMax={setMaxCovered}
-                            adornment="m²"
-                            step={10}
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <DemandFormSlider
-                            label={t("Plot")}
-                            min={minPlot}
-                            max={maxPlot}
-                            defaultMin={0}
-                            defaultMax={500}
-                            demandIndex={index}
-                            handleChange={handleSliderChange3}
-                            setterMin={setMinPlot}
-                            setterMax={setMaxPlot}
-                            adornment="m²"
-                            step={10}
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <DemandFormSlider
-                            label={t("Price")}
-                            min={minPrice}
-                            max={maxPrice}
-                            defaultMin={0}
-                            defaultMax={1000000}
-                            demandIndex={index}
-                            handleChange={handleSliderChange4}
-                            setterMin={setMinPrice}
-                            setterMax={setMaxPrice}
-                            adornment="€"
-                            step={50}
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <DemandFormSlider
-                            label={t("Year of Construction")}
-                            min={minYearOfConstruction}
-                            max={maxYearOfConstruction}
-                            defaultMin={1960}
-                            defaultMax={new Date().getFullYear()}
-                            demandIndex={index}
-                            handleChange={handleSliderChange5}
-                            setterMin={setMinYearOfConstruction}
-                            setterMax={setMaxYearOfConstruction}
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Typography variant="h6">{t("Floor")}</Typography>
-                        <Grid
-                            container
-                            direction={"row"}
-                            spacing={2}
-                            paddingTop={2}
-                            paddingLeft={3}
-                            paddingRight={3}
-                        >
-                            {minFloorsArray && maxFloorsArray && (
-                                <Slider
-                                    getAriaLabel={() => "Floor Slider"}
-                                    orientation="horizontal"
-                                    value={[
-                                        minFloorsArray.indexOf(minFloor),
-                                        maxFloorsArray.indexOf(maxFloor),
-                                    ]}
-                                    onChange={(
-                                        _event: any,
-                                        newValue: number | number[],
-                                        _activeThumb: number
-                                    ) => {
-                                        if (!Array.isArray(newValue)) return;
+                                valueLabelDisplay="auto"
+                                valueLabelFormat={(
+                                    value: number,
+                                    index: number
+                                ) =>
+                                    index === 0
+                                        ? minFloors![value].value
+                                        : maxFloors![value].value
+                                }
+                                min={0}
+                                max={maxFloorsArray.length - 41}
+                            />
+                        )}
 
-                                        const min = minFloorsArray[newValue[0]];
-                                        const max = maxFloorsArray[newValue[1]];
-
+                        <Grid item xs={6}>
+                            <FormControl fullWidth>
+                                <InputLabel>Min Floor</InputLabel>
+                                <Select
+                                    value={minFloor}
+                                    label="Min floor"
+                                    onChange={(e) => {
                                         dispatch(
                                             setMinFloor({
                                                 index,
-                                                value: min,
-                                            })
-                                        );
-                                        dispatch(
-                                            setMaxFloor({
-                                                index,
-                                                value: max,
+                                                value: e.target.value,
                                             })
                                         );
                                     }}
-                                    valueLabelDisplay="auto"
-                                    valueLabelFormat={(
-                                        value: number,
-                                        index: number
-                                    ) =>
-                                        index === 0
-                                            ? minFloors![value].value
-                                            : maxFloors![value].value
-                                    }
-                                    min={0}
-                                    max={maxFloorsArray.length - 41}
-                                />
-                            )}
-
-                            <Grid item xs={6}>
-                                <FormControl fullWidth>
-                                    <InputLabel>Min Floor</InputLabel>
-                                    <Select
-                                        value={minFloor}
-                                        label="Min floor"
-                                        onChange={(e) => {
-                                            dispatch(
-                                                setMinFloor({
-                                                    index,
-                                                    value: e.target.value,
-                                                })
-                                            );
-                                        }}
-                                    >
-                                        {minFloors
-                                            ? minFloors.map(
-                                                  (
-                                                      { key, value },
-                                                      minFloorsSelectIndex
-                                                  ) => (
-                                                      <MenuItem
-                                                          key={
-                                                              minFloorsSelectIndex
-                                                          }
-                                                          value={key}
-                                                      >
-                                                          {value}
-                                                      </MenuItem>
-                                                  )
+                                >
+                                    {minFloors
+                                        ? minFloors.map(
+                                              (
+                                                  { key, value },
+                                                  minFloorsSelectIndex
+                                              ) => (
+                                                  <MenuItem
+                                                      key={minFloorsSelectIndex}
+                                                      value={key}
+                                                  >
+                                                      {value}
+                                                  </MenuItem>
                                               )
-                                            : null}
-                                    </Select>
-                                </FormControl>
-                            </Grid>
-                            <Grid item xs={6}>
-                                <FormControl fullWidth>
-                                    <InputLabel>Max Floor</InputLabel>
-                                    <Select
-                                        value={maxFloor}
-                                        label="Max floor"
-                                        onChange={(e) => {
-                                            dispatch(
-                                                setMaxFloor({
-                                                    index,
-                                                    value: e.target.value,
-                                                })
-                                            );
-                                        }}
-                                    >
-                                        {maxFloors
-                                            ? maxFloors.map(
-                                                  (
-                                                      { key, value },
-                                                      maxFloorsSelectIndex
-                                                  ) => (
-                                                      <MenuItem
-                                                          key={
-                                                              maxFloorsSelectIndex
-                                                          }
-                                                          value={key}
-                                                      >
-                                                          {value}
-                                                      </MenuItem>
-                                                  )
+                                          )
+                                        : null}
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={6}>
+                            <FormControl fullWidth>
+                                <InputLabel>Max Floor</InputLabel>
+                                <Select
+                                    value={maxFloor}
+                                    label="Max floor"
+                                    onChange={(e) => {
+                                        dispatch(
+                                            setMaxFloor({
+                                                index,
+                                                value: e.target.value,
+                                            })
+                                        );
+                                    }}
+                                >
+                                    {maxFloors
+                                        ? maxFloors.map(
+                                              (
+                                                  { key, value },
+                                                  maxFloorsSelectIndex
+                                              ) => (
+                                                  <MenuItem
+                                                      key={maxFloorsSelectIndex}
+                                                      value={key}
+                                                  >
+                                                      {value}
+                                                  </MenuItem>
                                               )
-                                            : null}
-                                    </Select>
-                                </FormControl>
-                            </Grid>
+                                          )
+                                        : null}
+                                </Select>
+                            </FormControl>
                         </Grid>
                     </Grid>
                 </Grid>
-                <Grid item xs={12} mt={2}>
-                    <Typography variant="h6" mb={2}>
-                        {t("Area of Preference")}
-                    </Typography>
-                    <AreaOfPreference
-                        index={index}
-                        // setters
-                        setCities={setDemandCities}
-                        setComplexes={setDemandComplexes}
-                        setRegions={setDemandRegions}
-                    />
-                </Grid>
             </Grid>
+
+            <AreaOfPreference
+                index={index}
+                // setters
+                setCities={setDemandCities}
+                setComplexes={setDemandComplexes}
+                setRegions={setDemandRegions}
+            />
 
             {parentCategories &&
                 parentCategories.length > 0 &&

@@ -41,7 +41,8 @@ const slice = createSlice({
     },
 });
 
-export const { setPropertyCode, deletePropertyCode } = slice.actions;
+export const { setPropertyCode, deletePropertyCode, resetState } =
+    slice.actions;
 
 export const selectPropertyCode = ({ customerMisc }: RootState) =>
     customerMisc.propertyCode;

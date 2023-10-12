@@ -7,15 +7,13 @@ import PreviewImage from "src/components/image/PreviewImage";
 import { LabeledImage } from "src/components/image";
 
 import { IPropertyImage } from "src/types/file";
-import { useCallback, useEffect, useMemo, useRef } from "react";
+import { useCallback, useRef } from "react";
 
 import React from "react";
 import { Grid } from "@mui/material";
 
 interface CardProps {
-    src: string;
-    label: string;
-    id: string;
+    image: IPropertyImage;
     index: number;
     moveImage: (dragIndex: number, hoverIndex: number) => void;
     onClick: () => void;
@@ -28,7 +26,9 @@ type DraggableImageItem = {
 
 const DraggableImageType = "image";
 
-const Card = ({ src, label, id, index, moveImage, onClick }: CardProps) => {
+const Card = ({ image, index, moveImage, onClick }: CardProps) => {
+    const { key, url, hidden } = image;
+
     const ref: React.RefObject<HTMLDivElement> = useRef(null);
 
     const [, drop] = useDrop({
@@ -74,13 +74,13 @@ const Card = ({ src, label, id, index, moveImage, onClick }: CardProps) => {
 
     const [{ isDragging }, drag] = useDrag({
         type: DraggableImageType,
-        item: () => ({ id, index }),
+        item: () => ({ id: key, index }),
         collect: (monitor) => ({ isDragging: monitor.isDragging() }),
     });
 
     drag(drop(ref));
 
-    return src ? (
+    return url ? (
         <div
             ref={ref}
             style={{
@@ -89,8 +89,9 @@ const Card = ({ src, label, id, index, moveImage, onClick }: CardProps) => {
             className="card"
         >
             <LabeledImage
-                src={src}
-                label={label}
+                src={url}
+                hidden={hidden}
+                label={index === 0 ? "main" : ""}
                 sx={{
                     opacity: isDragging ? 0.5 : 1,
                 }}
@@ -130,9 +131,7 @@ export default function MultiFilePreviewReorder({
                 {files.map((image, index) => (
                     <Grid item xs={3} key={image.key}>
                         <Card
-                            src={image.url}
-                            label={index === 0 ? "main" : ""}
-                            id={image.key}
+                            image={image}
                             index={index}
                             moveImage={moveImage}
                             onClick={() =>

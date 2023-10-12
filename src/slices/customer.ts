@@ -110,16 +110,16 @@ const slice = createSlice({
     name: "customer",
     initialState,
     reducers: {
-        toggleLeaser(state: customerState, { payload }): void {
-            state.leaser = !state.leaser;
-        },
-        toggleLessor(state: customerState, { payload }): void {
+        toggleLessor(state: customerState): void {
             state.lessor = !state.lessor;
         },
-        toggleSeller(state: customerState, { payload }): void {
+        toggleSeller(state: customerState): void {
             state.seller = !state.seller;
         },
-        toggleBuyer(state: customerState, { payload }): void {
+        toggleLeaser(state: customerState): void {
+            state.leaser = !state.leaser;
+        },
+        toggleBuyer(state: customerState): void {
             state.buyer = !state.buyer;
         },
 
@@ -564,8 +564,11 @@ const slice = createSlice({
                 (demand) => demandMapper(demand) || initialDemand
             );
         },
-        addDemand: (state: customerState, action) => {
+        addDemand: (state: customerState) => {
             state.demands.push(initialDemandState);
+        },
+        clearDemands: (state: customerState) => {
+            state.demands = [];
         },
 
         resetState: () => {
@@ -650,6 +653,7 @@ export const {
     setPriorityFeature,
 
     setInitialState,
+    clearDemands,
     resetState,
 } = slice.actions;
 

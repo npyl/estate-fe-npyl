@@ -24,6 +24,7 @@ import {
     useSetPropertyThumbailMutation,
 } from "src/services/properties";
 import { IPropertyImage, IPropertyImagePOST } from "src/types/file";
+import ICarouselImage from "src/components/carousel/types";
 
 interface IImageSectionProps {
     files: IPropertyImage[];
@@ -145,8 +146,15 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
     const handleRemoveFile = (inputFile: IPropertyImage) => {
         if (!inputFile?.key) return;
 
+        // Prepare Next Image to avoid jumping
+        const index = files.findIndex((f) => f === inputFile);
+        if (index < 0) return;
+        const nextIndex = index + 1 < files.length ? index + 1 : index;
+        const nextImage = files.at(nextIndex);
+
         deleteImage({ propertyId: +propertyId!, imageKey: inputFile.key })
             .then(() => deleteFile(inputFile.key))
+            .then(() => setCurrentGalleryImage(nextImage))
             .catch((reason) => console.error("deleteImage: ", reason));
     };
     const handleReorder = (items: string[]) => {
@@ -161,6 +169,15 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 
     const handleOpenMore = () => setMoreOpen(true);
     const handleCloseMore = () => setMoreOpen(false);
+
+    const handleImageChange = (i: ICarouselImage) => {
+        /*
+        INFO: the indexes used inside the carousel are not updated in a consistent manner,
+                this is why we receive the currentImage on "afterChange", and we get the index that
+                translates to our array.
+        */
+        setCurrentGalleryImage(files.find((f) => f.key === i.id));
+    };
 
     const handleImageClick = (image: IPropertyImage) => {
         setCurrentGalleryImage(image);
@@ -226,6 +243,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
                     deleteOnGoing={isDeleteOnGoing}
                     currentImage={currentGalleryImage}
                     images={files}
+                    onChange={handleImageChange}
                     onClose={handleCloseGalleryManager}
                     onDelete={handleRemoveFile}
                 />

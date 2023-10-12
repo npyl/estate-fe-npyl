@@ -18,7 +18,7 @@ import { alpha, styled } from "@mui/material/styles";
 import { bgGradient } from "src/utils/cssStyles";
 // components
 import Carousel, { CarouselArrowIndex } from "src/components/carousel";
-import Image from "src/components/image";
+import Image, { LabeledImage } from "src/components/image";
 
 import Lightbox, { ThumbnailsRef } from "yet-another-react-lightbox";
 import Captions from "yet-another-react-lightbox/plugins/captions";
@@ -408,10 +408,9 @@ export function OnlyPhotosCarousel({ data }: Props) {
     const handleDownload = () => {
         setOpenDialog(true);
     };
-    // {data
-    //     .filter((image) => image.hidden)
-    //     .map(
+
     const [selectedTab, setSelectedTab] = useState(0);
+
     const renderAllImages = (
         <Box
             sx={{
@@ -430,8 +429,9 @@ export function OnlyPhotosCarousel({ data }: Props) {
                     index // Here is the inclusion of the index
                 ) =>
                     item.image ? (
-                        <Image
+                        <LabeledImage
                             key={item.id}
+                            hidden={item.hidden}
                             alt={item.title}
                             src={item.image}
                             ratio="16/9"
