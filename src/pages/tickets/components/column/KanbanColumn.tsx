@@ -1,97 +1,68 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 // @mui
 import { Button, Paper, Stack } from "@mui/material";
-// redux
-import {
-    addTask,
-    deleteColumn,
-    deleteTask,
-    updateColumn,
-} from "src/slices/kanban";
-import { useDispatch } from "src/store";
 // @types
-import { IKanbanCard, IKanbanColumn } from "src/types/kanban";
+import { IKanbanCard, IKanbanCardPOST, IKanbanColumn } from "src/types/kanban";
 // components
 import Iconify from "../../../../components/iconify";
-
 //
-import { toast } from "react-toastify";
 import KanbanTaskAdd from "../KanbanTaskAdd";
-import KanbanTaskCard from "../KanbanTaskCard";
 import KanbanColumnToolBar from "./KanbanColumnToolBar";
+import {
+    useAddCardMutation,
+    useDeleteCardMutation,
+    useDeleteColumnMutation,
+    useEditColumnMutation,
+    useGetBoardQuery,
+} from "src/services/tickets";
+import KanbanTaskCard from "../KanbanTaskCard";
 
 // ----------------------------------------------------------------------
 
 type Props = {
     column: IKanbanColumn;
-    cards: Record<string, IKanbanCard>;
-    index: number;
 };
 
-export default function KanbanColumn({ column, index, cards }: Props) {
-    const dispatch = useDispatch();
+export const DroppableTypeTask = "TASK";
+
+export default function KanbanColumn({ column }: Props) {
+    const { data: board } = useGetBoardQuery();
+    const cards = useMemo(() => board?.cards, [board]);
+
+    // Columns
+    const [editColumn] = useEditColumnMutation();
+    const [deleteColumn] = useDeleteColumnMutation();
+
+    // Cards
+    const [addCard] = useAddCardMutation();
+    const [deleteCard] = useDeleteCardMutation();
 
     const [openAddTask, setOpenAddTask] = useState(false);
 
-    const handleToggleAddTask = () => {
-        setOpenAddTask(!openAddTask);
-    };
+    const handleUpdateColumn = async (name: string) =>
+        editColumn({ id: column.id, name });
+    const handleDeleteColumn = async () => deleteColumn(column.id);
 
-    const handleCloseAddTask = () => {
-        setOpenAddTask(false);
-    };
-
-    const handleDeleteTask = (cardId: string) => {
-        dispatch(
-            deleteTask({
-                cardId,
-                columnId: column.id,
-            })
+    const handleToggleAddTask = () => setOpenAddTask(!openAddTask);
+    const handleCloseAddTask = () => setOpenAddTask(false);
+    const handleDeleteTask = (cardId: number) => deleteCard(cardId);
+    const handleAddTask = (task: IKanbanCardPOST) =>
+        addCard({ ...task, columnId: column.id }).then(() =>
+            handleCloseAddTask()
         );
-        toast.success("Delete success!");
-    };
 
-    const handleUpdateColumn = async (newName: string) => {
-        try {
-            if (newName !== column.name) {
-                dispatch(
-                    updateColumn(column.id, {
-                        ...column,
-                        name: newName,
-                    })
-                );
-                toast.success("Update success!");
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-    const handleDeleteColumn = async () => {
-        try {
-            dispatch(deleteColumn(column.id));
-            toast.success("Delete success!");
-        } catch (error) {
-            console.error(error);
-        }
-    };
-
-    const handleAddTask = (task: IKanbanCard) => {
-        handleCloseAddTask();
-        dispatch(
-            addTask({
-                card: task,
-                columnId: column.id,
-            })
-        );
-    };
+    // NOTE: backend doesn't delete columnOrder when a column is deleted!
+    if (!column) return null;
 
     return (
-        <Draggable draggableId={column.id} index={index}>
+        <Droppable
+            droppableId={`section-${column.id}`}
+            type={DroppableTypeTask}
+        >
             {(provided) => (
                 <Paper
-                    {...provided.draggableProps}
+                    {...provided.droppableProps}
                     ref={provided.innerRef}
                     variant="outlined"
                     sx={{
@@ -104,33 +75,31 @@ export default function KanbanColumn({ column, index, cards }: Props) {
                                 : "background.default",
                     }}
                 >
-                    <Stack spacing={3} {...provided.dragHandleProps}>
+                    <Stack spacing={3}>
                         <KanbanColumnToolBar
                             columnName={column.name}
                             onDelete={handleDeleteColumn}
                             onUpdate={handleUpdateColumn}
                         />
 
-                        <Droppable droppableId={column.id} type="task">
-                            {(provided) => (
-                                <Stack
-                                    ref={provided.innerRef}
-                                    {...provided.droppableProps}
-                                    spacing={2}
-                                    sx={{ width: 280 }}
-                                >
-                                    {column.cardIds.map((cardId, index) => (
-                                        <KanbanTaskCard
-                                            key={cardId}
-                                            index={index}
-                                            onDeleteTask={handleDeleteTask}
-                                            card={cards[cardId]}
-                                        />
-                                    ))}
-                                    {provided.placeholder}
-                                </Stack>
-                            )}
-                        </Droppable>
+                        <Stack spacing={2} sx={{ width: 280 }}>
+                            {column.cardOrder.map((cardId, index) => {
+                                const card = cards?.find(
+                                    (c) => c.id === cardId
+                                );
+
+                                return card ? (
+                                    <KanbanTaskCard
+                                        key={index}
+                                        index={index}
+                                        onDeleteTask={handleDeleteTask}
+                                        card={card}
+                                    />
+                                ) : (
+                                    <></>
+                                );
+                            })}
+                        </Stack>
 
                         <Stack spacing={2} sx={{ pb: 3 }}>
                             {openAddTask && (
@@ -144,7 +113,9 @@ export default function KanbanColumn({ column, index, cards }: Props) {
                                 fullWidth
                                 size="large"
                                 color="inherit"
-                                startIcon={<Iconify icon="eva:plus-fill" />}
+                                startIcon={
+                                    <Iconify icon="eva:plus-fill" mb={2} />
+                                }
                                 onClick={handleToggleAddTask}
                                 sx={{ fontSize: 14 }}
                             >
@@ -152,8 +123,9 @@ export default function KanbanColumn({ column, index, cards }: Props) {
                             </Button>
                         </Stack>
                     </Stack>
+                    {provided.placeholder}
                 </Paper>
             )}
-        </Draggable>
+        </Droppable>
     );
 }

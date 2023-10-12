@@ -10,10 +10,9 @@ import {
     Stack,
     Tooltip,
 } from "@mui/material";
-// utils
-import uuidv4 from "src/utils/uuidv4";
+
 // @types
-import { IKanbanCard } from "src/types/kanban";
+import { IKanbanCardPOST } from "src/types/kanban";
 // components
 import DateRangePicker, {
     useDateRangePicker,
@@ -25,15 +24,12 @@ import KanbanContactsDialog from "./KanbanContactsDialog";
 // ----------------------------------------------------------------------
 
 const defaultTask = {
-    attachments: [],
-    comments: [],
     description: "",
-    due: [null, null],
-    assignee: [],
+    due: [],
 };
 
 type Props = {
-    onAddTask: (task: IKanbanCard) => void;
+    onAddTask: (task: IKanbanCardPOST) => void;
     onCloseAddTask: VoidFunction;
 };
 
@@ -57,49 +53,34 @@ export default function KanbanTaskAdd({ onAddTask, onCloseAddTask }: Props) {
         shortLabel,
     } = useDateRangePicker(new Date(), new Date());
 
-    const handleOpenContacts = () => {
-        setOpenContacts(true);
-    };
+    const handleOpenContacts = () => setOpenContacts(true);
+    const handleCloseContacts = () => setOpenContacts(false);
 
-    const handleCloseContacts = () => {
-        setOpenContacts(false);
-    };
+    const handleAddTask = () =>
+        onAddTask({
+            ...defaultTask,
+            name,
+            due: [
+                startDate?.toDateString() || "",
+                endDate?.toDateString() || "",
+            ],
+            completed,
+        });
 
     const handleKeyUpAddTask = (
         event: React.KeyboardEvent<HTMLInputElement>
     ) => {
-        if (event.key === "Enter") {
-            if (name.trim() !== "") {
-                onAddTask({
-                    ...defaultTask,
-                    id: uuidv4(),
-                    name,
-                    due: [startDate, endDate],
-                    completed,
-                });
-            }
-        }
+        if (event.key === "Enter" && name.trim() !== "") handleAddTask();
     };
 
     const handleClickAddTask = () => {
-        if (name) {
-            onAddTask({
-                ...defaultTask,
-                id: uuidv4(),
-                name,
-                due: [startDate, endDate],
-                completed,
-            });
-        } else {
-            onCloseAddTask();
-        }
+        if (!name) handleAddTask();
+        else onCloseAddTask();
     };
 
     const handleChangeCompleted = (
         event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        setCompleted(event.target.checked);
-    };
+    ) => setCompleted(event.target.checked);
 
     return (
         <ClickAwayListener onClickAway={handleClickAddTask}>
@@ -175,6 +156,7 @@ export default function KanbanTaskAdd({ onAddTask, onCloseAddTask }: Props) {
 
                 <KanbanContactsDialog
                     open={openContacts}
+                    toggleAssignee={() => {}}
                     onClose={handleCloseContacts}
                 />
 

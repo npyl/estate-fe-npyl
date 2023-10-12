@@ -1,8 +1,7 @@
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 // @mui
 import {
     Avatar,
-    Box,
     Divider,
     Drawer,
     IconButton,
@@ -27,6 +26,7 @@ import KanbanDetailsCommentInput from "./KanbanDetailsCommentInput";
 import KanbanDetailsCommentList from "./KanbanDetailsCommentList";
 import KanbanDetailsPrioritizes from "./KanbanDetailsPrioritizes";
 import KanbanDetailsToolbar from "./KanbanDetailsToolbar";
+import { useEditCardMutation } from "src/services/tickets";
 
 // ----------------------------------------------------------------------
 
@@ -56,70 +56,130 @@ export default function KanbanDetails({
     onCloseDetails,
     onDeleteTask,
 }: Props) {
-    const fileInputRef = useRef<HTMLInputElement>(null);
+    const { id, completed, priority, name, description, user } = useMemo(
+        () => task,
+        [task]
+    );
 
     const [liked, setLiked] = useState(false);
 
-    const [prioritize, setPrioritize] = useState("low");
-
     const [taskName, setTaskName] = useState(task.name);
-
-    const [openContacts, setOpenContacts] = useState(false);
-
-    const [completed, setCompleted] = useState(task.completed);
-
     const [taskDescription, setTaskDescription] = useState(task.description);
 
-    const {
-        startDate,
-        endDate,
-        onChangeStartDate,
-        onChangeEndDate,
-        open: openPicker,
-        onOpen: onOpenPicker,
-        onClose: onClosePicker,
-        isSelected: isSelectedValuePicker,
-        isError,
-        shortLabel,
-    } = useDateRangePicker(task.due[0], task.due[1]);
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const renameRef = useRef<HTMLInputElement>(null);
+    const descriptionRef = useRef<HTMLInputElement>(null);
 
-    const handleLiked = () => {
-        setLiked(!liked);
-    };
+    const [openAssignees, setOpenAssignees] = useState(false);
 
-    const handleCompleted = () => {
-        setCompleted(!completed);
-    };
+    // TODO:
+    // const {
+    //     startDate,
+    //     endDate,
+    //     onChangeStartDate,
+    //     onChangeEndDate,
+    //     open: openPicker,
+    //     onOpen: onOpenPicker,
+    //     onClose: onClosePicker,
+    //     isSelected: isSelectedValuePicker,
+    //     isError,
+    //     shortLabel,
+    // } = useDateRangePicker(new Date(task.due[0]), new Date(task.due[1]));
 
-    const handleOpenContacts = () => {
-        setOpenContacts(true);
-    };
+    const [editCard] = useEditCardMutation();
 
-    const handleCloseContacts = () => {
-        setOpenContacts(false);
-    };
+    const handleLiked = () => setLiked(!liked);
+    const handleClickAttach = () => fileInputRef.current?.click();
 
-    const handleClickAttach = () => {
-        fileInputRef.current?.click();
-    };
-
-    const handleChangeTaskName = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
+    const handleChangeTaskName = (event: React.ChangeEvent<HTMLInputElement>) =>
         setTaskName(event.target.value);
-    };
-
     const handleChangeTaskDescription = (
         event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        setTaskDescription(event.target.value);
-    };
+    ) => setTaskDescription(event.target.value);
 
-    const handleChangePrioritize = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        setPrioritize((event.target as HTMLInputElement).value);
-    };
+    const handleUpdateTaskName = useCallback(
+        (event: React.KeyboardEvent<HTMLInputElement>) => {
+            if (event.key === "Enter" && renameRef.current) {
+                renameRef.current.blur();
+
+                editCard({
+                    id,
+                    name: taskName,
+                    description,
+                    priority,
+                    completed,
+                    userIds: user.map((u) => u.id),
+                });
+            }
+        },
+        [id, taskName, description, priority, completed, user]
+    );
+
+    const handleUpdateTaskDescription = useCallback(
+        (event: React.KeyboardEvent<HTMLInputElement>) => {
+            if (event.key === "Enter" && descriptionRef.current) {
+                descriptionRef.current.blur();
+
+                editCard({
+                    id,
+                    name,
+                    description: taskDescription,
+                    priority,
+                    completed,
+                    userIds: user.map((u) => u.id),
+                });
+            }
+        },
+        [id, name, taskDescription, priority, completed, user]
+    );
+
+    const toggleCompleted = useCallback(
+        () =>
+            editCard({
+                id,
+                name,
+                description,
+                priority,
+                completed: !completed,
+                userIds: user.map((u) => u.id),
+            }),
+        [id, name, description, priority, completed, user]
+    );
+
+    const handleChangePriority = useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>) =>
+            editCard({
+                id,
+                name,
+                description,
+                priority: +event.target.value,
+                completed,
+                userIds: user.map((u) => u.id),
+            }),
+        [id, name, description, completed, user]
+    );
+
+    const handleToggleAssignee = useCallback(
+        (userId: number) => {
+            const oldUserIds = user.map((u) => u.id);
+            const newUserIds = oldUserIds.includes(userId)
+                ? oldUserIds.filter((id) => id !== userId) // remove
+                : [...oldUserIds, userId]; // add
+
+            editCard({
+                id,
+                name,
+                description,
+                priority,
+                completed,
+                userIds: newUserIds,
+            });
+        },
+        [id, name, description, priority, completed, user]
+    );
+
+    const handleOpenAssignees = () => setOpenAssignees(true);
+    const handleCloseAssignees = () => setOpenAssignees(false);
 
     return (
         <Drawer
@@ -145,7 +205,7 @@ export default function KanbanDetails({
                 onLike={handleLiked}
                 onAttach={handleClickAttach}
                 onDelete={onDeleteTask}
-                onCompleted={handleCompleted}
+                onCompleted={toggleCompleted}
                 onCloseDetails={onCloseDetails}
             />
 
@@ -155,9 +215,11 @@ export default function KanbanDetails({
                 <Stack spacing={3} sx={{ px: 2.5, pt: 3, pb: 5 }}>
                     {/* Task name */}
                     <KanbanInputName
+                        inputRef={renameRef}
                         placeholder="Task name"
-                        value={taskName}
+                        value={taskName || name}
                         onChange={handleChangeTaskName}
+                        onKeyUp={handleUpdateTaskName}
                     />
 
                     {/* Assignee */}
@@ -173,18 +235,18 @@ export default function KanbanDetails({
                             flexWrap="wrap"
                             alignItems="center"
                         >
-                            {task.assignee.map((user) => (
+                            {task.user.map((user) => (
                                 <Avatar
                                     key={user.id}
-                                    alt={user.name}
-                                    src={user.avatar}
+                                    alt={user.username}
+                                    src={user.profilePhoto}
                                     sx={{ m: 0.5 }}
                                 />
                             ))}
 
                             <Tooltip title="Add assignee">
                                 <IconButton
-                                    onClick={handleOpenContacts}
+                                    onClick={handleOpenAssignees}
                                     sx={{
                                         p: 1,
                                         ml: 0.5,
@@ -202,15 +264,16 @@ export default function KanbanDetails({
                             </Tooltip>
 
                             <KanbanContactsDialog
-                                assignee={task.assignee}
-                                open={openContacts}
-                                onClose={handleCloseContacts}
+                                assignees={task.user}
+                                open={openAssignees}
+                                toggleAssignee={handleToggleAssignee}
+                                onClose={handleCloseAssignees}
                             />
                         </Stack>
                     </Stack>
 
                     {/* Due date */}
-                    <Stack direction="row" alignItems="center">
+                    {/* <Stack direction="row" alignItems="center">
                         <StyledLabel> Due date </StyledLabel>
                         <>
                             {isSelectedValuePicker ? (
@@ -258,15 +321,15 @@ export default function KanbanDetails({
                                 isError={isError}
                             />
                         </>
-                    </Stack>
+                    </Stack> */}
 
-                    {/* Prioritize */}
+                    {/* Priority */}
                     <Stack direction="row" alignItems="center">
-                        <StyledLabel>Prioritize</StyledLabel>
+                        <StyledLabel>Priority</StyledLabel>
 
                         <KanbanDetailsPrioritizes
-                            prioritize={prioritize}
-                            onChangePrioritize={handleChangePrioritize}
+                            priority={priority}
+                            onChangePrioritize={handleChangePriority}
                         />
                     </Stack>
 
@@ -278,8 +341,11 @@ export default function KanbanDetails({
                             fullWidth
                             multiline
                             size="small"
-                            value={taskDescription}
+                            rows={5}
+                            ref={descriptionRef}
+                            value={taskDescription || description}
                             onChange={handleChangeTaskDescription}
+                            onKeyUp={handleUpdateTaskDescription}
                             InputProps={{
                                 sx: {
                                     typography: "body2",

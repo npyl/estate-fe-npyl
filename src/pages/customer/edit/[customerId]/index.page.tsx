@@ -83,11 +83,13 @@ const EditCustomer: NextPage = () => {
 
     return (
         <>
-            <Form
-                performUpload={performUpload}
-                resetState={resetState}
-                handleCancel={handleCancel}
-            />
+            {everythingIsClear && (
+                <Form
+                    performUpload={performUpload}
+                    resetState={resetState}
+                    handleCancel={handleCancel}
+                />
+            )}
 
             {
                 // loading indicator (incase POST request is taking alot of time)

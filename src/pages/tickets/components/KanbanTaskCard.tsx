@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useMemo, useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 // @mui
 import { Box, Checkbox, Paper, Typography } from "@mui/material";
@@ -9,37 +9,47 @@ import Iconify from "../../../components/iconify";
 import Image from "../../../components/image";
 //
 import KanbanDetails from "./details/KanbanDetails";
+import { useEditCardMutation } from "src/services/tickets";
 
 // ----------------------------------------------------------------------
 
 type Props = {
     index: number;
     card: IKanbanCard;
-    onDeleteTask: (id: string) => void;
+    onDeleteTask: (id: number) => void;
 };
 
 export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
-    const { name, attachments } = card;
+    if (!card) return null;
 
-    const [completed, setCompleted] = useState(card.completed);
+    const { id, name, attachments, completed, priority, user } = useMemo(
+        () => card,
+        [card]
+    );
+
+    const [editCard] = useEditCardMutation();
 
     const [openDetails, setOpenDetails] = useState(false);
 
-    const handleOpenDetails = () => {
-        setOpenDetails(true);
-    };
+    const handleOpenDetails = () => setOpenDetails(true);
+    const handleCloseDetails = () => setOpenDetails(false);
 
-    const handleCloseDetails = () => {
-        setOpenDetails(false);
-    };
-
-    const handleChangeComplete = (event: ChangeEvent<HTMLInputElement>) => {
-        setCompleted(event.target.checked);
-    };
+    const handleChangeComplete = (event: ChangeEvent<HTMLInputElement>) =>
+        editCard({
+            id,
+            name,
+            priority,
+            completed: !completed,
+            userIds: user.map((u) => u.id),
+        });
 
     return (
         <>
-            <Draggable draggableId={card.id} index={index}>
+            <Draggable
+                draggableId={`task-${card.id}`}
+                key={`task-${card.id}`}
+                index={index}
+            >
                 {(provided) => (
                     <Paper
                         {...provided.draggableProps}

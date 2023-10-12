@@ -7,24 +7,24 @@ import Iconify from "../../../../components/iconify";
 // ----------------------------------------------------------------------
 
 const PRIORITIZES_OPTIONS = [
-    { value: "low", label: "Low", color: "info" },
-    { value: "medium", label: "Medium", color: "warning" },
-    { value: "hight", label: "Hight", color: "error" },
+    { value: 0, label: "Low", color: "info" },
+    { value: 1, label: "Medium", color: "warning" },
+    { value: 2, label: "High", color: "error" },
 ] as const;
 
 type Props = {
-    prioritize: string;
+    priority: number;
     onChangePrioritize: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 export default function KanbanDetailsPrioritizes({
-    prioritize,
+    priority,
     onChangePrioritize,
 }: Props) {
     return (
-        <RadioGroup row value={prioritize} onChange={onChangePrioritize}>
+        <RadioGroup row value={priority} onChange={onChangePrioritize}>
             {PRIORITIZES_OPTIONS.map((option) => {
-                const selected = option.value === prioritize;
+                const selected = option.value === priority;
 
                 return (
                     <Box
