@@ -1,13 +1,5 @@
 import { string, object, number } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-// import NextLink from "next/link";
-// import { LoadingButton } from "@mui/lab";
-// import { Alert, InputAdornment, Link, Stack } from "@mui/material";
-// import Iconify from "src/components/iconify/Iconify";
-// import FormProvider, {
-//     RHFCheckbox,
-//     RHFTextField,
-// } from "../../components/hook-form";
 
 import {
     Button,
@@ -17,6 +9,8 @@ import {
     DialogContentText,
     DialogTitle,
     Grid,
+    IconButton,
+    InputAdornment,
     MenuItem,
 } from "@mui/material";
 import { useMemo, useState } from "react";
@@ -25,6 +19,7 @@ import { useAllUsersQuery } from "src/services/user";
 import { IUser } from "src/types/user";
 import { FormProvider, useForm } from "react-hook-form";
 import { RHFSelect, RHFTextField } from "src/components/hook-form";
+import Iconify from "src/components/iconify";
 
 interface UserFormProps {
     open: boolean;
@@ -37,40 +32,20 @@ interface FormFields {
     lastName: string;
     email: string;
     password: string;
-    mobilePhone?: number;
-    homePhone?: number;
-    businessPhone?: number;
-    officePhone?: number;
-    callCenterNumber?: number;
-    address?: string;
-    zipCode?: string;
-    city?: string;
-    region?: string;
-    afm?: number;
-    doy?: number;
-    gemh?: number;
+    mobilePhone: string;
+    homePhone?: string;
+    businessPhone?: string;
+    officePhone?: string;
+    callCenterNumber?: string;
+    address: string;
+    zipCode: string;
+    city: string;
+    region: string;
+    afm?: string;
+    doy?: string;
+    gemh?: string;
     status?: string;
 }
-
-const defaultValues = {
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    mobilePhone: undefined,
-    homePhone: undefined,
-    businessPhone: undefined,
-    officePhone: undefined,
-    callCenterNumber: undefined,
-    address: "",
-    zipCode: "",
-    city: "",
-    region: "",
-    afm: undefined,
-    doy: undefined,
-    gemh: undefined,
-    status: "Inactive",
-};
 
 const Schema = object().shape({
     firstName: string().required(),
@@ -81,20 +56,20 @@ const Schema = object().shape({
 
     password: string().required("Password is required"),
 
-    mobilePhone: number(),
-    homePhone: number(),
-    businessPhone: number(),
-    officePhone: number(),
-    callCenterNumber: number(),
+    mobilePhone: string().required(),
+    homePhone: string(),
+    businessPhone: string(),
+    officePhone: string(),
+    callCenterNumber: string(),
 
-    address: string(),
-    zipCode: string(),
-    city: string(),
-    region: string(),
+    address: string().required(),
+    zipCode: string().required(),
+    city: string().required(),
+    region: string().required(),
 
-    afm: number(),
-    doy: number(),
-    gemh: number(),
+    afm: string(),
+    doy: string(),
+    gemh: string(),
 
     status: string().oneOf(["Active", "Inactive"]),
 });
@@ -102,18 +77,6 @@ const Schema = object().shape({
 export const UserForm = ({ open, onClose }: UserFormProps) => {
     const { data: users } = useAllUsersQuery();
     const { selectedUser } = useSecurityContext();
-
-    const methods = useForm<FormFields>({
-        resolver: yupResolver(Schema),
-        defaultValues,
-    });
-
-    const {
-        reset,
-        setError,
-        handleSubmit,
-        formState: { errors, isSubmitting, isSubmitSuccessful },
-    } = methods;
 
     const user = useMemo(
         () =>
@@ -124,27 +87,46 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
         [users, selectedUser]
     );
 
-    const [status, setStatus] = useState("Active");
-    const [firstName, setFirstName] = useState("");
-    const [lastName, setLastName] = useState("");
-    const [mobilePhone, setMobilePhone] = useState("");
-    const [homePhone, setHomePhone] = useState("");
-    const [businessPhone, setBusinessPhone] = useState("");
-    const [officePhone, setOfficePhone] = useState("");
-    const [callCenterNumber, setCallCenterNumber] = useState("");
-    const [address, setAddress] = useState("");
-    const [zipCode, setZipCode] = useState("");
-    const [city, setCity] = useState("");
-    const [region, setRegion] = useState("");
-    const [afm, setAfm] = useState("");
-    const [doy, setDoy] = useState("");
-    const [gemh, setGemh] = useState("");
-    const [email, setEmail] = useState("");
+    const defaultValues = useMemo(
+        () => ({
+            firstName: user?.firstName || "",
+            lastName: user?.lastName || "",
+            email: user?.email || "",
+            password: "",
+            mobilePhone: user?.mobilePhone || "",
+            homePhone: user?.homePhone || "",
+            businessPhone: "not-supported",
+            officePhone: "not-supported",
+            callCenterNumber: "not-supported",
+            address: user?.address || "",
+            zipCode: user?.zipCode || "",
+            city: user?.city || "",
+            region: user?.region || "",
+            afm: user?.afm || "",
+            doy: user?.doy || "",
+            gemh: user?.gemh || "",
+            status: "Active",
+        }),
+        [user]
+    );
+
+    const methods = useForm<FormFields>({
+        resolver: yupResolver(Schema),
+        defaultValues,
+        mode: "onChange",
+    });
+
+    const {
+        handleSubmit,
+        formState: { errors, isSubmitting, isSubmitSuccessful },
+    } = methods;
 
     // Delete Dialog
     const [openDelete, setOpenDelete] = useState(false);
     const handleOpenDelete = () => setOpenDelete(true);
     const handleCloseDelete = () => setOpenDelete(false);
+
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleCreate = () => {};
     const handleDelete = () => {};
@@ -171,164 +153,93 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
                             <Grid item xs={6}>
                                 <Grid container direction={"column"} gap={2}>
                                     <RHFTextField
-                                        fullWidth={false}
                                         name="firstName"
                                         label="First Name"
-                                        value={firstName}
-                                        onChange={(e) =>
-                                            setFirstName(e.target.value)
-                                        }
                                     />
+                                    <RHFTextField name="email" label="Email" />
                                     <RHFTextField
-                                        fullWidth={false}
-                                        name="email"
-                                        label="Email"
-                                        variant="outlined"
-                                        value={email}
-                                        onChange={(e) =>
-                                            setEmail(e.target.value)
-                                        }
-                                    />
-                                    <RHFTextField
-                                        fullWidth={false}
                                         name="businessPhone"
                                         label="Business Phone"
-                                        value={businessPhone}
-                                        onChange={(e) =>
-                                            setBusinessPhone(e.target.value)
-                                        }
                                     />
                                     <RHFTextField
-                                        fullWidth={false}
-                                        name="businessPhone"
+                                        name="officePhone"
                                         label="Office Phone"
-                                        value={officePhone}
-                                        onChange={(e) =>
-                                            setOfficePhone(e.target.value)
-                                        }
                                     />
                                     <RHFTextField
-                                        fullWidth={false}
-                                        name="businessPhone"
+                                        name="address"
                                         label="Address"
-                                        variant="outlined"
-                                        value={address}
-                                        onChange={(e) =>
-                                            setAddress(e.target.value)
-                                        }
                                     />
                                     <RHFTextField
-                                        fullWidth={false}
                                         name="zipCode"
                                         label="Zip code"
-                                        variant="outlined"
-                                        value={zipCode}
-                                        onChange={(e) =>
-                                            setZipCode(e.target.value)
-                                        }
                                     />
-                                    <RHFTextField
-                                        fullWidth={false}
-                                        name="afm"
-                                        label="ΑΦΜ"
-                                        variant="outlined"
-                                        value={afm}
-                                        onChange={(e) => setAfm(e.target.value)}
-                                    />
-                                    <RHFTextField
-                                        fullWidth={false}
-                                        name="doy"
-                                        label="ΔΟΥ"
-                                        variant="outlined"
-                                        value={doy}
-                                        onChange={(event) =>
-                                            setDoy(event.target.value)
-                                        }
-                                    />
-                                    <RHFTextField
-                                        fullWidth={false}
-                                        name="gemh"
-                                        label="ΓΕΜΥ"
-                                        variant="outlined"
-                                        value={gemh}
-                                        onChange={(e) =>
-                                            setGemh(e.target.value)
-                                        }
-                                    />
+                                    <RHFTextField name="afm" label="ΑΦΜ" />
+                                    <RHFTextField name="doy" label="ΔΟΥ" />
+                                    <RHFTextField name="gemh" label="ΓΕΜΥ" />
                                 </Grid>
                             </Grid>
                             <Grid item xs={6}>
                                 <Grid container direction={"column"} gap={2}>
                                     <RHFTextField
-                                        fullWidth={false}
                                         name="lastName"
                                         label="Last Name"
-                                        variant="outlined"
-                                        value={lastName}
-                                        onChange={(e) =>
-                                            setLastName(e.target.value)
-                                        }
                                     />
                                     <RHFTextField
-                                        fullWidth={false}
+                                        name="password"
+                                        label="Password"
+                                        type={
+                                            showPassword ? "text" : "password"
+                                        }
+                                        InputProps={{
+                                            endAdornment: (
+                                                <InputAdornment
+                                                    position="end"
+                                                    sx={{
+                                                        mb: 0.5,
+                                                        mr: 1.5,
+                                                    }}
+                                                >
+                                                    <IconButton
+                                                        onClick={() =>
+                                                            setShowPassword(
+                                                                !showPassword
+                                                            )
+                                                        }
+                                                        edge="end"
+                                                    >
+                                                        <Iconify
+                                                            icon={
+                                                                showPassword
+                                                                    ? "eva:eye-fill"
+                                                                    : "eva:eye-off-fill"
+                                                            }
+                                                        />
+                                                    </IconButton>
+                                                </InputAdornment>
+                                            ),
+                                        }}
+                                    />
+                                    <RHFTextField
                                         name="mobilePhone"
                                         label="Mobile Phone"
-                                        variant="outlined"
-                                        value={mobilePhone}
-                                        onChange={(e) =>
-                                            setMobilePhone(e.target.value)
-                                        }
                                     />
                                     <RHFTextField
-                                        fullWidth={false}
                                         name="homePhone"
                                         label="Home Phone"
-                                        variant="outlined"
-                                        value={homePhone}
-                                        onChange={(e) =>
-                                            setHomePhone(e.target.value)
-                                        }
                                     />
                                     <RHFTextField
-                                        fullWidth={false}
                                         name="callCenterNumber"
                                         label="Call Center Number"
-                                        variant="outlined"
-                                        value={callCenterNumber}
-                                        onChange={(e) =>
-                                            setCallCenterNumber(e.target.value)
-                                        }
                                     />
+                                    <RHFTextField name="city" label="City" />
                                     <RHFTextField
-                                        fullWidth={false}
-                                        name="city"
-                                        label="City"
-                                        variant="outlined"
-                                        value={city}
-                                        onChange={(e) =>
-                                            setCity(e.target.value)
-                                        }
-                                    />
-                                    <RHFTextField
-                                        fullWidth={false}
                                         name="region"
                                         label="Region"
-                                        variant="outlined"
-                                        value={region}
-                                        onChange={(e) =>
-                                            setRegion(e.target.value)
-                                        }
                                     />
                                     <RHFSelect
                                         select
-                                        fullWidth={false}
                                         name="status"
-                                        label="Status"
-                                        variant="outlined"
-                                        value={status}
-                                        onChange={(e) =>
-                                            setStatus(e.target.value)
-                                        }
+                                        label="Status (not-supported)"
                                     >
                                         <MenuItem value="Active">
                                             Active
@@ -366,22 +277,24 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
                 </DialogActions>
             </Dialog>
             {/* Delete Dialog */}
-            <Dialog open={openDelete} onClose={handleCloseDelete}>
-                <DialogTitle>Confirm Deletion</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        Are you sure you want to delete the user?
-                    </DialogContentText>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleCloseDelete} color="primary">
-                        Cancel
-                    </Button>
-                    <Button onClick={handleDelete} color="secondary">
-                        Delete
-                    </Button>
-                </DialogActions>
-            </Dialog>
+            {openDelete && (
+                <Dialog open={openDelete} onClose={handleCloseDelete}>
+                    <DialogTitle>Confirm Deletion</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            Are you sure you want to delete the user?
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleCloseDelete} color="primary">
+                            Cancel
+                        </Button>
+                        <Button onClick={handleDelete} color="secondary">
+                            Delete
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            )}
         </>
     );
 };
