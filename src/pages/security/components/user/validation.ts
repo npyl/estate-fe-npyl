@@ -1,25 +1,5 @@
 import { string, object, StringSchema } from "yup";
 
-export interface FormFields {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-    mobilePhone: string;
-    homePhone?: string;
-    businessPhone?: string;
-    officePhone?: string;
-    callCenterNumber?: string;
-    address: string;
-    zipCode: string;
-    city: string;
-    region: string;
-    afm?: string;
-    doy?: string;
-    gemh?: string;
-    status?: string;
-}
-
 const numberString = (label: string): StringSchema =>
     string().test("is-number", `${label} must be a number`, (value) =>
         // NOTE: return true if !value, because regex doesn't allow null, but we want to support empty string

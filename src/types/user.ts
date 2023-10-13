@@ -26,3 +26,23 @@ export interface IUser {
     joinedIn: string;
     registrationDate: string;
 }
+
+export interface IUserPOST {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+    mobilePhone: string;
+    homePhone?: string;
+    businessPhone?: string;
+    officePhone?: string;
+    callCenterNumber?: string;
+    address: string;
+    zipCode: string;
+    city: string;
+    region: string;
+    afm?: string;
+    doy?: string;
+    gemh?: string;
+    status?: string;
+}
