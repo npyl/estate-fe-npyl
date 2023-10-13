@@ -22,7 +22,7 @@ import { Users as UsersIcon } from "../../icons/users";
 import { Scrollbar } from "../scrollbar";
 import { DashboardSidebarSection } from "./dashboard-sidebar-section";
 import { OrganizationPopover } from "./organization-popover";
-
+import HistoryIcon from "@mui/icons-material/History";
 interface DashboardSidebarProps {
     onClose?: () => void;
     open?: boolean;
@@ -73,6 +73,11 @@ const getSections = (t: TFunction): Section[] => [
                 title: t("Tickets"),
                 path: "/tickets",
                 icon: <ConfirmationNumber fontSize="small" />,
+            },
+            {
+                title: t("Logs"),
+                path: "/logs",
+                icon: <HistoryIcon fontSize="small" />,
             },
             {
                 title: t("Mail"),

@@ -38,7 +38,9 @@ export const DemandFormSlider: FC<DemandFormSliderProps> = ({
     step = 1,
 }) => {
     const dispatch = useDispatch();
-
+    const formatNumberWithDots = (num: number) => {
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    };
     const handleFieldChange = (
         setter: any,
         index: number,

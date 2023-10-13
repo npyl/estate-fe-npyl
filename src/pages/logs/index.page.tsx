@@ -22,10 +22,11 @@ import {
     useBulkDeleteCustomersMutation,
     useFilterCustomersMutation,
 } from "src/services/customers";
+import { useGetAdmitLogsQuery } from "src/services/logs";
 import { selectAll } from "src/slices/customer/filters";
 import { ILabel } from "src/types/label";
-import { FilterSection } from "./components";
-import { BulkEdit } from "./components/BulkEdit/BulkEdit";
+import { ILogs } from "src/types/logs";
+
 interface TypeProps {
     seller: boolean;
     lessor: boolean;
@@ -33,53 +34,8 @@ interface TypeProps {
     buyer: boolean;
 }
 
-export const TypeLabels = ({ seller, lessor, leaser, buyer }: TypeProps) => {
+const Logs: NextPage = () => {
     const { t } = useTranslation();
-
-    const map = useMemo(
-        () => ({
-            ["Seller"]: {
-                value: seller,
-                color: "success",
-            },
-            ["Lessor"]: {
-                value: lessor,
-                color: "error",
-            },
-            ["Leaser"]: {
-                value: leaser,
-                color: "warning",
-            },
-            ["Buyer"]: {
-                value: buyer,
-                color: "info",
-            },
-        }),
-        [seller, lessor, leaser, buyer]
-    );
-
-    return (
-        <>
-            {Object.entries(map).map(([type, { value, color }]) =>
-                value ? (
-                    <Label
-                        key={type}
-                        variant="soft"
-                        opaque
-                        color={color as LabelColor}
-                    >
-                        {t(type)}
-                    </Label>
-                ) : null
-            )}
-        </>
-    );
-};
-{
-}
-const Customers: NextPage = () => {
-    const { t } = useTranslation();
-
     const allFilters = useSelector(selectAll);
 
     const [bulkEditOpen, setBulkEditOpen] = useState(false);
@@ -91,8 +47,10 @@ const Customers: NextPage = () => {
     const [pageSize, setPageSize] = useState(25);
 
     const [bulkDeleteCustomers] = useBulkDeleteCustomersMutation();
-    const [filterCustomers, { data }] = useFilterCustomersMutation();
+    const [filterCustomers, { isLoading, data }] = useFilterCustomersMutation();
 
+    // const getAdmitLogs: ILogs[] = useGetAdmitLogsQuery().data || [];
+    // console.log(getAdmitLogs);
     const totalRows = useMemo(
         () => (data?.totalElements ? data?.totalElements : 100000),
         [data?.totalElements]
@@ -109,46 +67,6 @@ const Customers: NextPage = () => {
             pageSize: pageSize,
         });
     };
-    function showLabel(params: GridCellParams) {
-        if (!params.value || !Array.isArray(params.value)) return <></>;
-
-        const labels: ILabel[] = params.value as ILabel[];
-
-        return (
-            <div style={{ display: "flex", justifyContent: "center" }}>
-                <ListLabelsItem labels={labels} label={""} />
-            </div>
-        );
-    }
-    const handlePaginationModelChange = (
-        model: GridPaginationModel,
-        details: GridCallbackDetails
-    ) => {
-        setPageSize(model.pageSize);
-        setPage(model.page);
-    };
-    function statusColor(params: GridCellParams) {
-        const labels = (
-            <TypeLabels
-                seller={params.row.seller}
-                lessor={params.row.lessor}
-                leaser={params.row.leaser}
-                buyer={params.row.buyer}
-            />
-        );
-
-        return <div>{labels}</div>;
-    }
-
-    function labels(params: GridCellParams) {
-        const label = (
-            <ListLabelsItem
-                labels={params.row.labels || "-"}
-                label={""}
-            ></ListLabelsItem>
-        );
-        return <div>{label}</div>;
-    }
 
     const columns: GridColDef[] = [
         {
@@ -213,22 +131,6 @@ const Customers: NextPage = () => {
                 return <div>{city}</div>;
             },
         },
-        {
-            field: "category",
-            width: 180,
-            headerAlign: "center",
-            align: "center",
-            headerName: t("Category") || "",
-            renderCell: statusColor,
-        },
-        {
-            field: "labels",
-            width: 180,
-            headerAlign: "center",
-            align: "center",
-            headerName: t("Labels") || "",
-            renderCell: showLabel,
-        },
     ];
     useEffect(() => {
         revalidate();
@@ -253,13 +155,17 @@ const Customers: NextPage = () => {
             revalidate()
         );
     };
-
+    const handlePaginationModelChange = (
+        model: GridPaginationModel,
+        details: GridCallbackDetails
+    ) => {
+        setPageSize(model.pageSize);
+        setPage(model.page);
+    };
     const openBulkEdit = (selectedRows: GridRowSelectionModel) => {
         setBulkEditOpen(true);
         setSelectedRows(selectedRows);
     };
-    const closeBulkEdit = () => setBulkEditOpen(false);
-    const handleBulkEditSave = () => revalidate();
 
     return (
         <Box
@@ -268,12 +174,7 @@ const Customers: NextPage = () => {
                 height: "100%", // WARN: make sure height is full so that bulk edit is full even if DataGrid is small
             }}
         >
-            <FilterSection
-                sx={{
-                    marginRight: bulkEditOpen ? 40 : 0,
-                }}
-            />
-
+            its not ready dont panic
             <Paper sx={{ mt: 1, marginRight: bulkEditOpen ? 40 : 0 }}>
                 {rows ? (
                     <DataGridTable
@@ -305,28 +206,14 @@ const Customers: NextPage = () => {
                     />
                 )}
             </Paper>
-
-            <BulkEdit
-                open={bulkEditOpen}
-                selectedIds={selectedRows.map((row) => +row)}
-                onSave={handleBulkEditSave}
-                onClose={closeBulkEdit}
-            />
-
-            <DeleteDialog
-                multiple
-                open={bulkDeleteDialogOpen}
-                onClose={closeBulkDeleteDialog}
-                onDelete={handleBulkDelete}
-            />
         </Box>
     );
 };
 
-Customers.getLayout = (page) => (
+Logs.getLayout = (page) => (
     <AuthGuard>
         <DashboardLayout>{page}</DashboardLayout>
     </AuthGuard>
 );
 
-export default Customers;
+export default Logs;
