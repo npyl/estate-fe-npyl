@@ -264,33 +264,35 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
                 />
             )}
 
-            {/* Dialog containing UploadDnd */}
-            <Dialog
-                open={moreOpen}
-                onClose={handleCloseMore}
-                aria-labelledby="upload-dnd-dialog-title"
-                fullWidth
-                maxWidth="lg"
-            >
-                <DialogTitle id="upload-dnd-dialog-title">
-                    Upload Images
-                </DialogTitle>
-                <DialogContent>
-                    <MultiFilePreviewReorder
-                        files={files}
-                        xs={2.4}
-                        thumbnail={false}
-                        setFiles={setFiles}
-                        onImageClick={handleImageClick}
-                        onReorder={handleReorder}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleCloseMore} color="primary">
-                        Close
-                    </Button>
-                </DialogActions>
-            </Dialog>
+            {/* Dialog for See More */}
+            {moreOpen && (
+                <Dialog
+                    open={moreOpen}
+                    onClose={handleCloseMore}
+                    aria-labelledby="upload-dnd-dialog-title"
+                    fullWidth
+                    maxWidth="lg"
+                >
+                    <DialogTitle id="upload-dnd-dialog-title">
+                        Upload Images
+                    </DialogTitle>
+                    <DialogContent>
+                        <MultiFilePreviewReorder
+                            files={files}
+                            xs={2.4}
+                            thumbnail={false}
+                            setFiles={setFiles}
+                            onImageClick={handleImageClick}
+                            onReorder={handleReorder}
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleCloseMore} color="primary">
+                            Close
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            )}
         </>
     );
 };
