@@ -45,11 +45,17 @@ const EditPropertyPage: NextPage = () => {
 
     useEffect(() => {
         if (data && propertyId) {
+            const isFirstEdit = data.createdAt === data.updatedAt;
+            const label = `${
+                isFirstEdit ? "Create" : "Edit"
+            } property ${propertyId}`;
+
             pushTab({
                 path: `/property/edit/${propertyId}`,
                 id: (propertyId + "edit") as string,
-                label: `New property ${propertyId}`,
+                label,
             });
+
             getImages(+propertyId!);
             getBlueprints(+propertyId!);
         }

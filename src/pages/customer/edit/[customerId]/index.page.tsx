@@ -44,10 +44,15 @@ const EditCustomer: NextPage = () => {
 
     useEffect(() => {
         if (data && customerId) {
+            const isFirstEdit = data.createdAt === data.updatedAt;
+            const label = `${
+                isFirstEdit ? "Create" : "Edit"
+            } customer ${customerId}`;
+
             pushTab({
                 path: `/customer/edit/${customerId}`,
                 id: (customerId + "edit") as string,
-                label: `Edit customer ${customerId}`,
+                label,
             });
             dispatch(setInitialNotesState(data.notes));
             dispatch(setInitialCustomerState(data));

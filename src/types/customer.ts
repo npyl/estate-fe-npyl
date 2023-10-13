@@ -61,6 +61,9 @@ export interface ICustomer {
     ownedProperties: IProperties[];
     labels: ILabel[];
     demands: IDemand[];
+
+    createdAt: string;
+    updatedAt: string;
 }
 
 export interface ICustomerPOST {
