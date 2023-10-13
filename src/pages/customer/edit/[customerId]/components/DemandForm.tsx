@@ -45,6 +45,8 @@ import {
     setDemandComplexes,
     setDemandRegions,
     selectDemands,
+    selectLeaser,
+    selectBuyer,
 } from "src/slices/customer";
 
 import { useTranslation } from "react-i18next";
@@ -83,7 +85,9 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
     const demands = useSelector(selectDemands);
     const demand = useMemo(() => demands.at(index), [demands, index]);
     const demandFilters = useMemo(() => demand?.filters, [demand?.filters]);
-
+    const leaser = useSelector(selectLeaser);
+    const buyer = useSelector(selectBuyer);
+    const stepValue = buyer ? 25000 : leaser ? 100 : 100; // default to 100 if neither is true
     const extractOrDefault = useCallback(
         (key: string, defaultValue: any) =>
             (demandFilters as IDemandFiltersPOST)[key] || defaultValue,
@@ -620,6 +624,52 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                 </Grid>
                 <Grid item xs={6}>
                     <DemandFormSlider
+                        label={t("Price")}
+                        min={minPrice}
+                        max={maxPrice}
+                        defaultMin={0}
+                        defaultMax={1000000}
+                        demandIndex={index}
+                        handleChange={handleSliderChange4}
+                        setterMin={setMinPrice}
+                        setterMax={setMaxPrice}
+                        adornment="€"
+                        step={stepValue}
+                    />
+                </Grid>
+                <Grid item xs={6}></Grid>
+                <Grid item xs={6}>
+                    <DemandFormSlider
+                        label={t("Size")}
+                        min={minCovered}
+                        max={maxCovered}
+                        defaultMin={0}
+                        defaultMax={300}
+                        demandIndex={index}
+                        handleChange={handleSliderChange2}
+                        setterMin={setMinCovered}
+                        setterMax={setMaxCovered}
+                        adornment="m²"
+                        step={10}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <DemandFormSlider
+                        label={t("Size of Plot")}
+                        min={minPlot}
+                        max={maxPlot}
+                        defaultMin={0}
+                        defaultMax={500}
+                        demandIndex={index}
+                        handleChange={handleSliderChange3}
+                        setterMin={setMinPlot}
+                        setterMax={setMaxPlot}
+                        adornment="m²"
+                        step={10}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <DemandFormSlider
                         label={t("Bedrooms")}
                         min={minBedrooms}
                         max={maxBedrooms}
@@ -644,51 +694,7 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                         setterMax={setMaxBathrooms}
                     />
                 </Grid>
-                <Grid item xs={6}>
-                    <DemandFormSlider
-                        label={t("Covered")}
-                        min={minCovered}
-                        max={maxCovered}
-                        defaultMin={0}
-                        defaultMax={300}
-                        demandIndex={index}
-                        handleChange={handleSliderChange2}
-                        setterMin={setMinCovered}
-                        setterMax={setMaxCovered}
-                        adornment="m²"
-                        step={10}
-                    />
-                </Grid>
-                <Grid item xs={6}>
-                    <DemandFormSlider
-                        label={t("Plot")}
-                        min={minPlot}
-                        max={maxPlot}
-                        defaultMin={0}
-                        defaultMax={500}
-                        demandIndex={index}
-                        handleChange={handleSliderChange3}
-                        setterMin={setMinPlot}
-                        setterMax={setMaxPlot}
-                        adornment="m²"
-                        step={10}
-                    />
-                </Grid>
-                <Grid item xs={6}>
-                    <DemandFormSlider
-                        label={t("Price")}
-                        min={minPrice}
-                        max={maxPrice}
-                        defaultMin={0}
-                        defaultMax={1000000}
-                        demandIndex={index}
-                        handleChange={handleSliderChange4}
-                        setterMin={setMinPrice}
-                        setterMax={setMaxPrice}
-                        adornment="€"
-                        step={50}
-                    />
-                </Grid>
+
                 <Grid item xs={6}>
                     <DemandFormSlider
                         label={t("Year of Construction")}
