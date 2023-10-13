@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { IUser } from "src/types/user";
+import { IUser, IUserPOST } from "src/types/user";
 
 export const user = createApi({
     reducerPath: "user",
@@ -24,13 +24,34 @@ export const user = createApi({
             }),
             providesTags: ["Profile"],
         }),
-        updateProfile: builder.mutation<any, any>({
-            query: (data) => ({
-                url: "",
-                method: "POST",
-                body: data,
-            }),
-            invalidatesTags: ["Profile"],
+        addUser: builder.mutation<
+            void,
+            { user: IUserPOST; profilePhoto?: File }
+        >({
+            query: ({ user, profilePhoto }) => {
+                // Convert user object to JSON string
+                const userJson = JSON.stringify(user);
+
+                // Create a FormData instance to handle file uploads
+                const formData = new FormData();
+                formData.append("userForm", userJson);
+
+                // If a profilePhoto is provided, append it to the FormData
+                if (profilePhoto) {
+                    formData.append("profilePhoto", profilePhoto);
+                }
+
+                return {
+                    url: "/add",
+                    method: "POST",
+                    body: formData,
+                    // This is important as we don't want to manually set a multipart content type with boundary
+                    headers: {
+                        "Content-Type": undefined,
+                    },
+                };
+            },
+            invalidatesTags: ["Users"],
         }),
         allUsers: builder.query<IUser[], void>({
             query: () => ({
@@ -41,5 +62,4 @@ export const user = createApi({
     }),
 });
 
-export const { useProfileQuery, useUpdateProfileMutation, useAllUsersQuery } =
-    user;
+export const { useProfileQuery, useAddUserMutation, useAllUsersQuery } = user;
