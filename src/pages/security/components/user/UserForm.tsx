@@ -1,4 +1,3 @@
-import { string, object, number, StringSchema } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import {
@@ -20,65 +19,13 @@ import { IUser } from "src/types/user";
 import { FormProvider, useForm } from "react-hook-form";
 import { RHFSelect, RHFTextField } from "src/components/hook-form";
 import Iconify from "src/components/iconify";
+import { FormFields, Schema } from "./validation";
 
 interface UserFormProps {
     open: boolean;
     user?: IUser;
     onClose: () => void;
 }
-
-interface FormFields {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-    mobilePhone: string;
-    homePhone?: string;
-    businessPhone?: string;
-    officePhone?: string;
-    callCenterNumber?: string;
-    address: string;
-    zipCode: string;
-    city: string;
-    region: string;
-    afm?: string;
-    doy?: string;
-    gemh?: string;
-    status?: string;
-}
-
-const numberString = (label: string): StringSchema =>
-    string().test("is-number", `${label} must be a number`, (value) =>
-        // NOTE: return true if !value, because regex doesn't allow null, but we want to support empty string
-        value ? /^\d+$/.test(value) : true
-    );
-
-const Schema = object().shape({
-    firstName: string().required(),
-    lastName: string().required(),
-    email: string()
-        .email("Email must be a valid email address")
-        .required("Email is required"),
-
-    password: string().required("Password is required"),
-
-    mobilePhone: numberString("Mobile Phone").required(),
-    homePhone: numberString("Home Phone"),
-    businessPhone: numberString("Business Phone"),
-    officePhone: numberString("Office Phone"),
-    callCenterNumber: numberString("Call Center Number"),
-
-    address: string().required(),
-    zipCode: string().required(),
-    city: string().required(),
-    region: string().required(),
-
-    afm: numberString("AFM"),
-    doy: numberString("DOY"),
-    gemh: numberString("GEMH"),
-
-    status: string().oneOf(["Active", "Inactive"]),
-});
 
 export const UserForm = ({ open, onClose }: UserFormProps) => {
     const { data: users } = useAllUsersQuery();
@@ -101,9 +48,9 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
             password: "",
             mobilePhone: user?.mobilePhone || "",
             homePhone: user?.homePhone || "",
-            businessPhone: "not-supported",
-            officePhone: "not-supported",
-            callCenterNumber: "not-supported",
+            businessPhone: user?.businessPhone || "",
+            officePhone: user?.officePhone || "",
+            callCenterNumber: user?.callCenterNumber || "",
             address: user?.address || "",
             zipCode: user?.zipCode || "",
             city: user?.city || "",
