@@ -27,12 +27,13 @@ const useTabsState = () => {
         (value: ITab) => {
             const exists = appTabs.some((item) => item.id === value.id);
             if (!exists) {
-                const tabObject: ITab = {
-                    path: value.path,
-                    id: value.id,
-                    label: value.label,
-                };
-                setAppTabs((prev) => [...prev, tabObject]);
+                // add
+                setAppTabs((prev) => [...prev, value]);
+            } else {
+                // update
+                setAppTabs((prev) =>
+                    prev.map((tab) => (tab.id === value.id ? value : tab))
+                );
             }
         },
         [appTabs, setAppTabs]

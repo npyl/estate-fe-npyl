@@ -21,6 +21,7 @@ import {
 } from "src/slices/notes";
 import { resetState as resetLabelsState } from "src/slices/labels";
 import Form from "./components/Form";
+import { useAutosaveTab } from "src/hooks/useAutosaveTab";
 
 const EditCustomer: NextPage = () => {
     const router = useRouter();
@@ -28,44 +29,43 @@ const EditCustomer: NextPage = () => {
     const { pushTab } = useTabsContext();
     const { customerId } = router.query;
 
-    const bodyRef = useRef(useSelector(selectAll));
     const { data } = useGetCustomerByIdQuery(+customerId!);
     const [edit, { isLoading: isEditLoading }] = useEditCustomerMutation();
 
+    useAutosaveTab(selectAll, (bodyRef) => {
+        if (bodyRef.current && bodyRef.current.id) {
+            edit({ customerId: +customerId!, body: bodyRef.current }).then(
+                () => {
+                    resetEverything();
+                }
+            );
+        }
+    });
+
     useEffect(() => {
         if (data && customerId) {
+            const isFirstEdit = data.createdAt === data.updatedAt;
+            const label = `${
+                isFirstEdit ? "Create" : "Edit"
+            } customer ${customerId}`;
+
             pushTab({
                 path: `/customer/edit/${customerId}`,
                 id: (customerId + "edit") as string,
-                label: `Edit customer ${customerId}`,
+                label,
             });
             dispatch(setInitialNotesState(data.notes));
             dispatch(setInitialCustomerState(data));
         }
     }, [data, customerId]);
+
     const resetEverything = () => {
         dispatch(resetCustomerState());
         dispatch(resetLabelsState());
         dispatch(resetNotesState());
     };
 
-    bodyRef.current = useSelector(selectAll);
-
-    useEffect(() => {
-        return () => {
-            if (bodyRef.current && bodyRef.current.id) {
-                edit({ customerId: +customerId!, body: bodyRef.current }).then(
-                    () => {
-                        resetEverything();
-                    }
-                );
-            }
-        };
-    }, []);
-
-    const handleRedirect = () => {
-        router.push(`/customer/${customerId}`);
-    };
+    const handleRedirect = () => router.push(`/customer/${customerId}`);
 
     return (
         <>

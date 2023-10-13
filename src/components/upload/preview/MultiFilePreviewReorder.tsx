@@ -7,10 +7,14 @@ import PreviewImage from "src/components/image/PreviewImage";
 import { LabeledImage } from "src/components/image";
 
 import { IPropertyImage } from "src/types/file";
-import { useCallback, useRef } from "react";
+import { useCallback, useMemo, useRef } from "react";
 
 import React from "react";
 import { Grid } from "@mui/material";
+
+interface MultiFilePreviewReorder extends UploadPropertyImageProps {
+    xs?: number;
+}
 
 interface CardProps {
     image: IPropertyImage;
@@ -27,7 +31,7 @@ type DraggableImageItem = {
 const DraggableImageType = "image";
 
 const Card = ({ image, index, moveImage, onClick }: CardProps) => {
-    const { key, url, hidden } = image;
+    const { key, url, hidden } = useMemo(() => image, [image]);
 
     const ref: React.RefObject<HTMLDivElement> = useRef(null);
 
@@ -80,6 +84,8 @@ const Card = ({ image, index, moveImage, onClick }: CardProps) => {
 
     drag(drop(ref));
 
+    console.log("image: ", image.hidden);
+
     return url ? (
         <div
             ref={ref}
@@ -105,11 +111,11 @@ const Card = ({ image, index, moveImage, onClick }: CardProps) => {
 
 export default function MultiFilePreviewReorder({
     files,
+    xs = 4,
     setFiles,
     onImageClick,
-    onImageDoubleClick,
     onReorder,
-}: UploadPropertyImageProps) {
+}: MultiFilePreviewReorder) {
     if (!files || !files?.length) return null;
 
     const moveImage = useCallback(
@@ -127,9 +133,9 @@ export default function MultiFilePreviewReorder({
 
     return (
         <DndProvider backend={HTML5Backend}>
-            <Grid container spacing={0.5}>
+            <Grid container spacing={1}>
                 {files.map((image, index) => (
-                    <Grid item xs={3} key={image.key}>
+                    <Grid item xs={xs} key={image.key}>
                         <Card
                             image={image}
                             index={index}

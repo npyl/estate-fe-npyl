@@ -99,6 +99,7 @@ export default function UploadDnd({
                         ...(hasFile && {
                             padding: "12% 0",
                         }),
+                        maxHeight: 300,
                     }}
                 >
                     <input {...getInputProps()} />

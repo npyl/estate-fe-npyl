@@ -24,7 +24,6 @@ import {
     useSetPropertyThumbailMutation,
 } from "src/services/properties";
 import { IPropertyImage, IPropertyImagePOST } from "src/types/file";
-import ICarouselImage from "src/components/carousel/types";
 
 interface IImageSectionProps {
     files: IPropertyImage[];
@@ -227,15 +226,23 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
                     }}
                 />
                 <CardContent>
-                    <UploadDnd
-                        multiple
-                        thumbnail={true}
-                        files={files}
-                        setFiles={setFiles}
-                        onImageClick={handleImageClick}
-                        onDrop={handleDropMultiFile}
-                        onReorder={handleReorder}
-                    />
+                    <Box
+                        sx={{
+                            maxHeight: "465px",
+                            overflowY: "auto",
+                            scrollBehavior: "smooth",
+                        }}
+                    >
+                        <UploadDnd
+                            multiple
+                            thumbnail={true}
+                            files={files}
+                            setFiles={setFiles}
+                            onImageClick={handleImageClick}
+                            onDrop={handleDropMultiFile}
+                            onReorder={handleReorder}
+                        />
+                    </Box>
 
                     <Box display="flex" justifyContent="flex-end" mt={2}>
                         <Button variant="contained" onClick={handleOpenMore}>
@@ -257,32 +264,35 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
                 />
             )}
 
-            {/* Dialog containing UploadDnd */}
-            <Dialog
-                open={moreOpen}
-                onClose={handleCloseMore}
-                aria-labelledby="upload-dnd-dialog-title"
-                fullWidth
-                maxWidth="lg"
-            >
-                <DialogTitle id="upload-dnd-dialog-title">
-                    Upload Images
-                </DialogTitle>
-                <DialogContent>
-                    <MultiFilePreviewReorder
-                        files={files}
-                        thumbnail={false}
-                        setFiles={setFiles}
-                        onImageClick={handleImageClick}
-                        onReorder={handleReorder}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleCloseMore} color="primary">
-                        Close
-                    </Button>
-                </DialogActions>
-            </Dialog>
+            {/* Dialog for See More */}
+            {moreOpen && (
+                <Dialog
+                    open={moreOpen}
+                    onClose={handleCloseMore}
+                    aria-labelledby="upload-dnd-dialog-title"
+                    fullWidth
+                    maxWidth="lg"
+                >
+                    <DialogTitle id="upload-dnd-dialog-title">
+                        Upload Images
+                    </DialogTitle>
+                    <DialogContent>
+                        <MultiFilePreviewReorder
+                            files={files}
+                            xs={2.4}
+                            thumbnail={false}
+                            setFiles={setFiles}
+                            onImageClick={handleImageClick}
+                            onReorder={handleReorder}
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleCloseMore} color="primary">
+                            Close
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            )}
         </>
     );
 };

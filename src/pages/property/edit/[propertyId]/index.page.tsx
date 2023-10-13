@@ -1,7 +1,6 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useRef } from "react";
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import {
@@ -27,6 +26,7 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { LogoProgressIndicator } from "src/components/LogoProgressIndicator";
 import { useTabsContext } from "src/contexts/tabs";
+import { useAutosaveTab } from "src/hooks/useAutosaveTab";
 
 const EditPropertyPage: NextPage = () => {
     const dispatch = useDispatch();
@@ -45,18 +45,37 @@ const EditPropertyPage: NextPage = () => {
 
     useEffect(() => {
         if (data && propertyId) {
+            const isFirstEdit = data.createdAt === data.updatedAt;
+            const label = `${
+                isFirstEdit ? "Create" : "Edit"
+            } property ${propertyId}`;
+
             pushTab({
                 path: `/property/edit/${propertyId}`,
                 id: (propertyId + "edit") as string,
-                label: `New property ${propertyId}`,
+                label,
             });
+
             getImages(+propertyId!);
             getBlueprints(+propertyId!);
         }
     }, [data, propertyId]);
 
-    const body = useSelector(selectAll);
-    const bodyRef = useRef(body);
+    useAutosaveTab(selectAll, (bodyRef) => {
+        if (!bodyRef.current.code) {
+            toast.error("Edit operation canceled. Code ID is required");
+            return;
+        }
+        if (!bodyRef.current.state) {
+            toast.error("Edit operation canceled. State is required");
+            return;
+        }
+
+        edit({ id: +propertyId!, body: bodyRef.current }).then(() => {
+            // removeTab(propertyId as string);
+            resetEverything();
+        });
+    });
 
     useEffect(() => {
         if (isNotesSuccess && isBluePrintsSuccess && data) {
@@ -81,28 +100,6 @@ const EditPropertyPage: NextPage = () => {
     const handleRedirect = () => {
         router.push(`/property/${propertyId}`);
     };
-
-    useEffect(() => {
-        bodyRef.current = body;
-    }, [body]);
-
-    useEffect(() => {
-        return () => {
-            if (!bodyRef.current.code) {
-                toast.error("Edit operation canceled. Code ID is required");
-                return;
-            }
-            if (!bodyRef.current.state) {
-                toast.error("Edit operation canceled. State is required");
-                return;
-            }
-
-            edit({ id: +propertyId!, body: bodyRef.current }).then(() => {
-                // removeTab(propertyId as string);
-                resetEverything();
-            });
-        };
-    }, []);
 
     return (
         <>
