@@ -1,4 +1,4 @@
-import { string, object, number } from "yup";
+import { string, object, number, StringSchema } from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import {
@@ -47,6 +47,12 @@ interface FormFields {
     status?: string;
 }
 
+const numberString = (label: string): StringSchema =>
+    string().test("is-number", `${label} must be a number`, (value) =>
+        // NOTE: return true if !value, because regex doesn't allow null, but we want to support empty string
+        value ? /^\d+$/.test(value) : true
+    );
+
 const Schema = object().shape({
     firstName: string().required(),
     lastName: string().required(),
@@ -56,20 +62,20 @@ const Schema = object().shape({
 
     password: string().required("Password is required"),
 
-    mobilePhone: string().required(),
-    homePhone: string(),
-    businessPhone: string(),
-    officePhone: string(),
-    callCenterNumber: string(),
+    mobilePhone: numberString("Mobile Phone").required(),
+    homePhone: numberString("Home Phone"),
+    businessPhone: numberString("Business Phone"),
+    officePhone: numberString("Office Phone"),
+    callCenterNumber: numberString("Call Center Number"),
 
     address: string().required(),
     zipCode: string().required(),
     city: string().required(),
     region: string().required(),
 
-    afm: string(),
-    doy: string(),
-    gemh: string(),
+    afm: numberString("AFM"),
+    doy: numberString("DOY"),
+    gemh: numberString("GEMH"),
 
     status: string().oneOf(["Active", "Inactive"]),
 });
@@ -186,7 +192,7 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
                                     />
                                     <RHFTextField
                                         name="password"
-                                        label="Password"
+                                        label="Password (todo)"
                                         type={
                                             showPassword ? "text" : "password"
                                         }
