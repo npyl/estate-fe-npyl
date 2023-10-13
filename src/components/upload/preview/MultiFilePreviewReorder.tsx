@@ -12,6 +12,10 @@ import { useCallback, useRef } from "react";
 import React from "react";
 import { Grid } from "@mui/material";
 
+interface MultiFilePreviewReorder extends UploadPropertyImageProps {
+    xs?: number;
+}
+
 interface CardProps {
     image: IPropertyImage;
     index: number;
@@ -105,11 +109,11 @@ const Card = ({ image, index, moveImage, onClick }: CardProps) => {
 
 export default function MultiFilePreviewReorder({
     files,
+    xs = 4,
     setFiles,
     onImageClick,
-    onImageDoubleClick,
     onReorder,
-}: UploadPropertyImageProps) {
+}: MultiFilePreviewReorder) {
     if (!files || !files?.length) return null;
 
     const moveImage = useCallback(
@@ -127,9 +131,9 @@ export default function MultiFilePreviewReorder({
 
     return (
         <DndProvider backend={HTML5Backend}>
-            <Grid container spacing={0.5}>
+            <Grid container spacing={1}>
                 {files.map((image, index) => (
-                    <Grid item xs={3} key={image.key}>
+                    <Grid item xs={xs} key={image.key}>
                         <Card
                             image={image}
                             index={index}
