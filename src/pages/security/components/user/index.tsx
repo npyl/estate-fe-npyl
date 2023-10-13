@@ -45,12 +45,11 @@ const UserPage: FC<Props> = ({ changeTab }) => {
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>Username</TableCell>
                             <TableCell>First Name</TableCell>
                             <TableCell>Last Name</TableCell>
-                            <TableCell>Status</TableCell>
                             <TableCell>Email</TableCell>
-                            <TableCell>status</TableCell>
+                            <TableCell>Status</TableCell>
+                            <TableCell>Mobile Phone</TableCell>
                             <TableCell>Update</TableCell>
                             <TableCell>Permissions</TableCell>
                         </TableRow>
@@ -58,12 +57,11 @@ const UserPage: FC<Props> = ({ changeTab }) => {
                     <TableBody>
                         {users?.map((user) => (
                             <TableRow key={user.id}>
-                                <TableCell>{user.username}</TableCell>
                                 <TableCell>{user.firstName}</TableCell>
                                 <TableCell>{user.lastName}</TableCell>
-                                <TableCell>{user.lastName}</TableCell>
                                 <TableCell>{user.email}</TableCell>
-                                <TableCell>{user.lastName}</TableCell>
+                                <TableCell>TODO</TableCell>
+                                <TableCell>{user.mobilePhone}</TableCell>
                                 <TableCell>
                                     <IconButton
                                         size="small"
