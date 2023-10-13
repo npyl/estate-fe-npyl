@@ -45,7 +45,7 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
             firstName: user?.firstName || "",
             lastName: user?.lastName || "",
             email: user?.email || "",
-            password: "",
+            password: user?.password || "",
             mobilePhone: user?.mobilePhone || "",
             homePhone: user?.homePhone || "",
             businessPhone: user?.businessPhone || "",

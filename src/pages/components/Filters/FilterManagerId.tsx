@@ -5,18 +5,20 @@ import { selectManagerId, setManagerId } from "src/slices/filters";
 import { useAllUsersQuery } from "src/services/user";
 
 import { useEffect, useState } from "react";
-import { t } from "i18next";
 import { useTranslation } from "react-i18next";
 
 export default function ManagerIdSelect() {
     const dispatch = useDispatch();
+    const { t } = useTranslation();
+
     const managerId = useSelector(selectManagerId);
     const [autocompleteValue, setAutocompleteValue] = useState("");
+
     useEffect(
         () => setAutocompleteValue(managerId?.toString() || ""),
         [managerId]
     );
-    const { t } = useTranslation();
+
     const managerIds: string[] =
         useAllUsersQuery(undefined, {
             selectFromResult: ({ data }) => ({

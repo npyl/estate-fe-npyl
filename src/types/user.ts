@@ -1,7 +1,7 @@
 import { IProperties } from "./properties";
 
 export interface IUser {
-    id?: number;
+    id: number;
     username: string;
     firstName: string;
     lastName: string;
