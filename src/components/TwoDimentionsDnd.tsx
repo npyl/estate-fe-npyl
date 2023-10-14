@@ -15,6 +15,7 @@ export interface TwoDimentionsDndItem {
 interface TwoDimentionsDndProps {
     items: TwoDimentionsDndItem[];
     columns: number;
+    gap?: number;
     onDragEnd: (results: DropResult) => void;
 }
 
@@ -28,13 +29,14 @@ export const DroppableTypeItem = "ITEM";
 export const TwoDimentionsDnd: FC<TwoDimentionsDndProps> = ({
     items,
     columns = 1,
+    gap = 3,
     onDragEnd,
 }) => {
     const rows = useMemo(() => chunks(items, columns), [items, columns]);
 
     return (
         <DragDropContext onDragEnd={onDragEnd}>
-            <Stack direction={"column"} gap={3}>
+            <Stack direction={"column"} gap={gap}>
                 {rows.map((row, i) => (
                     <Droppable
                         droppableId={`row-${i}`}
@@ -47,7 +49,7 @@ export const TwoDimentionsDnd: FC<TwoDimentionsDndProps> = ({
                                 {...provided.droppableProps}
                                 ref={provided.innerRef}
                             >
-                                <Stack direction={"row"} gap={3}>
+                                <Stack direction={"row"} gap={gap}>
                                     {row.map((item, j) => (
                                         <Draggable
                                             draggableId={`item-${item.id}`}

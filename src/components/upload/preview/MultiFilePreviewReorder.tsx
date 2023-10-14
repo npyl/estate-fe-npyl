@@ -1,16 +1,14 @@
 import { UploadPropertyImageProps } from "../types";
 
-import { DndProvider, DropTargetMonitor, useDrag, useDrop } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-
 import PreviewImage from "src/components/image/PreviewImage";
 import { LabeledImage } from "src/components/image";
 
 import { IPropertyImage } from "src/types/file";
-import { useCallback, useMemo, useRef } from "react";
+import { useCallback, useMemo } from "react";
 
-import React from "react";
-import { Grid } from "@mui/material";
+import { motion } from "framer-motion";
+import { TwoDimentionsDnd } from "src/components/TwoDimentionsDnd";
+import { DropResult } from "react-beautiful-dnd";
 
 interface MultiFilePreviewReorder extends UploadPropertyImageProps {
     xs?: number;
@@ -19,93 +17,28 @@ interface MultiFilePreviewReorder extends UploadPropertyImageProps {
 interface CardProps {
     image: IPropertyImage;
     index: number;
-    moveImage: (dragIndex: number, hoverIndex: number) => void;
     onClick: () => void;
 }
 
-type DraggableImageItem = {
-    type: string;
-    index: number;
-};
-
-const DraggableImageType = "image";
-
-const Card = ({ image, index, moveImage, onClick }: CardProps) => {
-    const { key, url, hidden } = useMemo(() => image, [image]);
-
-    const ref: React.RefObject<HTMLDivElement> = useRef(null);
-
-    const [, drop] = useDrop({
-        accept: DraggableImageType,
-        hover: (item: DraggableImageItem, monitor: DropTargetMonitor) => {
-            if (!ref.current) {
-                return;
-            }
-            const dragIndex = item.index;
-            const hoverIndex = index;
-
-            if (dragIndex === hoverIndex) {
-                return;
-            }
-
-            const hoverBoundingRect = ref.current?.getBoundingClientRect();
-
-            const hoverMiddleY =
-                (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-
-            const clientOffset = monitor.getClientOffset();
-
-            // Ensure clientOffset is not null before accessing its properties
-            if (!clientOffset) {
-                return;
-            }
-
-            const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-
-            if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-                return;
-            }
-
-            if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-                return;
-            }
-
-            moveImage(dragIndex, hoverIndex);
-
-            item.index = hoverIndex;
-        },
-    });
-
-    const [{ isDragging }, drag] = useDrag({
-        type: DraggableImageType,
-        item: () => ({ id: key, index }),
-        collect: (monitor) => ({ isDragging: monitor.isDragging() }),
-    });
-
-    drag(drop(ref));
-
-    console.log("image: ", image.hidden);
+const Item = ({ image, index, onClick }: CardProps) => {
+    const { url, hidden } = useMemo(() => image, [image]);
 
     return url ? (
-        <div
-            ref={ref}
-            style={{
-                position: "relative" /* INFO: Fixes image size */,
+        <motion.div
+            whileHover={{
+                scale: 0.95,
             }}
-            className="card"
         >
             <LabeledImage
+                borderRadius={0.3}
                 src={url}
                 hidden={hidden}
                 label={index === 0 ? "main" : ""}
-                sx={{
-                    opacity: isDragging ? 0.5 : 1,
-                }}
                 onClick={onClick}
             />
-        </div>
+        </motion.div>
     ) : (
-        <PreviewImage animate />
+        <PreviewImage animate borderRadius={0.3} />
     );
 };
 
@@ -118,35 +51,44 @@ export default function MultiFilePreviewReorder({
 }: MultiFilePreviewReorder) {
     if (!files || !files?.length) return null;
 
-    const moveImage = useCallback(
-        (dragIndex: number, hoverIndex: number) => {
-            const clonedImages = [...files];
-            const removedItem = clonedImages.splice(dragIndex, 1)[0];
-            clonedImages.splice(hoverIndex, 0, removedItem);
+    const items = useMemo(
+        () =>
+            files.map((f, index) => ({
+                id: index,
+                value: (
+                    <Item
+                        image={f}
+                        index={index}
+                        onClick={() => onImageClick && onImageClick(f)}
+                    />
+                ),
+            })),
+        [files]
+    );
 
-            setFiles(clonedImages);
+    const handleDragEnd = useCallback(
+        (result: DropResult) => {
+            if (!result.destination) return;
 
-            onReorder && onReorder(clonedImages.map((i) => i.key));
+            const { source, destination } = result;
+            const updatedItems = [...files];
+            const [removed] = updatedItems.splice(source.index, 1);
+            updatedItems.splice(destination.index, 0, removed);
+
+            setFiles(updatedItems);
+
+            // reorder callback
+            onReorder && onReorder(updatedItems.map((i) => i.key));
         },
         [files]
     );
 
     return (
-        <DndProvider backend={HTML5Backend}>
-            <Grid container spacing={1}>
-                {files.map((image, index) => (
-                    <Grid item xs={xs} key={image.key}>
-                        <Card
-                            image={image}
-                            index={index}
-                            moveImage={moveImage}
-                            onClick={() =>
-                                onImageClick && onImageClick(files[index])
-                            }
-                        />
-                    </Grid>
-                ))}
-            </Grid>
-        </DndProvider>
+        <TwoDimentionsDnd
+            gap={0.2}
+            columns={12 / xs}
+            items={items}
+            onDragEnd={handleDragEnd}
+        />
     );
 }
