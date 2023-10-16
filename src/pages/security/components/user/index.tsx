@@ -14,12 +14,15 @@ import React, { FC, useState } from "react";
 import { useSecurityContext } from "src/contexts/security";
 import { useAllUsersQuery } from "src/services/user";
 import { UserForm } from "./UserForm";
+import AnimatedTableRow from "src/components/Table/AnimatedTableRow";
+import { useRouter } from "next/router";
 
 type Props = {
     changeTab: (event: React.SyntheticEvent, newValue: number) => void;
 };
 
 const UserPage: FC<Props> = ({ changeTab }) => {
+    const router = useRouter();
     const { data: users } = useAllUsersQuery();
     const { setSelectedUser } = useSecurityContext();
 
@@ -30,6 +33,7 @@ const UserPage: FC<Props> = ({ changeTab }) => {
         setOpenUserForm(false);
         setSelectedUser(-1);
     };
+    const handleRowClick = (userId: number) => router.push(`/user/${userId}`);
 
     return (
         <div>
@@ -56,7 +60,10 @@ const UserPage: FC<Props> = ({ changeTab }) => {
                     </TableHead>
                     <TableBody>
                         {users?.map((user) => (
-                            <TableRow key={user.id}>
+                            <AnimatedTableRow
+                                key={user.id}
+                                onClick={() => handleRowClick(user.id)}
+                            >
                                 <TableCell>{user.firstName}</TableCell>
                                 <TableCell>{user.lastName}</TableCell>
                                 <TableCell>{user.email}</TableCell>
@@ -86,7 +93,7 @@ const UserPage: FC<Props> = ({ changeTab }) => {
                                         Set
                                     </Button>
                                 </TableCell>
-                            </TableRow>
+                            </AnimatedTableRow>
                         ))}
                     </TableBody>
                 </Table>
