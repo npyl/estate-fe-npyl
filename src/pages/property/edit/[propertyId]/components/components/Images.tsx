@@ -45,11 +45,18 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 
     const { propertyId } = router.query;
 
+    /* gallery */
     const [galleryManagerOpen, setGalleryManagerOpen] = useState(false);
     const [currentGalleryImage, setCurrentGalleryImage] =
         useState<IPropertyImage>();
     const [moreOpen, setMoreOpen] = useState(false);
 
+    /* multiple photos selection */
+    const [selectedImages, setSelectedImages] = useState<string[]>([]); // keys
+    const [selectMultiple, setSelectMultiple] = useState(false);
+    const toggleSelectMultiple = () => setSelectMultiple(!selectMultiple);
+
+    /* mutations */
     const [addImage] = useAddPropertyImageMutation();
     const [setThumbnail] = useSetPropertyThumbailMutation();
     const [reorderImages] = useReorderPropertyImagesMutation();
@@ -155,11 +162,26 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
     const handleOpenMore = () => setMoreOpen(true);
     const handleCloseMore = () => setMoreOpen(false);
 
-    const handleImageClick = (image: IPropertyImage) => {
-        setCurrentGalleryImage(image);
-        setMoreOpen(false);
-        setGalleryManagerOpen(true);
-    };
+    const handleImageClick = useCallback(
+        (image: IPropertyImage) => {
+            if (selectMultiple) {
+                setSelectedImages((oldSelectedImages) => {
+                    const alreadySelected = oldSelectedImages.includes(
+                        image.key
+                    );
+
+                    return alreadySelected
+                        ? oldSelectedImages.filter((key) => key !== image.key) // remove
+                        : [...oldSelectedImages, image.key]; // add
+                });
+            } else {
+                setCurrentGalleryImage(image);
+                setMoreOpen(false);
+                setGalleryManagerOpen(true);
+            }
+        },
+        [selectMultiple, selectedImages]
+    );
     const handleImageChange = useCallback(
         (key: string) => {
             /*
@@ -273,11 +295,33 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
                         style: { minWidth: "95vw", minHeight: "95vh" },
                     }}
                 >
-                    <DialogTitle>Upload Images</DialogTitle>
+                    <DialogTitle
+                        style={{
+                            position: "relative",
+                        }}
+                    >
+                        Upload Images
+                        <SoftButton
+                            onClick={toggleSelectMultiple}
+                            sx={{
+                                position: "absolute",
+                                top: 1,
+                                right: 1,
+                                m: 1,
+                            }}
+                            color={selectMultiple ? "error" : "primary"}
+                        >
+                            {selectMultiple
+                                ? "Cancel Select"
+                                : "Select Multiple"}
+                        </SoftButton>
+                    </DialogTitle>
                     <DialogContent>
                         <Box p={5}>
                             <MultiFilePreviewReorder
                                 files={files}
+                                selectMultiple={selectMultiple}
+                                selectedImages={selectedImages}
                                 columns={5}
                                 thumbnail={false}
                                 setFiles={setFiles}

@@ -11,18 +11,15 @@ import {
     rowId,
 } from "src/components/TwoDimentionsDnd";
 import { DropResult } from "react-beautiful-dnd";
+import { Check } from "@mui/icons-material";
 
-interface MultiFilePreviewReorder extends UploadPropertyImageProps {
-    columns?: number;
-}
-
-interface CardProps {
+interface ItemProps {
     image: IPropertyImage;
     index: number;
     onClick: () => void;
 }
 
-const Item = ({ image, index, onClick }: CardProps) => {
+const Item = ({ image, index, onClick }: ItemProps) => {
     const { url, hidden } = useMemo(() => image, [image]);
 
     return url ? (
@@ -44,9 +41,52 @@ const Item = ({ image, index, onClick }: CardProps) => {
     );
 };
 
+interface SelectableItemProps extends ItemProps {
+    selectMultiple: boolean;
+    selected: boolean;
+}
+
+const SelectableItem = ({
+    selectMultiple,
+    selected,
+    image,
+    index,
+    onClick,
+}: SelectableItemProps) => {
+    const checked = useMemo(
+        () => selectMultiple && selected,
+        [selectMultiple, selected]
+    );
+
+    return (
+        <div style={{ position: "relative" }}>
+            {checked && (
+                <Check
+                    sx={{
+                        position: "absolute",
+                        top: -20,
+                        right: -5,
+                        zIndex: 1,
+                        fontSize: 50,
+                    }}
+                />
+            )}
+            <Item image={image} index={index} onClick={onClick} />
+        </div>
+    );
+};
+
+interface MultiFilePreviewReorder extends UploadPropertyImageProps {
+    columns?: number;
+    selectMultiple?: boolean;
+    selectedImages?: string[];
+}
+
 export default function MultiFilePreviewReorder({
     files,
     columns = 3,
+    selectMultiple = false,
+    selectedImages = [],
     setFiles,
     onImageClick,
     onReorder,
@@ -58,14 +98,18 @@ export default function MultiFilePreviewReorder({
             files.map((f, index) => ({
                 id: index,
                 value: (
-                    <Item
+                    <SelectableItem
+                        selectMultiple={selectMultiple}
+                        selected={
+                            selectedImages.findIndex((key) => key === f.key) > 0
+                        }
                         image={f}
                         index={index}
                         onClick={() => onImageClick && onImageClick(f)}
                     />
                 ),
             })),
-        [files]
+        [files, selectMultiple, selectedImages]
     );
 
     const handleDragEnd = useCallback(
