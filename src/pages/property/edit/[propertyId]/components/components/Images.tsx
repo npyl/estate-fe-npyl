@@ -278,7 +278,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
                         <Box p={5}>
                             <MultiFilePreviewReorder
                                 files={files}
-                                xs={2.4}
+                                columns={5}
                                 thumbnail={false}
                                 setFiles={setFiles}
                                 onImageClick={handleImageClick}

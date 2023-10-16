@@ -19,6 +19,17 @@ interface TwoDimentionsDndProps {
     onDragEnd: (results: DropResult) => void;
 }
 
+export const itemId = (str?: string) => {
+    if (!str) return null;
+    const match = str.match(/item-(\d+)/);
+    return match ? parseInt(match[1], 10) : null;
+};
+export const rowId = (str?: string) => {
+    if (!str) return null;
+    const match = str.match(/row-(\d+)/);
+    return match ? parseInt(match[1], 10) : null;
+};
+
 const chunks = (arr: TwoDimentionsDndItem[], size: number) =>
     Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
         arr.slice(i * size, i * size + size)

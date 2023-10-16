@@ -1,17 +1,19 @@
 import { UploadPropertyImageProps } from "../types";
-
 import PreviewImage from "src/components/image/PreviewImage";
 import { LabeledImage } from "src/components/image";
-
 import { IPropertyImage } from "src/types/file";
 import { useCallback, useMemo } from "react";
-
 import { motion } from "framer-motion";
-import { TwoDimentionsDnd } from "src/components/TwoDimentionsDnd";
+import {
+    DroppableTypeItem,
+    TwoDimentionsDnd,
+    itemId,
+    rowId,
+} from "src/components/TwoDimentionsDnd";
 import { DropResult } from "react-beautiful-dnd";
 
 interface MultiFilePreviewReorder extends UploadPropertyImageProps {
-    xs?: number;
+    columns?: number;
 }
 
 interface CardProps {
@@ -44,7 +46,7 @@ const Item = ({ image, index, onClick }: CardProps) => {
 
 export default function MultiFilePreviewReorder({
     files,
-    xs = 4,
+    columns = 3,
     setFiles,
     onImageClick,
     onReorder,
@@ -67,26 +69,48 @@ export default function MultiFilePreviewReorder({
     );
 
     const handleDragEnd = useCallback(
-        (result: DropResult) => {
-            if (!result.destination) return;
+        ({ type, draggableId, source, destination }: DropResult) => {
+            if (type === DroppableTypeItem) {
+                const draggedItemId = itemId(draggableId);
+                /* src */
+                const srcRow = rowId(source?.droppableId);
+                const srcCol = source?.index;
+                /* dst */
+                const dstRow = rowId(destination?.droppableId);
+                const dstCol = destination?.index;
 
-            const { source, destination } = result;
-            const updatedItems = [...files];
-            const [removed] = updatedItems.splice(source.index, 1);
-            updatedItems.splice(destination.index, 0, removed);
+                if (draggedItemId === null) return;
+                if (srcRow === null || srcCol === null || srcCol === undefined)
+                    return;
+                if (dstRow === null || dstCol === null || dstCol === undefined)
+                    return;
 
-            setFiles(updatedItems);
+                let oneDimentionArraySrcIndex = srcRow * columns + srcCol;
+                let oneDimentionArrayDstIndex = dstRow * columns + dstCol;
 
-            // reorder callback
-            onReorder && onReorder(updatedItems.map((i) => i.key));
+                /* NOTE: compensate for when user moves a section at the end of the board */
+                if (oneDimentionArrayDstIndex === items.length)
+                    oneDimentionArrayDstIndex -= 1;
+
+                const updatedItems = [...files];
+                const [removed] = updatedItems.splice(
+                    oneDimentionArraySrcIndex,
+                    1
+                );
+                updatedItems.splice(oneDimentionArrayDstIndex, 0, removed);
+
+                setFiles(updatedItems);
+
+                onReorder && onReorder(updatedItems.map((i) => i.key));
+            }
         },
-        [files]
+        [files, columns]
     );
 
     return (
         <TwoDimentionsDnd
             gap={0.2}
-            columns={12 / xs}
+            columns={columns}
             items={items}
             onDragEnd={handleDragEnd}
         />
