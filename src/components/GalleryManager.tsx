@@ -156,7 +156,7 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
             </DialogTitle>
             <DialogContent>
                 <Grid container spacing={1}>
-                    <Grid item xs={8} position={"relative"}>
+                    <Grid item xs={10} position={"relative"}>
                         <CarouselSimple
                             onImageChange={handleImageChange}
                             mainLabel="main"
@@ -164,7 +164,7 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
                             initialIndex={carouselIndex}
                         />
                     </Grid>
-                    <Grid item xs={4} mt={1}>
+                    <Grid item xs={2} mt={1}>
                         <Grid container gap={1} flex={1}>
                             <TextField
                                 fullWidth
