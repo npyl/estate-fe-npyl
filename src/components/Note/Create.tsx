@@ -14,7 +14,7 @@ interface INoteCreate {
 
 const NoteCreate = (props: INoteCreate) => {
     const { notes, onAdd, onRemove } = props;
-    const profile = useProfileQuery({}).data; // current user
+    const profile = useProfileQuery().data; // current user
     const { t } = useTranslation();
     if (!profile) return null;
 

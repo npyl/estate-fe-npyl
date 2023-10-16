@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import { FC, useMemo } from "react";
 import {
     DragDropContext,
@@ -15,8 +15,20 @@ export interface TwoDimentionsDndItem {
 interface TwoDimentionsDndProps {
     items: TwoDimentionsDndItem[];
     columns: number;
+    gap?: number;
     onDragEnd: (results: DropResult) => void;
 }
+
+export const itemId = (str?: string) => {
+    if (!str) return null;
+    const match = str.match(/item-(\d+)/);
+    return match ? parseInt(match[1], 10) : null;
+};
+export const rowId = (str?: string) => {
+    if (!str) return null;
+    const match = str.match(/row-(\d+)/);
+    return match ? parseInt(match[1], 10) : null;
+};
 
 const chunks = (arr: TwoDimentionsDndItem[], size: number) =>
     Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
@@ -28,13 +40,14 @@ export const DroppableTypeItem = "ITEM";
 export const TwoDimentionsDnd: FC<TwoDimentionsDndProps> = ({
     items,
     columns = 1,
+    gap = 3,
     onDragEnd,
 }) => {
     const rows = useMemo(() => chunks(items, columns), [items, columns]);
 
     return (
         <DragDropContext onDragEnd={onDragEnd}>
-            <Stack direction={"column"} gap={3}>
+            <Stack direction={"column"} gap={gap}>
                 {rows.map((row, i) => (
                     <Droppable
                         droppableId={`row-${i}`}
@@ -47,7 +60,7 @@ export const TwoDimentionsDnd: FC<TwoDimentionsDndProps> = ({
                                 {...provided.droppableProps}
                                 ref={provided.innerRef}
                             >
-                                <Stack direction={"row"} gap={3}>
+                                <Stack direction={"row"} gap={gap}>
                                     {row.map((item, j) => (
                                         <Draggable
                                             draggableId={`item-${item.id}`}
@@ -65,6 +78,20 @@ export const TwoDimentionsDnd: FC<TwoDimentionsDndProps> = ({
                                             )}
                                         </Draggable>
                                     ))}
+
+                                    {/* Placeholder */}
+                                    {Array.from(
+                                        {
+                                            length: columns - row.length,
+                                        },
+                                        (v, i) => (
+                                            <Box
+                                                key={i}
+                                                width={"100%"}
+                                                height={"100%"}
+                                            />
+                                        )
+                                    )}
                                 </Stack>
                                 {provided.placeholder}
                             </div>

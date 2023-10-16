@@ -13,6 +13,7 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { SoftButton } from "src/components/SoftButton";
 import { ReactNode, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 
 interface IViewHeaderProps {
     onEdit: VoidFunction;
@@ -24,6 +25,7 @@ const ViewHeader = (props: IViewHeaderProps) => {
     const { onDelete, onEdit, children } = props;
     const { t } = useTranslation();
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+
     return (
         <Paper sx={{ borderColor: "divider", paddingX: 2 }}>
             <Grid container direction={"row"}>
@@ -31,6 +33,14 @@ const ViewHeader = (props: IViewHeaderProps) => {
                     {children}
                 </Grid>
                 <Grid item sx={{ mt: 1, mb: 1 }}>
+                    <Button
+                        variant="outlined"
+                        color="secondary"
+                        sx={{ mr: 1 }}
+                        onClick={() => toast.info("Patience is a virtue!")}
+                    >
+                        {t("Clone")}
+                    </Button>
                     <Button
                         variant="outlined"
                         color="secondary"

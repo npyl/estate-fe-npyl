@@ -16,7 +16,7 @@ const ListOwnerItem: FC<ListOwnerItemProps> = (props) => {
     const { t } = useTranslation();
     const { owner, label = t("Owner"), ...other } = props;
     const router = useRouter();
-    const { data } = useProfileQuery({});
+    const { data } = useProfileQuery();
     if (!data) return null;
     const performViewOwner = () => {
         // view Owner

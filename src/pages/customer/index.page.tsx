@@ -15,9 +15,7 @@ import { DeleteDialog } from "src/components/Dialog/Delete";
 import ListLabelsItem from "src/components/List/labels-item";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-import { Label, LabelColor } from "src/components/label";
 import { UserCircle } from "src/icons/user-circle";
-import nomoi from "src/json/nomoi.json";
 import {
     useBulkDeleteCustomersMutation,
     useFilterCustomersMutation,
@@ -26,57 +24,8 @@ import { selectAll } from "src/slices/customer/filters";
 import { ILabel } from "src/types/label";
 import { FilterSection } from "./components";
 import { BulkEdit } from "./components/BulkEdit/BulkEdit";
-interface TypeProps {
-    seller: boolean;
-    lessor: boolean;
-    leaser: boolean;
-    buyer: boolean;
-}
+import { TypeLabels } from "./components/TypeLabels";
 
-export const TypeLabels = ({ seller, lessor, leaser, buyer }: TypeProps) => {
-    const { t } = useTranslation();
-
-    const map = useMemo(
-        () => ({
-            ["Seller"]: {
-                value: seller,
-                color: "success",
-            },
-            ["Lessor"]: {
-                value: lessor,
-                color: "error",
-            },
-            ["Leaser"]: {
-                value: leaser,
-                color: "warning",
-            },
-            ["Buyer"]: {
-                value: buyer,
-                color: "info",
-            },
-        }),
-        [seller, lessor, leaser, buyer]
-    );
-
-    return (
-        <>
-            {Object.entries(map).map(([type, { value, color }]) =>
-                value ? (
-                    <Label
-                        key={type}
-                        variant="soft"
-                        opaque
-                        color={color as LabelColor}
-                    >
-                        {t(type)}
-                    </Label>
-                ) : null
-            )}
-        </>
-    );
-};
-{
-}
 const Customers: NextPage = () => {
     const { t } = useTranslation();
 
@@ -199,19 +148,6 @@ const Customers: NextPage = () => {
             width: 180,
             headerAlign: "center",
             align: "center",
-            renderCell: (params: GridCellParams) => {
-                const city = useMemo(() => {
-                    if (!params.row.city) return "";
-                    const isNumberString = (input: string): boolean =>
-                        !isNaN(Number(input));
-                    return isNumberString(params.row.city)
-                        ? nomoi.filter(
-                              (o) => o["Area ID"] === params.row.city
-                          )[0]["Name GR"]
-                        : params.row.city;
-                }, [params.row.city]);
-                return <div>{city}</div>;
-            },
         },
         {
             field: "category",

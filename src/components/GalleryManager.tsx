@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { SoftButton } from "./SoftButton";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { useEditPropertyImageMutation } from "src/services/properties";
 
 import CarouselSimple from "./CarouselSimple";
@@ -19,6 +19,20 @@ import ICarouselImage from "./carousel/types";
 import { IPropertyImage } from "src/types/file";
 import { useRouter } from "next/router";
 import { LanguageButton } from "./Language/LanguageButton";
+
+const useConditionalMemo = (
+    callback: () => number,
+    condition: (value: number) => boolean, // condition to accept new value
+    dependencies: any[]
+) => {
+    const value = useRef(0);
+    const newValue = useMemo(callback, dependencies);
+
+    // Update ONLY if condition is true
+    if (condition(newValue)) value.current = newValue;
+
+    return value.current;
+};
 
 interface IGalleryManager {
     open: boolean;
@@ -64,7 +78,6 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
     //
     //  Carousel
     //
-    const [carouselIndex, setCarouselIndex] = useState<number>(0);
     const _carouselImages: ICarouselImage[] = useMemo(
         () =>
             images.map((image) => ({
@@ -76,6 +89,12 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
                 path: "/repository",
             })),
         [images]
+    );
+    // Update Carousel Index *ONLY* if we have a seriously valid index
+    const carouselIndex = useConditionalMemo(
+        () => _carouselImages.findIndex((e) => e.id === currentImage?.key),
+        (newValue) => newValue !== -1,
+        [currentImage, _carouselImages]
     );
 
     const handleUpdate = useCallback(() => {
@@ -92,16 +111,6 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
 
         setShowControl(false);
     }, [currentImage?.key, description, title, hidden]);
-
-    // Update Carousel Index *ONLY* if we have a seriously valid index
-    useEffect(() => {
-        const index = _carouselImages.findIndex(
-            (e) => e.id === currentImage?.key
-        );
-        if (index < 0) return;
-
-        setCarouselIndex(index);
-    }, [currentImage, _carouselImages]);
 
     const handleImageChange = (i: ICarouselImage) => {
         handleClear();
@@ -147,7 +156,7 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
             </DialogTitle>
             <DialogContent>
                 <Grid container spacing={1}>
-                    <Grid item xs={8} position={"relative"}>
+                    <Grid item xs={10} position={"relative"}>
                         <CarouselSimple
                             onImageChange={handleImageChange}
                             mainLabel="main"
@@ -155,7 +164,7 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
                             initialIndex={carouselIndex}
                         />
                     </Grid>
-                    <Grid item xs={4} mt={1}>
+                    <Grid item xs={2} mt={1}>
                         <Grid container gap={1} flex={1}>
                             <TextField
                                 fullWidth

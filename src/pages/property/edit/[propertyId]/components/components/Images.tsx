@@ -269,22 +269,22 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
                 <Dialog
                     open={moreOpen}
                     onClose={handleCloseMore}
-                    aria-labelledby="upload-dnd-dialog-title"
-                    fullWidth
-                    maxWidth="lg"
+                    PaperProps={{
+                        style: { minWidth: "95vw", minHeight: "95vh" },
+                    }}
                 >
-                    <DialogTitle id="upload-dnd-dialog-title">
-                        Upload Images
-                    </DialogTitle>
+                    <DialogTitle>Upload Images</DialogTitle>
                     <DialogContent>
-                        <MultiFilePreviewReorder
-                            files={files}
-                            xs={2.4}
-                            thumbnail={false}
-                            setFiles={setFiles}
-                            onImageClick={handleImageClick}
-                            onReorder={handleReorder}
-                        />
+                        <Box p={5}>
+                            <MultiFilePreviewReorder
+                                files={files}
+                                columns={5}
+                                thumbnail={false}
+                                setFiles={setFiles}
+                                onImageClick={handleImageClick}
+                                onReorder={handleReorder}
+                            />
+                        </Box>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleCloseMore} color="primary">

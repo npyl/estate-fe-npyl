@@ -22,6 +22,8 @@ import {
     DroppableTypeItem,
     TwoDimentionsDnd,
     TwoDimentionsDndItem,
+    itemId,
+    rowId,
 } from "src/components/TwoDimentionsDnd";
 import { DroppableTypeTask } from "./components/column/KanbanColumn";
 
@@ -45,16 +47,6 @@ const cardId = (str?: string) => {
 const columnId = (str?: string) => {
     if (!str) return null;
     const match = str.match(/section-(\d+)/);
-    return match ? parseInt(match[1], 10) : null;
-};
-const itemId = (str?: string) => {
-    if (!str) return null;
-    const match = str.match(/item-(\d+)/);
-    return match ? parseInt(match[1], 10) : null;
-};
-const rowId = (str?: string) => {
-    if (!str) return null;
-    const match = str.match(/row-(\d+)/);
     return match ? parseInt(match[1], 10) : null;
 };
 

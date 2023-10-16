@@ -28,7 +28,7 @@ export default function Form({
         // create our property draft
         performUpload();
     };
-    console.log(parentCategory);
+
     return (
         <Grid container spacing={1} paddingLeft={2} paddingTop={3}>
             {parentCategory !== "" && (

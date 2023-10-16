@@ -23,7 +23,6 @@ import { Schema } from "./validation";
 
 interface UserFormProps {
     open: boolean;
-    user?: IUser;
     onClose: () => void;
 }
 
@@ -69,11 +68,6 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
         defaultValues,
         mode: "onChange",
     });
-
-    const {
-        handleSubmit,
-        formState: { errors, isSubmitting, isSubmitSuccessful },
-    } = methods;
 
     // Delete Dialog
     const [openDelete, setOpenDelete] = useState(false);
