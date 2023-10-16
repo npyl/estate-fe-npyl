@@ -1,4 +1,4 @@
-import { Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import { FC, useMemo } from "react";
 import {
     DragDropContext,
@@ -67,6 +67,20 @@ export const TwoDimentionsDnd: FC<TwoDimentionsDndProps> = ({
                                             )}
                                         </Draggable>
                                     ))}
+
+                                    {/* Placeholder */}
+                                    {Array.from(
+                                        {
+                                            length: columns - row.length,
+                                        },
+                                        (v, i) => (
+                                            <Box
+                                                key={i}
+                                                width={"100%"}
+                                                height={"100%"}
+                                            />
+                                        )
+                                    )}
                                 </Stack>
                                 {provided.placeholder}
                             </div>
