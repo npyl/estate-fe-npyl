@@ -18,11 +18,10 @@ import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import DataGridTable from "src/components/DataGrid";
 import { UserCircle } from "src/icons/user-circle";
-import nomoi from "src/json/nomoi.json";
 import { useSuggestForPropertyQuery } from "src/services/properties";
 import { ILabel } from "src/types/label";
 import ListLabelsItem from "src/components/List/labels-item";
-import { TypeLabels } from "src/pages/customer/index.page";
+import { TypeLabels } from "src/pages/customer/components/TypeLabels";
 
 const pageSize = 5;
 
@@ -121,19 +120,6 @@ const MatchingCustomersSection: React.FC = () => {
             width: 180,
             headerAlign: "center",
             align: "center",
-            renderCell: (params: GridCellParams) => {
-                const city = useMemo(() => {
-                    if (!params.row.city) return "";
-                    const isNumberString = (input: string): boolean =>
-                        !isNaN(Number(input));
-                    return isNumberString(params.row.city)
-                        ? nomoi.filter(
-                              (o) => o["Area ID"] === params.row.city
-                          )[0]["Name GR"]
-                        : params.row.city;
-                }, [params.row.city]);
-                return <div>{city}</div>;
-            },
         },
         {
             field: "category",

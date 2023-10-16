@@ -67,7 +67,7 @@ const LogCard: FC<LogCardProps> = ({ log }) => {
 
     // Generate avatar colors based on action type
     const getAvatarColor = () => {
-        switch (log.action.value.toLowerCase()) {
+        switch (log.action.value?.toLowerCase()) {
             case "created":
                 return green[500];
             case "updated":
@@ -101,8 +101,8 @@ const LogCard: FC<LogCardProps> = ({ log }) => {
                         <strong>
                             {log.user.firstName} {log.user.lastName}
                         </strong>{" "}
-                        {log.action.value.toLowerCase()} a{" "}
-                        {log.resourceType.value.toLowerCase()}{" "}
+                        {log.action.value?.toLowerCase()} a{" "}
+                        {log.resourceType.value?.toLowerCase()}{" "}
                         {resourceDescription}
                     </Typography>
                     <Typography
