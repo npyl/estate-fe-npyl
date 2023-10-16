@@ -143,6 +143,7 @@ export default function UploadDnd({
                 <>
                     <Box
                         sx={{
+                            mt: 1,
                             overflowY: "auto",
                         }}
                     >
