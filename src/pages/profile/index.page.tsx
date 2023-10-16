@@ -19,6 +19,8 @@ import { useTabsContext } from "src/contexts/tabs";
 import { List, ListItem } from "src/components/List";
 import { ViewLocation } from "src/components/Location/View";
 import { UserCircle } from "src/icons/user-circle";
+import { Label } from "src/components/label";
+import { Lock } from "@mui/icons-material";
 
 interface ViewUserProps {
     user?: IUser;
@@ -55,22 +57,24 @@ const RenderUsername = ({ username }: { username?: string }) => {
         <></>
     );
 };
+const RenderIsAdmin = ({ isAdmin }: { isAdmin?: boolean }) => {
+    return isAdmin ? (
+        <Label color="warning" opaque>
+            Admin
+        </Label>
+    ) : (
+        <></>
+    );
+};
 
 const ViewUser = ({ user }: ViewUserProps) => {
     const { t } = useTranslation();
 
+    // TODO:
     // profilePhoto: string;
-    // username: string;
     // password: string;
-
     // properties: IProperties[];
     // propertyFilters: IPropertyFilter[];
-
-    // isAdmin: boolean;
-
-    // joinedIn: string;
-
-    // registrationDate: string;
 
     return (
         <Paper
@@ -101,6 +105,7 @@ const ViewUser = ({ user }: ViewUserProps) => {
             >
                 <RenderUser user={user} />
                 <RenderUsername username={user?.username} />
+                <RenderIsAdmin isAdmin={user?.isAdmin} />
             </Box>
             <Divider />
             <Grid container>
@@ -216,6 +221,37 @@ const ViewUser = ({ user }: ViewUserProps) => {
                         <ListItem
                             label={t("GEMH")}
                             value={user?.gemh || ""}
+                            align="horizontal"
+                        />
+                    </List>
+                </Grid>
+            </Grid>
+            <Divider />
+            <Grid container>
+                <Grid item xs={6} padding={0}>
+                    <List>
+                        <ListItem
+                            label={t("Joined In")}
+                            value={
+                                user?.joinedIn
+                                    ? new Date(user?.joinedIn).toDateString()
+                                    : ""
+                            }
+                            align="horizontal"
+                        />
+                    </List>
+                </Grid>
+                <Grid item xs={6} padding={0}>
+                    <List>
+                        <ListItem
+                            label={t("Registration Date")}
+                            value={
+                                user?.registrationDate
+                                    ? new Date(
+                                          user?.registrationDate
+                                      ).toDateString()
+                                    : ""
+                            }
                             align="horizontal"
                         />
                     </List>
