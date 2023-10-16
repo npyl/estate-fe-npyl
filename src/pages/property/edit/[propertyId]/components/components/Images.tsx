@@ -300,7 +300,10 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
                             position: "relative",
                         }}
                     >
-                        Upload Images
+                        Upload Images{" "}
+                        {selectMultiple
+                            ? `(${selectedImages.length} selected)`
+                            : ""}
                         <SoftButton
                             onClick={toggleSelectMultiple}
                             sx={{
