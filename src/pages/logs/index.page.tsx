@@ -1,215 +1,195 @@
-import { Avatar, Box, Paper, Skeleton } from "@mui/material";
-import {
-    GridCallbackDetails,
-    GridCellParams,
-    GridColDef,
-    GridPaginationModel,
-    GridRowSelectionModel,
-} from "@mui/x-data-grid";
-import type { NextPage } from "next";
-import { useEffect, useMemo, useState } from "react";
+import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import DataGridTable from "src/components/DataGrid";
-import { DeleteDialog } from "src/components/Dialog/Delete";
-import ListLabelsItem from "src/components/List/labels-item";
+import { format } from "date-fns"; // for date formatting
+import { useAdminLogsPaginatedQuery } from "src/services/logs";
+import Link from "next/link";
+import {
+    Box,
+    CircularProgress,
+    Paper,
+    Typography,
+    Pagination,
+    Skeleton,
+    Stack,
+    Grid,
+} from "@mui/material";
+import { ILog } from "src/types/logs"; // import your log type
+import { NextPage } from "next";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-import { Label, LabelColor } from "src/components/label";
-import { UserCircle } from "src/icons/user-circle";
-import nomoi from "src/json/nomoi.json";
-import {
-    useBulkDeleteCustomersMutation,
-    useFilterCustomersMutation,
-} from "src/services/customers";
-import { useGetAdmitLogsQuery } from "src/services/logs";
-import { selectAll } from "src/slices/customer/filters";
-import { ILabel } from "src/types/label";
-import { ILogs } from "src/types/logs";
+import { alpha } from "@mui/material/styles";
+import { Avatar, useTheme, Divider } from "@mui/material";
 
-interface TypeProps {
-    seller: boolean;
-    lessor: boolean;
-    leaser: boolean;
-    buyer: boolean;
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import { deepOrange, green, deepPurple } from "@mui/material/colors";
+
+interface LogCardProps {
+    log: ILog;
 }
 
-const Logs: NextPage = () => {
-    const { t } = useTranslation();
-    const allFilters = useSelector(selectAll);
+const LogCard: FC<LogCardProps> = ({ log }) => {
+    const theme = useTheme();
+    const formattedDate = format(new Date(log.createdAt), "dd-MM-yyyy hh:mm");
 
-    const [bulkEditOpen, setBulkEditOpen] = useState(false);
-    const [bulkDeleteDialogOpen, setBulkDeleteDialogOpen] = useState(false);
-    const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
-    const [sortingOrder, setSortingOrder] = useState("asc");
-    // page
-    const [page, setPage] = useState(0);
-    const [pageSize, setPageSize] = useState(25);
-
-    const [bulkDeleteCustomers] = useBulkDeleteCustomersMutation();
-    const [filterCustomers, { isLoading, data }] = useFilterCustomersMutation();
-
-    // const getAdmitLogs: ILogs[] = useGetAdmitLogsQuery().data || [];
-    // console.log(getAdmitLogs);
-    const totalRows = useMemo(
-        () => (data?.totalElements ? data?.totalElements : 100000),
-        [data?.totalElements]
-    );
-
-    useEffect(() => {
-        revalidate();
-    }, [allFilters, page, pageSize]);
-
-    const revalidate = () => {
-        filterCustomers({
-            filter: allFilters,
-            page: page,
-            pageSize: pageSize,
-        });
-    };
-
-    const columns: GridColDef[] = [
-        {
-            field: "image",
-            headerName: "",
-            renderCell: (params: GridCellParams) => {
-                const firstName = params.row.firstName;
-                const lastName = params.row.lastName;
-
-                return (firstName && lastName) || firstName || lastName ? (
-                    <Avatar>
-                        {firstName[0]}
-                        {lastName[0]}
-                    </Avatar>
-                ) : (
-                    <Avatar>
-                        <UserCircle />
-                    </Avatar>
-                );
-            },
-        },
-
-        {
-            field: "firstName",
-            headerName: t("First Name") || "",
-            width: 180,
-            headerAlign: "center",
-            align: "center",
-        },
-        {
-            field: "lastName",
-            headerName: t("Last Name") || "",
-            width: 180,
-            headerAlign: "center",
-            align: "center",
-        },
-        {
-            field: "mobilePhone",
-            headerName: t("Mobile Phone") || "",
-            width: 180,
-            headerAlign: "center",
-            align: "center",
-        },
-
-        {
-            field: "city",
-            headerName: t("City") || "",
-            width: 180,
-            headerAlign: "center",
-            align: "center",
-            renderCell: (params: GridCellParams) => {
-                const city = useMemo(() => {
-                    if (!params.row.city) return "";
-                    const isNumberString = (input: string): boolean =>
-                        !isNaN(Number(input));
-                    return isNumberString(params.row.city)
-                        ? nomoi.filter(
-                              (o) => o["Area ID"] === params.row.city
-                          )[0]["Name GR"]
-                        : params.row.city;
-                }, [params.row.city]);
-                return <div>{city}</div>;
-            },
-        },
-    ];
-    useEffect(() => {
-        revalidate();
-    }, [allFilters, page, pageSize]);
-
-    const rows = useMemo(() => data?.content || [], [data?.content]);
-
-    const renderSkeletonCell = () => <Skeleton width={150} animation="wave" />;
-    const skeletonRows = Array.from({ length: 2 }, (_, index) => ({
-        id: index + 1,
-    }));
-
-    const openBulkDeleteDialog = (selectedRows: GridRowSelectionModel) => {
-        setBulkDeleteDialogOpen(true);
-        setSelectedRows(selectedRows);
-    };
-    const closeBulkDeleteDialog = () => setBulkDeleteDialogOpen(false);
-    const handleBulkDelete = () => {
-        closeBulkDeleteDialog();
-        // INFO: bulk delete rows; By default the DataGrid looks for a customer named `id` when getting the rows, so selectedRow = id
-        bulkDeleteCustomers(selectedRows.map((row) => +row)).then(() =>
-            revalidate()
+    // Determine the resource description based on the type
+    let resourceDescription: JSX.Element;
+    if (log.resourceType.key === "PROPERTY") {
+        resourceDescription = (
+            <span>
+                with property code{" "}
+                <Link href={`/property/${log.propertyId}`} passHref>
+                    {log.propertyCode}
+                </Link>
+            </span>
         );
-    };
-    const handlePaginationModelChange = (
-        model: GridPaginationModel,
-        details: GridCallbackDetails
-    ) => {
-        setPageSize(model.pageSize);
-        setPage(model.page);
-    };
-    const openBulkEdit = (selectedRows: GridRowSelectionModel) => {
-        setBulkEditOpen(true);
-        setSelectedRows(selectedRows);
+    } else if (log.resourceType.key === "CUSTOMER" && log.customer) {
+        // Assuming log.customer has an 'id' field for the route
+        resourceDescription = (
+            <span>
+                with name{" "}
+                <Link href={`/customer/${log.customerId}`} passHref>
+                    {log.customer} {/* Adjust if the field is different */}
+                </Link>
+            </span>
+        );
+    } else if (log.resourceType.key === "IMAGE") {
+        resourceDescription = (
+            <span>
+                to the property with code{" "}
+                <Link href={`/property/${log.propertyCode}`} passHref>
+                    {log.propertyCode}
+                </Link>
+            </span>
+        );
+    } else {
+        resourceDescription = <span></span>;
+    }
+
+    // Generate avatar colors based on action type
+    const getAvatarColor = () => {
+        switch (log.action.value.toLowerCase()) {
+            case "created":
+                return green[500];
+            case "updated":
+                return deepOrange[500];
+            case "deleted":
+                return theme.palette.error.main;
+            default:
+                return deepPurple[500];
+        }
     };
 
     return (
-        <Box
-            sx={{
-                position: "relative",
-                height: "100%", // WARN: make sure height is full so that bulk edit is full even if DataGrid is small
-            }}
+        <Paper
+            elevation={3}
+            style={{ padding: theme.spacing(2), marginTop: theme.spacing(1) }}
         >
-            its not ready dont panic
-            <Paper sx={{ mt: 1, marginRight: bulkEditOpen ? 40 : 0 }}>
-                {rows ? (
-                    <DataGridTable
-                        rows={rows}
-                        columns={columns}
-                        resource={"customer"}
-                        sortingBy={"firstName"}
-                        sortingOrder={sortingOrder}
-                        page={page}
-                        pageSize={pageSize}
-                        totalRows={totalRows}
-                        onPaginationModelChange={handlePaginationModelChange}
-                        onBulkEdit={openBulkEdit}
-                        onBulkDelete={openBulkDeleteDialog}
-                    />
-                ) : (
-                    <DataGridTable
-                        rows={skeletonRows}
-                        columns={columns.map((column) => ({
-                            ...column,
-                            renderCell: renderSkeletonCell,
-                        }))}
-                        sortingBy={""}
-                        sortingOrder={sortingOrder}
-                        page={page}
-                        pageSize={pageSize}
-                        totalRows={totalRows}
-                        onPaginationModelChange={handlePaginationModelChange}
-                    />
-                )}
-            </Paper>
-        </Box>
+            <Grid container spacing={2}>
+                {/* Left: User info and Action */}
+                <Grid item style={{ flexShrink: 0 }}>
+                    <Avatar
+                        style={{
+                            backgroundColor: getAvatarColor(),
+                            marginRight: theme.spacing(1.5),
+                        }}
+                    >
+                        {log.user.firstName.charAt(0)}
+                    </Avatar>
+                </Grid>
+                <Grid item xs>
+                    <Typography variant="subtitle1">
+                        <strong>
+                            {log.user.firstName} {log.user.lastName}
+                        </strong>{" "}
+                        {log.action.value.toLowerCase()} a{" "}
+                        {log.resourceType.value.toLowerCase()}{" "}
+                        {resourceDescription}
+                    </Typography>
+                    <Typography
+                        variant="caption"
+                        display="block"
+                        gutterBottom
+                        style={{ color: theme.palette.text.secondary }}
+                    >
+                        <AccessTimeIcon
+                            fontSize="inherit"
+                            style={{
+                                verticalAlign: "middle",
+                                marginRight: theme.spacing(0.5),
+                            }}
+                        />
+                        {formattedDate}
+                    </Typography>
+                </Grid>
+            </Grid>
+            <Divider
+                style={{
+                    marginTop: theme.spacing(1),
+                    marginBottom: theme.spacing(1),
+                }}
+            />
+            {/* Optional: Additional content can go here (e.g., if you want to expand on details or add interactive elements) */}
+        </Paper>
     );
 };
 
+const Logs: NextPage = () => {
+    const { t } = useTranslation();
+    const theme = useTheme();
+    const [page, setPage] = useState(0);
+    const [pageSize, setPageSize] = useState(10);
+    const { data, error, isLoading } = useAdminLogsPaginatedQuery({
+        page: page, // Since Material-UI's Pagination component uses 1-based numbering
+        pageSize: pageSize,
+    });
+
+    if (isLoading) return <CircularProgress />; // Show a loading indicator
+    const handlePageChange = (
+        event: React.ChangeEvent<unknown>,
+        value: number
+    ) => {
+        setPage(value - 1); // Adjust page number for zero-based numbering API
+    };
+
+    // Placeholder skeletons when data is loading
+    const loadingSkeletons = [...Array(pageSize)].map((_, index) => (
+        <Skeleton
+            key={index}
+            variant="rectangular"
+            height={118}
+            style={{ marginBottom: "10px" }}
+        />
+    ));
+
+    // Main content to render
+    const content = isLoading
+        ? loadingSkeletons
+        : data?.content.map((log) => <LogCard key={log.createdAt} log={log} />);
+
+    return (
+        <Box marginTop={"20px"}>
+            <Stack spacing={2}>{content}</Stack>
+            {data &&
+                !isLoading && ( // Only display pagination when data is loaded
+                    <Box
+                        display="flex" // Establishes a flex container
+                        justifyContent="center" // Centers items on the main axis
+                        alignItems="center" // Centers items on the cross axis
+                        my={3} // Adds spacing around the Box, change as needed
+                    >
+                        <Pagination
+                            count={data.totalPages}
+                            page={page + 1} // Adjust for 1-based numbering of Material-UI Pagination
+                            onChange={handlePageChange}
+                            color="primary"
+                            showFirstButton
+                            showLastButton
+                        />
+                    </Box>
+                )}
+        </Box>
+    );
+};
 Logs.getLayout = (page) => (
     <AuthGuard>
         <DashboardLayout>{page}</DashboardLayout>

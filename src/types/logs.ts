@@ -1,4 +1,5 @@
 import { KeyValue } from "./KeyValue";
+import { ICustomer } from "./customer";
 import { IDemand, IDemandPOST } from "./demand";
 import { ILabel } from "./label";
 import { ILocation, ILocationPOST } from "./location";
@@ -6,12 +7,14 @@ import { INote } from "./note";
 import { IProperties } from "./properties";
 import { IUser } from "./user";
 
-export interface ILogs {
-    propertyCode: string;
-    customerFirstName: string;
-    customerLastName: string;
-    createdAt: string;
+export interface ILog {
     user: IUser;
-    action: string;
-    affectedTable: string;
+    action: KeyValue;
+    resourceType: KeyValue;
+    createdAt: number;
+
+    propertyId: number;
+    propertyCode: string;
+    customerId: number;
+    customer: string;
 }
