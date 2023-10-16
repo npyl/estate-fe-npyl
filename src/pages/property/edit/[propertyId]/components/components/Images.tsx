@@ -275,14 +275,16 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
                 >
                     <DialogTitle>Upload Images</DialogTitle>
                     <DialogContent>
-                        <MultiFilePreviewReorder
-                            files={files}
-                            xs={2.4}
-                            thumbnail={false}
-                            setFiles={setFiles}
-                            onImageClick={handleImageClick}
-                            onReorder={handleReorder}
-                        />
+                        <Box p={5}>
+                            <MultiFilePreviewReorder
+                                files={files}
+                                xs={2.4}
+                                thumbnail={false}
+                                setFiles={setFiles}
+                                onImageClick={handleImageClick}
+                                onReorder={handleReorder}
+                            />
+                        </Box>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleCloseMore} color="primary">
