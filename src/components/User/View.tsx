@@ -5,6 +5,10 @@ import { IUser } from "src/types/user";
 import { List, ListItem } from "src/components/List";
 import { UserCircle } from "src/icons/user-circle";
 import { Label } from "src/components/label";
+import { SoftButton } from "../SoftButton";
+import { UserForm } from "./Form";
+import { useEffect, useState } from "react";
+import { useSecurityContext } from "src/contexts/security";
 
 interface ViewUserProps {
     user?: IUser;
@@ -53,6 +57,14 @@ const RenderIsAdmin = ({ isAdmin }: { isAdmin?: boolean }) => {
 
 const ViewUser = ({ user }: ViewUserProps) => {
     const { t } = useTranslation();
+    const { setSelectedUser } = useSecurityContext();
+
+    const [formOpen, setFormOpen] = useState(false);
+    const handleFormOpen = () => {
+        setSelectedUser(user!.id);
+        setFormOpen(true);
+    };
+    const handleFormClose = () => setFormOpen(false);
 
     // TODO:
     // profilePhoto: string;
@@ -70,13 +82,17 @@ const ViewUser = ({ user }: ViewUserProps) => {
         >
             <Box
                 sx={{
-                    px: 3,
+                    px: 2,
                     py: 1.5,
                     display: "flex",
                     justifyContent: "left",
                 }}
             >
-                <Typography variant="h6">{t("User Profile")}</Typography>
+                <Typography variant="h6" flex={1} mt={1}>
+                    {t("User Profile")}
+                </Typography>
+
+                <SoftButton onClick={handleFormOpen}>{t("Edit")}</SoftButton>
             </Box>
             <Divider />
             <Box
@@ -241,6 +257,8 @@ const ViewUser = ({ user }: ViewUserProps) => {
                     </List>
                 </Grid>
             </Grid>
+
+            {formOpen && <UserForm open={formOpen} onClose={handleFormClose} />}
         </Paper>
     );
 };

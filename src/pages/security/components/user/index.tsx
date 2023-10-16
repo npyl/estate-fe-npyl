@@ -13,7 +13,7 @@ import {
 import React, { FC, useState } from "react";
 import { useSecurityContext } from "src/contexts/security";
 import { useAllUsersQuery } from "src/services/user";
-import { UserForm } from "./UserForm";
+import { UserForm } from "../../../../components/User/Form";
 import AnimatedTableRow from "src/components/Table/AnimatedTableRow";
 import { useRouter } from "next/router";
 
@@ -33,7 +33,10 @@ const UserPage: FC<Props> = ({ changeTab }) => {
         setOpenUserForm(false);
         setSelectedUser(-1);
     };
-    const handleRowClick = (userId: number) => router.push(`/user/${userId}`);
+    const handleRowClick = (userId: number) => {
+        setSelectedUser(userId);
+        router.push(`/user/${userId}`);
+    };
 
     return (
         <div>

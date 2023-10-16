@@ -7,6 +7,7 @@ import { useAllUsersQuery, useProfileQuery } from "src/services/user";
 import { useTabsContext } from "src/contexts/tabs";
 import ViewUser from "src/components/User/View";
 import { useRouter } from "next/router";
+import { SecurityProvider } from "src/contexts/security";
 
 const User: NextPage = () => {
     const router = useRouter();
@@ -43,7 +44,9 @@ const User: NextPage = () => {
 
 User.getLayout = (page) => (
     <AuthGuard>
-        <DashboardLayout>{page}</DashboardLayout>
+        <DashboardLayout>
+            <SecurityProvider>{page}</SecurityProvider>
+        </DashboardLayout>
     </AuthGuard>
 );
 

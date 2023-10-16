@@ -2,7 +2,15 @@
 import React from "react";
 import { MotionProps, motion } from "framer-motion";
 
-const AnimatedTableRow: React.FC<MotionProps> = ({ children, ...props }) => {
+interface AnimatedTableRowProps extends MotionProps {
+    onClick: () => void;
+}
+
+const AnimatedTableRow: React.FC<AnimatedTableRowProps> = ({
+    onClick,
+    children,
+    ...props
+}) => {
     const variants = {
         initial: {
             backgroundColor: "transparent",
@@ -23,6 +31,7 @@ const AnimatedTableRow: React.FC<MotionProps> = ({ children, ...props }) => {
             whileHover="hover"
             whileTap="pressed"
             variants={variants}
+            onClick={onClick}
             {...props}
         >
             {children}

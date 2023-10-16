@@ -6,6 +6,7 @@ import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { useProfileQuery } from "src/services/user";
 import { useTabsContext } from "src/contexts/tabs";
 import ViewUser from "src/components/User/View";
+import { SecurityProvider } from "src/contexts/security";
 
 const Profile: NextPage = () => {
     const { data: profile } = useProfileQuery();
@@ -34,7 +35,9 @@ const Profile: NextPage = () => {
 
 Profile.getLayout = (page) => (
     <AuthGuard>
-        <DashboardLayout>{page}</DashboardLayout>
+        <DashboardLayout>
+            <SecurityProvider>{page}</SecurityProvider>
+        </DashboardLayout>
     </AuthGuard>
 );
 
