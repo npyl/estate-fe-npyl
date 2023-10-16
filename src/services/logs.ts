@@ -1,21 +1,14 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import {
-    ICustomer,
-    ICustomerFilter,
-    ICustomerPOST,
-    ICustomerResultResponse,
-} from "src/types/customer";
+import { ICustomer } from "src/types/customer";
 import { ILabel } from "src/types/label";
-import { ILogs } from "src/types/logs";
+import { ILog } from "src/types/logs";
 import IPage from "src/types/page";
+import { IProperties } from "src/types/properties";
 
 interface ILogsParams {
+    id?: number;
     page: number;
     pageSize: number;
-}
-interface IEditCustomerProps {
-    customerId: number;
-    body: ICustomerPOST;
 }
 
 export const logs = createApi({
@@ -33,30 +26,38 @@ export const logs = createApi({
             return headers;
         },
     }),
-    tagTypes: ["Logs", "CustomerById"],
+    tagTypes: ["Logs", "CustomerByIdLogs", "PropertyByIdLogs"], //tags must be uniq
     endpoints: (builder) => ({
-        getAdmitLogs: builder.query<ILogs[], void>({
-            query: () => ({
-                url: "all",
-            }),
-            providesTags: ["Logs"],
-        }),
-        admitLogsPaginated: builder.query<IPage<ILogs>, ILogsParams>({
+        adminLogsPaginated: builder.query<IPage<ILog>, ILogsParams>({
             query: (params: ILogsParams) => ({
                 url: "",
                 params: params,
+                headers: {
+                    "Accept-Language": "en",
+                },
             }),
             providesTags: ["Logs"],
         }),
-        // getCustomerById: builder.query<ICustomer, number>({
-        //     query: (id: number) => `${id}`,
-        //     providesTags: ["CustomerById"],
-        // }),
+
+        customerHistoryPaginated: builder.query<IPage<ILog>, ILogsParams>({
+            query: (params: ILogsParams) => ({
+                url: `/customer/${params.id}`,
+                params: params,
+            }),
+            providesTags: ["CustomerByIdLogs"],
+        }),
+        propertyHistoryPaginated: builder.query<IPage<ILog>, ILogsParams>({
+            query: (params: ILogsParams) => ({
+                url: `/property/${params.id}`,
+                params: params,
+            }),
+            providesTags: ["PropertyByIdLogs"],
+        }),
     }),
 });
 
 export const {
-    useGetAdmitLogsQuery,
-    useAdmitLogsPaginatedQuery,
-    // useGetCustomerByIdQuery,
+    useAdminLogsPaginatedQuery,
+    useCustomerHistoryPaginatedQuery,
+    useLazyPropertyHistoryPaginatedQuery,
 } = logs;
