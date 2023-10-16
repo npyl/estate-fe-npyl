@@ -18,7 +18,7 @@ const ListManagerItem: FC<ListManagerItemProps> = (props) => {
 
     const router = useRouter();
 
-    const { data } = useProfileQuery({});
+    const { data } = useProfileQuery();
     if (!data) return null;
 
     const performViewManager = () => {

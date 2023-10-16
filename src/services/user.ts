@@ -18,7 +18,7 @@ export const user = createApi({
     }),
     tagTypes: ["Users", "Profile"],
     endpoints: (builder) => ({
-        profile: builder.query<IUser, any>({
+        profile: builder.query<IUser, void>({
             query: () => ({
                 url: "profile/",
             }),

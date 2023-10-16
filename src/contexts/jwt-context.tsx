@@ -131,7 +131,7 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
         isSuccess,
         isUninitialized,
         isError,
-    } = useProfileQuery({}, { skip: !skipRequest });
+    } = useProfileQuery(undefined, { skip: !skipRequest });
 
     const [register] = useRegisterMutation();
 
