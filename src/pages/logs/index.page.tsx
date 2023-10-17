@@ -32,9 +32,9 @@ const LogCard: FC<LogCardProps> = ({ log }) => {
     const theme = useTheme();
     const formattedDate = format(new Date(log.createdAt), "dd-MM-yyyy hh:mm");
 
-    //date changer for filters
-    // const date = new Date();
-    // const datei = Math.floor(date.getTime() / 1000);
+    // date changer for filters
+    // const date = new Date(log.createdAt);
+    // const datei = Math.floor(date.getTime());
     // console.log(datei); // logs the Unix timestamp in seconds
 
     let resourceDescription: JSX.Element;
