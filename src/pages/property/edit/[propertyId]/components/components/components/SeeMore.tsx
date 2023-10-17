@@ -1,3 +1,4 @@
+import { Lock, LockOpen } from "@mui/icons-material";
 import {
     Box,
     Button,
@@ -5,6 +6,8 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
+    Divider,
+    Typography,
 } from "@mui/material";
 import { useState } from "react";
 import { SoftButton } from "src/components/SoftButton";
@@ -35,16 +38,7 @@ export const SeeMore = ({
     const handleImageClick = (image: IPropertyImage) => {
         if (selectMultiple) {
             setSelectedImages((oldSelectedImages) => {
-                // console.log("oldState: ", oldSelectedImages);
-
                 const alreadySelected = oldSelectedImages.includes(image.key);
-
-                // console.log(
-                //     "i.key: ",
-                //     image.key,
-                //     " alreadySelected: ",
-                //     alreadySelected
-                // );
 
                 return alreadySelected
                     ? oldSelectedImages.filter((key) => key !== image.key) // remove
@@ -70,19 +64,8 @@ export const SeeMore = ({
             >
                 Upload Images{" "}
                 {selectMultiple ? `(${selectedImages.length} selected)` : ""}
-                <SoftButton
-                    onClick={toggleSelectMultiple}
-                    sx={{
-                        position: "absolute",
-                        top: 1,
-                        right: 1,
-                        m: 1,
-                    }}
-                    color={selectMultiple ? "error" : "primary"}
-                >
-                    {selectMultiple ? "Cancel Select" : "Select Multiple"}
-                </SoftButton>
             </DialogTitle>
+            <Divider />
             <DialogContent>
                 <Box p={5}>
                     <MultiFilePreviewReorder
@@ -97,7 +80,22 @@ export const SeeMore = ({
                     />
                 </Box>
             </DialogContent>
+            <Divider />
             <DialogActions>
+                {selectMultiple && selectedImages.length > 0 && (
+                    <>
+                        <Typography mr={1}>Make</Typography>
+                        <SoftButton startIcon={<LockOpen />}>Public</SoftButton>
+                        <SoftButton startIcon={<Lock />}>Private</SoftButton>
+                    </>
+                )}
+                <Divider variant="middle" />
+                <SoftButton
+                    onClick={toggleSelectMultiple}
+                    color={selectMultiple ? "error" : "primary"}
+                >
+                    {selectMultiple ? "Cancel Select" : "Select Multiple"}
+                </SoftButton>
                 <Button onClick={onClose} color="primary">
                     Close
                 </Button>
