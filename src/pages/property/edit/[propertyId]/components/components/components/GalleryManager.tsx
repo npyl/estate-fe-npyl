@@ -10,15 +10,15 @@ import {
     DialogActions,
 } from "@mui/material";
 import { Delete } from "@mui/icons-material";
-import { SoftButton } from "./SoftButton";
+import { SoftButton } from "src/components/SoftButton";
 import { useCallback, useMemo, useRef, useState } from "react";
 import { useEditPropertyImageMutation } from "src/services/properties";
 
-import CarouselSimple from "./CarouselSimple";
-import ICarouselImage from "./carousel/types";
+import CarouselSimple from "src/components/CarouselSimple";
+import ICarouselImage from "src/components/carousel/types";
 import { IPropertyImage } from "src/types/file";
 import { useRouter } from "next/router";
-import { LanguageButton } from "./Language/LanguageButton";
+import { LanguageButton } from "src/components/Language/LanguageButton";
 
 const useConditionalMemo = (
     callback: () => number,
@@ -44,7 +44,7 @@ interface IGalleryManager {
     onClose: () => void;
 }
 
-const GalleryManager: React.FC<IGalleryManager> = (props) => {
+export const GalleryManager: React.FC<IGalleryManager> = (props) => {
     const {
         open,
         deleteOnGoing,
@@ -286,5 +286,3 @@ const GalleryManager: React.FC<IGalleryManager> = (props) => {
         </Dialog>
     );
 };
-
-export default GalleryManager;

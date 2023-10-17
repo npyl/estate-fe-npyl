@@ -2,7 +2,6 @@ import { Box, Button, Card, CardContent, CardHeader } from "@mui/material";
 import { useCallback, useState } from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
-import GalleryManager from "src/components/GalleryManager";
 import { SoftButton } from "src/components/SoftButton";
 import UploadDnd from "src/components/upload/UploadDnd";
 import {
@@ -12,6 +11,7 @@ import {
     useSetPropertyThumbailMutation,
 } from "src/services/properties";
 import { IPropertyImage, IPropertyImagePOST } from "src/types/file";
+import { GalleryManager } from "./components/GalleryManager";
 import { SeeMore } from "./components/SeeMore";
 
 interface IImageSectionProps {

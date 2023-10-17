@@ -68,6 +68,7 @@ const SelectableItem = ({
                         right: -5,
                         zIndex: 1,
                         fontSize: 50,
+                        color: "primary.main",
                         stroke: "white",
                         strokeWidth: "0.5",
                         strokeLinejoin: "round",
