@@ -1,4 +1,4 @@
-import { Box, Stack } from "@mui/material";
+import { Box, Grid, Stack } from "@mui/material";
 import { FC, useMemo } from "react";
 import {
     DragDropContext,
@@ -60,39 +60,30 @@ export const TwoDimentionsDnd: FC<TwoDimentionsDndProps> = ({
                                 {...provided.droppableProps}
                                 ref={provided.innerRef}
                             >
-                                <Stack direction={"row"} gap={gap}>
+                                <Grid container direction={"row"} spacing={gap}>
                                     {row.map((item, j) => (
-                                        <Draggable
-                                            draggableId={`item-${item.id}`}
+                                        <Grid
+                                            item
+                                            xs={12 / columns}
                                             key={`item-${item.id}`}
-                                            index={j}
                                         >
-                                            {(provided) => (
-                                                <div
-                                                    {...provided.draggableProps}
-                                                    {...provided.dragHandleProps}
-                                                    ref={provided.innerRef}
-                                                >
-                                                    {item.value}
-                                                </div>
-                                            )}
-                                        </Draggable>
+                                            <Draggable
+                                                draggableId={`item-${item.id}`}
+                                                index={j}
+                                            >
+                                                {(provided) => (
+                                                    <div
+                                                        {...provided.draggableProps}
+                                                        {...provided.dragHandleProps}
+                                                        ref={provided.innerRef}
+                                                    >
+                                                        {item.value}
+                                                    </div>
+                                                )}
+                                            </Draggable>
+                                        </Grid>
                                     ))}
-
-                                    {/* Placeholder */}
-                                    {Array.from(
-                                        {
-                                            length: columns - row.length,
-                                        },
-                                        (v, i) => (
-                                            <Box
-                                                key={i}
-                                                width={"100%"}
-                                                height={"100%"}
-                                            />
-                                        )
-                                    )}
-                                </Stack>
+                                </Grid>
                                 {provided.placeholder}
                             </div>
                         )}

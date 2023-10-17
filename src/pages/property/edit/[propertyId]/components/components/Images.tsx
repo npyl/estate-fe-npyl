@@ -155,7 +155,6 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
         );
     };
 
-    const handleOpenGalleryManager = () => setGalleryManagerOpen(true);
     const handleCloseGalleryManager = () => setGalleryManagerOpen(false);
 
     const handleOpenMore = () => setMoreOpen(true);
@@ -244,7 +243,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
                                     alignItems="center"
                                     justifyContent="center"
                                     flexDirection="column"
-                                    height="100%" // or any specific height, depending on your layout
+                                    height="100%"
                                     mt={1}
                                 >
                                     <Typography variant="h6">
