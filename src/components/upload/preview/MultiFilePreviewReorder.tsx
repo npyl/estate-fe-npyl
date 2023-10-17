@@ -64,15 +64,12 @@ const SelectableItem = ({
                 <Check
                     sx={{
                         position: "absolute",
-                        top: -25,
-                        right: -5,
+                        top: 1,
+                        right: 1,
                         zIndex: 1,
-                        fontSize: 50,
-                        color: "primary.main",
-                        stroke: "white",
-                        strokeWidth: "0.5",
-                        strokeLinejoin: "round",
-                        strokeLinecap: "round",
+                        fontSize: 35,
+                        color: "yellow",
+                        backgroundColor: "rgba(0, 0, 0, 0.7)",
                     }}
                 />
             )}
