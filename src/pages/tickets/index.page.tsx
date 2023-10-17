@@ -19,12 +19,14 @@ import {
 import { SkeletonKanbanColumn } from "src/components/skeleton";
 import { useMemo } from "react";
 import {
-    DroppableTypeItem,
     TwoDimentionsDnd,
-    TwoDimentionsDndItem,
     itemId,
     rowId,
-} from "src/components/TwoDimentionsDnd";
+} from "src/components/TwoDimentionsDnd/TwoDimentionsDnd";
+import {
+    DroppableTypeItem,
+    TwoDimentionsDndItem,
+} from "src/components/TwoDimentionsDnd/types";
 import { DroppableTypeTask } from "./components/column/KanbanColumn";
 
 KanbanPage.getLayout = (page: React.ReactElement) => (

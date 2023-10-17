@@ -5,11 +5,11 @@ import { IPropertyImage } from "src/types/file";
 import { useCallback, useMemo } from "react";
 import { motion } from "framer-motion";
 import {
-    DroppableTypeItem,
     TwoDimentionsDnd,
     itemId,
     rowId,
-} from "src/components/TwoDimentionsDnd";
+} from "src/components/TwoDimentionsDnd/TwoDimentionsDnd";
+import { DroppableTypeItem } from "src/components/TwoDimentionsDnd/types";
 import { DropResult } from "react-beautiful-dnd";
 import { Check } from "@mui/icons-material";
 
@@ -46,7 +46,7 @@ interface SelectableItemProps extends ItemProps {
     selected: boolean;
 }
 
-const SelectableItem = ({
+export const SelectableItem = ({
     selectMultiple,
     selected,
     image,

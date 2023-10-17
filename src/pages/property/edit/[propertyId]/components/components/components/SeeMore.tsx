@@ -13,6 +13,7 @@ import { useState } from "react";
 import { SoftButton } from "src/components/SoftButton";
 import MultiFilePreviewReorder from "src/components/upload/preview/MultiFilePreviewReorder";
 import { IPropertyImage } from "src/types/file";
+import { Over25ImagesPreview } from "./SeeMorePreview";
 
 interface SeeMoreProps {
     open: boolean;
@@ -62,22 +63,33 @@ export const SeeMore = ({
                     position: "relative",
                 }}
             >
-                Upload Images{" "}
+                Edit
                 {selectMultiple ? `(${selectedImages.length} selected)` : ""}
             </DialogTitle>
             <Divider />
             <DialogContent>
                 <Box p={5}>
-                    <MultiFilePreviewReorder
-                        files={files}
-                        selectMultiple={selectMultiple}
-                        selectedImages={selectedImages}
-                        columns={5}
-                        thumbnail={false}
-                        setFiles={setFiles}
-                        onImageClick={handleImageClick}
-                        onReorder={onReorder}
-                    />
+                    {files.length > 25 ? (
+                        <Over25ImagesPreview
+                            files={files}
+                            selectMultiple={selectMultiple}
+                            selectedImages={selectedImages}
+                            setFiles={setFiles}
+                            onImageClick={handleImageClick}
+                            onReorder={onReorder}
+                        />
+                    ) : (
+                        <MultiFilePreviewReorder
+                            files={files}
+                            selectMultiple={selectMultiple}
+                            selectedImages={selectedImages}
+                            columns={5}
+                            thumbnail={false}
+                            setFiles={setFiles}
+                            onImageClick={handleImageClick}
+                            onReorder={onReorder}
+                        />
+                    )}
                 </Box>
             </DialogContent>
             <Divider />
