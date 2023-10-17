@@ -3,6 +3,7 @@ import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useGetLabelsQuery } from "src/services/labels";
+import { useAllUsersQuery } from "src/services/user";
 import { deleteFilter, getChangedFields, selectIds } from "src/slices/filters";
 
 const ChosenFilters = () => {
@@ -10,6 +11,7 @@ const ChosenFilters = () => {
     const dispatch = useDispatch();
 
     const { data } = useGetLabelsQuery();
+    const { data: managers } = useAllUsersQuery();
 
     const changedProps = useSelector(getChangedFields);
     const ids = useSelector(selectIds);
@@ -67,7 +69,7 @@ const ChosenFilters = () => {
             label: t("Furnished"),
         },
         managerId: {
-            label: t("Manager ID"),
+            label: t("Manager"),
         },
         states: {
             label: t("State"),
@@ -127,6 +129,16 @@ const ChosenFilters = () => {
                 })
                 .join(", "),
         [allLabels]
+    );
+
+    const getManagerName = useCallback(
+        (managerId: number) => {
+            const manager = managers?.find((m) => m.id === managerId);
+            return manager?.firstName && manager.lastName
+                ? `${manager?.firstName} ${manager?.lastName}`
+                : "";
+        },
+        [managers]
     );
 
     return (
@@ -202,7 +214,11 @@ const ChosenFilters = () => {
                     );
                 } else {
                     const valuesToDisplay =
-                        key === "labels" ? getLabelNames(values) : values;
+                        key === "labels"
+                            ? getLabelNames(values)
+                            : key === "managerId"
+                            ? getManagerName(values)
+                            : values;
 
                     return (
                         <Chip

@@ -55,7 +55,7 @@ import SubCategorySelect from "./FilterCategory";
 import PriceSelect from "./FilterPrice";
 import FilterLabels from "./FilterLabels";
 import CodeSelect from "./FilterCode";
-import ManagerIdSelect from "./FilterManagerId";
+import ManagerSelect from "./FilterManager";
 
 import { ClearableDialogContent } from "./components/ClearableDialogContent";
 import { StyledDialogContent } from "./styles";
@@ -149,7 +149,7 @@ export default function FilterMore({
 
                 <Stack direction={"row"} gap={1} flexWrap={"wrap"}>
                     <CodeSelect />
-                    <ManagerIdSelect />
+                    <ManagerSelect />
 
                     <SaleSelect />
 

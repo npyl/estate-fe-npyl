@@ -4,10 +4,10 @@ import { selectManagerId, setManagerId } from "src/slices/filters";
 
 import { useAllUsersQuery } from "src/services/user";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-export default function ManagerIdSelect() {
+export default function ManagerSelect() {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
@@ -19,46 +19,49 @@ export default function ManagerIdSelect() {
         [managerId]
     );
 
-    const managerIds: string[] =
-        useAllUsersQuery(undefined, {
-            selectFromResult: ({ data }) => ({
-                data: data
-                    ?.filter((manager) => manager.id !== null)
-                    .map((manager) => {
-                        return manager.id.toString();
-                    }),
-            }),
-        }).data || [];
+    const { data: managerIdsValues } = useAllUsersQuery(undefined, {
+        selectFromResult: ({ data }) => ({
+            data:
+                data?.map((user) => ({
+                    id: user.id,
+                    value: `${user.firstName} ${user.lastName}`,
+                })) || [],
+        }),
+    });
+
+    const managerValues = useMemo(
+        () => managerIdsValues.map((pair) => pair.value),
+        [managerIdsValues]
+    );
 
     const autocompleteChange = (_event: any, value: string | null) => {
         setAutocompleteValue(value || "");
 
-        dispatch(
-            setManagerId(
-                // On autofill we get a stringified value.
-                value
-                    ? typeof value === "string"
-                        ? parseInt(value)
-                        : value
-                    : undefined
-            )
-        );
+        if (!value) {
+            dispatch(setManagerId(undefined));
+            return;
+        }
+
+        const idForValue = managerIdsValues.find(
+            (manager) => manager.value === value
+        )?.id;
+
+        if (!idForValue) return;
+
+        dispatch(setManagerId(idForValue));
     };
 
     return (
         <FormControl sx={{ width: 135 }}>
             <Autocomplete
                 disablePortal
-                id="combo-box-demo"
                 value={autocompleteValue}
                 onChange={autocompleteChange}
-                options={managerIds}
+                options={managerValues}
                 renderInput={(params) => (
                     <TextField
                         {...params}
-                        placeholder={
-                            (t("Manager ID") as string) || "Manager ID"
-                        }
+                        placeholder={t("Manager") as string}
                     />
                 )}
             />
