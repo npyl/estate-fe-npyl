@@ -1,3 +1,4 @@
+import { number } from "prop-types";
 import { KeyValue } from "./KeyValue";
 import { ICustomer } from "./customer";
 import { IDemand, IDemandPOST } from "./demand";
@@ -17,4 +18,16 @@ export interface ILog {
     propertyCode: string;
     customerId: number;
     customer: string;
+}
+
+export interface ILogResultResponse {}
+
+export interface ILogFilter {
+    fromDate?: string;
+    toDate?: string;
+    user?: IUser[];
+    actions?: KeyValue[];
+    resources?: KeyValue[];
+    propertiesIds?: number[];
+    customersIds?: number[];
 }

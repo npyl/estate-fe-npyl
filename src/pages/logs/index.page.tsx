@@ -23,6 +23,7 @@ import { Avatar, useTheme, Divider } from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { deepOrange, green, deepPurple, yellow } from "@mui/material/colors";
 import { Chip } from "@mui/material";
+import { FilterLogSection } from "./components";
 // import { parse, formatISO, utcToZonedTime } from "date-fns";
 interface LogCardProps {
     log: ILog;
@@ -208,6 +209,10 @@ const Logs: NextPage = () => {
 
     return (
         <Box marginTop={"20px"}>
+            <Box>
+                {" "}
+                <FilterLogSection />
+            </Box>
             <Stack spacing={2}>{content}</Stack>
             {data &&
                 !isLoading && ( // Only display pagination when data is loaded

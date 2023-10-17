@@ -52,8 +52,12 @@ export interface IGlobalCustomer {
     timeframe: KeyValue[];
     nationality: KeyValue[];
 }
-
+export interface IGlobalLog {
+    resourceTypes: KeyValue[];
+    userActions: KeyValue[];
+}
 export interface IGlobal {
     property: IGlobalProperty;
     customer: IGlobalCustomer;
+    logs: IGlobalLog;
 }
