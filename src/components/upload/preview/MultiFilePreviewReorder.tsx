@@ -64,10 +64,14 @@ const SelectableItem = ({
                 <Check
                     sx={{
                         position: "absolute",
-                        top: -20,
+                        top: -25,
                         right: -5,
                         zIndex: 1,
                         fontSize: 50,
+                        stroke: "white",
+                        strokeWidth: "0.5",
+                        strokeLinejoin: "round",
+                        strokeLinecap: "round",
                     }}
                 />
             )}
@@ -101,7 +105,8 @@ export default function MultiFilePreviewReorder({
                     <SelectableItem
                         selectMultiple={selectMultiple}
                         selected={
-                            selectedImages.findIndex((key) => key === f.key) > 0
+                            selectedImages.findIndex((key) => key === f.key) >
+                            -1
                         }
                         image={f}
                         index={index}

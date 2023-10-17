@@ -1,22 +1,10 @@
-import {
-    Box,
-    Button,
-    Card,
-    CardContent,
-    CardHeader,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-} from "@mui/material";
+import { Box, Button, Card, CardContent, CardHeader } from "@mui/material";
 import { useCallback, useState } from "react";
-
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import GalleryManager from "src/components/GalleryManager";
 import { SoftButton } from "src/components/SoftButton";
 import UploadDnd from "src/components/upload/UploadDnd";
-import MultiFilePreviewReorder from "src/components/upload/preview/MultiFilePreviewReorder";
 import {
     useAddPropertyImageMutation,
     useDeletePropertyImageMutation,
@@ -24,6 +12,7 @@ import {
     useSetPropertyThumbailMutation,
 } from "src/services/properties";
 import { IPropertyImage, IPropertyImagePOST } from "src/types/file";
+import { SeeMore } from "./components/SeeMore";
 
 interface IImageSectionProps {
     files: IPropertyImage[];
@@ -50,11 +39,6 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
     const [currentGalleryImage, setCurrentGalleryImage] =
         useState<IPropertyImage>();
     const [moreOpen, setMoreOpen] = useState(false);
-
-    /* multiple photos selection */
-    const [selectedImages, setSelectedImages] = useState<string[]>([]); // keys
-    const [selectMultiple, setSelectMultiple] = useState(false);
-    const toggleSelectMultiple = () => setSelectMultiple(!selectMultiple);
 
     /* mutations */
     const [addImage] = useAddPropertyImageMutation();
@@ -162,26 +146,11 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
     const handleOpenMore = () => setMoreOpen(true);
     const handleCloseMore = () => setMoreOpen(false);
 
-    const handleImageClick = useCallback(
-        (image: IPropertyImage) => {
-            if (selectMultiple) {
-                setSelectedImages((oldSelectedImages) => {
-                    const alreadySelected = oldSelectedImages.includes(
-                        image.key
-                    );
-
-                    return alreadySelected
-                        ? oldSelectedImages.filter((key) => key !== image.key) // remove
-                        : [...oldSelectedImages, image.key]; // add
-                });
-            } else {
-                setCurrentGalleryImage(image);
-                setMoreOpen(false);
-                setGalleryManagerOpen(true);
-            }
-        },
-        [selectMultiple, selectedImages]
-    );
+    const handleImageClick = (image: IPropertyImage) => {
+        setCurrentGalleryImage(image);
+        setMoreOpen(false);
+        setGalleryManagerOpen(true);
+    };
     const handleImageChange = useCallback(
         (key: string) => {
             /*
@@ -288,57 +257,14 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 
             {/* Dialog for See More */}
             {moreOpen && (
-                <Dialog
+                <SeeMore
                     open={moreOpen}
+                    files={files}
+                    setFiles={setFiles}
+                    onImageClick={handleImageClick}
+                    onReorder={handleReorder}
                     onClose={handleCloseMore}
-                    PaperProps={{
-                        style: { minWidth: "95vw", minHeight: "95vh" },
-                    }}
-                >
-                    <DialogTitle
-                        style={{
-                            position: "relative",
-                        }}
-                    >
-                        Upload Images{" "}
-                        {selectMultiple
-                            ? `(${selectedImages.length} selected)`
-                            : ""}
-                        <SoftButton
-                            onClick={toggleSelectMultiple}
-                            sx={{
-                                position: "absolute",
-                                top: 1,
-                                right: 1,
-                                m: 1,
-                            }}
-                            color={selectMultiple ? "error" : "primary"}
-                        >
-                            {selectMultiple
-                                ? "Cancel Select"
-                                : "Select Multiple"}
-                        </SoftButton>
-                    </DialogTitle>
-                    <DialogContent>
-                        <Box p={5}>
-                            <MultiFilePreviewReorder
-                                files={files}
-                                selectMultiple={selectMultiple}
-                                selectedImages={selectedImages}
-                                columns={5}
-                                thumbnail={false}
-                                setFiles={setFiles}
-                                onImageClick={handleImageClick}
-                                onReorder={handleReorder}
-                            />
-                        </Box>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleCloseMore} color="primary">
-                            Close
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+                />
             )}
         </>
     );
