@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { format } from "date-fns"; // for date formatting
 import { useAdminLogsPaginatedQuery } from "src/services/logs";
@@ -21,8 +21,9 @@ import { alpha } from "@mui/material/styles";
 import { Avatar, useTheme, Divider } from "@mui/material";
 
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import { deepOrange, green, deepPurple } from "@mui/material/colors";
-
+import { deepOrange, green, deepPurple, yellow } from "@mui/material/colors";
+import { Chip } from "@mui/material";
+// import { parse, formatISO, utcToZonedTime } from "date-fns";
 interface LogCardProps {
     log: ILog;
 }
@@ -31,7 +32,11 @@ const LogCard: FC<LogCardProps> = ({ log }) => {
     const theme = useTheme();
     const formattedDate = format(new Date(log.createdAt), "dd-MM-yyyy hh:mm");
 
-    // Determine the resource description based on the type
+    //date changer for filters
+    // const date = new Date();
+    // const datei = Math.floor(date.getTime() / 1000);
+    // console.log(datei); // logs the Unix timestamp in seconds
+
     let resourceDescription: JSX.Element;
     if (log.resourceType.key === "PROPERTY") {
         resourceDescription = (
@@ -64,32 +69,64 @@ const LogCard: FC<LogCardProps> = ({ log }) => {
     } else {
         resourceDescription = <span></span>;
     }
-
-    // Generate avatar colors based on action type
-    const getAvatarColor = () => {
-        switch (log.action.value?.toLowerCase()) {
-            case "created":
-                return green[500];
-            case "updated":
-                return deepOrange[500];
-            case "deleted":
-                return theme.palette.error.main;
+    const getCardBackgroundColor = () => {
+        switch (log.action.key) {
+            case "CREATE":
+                return alpha(green[500], 0.2); // light green
+            case "EDIT":
+                return alpha(yellow[700], 0.2); // light yellow, you can choose a different shade if you prefer
+            case "DELETE":
+                return alpha(theme.palette.error.main, 0.2); // light red
+            case "ADD":
+                return alpha(yellow[700], 0.2); // light yellow, you can choose a different shade if you prefer
             default:
-                return deepPurple[500];
+                return ""; // default, no background color or whatever you prefer
         }
     };
-
+    const getLabelColor = () => {
+        switch (log.action.key) {
+            case "CREATE":
+                return green[500]; // or any specific shade of green you prefer
+            case "EDIT":
+                return yellow[700]; // or any specific shade of yellow you prefer
+            case "DELETE":
+                return theme.palette.error.main; // red color for deletion
+            case "ADD":
+                return yellow[700]; // similar to "EDIT"
+            // ... add more cases here for other actions
+            default:
+                return theme.palette.text.primary; // default color
+        }
+    };
+    const actionLabel = (
+        <Chip
+            label={log.action.value} // assuming it's the human-readable action value
+            style={{
+                backgroundColor: getLabelColor(),
+                color: theme.palette.getContrastText(getLabelColor()), // ensures text is legible
+                position: "absolute", // absolutely position this element
+                top: theme.spacing(1), // spacing from the top
+                right: theme.spacing(1), // spacing from the right
+            }}
+        />
+    );
     return (
         <Paper
             elevation={3}
-            style={{ padding: theme.spacing(2), marginTop: theme.spacing(1) }}
+            style={{
+                position: "relative",
+                padding: theme.spacing(2),
+                marginTop: theme.spacing(1),
+                backgroundColor: getCardBackgroundColor(), // set background color here
+            }}
         >
+            {" "}
+            {actionLabel}
             <Grid container spacing={2}>
                 {/* Left: User info and Action */}
                 <Grid item style={{ flexShrink: 0 }}>
                     <Avatar
                         style={{
-                            backgroundColor: getAvatarColor(),
                             marginRight: theme.spacing(1.5),
                         }}
                     >
@@ -124,8 +161,10 @@ const LogCard: FC<LogCardProps> = ({ log }) => {
             </Grid>
             <Divider
                 style={{
+                    borderTop: "0px solid",
                     marginTop: theme.spacing(1),
                     marginBottom: theme.spacing(1),
+                    borderColor: "rgba(0, 0, 0, 0.3)",
                 }}
             />
             {/* Optional: Additional content can go here (e.g., if you want to expand on details or add interactive elements) */}
@@ -144,6 +183,7 @@ const Logs: NextPage = () => {
     });
 
     if (isLoading) return <CircularProgress />; // Show a loading indicator
+
     const handlePageChange = (
         event: React.ChangeEvent<unknown>,
         value: number
