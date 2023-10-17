@@ -16,6 +16,7 @@ export const TwoDimentionsDndNoContext = ({
     items,
     columns,
     gap,
+    dndId,
 }: TwoDimentionsDndNoContextProps) => {
     const rows = useMemo(() => chunks(items, columns), [items, columns]);
 
@@ -41,7 +42,11 @@ export const TwoDimentionsDndNoContext = ({
                                         key={`item-${item.id}`}
                                     >
                                         <Draggable
-                                            draggableId={`item-${item.id}`}
+                                            draggableId={
+                                                dndId !== undefined
+                                                    ? `${dndId}-item-${item.id}`
+                                                    : `item-${item.id}`
+                                            }
                                             index={j}
                                         >
                                             {(provided) => (

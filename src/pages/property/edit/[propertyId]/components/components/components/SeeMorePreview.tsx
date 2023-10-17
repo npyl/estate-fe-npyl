@@ -135,11 +135,16 @@ export const Over25ImagesPreview = ({
 
     return (
         <DragDropContext onDragEnd={handleDragEnd}>
-            <TwoDimentionsDndNoContext items={publicImages} columns={COLUMNS} />
+            <TwoDimentionsDndNoContext
+                items={publicImages}
+                columns={COLUMNS}
+                dndId={1}
+            />
             <Divider />
             <TwoDimentionsDndNoContext
                 items={privateImages}
                 columns={COLUMNS}
+                dndId={2}
             />
         </DragDropContext>
     );
