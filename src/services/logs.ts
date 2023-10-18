@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { ICustomer } from "src/types/customer";
 import { ILabel } from "src/types/label";
-import { ILog } from "src/types/logs";
+import { ILog, ILogFilter, ILogResultResponse } from "src/types/logs";
 import IPage from "src/types/page";
 import { IProperties } from "src/types/properties";
 
@@ -10,7 +10,9 @@ interface ILogsParams {
     page: number;
     pageSize: number;
 }
-
+interface ILogFilterProps extends ILogsParams {
+    filter: ILogFilter;
+}
 export const logs = createApi({
     reducerPath: "logs",
     baseQuery: fetchBaseQuery({
@@ -53,6 +55,18 @@ export const logs = createApi({
             }),
             providesTags: ["PropertyByIdLogs"],
         }),
+        filterLogs: builder.mutation<IPage<ILog>, ILogFilterProps>({
+            query: (props: ILogFilterProps) => ({
+                url: "/filter",
+                method: "POST",
+                body: props.filter,
+                params: {
+                    page: props.page,
+                    pageSize: props.pageSize,
+                },
+            }),
+            invalidatesTags: ["Logs"],
+        }),
     }),
 });
 
@@ -60,4 +74,5 @@ export const {
     useAdminLogsPaginatedQuery,
     useCustomerHistoryPaginatedQuery,
     useLazyPropertyHistoryPaginatedQuery,
+    useFilterLogsMutation,
 } = logs;
