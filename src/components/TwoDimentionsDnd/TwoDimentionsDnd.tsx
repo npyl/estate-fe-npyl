@@ -7,6 +7,10 @@ interface ParseItemResult {
     itemId: number;
     dndId?: number;
 }
+interface ParseRowResult {
+    rowId: number;
+    dndId?: number;
+}
 
 export const parseItemId = (str?: string): ParseItemResult => {
     if (!str) return { itemId: -1, dndId: undefined };
@@ -22,10 +26,18 @@ export const parseItemId = (str?: string): ParseItemResult => {
     return { itemId, dndId };
 };
 
-export const parseRowId = (str?: string) => {
-    if (!str) return null;
-    const match = str.match(/row-(\d+)/);
-    return match ? parseInt(match[1], 10) : null;
+export const parseRowId = (str?: string): ParseRowResult => {
+    if (!str) return { rowId: -1, dndId: undefined };
+
+    // Regular expression to match either 'row-{i}' or '{j}-row-{i}'
+    const dualMatch = str.match(/(?:([0-9]+)-)?row-([0-9]+)/);
+    if (!dualMatch) return { rowId: -1, dndId: undefined };
+
+    const dndId =
+        dualMatch[1] !== undefined ? parseInt(dualMatch[1], 10) : undefined;
+    const rowId = parseInt(dualMatch[2], 10);
+
+    return { rowId, dndId };
 };
 
 interface TwoDimentionsDndProps extends TwoDimentionsDndNoContextProps {

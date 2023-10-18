@@ -92,12 +92,12 @@ export default function KanbanPage() {
     }: DropResult) => {
         if (type === DroppableTypeItem) {
             const { itemId: draggedItemId } = parseItemId(draggableId);
-            const dstRow = parseRowId(destination?.droppableId);
+            const { rowId: dstRow } = parseRowId(destination?.droppableId);
             const dstCol = destination?.index;
 
             if (
-                draggedItemId === null ||
-                dstRow === null ||
+                draggedItemId === -1 ||
+                dstRow === -1 ||
                 dstCol === null ||
                 dstCol === undefined
             )

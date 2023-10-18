@@ -73,22 +73,24 @@ export const Over25ImagesPreview = ({
             );
 
             if (type === DroppableTypeItem) {
-                const { itemId: draggedItemId, dndId } =
+                const { itemId: draggedItemId, dndId: srcDndId } =
                     parseItemId(draggableId);
 
-                console.log("draggedId: ", draggedItemId, " dndId: ", dndId);
+                console.log("draggedId: ", draggedItemId, " dndId: ", srcDndId);
 
                 /* src */
-                const srcRow = parseRowId(source?.droppableId);
+                const { rowId: srcRow } = parseRowId(source?.droppableId);
                 const srcCol = source?.index;
                 /* dst */
-                const dstRow = parseRowId(destination?.droppableId);
+                const { rowId: dstRow, dndId: dstDndId } = parseRowId(
+                    destination?.droppableId
+                );
                 const dstCol = destination?.index;
 
                 if (draggedItemId === -1) return;
-                if (srcRow === null || srcCol === null || srcCol === undefined)
+                if (srcRow === -1 || srcCol === null || srcCol === undefined)
                     return;
-                if (dstRow === null || dstCol === null || dstCol === undefined)
+                if (dstRow === -1 || dstCol === null || dstCol === undefined)
                     return;
 
                 let oneDimentionArraySrcIndex = srcRow * COLUMNS + srcCol;

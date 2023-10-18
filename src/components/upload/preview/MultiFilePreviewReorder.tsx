@@ -120,16 +120,16 @@ export default function MultiFilePreviewReorder({
             if (type === DroppableTypeItem) {
                 const { itemId: draggedItemId } = parseItemId(draggableId);
                 /* src */
-                const srcRow = parseRowId(source?.droppableId);
+                const { rowId: srcRow } = parseRowId(source?.droppableId);
                 const srcCol = source?.index;
                 /* dst */
-                const dstRow = parseRowId(destination?.droppableId);
+                const { rowId: dstRow } = parseRowId(destination?.droppableId);
                 const dstCol = destination?.index;
 
                 if (draggedItemId === -1) return;
-                if (srcRow === null || srcCol === null || srcCol === undefined)
+                if (srcRow === -1 || srcCol === null || srcCol === undefined)
                     return;
-                if (dstRow === null || dstCol === null || dstCol === undefined)
+                if (dstRow === -1 || dstCol === null || dstCol === undefined)
                     return;
 
                 let oneDimentionArraySrcIndex = srcRow * columns + srcCol;
