@@ -26,6 +26,9 @@ export interface IMapAddress {
 interface IMapProps {
     onReady?: (m: google.maps.Map) => void;
     onClick?: (lat: number, lng: number, address: IMapAddress) => void;
+    //
+    // Marker
+    //
     onMarkerClick?: (marker: IMapMarker) => void;
     onDragEnd?: (
         marker: IMapMarker,
@@ -33,8 +36,14 @@ interface IMapProps {
         newLng: number,
         address: IMapAddress
     ) => void;
+    //
+    // Shape
+    //
     onDraw?: (shape: DrawShape | StopDraw) => void;
     onDrag?: (oldShape: DrawShape, newShape: DrawShape) => void;
+    //
+    // Search
+    //
     onSearchSelect?: (selected: IMapAddress, lat: number, lng: number) => void;
 
     markers?: IMapMarker[];
