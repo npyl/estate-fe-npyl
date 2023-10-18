@@ -20,8 +20,8 @@ import { SkeletonKanbanColumn } from "src/components/skeleton";
 import { useMemo } from "react";
 import {
     TwoDimentionsDnd,
-    itemId,
-    rowId,
+    parseItemId,
+    parseRowId,
 } from "src/components/TwoDimentionsDnd/TwoDimentionsDnd";
 import {
     DroppableTypeItem,
@@ -91,8 +91,8 @@ export default function KanbanPage() {
         draggableId,
     }: DropResult) => {
         if (type === DroppableTypeItem) {
-            const draggedItemId = itemId(draggableId);
-            const dstRow = rowId(destination?.droppableId);
+            const { itemId: draggedItemId } = parseItemId(draggableId);
+            const dstRow = parseRowId(destination?.droppableId);
             const dstCol = destination?.index;
 
             if (

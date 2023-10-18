@@ -6,8 +6,8 @@ import { useCallback, useMemo } from "react";
 import { motion } from "framer-motion";
 import {
     TwoDimentionsDnd,
-    itemId,
-    rowId,
+    parseItemId,
+    parseRowId,
 } from "src/components/TwoDimentionsDnd/TwoDimentionsDnd";
 import { DroppableTypeItem } from "src/components/TwoDimentionsDnd/types";
 import { DropResult } from "react-beautiful-dnd";
@@ -118,15 +118,15 @@ export default function MultiFilePreviewReorder({
     const handleDragEnd = useCallback(
         ({ type, draggableId, source, destination }: DropResult) => {
             if (type === DroppableTypeItem) {
-                const draggedItemId = itemId(draggableId);
+                const { itemId: draggedItemId } = parseItemId(draggableId);
                 /* src */
-                const srcRow = rowId(source?.droppableId);
+                const srcRow = parseRowId(source?.droppableId);
                 const srcCol = source?.index;
                 /* dst */
-                const dstRow = rowId(destination?.droppableId);
+                const dstRow = parseRowId(destination?.droppableId);
                 const dstCol = destination?.index;
 
-                if (draggedItemId === null) return;
+                if (draggedItemId === -1) return;
                 if (srcRow === null || srcCol === null || srcCol === undefined)
                     return;
                 if (dstRow === null || dstCol === null || dstCol === undefined)

@@ -2,8 +2,8 @@ import { Box, Divider } from "@mui/material";
 import { useCallback, useMemo } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import {
-    itemId,
-    rowId,
+    parseItemId,
+    parseRowId,
 } from "src/components/TwoDimentionsDnd/TwoDimentionsDnd";
 import { TwoDimentionsDndNoContext } from "src/components/TwoDimentionsDnd/TwoDimentionsDndNoContext";
 import { DroppableTypeItem } from "src/components/TwoDimentionsDnd/types";
@@ -73,15 +73,19 @@ export const Over25ImagesPreview = ({
             );
 
             if (type === DroppableTypeItem) {
-                const draggedItemId = itemId(draggableId);
+                const { itemId: draggedItemId, dndId } =
+                    parseItemId(draggableId);
+
+                console.log("draggedId: ", draggedItemId, " dndId: ", dndId);
+
                 /* src */
-                const srcRow = rowId(source?.droppableId);
+                const srcRow = parseRowId(source?.droppableId);
                 const srcCol = source?.index;
                 /* dst */
-                const dstRow = rowId(destination?.droppableId);
+                const dstRow = parseRowId(destination?.droppableId);
                 const dstCol = destination?.index;
 
-                if (draggedItemId === null) return;
+                if (draggedItemId === -1) return;
                 if (srcRow === null || srcCol === null || srcCol === undefined)
                     return;
                 if (dstRow === null || dstCol === null || dstCol === undefined)
