@@ -24,6 +24,8 @@ interface SeeMoreProps {
     onClose: () => void;
 }
 
+// (1): See https://github.com/atlassian/react-beautiful-dnd/issues/131
+
 export const SeeMore = ({
     open,
     files,
@@ -54,20 +56,25 @@ export const SeeMore = ({
         <Dialog
             open={open}
             onClose={onClose}
+            scroll="body" // (1)
             PaperProps={{
-                style: { minWidth: "95vw", minHeight: "95vh" },
+                style: {
+                    overflow: "hidden", // (1)
+                    minWidth: "95vw",
+                    minHeight: "95vh",
+                },
             }}
         >
-            <DialogTitle
-                style={{
-                    position: "relative",
-                }}
-            >
+            <DialogTitle>
                 Edit
                 {selectMultiple ? `(${selectedImages.length} selected)` : ""}
             </DialogTitle>
             <Divider />
-            <DialogContent>
+            <DialogContent
+                sx={{
+                    overflow: "hidden", // (1)
+                }}
+            >
                 <Box p={5}>
                     {files.length > 25 ? (
                         <Over25ImagesPreview

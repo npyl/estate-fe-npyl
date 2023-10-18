@@ -76,8 +76,6 @@ export const Over25ImagesPreview = ({
                 const { itemId: draggedItemId, dndId: srcDndId } =
                     parseItemId(draggableId);
 
-                console.log("draggedId: ", draggedItemId, " dndId: ", srcDndId);
-
                 /* src */
                 const { rowId: srcRow } = parseRowId(source?.droppableId);
                 const srcCol = source?.index;
@@ -92,6 +90,11 @@ export const Over25ImagesPreview = ({
                     return;
                 if (dstRow === -1 || dstCol === null || dstCol === undefined)
                     return;
+                if (!srcDndId || !dstDndId) return;
+
+                if (srcDndId === dstDndId) {
+                    console.log("reorder on same");
+                }
 
                 let oneDimentionArraySrcIndex = srcRow * COLUMNS + srcCol;
                 let oneDimentionArrayDstIndex = dstRow * COLUMNS + dstCol;
