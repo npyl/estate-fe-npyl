@@ -25,6 +25,7 @@ import { reducer as notificationReducer } from "../slices/notification";
 import { reducer as propertyReducer } from "../slices/property";
 import { reducer as propertyFilesReducer } from "../slices/property/files";
 import { reducer as securityReducer } from "../slices/security";
+import { reducer as logReducer } from "../slices/log";
 
 export const rootReducer = combineReducers({
     [location.reducerPath]: location.reducer,
@@ -55,4 +56,5 @@ export const rootReducer = combineReducers({
     notification: notificationReducer,
     kanban: kanbanReducer,
     securitySlice: securityReducer,
+    logsFilters: logReducer,
 });

@@ -79,11 +79,7 @@ const getSections = (t: TFunction): Section[] => [
                 path: "/logs",
                 icon: <HistoryIcon fontSize="small" />,
             },
-            {
-                title: t("Mail"),
-                path: "/email",
-                icon: <Email fontSize="small" />,
-            },
+
             {
                 title: t("Security"),
                 path: "/security",
