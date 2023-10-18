@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 import { selectResources, setResources } from "src/slices/log";
 import { KeyValue } from "src/types/KeyValue";
 
-export default function FilterActions() {
+export default function FilterResources() {
     const dispatch = useDispatch();
     const { t } = useTranslation();
     const data = useGlobals();
@@ -55,7 +55,7 @@ export default function FilterActions() {
                 input={<OutlinedInput label={t("Resource")} />}
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
-                {actionsEnums!.map(({ key, value }) => {
+                {resourceEnums!.map(({ key, value }) => {
                     // Checking the existence of 'key' in 'actions' array of KeyValue
                     const isKeySelected = resources?.some(
                         (action) => action.key === key

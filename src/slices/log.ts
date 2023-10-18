@@ -1,14 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createSelector } from "@reduxjs/toolkit";
-import { ICustomer, ICustomerPOST } from "src/types/customer";
-import {
-    IDemand,
-    IDemandFilters,
-    IDemandFiltersPOST,
-    IDemandPOST,
-} from "src/types/demand";
-import { IPropertyFeatures } from "src/types/features";
-import { ILabel } from "src/types/label";
 import type { RootState } from "../store";
 import { ILogFilter } from "src/types/logs";
 interface Filters extends ILogFilter {
@@ -23,6 +14,7 @@ const initialState: IFilterProps = {
     filters: {
         resources: [],
         actions: [],
+        users: [],
     },
     ids: [],
 };
@@ -40,19 +32,67 @@ const slice = createSlice({
             state.filters.actions = payload;
             !state.ids.includes("actions") && state.ids.push("actions");
         },
+        setUsers(state, { payload }) {
+            state.filters.users = payload;
+            !state.ids.includes("users") && state.ids.push("users");
+        },
+        //start-end
+        setFromDate(state, { payload }) {
+            state.filters.fromDate = payload;
+            !state.ids.includes("fromDate") && state.ids.push("fromDate");
+        },
+        setToDate(state, { payload }) {
+            state.filters.toDate = payload;
+            !state.ids.includes("toDate") && state.ids.push("toDate");
+        },
+        // general delete
+        deleteFilter(state, { payload }) {
+            const key = payload;
+
+            if (Array.isArray(state.filters[key])) {
+                state.ids =
+                    state.filters[key]?.length === 1
+                        ? state.ids.filter((id) => id !== key)
+                        : state.ids;
+            } else state.ids = state.ids.filter((id) => id !== key);
+
+            const initialValue = initialState.filters[key];
+            state.filters[key] = initialValue;
+        },
+
+        resetState: () => {
+            return initialState;
+        },
     },
 });
 export const {
     //multiple
     setActions,
     setResources,
+    //single
+    setUsers,
+    //start-end
+    setFromDate,
+    setToDate,
+    // delete
+    deleteFilter,
 } = slice.actions;
-
+//multiple
 export const selectResources = ({ logsFilters }: RootState) =>
     logsFilters.filters.resources;
 export const selectActions = ({ logsFilters }: RootState) =>
     logsFilters.filters.actions;
+export const selectUsers = ({ logsFilters }: RootState) =>
+    logsFilters.filters.users;
+//single
 
+//start-end
+export const selectFromDate = ({ logsFilters }: RootState) =>
+    logsFilters.filters.fromDate;
+export const selectToDate = ({ logsFilters }: RootState) =>
+    logsFilters.filters.toDate;
+export const selectIds = ({ logsFilters }: RootState) => logsFilters.ids;
+export const selectAll = ({ logsFilters }: RootState) => logsFilters.filters;
 export const sumOfChangedProperties = createSelector(
     (state: RootState) => state.logsFilters,
     (filter) => {
@@ -60,6 +100,11 @@ export const sumOfChangedProperties = createSelector(
             // multiple
             "resources",
             "actions",
+            //single
+            "users",
+            //start-end
+            "fromDate",
+            "toDate",
         ];
 
         return propertiesToInclude.reduce(
@@ -75,6 +120,21 @@ export const sumOfChangedProperties = createSelector(
                     : acc,
             0
         );
+    }
+);
+export const getChangedFields = createSelector(
+    (state: RootState) => state.logsFilters,
+    (filter) => {
+        const changedFields = Object.entries(filter.filters).reduce(
+            (acc: any, [key, value]) => {
+                if (value !== initialState.filters[key]) {
+                    acc[key] = value;
+                }
+                return acc;
+            },
+            {}
+        );
+        return changedFields;
     }
 );
 export const { reducer } = slice;

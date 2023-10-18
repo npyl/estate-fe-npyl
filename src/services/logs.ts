@@ -55,10 +55,7 @@ export const logs = createApi({
             }),
             providesTags: ["PropertyByIdLogs"],
         }),
-        filterLogs: builder.mutation<
-            IPage<ILogResultResponse>,
-            ILogFilterProps
-        >({
+        filterLogs: builder.mutation<IPage<ILog>, ILogFilterProps>({
             query: (props: ILogFilterProps) => ({
                 url: "/filter",
                 method: "POST",

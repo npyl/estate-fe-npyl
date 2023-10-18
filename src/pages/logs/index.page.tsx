@@ -1,7 +1,10 @@
 import { FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { format } from "date-fns"; // for date formatting
-import { useAdminLogsPaginatedQuery } from "src/services/logs";
+import {
+    useAdminLogsPaginatedQuery,
+    useFilterLogsMutation,
+} from "src/services/logs";
 import Link from "next/link";
 import {
     Box,
@@ -24,6 +27,8 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { deepOrange, green, deepPurple, yellow } from "@mui/material/colors";
 import { Chip } from "@mui/material";
 import { FilterLogSection } from "./components";
+import { useSelector } from "react-redux";
+import { selectAll } from "src/slices/log";
 // import { parse, formatISO, utcToZonedTime } from "date-fns";
 interface LogCardProps {
     log: ILog;
@@ -178,13 +183,18 @@ const Logs: NextPage = () => {
     const theme = useTheme();
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
-    const { data, error, isLoading } = useAdminLogsPaginatedQuery({
-        page: page, // Since Material-UI's Pagination component uses 1-based numbering
-        pageSize: pageSize,
-    });
-
-    if (isLoading) return <CircularProgress />; // Show a loading indicator
-
+    const allFilters = useSelector(selectAll);
+    const [filterLogs, { data }] = useFilterLogsMutation();
+    useEffect(() => {
+        revalidate();
+    }, [allFilters, page, pageSize]);
+    const revalidate = () => {
+        filterLogs({
+            filter: allFilters,
+            page: page,
+            pageSize: pageSize,
+        });
+    };
     const handlePageChange = (
         event: React.ChangeEvent<unknown>,
         value: number
@@ -203,9 +213,9 @@ const Logs: NextPage = () => {
     ));
 
     // Main content to render
-    const content = isLoading
-        ? loadingSkeletons
-        : data?.content.map((log) => <LogCard key={log.createdAt} log={log} />);
+    const content = data?.content.map((log) => (
+        <LogCard key={log.createdAt} log={log} />
+    ));
 
     return (
         <Box marginTop={"20px"}>
@@ -214,24 +224,23 @@ const Logs: NextPage = () => {
                 <FilterLogSection />
             </Box>
             <Stack spacing={2}>{content}</Stack>
-            {data &&
-                !isLoading && ( // Only display pagination when data is loaded
-                    <Box
-                        display="flex" // Establishes a flex container
-                        justifyContent="center" // Centers items on the main axis
-                        alignItems="center" // Centers items on the cross axis
-                        my={3} // Adds spacing around the Box, change as needed
-                    >
-                        <Pagination
-                            count={data.totalPages}
-                            page={page + 1} // Adjust for 1-based numbering of Material-UI Pagination
-                            onChange={handlePageChange}
-                            color="primary"
-                            showFirstButton
-                            showLastButton
-                        />
-                    </Box>
-                )}
+            {data && ( // Only display pagination when data is loaded
+                <Box
+                    display="flex" // Establishes a flex container
+                    justifyContent="center" // Centers items on the main axis
+                    alignItems="center" // Centers items on the cross axis
+                    my={3} // Adds spacing around the Box, change as needed
+                >
+                    <Pagination
+                        count={data.totalPages}
+                        page={page + 1} // Adjust for 1-based numbering of Material-UI Pagination
+                        onChange={handlePageChange}
+                        color="primary"
+                        showFirstButton
+                        showLastButton
+                    />
+                </Box>
+            )}
         </Box>
     );
 };

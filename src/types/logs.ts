@@ -25,7 +25,7 @@ export interface ILogResultResponse {}
 export interface ILogFilter {
     fromDate?: string;
     toDate?: string;
-    user?: IUser[];
+    users?: number[]; //id
     actions?: KeyValue[];
     resources?: KeyValue[];
     propertiesIds?: number[];
