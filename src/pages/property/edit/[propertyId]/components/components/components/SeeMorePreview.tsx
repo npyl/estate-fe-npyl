@@ -17,6 +17,11 @@ interface SeeMorePreviewProps {
     setFiles: (files: IPropertyImage[]) => void;
     onImageClick: (i: IPropertyImage) => void;
     onReorder: (keys: string[]) => void;
+    onReorderWithVisibility?: (
+        imageKeys: string[],
+        imageKey: string,
+        hidden: boolean
+    ) => void;
 }
 
 const COLUMNS = 5;
@@ -28,6 +33,7 @@ export const Over25ImagesPreview = ({
     setFiles,
     onImageClick,
     onReorder,
+    onReorderWithVisibility,
 }: SeeMorePreviewProps) => {
     const createItem = useCallback(
         (image: IPropertyImage, index: number) => ({
@@ -110,9 +116,20 @@ export const Over25ImagesPreview = ({
                 );
                 updatedItems.splice(oneDimentionArrayDstIndex, 0, removed);
 
+                // TODO: for diffent dndIds update visibility on setFiles aswell!
+
                 setFiles(updatedItems);
 
-                onReorder && onReorder(updatedItems.map((i) => i.key));
+                if (srcDndId === dstDndId) {
+                    onReorder && onReorder(updatedItems.map((i) => i.key));
+                } else {
+                    onReorderWithVisibility &&
+                        onReorderWithVisibility(
+                            updatedItems.map((i) => i.key),
+                            removed.key,
+                            dstDndId === 1 ? false : true
+                        );
+                }
             }
         },
         [files]

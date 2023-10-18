@@ -1,4 +1,8 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {
+    FetchBaseQueryError,
+    createApi,
+    fetchBaseQuery,
+} from "@reduxjs/toolkit/query/react";
 import {
     IProperties,
     IPropertiesPOST,
@@ -28,10 +32,6 @@ export interface BulkEditRequest {
     bedrooms?: number;
     state?: string;
 }
-interface BulkDeleteRequest {
-    propertyIds: number[];
-}
-
 interface IGetPropertyAttributeProps {
     propertyId: number;
     attributeName: string;
@@ -76,6 +76,13 @@ interface ISuggestForPropertyParams {
     propertyId: number;
     page: number;
     pageSize: number;
+}
+
+interface ReorderImagesWithSetImageVisibilityProps {
+    propertyId: number;
+    imageKeys: string[];
+    imageKey: string;
+    hidden: boolean;
 }
 
 export const properties = createApi({
@@ -316,6 +323,49 @@ export const properties = createApi({
             }),
             invalidatesTags: ["Properties", "PropertyByIdImages"],
         }),
+        reorderPropertyImagesWithSetImageVisibility: builder.mutation<
+            IFileResponse,
+            ReorderImagesWithSetImageVisibilityProps
+        >({
+            async queryFn(
+                { propertyId, imageKeys, imageKey, hidden },
+                api,
+                extraOptions,
+                baseQuery
+            ) {
+                try {
+                    // First, reorder the images.
+                    const reorderResponse = await baseQuery({
+                        url: `/${propertyId}/reorderImages`,
+                        method: "POST",
+                        body: imageKeys,
+                    });
+
+                    if ("error" in reorderResponse) {
+                        throw reorderResponse.error;
+                    }
+
+                    // Then, set the visibility of a specific image.
+                    const visibilityResponse = await baseQuery({
+                        url: `${propertyId}/image`,
+                        method: "POST",
+                        body: {
+                            key: imageKey,
+                            hidden,
+                        },
+                    });
+
+                    if ("error" in visibilityResponse) {
+                        throw visibilityResponse.error;
+                    }
+
+                    return { data: visibilityResponse.data as IFileResponse };
+                } catch (error) {
+                    return { error: error as FetchBaseQueryError };
+                }
+            },
+            invalidatesTags: ["Properties", "PropertyByIdImages"],
+        }),
     }),
 });
 
@@ -354,4 +404,5 @@ export const {
     useDeletePropertyBlueprintMutation,
 
     useReorderPropertyImagesMutation,
+    useReorderPropertyImagesWithSetImageVisibilityMutation,
 } = properties;

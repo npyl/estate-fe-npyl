@@ -14,6 +14,11 @@ import { SoftButton } from "src/components/SoftButton";
 import MultiFilePreviewReorder from "src/components/upload/preview/MultiFilePreviewReorder";
 import { IPropertyImage } from "src/types/file";
 import { Over25ImagesPreview } from "./SeeMorePreview";
+import {
+    useReorderPropertyImagesWithSetImageVisibilityMutation,
+    useSetPropertyThumbailMutation,
+} from "src/services/properties";
+import { useRouter } from "next/router";
 
 interface SeeMoreProps {
     open: boolean;
@@ -34,6 +39,13 @@ export const SeeMore = ({
     onReorder,
     onClose,
 }: SeeMoreProps) => {
+    const router = useRouter();
+    const { propertyId } = router.query;
+
+    const [setThumbnail] = useSetPropertyThumbailMutation();
+    const [reorderImagesWithVisibility] =
+        useReorderPropertyImagesWithSetImageVisibilityMutation();
+
     const [selectMultiple, setSelectMultiple] = useState(false);
     const [selectedImages, setSelectedImages] = useState<string[]>([]); // keys
     const toggleSelectMultiple = () => setSelectMultiple(!selectMultiple);
@@ -52,6 +64,20 @@ export const SeeMore = ({
         }
     };
 
+    const handleReorderWithVisibility = (
+        imageKeys: string[],
+        imageKey: string,
+        hidden: boolean
+    ) => {
+        reorderImagesWithVisibility({
+            propertyId: +propertyId!,
+            imageKeys,
+            imageKey,
+            hidden,
+        }).then(() => {});
+        // TODO: set thumbnail
+    };
+
     return (
         <Dialog
             open={open}
@@ -65,9 +91,52 @@ export const SeeMore = ({
                 },
             }}
         >
-            <DialogTitle>
-                Edit
-                {selectMultiple ? `(${selectedImages.length} selected)` : ""}
+            <DialogTitle
+                style={{
+                    position: "fixed",
+                    top: 0,
+                    minWidth: "95vw",
+                    zIndex: 2,
+                    backgroundColor: "#fff",
+                    borderBottom: "1px solid #ccc",
+                    boxSizing: "border-box",
+                }}
+            >
+                <Box
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="space-between"
+                >
+                    <Box>
+                        Edit{" "}
+                        {selectMultiple
+                            ? `(${selectedImages.length} selected)`
+                            : ""}
+                    </Box>
+
+                    <Box display="flex" alignItems="center" gap={1}>
+                        {selectMultiple && selectedImages.length > 0 && (
+                            <>
+                                <Typography mr={1}>Make</Typography>
+                                <SoftButton startIcon={<LockOpen />}>
+                                    Public
+                                </SoftButton>
+                                <SoftButton startIcon={<Lock />}>
+                                    Private
+                                </SoftButton>
+                            </>
+                        )}
+                        <Divider orientation="vertical" />
+                        <SoftButton
+                            onClick={toggleSelectMultiple}
+                            color={selectMultiple ? "error" : "primary"}
+                        >
+                            {selectMultiple
+                                ? "Cancel Select"
+                                : "Select Multiple"}
+                        </SoftButton>
+                    </Box>
+                </Box>
             </DialogTitle>
             <Divider />
             <DialogContent
@@ -84,6 +153,9 @@ export const SeeMore = ({
                             setFiles={setFiles}
                             onImageClick={handleImageClick}
                             onReorder={onReorder}
+                            onReorderWithVisibility={
+                                handleReorderWithVisibility
+                            }
                         />
                     ) : (
                         <MultiFilePreviewReorder
@@ -101,20 +173,6 @@ export const SeeMore = ({
             </DialogContent>
             <Divider />
             <DialogActions>
-                {selectMultiple && selectedImages.length > 0 && (
-                    <>
-                        <Typography mr={1}>Make</Typography>
-                        <SoftButton startIcon={<LockOpen />}>Public</SoftButton>
-                        <SoftButton startIcon={<Lock />}>Private</SoftButton>
-                    </>
-                )}
-                <Divider variant="middle" />
-                <SoftButton
-                    onClick={toggleSelectMultiple}
-                    color={selectMultiple ? "error" : "primary"}
-                >
-                    {selectMultiple ? "Cancel Select" : "Select Multiple"}
-                </SoftButton>
                 <Button onClick={onClose} color="primary">
                     Close
                 </Button>
