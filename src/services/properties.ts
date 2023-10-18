@@ -364,6 +364,38 @@ export const properties = createApi({
                     return { error: error as FetchBaseQueryError };
                 }
             },
+            onQueryStarted: async (
+                { propertyId, imageKeys, imageKey, hidden },
+                { dispatch, queryFulfilled }
+            ) => {
+                const patchResult = dispatch(
+                    properties.util.updateQueryData(
+                        "getPropertyById",
+                        propertyId,
+                        (draft) => {
+                            // reorder based on imageKeys
+                            const reordered = imageKeys.map(
+                                (k) => draft.images.find((i) => i.key === k)!
+                            );
+                            if (!reordered) return;
+
+                            // set visibility
+                            const toSetVisibilityIndex = reordered.findIndex(
+                                (i) => i.key === imageKey
+                            );
+                            if (toSetVisibilityIndex < 0) return;
+                            reordered[toSetVisibilityIndex].hidden = hidden;
+
+                            draft.images = reordered;
+                        }
+                    )
+                );
+                try {
+                    await queryFulfilled;
+                } catch {
+                    patchResult.undo();
+                }
+            },
             invalidatesTags: ["Properties", "PropertyByIdImages"],
         }),
     }),
