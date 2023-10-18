@@ -251,7 +251,7 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
                 <Box p={2}>
                     <Link href="/">
                         <Typography color="neutral.900" variant={"h5"}>
-                            Mordor
+                            PropertyPro
                         </Typography>
                     </Link>
                 </Box>

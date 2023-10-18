@@ -50,7 +50,7 @@ const App: FC<EnhancedAppProps> = (props) => {
     return (
         <CacheProvider value={emotionCache}>
             <Head>
-                <title>MordorEstate</title>
+                <title>PropertyPro</title>
                 <meta
                     name="viewport"
                     content="initial-scale=1, width=device-width"
