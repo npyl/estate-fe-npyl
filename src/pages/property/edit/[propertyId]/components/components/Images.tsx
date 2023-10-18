@@ -2,21 +2,15 @@ import {
     Box,
     Button,
     Card,
+    CardActionArea,
     CardContent,
     CardHeader,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
+    Typography,
 } from "@mui/material";
-import { useCallback, useState } from "react";
-
+import { useCallback, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
-import GalleryManager from "src/components/GalleryManager";
 import { SoftButton } from "src/components/SoftButton";
-import UploadDnd from "src/components/upload/UploadDnd";
-import MultiFilePreviewReorder from "src/components/upload/preview/MultiFilePreviewReorder";
 import {
     useAddPropertyImageMutation,
     useDeletePropertyImageMutation,
@@ -24,6 +18,9 @@ import {
     useSetPropertyThumbailMutation,
 } from "src/services/properties";
 import { IPropertyImage, IPropertyImagePOST } from "src/types/file";
+import { GalleryManager } from "./components/GalleryManager";
+import { SeeMore } from "./components/SeeMore";
+import UploadImages from "src/components/upload/UploadImages";
 
 interface IImageSectionProps {
     files: IPropertyImage[];
@@ -32,6 +29,8 @@ interface IImageSectionProps {
     setCdnUrlForNextAvailable: (cdnUrl: string) => void;
     setFiles: (images: IPropertyImage[]) => void;
 }
+
+const PREVIEW_IMAGES_COUNT = 5;
 
 const ImagesSection: React.FC<IImageSectionProps> = ({
     files,
@@ -45,11 +44,18 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 
     const { propertyId } = router.query;
 
+    /* gallery */
     const [galleryManagerOpen, setGalleryManagerOpen] = useState(false);
     const [currentGalleryImage, setCurrentGalleryImage] =
         useState<IPropertyImage>();
     const [moreOpen, setMoreOpen] = useState(false);
 
+    const previewImages = useMemo(
+        () => files.slice(0, PREVIEW_IMAGES_COUNT),
+        [files]
+    );
+
+    /* mutations */
     const [addImage] = useAddPropertyImageMutation();
     const [setThumbnail] = useSetPropertyThumbailMutation();
     const [reorderImages] = useReorderPropertyImagesMutation();
@@ -149,7 +155,6 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
         );
     };
 
-    const handleOpenGalleryManager = () => setGalleryManagerOpen(true);
     const handleCloseGalleryManager = () => setGalleryManagerOpen(false);
 
     const handleOpenMore = () => setMoreOpen(true);
@@ -206,13 +211,14 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
                     action={
                         files.length > 0 && (
                             <SoftButton
-                                onClick={handleOpenGalleryManager}
+                                onClick={handleOpenMore}
                                 sx={{
                                     mt: -1,
                                     mr: 1,
                                 }}
                             >
                                 {t("Edit")}
+                                {` (${files.length} images)`}
                             </SoftButton>
                         )
                     }
@@ -226,29 +232,35 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
                     }}
                 />
                 <CardContent>
-                    <Box
-                        sx={{
-                            maxHeight: "465px",
-                            overflowY: "auto",
-                            scrollBehavior: "smooth",
-                        }}
-                    >
-                        <UploadDnd
-                            multiple
-                            thumbnail={true}
-                            files={files}
-                            setFiles={setFiles}
-                            onImageClick={handleImageClick}
-                            onDrop={handleDropMultiFile}
-                            onReorder={handleReorder}
-                        />
-                    </Box>
-
-                    <Box display="flex" justifyContent="flex-end" mt={2}>
-                        <Button variant="contained" onClick={handleOpenMore}>
-                            See More
-                        </Button>
-                    </Box>
+                    <UploadImages
+                        files={previewImages}
+                        onImageClick={handleImageClick}
+                        onDrop={handleDropMultiFile}
+                        placeholder={
+                            files.length > PREVIEW_IMAGES_COUNT && (
+                                <Box
+                                    display="flex"
+                                    alignItems="center"
+                                    justifyContent="center"
+                                    flexDirection="column"
+                                    height="100%"
+                                    mt={1}
+                                >
+                                    <Typography variant="h6">
+                                        {`+${
+                                            files.length - PREVIEW_IMAGES_COUNT
+                                        } image${
+                                            files.length -
+                                                PREVIEW_IMAGES_COUNT >
+                                            1
+                                                ? "s"
+                                                : ""
+                                        } ...`}
+                                    </Typography>
+                                </Box>
+                            )
+                        }
+                    />
                 </CardContent>
             </Card>
 
@@ -266,32 +278,14 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 
             {/* Dialog for See More */}
             {moreOpen && (
-                <Dialog
+                <SeeMore
                     open={moreOpen}
+                    files={files}
+                    setFiles={setFiles}
+                    onImageClick={handleImageClick}
+                    onReorder={handleReorder}
                     onClose={handleCloseMore}
-                    PaperProps={{
-                        style: { minWidth: "95vw", minHeight: "95vh" },
-                    }}
-                >
-                    <DialogTitle>Upload Images</DialogTitle>
-                    <DialogContent>
-                        <Box p={5}>
-                            <MultiFilePreviewReorder
-                                files={files}
-                                columns={5}
-                                thumbnail={false}
-                                setFiles={setFiles}
-                                onImageClick={handleImageClick}
-                                onReorder={handleReorder}
-                            />
-                        </Box>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleCloseMore} color="primary">
-                            Close
-                        </Button>
-                    </DialogActions>
-                </Dialog>
+                />
             )}
         </>
     );

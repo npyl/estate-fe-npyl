@@ -1,5 +1,5 @@
 import { Button, Box, Grid, Paper, Stack, Typography } from "@mui/material";
-import { useState, useMemo, useEffect, useRef } from "react";
+import { useState, useMemo, useRef } from "react";
 import Map, { IMapAddress, IMapMarker } from "src/components/Map/Map";
 import { BookingItem } from "./BookingItem";
 import { IPropertyResultResponse } from "src/types/properties";
@@ -10,6 +10,7 @@ import CarouselSimple from "src/components/CarouselSimple";
 import FlipIcon from "@mui/icons-material/Flip";
 import { DrawShape, StopDraw } from "src/components/Map/types";
 import { isPointInsideShape } from "src/components/Map/util";
+import * as _ from "lodash";
 
 interface Props {
     data: IPropertyResultResponse[];
@@ -19,49 +20,47 @@ const MapView = ({ data }: Props) => {
     const [shape, setShape] = useState<DrawShape | StopDraw>();
 
     const [activeMarker, setActiveMarker] = useState(null);
-    const [orientation, setOrientation] = useState(false); // true -> vertical, false -> horizontal)
+    const [mainMarker, setMainMarker] = useState<IMapMarker>({
+        lat: 37.98381,
+        lng: 23.727539,
+    });
     const [selectedMarker, setSelectedMarker] = useState<IMapMarker | null>(
         null
     );
 
-    const properties = useMemo(
-        () =>
-            shape
-                ? data.filter(
-                      (property) =>
-                          property.location?.lat &&
-                          property.location?.lng &&
-                          isPointInsideShape(
-                              property.location.lat,
-                              property.location.lng,
-                              shape
-                          )
-                  )
-                : data.filter(
-                      (p) => p.location?.lat && p.location?.lng // filter nulls
-                  ),
-        [data, shape]
+    const [orientation, setOrientation] = useState(false); // true -> vertical, false -> horizontal)
+
+    // filter only properties with valid location.{lat,lng}
+    const nonNullProperties = useMemo(
+        () => data.filter((p) => p.location?.lat && p.location?.lng),
+        [data]
     );
 
+    // properties we show
+    const properties = useMemo(() => {
+        if (!shape) return nonNullProperties;
+
+        const filtered = nonNullProperties.filter((p) =>
+            isPointInsideShape(p.location.lat!, p.location.lng!, shape)
+        );
+
+        return filtered.length > 0 ? filtered : nonNullProperties;
+    }, [nonNullProperties, shape]);
+
+    // respective markers
     const markers: IMapMarker[] = useMemo(
         () =>
             properties.map(({ location }) => ({
-                lat: location?.lat!,
-                lng: location?.lng!,
+                lat: location.lat!,
+                lng: location.lng!,
             })),
         [properties]
     );
 
     const toggleOrientation = () => setOrientation(!orientation);
 
-    const [mainMarker, setMainMarker] = useState<IMapMarker>({
-        lat: 37.98381,
-        lng: 23.727539,
-    });
-
-    const handleDraw = (shape: DrawShape | StopDraw) => {
-        setShape(shape);
-    };
+    const handleDraw = (shape: DrawShape | StopDraw) =>
+        setShape(_.cloneDeep(shape));
 
     const updateMainMarkerCoordinates = (lat: number, lng: number) => {
         let newMarker = mainMarker;
@@ -94,6 +93,7 @@ const MapView = ({ data }: Props) => {
                         }}
                         markers={markers}
                         onDraw={handleDraw}
+                        onDrag={(oldShape, newShape) => handleDraw(newShape)}
                         onSearchSelect={handleSearchSelect}
                     />
                 </Box>
