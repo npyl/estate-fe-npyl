@@ -29,68 +29,28 @@ export const Over25ImagesPreview = ({
     onImageClick,
     onReorder,
 }: SeeMorePreviewProps) => {
-    const items = useMemo(
-        () =>
-            files.map((f, index) => ({
-                id: index,
-                value: (
-                    <SelectableItem
-                        selectMultiple={selectMultiple}
-                        selected={
-                            selectedImages.findIndex((key) => key === f.key) >
-                            -1
-                        }
-                        image={f}
-                        index={index}
-                        onClick={() => onImageClick && onImageClick(f)}
-                    />
-                ),
-            })),
-        [files, selectMultiple, selectedImages]
+    const createItem = useCallback(
+        (image: IPropertyImage, index: number) => ({
+            id: index,
+            value: (
+                <SelectableItem
+                    selectMultiple={selectMultiple}
+                    selected={selectedImages.includes(image.key)}
+                    image={image}
+                    index={index}
+                    onClick={() => onImageClick && onImageClick(image)}
+                />
+            ),
+        }),
+        [selectMultiple, selectedImages]
     );
 
     const publicImages = useMemo(
-        () =>
-            files
-                .filter((f) => !f.hidden)
-                .map((f, index) => ({
-                    id: index,
-                    value: (
-                        <SelectableItem
-                            selectMultiple={selectMultiple}
-                            selected={
-                                selectedImages.findIndex(
-                                    (key) => key === f.key
-                                ) > -1
-                            }
-                            image={f}
-                            index={index}
-                            onClick={() => onImageClick && onImageClick(f)}
-                        />
-                    ),
-                })),
+        () => files.filter((f) => !f.hidden).map(createItem),
         [files, selectMultiple, selectedImages]
     );
     const privateImages = useMemo(
-        () =>
-            files
-                .filter((f) => f.hidden)
-                .map((f, index) => ({
-                    id: index,
-                    value: (
-                        <SelectableItem
-                            selectMultiple={selectMultiple}
-                            selected={
-                                selectedImages.findIndex(
-                                    (key) => key === f.key
-                                ) > -1
-                            }
-                            image={f}
-                            index={index}
-                            onClick={() => onImageClick && onImageClick(f)}
-                        />
-                    ),
-                })),
+        () => files.filter((f) => f.hidden).map(createItem),
         [files, selectMultiple, selectedImages]
     );
 
@@ -131,7 +91,7 @@ export const Over25ImagesPreview = ({
                 let oneDimentionArrayDstIndex = dstRow * COLUMNS + dstCol;
 
                 /* NOTE: compensate for when user moves a section at the end of the board */
-                if (oneDimentionArrayDstIndex === items.length)
+                if (oneDimentionArrayDstIndex === files.length)
                     oneDimentionArrayDstIndex -= 1;
 
                 const updatedItems = [...files];
