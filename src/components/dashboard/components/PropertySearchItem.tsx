@@ -1,8 +1,8 @@
 import { Box, Stack, Typography } from "@mui/material";
 import KeyIcon from "@mui/icons-material/Key";
 import Image from "src/components/image/Image";
-import match from "autosuggest-highlight/match";
-import parse from "autosuggest-highlight/parse";
+// import match from "autosuggest-highlight/match";
+// import parse from "autosuggest-highlight/parse";
 import { IPropertyResultResponse } from "src/types/properties";
 import { StyledSearchStack } from "../styles";
 import { useMemo } from "react";
@@ -29,48 +29,52 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
 
     const code = useMemo(
         () =>
-            option.code
-                ? parse(option.code, match(option.code, searchText))[0]
-                : {
-                      highlight: false,
-                      text: "",
-                  },
+            // option.code
+            //     ? parse(option.code, match(option.code, searchText))[0]
+            //     :
+            ({
+                highlight: false,
+                text: "",
+            }),
         [option.code, searchText]
     );
     const keyCode = useMemo(
         () =>
-            option.keyCode
-                ? parse(option.keyCode, match(option.keyCode, searchText))[0]
-                : {
-                      highlight: false,
-                      text: "",
-                  },
+            // option.keyCode
+            //     ? parse(option.keyCode, match(option.keyCode, searchText))[0]
+            //     :
+            ({
+                highlight: false,
+                text: "",
+            }),
         [option.keyCode, searchText]
     );
     const price = useMemo(
         () =>
-            option.price
-                ? parse(
-                      option.price.toString(),
-                      match(option.price.toString(), searchText)
-                  )[0]
-                : {
-                      highlight: false,
-                      text: "",
-                  },
+            // option.price
+            //     ? parse(
+            //           option.price.toString(),
+            //           match(option.price.toString(), searchText)
+            //       )[0]
+            //     :
+            ({
+                highlight: false,
+                text: "",
+            }),
         [option.price, searchText]
     );
     const area = useMemo(
         () =>
-            option.area
-                ? parse(
-                      option.area.toString(),
-                      match(option.area.toString(), searchText)
-                  )[0]
-                : {
-                      highlight: false,
-                      text: "",
-                  },
+            // option.area
+            //     ? parse(
+            //           option.area.toString(),
+            //           match(option.area.toString(), searchText)
+            //       )[0]
+            //     :
+            ({
+                highlight: false,
+                text: "",
+            }),
         [option.area, searchText]
     );
 
@@ -81,10 +85,14 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
         for (const [key, value] of Object.entries(rest)) {
             if (!value) continue;
 
-            const highlightResult = parse(
-                value.toString(),
-                match(value.toString(), searchText)
-            )[0];
+            // const highlightResult = parse(
+            //     value.toString(),
+            //     match(value.toString(), searchText)
+            // )[0];
+            const highlightResult = {
+                highlight: false,
+                value: value,
+            };
 
             // add only if highlighted
             if (highlightResult.highlight) result[key] = value.toString();
