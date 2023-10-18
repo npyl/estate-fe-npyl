@@ -321,6 +321,32 @@ export const properties = createApi({
                 method: "POST",
                 body: params.body,
             }),
+            onQueryStarted: async (
+                { id, body: imageKeys },
+                { dispatch, queryFulfilled }
+            ) => {
+                const patchResult = dispatch(
+                    properties.util.updateQueryData(
+                        "getPropertyById",
+                        id,
+                        (draft) => {
+                            // reorder based on imageKeys
+                            const reordered = imageKeys.map(
+                                (k) => draft.images.find((i) => i.key === k)!
+                            );
+                            if (!reordered) return;
+
+                            draft.images = reordered;
+                        }
+                    )
+                );
+                try {
+                    await queryFulfilled;
+                } catch {
+                    patchResult.undo();
+                }
+            },
+
             invalidatesTags: ["Properties", "PropertyByIdImages"],
         }),
         reorderPropertyImagesWithSetImageVisibility: builder.mutation<
