@@ -1,4 +1,4 @@
-import { Divider } from "@mui/material";
+import { Box, Divider } from "@mui/material";
 import { useCallback, useMemo } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import {
@@ -94,8 +94,24 @@ export const Over25ImagesPreview = ({
         [files, selectMultiple, selectedImages]
     );
 
+    const secondDndStartIndex = useMemo(
+        () => publicImages.length,
+        [publicImages]
+    );
+
     const handleDragEnd = useCallback(
         ({ type, draggableId, source, destination }: DropResult) => {
+            console.log(
+                "problem: ",
+                type,
+                " draggableId: ",
+                draggableId,
+                " source: ",
+                source,
+                " destination: ",
+                destination
+            );
+
             if (type === DroppableTypeItem) {
                 const draggedItemId = itemId(draggableId);
                 /* src */
@@ -136,15 +152,19 @@ export const Over25ImagesPreview = ({
     return (
         <DragDropContext onDragEnd={handleDragEnd}>
             <TwoDimentionsDndNoContext
+                dndId={1}
+                startIndex={0}
                 items={publicImages}
                 columns={COLUMNS}
-                dndId={1}
+                gap={0.5}
             />
-            <Divider />
+            <Divider sx={{ mt: 2, mb: 2 }} />
             <TwoDimentionsDndNoContext
+                dndId={2}
+                startIndex={secondDndStartIndex}
                 items={privateImages}
                 columns={COLUMNS}
-                dndId={2}
+                gap={0.5}
             />
         </DragDropContext>
     );

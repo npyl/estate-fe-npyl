@@ -1,5 +1,5 @@
 import { Grid, Stack } from "@mui/material";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import {
     DroppableTypeItem,
@@ -17,16 +17,29 @@ export const TwoDimentionsDndNoContext = ({
     columns,
     gap,
     dndId,
+    startIndex,
 }: TwoDimentionsDndNoContextProps) => {
     const rows = useMemo(() => chunks(items, columns), [items, columns]);
+
+    useEffect(() => {
+        if (dndId !== undefined && dndId < 1)
+            throw new Error(
+                "TwoDimentionsDnd: dndIds must be greater than 1, and unique!"
+            );
+
+        if (dndId !== undefined && startIndex === undefined)
+            throw new Error("TwoDimentionsDnd: you need to pass startIndex");
+    }, []);
 
     return (
         <Stack direction={"column"} gap={gap}>
             {rows.map((row, i) => (
                 <Droppable
-                    droppableId={`row-${i}`}
+                    droppableId={
+                        dndId !== undefined ? `${dndId}-row-${i}` : `row-${i}`
+                    }
                     type={DroppableTypeItem}
-                    key={i}
+                    key={dndId !== undefined ? `${dndId}-row-${i}` : `row-${i}`}
                     direction="horizontal"
                 >
                     {(provided) => (
@@ -36,18 +49,23 @@ export const TwoDimentionsDndNoContext = ({
                         >
                             <Grid container direction={"row"} spacing={gap}>
                                 {row.map((item, j) => (
-                                    <Grid
-                                        item
-                                        xs={12 / columns}
-                                        key={`item-${item.id}`}
-                                    >
+                                    <Grid item xs={12 / columns} key={j}>
                                         <Draggable
                                             draggableId={
                                                 dndId !== undefined
                                                     ? `${dndId}-item-${item.id}`
                                                     : `item-${item.id}`
                                             }
-                                            index={j}
+                                            key={
+                                                dndId !== undefined
+                                                    ? `${dndId}-item-${item.id}`
+                                                    : `item-${item.id}`
+                                            }
+                                            index={
+                                                startIndex !== undefined
+                                                    ? startIndex + j
+                                                    : j
+                                            }
                                         >
                                             {(provided) => (
                                                 <div
