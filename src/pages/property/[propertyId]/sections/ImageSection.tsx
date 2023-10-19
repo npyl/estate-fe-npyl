@@ -10,20 +10,32 @@ interface ImageSectionProps {
     data: IProperties;
 }
 
+const defaultImage = "/static/noImage.png";
+
 const ImageSection: React.FC<ImageSectionProps> = (props) => {
     const { data } = props;
     const images: IPropertyImage[] = data.images;
 
-    const carouselImages = [
-        ...images.map((image, index) => ({
-            id: index.toString(),
-            title: "Image",
-            image: image.url || "",
-            description: "One of the images",
-            hidden: image.hidden,
-            path: "/repository",
-        })),
-    ];
+    const carouselImages =
+        images && images.length > 0
+            ? images.map((image, index) => ({
+                  id: index.toString(),
+                  title: "Image",
+                  image: image.url || "",
+                  description: "One of the images",
+                  hidden: image.hidden,
+                  path: "/repository",
+              }))
+            : [
+                  {
+                      id: "default",
+                      title: "Default Image",
+                      image: defaultImage,
+                      description: "Default image description",
+                      hidden: false,
+                      path: "/repository",
+                  },
+              ];
 
     return (
         <Paper elevation={10} sx={{ overflow: "auto" }}>
