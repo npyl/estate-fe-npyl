@@ -66,7 +66,6 @@ export const Over25ImagesPreview = ({
     const handleDragEnd = useCallback(
         ({ type, draggableId, source, destination }: DropResult) => {
             console.log(
-                "problem: ",
                 type,
                 " draggableId: ",
                 draggableId,
@@ -97,17 +96,30 @@ export const Over25ImagesPreview = ({
                 )
                     return;
 
-                const srcCol = source?.index / srcDndId;
-                const dstCol = destination?.index / dstDndId;
+                const srcCol =
+                    (source?.index -
+                        (srcDndId === 1 ? 0 : secondDndStartIndex)) /
+                    srcDndId;
+                const dstCol =
+                    (destination?.index -
+                        (dstDndId === 1 ? 0 : secondDndStartIndex)) /
+                    dstDndId;
 
                 let oneDimentionArraySrcIndex =
-                    srcDndId === 1
-                        ? 0
-                        : secondDndStartIndex + srcRow * COLUMNS + srcCol;
+                    srcRow * COLUMNS +
+                    srcCol +
+                    (srcDndId === 1 ? 0 : secondDndStartIndex);
                 let oneDimentionArrayDstIndex =
-                    dstDndId === 1
-                        ? 0
-                        : secondDndStartIndex + dstRow * COLUMNS + dstCol;
+                    dstRow * COLUMNS +
+                    dstCol +
+                    (dstDndId === 1 ? 0 : secondDndStartIndex);
+
+                console.log(
+                    "1dSrcIndex: ",
+                    oneDimentionArraySrcIndex,
+                    " 1dDstIndex: ",
+                    oneDimentionArrayDstIndex
+                );
 
                 /* NOTE: compensate for when user moves a section at the end of the board */
                 if (oneDimentionArrayDstIndex === files.length)
@@ -119,9 +131,6 @@ export const Over25ImagesPreview = ({
                     1
                 );
                 updatedItems.splice(oneDimentionArrayDstIndex, 0, removed);
-
-                // TODO: for diffent dndIds update visibility on setFiles aswell!
-                // TODO: remove slice
 
                 if (srcDndId === dstDndId) {
                     onReorder && onReorder(updatedItems.map((i) => i.key));

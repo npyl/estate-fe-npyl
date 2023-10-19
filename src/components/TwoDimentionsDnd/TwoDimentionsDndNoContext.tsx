@@ -62,8 +62,9 @@ export const TwoDimentionsDndNoContext = ({
                                                     : `item-${item.id}`
                                             }
                                             index={
-                                                startIndex !== undefined
-                                                    ? startIndex + j
+                                                startIndex !== undefined &&
+                                                dndId !== undefined
+                                                    ? startIndex + dndId * j
                                                     : j
                                             }
                                         >
