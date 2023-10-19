@@ -85,6 +85,12 @@ interface ReorderImagesWithSetImageVisibilityProps {
     hidden: boolean;
 }
 
+interface UploadPropertyImageToAmazonProps {
+    url: string;
+    contentType: string;
+    image: File;
+}
+
 export const properties = createApi({
     reducerPath: "properties",
     baseQuery: fetchBaseQuery({
@@ -258,11 +264,69 @@ export const properties = createApi({
             IFileResponse,
             IPropertyAddFileParams<IPropertyImagePOST>
         >({
+            // INFO: asks for an amazon url from backend; to be used before uploadPropertyImage
             query: (params: IPropertyAddFileParams<IPropertyImagePOST>) => ({
                 url: `/${params.id}/image`,
                 method: "POST",
                 body: params.body,
             }),
+            onQueryStarted: async (
+                { body, id },
+                { dispatch, queryFulfilled }
+            ) => {
+                const patchResult = dispatch(
+                    properties.util.updateQueryData(
+                        "getPropertyById",
+                        id,
+                        (draft) => {
+                            draft.images.push({
+                                ...body,
+                                url: null,
+                            } as IPropertyImage);
+                        }
+                    )
+                );
+                try {
+                    await queryFulfilled;
+                } catch {
+                    patchResult.undo();
+                }
+            },
+            // WARN: Do not add the tags! addPropertyImage needs to be used optimistically, to have the url null and show a preview Image.
+            //          Then, call uploadPropertyImage, which invalidates and shows the image with correct url!
+            // invalidatesTags: ["Properties", "PropertyById"],
+        }),
+        uploadPropertyImage: builder.mutation<
+            Response,
+            UploadPropertyImageToAmazonProps
+        >({
+            // INFO: upload to amazon
+            async queryFn(
+                { url, contentType, image },
+                api,
+                extraOptions,
+                baseQuery
+            ) {
+                try {
+                    // PUT to amazon url
+                    const res0 = await fetch(url, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": contentType,
+                        },
+                        body: image,
+                    });
+
+                    if ("error" in res0) {
+                        throw res0.error;
+                    }
+
+                    return { data: res0 };
+                } catch (error) {
+                    return { error: error as FetchBaseQueryError };
+                }
+            },
+            invalidatesTags: ["Properties", "PropertyById"],
         }),
         editPropertyImage: builder.mutation<
             IFileResponse,
@@ -335,8 +399,6 @@ export const properties = createApi({
                                 (k) => draft.images.find((i) => i.key === k)!
                             );
                             if (!reordered) return;
-
-                            console.log("optimistic reorder done!");
 
                             draft.images = reordered;
                         }
@@ -454,6 +516,7 @@ export const {
 
     // images & files
     useAddPropertyImageMutation,
+    useUploadPropertyImageMutation,
     useEditPropertyImageMutation,
     useSetPropertyThumbailMutation,
     useDeletePropertyImageMutation,
