@@ -6,6 +6,7 @@ import {
     OutlinedInput,
     Select,
     SelectChangeEvent,
+    styled,
 } from "@mui/material";
 import { useDispatch } from "src/store";
 import Label from "src/components/label/Label";
@@ -21,6 +22,12 @@ interface FilterLabelsProps {
     labels: number[];
     setLabels: ActionCreatorWithPayload<any, string>;
 }
+
+const StyledOutlinedInput = styled(OutlinedInput)({
+    "& .MuiOutlinedInput-input": {
+        textAlign: "center",
+    },
+});
 
 export default function FilterLabels(props: FilterLabelsProps) {
     const { variant = "property", labels, setLabels } = props;
@@ -69,7 +76,7 @@ export default function FilterLabels(props: FilterLabelsProps) {
                 renderValue={(selected) =>
                     renderLabelNames(selected as number[])
                 }
-                input={<OutlinedInput label="Ετικέτες" />}
+                input={<StyledOutlinedInput label="Ετικέτες" />}
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
                 {labelOptions.map((option) => {

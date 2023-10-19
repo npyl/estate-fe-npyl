@@ -46,7 +46,6 @@ export default function CodeSelect() {
         <FormControl sx={{ width: 135 }}>
             <Autocomplete
                 disablePortal
-                id="combo-box-demo"
                 value={autocompleteValue}
                 onChange={autocompleteChange}
                 options={propertyCodes}
