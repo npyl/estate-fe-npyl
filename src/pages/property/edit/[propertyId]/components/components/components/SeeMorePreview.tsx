@@ -16,7 +16,7 @@ interface SeeMorePreviewProps {
     selectedImages: string[];
     onImageClick: (i: IPropertyImage) => void;
     onReorder: (keys: string[]) => void;
-    onReorderWithVisibility?: (
+    onReorderWithVisibility: (
         imageKeys: string[],
         imageKey: string,
         hidden: boolean
@@ -35,7 +35,7 @@ export const Over25ImagesPreview = ({
 }: SeeMorePreviewProps) => {
     const createItem = useCallback(
         (image: IPropertyImage, index: number) => ({
-            id: index,
+            id: image.id,
             value: (
                 <SelectableItem
                     selectMultiple={selectMultiple}
@@ -65,15 +65,17 @@ export const Over25ImagesPreview = ({
 
     const handleDragEnd = useCallback(
         ({ type, draggableId, source, destination }: DropResult) => {
-            console.log(
-                type,
-                " draggableId: ",
-                draggableId,
-                " source: ",
-                source,
-                " destination: ",
-                destination
-            );
+            // console.log(
+            //     " draggableId: ",
+            //     draggableId,
+            //     " source: ",
+            //     source,
+            //     " destination: ",
+            //     destination
+            // );
+
+            console.log(source);
+            console.log(destination);
 
             if (type === DroppableTypeItem) {
                 const { itemId: draggedItemId } = parseItemId(draggableId);
@@ -121,26 +123,27 @@ export const Over25ImagesPreview = ({
                     oneDimentionArrayDstIndex
                 );
 
-                /* NOTE: compensate for when user moves a section at the end of the board */
-                if (oneDimentionArrayDstIndex === files.length)
-                    oneDimentionArrayDstIndex -= 1;
+                // /* NOTE: compensate for when user moves a section at the end of the board */
+                // if (oneDimentionArrayDstIndex === files.length)
+                //     oneDimentionArrayDstIndex -= 1;
+
+                const removedIndex = files.findIndex(
+                    (f) => f.id === +draggedItemId
+                );
+                if (removedIndex < 0) return;
 
                 const updatedItems = [...files];
-                const [removed] = updatedItems.splice(
-                    oneDimentionArraySrcIndex,
-                    1
-                );
+                const [removed] = updatedItems.splice(removedIndex, 1);
                 updatedItems.splice(oneDimentionArrayDstIndex, 0, removed);
 
                 if (srcDndId === dstDndId) {
-                    onReorder && onReorder(updatedItems.map((i) => i.key));
+                    onReorder(updatedItems.map((i) => i.key));
                 } else {
-                    onReorderWithVisibility &&
-                        onReorderWithVisibility(
-                            updatedItems.map((i) => i.key),
-                            removed.key,
-                            dstDndId === 1 ? false : true
-                        );
+                    onReorderWithVisibility(
+                        updatedItems.map((i) => i.key),
+                        removed.key,
+                        dstDndId === 1 ? false : true
+                    );
                 }
             }
         },
