@@ -65,67 +65,34 @@ export const Over25ImagesPreview = ({
 
     const handleDragEnd = useCallback(
         ({ type, draggableId, source, destination }: DropResult) => {
-            // console.log(
-            //     " draggableId: ",
-            //     draggableId,
-            //     " source: ",
-            //     source,
-            //     " destination: ",
-            //     destination
-            // );
-
-            console.log(source);
-            console.log(destination);
-
             if (type === DroppableTypeItem) {
-                const { itemId: draggedItemId } = parseItemId(draggableId);
+                const { itemId: draggedItemId, dndId: srcDndId } =
+                    parseItemId(draggableId);
                 if (draggedItemId === -1) return;
 
-                const { rowId: srcRow, dndId: srcDndId } = parseRowId(
-                    source?.droppableId
-                );
                 const { rowId: dstRow, dndId: dstDndId } = parseRowId(
                     destination?.droppableId
                 );
 
                 // checks
-                if (srcRow < 0 || dstRow < 0) return;
+                if (dstRow < 0) return;
                 if (srcDndId === undefined || dstDndId === undefined) return;
                 if (srcDndId < 0 || dstDndId < 0) return;
-                if (
-                    source?.index === undefined ||
-                    destination?.index === undefined
-                )
-                    return;
+                if (destination?.index === undefined) return;
 
-                const srcCol =
-                    (source?.index -
-                        (srcDndId === 1 ? 0 : secondDndStartIndex)) /
-                    srcDndId;
                 const dstCol =
                     (destination?.index -
                         (dstDndId === 1 ? 0 : secondDndStartIndex)) /
                     dstDndId;
 
-                let oneDimentionArraySrcIndex =
-                    srcRow * COLUMNS +
-                    srcCol +
-                    (srcDndId === 1 ? 0 : secondDndStartIndex);
                 let oneDimentionArrayDstIndex =
                     dstRow * COLUMNS +
                     dstCol +
                     (dstDndId === 1 ? 0 : secondDndStartIndex);
 
-                console.log(
-                    "1dSrcIndex: ",
-                    oneDimentionArraySrcIndex,
-                    " 1dDstIndex: ",
-                    oneDimentionArrayDstIndex
-                );
-
-                // /* NOTE: compensate for when user moves a section at the end of the board */
-                // if (oneDimentionArrayDstIndex === files.length)
-                //     oneDimentionArrayDstIndex -= 1;
+                /* NOTE: compensate for when user moves a section at the end of the board */
+                if (oneDimentionArrayDstIndex === files.length)
+                    oneDimentionArrayDstIndex -= 1;
 
                 const removedIndex = files.findIndex(
                     (f) => f.id === +draggedItemId
@@ -145,6 +112,20 @@ export const Over25ImagesPreview = ({
                         dstDndId === 1 ? false : true
                     );
                 }
+
+                /* 
+                    DEBUGGING:
+
+                    const srcCol = (source?.index - (srcDndId === 1 ? 0 : secondDndStartIndex)) / srcDndId;
+                    let oneDimentionArraySrcIndex = srcRow * COLUMNS + srcCol + (srcDndId === 1 ? 0 : secondDndStartIndex);
+                    console.log(
+                        "1dSrcIndex: ",
+                        oneDimentionArraySrcIndex,
+                        " 1dDstIndex: ",
+                        oneDimentionArrayDstIndex
+                    );
+
+                */
             }
         },
         [files, secondDndStartIndex]
