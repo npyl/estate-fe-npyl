@@ -5,11 +5,11 @@ import { IPropertyImage } from "src/types/file";
 import { useCallback, useMemo } from "react";
 import { motion } from "framer-motion";
 import {
-    DroppableTypeItem,
     TwoDimentionsDnd,
-    itemId,
-    rowId,
-} from "src/components/TwoDimentionsDnd";
+    parseItemId,
+    parseRowId,
+} from "src/components/TwoDimentionsDnd/TwoDimentionsDnd";
+import { DroppableTypeItem } from "src/components/TwoDimentionsDnd/types";
 import { DropResult } from "react-beautiful-dnd";
 import { Check } from "@mui/icons-material";
 
@@ -46,7 +46,7 @@ interface SelectableItemProps extends ItemProps {
     selected: boolean;
 }
 
-const SelectableItem = ({
+export const SelectableItem = ({
     selectMultiple,
     selected,
     image,
@@ -89,7 +89,6 @@ export default function MultiFilePreviewReorder({
     columns = 3,
     selectMultiple = false,
     selectedImages = [],
-    setFiles,
     onImageClick,
     onReorder,
 }: MultiFilePreviewReorder) {
@@ -118,18 +117,18 @@ export default function MultiFilePreviewReorder({
     const handleDragEnd = useCallback(
         ({ type, draggableId, source, destination }: DropResult) => {
             if (type === DroppableTypeItem) {
-                const draggedItemId = itemId(draggableId);
+                const { itemId: draggedItemId } = parseItemId(draggableId);
                 /* src */
-                const srcRow = rowId(source?.droppableId);
+                const { rowId: srcRow } = parseRowId(source?.droppableId);
                 const srcCol = source?.index;
                 /* dst */
-                const dstRow = rowId(destination?.droppableId);
+                const { rowId: dstRow } = parseRowId(destination?.droppableId);
                 const dstCol = destination?.index;
 
-                if (draggedItemId === null) return;
-                if (srcRow === null || srcCol === null || srcCol === undefined)
+                if (draggedItemId === -1) return;
+                if (srcRow === -1 || srcCol === null || srcCol === undefined)
                     return;
-                if (dstRow === null || dstCol === null || dstCol === undefined)
+                if (dstRow === -1 || dstCol === null || dstCol === undefined)
                     return;
 
                 let oneDimentionArraySrcIndex = srcRow * columns + srcCol;
@@ -145,8 +144,6 @@ export default function MultiFilePreviewReorder({
                     1
                 );
                 updatedItems.splice(oneDimentionArrayDstIndex, 0, removed);
-
-                setFiles(updatedItems);
 
                 onReorder && onReorder(updatedItems.map((i) => i.key));
             }

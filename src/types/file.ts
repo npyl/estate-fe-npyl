@@ -21,7 +21,7 @@ export interface IPropertyImage {
     description: string;
     title: string;
     orderNumber: number;
-    url: string;
+    url: string | null;
     key: string;
     thumbnail: boolean;
 }

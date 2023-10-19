@@ -1,12 +1,4 @@
-import {
-    Box,
-    Button,
-    Card,
-    CardActionArea,
-    CardContent,
-    CardHeader,
-    Typography,
-} from "@mui/material";
+import { Box, Card, CardContent, CardHeader, Typography } from "@mui/material";
 import { useCallback, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
@@ -16,33 +8,24 @@ import {
     useDeletePropertyImageMutation,
     useReorderPropertyImagesMutation,
     useSetPropertyThumbailMutation,
+    useUploadPropertyImageMutation,
 } from "src/services/properties";
 import { IPropertyImage, IPropertyImagePOST } from "src/types/file";
 import { GalleryManager } from "./components/GalleryManager";
 import { SeeMore } from "./components/SeeMore";
 import UploadImages from "src/components/upload/UploadImages";
-
-interface IImageSectionProps {
-    files: IPropertyImage[];
-    addFile: (image: IPropertyImagePOST) => void;
-    deleteFile: (image: string) => void;
-    setCdnUrlForNextAvailable: (cdnUrl: string) => void;
-    setFiles: (images: IPropertyImage[]) => void;
-}
+import { useSelector } from "react-redux";
+import { selectPropertyImages } from "src/slices/property/files";
 
 const PREVIEW_IMAGES_COUNT = 5;
 
-const ImagesSection: React.FC<IImageSectionProps> = ({
-    files,
-    addFile,
-    deleteFile,
-    setFiles,
-    setCdnUrlForNextAvailable,
-}) => {
+const ImagesSection: React.FC = () => {
     const router = useRouter();
     const { t } = useTranslation();
 
     const { propertyId } = router.query;
+
+    const files = useSelector(selectPropertyImages);
 
     /* gallery */
     const [galleryManagerOpen, setGalleryManagerOpen] = useState(false);
@@ -57,6 +40,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 
     /* mutations */
     const [addImage] = useAddPropertyImageMutation();
+    const [uploadImage] = useUploadPropertyImageMutation();
     const [setThumbnail] = useSetPropertyThumbailMutation();
     const [reorderImages] = useReorderPropertyImagesMutation();
     const [deleteImage, { isLoading: isDeleteOnGoing }] =
@@ -91,19 +75,15 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
         const url = fileResponse.url;
         const cdnUrl = fileResponse.cdnUrl;
 
-        addFile({ ...body, key });
-
         // PUT to amazon url
-        const response = await fetch(url, {
-            method: "PUT",
-            headers: {
-                "Content-Type": contentType,
-            },
-            body: image,
+        const response = await uploadImage({
+            url,
+            contentType,
+            image,
         });
 
-        if (!response) throw new Error("PUT request failed: " + response);
-        if (!response.ok) throw new Error("Uploading the image failed!");
+        if (!response)
+            throw new Error("Uploading the image failed: ", response);
 
         return { cdnUrl, key };
     };
@@ -114,7 +94,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
                 // this is the first image we are adding; therefore it is the mainImage
                 uploadFile(acceptedFiles[0])
                     .then(({ cdnUrl, key }) => {
-                        setCdnUrlForNextAvailable(cdnUrl);
+                        // setCdnUrlForNextAvailable(cdnUrl);
                         setThumbnail({
                             propertyId: +propertyId!,
                             imageKey: key,
@@ -126,8 +106,9 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
 
                 for (let i = 1; i < acceptedFiles.length; i++)
                     uploadFile(acceptedFiles[i])
-                        .then(({ cdnUrl, key }) =>
-                            setCdnUrlForNextAvailable(cdnUrl)
+                        .then(
+                            ({ cdnUrl, key }) => {}
+                            // setCdnUrlForNextAvailable(cdnUrl)
                         )
                         .catch((reason) =>
                             console.error("uploadImage: ", reason)
@@ -136,8 +117,9 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
                 // treat every file as secondary image
                 acceptedFiles.forEach((acceptedFile) =>
                     uploadFile(acceptedFile)
-                        .then(({ cdnUrl, key }) =>
-                            setCdnUrlForNextAvailable(cdnUrl)
+                        .then(
+                            ({ cdnUrl, key }) => {}
+                            // setCdnUrlForNextAvailable(cdnUrl)
                         )
                         .catch((reason) =>
                             console.error("uploadImage: ", reason)
@@ -190,7 +172,7 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
             const nextImage = files.at(nextIndex);
 
             deleteImage({ propertyId: +propertyId!, imageKey: key })
-                .then(() => deleteFile(key))
+                // .then(() => deleteFile(key))
                 .then(() => setCurrentGalleryImage(nextImage))
                 .catch((reason) => console.error("deleteImage: ", reason));
         },
@@ -281,7 +263,6 @@ const ImagesSection: React.FC<IImageSectionProps> = ({
                 <SeeMore
                     open={moreOpen}
                     files={files}
-                    setFiles={setFiles}
                     onImageClick={handleImageClick}
                     onReorder={handleReorder}
                     onClose={handleCloseMore}
