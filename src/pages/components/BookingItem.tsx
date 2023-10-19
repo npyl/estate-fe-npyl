@@ -22,6 +22,7 @@ type BookingItemProps = {
 
 const ForSaleLabel = () => {
     const { t } = useTranslation();
+
     return (
         <Box
             borderRadius={1}
@@ -32,12 +33,11 @@ const ForSaleLabel = () => {
                 backgroundColor: "rgb(235, 0, 0)",
                 color: "white",
                 zIndex: 1,
-                p: 1,
+                p: 0.5,
             }}
             textAlign={"center"}
-            height={40}
         >
-            <Typography>{t("For Sale")}</Typography>
+            <Typography fontSize={"14px"}>{t("For Sale")}</Typography>
         </Box>
     );
 };
@@ -74,7 +74,9 @@ const PriceLabel = ({ value }: { value: number }) => {
         </Box>
     );
 };
+
 const defaultImage = "/static/noImage.png";
+
 export const BookingItem = ({
     item,
     activeMarker,
@@ -162,6 +164,7 @@ export const BookingItem = ({
                     <CarouselSimple
                         onImageClick={() => router.push(`property/${id}`)}
                         data={_carouselImages}
+                        ratio="4/3"
                     />
                 </Box>
             )}
