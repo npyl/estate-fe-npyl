@@ -14,7 +14,6 @@ interface SeeMorePreviewProps {
     files: IPropertyImage[];
     selectMultiple: boolean;
     selectedImages: string[];
-    setFiles: (files: IPropertyImage[]) => void;
     onImageClick: (i: IPropertyImage) => void;
     onReorder: (keys: string[]) => void;
     onReorderWithVisibility?: (
@@ -30,7 +29,6 @@ export const Over25ImagesPreview = ({
     files,
     selectMultiple,
     selectedImages,
-    setFiles,
     onImageClick,
     onReorder,
     onReorderWithVisibility,
@@ -79,31 +77,37 @@ export const Over25ImagesPreview = ({
             );
 
             if (type === DroppableTypeItem) {
-                const { itemId: draggedItemId, dndId: srcDndId } =
-                    parseItemId(draggableId);
+                const { itemId: draggedItemId } = parseItemId(draggableId);
+                if (draggedItemId === -1) return;
 
-                /* src */
-                const { rowId: srcRow } = parseRowId(source?.droppableId);
-                const srcCol = source?.index;
-                /* dst */
+                const { rowId: srcRow, dndId: srcDndId } = parseRowId(
+                    source?.droppableId
+                );
                 const { rowId: dstRow, dndId: dstDndId } = parseRowId(
                     destination?.droppableId
                 );
-                const dstCol = destination?.index;
 
-                if (draggedItemId === -1) return;
-                if (srcRow === -1 || srcCol === null || srcCol === undefined)
+                // checks
+                if (srcRow < 0 || dstRow < 0) return;
+                if (srcDndId === undefined || dstDndId === undefined) return;
+                if (srcDndId < 0 || dstDndId < 0) return;
+                if (
+                    source?.index === undefined ||
+                    destination?.index === undefined
+                )
                     return;
-                if (dstRow === -1 || dstCol === null || dstCol === undefined)
-                    return;
-                if (!srcDndId || !dstDndId) return;
 
-                if (srcDndId === dstDndId) {
-                    console.log("reorder on same");
-                }
+                const srcCol = source?.index / srcDndId;
+                const dstCol = destination?.index / dstDndId;
 
-                let oneDimentionArraySrcIndex = srcRow * COLUMNS + srcCol;
-                let oneDimentionArrayDstIndex = dstRow * COLUMNS + dstCol;
+                let oneDimentionArraySrcIndex =
+                    srcDndId === 1
+                        ? 0
+                        : secondDndStartIndex + srcRow * COLUMNS + srcCol;
+                let oneDimentionArrayDstIndex =
+                    dstDndId === 1
+                        ? 0
+                        : secondDndStartIndex + dstRow * COLUMNS + dstCol;
 
                 /* NOTE: compensate for when user moves a section at the end of the board */
                 if (oneDimentionArrayDstIndex === files.length)
@@ -117,8 +121,7 @@ export const Over25ImagesPreview = ({
                 updatedItems.splice(oneDimentionArrayDstIndex, 0, removed);
 
                 // TODO: for diffent dndIds update visibility on setFiles aswell!
-
-                setFiles(updatedItems);
+                // TODO: remove slice
 
                 if (srcDndId === dstDndId) {
                     onReorder && onReorder(updatedItems.map((i) => i.key));
@@ -132,7 +135,7 @@ export const Over25ImagesPreview = ({
                 }
             }
         },
-        [files]
+        [files, secondDndStartIndex]
     );
 
     return (

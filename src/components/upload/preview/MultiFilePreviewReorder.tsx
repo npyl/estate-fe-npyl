@@ -89,7 +89,6 @@ export default function MultiFilePreviewReorder({
     columns = 3,
     selectMultiple = false,
     selectedImages = [],
-    setFiles,
     onImageClick,
     onReorder,
 }: MultiFilePreviewReorder) {
@@ -145,8 +144,6 @@ export default function MultiFilePreviewReorder({
                     1
                 );
                 updatedItems.splice(oneDimentionArrayDstIndex, 0, removed);
-
-                setFiles(updatedItems);
 
                 onReorder && onReorder(updatedItems.map((i) => i.key));
             }

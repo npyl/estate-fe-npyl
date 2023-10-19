@@ -7,6 +7,7 @@ import {
     DialogContent,
     DialogTitle,
     Divider,
+    IconButton,
     Typography,
 } from "@mui/material";
 import { useState } from "react";
@@ -19,12 +20,12 @@ import {
     useSetPropertyThumbailMutation,
 } from "src/services/properties";
 import { useRouter } from "next/router";
+import { Close as CloseIcon } from "@mui/icons-material";
 
 interface SeeMoreProps {
     open: boolean;
     files: IPropertyImage[];
     onImageClick: (i: IPropertyImage) => void;
-    setFiles: (images: IPropertyImage[]) => void;
     onReorder: (items: string[]) => void;
     onClose: () => void;
 }
@@ -35,7 +36,6 @@ export const SeeMore = ({
     open,
     files,
     onImageClick,
-    setFiles,
     onReorder,
     onClose,
 }: SeeMoreProps) => {
@@ -99,6 +99,7 @@ export const SeeMore = ({
                     zIndex: 2,
                     backgroundColor: "#fff",
                     borderBottom: "1px solid #ccc",
+                    padding: 7,
                     boxSizing: "border-box",
                 }}
             >
@@ -135,6 +136,15 @@ export const SeeMore = ({
                                 ? "Cancel Select"
                                 : "Select Multiple"}
                         </SoftButton>
+
+                        <IconButton
+                            onClick={() => onClose()}
+                            sx={{
+                                color: "grey",
+                            }}
+                        >
+                            <CloseIcon />
+                        </IconButton>
                     </Box>
                 </Box>
             </DialogTitle>
@@ -150,7 +160,6 @@ export const SeeMore = ({
                             files={files}
                             selectMultiple={selectMultiple}
                             selectedImages={selectedImages}
-                            setFiles={setFiles}
                             onImageClick={handleImageClick}
                             onReorder={onReorder}
                             onReorderWithVisibility={
@@ -164,7 +173,6 @@ export const SeeMore = ({
                             selectedImages={selectedImages}
                             columns={5}
                             thumbnail={false}
-                            setFiles={setFiles}
                             onImageClick={handleImageClick}
                             onReorder={onReorder}
                         />

@@ -274,7 +274,7 @@ export const properties = createApi({
                 method: "POST",
                 body: params.body,
             }),
-            invalidatesTags: ["PropertyByIdImages", "PropertyById"],
+            invalidatesTags: ["Properties", "PropertyById"],
         }),
         setPropertyThumbail: builder.mutation<void, IPropertySetThumbnailProps>(
             {
@@ -282,7 +282,7 @@ export const properties = createApi({
                     url: `/${props.propertyId}/thumbnail/${props.imageKey}`,
                     method: "POST",
                 }),
-                invalidatesTags: ["PropertyByIdImages", "PropertyById"],
+                invalidatesTags: ["Properties", "PropertyById"],
             }
         ),
         deletePropertyImage: builder.mutation<void, IDeleteImageProps>({
@@ -290,7 +290,7 @@ export const properties = createApi({
                 url: `/${propertyId}/image/${imageKey}`,
                 method: "DELETE",
             }),
-            invalidatesTags: ["PropertyByIdImages", "PropertyById"],
+            invalidatesTags: ["Properties", "PropertyById"],
         }),
 
         addPropertyBlueprint: builder.mutation<
@@ -336,6 +336,8 @@ export const properties = createApi({
                             );
                             if (!reordered) return;
 
+                            console.log("optimistic reorder done!");
+
                             draft.images = reordered;
                         }
                     )
@@ -347,7 +349,7 @@ export const properties = createApi({
                 }
             },
 
-            invalidatesTags: ["Properties", "PropertyByIdImages"],
+            invalidatesTags: ["Properties", "PropertyById"],
         }),
         reorderPropertyImagesWithSetImageVisibility: builder.mutation<
             IFileResponse,
@@ -422,7 +424,7 @@ export const properties = createApi({
                     patchResult.undo();
                 }
             },
-            invalidatesTags: ["Properties", "PropertyByIdImages"],
+            invalidatesTags: ["Properties", "PropertyById"],
         }),
     }),
 });

@@ -1,5 +1,4 @@
-import { Grid, Typography } from "@mui/material";
-import Stack from "@mui/material/Stack";
+import { Grid, Stack } from "@mui/material";
 import * as React from "react";
 import AreasSection from "./components/Areas";
 import BalconiesSection from "./components/Balconies";
@@ -18,14 +17,6 @@ import SuitableForForResidentialSection from "./components/SuitableForForResiden
 import TechnicalFeaturesAndInteriorForResidentialSection from "./components/TechnicalFeaturesAndInteriorForResidential";
 import ROISection from "./components/ROI";
 import { useSelector } from "react-redux";
-
-import { useDispatch } from "react-redux";
-
-import {
-    setPropertyImages,
-    setCdnUrlForNextAvailable,
-    deletePropertyImage,
-} from "src/slices/property/files";
 
 import {
     selectState,
@@ -50,20 +41,11 @@ import {
     setLongitude,
 } from "src/slices/property";
 
-import {
-    selectPropertyImages,
-    addPropertyImage,
-} from "src/slices/property/files";
+import { selectPropertyImages } from "src/slices/property/files";
 import NotesSection from "./components/NotesSection";
 import VideoLinkSection from "./components/VideoLink";
 
-import { IPropertyImage, IPropertyImagePOST } from "src/types/file";
-
 const ResidentialFormSection: React.FC<any> = (props) => {
-    const dispatch = useDispatch();
-
-    const images = useSelector(selectPropertyImages);
-
     const state = useSelector(selectState);
 
     const street = useSelector(selectStreet);
@@ -75,21 +57,6 @@ const ResidentialFormSection: React.FC<any> = (props) => {
     const country = useSelector(selectCountry);
     const lat = useSelector(selectLatitude);
     const lng = useSelector(selectLongitude);
-
-    const handleAddFile = (images: IPropertyImage | IPropertyImagePOST) => {
-        dispatch(addPropertyImage(images));
-    };
-    const handleSetCdnUrlForNextAvailable = (cdnUrl: string) => {
-        dispatch(setCdnUrlForNextAvailable(cdnUrl));
-    };
-    const handleAddFiles = (
-        images: (IPropertyImage | IPropertyImagePOST)[]
-    ) => {
-        dispatch(setPropertyImages(images));
-    };
-    const handleDeleteFile = (imageKey: string) => {
-        dispatch(deletePropertyImage(imageKey));
-    };
 
     return (
         <>
@@ -111,15 +78,7 @@ const ResidentialFormSection: React.FC<any> = (props) => {
                 </Grid>
                 <Grid item xs={6}>
                     <Stack spacing={1}>
-                        <ImageSection
-                            files={images}
-                            addFile={handleAddFile}
-                            deleteFile={handleDeleteFile}
-                            setCdnUrlForNextAvailable={
-                                handleSetCdnUrlForNextAvailable
-                            }
-                            setFiles={handleAddFiles}
-                        />
+                        <ImageSection />
 
                         <LocationSection
                             street={street}
