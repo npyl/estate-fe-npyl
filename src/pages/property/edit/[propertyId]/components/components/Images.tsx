@@ -94,7 +94,6 @@ const ImagesSection: React.FC = () => {
                 // this is the first image we are adding; therefore it is the mainImage
                 uploadFile(acceptedFiles[0])
                     .then(({ cdnUrl, key }) => {
-                        // setCdnUrlForNextAvailable(cdnUrl);
                         setThumbnail({
                             propertyId: +propertyId!,
                             imageKey: key,
@@ -105,25 +104,15 @@ const ImagesSection: React.FC = () => {
                     );
 
                 for (let i = 1; i < acceptedFiles.length; i++)
-                    uploadFile(acceptedFiles[i])
-                        .then(
-                            ({ cdnUrl, key }) => {}
-                            // setCdnUrlForNextAvailable(cdnUrl)
-                        )
-                        .catch((reason) =>
-                            console.error("uploadImage: ", reason)
-                        );
+                    uploadFile(acceptedFiles[i]).catch((reason) =>
+                        console.error("uploadImage: ", reason)
+                    );
             } else {
                 // treat every file as secondary image
                 acceptedFiles.forEach((acceptedFile) =>
-                    uploadFile(acceptedFile)
-                        .then(
-                            ({ cdnUrl, key }) => {}
-                            // setCdnUrlForNextAvailable(cdnUrl)
-                        )
-                        .catch((reason) =>
-                            console.error("uploadImage: ", reason)
-                        )
+                    uploadFile(acceptedFile).catch((reason) =>
+                        console.error("uploadImage: ", reason)
+                    )
                 );
             }
         },
@@ -150,10 +139,10 @@ const ImagesSection: React.FC = () => {
     const handleImageChange = useCallback(
         (key: string) => {
             /*
-        INFO: the indexes used inside the carousel are not updated in a consistent manner,
+                INFO: the indexes used inside the carousel are not updated in a consistent manner,
                 this is why we receive the currentImage on "afterChange", and we get the index that
                 translates to our array.
-        */
+            */
             setCurrentGalleryImage(files.find((f) => f.key === key));
         },
         [files]
