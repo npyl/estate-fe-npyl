@@ -19,12 +19,14 @@ import {
 import { SkeletonKanbanColumn } from "src/components/skeleton";
 import { useMemo } from "react";
 import {
-    DroppableTypeItem,
     TwoDimentionsDnd,
+    parseItemId,
+    parseRowId,
+} from "src/components/TwoDimentionsDnd/TwoDimentionsDnd";
+import {
+    DroppableTypeItem,
     TwoDimentionsDndItem,
-    itemId,
-    rowId,
-} from "src/components/TwoDimentionsDnd";
+} from "src/components/TwoDimentionsDnd/types";
 import { DroppableTypeTask } from "./components/column/KanbanColumn";
 
 KanbanPage.getLayout = (page: React.ReactElement) => (
@@ -89,13 +91,13 @@ export default function KanbanPage() {
         draggableId,
     }: DropResult) => {
         if (type === DroppableTypeItem) {
-            const draggedItemId = itemId(draggableId);
-            const dstRow = rowId(destination?.droppableId);
+            const { itemId: draggedItemId } = parseItemId(draggableId);
+            const { rowId: dstRow } = parseRowId(destination?.droppableId);
             const dstCol = destination?.index;
 
             if (
-                draggedItemId === null ||
-                dstRow === null ||
+                draggedItemId === -1 ||
+                dstRow === -1 ||
                 dstCol === null ||
                 dstCol === undefined
             )

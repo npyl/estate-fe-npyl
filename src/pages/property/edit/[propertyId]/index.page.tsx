@@ -46,9 +46,9 @@ const EditPropertyPage: NextPage = () => {
     useEffect(() => {
         if (data && propertyId) {
             const isFirstEdit = data.createdAt === data.updatedAt;
-            const label = `${
-                isFirstEdit ? "Create" : "Edit"
-            } property ${propertyId}`;
+            const label = `${isFirstEdit ? "Create" : "Edit"} property ${
+                data?.code || ""
+            }`;
 
             pushTab({
                 path: `/property/edit/${propertyId}`,

@@ -6,11 +6,18 @@ import {
     OutlinedInput,
     Select,
     SelectChangeEvent,
+    styled,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useGlobals } from "src/hooks/useGlobals";
 import { selectStates, setStates } from "src/slices/filters";
 import { useDispatch, useSelector } from "src/store";
+
+const StyledOutlinedInput = styled(OutlinedInput)({
+    "& .MuiOutlinedInput-input": {
+        textAlign: "center",
+    },
+});
 
 export default function SaleSelect() {
     const dispatch = useDispatch();
@@ -36,10 +43,9 @@ export default function SaleSelect() {
 
     return (
         <FormControl sx={{ minWidth: "130px" }}>
-            <InputLabel id="demo-simple-select-label">{t("State")}</InputLabel>
+            <InputLabel>{t("State")}</InputLabel>
             <Select
                 multiple
-                labelId="demo-simple-select-label"
                 value={states}
                 onChange={handleChange}
                 renderValue={(selected: string[]) => {
@@ -52,7 +58,7 @@ export default function SaleSelect() {
                         .filter(Boolean) // Remove any undefined values
                         .join(", ");
                 }}
-                input={<OutlinedInput label="Κατάσταση" />}
+                input={<StyledOutlinedInput label="Κατάσταση" />}
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
                 {stateEnum.map(({ key, value }) => {

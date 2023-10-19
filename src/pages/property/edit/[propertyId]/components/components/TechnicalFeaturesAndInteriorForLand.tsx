@@ -1,10 +1,11 @@
-import { Grid, Paper, Box } from "@mui/material";
+import { Grid, Paper, Box, TextField, MenuItem } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import OnlyNumbersInput from "src/components/OnlyNumbers";
+import { useGlobals } from "src/hooks/useGlobals";
 import {
     selectCoverageFactor,
     selectFacadeLength,
@@ -12,15 +13,21 @@ import {
     setCoverageFactor,
     setFacadeLength,
     setFloorToAreaRatio,
+    selectInclination,
+    setInclination,
 } from "src/slices/property";
 
 const TechnicalFeaturesAndInteriorForLandSection: React.FC<any> = () => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
+    const globals = useGlobals();
+    const inclinationEnum = globals?.property?.details?.inclination;
+
     const floorToAreaRatio = useSelector(selectFloorToAreaRatio);
     const coverageFactor = useSelector(selectCoverageFactor);
     const facadeLength = useSelector(selectFacadeLength);
+    const inclination = useSelector(selectInclination);
 
     const handleFloorToAreaRatioChange = (value: string) =>
         dispatch(setFloorToAreaRatio(value));
@@ -28,6 +35,8 @@ const TechnicalFeaturesAndInteriorForLandSection: React.FC<any> = () => {
         dispatch(setCoverageFactor(value));
     const handleFacadeLengthChange = (value: string) =>
         dispatch(setFacadeLength(value));
+    const handleInclinationChange = (value: string) =>
+        dispatch(setInclination(value));
 
     return (
         <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
@@ -70,6 +79,26 @@ const TechnicalFeaturesAndInteriorForLandSection: React.FC<any> = () => {
                             adornment="m"
                             onChange={handleFacadeLengthChange}
                         />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <TextField
+                            fullWidth
+                            select
+                            label={t("Inclination")}
+                            value={inclination}
+                            onChange={(e) =>
+                                handleInclinationChange(e.target.value)
+                            }
+                        >
+                            {inclinationEnum?.map((inclination, index) => (
+                                <MenuItem
+                                    key={inclination.key}
+                                    value={inclination.key}
+                                >
+                                    {inclination.value}
+                                </MenuItem>
+                            ))}
+                        </TextField>
                     </Grid>
                 </Grid>
             </Grid>
