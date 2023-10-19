@@ -16,7 +16,7 @@ const ImageSection: React.FC<ImageSectionProps> = (props) => {
     const { data } = props;
     const images: IPropertyImage[] = data.images;
 
-    const carouselImages = [
+    const carouselImages =
         images && images.length > 0
             ? images.map((image, index) => ({
                   id: index.toString(),
@@ -26,15 +26,16 @@ const ImageSection: React.FC<ImageSectionProps> = (props) => {
                   hidden: image.hidden,
                   path: "/repository",
               }))
-            : {
-                  id: "default",
-                  title: "Default Image",
-                  image: defaultImage,
-                  description: "Default image description",
-                  hidden: false,
-                  path: "/repository",
-              },
-    ];
+            : [
+                  {
+                      id: "default",
+                      title: "Default Image",
+                      image: defaultImage,
+                      description: "Default image description",
+                      hidden: false,
+                      path: "/repository",
+                  },
+              ];
 
     return (
         <Paper elevation={10} sx={{ overflow: "auto" }}>
