@@ -48,6 +48,7 @@ export default function CodeSelect() {
                 disablePortal
                 value={autocompleteValue}
                 onChange={autocompleteChange}
+                clearIcon={<></>}
                 options={propertyCodes}
                 renderInput={(params) => (
                     <TextField
