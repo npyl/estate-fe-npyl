@@ -83,7 +83,7 @@ export const GalleryManager: React.FC<IGalleryManager> = (props) => {
             images.map((image) => ({
                 id: image.key,
                 title: "Image",
-                image: image.url,
+                image: image.url!,
                 description: "",
                 hidden: image.hidden,
                 path: "/repository",
