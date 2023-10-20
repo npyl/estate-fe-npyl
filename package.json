@@ -44,7 +44,6 @@
         "@reduxjs/toolkit": "^1.9.3",
         "@syncfusion/ej2-react-richtexteditor": "^21.2.3",
         "@tinymce/tinymce-react": "^4.3.0",
-        "@types/autosuggest-highlight": "^3.2.0",
         "@types/lodash": "^4.14.192",
         "@types/node": "^18.15.10",
         "@types/nprogress": "^0.2.0",
