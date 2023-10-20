@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import { SoftButton } from "src/components/SoftButton";
 import {
+    properties,
     useAddPropertyImageMutation,
     useDeletePropertyImageMutation,
     useReorderPropertyImagesMutation,
@@ -16,12 +17,14 @@ import { SeeMore } from "./components/SeeMore";
 import UploadImages from "src/components/upload/UploadImages";
 import { useSelector } from "react-redux";
 import { selectPropertyImages } from "src/slices/property/files";
+import { useDispatch } from "react-redux";
 
 const PREVIEW_IMAGES_COUNT = 5;
 
 const ImagesSection: React.FC = () => {
     const router = useRouter();
     const { t } = useTranslation();
+    const dispatch = useDispatch();
 
     const { propertyId } = router.query;
 
@@ -45,6 +48,11 @@ const ImagesSection: React.FC = () => {
     const [reorderImages] = useReorderPropertyImagesMutation();
     const [deleteImage, { isLoading: isDeleteOnGoing }] =
         useDeletePropertyImageMutation();
+
+    const invalidateTags = () =>
+        dispatch(
+            properties.util.invalidateTags(["Properties", "PropertyById"])
+        );
 
     const uploadFile = async (
         image: File
@@ -103,17 +111,23 @@ const ImagesSection: React.FC = () => {
                         console.error("uploadThumbnail: ", reason)
                     );
 
-                for (let i = 1; i < acceptedFiles.length; i++)
-                    uploadFile(acceptedFiles[i]).catch((reason) =>
-                        console.error("uploadImage: ", reason)
+                const uploadPromises = acceptedFiles.slice(1).map(uploadFile);
+
+                Promise.all(uploadPromises)
+                    .then(invalidateTags)
+                    .catch((error) =>
+                        console.error("Error in Promise.all:", error)
                     );
             } else {
                 // treat every file as secondary image
-                acceptedFiles.forEach((acceptedFile) =>
-                    uploadFile(acceptedFile).catch((reason) =>
-                        console.error("uploadImage: ", reason)
-                    )
-                );
+
+                const uploadPromises = acceptedFiles.map(uploadFile);
+
+                Promise.all(uploadPromises)
+                    .then(invalidateTags)
+                    .catch((error) => {
+                        console.error("uploadImage:", error);
+                    });
             }
         },
         [files]
@@ -122,7 +136,9 @@ const ImagesSection: React.FC = () => {
     const handleReorder = (items: string[]) => {
         // INFO: backend requires a list with reordered keys like:  [key, key, ...]
         reorderImages({ id: +propertyId!, body: items }).then(() =>
-            setThumbnail({ propertyId: +propertyId!, imageKey: items[0] })
+            setThumbnail({ propertyId: +propertyId!, imageKey: items[0] }).then(
+                invalidateTags
+            )
         );
     };
 
