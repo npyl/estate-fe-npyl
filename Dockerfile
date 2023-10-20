@@ -1,13 +1,13 @@
 # base image
-FROM --platform=linux/amd64 node:alpine
+FROM --platform=linux/amd64 node:18-alpine
 # create & set working directory
 RUN mkdir -p /usr/src
 WORKDIR /usr/src
 # copy source files
 COPY . /usr/src
 # install dependencies
-RUN npm install
+RUN yarn install
 # start app
-RUN npm run build
+RUN yarn build
 EXPOSE 3000
-CMD npm run start
+CMD yarn start

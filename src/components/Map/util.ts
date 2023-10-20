@@ -1,5 +1,4 @@
 import { DrawShape, ShapeData } from "./types";
-import * as _ from "lodash";
 
 const drawCircle = (
     lat: number,
@@ -20,7 +19,7 @@ const drawCircle = (
         strokeWeight: 1,
         zIndex: 1,
     });
-    const initialCircle = _.cloneDeep(circle);
+    const initialCircle = JSON.parse(JSON.stringify(circle));
 
     // Support shape drag
     onDrag &&
@@ -56,7 +55,8 @@ const drawRectangle = (
         strokeWeight: 1,
         zIndex: 1,
     });
-    const initialRectangle = _.cloneDeep(rectangle);
+
+    const initialRectangle = JSON.parse(JSON.stringify(rectangle));
 
     // Support shape drag
     onDrag &&
@@ -82,7 +82,7 @@ const drawPolygon = (
         strokeWeight: 1,
         zIndex: 1,
     });
-    const initialPolygon = _.cloneDeep(polygon);
+    const initialPolygon = JSON.parse(JSON.stringify(polygon));
 
     // Support shape drag
     onDrag &&

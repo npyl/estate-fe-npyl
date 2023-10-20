@@ -1,7 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
-import keyBy from "lodash/keyBy";
-import omit from "lodash/omit";
+
 // utils
+
+const keyBy = (array: any, key: any) =>
+    array.reduce((obj: any, item: any) => {
+        obj[item[key]] = item;
+        return obj;
+    }, {});
+
+// Custom 'omit' implementation:
+const omit = (obj: any, keysToOmit: any) => {
+    return Object.keys(obj)
+        .filter((key: any) => !keysToOmit.includes(key))
+        .reduce((newObj: any, key: any) => {
+            newObj[key] = obj[key];
+            return newObj;
+        }, {});
+};
 
 import { dispatch } from "../store";
 // @types
