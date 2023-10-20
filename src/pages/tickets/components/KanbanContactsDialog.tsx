@@ -15,12 +15,11 @@ import {
     Typography,
 } from "@mui/material";
 // components
-import { Scrollbar } from "src/components/scrollbar";
-import Iconify from "../../../components/iconify";
-import SearchNotFound from "../../../components/search-not-found";
 import { useTranslation } from "react-i18next";
+import { Scrollbar } from "src/components/scrollbar";
 import { useAllUsersQuery } from "src/services/user";
 import { IUser } from "src/types/user";
+import Iconify from "../../../components/iconify";
 
 // ----------------------------------------------------------------------
 
@@ -181,11 +180,14 @@ function applyFilter({
     if (query) {
         inputData = inputData.filter(
             (contact) =>
-                contact.firstName.toLowerCase().indexOf(query.toLowerCase()) !==
-                    -1 ||
-                contact.lastName.toLowerCase().indexOf(query.toLowerCase()) !==
-                    -1 ||
-                contact.email.toLowerCase().indexOf(query.toLowerCase()) !== -1
+                contact.firstName
+                    ?.toLowerCase()
+                    .indexOf(query?.toLowerCase()) !== -1 ||
+                contact.lastName
+                    ?.toLowerCase()
+                    .indexOf(query?.toLowerCase()) !== -1 ||
+                contact.email?.toLowerCase().indexOf(query?.toLowerCase()) !==
+                    -1
         );
     }
 
