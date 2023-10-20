@@ -156,14 +156,9 @@ const ImagesSection: React.FC = () => {
         [files]
     );
 
-    const handleReorder = (items: string[]) => {
-        // INFO: backend requires a list with reordered keys like:  [key, key, ...]
-        reorderImages({ id: +propertyId!, body: items }).then(() =>
-            setThumbnail({ propertyId: +propertyId!, imageKey: items[0] }).then(
-                invalidateTags
-            )
-        );
-    };
+    // INFO: backend requires a list with reordered keys like:  [key, key, ...]
+    const handleReorder = (items: string[]) =>
+        reorderImages({ id: +propertyId!, body: items }).then(invalidateTags);
 
     const handleCloseGalleryManager = () => setGalleryManagerOpen(false);
 
@@ -200,7 +195,6 @@ const ImagesSection: React.FC = () => {
             const nextImage = files.at(nextIndex);
 
             deleteImage({ propertyId: +propertyId!, imageKey: key })
-                // .then(() => deleteFile(key))
                 .then(() => setCurrentGalleryImage(nextImage))
                 .catch((reason) => console.error("deleteImage: ", reason));
         },

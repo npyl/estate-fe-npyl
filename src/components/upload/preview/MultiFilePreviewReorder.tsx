@@ -20,7 +20,7 @@ interface ItemProps {
 }
 
 const Item = ({ image, index, onClick }: ItemProps) => {
-    const { url, hidden } = useMemo(() => image, [image]);
+    const { url, hidden, thumbnail } = useMemo(() => image, [image]);
 
     return url ? (
         <motion.div
@@ -32,7 +32,7 @@ const Item = ({ image, index, onClick }: ItemProps) => {
                 borderRadius={0.3}
                 src={url}
                 hidden={hidden}
-                label={index === 0 ? "main" : ""}
+                label={thumbnail ? "main" : ""}
                 onClick={onClick}
             />
         </motion.div>

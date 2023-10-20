@@ -18,7 +18,6 @@ import { Over25ImagesPreview } from "./SeeMorePreview";
 import {
     useEditPropertyImageMutation,
     useReorderPropertyImagesWithSetImageVisibilityMutation,
-    useSetPropertyThumbailMutation,
 } from "src/services/properties";
 import { useRouter } from "next/router";
 import { Close as CloseIcon } from "@mui/icons-material";
@@ -46,7 +45,6 @@ export const SeeMore = ({
     const router = useRouter();
     const { propertyId } = router.query;
 
-    const [setThumbnail] = useSetPropertyThumbailMutation();
     const [editImage] = useEditPropertyImageMutation();
     const [reorderImagesWithVisibility] =
         useReorderPropertyImagesWithSetImageVisibilityMutation();
