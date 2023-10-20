@@ -292,8 +292,7 @@ export const properties = createApi({
                     patchResult.undo();
                 }
             },
-            // WARN: Do not add the tags! addPropertyImage needs to be used optimistically, to have the url null and show a preview Image.
-            //          Then, call uploadPropertyImage, which invalidates and shows the image with correct url!
+            // WARN: Do not add the tags! addPropertyImage needs to be used optimistically, to explicitly set the url null and know to show a preview Image.
             // invalidatesTags: ["Properties", "PropertyById"],
         }),
         uploadPropertyImage: builder.mutation<
@@ -326,7 +325,9 @@ export const properties = createApi({
                     return { error: error as FetchBaseQueryError };
                 }
             },
-            invalidatesTags: ["Properties", "PropertyById"],
+            // WARN: Do not add the tags! We use Promise.all on uploadPropertyImage to wait for all the photos to upload.
+            //          This is because, every photo contains a non-null url, but it is not ready for fetching.
+            // invalidatesTags: ["Properties", "PropertyById"],
         }),
         editPropertyImage: builder.mutation<
             IFileResponse,
@@ -346,7 +347,6 @@ export const properties = createApi({
                     url: `/${props.propertyId}/thumbnail/${props.imageKey}`,
                     method: "POST",
                 }),
-                invalidatesTags: ["Properties", "PropertyById"],
             }
         ),
         deletePropertyImage: builder.mutation<void, IDeleteImageProps>({
