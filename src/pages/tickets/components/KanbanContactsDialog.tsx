@@ -121,13 +121,10 @@ export default function KanbanContactsDialog({
                     value={searchContacts}
                     onChange={handleSearchContacts}
                     placeholder="Search..."
-                    InputProps={{
+                    inputProps={{
                         startAdornment: (
                             <InputAdornment position="start">
-                                <Iconify
-                                    icon="eva:search-fill"
-                                    sx={{ color: "text.disabled" }}
-                                />
+                                <Iconify icon="eva:search-fill" />
                             </InputAdornment>
                         ),
                     }}
@@ -180,14 +177,11 @@ function applyFilter({
     if (query) {
         inputData = inputData.filter(
             (contact) =>
-                contact.firstName
-                    ?.toLowerCase()
-                    .indexOf(query?.toLowerCase()) !== -1 ||
-                contact.lastName
-                    ?.toLowerCase()
-                    .indexOf(query?.toLowerCase()) !== -1 ||
-                contact.email?.toLowerCase().indexOf(query?.toLowerCase()) !==
-                    -1
+                contact.firstName.toLowerCase().indexOf(query.toLowerCase()) !==
+                    -1 ||
+                contact.lastName.toLowerCase().indexOf(query.toLowerCase()) !==
+                    -1 ||
+                contact.email.toLowerCase().indexOf(query.toLowerCase()) !== -1
         );
     }
 

@@ -7,9 +7,9 @@ import {
     Select,
     SelectChangeEvent,
 } from "@mui/material";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useGlobals } from "src/hooks/useGlobals";
-import { useTranslation } from "react-i18next";
 import { selectActions, setActions } from "src/slices/log";
 import { KeyValue } from "src/types/KeyValue";
 

@@ -1,26 +1,23 @@
+import { Box, ClickAwayListener, Grid, Popper } from "@mui/material";
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "src/store";
 import { useTranslation } from "react-i18next";
-import { Box, ClickAwayListener, Popper, Grid, TextField } from "@mui/material";
+import { useDispatch, useSelector } from "src/store";
 
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 
 import { DateRangePicker } from "react-date-range";
+import { StyledPriceButton } from "src/pages/components/Filters/styles";
 import {
-    StyledBox,
-    StyledPriceButton,
-} from "src/pages/components/Filters/styles";
-import {
-    setFromDate,
-    setToDate,
     selectFromDate,
     selectToDate,
+    setFromDate,
+    setToDate,
 } from "src/slices/log";
 
+import { addDays } from "date-fns"; // make sure you've installed date-fns as it's a peer dependency
 import "react-date-range/dist/styles.css"; // main CSS file
 import "react-date-range/dist/theme/default.css"; // theme CSS file
-import { addDays } from "date-fns"; // make sure you've installed date-fns as it's a peer dependency
 
 const DateSelect = () => {
     const dispatch = useDispatch();
