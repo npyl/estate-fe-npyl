@@ -324,7 +324,7 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
             setMinYearOfConstruction,
             setMaxYearOfConstruction
         );
-
+    //fdd
     if (
         !propertyEnums ||
         !stateEnum ||
