@@ -1,5 +1,5 @@
 import { Button, Box, Grid, Paper, Stack, Typography } from "@mui/material";
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import Map, { IMapAddress, IMapMarker } from "src/components/Map/Map";
 import { BookingItem } from "./BookingItem";
 import { IPropertyResultResponse } from "src/types/properties";
@@ -178,7 +178,7 @@ export function HorizontalCard({
         item.location.lat === selectedMarker?.lat &&
         item.location.lng === selectedMarker?.lng;
 
-    useMemo(() => {
+    useEffect(() => {
         if (isActive && itemRef.current) {
             itemRef.current.scrollIntoView({ behavior: "smooth" });
         }

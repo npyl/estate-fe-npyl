@@ -23,7 +23,7 @@ export const CodeField = (props: CodeFieldProps) => {
     }, [codeExists]);
 
     // detect code change
-    useMemo(() => {
+    useEffect(() => {
         if (!code) return;
         if (initialCode && initialCode === code) {
             // prevent checking on property's code

@@ -23,7 +23,7 @@ export const KeyCodeField = (props: KeyCodeFieldProps) => {
     }, [keyCodeExists]);
 
     // detect keyCode change
-    useMemo(() => {
+    useEffect(() => {
         if (!keyCode) return;
         if (initialKeyCode && initialKeyCode === keyCode) {
             // prevent checking on property's keyCode

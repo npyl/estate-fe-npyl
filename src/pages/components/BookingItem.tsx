@@ -107,7 +107,7 @@ export const BookingItem = ({
         item.location.lat === selectedMarker?.lat &&
         item.location.lng === selectedMarker?.lng;
 
-    useMemo(() => {
+    useEffect(() => {
         if (isActive && itemRef.current) {
             itemRef.current.scrollIntoView({ behavior: "smooth" });
         }

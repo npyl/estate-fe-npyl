@@ -28,7 +28,7 @@ export const DroppableTypeTask = "TASK";
 
 export default function KanbanColumn({ column }: Props) {
     const { data: board } = useGetBoardQuery();
-    const cards = useMemo(() => board?.cards, [board]);
+    const cards = useMemo(() => board?.cards || [], [board]);
 
     // Columns
     const [editColumn] = useEditColumnMutation();
