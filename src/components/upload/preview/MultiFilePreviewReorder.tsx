@@ -1,17 +1,16 @@
-import { UploadPropertyImageProps } from "../types";
-import PreviewImage from "src/components/image/PreviewImage";
-import { LabeledImage } from "src/components/image";
-import { IPropertyImage } from "src/types/file";
+import { Check } from "@mui/icons-material";
 import { useCallback, useMemo } from "react";
-import { motion } from "framer-motion";
+import { DropResult } from "react-beautiful-dnd";
 import {
     TwoDimentionsDnd,
     parseItemId,
     parseRowId,
 } from "src/components/TwoDimentionsDnd/TwoDimentionsDnd";
 import { DroppableTypeItem } from "src/components/TwoDimentionsDnd/types";
-import { DropResult } from "react-beautiful-dnd";
-import { Check } from "@mui/icons-material";
+import { LabeledImage } from "src/components/image";
+import PreviewImage from "src/components/image/PreviewImage";
+import { IPropertyImage } from "src/types/file";
+import { UploadPropertyImageProps } from "../types";
 
 interface ItemProps {
     image: IPropertyImage;
@@ -23,20 +22,21 @@ const Item = ({ image, index, onClick }: ItemProps) => {
     const { url, hidden } = useMemo(() => image, [image]);
 
     return url ? (
-        <motion.div
-            whileHover={{
-                scale: 0.95,
-            }}
-        >
-            <LabeledImage
-                borderRadius={0.3}
-                src={url}
-                hidden={hidden}
-                label={index === 0 ? "main" : ""}
-                onClick={onClick}
-            />
-        </motion.div>
+        // <motion.div
+        //     whileHover={{
+        //         scale: 0.95,
+        //     }}
+        // >
+        <LabeledImage
+            borderRadius={0.3}
+            src={url}
+            hidden={hidden}
+            label={index === 0 ? "main" : ""}
+            onClick={onClick}
+        />
     ) : (
+        // </motion.div>
+        //BUILD
         <PreviewImage animate borderRadius={0.3} />
     );
 };

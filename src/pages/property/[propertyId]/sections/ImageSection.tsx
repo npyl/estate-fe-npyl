@@ -1,8 +1,5 @@
 import { Grid, Paper } from "@mui/material";
 
-import { m } from "framer-motion";
-import { varFade } from "src/components/animate";
-import CarouselThumbnail from "src/components/CarouselThumbnail";
 import { IPropertyImage } from "src/types/file";
 import { IProperties } from "src/types/properties";
 
@@ -41,9 +38,10 @@ const ImageSection: React.FC<ImageSectionProps> = (props) => {
         <Paper elevation={10} sx={{ overflow: "auto" }}>
             <Grid container>
                 <Grid item xs={12}>
-                    <m.div variants={varFade().in}>
+                    {/* <m.div variants={varFade().in}>
                         <CarouselThumbnail data={carouselImages} />
-                    </m.div>
+                    </m.div> */}
+                    {/* BUILD */}
                 </Grid>
             </Grid>
         </Paper>
