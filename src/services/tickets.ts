@@ -30,7 +30,7 @@ interface ReorderCardProps {
 // position is the new position that a column / card is to be moved
 function moveItem(arr: number[], id: number, position: number): number[] {
     // Find the current index of the id
-    const index = arr.indexOf(id);
+    const index = arr?.indexOf(id) ?? -1;
 
     // If id is not in the array, just return the original array
     if (index === -1) return arr;

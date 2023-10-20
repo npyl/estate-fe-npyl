@@ -8,15 +8,13 @@ interface VideoSectionProps {
 }
 
 const getVideoId = (url: string) => {
-    console.log(url);
     if (url.includes("youtu.be/")) {
         return url.split("youtu.be/")[1];
     } else if (url.includes("youtube.com/embed/")) {
         return url.split("youtube.com/embed/")[1];
     } else if (url.includes("watch?v=")) {
         let videoId = url.split("watch?v=")[1];
-        if (!videoId) return null;
-        const ampersandPosition = videoId?.indexOf("&") ?? -1;
+        const ampersandPosition = videoId.indexOf("&");
         if (ampersandPosition !== -1) {
             videoId = videoId.substring(0, ampersandPosition);
         }
