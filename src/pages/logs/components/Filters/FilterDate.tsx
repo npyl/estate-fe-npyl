@@ -3,12 +3,8 @@ import { useDispatch, useSelector } from "src/store";
 import { useTranslation } from "react-i18next";
 import { Box, ClickAwayListener, Popper, Grid, TextField } from "@mui/material";
 
-import AdapterDateFns from "@mui/lab/AdapterDateFns";
-import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
-import { TextFieldProps } from "@mui/material/TextField";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 
 import { DateRangePicker } from "react-date-range";
 import {

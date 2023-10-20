@@ -51,7 +51,7 @@ import {
     setState,
 } from "src/slices/property";
 
-import DateFieldStyled from "src/components/DateFieldStyled";
+// import DateFieldStyled from "src/components/DateFieldStyled";
 
 import { LabelCreate } from "src/components/label";
 import { useGlobals } from "src/hooks/useGlobals";
@@ -478,7 +478,7 @@ const BasicForLandSection: React.FC<any> = () => {
                             <Grid item xs={12}>
                                 <Grid container spacing={2}>
                                     <Grid item xs={6}>
-                                        <DateFieldStyled
+                                        {/* <DateFieldStyled
                                             label={t("Available After:")}
                                             value={
                                                 availableAfter
@@ -496,7 +496,7 @@ const BasicForLandSection: React.FC<any> = () => {
                                             }}
                                             disabled={!rented} // Disable the field if "rented" is unchecked
                                             sx={{ width: "100%" }} // Add custom styles to make it full width
-                                        />
+                                        /> */}
                                     </Grid>
                                     <Grid item xs={6}>
                                         <OnlyNumbersInput
@@ -513,7 +513,7 @@ const BasicForLandSection: React.FC<any> = () => {
                                         />
                                     </Grid>
                                     <Grid item xs={6}>
-                                        <DateFieldStyled
+                                        {/* <DateFieldStyled
                                             label={t("Rental Period Start")}
                                             value={new Date(rentalPeriodStart)}
                                             onChange={(value: any) => {
@@ -527,10 +527,10 @@ const BasicForLandSection: React.FC<any> = () => {
                                             }}
                                             disabled={!rented} // Disable the field if "rented" is unchecked
                                             sx={{ width: "100%" }} // Add custom styles to make it full width
-                                        />
+                                        /> */}
                                     </Grid>
                                     <Grid item xs={6}>
-                                        <DateFieldStyled
+                                        {/* <DateFieldStyled
                                             label={t("Rental Period End")}
                                             value={new Date(rentalPeriodEnd)}
                                             onChange={(value: any) => {
@@ -544,7 +544,7 @@ const BasicForLandSection: React.FC<any> = () => {
                                             }}
                                             disabled={!rented} // Disable the field if "rented" is unchecked
                                             sx={{ width: "100%" }} // Add custom styles to make it full width
-                                        />
+                                        /> */}
                                     </Grid>
                                 </Grid>
                             </Grid>

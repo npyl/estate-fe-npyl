@@ -31,14 +31,11 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
     const [addUser] = useAddUserMutation();
     const { selectedUser } = useSecurityContext();
 
-    const user = useMemo(
-        () =>
-            (users &&
-                selectedUser &&
-                (users.find((u) => u.id === selectedUser) as IUser)) ||
-            undefined,
-        [users, selectedUser]
-    );
+    const user: IUser | null = useMemo(() => {
+        if (!users || selectedUser === -1) return null;
+
+        return users.find((u) => u.id === selectedUser) || null;
+    }, [users, selectedUser]);
 
     const defaultValues = useMemo(
         () => ({

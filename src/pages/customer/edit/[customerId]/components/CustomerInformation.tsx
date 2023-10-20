@@ -68,10 +68,11 @@ import { useTranslation } from "react-i18next";
 import { useLazyGetCustomerLabelsQuery } from "src/services/customers";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
-import DateFieldStyled from "src/components/DateFieldStyled";
+import DatePicker from "src/components/DatePicker";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import OnlyLettersInput from "src/components/OnlyLetters";
 import OnlyEmailInput from "src/components/OnlyEmailInput";
+import { DateObject } from "react-multi-date-picker";
 
 const CustomerInformation: React.FC<any> = () => {
     const dispatch = useDispatch();
@@ -126,18 +127,18 @@ const CustomerInformation: React.FC<any> = () => {
 
     const handleDateChange = (
         setter: ActionCreatorWithPayload<any, string>,
-        newDate: Date | null,
+        newDate: DateObject | null,
         dateOfBirth: string | null
     ) => {
-        if (!newDate || !setter) return;
-        const updatedDate = newDate.toISOString();
-        dispatch(setter(updatedDate));
-        // Convert the strings back to Date objects for comparison
-        setter === setDateOfBirth
-            ? newDate
-            : dateOfBirth
-            ? new Date(dateOfBirth)
-            : null;
+        // if (!newDate || !setter) return;
+        // const updatedDate = newDate.toISOString();
+        // dispatch(setter(updatedDate));
+        // // Convert the strings back to Date objects for comparison
+        // setter === setDateOfBirth
+        //     ? newDate
+        //     : dateOfBirth
+        //     ? new Date(dateOfBirth)
+        //     : null;
     };
 
     const handleLabelClick = (label: ILabel) =>
@@ -296,21 +297,16 @@ const CustomerInformation: React.FC<any> = () => {
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <DateFieldStyled
-                            label={t("Date of Birth")}
-                            value={
-                                dateOfBirth
-                                    ? new Date(dateOfBirth)
-                                    : currentDate
-                            }
-                            onChange={(value: any) => {
+                        <DatePicker
+                            dateFrom={dateOfBirth || currentDate.toDateString()}
+                            dateTo={dateOfBirth || currentDate.toDateString()}
+                            onSelect={(dates) => {
                                 handleDateChange(
                                     setDateOfBirth,
-                                    value,
+                                    dates[0],
                                     dateOfBirth
                                 );
                             }}
-                            sx={{ width: "100%" }}
                         />
                     </Grid>
                     <Grid item xs={6}>

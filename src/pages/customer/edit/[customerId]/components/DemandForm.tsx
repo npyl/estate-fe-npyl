@@ -73,7 +73,7 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
 
     const enums = useGlobals();
 
-    const propertyEnums = useMemo(() => enums?.property, [enums]);
+    const propertyEnums = useMemo(() => enums?.property || null, [enums]);
     const stateEnum = propertyEnums?.state;
     const detailsEnum = propertyEnums?.details;
     const parentCategoryEnum = propertyEnums?.parentCategory;
@@ -83,8 +83,11 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
     const maxFloors = detailsEnum?.floors;
 
     const demands = useSelector(selectDemands);
-    const demand = useMemo(() => demands.at(index), [demands, index]);
-    const demandFilters = useMemo(() => demand?.filters, [demand?.filters]);
+    const demand = useMemo(() => demands.at(index) || null, [demands, index]);
+    const demandFilters = useMemo(
+        () => demand?.filters || null,
+        [demand?.filters]
+    );
     const leaser = useSelector(selectLeaser);
     const buyer = useSelector(selectBuyer);
     const stepValue = buyer ? 25000 : leaser ? 100 : 100; // default to 100 if neither is true

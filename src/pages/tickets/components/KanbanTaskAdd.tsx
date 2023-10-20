@@ -14,9 +14,9 @@ import {
 // @types
 import { IKanbanCardPOST } from "src/types/kanban";
 // components
-import DateRangePicker, {
-    useDateRangePicker,
-} from "src/components/date-range-picker";
+// import DateRangePicker, {
+//     useDateRangePicker,
+// } from "src/components/date-range-picker";
 import Iconify from "../../../components/iconify";
 //
 import KanbanContactsDialog from "./KanbanContactsDialog";
@@ -40,18 +40,18 @@ export default function KanbanTaskAdd({ onAddTask, onCloseAddTask }: Props) {
 
     const [openContacts, setOpenContacts] = useState(false);
 
-    const {
-        startDate,
-        endDate,
-        onChangeStartDate,
-        onChangeEndDate,
-        open: openPicker,
-        onOpen: onOpenPicker,
-        onClose: onClosePicker,
-        isSelected: isSelectedValuePicker,
-        isError,
-        shortLabel,
-    } = useDateRangePicker(new Date(), new Date());
+    // const {
+    //     startDate,
+    //     endDate,
+    //     onChangeStartDate,
+    //     onChangeEndDate,
+    //     open: openPicker,
+    //     onOpen: onOpenPicker,
+    //     onClose: onClosePicker,
+    //     isSelected: isSelectedValuePicker,
+    //     isError,
+    //     shortLabel,
+    // } = useDateRangePicker(new Date(), new Date());
 
     const handleOpenContacts = () => setOpenContacts(true);
     const handleCloseContacts = () => setOpenContacts(false);
@@ -61,8 +61,10 @@ export default function KanbanTaskAdd({ onAddTask, onCloseAddTask }: Props) {
             ...defaultTask,
             name,
             due: [
-                startDate?.toDateString() || "",
-                endDate?.toDateString() || "",
+                // startDate?.toDateString() || "",
+                // endDate?.toDateString() || "",
+                "",
+                "",
             ],
             completed,
         });
@@ -129,7 +131,7 @@ export default function KanbanTaskAdd({ onAddTask, onCloseAddTask }: Props) {
                                 </IconButton>
                             </Tooltip>
 
-                            {isSelectedValuePicker ? (
+                            {/* {isSelectedValuePicker ? (
                                 <Box
                                     onClick={onOpenPicker}
                                     sx={{
@@ -149,7 +151,7 @@ export default function KanbanTaskAdd({ onAddTask, onCloseAddTask }: Props) {
                                         <Iconify icon="eva:calendar-fill" />
                                     </IconButton>
                                 </Tooltip>
-                            )}
+                            )} */}
                         </Stack>
                     </Stack>
                 </Paper>
@@ -160,7 +162,7 @@ export default function KanbanTaskAdd({ onAddTask, onCloseAddTask }: Props) {
                     onClose={handleCloseContacts}
                 />
 
-                <DateRangePicker
+                {/* <DateRangePicker
                     variant="calendar"
                     title="Choose due date"
                     startDate={startDate}
@@ -171,7 +173,7 @@ export default function KanbanTaskAdd({ onAddTask, onCloseAddTask }: Props) {
                     onClose={onClosePicker}
                     isSelected={isSelectedValuePicker}
                     isError={isError}
-                />
+                /> */}
             </div>
         </ClickAwayListener>
     );

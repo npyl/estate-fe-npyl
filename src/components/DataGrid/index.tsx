@@ -14,7 +14,7 @@ import {
     GridToolbarExport,
 } from "@mui/x-data-grid";
 import { useRouter } from "next/router";
-import { FC, useMemo, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyledDataGrid } from "./styles";
 
@@ -61,7 +61,7 @@ const DataGridTable: FC<GridProps> = ({
     const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
     const [sortModel, setSortModel] = useState<GridSortModel>([]);
 
-    useMemo(() => {
+    useEffect(() => {
         setSortModel([
             { field: sortingBy || "", sort: sortingOrder as GridSortDirection },
         ]);

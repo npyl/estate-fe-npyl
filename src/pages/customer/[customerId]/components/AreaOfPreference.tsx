@@ -113,10 +113,16 @@ export const AreaOfPreference: React.FC<AreaOfPreferenceProps> = ({
 
     const { data } = useGetCustomerByIdQuery(+customerId!);
 
-    const demand = useMemo(() => data?.demands[index], [data?.demands[index]]);
-    const demandFilters = useMemo(() => demand?.filters, [demand?.filters]);
+    const demand = useMemo(
+        () => data?.demands[index] || null,
+        [data?.demands[index]]
+    );
+    const demandFilters = useMemo(
+        () => demand?.filters || null,
+        [demand?.filters]
+    );
 
-    const shapes = useMemo(() => demand?.shapes, [demand?.shapes]);
+    const shapes = useMemo(() => demand?.shapes || [], [demand?.shapes]);
     const shapeData = useMemo(
         () =>
             shapes

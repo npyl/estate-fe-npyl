@@ -14,6 +14,7 @@ import { useGetLabelsQuery } from "src/services/labels";
 import { useMemo } from "react";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { useTranslation } from "react-i18next";
+import { ILabel } from "src/types/label";
 
 type FilterVariant = "property" | "customer";
 
@@ -35,14 +36,13 @@ export default function FilterLabels(props: FilterLabelsProps) {
     const dispatch = useDispatch();
 
     const { data } = useGetLabelsQuery();
-    const labelOptions =
-        useMemo(
-            () =>
-                variant === "property"
-                    ? data?.propertyLabels
-                    : data?.customerLabels,
-            [data]
-        ) || [];
+    const labelOptions = useMemo(
+        () =>
+            (variant === "property"
+                ? data?.propertyLabels
+                : data?.customerLabels) || [],
+        [data]
+    );
     const renderLabelNames = (selectedIds: number[]) => {
         return selectedIds
             .map((id) => {

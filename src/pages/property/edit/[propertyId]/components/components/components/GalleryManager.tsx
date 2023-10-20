@@ -61,12 +61,18 @@ export const GalleryManager: React.FC<IGalleryManager> = (props) => {
     const [editImage, { isLoading }] = useEditPropertyImageMutation();
 
     // default values
-    const initialTitle = useMemo(() => currentImage?.title, [currentImage]);
-    const initialDescription = useMemo(
-        () => currentImage?.description,
+    const initialTitle = useMemo(
+        () => currentImage?.title || null,
         [currentImage]
     );
-    const initialHidden = useMemo(() => currentImage?.hidden, [currentImage]);
+    const initialDescription = useMemo(
+        () => currentImage?.description || null,
+        [currentImage]
+    );
+    const initialHidden = useMemo(
+        () => currentImage?.hidden || null,
+        [currentImage]
+    );
 
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");

@@ -39,7 +39,7 @@ const MatchingCustomersSection: React.FC = () => {
     );
 
     const totalRows = useMemo(
-        () => customersPage?.totalElements,
+        () => customersPage?.totalElements || 1,
         [customersPage?.totalElements]
     );
 
