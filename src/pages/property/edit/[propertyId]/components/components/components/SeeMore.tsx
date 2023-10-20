@@ -10,12 +10,13 @@ import {
     IconButton,
     Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { SoftButton } from "src/components/SoftButton";
 import MultiFilePreviewReorder from "src/components/upload/preview/MultiFilePreviewReorder";
 import { IPropertyImage } from "src/types/file";
 import { Over25ImagesPreview } from "./SeeMorePreview";
 import {
+    useEditPropertyImageMutation,
     useReorderPropertyImagesWithSetImageVisibilityMutation,
     useSetPropertyThumbailMutation,
 } from "src/services/properties";
@@ -43,6 +44,7 @@ export const SeeMore = ({
     const { propertyId } = router.query;
 
     const [setThumbnail] = useSetPropertyThumbailMutation();
+    const [editImage] = useEditPropertyImageMutation();
     const [reorderImagesWithVisibility] =
         useReorderPropertyImagesWithSetImageVisibilityMutation();
 
@@ -77,6 +79,29 @@ export const SeeMore = ({
         }).then(() => {});
         // TODO: set thumbnail
     };
+
+    const handleMakePublic = useCallback(() => {
+        selectedImages.forEach((k) =>
+            editImage({
+                id: +propertyId!,
+                body: {
+                    key: files.find((f) => f.key === k)?.key,
+                    hidden: false,
+                },
+            })
+        );
+    }, [files, selectedImages]);
+    const handleMakePrivate = useCallback(() => {
+        selectedImages.forEach((k) =>
+            editImage({
+                id: +propertyId!,
+                body: {
+                    key: files.find((f) => f.key === k)?.key,
+                    hidden: true,
+                },
+            })
+        );
+    }, [files, selectedImages]);
 
     return (
         <Dialog
@@ -119,10 +144,16 @@ export const SeeMore = ({
                         {selectMultiple && selectedImages.length > 0 && (
                             <>
                                 <Typography mr={1}>Make</Typography>
-                                <SoftButton startIcon={<LockOpen />}>
+                                <SoftButton
+                                    startIcon={<LockOpen />}
+                                    onClick={handleMakePublic}
+                                >
                                     Public
                                 </SoftButton>
-                                <SoftButton startIcon={<Lock />}>
+                                <SoftButton
+                                    startIcon={<Lock />}
+                                    onClick={handleMakePrivate}
+                                >
                                     Private
                                 </SoftButton>
                             </>
