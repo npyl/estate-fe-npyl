@@ -1,5 +1,6 @@
 import {
     FetchBaseQueryError,
+    FetchBaseQueryMeta,
     createApi,
     fetchBaseQuery,
 } from "@reduxjs/toolkit/query/react";
@@ -377,14 +378,42 @@ export const properties = createApi({
         }),
 
         reorderPropertyImages: builder.mutation<
-            void,
+            number,
             IPropertyAddFileParams<string[]>
         >({
-            query: (params: IPropertyAddFileParams<string[]>) => ({
-                url: `/${params.id}/reorderImages`,
-                method: "POST",
-                body: params.body,
-            }),
+            async queryFn(
+                { id: propertyId, body: imageKeys },
+                api,
+                extraOptions,
+                baseQuery
+            ) {
+                try {
+                    const reorderResponse = await baseQuery({
+                        url: `/${propertyId}/reorderImages`,
+                        method: "POST",
+                        body: imageKeys,
+                    });
+
+                    if ("error" in reorderResponse) {
+                        throw reorderResponse.error;
+                    }
+
+                    // Then, set thumbnail
+                    const thumbnailResponse = await baseQuery({
+                        url: `${propertyId}/thumbnail/${imageKeys[0]}`,
+                        method: "POST",
+                    });
+
+                    if ("error" in thumbnailResponse) {
+                        throw thumbnailResponse.error;
+                    }
+
+                    return { data: 0 }; // 0 for success
+                } catch (error) {
+                    return { error: error as FetchBaseQueryError };
+                }
+            },
+
             onQueryStarted: async (
                 { id, body: imageKeys },
                 { dispatch, queryFulfilled }
@@ -395,10 +424,13 @@ export const properties = createApi({
                         id,
                         (draft) => {
                             // reorder based on imageKeys
-                            const reordered = imageKeys.map(
+                            let reordered = imageKeys.map(
                                 (k) => draft.images.find((i) => i.key === k)!
                             );
                             if (!reordered) return;
+
+                            // set thumbnail
+                            reordered[0].thumbnail = true;
 
                             draft.images = reordered;
                         }
@@ -424,18 +456,7 @@ export const properties = createApi({
                 baseQuery
             ) {
                 try {
-                    // First, reorder the images.
-                    const reorderResponse = await baseQuery({
-                        url: `/${propertyId}/reorderImages`,
-                        method: "POST",
-                        body: imageKeys,
-                    });
-
-                    if ("error" in reorderResponse) {
-                        throw reorderResponse.error;
-                    }
-
-                    // Then, set the visibility of a specific image.
+                    // First, set the visibility of a specific image.
                     const visibilityResponse = await baseQuery({
                         url: `${propertyId}/image`,
                         method: "POST",
@@ -449,7 +470,28 @@ export const properties = createApi({
                         throw visibilityResponse.error;
                     }
 
-                    return { data: visibilityResponse.data as IFileResponse };
+                    // Then, set thumbnail
+                    const thumbnailResponse = await baseQuery({
+                        url: `${propertyId}/thumbnail/${imageKeys[0]}`,
+                        method: "POST",
+                    });
+
+                    if ("error" in thumbnailResponse) {
+                        throw thumbnailResponse.error;
+                    }
+
+                    // Then, reorder the images.
+                    const reorderResponse = await baseQuery({
+                        url: `/${propertyId}/reorderImages`,
+                        method: "POST",
+                        body: imageKeys,
+                    });
+
+                    if ("error" in reorderResponse) {
+                        throw reorderResponse.error;
+                    }
+
+                    return { data: reorderResponse.data as IFileResponse };
                 } catch (error) {
                     return { error: error as FetchBaseQueryError };
                 }

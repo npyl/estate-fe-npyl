@@ -18,14 +18,15 @@ import { Over25ImagesPreview } from "./SeeMorePreview";
 import {
     useEditPropertyImageMutation,
     useReorderPropertyImagesWithSetImageVisibilityMutation,
-    useSetPropertyThumbailMutation,
 } from "src/services/properties";
 import { useRouter } from "next/router";
 import { Close as CloseIcon } from "@mui/icons-material";
+import { ProgressBar } from "./ProgressBar";
 
 interface SeeMoreProps {
     open: boolean;
     files: IPropertyImage[];
+    progress?: number;
     onImageClick: (i: IPropertyImage) => void;
     onReorder: (items: string[]) => void;
     onClose: () => void;
@@ -36,6 +37,7 @@ interface SeeMoreProps {
 export const SeeMore = ({
     open,
     files,
+    progress,
     onImageClick,
     onReorder,
     onClose,
@@ -43,7 +45,6 @@ export const SeeMore = ({
     const router = useRouter();
     const { propertyId } = router.query;
 
-    const [setThumbnail] = useSetPropertyThumbailMutation();
     const [editImage] = useEditPropertyImageMutation();
     const [reorderImagesWithVisibility] =
         useReorderPropertyImagesWithSetImageVisibilityMutation();
@@ -139,6 +140,12 @@ export const SeeMore = ({
                             ? `(${selectedImages.length} selected)`
                             : ""}
                     </Box>
+
+                    {progress && (
+                        <Box sx={{ width: "30%" }}>
+                            <ProgressBar value={progress} />
+                        </Box>
+                    )}
 
                     <Box display="flex" alignItems="center" gap={1}>
                         {selectMultiple && selectedImages.length > 0 && (

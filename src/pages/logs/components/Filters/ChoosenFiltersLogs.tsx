@@ -39,8 +39,6 @@ const ChosenFiltersLogs = () => {
         [users]
     );
 
-    // New function to check for date pairs
-    const hasDatePair = (key: string) => ["fromDate", "toDate"].includes(key);
     // Adjusted logic to ensure date pair is treated as a single unit
     let dateRangeRendered = false;
     return (

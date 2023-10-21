@@ -1,5 +1,5 @@
 import { Box, Card, CardContent, CardHeader, Typography } from "@mui/material";
-import { useCallback, useMemo, useState } from "react";
+import { use, useCallback, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import { SoftButton } from "src/components/SoftButton";
@@ -18,6 +18,7 @@ import UploadImages from "src/components/upload/UploadImages";
 import { useSelector } from "react-redux";
 import { selectPropertyImages } from "src/slices/property/files";
 import { useDispatch } from "react-redux";
+import { useDebouncedCallback } from "use-debounce";
 
 const PREVIEW_IMAGES_COUNT = 5;
 
@@ -35,6 +36,15 @@ const ImagesSection: React.FC = () => {
     const [currentGalleryImage, setCurrentGalleryImage] =
         useState<IPropertyImage>();
     const [moreOpen, setMoreOpen] = useState(false);
+
+    /* progress */
+    const [progress, setProgress] = useState<number>();
+    const resetProgress = useDebouncedCallback(
+        () => setProgress(undefined),
+        500
+    );
+    const incrementProgress = (s: number) =>
+        setProgress((progress) => progress! + s);
 
     const previewImages = useMemo(
         () => files.slice(0, PREVIEW_IMAGES_COUNT),
@@ -55,7 +65,8 @@ const ImagesSection: React.FC = () => {
         );
 
     const uploadFile = async (
-        image: File
+        image: File,
+        step: number
     ): Promise<{ cdnUrl: string; key: string }> => {
         const filename = image.name;
         const contentType = image.type;
@@ -93,15 +104,21 @@ const ImagesSection: React.FC = () => {
         if (!response)
             throw new Error("Uploading the image failed: ", response);
 
+        incrementProgress(step);
+
         return { cdnUrl, key };
     };
 
     const handleDropMultiFile = useCallback(
         (acceptedFiles: File[]) => {
+            setProgress(0.1);
+
+            const step = 100 / acceptedFiles.length;
+
             if (files.length === 0) {
                 // this is the first image we are adding; therefore it is the mainImage
-                uploadFile(acceptedFiles[0])
-                    .then(({ cdnUrl, key }) => {
+                uploadFile(acceptedFiles[0], step)
+                    .then(({ key }) => {
                         setThumbnail({
                             propertyId: +propertyId!,
                             imageKey: key,
@@ -111,20 +128,26 @@ const ImagesSection: React.FC = () => {
                         console.error("uploadThumbnail: ", reason)
                     );
 
-                const uploadPromises = acceptedFiles.slice(1).map(uploadFile);
+                const uploadPromises = acceptedFiles
+                    .slice(1)
+                    .map((f) => uploadFile(f, step));
 
                 Promise.all(uploadPromises)
                     .then(invalidateTags)
+                    .then(resetProgress)
                     .catch((error) =>
                         console.error("Error in Promise.all:", error)
                     );
             } else {
                 // treat every file as secondary image
 
-                const uploadPromises = acceptedFiles.map(uploadFile);
+                const uploadPromises = acceptedFiles.map((f) =>
+                    uploadFile(f, step)
+                );
 
                 Promise.all(uploadPromises)
                     .then(invalidateTags)
+                    .then(resetProgress)
                     .catch((error) => {
                         console.error("uploadImage:", error);
                     });
@@ -133,14 +156,9 @@ const ImagesSection: React.FC = () => {
         [files]
     );
 
-    const handleReorder = (items: string[]) => {
-        // INFO: backend requires a list with reordered keys like:  [key, key, ...]
-        reorderImages({ id: +propertyId!, body: items }).then(() =>
-            setThumbnail({ propertyId: +propertyId!, imageKey: items[0] }).then(
-                invalidateTags
-            )
-        );
-    };
+    // INFO: backend requires a list with reordered keys like:  [key, key, ...]
+    const handleReorder = (items: string[]) =>
+        reorderImages({ id: +propertyId!, body: items }).then(invalidateTags);
 
     const handleCloseGalleryManager = () => setGalleryManagerOpen(false);
 
@@ -177,7 +195,6 @@ const ImagesSection: React.FC = () => {
             const nextImage = files.at(nextIndex);
 
             deleteImage({ propertyId: +propertyId!, imageKey: key })
-                // .then(() => deleteFile(key))
                 .then(() => setCurrentGalleryImage(nextImage))
                 .catch((reason) => console.error("deleteImage: ", reason));
         },
@@ -268,6 +285,7 @@ const ImagesSection: React.FC = () => {
                 <SeeMore
                     open={moreOpen}
                     files={files}
+                    progress={progress}
                     onImageClick={handleImageClick}
                     onReorder={handleReorder}
                     onClose={handleCloseMore}
