@@ -125,7 +125,7 @@ export const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                                 }}
                             />
                             <Typography color="neutral.900" variant={"h5"}>
-                                PropertyPro v0.45
+                                PropertyPro v0.46
                             </Typography>
                         </Link>
                     </Box>

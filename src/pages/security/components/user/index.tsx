@@ -1,6 +1,5 @@
 import {
     Button,
-    IconButton,
     Paper,
     Table,
     TableBody,
@@ -13,9 +12,7 @@ import { useRouter } from "next/router";
 import React, { FC, useState } from "react";
 import { useSecurityContext } from "src/contexts/security";
 import { useAllUsersQuery } from "src/services/user";
-import { UserForm } from "src/components/User/Form";
-import AnimatedTableRow from "src/components/Table/AnimatedTableRow";
-import { Edit as EditIcon } from "@mui/icons-material";
+import { UserForm } from "../../../../components/User/Form";
 
 type Props = {
     changeTab: (event: React.SyntheticEvent, newValue: number) => void;
@@ -81,7 +78,8 @@ const UserPage: FC<Props> = ({ changeTab }) => {
                                         }}
                                         sx={{ ml: 1, mr: -1 }}
                                     >
-                                        <EditIcon fontSize="small" />
+                                        Edit
+                                        {/* <EditIcon fontSize="small" /> */}
                                     </IconButton>
                                 </TableCell>
                                 <TableCell>
