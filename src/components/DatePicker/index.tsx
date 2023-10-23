@@ -30,7 +30,7 @@ type DatePickerProps = {
     onSelect: (dates: DateObject | DateObject[]) => void;
 };
 
-const DatePickerPopper: React.FC<DatePickerProps> = ({
+const DatePicker: React.FC<DatePickerProps> = ({
     dateFrom = "",
     dateTo = "",
     date = "",
@@ -110,4 +110,4 @@ const DatePickerPopper: React.FC<DatePickerProps> = ({
     );
 };
 
-export default DatePickerPopper;
+export default DatePicker;

@@ -19,8 +19,6 @@ import { useDispatch, useSelector } from "react-redux";
 import OnlyNumbersInput from "src/components/OnlyNumbers";
 import { useAllCustomersQuery } from "src/services/customers";
 
-import "react-day-picker/dist/style.css";
-
 import {
     selectArea,
     selectAuction,
