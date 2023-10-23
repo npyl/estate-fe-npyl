@@ -147,9 +147,13 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
         [index, shapes]
     );
     const handleDrag = useCallback(
-        (oldShape: DrawShape, newShape: DrawShape) => {
-            const encodedOldShape = encodeShape(oldShape);
-            const encodedNewShape = encodeShape(newShape);
+        (encodedOldShape: string, encodedNewShape: string) => {
+            console.log(
+                "comparing: ",
+                encodedOldShape,
+                " with: ",
+                encodedNewShape
+            );
 
             const updatedShapes = shapes.map((shapeString) =>
                 shapeString === encodedOldShape ? encodedNewShape : shapeString
