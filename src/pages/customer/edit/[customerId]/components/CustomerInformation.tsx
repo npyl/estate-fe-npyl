@@ -73,6 +73,7 @@ import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import OnlyLettersInput from "src/components/OnlyLetters";
 import OnlyEmailInput from "src/components/OnlyEmailInput";
 import { DateObject } from "react-multi-date-picker";
+import DatePickerTrigger from "src/components/DatePicker";
 
 const CustomerInformation: React.FC<any> = () => {
     const dispatch = useDispatch();
@@ -125,21 +126,8 @@ const CustomerInformation: React.FC<any> = () => {
         getLabels(+customerId!);
     };
 
-    const handleDateChange = (
-        setter: ActionCreatorWithPayload<any, string>,
-        newDate: DateObject | null,
-        dateOfBirth: string | null
-    ) => {
-        // if (!newDate || !setter) return;
-        // const updatedDate = newDate.toISOString();
-        // dispatch(setter(updatedDate));
-        // // Convert the strings back to Date objects for comparison
-        // setter === setDateOfBirth
-        //     ? newDate
-        //     : dateOfBirth
-        //     ? new Date(dateOfBirth)
-        //     : null;
-    };
+    const handleDateChange = (dates: DateObject | DateObject[]) =>
+        dispatch(setDateOfBirth(dates as DateObject));
 
     const handleLabelClick = (label: ILabel) =>
         label.id &&
@@ -298,15 +286,9 @@ const CustomerInformation: React.FC<any> = () => {
                     </Grid>
                     <Grid item xs={6}>
                         <DatePicker
-                            dateFrom={dateOfBirth || currentDate.toDateString()}
-                            dateTo={dateOfBirth || currentDate.toDateString()}
-                            onSelect={(dates) => {
-                                handleDateChange(
-                                    setDateOfBirth,
-                                    dates[0],
-                                    dateOfBirth
-                                );
-                            }}
+                            date={dateOfBirth || currentDate.toDateString()}
+                            label={t("Date of Birth").toString()}
+                            onSelect={handleDateChange}
                         />
                     </Grid>
                     <Grid item xs={6}>
