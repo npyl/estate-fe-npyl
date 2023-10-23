@@ -1,9 +1,9 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
-import { Button, Stack, SvgIcon, Typography, styled } from "@mui/material";
-import { StyledButton } from "./style";
+import { Button, Stack, Typography, styled } from "@mui/material";
 import { DrawShape, ShapeData, StopDraw } from "./types";
-import { drawShape } from "./util";
+import { drawShape, encodeShape } from "./util";
 import { IMapMarker } from "./Map";
+
 interface SvgIconProps {
     children: ReactNode;
     [key: string]: any; // for other props you might want to pass
@@ -13,6 +13,7 @@ interface DrawingComponentProps {
     drawing: boolean;
     shape?: ShapeData;
     onDraw: (shape: DrawShape | StopDraw) => void;
+    onDrag?: (newEncodedShape: string) => void;
 }
 
 export const CustomDrawingComponent = ({
@@ -20,10 +21,11 @@ export const CustomDrawingComponent = ({
     drawing,
     shape,
     onDraw,
+    onDrag,
 }: DrawingComponentProps) => {
     const drawingManagerRef = useRef<any>(null);
     const shapeRef = useRef<DrawShape | StopDraw>(null);
-    const [markers, setMarkers] = useState<IMapMarker[]>([]);
+
     // drawing manager ready
     const [ready, setReady] = useState(false);
 
@@ -90,9 +92,11 @@ export const CustomDrawingComponent = ({
                 drawingManagerRef.current.setDrawingMode(null);
 
                 // Support shape drag
-                google.maps.event.addListener(shape, "dragend", () => {
-                    onDraw(shape as DrawShape);
-                });
+                google.maps.event.addListener(
+                    shape,
+                    "dragend",
+                    () => onDrag && onDrag(encodeShape(shape as DrawShape))
+                );
 
                 onDraw(shape as DrawShape);
             }
@@ -115,14 +119,19 @@ export const CustomDrawingComponent = ({
         // draw any imported shape
         shapeRef.current?.setMap(null);
         shapeRef.current = shape
-            ? drawShape(shape, map, !!drawing ? onDraw : null)
+            ? drawShape(
+                  shape,
+                  map,
+                  !!drawing && onDrag
+                      ? (old, newShape) => onDrag(newShape)
+                      : null
+              )
             : null;
 
         // INFO: we need to support null/undefined shape, because it can mean user cleared the shape OR we loaded a new map on a new demand form
     }, [ready, shape]);
 
     const startDrawing = () => {
-        setMarkers([]);
         if (shapeRef.current?.getMap()) {
             shapeRef.current.setMap(null);
         }

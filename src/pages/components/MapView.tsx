@@ -7,9 +7,7 @@ import Map, { IMapAddress, IMapMarker } from "src/components/Map/Map";
 import { DrawShape, StopDraw } from "src/components/Map/types";
 import {
     decodeShape,
-    deepClone,
     encodeShape,
-    isPointInsideShape,
     isPointInsideShapeData,
 } from "src/components/Map/util";
 import ICarouselImage from "src/components/carousel/types";
@@ -70,6 +68,8 @@ const MapView = ({ data }: Props) => {
 
     const handleDraw = (shape: DrawShape | StopDraw) =>
         setEncodedShape(shape ? encodeShape(shape) : "");
+    const handleDrag = (oldEncodedShape: string, newEncodedShape: string) =>
+        setEncodedShape(newEncodedShape);
 
     const updateMainMarkerCoordinates = (lat: number, lng: number) => {
         let newMarker = mainMarker;
@@ -102,7 +102,7 @@ const MapView = ({ data }: Props) => {
                         }}
                         markers={markers}
                         onDraw={handleDraw}
-                        onDrag={(oldShape, newShape) => handleDraw(newShape)}
+                        onDrag={handleDrag}
                         onSearchSelect={handleSearchSelect}
                     />
                 </Box>

@@ -1,15 +1,14 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button, Stack, SvgIconProps, Typography, styled } from "@mui/material";
-import { StyledButton } from "./style";
 import { DrawShape, ShapeData, StopDraw } from "./types";
-import { drawShape } from "./util";
+import { drawShape, encodeShape } from "./util";
 
 interface DrawMultipleProps {
     map: any;
     drawing: boolean;
     shapes?: ShapeData[];
     onDraw: (shape: DrawShape | StopDraw) => void;
-    onDrag: (oldShape: DrawShape, newShape: DrawShape) => void;
+    onDrag: (oldEncodedShape: string, newEncodedShape: string) => void;
 }
 
 export const DrawMultiple = ({
@@ -27,7 +26,7 @@ export const DrawMultiple = ({
 
     // drawing manager ready
     const [ready, setReady] = useState(false);
-    console.log("DrawMultiple component rendered.");
+
     useEffect(() => {
         // Create a new instance of the DrawingManager
         const drawingManager = new google.maps.drawing.DrawingManager({
@@ -130,8 +129,11 @@ export const DrawMultiple = ({
         );
         shapeRefs.current = updatedShapes;
 
+        const encodedOldShape = encodeShape(dragStartShape);
+        const encodedNewShape = encodeShape(dragStopShape);
+
         // call
-        onDrag(dragStartShape, dragStopShape);
+        onDrag(encodedOldShape, encodedNewShape);
 
         // clear
         setDragStartShape(undefined);

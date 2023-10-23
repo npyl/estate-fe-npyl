@@ -45,7 +45,7 @@ interface IMapProps {
     // Shape
     //
     onDraw?: (shape: DrawShape | StopDraw) => void;
-    onDrag?: (oldShape: DrawShape, newShape: DrawShape) => void;
+    onDrag?: (encodedOldShape: string, encodedNewShape: string) => void;
     //
     // Search
     //
@@ -251,6 +251,9 @@ const Map = ({
                     drawing={drawing}
                     shape={shape}
                     onDraw={(shape) => onDraw && onDraw(shape)}
+                    onDrag={(newEncodedShape) =>
+                        onDrag && onDrag("", newEncodedShape)
+                    }
                 />
             )}
             {multipleShapes && (
