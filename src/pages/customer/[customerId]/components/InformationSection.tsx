@@ -134,7 +134,11 @@ const InformationSection: React.FC = () => {
                         />
                         <ListItem
                             label={t("Date of Birth")}
-                            value={data?.dateOfBirth || "-"}
+                            value={
+                                data?.dateOfBirth
+                                    ? new Date(data?.dateOfBirth).toDateString()
+                                    : "-"
+                            }
                             align="horizontal"
                         />
                         <ListItem

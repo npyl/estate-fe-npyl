@@ -127,7 +127,7 @@ const CustomerInformation: React.FC<any> = () => {
     };
 
     const handleDateChange = (dates: DateObject | DateObject[]) =>
-        dispatch(setDateOfBirth(dates as DateObject));
+        dispatch(setDateOfBirth((dates as DateObject).toDate().toISOString()));
 
     const handleLabelClick = (label: ILabel) =>
         label.id &&
