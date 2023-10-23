@@ -5,26 +5,27 @@ const drawCircle = (
     lng: number,
     radius: number,
     map: google.maps.Map,
-    onDrag: ((oldShape: DrawShape, newShape: DrawShape) => void) | null
+    onDrag: ((oldShape: string, newShape: string) => void) | null
 ) => {
-    const circle = new google.maps.Circle({
+    const circleConfig = {
         clickable: true,
         editable: !!onDrag,
         draggable: !!onDrag,
-        map: map, // Map where to draw the circle
         center: { lat, lng }, // Center of the circle
         radius: radius, // Radius (in meters)
         fillColor: "cyan",
         fillOpacity: 0.15,
         strokeWeight: 1,
         zIndex: 1,
-    });
-    const initialCircle = JSON.parse(JSON.stringify(circle));
+    };
+
+    const circle = new google.maps.Circle({ ...circleConfig, map });
+    const encodedOldShape = encodeShape(circle);
 
     // Support shape drag
     onDrag &&
         google.maps.event.addListener(circle, "dragend", () =>
-            onDrag(initialCircle, circle)
+            onDrag(encodedOldShape, encodeShape(circle))
         );
 
     return circle;
@@ -35,7 +36,7 @@ const drawRectangle = (
     swlat: number,
     swlng: number,
     map: google.maps.Map,
-    onDrag: ((oldShape: DrawShape, newShape: DrawShape) => void) | null
+    onDrag: ((oldShape: string, newShape: string) => void) | null
 ) => {
     const rectangleBounds = {
         north: nelat,
@@ -44,7 +45,7 @@ const drawRectangle = (
         west: swlng,
     };
 
-    const rectangle = new google.maps.Rectangle({
+    const rectangleConfig = {
         clickable: true,
         editable: !!onDrag,
         draggable: !!onDrag,
@@ -54,14 +55,15 @@ const drawRectangle = (
         fillOpacity: 0.15,
         strokeWeight: 1,
         zIndex: 1,
-    });
+    };
 
-    const initialRectangle = JSON.parse(JSON.stringify(rectangle));
+    const rectangle = new google.maps.Rectangle({ ...rectangleConfig, map });
+    const encodedOldShape = encodeShape(rectangle);
 
     // Support shape drag
     onDrag &&
         google.maps.event.addListener(rectangle, "dragend", () =>
-            onDrag(initialRectangle, rectangle)
+            onDrag(encodedOldShape, encodeShape(rectangle))
         );
 
     return rectangle;
@@ -69,9 +71,9 @@ const drawRectangle = (
 const drawPolygon = (
     paths: google.maps.LatLngLiteral[][],
     map: google.maps.Map,
-    onDrag: ((oldShape: DrawShape, newShape: DrawShape) => void) | null
+    onDrag: ((oldShape: string, newShape: string) => void) | null
 ) => {
-    const polygon = new google.maps.Polygon({
+    const polygonConfig = {
         clickable: true,
         editable: !!onDrag,
         draggable: !!onDrag,
@@ -81,13 +83,15 @@ const drawPolygon = (
         fillOpacity: 0.15,
         strokeWeight: 1,
         zIndex: 1,
-    });
-    const initialPolygon = JSON.parse(JSON.stringify(polygon));
+    };
+
+    const polygon = new google.maps.Polygon({ ...polygonConfig, map });
+    const encodedOldShape = encodeShape(polygon);
 
     // Support shape drag
     onDrag &&
         google.maps.event.addListener(polygon, "dragend", () =>
-            onDrag(initialPolygon, polygon)
+            onDrag(encodedOldShape, encodeShape(polygon))
         );
 
     return polygon;
@@ -96,7 +100,7 @@ const drawPolygon = (
 export const drawShape = (
     shapeData: ShapeData,
     map: google.maps.Map,
-    onDrag: ((oldShape: DrawShape, newShape: DrawShape) => void) | null
+    onDrag: ((oldShape: string, newShape: string) => void) | null
 ): DrawShape | null => {
     switch (shapeData.type) {
         case "Circle":

@@ -1,33 +1,31 @@
-import {
-    Avatar,
-    Box,
-    Divider,
-    Grid,
-    Pagination,
-    Paper,
-    Skeleton,
-    Stack,
-    Typography,
-    useTheme,
-} from "@mui/material";
-import { alpha } from "@mui/material/styles";
-import { format } from "date-fns"; // for date formatting
-import { NextPage } from "next";
-import Link from "next/link";
 import { FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { format } from "date-fns"; // for date formatting
+import { useFilterLogsMutation } from "src/services/logs";
+import Link from "next/link";
+import {
+    Box,
+    Paper,
+    Typography,
+    Pagination,
+    Skeleton,
+    Stack,
+    Grid,
+} from "@mui/material";
+import { ILog } from "src/types/logs"; // import your log type
+import { NextPage } from "next";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-import { useFilterLogsMutation } from "src/services/logs";
-import { ILog } from "src/types/logs"; // import your log type
-
+import { alpha } from "@mui/material/styles";
+import { Avatar, useTheme, Divider } from "@mui/material";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import { green, yellow, purple } from "@mui/material/colors";
 import { Chip } from "@mui/material";
-import { green, yellow } from "@mui/material/colors";
+import { FilterLogSection } from "./components";
 import { useSelector } from "react-redux";
 import { selectAll } from "src/slices/log";
-import { FilterLogSection } from "./components";
 // import { parse, formatISO, utcToZonedTime } from "date-fns";
+
 interface LogCardProps {
     log: ILog;
 }
@@ -35,7 +33,7 @@ interface LogCardProps {
 const LogCard: FC<LogCardProps> = ({ log }) => {
     const theme = useTheme();
     const formattedDate = format(new Date(log.createdAt), "dd-MM-yyyy hh:mm");
-    if (!log) return;
+
     // date changer for filters
     // const date = new Date(log.createdAt);
     // const datei = Math.floor(date.getTime());
@@ -83,6 +81,10 @@ const LogCard: FC<LogCardProps> = ({ log }) => {
                 return alpha(theme.palette.error.main, 0.2); // light red
             case "ADD":
                 return alpha(yellow[700], 0.2); // light yellow, you can choose a different shade if you prefer
+            case "RESTORE":
+                return "#EFCFEC"; // similar to "EDIT"
+            case "DOWNLOAD":
+                return "#CBEBF2"; // similar to "EDIT"
             default:
                 return ""; // default, no background color or whatever you prefer
         }
@@ -97,7 +99,11 @@ const LogCard: FC<LogCardProps> = ({ log }) => {
                 return theme.palette.error.main; // red color for deletion
             case "ADD":
                 return yellow[700]; // similar to "EDIT"
-            // ... add more cases here for other actions
+            case "RESTORE":
+                return purple[700]; // similar to "EDIT"
+            case "DOWNLOAD":
+                return "#00BCE1"; // similar to "EDIT"
+
             default:
                 return theme.palette.text.primary; // default color
         }
@@ -106,8 +112,8 @@ const LogCard: FC<LogCardProps> = ({ log }) => {
         <Chip
             label={log.action.value} // assuming it's the human-readable action value
             style={{
-                backgroundColor: getLabelColor(),
-                color: theme.palette.getContrastText(getLabelColor()), // ensures text is legible
+                backgroundColor: getLabelColor(), // color based on action
+                color: "#FFFFFF", // set text color to white
                 position: "absolute", // absolutely position this element
                 top: theme.spacing(1), // spacing from the top
                 right: theme.spacing(1), // spacing from the right
@@ -142,7 +148,7 @@ const LogCard: FC<LogCardProps> = ({ log }) => {
                         <strong>
                             {log.user.firstName} {log.user.lastName}
                         </strong>{" "}
-                        {log.action.value?.toLowerCase()}{" "}
+                        {log.action.value?.toLowerCase()} a{" "}
                         {log.resourceType.value?.toLowerCase()}{" "}
                         {resourceDescription}
                     </Typography>
@@ -200,25 +206,14 @@ const Logs: NextPage = () => {
         setPage(value - 1); // Adjust page number for zero-based numbering API
     };
 
-    // Placeholder skeletons when data is loading
-    const loadingSkeletons = [...Array(pageSize)].map((_, index) => (
-        <Skeleton
-            key={index}
-            variant="rectangular"
-            height={118}
-            style={{ marginBottom: "10px" }}
-        />
-    ));
-
     // Main content to render
-    const content = data?.content.map((log: ILog) => (
+    const content = data?.content.map((log) => (
         <LogCard key={log.createdAt} log={log} />
     ));
 
     return (
-        <Box marginTop={"20px"}>
+        <Box>
             <Box>
-                {" "}
                 <FilterLogSection />
             </Box>
             <Stack spacing={2}>{content}</Stack>

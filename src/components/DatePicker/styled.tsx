@@ -38,6 +38,9 @@ export const CalendarBox = styled(Box, {
     shouldForwardProp: (props) => props !== "isSingleDate",
 })<{ isSingleDate?: boolean }>(({ theme, isSingleDate }) => ({
     padding: "14px 14px",
+    borderRadius: "12px",
+    background: theme.palette.background.paper,
+    boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2)",
     "& .rmdp-range": {
         background: theme.palette.grey,
         boxShadow: "none",

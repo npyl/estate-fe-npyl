@@ -5,7 +5,11 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import CarouselSimple from "src/components/CarouselSimple";
 import Map, { IMapAddress, IMapMarker } from "src/components/Map/Map";
 import { DrawShape, StopDraw } from "src/components/Map/types";
-import { isPointInsideShape } from "src/components/Map/util";
+import {
+    decodeShape,
+    encodeShape,
+    isPointInsideShapeData,
+} from "src/components/Map/util";
 import ICarouselImage from "src/components/carousel/types";
 import Iconify from "src/components/iconify";
 import { IPropertyResultResponse } from "src/types/properties";
@@ -16,7 +20,7 @@ interface Props {
 }
 
 const MapView = ({ data }: Props) => {
-    const [shape, setShape] = useState<DrawShape | StopDraw>();
+    const [encodedShape, setEncodedShape] = useState<string>();
 
     const [activeMarker, setActiveMarker] = useState(null);
     const [mainMarker, setMainMarker] = useState<IMapMarker>({
@@ -37,14 +41,18 @@ const MapView = ({ data }: Props) => {
 
     // properties we show
     const properties = useMemo(() => {
+        if (!encodedShape) return nonNullProperties;
+
+        /* INFO: encode & decode shape so that changes to string object can be caught from useMemo */
+        const shape = decodeShape(encodedShape);
         if (!shape) return nonNullProperties;
 
         const filtered = nonNullProperties.filter((p) =>
-            isPointInsideShape(p.location.lat!, p.location.lng!, shape)
+            isPointInsideShapeData(p.location.lat!, p.location.lng!, shape)
         );
 
         return filtered.length > 0 ? filtered : nonNullProperties;
-    }, [nonNullProperties, shape]);
+    }, [nonNullProperties, encodedShape]);
 
     // respective markers
     const markers: IMapMarker[] = useMemo(
@@ -59,7 +67,9 @@ const MapView = ({ data }: Props) => {
     const toggleOrientation = () => setOrientation(!orientation);
 
     const handleDraw = (shape: DrawShape | StopDraw) =>
-        setShape(JSON.parse(JSON.stringify(shape)));
+        setEncodedShape(shape ? encodeShape(shape) : "");
+    const handleDrag = (oldEncodedShape: string, newEncodedShape: string) =>
+        setEncodedShape(newEncodedShape);
 
     const updateMainMarkerCoordinates = (lat: number, lng: number) => {
         let newMarker = mainMarker;
@@ -92,7 +102,7 @@ const MapView = ({ data }: Props) => {
                         }}
                         markers={markers}
                         onDraw={handleDraw}
-                        onDrag={(oldShape, newShape) => handleDraw(newShape)}
+                        onDrag={handleDrag}
                         onSearchSelect={handleSearchSelect}
                     />
                 </Box>

@@ -19,8 +19,6 @@ import { useDispatch, useSelector } from "react-redux";
 import OnlyNumbersInput from "src/components/OnlyNumbers";
 import { useAllCustomersQuery } from "src/services/customers";
 
-import "react-day-picker/dist/style.css";
-
 import {
     selectArea,
     selectAuction,
@@ -81,6 +79,7 @@ import { CodeField } from "./componentsFields/CodeField";
 import { KeyCodeField } from "./componentsFields/KeyCodeField";
 import { selectCategory, selectParentCategory } from "src/slices/property";
 import { KeyValue } from "src/types/KeyValue";
+import { DateObject } from "react-multi-date-picker";
 
 const BasicSection: React.FC<any> = () => {
     const router = useRouter();
@@ -183,51 +182,20 @@ const BasicSection: React.FC<any> = () => {
             labelId: assignedLabels[index].id!,
         }).then(() => revalidate());
 
-    const handleDateChange = (
-        setter: ActionCreatorWithPayload<any, string>,
-        newDate: Date | null,
-        rentalPeriodStart: string | null,
-        rentalPeriodEnd: string | null,
-        availableAfter: string | null
-    ) => {
-        if (!newDate || !setter) return;
+    //
+    //  Dates
+    //
+    const changeDate = (
+        dates: DateObject | DateObject[],
+        setter: ActionCreatorWithPayload<any, string>
+    ) => dispatch(setter((dates as DateObject).toDate().toISOString()));
 
-        const updatedDate = newDate.toISOString();
-        dispatch(setter(updatedDate));
-
-        // Convert the strings back to Date objects for comparison
-        const startDate =
-            setter === setRentalPeriodStart
-                ? newDate
-                : rentalPeriodStart
-                ? new Date(rentalPeriodStart)
-                : null;
-
-        const endDate =
-            setter === setRentalPeriodEnd
-                ? newDate
-                : rentalPeriodEnd
-                ? new Date(rentalPeriodEnd)
-                : null;
-
-        const availableAt =
-            setter === setAvailableAfter
-                ? newDate
-                : availableAfter
-                ? new Date(availableAfter)
-                : null;
-
-        if (startDate && endDate && endDate < startDate) {
-            alert(
-                "Error: Rental Period End date should not be before the Rental Period Start date."
-            );
-        }
-        if (endDate && availableAt && availableAt < endDate) {
-            alert(
-                "Error: The property can not be available before the rental period end."
-            );
-        }
-    };
+    const changeAvailableAfter = (dates: DateObject | DateObject[]) =>
+        changeDate(dates, setAvailableAfter);
+    const changeRentalPeriodStart = (dates: DateObject | DateObject[]) =>
+        changeDate(dates, setRentalPeriodStart);
+    const changeRentalPeriodEnd = (dates: DateObject | DateObject[]) =>
+        changeDate(dates, setRentalPeriodEnd);
 
     if (!enums || !propertyLabels || !propertyId || !subCategoriesMap)
         return null;
@@ -279,7 +247,6 @@ const BasicSection: React.FC<any> = () => {
                     <Grid item xs={6}>
                         <TextField
                             fullWidth
-                            id="outlined-start-adornment"
                             select
                             label={t("Manager")}
                             value={manager}
@@ -303,7 +270,6 @@ const BasicSection: React.FC<any> = () => {
                     <Grid item xs={6}>
                         <TextField
                             fullWidth
-                            id="outlined-start-adornment"
                             select
                             label={t("Owner")}
                             value={owner}
@@ -342,12 +308,8 @@ const BasicSection: React.FC<any> = () => {
                     </Grid>
                     <Grid item xs={6}>
                         <FormControl fullWidth>
-                            <InputLabel id="demo-simple-select-label">
-                                {t("State")}
-                            </InputLabel>
+                            <InputLabel>{t("State")}</InputLabel>
                             <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
                                 value={state}
                                 label={t("State")}
                                 onChange={(e) => {
@@ -461,7 +423,6 @@ const BasicSection: React.FC<any> = () => {
                         }}
                         sx={{ cursor: "default" }}
                         color="primary"
-                        inputProps={{ "aria-label": "Elevator" }}
                     />
                     <Typography variant="body1" sx={{ ml: 0 }}>
                         {t("Rented")}
@@ -480,25 +441,14 @@ const BasicSection: React.FC<any> = () => {
                     <Grid item xs={12}>
                         <Grid container spacing={2}>
                             <Grid item xs={6}>
-                                {/* <DateFieldStyled
-                                    label={t("Available After")}
-                                    value={
-                                        availableAfter
-                                            ? new Date(availableAfter)
-                                            : currentDate
+                                <DatePicker
+                                    date={
+                                        availableAfter ||
+                                        currentDate.toDateString()
                                     }
-                                    onChange={(value: any) => {
-                                        handleDateChange(
-                                            setAvailableAfter,
-                                            value,
-                                            rentalPeriodStart,
-                                            rentalPeriodEnd,
-                                            availableAfter
-                                        );
-                                    }}
-                                    disabled={!rented} // Disable the field if "rented" is unchecked
-                                    sx={{ width: "100%" }} // Add custom styles to make it full width
-                                /> */}
+                                    label={t("Available After").toString()}
+                                    onSelect={changeAvailableAfter}
+                                />
                             </Grid>
                             <Grid item xs={6}>
                                 <OnlyNumbersInput
@@ -513,38 +463,24 @@ const BasicSection: React.FC<any> = () => {
                                 />
                             </Grid>
                             <Grid item xs={6}>
-                                {/* <DateFieldStyled
-                                    label={t("Rental Period Start")}
-                                    value={new Date(rentalPeriodStart)}
-                                    onChange={(value: any) => {
-                                        handleDateChange(
-                                            setRentalPeriodStart,
-                                            value,
-                                            rentalPeriodStart,
-                                            rentalPeriodEnd,
-                                            availableAfter
-                                        );
-                                    }}
-                                    disabled={!rented} // Disable the field if "rented" is unchecked
-                                    sx={{ width: "100%" }} // Add custom styles to make it full width
-                                /> */}
+                                <DatePicker
+                                    date={
+                                        rentalPeriodStart ||
+                                        currentDate.toDateString()
+                                    }
+                                    label={t("Rental Period Start").toString()}
+                                    onSelect={changeRentalPeriodStart}
+                                />
                             </Grid>
                             <Grid item xs={6}>
-                                {/* <DateFieldStyled
-                                    label={t("Rental Period End")}
-                                    value={new Date(rentalPeriodEnd)}
-                                    onChange={(value: any) => {
-                                        handleDateChange(
-                                            setRentalPeriodEnd,
-                                            value,
-                                            rentalPeriodStart,
-                                            rentalPeriodEnd,
-                                            availableAfter
-                                        );
-                                    }}
-                                    disabled={!rented} // Disable the field if "rented" is unchecked
-                                    sx={{ width: "100%" }} // Add custom styles to make it full width
-                                /> */}
+                                <DatePicker
+                                    date={
+                                        rentalPeriodEnd ||
+                                        currentDate.toDateString()
+                                    }
+                                    label={t("Rental Period End").toString()}
+                                    onSelect={changeRentalPeriodEnd}
+                                />
                             </Grid>
                         </Grid>
                     </Grid>
@@ -566,9 +502,6 @@ const BasicSection: React.FC<any> = () => {
                         }}
                         sx={{ cursor: "default" }}
                         color="primary"
-                        inputProps={{
-                            "aria-label": "Floor Heating Checkbox",
-                        }}
                     />
                     <Typography variant="body1" sx={{ ml: 0 }}>
                         {t("Debatable Price")}
@@ -592,9 +525,6 @@ const BasicSection: React.FC<any> = () => {
                         }}
                         sx={{ cursor: "default" }}
                         color="primary"
-                        inputProps={{
-                            "aria-label": "Floor Heating Checkbox",
-                        }}
                     />
                     <Typography variant="body1" sx={{ ml: 0 }}>
                         {t("Auction")}

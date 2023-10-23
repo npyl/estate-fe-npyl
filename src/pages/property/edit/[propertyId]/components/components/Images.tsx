@@ -7,6 +7,7 @@ import {
     properties,
     useAddPropertyImageMutation,
     useDeletePropertyImageMutation,
+    useGetPropertyByIdQuery,
     useReorderPropertyImagesMutation,
     useSetPropertyThumbailMutation,
     useUploadPropertyImageMutation,
@@ -15,8 +16,6 @@ import { IPropertyImage, IPropertyImagePOST } from "src/types/file";
 import { GalleryManager } from "./components/GalleryManager";
 import { SeeMore } from "./components/SeeMore";
 import UploadImages from "src/components/upload/UploadImages";
-import { useSelector } from "react-redux";
-import { selectPropertyImages } from "src/slices/property/files";
 import { useDispatch } from "react-redux";
 import { useDebouncedCallback } from "use-debounce";
 
@@ -29,10 +28,12 @@ const ImagesSection: React.FC = () => {
 
     const { propertyId } = router.query;
 
-    const files = useSelector(selectPropertyImages);
+    const { data: property } = useGetPropertyByIdQuery(+propertyId!);
+    const files = useMemo(() => property?.images || [], [property]);
 
     /* gallery */
     const [galleryManagerOpen, setGalleryManagerOpen] = useState(false);
+    const [openFromSeeMore, setOpenFromSeeMore] = useState(false);
     const [currentGalleryImage, setCurrentGalleryImage] =
         useState<IPropertyImage>();
     const [moreOpen, setMoreOpen] = useState(false);
@@ -160,16 +161,29 @@ const ImagesSection: React.FC = () => {
     const handleReorder = (items: string[]) =>
         reorderImages({ id: +propertyId!, body: items }).then(invalidateTags);
 
-    const handleCloseGalleryManager = () => setGalleryManagerOpen(false);
+    const handleCloseGalleryManager = () => {
+        setGalleryManagerOpen(false);
+
+        /* return to SeeMore */
+        if (openFromSeeMore) setMoreOpen(true);
+    };
 
     const handleOpenMore = () => setMoreOpen(true);
     const handleCloseMore = () => setMoreOpen(false);
 
-    const handleImageClick = (image: IPropertyImage) => {
-        setCurrentGalleryImage(image);
-        setMoreOpen(false);
-        setGalleryManagerOpen(true);
-    };
+    const handleImageClick = useCallback(
+        (image: IPropertyImage) => {
+            setCurrentGalleryImage(image);
+
+            /* return to SeeMore if opened from */
+            if (moreOpen) setOpenFromSeeMore(true);
+            else setOpenFromSeeMore(false);
+
+            setMoreOpen(false);
+            setGalleryManagerOpen(true);
+        },
+        [moreOpen]
+    );
     const handleImageChange = useCallback(
         (key: string) => {
             /*

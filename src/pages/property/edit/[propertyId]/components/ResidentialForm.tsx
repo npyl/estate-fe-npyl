@@ -41,7 +41,6 @@ import {
     setLongitude,
 } from "src/slices/property";
 
-import { selectPropertyImages } from "src/slices/property/files";
 import NotesSection from "./components/NotesSection";
 import VideoLinkSection from "./components/VideoLink";
 

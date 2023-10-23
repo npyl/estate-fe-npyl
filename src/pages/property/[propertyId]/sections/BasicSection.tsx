@@ -213,7 +213,11 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 return (
                     <ListDateItem
                         label={t("Available After")}
-                        value={data?.availableAfter}
+                        value={
+                            data?.availableAfter
+                                ? new Date(data?.availableAfter).toDateString()
+                                : ""
+                        }
                         align="horizontal"
                     />
                 );
@@ -221,7 +225,11 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 return (
                     <ListDateItem
                         label={t("Rental Period Start")}
-                        value={data?.rentalStart}
+                        value={
+                            data?.rentalStart
+                                ? new Date(data?.rentalStart).toDateString()
+                                : ""
+                        }
                         align="horizontal"
                     />
                 );
@@ -229,7 +237,11 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 return (
                     <ListDateItem
                         label={t("Rental Period End")}
-                        value={data?.rentalEnd}
+                        value={
+                            data?.rentalEnd
+                                ? new Date(data?.rentalEnd).toDateString()
+                                : ""
+                        }
                         align="horizontal"
                     />
                 );
