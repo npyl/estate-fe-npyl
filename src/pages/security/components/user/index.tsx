@@ -1,5 +1,6 @@
 import {
     Button,
+    IconButton,
     Paper,
     Table,
     TableBody,
@@ -13,6 +14,7 @@ import React, { FC, useState } from "react";
 import { useSecurityContext } from "src/contexts/security";
 import { useAllUsersQuery } from "src/services/user";
 import { UserForm } from "../../../../components/User/Form";
+import AnimatedTableRow from "src/components/Table/AnimatedTableRow";
 
 type Props = {
     changeTab: (event: React.SyntheticEvent, newValue: number) => void;
