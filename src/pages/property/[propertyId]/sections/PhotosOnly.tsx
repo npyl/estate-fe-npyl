@@ -1,4 +1,5 @@
 import { Grid, Paper } from "@mui/material";
+import { OnlyPhotosCarousel } from "src/components/CarouselThumbnail";
 
 import { IPropertyImage } from "src/types/file";
 import { IProperties } from "src/types/properties";
@@ -10,6 +11,7 @@ interface ImageSectionProps {
 const PhotosOnly: React.FC<ImageSectionProps> = (props) => {
     const { data } = props;
     const images: IPropertyImage[] = data.images;
+
     const carouselImages = [
         ...images.map((image, index) => ({
             id: index.toString(),
@@ -25,9 +27,7 @@ const PhotosOnly: React.FC<ImageSectionProps> = (props) => {
         <Paper elevation={10} sx={{ overflow: "auto", padding: "10px" }}>
             <Grid container>
                 <Grid item xs={12}>
-                    {/* <m.div variants={varFade().in}>
-                        <OnlyPhotosCarousel data={carouselImages} />
-                    </m.div> */}
+                    <OnlyPhotosCarousel data={carouselImages} />
                 </Grid>
             </Grid>
         </Paper>
