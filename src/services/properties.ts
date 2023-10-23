@@ -91,6 +91,9 @@ interface UploadPropertyImageToAmazonProps {
     contentType: string;
     image: File;
 }
+interface UploadResponse {
+    success: boolean;
+}
 
 export const properties = createApi({
     reducerPath: "properties",
@@ -297,7 +300,7 @@ export const properties = createApi({
             // invalidatesTags: ["Properties", "PropertyById"],
         }),
         uploadPropertyImage: builder.mutation<
-            Response,
+            UploadResponse,
             UploadPropertyImageToAmazonProps
         >({
             // INFO: upload to amazon
@@ -317,11 +320,11 @@ export const properties = createApi({
                         body: image,
                     });
 
-                    if ("error" in res0) {
-                        throw res0.error;
+                    if (!res0.ok) {
+                        throw new Error("Upload error: " + res0.statusText);
                     }
 
-                    return { data: res0 };
+                    return { data: { success: true } };
                 } catch (error) {
                     return { error: error as FetchBaseQueryError };
                 }
