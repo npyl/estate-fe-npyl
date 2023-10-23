@@ -1,14 +1,8 @@
 import { Card, CardHeader, CardContent } from "@mui/material";
 import { Upload } from "src/components/upload";
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import {
-    addPropertyBlueprint,
-    deletePropertyBlueprint,
-    selectPropertyBlueprints,
-    setCdnUrlForNextAvailableBlueprint,
-} from "src/slices/property/files";
 import {
     IExtendedPropertyBlueprint,
     IPropertyBlueprintPOST,
@@ -16,6 +10,7 @@ import {
 import {
     useAddPropertyBlueprintMutation,
     useDeletePropertyBlueprintMutation,
+    useGetPropertyByIdQuery,
 } from "src/services/properties";
 import { useRouter } from "next/router";
 
@@ -26,7 +21,8 @@ const BlueprintsSection: React.FC = () => {
 
     const { propertyId } = router.query;
 
-    const blueprints = useSelector(selectPropertyBlueprints);
+    const { data: property } = useGetPropertyByIdQuery(+propertyId!);
+    const blueprints = useMemo(() => property?.blueprints || [], [property]);
 
     const [addBlueprint] = useAddPropertyBlueprintMutation();
     const [deleteBlueprint] = useDeletePropertyBlueprintMutation();
@@ -58,7 +54,7 @@ const BlueprintsSection: React.FC = () => {
         const url = fileResponse.url;
         const cdnUrl = fileResponse.cdnUrl;
 
-        dispatch(addPropertyBlueprint({ ...body, key, filename }));
+        // dispatch(addPropertyBlueprint({ ...body, key, filename }));
 
         // PUT to amazon url
         const response = await fetch(url, {
@@ -72,7 +68,7 @@ const BlueprintsSection: React.FC = () => {
         if (!response) throw new Error("PUT request failed: " + response);
         if (!response.ok) throw new Error("Uploading the image failed!");
 
-        dispatch(setCdnUrlForNextAvailableBlueprint(cdnUrl));
+        // dispatch(setCdnUrlForNextAvailableBlueprint(cdnUrl));
 
         return { cdnUrl, key };
     };
@@ -89,7 +85,10 @@ const BlueprintsSection: React.FC = () => {
             imageKey: blueprints.filter(
                 (blueprint) => blueprint.url === inputFile.url
             )[0].key,
-        }).then(() => dispatch(deletePropertyBlueprint(inputFile.key)));
+        }).then(
+            () => {}
+            // dispatch(deletePropertyBlueprint(inputFile.key))
+        );
     };
 
     const handleRemoveAllFileData = () => {
@@ -97,7 +96,10 @@ const BlueprintsSection: React.FC = () => {
             deleteBlueprint({
                 propertyId: +propertyId!,
                 imageKey: blueprint.key,
-            }).then(() => dispatch(deletePropertyBlueprint(blueprint.key)))
+            }).then(
+                () => {}
+                // dispatch(deletePropertyBlueprint(blueprint.key))
+            )
         );
     };
 
@@ -108,7 +110,7 @@ const BlueprintsSection: React.FC = () => {
                 <Upload
                     multiple
                     thumbnail={false}
-                    files={blueprints}
+                    files={blueprints as IExtendedPropertyBlueprint[]}
                     onDrop={handleDropMultiFile}
                     onRemove={handleRemoveFile}
                     onRemoveAll={handleRemoveAllFileData}

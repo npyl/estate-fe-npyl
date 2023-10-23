@@ -7,6 +7,7 @@ import {
     properties,
     useAddPropertyImageMutation,
     useDeletePropertyImageMutation,
+    useGetPropertyByIdQuery,
     useReorderPropertyImagesMutation,
     useSetPropertyThumbailMutation,
     useUploadPropertyImageMutation,
@@ -15,8 +16,6 @@ import { IPropertyImage, IPropertyImagePOST } from "src/types/file";
 import { GalleryManager } from "./components/GalleryManager";
 import { SeeMore } from "./components/SeeMore";
 import UploadImages from "src/components/upload/UploadImages";
-import { useSelector } from "react-redux";
-import { selectPropertyImages } from "src/slices/property/files";
 import { useDispatch } from "react-redux";
 import { useDebouncedCallback } from "use-debounce";
 
@@ -29,7 +28,8 @@ const ImagesSection: React.FC = () => {
 
     const { propertyId } = router.query;
 
-    const files = useSelector(selectPropertyImages);
+    const { data: property } = useGetPropertyByIdQuery(+propertyId!);
+    const files = useMemo(() => property?.images || [], [property]);
 
     /* gallery */
     const [galleryManagerOpen, setGalleryManagerOpen] = useState(false);

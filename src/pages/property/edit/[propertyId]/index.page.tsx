@@ -10,10 +10,10 @@ import {
     setInitialState as setInitialNotesState,
 } from "src/slices/notes";
 import { resetState, selectAll, setInitialState } from "src/slices/property";
-import {
-    resetState as resetFiles,
-    setInitialState as setInitialFilesState,
-} from "src/slices/property/files";
+// import {
+//     resetState as resetFiles,
+//     setInitialState as setInitialFilesState,
+// } from "src/slices/property/files";
 import Form from "./Form";
 
 import { useGetPropertyByIdQuery } from "src/services/properties";
@@ -70,17 +70,17 @@ const EditPropertyPage: NextPage = () => {
         if (data) {
             dispatch(setInitialNotesState(data.notes));
             dispatch(setInitialState(data));
-            dispatch(
-                setInitialFilesState({
-                    propertyImages: data?.images,
-                    propertyBlueprints: data?.blueprints,
-                })
-            );
+            // dispatch(
+            //     setInitialFilesState({
+            //         propertyImages: data?.images,
+            //         propertyBlueprints: data?.blueprints,
+            //     })
+            // );
         }
     }, [data, propertyId]);
 
     const resetEverything = () => {
-        dispatch(resetFiles());
+        // dispatch(resetFiles());
         dispatch(resetLabels());
         dispatch(resetNotes());
         dispatch(resetState());
