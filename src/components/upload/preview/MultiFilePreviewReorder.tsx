@@ -11,6 +11,7 @@ import { LabeledImage } from "src/components/image";
 import PreviewImage from "src/components/image/PreviewImage";
 import { IPropertyImage } from "src/types/file";
 import { UploadPropertyImageProps } from "../types";
+import { motion } from "framer-motion";
 
 interface ItemProps {
     image: IPropertyImage;
@@ -22,21 +23,20 @@ const Item = ({ image, index, onClick }: ItemProps) => {
     const { url, hidden, thumbnail } = useMemo(() => image, [image]);
 
     return url ? (
-        // <motion.div
-        //     whileHover={{
-        //         scale: 0.95,
-        //     }}
-        // >
-        <LabeledImage
-            borderRadius={0.3}
-            src={url}
-            hidden={hidden}
-            label={thumbnail ? "main" : ""}
-            onClick={onClick}
-        />
+        <motion.div
+            whileHover={{
+                scale: 0.95,
+            }}
+        >
+            <LabeledImage
+                borderRadius={0.3}
+                src={url}
+                hidden={hidden}
+                label={thumbnail ? "main" : ""}
+                onClick={onClick}
+            />
+        </motion.div>
     ) : (
-        // </motion.div>
-        //BUILD
         <PreviewImage animate borderRadius={0.3} />
     );
 };
