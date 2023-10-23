@@ -11,7 +11,7 @@ import {
     Typography,
 } from "@mui/material";
 import { useDebouncedCallback } from "use-debounce";
-import DateFieldStyled from "src/components/DateFieldStyled";
+import DatePicker from "src/components/DatePicker";
 
 import * as React from "react";
 
@@ -480,7 +480,7 @@ const BasicSection: React.FC<any> = () => {
                     <Grid item xs={12}>
                         <Grid container spacing={2}>
                             <Grid item xs={6}>
-                                <DateFieldStyled
+                                {/* <DateFieldStyled
                                     label={t("Available After")}
                                     value={
                                         availableAfter
@@ -498,7 +498,7 @@ const BasicSection: React.FC<any> = () => {
                                     }}
                                     disabled={!rented} // Disable the field if "rented" is unchecked
                                     sx={{ width: "100%" }} // Add custom styles to make it full width
-                                />
+                                /> */}
                             </Grid>
                             <Grid item xs={6}>
                                 <OnlyNumbersInput
@@ -513,7 +513,7 @@ const BasicSection: React.FC<any> = () => {
                                 />
                             </Grid>
                             <Grid item xs={6}>
-                                <DateFieldStyled
+                                {/* <DateFieldStyled
                                     label={t("Rental Period Start")}
                                     value={new Date(rentalPeriodStart)}
                                     onChange={(value: any) => {
@@ -527,10 +527,10 @@ const BasicSection: React.FC<any> = () => {
                                     }}
                                     disabled={!rented} // Disable the field if "rented" is unchecked
                                     sx={{ width: "100%" }} // Add custom styles to make it full width
-                                />
+                                /> */}
                             </Grid>
                             <Grid item xs={6}>
-                                <DateFieldStyled
+                                {/* <DateFieldStyled
                                     label={t("Rental Period End")}
                                     value={new Date(rentalPeriodEnd)}
                                     onChange={(value: any) => {
@@ -544,7 +544,7 @@ const BasicSection: React.FC<any> = () => {
                                     }}
                                     disabled={!rented} // Disable the field if "rented" is unchecked
                                     sx={{ width: "100%" }} // Add custom styles to make it full width
-                                />
+                                /> */}
                             </Grid>
                         </Grid>
                     </Grid>

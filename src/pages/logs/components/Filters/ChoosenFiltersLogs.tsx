@@ -1,11 +1,11 @@
-import { Chip, Grid, Stack, Typography } from "@mui/material";
+import { Chip, Grid } from "@mui/material";
+import { format } from "date-fns"; // for date formatting
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useGetLabelsQuery } from "src/services/labels";
 import { useAllUsersQuery } from "src/services/user";
 import { deleteFilter, getChangedFields, selectIds } from "src/slices/log";
-import { format } from "date-fns"; // for date formatting
 const ChosenFiltersLogs = () => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
@@ -39,8 +39,6 @@ const ChosenFiltersLogs = () => {
         [users]
     );
 
-    // New function to check for date pairs
-    const hasDatePair = (key: string) => ["fromDate", "toDate"].includes(key);
     // Adjusted logic to ensure date pair is treated as a single unit
     let dateRangeRendered = false;
     return (

@@ -113,10 +113,10 @@ const MatchingPropertiesSection: React.FC = () => {
         pageSize,
     });
 
-    const demands = useMemo(() => customer?.demands, [customer?.demands]);
+    const demands = useMemo(() => customer?.demands || [], [customer?.demands]);
 
     const totalRows = useMemo(
-        () => propertiesPage?.totalElements,
+        () => propertiesPage?.totalElements || 1,
         [propertiesPage?.totalElements]
     );
 

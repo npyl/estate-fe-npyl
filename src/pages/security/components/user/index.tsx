@@ -1,7 +1,5 @@
-import EditIcon from "@mui/icons-material/Edit"; // Make sure to import EditIcon
 import {
     Button,
-    IconButton,
     Paper,
     Table,
     TableBody,
@@ -10,12 +8,11 @@ import {
     TableHead,
     TableRow,
 } from "@mui/material";
+import { useRouter } from "next/router";
 import React, { FC, useState } from "react";
 import { useSecurityContext } from "src/contexts/security";
 import { useAllUsersQuery } from "src/services/user";
 import { UserForm } from "../../../../components/User/Form";
-import AnimatedTableRow from "src/components/Table/AnimatedTableRow";
-import { useRouter } from "next/router";
 
 type Props = {
     changeTab: (event: React.SyntheticEvent, newValue: number) => void;
@@ -62,7 +59,8 @@ const UserPage: FC<Props> = ({ changeTab }) => {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {users?.map((user) => (
+                        {/* BUILD */}
+                        {/* {users?.map((user) => (
                             <AnimatedTableRow
                                 key={user.id}
                                 onClick={() => handleRowClick(user.id)}
@@ -97,7 +95,7 @@ const UserPage: FC<Props> = ({ changeTab }) => {
                                     </Button>
                                 </TableCell>
                             </AnimatedTableRow>
-                        ))}
+                        ))} */}
                     </TableBody>
                 </Table>
             </TableContainer>

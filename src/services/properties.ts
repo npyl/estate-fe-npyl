@@ -1,4 +1,9 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {
+    FetchBaseQueryError,
+    FetchBaseQueryMeta,
+    createApi,
+    fetchBaseQuery,
+} from "@reduxjs/toolkit/query/react";
 import {
     IProperties,
     IPropertiesPOST,
@@ -28,10 +33,6 @@ export interface BulkEditRequest {
     bedrooms?: number;
     state?: string;
 }
-interface BulkDeleteRequest {
-    propertyIds: number[];
-}
-
 interface IGetPropertyAttributeProps {
     propertyId: number;
     attributeName: string;
@@ -76,6 +77,19 @@ interface ISuggestForPropertyParams {
     propertyId: number;
     page: number;
     pageSize: number;
+}
+
+interface ReorderImagesWithSetImageVisibilityProps {
+    propertyId: number;
+    imageKeys: string[];
+    imageKey: string;
+    hidden: boolean;
+}
+
+interface UploadPropertyImageToAmazonProps {
+    url: string;
+    contentType: string;
+    image: File;
 }
 
 export const properties = createApi({
@@ -251,11 +265,70 @@ export const properties = createApi({
             IFileResponse,
             IPropertyAddFileParams<IPropertyImagePOST>
         >({
+            // INFO: asks for an amazon url from backend; to be used before uploadPropertyImage
             query: (params: IPropertyAddFileParams<IPropertyImagePOST>) => ({
                 url: `/${params.id}/image`,
                 method: "POST",
                 body: params.body,
             }),
+            onQueryStarted: async (
+                { body, id },
+                { dispatch, queryFulfilled }
+            ) => {
+                const patchResult = dispatch(
+                    properties.util.updateQueryData(
+                        "getPropertyById",
+                        id,
+                        (draft) => {
+                            draft.images.push({
+                                ...body,
+                                url: null,
+                            } as IPropertyImage);
+                        }
+                    )
+                );
+                try {
+                    await queryFulfilled;
+                } catch {
+                    patchResult.undo();
+                }
+            },
+            // WARN: Do not add the tags! addPropertyImage needs to be used optimistically, to explicitly set the url null and know to show a preview Image.
+            // invalidatesTags: ["Properties", "PropertyById"],
+        }),
+        uploadPropertyImage: builder.mutation<
+            Response,
+            UploadPropertyImageToAmazonProps
+        >({
+            // INFO: upload to amazon
+            async queryFn(
+                { url, contentType, image },
+                api,
+                extraOptions,
+                baseQuery
+            ) {
+                try {
+                    // PUT to amazon url
+                    const res0 = await fetch(url, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": contentType,
+                        },
+                        body: image,
+                    });
+
+                    if ("error" in res0) {
+                        throw res0.error;
+                    }
+
+                    return { data: res0 };
+                } catch (error) {
+                    return { error: error as FetchBaseQueryError };
+                }
+            },
+            // WARN: Do not add the tags! We use Promise.all on uploadPropertyImage to wait for all the photos to upload.
+            //          This is because, every photo contains a non-null url, but it is not ready for fetching.
+            // invalidatesTags: ["Properties", "PropertyById"],
         }),
         editPropertyImage: builder.mutation<
             IFileResponse,
@@ -267,7 +340,7 @@ export const properties = createApi({
                 method: "POST",
                 body: params.body,
             }),
-            invalidatesTags: ["PropertyByIdImages", "PropertyById"],
+            invalidatesTags: ["Properties", "PropertyById"],
         }),
         setPropertyThumbail: builder.mutation<void, IPropertySetThumbnailProps>(
             {
@@ -275,7 +348,6 @@ export const properties = createApi({
                     url: `/${props.propertyId}/thumbnail/${props.imageKey}`,
                     method: "POST",
                 }),
-                invalidatesTags: ["PropertyByIdImages", "PropertyById"],
             }
         ),
         deletePropertyImage: builder.mutation<void, IDeleteImageProps>({
@@ -283,7 +355,7 @@ export const properties = createApi({
                 url: `/${propertyId}/image/${imageKey}`,
                 method: "DELETE",
             }),
-            invalidatesTags: ["PropertyByIdImages", "PropertyById"],
+            invalidatesTags: ["Properties", "PropertyById"],
         }),
 
         addPropertyBlueprint: builder.mutation<
@@ -306,15 +378,157 @@ export const properties = createApi({
         }),
 
         reorderPropertyImages: builder.mutation<
-            void,
+            number,
             IPropertyAddFileParams<string[]>
         >({
-            query: (params: IPropertyAddFileParams<string[]>) => ({
-                url: `/${params.id}/reorderImages`,
-                method: "POST",
-                body: params.body,
-            }),
-            invalidatesTags: ["Properties", "PropertyByIdImages"],
+            async queryFn(
+                { id: propertyId, body: imageKeys },
+                api,
+                extraOptions,
+                baseQuery
+            ) {
+                try {
+                    const reorderResponse = await baseQuery({
+                        url: `/${propertyId}/reorderImages`,
+                        method: "POST",
+                        body: imageKeys,
+                    });
+
+                    if ("error" in reorderResponse) {
+                        throw reorderResponse.error;
+                    }
+
+                    // Then, set thumbnail
+                    const thumbnailResponse = await baseQuery({
+                        url: `${propertyId}/thumbnail/${imageKeys[0]}`,
+                        method: "POST",
+                    });
+
+                    if ("error" in thumbnailResponse) {
+                        throw thumbnailResponse.error;
+                    }
+
+                    return { data: 0 }; // 0 for success
+                } catch (error) {
+                    return { error: error as FetchBaseQueryError };
+                }
+            },
+
+            onQueryStarted: async (
+                { id, body: imageKeys },
+                { dispatch, queryFulfilled }
+            ) => {
+                const patchResult = dispatch(
+                    properties.util.updateQueryData(
+                        "getPropertyById",
+                        id,
+                        (draft) => {
+                            // reorder based on imageKeys
+                            let reordered = imageKeys.map(
+                                (k) => draft.images.find((i) => i.key === k)!
+                            );
+                            if (!reordered) return;
+
+                            // set thumbnail
+                            reordered[0].thumbnail = true;
+
+                            draft.images = reordered;
+                        }
+                    )
+                );
+                try {
+                    await queryFulfilled;
+                } catch {
+                    patchResult.undo();
+                }
+            },
+
+            invalidatesTags: ["Properties", "PropertyById"],
+        }),
+        reorderPropertyImagesWithSetImageVisibility: builder.mutation<
+            IFileResponse,
+            ReorderImagesWithSetImageVisibilityProps
+        >({
+            async queryFn(
+                { propertyId, imageKeys, imageKey, hidden },
+                api,
+                extraOptions,
+                baseQuery
+            ) {
+                try {
+                    // First, set the visibility of a specific image.
+                    const visibilityResponse = await baseQuery({
+                        url: `${propertyId}/image`,
+                        method: "POST",
+                        body: {
+                            key: imageKey,
+                            hidden,
+                        },
+                    });
+
+                    if ("error" in visibilityResponse) {
+                        throw visibilityResponse.error;
+                    }
+
+                    // Then, set thumbnail
+                    const thumbnailResponse = await baseQuery({
+                        url: `${propertyId}/thumbnail/${imageKeys[0]}`,
+                        method: "POST",
+                    });
+
+                    if ("error" in thumbnailResponse) {
+                        throw thumbnailResponse.error;
+                    }
+
+                    // Then, reorder the images.
+                    const reorderResponse = await baseQuery({
+                        url: `/${propertyId}/reorderImages`,
+                        method: "POST",
+                        body: imageKeys,
+                    });
+
+                    if ("error" in reorderResponse) {
+                        throw reorderResponse.error;
+                    }
+
+                    return { data: reorderResponse.data as IFileResponse };
+                } catch (error) {
+                    return { error: error as FetchBaseQueryError };
+                }
+            },
+            onQueryStarted: async (
+                { propertyId, imageKeys, imageKey, hidden },
+                { dispatch, queryFulfilled }
+            ) => {
+                const patchResult = dispatch(
+                    properties.util.updateQueryData(
+                        "getPropertyById",
+                        propertyId,
+                        (draft) => {
+                            // reorder based on imageKeys
+                            const reordered = imageKeys.map(
+                                (k) => draft.images.find((i) => i.key === k)!
+                            );
+                            if (!reordered) return;
+
+                            // set visibility
+                            const toSetVisibilityIndex = reordered.findIndex(
+                                (i) => i.key === imageKey
+                            );
+                            if (toSetVisibilityIndex < 0) return;
+                            reordered[toSetVisibilityIndex].hidden = hidden;
+
+                            draft.images = reordered;
+                        }
+                    )
+                );
+                try {
+                    await queryFulfilled;
+                } catch {
+                    patchResult.undo();
+                }
+            },
+            invalidatesTags: ["Properties", "PropertyById"],
         }),
     }),
 });
@@ -344,6 +558,7 @@ export const {
 
     // images & files
     useAddPropertyImageMutation,
+    useUploadPropertyImageMutation,
     useEditPropertyImageMutation,
     useSetPropertyThumbailMutation,
     useDeletePropertyImageMutation,
@@ -354,4 +569,5 @@ export const {
     useDeletePropertyBlueprintMutation,
 
     useReorderPropertyImagesMutation,
+    useReorderPropertyImagesWithSetImageVisibilityMutation,
 } = properties;

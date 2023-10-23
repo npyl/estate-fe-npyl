@@ -1,16 +1,15 @@
-import { Button, Box, Grid, Paper, Stack, Typography } from "@mui/material";
-import { useState, useMemo, useRef } from "react";
-import Map, { IMapAddress, IMapMarker } from "src/components/Map/Map";
-import { BookingItem } from "./BookingItem";
-import { IPropertyResultResponse } from "src/types/properties";
-import { useRouter } from "next/router";
-import Iconify from "src/components/iconify";
-import ICarouselImage from "src/components/carousel/types";
-import CarouselSimple from "src/components/CarouselSimple";
 import FlipIcon from "@mui/icons-material/Flip";
+import { Box, Button, Grid, Paper, Stack, Typography } from "@mui/material";
+import { useRouter } from "next/router";
+import { useEffect, useMemo, useRef, useState } from "react";
+import CarouselSimple from "src/components/CarouselSimple";
+import Map, { IMapAddress, IMapMarker } from "src/components/Map/Map";
 import { DrawShape, StopDraw } from "src/components/Map/types";
 import { isPointInsideShape } from "src/components/Map/util";
-import * as _ from "lodash";
+import ICarouselImage from "src/components/carousel/types";
+import Iconify from "src/components/iconify";
+import { IPropertyResultResponse } from "src/types/properties";
+import { BookingItem } from "./BookingItem";
 
 interface Props {
     data: IPropertyResultResponse[];
@@ -60,7 +59,7 @@ const MapView = ({ data }: Props) => {
     const toggleOrientation = () => setOrientation(!orientation);
 
     const handleDraw = (shape: DrawShape | StopDraw) =>
-        setShape(_.cloneDeep(shape));
+        setShape(JSON.parse(JSON.stringify(shape)));
 
     const updateMainMarkerCoordinates = (lat: number, lng: number) => {
         let newMarker = mainMarker;
@@ -178,7 +177,7 @@ export function HorizontalCard({
         item.location.lat === selectedMarker?.lat &&
         item.location.lng === selectedMarker?.lng;
 
-    useMemo(() => {
+    useEffect(() => {
         if (isActive && itemRef.current) {
             itemRef.current.scrollIntoView({ behavior: "smooth" });
         }

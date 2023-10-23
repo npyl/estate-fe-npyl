@@ -1,4 +1,9 @@
-import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+import {
+    GoogleMap,
+    Libraries,
+    Marker,
+    useJsApiLoader,
+} from "@react-google-maps/api";
 import { CustomDrawingComponent } from "./Draw";
 import React, { useCallback, useMemo, useState } from "react";
 import { DrawShape, ShapeData, StopDraw } from "./types";
@@ -61,12 +66,13 @@ interface IMapProps {
 
 const apiKey = "AIzaSyCW6oijpbC0JhlXRwPBtNIxy9e4sn7NnwU";
 const athensLatLng = { lat: 37.98381, lng: 23.727539 };
+const libraries = ["drawing", "places", "geometry"] as Libraries;
 
 export const useLoadApi = () => {
     return useJsApiLoader({
         id: "google-map-script",
         googleMapsApiKey: apiKey,
-        libraries: ["drawing", "places", "geometry"],
+        libraries: libraries,
     });
 };
 

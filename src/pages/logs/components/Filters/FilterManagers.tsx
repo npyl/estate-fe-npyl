@@ -6,11 +6,11 @@ import {
     Select,
     SelectChangeEvent,
 } from "@mui/material";
-import { useDispatch } from "src/store";
 import { useTranslation } from "react-i18next";
-import { useAllUsersQuery } from "src/services/user";
 import { useSelector } from "react-redux";
+import { useAllUsersQuery } from "src/services/user";
 import { selectUsers, setUsers } from "src/slices/log";
+import { useDispatch } from "src/store";
 
 export default function FilterLogManager() {
     const { t } = useTranslation();

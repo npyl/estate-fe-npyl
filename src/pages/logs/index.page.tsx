@@ -1,34 +1,32 @@
-import { FC, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { format } from "date-fns"; // for date formatting
 import {
-    useAdminLogsPaginatedQuery,
-    useFilterLogsMutation,
-} from "src/services/logs";
-import Link from "next/link";
-import {
+    Avatar,
     Box,
-    CircularProgress,
-    Paper,
-    Typography,
+    Divider,
+    Grid,
     Pagination,
+    Paper,
     Skeleton,
     Stack,
-    Grid,
+    Typography,
+    useTheme,
 } from "@mui/material";
-import { ILog } from "src/types/logs"; // import your log type
+import { alpha } from "@mui/material/styles";
+import { format } from "date-fns"; // for date formatting
 import { NextPage } from "next";
+import Link from "next/link";
+import { FC, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-import { alpha } from "@mui/material/styles";
-import { Avatar, useTheme, Divider } from "@mui/material";
+import { useFilterLogsMutation } from "src/services/logs";
+import { ILog } from "src/types/logs"; // import your log type
 
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import { deepOrange, green, deepPurple, yellow } from "@mui/material/colors";
 import { Chip } from "@mui/material";
-import { FilterLogSection } from "./components";
+import { green, yellow } from "@mui/material/colors";
 import { useSelector } from "react-redux";
 import { selectAll } from "src/slices/log";
+import { FilterLogSection } from "./components";
 // import { parse, formatISO, utcToZonedTime } from "date-fns";
 interface LogCardProps {
     log: ILog;
@@ -37,7 +35,7 @@ interface LogCardProps {
 const LogCard: FC<LogCardProps> = ({ log }) => {
     const theme = useTheme();
     const formattedDate = format(new Date(log.createdAt), "dd-MM-yyyy hh:mm");
-
+    if (!log) return;
     // date changer for filters
     // const date = new Date(log.createdAt);
     // const datei = Math.floor(date.getTime());
@@ -144,7 +142,7 @@ const LogCard: FC<LogCardProps> = ({ log }) => {
                         <strong>
                             {log.user.firstName} {log.user.lastName}
                         </strong>{" "}
-                        {log.action.value?.toLowerCase()} a{" "}
+                        {log.action.value?.toLowerCase()}{" "}
                         {log.resourceType.value?.toLowerCase()}{" "}
                         {resourceDescription}
                     </Typography>
@@ -213,7 +211,7 @@ const Logs: NextPage = () => {
     ));
 
     // Main content to render
-    const content = data?.content.map((log) => (
+    const content = data?.content.map((log: ILog) => (
         <LogCard key={log.createdAt} log={log} />
     ));
 

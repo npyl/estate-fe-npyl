@@ -43,7 +43,7 @@ const NestedTable = ({ row, state }: Props) => {
                 subcategories2,
                 subcategories3,
                 subcategories4
-            ),
+            ) || [],
         [row, subcategories1, subcategories2, subcategories3, subcategories4]
     );
 

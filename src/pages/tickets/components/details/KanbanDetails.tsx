@@ -14,9 +14,7 @@ import { alpha, styled } from "@mui/material/styles";
 import { IKanbanCard } from "src/types/kanban";
 // components
 import { Scrollbar } from "src/components/scrollbar";
-import DateRangePicker, {
-    useDateRangePicker,
-} from "../../../../components/date-range-picker";
+
 import Iconify from "../../../../components/iconify";
 //
 import KanbanContactsDialog from "../KanbanContactsDialog";

@@ -51,7 +51,12 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Wiring",
         "Loading-Unloading Elevator",
     ],
-    LAND: ["Floor To Area Ratio", "Coverage Factor", "Facade Length"],
+    LAND: [
+        "Floor To Area Ratio",
+        "Coverage Factor",
+        "Facade Length",
+        "Inclination",
+    ],
     OTHER: [
         "Safety Door",
         "Double Frontage",
@@ -321,7 +326,7 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Inclination")}
-                        value={technicalFeatures?.inclination}
+                        value={technicalFeatures?.inclination?.value}
                         align="horizontal"
                     />
                 );

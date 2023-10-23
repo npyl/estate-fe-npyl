@@ -17,7 +17,7 @@ const User: NextPage = () => {
 
     // TODO: remove
     const user = useMemo(
-        () => (users ? users.find((u) => u.id === +userId!) : null),
+        () => users?.find((u) => u.id === +userId!) || null,
         [users, userId]
     );
 

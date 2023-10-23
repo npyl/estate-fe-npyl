@@ -1,23 +1,15 @@
 import { Autocomplete, FormControl, TextField } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import { selectManagerId, setManagerId } from "src/slices/filters";
-
+import { useDispatch } from "react-redux";
+import { setManagerId } from "src/slices/filters";
 import { useAllUsersQuery } from "src/services/user";
-
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 export default function ManagerSelect() {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
-    const managerId = useSelector(selectManagerId);
     const [autocompleteValue, setAutocompleteValue] = useState("");
-
-    useEffect(
-        () => setAutocompleteValue(managerId?.toString() || ""),
-        [managerId]
-    );
 
     const { data: managerIdsValues } = useAllUsersQuery(undefined, {
         selectFromResult: ({ data }) => ({
@@ -52,9 +44,10 @@ export default function ManagerSelect() {
     };
 
     return (
-        <FormControl sx={{ width: 135 }}>
+        <FormControl sx={{ width: 180 }}>
             <Autocomplete
                 disablePortal
+                clearIcon={<></>}
                 value={autocompleteValue}
                 onChange={autocompleteChange}
                 options={managerValues}

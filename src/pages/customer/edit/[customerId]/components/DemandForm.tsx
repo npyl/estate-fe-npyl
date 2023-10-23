@@ -73,7 +73,7 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
 
     const enums = useGlobals();
 
-    const propertyEnums = useMemo(() => enums?.property, [enums]);
+    const propertyEnums = useMemo(() => enums?.property || null, [enums]);
     const stateEnum = propertyEnums?.state;
     const detailsEnum = propertyEnums?.details;
     const parentCategoryEnum = propertyEnums?.parentCategory;
@@ -83,8 +83,11 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
     const maxFloors = detailsEnum?.floors;
 
     const demands = useSelector(selectDemands);
-    const demand = useMemo(() => demands.at(index), [demands, index]);
-    const demandFilters = useMemo(() => demand?.filters, [demand?.filters]);
+    const demand = useMemo(() => demands.at(index) || null, [demands, index]);
+    const demandFilters = useMemo(
+        () => demand?.filters || null,
+        [demand?.filters]
+    );
     const leaser = useSelector(selectLeaser);
     const buyer = useSelector(selectBuyer);
     const stepValue = buyer ? 25000 : leaser ? 100 : 100; // default to 100 if neither is true
@@ -324,7 +327,7 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
             setMinYearOfConstruction,
             setMaxYearOfConstruction
         );
-
+    //fdd
     if (
         !propertyEnums ||
         !stateEnum ||
@@ -713,7 +716,7 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                     <Grid
                         container
                         direction={"row"}
-                        spacing={2}
+                        spacing={1}
                         paddingTop={2}
                         paddingLeft={3}
                         paddingRight={3}
@@ -762,72 +765,77 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                                 max={maxFloorsArray.length - 41}
                             />
                         )}
-
-                        <Grid item xs={6}>
-                            <FormControl fullWidth>
-                                <InputLabel>Min Floor</InputLabel>
-                                <Select
-                                    value={minFloor}
-                                    label="Min floor"
-                                    onChange={(e) => {
-                                        dispatch(
-                                            setMinFloor({
-                                                index,
-                                                value: e.target.value,
-                                            })
-                                        );
-                                    }}
-                                >
-                                    {minFloors
-                                        ? minFloors.map(
-                                              (
-                                                  { key, value },
-                                                  minFloorsSelectIndex
-                                              ) => (
-                                                  <MenuItem
-                                                      key={minFloorsSelectIndex}
-                                                      value={key}
-                                                  >
-                                                      {value}
-                                                  </MenuItem>
+                        <Grid container spacing={2}>
+                            <Grid item xs={6}>
+                                <FormControl fullWidth>
+                                    <InputLabel>{t("Min Floor")}</InputLabel>
+                                    <Select
+                                        value={minFloor}
+                                        label="Min floor"
+                                        onChange={(e) => {
+                                            dispatch(
+                                                setMinFloor({
+                                                    index,
+                                                    value: e.target.value,
+                                                })
+                                            );
+                                        }}
+                                    >
+                                        {minFloors
+                                            ? minFloors.map(
+                                                  (
+                                                      { key, value },
+                                                      minFloorsSelectIndex
+                                                  ) => (
+                                                      <MenuItem
+                                                          key={
+                                                              minFloorsSelectIndex
+                                                          }
+                                                          value={key}
+                                                      >
+                                                          {value}
+                                                      </MenuItem>
+                                                  )
                                               )
-                                          )
-                                        : null}
-                                </Select>
-                            </FormControl>
-                        </Grid>
-                        <Grid item xs={6}>
-                            <FormControl fullWidth>
-                                <InputLabel>Max Floor</InputLabel>
-                                <Select
-                                    value={maxFloor}
-                                    label="Max floor"
-                                    onChange={(e) => {
-                                        dispatch(
-                                            setMaxFloor({
-                                                index,
-                                                value: e.target.value,
-                                            })
-                                        );
-                                    }}
-                                >
-                                    {maxFloors
-                                        ? maxFloors.map(
-                                              (
-                                                  { key, value },
-                                                  maxFloorsSelectIndex
-                                              ) => (
-                                                  <MenuItem
-                                                      key={maxFloorsSelectIndex}
-                                                      value={key}
-                                                  >
-                                                      {value}
-                                                  </MenuItem>
+                                            : null}
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={6}>
+                                <FormControl fullWidth>
+                                    <InputLabel>{t("Max Floor")}</InputLabel>
+                                    <Select
+                                        value={maxFloor}
+                                        label="Max floor"
+                                        onChange={(e) => {
+                                            dispatch(
+                                                setMaxFloor({
+                                                    index,
+                                                    value: e.target.value,
+                                                })
+                                            );
+                                        }}
+                                    >
+                                        {maxFloors
+                                            ? maxFloors.map(
+                                                  (
+                                                      { key, value },
+                                                      maxFloorsSelectIndex
+                                                  ) => (
+                                                      <MenuItem
+                                                          key={
+                                                              maxFloorsSelectIndex
+                                                          }
+                                                          value={key}
+                                                      >
+                                                          {value}
+                                                      </MenuItem>
+                                                  )
                                               )
-                                          )
-                                        : null}
-                                </Select>
-                            </FormControl>
+                                            : null}
+                                    </Select>
+                                </FormControl>
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Grid>

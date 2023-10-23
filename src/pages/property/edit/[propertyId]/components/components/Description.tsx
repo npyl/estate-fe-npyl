@@ -12,7 +12,7 @@ import { useEffect, useMemo, useState } from "react";
 import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { debounce } from "lodash";
+import { useDebouncedCallback } from "use-debounce";
 
 const DescriptionSection: React.FC = () => {
     const { t } = useTranslation();
@@ -39,19 +39,17 @@ const DescriptionSection: React.FC = () => {
         setEditorState(EditorState.createWithContent(contentState));
     }, []);
 
-    const debouncedSetDescription = useMemo(
-        () =>
-            debounce((newEditorState: EditorState) => {
-                // convert currentState (JSON) to string (=> stringify) for description
-                const contentState = newEditorState.getCurrentContent();
-                const plainText = contentState.getPlainText();
-                dispatch(setDescriptionText(plainText));
-                const contentStateJSON = JSON.stringify(
-                    convertToRaw(contentState)
-                );
-                dispatch(setDescription(contentStateJSON));
-            }, 300), // debounce for 300ms
-        []
+    const debouncedSetDescription = useDebouncedCallback(
+        (newEditorState: EditorState) => {
+            const contentState = newEditorState.getCurrentContent();
+            const plainText = contentState.getPlainText();
+
+            dispatch(setDescriptionText(plainText));
+
+            const contentStateJSON = JSON.stringify(convertToRaw(contentState));
+            dispatch(setDescription(contentStateJSON));
+        },
+        300 // the delay in ms
     );
 
     return (

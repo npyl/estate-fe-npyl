@@ -15,12 +15,11 @@ import {
     Typography,
 } from "@mui/material";
 // components
-import { Scrollbar } from "src/components/scrollbar";
-import Iconify from "../../../components/iconify";
-import SearchNotFound from "../../../components/search-not-found";
 import { useTranslation } from "react-i18next";
+import { Scrollbar } from "src/components/scrollbar";
 import { useAllUsersQuery } from "src/services/user";
 import { IUser } from "src/types/user";
+import Iconify from "../../../components/iconify";
 
 // ----------------------------------------------------------------------
 
@@ -122,13 +121,10 @@ export default function KanbanContactsDialog({
                     value={searchContacts}
                     onChange={handleSearchContacts}
                     placeholder="Search..."
-                    InputProps={{
+                    inputProps={{
                         startAdornment: (
                             <InputAdornment position="start">
-                                <Iconify
-                                    icon="eva:search-fill"
-                                    sx={{ color: "text.disabled" }}
-                                />
+                                <Iconify icon="eva:search-fill" />
                             </InputAdornment>
                         ),
                     }}
@@ -171,23 +167,23 @@ export default function KanbanContactsDialog({
 
 // ----------------------------------------------------------------------
 
-function applyFilter({
-    inputData,
-    query,
-}: {
-    inputData: IUser[];
-    query: string;
-}) {
-    if (query) {
-        inputData = inputData.filter(
-            (contact) =>
-                contact.firstName.toLowerCase().indexOf(query.toLowerCase()) !==
-                    -1 ||
-                contact.lastName.toLowerCase().indexOf(query.toLowerCase()) !==
-                    -1 ||
-                contact.email.toLowerCase().indexOf(query.toLowerCase()) !== -1
-        );
-    }
+// function applyFilter({
+//     inputData,
+//     query,
+// }: {
+//     inputData: IUser[];
+//     query: string;
+// }) {
+//     if (query) {
+//         inputData = inputData.filter(
+//             (contact) =>
+//                 contact.firstName.toLowerCase().indexOf(query.toLowerCase()) !==
+//                     -1 ||
+//                 contact.lastName.toLowerCase().indexOf(query.toLowerCase()) !==
+//                     -1 ||
+//                 contact.email.toLowerCase().indexOf(query.toLowerCase()) !== -1
+//         );
+//     }
 
-    return inputData;
-}
+//     return inputData;
+// }

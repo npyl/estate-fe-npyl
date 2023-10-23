@@ -1,17 +1,16 @@
-import { UploadPropertyImageProps } from "../types";
-import PreviewImage from "src/components/image/PreviewImage";
-import { LabeledImage } from "src/components/image";
-import { IPropertyImage } from "src/types/file";
-import { useCallback, useMemo } from "react";
-import { motion } from "framer-motion";
-import {
-    DroppableTypeItem,
-    TwoDimentionsDnd,
-    itemId,
-    rowId,
-} from "src/components/TwoDimentionsDnd";
-import { DropResult } from "react-beautiful-dnd";
 import { Check } from "@mui/icons-material";
+import { useCallback, useMemo } from "react";
+import { DropResult } from "react-beautiful-dnd";
+import {
+    TwoDimentionsDnd,
+    parseItemId,
+    parseRowId,
+} from "src/components/TwoDimentionsDnd/TwoDimentionsDnd";
+import { DroppableTypeItem } from "src/components/TwoDimentionsDnd/types";
+import { LabeledImage } from "src/components/image";
+import PreviewImage from "src/components/image/PreviewImage";
+import { IPropertyImage } from "src/types/file";
+import { UploadPropertyImageProps } from "../types";
 
 interface ItemProps {
     image: IPropertyImage;
@@ -20,23 +19,24 @@ interface ItemProps {
 }
 
 const Item = ({ image, index, onClick }: ItemProps) => {
-    const { url, hidden } = useMemo(() => image, [image]);
+    const { url, hidden, thumbnail } = useMemo(() => image, [image]);
 
     return url ? (
-        <motion.div
-            whileHover={{
-                scale: 0.95,
-            }}
-        >
-            <LabeledImage
-                borderRadius={0.3}
-                src={url}
-                hidden={hidden}
-                label={index === 0 ? "main" : ""}
-                onClick={onClick}
-            />
-        </motion.div>
+        // <motion.div
+        //     whileHover={{
+        //         scale: 0.95,
+        //     }}
+        // >
+        <LabeledImage
+            borderRadius={0.3}
+            src={url}
+            hidden={hidden}
+            label={thumbnail ? "main" : ""}
+            onClick={onClick}
+        />
     ) : (
+        // </motion.div>
+        //BUILD
         <PreviewImage animate borderRadius={0.3} />
     );
 };
@@ -46,7 +46,7 @@ interface SelectableItemProps extends ItemProps {
     selected: boolean;
 }
 
-const SelectableItem = ({
+export const SelectableItem = ({
     selectMultiple,
     selected,
     image,
@@ -89,7 +89,6 @@ export default function MultiFilePreviewReorder({
     columns = 3,
     selectMultiple = false,
     selectedImages = [],
-    setFiles,
     onImageClick,
     onReorder,
 }: MultiFilePreviewReorder) {
@@ -118,18 +117,18 @@ export default function MultiFilePreviewReorder({
     const handleDragEnd = useCallback(
         ({ type, draggableId, source, destination }: DropResult) => {
             if (type === DroppableTypeItem) {
-                const draggedItemId = itemId(draggableId);
+                const { itemId: draggedItemId } = parseItemId(draggableId);
                 /* src */
-                const srcRow = rowId(source?.droppableId);
+                const { rowId: srcRow } = parseRowId(source?.droppableId);
                 const srcCol = source?.index;
                 /* dst */
-                const dstRow = rowId(destination?.droppableId);
+                const { rowId: dstRow } = parseRowId(destination?.droppableId);
                 const dstCol = destination?.index;
 
-                if (draggedItemId === null) return;
-                if (srcRow === null || srcCol === null || srcCol === undefined)
+                if (draggedItemId === -1) return;
+                if (srcRow === -1 || srcCol === null || srcCol === undefined)
                     return;
-                if (dstRow === null || dstCol === null || dstCol === undefined)
+                if (dstRow === -1 || dstCol === null || dstCol === undefined)
                     return;
 
                 let oneDimentionArraySrcIndex = srcRow * columns + srcCol;
@@ -145,8 +144,6 @@ export default function MultiFilePreviewReorder({
                     1
                 );
                 updatedItems.splice(oneDimentionArrayDstIndex, 0, removed);
-
-                setFiles(updatedItems);
 
                 onReorder && onReorder(updatedItems.map((i) => i.key));
             }

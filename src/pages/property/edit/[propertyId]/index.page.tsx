@@ -3,11 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-import {
-    useEditPropertyMutation,
-    useLazyGetPropertyBlueprintsQuery,
-    useLazyGetPropertyImagesQuery,
-} from "src/services/properties";
+import { useEditPropertyMutation } from "src/services/properties";
 import { resetState as resetLabels } from "src/slices/labels";
 import {
     resetState as resetNotes,
@@ -37,27 +33,20 @@ const EditPropertyPage: NextPage = () => {
     // INFO: lazy is used on * because addImage doesn't cause invalidate (in contradiction to editImage)
 
     const { data } = useGetPropertyByIdQuery(+propertyId!);
-    const [getImages, { isSuccess: isNotesSuccess }] =
-        useLazyGetPropertyImagesQuery(); // *
-    const [getBlueprints, { isSuccess: isBluePrintsSuccess }] =
-        useLazyGetPropertyBlueprintsQuery(); // *
     const [edit, { isLoading: isEditLoading }] = useEditPropertyMutation();
 
     useEffect(() => {
         if (data && propertyId) {
             const isFirstEdit = data.createdAt === data.updatedAt;
-            const label = `${
-                isFirstEdit ? "Create" : "Edit"
-            } property ${propertyId}`;
+            const label = `${isFirstEdit ? "Create" : "Edit"} property ${
+                data?.code || ""
+            }`;
 
             pushTab({
                 path: `/property/edit/${propertyId}`,
                 id: (propertyId + "edit") as string,
                 label,
             });
-
-            getImages(+propertyId!);
-            getBlueprints(+propertyId!);
         }
     }, [data, propertyId]);
 
@@ -78,7 +67,7 @@ const EditPropertyPage: NextPage = () => {
     });
 
     useEffect(() => {
-        if (isNotesSuccess && isBluePrintsSuccess && data) {
+        if (data) {
             dispatch(setInitialNotesState(data.notes));
             dispatch(setInitialState(data));
             dispatch(
@@ -88,7 +77,7 @@ const EditPropertyPage: NextPage = () => {
                 })
             );
         }
-    }, [isNotesSuccess, isBluePrintsSuccess, data, propertyId]);
+    }, [data, propertyId]);
 
     const resetEverything = () => {
         dispatch(resetFiles());

@@ -1,4 +1,4 @@
-import { Stack, Paper, Typography, Box } from "@mui/material";
+import { Box, Paper } from "@mui/material";
 import React from "react";
 
 import { IProperties } from "src/types/properties";

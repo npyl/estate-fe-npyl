@@ -11,15 +11,7 @@ import PropertyDescriptionForLandSection from "./components/PropertyDescriptionF
 import SuitableForForLandSection from "./components/SuitableForForLand";
 import TechnicalFeaturesAndInteriorForLandSection from "./components/TechnicalFeaturesAndInteriorForLand";
 import ROISection from "./components/ROI";
-import { useSelector, useDispatch } from "react-redux";
-
-import {
-    selectPropertyImages,
-    addPropertyImage,
-    deletePropertyImage,
-    setPropertyImages,
-    setCdnUrlForNextAvailable,
-} from "src/slices/property/files";
+import { useSelector } from "react-redux";
 
 import {
     selectState,
@@ -43,13 +35,9 @@ import {
     setLatitude,
     setLongitude,
 } from "src/slices/property";
-import { IPropertyImage, IPropertyImagePOST } from "src/types/file";
 
 const LandFormSection: React.FC<any> = () => {
-    const dispatch = useDispatch();
-
     const state = useSelector(selectState);
-    const images = useSelector(selectPropertyImages);
 
     const street = useSelector(selectStreet);
     const number = useSelector(selectNumber);
@@ -60,21 +48,6 @@ const LandFormSection: React.FC<any> = () => {
     const country = useSelector(selectCountry);
     const lat = useSelector(selectLatitude);
     const lng = useSelector(selectLongitude);
-
-    const handleAddFile = (images: IPropertyImage | IPropertyImagePOST) => {
-        dispatch(addPropertyImage(images));
-    };
-    const handleSetCdnUrlForNextAvailable = (cdnUrl: string) => {
-        dispatch(setCdnUrlForNextAvailable(cdnUrl));
-    };
-    const handleAddFiles = (
-        images: (IPropertyImage | IPropertyImagePOST)[]
-    ) => {
-        dispatch(setPropertyImages(images));
-    };
-    const handleDeleteFile = (imageKey: string) => {
-        dispatch(deletePropertyImage(imageKey));
-    };
 
     return (
         <>
@@ -91,15 +64,7 @@ const LandFormSection: React.FC<any> = () => {
                 </Grid>
                 <Grid item xs={6}>
                     <Stack spacing={1}>
-                        <ImageSection
-                            files={images}
-                            addFile={handleAddFile}
-                            deleteFile={handleDeleteFile}
-                            setCdnUrlForNextAvailable={
-                                handleSetCdnUrlForNextAvailable
-                            }
-                            setFiles={handleAddFiles}
-                        />
+                        <ImageSection />
                         <LocationSection
                             street={street}
                             number={number}

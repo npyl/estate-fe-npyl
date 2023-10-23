@@ -6,6 +6,7 @@ import {
     OutlinedInput,
     Select,
     SelectChangeEvent,
+    styled,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -15,6 +16,20 @@ import {
 
 import { useTranslation } from "react-i18next";
 import { useGlobals } from "src/hooks/useGlobals";
+
+const StyledOutlinedInput = styled(OutlinedInput)({
+    "& .MuiOutlinedInput-input": {
+        textAlign: "center",
+    },
+});
+const StyledInputLabel = styled(InputLabel)({
+    "& .MuiInputLabel-formControl": {
+        textAlign: "center",
+    },
+    "& .MuiInputLabel-root": {
+        textAlign: "center",
+    },
+});
 
 export default function FilterParentCategory() {
     const dispatch = useDispatch();
@@ -41,8 +56,8 @@ export default function FilterParentCategory() {
     };
 
     return (
-        <FormControl sx={{ minWidth: "130px", maxWidth: "130px" }}>
-            <InputLabel>{t("Parent Category")}</InputLabel>
+        <FormControl sx={{ minWidth: "200px", maxWidth: "200px" }}>
+            <StyledInputLabel>{t("Parent Category")}</StyledInputLabel>
             <Select
                 multiple
                 value={categories}
@@ -57,7 +72,7 @@ export default function FilterParentCategory() {
                         .filter(Boolean)
                         .join(", ");
                 }}
-                input={<OutlinedInput label={t("Parent Category")} />}
+                input={<StyledOutlinedInput label={t("Parent Category")} />}
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
                 {categoryEnums!.map(({ key, value }) => {

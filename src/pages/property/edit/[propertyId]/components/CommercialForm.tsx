@@ -18,13 +18,6 @@ import TechnicalFeaturesAndInteriorForCommercialSection from "./components/Techn
 import ROISection from "./components/ROI";
 import { useSelector, useDispatch } from "react-redux";
 
-import {
-    addPropertyImage,
-    deletePropertyImage,
-    selectPropertyImages,
-    setCdnUrlForNextAvailable,
-    setPropertyImages,
-} from "src/slices/property/files";
 import NotesSection from "./components/NotesSection";
 import {
     selectState,
@@ -53,7 +46,6 @@ import { IPropertyImage, IPropertyImagePOST } from "src/types/file";
 const CommercialFormSection: React.FC<any> = () => {
     const dispatch = useDispatch();
 
-    const images = useSelector(selectPropertyImages);
     const state = useSelector(selectState);
 
     const street = useSelector(selectStreet);
@@ -65,21 +57,6 @@ const CommercialFormSection: React.FC<any> = () => {
     const country = useSelector(selectCountry);
     const lat = useSelector(selectLatitude);
     const lng = useSelector(selectLongitude);
-
-    const handleAddFile = (images: IPropertyImage | IPropertyImagePOST) => {
-        dispatch(addPropertyImage(images));
-    };
-    const handleSetCdnUrlForNextAvailable = (cdnUrl: string) => {
-        dispatch(setCdnUrlForNextAvailable(cdnUrl));
-    };
-    const handleAddFiles = (
-        images: (IPropertyImage | IPropertyImagePOST)[]
-    ) => {
-        dispatch(setPropertyImages(images));
-    };
-    const handleDeleteFile = (imageKey: string) => {
-        dispatch(deletePropertyImage(imageKey));
-    };
 
     return (
         <>
@@ -98,15 +75,7 @@ const CommercialFormSection: React.FC<any> = () => {
                 </Grid>
                 <Grid item xs={6}>
                     <Stack spacing={1}>
-                        <ImageSection
-                            files={images}
-                            addFile={handleAddFile}
-                            deleteFile={handleDeleteFile}
-                            setCdnUrlForNextAvailable={
-                                handleSetCdnUrlForNextAvailable
-                            }
-                            setFiles={handleAddFiles}
-                        />
+                        <ImageSection />
                         <LocationSection
                             street={street}
                             number={number}
