@@ -33,6 +33,7 @@ const ImagesSection: React.FC = () => {
 
     /* gallery */
     const [galleryManagerOpen, setGalleryManagerOpen] = useState(false);
+    const [openFromSeeMore, setOpenFromSeeMore] = useState(false);
     const [currentGalleryImage, setCurrentGalleryImage] =
         useState<IPropertyImage>();
     const [moreOpen, setMoreOpen] = useState(false);
@@ -160,16 +161,29 @@ const ImagesSection: React.FC = () => {
     const handleReorder = (items: string[]) =>
         reorderImages({ id: +propertyId!, body: items }).then(invalidateTags);
 
-    const handleCloseGalleryManager = () => setGalleryManagerOpen(false);
+    const handleCloseGalleryManager = () => {
+        setGalleryManagerOpen(false);
+
+        /* return to SeeMore */
+        if (openFromSeeMore) setMoreOpen(true);
+    };
 
     const handleOpenMore = () => setMoreOpen(true);
     const handleCloseMore = () => setMoreOpen(false);
 
-    const handleImageClick = (image: IPropertyImage) => {
-        setCurrentGalleryImage(image);
-        setMoreOpen(false);
-        setGalleryManagerOpen(true);
-    };
+    const handleImageClick = useCallback(
+        (image: IPropertyImage) => {
+            setCurrentGalleryImage(image);
+
+            /* return to SeeMore if opened from */
+            if (moreOpen) setOpenFromSeeMore(true);
+            else setOpenFromSeeMore(false);
+
+            setMoreOpen(false);
+            setGalleryManagerOpen(true);
+        },
+        [moreOpen]
+    );
     const handleImageChange = useCallback(
         (key: string) => {
             /*
