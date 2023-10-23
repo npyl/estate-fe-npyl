@@ -19,7 +19,7 @@ export const FilterLogSection: React.FC<PaperProps> = ({ ...props }) => {
     const changedCustomerFilters = useSelector(sumOfChangedProperties);
 
     return (
-        <Stack spacing={1} component={Paper} p={1} mt={2} {...props}>
+        <Stack spacing={1} component={Paper} p={1} mt={1} {...props}>
             <Stack flexWrap={"wrap"} direction={"row"} gap={1}>
                 <FilterActions></FilterActions>
                 <FilterResources />

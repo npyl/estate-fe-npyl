@@ -1,5 +1,6 @@
 import {
     Button,
+    IconButton,
     Paper,
     Table,
     TableBody,
@@ -13,6 +14,7 @@ import React, { FC, useState } from "react";
 import { useSecurityContext } from "src/contexts/security";
 import { useAllUsersQuery } from "src/services/user";
 import { UserForm } from "../../../../components/User/Form";
+import AnimatedTableRow from "src/components/Table/AnimatedTableRow";
 
 type Props = {
     changeTab: (event: React.SyntheticEvent, newValue: number) => void;
@@ -60,7 +62,7 @@ const UserPage: FC<Props> = ({ changeTab }) => {
                     </TableHead>
                     <TableBody>
                         {/* BUILD */}
-                        {/* {users?.map((user) => (
+                        {users?.map((user) => (
                             <AnimatedTableRow
                                 key={user.id}
                                 onClick={() => handleRowClick(user.id)}
@@ -74,12 +76,13 @@ const UserPage: FC<Props> = ({ changeTab }) => {
                                     <IconButton
                                         size="small"
                                         onClick={(e) => {
-                                            setSelectedUser(user.id);
+                                            // setSelectedUser(user.id);
                                             handleOpenUserForm();
                                         }}
                                         sx={{ ml: 1, mr: -1 }}
                                     >
-                                        <EditIcon fontSize="small" />
+                                        Edit
+                                        {/* <EditIcon fontSize="small" /> */}
                                     </IconButton>
                                 </TableCell>
                                 <TableCell>
@@ -95,7 +98,7 @@ const UserPage: FC<Props> = ({ changeTab }) => {
                                     </Button>
                                 </TableCell>
                             </AnimatedTableRow>
-                        ))} */}
+                        ))}
                     </TableBody>
                 </Table>
             </TableContainer>
