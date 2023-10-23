@@ -28,7 +28,7 @@ export default function ImagePreview({
                             <LabeledImage
                                 borderRadius={0.3}
                                 src={image.url}
-                                label={index === 0 ? "main" : ""}
+                                label={image.thumbnail ? "main" : ""}
                                 hidden={image.hidden}
                                 onClick={() =>
                                     onImageClick && onImageClick(image)
