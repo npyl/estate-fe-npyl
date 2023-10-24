@@ -20,6 +20,7 @@ import ViewHeader from "src/pages/components/ViewHeader";
 
 import { useTranslation } from "react-i18next";
 import { useTabsContext } from "src/contexts/tabs";
+import CustomerLogs from "./components/Logs";
 
 function a11yProps(index: number) {
     return {
@@ -90,6 +91,7 @@ const CustomerView: NextPage = () => {
                 </Grid>
             ),
         },
+
         // Add this new tab configuration for DemandSection
         isBuyerOrLeaser && {
             label: t("Demands"),
@@ -108,6 +110,10 @@ const CustomerView: NextPage = () => {
         isBuyerOrLeaser && {
             label: t("Matching Properties"),
             content: <MatchingPropertiesSection />,
+        },
+        {
+            label: t("Logs"),
+            content: <CustomerLogs />,
         },
     ].filter((tab): tab is TabConfig => Boolean(tab));
 

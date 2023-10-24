@@ -85,8 +85,8 @@ function MyComponent() {
     };
     const center = useMemo(() => {
         return {
-            lat: data?.location.lat || 37.98381,
-            lng: data?.location.lng || 23.727539,
+            lat: data?.location?.lat || 37.98381,
+            lng: data?.location?.lng || 23.727539,
         };
     }, [data?.location?.lat, data?.location?.lng]);
 
@@ -105,7 +105,7 @@ function MyComponent() {
             new google.maps.Marker({
                 position: center,
                 map: mapRef.current,
-                icon: "/static/img/home.png",
+                icon: "https://img.icons8.com/external-bearicons-flat-bearicons/64/external-Home-location-bearicons-flat-bearicons.png",
                 zIndex: 50,
             });
             serviceRef.current = new window.google.maps.places.PlacesService(
