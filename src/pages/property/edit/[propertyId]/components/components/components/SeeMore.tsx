@@ -209,12 +209,6 @@ export const SeeMore = ({
                     )}
                 </Box>
             </DialogContent>
-            <Divider />
-            <DialogActions>
-                <Button onClick={onClose} color="primary">
-                    Close
-                </Button>
-            </DialogActions>
         </Dialog>
     );
 };
