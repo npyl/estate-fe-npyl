@@ -49,7 +49,9 @@ const CustomerView: NextPage = () => {
             pushTab({
                 path: `/customer/${customerId}`,
                 id: customerId as string,
-                label: `Customer ${customerId}`,
+                label: `Customer ${data?.firstName || ""} ${
+                    data?.lastName || ""
+                }`,
             });
         }
     }, [data, customerId]);

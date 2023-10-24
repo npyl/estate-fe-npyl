@@ -67,7 +67,7 @@ const SingleProperty: NextPage = () => {
             pushTab({
                 path: `/property/${propertyId}`,
                 id: propertyId as string,
-                label: `Property ${propertyId}`,
+                label: `Property ${data?.code || ""}`,
             });
         }
     }, [data, propertyId]);
