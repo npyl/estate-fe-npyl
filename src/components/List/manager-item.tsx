@@ -16,19 +16,13 @@ const ListManagerItem: FC<ListManagerItemProps> = (props) => {
     const { t } = useTranslation();
     const { manager, label = t("Manager"), ...other } = props;
     const router = useRouter();
-    const [showManager, setShowManager] = useState(false);
+    const [showManager, setShowManager] = useState(true);
     const { data } = useProfileQuery();
 
     const performViewManager = () => {
         router.push(`/user/${manager.id}`);
     };
-    const handleTouchStart = () => {
-        setShowManager(true);
-    };
 
-    const handleTouchEnd = () => {
-        setShowManager(false);
-    };
     const fitContentStyles = {
         display: "inline-flex", // makes the container fit its content width
         alignItems: "center",
@@ -51,8 +45,6 @@ const ListManagerItem: FC<ListManagerItemProps> = (props) => {
                 sx={fitContentStyles} // apply styles
                 variant="outlined"
                 onClick={performViewManager}
-                onMouseOver={handleTouchStart}
-                onMouseLeave={handleTouchEnd}
             >
                 <Box
                     sx={{
