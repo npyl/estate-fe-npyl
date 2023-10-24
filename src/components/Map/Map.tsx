@@ -45,7 +45,7 @@ interface IMapProps {
     // Shape
     //
     onDraw?: (shape: DrawShape | StopDraw) => void;
-    onDrag?: (encodedOldShape: string, encodedNewShape: string) => void;
+    onShapeChange?: (encodedOldShape: string, encodedNewShape: string) => void;
     //
     // Search
     //
@@ -93,7 +93,7 @@ const Map = ({
     onMarkerClick,
     onDragEnd,
     onDraw,
-    onDrag,
+    onShapeChange,
     onSearchSelect,
     markers,
     zoom,
@@ -251,8 +251,8 @@ const Map = ({
                     drawing={drawing}
                     shape={shape}
                     onDraw={(shape) => onDraw && onDraw(shape)}
-                    onDrag={(newEncodedShape) =>
-                        onDrag && onDrag("", newEncodedShape)
+                    onShapeChange={(newEncodedShape) =>
+                        onShapeChange && onShapeChange("", newEncodedShape)
                     }
                 />
             )}
@@ -262,8 +262,8 @@ const Map = ({
                     drawing={drawing}
                     shapes={shapes}
                     onDraw={(shape) => onDraw && onDraw(shape)}
-                    onDrag={(oldShape, newShape) =>
-                        onDrag && onDrag(oldShape, newShape)
+                    onShapeChange={(oldShape, newShape) =>
+                        onShapeChange && onShapeChange(oldShape, newShape)
                     }
                 />
             )}

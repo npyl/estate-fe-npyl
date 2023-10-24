@@ -1,19 +1,39 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { Button, Stack, Typography, styled } from "@mui/material";
 import { DrawShape, ShapeData, StopDraw } from "./types";
-import { drawShape, encodeShape } from "./util";
-import { IMapMarker } from "./Map";
+import { drawShape, encodeShape, setShapeEvents } from "./util";
 
 interface SvgIconProps {
     children: ReactNode;
     [key: string]: any; // for other props you might want to pass
 }
+
+const StyledButton = styled(Button)({
+    margin: "2px",
+    padding: "3px 4px", // Reduced horizontal padding for a narrower look
+    backgroundColor: "#dcdcdc", // Light gray background
+    color: "#000",
+    "& svg": {
+        width: "24px", // A bit smaller icon size for a narrower button
+        height: "24px",
+    },
+    "&:hover": {
+        backgroundColor: "#c7c7c7", // Slightly darker gray for hover
+    },
+});
+
+const SvgIcon = ({ children, ...props }: SvgIconProps) => (
+    <svg width="24" height="24" viewBox="0 0 24 24" {...props}>
+        {children}
+    </svg>
+);
+
 interface DrawingComponentProps {
     map: any;
     drawing: boolean;
     shape?: ShapeData;
     onDraw: (shape: DrawShape | StopDraw) => void;
-    onDrag?: (newEncodedShape: string) => void;
+    onShapeChange?: (newEncodedShape: string) => void;
 }
 
 export const CustomDrawingComponent = ({
@@ -21,7 +41,7 @@ export const CustomDrawingComponent = ({
     drawing,
     shape,
     onDraw,
-    onDrag,
+    onShapeChange,
 }: DrawingComponentProps) => {
     const drawingManagerRef = useRef<any>(null);
     const shapeRef = useRef<DrawShape | StopDraw>(null);
@@ -91,11 +111,12 @@ export const CustomDrawingComponent = ({
 
                 drawingManagerRef.current.setDrawingMode(null);
 
-                // Support shape drag
-                google.maps.event.addListener(
-                    shape,
-                    "dragend",
-                    () => onDrag && onDrag(encodeShape(shape as DrawShape))
+                setShapeEvents(
+                    shape as DrawShape,
+                    () =>
+                        onShapeChange &&
+                        shape &&
+                        onShapeChange(encodeShape(shape as DrawShape))
                 );
 
                 onDraw(shape as DrawShape);
@@ -122,8 +143,8 @@ export const CustomDrawingComponent = ({
             ? drawShape(
                   shape,
                   map,
-                  !!drawing && onDrag
-                      ? (old, newShape) => onDrag(newShape)
+                  !!drawing && onShapeChange
+                      ? (old, newShape) => onShapeChange(newShape)
                       : null
               )
             : null;
@@ -132,65 +153,31 @@ export const CustomDrawingComponent = ({
     }, [ready, shape]);
 
     const startDrawing = () => {
-        if (shapeRef.current?.getMap()) {
-            shapeRef.current.setMap(null);
-        }
+        shapeRef.current?.setMap(null);
 
-        if (drawingManagerRef.current) {
-            drawingManagerRef.current.setDrawingMode(
-                google.maps.drawing.OverlayType.POLYGON
-            );
-        }
+        drawingManagerRef.current?.setDrawingMode(
+            google.maps.drawing.OverlayType.POLYGON
+        );
     };
     const startDrawingRect = () => {
-        if (shapeRef.current?.getMap()) {
-            shapeRef.current.setMap(null);
-        }
+        shapeRef.current?.setMap(null);
 
-        if (drawingManagerRef.current) {
-            drawingManagerRef.current.setDrawingMode(
-                google.maps.drawing.OverlayType.RECTANGLE
-            );
-        }
+        drawingManagerRef.current?.setDrawingMode(
+            google.maps.drawing.OverlayType.RECTANGLE
+        );
     };
     const startDrawingCircle = () => {
-        if (shapeRef.current?.getMap()) {
-            shapeRef.current.setMap(null);
-        }
+        shapeRef.current?.setMap(null);
 
-        if (drawingManagerRef.current) {
-            drawingManagerRef.current.setDrawingMode(
-                google.maps.drawing.OverlayType.CIRCLE
-            );
-        }
+        drawingManagerRef.current?.setDrawingMode(
+            google.maps.drawing.OverlayType.CIRCLE
+        );
     };
 
     const stopDrawing = () => {
-        if (shapeRef.current?.getMap()) {
-            shapeRef.current.setMap(null);
-        }
-
+        shapeRef.current?.setMap(null);
         onDraw(null);
     };
-    const StyledButton = styled(Button)({
-        margin: "2px",
-        padding: "3px 4px", // Reduced horizontal padding for a narrower look
-        backgroundColor: "#dcdcdc", // Light gray background
-        color: "#000",
-        "& svg": {
-            width: "24px", // A bit smaller icon size for a narrower button
-            height: "24px",
-        },
-        "&:hover": {
-            backgroundColor: "#c7c7c7", // Slightly darker gray for hover
-        },
-    });
-
-    const SvgIcon = ({ children, ...props }: SvgIconProps) => (
-        <svg width="24" height="24" viewBox="0 0 24 24" {...props}>
-            {children}
-        </svg>
-    );
 
     return drawing ? (
         <Stack

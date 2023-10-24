@@ -26,6 +26,7 @@ import {
     selectDemandCities,
     selectDemandComplexes,
 } from "src/slices/customer";
+import { useDebouncedCallback } from "use-debounce";
 
 interface ILocationSectionProps {
     index: number;
@@ -146,22 +147,27 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
         },
         [index, shapes]
     );
-    const handleDrag = useCallback(
-        (encodedOldShape: string, encodedNewShape: string) => {
-            console.log(
-                "comparing: ",
-                encodedOldShape,
-                " with: ",
-                encodedNewShape
-            );
+    const handleShapeChange = useDebouncedCallback(
+        useCallback(
+            (encodedOldShape: string, encodedNewShape: string) => {
+                console.log(
+                    "comparing: ",
+                    encodedOldShape,
+                    " with: ",
+                    encodedNewShape
+                );
 
-            const updatedShapes = shapes.map((shapeString) =>
-                shapeString === encodedOldShape ? encodedNewShape : shapeString
-            );
+                const updatedShapes = shapes.map((shapeString) =>
+                    shapeString === encodedOldShape
+                        ? encodedNewShape
+                        : shapeString
+                );
 
-            dispatch(setShapes(indexedData(index, updatedShapes)));
-        },
-        [index, shapes]
+                dispatch(setShapes(indexedData(index, updatedShapes)));
+            },
+            [index, shapes]
+        ),
+        100
     );
 
     const updateMainMarkerCoordinates = (lat: number, lng: number) => {
@@ -278,7 +284,7 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
                         mainMarker={mainMarker}
                         shapes={shapeData}
                         onDraw={handleDraw}
-                        onDrag={handleDrag}
+                        onShapeChange={handleShapeChange}
                         onDragEnd={handleMarkerDragEnd}
                         onClick={handleMapClick}
                         onSearchSelect={handleSearchSelect}

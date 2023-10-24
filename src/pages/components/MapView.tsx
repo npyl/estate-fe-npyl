@@ -14,6 +14,7 @@ import ICarouselImage from "src/components/carousel/types";
 import Iconify from "src/components/iconify";
 import { IPropertyResultResponse } from "src/types/properties";
 import { BookingItem } from "./BookingItem";
+import { useDebouncedCallback } from "use-debounce";
 
 interface Props {
     data: IPropertyResultResponse[];
@@ -68,8 +69,11 @@ const MapView = ({ data }: Props) => {
 
     const handleDraw = (shape: DrawShape | StopDraw) =>
         setEncodedShape(shape ? encodeShape(shape) : "");
-    const handleDrag = (oldEncodedShape: string, newEncodedShape: string) =>
-        setEncodedShape(newEncodedShape);
+    const handleChange = useDebouncedCallback(
+        (oldEncodedShape: string, newEncodedShape: string) =>
+            setEncodedShape(newEncodedShape),
+        150
+    );
 
     const updateMainMarkerCoordinates = (lat: number, lng: number) => {
         let newMarker = mainMarker;
@@ -102,7 +106,7 @@ const MapView = ({ data }: Props) => {
                         }}
                         markers={markers}
                         onDraw={handleDraw}
-                        onDrag={handleDrag}
+                        onShapeChange={handleChange}
                         onSearchSelect={handleSearchSelect}
                     />
                 </Box>
