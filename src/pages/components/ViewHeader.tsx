@@ -18,11 +18,12 @@ import { toast } from "react-toastify";
 interface IViewHeaderProps {
     onEdit: VoidFunction;
     onDelete: VoidFunction;
+    onClone: VoidFunction;
     children?: ReactNode;
 }
 
 const ViewHeader = (props: IViewHeaderProps) => {
-    const { onDelete, onEdit, children } = props;
+    const { onDelete, onEdit, onClone, children } = props;
     const { t } = useTranslation();
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
@@ -37,7 +38,7 @@ const ViewHeader = (props: IViewHeaderProps) => {
                         variant="outlined"
                         color="secondary"
                         sx={{ mr: 1 }}
-                        onClick={() => toast.info("Patience is a virtue!")}
+                        onClick={onClone}
                     >
                         {t("Clone")}
                     </Button>
@@ -52,67 +53,59 @@ const ViewHeader = (props: IViewHeaderProps) => {
 
                     <SoftButton
                         color="error"
-                        onClick={() => {
-                            setDeleteDialogOpen(true);
-                        }}
+                        onClick={() => setDeleteDialogOpen(true)}
                         startIcon={<DeleteIcon />}
                     >
                         {t("Delete")}
                     </SoftButton>
 
-                    <Dialog
-                        maxWidth="xs"
-                        open={deleteDialogOpen}
-                        onClose={() => {
-                            setDeleteDialogOpen(false);
-                        }}
-                        closeAfterTransition={true}
-                    >
-                        <DialogTitle sx={{ textAlign: "center" }}>
-                            <HighlightOffIcon
-                                sx={{
-                                    fontSize: "100px",
-                                    stroke: "Window",
-                                    strokeWidth: 1.5,
-                                    color: "error.main",
-                                }}
-                            />
-                        </DialogTitle>
-                        <DialogContent sx={{ textAlign: "center" }}>
-                            <Typography variant="h5" fontWeight={400}>
-                                {t("Are you sure?")}
-                            </Typography>
-                        </DialogContent>
-                        <DialogContentText
-                            ml={3}
-                            mr={3}
-                            sx={{ textAlign: "center" }}
+                    {deleteDialogOpen && (
+                        <Dialog
+                            maxWidth="xs"
+                            open={deleteDialogOpen}
+                            onClose={() => setDeleteDialogOpen(false)}
+                            closeAfterTransition={true}
                         >
-                            {t("Do you really want to delete this record?")}
-                            <br />
-                            {t("This process cannot be undone")}
-                        </DialogContentText>
-                        <DialogContent sx={{ textAlign: "center" }}>
-                            <Button
-                                sx={{ mr: 1 }}
-                                variant="outlined"
-                                color="secondary"
-                                onClick={() => {
-                                    setDeleteDialogOpen(false);
-                                }}
+                            <DialogTitle sx={{ textAlign: "center" }}>
+                                <HighlightOffIcon
+                                    sx={{
+                                        fontSize: "100px",
+                                        stroke: "Window",
+                                        strokeWidth: 1.5,
+                                        color: "error.main",
+                                    }}
+                                />
+                            </DialogTitle>
+                            <DialogContent sx={{ textAlign: "center" }}>
+                                <Typography variant="h5" fontWeight={400}>
+                                    {t("Are you sure?")}
+                                </Typography>
+                            </DialogContent>
+                            <DialogContentText
+                                ml={3}
+                                mr={3}
+                                sx={{ textAlign: "center" }}
                             >
-                                {t("No")}
-                            </Button>
+                                {t("Do you really want to delete this record?")}
+                                <br />
+                                {t("This process cannot be undone")}
+                            </DialogContentText>
+                            <DialogContent sx={{ textAlign: "center" }}>
+                                <Button
+                                    sx={{ mr: 1 }}
+                                    variant="outlined"
+                                    color="secondary"
+                                    onClick={() => setDeleteDialogOpen(false)}
+                                >
+                                    {t("No")}
+                                </Button>
 
-                            <SoftButton
-                                color="error"
-                                onClick={onDelete}
-                                // startIcon={<Iconify icon={"eva:trash-2-outline"} />}
-                            >
-                                {t("Yes")}
-                            </SoftButton>
-                        </DialogContent>
-                    </Dialog>
+                                <SoftButton color="error" onClick={onDelete}>
+                                    {t("Yes")}
+                                </SoftButton>
+                            </DialogContent>
+                        </Dialog>
+                    )}
                 </Grid>
             </Grid>
         </Paper>

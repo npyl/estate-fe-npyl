@@ -3,6 +3,7 @@ import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import {
+    useClonePropertyMutation,
     useDeletePropertyMutation,
     useGetPropertyByIdQuery,
 } from "src/services/properties";
@@ -58,6 +59,7 @@ const SingleProperty: NextPage = () => {
     const { propertyId } = router.query;
 
     const { data } = useGetPropertyByIdQuery(+propertyId!); // basic details
+    const [cloneProperty] = useClonePropertyMutation();
     const [deleteProperty] = useDeletePropertyMutation();
 
     const [value, setValue] = useState(0);
@@ -76,6 +78,10 @@ const SingleProperty: NextPage = () => {
         setValue(newValue);
 
     const handleEdit = () => router.push(`/property/edit/${propertyId}`);
+    const handleClone = () =>
+        cloneProperty(+propertyId!)
+            .unwrap()
+            .then((newPropertyId) => router.push(`/property/${newPropertyId}`));
     const handleDelete = () =>
         deleteProperty(+propertyId!).then(() => {
             router.push("/");
@@ -86,7 +92,11 @@ const SingleProperty: NextPage = () => {
 
     return (
         <Box sx={{ width: "100%", paddingY: 1 }}>
-            <ViewHeader onEdit={handleEdit} onDelete={handleDelete}>
+            <ViewHeader
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+                onClone={handleClone}
+            >
                 <Tabs
                     value={value}
                     onChange={handleChange}

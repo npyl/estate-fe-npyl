@@ -175,6 +175,13 @@ export const properties = createApi({
             }),
             invalidatesTags: ["Properties"],
         }),
+        cloneProperty: builder.mutation<number, number>({
+            query: (propertyId: number) => ({
+                url: `/clone/${propertyId}`,
+                method: "POST",
+            }),
+            invalidatesTags: ["Properties"],
+        }),
         bulkEditProperties: builder.mutation<void, BulkEditRequest>({
             query: (body: BulkEditRequest) => ({
                 url: `/edit/bulk`,
@@ -548,6 +555,7 @@ export const {
     // mutations
     useEditPropertyMutation,
     useCreatePropertyMutation,
+    useClonePropertyMutation,
     useDeletePropertyMutation,
     useFilterPropertiesMutation,
     useSuggestForCustomerQuery,
