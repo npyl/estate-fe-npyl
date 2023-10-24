@@ -16,7 +16,7 @@ import MultiFilePreviewReorder from "src/components/upload/preview/MultiFilePrev
 import { IPropertyImage } from "src/types/file";
 import { Over25ImagesPreview } from "./SeeMorePreview";
 import {
-    useEditPropertyImageMutation,
+    useBulkEditPropertyImagesMutation,
     useReorderPropertyImagesWithSetImageVisibilityMutation,
 } from "src/services/properties";
 import { useRouter } from "next/router";
@@ -45,7 +45,7 @@ export const SeeMore = ({
     const router = useRouter();
     const { propertyId } = router.query;
 
-    const [editImage] = useEditPropertyImageMutation();
+    const [bulkEditImages] = useBulkEditPropertyImagesMutation();
     const [reorderImagesWithVisibility] =
         useReorderPropertyImagesWithSetImageVisibilityMutation();
 
@@ -81,28 +81,20 @@ export const SeeMore = ({
         // TODO: set thumbnail
     };
 
-    const handleMakePublic = useCallback(() => {
-        selectedImages.forEach((k) =>
-            editImage({
-                id: +propertyId!,
+    const handleBulkChangeVisibility = useCallback(
+        (hidden: boolean) =>
+            bulkEditImages({
+                propertyId: +propertyId!,
                 body: {
-                    key: files.find((f) => f.key === k)?.key,
-                    hidden: false,
+                    imageKeys: selectedImages,
+                    hidden,
                 },
-            })
-        );
-    }, [files, selectedImages]);
-    const handleMakePrivate = useCallback(() => {
-        selectedImages.forEach((k) =>
-            editImage({
-                id: +propertyId!,
-                body: {
-                    key: files.find((f) => f.key === k)?.key,
-                    hidden: true,
-                },
-            })
-        );
-    }, [files, selectedImages]);
+            }),
+        [selectedImages]
+    );
+
+    const handleMakePublic = () => handleBulkChangeVisibility(false);
+    const handleMakePrivate = () => handleBulkChangeVisibility(true);
 
     return (
         <Dialog

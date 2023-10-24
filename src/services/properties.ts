@@ -53,6 +53,13 @@ interface IPropertySetThumbnailProps {
     propertyId: number;
     imageKey: string;
 }
+interface BulkEditPropertyImagesParams {
+    propertyId: number;
+    body: {
+        imageKeys: string[];
+        hidden: boolean;
+    };
+}
 interface IDeleteImageProps {
     propertyId: number;
     imageKey: string;
@@ -360,6 +367,17 @@ export const properties = createApi({
                 }),
             }
         ),
+        bulkEditPropertyImages: builder.mutation<
+            void,
+            BulkEditPropertyImagesParams
+        >({
+            query: ({ propertyId, body }: BulkEditPropertyImagesParams) => ({
+                url: `/${propertyId}/images/edit/bulk`,
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["Properties", "PropertyById"],
+        }),
         deletePropertyImage: builder.mutation<void, IDeleteImageProps>({
             query: ({ propertyId, imageKey }: IDeleteImageProps) => ({
                 url: `/${propertyId}/image/${imageKey}`,
@@ -572,6 +590,7 @@ export const {
     useUploadPropertyImageMutation,
     useEditPropertyImageMutation,
     useSetPropertyThumbailMutation,
+    useBulkEditPropertyImagesMutation,
     useDeletePropertyImageMutation,
     useLazyGetPropertyImagesQuery,
     useLazyGetPropertyBlueprintsQuery,
