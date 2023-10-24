@@ -95,23 +95,34 @@ function MyComponent() {
 
     useEffect(() => {
         if (isLoaded) {
-            mapRef.current = new window.google.maps.Map(
-                document.getElementById("map")!,
-                {
-                    center,
-                    zoom: 15 - +radius * 0.6,
-                }
-            );
-            new google.maps.Marker({
-                position: center,
-                map: mapRef.current,
-                icon: "https://img.icons8.com/external-bearicons-flat-bearicons/64/external-Home-location-bearicons-flat-bearicons.png",
-                zIndex: 50,
-            });
-            serviceRef.current = new window.google.maps.places.PlacesService(
-                mapRef.current
-            );
+            if (data?.location?.lat != null && data?.location?.lng != null) {
+                mapRef.current = new window.google.maps.Map(
+                    document.getElementById("map")!,
+                    {
+                        center,
+                        zoom: 15 - +radius * 0.6,
+                    }
+                );
+                // Check if latitude and longitude are available before adding a marker
 
+                new google.maps.Marker({
+                    position: center,
+                    map: mapRef.current,
+                    icon: "https://img.icons8.com/external-bearicons-flat-bearicons/64/external-Home-location-bearicons-flat-bearicons.png",
+                    zIndex: 50,
+                });
+
+                serviceRef.current =
+                    new window.google.maps.places.PlacesService(mapRef.current);
+            } else {
+                mapRef.current = new window.google.maps.Map(
+                    document.getElementById("map")!,
+                    {
+                        center,
+                        zoom: 10.6 - +radius * 0.6,
+                    }
+                );
+            }
             searchNearbyHospitals();
         }
     }, [isLoaded, radius, alignment]);
@@ -170,7 +181,10 @@ function MyComponent() {
                             // Call the DirectionsService route method to calculate the directions
                             directionsService.route(
                                 request,
-                                (response, status) => {
+                                (
+                                    response: { routes: { legs: any[] }[] },
+                                    status: any
+                                ) => {
                                     if (
                                         status ===
                                         google.maps.DirectionsStatus.OK
@@ -210,7 +224,7 @@ function MyComponent() {
     if (loadError) {
         return <div>Error loading maps</div>;
     }
-
+    // if (data?.location?.lat == null) return null;
     return (
         <Box display={"flex"} gap={2}>
             <div
@@ -223,33 +237,34 @@ function MyComponent() {
                 ) : (
                     <div>Loading maps</div>
                 )}
-
-                <Paper
-                    sx={{
-                        width: 240,
-                        position: "absolute",
-                        top: "10px",
-                        left: "50%",
-                        paddingX: 3,
-                        textAlign: "center",
-                        transform: "translateX(-50%)",
-                    }}
-                >
-                    <Typography variant="caption">
-                        Επέκταση ακτίνας κατά {radius}χλμ.{" "}
-                    </Typography>
-                    <Slider
-                        onChange={(e, value) => handleSliderRadius(value)}
-                        aria-label="Always visible"
-                        defaultValue={0}
-                        getAriaValueText={valuetext}
-                        step={0.2}
-                        marks={marks}
-                        valueLabelDisplay="off"
-                        min={0}
-                        max={5}
-                    />
-                </Paper>
+                {data?.location?.lat != null && data?.location?.lng != null ? (
+                    <Paper
+                        sx={{
+                            width: 240,
+                            position: "absolute",
+                            top: "10px",
+                            left: "50%",
+                            paddingX: 3,
+                            textAlign: "center",
+                            transform: "translateX(-50%)",
+                        }}
+                    >
+                        <Typography variant="caption">
+                            Επέκταση ακτίνας κατά {radius}χλμ.{" "}
+                        </Typography>
+                        <Slider
+                            onChange={(e, value) => handleSliderRadius(value)}
+                            aria-label="Always visible"
+                            defaultValue={0}
+                            getAriaValueText={valuetext}
+                            step={0.2}
+                            marks={marks}
+                            valueLabelDisplay="off"
+                            min={0}
+                            max={5}
+                        />
+                    </Paper>
+                ) : null}
                 <ToggleButtonGroup
                     sx={{
                         position: "absolute",
@@ -289,6 +304,7 @@ function MyComponent() {
             </div>
             <Box width={"40vw"} height={"65vh"} overflow={"auto"}>
                 <RelatedPlaces
+                    data={data}
                     title="Closest points"
                     list={places}
                     duration={state}
