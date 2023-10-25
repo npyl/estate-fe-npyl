@@ -30,14 +30,22 @@ const ChosenFiltersLogs = () => {
                 .join(", "),
         [allLabels]
     );
-
     const getUserName = useCallback(
         (userId: number) => {
-            const user = users?.find((user) => user.id === userId);
-            return user ? `${user.firstName} ${user.lastName}` : "Unknown";
+            const user = users?.find((m) => m.id === userId);
+            return user?.firstName && user.lastName
+                ? `${user?.firstName} ${user?.lastName}`
+                : "";
         },
         [users]
     );
+    // const getUserName = useCallback(
+    //     (userId: number) => {
+    //         const user = users?.find((user) => user.id === userId);
+    //         return user ? `${user.firstName} ${user.lastName}` : "Unknown";
+    //     },
+    //     [users]
+    // );
 
     // Adjusted logic to ensure date pair is treated as a single unit
     let dateRangeRendered = false;
@@ -83,7 +91,7 @@ const ChosenFiltersLogs = () => {
                     const values = changedProps[key];
                     if (!values) return null;
 
-                    const label = key === "users" ? t("User") : t("Other");
+                    const label = key === "users" ? t("User") : t("Filter");
                     let valuesToDisplay = Array.isArray(values)
                         ? values.join(", ")
                         : values;

@@ -45,10 +45,10 @@ export default function FilterResources() {
                 multiple
                 value={resources}
                 onChange={handleChange}
-                renderValue={(selected: KeyValue[]) => {
+                renderValue={(selected) => {
                     // Change here to expect KeyValue[]
                     return selected
-                        .map((item) => item.value) // Now we're directly accessing the 'value' field of each KeyValue item
+                        .map((item) => item) // Now we're directly accessing the 'value' field of each KeyValue item
                         .filter(Boolean)
                         .join(", ");
                 }}
@@ -58,7 +58,7 @@ export default function FilterResources() {
                 {resourceEnums!.map(({ key, value }) => {
                     // Checking the existence of 'key' in 'actions' array of KeyValue
                     const isKeySelected = resources?.some(
-                        (action) => action.key === key
+                        (action) => action === key
                     );
 
                     return (

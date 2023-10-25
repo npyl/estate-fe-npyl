@@ -45,24 +45,23 @@ export default function FilterActions() {
                 multiple
                 value={actions}
                 onChange={handleChange}
-                renderValue={(selected: KeyValue[]) => {
+                renderValue={(selected) => {
                     // Change here to expect KeyValue[]
                     return selected
-                        .map((item) => item.value) // Now we're directly accessing the 'value' field of each KeyValue item
+                        .map((item) => item) // Now we're directly accessing the 'value' field of each KeyValue item
                         .filter(Boolean)
                         .join(", ");
                 }}
                 input={<OutlinedInput label={t("Action")} />}
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
-                {actionsEnums!.map(({ key, value }) => {
+                {actionsEnums!.map(({ key, value }, index) => {
                     // Checking the existence of 'key' in 'actions' array of KeyValue
-                    const isKeySelected = actions?.some(
-                        (action) => action.key === key
-                    );
+
+                    const isKeySelected = !!actions?.includes(key);
 
                     return (
-                        <MenuItem key={key} value={key}>
+                        <MenuItem key={index} value={key}>
                             <Checkbox checked={isKeySelected} />
                             {value}
                         </MenuItem>
