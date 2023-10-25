@@ -93,11 +93,12 @@ interface ReorderImagesWithSetImageVisibilityProps {
     hidden: boolean;
 }
 
-interface UploadPropertyImageToAmazonProps {
+interface UploadDocumentToAmazonProps {
     url: string;
     contentType: string;
     image: File;
 }
+
 interface UploadResponse {
     success: boolean;
 }
@@ -313,40 +314,6 @@ export const properties = createApi({
             // WARN: Do not add the tags! addPropertyImage needs to be used optimistically, to explicitly set the url null and know to show a preview Image.
             // invalidatesTags: ["Properties", "PropertyById"],
         }),
-        uploadPropertyImage: builder.mutation<
-            UploadResponse,
-            UploadPropertyImageToAmazonProps
-        >({
-            // INFO: upload to amazon
-            async queryFn(
-                { url, contentType, image },
-                api,
-                extraOptions,
-                baseQuery
-            ) {
-                try {
-                    // PUT to amazon url
-                    const res0 = await fetch(url, {
-                        method: "PUT",
-                        headers: {
-                            "Content-Type": contentType,
-                        },
-                        body: image,
-                    });
-
-                    if (!res0.ok) {
-                        throw new Error("Upload error: " + res0.statusText);
-                    }
-
-                    return { data: { success: true } };
-                } catch (error) {
-                    return { error: error as FetchBaseQueryError };
-                }
-            },
-            // WARN: Do not add the tags! We use Promise.all on uploadPropertyImage to wait for all the photos to upload.
-            //          This is because, every photo contains a non-null url, but it is not ready for fetching.
-            // invalidatesTags: ["Properties", "PropertyById"],
-        }),
         editPropertyImage: builder.mutation<
             IFileResponse,
             IPropertyAddFileParams<IPropertyImagePOST>
@@ -385,26 +352,6 @@ export const properties = createApi({
             }),
             invalidatesTags: ["Properties", "PropertyById"],
         }),
-
-        addPropertyBlueprint: builder.mutation<
-            IFileResponse,
-            IPropertyAddFileParams<IPropertyBlueprintPOST>
-        >({
-            query: (
-                params: IPropertyAddFileParams<IPropertyBlueprintPOST>
-            ) => ({
-                url: `/${params.id}/blueprint`,
-                method: "POST",
-                body: params.body,
-            }),
-        }),
-        deletePropertyBlueprint: builder.mutation<void, IDeleteBlueprintProps>({
-            query: ({ propertyId, imageKey }: IDeleteBlueprintProps) => ({
-                url: `/${propertyId}/blueprint/${imageKey}`,
-                method: "DELETE",
-            }),
-        }),
-
         reorderPropertyImages: builder.mutation<
             number,
             IPropertyAddFileParams<string[]>
@@ -558,6 +505,85 @@ export const properties = createApi({
             },
             invalidatesTags: ["Properties", "PropertyById"],
         }),
+
+        addPropertyBlueprint: builder.mutation<
+            IFileResponse,
+            IPropertyAddFileParams<IPropertyBlueprintPOST>
+        >({
+            query: (
+                params: IPropertyAddFileParams<IPropertyBlueprintPOST>
+            ) => ({
+                url: `/${params.id}/blueprint`,
+                method: "POST",
+                body: params.body,
+            }),
+            onQueryStarted: async (
+                { body, id },
+                { dispatch, queryFulfilled }
+            ) => {
+                const patchResult = dispatch(
+                    properties.util.updateQueryData(
+                        "getPropertyById",
+                        id,
+                        (draft) => {
+                            draft.blueprints.push({
+                                ...body,
+                                url: null,
+                            } as IPropertyBlueprint);
+                        }
+                    )
+                );
+                try {
+                    await queryFulfilled;
+                } catch {
+                    patchResult.undo();
+                }
+            },
+            // WARN: Do not add the tags! addPropertyImage needs to be used optimistically, to explicitly set the url null and know to show a preview Image.
+            // invalidatesTags: ["Properties", "PropertyById"],
+        }),
+        deletePropertyBlueprint: builder.mutation<void, IDeleteBlueprintProps>({
+            query: ({ propertyId, imageKey }: IDeleteBlueprintProps) => ({
+                url: `/${propertyId}/blueprint/${imageKey}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Properties", "PropertyById"],
+        }),
+
+        uploadPropertyImageOrBlueprint: builder.mutation<
+            UploadResponse,
+            UploadDocumentToAmazonProps
+        >({
+            // INFO: upload to amazon
+            async queryFn(
+                { url, contentType, image },
+                api,
+                extraOptions,
+                baseQuery
+            ) {
+                try {
+                    // PUT to amazon url
+                    const res0 = await fetch(url, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": contentType,
+                        },
+                        body: image,
+                    });
+
+                    if (!res0.ok) {
+                        throw new Error("Upload error: " + res0.statusText);
+                    }
+
+                    return { data: { success: true } };
+                } catch (error) {
+                    return { error: error as FetchBaseQueryError };
+                }
+            },
+            // WARN: Do not add the tags! We use Promise.all on uploadPropertyImage to wait for all the photos to upload.
+            //          This is because, every photo contains a non-null url, but it is not ready for fetching.
+            // invalidatesTags: ["Properties", "PropertyById"],
+        }),
     }),
 });
 
@@ -587,17 +613,17 @@ export const {
 
     // images & files
     useAddPropertyImageMutation,
-    useUploadPropertyImageMutation,
     useEditPropertyImageMutation,
     useSetPropertyThumbailMutation,
     useBulkEditPropertyImagesMutation,
     useDeletePropertyImageMutation,
     useLazyGetPropertyImagesQuery,
     useLazyGetPropertyBlueprintsQuery,
+    useReorderPropertyImagesMutation,
+    useReorderPropertyImagesWithSetImageVisibilityMutation,
 
     useAddPropertyBlueprintMutation,
     useDeletePropertyBlueprintMutation,
 
-    useReorderPropertyImagesMutation,
-    useReorderPropertyImagesWithSetImageVisibilityMutation,
+    useUploadPropertyImageOrBlueprintMutation,
 } = properties;

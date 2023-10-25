@@ -1,18 +1,41 @@
 import { Card, CardHeader, CardContent } from "@mui/material";
 import { Upload } from "src/components/upload";
 import { useCallback, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import {
     IExtendedPropertyBlueprint,
+    IFileResponse,
     IPropertyBlueprintPOST,
 } from "src/types/file";
 import {
+    properties,
     useAddPropertyBlueprintMutation,
     useDeletePropertyBlueprintMutation,
     useGetPropertyByIdQuery,
+    useUploadPropertyImageOrBlueprintMutation,
 } from "src/services/properties";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+
+interface UploadResponse {
+    key: string;
+    cdnUrl: string;
+}
+
+type PromiseFunction<T> = () => Promise<T>;
+
+async function executeSequentially<T>(
+    promises: PromiseFunction<T>[]
+): Promise<T[]> {
+    const results: T[] = [];
+
+    for (const promise of promises) {
+        const result = await promise();
+        results.push(result);
+    }
+
+    return results;
+}
 
 const BlueprintsSection: React.FC = () => {
     const dispatch = useDispatch();
@@ -26,12 +49,10 @@ const BlueprintsSection: React.FC = () => {
 
     const [addBlueprint] = useAddPropertyBlueprintMutation();
     const [deleteBlueprint] = useDeletePropertyBlueprintMutation();
+    const [uploadBlueprint] = useUploadPropertyImageOrBlueprintMutation();
 
-    const uploadFile = async (
-        image: File
-    ): Promise<{ cdnUrl: string; key: string }> => {
-        const filename = image.name;
-        const contentType = image.type;
+    const addFile = async (image: File): Promise<IFileResponse> => {
+        const { name: filename, type: contentType, size } = image;
 
         if (!filename || !contentType)
             throw new Error("filename or contentType cannot be null");
@@ -42,66 +63,80 @@ const BlueprintsSection: React.FC = () => {
         };
 
         // get amazon url
-        const fileResponse = await addBlueprint({
+        const response = await addBlueprint({
             id: +propertyId!,
             body: body,
-        }).unwrap();
-
-        if (!fileResponse)
-            throw new Error("Error: FileResponse: " + fileResponse);
-
-        const key = fileResponse.key;
-        const url = fileResponse.url;
-        const cdnUrl = fileResponse.cdnUrl;
-
-        // dispatch(addPropertyBlueprint({ ...body, key, filename }));
-
-        // PUT to amazon url
-        const response = await fetch(url, {
-            method: "PUT",
-            headers: {
-                "Content-Type": contentType,
-            },
-            body: image,
         });
 
-        if (!response) throw new Error("PUT request failed: " + response);
-        if (!response.ok) throw new Error("Uploading the image failed!");
+        if ("error" in response) return Promise.reject(response.error);
 
-        // dispatch(setCdnUrlForNextAvailableBlueprint(cdnUrl));
+        return Promise.resolve(response.data);
+    };
+
+    const uploadFile = async (
+        image: File | undefined,
+        fileResponse: IFileResponse
+    ): Promise<UploadResponse> => {
+        if (!image) throw new Error("null image!");
+
+        const { type: contentType, size } = image;
+        const { key, url, cdnUrl } = fileResponse;
+
+        if (!contentType) throw new Error("contentType cannot be null");
+        if (!key || !url || !cdnUrl) throw new Error("checks2 nulls");
+
+        // PUT to amazon url
+        const response = await uploadBlueprint({
+            url,
+            contentType,
+            image,
+        });
+
+        if (!response)
+            throw new Error("Uploading the image failed: ", response);
 
         return { cdnUrl, key };
     };
 
+    const invalidateTags = () =>
+        dispatch(
+            properties.util.invalidateTags(["Properties", "PropertyById"])
+        );
+
     const handleDropMultiFile = useCallback(
-        (acceptedFiles: File[]) =>
-            acceptedFiles.forEach((file) => uploadFile(file)),
+        async (acceptedFiles: File[]) => {
+            const fileResponses = await Promise.all(acceptedFiles.map(addFile));
+
+            /* Upload Sequentially */
+            const uploadPromises = fileResponses.map(
+                (fileResponse, i) => () =>
+                    uploadFile(acceptedFiles.at(i), fileResponse)
+            );
+
+            executeSequentially(uploadPromises)
+                .then(invalidateTags)
+                .catch((error) =>
+                    console.error("SequentialUploadError:", error)
+                );
+        },
         [blueprints]
     );
 
-    const handleRemoveFile = (inputFile: IExtendedPropertyBlueprint) => {
+    const handleRemoveFile = (inputFile: IExtendedPropertyBlueprint) =>
         deleteBlueprint({
             propertyId: +propertyId!,
-            imageKey: blueprints.filter(
-                (blueprint) => blueprint.url === inputFile.url
-            )[0].key,
-        }).then(
-            () => {}
-            // dispatch(deletePropertyBlueprint(inputFile.key))
-        );
-    };
+            imageKey: inputFile.key,
+        });
 
-    const handleRemoveAllFileData = () => {
-        blueprints.forEach((blueprint) =>
-            deleteBlueprint({
-                propertyId: +propertyId!,
-                imageKey: blueprint.key,
-            }).then(
-                () => {}
-                // dispatch(deletePropertyBlueprint(blueprint.key))
+    const handleRemoveAllFileData = () =>
+        Promise.all(
+            blueprints.map((blueprint) =>
+                deleteBlueprint({
+                    propertyId: +propertyId!,
+                    imageKey: blueprint.key,
+                })
             )
-        );
-    };
+        ).then(invalidateTags);
 
     return (
         <Card>
