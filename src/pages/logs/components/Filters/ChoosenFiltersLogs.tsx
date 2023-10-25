@@ -39,6 +39,32 @@ const ChosenFiltersLogs = () => {
         },
         [users]
     );
+    const getDisplayValue = useCallback(
+        (key: any, values: any) => {
+            let processedValues = values; // This will either remain an array or change based on the condition below
+
+            // If 'values' is a single number, convert it to an array with one element for compatibility
+            if (typeof values === "number") {
+                processedValues = [values];
+            }
+
+            switch (key) {
+                case "users":
+                    // Now, 'processedValues' is guaranteed to be an array, whether it's a list of IDs or a single ID in an array
+                    return processedValues
+                        .map((id: number) => getUserName(id))
+                        .join(", ");
+                case "labels":
+                    return getLabelNames(processedValues); // Same guarantee here
+                // ... other cases ...
+                default:
+                    return Array.isArray(processedValues)
+                        ? processedValues.join(", ")
+                        : processedValues;
+            }
+        },
+        [getUserName, getLabelNames] // include all functions used within the useCallback
+    );
     // const getUserName = useCallback(
     //     (userId: number) => {
     //         const user = users?.find((user) => user.id === userId);
@@ -92,22 +118,12 @@ const ChosenFiltersLogs = () => {
                     if (!values) return null;
 
                     const label = key === "users" ? t("User") : t("Filter");
-                    let valuesToDisplay = Array.isArray(values)
-                        ? values.join(", ")
-                        : values;
-
-                    if (key === "users" && typeof values === "number") {
-                        valuesToDisplay = getUserName(values);
-                    }
-
-                    if (key === "labels") {
-                        valuesToDisplay = getLabelNames(values);
-                    }
+                    const valuesToDisplay = getDisplayValue(key, values);
 
                     return (
                         <Chip
-                            key={index}
-                            label={`${label}: ${valuesToDisplay}`}
+                            key={index} // Consider using something unique rather than 'index'
+                            label={`${t(key)}: ${valuesToDisplay}`} // Assuming 't(key)' gets the correct label for the filter
                             onDelete={() => dispatch(deleteFilter(key))}
                             sx={{ m: 0.5 }}
                         />
