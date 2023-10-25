@@ -21,11 +21,12 @@ interface Props extends CardProps {
     title?: string;
     list: Place[];
     duration: any;
+    data?: any;
 }
 
 export default function RelatedPlaces({
     title,
-
+    data,
     list,
     duration,
     ...other
@@ -33,8 +34,15 @@ export default function RelatedPlaces({
     return (
         <Card {...other}>
             <CardHeader title={title} />
-            {list.length == 0 && (
+            {data?.location?.lat != null &&
+            data?.location?.lng != null &&
+            list.length == 0 ? (
                 <Typography textAlign={"center"}>No results</Typography>
+            ) : (
+                !data?.location?.lat &&
+                !data?.location?.lng && (
+                    <Typography textAlign={"center"}>No location</Typography>
+                )
             )}
             <Scrollbar>
                 <Stack spacing={3} sx={{ p: 3, pr: 0 }}>

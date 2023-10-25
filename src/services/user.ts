@@ -16,7 +16,7 @@ export const user = createApi({
             return headers;
         },
     }),
-    tagTypes: ["Users", "Profile"],
+    tagTypes: ["Users", "Profile", "UserActive"],
     endpoints: (builder) => ({
         profile: builder.query<IUser, void>({
             query: () => ({
@@ -59,7 +59,20 @@ export const user = createApi({
             }),
             providesTags: ["Users"],
         }),
+
+        toggleActiveUser: builder.mutation<IUser[], number>({
+            query: (userId: number) => ({
+                url: `toggleActive/${userId}`,
+                method: "POST",
+            }),
+            invalidatesTags: ["Users"],
+        }),
     }),
 });
 
-export const { useProfileQuery, useAddUserMutation, useAllUsersQuery } = user;
+export const {
+    useProfileQuery,
+    useAddUserMutation,
+    useAllUsersQuery,
+    useToggleActiveUserMutation,
+} = user;

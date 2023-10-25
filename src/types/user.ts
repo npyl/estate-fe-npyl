@@ -23,6 +23,7 @@ export interface IUser {
     properties: IProperties[];
     // propertyFilters: IPropertyFilter[];
     isAdmin: boolean;
+    isActive: boolean;
     joinedIn: string;
     registrationDate: string;
 }

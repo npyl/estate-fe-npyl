@@ -5,7 +5,7 @@ import { ILog, ILogFilter, ILogResultResponse } from "src/types/logs";
 import IPage from "src/types/page";
 import { IProperties } from "src/types/properties";
 
-interface ILogsParams {
+export interface ILogsParams {
     id?: number;
     page: number;
     pageSize: number;
@@ -45,6 +45,9 @@ export const logs = createApi({
             query: (params: ILogsParams) => ({
                 url: `/customer/${params.id}`,
                 params: params,
+                headers: {
+                    "Accept-Language": "en",
+                },
             }),
             providesTags: ["CustomerByIdLogs"],
         }),
@@ -52,6 +55,9 @@ export const logs = createApi({
             query: (params: ILogsParams) => ({
                 url: `/property/${params.id}`,
                 params: params,
+                headers: {
+                    "Accept-Language": "en",
+                },
             }),
             providesTags: ["PropertyByIdLogs"],
         }),
@@ -64,6 +70,9 @@ export const logs = createApi({
                     page: props.page,
                     pageSize: props.pageSize,
                 },
+                headers: {
+                    "Accept-Language": "en",
+                },
             }),
             invalidatesTags: ["Logs"],
         }),
@@ -73,6 +82,6 @@ export const logs = createApi({
 export const {
     useAdminLogsPaginatedQuery,
     useCustomerHistoryPaginatedQuery,
-    useLazyPropertyHistoryPaginatedQuery,
+    usePropertyHistoryPaginatedQuery,
     useFilterLogsMutation,
 } = logs;
