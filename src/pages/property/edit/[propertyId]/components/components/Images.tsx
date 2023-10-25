@@ -12,7 +12,11 @@ import {
     useSetPropertyThumbailMutation,
     useUploadPropertyImageMutation,
 } from "src/services/properties";
-import { IPropertyImage, IPropertyImagePOST } from "src/types/file";
+import {
+    IFileResponse,
+    IPropertyImage,
+    IPropertyImagePOST,
+} from "src/types/file";
 import { GalleryManager } from "./components/GalleryManager";
 import { SeeMore } from "./components/SeeMore";
 import UploadImages from "src/components/upload/UploadImages";
@@ -20,6 +24,26 @@ import { useDispatch } from "react-redux";
 import { useDebouncedCallback } from "use-debounce";
 
 const PREVIEW_IMAGES_COUNT = 5;
+
+interface UploadResponse {
+    key: string;
+    cdnUrl: string;
+}
+
+type PromiseFunction<T> = () => Promise<T>;
+
+async function executeSequentially<T>(
+    promises: PromiseFunction<T>[]
+): Promise<T[]> {
+    const results: T[] = [];
+
+    for (const promise of promises) {
+        const result = await promise();
+        results.push(result);
+    }
+
+    return results;
+}
 
 const ImagesSection: React.FC = () => {
     const router = useRouter();
@@ -65,13 +89,8 @@ const ImagesSection: React.FC = () => {
             properties.util.invalidateTags(["Properties", "PropertyById"])
         );
 
-    const uploadFile = async (
-        image: File,
-        step: number
-    ): Promise<{ cdnUrl: string; key: string }> => {
-        const filename = image.name;
-        const contentType = image.type;
-        const size = image.size;
+    const addFile = async (image: File): Promise<IFileResponse> => {
+        const { name: filename, type: contentType, size } = image;
 
         if (!filename || !contentType)
             throw new Error("filename or contentType cannot be null");
@@ -83,17 +102,28 @@ const ImagesSection: React.FC = () => {
         };
 
         // get amazon url
-        const fileResponse = await addImage({
+        const response = await addImage({
             id: +propertyId!,
             body: body,
-        }).unwrap();
+        });
 
-        if (!fileResponse)
-            throw new Error("Error: FileResponse: " + fileResponse);
+        if ("error" in response) return Promise.reject(response.error);
 
-        const key = fileResponse.key;
-        const url = fileResponse.url;
-        const cdnUrl = fileResponse.cdnUrl;
+        return Promise.resolve(response.data);
+    };
+
+    const uploadFile = async (
+        image: File | undefined,
+        fileResponse: IFileResponse,
+        step: number
+    ): Promise<UploadResponse> => {
+        if (!image) throw new Error("null image!");
+
+        const { type: contentType, size } = image;
+        const { key, url, cdnUrl } = fileResponse;
+
+        if (!contentType) throw new Error("contentType cannot be null");
+        if (!key || !url || !cdnUrl) throw new Error("checks2 nulls");
 
         // PUT to amazon url
         const response = await uploadImage({
@@ -111,47 +141,71 @@ const ImagesSection: React.FC = () => {
     };
 
     const handleDropMultiFile = useCallback(
-        (acceptedFiles: File[]) => {
+        async (acceptedFiles: File[]) => {
             setProgress(0.1);
 
             const step = 100 / acceptedFiles.length;
 
             if (files.length === 0) {
                 // this is the first image we are adding; therefore it is the mainImage
-                uploadFile(acceptedFiles[0], step)
-                    .then(({ key }) => {
+                addFile(acceptedFiles[0])
+                    .then((fileResponse) =>
+                        uploadFile(acceptedFiles[0], fileResponse, step)
+                    )
+                    .then(({ key }) =>
                         setThumbnail({
                             propertyId: +propertyId!,
                             imageKey: key,
-                        });
-                    })
+                        })
+                    )
+                    // Invalidate *ONLY* if user has uploaded only one image
+                    .then(() => acceptedFiles.length === 1 && invalidateTags())
                     .catch((reason) =>
                         console.error("uploadThumbnail: ", reason)
                     );
 
-                const uploadPromises = acceptedFiles
-                    .slice(1)
-                    .map((f) => uploadFile(f, step));
+                const addPromises = acceptedFiles.slice(1).map(addFile);
 
-                Promise.all(uploadPromises)
+                /* Add All */
+                const fileResponses = await Promise.all(addPromises);
+
+                // TODO: error handling here!
+
+                /* Upload Sequentially */
+                const uploadPromises = fileResponses.map(
+                    (fileResponse, i) => () =>
+                        uploadFile(
+                            acceptedFiles.slice(1).at(i),
+                            fileResponse,
+                            step
+                        )
+                );
+
+                executeSequentially(uploadPromises)
                     .then(invalidateTags)
                     .then(resetProgress)
                     .catch((error) =>
-                        console.error("Error in Promise.all:", error)
+                        console.error("SequentialUploadError:", error)
                     );
             } else {
-                // treat every file as secondary image
+                const addPromises = acceptedFiles.map(addFile);
+                /* Add All */
+                const fileResponses = await Promise.all(addPromises);
 
-                const uploadPromises = acceptedFiles.map((f) =>
-                    uploadFile(f, step)
+                // TODO: error checks
+
+                /* Upload Sequentially */
+                const uploadPromises = fileResponses.map(
+                    (fileResponse, i) => () =>
+                        uploadFile(acceptedFiles.at(i), fileResponse, step)
                 );
 
-                Promise.all(uploadPromises)
+                executeSequentially(uploadPromises)
                     .then(invalidateTags)
                     .then(resetProgress)
-                    .catch((error) => {
-                        console.error("uploadImage:", error);
-                    });
+                    .catch((error) =>
+                        console.error("SequentialUploadError:", error)
+                    );
             }
         },
         [files]

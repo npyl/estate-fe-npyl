@@ -9,15 +9,15 @@ import { IProperties } from "./properties";
 import { IUser } from "./user";
 
 export interface ILog {
-    user: IUser;
-    action: KeyValue;
-    resourceType: KeyValue;
+    user?: IUser;
+    action?: KeyValue;
+    resourceType?: KeyValue;
     createdAt: number;
 
-    propertyId: number;
-    propertyCode: string;
-    customerId: number;
-    customer: string;
+    propertyId?: number;
+    propertyCode?: string;
+    customerId?: number;
+    customer?: string;
 }
 
 export interface ILogResultResponse {}

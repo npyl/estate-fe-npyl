@@ -1,14 +1,34 @@
 import { useEffect, useRef, useState } from "react";
 import { Button, Stack, SvgIconProps, Typography, styled } from "@mui/material";
 import { DrawShape, ShapeData, StopDraw } from "./types";
-import { drawShape, encodeShape } from "./util";
+import { drawShape, encodeShape, setShapeEvents } from "./util";
+
+const StyledButton = styled(Button)({
+    margin: "2px",
+    padding: "3px 4px", // Reduced horizontal padding for a narrower look
+    backgroundColor: "#dcdcdc", // Light gray background
+    color: "#000",
+    "& svg": {
+        width: "24px", // A bit smaller icon size for a narrower button
+        height: "24px",
+    },
+    "&:hover": {
+        backgroundColor: "#c7c7c7", // Slightly darker gray for hover
+    },
+});
+
+const SvgIcon = ({ children, ...props }: SvgIconProps) => (
+    <svg width="24" height="24" viewBox="0 0 24 24" {...props}>
+        {children}
+    </svg>
+);
 
 interface DrawMultipleProps {
     map: any;
     drawing: boolean;
     shapes?: ShapeData[];
     onDraw: (shape: DrawShape | StopDraw) => void;
-    onDrag: (oldEncodedShape: string, newEncodedShape: string) => void;
+    onShapeChange: (oldEncodedShape: string, newEncodedShape: string) => void;
 }
 
 export const DrawMultiple = ({
@@ -16,13 +36,10 @@ export const DrawMultiple = ({
     drawing,
     shapes,
     onDraw,
-    onDrag,
+    onShapeChange,
 }: DrawMultipleProps) => {
     const drawingManagerRef = useRef<any>(null);
     const shapeRefs = useRef<(DrawShape | StopDraw)[]>([]);
-
-    const [dragStartShape, setDragStartShape] = useState<DrawShape>();
-    const [dragStopShape, setDragStopShape] = useState<DrawShape>();
 
     // drawing manager ready
     const [ready, setReady] = useState(false);
@@ -81,13 +98,15 @@ export const DrawMultiple = ({
                 shapeRefs.current?.push(shape as DrawShape);
                 drawingManagerRef.current.setDrawingMode(null);
 
-                // Support shape drag
-                google.maps.event.addListener(shape, "dragend", () =>
-                    setDragStartShape(shape as DrawShape)
-                );
-                google.maps.event.addListener(shape, "dragend", () =>
-                    setDragStopShape(shape as DrawShape)
-                );
+                /* catch drag/change events */
+                const oldEncodedShape = encodeShape(shape as DrawShape);
+                onShapeChange &&
+                    setShapeEvents(shape as DrawShape, () =>
+                        onShapeChange(
+                            oldEncodedShape,
+                            encodeShape(shape as DrawShape)
+                        )
+                    );
 
                 onDraw(shape as DrawShape);
             }
@@ -116,29 +135,10 @@ export const DrawMultiple = ({
             ?.filter((shape) => !!shape)
             .map((shape) =>
                 shapeRefs.current?.push(
-                    drawShape(shape, map, !!drawing ? onDrag : null)
+                    drawShape(shape, map, !!drawing ? onShapeChange : null)
                 )
             );
     }, [ready, shapes]);
-
-    useEffect(() => {
-        if (!dragStartShape || !dragStopShape) return;
-
-        const updatedShapes = shapeRefs.current?.map((shape) =>
-            shape === dragStartShape ? dragStopShape : shape
-        );
-        shapeRefs.current = updatedShapes;
-
-        const encodedOldShape = encodeShape(dragStartShape);
-        const encodedNewShape = encodeShape(dragStopShape);
-
-        // call
-        onDrag(encodedOldShape, encodedNewShape);
-
-        // clear
-        setDragStartShape(undefined);
-        setDragStopShape(undefined);
-    }, [dragStartShape, dragStopShape]);
 
     const startDrawing = () =>
         drawingManagerRef.current?.setDrawingMode(
@@ -158,25 +158,6 @@ export const DrawMultiple = ({
         shapeRefs.current = [];
         onDraw(null);
     };
-    const StyledButton = styled(Button)({
-        margin: "2px",
-        padding: "3px 4px", // Reduced horizontal padding for a narrower look
-        backgroundColor: "#dcdcdc", // Light gray background
-        color: "#000",
-        "& svg": {
-            width: "24px", // A bit smaller icon size for a narrower button
-            height: "24px",
-        },
-        "&:hover": {
-            backgroundColor: "#c7c7c7", // Slightly darker gray for hover
-        },
-    });
-
-    const SvgIcon = ({ children, ...props }: SvgIconProps) => (
-        <svg width="24" height="24" viewBox="0 0 24 24" {...props}>
-            {children}
-        </svg>
-    );
 
     return drawing ? (
         <Stack

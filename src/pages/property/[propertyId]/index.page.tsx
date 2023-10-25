@@ -3,6 +3,7 @@ import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import {
+    useClonePropertyMutation,
     useDeletePropertyMutation,
     useGetPropertyByIdQuery,
 } from "src/services/properties";
@@ -42,6 +43,7 @@ import PhotosOnly from "./sections/PhotosOnly";
 import { useTranslation } from "react-i18next";
 
 import { useTabsContext } from "src/contexts/tabs";
+import PropertyLogs from "./sections/Logs";
 
 function a11yProps(index: number) {
     return {
@@ -58,6 +60,7 @@ const SingleProperty: NextPage = () => {
     const { propertyId } = router.query;
 
     const { data } = useGetPropertyByIdQuery(+propertyId!); // basic details
+    const [cloneProperty] = useClonePropertyMutation();
     const [deleteProperty] = useDeletePropertyMutation();
 
     const [value, setValue] = useState(0);
@@ -67,7 +70,7 @@ const SingleProperty: NextPage = () => {
             pushTab({
                 path: `/property/${propertyId}`,
                 id: propertyId as string,
-                label: `Property ${propertyId}`,
+                label: `Property ${data?.code || ""}`,
             });
         }
     }, [data, propertyId]);
@@ -76,6 +79,10 @@ const SingleProperty: NextPage = () => {
         setValue(newValue);
 
     const handleEdit = () => router.push(`/property/edit/${propertyId}`);
+    const handleClone = () =>
+        cloneProperty(+propertyId!)
+            .unwrap()
+            .then((newPropertyId) => router.push(`/property/${newPropertyId}`));
     const handleDelete = () =>
         deleteProperty(+propertyId!).then(() => {
             router.push("/");
@@ -86,7 +93,11 @@ const SingleProperty: NextPage = () => {
 
     return (
         <Box sx={{ width: "100%", paddingY: 1 }}>
-            <ViewHeader onEdit={handleEdit} onDelete={handleDelete}>
+            <ViewHeader
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+                onClone={handleClone}
+            >
                 <Tabs
                     value={value}
                     onChange={handleChange}
@@ -98,7 +109,8 @@ const SingleProperty: NextPage = () => {
                     <Tab label={t("Matching Customers")} {...a11yProps(3)} />
                     <Tab label={t("Photos")} {...a11yProps(4)} />
                     <Tab label={t("Connections")} {...a11yProps(5)} />
-                    <Tab label={t("Map")} {...a11yProps(6)} />
+                    <Tab label={t("Logs")} {...a11yProps(6)} />
+                    <Tab label={t("Map")} {...a11yProps(7)} />
                 </Tabs>
             </ViewHeader>
             <TabPanel value={value} index={0}>
@@ -132,6 +144,9 @@ const SingleProperty: NextPage = () => {
             </TabPanel>
             <TabPanel value={value} index={5}></TabPanel>
             <TabPanel value={value} index={6}>
+                <PropertyLogs />
+            </TabPanel>
+            <TabPanel value={value} index={7}>
                 <Box height={"400px"} width={"100%"}>
                     <InitMap />
                 </Box>

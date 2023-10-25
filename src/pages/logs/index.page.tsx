@@ -26,11 +26,11 @@ import { useSelector } from "react-redux";
 import { selectAll } from "src/slices/log";
 // import { parse, formatISO, utcToZonedTime } from "date-fns";
 
-interface LogCardProps {
+export interface LogCardProps {
     log: ILog;
 }
 
-const LogCard: FC<LogCardProps> = ({ log }) => {
+export const LogCard: FC<LogCardProps> = ({ log }) => {
     const theme = useTheme();
     const formattedDate = format(new Date(log.createdAt), "dd-MM-yyyy hh:mm");
 
@@ -40,7 +40,7 @@ const LogCard: FC<LogCardProps> = ({ log }) => {
     // console.log(datei); // logs the Unix timestamp in seconds
 
     let resourceDescription: JSX.Element;
-    if (log.resourceType.key === "PROPERTY") {
+    if (log?.resourceType?.key === "PROPERTY") {
         resourceDescription = (
             <span>
                 with property code{" "}
@@ -49,7 +49,7 @@ const LogCard: FC<LogCardProps> = ({ log }) => {
                 </Link>
             </span>
         );
-    } else if (log.resourceType.key === "CUSTOMER" && log.customer) {
+    } else if (log?.resourceType?.key === "CUSTOMER" && log.customer) {
         // Assuming log.customer has an 'id' field for the route
         resourceDescription = (
             <span>
@@ -59,7 +59,7 @@ const LogCard: FC<LogCardProps> = ({ log }) => {
                 </Link>
             </span>
         );
-    } else if (log.resourceType.key === "IMAGE") {
+    } else if (log?.resourceType?.key === "IMAGE") {
         resourceDescription = (
             <span>
                 to the property with code{" "}
@@ -72,7 +72,7 @@ const LogCard: FC<LogCardProps> = ({ log }) => {
         resourceDescription = <span></span>;
     }
     const getCardBackgroundColor = () => {
-        switch (log.action.key) {
+        switch (log?.action?.key) {
             case "CREATE":
                 return alpha(green[500], 0.2); // light green
             case "EDIT":
@@ -90,7 +90,7 @@ const LogCard: FC<LogCardProps> = ({ log }) => {
         }
     };
     const getLabelColor = () => {
-        switch (log.action.key) {
+        switch (log?.action?.key) {
             case "CREATE":
                 return green[500]; // or any specific shade of green you prefer
             case "EDIT":
@@ -110,7 +110,7 @@ const LogCard: FC<LogCardProps> = ({ log }) => {
     };
     const actionLabel = (
         <Chip
-            label={log.action.value} // assuming it's the human-readable action value
+            label={log?.action?.value} // assuming it's the human-readable action value
             style={{
                 backgroundColor: getLabelColor(), // color based on action
                 color: "#FFFFFF", // set text color to white
@@ -140,16 +140,16 @@ const LogCard: FC<LogCardProps> = ({ log }) => {
                             marginRight: theme.spacing(1.5),
                         }}
                     >
-                        {log.user.firstName.charAt(0)}
+                        {log?.user?.firstName.charAt(0)}
                     </Avatar>
                 </Grid>
                 <Grid item xs>
                     <Typography variant="subtitle1">
                         <strong>
-                            {log.user.firstName} {log.user.lastName}
+                            {log?.user?.firstName} {log?.user?.lastName}
                         </strong>{" "}
-                        {log.action.value?.toLowerCase()} a{" "}
-                        {log.resourceType.value?.toLowerCase()}{" "}
+                        {log?.action?.value?.toLowerCase()} a{" "}
+                        {log?.resourceType?.value?.toLowerCase()}{" "}
                         {resourceDescription}
                     </Typography>
                     <Typography

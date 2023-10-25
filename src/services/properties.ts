@@ -53,6 +53,13 @@ interface IPropertySetThumbnailProps {
     propertyId: number;
     imageKey: string;
 }
+interface BulkEditPropertyImagesParams {
+    propertyId: number;
+    body: {
+        imageKeys: string[];
+        hidden: boolean;
+    };
+}
 interface IDeleteImageProps {
     propertyId: number;
     imageKey: string;
@@ -172,6 +179,13 @@ export const properties = createApi({
                 url: "/create",
                 method: "POST",
                 params: dataToSend,
+            }),
+            invalidatesTags: ["Properties"],
+        }),
+        cloneProperty: builder.mutation<number, number>({
+            query: (propertyId: number) => ({
+                url: `/clone/${propertyId}`,
+                method: "POST",
             }),
             invalidatesTags: ["Properties"],
         }),
@@ -353,6 +367,17 @@ export const properties = createApi({
                 }),
             }
         ),
+        bulkEditPropertyImages: builder.mutation<
+            void,
+            BulkEditPropertyImagesParams
+        >({
+            query: ({ propertyId, body }: BulkEditPropertyImagesParams) => ({
+                url: `/${propertyId}/images/edit/bulk`,
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["Properties", "PropertyById"],
+        }),
         deletePropertyImage: builder.mutation<void, IDeleteImageProps>({
             query: ({ propertyId, imageKey }: IDeleteImageProps) => ({
                 url: `/${propertyId}/image/${imageKey}`,
@@ -548,6 +573,7 @@ export const {
     // mutations
     useEditPropertyMutation,
     useCreatePropertyMutation,
+    useClonePropertyMutation,
     useDeletePropertyMutation,
     useFilterPropertiesMutation,
     useSuggestForCustomerQuery,
@@ -564,6 +590,7 @@ export const {
     useUploadPropertyImageMutation,
     useEditPropertyImageMutation,
     useSetPropertyThumbailMutation,
+    useBulkEditPropertyImagesMutation,
     useDeletePropertyImageMutation,
     useLazyGetPropertyImagesQuery,
     useLazyGetPropertyBlueprintsQuery,

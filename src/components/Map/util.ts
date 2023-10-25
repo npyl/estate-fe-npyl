@@ -1,16 +1,38 @@
 import { DrawShape, ShapeData } from "./types";
 
+export const setShapeEvents = (shape: DrawShape, callback: () => void) => {
+    if (shape instanceof google.maps.Circle) {
+        console.log("The shape is a Circle.");
+
+        google.maps.event.addListener(shape, "dragend", callback);
+        google.maps.event.addListener(shape, "radius_changed", callback);
+    } else if (shape instanceof google.maps.Rectangle) {
+        console.log("The shape is a Rectangle.");
+
+        google.maps.event.addListener(shape, "bounds_changed", callback);
+    } else if (shape instanceof google.maps.Polygon) {
+        console.log("The shape is a Polygon.");
+
+        const vertices = shape.getPath();
+
+        vertices.addListener("set_at", callback);
+        vertices.addListener("insert_at", callback);
+    } else {
+        console.log("Unknown shape type.");
+    }
+};
+
 const drawCircle = (
     lat: number,
     lng: number,
     radius: number,
     map: google.maps.Map,
-    onDrag: ((oldShape: string, newShape: string) => void) | null
+    onChange: ((oldShape: string, newShape: string) => void) | null
 ) => {
     const circleConfig = {
         clickable: true,
-        editable: !!onDrag,
-        draggable: !!onDrag,
+        editable: !!onChange,
+        draggable: !!onChange,
         center: { lat, lng }, // Center of the circle
         radius: radius, // Radius (in meters)
         fillColor: "cyan",
@@ -22,10 +44,10 @@ const drawCircle = (
     const circle = new google.maps.Circle({ ...circleConfig, map });
     const encodedOldShape = encodeShape(circle);
 
-    // Support shape drag
-    onDrag &&
-        google.maps.event.addListener(circle, "dragend", () =>
-            onDrag(encodedOldShape, encodeShape(circle))
+    // Support shape drag/change
+    onChange &&
+        setShapeEvents(circle, () =>
+            onChange(encodedOldShape, encodeShape(circle))
         );
 
     return circle;
@@ -36,7 +58,7 @@ const drawRectangle = (
     swlat: number,
     swlng: number,
     map: google.maps.Map,
-    onDrag: ((oldShape: string, newShape: string) => void) | null
+    onChange: ((oldShape: string, newShape: string) => void) | null
 ) => {
     const rectangleBounds = {
         north: nelat,
@@ -47,8 +69,8 @@ const drawRectangle = (
 
     const rectangleConfig = {
         clickable: true,
-        editable: !!onDrag,
-        draggable: !!onDrag,
+        editable: !!onChange,
+        draggable: !!onChange,
         bounds: rectangleBounds,
         map: map,
         fillColor: "cyan",
@@ -60,10 +82,10 @@ const drawRectangle = (
     const rectangle = new google.maps.Rectangle({ ...rectangleConfig, map });
     const encodedOldShape = encodeShape(rectangle);
 
-    // Support shape drag
-    onDrag &&
-        google.maps.event.addListener(rectangle, "dragend", () =>
-            onDrag(encodedOldShape, encodeShape(rectangle))
+    // Support shape drag/change
+    onChange &&
+        setShapeEvents(rectangle, () =>
+            onChange(encodedOldShape, encodeShape(rectangle))
         );
 
     return rectangle;
@@ -71,12 +93,12 @@ const drawRectangle = (
 const drawPolygon = (
     paths: google.maps.LatLngLiteral[][],
     map: google.maps.Map,
-    onDrag: ((oldShape: string, newShape: string) => void) | null
+    onChange: ((oldShape: string, newShape: string) => void) | null
 ) => {
     const polygonConfig = {
         clickable: true,
-        editable: !!onDrag,
-        draggable: !!onDrag,
+        editable: !!onChange,
+        draggable: !!onChange,
         paths: paths,
         map: map,
         fillColor: "cyan",
@@ -88,10 +110,10 @@ const drawPolygon = (
     const polygon = new google.maps.Polygon({ ...polygonConfig, map });
     const encodedOldShape = encodeShape(polygon);
 
-    // Support shape drag
-    onDrag &&
-        google.maps.event.addListener(polygon, "dragend", () =>
-            onDrag(encodedOldShape, encodeShape(polygon))
+    // Support shape drag/change
+    onChange &&
+        setShapeEvents(polygon, () =>
+            onChange(encodedOldShape, encodeShape(polygon))
         );
 
     return polygon;
@@ -100,22 +122,22 @@ const drawPolygon = (
 export const drawShape = (
     shapeData: ShapeData,
     map: google.maps.Map,
-    onDrag: ((oldShape: string, newShape: string) => void) | null
+    onChange: ((oldShape: string, newShape: string) => void) | null
 ): DrawShape | null => {
     switch (shapeData.type) {
         case "Circle":
             const { lat, lng, radius } = shapeData;
             if (!lat || !lng || !radius) return null;
-            return drawCircle(lat, lng, radius, map, onDrag);
+            return drawCircle(lat, lng, radius, map, onChange);
 
         case "Rectangle":
             const { nelat, nelng, swlat, swlng } = shapeData;
             if (!nelat || !nelng || !swlat || !swlng) return null;
-            return drawRectangle(nelat, nelng, swlat, swlng, map, onDrag);
+            return drawRectangle(nelat, nelng, swlat, swlng, map, onChange);
 
         case "Polygon":
             if (!shapeData.paths || shapeData.paths.length === 0) return null;
-            return drawPolygon(shapeData.paths, map, onDrag);
+            return drawPolygon(shapeData.paths, map, onChange);
 
         default:
             // Technically unreachable with the given types, but good for robustness
