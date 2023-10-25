@@ -13,6 +13,10 @@ import ICarouselImage from "./carousel/types";
 type Props = {
     initialIndex?: number;
     ratio?: string;
+    size?: {
+        width: string;
+        height: string;
+    };
     data: ICarouselImage[];
     mainLabel?: string;
     onImageChange?: (newImage: ICarouselImage) => void;
@@ -28,6 +32,7 @@ export default function CarouselSimple({
     onImageClick,
     mainLabel,
     ratio = "16/9",
+    size,
 }: Props) {
     const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -90,6 +95,7 @@ export default function CarouselSimple({
                             onClick={() => {
                                 onImageClick && onImageClick();
                             }}
+                            size={size}
                             ratio={ratio! as ImageRatio}
                         />
                     ))}
