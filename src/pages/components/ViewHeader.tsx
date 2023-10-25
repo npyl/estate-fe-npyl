@@ -18,7 +18,7 @@ import { toast } from "react-toastify";
 interface IViewHeaderProps {
     onEdit: VoidFunction;
     onDelete: VoidFunction;
-    onClone: VoidFunction;
+    onClone?: VoidFunction;
     children?: ReactNode;
 }
 
@@ -34,14 +34,16 @@ const ViewHeader = (props: IViewHeaderProps) => {
                     {children}
                 </Grid>
                 <Grid item sx={{ mt: 1, mb: 1 }}>
-                    <Button
-                        variant="outlined"
-                        color="secondary"
-                        sx={{ mr: 1 }}
-                        onClick={onClone}
-                    >
-                        {t("Clone")}
-                    </Button>
+                    {onClone && (
+                        <Button
+                            variant="outlined"
+                            color="secondary"
+                            sx={{ mr: 1 }}
+                            onClick={onClone}
+                        >
+                            {t("Clone")}
+                        </Button>
+                    )}
                     <Button
                         variant="outlined"
                         color="secondary"

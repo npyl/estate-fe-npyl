@@ -182,8 +182,8 @@ function MyComponent() {
                             directionsService.route(
                                 request,
                                 (
-                                    response: { routes: { legs: any[] }[] },
-                                    status: any
+                                    response: google.maps.DirectionsResult | null,
+                                    status: google.maps.DirectionsStatus
                                 ) => {
                                     if (
                                         status ===
