@@ -15,6 +15,10 @@ const initialState: IFilterProps = {
         labels: [],
         categories: [],
         parentCategories: [],
+        leaser: false,
+        lessor: false,
+        buyer: false,
+        seller: false,
     },
     ids: [],
 };
