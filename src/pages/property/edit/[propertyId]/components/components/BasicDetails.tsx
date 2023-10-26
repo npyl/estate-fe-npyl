@@ -2,13 +2,17 @@ import {
     Box,
     Checkbox,
     FormControl,
+    FormControlLabel,
     Grid,
     InputLabel,
     MenuItem,
     Paper,
     Select,
+    Switch,
+    SwitchProps,
     TextField,
     Typography,
+    styled,
 } from "@mui/material";
 import { useDebouncedCallback } from "use-debounce";
 import DatePicker from "src/components/DatePicker";
@@ -22,6 +26,7 @@ import { useAllCustomersQuery } from "src/services/customers";
 import {
     selectArea,
     selectAuction,
+    selectExclusive,
     selectAvgUtils,
     selectCode,
     selectCurrentRentPrice,
@@ -37,6 +42,7 @@ import {
     selectRented,
     selectState,
     setArea,
+    setExclusive,
     setAuction,
     setAvailableAfter,
     setAvgUtils,
@@ -58,7 +64,7 @@ import {
 
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { useRouter } from "next/router";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { LabelCreate } from "src/components/label";
 import { useGlobals } from "src/hooks/useGlobals";
@@ -80,7 +86,61 @@ import { KeyCodeField } from "./componentsFields/KeyCodeField";
 import { selectCategory, selectParentCategory } from "src/slices/property";
 import { KeyValue } from "src/types/KeyValue";
 import { DateObject } from "react-multi-date-picker";
-
+export const IOSSwitch = styled((props: SwitchProps) => (
+    <Switch
+        focusVisibleClassName=".Mui-focusVisible"
+        disableRipple
+        {...props}
+    />
+))(({ theme }) => ({
+    width: 42,
+    height: 26,
+    padding: 0,
+    "& .MuiSwitch-switchBase": {
+        padding: 0,
+        margin: 2,
+        transitionDuration: "300ms",
+        "&.Mui-checked": {
+            transform: "translateX(16px)",
+            color: "#fff",
+            "& + .MuiSwitch-track": {
+                backgroundColor:
+                    theme.palette.mode === "dark" ? "#2ECA45" : "#65C466",
+                opacity: 1,
+                border: 0,
+            },
+            "&.Mui-disabled + .MuiSwitch-track": {
+                opacity: 0.5,
+            },
+        },
+        "&.Mui-focusVisible .MuiSwitch-thumb": {
+            color: "#33cf4d",
+            border: "6px solid #fff",
+        },
+        "&.Mui-disabled .MuiSwitch-thumb": {
+            color:
+                theme.palette.mode === "light"
+                    ? theme.palette.grey[100]
+                    : theme.palette.grey[600],
+        },
+        "&.Mui-disabled + .MuiSwitch-track": {
+            opacity: theme.palette.mode === "light" ? 0.7 : 0.3,
+        },
+    },
+    "& .MuiSwitch-thumb": {
+        boxSizing: "border-box",
+        width: 22,
+        height: 22,
+    },
+    "& .MuiSwitch-track": {
+        borderRadius: 26 / 2,
+        backgroundColor: theme.palette.mode === "light" ? "#E9E9EA" : "#39393D",
+        opacity: 1,
+        transition: theme.transitions.create(["background-color"], {
+            duration: 500,
+        }),
+    },
+}));
 const BasicSection: React.FC<any> = () => {
     const router = useRouter();
     const { t } = useTranslation();
@@ -113,6 +173,9 @@ const BasicSection: React.FC<any> = () => {
     const rentalPeriodStart = useSelector(selectRentalPeriodStart);
     const rentalPeriodEnd = useSelector(selectRentalPeriodEnd);
     const auction = useSelector(selectAuction);
+    const exclusive = useSelector(selectExclusive);
+
+    // const exclusive = useSelector(selectExclusive);
 
     const state = useSelector(selectState) || "";
     const stateEnum = enums?.state;
@@ -207,10 +270,29 @@ const BasicSection: React.FC<any> = () => {
                     px: 3,
                     py: 1.5,
                     display: "flex",
-                    justifyContent: "left",
+                    justifyContent: "space-between", // This will push the child elements apart
+                    alignItems: "center", // This will align them vertically
                 }}
             >
                 <Typography variant="h6">{t("Basic Details")}</Typography>
+                <FormControlLabel
+                    control={
+                        <IOSSwitch
+                            value={exclusive}
+                            checked={exclusive}
+                            onChange={(
+                                event: React.ChangeEvent<unknown>,
+                                checked: boolean
+                            ) => {
+                                dispatch(setExclusive(checked));
+                            }}
+                            name="exclusiveOption"
+                            // any other props you need
+                        />
+                    }
+                    label={t("Exclusive")} // or "iOS style" if you're keeping the original label
+                    // ... any other props you need
+                />
             </Box>
 
             <Grid item xs={12} padding={1}>

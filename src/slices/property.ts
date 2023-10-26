@@ -12,6 +12,7 @@ const initialState: propertyState = {
     // parentCategory: "",
     // category: "",
     rented: false,
+    exclusive: false,
     rentalStart: "",
     rentalEnd: "",
     availableAfter: "",
@@ -764,6 +765,9 @@ const slice = createSlice({
         setCottage(state: propertyState, action): void {
             state.suitableFor.cottage = action.payload;
         },
+        setExclusive(state: propertyState, action): void {
+            state.exclusive = action.payload;
+        },
         setTouristRental(state: propertyState, action): void {
             state.suitableFor.touristRental = action.payload;
         },
@@ -813,6 +817,7 @@ const slice = createSlice({
             state.price = payload.price || state.price;
             state.averageUtils = payload.averageUtils || state.averageUtils;
             state.rented = payload.rented || state.rented;
+            state.exclusive = payload.exclusive || state.exclusive;
             state.currentRentPrice =
                 payload.currentRentPrice || state.currentRentPrice;
             state.estimatedRentPrice =
@@ -1034,7 +1039,7 @@ export const {
     setInitialState,
 
     setKeyCode,
-
+    setExclusive,
     setVideo,
     setCoverageFactor,
     setSeaFront,
@@ -1239,7 +1244,7 @@ export const selectCurrentRentPrice = ({ property }: RootState) =>
     property.currentRentPrice;
 export const selectEstimatedRentPrice = ({ property }: RootState) =>
     property.estimatedRentPrice;
-
+export const selectExclusive = ({ property }: RootState) => property.exclusive;
 export const selectAuction = ({ property }: RootState) => property.auction;
 export const selectDebatablePrice = ({ property }: RootState) =>
     property.debatablePrice;

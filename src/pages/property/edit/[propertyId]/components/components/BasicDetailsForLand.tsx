@@ -2,6 +2,7 @@ import {
     Box,
     Checkbox,
     FormControl,
+    FormControlLabel,
     Grid,
     InputLabel,
     MenuItem,
@@ -28,12 +29,14 @@ import {
     selectOwner,
     selectPlotArea,
     selectPrice,
+    selectExclusive,
     selectRentalPeriodEnd,
     selectRentalPeriodStart,
     selectRented,
     selectState,
     setArea,
     setAuction,
+    setExclusive,
     setAvailableAfter,
     setBuildable,
     setCode,
@@ -77,6 +80,7 @@ import { ICustomer } from "src/types/customer";
 import { useTranslation } from "react-i18next";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { DateObject } from "react-multi-date-picker";
+import { IOSSwitch } from "./BasicDetails";
 
 const BasicForLandSection: React.FC<any> = () => {
     const router = useRouter();
@@ -120,6 +124,7 @@ const BasicForLandSection: React.FC<any> = () => {
     const rentalPeriodEnd = useSelector(selectRentalPeriodEnd);
     const auction = useSelector(selectAuction);
     const debatablePrice = useSelector(selectDebatablePrice);
+    const exclusive = useSelector(selectExclusive);
     const stateEnum = enums?.state;
 
     useEffect(() => {
@@ -180,10 +185,29 @@ const BasicForLandSection: React.FC<any> = () => {
                     px: 3,
                     py: 1.5,
                     display: "flex",
-                    justifyContent: "left",
+                    justifyContent: "space-between", // This will push the child elements apart
+                    alignItems: "center", // This will align them vertically
                 }}
             >
                 <Typography variant="h6">{t("Basic Details")}</Typography>
+                <FormControlLabel
+                    control={
+                        <IOSSwitch
+                            value={exclusive}
+                            checked={exclusive}
+                            onChange={(
+                                event: React.ChangeEvent<unknown>,
+                                checked: boolean
+                            ) => {
+                                dispatch(setExclusive(checked));
+                            }}
+                            name="exclusiveOption"
+                            // any other props you need
+                        />
+                    }
+                    label={t("Exclusive")} // or "iOS style" if you're keeping the original label
+                    // ... any other props you need
+                />
             </Box>
 
             <Grid item xs={12} padding={1}>
@@ -436,6 +460,7 @@ const BasicForLandSection: React.FC<any> = () => {
                             {t("Auction")}
                         </Typography>
                     </Grid>
+
                     <Grid item xs={12} padding={1}>
                         <Grid
                             container
