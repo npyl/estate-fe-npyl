@@ -23,6 +23,8 @@ import {
 import { UserForm } from "../../../../components/User/Form";
 import AnimatedTableRow from "src/components/Table/AnimatedTableRow";
 import FormControlLabel from "@mui/material/FormControlLabel";
+import { Label } from "src/components/label";
+
 const IOSSwitch = styled((props: SwitchProps) => (
     <Switch
         focusVisibleClassName=".Mui-focusVisible"
@@ -78,12 +80,15 @@ const IOSSwitch = styled((props: SwitchProps) => (
         }),
     },
 }));
+
 type Props = {
     changeTab: (event: React.SyntheticEvent, newValue: number) => void;
 };
+
 type ActiveStatusesType = {
     [userId: number]: boolean;
 };
+
 const UserPage: FC<Props> = ({ changeTab }) => {
     const router = useRouter();
     const { data: users } = useAllUsersQuery();
@@ -102,6 +107,7 @@ const UserPage: FC<Props> = ({ changeTab }) => {
             setActiveStatuses(initialStatuses);
         }
     }, [users]);
+
     const handleToggleActive = async (
         event: React.ChangeEvent<HTMLInputElement>,
         userId: number
@@ -175,32 +181,38 @@ const UserPage: FC<Props> = ({ changeTab }) => {
                                 <TableCell>{user.lastName}</TableCell>
                                 <TableCell>{user.email}</TableCell>
                                 <TableCell>
-                                    <FormGroup>
-                                        <FormControlLabel
-                                            control={
-                                                <IOSSwitch
-                                                    checked={
-                                                        activeStatuses[
-                                                            user.id
-                                                        ] || false
-                                                    } // fallback to 'false' if the id is not yet in the state
-                                                    onChange={(e) => {
-                                                        e.stopPropagation();
-                                                        handleToggleActive(
-                                                            e,
-                                                            user.id
-                                                        );
-                                                    }}
-                                                    onClick={(e) =>
-                                                        e.stopPropagation()
-                                                    }
-                                                    name="isActiveSwitch"
-                                                    sx={{ m: 1 }}
-                                                />
-                                            }
-                                            label="Active"
-                                        />
-                                    </FormGroup>
+                                    {user.isAdmin ? (
+                                        <Label opaque color="info">
+                                            Admin
+                                        </Label>
+                                    ) : (
+                                        <FormGroup>
+                                            <FormControlLabel
+                                                control={
+                                                    <IOSSwitch
+                                                        checked={
+                                                            activeStatuses[
+                                                                user.id
+                                                            ] || false
+                                                        } // fallback to 'false' if the id is not yet in the state
+                                                        onChange={(e) => {
+                                                            e.stopPropagation();
+                                                            handleToggleActive(
+                                                                e,
+                                                                user.id
+                                                            );
+                                                        }}
+                                                        onClick={(e) =>
+                                                            e.stopPropagation()
+                                                        }
+                                                        name="isActiveSwitch"
+                                                        sx={{ m: 1 }}
+                                                    />
+                                                }
+                                                label="Active"
+                                            />
+                                        </FormGroup>
+                                    )}
                                 </TableCell>
                                 <TableCell>{user.mobilePhone}</TableCell>
                                 <TableCell>

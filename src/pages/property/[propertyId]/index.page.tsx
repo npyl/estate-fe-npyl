@@ -82,7 +82,9 @@ const SingleProperty: NextPage = () => {
     const handleClone = () =>
         cloneProperty(+propertyId!)
             .unwrap()
-            .then((newPropertyId) => router.push(`/property/${newPropertyId}`));
+            .then((newPropertyId) =>
+                router.push(`/property/edit/${newPropertyId}`)
+            );
     const handleDelete = () =>
         deleteProperty(+propertyId!).then(() => {
             router.push("/");

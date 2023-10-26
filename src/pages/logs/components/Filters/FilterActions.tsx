@@ -21,7 +21,6 @@ export default function FilterActions() {
     const actions = useSelector(selectActions);
 
     const logsEnums = data?.logs;
-    const resourceEnums = logsEnums?.resourceTypes;
     const actionsEnums = logsEnums?.userActions;
 
     if (!data) return null;
@@ -31,11 +30,16 @@ export default function FilterActions() {
             target: { value },
         } = event;
         dispatch(
-            setActions(
-                // On autofill we get a stringified value.
-                typeof value === "string" ? value.split(",") : value
-            )
+            setActions(typeof value === "string" ? value.split(",") : value)
         );
+    };
+
+    // Function to retrieve the display text for selected keys
+    const getSelectedActionValues = (selectedKeys: string[]) => {
+        return selectedKeys.map((key: string) => {
+            const found = actionsEnums?.find((action) => action.key === key);
+            return found ? found.value : "Unknown"; // Or some default text or error handling
+        });
     };
 
     return (
@@ -45,22 +49,17 @@ export default function FilterActions() {
                 multiple
                 value={actions}
                 onChange={handleChange}
-                renderValue={(selected: KeyValue[]) => {
-                    // Change here to expect KeyValue[]
-                    return selected
-                        .map((item) => item.value) // Now we're directly accessing the 'value' field of each KeyValue item
-                        .filter(Boolean)
-                        .join(", ");
+                renderValue={(selected) => {
+                    const displayValues = getSelectedActionValues(selected);
+                    return displayValues.join(", ");
                 }}
                 input={<OutlinedInput label={t("Action")} />}
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
                 {actionsEnums!.map(({ key, value }) => {
-                    // Checking the existence of 'key' in 'actions' array of KeyValue
-                    const isKeySelected = actions?.some(
-                        (action) => action.key === key
-                    );
+                    const isKeySelected = actions?.includes(key);
 
+                    // Use the 'key' for the MenuItem key instead of 'index' to ensure it's unique
                     return (
                         <MenuItem key={key} value={key}>
                             <Checkbox checked={isKeySelected} />

@@ -7,6 +7,7 @@ import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import SchoolIcon from "@mui/icons-material/School";
 import {
     Box,
+    Button,
     Paper,
     Slider,
     ToggleButton,
@@ -20,7 +21,7 @@ import { useGetPropertyByIdQuery } from "src/services/properties";
 import { useDebouncedCallback } from "use-debounce";
 import RelatedPlaces from "./RelatedPlaces";
 import { useLoadApi } from "src/components/Map/Map";
-
+import { LocationOff } from "@mui/icons-material";
 const containerStyle = {
     width: "100%",
     height: "65vh",
@@ -96,32 +97,29 @@ function MyComponent() {
     useEffect(() => {
         if (isLoaded) {
             if (data?.location?.lat != null && data?.location?.lng != null) {
-                mapRef.current = new window.google.maps.Map(
-                    document.getElementById("map")!,
-                    {
-                        center,
-                        zoom: 15 - +radius * 0.6,
-                    }
-                );
-                // Check if latitude and longitude are available before adding a marker
+                if (window.google && document.getElementById("map")) {
+                    mapRef.current = new window.google.maps.Map(
+                        document.getElementById("map")!,
+                        {
+                            center,
+                            zoom: 15 - +radius * 0.6,
+                        }
+                    );
+                    // Check if latitude and longitude are available before adding a marker
 
-                new google.maps.Marker({
-                    position: center,
-                    map: mapRef.current,
-                    icon: "https://img.icons8.com/external-bearicons-flat-bearicons/64/external-Home-location-bearicons-flat-bearicons.png",
-                    zIndex: 50,
-                });
+                    new google.maps.Marker({
+                        position: center,
+                        map: mapRef.current,
+                        icon: "https://img.icons8.com/external-bearicons-flat-bearicons/64/external-Home-location-bearicons-flat-bearicons.png",
+                        zIndex: 50,
+                    });
 
-                serviceRef.current =
-                    new window.google.maps.places.PlacesService(mapRef.current);
+                    serviceRef.current =
+                        new window.google.maps.places.PlacesService(
+                            mapRef.current
+                        );
+                }
             } else {
-                mapRef.current = new window.google.maps.Map(
-                    document.getElementById("map")!,
-                    {
-                        center,
-                        zoom: 10.6 - +radius * 0.6,
-                    }
-                );
             }
             searchNearbyHospitals();
         }
@@ -225,93 +223,126 @@ function MyComponent() {
         return <div>Error loading maps</div>;
     }
     // if (data?.location?.lat == null) return null;
-    return (
-        <Box display={"flex"} gap={2}>
-            <div
-                style={{ height: "65vh", width: "60vw", position: "relative" }}
-            >
-                {isLoaded ? (
-                    <Box>
-                        <div id="map" style={containerStyle} />
-                    </Box>
-                ) : (
-                    <div>Loading maps</div>
-                )}
-                {data?.location?.lat != null && data?.location?.lng != null ? (
-                    <Paper
-                        sx={{
-                            width: 240,
-                            position: "absolute",
-                            top: "10px",
-                            left: "50%",
-                            paddingX: 3,
-                            textAlign: "center",
-                            transform: "translateX(-50%)",
-                        }}
-                    >
-                        <Typography variant="caption">
-                            Επέκταση ακτίνας κατά {radius}χλμ.{" "}
-                        </Typography>
-                        <Slider
-                            onChange={(e, value) => handleSliderRadius(value)}
-                            aria-label="Always visible"
-                            defaultValue={0}
-                            getAriaValueText={valuetext}
-                            step={0.2}
-                            marks={marks}
-                            valueLabelDisplay="off"
-                            min={0}
-                            max={5}
-                        />
-                    </Paper>
-                ) : null}
-                <ToggleButtonGroup
-                    sx={{
-                        position: "absolute",
-                        bottom: "30px",
-                        left: "10px",
-                        background: "white",
+    if (data?.location?.lat != null && data?.location?.lng != null)
+        return (
+            <Box display={"flex"} gap={2}>
+                <div
+                    style={{
+                        height: "65vh",
+                        width: "60vw",
+                        position: "relative",
                     }}
-                    orientation="vertical"
-                    color="primary"
-                    value={alignment}
-                    exclusive
-                    onChange={handleChange}
-                    aria-label="Platform"
                 >
-                    <ToggleButton value="hospital">
-                        <LocalHospitalIcon />
-                    </ToggleButton>
-                    <ToggleButton value="supermarket">
-                        <LocalGroceryStoreIcon />
-                    </ToggleButton>
-                    <ToggleButton value="restaurant">
-                        <LocalDiningIcon />
-                    </ToggleButton>
-                    <ToggleButton value="bar">
-                        <LocalBarIcon />
-                    </ToggleButton>
-                    <ToggleButton value="school">
-                        <SchoolIcon />
-                    </ToggleButton>
-                    <ToggleButton value="airport">
-                        <LocalAirportIcon />
-                    </ToggleButton>
-                    <ToggleButton value="transit_station">
-                        <DirectionsBusIcon />
-                    </ToggleButton>
-                </ToggleButtonGroup>
-            </div>
-            <Box width={"40vw"} height={"65vh"} overflow={"auto"}>
-                <RelatedPlaces
-                    data={data}
-                    title="Closest points"
-                    list={places}
-                    duration={state}
-                />
+                    {isLoaded ? (
+                        <Box>
+                            <div id="map" style={containerStyle} />
+                        </Box>
+                    ) : (
+                        <div>Loading maps</div>
+                    )}
+                    {data?.location?.lat != null &&
+                    data?.location?.lng != null ? (
+                        <Paper
+                            sx={{
+                                width: 240,
+                                position: "absolute",
+                                top: "10px",
+                                left: "50%",
+                                paddingX: 3,
+                                textAlign: "center",
+                                transform: "translateX(-50%)",
+                            }}
+                        >
+                            <Typography variant="caption">
+                                Επέκταση ακτίνας κατά {radius}χλμ.{" "}
+                            </Typography>
+                            <Slider
+                                onChange={(e, value) =>
+                                    handleSliderRadius(value)
+                                }
+                                aria-label="Always visible"
+                                defaultValue={0}
+                                getAriaValueText={valuetext}
+                                step={0.2}
+                                marks={marks}
+                                valueLabelDisplay="off"
+                                min={0}
+                                max={5}
+                            />
+                        </Paper>
+                    ) : null}
+                    <ToggleButtonGroup
+                        sx={{
+                            position: "absolute",
+                            bottom: "30px",
+                            left: "10px",
+                            background: "white",
+                        }}
+                        orientation="vertical"
+                        color="primary"
+                        value={alignment}
+                        exclusive
+                        onChange={handleChange}
+                        aria-label="Platform"
+                    >
+                        <ToggleButton value="hospital">
+                            <LocalHospitalIcon />
+                        </ToggleButton>
+                        <ToggleButton value="supermarket">
+                            <LocalGroceryStoreIcon />
+                        </ToggleButton>
+                        <ToggleButton value="restaurant">
+                            <LocalDiningIcon />
+                        </ToggleButton>
+                        <ToggleButton value="bar">
+                            <LocalBarIcon />
+                        </ToggleButton>
+                        <ToggleButton value="school">
+                            <SchoolIcon />
+                        </ToggleButton>
+                        <ToggleButton value="airport">
+                            <LocalAirportIcon />
+                        </ToggleButton>
+                        <ToggleButton value="transit_station">
+                            <DirectionsBusIcon />
+                        </ToggleButton>
+                    </ToggleButtonGroup>
+                </div>
+                <Box width={"40vw"} height={"65vh"} overflow={"auto"}>
+                    <RelatedPlaces
+                        data={data}
+                        title="Closest points"
+                        list={places}
+                        duration={state}
+                    />
+                </Box>
             </Box>
-        </Box>
-    );
+        );
+    else
+        return (
+            <Box
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                justifyContent="center"
+                height="100%" // or '65vh' or similar depending on your layout needs
+                textAlign="center"
+                color={theme.palette.grey[500]}
+            >
+                {/* Optional: icon from @mui/icons-material or similar library */}
+                <LocationOff style={{ fontSize: 70 }} color="action" />
+
+                <Typography variant="h5" gutterBottom>
+                    No location data available
+                </Typography>
+
+                <Typography variant="subtitle1" color="textSecondary">
+                    Please check the property details or try again later.
+                </Typography>
+
+                {/* Optional: Call to action button */}
+            </Box>
+        );
 }
 
 export default MyComponent;

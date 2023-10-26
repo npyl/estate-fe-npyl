@@ -28,7 +28,7 @@ export interface IPropertyImage {
 
 export interface IPropertyDocument {
     id: number;
-    url: string;
+    url: string | null;
     key: string;
 }
 

@@ -1,9 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { ICustomer } from "src/types/customer";
-import { ILabel } from "src/types/label";
-import { ILog, ILogFilter, ILogResultResponse } from "src/types/logs";
+import { ILog, ILogFilterPOST } from "src/types/logs";
 import IPage from "src/types/page";
-import { IProperties } from "src/types/properties";
 
 export interface ILogsParams {
     id?: number;
@@ -11,7 +8,7 @@ export interface ILogsParams {
     pageSize: number;
 }
 interface ILogFilterProps extends ILogsParams {
-    filter: ILogFilter;
+    filter: ILogFilterPOST;
 }
 export const logs = createApi({
     reducerPath: "logs",

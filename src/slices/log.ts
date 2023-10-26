@@ -1,10 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createSelector } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
-import { ILogFilter } from "src/types/logs";
-interface Filters extends ILogFilter {
+import { ILogFilterPOST } from "src/types/logs";
+
+interface Filters extends ILogFilterPOST {
     [key: string]: any;
 }
+
 interface IFilterProps {
     filters: Filters;
     ids: string[];

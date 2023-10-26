@@ -31,3 +31,13 @@ export interface ILogFilter {
     propertiesIds?: number[];
     customersIds?: number[];
 }
+
+export interface ILogFilterPOST {
+    fromDate?: string;
+    toDate?: string;
+    users?: number[]; //id
+    actions?: string[];
+    resources?: string[];
+    propertiesIds?: number[];
+    customersIds?: number[];
+}
