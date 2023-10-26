@@ -189,9 +189,11 @@ const Logs: NextPage = () => {
     const [pageSize, setPageSize] = useState(10);
     const allFilters = useSelector(selectAll);
     const [filterLogs, { data }] = useFilterLogsMutation();
+
     useEffect(() => {
         revalidate();
     }, [allFilters, page, pageSize]);
+
     const revalidate = () => {
         filterLogs({
             filter: allFilters,
