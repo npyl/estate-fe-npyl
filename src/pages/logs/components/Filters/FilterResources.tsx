@@ -37,7 +37,15 @@ export default function FilterResources() {
             )
         );
     };
-
+    const getDisplayValues = (selectedKeys: string[]) => {
+        // Map the keys back to their respective display values (i.e., 'value' field in your data).
+        return selectedKeys.map((key: string) => {
+            // Find the corresponding item in resourceEnums
+            const item = resourceEnums?.find((item) => item.key === key);
+            // Return the display value, or a fallback if not found.
+            return item ? item.value : "Unknown";
+        });
+    };
     return (
         <FormControl sx={{ minWidth: "130px", maxWidth: "130px" }}>
             <InputLabel>{t("Resource")}</InputLabel>
@@ -45,22 +53,19 @@ export default function FilterResources() {
                 multiple
                 value={resources}
                 onChange={handleChange}
-                renderValue={(selected: KeyValue[]) => {
-                    // Change here to expect KeyValue[]
-                    return selected
-                        .map((item) => item.value) // Now we're directly accessing the 'value' field of each KeyValue item
-                        .filter(Boolean)
-                        .join(", ");
+                renderValue={(selected) => {
+                    // Get display values.
+                    const displayValues = getDisplayValues(selected);
+                    // Join the values for displaying in the select box.
+                    return displayValues.join(", ");
                 }}
                 input={<OutlinedInput label={t("Resource")} />}
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
                 {resourceEnums!.map(({ key, value }) => {
-                    // Checking the existence of 'key' in 'actions' array of KeyValue
                     const isKeySelected = resources?.some(
-                        (action) => action.key === key
+                        (resourceKey) => resourceKey === key
                     );
-
                     return (
                         <MenuItem key={key} value={key}>
                             <Checkbox checked={isKeySelected} />
