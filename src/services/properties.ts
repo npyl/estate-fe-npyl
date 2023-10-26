@@ -60,6 +60,10 @@ interface BulkEditPropertyImagesParams {
         hidden: boolean;
     };
 }
+interface BulkDeletePropertyImagesParams {
+    propertyId: number;
+    imageKeys: string[];
+}
 interface IDeleteImageProps {
     propertyId: number;
     imageKey: string;
@@ -345,6 +349,20 @@ export const properties = createApi({
             }),
             invalidatesTags: ["Properties", "PropertyById"],
         }),
+        bulkDeletePropertyImages: builder.mutation<
+            void,
+            BulkDeletePropertyImagesParams
+        >({
+            query: ({
+                propertyId,
+                imageKeys,
+            }: BulkDeletePropertyImagesParams) => ({
+                url: `/${propertyId}/images/delete/bulk`,
+                method: "DELETE",
+                body: imageKeys,
+            }),
+            invalidatesTags: ["Properties", "PropertyById"],
+        }),
         deletePropertyImage: builder.mutation<void, IDeleteImageProps>({
             query: ({ propertyId, imageKey }: IDeleteImageProps) => ({
                 url: `/${propertyId}/image/${imageKey}`,
@@ -616,6 +634,7 @@ export const {
     useEditPropertyImageMutation,
     useSetPropertyThumbailMutation,
     useBulkEditPropertyImagesMutation,
+    useBulkDeletePropertyImagesMutation,
     useDeletePropertyImageMutation,
     useLazyGetPropertyImagesQuery,
     useLazyGetPropertyBlueprintsQuery,

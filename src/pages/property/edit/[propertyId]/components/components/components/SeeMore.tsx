@@ -1,9 +1,7 @@
 import { Lock, LockOpen } from "@mui/icons-material";
 import {
     Box,
-    Button,
     Dialog,
-    DialogActions,
     DialogContent,
     DialogTitle,
     Divider,
@@ -16,11 +14,12 @@ import MultiFilePreviewReorder from "src/components/upload/preview/MultiFilePrev
 import { IPropertyImage } from "src/types/file";
 import { Over25ImagesPreview } from "./SeeMorePreview";
 import {
+    useBulkDeletePropertyImagesMutation,
     useBulkEditPropertyImagesMutation,
     useReorderPropertyImagesWithSetImageVisibilityMutation,
 } from "src/services/properties";
 import { useRouter } from "next/router";
-import { Close as CloseIcon } from "@mui/icons-material";
+import { Close as CloseIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { ProgressBar } from "./ProgressBar";
 
 interface SeeMoreProps {
@@ -46,6 +45,7 @@ export const SeeMore = ({
     const { propertyId } = router.query;
 
     const [bulkEditImages] = useBulkEditPropertyImagesMutation();
+    const [bulkDeleteImages] = useBulkDeletePropertyImagesMutation();
     const [reorderImagesWithVisibility] =
         useReorderPropertyImagesWithSetImageVisibilityMutation();
 
@@ -71,15 +71,13 @@ export const SeeMore = ({
         imageKeys: string[],
         imageKey: string,
         hidden: boolean
-    ) => {
+    ) =>
         reorderImagesWithVisibility({
             propertyId: +propertyId!,
             imageKeys,
             imageKey,
             hidden,
-        }).then(() => {});
-        // TODO: set thumbnail
-    };
+        });
 
     const handleBulkChangeVisibility = useCallback(
         (hidden: boolean) =>
@@ -89,6 +87,15 @@ export const SeeMore = ({
                     imageKeys: selectedImages,
                     hidden,
                 },
+            }),
+        [selectedImages]
+    );
+
+    const handleBulkDelete = useCallback(
+        () =>
+            bulkDeleteImages({
+                propertyId: +propertyId!,
+                imageKeys: selectedImages,
             }),
         [selectedImages]
     );
@@ -155,11 +162,19 @@ export const SeeMore = ({
                                 >
                                     Private
                                 </SoftButton>
+                                <SoftButton
+                                    color="error"
+                                    startIcon={<DeleteIcon />}
+                                    onClick={handleBulkDelete}
+                                >
+                                    Delete
+                                </SoftButton>
                             </>
                         )}
                         <Divider orientation="vertical" />
                         <SoftButton
                             onClick={toggleSelectMultiple}
+                            variant="outlined"
                             color={selectMultiple ? "error" : "primary"}
                         >
                             {selectMultiple
