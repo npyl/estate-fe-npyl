@@ -1,14 +1,17 @@
-import {
-    GoogleMap,
-    Libraries,
-    Marker,
-    useJsApiLoader,
-} from "@react-google-maps/api";
-import { CustomDrawingComponent } from "./Draw";
+import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import React, { useCallback, useMemo, useState } from "react";
-import { DrawShape, ShapeData, StopDraw } from "./types";
-import SearchOnMap from "./Search";
+import { CustomDrawingComponent } from "./Draw";
 import { DrawMultiple } from "./DrawMultiple";
+import SearchOnMap from "./Search";
+import { DrawShape, ShapeData, StopDraw } from "./types";
+
+export declare type Libraries = (
+    | "drawing"
+    | "geometry"
+    | "localContext"
+    | "places"
+    | "visualization"
+)[];
 
 const containerStyle = {
     width: "100%",
