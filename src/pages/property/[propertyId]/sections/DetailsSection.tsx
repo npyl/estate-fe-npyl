@@ -110,7 +110,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Floor")}
-                        value={details?.floor.value}
+                        value={details?.floor.value || "-"}
                         align="horizontal"
                     />
                 );
@@ -118,7 +118,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Layers")}
-                        value={details?.layers}
+                        value={details?.layers || "-"}
                         align="horizontal"
                     />
                 );
@@ -126,7 +126,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Bedrooms")}
-                        value={details?.bedrooms}
+                        value={details?.bedrooms || "-"}
                         align="horizontal"
                     />
                 );
@@ -134,7 +134,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Kitchens")}
-                        value={details?.kitchens}
+                        value={details?.kitchens || "-"}
                         align="horizontal"
                     />
                 );
@@ -142,7 +142,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Bathrooms")}
-                        value={details?.bathrooms}
+                        value={details?.bathrooms || "-"}
                         align="horizontal"
                     />
                 );
@@ -150,7 +150,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("W/C")}
-                        value={details?.wc}
+                        value={details?.wc || "-"}
                         align="horizontal"
                     />
                 );
@@ -158,7 +158,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Living Rooms")}
-                        value={details?.livingrooms}
+                        value={details?.livingrooms || "-"}
                         align="horizontal"
                     />
                 );
@@ -166,7 +166,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("View Type")}
-                        value={details?.viewType.value}
+                        value={details?.viewType.value || "-"}
                         align="horizontal"
                     />
                 );
@@ -174,7 +174,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Zone Type")}
-                        value={details?.zoneType.value}
+                        value={details?.zoneType.value || "-"}
                         align="horizontal"
                     />
                 );
@@ -182,7 +182,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Land Use")}
-                        value={details?.landUse.value}
+                        value={details?.landUse.value || "-"}
                         align="horizontal"
                     />
                 );
@@ -190,7 +190,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Accessibility")}
-                        value={details?.accessibility.value}
+                        value={details?.accessibility.value || "-"}
                         align="horizontal"
                     />
                 );
@@ -198,7 +198,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Rooms")}
-                        value={details?.rooms}
+                        value={details?.rooms || "-"}
                         align="horizontal"
                     />
                 );
@@ -206,7 +206,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Orientation")}
-                        value={details?.orientation.value}
+                        value={details?.orientation.value || "-"}
                         align="horizontal"
                     />
                 );
@@ -257,7 +257,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Distance From Sea")}
-                        value={distances?.sea}
+                        value={distances?.sea || "-"}
                         align="horizontal"
                     />
                 );
@@ -265,7 +265,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Number of WC")}
-                        value={details?.wc}
+                        value={details?.wc || "-"}
                         align="horizontal"
                     />
                 );
@@ -273,7 +273,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Zone")}
-                        value={details?.zoneType.value}
+                        value={details?.zoneType.value || "-"}
                         align="horizontal"
                     />
                 );
@@ -281,7 +281,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("View")}
-                        value={details?.viewType.value}
+                        value={details?.viewType.value || "-"}
                         align="horizontal"
                     />
                 );

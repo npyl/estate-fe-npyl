@@ -320,7 +320,16 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 );
 
             case "Manager":
-                return <ListManagerItem manager={manager} />;
+                if (data.manager != null)
+                    return <ListManagerItem manager={manager} />;
+                else
+                    return (
+                        <ListItem
+                            label={t("Manager")}
+                            value={"-"} // Displaying '-' when managedBy is null
+                            align="horizontal"
+                        />
+                    );
 
             case "State":
                 return (
@@ -363,7 +372,15 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                     />
                 );
             case "Owner":
-                return <ListOwnerItem owner={owner} />;
+                if (data.owner != null) return <ListOwnerItem owner={owner} />;
+                else
+                    return (
+                        <ListItem
+                            label={t("Owner")}
+                            value={"-"} // Displaying '-' when managedBy is null
+                            align="horizontal"
+                        />
+                    );
             default:
                 return null;
         }

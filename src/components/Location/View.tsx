@@ -68,13 +68,13 @@ export const ViewLocation = ({ location }: ViewLocationProps) => {
                         <List>
                             <ListItem
                                 label={t("Street")}
-                                value={location?.street}
+                                value={location?.street || "-"}
                                 align="horizontal"
                             />
 
                             <ListItem
                                 label={t("Number")}
-                                value={location?.number}
+                                value={location?.number || "-"}
                                 align="horizontal"
                             />
                         </List>
@@ -84,7 +84,7 @@ export const ViewLocation = ({ location }: ViewLocationProps) => {
                         <List>
                             <ListItem
                                 label={t("City")}
-                                value={city}
+                                value={city || "-"}
                                 align="horizontal"
                             />
                         </List>
@@ -100,19 +100,19 @@ export const ViewLocation = ({ location }: ViewLocationProps) => {
                         <List>
                             <ListItem
                                 label={t("Street")}
-                                value={location?.street}
+                                value={location?.street || "-"}
                                 align="horizontal"
                             />
 
                             <ListItem
                                 label={t("Number")}
-                                value={location?.number}
+                                value={location?.number || "-"}
                                 align="horizontal"
                             />
 
                             <ListItem
                                 label={t("City")}
-                                value={city}
+                                value={city || "-"}
                                 align="horizontal"
                             />
                         </List>
@@ -122,22 +122,22 @@ export const ViewLocation = ({ location }: ViewLocationProps) => {
                         <List>
                             <ListItem
                                 label={t("Zip Code")}
-                                value={location?.zipCode}
+                                value={location?.zipCode || "-"}
                                 align="horizontal"
                             />
                             <ListItem
                                 label={t("Region")}
-                                value={region}
+                                value={region || "-"}
                                 align="horizontal"
                             />
                             <ListItem
                                 label={t("Country")}
-                                value={location?.country}
+                                value={location?.country || "-"}
                                 align="horizontal"
                             />
                             <ListItem
                                 label={t("Neighborhood")}
-                                value={neighb}
+                                value={neighb || "-"}
                                 align="horizontal"
                             />
                         </List>
