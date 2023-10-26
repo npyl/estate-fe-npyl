@@ -83,7 +83,7 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Energy Class")}
-                        value={heating?.energyClass.value}
+                        value={heating?.energyClass.value || "-"}
                         align="horizontal"
                     />
                 );
@@ -91,7 +91,7 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Heating Type")}
-                        value={heating?.heatingType.value}
+                        value={heating?.heatingType.value || "-"}
                         align="horizontal"
                     />
                 );
@@ -99,7 +99,7 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Heating System")}
-                        value={heating?.heatingSystem.value}
+                        value={heating?.heatingSystem.value || "-"}
                         align="horizontal"
                     />
                 );
@@ -107,7 +107,7 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Electricity Type")}
-                        value={heating?.electricityType.value}
+                        value={heating?.electricityType.value || "-"}
                         align="horizontal"
                     />
                 );

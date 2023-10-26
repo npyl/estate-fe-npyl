@@ -46,6 +46,7 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Rented",
         "Debatable Price",
         "Auction",
+        "Exclusive",
     ],
     COMMERCIAL: [
         "ParentCategory",
@@ -70,6 +71,7 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Rented",
         "Debatable Price",
         "Auction",
+        "Exclusive",
     ],
     LAND: [
         "ParentCategory",
@@ -93,6 +95,7 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Debatable Price",
         "Auction",
         "Buildable",
+        "Exclusive",
     ],
     OTHER: [
         "ParentCategory",
@@ -116,6 +119,7 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Rented",
         "Debatable Price",
         "Auction",
+        "Exclusive",
     ],
 };
 
@@ -186,6 +190,14 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                     <ListItem
                         label={t("Area")}
                         value={data?.area ? `${data?.area}m²` : "-"}
+                        align="horizontal"
+                    />
+                );
+            case "Exclusive":
+                return (
+                    <ListBooleanItem
+                        label={t("Exclusive")}
+                        status={data?.exclusive ?? "-"}
                         align="horizontal"
                     />
                 );
@@ -320,7 +332,16 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 );
 
             case "Manager":
-                return <ListManagerItem manager={manager} />;
+                if (data.manager != null)
+                    return <ListManagerItem manager={manager} />;
+                else
+                    return (
+                        <ListItem
+                            label={t("Manager")}
+                            value={"-"} // Displaying '-' when managedBy is null
+                            align="horizontal"
+                        />
+                    );
 
             case "State":
                 return (
@@ -363,7 +384,15 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                     />
                 );
             case "Owner":
-                return <ListOwnerItem owner={owner} />;
+                if (data.owner != null) return <ListOwnerItem owner={owner} />;
+                else
+                    return (
+                        <ListItem
+                            label={t("Owner")}
+                            value={"-"} // Displaying '-' when managedBy is null
+                            align="horizontal"
+                        />
+                    );
             default:
                 return null;
         }

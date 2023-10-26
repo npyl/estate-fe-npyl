@@ -114,7 +114,7 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Entrances")}
-                        value={technicalFeatures?.entrances}
+                        value={technicalFeatures?.entrances || "-"}
                         align="horizontal"
                     />
                 );
@@ -122,7 +122,7 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Display Windows Length")}
-                        value={technicalFeatures?.displayWindowsLength}
+                        value={technicalFeatures?.displayWindowsLength || "-"}
                         align="horizontal"
                     />
                 );
@@ -154,7 +154,7 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Furnished")}
-                        value={technicalFeatures?.furnished?.value}
+                        value={technicalFeatures?.furnished?.value || "-"}
                         align="horizontal"
                     />
                 );
@@ -162,7 +162,7 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Frame Type")}
-                        value={technicalFeatures?.frameType?.value}
+                        value={technicalFeatures?.frameType?.value || "-"}
                         align="horizontal"
                     />
                 );
@@ -170,7 +170,7 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Pane Glass Type")}
-                        value={technicalFeatures?.paneGlassType?.value}
+                        value={technicalFeatures?.paneGlassType?.value || "-"}
                         align="horizontal"
                     />
                 );
@@ -236,7 +236,7 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Floor Type")}
-                        value={technicalFeatures?.floorType?.value}
+                        value={technicalFeatures?.floorType?.value || "-"}
                         align="horizontal"
                     />
                 );
@@ -302,7 +302,7 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Floor to Area Ratio")}
-                        value={technicalFeatures?.floorToAreaRatio}
+                        value={technicalFeatures?.floorToAreaRatio || "-"}
                         align="horizontal"
                     />
                 );
@@ -310,7 +310,7 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Coverage Factor")}
-                        value={technicalFeatures?.coverageFactor}
+                        value={technicalFeatures?.coverageFactor || "-"}
                         align="horizontal"
                     />
                 );
@@ -318,7 +318,7 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Facade Length")}
-                        value={technicalFeatures?.facadeLength}
+                        value={technicalFeatures?.facadeLength || "-"}
                         align="horizontal"
                     />
                 );
@@ -326,7 +326,7 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Inclination")}
-                        value={technicalFeatures?.inclination?.value}
+                        value={technicalFeatures?.inclination?.value || "-"}
                         align="horizontal"
                     />
                 );

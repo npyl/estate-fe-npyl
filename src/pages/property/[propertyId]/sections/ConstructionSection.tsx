@@ -101,7 +101,7 @@ const ConstructionSection: React.FC<ConstructionSectionProps> = ({ data }) => {
                 return (
                     <ListItem
                         label={t("Year Of Construction")}
-                        value={construction?.yearOfConstruction}
+                        value={construction?.yearOfConstruction || "-"}
                         align="horizontal"
                     />
                 );
@@ -109,7 +109,7 @@ const ConstructionSection: React.FC<ConstructionSectionProps> = ({ data }) => {
                 return (
                     <ListItem
                         label={t("Year Of Renovation")}
-                        value={construction?.yearOfRenovation}
+                        value={construction?.yearOfRenovation || "-"}
                         align="horizontal"
                     />
                 );
@@ -117,7 +117,7 @@ const ConstructionSection: React.FC<ConstructionSectionProps> = ({ data }) => {
                 return (
                     <ListItem
                         label={t("Total Floor Number")}
-                        value={construction?.totalFloorNumber}
+                        value={construction?.totalFloorNumber || "-"}
                         align="horizontal"
                     />
                 );
