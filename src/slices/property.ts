@@ -8,16 +8,18 @@ type propertyState = IPropertiesPOST;
 const initialState: propertyState = {
     code: "",
     title: "",
-    // state: "",
-    // parentCategory: "",
-    // category: "",
+    state: "",
+    parentCategory: "",
+    category: "",
     rented: false,
-    exclusive: false,
+
     rentalStart: "",
     rentalEnd: "",
     availableAfter: "",
     keyCode: "",
     auction: false,
+    exclusive: false,
+
     debatablePrice: false,
     buildable: false,
     video: "",
@@ -161,9 +163,7 @@ const slice = createSlice({
         setRentalPeriodStart(state: propertyState, action): void {
             state.rentalStart = action.payload;
         },
-        setAuction(state: propertyState, action): void {
-            state.auction = action.payload;
-        },
+
         setDebatablePrice(state: propertyState, action): void {
             state.debatablePrice = action.payload;
         },
@@ -765,9 +765,14 @@ const slice = createSlice({
         setCottage(state: propertyState, action): void {
             state.suitableFor.cottage = action.payload;
         },
+
+        setAuction(state: propertyState, action): void {
+            state.auction = action.payload;
+        },
         setExclusive(state: propertyState, action): void {
             state.exclusive = action.payload;
         },
+
         setTouristRental(state: propertyState, action): void {
             state.suitableFor.touristRental = action.payload;
         },
@@ -817,7 +822,7 @@ const slice = createSlice({
             state.price = payload.price || state.price;
             state.averageUtils = payload.averageUtils || state.averageUtils;
             state.rented = payload.rented || state.rented;
-            state.exclusive = payload.exclusive || state.exclusive;
+
             state.currentRentPrice =
                 payload.currentRentPrice || state.currentRentPrice;
             state.estimatedRentPrice =
@@ -827,7 +832,10 @@ const slice = createSlice({
             state.availableAfter =
                 payload.availableAfter || state.availableAfter;
             state.keyCode = payload.keyCode || state.keyCode;
+
             state.auction = payload.auction || state.auction;
+            state.exclusive = payload.exclusive || state.exclusive;
+
             state.debatablePrice =
                 payload.debatablePrice || state.debatablePrice;
             state.buildable = payload.buildable || state.buildable;
@@ -1039,7 +1047,7 @@ export const {
     setInitialState,
 
     setKeyCode,
-    setExclusive,
+
     setVideo,
     setCoverageFactor,
     setSeaFront,
@@ -1107,7 +1115,6 @@ export const {
     setPreserved,
     setSea,
     setLoadingDock,
-
     setSchools,
     setSupermarket,
     setCafeRestaurant,
@@ -1116,6 +1123,7 @@ export const {
     setCode,
     setOffPeakElectricity,
     setAuction,
+    setExclusive,
     setDebatablePrice,
     setFloorApartment,
     setPenthouse,
@@ -1244,8 +1252,10 @@ export const selectCurrentRentPrice = ({ property }: RootState) =>
     property.currentRentPrice;
 export const selectEstimatedRentPrice = ({ property }: RootState) =>
     property.estimatedRentPrice;
-export const selectExclusive = ({ property }: RootState) => property.exclusive;
+
 export const selectAuction = ({ property }: RootState) => property.auction;
+export const selectExclusive = ({ property }: RootState) => property.exclusive;
+
 export const selectDebatablePrice = ({ property }: RootState) =>
     property.debatablePrice;
 export const selectPrice = ({ property }: RootState) => property.price;

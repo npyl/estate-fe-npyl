@@ -288,9 +288,9 @@ export interface IPropertiesPOST {
     labelIDs: number[];
 
     rented: boolean;
-    auction: boolean;
     debatablePrice: boolean;
     buildable: boolean;
+    auction: boolean;
     exclusive: boolean;
 
     suitableFor: IPropertySuitableFor;
@@ -326,9 +326,9 @@ export interface IProperties {
     estimatedRentPrice: number;
 
     rented: boolean;
-    auction: boolean;
     debatablePrice: boolean;
     buildable: boolean;
+    auction: boolean;
     exclusive: boolean;
 
     state: KeyValue;
