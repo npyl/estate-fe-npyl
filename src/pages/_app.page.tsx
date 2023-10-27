@@ -25,6 +25,10 @@ import { createEmotionCache } from "../utils/create-emotion-cache";
 
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { TabsProvider } from "src/contexts/tabs";
+import { LocalizationProvider } from "@mui/x-date-pickers";
+
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+
 
 type EnhancedAppProps = AppProps & {
     Component: NextPage;
@@ -58,40 +62,42 @@ const App: FC<EnhancedAppProps> = (props) => {
             </Head>
 
             <ReduxProvider store={store}>
-                <AuthProvider>
-                    <SettingsProvider>
-                        <SettingsConsumer>
-                            {({ settings }) => (
-                                <ThemeProvider
-                                    theme={createTheme({
-                                        direction: settings.direction,
-                                        responsiveFontSizes:
-                                            settings.responsiveFontSizes,
-                                        mode: settings.theme,
-                                    })}
-                                >
-                                    <CssBaseline />
-                                    <TabsProvider>
-                                        <ToastContainer position="top-center" />
-                                        <AuthConsumer>
-                                            {(auth) =>
-                                                !auth.isInitialized ? (
-                                                    <SplashScreen />
-                                                ) : (
-                                                    getLayout(
-                                                        <Component
-                                                            {...pageProps}
-                                                        />
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                    <AuthProvider>
+                        <SettingsProvider>
+                            <SettingsConsumer>
+                                {({ settings }) => (
+                                    <ThemeProvider
+                                        theme={createTheme({
+                                            direction: settings.direction,
+                                            responsiveFontSizes:
+                                                settings.responsiveFontSizes,
+                                            mode: settings.theme,
+                                        })}
+                                    >
+                                        <CssBaseline />
+                                        <TabsProvider>
+                                            <ToastContainer position="top-center" />
+                                            <AuthConsumer>
+                                                {(auth) =>
+                                                    !auth.isInitialized ? (
+                                                        <SplashScreen />
+                                                    ) : (
+                                                        getLayout(
+                                                            <Component
+                                                                {...pageProps}
+                                                            />
+                                                        )
                                                     )
-                                                )
-                                            }
-                                        </AuthConsumer>
-                                    </TabsProvider>
-                                </ThemeProvider>
-                            )}
-                        </SettingsConsumer>
-                    </SettingsProvider>
-                </AuthProvider>
+                                                }
+                                            </AuthConsumer>
+                                        </TabsProvider>
+                                    </ThemeProvider>
+                                )}
+                            </SettingsConsumer>
+                        </SettingsProvider>
+                    </AuthProvider>
+                </LocalizationProvider>
             </ReduxProvider>
         </CacheProvider>
     );
