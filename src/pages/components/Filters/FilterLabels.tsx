@@ -6,7 +6,6 @@ import {
     OutlinedInput,
     Select,
     SelectChangeEvent,
-    styled,
 } from "@mui/material";
 import { useDispatch } from "src/store";
 import Label from "src/components/label/Label";
@@ -14,7 +13,8 @@ import { useGetLabelsQuery } from "src/services/labels";
 import { useMemo } from "react";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { useTranslation } from "react-i18next";
-import { ILabel } from "src/types/label";
+
+import { useTheme } from "@mui/material/styles";
 
 type FilterVariant = "property" | "customer";
 
@@ -24,25 +24,20 @@ interface FilterLabelsProps {
     setLabels: ActionCreatorWithPayload<any, string>;
 }
 
-const StyledOutlinedInput = styled(OutlinedInput)({
-    "& .MuiOutlinedInput-input": {
-        textAlign: "center",
-    },
-});
-
 export default function FilterLabels(props: FilterLabelsProps) {
     const { variant = "property", labels, setLabels } = props;
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
     const { data } = useGetLabelsQuery();
-    const labelOptions = useMemo(
-        () =>
-            (variant === "property"
-                ? data?.propertyLabels
-                : data?.customerLabels) || [],
-        [data]
-    );
+    const labelOptions =
+        useMemo(
+            () =>
+                variant === "property"
+                    ? data?.propertyLabels
+                    : data?.customerLabels,
+            [data]
+        ) || [];
     const renderLabelNames = (selectedIds: number[]) => {
         return selectedIds
             .map((id) => {
@@ -53,6 +48,8 @@ export default function FilterLabels(props: FilterLabelsProps) {
             })
             .join(", ");
     };
+    const theme = useTheme();
+
     const handleChange = (event: SelectChangeEvent<typeof labels>) => {
         const {
             target: { value },
@@ -64,10 +61,10 @@ export default function FilterLabels(props: FilterLabelsProps) {
             )
         );
     };
-
+    
     return (
-        <FormControl sx={{ minWidth: "130px" }}>
-            <InputLabel id="demo-simple-select-label">{t("Labels")}</InputLabel>
+        <FormControl sx={{ minWidth: "130px", maxHeight: "38px" }}>
+            <InputLabel sx={{ textAlign:"center", transform: theme.palette.mode === "dark" ? "translate(14px, 8px)" : "translate(14px, 16px)"}} id="demo-simple-select-label">{t("Labels")}</InputLabel>
             <Select
                 multiple
                 labelId="demo-simple-select-label"
@@ -76,7 +73,7 @@ export default function FilterLabels(props: FilterLabelsProps) {
                 renderValue={(selected) =>
                     renderLabelNames(selected as number[])
                 }
-                input={<StyledOutlinedInput label="Ετικέτες" />}
+                input={<OutlinedInput sx={{maxHeight: "38px", textAlign:"center"}} label="Ετικέτες" />}
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
                 {labelOptions.map((option) => {

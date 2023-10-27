@@ -21,9 +21,12 @@ import {
     setSeller,
 } from "src/slices/customer/filters";
 
+import { useTheme } from "@mui/material/styles"; 
+
 export default function FilterBuyerLeaserAndMore() {
     const { t } = useTranslation();
     const dispatch = useDispatch();
+    const theme =  useTheme();
 
     const leaser = useSelector(selectLeaser);
     const buyer = useSelector(selectBuyer);
@@ -47,14 +50,14 @@ export default function FilterBuyerLeaserAndMore() {
 
     return (
         <FormControl sx={{ minWidth: "130px" }}>
-            <InputLabel id="roles-label">{t("Roles")}</InputLabel>
+            <InputLabel sx={{ textAlign:"center", transform: theme.palette.mode === "dark" ? "translate(14px, 8px)" : "translate(14px, 16px)"}} id="roles-label">{t("Roles")}</InputLabel>
             <Select
                 labelId="roles-label"
                 multiple
                 value={selectedRoles}
                 onChange={handleChange}
                 renderValue={(selected) => selected.join(", ")}
-                input={<OutlinedInput label={t("Roles")} />}
+                input={<OutlinedInput sx={{maxHeight: "38px", textAlign:"center"}} label={t("Roles")} />}
             >
                 <MenuItem value={"leaser"}>
                     <Checkbox checked={leaser} />

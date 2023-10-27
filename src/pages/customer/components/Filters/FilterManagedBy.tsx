@@ -11,10 +11,12 @@ import { useTranslation } from "react-i18next";
 import { useAllUsersQuery } from "src/services/user";
 import { useSelector } from "react-redux";
 import { selectManagerId, setManagerId } from "src/slices/customer/filters";
+import { useTheme } from "@mui/material/styles";
 
 export default function FilterManager() {
     const { t } = useTranslation();
     const dispatch = useDispatch();
+    const theme = useTheme();
 
     const { data } = useAllUsersQuery();
     const managerOptions = data || [];
@@ -39,12 +41,12 @@ export default function FilterManager() {
 
     return (
         <FormControl sx={{ minWidth: "130px" }}>
-            <InputLabel>{t("Managers")}</InputLabel>
+            <InputLabel sx={{ textAlign:"center", transform: theme.palette.mode === "dark" ? "translate(14px, 8px)" : "translate(14px, 16px)"}}>{t("Managers")}</InputLabel>
             <Select
                 value={manager || ""}
                 onChange={handleChange}
                 renderValue={renderManagerName}
-                input={<OutlinedInput label="Ετικέτες" />}
+                input={<OutlinedInput sx={{maxHeight:"38px", textAlign:"center"}} label="Ετικέτες" />}
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
                 {managerOptions.map((option) => (
