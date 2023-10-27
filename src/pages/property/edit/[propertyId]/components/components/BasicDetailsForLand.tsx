@@ -62,7 +62,7 @@ import { IGlobalProperty } from "src/types/global";
 
 import OnlyNumbersInput from "src/components/OnlyNumbers";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useLazyGetPropertyLabelsQuery } from "src/services/properties";
 import { ILabel } from "src/types/label";
 
@@ -89,16 +89,17 @@ const BasicForLandSection: React.FC<any> = () => {
 
     // get list of owners & managers
     const { data: owners } = useAllCustomersQuery();
-    let ownerNames: { label: string, value: number }[] = [];
-    if(owners){
-        ownerNames = owners.filter(
-            (option: ICustomer) =>
-                option.seller || option.lessor
-        ).map((owner) => ({
-            label: `${owner.firstName} ${owner.lastName}`,
-            value: owner.id
-        }));
-    }
+    const ownerNames = useMemo(() => {
+        if (owners) {
+          return owners
+            .filter((option) => option.seller || option.lessor)
+            .map((owner) => ({
+              label: `${owner.firstName} ${owner.lastName}`,
+              value: owner.id,
+            }));
+        }
+        return [];
+      }, [owners]);
     const { data: managers } = useAllUsersQuery();
     // labels
     const { data: labels } = useGetLabelsQuery();

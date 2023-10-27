@@ -221,7 +221,6 @@ const ViewAll: FC = () => {
         // Scroll to the saved position
         if (savedScrollHeight && (Number(savedScrollHeight) <= entries[0].contentRect.height) ) {
         window.scrollTo(0, Number(savedScrollHeight));
-        console.log("scrolling to "+savedScrollHeight);
         localStorage.removeItem('scrollHeight');
         }
         
@@ -352,7 +351,6 @@ const ViewAll: FC = () => {
         setPage(model.page);
         const paginationState = { page: model.page };
         localStorage.setItem('propertyPaginationState', JSON.stringify(paginationState));
-        console.log("currentPage:"+model.page)
         
     };
 

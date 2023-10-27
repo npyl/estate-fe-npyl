@@ -95,16 +95,19 @@ const BasicSection: React.FC<any> = () => {
 
     // get list of owners, managers & labels
     const { data: owners } = useAllCustomersQuery();
-    let ownerNames: { label: string, value: number }[] = [];
-    if(owners){
-        ownerNames = owners.filter(
-            (option: ICustomer) =>
-                option.seller || option.lessor
-        ).map((owner) => ({
-            label: `${owner.firstName} ${owner.lastName}`,
-            value: owner.id
-        }));
-    }
+
+    const ownerNames = useMemo(() => {
+        if (owners) {
+          return owners
+            .filter((option) => option.seller || option.lessor)
+            .map((owner) => ({
+              label: `${owner.firstName} ${owner.lastName}`,
+              value: owner.id,
+            }));
+        }
+        return [];
+      }, [owners]);
+    
     
    
     const { data: managers } = useAllUsersQuery();
@@ -142,6 +145,8 @@ const BasicSection: React.FC<any> = () => {
     const [assignLabel] = useAssignLabelToPropertyWithIDMutation();
     const [createAndAssignLabel] = useCreateLabelForPropertyWithIDMutation();
     const [deleteLabel] = useDeleteLabelForPropertyWithIdMutation();
+
+
 
     
     const subCategoriesMap: {
