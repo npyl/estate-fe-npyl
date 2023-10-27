@@ -1,5 +1,5 @@
 import FlipIcon from "@mui/icons-material/Flip";
-import { Box, Button, Grid, Stack } from "@mui/material";
+import { Box, Button, Grid, Stack, Typography } from "@mui/material";
 import { useMemo, useState } from "react";
 import Map, { IMapAddress, IMapMarker } from "src/components/Map/Map";
 import { DrawShape, StopDraw } from "src/components/Map/types";
@@ -10,7 +10,7 @@ import {
 } from "src/components/Map/util";
 import { IPropertyResultResponse } from "src/types/properties";
 import { useDebouncedCallback } from "use-debounce";
-
+import InfoIcon from "@mui/icons-material/Info";
 import { BookingItem } from "./BookingItem";
 import { HorizontalCard } from "./HorizontalCard";
 
@@ -39,18 +39,29 @@ const MapView = ({ data }: Props) => {
     );
 
     // properties we show
-    const properties = useMemo(() => {
-        if (!encodedShape) return nonNullProperties;
+    const { properties, filtered } = useMemo(() => {
+        if (!encodedShape) {
+            return { properties: nonNullProperties, filtered: [] }; // No shape, no filtered properties
+        }
 
-        /* INFO: encode & decode shape so that changes to string object can be caught from useMemo */
         const shape = decodeShape(encodedShape);
-        if (!shape) return nonNullProperties;
+        if (!shape) {
+            return { properties: nonNullProperties, filtered: [] }; // Invalid shape, no filtered properties
+        }
 
-        const filtered = nonNullProperties.filter((p) =>
+        // Properties within the drawn shape
+        const filteredProperties = nonNullProperties.filter((p) =>
             isPointInsideShapeData(p.location.lat!, p.location.lng!, shape)
         );
 
-        return filtered.length > 0 ? filtered : nonNullProperties;
+        // If filtered is not empty, properties should match filtered
+        return {
+            properties:
+                filteredProperties.length > 0
+                    ? filteredProperties
+                    : nonNullProperties,
+            filtered: filteredProperties,
+        };
     }, [nonNullProperties, encodedShape]);
 
     // respective markers
@@ -89,7 +100,40 @@ const MapView = ({ data }: Props) => {
 
         updateMainMarkerCoordinates(lat, lng);
     };
+    // const renderPropertyCards = () => {
+    //     if (filtered.length === 0) {
+    //         return null; // Don't render cards if there are no properties
+    //     }
 
+    //     // If there are properties, render the cards
+    //     return (
+    //         <Grid container>
+    //             {properties.map((item, index) => (
+    //                 <Grid
+    //                     mb={1}
+    //                     key={index}
+    //                     item
+    //                     xs={12}
+    //                     sm={orientation ? 12 : 6}
+    //                 >
+    //                     {orientation ? (
+    //                         <HorizontalCard
+    //                             activeMarker={activeMarker || -1}
+    //                             item={item}
+    //                             selectedMarker={selectedMarker}
+    //                         />
+    //                     ) : (
+    //                         <BookingItem
+    //                             activeMarker={activeMarker || -1}
+    //                             item={item}
+    //                             selectedMarker={selectedMarker}
+    //                         />
+    //                     )}
+    //                 </Grid>
+    //             ))}
+    //         </Grid>
+    //     );
+    // };
     return (
         <>
             <Box display={"flex"}>
@@ -125,32 +169,70 @@ const MapView = ({ data }: Props) => {
                             <FlipIcon />
                         </Button>
                     </Stack>
+                    {filtered.length > 0 && (
+                        <Grid container>
+                            {properties.map((item, index) => (
+                                <Grid
+                                    mb={1}
+                                    key={index}
+                                    item
+                                    xs={12}
+                                    sm={orientation ? 12 : 6}
+                                    sx={{
+                                        backgroundColor: "background.default", // Use theme background color
+                                    }}
+                                >
+                                    {orientation ? (
+                                        <HorizontalCard
+                                            activeMarker={activeMarker || -1}
+                                            item={item}
+                                            selectedMarker={selectedMarker}
+                                        />
+                                    ) : (
+                                        <BookingItem
+                                            activeMarker={activeMarker || -1}
+                                            item={item}
+                                            selectedMarker={selectedMarker}
+                                        />
+                                    )}
+                                </Grid>
+                            ))}
+                        </Grid>
+                    )}
 
-                    <Grid container>
-                        {properties.map((item, index) => (
-                            <Grid
-                                mb={1}
-                                key={index}
-                                item
-                                xs={12}
-                                sm={orientation ? 12 : 6}
+                    {filtered.length <= 0 && (
+                        <Box
+                            sx={{
+                                display: "flex",
+                                flexDirection: "column", // Changed to 'column' to stack icon and text
+                                justifyContent: "center",
+                                alignItems: "center",
+                                padding: 3, // Increased padding for more space
+                                backgroundColor: "background.default", // Use theme background color
+                                textAlign: "center",
+                                height: "100%", // Full height of the parent container
+                                gap: 2, // space between icon and text
+                            }}
+                        >
+                            <InfoIcon
+                                sx={{
+                                    color: "primary.main", // Use theme primary color
+                                    fontSize: "3rem", // makes the icon larger
+                                }}
+                            />
+                            <Typography
+                                variant="subtitle1" // Suitable for informative text
+                                component="div"
+                                sx={{
+                                    color: "text.primary", // Use theme primary text color
+                                    fontWeight: "medium", // Medium weight for the text
+                                    // other styles here as needed
+                                }}
                             >
-                                {orientation ? (
-                                    <HorizontalCard
-                                        activeMarker={activeMarker || -1}
-                                        item={item}
-                                        selectedMarker={selectedMarker} // add this line
-                                    />
-                                ) : (
-                                    <BookingItem
-                                        activeMarker={activeMarker || -1}
-                                        item={item}
-                                        selectedMarker={selectedMarker}
-                                    />
-                                )}
-                            </Grid>
-                        ))}
-                    </Grid>
+                                Draw or drag to a location that has markers
+                            </Typography>
+                        </Box>
+                    )}
                 </Stack>
             </Box>
         </>
