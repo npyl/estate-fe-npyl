@@ -17,7 +17,7 @@ import {
     GridPaginationModel,
     GridRowSelectionModel,
 } from "@mui/x-data-grid";
-import { FC, SetStateAction, useEffect, useMemo, useState } from "react";
+import { FC, SetStateAction, useEffect, useMemo, useState, useRef } from "react";
 import Image from "src/components/image";
 import { Menu } from "src/icons/menu";
 import {
@@ -179,6 +179,7 @@ const ViewAll: FC = () => {
     // pagination
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(25);
+    
     // view
     const [optionView, setOptionView] = useState<optionType>("list");
 
@@ -208,6 +209,48 @@ const ViewAll: FC = () => {
         () => (data?.totalElements ? data?.totalElements : 100000),
         [data?.totalElements]
     );
+    const observerRef = useRef<ResizeObserver | null>(null);
+
+  useEffect(() => {
+    // Create a new ResizeObserver instance
+    observerRef.current = new ResizeObserver((entries) => {
+      // Callback function to be called when the body's size changes
+      // You can trigger your function or logic here
+      const savedScrollHeight = localStorage.getItem('scrollHeight');
+
+        // Scroll to the saved position
+        if (savedScrollHeight && (Number(savedScrollHeight) <= entries[0].contentRect.height) ) {
+        window.scrollTo(0, Number(savedScrollHeight));
+        console.log("scrolling to "+savedScrollHeight);
+        localStorage.removeItem('scrollHeight');
+        }
+        
+    });
+
+    // Start observing the body element
+    observerRef.current.observe(document.body);
+
+    // Clean up the observer when the component unmounts
+    return () => {
+      if(observerRef.current){
+        observerRef.current.disconnect();
+      }
+    };
+  }, []);
+
+    useEffect(() => {
+        const storedPagination = localStorage.getItem('propertyPaginationState');
+    
+        if (storedPagination) {
+            const parsedPagination = JSON.parse(storedPagination)
+          if(page !== parsedPagination.page){
+            setPage(parsedPagination.page);
+            localStorage.removeItem('propertyPaginationState');
+          }
+
+          
+        }
+      }, []);
 
     const columns: GridColDef[] = [
         {
@@ -307,6 +350,10 @@ const ViewAll: FC = () => {
     ) => {
         setPageSize(model.pageSize);
         setPage(model.page);
+        const paginationState = { page: model.page };
+        localStorage.setItem('propertyPaginationState', JSON.stringify(paginationState));
+        console.log("currentPage:"+model.page)
+        
     };
 
     // Bulk Edit

@@ -1,6 +1,7 @@
 import type { ListItemProps as MuiListItemProps } from "@mui/material";
 import { Box, ListItemText, Typography } from "@mui/material";
 import { ListItem as MuiListItem } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import type { FC } from "react";
 
 type Direction = "horizontal" | "vertical";
@@ -11,7 +12,9 @@ interface ListItemProps extends MuiListItemProps {
     value?: any | null;
 }
 
+
 const ListItem: FC<ListItemProps> = (props) => {
+    const theme = useTheme();
     const {
         align = "vertical",
         children,
@@ -29,10 +32,10 @@ const ListItem: FC<ListItemProps> = (props) => {
                 flex: 1,
 
                 "&:nth-of-type(odd)": {
-                    backgroundColor: "white",
+                    background: theme.palette.mode === "dark" ? "transparent" : "white",
                 },
                 "&:nth-of-type(even)": {
-                    backgroundColor: "#fcfcfc",
+                    background: theme.palette.mode === "dark" ? "transparent" : "#fcfcfc",
                 },
             }}
             {...other}

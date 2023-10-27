@@ -2,6 +2,8 @@ import type { ListItemProps as MuiListItemProps } from "@mui/material";
 import { Box, ListItemText, Typography } from "@mui/material";
 import { ListItem as MuiListItem } from "@mui/material";
 import type { FC } from "react";
+import { useTheme } from "@mui/material/styles";
+
 
 type Direction = "horizontal" | "vertical";
 
@@ -10,6 +12,7 @@ interface ListDateItemProps extends MuiListItemProps {
     label: string;
     value?: string;
 }
+    
 
 const ListDateItem: FC<ListDateItemProps> = ({
     align = "vertical",
@@ -19,6 +22,7 @@ const ListDateItem: FC<ListDateItemProps> = ({
     label,
     ...other
 }) => {
+    const theme = useTheme();
     return (
         <MuiListItem
             sx={{
@@ -27,10 +31,10 @@ const ListDateItem: FC<ListDateItemProps> = ({
                 flex: 1,
 
                 "&:nth-of-type(odd)": {
-                    backgroundColor: "white",
+                    background: theme.palette.mode === "dark" ? "transparent" : "#white",
                 },
                 "&:nth-of-type(even)": {
-                    backgroundColor: "#fcfcfc",
+                    background: theme.palette.mode === "dark" ? "transparent" : "#fcfcfc",
                 },
             }}
             {...other}

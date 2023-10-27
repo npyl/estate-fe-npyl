@@ -14,7 +14,7 @@ import {
     GridToolbarExport,
 } from "@mui/x-data-grid";
 import { useRouter } from "next/router";
-import { FC, useEffect, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyledDataGrid } from "./styles";
 
@@ -61,7 +61,7 @@ const DataGridTable: FC<GridProps> = ({
     const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
     const [sortModel, setSortModel] = useState<GridSortModel>([]);
 
-    useEffect(() => {
+    useMemo(() => {
         setSortModel([
             { field: sortingBy || "", sort: sortingOrder as GridSortDirection },
         ]);
@@ -148,7 +148,14 @@ const DataGridTable: FC<GridProps> = ({
                 disableDensitySelector
                 rowHeight={100}
                 getRowId={(e) => e.id}
-                onRowClick={(e) => router.push(`/${resource}/${e.row.id}`)}
+                onRowClick={(e) => {
+                    // Save the current scroll height to local storage
+                    const scrollHeight = window.scrollY;
+                    localStorage.setItem('scrollHeight', scrollHeight.toString());
+                  
+                    // Navigate to the next page
+                    router.push(`/${resource}/${e.row.id}`);
+                  }}
                 checkboxSelection
                 autoHeight
                 disableRowSelectionOnClick

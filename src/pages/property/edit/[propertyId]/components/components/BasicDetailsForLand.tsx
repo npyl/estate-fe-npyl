@@ -2,7 +2,6 @@ import {
     Box,
     Checkbox,
     FormControl,
-    FormControlLabel,
     Grid,
     InputLabel,
     MenuItem,
@@ -29,14 +28,12 @@ import {
     selectOwner,
     selectPlotArea,
     selectPrice,
-    selectExclusive,
     selectRentalPeriodEnd,
     selectRentalPeriodStart,
     selectRented,
     selectState,
     setArea,
     setAuction,
-    setExclusive,
     setAvailableAfter,
     setBuildable,
     setCode,
@@ -54,7 +51,9 @@ import {
     setState,
 } from "src/slices/property";
 
-import DatePicker from "src/components/DatePicker";
+import DateFieldStyled from "src/components/DateFieldStyled";
+
+import Autocomplete from '@mui/material/Autocomplete';
 
 import { LabelCreate } from "src/components/label";
 import { useGlobals } from "src/hooks/useGlobals";
@@ -79,8 +78,6 @@ import { KeyCodeField } from "./components/KeyCodeField";
 import { ICustomer } from "src/types/customer";
 import { useTranslation } from "react-i18next";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
-import { DateObject } from "react-multi-date-picker";
-import { IOSSwitch } from "./BasicDetails";
 
 const BasicForLandSection: React.FC<any> = () => {
     const router = useRouter();
@@ -92,6 +89,16 @@ const BasicForLandSection: React.FC<any> = () => {
 
     // get list of owners & managers
     const { data: owners } = useAllCustomersQuery();
+    let ownerNames: { label: string, value: number }[] = [];
+    if(owners){
+        ownerNames = owners.filter(
+            (option: ICustomer) =>
+                option.seller || option.lessor
+        ).map((owner) => ({
+            label: `${owner.firstName} ${owner.lastName}`,
+            value: owner.id
+        }));
+    }
     const { data: managers } = useAllUsersQuery();
     // labels
     const { data: labels } = useGetLabelsQuery();
@@ -109,6 +116,7 @@ const BasicForLandSection: React.FC<any> = () => {
     const currentDate = new Date();
     const code = useSelector(selectCode);
     const owner = useSelector(selectOwner) || "";
+    const defOwner = useSelector(selectOwner) || "";
     const manager = useSelector(selectManager);
     const currentRentPrice = useSelector(selectCurrentRentPrice);
     const estimatedRentPrice = useSelector(selectEstimatedRentPrice);
@@ -124,7 +132,6 @@ const BasicForLandSection: React.FC<any> = () => {
     const rentalPeriodEnd = useSelector(selectRentalPeriodEnd);
     const auction = useSelector(selectAuction);
     const debatablePrice = useSelector(selectDebatablePrice);
-    const exclusive = useSelector(selectExclusive);
     const stateEnum = enums?.state;
 
     useEffect(() => {
@@ -161,21 +168,51 @@ const BasicForLandSection: React.FC<any> = () => {
             labelId: assignedLabels[index].id!,
         }).then(() => revalidate());
 
-    //
-    //  Dates
-    //
-    const changeDate = (
-        dates: DateObject | DateObject[],
-        setter: ActionCreatorWithPayload<any, string>
-    ) => dispatch(setter((dates as DateObject).toDate().toISOString()));
+    const handleDateChange = (
+        setter: ActionCreatorWithPayload<any, string>,
+        newDate: Date | null,
+        rentalPeriodStart: string | null,
+        rentalPeriodEnd: string | null,
+        availableAfter: string | null
+    ) => {
+        if (!newDate || !setter) return;
 
-    const changeAvailableAfter = (dates: DateObject | DateObject[]) =>
-        changeDate(dates, setAvailableAfter);
-    const changeRentalPeriodStart = (dates: DateObject | DateObject[]) =>
-        changeDate(dates, setRentalPeriodStart);
-    const changeRentalPeriodEnd = (dates: DateObject | DateObject[]) =>
-        changeDate(dates, setRentalPeriodEnd);
+        const updatedDate = newDate.toISOString();
+        dispatch(setter(updatedDate));
 
+        // Convert the strings back to Date objects for comparison
+        const startDate =
+            setter === setRentalPeriodStart
+                ? newDate
+                : rentalPeriodStart
+                ? new Date(rentalPeriodStart)
+                : null;
+
+        const endDate =
+            setter === setRentalPeriodEnd
+                ? newDate
+                : rentalPeriodEnd
+                ? new Date(rentalPeriodEnd)
+                : null;
+
+        const availableAt =
+            setter === setAvailableAfter
+                ? newDate
+                : availableAfter
+                ? new Date(availableAfter)
+                : null;
+
+        if (startDate && endDate && endDate < startDate) {
+            alert(
+                "Error: Rental Period End date should not be before the Rental Period Start date."
+            );
+        }
+        if (endDate && availableAt && availableAt < endDate) {
+            alert(
+                "Error: The property can not be available before the rental period end."
+            );
+        }
+    };
     if (!enums) return null;
 
     return (
@@ -185,29 +222,10 @@ const BasicForLandSection: React.FC<any> = () => {
                     px: 3,
                     py: 1.5,
                     display: "flex",
-                    justifyContent: "space-between", // This will push the child elements apart
-                    alignItems: "center", // This will align them vertically
+                    justifyContent: "left",
                 }}
             >
                 <Typography variant="h6">{t("Basic Details")}</Typography>
-                <FormControlLabel
-                    control={
-                        <IOSSwitch
-                            value={exclusive}
-                            checked={exclusive}
-                            onChange={(
-                                event: React.ChangeEvent<unknown>,
-                                checked: boolean
-                            ) => {
-                                dispatch(setExclusive(checked));
-                            }}
-                            name="exclusiveOption"
-                            // any other props you need
-                        />
-                    }
-                    label={t("Exclusive")} // or "iOS style" if you're keeping the original label
-                    // ... any other props you need
-                />
             </Box>
 
             <Grid item xs={12} padding={1}>
@@ -221,7 +239,7 @@ const BasicForLandSection: React.FC<any> = () => {
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <TextField
+                        {/*<TextField
                             fullWidth
                             id="outlined-start-adornment"
                             select
@@ -244,7 +262,25 @@ const BasicForLandSection: React.FC<any> = () => {
                             ) : (
                                 <MenuItem value={""}></MenuItem>
                             )}
-                        </TextField>
+                        </TextField>*/}
+                        <Autocomplete
+                        disablePortal
+                        id="combo-box-demo"
+                        options={ownerNames}
+                        value={{label: (ownerNames.find(i => i.value == owner))?.label ?? "Owner", value:owner}}
+                        onChange={(event: any, newValue: any | null) => {
+                            try{
+                                if(newValue.value){
+                                    dispatch(setOwner(newValue.value));
+                                }
+                            }catch (e: any){
+                                console.log(e)
+                            }
+                            
+                            
+                          }}
+                        renderInput={(params) => <TextField {...params} label="Owner" />}
+                        />
                     </Grid>
                     <Grid item xs={6}>
                         <TextField
@@ -460,7 +496,6 @@ const BasicForLandSection: React.FC<any> = () => {
                             {t("Auction")}
                         </Typography>
                     </Grid>
-
                     <Grid item xs={12} padding={1}>
                         <Grid
                             container
@@ -474,15 +509,24 @@ const BasicForLandSection: React.FC<any> = () => {
                             <Grid item xs={12}>
                                 <Grid container spacing={2}>
                                     <Grid item xs={6}>
-                                        <DatePicker
-                                            date={
-                                                availableAfter ||
-                                                currentDate.toDateString()
+                                        <DateFieldStyled
+                                            label={t("Available After:")}
+                                            value={
+                                                availableAfter
+                                                    ? new Date(availableAfter)
+                                                    : currentDate
                                             }
-                                            label={t(
-                                                "Available After"
-                                            ).toString()}
-                                            onSelect={changeAvailableAfter}
+                                            onChange={(value: any) => {
+                                                handleDateChange(
+                                                    setAvailableAfter,
+                                                    value,
+                                                    rentalPeriodStart,
+                                                    rentalPeriodEnd,
+                                                    availableAfter
+                                                );
+                                            }}
+                                            disabled={!rented} // Disable the field if "rented" is unchecked
+                                            sx={{ width: "100%" }} // Add custom styles to make it full width
                                         />
                                     </Grid>
                                     <Grid item xs={6}>
@@ -500,27 +544,37 @@ const BasicForLandSection: React.FC<any> = () => {
                                         />
                                     </Grid>
                                     <Grid item xs={6}>
-                                        <DatePicker
-                                            date={
-                                                rentalPeriodStart ||
-                                                currentDate.toDateString()
-                                            }
-                                            label={t(
-                                                "Rental Period Start"
-                                            ).toString()}
-                                            onSelect={changeRentalPeriodStart}
+                                        <DateFieldStyled
+                                            label={t("Rental Period Start")}
+                                            value={new Date(rentalPeriodStart)}
+                                            onChange={(value: any) => {
+                                                handleDateChange(
+                                                    setRentalPeriodStart,
+                                                    value,
+                                                    rentalPeriodStart,
+                                                    rentalPeriodEnd,
+                                                    availableAfter
+                                                );
+                                            }}
+                                            disabled={!rented} // Disable the field if "rented" is unchecked
+                                            sx={{ width: "100%" }} // Add custom styles to make it full width
                                         />
                                     </Grid>
                                     <Grid item xs={6}>
-                                        <DatePicker
-                                            date={
-                                                rentalPeriodEnd ||
-                                                currentDate.toDateString()
-                                            }
-                                            label={t(
-                                                "Rental Period End"
-                                            ).toString()}
-                                            onSelect={changeRentalPeriodEnd}
+                                        <DateFieldStyled
+                                            label={t("Rental Period End")}
+                                            value={new Date(rentalPeriodEnd)}
+                                            onChange={(value: any) => {
+                                                handleDateChange(
+                                                    setRentalPeriodEnd,
+                                                    value,
+                                                    rentalPeriodStart,
+                                                    rentalPeriodEnd,
+                                                    availableAfter
+                                                );
+                                            }}
+                                            disabled={!rented} // Disable the field if "rented" is unchecked
+                                            sx={{ width: "100%" }} // Add custom styles to make it full width
                                         />
                                     </Grid>
                                 </Grid>
