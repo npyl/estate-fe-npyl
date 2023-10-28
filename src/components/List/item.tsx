@@ -1,7 +1,6 @@
 import type { ListItemProps as MuiListItemProps } from "@mui/material";
 import { Box, ListItemText, Typography } from "@mui/material";
-import { ListItem as MuiListItem } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
+import StyledListItem from "./StyledListItem";
 import type { FC } from "react";
 
 type Direction = "horizontal" | "vertical";
@@ -14,7 +13,6 @@ interface ListItemProps extends MuiListItemProps {
 
 
 const ListItem: FC<ListItemProps> = (props) => {
-    const theme = useTheme();
     const {
         align = "vertical",
         children,
@@ -25,18 +23,9 @@ const ListItem: FC<ListItemProps> = (props) => {
     } = props;
 
     return (
-        <MuiListItem
+        <StyledListItem
             sx={{
                 px: disableGutters ? 0 : 3,
-
-                flex: 1,
-
-                "&:nth-of-type(odd)": {
-                    background: theme.palette.mode === "dark" ? "transparent" : "white",
-                },
-                "&:nth-of-type(even)": {
-                    background: theme.palette.mode === "dark" ? "transparent" : "#fcfcfc",
-                },
             }}
             {...other}
         >
@@ -67,7 +56,7 @@ const ListItem: FC<ListItemProps> = (props) => {
                     my: 0,
                 }}
             />
-        </MuiListItem>
+        </StyledListItem>
     );
 };
 

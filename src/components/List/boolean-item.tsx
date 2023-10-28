@@ -1,7 +1,5 @@
 import { Typography } from "@mui/material";
 import type { FC } from "react";
-import { useTheme } from "@mui/material/styles";
-
 import ListItem from "./item";
 import type { ListItemProps as MuiListItemProps } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
@@ -16,7 +14,6 @@ interface ListBooleanItemProps extends MuiListItemProps {
 }
 
 const ListBooleanItem: FC<ListBooleanItemProps> = (props) => {
-    const theme = useTheme();
     const {
         align = "vertical",
         status,
@@ -35,12 +32,7 @@ const ListBooleanItem: FC<ListBooleanItemProps> = (props) => {
 
                 flex: 1,
 
-                "&:nth-of-type(odd)": {
-                    background: theme.palette.mode === "dark" ? "transparent" : "#white",
-                },
-                "&:nth-of-type(even)": {
-                    background: theme.palette.mode === "dark" ? "transparent" : "#fcfcfc",
-                },
+               
             }}
             {...other}
         >

@@ -1,8 +1,8 @@
 import type { ListItemProps as MuiListItemProps } from "@mui/material";
 import { Box, ListItemText, Typography } from "@mui/material";
-import { ListItem as MuiListItem } from "@mui/material";
 import type { FC } from "react";
 import { useTheme } from "@mui/material/styles";
+import StyledListItem from "./StyledListItem";
 
 
 type Direction = "horizontal" | "vertical";
@@ -24,18 +24,9 @@ const ListDateItem: FC<ListDateItemProps> = ({
 }) => {
     const theme = useTheme();
     return (
-        <MuiListItem
+        <StyledListItem
             sx={{
                 px: disableGutters ? 0 : 3,
-
-                flex: 1,
-
-                "&:nth-of-type(odd)": {
-                    background: theme.palette.mode === "dark" ? "transparent" : "#white",
-                },
-                "&:nth-of-type(even)": {
-                    background: theme.palette.mode === "dark" ? "transparent" : "#fcfcfc",
-                },
             }}
             {...other}
         >
@@ -66,7 +57,7 @@ const ListDateItem: FC<ListDateItemProps> = ({
                     my: 0,
                 }}
             />
-        </MuiListItem>
+        </StyledListItem>
     );
 };
 
