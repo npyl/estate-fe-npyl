@@ -17,7 +17,7 @@ import {
     GridPaginationModel,
     GridRowSelectionModel,
 } from "@mui/x-data-grid";
-import { FC, SetStateAction, useEffect, useMemo, useState, useRef } from "react";
+import { FC, SetStateAction, useEffect, useMemo, useState } from "react";
 import Image from "src/components/image";
 import { Menu } from "src/icons/menu";
 import {
@@ -38,6 +38,7 @@ import ChosenFilters from "./Filters/ChosenFilters";
 import { KeyValue } from "src/types/KeyValue";
 import { ILabel } from "src/types/label";
 import ListLabelsItem from "src/components/List/labels-item";
+import useLocalStorageScrollRestore from "src/hooks/useLocalStorageScrollRestore";
 
 type optionType = "list" | "grid" | "map";
 
@@ -209,34 +210,7 @@ const ViewAll: FC = () => {
         () => (data?.totalElements ? data?.totalElements : 100000),
         [data?.totalElements]
     );
-    const observerRef = useRef<ResizeObserver | null>(null);
-
-  useEffect(() => {
-    // Create a new ResizeObserver instance
-    observerRef.current = new ResizeObserver((entries) => {
-      // Callback function to be called when the body's size changes
-      // You can trigger your function or logic here
-      const savedScrollHeight = localStorage.getItem('scrollHeight');
-
-        // Scroll to the saved position
-        if (savedScrollHeight && (Number(savedScrollHeight) <= entries[0].contentRect.height) ) {
-        window.scrollTo(0, Number(savedScrollHeight));
-        localStorage.removeItem('scrollHeight');
-        }
-        
-    });
-
-    // Start observing the body element
-    observerRef.current.observe(document.body);
-
-    // Clean up the observer when the component unmounts
-    return () => {
-      if(observerRef.current){
-        observerRef.current.disconnect();
-      }
-    };
-  }, []);
-
+    const observerRef = useLocalStorageScrollRestore();
     useEffect(() => {
         const storedPagination = localStorage.getItem('propertyPaginationState');
     
@@ -244,7 +218,6 @@ const ViewAll: FC = () => {
             const parsedPagination = JSON.parse(storedPagination)
           if(page !== parsedPagination.page){
             setPage(parsedPagination.page);
-            localStorage.removeItem('propertyPaginationState');
           }
 
           

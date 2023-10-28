@@ -7,7 +7,7 @@ import {
     GridRowSelectionModel,
 } from "@mui/x-data-grid";
 import type { NextPage } from "next";
-import { useEffect, useMemo, useState, useRef } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import DataGridTable from "src/components/DataGrid";
@@ -25,6 +25,7 @@ import { ILabel } from "src/types/label";
 import { FilterSection } from "./components";
 import { BulkEdit } from "./components/BulkEdit/BulkEdit";
 import { TypeLabels } from "./components/TypeLabels";
+import useLocalStorageScrollRestore from "src/hooks/useLocalStorageScrollRestore";
 
 const Customers: NextPage = () => {
     const { t } = useTranslation();
@@ -199,34 +200,7 @@ const Customers: NextPage = () => {
     };
     const closeBulkEdit = () => setBulkEditOpen(false);
     const handleBulkEditSave = () => revalidate();
-    const observerRef = useRef<ResizeObserver | null>(null);
-
-  useEffect(() => {
-    // Create a new ResizeObserver instance
-    observerRef.current = new ResizeObserver((entries) => {
-      // Callback function to be called when the body's size changes
-      // You can trigger your function or logic here
-      const savedScrollHeight = localStorage.getItem('scrollHeight');
-
-        // Scroll to the saved position
-        if (savedScrollHeight && (Number(savedScrollHeight) <= entries[0].contentRect.height) ) {
-        window.scrollTo(0, Number(savedScrollHeight));
-        console.log("scrolling to "+savedScrollHeight);
-        localStorage.removeItem('scrollHeight');
-        }
-        
-    });
-
-    // Start observing the body element
-    observerRef.current.observe(document.body);
-
-    // Clean up the observer when the component unmounts
-    return () => {
-      if(observerRef.current){
-        observerRef.current.disconnect();
-      }
-    };
-  }, []);
+    const observerRef = useLocalStorageScrollRestore()
   useEffect(() => {
     const storedPagination = localStorage.getItem('customerPaginationState');
 
@@ -235,7 +209,6 @@ const Customers: NextPage = () => {
             // Now you can work with the parsed data.
             if(page !== parsedPagination.page){
                 setPage(parsedPagination.page);
-                localStorage.removeItem('customerPaginationState');
             }   
         }
   }, []);

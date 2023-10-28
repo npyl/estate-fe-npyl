@@ -143,6 +143,7 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
         useState<boolean>(false);
 
     const handlePathChange = () => {
+        removePaginationPropertiesFromLocalStorage()
         if (!router.isReady) {
             return;
         }
@@ -151,6 +152,11 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
             onClose?.();
         }
     };
+    function removePaginationPropertiesFromLocalStorage() {
+        localStorage.removeItem('propertyPaginationState');
+        localStorage.removeItem('customerPaginationState');
+        localStorage.removeItem('scrollHeight');
+      }
 
     useEffect(
         handlePathChange,
