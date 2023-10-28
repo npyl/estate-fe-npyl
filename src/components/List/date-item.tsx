@@ -1,7 +1,6 @@
 import type { ListItemProps as MuiListItemProps } from "@mui/material";
 import { Box, ListItemText, Typography } from "@mui/material";
 import type { FC } from "react";
-import { useTheme } from "@mui/material/styles";
 import StyledListItem from "./StyledListItem";
 
 
@@ -22,7 +21,6 @@ const ListDateItem: FC<ListDateItemProps> = ({
     label,
     ...other
 }) => {
-    const theme = useTheme();
     return (
         <StyledListItem
             sx={{
