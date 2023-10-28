@@ -1,7 +1,6 @@
 import {
     Checkbox,
     FormControl,
-    InputLabel,
     MenuItem,
     OutlinedInput,
     Select,
@@ -14,14 +13,13 @@ import {
     selectParentCategories,
     setParentCategories,
 } from "src/slices/customer/filters";
-import { useTheme } from "@mui/material/styles";
+import StyledInputLabel from "src/pages/components/Filters/components/StyledInputLabel";
 
 export default function FilterParentCategory() {
     const dispatch = useDispatch();
     const { t } = useTranslation();
     const data = useGlobals();
-    const theme = useTheme();
-
+    
     const parentCategories = useSelector(selectParentCategories);
 
     const propertyEnums = data?.property;
@@ -45,7 +43,7 @@ export default function FilterParentCategory() {
 
     return (
         <FormControl sx={{ minWidth: "130px", maxWidth: "130px" }}>
-            <InputLabel sx={{ textAlign:"center", transform: theme.palette.mode === "dark" ? "translate(14px, 8px)" : "translate(14px, 16px)"}}>{t("Parent Category")}</InputLabel>
+            <StyledInputLabel>{t("Parent Category")}</StyledInputLabel>
             <Select
                 multiple
                 value={parentCategories}

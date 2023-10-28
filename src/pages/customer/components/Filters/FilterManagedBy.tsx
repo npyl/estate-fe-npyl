@@ -1,6 +1,5 @@
 import {
     FormControl,
-    InputLabel,
     MenuItem,
     OutlinedInput,
     Select,
@@ -11,13 +10,12 @@ import { useTranslation } from "react-i18next";
 import { useAllUsersQuery } from "src/services/user";
 import { useSelector } from "react-redux";
 import { selectManagerId, setManagerId } from "src/slices/customer/filters";
-import { useTheme } from "@mui/material/styles";
+import StyledInputLabel from "src/pages/components/Filters/components/StyledInputLabel";
 
 export default function FilterManager() {
     const { t } = useTranslation();
     const dispatch = useDispatch();
-    const theme = useTheme();
-
+    
     const { data } = useAllUsersQuery();
     const managerOptions = data || [];
 
@@ -41,7 +39,7 @@ export default function FilterManager() {
 
     return (
         <FormControl sx={{ minWidth: "130px" }}>
-            <InputLabel sx={{ textAlign:"center", transform: theme.palette.mode === "dark" ? "translate(14px, 8px)" : "translate(14px, 16px)"}}>{t("Managers")}</InputLabel>
+            <StyledInputLabel>{t("Managers")}</StyledInputLabel>
             <Select
                 value={manager || ""}
                 onChange={handleChange}

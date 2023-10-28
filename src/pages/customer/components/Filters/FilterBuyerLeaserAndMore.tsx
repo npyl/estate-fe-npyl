@@ -1,7 +1,6 @@
 import {
     Checkbox,
     FormControl,
-    InputLabel,
     MenuItem,
     OutlinedInput,
     Select,
@@ -20,14 +19,13 @@ import {
     setLessor,
     setSeller,
 } from "src/slices/customer/filters";
+import StyledInputLabel from "src/pages/components/Filters/components/StyledInputLabel";
 
-import { useTheme } from "@mui/material/styles"; 
 
 export default function FilterBuyerLeaserAndMore() {
     const { t } = useTranslation();
     const dispatch = useDispatch();
-    const theme =  useTheme();
-
+    
     const leaser = useSelector(selectLeaser);
     const buyer = useSelector(selectBuyer);
     const seller = useSelector(selectSeller);
@@ -50,7 +48,7 @@ export default function FilterBuyerLeaserAndMore() {
 
     return (
         <FormControl sx={{ minWidth: "130px" }}>
-            <InputLabel sx={{ textAlign:"center", transform: theme.palette.mode === "dark" ? "translate(14px, 8px)" : "translate(14px, 16px)"}} id="roles-label">{t("Roles")}</InputLabel>
+            <StyledInputLabel id="roles-label">{t("Roles")}</StyledInputLabel>
             <Select
                 labelId="roles-label"
                 multiple

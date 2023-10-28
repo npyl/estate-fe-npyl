@@ -1,7 +1,6 @@
 import {
     Checkbox,
     FormControl,
-    InputLabel,
     MenuItem,
     OutlinedInput,
     Select,
@@ -14,7 +13,7 @@ import { useMemo } from "react";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { useTranslation } from "react-i18next";
 
-import { useTheme } from "@mui/material/styles";
+import StyledInputLabel from "./components/StyledInputLabel";
 
 type FilterVariant = "property" | "customer";
 
@@ -48,8 +47,7 @@ export default function FilterLabels(props: FilterLabelsProps) {
             })
             .join(", ");
     };
-    const theme = useTheme();
-
+    
     const handleChange = (event: SelectChangeEvent<typeof labels>) => {
         const {
             target: { value },
@@ -64,7 +62,7 @@ export default function FilterLabels(props: FilterLabelsProps) {
     
     return (
         <FormControl sx={{ minWidth: "130px", maxHeight: "38px" }}>
-            <InputLabel sx={{ textAlign:"center", transform: theme.palette.mode === "dark" ? "translate(14px, 8px)" : "translate(14px, 16px)"}} id="demo-simple-select-label">{t("Labels")}</InputLabel>
+            <StyledInputLabel sx={{ }} id="demo-simple-select-label">{t("Labels")}</StyledInputLabel>
             <Select
                 multiple
                 labelId="demo-simple-select-label"

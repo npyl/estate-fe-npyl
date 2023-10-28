@@ -1,7 +1,6 @@
 import {
     Checkbox,
     FormControl,
-    InputLabel,
     MenuItem,
     OutlinedInput,
     Select,
@@ -11,14 +10,13 @@ import { useTranslation } from "react-i18next";
 import { useGlobals } from "src/hooks/useGlobals";
 import { selectStates, setStates } from "src/slices/filters";
 import { useDispatch, useSelector } from "src/store";
-import { useTheme } from "@mui/material/styles";
+import StyledInputLabel from "./components/StyledInputLabel";
 
 export default function SaleSelect() {
     const dispatch = useDispatch();
     const data = useGlobals();
     const { t } = useTranslation();
-    const theme = useTheme();
-
+    
     const states = useSelector(selectStates);
 
     const stateEnum = data?.property?.state;
@@ -38,7 +36,7 @@ export default function SaleSelect() {
 
     return (
         <FormControl sx={{ minWidth: "130px" }}>
-            <InputLabel sx={{ textAlign:"center", transform: theme.palette.mode === "dark" ? "translate(14px, 8px)" : "translate(14px, 16px)"}} id="demo-simple-select-label">{t("State")}</InputLabel>
+            <StyledInputLabel id="demo-simple-select-label">{t("State")}</StyledInputLabel>
             <Select
                 multiple
                 labelId="demo-simple-select-label"
