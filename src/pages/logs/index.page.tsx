@@ -74,17 +74,17 @@ export const LogCard: FC<LogCardProps> = ({ log }) => {
     const getCardBackgroundColor = () => {
         switch (log?.action?.key) {
             case "CREATE":
-                return alpha(green[500], 0.2); // light green
+                return alpha(green[500], 0.1); // even lighter green
             case "EDIT":
-                return alpha(yellow[700], 0.2); // light yellow, you can choose a different shade if you prefer
-            case "DELETE":
-                return alpha(theme.palette.error.main, 0.2); // light red
+                return alpha(yellow[700], 0.1); // even lighter yellow
             case "ADD":
-                return alpha(yellow[700], 0.2); // light yellow, you can choose a different shade if you prefer
+                return alpha(yellow[700], 0.1); // even lighter yellow
+            case "DELETE":
+                return alpha(theme.palette.error.main, 0.1); // even lighter red
             case "RESTORE":
-                return "#EFCFEC"; // similar to "EDIT"
+                return alpha("#EFCFEC", 0.2); // make it lighter
             case "DOWNLOAD":
-                return "#CBEBF2"; // similar to "EDIT"
+                return alpha("#CBEBF2", 0.2); // make it lighter
             default:
                 return ""; // default, no background color or whatever you prefer
         }
@@ -92,17 +92,17 @@ export const LogCard: FC<LogCardProps> = ({ log }) => {
     const getLabelColor = () => {
         switch (log?.action?.key) {
             case "CREATE":
-                return green[500]; // or any specific shade of green you prefer
+                return green[400]; // Lighter shade of green
             case "EDIT":
-                return yellow[700]; // or any specific shade of yellow you prefer
-            case "DELETE":
-                return theme.palette.error.main; // red color for deletion
+                return yellow[600]; // Lighter shade of yellow
             case "ADD":
-                return yellow[700]; // similar to "EDIT"
+                return yellow[600]; // Lighter shade of yellow
+            case "DELETE":
+                return theme.palette.error.light; // Lighter shade of red
             case "RESTORE":
-                return purple[700]; // similar to "EDIT"
+                return purple[600]; // Lighter shade of purple
             case "DOWNLOAD":
-                return "#00BCE1"; // similar to "EDIT"
+                return alpha("#33C6E4", 0.6); // A lighter approximation of "#00BCE1"
 
             default:
                 return theme.palette.text.primary; // default color
