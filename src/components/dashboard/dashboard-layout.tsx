@@ -23,7 +23,8 @@ import { Users as UsersIcon } from "../../icons/users";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import { Add, CircleNotifications } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
-
+import PlusOneIcon from "@mui/icons-material/PlusOne"; // Import the new icon
+import { relative } from "path";
 interface DashboardLayoutProps {
     children?: ReactNode;
 }
@@ -96,38 +97,58 @@ export const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
                                 <Subbar />
                             </Grid>
 
-                            <Grid
-                                item
+                            <Box
+                                border={1}
                                 sx={{
                                     display: "flex",
-                                    justifyContent: "center", // This centers horizontally in case of flex direction row (which is default)
-                                    alignItems: "center", // This centers vertically in case of flex direction row
+                                    justifyContent: "center",
+                                    alignItems: "center",
+                                    borderRadius: "11px",
+                                    backgroundColor: "transparent",
+                                    color: (theme) =>
+                                        theme.palette.primary.main,
+                                    border: (theme) =>
+                                        `2px solid ${theme.palette.primary.main}`,
                                 }}
                             >
+                                <Box
+                                    sx={{
+                                        position: "relative",
+                                        backgroundColor: (theme) =>
+                                            theme.palette.grey[700],
+                                        borderTopLeftRadius: 8,
+                                        borderBottomLeftRadius: 8,
+                                    }}
+                                >
+                                    <Add
+                                        sx={{
+                                            marginTop: "3px",
+                                            marginBottom: "-3px",
+                                            fontSize: "2em",
+                                            color: "white",
+                                            marginRight: "2px", // spacing between the icon and the button
+                                        }}
+                                    />
+                                </Box>
+
                                 <Button
                                     sx={{
-                                        minWidth: "100px",
-                                        borderRadius: 1,
+                                        minWidth: "120px",
                                         fontFamily: "'Poppins', sans-serif",
-                                        fontSize: "1em",
-                                        color: "white",
-                                        backgroundImage:
-                                            "linear-gradient(45deg, #3f51b5 30%, #1a237e 90%)", // deep blue colors
+                                        fontSize: "1.2em",
+                                        backgroundColor: "transparent",
                                     }}
-                                    id="create-menu-button"
-                                    aria-controls={
-                                        open ? "create-menu" : undefined
-                                    }
-                                    aria-haspopup="true"
-                                    aria-expanded={open ? "true" : undefined}
-                                    variant="contained"
                                     disableElevation
-                                    startIcon={<Add />}
                                     onClick={showDropdown}
                                 >
-                                    <Typography>{t("Create")}</Typography>
+                                    <Typography
+                                        fontWeight={700}
+                                        sx={{ fontSize: "0.9em" }}
+                                    >
+                                        {t("Create")}
+                                    </Typography>
                                 </Button>
-                            </Grid>
+                            </Box>
                             <StyledMenu
                                 id="create-menu"
                                 MenuListProps={{
