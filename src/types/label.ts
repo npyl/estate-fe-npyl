@@ -7,4 +7,5 @@ export interface ILabel {
 export interface ILabels {
     customerLabels: ILabel[];
     propertyLabels: ILabel[];
+    documentLabels: ILabel[];
 }

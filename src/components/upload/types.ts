@@ -25,6 +25,7 @@ export interface UploadProps extends DropzoneOptions {
     placeholder?: React.ReactNode;
     helperText?: React.ReactNode;
     disableMultiple?: boolean;
+    supportsLabels?: boolean; // IPropertyDocument labels
     //
     file?: CustomFile | string | null;
     onDelete?: VoidFunction;

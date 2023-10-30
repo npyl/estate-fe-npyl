@@ -41,17 +41,16 @@ interface ILabelCreateProps {
     onRemoveNewLabel: (index: number) => void;
 }
 
-const LabelCreate = (props: ILabelCreateProps) => {
-    const {
-        variant = "property",
-        existingLabels,
-        assignedLabels,
-        newLabels,
-        onLabelClick,
-        onLabelCreate,
-        onRemoveAssignedLabel,
-        onRemoveNewLabel,
-    } = props;
+const LabelCreate = ({
+    variant = "property",
+    existingLabels,
+    assignedLabels,
+    newLabels,
+    onLabelClick,
+    onLabelCreate,
+    onRemoveAssignedLabel,
+    onRemoveNewLabel,
+}: ILabelCreateProps) => {
     const { t } = useTranslation();
     const [addLabelDialog, setAddLabelDialog] = useState(false);
 

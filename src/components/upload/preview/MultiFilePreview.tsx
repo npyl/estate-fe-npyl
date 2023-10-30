@@ -5,18 +5,32 @@ import FileThumbnail from "../../file-thumbnail";
 import Iconify from "../../iconify";
 //
 import { UploadProps } from "../types";
+import { useGetLabelsQuery } from "src/services/labels";
+import { useMemo } from "react";
+import { LabelCreate } from "src/components/label";
 
 // ----------------------------------------------------------------------
 
 export default function MultiFilePreview({
     thumbnail,
     files,
+    supportsLabels = false,
     onRemove,
     sx,
 }: UploadProps) {
     if (!files?.length) {
         return null;
     }
+
+    const { data: labels } = useGetLabelsQuery(undefined, {
+        skip: !supportsLabels,
+    });
+
+    const documentLabels = useMemo(
+        () => labels?.documentLabels || [],
+        [labels]
+    );
+
     return (
         <>
             {files.map((file, index) => {
@@ -97,6 +111,8 @@ export default function MultiFilePreview({
                                 </Typography>
                             </Stack>
                         )}
+
+                        {supportsLabels && <LabelCreate />}
 
                         {onRemove && (
                             <IconButton
