@@ -65,7 +65,7 @@ import OnlyNumbersInput from "src/components/OnlyNumbers";
 
 import { useEffect } from "react";
 import { useLazyGetPropertyLabelsQuery } from "src/services/properties";
-import { ILabel } from "src/types/label";
+import { ILabel, ILabelPOST } from "src/types/label";
 
 import { useRouter } from "next/router";
 import {
@@ -146,7 +146,7 @@ const BasicForLandSection: React.FC<any> = () => {
                 labelId: label.id,
             }).then(() => revalidate());
     }, 500);
-    const handleLabelCreate = (label: ILabel) =>
+    const handleLabelCreate = (label: ILabelPOST) =>
         createAndAssignLabel({
             propertyId: +propertyId!,
             labelBody: label,

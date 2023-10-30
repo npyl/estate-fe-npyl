@@ -2,7 +2,7 @@ import { Box, IconButton, Stack, Typography } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useMemo, useState } from "react";
 import Label from "src/components/label/Label";
-import { ILabel, LabelResourceType } from "src/types/label";
+import { ILabel, ILabelPOST, LabelResourceType } from "src/types/label";
 import { useTranslation } from "react-i18next";
 import { AddLabelDialog } from "./components/Dialog";
 import { useGetLabelsQuery } from "src/services/labels";
@@ -15,7 +15,7 @@ interface ILabelCreateProps {
 
     // handlers
     onLabelClick: (label: ILabel) => void;
-    onLabelCreate: (label: ILabel) => void;
+    onLabelCreate: (label: ILabelPOST) => void;
     onRemoveAssignedLabel: (index: number) => void;
 }
 

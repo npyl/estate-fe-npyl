@@ -405,7 +405,7 @@ const CustomerInformation: React.FC<any> = () => {
                         <LabelCreate
                             assignedLabels={assignedLabels || []}
                             onLabelClick={handleLabelClick}
-                            onLabelCreate={handleLabelCreate}
+                            onLabelCreate={() => {}}
                             onRemoveAssignedLabel={handleLabelRemove}
                         />
                     </Grid>

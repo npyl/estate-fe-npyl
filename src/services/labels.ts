@@ -1,6 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-import { ILabels, ILabel, LabelResourceType } from "src/types/label";
+import {
+    ILabels,
+    ILabel,
+    LabelResourceType,
+    ILabelPOST,
+} from "src/types/label";
 
 interface LabelForResourceProps {
     resourceId: number;
@@ -17,11 +22,11 @@ type DeleteLabelProps = AssignLabelProps;
 
 interface ILabelForPropertyProps {
     propertyId: number;
-    labelBody: ILabel;
+    labelBody: ILabelPOST;
 }
 interface ILabelForCustomerProps {
     customerId: number;
-    labelBody: ILabel;
+    labelBody: ILabelPOST;
 }
 
 interface IAssignLabelProps {
@@ -132,7 +137,7 @@ export const labels = createApi({
         //
         // general
         //
-        createLabelForProperties: builder.mutation<ILabels, ILabel>({
+        createLabelForProperties: builder.mutation<ILabels, ILabelPOST>({
             query: (data: ILabel) => ({
                 url: `property`,
                 method: "POST",
@@ -140,7 +145,7 @@ export const labels = createApi({
             }),
             invalidatesTags: ["Labels"],
         }),
-        createLabelForCustomers: builder.mutation<ILabels, ILabel>({
+        createLabelForCustomers: builder.mutation<ILabels, ILabelPOST>({
             query: (data: ILabel) => ({
                 url: `customer`,
                 method: "POST",
@@ -148,7 +153,7 @@ export const labels = createApi({
             }),
             invalidatesTags: ["Labels"],
         }),
-        createLabelForDocuments: builder.mutation<ILabels, ILabel>({
+        createLabelForDocuments: builder.mutation<ILabels, ILabelPOST>({
             query: (data: ILabel) => ({
                 url: `document`,
                 method: "POST",
@@ -225,4 +230,8 @@ export const {
     useCreateLabelForCustomersMutation,
     useDeletePropertyLabelMutation,
     useDeleteCustomerLabelMutation,
+
+    useCreateLabelForResourceMutation,
+    useAssignLabelToResourceMutation,
+    useDeleteLabelForResourceMutation,
 } = labels;

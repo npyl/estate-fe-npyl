@@ -79,7 +79,7 @@ import { useAllUsersQuery } from "src/services/user";
 import { selectAvailableAfter } from "src/slices/property";
 import { ICustomer } from "src/types/customer";
 import { IGlobalProperty } from "src/types/global";
-import { ILabel } from "src/types/label";
+import { ILabel, ILabelPOST } from "src/types/label";
 
 import { CodeField } from "./componentsFields/CodeField";
 import { KeyCodeField } from "./componentsFields/KeyCodeField";
@@ -229,7 +229,7 @@ const BasicSection: React.FC<any> = () => {
             }).then(() => revalidate());
     }, 500);
 
-    const handleLabelCreate = (label: ILabel) => {
+    const handleLabelCreate = (label: ILabelPOST) => {
         createAndAssignLabel({
             propertyId: +propertyId!,
             labelBody: label,

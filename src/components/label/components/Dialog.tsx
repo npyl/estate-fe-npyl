@@ -17,7 +17,7 @@ import { Close as CloseIcon } from "@mui/icons-material";
 import * as React from "react";
 import Label from "src/components/label/Label";
 import { SliderPicker } from "react-color";
-import { ILabel, LabelResourceType } from "src/types/label";
+import { ILabel, ILabelPOST, LabelResourceType } from "src/types/label";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
 
@@ -29,7 +29,7 @@ interface AddLabelDialog {
     assignedLabels: ILabel[];
 
     onLabelClick: (l: ILabel) => void;
-    onCreate: (l: ILabel) => void;
+    onCreate: (l: ILabelPOST) => void;
     onClose: () => void;
 }
 
