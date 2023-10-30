@@ -1,21 +1,17 @@
 import { Card, CardHeader, CardContent } from "@mui/material";
-import { IPropertyFile, Upload } from "src/components/upload";
+import { useRouter } from "next/router";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import {
-    IExtendedPropertyBlueprint,
-    IFileResponse,
-    IPropertyBlueprintPOST,
-} from "src/types/file";
+import { useDispatch } from "react-redux";
+import { IPropertyFile, Upload } from "src/components/upload";
 import {
     properties,
-    useAddPropertyBlueprintMutation,
-    useDeletePropertyBlueprintMutation,
+    useAddPropertyDocumentMutation,
+    useDeletePropertyDocumentMutation,
     useGetPropertyByIdQuery,
     useUploadPropertyFileMutation,
 } from "src/services/properties";
-import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
+import { IFileResponse, IPropertyDocumentPOST } from "src/types/file";
 
 interface UploadResponse {
     key: string;
@@ -37,19 +33,18 @@ async function executeSequentially<T>(
     return results;
 }
 
-const BlueprintsSection: React.FC = () => {
+const DocumentsSection: React.FC = () => {
+    const { t } = useTranslation();
     const dispatch = useDispatch();
     const router = useRouter();
-    const { t } = useTranslation();
-
     const { propertyId } = router.query;
 
     const { data: property } = useGetPropertyByIdQuery(+propertyId!);
-    const blueprints = useMemo(() => property?.blueprints || [], [property]);
+    const documents = useMemo(() => property?.documents || [], [property]);
 
-    const [addBlueprint] = useAddPropertyBlueprintMutation();
-    const [deleteBlueprint] = useDeletePropertyBlueprintMutation();
-    const [uploadBlueprint] = useUploadPropertyFileMutation();
+    const [addDocument] = useAddPropertyDocumentMutation();
+    const [deleteDocument] = useDeletePropertyDocumentMutation();
+    const [uploadDocument] = useUploadPropertyFileMutation();
 
     const addFile = async (image: File): Promise<IFileResponse> => {
         const { name: filename, type: contentType, size } = image;
@@ -57,13 +52,13 @@ const BlueprintsSection: React.FC = () => {
         if (!filename || !contentType)
             throw new Error("filename or contentType cannot be null");
 
-        const body: IPropertyBlueprintPOST = {
+        const body: IPropertyDocumentPOST = {
             filename,
             contentType,
         };
 
         // get amazon url
-        const response = await addBlueprint({
+        const response = await addDocument({
             id: +propertyId!,
             body: body,
         });
@@ -86,7 +81,7 @@ const BlueprintsSection: React.FC = () => {
         if (!key || !url || !cdnUrl) throw new Error("checks2 nulls");
 
         // PUT to amazon url
-        const response = await uploadBlueprint({
+        const response = await uploadDocument({
             url,
             contentType,
             image,
@@ -119,33 +114,34 @@ const BlueprintsSection: React.FC = () => {
                     console.error("SequentialUploadError:", error)
                 );
         },
-        [blueprints]
+        [documents]
     );
 
     const handleRemoveFile = (inputFile: IPropertyFile) =>
-        deleteBlueprint({
+        deleteDocument({
             propertyId: +propertyId!,
             imageKey: inputFile.key,
         });
 
     const handleRemoveAllFileData = () =>
         Promise.all(
-            blueprints.map((blueprint) =>
-                deleteBlueprint({
+            documents.map(({ key }) =>
+                deleteDocument({
                     propertyId: +propertyId!,
-                    imageKey: blueprint.key,
+                    imageKey: key,
                 })
             )
         ).then(invalidateTags);
 
     return (
         <Card>
-            <CardHeader title={t("Blueprints")} />
+            <CardHeader title={t("Documents")} />
             <CardContent>
                 <Upload
                     multiple
+                    supportsLabels
                     thumbnail={false}
-                    files={blueprints as IExtendedPropertyBlueprint[]}
+                    files={documents}
                     onDrop={handleDropMultiFile}
                     onRemove={handleRemoveFile}
                     onRemoveAll={handleRemoveAllFileData}
@@ -154,4 +150,4 @@ const BlueprintsSection: React.FC = () => {
         </Card>
     );
 };
-export default BlueprintsSection;
+export default DocumentsSection;

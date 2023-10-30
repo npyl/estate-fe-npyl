@@ -43,6 +43,7 @@ import {
 
 import NotesSection from "./components/NotesSection";
 import VideoLinkSection from "./components/VideoLink";
+import DocumentsSection from "./components/Documents";
 
 const ResidentialFormSection: React.FC<any> = (props) => {
     const state = useSelector(selectState);
@@ -71,7 +72,8 @@ const ResidentialFormSection: React.FC<any> = (props) => {
                         <AreasSection />
                         <DistancesSection />
                         <BlueprintsSection />
-                        <VideoLinkSection></VideoLinkSection>
+                        <DocumentsSection />
+                        <VideoLinkSection />
                         <NotesSection />
                     </Stack>
                 </Grid>

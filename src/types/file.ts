@@ -1,3 +1,5 @@
+import { ILabel } from "./label";
+
 export interface IFileResponse {
     key: string;
     url: string; // amazon to PUT image
@@ -30,6 +32,13 @@ export interface IPropertyDocument {
     id: number;
     url: string | null;
     key: string;
+    labels: ILabel[];
+}
+
+export interface IPropertyBlueprint {
+    id: number;
+    url: string | null;
+    key: string;
 }
 
 export interface IPropertyDocumentPOST {
@@ -39,7 +48,6 @@ export interface IPropertyDocumentPOST {
     contentType: string;
 }
 
-export interface IPropertyBlueprint extends IPropertyDocument {}
 export interface IExtendedPropertyBlueprint extends IPropertyBlueprint {
     filename: string;
 }

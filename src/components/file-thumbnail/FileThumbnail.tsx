@@ -3,12 +3,12 @@ import { Tooltip, SxProps, Stack } from "@mui/material";
 import DownloadButton from "./DownloadButton";
 import Image from "../image/Image";
 import PreviewImage from "../image/PreviewImage";
-import { IExtendedPropertyBlueprint } from "src/types/file";
+import { IPropertyFile } from "../upload";
 
 // ----------------------------------------------------------------------
 
 type FileIconProps = {
-    file: IExtendedPropertyBlueprint;
+    file: IPropertyFile;
     tooltip?: boolean;
     imageView?: boolean;
     onDownload?: VoidFunction;
@@ -19,10 +19,8 @@ type FileIconProps = {
 export default function FileThumbnail({
     file,
     tooltip,
-    imageView,
     onDownload,
     sx,
-    imgSx,
 }: FileIconProps) {
     const renderContent = file.url ? (
         <Image
@@ -46,7 +44,7 @@ export default function FileThumbnail({
         />
     );
 
-    return tooltip ? (
+    return tooltip && "filename" in file ? (
         <Tooltip title={file.filename}>
             <Stack
                 flexShrink={0}

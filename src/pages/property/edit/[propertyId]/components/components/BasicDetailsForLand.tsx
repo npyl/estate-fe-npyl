@@ -66,7 +66,7 @@ import OnlyNumbersInput from "src/components/OnlyNumbers";
 
 import { useEffect, useMemo } from "react";
 import { useLazyGetPropertyLabelsQuery } from "src/services/properties";
-import { ILabel } from "src/types/label";
+import { ILabel, ILabelPOST } from "src/types/label";
 
 import { useRouter } from "next/router";
 import {
@@ -109,7 +109,6 @@ const BasicForLandSection: React.FC<any> = () => {
     const { data: labels } = useGetLabelsQuery();
 
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
-    const propertyLabels = labels?.propertyLabels || [];
 
     // labels
     const [getLabels, { data: assignedLabels }] =
@@ -160,7 +159,7 @@ const BasicForLandSection: React.FC<any> = () => {
                 labelId: label.id,
             }).then(() => revalidate());
     }, 500);
-    const handleLabelCreate = (label: ILabel) =>
+    const handleLabelCreate = (label: ILabelPOST) =>
         createAndAssignLabel({
             propertyId: +propertyId!,
             labelBody: label,
@@ -359,13 +358,10 @@ const BasicForLandSection: React.FC<any> = () => {
 
                     <Grid item xs={6}>
                         <LabelCreate
-                            existingLabels={propertyLabels}
                             assignedLabels={assignedLabels || []}
-                            newLabels={[]}
                             onLabelClick={handleLabelClick}
                             onLabelCreate={handleLabelCreate}
                             onRemoveAssignedLabel={handleLabelRemove}
-                            onRemoveNewLabel={() => {}}
                         />
                     </Grid>
                     <Grid

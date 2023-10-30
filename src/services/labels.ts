@@ -1,14 +1,32 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-import { ILabels, ILabel } from "src/types/label";
+import {
+    ILabels,
+    ILabel,
+    LabelResourceType,
+    ILabelPOST,
+} from "src/types/label";
+
+interface LabelForResourceProps {
+    resourceId: number;
+    resource: LabelResourceType;
+    body: ILabel;
+}
+
+interface AssignLabelProps {
+    resource: LabelResourceType;
+    resourceId: number;
+    labelId: number;
+}
+type DeleteLabelProps = AssignLabelProps;
 
 interface ILabelForPropertyProps {
     propertyId: number;
-    labelBody: ILabel;
+    labelBody: ILabelPOST;
 }
 interface ILabelForCustomerProps {
     customerId: number;
-    labelBody: ILabel;
+    labelBody: ILabelPOST;
 }
 
 interface IAssignLabelProps {
@@ -41,7 +59,10 @@ export const labels = createApi({
             }),
             providesTags: ["Labels"],
         }),
+
+        //
         // property
+        //
         createLabelForPropertyWithID: builder.mutation<
             ILabels,
             ILabelForPropertyProps
@@ -76,7 +97,9 @@ export const labels = createApi({
             invalidatesTags: ["Labels"],
         }),
 
+        //
         // customer
+        //
         createLabelForCustomerWithID: builder.mutation<
             ILabels,
             ILabelForCustomerProps
@@ -111,8 +134,10 @@ export const labels = createApi({
             invalidatesTags: ["Labels"],
         }),
 
+        //
         // general
-        createLabelForProperties: builder.mutation<ILabels, ILabel>({
+        //
+        createLabelForProperties: builder.mutation<ILabels, ILabelPOST>({
             query: (data: ILabel) => ({
                 url: `property`,
                 method: "POST",
@@ -120,7 +145,7 @@ export const labels = createApi({
             }),
             invalidatesTags: ["Labels"],
         }),
-        createLabelForCustomers: builder.mutation<ILabels, ILabel>({
+        createLabelForCustomers: builder.mutation<ILabels, ILabelPOST>({
             query: (data: ILabel) => ({
                 url: `customer`,
                 method: "POST",
@@ -128,6 +153,15 @@ export const labels = createApi({
             }),
             invalidatesTags: ["Labels"],
         }),
+        createLabelForDocuments: builder.mutation<ILabels, ILabelPOST>({
+            query: (data: ILabel) => ({
+                url: `document`,
+                method: "POST",
+                body: data,
+            }),
+            invalidatesTags: ["Labels"],
+        }),
+
         deletePropertyLabel: builder.mutation<void, number>({
             query: (labelId: number) => ({
                 url: `property/${labelId}`,
@@ -139,6 +173,37 @@ export const labels = createApi({
             query: (labelId: number) => ({
                 url: `customer/${labelId}`,
                 method: "DELETE",
+            }),
+            invalidatesTags: ["Labels"],
+        }),
+
+        //
+        //  Ultra General
+        //
+        createLabelForResource: builder.mutation<
+            ILabels,
+            LabelForResourceProps
+        >({
+            query: ({ resource, resourceId, body }: LabelForResourceProps) => ({
+                url: `${resource}/${resourceId}`,
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["Labels"],
+        }),
+        assignLabelToResource: builder.mutation<ILabels, AssignLabelProps>({
+            query: ({ resource, resourceId, labelId }: AssignLabelProps) => ({
+                url: `add/${resource}/${resourceId}`,
+                method: "POST",
+                params: { labelId },
+            }),
+            invalidatesTags: ["Labels"],
+        }),
+        deleteLabelForResource: builder.mutation<ILabels, DeleteLabelProps>({
+            query: ({ resource, resourceId, labelId }: DeleteLabelProps) => ({
+                url: `/remove/${resource}/${resourceId}`,
+                method: "DELETE",
+                params: { labelId },
             }),
             invalidatesTags: ["Labels"],
         }),
@@ -157,9 +222,16 @@ export const {
     useAssignLabelToCustomerWithIDMutation,
     useDeleteLabelForCustomerWithIdMutation,
 
+    // document
+    useCreateLabelForDocumentsMutation,
+
     // general
     useCreateLabelForPropertiesMutation,
     useCreateLabelForCustomersMutation,
     useDeletePropertyLabelMutation,
     useDeleteCustomerLabelMutation,
+
+    useCreateLabelForResourceMutation,
+    useAssignLabelToResourceMutation,
+    useDeleteLabelForResourceMutation,
 } = labels;

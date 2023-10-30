@@ -81,7 +81,7 @@ import { useAllUsersQuery } from "src/services/user";
 import { selectAvailableAfter } from "src/slices/property";
 import { ICustomer } from "src/types/customer";
 import { IGlobalProperty } from "src/types/global";
-import { ILabel } from "src/types/label";
+import { ILabel, ILabelPOST } from "src/types/label";
 
 import { CodeField } from "./componentsFields/CodeField";
 import { KeyCodeField } from "./componentsFields/KeyCodeField";
@@ -168,7 +168,6 @@ const BasicSection: React.FC<any> = () => {
     
     const { data: managers } = useAllUsersQuery();
     const { data: labels } = useGetLabelsQuery();
-    const propertyLabels = labels?.propertyLabels;
 
     const currentDate = new Date();
     const code = useSelector(selectCode);
@@ -245,7 +244,7 @@ const BasicSection: React.FC<any> = () => {
             }).then(() => revalidate());
     }, 500);
 
-    const handleLabelCreate = (label: ILabel) => {
+    const handleLabelCreate = (label: ILabelPOST) => {
         createAndAssignLabel({
             propertyId: +propertyId!,
             labelBody: label,
@@ -275,8 +274,7 @@ const BasicSection: React.FC<any> = () => {
     const changeRentalPeriodEnd = (dates: DateObject | DateObject[]) =>
         changeDate(dates, setRentalPeriodEnd);
 
-    if (!enums || !propertyLabels || !propertyId || !subCategoriesMap)
-        return null;
+    if (!enums || !propertyId || !subCategoriesMap) return null;
 
     return (
         <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
@@ -440,13 +438,10 @@ const BasicSection: React.FC<any> = () => {
                     </Grid>
                     <Grid item xs={6}>
                         <LabelCreate
-                            existingLabels={propertyLabels}
                             assignedLabels={assignedLabels || []}
-                            newLabels={[]}
                             onLabelClick={handleLabelClick}
                             onLabelCreate={handleLabelCreate}
                             onRemoveAssignedLabel={handleLabelRemove}
-                            onRemoveNewLabel={() => {}}
                         />
                     </Grid>
 

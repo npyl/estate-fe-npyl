@@ -43,6 +43,7 @@ export default function Upload({
     multiple = false,
     error,
     helperText,
+    supportsLabels = false,
     //
     file,
     onDelete,
@@ -138,6 +139,7 @@ export default function Upload({
                     <Box sx={{ my: 3 }}>
                         <MultiFilePreview
                             files={files}
+                            supportsLabels={supportsLabels}
                             thumbnail={false}
                             onRemove={onRemove}
                         />

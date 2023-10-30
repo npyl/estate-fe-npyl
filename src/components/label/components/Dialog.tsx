@@ -1,0 +1,213 @@
+import {
+    Box,
+    Button,
+    Dialog,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+    FormControl,
+    FormLabel,
+    IconButton,
+    Stack,
+    TextField,
+    Typography,
+} from "@mui/material";
+
+import { Close as CloseIcon } from "@mui/icons-material";
+import * as React from "react";
+import Label from "src/components/label/Label";
+import { SliderPicker } from "react-color";
+import { ILabel, ILabelPOST, LabelResourceType } from "src/types/label";
+import { useTranslation } from "react-i18next";
+import { useState } from "react";
+
+interface AddLabelDialog {
+    open: boolean;
+    variant: LabelResourceType;
+
+    existingLabels: ILabel[];
+    assignedLabels: ILabel[];
+
+    onLabelClick: (l: ILabel) => void;
+    onCreate: (l: ILabelPOST) => void;
+    onClose: () => void;
+}
+
+export const AddLabelDialog = ({
+    open,
+    variant,
+
+    existingLabels,
+    assignedLabels,
+
+    onLabelClick,
+    onCreate,
+    onClose,
+}: AddLabelDialog) => {
+    const { t } = useTranslation();
+
+    const [error, setError] = useState("");
+
+    const [pickerColor, setPickerColor] = useState("#22194d");
+    const [labelName, setLabelName] = useState("");
+
+    const title =
+        variant === "property"
+            ? "Property Labels"
+            : variant === "customer"
+            ? "Customer Labels"
+            : "Document Labels";
+
+    const handleChangeComplete = (color: any) => setPickerColor(color.hex);
+
+    const createLabel = () => {
+        if (!labelName) {
+            setError(t("The name of the label is mandatory") || "");
+            return;
+        }
+
+        onCreate({ color: pickerColor, name: labelName });
+
+        // After creating a label, reset the states
+        setPickerColor("#22194d");
+        setLabelName("");
+        setError("");
+
+        // close dialog
+        onClose();
+    };
+
+    return (
+        <Dialog
+            fullWidth
+            maxWidth="xs"
+            open={open}
+            onClose={onClose}
+            closeAfterTransition={true}
+        >
+            <DialogTitle variant="h5">
+                {t("Adding an existing label")}
+                <IconButton
+                    aria-label="close"
+                    onClick={onClose}
+                    sx={{
+                        position: "absolute",
+                        right: 8,
+                        top: 8,
+                        color: "grey",
+                    }}
+                >
+                    <CloseIcon />
+                </IconButton>
+            </DialogTitle>
+            <DialogContent>
+                <DialogContentText>{title}</DialogContentText>
+                <Stack direction={"row"} flexWrap={"wrap"} spacing={1}>
+                    {existingLabels.map((label, index) => {
+                        const isAssigned = assignedLabels.some(
+                            (assignedLabel) => assignedLabel.name === label.name
+                        );
+
+                        return (
+                            <Label
+                                key={index}
+                                variant="soft"
+                                onClick={
+                                    isAssigned
+                                        ? undefined
+                                        : () => onLabelClick(label)
+                                }
+                                opacity={isAssigned ? 0.4 : 1} // Pass opacity directly here
+                                sx={{
+                                    bgcolor: label.color,
+                                    borderRadius: 7,
+                                    color: "white",
+                                    "&:hover": isAssigned
+                                        ? undefined
+                                        : { cursor: "pointer" },
+                                }}
+                            >
+                                {label.name}
+                            </Label>
+                        );
+                    })}
+                </Stack>
+
+                <Typography variant="h5">{t("Create Label")}</Typography>
+                <Stack spacing={3} mt={2}>
+                    <Stack spacing={1}>
+                        <FormControl>
+                            <FormLabel id="demo-controlled-radio-buttons-group"></FormLabel>
+                            <Stack direction={"row"} spacing={1}>
+                                <TextField
+                                    fullWidth
+                                    label={t("Label's name")}
+                                    variant="outlined"
+                                    value={labelName}
+                                    placeholder="Label's Name"
+                                    error={!!error}
+                                    helperText={error}
+                                    onFocus={(event) => {
+                                        (event.target.placeholder = ""),
+                                            setError("");
+                                    }}
+                                    onBlur={(event) =>
+                                        (event.target.placeholder =
+                                            t("New Label"))
+                                    }
+                                    onChange={(
+                                        event: React.ChangeEvent<HTMLInputElement>
+                                    ) => {
+                                        setLabelName(event.target.value);
+                                    }}
+                                />
+                            </Stack>
+                            <Box m={2}>
+                                <SliderPicker
+                                    color={pickerColor}
+                                    onChangeComplete={handleChangeComplete}
+                                />
+                            </Box>
+                            <FormControl>
+                                <Stack
+                                    direction={"row"}
+                                    paddingTop={2}
+                                    paddingBottom={2}
+                                    spacing={3}
+                                >
+                                    <FormLabel id="demo-controlled-radio-buttons-group">
+                                        <Typography
+                                            variant="subtitle2"
+                                            sx={{
+                                                color: "text.secondary",
+                                            }}
+                                        >
+                                            {t("Preview")}
+                                        </Typography>
+                                    </FormLabel>
+                                    <Label
+                                        variant="soft"
+                                        sx={{
+                                            bgcolor: pickerColor,
+                                            borderRadius: 7,
+                                            color: "white",
+                                        }}
+                                    >
+                                        {labelName || t("New Label")}
+                                    </Label>
+                                </Stack>
+
+                                <Button
+                                    variant="outlined"
+                                    onClick={createLabel}
+                                >
+                                    {t("Create")}
+                                </Button>
+                            </FormControl>
+                        </FormControl>
+                    </Stack>
+                </Stack>
+            </DialogContent>
+        </Dialog>
+    );
+};

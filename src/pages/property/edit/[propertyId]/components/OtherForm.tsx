@@ -37,6 +37,7 @@ import {
     setLatitude,
     setLongitude,
 } from "src/slices/property";
+import DocumentsSection from "./components/Documents";
 
 const OtherFormSection: React.FC = () => {
     const state = useSelector(selectState);
@@ -64,6 +65,7 @@ const OtherFormSection: React.FC = () => {
                         <FeaturesForOtherSection />
                         <SuitableForForOtherSection />
                         <BlueprintsSection />
+                        <DocumentsSection />
                     </Stack>
                 </Grid>
                 <Grid item xs={6}>

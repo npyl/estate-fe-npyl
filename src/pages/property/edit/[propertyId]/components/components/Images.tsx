@@ -10,7 +10,7 @@ import {
     useGetPropertyByIdQuery,
     useReorderPropertyImagesMutation,
     useSetPropertyThumbailMutation,
-    useUploadPropertyImageOrBlueprintMutation,
+    useUploadPropertyFileMutation,
 } from "src/services/properties";
 import {
     IFileResponse,
@@ -78,7 +78,7 @@ const ImagesSection: React.FC = () => {
 
     /* mutations */
     const [addImage] = useAddPropertyImageMutation();
-    const [uploadImage] = useUploadPropertyImageOrBlueprintMutation();
+    const [uploadImage] = useUploadPropertyFileMutation();
     const [setThumbnail] = useSetPropertyThumbailMutation();
     const [reorderImages] = useReorderPropertyImagesMutation();
     const [deleteImage, { isLoading: isDeleteOnGoing }] =

@@ -13,13 +13,13 @@ interface ListLabelsItemProps extends ListItemProps {
     label: string;
 }
 
+// This function truncates the label name if it's more than 16 characters
+const truncateLabelName = (name: string) => {
+    return name.length > 19 ? name.substring(0, 19) + "..." : name;
+};
+
 const ListLabelsItem: FC<ListLabelsItemProps> = (props) => {
     const { labels, label = "Labels", ...other } = props;
-
-    // This function truncates the label name if it's more than 16 characters
-    const truncateLabelName = (name: string) => {
-        return name.length > 19 ? name.substring(0, 19) + "..." : name;
-    };
 
     return (
         <ListItem label={label} {...other}>
