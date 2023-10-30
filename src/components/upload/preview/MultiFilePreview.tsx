@@ -112,7 +112,18 @@ export default function MultiFilePreview({
                             </Stack>
                         )}
 
-                        {supportsLabels && <LabelCreate />}
+                        {supportsLabels && (
+                            <LabelCreate
+                                variant="document"
+                                existingLabels={documentLabels}
+                                assignedLabels={[]}
+                                newLabels={[]}
+                                onLabelClick={() => {}}
+                                onLabelCreate={() => {}}
+                                onRemoveNewLabel={() => {}}
+                                onRemoveAssignedLabel={() => {}}
+                            />
+                        )}
 
                         {onRemove && (
                             <IconButton

@@ -598,6 +598,7 @@ export const properties = createApi({
                             draft.documents.push({
                                 ...body,
                                 url: null,
+                                labels: [],
                             } as IPropertyDocument);
                         }
                     )

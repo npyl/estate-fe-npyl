@@ -1,6 +1,19 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-import { ILabels, ILabel } from "src/types/label";
+import { ILabels, ILabel, LabelResourceType } from "src/types/label";
+
+interface LabelForResourceProps {
+    resourceId: number;
+    resource: LabelResourceType;
+    body: ILabel;
+}
+
+interface AssignLabelProps {
+    resource: LabelResourceType;
+    resourceId: number;
+    labelId: number;
+}
+type DeleteLabelProps = AssignLabelProps;
 
 interface ILabelForPropertyProps {
     propertyId: number;
@@ -41,7 +54,10 @@ export const labels = createApi({
             }),
             providesTags: ["Labels"],
         }),
+
+        //
         // property
+        //
         createLabelForPropertyWithID: builder.mutation<
             ILabels,
             ILabelForPropertyProps
@@ -76,7 +92,9 @@ export const labels = createApi({
             invalidatesTags: ["Labels"],
         }),
 
+        //
         // customer
+        //
         createLabelForCustomerWithID: builder.mutation<
             ILabels,
             ILabelForCustomerProps
@@ -111,7 +129,9 @@ export const labels = createApi({
             invalidatesTags: ["Labels"],
         }),
 
+        //
         // general
+        //
         createLabelForProperties: builder.mutation<ILabels, ILabel>({
             query: (data: ILabel) => ({
                 url: `property`,
@@ -128,6 +148,15 @@ export const labels = createApi({
             }),
             invalidatesTags: ["Labels"],
         }),
+        createLabelForDocuments: builder.mutation<ILabels, ILabel>({
+            query: (data: ILabel) => ({
+                url: `document`,
+                method: "POST",
+                body: data,
+            }),
+            invalidatesTags: ["Labels"],
+        }),
+
         deletePropertyLabel: builder.mutation<void, number>({
             query: (labelId: number) => ({
                 url: `property/${labelId}`,
@@ -139,6 +168,37 @@ export const labels = createApi({
             query: (labelId: number) => ({
                 url: `customer/${labelId}`,
                 method: "DELETE",
+            }),
+            invalidatesTags: ["Labels"],
+        }),
+
+        //
+        //  Ultra General
+        //
+        createLabelForResource: builder.mutation<
+            ILabels,
+            LabelForResourceProps
+        >({
+            query: ({ resource, resourceId, body }: LabelForResourceProps) => ({
+                url: `${resource}/${resourceId}`,
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["Labels"],
+        }),
+        assignLabelToResource: builder.mutation<ILabels, AssignLabelProps>({
+            query: ({ resource, resourceId, labelId }: AssignLabelProps) => ({
+                url: `add/${resource}/${resourceId}`,
+                method: "POST",
+                params: { labelId },
+            }),
+            invalidatesTags: ["Labels"],
+        }),
+        deleteLabelForResource: builder.mutation<ILabels, DeleteLabelProps>({
+            query: ({ resource, resourceId, labelId }: DeleteLabelProps) => ({
+                url: `/remove/${resource}/${resourceId}`,
+                method: "DELETE",
+                params: { labelId },
             }),
             invalidatesTags: ["Labels"],
         }),
@@ -156,6 +216,9 @@ export const {
     useCreateLabelForCustomerWithIDMutation,
     useAssignLabelToCustomerWithIDMutation,
     useDeleteLabelForCustomerWithIdMutation,
+
+    // document
+    useCreateLabelForDocumentsMutation,
 
     // general
     useCreateLabelForPropertiesMutation,

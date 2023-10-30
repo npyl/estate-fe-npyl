@@ -1,3 +1,5 @@
+export type LabelResourceType = "property" | "customer" | "document";
+
 export interface ILabel {
     id?: number;
     color: string;

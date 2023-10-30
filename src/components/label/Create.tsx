@@ -17,17 +17,17 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Close as CloseIcon } from "@mui/icons-material";
 
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import Label from "src/components/label/Label";
 
 import { SliderPicker } from "react-color";
 
-import { ILabel } from "src/types/label";
+import { ILabel, LabelResourceType } from "src/types/label";
 import { useTranslation } from "react-i18next";
 
 interface ILabelCreateProps {
-    variant?: string;
+    variant?: LabelResourceType;
 
     existingLabels: ILabel[];
     // assigned-existing labels & newly-created labels
@@ -52,22 +52,17 @@ const LabelCreate = ({
     onRemoveNewLabel,
 }: ILabelCreateProps) => {
     const { t } = useTranslation();
+
     const [addLabelDialog, setAddLabelDialog] = useState(false);
 
     const [pickerColor, setPickerColor] = useState("#22194d");
     const [labelName, setLabelName] = useState("");
 
+    const [dialogKey, setDialogKey] = useState(0);
+
     const [error, setError] = useState("");
 
-    const handleChangeComplete = (color: any) => {
-        setPickerColor(color.hex);
-    };
-    const [unavailableLabels, setUnavailableLabels] = useState<string[]>([]);
-    const handleLabelClick = (label: ILabel) => {
-        onLabelClick(label); // Call the prop's handler
-        setUnavailableLabels((prev) => [...prev, label.name]); // Add the clicked label's name to the unavailable list
-    };
-    const [dialogKey, setDialogKey] = useState(0);
+    const handleChangeComplete = (color: any) => setPickerColor(color.hex);
 
     const createLabel = () => {
         setDialogKey((prevKey) => prevKey + 1);
@@ -87,8 +82,6 @@ const LabelCreate = ({
         // close dialog
         setAddLabelDialog(false);
     };
-
-    if (!existingLabels) return null;
 
     return (
         <Box

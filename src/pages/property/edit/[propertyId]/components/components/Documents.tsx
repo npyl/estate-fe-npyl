@@ -3,8 +3,7 @@ import { useRouter } from "next/router";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
-import { IPropertyFile } from "src/components/upload";
-import UploadDocuments from "src/components/upload/UploadDocuments";
+import { IPropertyFile, Upload } from "src/components/upload";
 import {
     properties,
     useAddPropertyDocumentMutation,
@@ -138,8 +137,9 @@ const DocumentsSection: React.FC = () => {
         <Card>
             <CardHeader title={t("Documents")} />
             <CardContent>
-                <UploadDocuments
+                <Upload
                     multiple
+                    supportsLabels
                     thumbnail={false}
                     files={documents}
                     onDrop={handleDropMultiFile}
