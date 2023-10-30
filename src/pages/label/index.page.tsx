@@ -144,7 +144,7 @@ const SingleProperty: NextPage = () => {
     };
 
     return (
-        <Grid container direction={"row"} gap={1} paddingY={3}>
+        <Grid container direction={"row"} gap={1} paddingY={1}>
             {editMode && editedLabel ? (
                 <Edit
                     editedLabel={editedLabel}

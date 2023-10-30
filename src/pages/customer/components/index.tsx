@@ -24,7 +24,7 @@ export const FilterSection: React.FC<PaperProps> = ({ ...props }) => {
     const managers = useSelector(selectManagerId) || 0;
 
     return (
-        <Stack spacing={1} component={Paper} p={1} mt={2} {...props}>
+        <Stack spacing={1} component={Paper} p={1} mt={1} {...props}>
             <Stack flexWrap={"wrap"} direction={"row"} gap={1}>
                 <FilterBuyerLeaserAndMore />
                 <FilterParentCategory />
