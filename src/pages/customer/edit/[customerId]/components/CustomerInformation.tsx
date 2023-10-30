@@ -403,7 +403,6 @@ const CustomerInformation: React.FC<any> = () => {
                     </Grid>
                     <Grid item xs={6}>
                         <LabelCreate
-                            existingLabels={customerLabels}
                             assignedLabels={assignedLabels || []}
                             onLabelClick={handleLabelClick}
                             onLabelCreate={handleLabelCreate}

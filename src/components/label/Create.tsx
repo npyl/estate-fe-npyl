@@ -1,15 +1,15 @@
 import { Box, IconButton, Stack, Typography } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Label from "src/components/label/Label";
 import { ILabel, LabelResourceType } from "src/types/label";
 import { useTranslation } from "react-i18next";
 import { AddLabelDialog } from "./components/Dialog";
+import { useGetLabelsQuery } from "src/services/labels";
 
 interface ILabelCreateProps {
     variant?: LabelResourceType;
 
-    existingLabels: ILabel[];
     // assigned-existing labels & newly-created labels
     assignedLabels: ILabel[];
 
@@ -21,13 +21,22 @@ interface ILabelCreateProps {
 
 const LabelCreate = ({
     variant = "property",
-    existingLabels,
     assignedLabels,
     onLabelClick,
     onLabelCreate,
     onRemoveAssignedLabel,
 }: ILabelCreateProps) => {
     const { t } = useTranslation();
+
+    const { data: labels } = useGetLabelsQuery();
+
+    const existingLabels = useMemo(() => {
+        if (variant === "property") return labels?.propertyLabels || [];
+        if (variant === "customer") return labels?.customerLabels || [];
+        if (variant === "document") return labels?.documentLabels || [];
+
+        return [];
+    }, [labels, variant]);
 
     const [addLabelDialog, setAddLabelDialog] = useState(false);
 
@@ -75,23 +84,6 @@ const LabelCreate = ({
                                     color: "white",
                                 }}
                                 onClose={() => onRemoveAssignedLabel(index)}
-                            >
-                                {label.name}
-                            </Label>
-                        ))}
-                    </Stack>
-                )}
-                {newLabels?.length > 0 && (
-                    <Stack direction={"row"} flexWrap={"wrap"} spacing={1}>
-                        {newLabels.map((label, index) => (
-                            <Label
-                                key={index}
-                                variant="soft"
-                                sx={{
-                                    bgcolor: label.color,
-                                    color: "white",
-                                }}
-                                onClose={() => onRemoveNewLabel(index)}
                             >
                                 {label.name}
                             </Label>

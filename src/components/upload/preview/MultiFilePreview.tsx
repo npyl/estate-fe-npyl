@@ -22,15 +22,6 @@ export default function MultiFilePreview({
         return null;
     }
 
-    const { data: labels } = useGetLabelsQuery(undefined, {
-        skip: !supportsLabels,
-    });
-
-    const documentLabels = useMemo(
-        () => labels?.documentLabels || [],
-        [labels]
-    );
-
     return (
         <>
             {files.map((file, index) => {
@@ -115,7 +106,6 @@ export default function MultiFilePreview({
                         {supportsLabels && (
                             <LabelCreate
                                 variant="document"
-                                existingLabels={documentLabels}
                                 assignedLabels={[]}
                                 onLabelClick={() => {}}
                                 onLabelCreate={() => {}}

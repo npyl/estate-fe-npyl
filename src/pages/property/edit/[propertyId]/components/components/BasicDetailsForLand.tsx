@@ -97,7 +97,6 @@ const BasicForLandSection: React.FC<any> = () => {
     const { data: labels } = useGetLabelsQuery();
 
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
-    const propertyLabels = labels?.propertyLabels || [];
 
     // labels
     const [getLabels, { data: assignedLabels }] =
@@ -352,7 +351,6 @@ const BasicForLandSection: React.FC<any> = () => {
 
                     <Grid item xs={6}>
                         <LabelCreate
-                            existingLabels={propertyLabels}
                             assignedLabels={assignedLabels || []}
                             onLabelClick={handleLabelClick}
                             onLabelCreate={handleLabelCreate}

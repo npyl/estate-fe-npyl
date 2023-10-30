@@ -154,7 +154,6 @@ const BasicSection: React.FC<any> = () => {
     const { data: owners } = useAllCustomersQuery();
     const { data: managers } = useAllUsersQuery();
     const { data: labels } = useGetLabelsQuery();
-    const propertyLabels = labels?.propertyLabels;
 
     const currentDate = new Date();
     const code = useSelector(selectCode);
@@ -260,8 +259,7 @@ const BasicSection: React.FC<any> = () => {
     const changeRentalPeriodEnd = (dates: DateObject | DateObject[]) =>
         changeDate(dates, setRentalPeriodEnd);
 
-    if (!enums || !propertyLabels || !propertyId || !subCategoriesMap)
-        return null;
+    if (!enums || !propertyId || !subCategoriesMap) return null;
 
     return (
         <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
@@ -433,7 +431,6 @@ const BasicSection: React.FC<any> = () => {
                     </Grid>
                     <Grid item xs={6}>
                         <LabelCreate
-                            existingLabels={propertyLabels}
                             assignedLabels={assignedLabels || []}
                             onLabelClick={handleLabelClick}
                             onLabelCreate={handleLabelCreate}
