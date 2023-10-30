@@ -90,11 +90,13 @@ export default function MultiFilePreview({
                     >
                         <FileThumbnail file={file} />
 
-                        <Stack flexGrow={1} sx={{ minWidth: 0 }}>
-                            <Typography variant="subtitle2">
-                                {file.filename}
-                            </Typography>
-                        </Stack>
+                        {"filename" in file && (
+                            <Stack flexGrow={1} sx={{ minWidth: 0 }}>
+                                <Typography variant="subtitle2">
+                                    {file.filename}
+                                </Typography>
+                            </Stack>
+                        )}
 
                         {onRemove && (
                             <IconButton

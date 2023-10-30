@@ -18,6 +18,8 @@ import {
     IPropertyBlueprintPOST,
     IPropertyBlueprint,
     IPropertyImage,
+    IPropertyDocument,
+    IPropertyDocumentPOST,
 } from "src/types/file";
 
 import { ILabel } from "src/types/label";
@@ -64,11 +66,15 @@ interface BulkDeletePropertyImagesParams {
     propertyId: number;
     imageKeys: string[];
 }
+
+// TODO: for cleanup, merge these 3 into one type
 interface IDeleteImageProps {
     propertyId: number;
     imageKey: string;
 }
+type IDeleteDocumentProps = IDeleteImageProps;
 type IDeleteBlueprintProps = IDeleteImageProps;
+
 interface IPropertyFilterParams {
     filter: IPropertyFilter;
     page: number;
@@ -568,7 +574,55 @@ export const properties = createApi({
             invalidatesTags: ["Properties", "PropertyById"],
         }),
 
-        uploadPropertyImageOrBlueprint: builder.mutation<
+        addPropertyDocument: builder.mutation<
+            IFileResponse,
+            IPropertyAddFileParams<IPropertyDocumentPOST>
+        >({
+            query: ({
+                id,
+                body,
+            }: IPropertyAddFileParams<IPropertyDocumentPOST>) => ({
+                url: `/${id}/document`,
+                method: "POST",
+                body,
+            }),
+            onQueryStarted: async (
+                { body, id },
+                { dispatch, queryFulfilled }
+            ) => {
+                const patchResult = dispatch(
+                    properties.util.updateQueryData(
+                        "getPropertyById",
+                        id,
+                        (draft) => {
+                            draft.documents.push({
+                                ...body,
+                                url: null,
+                            } as IPropertyDocument);
+                        }
+                    )
+                );
+                try {
+                    await queryFulfilled;
+                } catch {
+                    patchResult.undo();
+                }
+            },
+            // WARN: Do not add the tags! addPropertyImage needs to be used optimistically, to explicitly set the url null and know to show a preview Image.
+            // invalidatesTags: ["Properties", "PropertyById"],
+        }),
+        deletePropertyDocument: builder.mutation<void, IDeleteDocumentProps>({
+            query: ({
+                propertyId,
+                imageKey: documentKey,
+            }: IDeleteDocumentProps) => ({
+                url: `/${propertyId}/document/${documentKey}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Properties", "PropertyById"],
+        }),
+
+        uploadPropertyFile: builder.mutation<
             UploadResponse,
             UploadDocumentToAmazonProps
         >({
@@ -644,5 +698,8 @@ export const {
     useAddPropertyBlueprintMutation,
     useDeletePropertyBlueprintMutation,
 
-    useUploadPropertyImageOrBlueprintMutation,
+    useAddPropertyDocumentMutation,
+    useDeletePropertyDocumentMutation,
+
+    useUploadPropertyFileMutation,
 } = properties;

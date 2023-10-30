@@ -42,6 +42,7 @@ import {
     setLongitude,
 } from "src/slices/property";
 import { IPropertyImage, IPropertyImagePOST } from "src/types/file";
+import DocumentsSection from "./components/Documents";
 
 const CommercialFormSection: React.FC<any> = () => {
     const dispatch = useDispatch();
@@ -70,6 +71,7 @@ const CommercialFormSection: React.FC<any> = () => {
                         <AreasSection />
                         <DistancesSection />
                         <BlueprintsSection />
+                        <DocumentsSection />
                         <NotesSection />
                     </Stack>
                 </Grid>

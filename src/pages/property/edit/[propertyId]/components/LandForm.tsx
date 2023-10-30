@@ -35,6 +35,7 @@ import {
     setLatitude,
     setLongitude,
 } from "src/slices/property";
+import DocumentsSection from "./components/Documents";
 
 const LandFormSection: React.FC<any> = () => {
     const state = useSelector(selectState);
@@ -60,11 +61,13 @@ const LandFormSection: React.FC<any> = () => {
                         <PropertyDescriptionForLandSection />
                         <FeaturesForLandSection />
                         <BlueprintsSection />
+                        <DocumentsSection />
                     </Stack>
                 </Grid>
                 <Grid item xs={6}>
                     <Stack spacing={1}>
                         <ImageSection />
+
                         <LocationSection
                             street={street}
                             number={number}
