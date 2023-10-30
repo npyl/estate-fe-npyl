@@ -97,6 +97,16 @@ export const darkThemeOptions: ThemeOptions = {
                     },
                 },
             },
+        }
+        ,MuiInputLabel: {
+            styleOverrides: {
+                root: {
+                    top: "-8px",
+                },
+                shrink: {
+                    top: 0,
+                },
+            },
         },
         MuiInputBase: {
             styleOverrides: {
@@ -104,13 +114,16 @@ export const darkThemeOptions: ThemeOptions = {
                     "&::placeholder": {
                         opacity: 1,
                         color: text.secondary,
+                        height: "38px",
                     },
                 },
             },
         },
         MuiOutlinedInput: {
             styleOverrides: {
-                notchedOutline: {
+                root: {
+                    padding: "0 5px!important",
+                },notchedOutline: {
                     borderColor: divider,
                 },
             },
