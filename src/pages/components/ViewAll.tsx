@@ -38,6 +38,7 @@ import ChosenFilters from "./Filters/ChosenFilters";
 import { KeyValue } from "src/types/KeyValue";
 import { ILabel } from "src/types/label";
 import ListLabelsItem from "src/components/List/labels-item";
+import useLocalStorageScrollRestore from "src/hooks/useLocalStorageScrollRestore";
 
 type optionType = "list" | "grid" | "map";
 
@@ -179,6 +180,7 @@ const ViewAll: FC = () => {
     // pagination
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(25);
+    
     // view
     const [optionView, setOptionView] = useState<optionType>("list");
 
@@ -208,6 +210,19 @@ const ViewAll: FC = () => {
         () => (data?.totalElements ? data?.totalElements : 100000),
         [data?.totalElements]
     );
+    const observerRef = useLocalStorageScrollRestore();
+    useEffect(() => {
+        const storedPagination = localStorage.getItem('propertyPaginationState');
+    
+        if (storedPagination) {
+            const parsedPagination = JSON.parse(storedPagination)
+          if(page !== parsedPagination.page){
+            setPage(parsedPagination.page);
+          }
+
+          
+        }
+      }, []);
 
     const columns: GridColDef[] = [
         {
@@ -307,6 +322,9 @@ const ViewAll: FC = () => {
     ) => {
         setPageSize(model.pageSize);
         setPage(model.page);
+        const paginationState = { page: model.page };
+        localStorage.setItem('propertyPaginationState', JSON.stringify(paginationState));
+        
     };
 
     // Bulk Edit

@@ -1,6 +1,5 @@
 import { Typography } from "@mui/material";
 import type { FC } from "react";
-
 import ListItem from "./item";
 import type { ListItemProps as MuiListItemProps } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
@@ -33,12 +32,7 @@ const ListBooleanItem: FC<ListBooleanItemProps> = (props) => {
 
                 flex: 1,
 
-                "&:nth-of-type(odd)": {
-                    backgroundColor: "white",
-                },
-                "&:nth-of-type(even)": {
-                    backgroundColor: "#fcfcfc",
-                },
+               
             }}
             {...other}
         >

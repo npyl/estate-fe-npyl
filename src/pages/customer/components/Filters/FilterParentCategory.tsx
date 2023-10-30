@@ -1,7 +1,6 @@
 import {
     Checkbox,
     FormControl,
-    InputLabel,
     MenuItem,
     OutlinedInput,
     Select,
@@ -14,12 +13,13 @@ import {
     selectParentCategories,
     setParentCategories,
 } from "src/slices/customer/filters";
+import StyledInputLabel from "src/pages/components/Filters/components/StyledInputLabel";
 
 export default function FilterParentCategory() {
     const dispatch = useDispatch();
     const { t } = useTranslation();
     const data = useGlobals();
-
+    
     const parentCategories = useSelector(selectParentCategories);
 
     const propertyEnums = data?.property;
@@ -42,8 +42,8 @@ export default function FilterParentCategory() {
     };
 
     return (
-        <FormControl sx={{ minWidth: "180px", maxWidth: "180px" }}>
-            <InputLabel>{t("Parent Category")}</InputLabel>
+        <FormControl sx={{ minWidth: "130px", maxWidth: "130px" }}>
+            <StyledInputLabel>{t("Parent Category")}</StyledInputLabel>
             <Select
                 multiple
                 value={parentCategories}
@@ -59,7 +59,7 @@ export default function FilterParentCategory() {
                         .filter(Boolean)
                         .join(", ");
                 }}
-                input={<OutlinedInput label={t("Parent Category")} />}
+                input={<OutlinedInput sx={{maxHeight: "38px", textAlign:"center"}} label={t("Parent Category")} />}
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
                 {parentCategoryEnums!.map(({ key, value }) => {

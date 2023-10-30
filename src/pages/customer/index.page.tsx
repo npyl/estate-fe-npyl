@@ -25,6 +25,7 @@ import { ILabel } from "src/types/label";
 import { FilterSection } from "./components";
 import { BulkEdit } from "./components/BulkEdit/BulkEdit";
 import { TypeLabels } from "./components/TypeLabels";
+import useLocalStorageScrollRestore from "src/hooks/useLocalStorageScrollRestore";
 
 const Customers: NextPage = () => {
     const { t } = useTranslation();
@@ -75,6 +76,9 @@ const Customers: NextPage = () => {
     ) => {
         setPageSize(model.pageSize);
         setPage(model.page);
+        const paginationState = { page: model.page };
+        localStorage.setItem('customerPaginationState', JSON.stringify(paginationState));
+        //console.log("currentPage:"+model.page)
     };
     function statusColor(params: GridCellParams) {
         const labels = (
@@ -196,6 +200,18 @@ const Customers: NextPage = () => {
     };
     const closeBulkEdit = () => setBulkEditOpen(false);
     const handleBulkEditSave = () => revalidate();
+    const observerRef = useLocalStorageScrollRestore()
+  useEffect(() => {
+    const storedPagination = localStorage.getItem('customerPaginationState');
+
+        if (storedPagination !== null) {
+            const parsedPagination = JSON.parse(storedPagination);
+            // Now you can work with the parsed data.
+            if(page !== parsedPagination.page){
+                setPage(parsedPagination.page);
+            }   
+        }
+  }, []);
 
     return (
         <Box

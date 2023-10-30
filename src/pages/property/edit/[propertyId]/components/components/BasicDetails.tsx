@@ -17,6 +17,8 @@ import {
 import { useDebouncedCallback } from "use-debounce";
 import DatePicker from "src/components/DatePicker";
 
+import Autocomplete from '@mui/material/Autocomplete';
+
 import * as React from "react";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -152,6 +154,18 @@ const BasicSection: React.FC<any> = () => {
 
     // get list of owners, managers & labels
     const { data: owners } = useAllCustomersQuery();
+    const ownerNames = useMemo(() => {
+        if (owners) {
+          return owners
+            .filter((option) => option.seller || option.lessor)
+            .map((owner) => ({
+              label: `${owner.firstName} ${owner.lastName}`,
+              value: owner.id,
+            }));
+        }
+        return [];
+      }, [owners]);
+    
     const { data: managers } = useAllUsersQuery();
     const { data: labels } = useGetLabelsQuery();
     const propertyLabels = labels?.propertyLabels;
@@ -159,6 +173,7 @@ const BasicSection: React.FC<any> = () => {
     const currentDate = new Date();
     const code = useSelector(selectCode);
     const owner = useSelector(selectOwner) || "";
+    const defOwner = useSelector(selectOwner) || "";
     const manager = useSelector(selectManager);
     const currentRentPrice = useSelector(selectCurrentRentPrice);
     const estimatedRentPrice = useSelector(selectEstimatedRentPrice);
@@ -350,32 +365,24 @@ const BasicSection: React.FC<any> = () => {
                         </TextField>
                     </Grid>
                     <Grid item xs={6}>
-                        <TextField
-                            fullWidth
-                            select
-                            label={t("Owner")}
-                            value={owner}
-                            onChange={(
-                                event: React.ChangeEvent<HTMLInputElement>
-                            ) => {
-                                dispatch(setOwner(event.target.value));
-                            }}
-                        >
-                            {owners && owners.length > 0 ? (
-                                owners
-                                    .filter(
-                                        (option: ICustomer) =>
-                                            option.seller || option.lessor
-                                    ) // Filtering based on sellers or lessors being true
-                                    .map((option: ICustomer, index: number) => (
-                                        <MenuItem key={index} value={option.id}>
-                                            {`${option.firstName} ${option.lastName}`}
-                                        </MenuItem>
-                                    ))
-                            ) : (
-                                <MenuItem value={""}></MenuItem>
-                            )}
-                        </TextField>
+                    <Autocomplete
+                        disablePortal
+                        id="combo-box-owners"
+                        options={ownerNames}
+                        value={{label: (ownerNames.find(i => i.value == owner))?.label ?? "Owner", value:owner}}
+                        onChange={(event: any, newValue: any | null) => {
+                            try{
+                                if(newValue.value){
+                                    dispatch(setOwner(newValue.value));
+                                }
+                            }catch (e: any){
+                                console.log(e)
+                            }
+                            
+                            
+                          }}
+                        renderInput={(params) => <TextField {...params} label="Owner" />}
+                        />
                     </Grid>
                     <Grid item xs={6}>
                         <OnlyNumbersInput

@@ -55,6 +55,7 @@ import {
 } from "src/slices/property";
 
 import DatePicker from "src/components/DatePicker";
+import Autocomplete from '@mui/material/Autocomplete';
 
 import { LabelCreate } from "src/components/label";
 import { useGlobals } from "src/hooks/useGlobals";
@@ -63,7 +64,7 @@ import { IGlobalProperty } from "src/types/global";
 
 import OnlyNumbersInput from "src/components/OnlyNumbers";
 
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useLazyGetPropertyLabelsQuery } from "src/services/properties";
 import { ILabel } from "src/types/label";
 
@@ -92,6 +93,17 @@ const BasicForLandSection: React.FC<any> = () => {
 
     // get list of owners & managers
     const { data: owners } = useAllCustomersQuery();
+    const ownerNames = useMemo(() => {
+        if (owners) {
+          return owners
+            .filter((option) => option.seller || option.lessor)
+            .map((owner) => ({
+              label: `${owner.firstName} ${owner.lastName}`,
+              value: owner.id,
+            }));
+        }
+        return [];
+      }, [owners]);
     const { data: managers } = useAllUsersQuery();
     // labels
     const { data: labels } = useGetLabelsQuery();
@@ -109,6 +121,7 @@ const BasicForLandSection: React.FC<any> = () => {
     const currentDate = new Date();
     const code = useSelector(selectCode);
     const owner = useSelector(selectOwner) || "";
+    const defOwner = useSelector(selectOwner) || "";
     const manager = useSelector(selectManager);
     const currentRentPrice = useSelector(selectCurrentRentPrice);
     const estimatedRentPrice = useSelector(selectEstimatedRentPrice);
@@ -221,30 +234,24 @@ const BasicForLandSection: React.FC<any> = () => {
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <TextField
-                            fullWidth
-                            id="outlined-start-adornment"
-                            select
-                            label={t("Owner")}
-                            value={owner}
-                            onChange={(
-                                event: React.ChangeEvent<HTMLInputElement>
-                            ) => {
-                                dispatch(setOwner(event.target.value));
+                        <Autocomplete
+                            disablePortal
+                            id="combo-box-demo"
+                            options={ownerNames}
+                            value={{label: (ownerNames.find(i => i.value == owner))?.label ?? "Owner", value:owner}}
+                            onChange={(event: any, newValue: any | null) => {
+                                try{
+                                    if(newValue.value){
+                                        dispatch(setOwner(newValue.value));
+                                    }
+                                }catch (e: any){
+                                    console.log(e)
+                                }
+                                
+                                
                             }}
-                        >
-                            {owners && owners.length > 0 ? (
-                                owners?.map(
-                                    (option: ICustomer, index: number) => (
-                                        <MenuItem key={index} value={option.id}>
-                                            {`${option.firstName} ${option.lastName}`}
-                                        </MenuItem>
-                                    )
-                                )
-                            ) : (
-                                <MenuItem value={""}></MenuItem>
-                            )}
-                        </TextField>
+                            renderInput={(params) => <TextField {...params} label="Owner" />}
+                            />
                     </Grid>
                     <Grid item xs={6}>
                         <TextField

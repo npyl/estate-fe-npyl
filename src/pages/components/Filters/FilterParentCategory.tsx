@@ -1,12 +1,10 @@
 import {
     Checkbox,
     FormControl,
-    InputLabel,
     MenuItem,
     OutlinedInput,
     Select,
     SelectChangeEvent,
-    styled,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -16,26 +14,14 @@ import {
 
 import { useTranslation } from "react-i18next";
 import { useGlobals } from "src/hooks/useGlobals";
-
-const StyledOutlinedInput = styled(OutlinedInput)({
-    "& .MuiOutlinedInput-input": {
-        textAlign: "center",
-    },
-});
-const StyledInputLabel = styled(InputLabel)({
-    "& .MuiInputLabel-formControl": {
-        textAlign: "center",
-    },
-    "& .MuiInputLabel-root": {
-        textAlign: "center",
-    },
-});
+import StyledInputLabel from "./components/StyledInputLabel";
 
 export default function FilterParentCategory() {
     const dispatch = useDispatch();
     const { t } = useTranslation();
     const data = useGlobals();
 
+    
     const categories = useSelector(selectParentCategories);
 
     const propertyEnums = data?.property;
@@ -72,7 +58,7 @@ export default function FilterParentCategory() {
                         .filter(Boolean)
                         .join(", ");
                 }}
-                input={<StyledOutlinedInput label={t("Parent Category")} />}
+                input={<OutlinedInput sx={{maxHeight:"38px", textAlign:"center"}} label={t("Parent Category")} />}
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
                 {categoryEnums!.map(({ key, value }) => {
