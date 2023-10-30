@@ -117,10 +117,8 @@ export default function MultiFilePreview({
                                 variant="document"
                                 existingLabels={documentLabels}
                                 assignedLabels={[]}
-                                newLabels={[]}
                                 onLabelClick={() => {}}
                                 onLabelCreate={() => {}}
-                                onRemoveNewLabel={() => {}}
                                 onRemoveAssignedLabel={() => {}}
                             />
                         )}

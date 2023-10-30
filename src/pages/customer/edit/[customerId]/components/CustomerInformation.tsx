@@ -405,11 +405,9 @@ const CustomerInformation: React.FC<any> = () => {
                         <LabelCreate
                             existingLabels={customerLabels}
                             assignedLabels={assignedLabels || []}
-                            newLabels={[]}
                             onLabelClick={handleLabelClick}
                             onLabelCreate={handleLabelCreate}
                             onRemoveAssignedLabel={handleLabelRemove}
-                            onRemoveNewLabel={() => {}}
                         />
                     </Grid>
                     <Grid item xs={12}>
