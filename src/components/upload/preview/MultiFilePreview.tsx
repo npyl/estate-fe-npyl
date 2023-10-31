@@ -1,5 +1,12 @@
 // @mui
-import { IconButton, Stack, Typography } from "@mui/material";
+import {
+    CircularProgress,
+    IconButton,
+    Stack,
+    Typography,
+    createSvgIcon,
+    SvgIconProps,
+} from "@mui/material";
 import { alpha } from "@mui/material/styles";
 import FileThumbnail from "../../file-thumbnail";
 import Iconify from "../../iconify";
@@ -10,14 +17,52 @@ import {
     useCreateLabelForResourceMutation,
     useDeleteLabelForResourceMutation,
 } from "src/services/labels";
-import { useMemo } from "react";
 import { LabelCreate } from "src/components/label";
 import { LabelResourceType } from "src/types/label";
-import { properties, useGetPropertyByIdQuery } from "src/services/properties";
+import { properties } from "src/services/properties";
 import { useDispatch } from "react-redux";
-import { useRouter } from "next/router";
 
 // ----------------------------------------------------------------------
+
+// First, create the icon with createSvgIcon
+const DocumentSvg = createSvgIcon(
+    <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path
+            d="M6 2H14L20 8V22C20 23.1 19.1 24 18 24H6C4.9 24 4 23.1 4 22V4C4 2.9 4.9 2 6 2Z"
+            fill="currentColor"
+        />
+        <path d="M13 9V3.5L18.5 9H13Z" fill="currentColor" />
+    </svg>,
+    "DocumentIcon"
+);
+
+interface DocumentIconProps extends SvgIconProps {
+    isPreview: boolean;
+}
+
+const DocumentIcon = ({ isPreview, ...other }: DocumentIconProps) => {
+    return (
+        <div style={{ position: "relative", display: "inline-block" }}>
+            <DocumentSvg {...other} />
+            {isPreview && (
+                <CircularProgress
+                    sx={{
+                        position: "absolute",
+                        top: "calc(50% - 20px)",
+                        left: "calc(50% - 20px)",
+                        transform: "translate(-50%, -50%)",
+                    }}
+                />
+            )}
+        </div>
+    );
+};
 
 const tag = "PropertyById";
 const resource: LabelResourceType = "document";
@@ -25,7 +70,7 @@ const resource: LabelResourceType = "document";
 export default function MultiFilePreview({
     thumbnail,
     files,
-    supportsLabels = false,
+    variant,
     onRemove,
     sx,
 }: UploadProps) {
@@ -33,17 +78,7 @@ export default function MultiFilePreview({
         return null;
     }
 
-    const router = useRouter();
     const dispatch = useDispatch();
-
-    const { propertyId } = router.query;
-
-    const { data: property } = useGetPropertyByIdQuery(+propertyId!);
-
-    const assignedLabels = useMemo(
-        () => property?.documents?.map((d) => d.labels).flat() || [],
-        [property]
-    );
 
     const [assignLabel] = useAssignLabelToResourceMutation();
     const [createAssignLabel] = useCreateLabelForResourceMutation();
@@ -132,7 +167,16 @@ export default function MultiFilePreview({
                             ...sx,
                         }}
                     >
-                        <FileThumbnail file={file} />
+                        {variant === "image" && <FileThumbnail file={file} />}
+                        {variant === "document" && (
+                            <DocumentIcon
+                                isPreview={!file.url}
+                                sx={{
+                                    width: 50,
+                                    height: 50,
+                                }}
+                            />
+                        )}
 
                         {"filename" in file && (
                             <Stack flexGrow={1} sx={{ minWidth: 0 }}>
@@ -142,10 +186,10 @@ export default function MultiFilePreview({
                             </Stack>
                         )}
 
-                        {supportsLabels && (
+                        {variant === "document" && (
                             <LabelCreate
                                 variant="document"
-                                assignedLabels={assignedLabels}
+                                assignedLabels={[]}
                                 onLabelClick={({ id }) =>
                                     handleAssignLabel(id, file.id)
                                 }

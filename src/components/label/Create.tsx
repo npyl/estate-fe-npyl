@@ -21,7 +21,7 @@ interface ILabelCreateProps {
 
 const LabelCreate = ({
     variant = "property",
-    assignedLabels,
+    assignedLabels = [],
     onLabelClick,
     onLabelCreate,
     onRemoveAssignedLabel,
@@ -73,23 +73,21 @@ const LabelCreate = ({
             </Box>
 
             <Box flex={1} justifyContent={"center"} flexWrap={"wrap"} pt={2}>
-                {assignedLabels?.length > 0 && (
-                    <Stack direction={"row"} flexWrap={"wrap"} spacing={1}>
-                        {assignedLabels.map((label, index) => (
-                            <Label
-                                key={index}
-                                variant="soft"
-                                sx={{
-                                    bgcolor: label.color,
-                                    color: "white",
-                                }}
-                                onClose={() => onRemoveAssignedLabel(index)}
-                            >
-                                {label.name}
-                            </Label>
-                        ))}
-                    </Stack>
-                )}
+                <Stack direction={"row"} flexWrap={"wrap"} spacing={1}>
+                    {assignedLabels?.map(({ color, name }, index) => (
+                        <Label
+                            key={index}
+                            variant="soft"
+                            sx={{
+                                bgcolor: color,
+                                color: "white",
+                            }}
+                            onClose={() => onRemoveAssignedLabel(index)}
+                        >
+                            {name}
+                        </Label>
+                    ))}
+                </Stack>
             </Box>
 
             {addLabelDialog && (

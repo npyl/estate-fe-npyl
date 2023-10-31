@@ -18,6 +18,8 @@ export interface CustomFile extends File {
 
 export type IPropertyFile = IExtendedPropertyBlueprint | IPropertyDocument;
 
+export type UploadVariant = "image" | "document" | undefined;
+
 export interface UploadProps extends DropzoneOptions {
     error?: boolean;
     sx?: SxProps<Theme>;
@@ -25,7 +27,8 @@ export interface UploadProps extends DropzoneOptions {
     placeholder?: React.ReactNode;
     helperText?: React.ReactNode;
     disableMultiple?: boolean;
-    supportsLabels?: boolean; // IPropertyDocument labels
+
+    variant?: UploadVariant;
     //
     file?: CustomFile | string | null;
     onDelete?: VoidFunction;

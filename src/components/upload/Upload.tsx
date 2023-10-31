@@ -1,4 +1,4 @@
-import { useDropzone } from "react-dropzone";
+import { FileRejection, useDropzone } from "react-dropzone";
 // @mui
 import {
     Box,
@@ -43,7 +43,7 @@ export default function Upload({
     multiple = false,
     error,
     helperText,
-    supportsLabels = false,
+    variant = "image",
     //
     file,
     onDelete,
@@ -139,7 +139,7 @@ export default function Upload({
                     <Box sx={{ my: 3 }}>
                         <MultiFilePreview
                             files={files}
-                            supportsLabels={supportsLabels}
+                            variant={variant}
                             thumbnail={false}
                             onRemove={onRemove}
                         />

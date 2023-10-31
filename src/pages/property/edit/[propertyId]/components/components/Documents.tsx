@@ -139,7 +139,7 @@ const DocumentsSection: React.FC = () => {
             <CardContent>
                 <Upload
                     multiple
-                    supportsLabels
+                    variant="document"
                     thumbnail={false}
                     files={documents}
                     onDrop={handleDropMultiFile}
