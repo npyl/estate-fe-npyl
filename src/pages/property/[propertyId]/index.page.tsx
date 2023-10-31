@@ -44,6 +44,7 @@ import { useTranslation } from "react-i18next";
 
 import { useTabsContext } from "src/contexts/tabs";
 import PropertyLogs from "./sections/Logs";
+import Documents from "./sections/Documents";
 
 function a11yProps(index: number) {
     return {
@@ -112,7 +113,8 @@ const SingleProperty: NextPage = () => {
                     <Tab label={t("Photos")} {...a11yProps(4)} />
                     <Tab label={t("Connections")} {...a11yProps(5)} />
                     <Tab label={t("Logs")} {...a11yProps(6)} />
-                    <Tab label={t("Map")} {...a11yProps(7)} />
+                    <Tab label={t("Documents")} {...a11yProps(7)} />
+                    <Tab label={t("Map")} {...a11yProps(8)} />
                 </Tabs>
             </ViewHeader>
             <TabPanel value={value} index={0}>
@@ -142,13 +144,16 @@ const SingleProperty: NextPage = () => {
                 <MatchingCustomersSection />
             </TabPanel>
             <TabPanel value={value} index={4}>
-                <PhotosOnly data={data as any}></PhotosOnly>
+                <PhotosOnly data={data as any} />
             </TabPanel>
             <TabPanel value={value} index={5}></TabPanel>
             <TabPanel value={value} index={6}>
                 <PropertyLogs />
             </TabPanel>
             <TabPanel value={value} index={7}>
+                <Documents />
+            </TabPanel>
+            <TabPanel value={value} index={8}>
                 <Box height={"400px"} width={"100%"}>
                     <InitMap />
                 </Box>
