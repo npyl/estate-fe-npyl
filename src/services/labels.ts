@@ -10,7 +10,7 @@ import {
 interface LabelForResourceProps {
     resourceId: number;
     resource: LabelResourceType;
-    body: ILabel;
+    body: ILabelPOST;
 }
 
 interface AssignLabelProps {

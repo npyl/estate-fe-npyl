@@ -1,28 +1,36 @@
 import { Box, IconButton, Stack, Typography } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import Label from "src/components/label/Label";
-import { LabelResourceType } from "src/types/label";
+import { ILabelPOST, LabelResourceType } from "src/types/label";
 import { useTranslation } from "react-i18next";
 import { AddLabelDialog } from "./components/Dialog";
 import {
+    useAssignLabelToResourceMutation,
+    useCreateLabelForResourceMutation,
     useDeleteLabelForResourceMutation,
     useGetLabelsQuery,
 } from "src/services/labels";
-import { useGetPropertyByIdQuery } from "src/services/properties";
-import { useGetCustomerByIdQuery } from "src/services/customers";
+import { properties, useGetPropertyByIdQuery } from "src/services/properties";
+import { customers, useGetCustomerByIdQuery } from "src/services/customers";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
 
 interface ILabelCreateProps {
     variant: LabelResourceType;
     resourceId: number;
 }
 
+// TODO: this needs to be debounced? (make sure we don't allow to click an already added label)
+
 const LabelCreate = ({ variant, resourceId }: ILabelCreateProps) => {
     const { t } = useTranslation();
+    const dispatch = useDispatch();
 
     const router = useRouter();
     const { propertyId } = router.query;
+
+    const [addLabelDialog, setAddLabelDialog] = useState(false);
 
     //
     //  Queries
@@ -40,12 +48,14 @@ const LabelCreate = ({ variant, resourceId }: ILabelCreateProps) => {
         skip: variant !== "customer",
     });
 
+    const { data: labels } = useGetLabelsQuery();
+
     //
     //  Mutations
     //
+    const [createAssignLabel] = useCreateLabelForResourceMutation();
+    const [assignLabel] = useAssignLabelToResourceMutation();
     const [deleteLabel] = useDeleteLabelForResourceMutation();
-
-    const { data: labels } = useGetLabelsQuery();
 
     const existingLabels = useMemo(() => {
         if (variant === "property") return labels?.propertyLabels || [];
@@ -63,18 +73,37 @@ const LabelCreate = ({ variant, resourceId }: ILabelCreateProps) => {
         return [];
     }, [variant, property, customer]);
 
+    //
+    //  Callbacks
+    //
     const handleRemoveLabel = (i: number) =>
         deleteLabel({
             resource: variant,
             resourceId,
             labelId: assignedLabels[i].id,
-        });
+        }).then(invalidateTags);
 
-    // TODO: this needs to be debounced? (make sure we don't allow to click an already added label)
-    const handleLabelClick = () => {};
-    const handleLabelCreate = () => {};
+    const handleLabelClick = ({ id }: ILabelPOST) =>
+        id &&
+        assignLabel({
+            resource: variant,
+            resourceId,
+            labelId: id,
+        }).then(invalidateTags);
 
-    const [addLabelDialog, setAddLabelDialog] = useState(false);
+    const handleLabelCreate = (body: ILabelPOST) =>
+        createAssignLabel({
+            resource: variant,
+            resourceId,
+            body,
+        }).then(invalidateTags);
+
+    const invalidateTags = useCallback(() => {
+        if (variant === "property" || variant === "document")
+            dispatch(properties.util.invalidateTags(["PropertyById"]));
+        else if (variant === "customer")
+            dispatch(customers.util.invalidateTags(["CustomerById"]));
+    }, [variant]);
 
     return (
         <Box
