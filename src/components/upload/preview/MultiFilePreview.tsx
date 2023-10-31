@@ -6,13 +6,15 @@ import {
     Typography,
     createSvgIcon,
     SvgIconProps,
+    Box,
 } from "@mui/material";
 import { alpha } from "@mui/material/styles";
 import FileThumbnail from "../../file-thumbnail";
 import Iconify from "../../iconify";
 //
-import { UploadProps } from "../types";
+import { IPropertyFile, UploadProps, UploadVariant } from "../types";
 import { LabelCreate } from "src/components/label";
+import { motion } from "framer-motion";
 
 // ----------------------------------------------------------------------
 
@@ -56,10 +58,90 @@ const DocumentIcon = ({ isPreview, ...other }: DocumentIconProps) => {
     );
 };
 
+interface ItemProps {
+    variant: UploadVariant;
+    file: IPropertyFile;
+    onClick?: (f: IPropertyFile) => void;
+    onRemove?: (f: IPropertyFile) => void;
+}
+
+const variants = {
+    initial: {
+        backgroundColor: "transparent",
+        transition: { duration: 0.3, ease: "easeOut" },
+    },
+    hover: {
+        backgroundColor: "#f0f0f0",
+        transition: { duration: 0.8, ease: "easeIn" },
+    },
+    pressed: {
+        scale: 0.995,
+        transition: { duration: 0.2, ease: "easeIn" },
+    },
+};
+
+const Item = ({ variant, file, onClick, onRemove }: ItemProps) => {
+    return (
+        <motion.div
+            whileHover="hover"
+            whileTap="pressed"
+            variants={variants}
+            onClick={() => onClick && onClick(file)}
+        >
+            <Stack
+                spacing={2}
+                direction="row"
+                alignItems="center"
+                sx={{
+                    my: 1,
+                    px: 1,
+                    py: 0.75,
+                    borderRadius: 0.75,
+                    border: (theme) => `solid 1px ${theme.palette.divider}`,
+                }}
+            >
+                {variant === "image" && <FileThumbnail file={file} />}
+                {variant === "document" && (
+                    <DocumentIcon
+                        isPreview={!file.url}
+                        sx={{
+                            width: 50,
+                            height: 50,
+                        }}
+                    />
+                )}
+
+                {"filename" in file && (
+                    <Stack flexGrow={1} sx={{ minWidth: 0 }}>
+                        <Typography variant="subtitle2">
+                            {file.filename}
+                        </Typography>
+                    </Stack>
+                )}
+
+                {variant === "document" && (
+                    <LabelCreate variant="document" resourceId={file.id} />
+                )}
+
+                {onRemove && (
+                    <IconButton
+                        edge="end"
+                        size="small"
+                        onClick={() => onRemove(file)}
+                    >
+                        <Iconify icon="eva:close-fill" />
+                    </IconButton>
+                )}
+            </Stack>
+        </motion.div>
+    );
+};
+
 export default function MultiFilePreview({
     thumbnail,
     files,
     variant,
+    onFileClick,
     onRemove,
     sx,
 }: UploadProps) {
@@ -123,57 +205,13 @@ export default function MultiFilePreview({
                         )}
                     </Stack>
                 ) : (
-                    <Stack
+                    <Item
                         key={index}
-                        spacing={2}
-                        direction="row"
-                        alignItems="center"
-                        sx={{
-                            my: 1,
-                            px: 1,
-                            py: 0.75,
-                            borderRadius: 0.75,
-                            border: (theme) =>
-                                `solid 1px ${theme.palette.divider}`,
-                            ...sx,
-                        }}
-                    >
-                        {variant === "image" && <FileThumbnail file={file} />}
-                        {variant === "document" && (
-                            <DocumentIcon
-                                isPreview={!file.url}
-                                sx={{
-                                    width: 50,
-                                    height: 50,
-                                }}
-                            />
-                        )}
-
-                        {"filename" in file && (
-                            <Stack flexGrow={1} sx={{ minWidth: 0 }}>
-                                <Typography variant="subtitle2">
-                                    {file.filename}
-                                </Typography>
-                            </Stack>
-                        )}
-
-                        {variant === "document" && (
-                            <LabelCreate
-                                variant="document"
-                                resourceId={file.id}
-                            />
-                        )}
-
-                        {onRemove && (
-                            <IconButton
-                                edge="end"
-                                size="small"
-                                onClick={() => onRemove(file)}
-                            >
-                                <Iconify icon="eva:close-fill" />
-                            </IconButton>
-                        )}
-                    </Stack>
+                        variant={variant}
+                        file={file}
+                        onClick={onFileClick}
+                        onRemove={onRemove}
+                    />
                 );
             })}
         </>

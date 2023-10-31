@@ -142,6 +142,7 @@ const DocumentsSection: React.FC = () => {
                     variant="document"
                     thumbnail={false}
                     files={documents}
+                    onFileClick={() => alert("wtvr")}
                     onDrop={handleDropMultiFile}
                     onRemove={handleRemoveFile}
                     onRemoveAll={handleRemoveAllFileData}

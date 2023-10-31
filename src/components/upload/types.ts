@@ -27,14 +27,13 @@ export interface UploadProps extends DropzoneOptions {
     placeholder?: React.ReactNode;
     helperText?: React.ReactNode;
     disableMultiple?: boolean;
-
     variant?: UploadVariant;
     //
     file?: CustomFile | string | null;
     onDelete?: VoidFunction;
     //
     files?: IPropertyFile[];
-    onImageClick?: (file: File) => void;
+    onFileClick?: (file: IPropertyFile) => void;
     onUpload?: VoidFunction;
     onRemove?: (file: IPropertyFile) => void;
     onRemoveAll?: VoidFunction;
