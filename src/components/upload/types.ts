@@ -3,7 +3,7 @@ import { DropzoneOptions } from "react-dropzone";
 import { SxProps } from "@mui/material";
 import { Theme } from "@mui/material/styles";
 import {
-    IExtendedPropertyBlueprint,
+    IPropertyBlueprint,
     IPropertyDocument,
     IPropertyImage,
 } from "src/types/file";
@@ -16,7 +16,7 @@ export interface CustomFile extends File {
     lastModifiedDate?: Date;
 }
 
-export type IPropertyFile = IExtendedPropertyBlueprint | IPropertyDocument;
+export type IPropertyFile = IPropertyBlueprint | IPropertyDocument;
 
 export type UploadVariant = "image" | "document" | undefined;
 

@@ -3,7 +3,7 @@ import { IPropertyFile, Upload } from "src/components/upload";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import {
-    IExtendedPropertyBlueprint,
+    IPropertyBlueprint,
     IFileResponse,
     IPropertyBlueprintPOST,
 } from "src/types/file";
@@ -145,7 +145,7 @@ const BlueprintsSection: React.FC = () => {
                 <Upload
                     multiple
                     thumbnail={false}
-                    files={blueprints as IExtendedPropertyBlueprint[]}
+                    files={blueprints as IPropertyBlueprint[]}
                     onDrop={handleDropMultiFile}
                     onRemove={handleRemoveFile}
                     onRemoveAll={handleRemoveAllFileData}
