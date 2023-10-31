@@ -71,7 +71,7 @@ const LabelCreate = ({ variant, resourceId }: ILabelCreateProps) => {
         if (variant === "document") return document?.labels || [];
 
         return [];
-    }, [variant, property, customer]);
+    }, [variant, property, document, customer]);
 
     //
     //  Callbacks
