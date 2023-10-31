@@ -57,7 +57,7 @@ export const SelectableItem = ({
 }: SelectableItemProps) => {
     const checked = useMemo(
         () => (compare || selectMultiple) && selected,
-        [selectMultiple, selected]
+        [selectMultiple, selected, compare]
     );
 
     return (
