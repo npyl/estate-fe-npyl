@@ -53,27 +53,15 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 import OnlyNumbersInput from "src/components/OnlyNumbers";
-import {
-    useAssignLabelToCustomerWithIDMutation,
-    useCreateLabelForCustomerWithIDMutation,
-    useDeleteLabelForCustomerWithIdMutation,
-    useGetLabelsQuery,
-} from "src/services/labels";
-
-import { ILabel } from "src/types/label";
 import { LeadSource } from "src/types/global";
 
 import CustomerTypeSelect from "./CustomerTypeSelect";
 import { useTranslation } from "react-i18next";
-import { useLazyGetCustomerLabelsQuery } from "src/services/customers";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 import DatePicker from "src/components/DatePicker";
-import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import OnlyLettersInput from "src/components/OnlyLetters";
 import OnlyEmailInput from "src/components/OnlyEmailInput";
 import { DateObject } from "react-multi-date-picker";
-import DatePickerTrigger from "src/components/DatePicker";
 
 const CustomerInformation: React.FC<any> = () => {
     const dispatch = useDispatch();
@@ -87,14 +75,6 @@ const CustomerInformation: React.FC<any> = () => {
     const leadSourceEnum = enums?.customer?.leadSource;
 
     const managers = useAllUsersQuery().data;
-    const { data: labels } = useGetLabelsQuery();
-
-    // labels
-    const [getLabels, { data: assignedLabels }] =
-        useLazyGetCustomerLabelsQuery();
-    const [assignLabel] = useAssignLabelToCustomerWithIDMutation();
-    const [createAndAssignLabel] = useCreateLabelForCustomerWithIDMutation();
-    const [deleteLabel] = useDeleteLabelForCustomerWithIdMutation();
 
     const firstName = useSelector(selectFirstName);
     const lastName = useSelector(selectLastName);
@@ -113,42 +93,10 @@ const CustomerInformation: React.FC<any> = () => {
     const preferredLanguage = useSelector(selectPreferredLanguage) || "";
     const leadSource = (useSelector(selectLeadSource) as LeadSource) || "";
 
-    const customerLabels = labels?.customerLabels;
     const currentDate = new Date();
-
-    useEffect(() => {
-        if (!customerId) return;
-        revalidate();
-    }, [customerId]);
-
-    const revalidate = () => {
-        // TODO: improve this by revalidating automatically (invalidating a tag)
-        getLabels(+customerId!);
-    };
 
     const handleDateChange = (dates: DateObject | DateObject[]) =>
         dispatch(setDateOfBirth((dates as DateObject).toDate().toISOString()));
-
-    const handleLabelClick = (label: ILabel) =>
-        label.id &&
-        assignLabel({ customerId: +customerId!, labelId: label.id }).then(() =>
-            revalidate()
-        );
-    const handleLabelCreate = (label: ILabel) =>
-        createAndAssignLabel({
-            customerId: +customerId!,
-            labelBody: label,
-        }).then(() => revalidate());
-    const handleLabelRemove = (index: number) =>
-        assignedLabels &&
-        assignedLabels[index] &&
-        assignedLabels[index].id &&
-        deleteLabel({
-            customerId: +customerId!,
-            labelId: assignedLabels[index].id!,
-        }).then(() => revalidate());
-
-    if (!customerLabels) return null;
 
     return (
         <Paper
@@ -403,10 +351,8 @@ const CustomerInformation: React.FC<any> = () => {
                     </Grid>
                     <Grid item xs={6}>
                         <LabelCreate
-                            assignedLabels={assignedLabels || []}
-                            onLabelClick={handleLabelClick}
-                            onLabelCreate={() => {}}
-                            onRemoveAssignedLabel={handleLabelRemove}
+                            variant="customer"
+                            resourceId={+customerId!}
                         />
                     </Grid>
                     <Grid item xs={12}>

@@ -1,9 +1,9 @@
 import { Card, CardHeader, CardContent } from "@mui/material";
 import { IPropertyFile, Upload } from "src/components/upload";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-    IExtendedPropertyBlueprint,
+    IPropertyBlueprint,
     IFileResponse,
     IPropertyBlueprintPOST,
 } from "src/types/file";
@@ -16,6 +16,7 @@ import {
 } from "src/services/properties";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
+import { BlueprintViewer } from "./components/BlueprintViewer";
 
 interface UploadResponse {
     key: string;
@@ -50,6 +51,8 @@ const BlueprintsSection: React.FC = () => {
     const [addBlueprint] = useAddPropertyBlueprintMutation();
     const [deleteBlueprint] = useDeletePropertyBlueprintMutation();
     const [uploadBlueprint] = useUploadPropertyFileMutation();
+
+    const [blueprintUrl, setBlueprintUrl] = useState("");
 
     const addFile = async (image: File): Promise<IFileResponse> => {
         const { name: filename, type: contentType, size } = image;
@@ -122,6 +125,9 @@ const BlueprintsSection: React.FC = () => {
         [blueprints]
     );
 
+    const handleFileClick = ({ url }: IPropertyFile) =>
+        url && setBlueprintUrl(url);
+
     const handleRemoveFile = (inputFile: IPropertyFile) =>
         deleteBlueprint({
             propertyId: +propertyId!,
@@ -145,11 +151,20 @@ const BlueprintsSection: React.FC = () => {
                 <Upload
                     multiple
                     thumbnail={false}
-                    files={blueprints as IExtendedPropertyBlueprint[]}
+                    files={blueprints as IPropertyBlueprint[]}
                     onDrop={handleDropMultiFile}
+                    onFileClick={handleFileClick}
                     onRemove={handleRemoveFile}
                     onRemoveAll={handleRemoveAllFileData}
                 />
+
+                {blueprintUrl && (
+                    <BlueprintViewer
+                        open={!!blueprintUrl}
+                        url={blueprintUrl}
+                        onClose={() => setBlueprintUrl("")}
+                    />
+                )}
             </CardContent>
         </Card>
     );

@@ -6,11 +6,16 @@ import {
     LabelResourceType,
     ILabelPOST,
 } from "src/types/label";
+import { properties } from "./properties";
+import { customers } from "./customers";
+
+import type { AnyAction } from "redux";
+import type { ThunkDispatch } from "redux-thunk";
 
 interface LabelForResourceProps {
     resourceId: number;
     resource: LabelResourceType;
-    body: ILabel;
+    body: ILabelPOST;
 }
 
 interface AssignLabelProps {
@@ -35,6 +40,96 @@ interface IAssignLabelProps {
     labelId: number;
 }
 type IDeleteLabelProps = IAssignLabelProps;
+
+const optimisticCreate = (
+    resource: LabelResourceType,
+    resourceId: number,
+    body: ILabelPOST,
+    dispatch: ThunkDispatch<any, any, AnyAction>
+) => {
+    let res;
+
+    if (resource === "property") {
+        res = dispatch(
+            properties.util.updateQueryData(
+                "getPropertyById",
+                resourceId,
+                (draft) => {
+                    draft.labels.push(body as ILabel);
+                }
+            )
+        );
+    } else if (resource === "customer") {
+        res = dispatch(
+            customers.util.updateQueryData(
+                "getCustomerById",
+                resourceId,
+                (draft) => {
+                    draft.labels.push(body as ILabel);
+                }
+            )
+        );
+    } else if (resource === "document") {
+        res = dispatch(
+            properties.util.updateQueryData(
+                "getPropertyById",
+                resourceId,
+                (draft) => {
+                    // draft.documents
+                    //     ?.at(resourceId)
+                    //     ?.labels.push(body as ILabel);
+                }
+            )
+        );
+    }
+
+    return res;
+};
+
+const optimisticDelete = (
+    resource: LabelResourceType,
+    resourceId: number,
+    labelId: number,
+    dispatch: ThunkDispatch<any, any, AnyAction>
+) => {
+    let res;
+
+    if (resource === "property") {
+        res = dispatch(
+            properties.util.updateQueryData(
+                "getPropertyById",
+                resourceId,
+                (draft) => {
+                    draft.labels.filter((l) => l.id !== labelId);
+                }
+            )
+        );
+    } else if (resource === "customer") {
+        res = dispatch(
+            customers.util.updateQueryData(
+                "getCustomerById",
+                resourceId,
+                (draft) => {
+                    draft.labels.filter((l) => l.id !== labelId);
+                }
+            )
+        );
+    } else if (resource === "document") {
+        res = dispatch(
+            properties.util.updateQueryData(
+                "getPropertyById",
+                resourceId,
+                (draft) => {
+                    // draft.documents
+                    //     ?.at(resourceId)
+                    //     ?.labels.push(body as ILabel);
+                }
+            )
+        );
+    }
+
+    return res;
+};
 
 export const labels = createApi({
     reducerPath: "labels",
@@ -176,6 +271,13 @@ export const labels = createApi({
             }),
             invalidatesTags: ["Labels"],
         }),
+        deleteDocumentLabel: builder.mutation<void, number>({
+            query: (labelId: number) => ({
+                url: `document/${labelId}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Labels"],
+        }),
 
         //
         //  Ultra General
@@ -189,6 +291,25 @@ export const labels = createApi({
                 method: "POST",
                 body,
             }),
+            onQueryStarted: async (
+                { resource, resourceId, body },
+                { dispatch, queryFulfilled }
+            ) => {
+                let patchResult = optimisticCreate(
+                    resource,
+                    resourceId,
+                    body,
+                    dispatch
+                );
+
+                if (!patchResult) throw new Error("Failure!");
+
+                try {
+                    await queryFulfilled;
+                } catch {
+                    patchResult.undo();
+                }
+            },
             invalidatesTags: ["Labels"],
         }),
         assignLabelToResource: builder.mutation<ILabels, AssignLabelProps>({
@@ -205,6 +326,25 @@ export const labels = createApi({
                 method: "DELETE",
                 params: { labelId },
             }),
+            onQueryStarted: async (
+                { resource, resourceId, labelId },
+                { dispatch, queryFulfilled }
+            ) => {
+                let patchResult = optimisticDelete(
+                    resource,
+                    resourceId,
+                    labelId,
+                    dispatch
+                );
+
+                if (!patchResult) throw new Error("Failure!");
+
+                try {
+                    await queryFulfilled;
+                } catch {
+                    patchResult.undo();
+                }
+            },
             invalidatesTags: ["Labels"],
         }),
     }),
@@ -222,14 +362,13 @@ export const {
     useAssignLabelToCustomerWithIDMutation,
     useDeleteLabelForCustomerWithIdMutation,
 
-    // document
-    useCreateLabelForDocumentsMutation,
-
     // general
     useCreateLabelForPropertiesMutation,
     useCreateLabelForCustomersMutation,
+    useCreateLabelForDocumentsMutation,
     useDeletePropertyLabelMutation,
     useDeleteCustomerLabelMutation,
+    useDeleteDocumentLabelMutation,
 
     useCreateLabelForResourceMutation,
     useAssignLabelToResourceMutation,

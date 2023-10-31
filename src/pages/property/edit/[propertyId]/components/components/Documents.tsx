@@ -1,6 +1,6 @@
 import { Card, CardHeader, CardContent } from "@mui/material";
 import { useRouter } from "next/router";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { IPropertyFile, Upload } from "src/components/upload";
@@ -12,6 +12,7 @@ import {
     useUploadPropertyFileMutation,
 } from "src/services/properties";
 import { IFileResponse, IPropertyDocumentPOST } from "src/types/file";
+import { PDFViewer } from "./components/PDFViewer";
 
 interface UploadResponse {
     key: string;
@@ -45,6 +46,8 @@ const DocumentsSection: React.FC = () => {
     const [addDocument] = useAddPropertyDocumentMutation();
     const [deleteDocument] = useDeletePropertyDocumentMutation();
     const [uploadDocument] = useUploadPropertyFileMutation();
+
+    const [pdfUrl, setPdfUrl] = useState("");
 
     const addFile = async (image: File): Promise<IFileResponse> => {
         const { name: filename, type: contentType, size } = image;
@@ -117,6 +120,8 @@ const DocumentsSection: React.FC = () => {
         [documents]
     );
 
+    const handleFileClick = ({ url }: IPropertyFile) => url && setPdfUrl(url);
+
     const handleRemoveFile = (inputFile: IPropertyFile) =>
         deleteDocument({
             propertyId: +propertyId!,
@@ -142,10 +147,19 @@ const DocumentsSection: React.FC = () => {
                     variant="document"
                     thumbnail={false}
                     files={documents}
+                    onFileClick={handleFileClick}
                     onDrop={handleDropMultiFile}
                     onRemove={handleRemoveFile}
                     onRemoveAll={handleRemoveAllFileData}
                 />
+
+                {pdfUrl && (
+                    <PDFViewer
+                        open={!!pdfUrl}
+                        url={pdfUrl}
+                        onClose={() => setPdfUrl("")}
+                    />
+                )}
             </CardContent>
         </Card>
     );

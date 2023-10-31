@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import type { NextPage } from "next";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
@@ -8,40 +8,49 @@ import { useAllCustomersQuery } from "src/services/customers";
 import {
     useCreateLabelForCustomerWithIDMutation,
     useCreateLabelForCustomersMutation,
+    useCreateLabelForDocumentsMutation,
     useCreateLabelForPropertiesMutation,
     useCreateLabelForPropertyWithIDMutation,
-    useDeleteCustomerLabelMutation,
     // General
     useDeletePropertyLabelMutation,
-    // Get
-    useGetLabelsQuery,
+    useDeleteCustomerLabelMutation,
+    useDeleteDocumentLabelMutation,
 } from "src/services/labels";
 import { useAllPropertiesQuery } from "src/services/properties";
 import { ICustomer } from "src/types/customer";
-import { ILabel } from "src/types/label";
+import { LabelResourceType } from "src/types/label";
 import { IProperties } from "src/types/properties";
 import { Create } from "./components/Create";
 import { Edit } from "./components/Edit";
 import { Preview } from "./components/Preview";
 import { IEditProps } from "./components/types";
 
-const SingleProperty: NextPage = () => {
+const LabelsPage: NextPage = () => {
     const { t } = useTranslation();
+
     const propertySectionLabel = t("Property Labels");
-    const customerSectionLabel = t("Customer labels");
+    const customerSectionLabel = t("Customer Labels");
+    const documentSectionLabel = t("Document Labels");
+
     const [editMode, setEditMode] = useState(false);
     const [editedLabel, setEditedLabel] = useState<IEditProps>();
 
+    // TODO: replace with createAssign
     const [createLabelForPropertyWithID] =
         useCreateLabelForPropertyWithIDMutation();
     const [createLabelForCustomerWithID] =
         useCreateLabelForCustomerWithIDMutation();
+
+    //
+    //  Mutations
+    //
     const [createLabelForProperties] = useCreateLabelForPropertiesMutation();
     const [createLabelForCustomers] = useCreateLabelForCustomersMutation();
+    const [createLabelForDocuments] = useCreateLabelForDocumentsMutation();
+
     const [deleteLabelForProperties] = useDeletePropertyLabelMutation();
     const [deleteLabelForCustomers] = useDeleteCustomerLabelMutation();
-
-    const { data: labels } = useGetLabelsQuery();
+    const [deleteLabelForDocuments] = useDeleteDocumentLabelMutation();
 
     const allProperties: IProperties[] = useAllPropertiesQuery().data || [];
     const allCustomers: ICustomer[] = useAllCustomersQuery().data || [];
@@ -50,7 +59,7 @@ const SingleProperty: NextPage = () => {
         labelName: string,
         autocompleteValue: string,
         pickerColor: string,
-        assigneeType: string
+        assigneeType: LabelResourceType
     ) => {
         const propertyIdForCode = (code: string) => {
             const property = allProperties.find(
@@ -71,11 +80,11 @@ const SingleProperty: NextPage = () => {
 
         if (code === "") {
             // create without assign
-            if (assigneeType === "property") {
-                createLabelForProperties(label);
-            } else if (assigneeType === "customer") {
+            if (assigneeType === "property") createLabelForProperties(label);
+            else if (assigneeType === "customer")
                 createLabelForCustomers(label);
-            }
+            else if (assigneeType === "document")
+                createLabelForDocuments(label);
         } else {
             // create with assign
 
@@ -100,36 +109,28 @@ const SingleProperty: NextPage = () => {
             }
         }
     };
-    const editLabel = (editedLabel: IEditProps) => {
-        editedLabel.resource === propertySectionLabel &&
+    const editLabel = ({ id, name, color, resource }: IEditProps) => {
+        resource === propertySectionLabel &&
             createLabelForProperties({
-                id: editedLabel.id,
-                name: editedLabel.name,
-                color: editedLabel.color,
-            }).then(() => cancelEdit());
-        editedLabel.resource === customerSectionLabel &&
+                id,
+                name,
+                color,
+            }).then(cancelEdit);
+
+        resource === customerSectionLabel &&
             createLabelForCustomers({
-                id: editedLabel.id,
-                name: editedLabel.name,
-                color: editedLabel.color,
-            }).then(() => cancelEdit());
+                id,
+                name,
+                color,
+            }).then(cancelEdit);
+
+        resource === documentSectionLabel &&
+            createLabelForDocuments({
+                id,
+                name,
+                color,
+            }).then(cancelEdit);
     };
-
-    const labelData: Record<string, { label: string; data: ILabel[] }> | null =
-        useMemo(() => {
-            if (!labels) return null;
-
-            return {
-                propertyLabels: {
-                    label: propertySectionLabel,
-                    data: labels.propertyLabels,
-                },
-                customerLabels: {
-                    label: customerSectionLabel,
-                    data: labels.customerLabels,
-                },
-            };
-        }, [labels]);
 
     const handleEdit = (props: IEditProps) => {
         setEditedLabel(props);
@@ -139,8 +140,12 @@ const SingleProperty: NextPage = () => {
     const cancelEdit = () => setEditMode(false);
 
     const handleDelete = (resource: string, labelId: number) => {
-        resource === propertySectionLabel && deleteLabelForProperties(labelId);
-        resource === customerSectionLabel && deleteLabelForCustomers(labelId);
+        resource === propertySectionLabel &&
+            deleteLabelForProperties(labelId).then(cancelEdit);
+        resource === customerSectionLabel &&
+            deleteLabelForCustomers(labelId).then(cancelEdit);
+        resource === documentSectionLabel &&
+            deleteLabelForDocuments(labelId).then(cancelEdit);
     };
 
     return (
@@ -155,19 +160,15 @@ const SingleProperty: NextPage = () => {
                 <Create createLabel={createLabel} />
             )}
 
-            <Preview
-                labelData={labelData}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
-            />
+            <Preview onEdit={handleEdit} onDelete={handleDelete} />
         </Grid>
     );
 };
 
-SingleProperty.getLayout = (page) => (
+LabelsPage.getLayout = (page) => (
     <AuthGuard>
         <DashboardLayout>{page}</DashboardLayout>
     </AuthGuard>
 );
 
-export default SingleProperty;
+export default LabelsPage;

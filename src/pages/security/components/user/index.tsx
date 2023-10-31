@@ -24,7 +24,9 @@ import { UserForm } from "../../../../components/User/Form";
 import AnimatedTableRow from "src/components/Table/AnimatedTableRow";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import { Label } from "src/components/label";
-
+import EditIcon from "@mui/icons-material/Edit";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 const IOSSwitch = styled((props: SwitchProps) => (
     <Switch
         focusVisibleClassName=".Mui-focusVisible"
@@ -225,20 +227,20 @@ const UserPage: FC<Props> = ({ changeTab }) => {
                                         }}
                                         sx={{ ml: 1, mr: -1 }}
                                     >
-                                        Edit
-                                        {/* <EditIcon fontSize="small" /> */}
+                                        <EditIcon fontSize="small" />
                                     </IconButton>
                                 </TableCell>
                                 <TableCell>
                                     <Button
                                         variant="text"
-                                        color="success"
+                                        sx={{ color: "#5e5e5e" }}
                                         onClick={(e) => {
                                             changeTab(e, 1);
                                             setSelectedUser(user.id);
+                                            e.stopPropagation();
                                         }}
                                     >
-                                        Set
+                                        <VisibilityIcon fontSize="small"></VisibilityIcon>
                                     </Button>
                                 </TableCell>
                             </AnimatedTableRow>

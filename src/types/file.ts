@@ -26,18 +26,21 @@ export interface IPropertyImage {
     url: string | null;
     key: string;
     thumbnail: boolean;
+    filename: string;
 }
 
 export interface IPropertyDocument {
     id: number;
     url: string | null;
     key: string;
+    filename: string;
     labels: ILabel[];
 }
 
 export interface IPropertyBlueprint {
     id: number;
     url: string | null;
+    filename: string;
     key: string;
 }
 
@@ -48,9 +51,6 @@ export interface IPropertyDocumentPOST {
     contentType: string;
 }
 
-export interface IExtendedPropertyBlueprint extends IPropertyBlueprint {
-    filename: string;
-}
 export interface IPropertyBlueprintPOST extends IPropertyDocumentPOST {}
 
 export interface IFileModel {

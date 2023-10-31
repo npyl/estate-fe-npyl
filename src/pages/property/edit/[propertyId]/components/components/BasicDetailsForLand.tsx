@@ -11,7 +11,6 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
-import { useDebouncedCallback } from "use-debounce";
 import * as React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useAllCustomersQuery } from "src/services/customers";
@@ -55,29 +54,16 @@ import {
 } from "src/slices/property";
 
 import DatePicker from "src/components/DatePicker";
-import Autocomplete from '@mui/material/Autocomplete';
-
+import Autocomplete from "@mui/material/Autocomplete";
 import { LabelCreate } from "src/components/label";
 import { useGlobals } from "src/hooks/useGlobals";
 import { useAllUsersQuery } from "src/services/user";
 import { IGlobalProperty } from "src/types/global";
-
 import OnlyNumbersInput from "src/components/OnlyNumbers";
-
-import { useEffect, useMemo } from "react";
-import { useLazyGetPropertyLabelsQuery } from "src/services/properties";
-import { ILabel, ILabelPOST } from "src/types/label";
-
+import { useMemo } from "react";
 import { useRouter } from "next/router";
-import {
-    useAssignLabelToPropertyWithIDMutation,
-    useCreateLabelForPropertyWithIDMutation,
-    useDeleteLabelForPropertyWithIdMutation,
-    useGetLabelsQuery,
-} from "src/services/labels";
 import { CodeField } from "./components/CodeField";
 import { KeyCodeField } from "./components/KeyCodeField";
-import { ICustomer } from "src/types/customer";
 import { useTranslation } from "react-i18next";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { DateObject } from "react-multi-date-picker";
@@ -95,27 +81,19 @@ const BasicForLandSection: React.FC<any> = () => {
     const { data: owners } = useAllCustomersQuery();
     const ownerNames = useMemo(() => {
         if (owners) {
-          return owners
-            .filter((option) => option.seller || option.lessor)
-            .map((owner) => ({
-              label: `${owner.firstName} ${owner.lastName}`,
-              value: owner.id,
-            }));
+            return owners
+                .filter((option) => option.seller || option.lessor)
+                .map((owner) => ({
+                    label: `${owner.firstName} ${owner.lastName}`,
+                    value: owner.id,
+                }));
         }
         return [];
-      }, [owners]);
+    }, [owners]);
+
     const { data: managers } = useAllUsersQuery();
-    // labels
-    const { data: labels } = useGetLabelsQuery();
 
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
-
-    // labels
-    const [getLabels, { data: assignedLabels }] =
-        useLazyGetPropertyLabelsQuery();
-    const [assignLabel] = useAssignLabelToPropertyWithIDMutation();
-    const [createAndAssignLabel] = useCreateLabelForPropertyWithIDMutation();
-    const [deleteLabel] = useDeleteLabelForPropertyWithIdMutation();
 
     const currentDate = new Date();
     const code = useSelector(selectCode);
@@ -138,40 +116,6 @@ const BasicForLandSection: React.FC<any> = () => {
     const debatablePrice = useSelector(selectDebatablePrice);
     const exclusive = useSelector(selectExclusive);
     const stateEnum = enums?.state;
-
-    useEffect(() => {
-        if (!propertyId) return;
-        revalidate();
-    }, [propertyId]);
-
-    const revalidate = () => {
-        // TODO: improve this by revalidating automatically (invalidating a tag)
-        getLabels(+propertyId!);
-    };
-
-    const handleLabelClick = useDebouncedCallback((label: ILabel) => {
-        if (!assignedLabels) return null;
-        if (assignedLabels.find((item) => item.id === label.id)) return null;
-
-        label.id &&
-            assignLabel({
-                propertyId: +propertyId!,
-                labelId: label.id,
-            }).then(() => revalidate());
-    }, 500);
-    const handleLabelCreate = (label: ILabelPOST) =>
-        createAndAssignLabel({
-            propertyId: +propertyId!,
-            labelBody: label,
-        }).then(() => revalidate());
-    const handleLabelRemove = (index: number) =>
-        assignedLabels &&
-        assignedLabels[index] &&
-        assignedLabels[index].id &&
-        deleteLabel({
-            propertyId: +propertyId!,
-            labelId: assignedLabels[index].id!,
-        }).then(() => revalidate());
 
     //
     //  Dates
@@ -237,20 +181,25 @@ const BasicForLandSection: React.FC<any> = () => {
                             disablePortal
                             id="combo-box-demo"
                             options={ownerNames}
-                            value={{label: (ownerNames.find(i => i.value == owner))?.label ?? "Owner", value:owner}}
+                            value={{
+                                label:
+                                    ownerNames.find((i) => i.value == owner)
+                                        ?.label ?? "Owner",
+                                value: owner,
+                            }}
                             onChange={(event: any, newValue: any | null) => {
-                                try{
-                                    if(newValue.value){
+                                try {
+                                    if (newValue.value) {
                                         dispatch(setOwner(newValue.value));
                                     }
-                                }catch (e: any){
-                                    console.log(e)
+                                } catch (e: any) {
+                                    console.log(e);
                                 }
-                                
-                                
                             }}
-                            renderInput={(params) => <TextField {...params} label="Owner" />}
-                            />
+                            renderInput={(params) => (
+                                <TextField {...params} label="Owner" />
+                            )}
+                        />
                     </Grid>
                     <Grid item xs={6}>
                         <TextField
@@ -358,10 +307,8 @@ const BasicForLandSection: React.FC<any> = () => {
 
                     <Grid item xs={6}>
                         <LabelCreate
-                            assignedLabels={assignedLabels || []}
-                            onLabelClick={handleLabelClick}
-                            onLabelCreate={handleLabelCreate}
-                            onRemoveAssignedLabel={handleLabelRemove}
+                            variant="property"
+                            resourceId={+propertyId!}
                         />
                     </Grid>
                     <Grid

@@ -6,26 +6,26 @@ interface AnimatedTableRowProps extends MotionProps {
     onClick: () => void;
 }
 
+const variants = {
+    initial: {
+        backgroundColor: "transparent",
+        transition: { duration: 0.3, ease: "easeOut" },
+    },
+    hover: {
+        backgroundColor: "#f0f0f0",
+        transition: { duration: 0.8, ease: "easeIn" },
+    },
+    pressed: {
+        scale: 0.995,
+        transition: { duration: 0.2, ease: "easeIn" },
+    },
+};
+
 const AnimatedTableRow: React.FC<AnimatedTableRowProps> = ({
     onClick,
     children,
     ...props
 }) => {
-    const variants = {
-        initial: {
-            backgroundColor: "transparent",
-            transition: { duration: 0.3, ease: "easeOut" },
-        },
-        hover: {
-            backgroundColor: "#f0f0f0",
-            transition: { duration: 0.8, ease: "easeIn" },
-        },
-        pressed: {
-            scale: 0.995,
-            transition: { duration: 0.2, ease: "easeIn" },
-        },
-    };
-
     return (
         <motion.tr
             whileHover="hover"

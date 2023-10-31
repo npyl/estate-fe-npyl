@@ -1,34 +1,61 @@
 import { Box, IconButton, Stack, Typography } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import Label from "src/components/label/Label";
-import { ILabel, ILabelPOST, LabelResourceType } from "src/types/label";
+import { ILabelPOST, LabelResourceType } from "src/types/label";
 import { useTranslation } from "react-i18next";
 import { AddLabelDialog } from "./components/Dialog";
-import { useGetLabelsQuery } from "src/services/labels";
+import {
+    useAssignLabelToResourceMutation,
+    useCreateLabelForResourceMutation,
+    useDeleteLabelForResourceMutation,
+    useGetLabelsQuery,
+} from "src/services/labels";
+import { properties, useGetPropertyByIdQuery } from "src/services/properties";
+import { customers, useGetCustomerByIdQuery } from "src/services/customers";
+import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
 
 interface ILabelCreateProps {
-    variant?: LabelResourceType;
-
-    // assigned-existing labels & newly-created labels
-    assignedLabels: ILabel[];
-
-    // handlers
-    onLabelClick: (label: ILabel) => void;
-    onLabelCreate: (label: ILabelPOST) => void;
-    onRemoveAssignedLabel: (index: number) => void;
+    variant: LabelResourceType;
+    resourceId: number;
 }
 
-const LabelCreate = ({
-    variant = "property",
-    assignedLabels = [],
-    onLabelClick,
-    onLabelCreate,
-    onRemoveAssignedLabel,
-}: ILabelCreateProps) => {
+// TODO: this needs to be debounced? (make sure we don't allow to click an already added label)
+
+const LabelCreate = ({ variant, resourceId }: ILabelCreateProps) => {
     const { t } = useTranslation();
+    const dispatch = useDispatch();
+
+    const router = useRouter();
+    const { propertyId } = router.query;
+
+    const [addLabelDialog, setAddLabelDialog] = useState(false);
+
+    //
+    //  Queries
+    //
+    const { data: property } = useGetPropertyByIdQuery(resourceId, {
+        skip: variant !== "property",
+    });
+    const { data: document } = useGetPropertyByIdQuery(+propertyId!, {
+        skip: variant !== "document",
+        selectFromResult: ({ data }) => ({
+            data: data?.documents?.find((d) => d.id === resourceId),
+        }),
+    });
+    const { data: customer } = useGetCustomerByIdQuery(resourceId, {
+        skip: variant !== "customer",
+    });
 
     const { data: labels } = useGetLabelsQuery();
+
+    //
+    //  Mutations
+    //
+    const [createAssignLabel] = useCreateLabelForResourceMutation();
+    const [assignLabel] = useAssignLabelToResourceMutation();
+    const [deleteLabel] = useDeleteLabelForResourceMutation();
 
     const existingLabels = useMemo(() => {
         if (variant === "property") return labels?.propertyLabels || [];
@@ -38,7 +65,45 @@ const LabelCreate = ({
         return [];
     }, [labels, variant]);
 
-    const [addLabelDialog, setAddLabelDialog] = useState(false);
+    const assignedLabels = useMemo(() => {
+        if (variant === "property") return property?.labels || [];
+        if (variant === "customer") return customer?.labels || [];
+        if (variant === "document") return document?.labels || [];
+
+        return [];
+    }, [variant, property, document, customer]);
+
+    //
+    //  Callbacks
+    //
+    const handleRemoveLabel = (i: number) =>
+        deleteLabel({
+            resource: variant,
+            resourceId,
+            labelId: assignedLabels[i].id,
+        }).then(invalidateTags);
+
+    const handleLabelClick = ({ id }: ILabelPOST) =>
+        id &&
+        assignLabel({
+            resource: variant,
+            resourceId,
+            labelId: id,
+        }).then(invalidateTags);
+
+    const handleLabelCreate = (body: ILabelPOST) =>
+        createAssignLabel({
+            resource: variant,
+            resourceId,
+            body,
+        }).then(invalidateTags);
+
+    const invalidateTags = useCallback(() => {
+        if (variant === "property" || variant === "document")
+            dispatch(properties.util.invalidateTags(["PropertyById"]));
+        else if (variant === "customer")
+            dispatch(customers.util.invalidateTags(["CustomerById"]));
+    }, [variant]);
 
     return (
         <Box
@@ -82,7 +147,7 @@ const LabelCreate = ({
                                 bgcolor: color,
                                 color: "white",
                             }}
-                            onClose={() => onRemoveAssignedLabel(index)}
+                            onClose={() => handleRemoveLabel(index)}
                         >
                             {name}
                         </Label>
@@ -96,8 +161,8 @@ const LabelCreate = ({
                     variant={variant}
                     existingLabels={existingLabels}
                     assignedLabels={assignedLabels}
-                    onLabelClick={onLabelClick}
-                    onCreate={onLabelCreate}
+                    onLabelClick={handleLabelClick}
+                    onCreate={handleLabelCreate}
                     onClose={() => setAddLabelDialog(false)}
                 />
             )}

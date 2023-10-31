@@ -3,11 +3,11 @@ import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-
+import { Send as SendIcon } from "@mui/icons-material";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { useCreateCustomerMutation } from "src/services/customers";
-
+import { BsPlusCircle } from "react-icons/bs";
 const CreateCustomer: NextPage = () => {
     const router = useRouter();
     const [createCustomer] = useCreateCustomerMutation();
@@ -28,6 +28,7 @@ const CreateCustomer: NextPage = () => {
 
     return (
         <Box
+            marginTop={4}
             style={{
                 display: "flex",
                 flexDirection: "column",
@@ -42,8 +43,16 @@ const CreateCustomer: NextPage = () => {
             <Button
                 variant="contained"
                 color="primary"
-                size="large"
+                startIcon={<BsPlusCircle />}
                 onClick={handleCreateButtonClick}
+                style={{
+                    backgroundColor: "#4CAF50",
+                    color: "white",
+                    padding: "10px 20px",
+                    fontSize: "16px",
+                    borderRadius: "5px",
+                    boxShadow: "0 2px 5px rgba(0, 0, 0, 0.5)",
+                }}
             >
                 Create Customer
             </Button>
