@@ -9,27 +9,27 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
-import React, { useState } from "react";
+import { useState } from "react";
 import { SliderPicker } from "react-color";
 import { Label } from "src/components/label";
 import { IEditProps } from "./types";
 import { useTranslation } from "react-i18next";
-import { padding } from "@mui/system";
 
-export const Edit = (props: {
+interface EditProps {
     editedLabel: IEditProps;
     cancelEdit: () => void;
     editLabel: (editedLabel: IEditProps) => void;
-}) => {
-    const { editedLabel, cancelEdit, editLabel } = props;
+}
+
+export const Edit = ({ editedLabel, cancelEdit, editLabel }: EditProps) => {
     const { t } = useTranslation();
+
     const [pickerColor, setPickerColor] = useState(editedLabel.color);
     const [labelName, setLabelName] = useState(editedLabel.name);
 
     const [error, setError] = useState("");
-    const handleChangeComplete = (color: any) => {
-        setPickerColor(color.hex);
-    };
+
+    const handleChangeComplete = (color: any) => setPickerColor(color.hex);
 
     const handleCreateLabel = () => {
         if (!labelName) {

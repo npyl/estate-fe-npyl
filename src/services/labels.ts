@@ -271,6 +271,13 @@ export const labels = createApi({
             }),
             invalidatesTags: ["Labels"],
         }),
+        deleteDocumentLabel: builder.mutation<void, number>({
+            query: (labelId: number) => ({
+                url: `document/${labelId}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Labels"],
+        }),
 
         //
         //  Ultra General
@@ -355,14 +362,13 @@ export const {
     useAssignLabelToCustomerWithIDMutation,
     useDeleteLabelForCustomerWithIdMutation,
 
-    // document
-    useCreateLabelForDocumentsMutation,
-
     // general
     useCreateLabelForPropertiesMutation,
     useCreateLabelForCustomersMutation,
+    useCreateLabelForDocumentsMutation,
     useDeletePropertyLabelMutation,
     useDeleteCustomerLabelMutation,
+    useDeleteDocumentLabelMutation,
 
     useCreateLabelForResourceMutation,
     useAssignLabelToResourceMutation,

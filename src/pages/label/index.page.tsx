@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import type { NextPage } from "next";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
@@ -11,15 +11,14 @@ import {
     useCreateLabelForDocumentsMutation,
     useCreateLabelForPropertiesMutation,
     useCreateLabelForPropertyWithIDMutation,
-    useDeleteCustomerLabelMutation,
     // General
     useDeletePropertyLabelMutation,
-    // Get
-    useGetLabelsQuery,
+    useDeleteCustomerLabelMutation,
+    useDeleteDocumentLabelMutation,
 } from "src/services/labels";
 import { useAllPropertiesQuery } from "src/services/properties";
 import { ICustomer } from "src/types/customer";
-import { ILabel, LabelResourceType } from "src/types/label";
+import { LabelResourceType } from "src/types/label";
 import { IProperties } from "src/types/properties";
 import { Create } from "./components/Create";
 import { Edit } from "./components/Edit";
@@ -31,6 +30,7 @@ const LabelsPage: NextPage = () => {
 
     const propertySectionLabel = t("Property Labels");
     const customerSectionLabel = t("Customer Labels");
+    const documentSectionLabel = t("Document Labels");
 
     const [editMode, setEditMode] = useState(false);
     const [editedLabel, setEditedLabel] = useState<IEditProps>();
@@ -47,8 +47,10 @@ const LabelsPage: NextPage = () => {
     const [createLabelForProperties] = useCreateLabelForPropertiesMutation();
     const [createLabelForCustomers] = useCreateLabelForCustomersMutation();
     const [createLabelForDocuments] = useCreateLabelForDocumentsMutation();
+
     const [deleteLabelForProperties] = useDeletePropertyLabelMutation();
     const [deleteLabelForCustomers] = useDeleteCustomerLabelMutation();
+    const [deleteLabelForDocuments] = useDeleteDocumentLabelMutation();
 
     const allProperties: IProperties[] = useAllPropertiesQuery().data || [];
     const allCustomers: ICustomer[] = useAllCustomersQuery().data || [];
@@ -122,7 +124,12 @@ const LabelsPage: NextPage = () => {
                 color,
             }).then(cancelEdit);
 
-        // TODO: edit for document
+        resource === documentSectionLabel &&
+            createLabelForDocuments({
+                id,
+                name,
+                color,
+            }).then(cancelEdit);
     };
 
     const handleEdit = (props: IEditProps) => {
@@ -133,10 +140,12 @@ const LabelsPage: NextPage = () => {
     const cancelEdit = () => setEditMode(false);
 
     const handleDelete = (resource: string, labelId: number) => {
-        resource === propertySectionLabel && deleteLabelForProperties(labelId);
-        resource === customerSectionLabel && deleteLabelForCustomers(labelId);
-
-        // TODO: delete document label
+        resource === propertySectionLabel &&
+            deleteLabelForProperties(labelId).then(cancelEdit);
+        resource === customerSectionLabel &&
+            deleteLabelForCustomers(labelId).then(cancelEdit);
+        resource === documentSectionLabel &&
+            deleteLabelForDocuments(labelId).then(cancelEdit);
     };
 
     return (
