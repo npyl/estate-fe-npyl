@@ -8,6 +8,7 @@ import {
     Link,
     Stack,
     Toolbar,
+    Tooltip,
     Typography,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -47,7 +48,13 @@ const AccountButton = () => {
     const handleOpenPopover = (): void => {
         setOpenPopover(true);
     };
+    const [messageVisible, setMessageVisible] = useState(false);
 
+    const showMessage = () => {
+        setMessageVisible(true);
+        // Optionally, hide the message after a few seconds
+        setTimeout(() => setMessageVisible(false), 3000);
+    };
     const handleClosePopover = (): void => {
         setOpenPopover(false);
     };
@@ -124,9 +131,12 @@ export const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                                     marginRight: 2, // Adds some spacing between the logo and the text
                                 }}
                             />
-                            <Typography color="neutral.900" variant={"h5"}>
-                                PropertyPro v0.52
-                            </Typography>
+                            {/* nick ama to svhseis se gamhsa */}
+                            <Tooltip title="Alex Gamiesai file">
+                                <Typography color="neutral.900" variant={"h5"}>
+                                    PropertyPro v0.52
+                                </Typography>
+                            </Tooltip>
                         </Link>
                     </Box>
 
