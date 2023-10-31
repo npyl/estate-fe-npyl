@@ -6,6 +6,11 @@ import {
     LabelResourceType,
     ILabelPOST,
 } from "src/types/label";
+import { properties } from "./properties";
+import { customers } from "./customers";
+
+import type { AnyAction } from "redux";
+import type { ThunkDispatch } from "redux-thunk";
 
 interface LabelForResourceProps {
     resourceId: number;
@@ -35,6 +40,51 @@ interface IAssignLabelProps {
     labelId: number;
 }
 type IDeleteLabelProps = IAssignLabelProps;
+
+const optimisticCreate = (
+    resource: LabelResourceType,
+    resourceId: number,
+    body: ILabelPOST,
+    dispatch: ThunkDispatch<any, any, AnyAction>
+) => {
+    let res;
+
+    if (resource === "property") {
+        res = dispatch(
+            properties.util.updateQueryData(
+                "getPropertyById",
+                resourceId,
+                (draft) => {
+                    draft.labels.push(body as ILabel);
+                }
+            )
+        );
+    } else if (resource === "customer") {
+        res = dispatch(
+            customers.util.updateQueryData(
+                "getCustomerById",
+                resourceId,
+                (draft) => {
+                    draft.labels.push(body as ILabel);
+                }
+            )
+        );
+    } else if (resource === "document") {
+        res = dispatch(
+            properties.util.updateQueryData(
+                "getPropertyById",
+                resourceId,
+                (draft) => {
+                    // draft.documents
+                    //     ?.at(resourceId)
+                    //     ?.labels.push(body as ILabel);
+                }
+            )
+        );
+    }
+
+    return res;
+};
 
 export const labels = createApi({
     reducerPath: "labels",
@@ -189,6 +239,25 @@ export const labels = createApi({
                 method: "POST",
                 body,
             }),
+            onQueryStarted: async (
+                { resource, resourceId, body },
+                { dispatch, queryFulfilled }
+            ) => {
+                let patchResult = optimisticCreate(
+                    resource,
+                    resourceId,
+                    body,
+                    dispatch
+                );
+
+                if (!patchResult) throw new Error("Failure!");
+
+                try {
+                    await queryFulfilled;
+                } catch {
+                    patchResult.undo();
+                }
+            },
             invalidatesTags: ["Labels"],
         }),
         assignLabelToResource: builder.mutation<ILabels, AssignLabelProps>({
