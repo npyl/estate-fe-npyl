@@ -1,4 +1,4 @@
-import { Container, Tab, Tabs } from "@mui/material";
+import { Container, Grid, Tab, Tabs } from "@mui/material";
 import { NextPage } from "next";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -12,6 +12,7 @@ import { AuthGuard } from "../../components/authentication/auth-guard";
 import { UserDashboardLayout } from "../../components/dashboard/user-dashboard-layout";
 import PermissionPage from "./components/permission";
 import UserPage from "./components/user";
+import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 
 const SecurityPage: NextPage = () => {
     const { t } = useTranslation();
@@ -32,32 +33,33 @@ const SecurityPage: NextPage = () => {
     };
 
     return (
-        <Container maxWidth={"xl"}>
-            <Tabs
-                value={value}
-                onChange={handleChange}
-                aria-label="View Property Tabs"
-                sx={{ padding: 2 }}
-            >
-                <Tab label={t("Users")} {...a11yProps(0)} />
-                <Tab label={t("Permissions")} {...a11yProps(1)} />
-            </Tabs>
+        <Grid container>
+            <Grid item xs={12}>
+                <Tabs
+                    value={value}
+                    onChange={handleChange}
+                    aria-label="View Property Tabs"
+                >
+                    <Tab label={t("Users")} {...a11yProps(0)} />
+                    <Tab label={t("Permissions")} {...a11yProps(1)} />
+                </Tabs>
 
-            <TabPanel value={value} index={0}>
-                <UserPage changeTab={handleChange} />
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-                <PermissionPage />
-            </TabPanel>
-        </Container>
+                <TabPanel value={value} index={0}>
+                    <UserPage changeTab={handleChange} />
+                </TabPanel>
+                <TabPanel value={value} index={1}>
+                    <PermissionPage />
+                </TabPanel>
+            </Grid>
+        </Grid>
     );
 };
 
 SecurityPage.getLayout = (page) => (
     <AuthGuard>
-        <UserDashboardLayout>
+        <DashboardLayout>
             <SecurityProvider>{page}</SecurityProvider>
-        </UserDashboardLayout>
+        </DashboardLayout>
     </AuthGuard>
 );
 
