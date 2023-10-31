@@ -86,6 +86,51 @@ const optimisticCreate = (
     return res;
 };
 
+const optimisticDelete = (
+    resource: LabelResourceType,
+    resourceId: number,
+    labelId: number,
+    dispatch: ThunkDispatch<any, any, AnyAction>
+) => {
+    let res;
+
+    if (resource === "property") {
+        res = dispatch(
+            properties.util.updateQueryData(
+                "getPropertyById",
+                resourceId,
+                (draft) => {
+                    draft.labels.filter((l) => l.id !== labelId);
+                }
+            )
+        );
+    } else if (resource === "customer") {
+        res = dispatch(
+            customers.util.updateQueryData(
+                "getCustomerById",
+                resourceId,
+                (draft) => {
+                    draft.labels.filter((l) => l.id !== labelId);
+                }
+            )
+        );
+    } else if (resource === "document") {
+        res = dispatch(
+            properties.util.updateQueryData(
+                "getPropertyById",
+                resourceId,
+                (draft) => {
+                    // draft.documents
+                    //     ?.at(resourceId)
+                    //     ?.labels.push(body as ILabel);
+                }
+            )
+        );
+    }
+
+    return res;
+};
+
 export const labels = createApi({
     reducerPath: "labels",
     baseQuery: fetchBaseQuery({
@@ -274,6 +319,25 @@ export const labels = createApi({
                 method: "DELETE",
                 params: { labelId },
             }),
+            onQueryStarted: async (
+                { resource, resourceId, labelId },
+                { dispatch, queryFulfilled }
+            ) => {
+                let patchResult = optimisticDelete(
+                    resource,
+                    resourceId,
+                    labelId,
+                    dispatch
+                );
+
+                if (!patchResult) throw new Error("Failure!");
+
+                try {
+                    await queryFulfilled;
+                } catch {
+                    patchResult.undo();
+                }
+            },
             invalidatesTags: ["Labels"],
         }),
     }),
