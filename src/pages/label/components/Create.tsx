@@ -20,18 +20,21 @@ import { useAllCustomersQuery } from "src/services/customers";
 import { SliderPicker } from "react-color";
 import { Label } from "src/components/label";
 import { useTranslation } from "react-i18next";
+import { LabelResourceType } from "src/types/label";
 
-export const Create = (props: {
+interface CreateProps {
     createLabel: (
         labelName: string,
         autocompleteValue: string,
         pickerColor: string,
-        assigneeType: string
+        assigneeType: LabelResourceType
     ) => void;
-}) => {
-    const { createLabel } = props;
+}
+
+export const Create = ({ createLabel }: CreateProps) => {
     const { t } = useTranslation();
-    const [assigneeType, setAssigneeType] = useState("");
+
+    const [assigneeType, setAssigneeType] = useState<LabelResourceType>();
     const [checked, setChecked] = useState(false);
 
     const [pickerColor, setPickerColor] = useState("#22194d");
@@ -69,17 +72,14 @@ export const Create = (props: {
             }),
         }).data || [];
 
-    const handleChangeComplete = (color: any) => {
-        setPickerColor(color.hex);
-    };
-    const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChangeComplete = (color: any) => setPickerColor(color.hex);
+    const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) =>
         setChecked(event.target.checked);
-    };
     const handleAssigneeTypeChange = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
-        setAutocompleteValue(""); // clear
-        setAssigneeType((event.target as HTMLInputElement).value);
+        setAutocompleteValue("");
+        setAssigneeType(event.target.value as LabelResourceType);
     };
     const autocompleteChange = (_event: any, value: string | null) => {
         if (!value) return;
@@ -96,7 +96,7 @@ export const Create = (props: {
             return;
         }
 
-        createLabel(labelName, autocompleteValue, pickerColor, assigneeType);
+        createLabel(labelName, autocompleteValue, pickerColor, assigneeType!);
     };
 
     return (
@@ -124,6 +124,11 @@ export const Create = (props: {
                         value="customer"
                         control={<Radio />}
                         label={t("Customer")}
+                    />
+                    <FormControlLabel
+                        value="document"
+                        control={<Radio />}
+                        label={t("Document")}
                     />
                 </RadioGroup>
 
@@ -169,15 +174,17 @@ export const Create = (props: {
                             </Label>
                         </Box>
 
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={checked}
-                                    onChange={handleCheck}
-                                />
-                            }
-                            label={t("Label assignment")}
-                        />
+                        {assigneeType !== "document" && (
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        checked={checked}
+                                        onChange={handleCheck}
+                                    />
+                                }
+                                label={t("Label assignment")}
+                            />
+                        )}
 
                         {checked && (
                             <Autocomplete

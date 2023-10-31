@@ -3,14 +3,41 @@ import { EditableLabel } from "src/components/label";
 import { ILabel } from "src/types/label";
 import { IEditProps } from "./types";
 import { useTranslation } from "react-i18next";
+import { useMemo } from "react";
+import { useGetLabelsQuery } from "src/services/labels";
 
-export const Preview = (props: {
-    labelData: Record<string, { label: string; data: ILabel[] }> | null;
+interface PreviewProps {
     onEdit: (label: IEditProps) => void;
     onDelete: (resource: string, labelId: number) => void;
-}) => {
-    const { labelData, onEdit, onDelete } = props;
+}
+
+export const Preview = ({ onEdit, onDelete }: PreviewProps) => {
     const { t } = useTranslation();
+
+    const propertySectionLabel = t("Property Labels");
+    const customerSectionLabel = t("Customer Labels");
+    const documentSectionLabel = t("Document Labels");
+
+    const { data: labels } = useGetLabelsQuery();
+
+    const labelData: Record<string, { label: string; data: ILabel[] }> | null =
+        useMemo(
+            () => ({
+                propertyLabels: {
+                    label: propertySectionLabel,
+                    data: labels?.propertyLabels || [],
+                },
+                customerLabels: {
+                    label: customerSectionLabel,
+                    data: labels?.customerLabels || [],
+                },
+                documentLabels: {
+                    label: documentSectionLabel,
+                    data: labels?.documentLabels || [],
+                },
+            }),
+            [labels]
+        );
 
     return (
         <Grid component={Paper} item xs={12} sm p={2}>
