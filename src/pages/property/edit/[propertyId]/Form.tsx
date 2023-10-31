@@ -30,7 +30,7 @@ export default function Form({
     };
 
     return (
-        <Grid container spacing={1} paddingLeft={2} paddingTop={3}>
+        <Grid container spacing={1} paddingLeft={2} paddingTop={1}>
             {parentCategory !== "" && (
                 <Grid container mt={0} spacing={1}>
                     {parentCategory === "RESIDENTIAL" && (

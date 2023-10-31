@@ -1,4 +1,5 @@
 import {
+    Stack,
     Grid,
     Paper,
     TextField,
@@ -6,8 +7,10 @@ import {
     InputLabel,
     MenuItem,
     Select,
+    Box,
     Button,
     SelectChangeEvent,
+    Typography,
 } from "@mui/material";
 
 import * as React from "react";
@@ -72,72 +75,132 @@ export default function Form({ performUpload }: IFormProps) {
     };
 
     return (
-        <Grid container spacing={1} paddingLeft={2} paddingTop={3}>
-            <Grid
-                component={Paper}
-                padding={"8px 16px 16px 10px"}
-                container
-                spacing={1}
-            >
-                <Grid item xs={6}>
-                    <FormControl fullWidth>
-                        <InputLabel>{t("Parent Category")}</InputLabel>
-                        <Select
-                            value={parentCategory}
-                            label="Parent Category"
-                            onChange={handleParentCategorySelect}
-                        >
-                            {parentCategoryEnum.map((parentCategory, index) => {
-                                return (
-                                    <MenuItem
-                                        key={index}
-                                        value={parentCategory.key}
+        <Box
+            borderRadius={12}
+            sx={{
+                padding: "24px",
+                margin: "10px",
+                marginTop: "1%",
+                backgroundColor: "background.default",
+                spacing: "3",
+            }}
+        >
+            <Stack spacing={2} direction="column">
+                <Grid
+                    container
+                    xs={12}
+                    justifyContent="center"
+                    alignItems="center"
+                >
+                    <Grid
+                        item
+                        xs={12}
+                        container
+                        direction="column"
+                        justifyContent="center"
+                        alignItems="center"
+                    >
+                        <Typography variant="h5" gutterBottom>
+                            Create a New Property
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary">
+                            Choose a category and subcategory for your property.
+                        </Typography>
+                    </Grid>
+
+                    <Grid
+                        item
+                        xs={8}
+                        marginTop={5}
+                        component={Paper}
+                        elevation={18}
+                        sx={{
+                            padding: "24px",
+                            borderRadius: "8px",
+                            backgroundColor: "background.paper",
+                        }}
+                    >
+                        <Grid container spacing={2}>
+                            <Grid item xs={6}>
+                                <FormControl fullWidth>
+                                    <InputLabel>
+                                        {t("Parent Category")}
+                                    </InputLabel>
+                                    <Select
+                                        value={parentCategory}
+                                        label="Parent Category"
+                                        onChange={handleParentCategorySelect}
                                     >
-                                        {parentCategory.value}
-                                    </MenuItem>
-                                );
-                            })}
-                        </Select>
-                    </FormControl>
-                </Grid>
+                                        {parentCategoryEnum.map(
+                                            (parentCategory, index) => {
+                                                return (
+                                                    <MenuItem
+                                                        key={index}
+                                                        value={
+                                                            parentCategory.key
+                                                        }
+                                                    >
+                                                        {parentCategory.value}
+                                                    </MenuItem>
+                                                );
+                                            }
+                                        )}
+                                    </Select>
+                                </FormControl>
+                            </Grid>
 
-                <Grid item xs={6}>
-                    <TextField
-                        disabled={!parentCategory}
-                        fullWidth
-                        select
-                        label={t("Category")}
-                        value={category}
-                        onChange={handleCategorySelect}
-                    >
-                        {subCategoriesMap[parentCategory!]?.map(
-                            ({ key, value }) => (
-                                <MenuItem key={key} value={key}>
-                                    {value}
-                                </MenuItem>
-                            )
-                        ) || <MenuItem />}
-                    </TextField>
-                </Grid>
-            </Grid>
+                            <Grid item xs={6}>
+                                <TextField
+                                    disabled={!parentCategory}
+                                    fullWidth
+                                    select
+                                    label={t("Category")}
+                                    value={category}
+                                    onChange={handleCategorySelect}
+                                >
+                                    {subCategoriesMap[parentCategory!]?.map(
+                                        ({ key, value }) => (
+                                            <MenuItem key={key} value={key}>
+                                                {value}
+                                            </MenuItem>
+                                        )
+                                    ) || <MenuItem />}
+                                </TextField>
+                            </Grid>
+                        </Grid>
+                    </Grid>
 
-            <Grid
-                padding={2}
-                container
-                alignItems="center"
-                justifyContent="flex-end"
-                spacing={1}
-            >
-                <Grid item>
-                    <Button
-                        variant="contained"
-                        endIcon={<SendIcon />}
-                        onClick={performUpload}
+                    <Grid
+                        item
+                        xs={12}
+                        container
+                        justifyContent="center"
+                        marginTop={3}
                     >
-                        {t("Create")}
-                    </Button>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            startIcon={<SendIcon />}
+                            onClick={performUpload}
+                            style={{
+                                backgroundColor: "#4CAF50",
+                                color: "white",
+                                padding: "10px 20px",
+                                fontSize: "16px",
+                                borderRadius: "5px",
+                                boxShadow: "0 2px 5px rgba(0, 0, 0, 0.2)",
+                            }}
+                            onMouseOver={(e) => {
+                                (
+                                    e.target as HTMLElement
+                                ).style.backgroundColor = "#45a049";
+                            }}
+                        >
+                            {t("Create")}
+                        </Button>
+                    </Grid>
                 </Grid>
-            </Grid>
-        </Grid>
+            </Stack>
+        </Box>
     );
 }
