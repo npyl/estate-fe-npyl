@@ -2,31 +2,48 @@ import { Box, IconButton, Stack, Typography } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useMemo, useState } from "react";
 import Label from "src/components/label/Label";
-import { ILabel, ILabelPOST, LabelResourceType } from "src/types/label";
+import { LabelResourceType } from "src/types/label";
 import { useTranslation } from "react-i18next";
 import { AddLabelDialog } from "./components/Dialog";
-import { useGetLabelsQuery } from "src/services/labels";
+import {
+    useDeleteLabelForResourceMutation,
+    useGetLabelsQuery,
+} from "src/services/labels";
+import { useGetPropertyByIdQuery } from "src/services/properties";
+import { useGetCustomerByIdQuery } from "src/services/customers";
+import { useRouter } from "next/router";
 
 interface ILabelCreateProps {
-    variant?: LabelResourceType;
-
-    // assigned-existing labels & newly-created labels
-    assignedLabels: ILabel[];
-
-    // handlers
-    onLabelClick: (label: ILabel) => void;
-    onLabelCreate: (label: ILabelPOST) => void;
-    onRemoveAssignedLabel: (index: number) => void;
+    variant: LabelResourceType;
+    resourceId: number;
 }
 
-const LabelCreate = ({
-    variant = "property",
-    assignedLabels = [],
-    onLabelClick,
-    onLabelCreate,
-    onRemoveAssignedLabel,
-}: ILabelCreateProps) => {
+const LabelCreate = ({ variant, resourceId }: ILabelCreateProps) => {
     const { t } = useTranslation();
+
+    const router = useRouter();
+    const { propertyId } = router.query;
+
+    //
+    //  Queries
+    //
+    const { data: property } = useGetPropertyByIdQuery(resourceId, {
+        skip: variant !== "property",
+    });
+    const { data: document } = useGetPropertyByIdQuery(+propertyId!, {
+        skip: variant !== "document",
+        selectFromResult: ({ data }) => ({
+            data: data?.documents?.find((d) => d.id === resourceId),
+        }),
+    });
+    const { data: customer } = useGetCustomerByIdQuery(resourceId, {
+        skip: variant !== "customer",
+    });
+
+    //
+    //  Mutations
+    //
+    const [deleteLabel] = useDeleteLabelForResourceMutation();
 
     const { data: labels } = useGetLabelsQuery();
 
@@ -37,6 +54,24 @@ const LabelCreate = ({
 
         return [];
     }, [labels, variant]);
+
+    const assignedLabels = useMemo(() => {
+        if (variant === "property") return property?.labels || [];
+        if (variant === "customer") return customer?.labels || [];
+        if (variant === "document") return document?.labels || [];
+
+        return [];
+    }, [variant, property, customer]);
+
+    const handleRemoveLabel = (i: number) =>
+        deleteLabel({
+            resource: variant,
+            resourceId,
+            labelId: assignedLabels[i].id,
+        });
+
+    const handleLabelClick = () => {};
+    const handleLabelCreate = () => {};
 
     const [addLabelDialog, setAddLabelDialog] = useState(false);
 
@@ -82,7 +117,7 @@ const LabelCreate = ({
                                 bgcolor: color,
                                 color: "white",
                             }}
-                            onClose={() => onRemoveAssignedLabel(index)}
+                            onClose={() => handleRemoveLabel(index)}
                         >
                             {name}
                         </Label>
@@ -96,8 +131,8 @@ const LabelCreate = ({
                     variant={variant}
                     existingLabels={existingLabels}
                     assignedLabels={assignedLabels}
-                    onLabelClick={onLabelClick}
-                    onCreate={onLabelCreate}
+                    onLabelClick={handleLabelClick}
+                    onCreate={handleLabelCreate}
                     onClose={() => setAddLabelDialog(false)}
                 />
             )}

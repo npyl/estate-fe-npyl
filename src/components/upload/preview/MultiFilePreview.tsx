@@ -12,15 +12,7 @@ import FileThumbnail from "../../file-thumbnail";
 import Iconify from "../../iconify";
 //
 import { UploadProps } from "../types";
-import {
-    useAssignLabelToResourceMutation,
-    useCreateLabelForResourceMutation,
-    useDeleteLabelForResourceMutation,
-} from "src/services/labels";
 import { LabelCreate } from "src/components/label";
-import { LabelResourceType } from "src/types/label";
-import { properties } from "src/services/properties";
-import { useDispatch } from "react-redux";
 
 // ----------------------------------------------------------------------
 
@@ -64,9 +56,6 @@ const DocumentIcon = ({ isPreview, ...other }: DocumentIconProps) => {
     );
 };
 
-const tag = "PropertyById";
-const resource: LabelResourceType = "document";
-
 export default function MultiFilePreview({
     thumbnail,
     files,
@@ -77,24 +66,6 @@ export default function MultiFilePreview({
     if (!files?.length) {
         return null;
     }
-
-    const dispatch = useDispatch();
-
-    const [assignLabel] = useAssignLabelToResourceMutation();
-    const [createAssignLabel] = useCreateLabelForResourceMutation();
-    const [removeLabel] = useDeleteLabelForResourceMutation();
-
-    const invalidateTags = () =>
-        dispatch(properties.util.invalidateTags([tag]));
-
-    const handleAssignLabel = (labelId: number, documentId: number) =>
-        assignLabel({ resource, resourceId: documentId, labelId }).then(
-            invalidateTags
-        );
-
-    const handleCreateLabel = () => {};
-
-    const handleRemoveLabel = (i: number) => {};
 
     return (
         <>
@@ -189,12 +160,7 @@ export default function MultiFilePreview({
                         {variant === "document" && (
                             <LabelCreate
                                 variant="document"
-                                assignedLabels={[]}
-                                onLabelClick={({ id }) =>
-                                    handleAssignLabel(id, file.id)
-                                }
-                                onLabelCreate={() => handleCreateLabel}
-                                onRemoveAssignedLabel={handleRemoveLabel}
+                                resourceId={file.id}
                             />
                         )}
 
