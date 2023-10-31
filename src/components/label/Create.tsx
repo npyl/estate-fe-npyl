@@ -70,6 +70,7 @@ const LabelCreate = ({ variant, resourceId }: ILabelCreateProps) => {
             labelId: assignedLabels[i].id,
         });
 
+    // TODO: this needs to be debounced? (make sure we don't allow to click an already added label)
     const handleLabelClick = () => {};
     const handleLabelCreate = () => {};
 
