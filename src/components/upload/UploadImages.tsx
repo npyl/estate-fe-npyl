@@ -15,6 +15,7 @@ import { UploadIllustration } from "../../assets/illustrations";
 import RejectionFiles from "./errors/RejectionFiles";
 import { IPropertyImage } from "src/types/file";
 import ImagePreview from "./preview/ImagePreview";
+import { toast } from "react-toastify";
 
 export interface UploadProps extends DropzoneOptions {
     error?: boolean;
@@ -80,6 +81,10 @@ export default function UploadImages({
     } = useDropzone({
         multiple,
         disabled,
+        accept: {
+            "image/jpeg": ["jpeg", "jpg"],
+            "image/png": ["png"],
+        },
         ...other,
     });
 

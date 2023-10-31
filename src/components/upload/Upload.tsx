@@ -18,6 +18,7 @@ import { UploadProps } from "./types";
 import RejectionFiles from "./errors/RejectionFiles";
 import SingleFilePreview from "./preview/SingleFilePreview";
 import MultiFilePreview from "./preview/MultiFilePreview";
+import { toast } from "react-toastify";
 
 // ----------------------------------------------------------------------
 
@@ -65,6 +66,15 @@ export default function Upload({
     } = useDropzone({
         multiple,
         disabled,
+        accept:
+            variant === "image"
+                ? {
+                      "image/jpeg": ["jpeg", "jpg"],
+                      "image/png": ["png"],
+                  }
+                : {
+                      "application/pdf": ["pdf"],
+                  },
         ...other,
     });
 
