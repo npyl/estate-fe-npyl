@@ -25,6 +25,11 @@ import { Add, CircleNotifications } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import PlusOneIcon from "@mui/icons-material/PlusOne"; // Import the new icon
 import { relative } from "path";
+import { Send as SendIcon } from "@mui/icons-material";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import { BsPlusCircle } from "react-icons/bs";
+
 interface DashboardLayoutProps {
     children?: ReactNode;
 }
@@ -98,55 +103,28 @@ export const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
                             </Grid>
 
                             <Box
-                                border={1}
                                 sx={{
                                     display: "flex",
                                     justifyContent: "center",
                                     alignItems: "center",
-                                    borderRadius: "11px",
                                     backgroundColor: "transparent",
-                                    color: (theme) =>
-                                        theme.palette.primary.main,
-                                    border: (theme) =>
-                                        `2px solid ${theme.palette.primary.main}`,
                                 }}
                             >
-                                <Box
-                                    sx={{
-                                        position: "relative",
-                                        backgroundColor: (theme) =>
-                                            theme.palette.grey[700],
-                                        borderTopLeftRadius: 8,
-                                        borderBottomLeftRadius: 8,
-                                    }}
-                                >
-                                    <Add
-                                        sx={{
-                                            marginTop: "3px",
-                                            marginBottom: "-3px",
-                                            fontSize: "2em",
-                                            color: "white",
-                                            marginRight: "2px", // spacing between the icon and the button
-                                        }}
-                                    />
-                                </Box>
-
                                 <Button
-                                    sx={{
-                                        minWidth: "120px",
-                                        fontFamily: "'Poppins', sans-serif",
-                                        fontSize: "1.2em",
-                                        backgroundColor: "transparent",
-                                    }}
-                                    disableElevation
+                                    variant="contained"
+                                    color="primary"
+                                    startIcon={<BsPlusCircle />}
                                     onClick={showDropdown}
+                                    style={{
+                                        color: "white",
+                                        padding: "10px 20px",
+                                        fontSize: "16px",
+                                        borderRadius: "5px",
+                                        boxShadow:
+                                            "0 2px 5px rgba(0, 0, 0, 0.5)",
+                                    }}
                                 >
-                                    <Typography
-                                        fontWeight={700}
-                                        sx={{ fontSize: "0.9em" }}
-                                    >
-                                        {t("Create")}
-                                    </Typography>
+                                    {t("Create")}
                                 </Button>
                             </Box>
                             <StyledMenu

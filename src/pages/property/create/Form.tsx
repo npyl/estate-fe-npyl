@@ -104,7 +104,8 @@ export default function Form({ performUpload }: IFormProps) {
                             Create a New Property
                         </Typography>
                         <Typography variant="body2" color="textSecondary">
-                            Choose a category and subcategory for your property.
+                            Choose a parent category and category for your
+                            property.
                         </Typography>
                     </Grid>
 
@@ -188,15 +189,10 @@ export default function Form({ performUpload }: IFormProps) {
                                 padding: "10px 20px",
                                 fontSize: "16px",
                                 borderRadius: "5px",
-                                boxShadow: "0 2px 5px rgba(0, 0, 0, 0.2)",
-                            }}
-                            onMouseOver={(e) => {
-                                (
-                                    e.target as HTMLElement
-                                ).style.backgroundColor = "#45a049";
+                                boxShadow: "0 2px 5px rgba(0, 0, 0, 0.5)",
                             }}
                         >
-                            {t("Create")}
+                            {t("Continue")}
                         </Button>
                     </Grid>
                 </Grid>
