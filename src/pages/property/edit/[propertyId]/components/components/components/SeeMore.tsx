@@ -100,6 +100,24 @@ export const SeeMore = ({
         }
     };
 
+    const onSetMain = (key: string) => {
+        const allKeys = files.map((file) => file.key);
+        try {
+            const keyIndex = allKeys.indexOf(key);
+        
+            // Move the selected key to the front and reorder the keys array
+            const reorderedKeys = [
+                key,
+                ...allKeys.slice(0, keyIndex),
+                ...allKeys.slice(keyIndex + 1),
+              ];
+          
+              onReorder(reorderedKeys)
+          } catch (error) {
+            console.error("Key not found in the array:", error);
+          }
+      };
+
     const handleReorderWithVisibility = (
         imageKeys: string[],
         imageKey: string,
@@ -240,7 +258,7 @@ export const SeeMore = ({
                                     color={compare ? "error" : "primary"}
                                 >
                                     {compare
-                                        ? "Cancel"
+                                        ? "Close"
                                         : "Compare Mode"}
                                 </SoftButton>
 
@@ -299,7 +317,7 @@ export const SeeMore = ({
             </DialogContent>
         </Dialog>
         {(compareImage1 && compareImage2) &&(
-            <CompareGallery open={compareGalleryOpen} image1={compareImage1} image2={compareImage2} onClose={closeCompareGallery} />
+            <CompareGallery open={compareGalleryOpen} image1={compareImage1} image2={compareImage2} onClose={closeCompareGallery} setMain={onSetMain} />
         )}
         
         
