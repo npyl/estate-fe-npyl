@@ -53,7 +53,16 @@ export const exports = createApi({
             },
             providesTags: ["PropertyByIdZip"],
         }),
+        downloadDocuments: builder.query<Blob, number>({
+            query: (propertyId: number) => {
+                return {
+                    url: `${propertyId}/downloadDocuments`,
+                    method: "GET",
+                };
+            },
+        }),
     }),
 });
 
-export const { useLazyDownloadImagesQuery } = exports;
+export const { useLazyDownloadImagesQuery, useLazyDownloadDocumentsQuery } =
+    exports;
