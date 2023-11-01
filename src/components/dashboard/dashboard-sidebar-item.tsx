@@ -97,6 +97,14 @@ export const DashboardSidebarItem: FC<DashboardSidebarItemProps> = (props) => {
         );
     }
 
+    const navigateToPath = (path: string) => {
+        localStorage.removeItem('propertyPaginationState');
+        localStorage.removeItem('customerPaginationState');
+        localStorage.removeItem('scrollHeight');
+        router.push(path)
+
+      }
+
     // Leaf
     return (
         <ListItem
@@ -109,7 +117,7 @@ export const DashboardSidebarItem: FC<DashboardSidebarItemProps> = (props) => {
             }}
         >
             <Button
-                onClick={() => router.push(path as string)}
+                onClick={() => navigateToPath(path as string)}
                 startIcon={icon}
                 endIcon={chip}
                 disableRipple
