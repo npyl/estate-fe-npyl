@@ -43,19 +43,21 @@ const Item = ({ image, index, onClick }: ItemProps) => {
 
 interface SelectableItemProps extends ItemProps {
     selectMultiple: boolean;
+    compare: boolean;
     selected: boolean;
 }
 
 export const SelectableItem = ({
     selectMultiple,
+    compare,
     selected,
     image,
     index,
     onClick,
 }: SelectableItemProps) => {
     const checked = useMemo(
-        () => selectMultiple && selected,
-        [selectMultiple, selected]
+        () => (compare || selectMultiple) && selected,
+        [selectMultiple, selected, compare]
     );
 
     return (
@@ -82,13 +84,17 @@ interface MultiFilePreviewReorder extends UploadPropertyImageProps {
     columns?: number;
     selectMultiple?: boolean;
     selectedImages?: string[];
+    compare?: boolean;
+    compareImages?: string[];
 }
 
 export default function MultiFilePreviewReorder({
     files,
     columns = 3,
     selectMultiple = false,
+    compare = false,
     selectedImages = [],
+    compareImages=[],
     onImageClick,
     onReorder,
 }: MultiFilePreviewReorder) {
@@ -101,9 +107,10 @@ export default function MultiFilePreviewReorder({
                 value: (
                     <SelectableItem
                         selectMultiple={selectMultiple}
+                        compare={compare}
                         selected={
-                            selectedImages.findIndex((key) => key === f.key) >
-                            -1
+                            (selectedImages.findIndex((key) => key === f.key) > -1) || 
+                            (compareImages.findIndex((key) => key === f.key) > -1 )
                         }
                         image={f}
                         index={index}
@@ -111,7 +118,7 @@ export default function MultiFilePreviewReorder({
                     />
                 ),
             })),
-        [files, selectMultiple, selectedImages]
+        [files, selectMultiple, compare, compareImages, selectedImages]
     );
 
     const handleDragEnd = useCallback(

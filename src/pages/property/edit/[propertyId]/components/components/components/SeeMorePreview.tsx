@@ -14,6 +14,8 @@ interface SeeMorePreviewProps {
     files: IPropertyImage[];
     selectMultiple: boolean;
     selectedImages: string[];
+    compare: boolean;
+    compareImages: string[];
     onImageClick: (i: IPropertyImage) => void;
     onReorder: (keys: string[]) => void;
     onReorderWithVisibility: (
@@ -29,6 +31,8 @@ export const Over25ImagesPreview = ({
     files,
     selectMultiple,
     selectedImages,
+    compare,
+    compareImages,                            
     onImageClick,
     onReorder,
     onReorderWithVisibility,
@@ -39,14 +43,18 @@ export const Over25ImagesPreview = ({
             value: (
                 <SelectableItem
                     selectMultiple={selectMultiple}
-                    selected={selectedImages.includes(image.key)}
+                    compare = {compare}
+                    selected={
+                        (selectedImages.findIndex((key) => key === image.key) > -1) || 
+                        (compareImages.findIndex((key) => key === image.key) > -1 )
+                    }
                     image={image}
                     index={index}
                     onClick={() => onImageClick && onImageClick(image)}
                 />
             ),
         }),
-        [selectMultiple, selectedImages]
+        [selectMultiple, selectedImages, compare, compareImages]
     );
 
     const publicImages = useMemo(
