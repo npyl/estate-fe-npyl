@@ -1,4 +1,8 @@
-import { ArrowDownward, ArrowUpward } from "@mui/icons-material";
+import {
+    KeyboardArrowDown as KeyboardArrowDownIcon,
+    KeyboardArrowUp as KeyboardArrowUpIcon,
+} from "@mui/icons-material";
+
 import {
     Paper,
     Grid,
@@ -10,6 +14,7 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
+import { Label } from "src/components/label";
 import { DocumentIcon } from "src/components/upload/preview/DocumentIcon";
 import { useLazyDownloadDocumentsQuery } from "src/services/exports";
 import { useGetPropertyByIdQuery } from "src/services/properties";
@@ -52,7 +57,7 @@ const Documents: React.FC = () => {
     return (
         <Paper elevation={10} sx={{ overflow: "auto", padding: "10px" }}>
             <Grid container direction={"column"} gap={1} flex={1} mb={2}>
-                {documents?.map(({ key, filename, url }) =>
+                {documents?.map(({ key, filename, url, labels }) =>
                     url ? (
                         <Grid
                             item
@@ -83,15 +88,25 @@ const Documents: React.FC = () => {
                                     <Typography variant="h6">
                                         {filename || "N/A"}
                                     </Typography>
+                                    <Box ml={2}>
+                                        {labels.map(({ id, name, color }) => (
+                                            <Label
+                                                key={id}
+                                                sx={{ bgcolor: color }}
+                                            >
+                                                {name}
+                                            </Label>
+                                        ))}
+                                    </Box>
                                 </Box>
                                 <IconButton>
                                     {!openIframe && (
-                                        <ArrowDownward
+                                        <KeyboardArrowDownIcon
                                             onClick={() => setOpenIframe(key)}
                                         />
                                     )}
                                     {openIframe === key && (
-                                        <ArrowUpward
+                                        <KeyboardArrowUpIcon
                                             onClick={() => setOpenIframe("")}
                                         />
                                     )}

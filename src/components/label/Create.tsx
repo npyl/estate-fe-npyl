@@ -30,7 +30,7 @@ const LabelCreate = ({ variant, resourceId }: ILabelCreateProps) => {
     const router = useRouter();
     const { propertyId } = router.query;
 
-    const [addLabelDialog, setAddLabelDialog] = useState(false);
+    const [dialogOpen, setDialogOpen] = useState(false);
 
     //
     //  Queries
@@ -105,6 +105,12 @@ const LabelCreate = ({ variant, resourceId }: ILabelCreateProps) => {
             dispatch(customers.util.invalidateTags(["CustomerById"]));
     }, [variant]);
 
+    const handleOpenDialog = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        setDialogOpen(true);
+    };
+    const handleCloseDialog = () => setDialogOpen(false);
+
     return (
         <Box
             sx={{
@@ -129,10 +135,7 @@ const LabelCreate = ({ variant, resourceId }: ILabelCreateProps) => {
                 <Typography flex={1} sx={{ justifyContent: "center" }}>
                     {t("Labels")}
                 </Typography>
-                <IconButton
-                    size="small"
-                    onClick={() => setAddLabelDialog(true)}
-                >
+                <IconButton size="small" onClick={handleOpenDialog}>
                     <AddCircleIcon />
                 </IconButton>
             </Box>
@@ -155,15 +158,15 @@ const LabelCreate = ({ variant, resourceId }: ILabelCreateProps) => {
                 </Stack>
             </Box>
 
-            {addLabelDialog && (
+            {dialogOpen && (
                 <AddLabelDialog
-                    open={addLabelDialog}
+                    open={dialogOpen}
                     variant={variant}
                     existingLabels={existingLabels}
                     assignedLabels={assignedLabels}
                     onLabelClick={handleLabelClick}
                     onCreate={handleLabelCreate}
-                    onClose={() => setAddLabelDialog(false)}
+                    onClose={handleCloseDialog}
                 />
             )}
         </Box>

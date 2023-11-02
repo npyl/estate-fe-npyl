@@ -34,6 +34,11 @@ const variants = {
 };
 
 const Item = ({ variant, file, onClick, onRemove }: ItemProps) => {
+    const handleRemove = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        onRemove && onRemove(file);
+    };
+
     return (
         <motion.div
             whileHover="hover"
@@ -73,31 +78,15 @@ const Item = ({ variant, file, onClick, onRemove }: ItemProps) => {
                 )}
 
                 {variant === "document" && file.url && (
-                    <LabelCreate variant="document" resourceId={file.id} />
+                    <div onClick={(e) => e.stopPropagation()}>
+                        <LabelCreate variant="document" resourceId={file.id} />
+                    </div>
                 )}
 
                 {onRemove && file.url && (
-                    <Box
-                        sx={{
-                            position: "relative",
-                            width: 20,
-                            height: "100%",
-                        }}
-                    >
-                        <IconButton
-                            edge="end"
-                            size="small"
-                            sx={{
-                                position: "absolute",
-                                zIndex: 1000,
-                                right: 5,
-                                top: -10,
-                            }}
-                            onClick={() => onRemove(file)}
-                        >
-                            <Iconify icon="eva:close-fill" />
-                        </IconButton>
-                    </Box>
+                    <IconButton edge="end" size="small" onClick={handleRemove}>
+                        <Iconify icon="eva:close-fill" />
+                    </IconButton>
                 )}
             </Stack>
         </motion.div>

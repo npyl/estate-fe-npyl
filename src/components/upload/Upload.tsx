@@ -101,22 +101,11 @@ export default function Upload({
                         opacity: 0.48,
                         pointerEvents: "none",
                     }),
-                    ...(hasFile && {
-                        padding: "12% 0",
-                    }),
                 }}
             >
                 <input {...getInputProps()} />
 
-                <Placeholder
-                    sx={{
-                        ...(hasFile && {
-                            opacity: 0,
-                        }),
-                    }}
-                />
-
-                {hasFile && <SingleFilePreview file={file} />}
+                <Placeholder />
             </StyledDropZone>
 
             <RejectionFiles fileRejections={fileRejections} />
@@ -146,15 +135,13 @@ export default function Upload({
 
             {hasFiles && (
                 <>
-                    <Box sx={{ my: 3 }}>
-                        <MultiFilePreview
-                            files={files}
-                            variant={variant}
-                            thumbnail={false}
-                            onFileClick={onFileClick}
-                            onRemove={onRemove}
-                        />
-                    </Box>
+                    <MultiFilePreview
+                        files={files}
+                        variant={variant}
+                        thumbnail={false}
+                        onFileClick={onFileClick}
+                        onRemove={onRemove}
+                    />
 
                     <Stack
                         direction="row"
@@ -195,7 +182,6 @@ export default function Upload({
 function Placeholder({ sx, ...other }: StackProps) {
     return (
         <Stack
-            spacing={2}
             alignItems="center"
             justifyContent="center"
             direction={{
@@ -212,29 +198,11 @@ function Placeholder({ sx, ...other }: StackProps) {
             }}
             {...other}
         >
-            <UploadIllustration sx={{ width: 220 }} />
+            <UploadIllustration sx={{ width: 100 }} />
 
-            <Box sx={{ p: 3 }}>
-                <Typography gutterBottom variant="h5">
-                    Drop or Select file
-                </Typography>
-
-                <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                    Drop files here or click
-                    <Typography
-                        variant="body2"
-                        component="span"
-                        sx={{
-                            mx: 0.5,
-                            color: "primary.main",
-                            textDecoration: "underline",
-                        }}
-                    >
-                        browse
-                    </Typography>
-                    thorough your machine
-                </Typography>
-            </Box>
+            <Typography gutterBottom variant="h5">
+                Drop or Select files
+            </Typography>
         </Stack>
     );
 }
