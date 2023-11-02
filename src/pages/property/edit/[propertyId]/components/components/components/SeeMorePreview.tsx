@@ -60,11 +60,11 @@ export const Over25ImagesPreview = ({
 
     const publicImages = useMemo(
         () => files.filter((f) => !f.hidden).map(createItem),
-        [files, selectMultiple, selectedImages]
+        [files, selectMultiple, selectedImages, compare, compareImages]
     );
     const privateImages = useMemo(
         () => files.filter((f) => f.hidden).map(createItem),
-        [files, selectMultiple, selectedImages]
+        [files, selectMultiple, selectedImages, compare, compareImages]
     );
 
     const secondDndStartIndex = useMemo(
