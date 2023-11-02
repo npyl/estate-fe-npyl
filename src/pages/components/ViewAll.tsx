@@ -213,7 +213,7 @@ const ViewAll: FC = () => {
     const observerRef = useLocalStorageScrollRestore();
     useEffect(() => {
         const storedPagination = localStorage.getItem('propertyPaginationState');
-    
+        
         if (storedPagination) {
             const parsedPagination = JSON.parse(storedPagination)
           if(page !== parsedPagination.page){
