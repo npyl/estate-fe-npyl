@@ -11,7 +11,6 @@ interface ListItemProps extends MuiListItemProps {
     value?: any | null;
 }
 
-
 const ListItem: FC<ListItemProps> = (props) => {
     const {
         align = "vertical",

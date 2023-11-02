@@ -54,7 +54,9 @@ const itemTypeToPath: { [key: string]: string } = {
     [notificationItemType]: "/notification/create",
 };
 
-export const UserDashboardLayout: FC<UserDashboardLayoutProps> = ({ children }) => {
+export const UserDashboardLayout: FC<UserDashboardLayoutProps> = ({
+    children,
+}) => {
     const { t } = useTranslation();
     const router = useRouter();
 

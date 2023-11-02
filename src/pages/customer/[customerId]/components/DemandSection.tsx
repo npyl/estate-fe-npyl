@@ -69,10 +69,11 @@ const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
 
     const selectedLabels = useMemo(
         () =>
-            propertyLabels?.filter((propertyLabel) =>
-                demandFilterLabelIDs?.find(
-                    (labelID) => labelID === propertyLabel.id
-                )
+            propertyLabels?.filter(
+                (propertyLabel) =>
+                    demandFilterLabelIDs?.find(
+                        (labelID) => labelID === propertyLabel.id
+                    )
             ) || [],
         [propertyLabels, demandFilterLabelIDs]
     );

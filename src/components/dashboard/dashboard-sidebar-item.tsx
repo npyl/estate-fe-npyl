@@ -98,12 +98,11 @@ export const DashboardSidebarItem: FC<DashboardSidebarItemProps> = (props) => {
     }
 
     const navigateToPath = (path: string) => {
-        localStorage.removeItem('propertyPaginationState');
-        localStorage.removeItem('customerPaginationState');
-        localStorage.removeItem('scrollHeight');
-        router.push(path)
-
-      }
+        localStorage.removeItem("propertyPaginationState");
+        localStorage.removeItem("customerPaginationState");
+        localStorage.removeItem("scrollHeight");
+        router.push(path);
+    };
 
     // Leaf
     return (

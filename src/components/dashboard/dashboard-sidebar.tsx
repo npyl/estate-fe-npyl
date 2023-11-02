@@ -151,7 +151,6 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
             onClose?.();
         }
     };
-    
 
     useEffect(
         handlePathChange,

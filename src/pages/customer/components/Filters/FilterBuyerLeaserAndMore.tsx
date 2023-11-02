@@ -21,11 +21,10 @@ import {
 } from "src/slices/customer/filters";
 import StyledInputLabel from "src/pages/components/Filters/components/StyledInputLabel";
 
-
 export default function FilterBuyerLeaserAndMore() {
     const { t } = useTranslation();
     const dispatch = useDispatch();
-    
+
     const leaser = useSelector(selectLeaser);
     const buyer = useSelector(selectBuyer);
     const seller = useSelector(selectSeller);
@@ -55,7 +54,12 @@ export default function FilterBuyerLeaserAndMore() {
                 value={selectedRoles}
                 onChange={handleChange}
                 renderValue={(selected) => selected.join(", ")}
-                input={<OutlinedInput sx={{maxHeight: "38px", textAlign:"center"}} label={t("Roles")} />}
+                input={
+                    <OutlinedInput
+                        sx={{ maxHeight: "38px", textAlign: "center" }}
+                        label={t("Roles")}
+                    />
+                }
             >
                 <MenuItem value={"leaser"}>
                     <Checkbox checked={leaser} />

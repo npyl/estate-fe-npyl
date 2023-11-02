@@ -15,7 +15,7 @@ import StyledInputLabel from "src/pages/components/Filters/components/StyledInpu
 export default function FilterManager() {
     const { t } = useTranslation();
     const dispatch = useDispatch();
-    
+
     const { data } = useAllUsersQuery();
     const managerOptions = data || [];
 
@@ -44,7 +44,12 @@ export default function FilterManager() {
                 value={manager || ""}
                 onChange={handleChange}
                 renderValue={renderManagerName}
-                input={<OutlinedInput sx={{maxHeight:"38px", textAlign:"center"}} label="Ετικέτες" />}
+                input={
+                    <OutlinedInput
+                        sx={{ maxHeight: "38px", textAlign: "center" }}
+                        label="Ετικέτες"
+                    />
+                }
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
                 {managerOptions.map((option) => (

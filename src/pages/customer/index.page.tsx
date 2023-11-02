@@ -77,7 +77,10 @@ const Customers: NextPage = () => {
         setPageSize(model.pageSize);
         setPage(model.page);
         const paginationState = { page: model.page };
-        localStorage.setItem('customerPaginationState', JSON.stringify(paginationState));
+        localStorage.setItem(
+            "customerPaginationState",
+            JSON.stringify(paginationState)
+        );
         //console.log("currentPage:"+model.page)
     };
     function statusColor(params: GridCellParams) {
@@ -200,18 +203,20 @@ const Customers: NextPage = () => {
     };
     const closeBulkEdit = () => setBulkEditOpen(false);
     const handleBulkEditSave = () => revalidate();
-    const observerRef = useLocalStorageScrollRestore()
-  useEffect(() => {
-    const storedPagination = localStorage.getItem('customerPaginationState');
+    const observerRef = useLocalStorageScrollRestore();
+    useEffect(() => {
+        const storedPagination = localStorage.getItem(
+            "customerPaginationState"
+        );
 
         if (storedPagination !== null) {
             const parsedPagination = JSON.parse(storedPagination);
             // Now you can work with the parsed data.
-            if(page !== parsedPagination.page){
+            if (page !== parsedPagination.page) {
                 setPage(parsedPagination.page);
-            }   
+            }
         }
-  }, []);
+    }, []);
 
     return (
         <Box

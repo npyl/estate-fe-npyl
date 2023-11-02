@@ -180,7 +180,7 @@ const ViewAll: FC = () => {
     // pagination
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(25);
-    
+
     // view
     const [optionView, setOptionView] = useState<optionType>("list");
 
@@ -212,17 +212,17 @@ const ViewAll: FC = () => {
     );
     const observerRef = useLocalStorageScrollRestore();
     useEffect(() => {
-        const storedPagination = localStorage.getItem('propertyPaginationState');
-        
-        if (storedPagination) {
-            const parsedPagination = JSON.parse(storedPagination)
-          if(page !== parsedPagination.page){
-            setPage(parsedPagination.page);
-          }
+        const storedPagination = localStorage.getItem(
+            "propertyPaginationState"
+        );
 
-          
+        if (storedPagination) {
+            const parsedPagination = JSON.parse(storedPagination);
+            if (page !== parsedPagination.page) {
+                setPage(parsedPagination.page);
+            }
         }
-      }, []);
+    }, []);
 
     const columns: GridColDef[] = [
         {
@@ -323,8 +323,10 @@ const ViewAll: FC = () => {
         setPageSize(model.pageSize);
         setPage(model.page);
         const paginationState = { page: model.page };
-        localStorage.setItem('propertyPaginationState', JSON.stringify(paginationState));
-        
+        localStorage.setItem(
+            "propertyPaginationState",
+            JSON.stringify(paginationState)
+        );
     };
 
     // Bulk Edit

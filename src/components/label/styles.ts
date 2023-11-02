@@ -6,92 +6,90 @@ import { LabelColor, LabelVariant } from "./types";
 
 // ----------------------------------------------------------------------
 
-export const StyledLabel = styled(Box)(
-    ({
-        theme,
-        ownerState,
-    }: {
-        theme: Theme;
-        ownerState: {
-            color: LabelColor;
-            variant: LabelVariant;
-            opacity?: number;
-        };
-    }) => {
-        const isLight = theme.palette.mode === "light";
+export const StyledLabel = styled(Box)(({
+    theme,
+    ownerState,
+}: {
+    theme: Theme;
+    ownerState: {
+        color: LabelColor;
+        variant: LabelVariant;
+        opacity?: number;
+    };
+}) => {
+    const isLight = theme.palette.mode === "light";
 
-        const filledVariant = ownerState.variant === "filled";
+    const filledVariant = ownerState.variant === "filled";
 
-        const outlinedVariant = ownerState.variant === "outlined";
+    const outlinedVariant = ownerState.variant === "outlined";
 
-        const softVariant = ownerState.variant === "soft";
+    const softVariant = ownerState.variant === "soft";
 
-        const defaultStyle = {
-            ...(ownerState.color === "default" && {
-                // OUTLINED
-                ...(outlinedVariant && {
-                    backgroundColor: "transparent",
-                    color: theme.palette.text.primary,
-                    border: `1px solid ${alpha(theme.palette.grey[500], 0.32)}`,
-                }),
-                // SOFT
-                ...(softVariant && {
-                    color: isLight
-                        ? theme.palette.text.primary
-                        : theme.palette.common.white,
-                    backgroundColor: alpha(theme.palette.grey[500], 0.16),
-                }),
+    const defaultStyle = {
+        ...(ownerState.color === "default" && {
+            // OUTLINED
+            ...(outlinedVariant && {
+                backgroundColor: "transparent",
+                color: theme.palette.text.primary,
+                border: `1px solid ${alpha(theme.palette.grey[500], 0.32)}`,
             }),
-        };
-
-        const colorStyle = {
-            ...(ownerState.color !== "default" && {
-                // FILLED
-                ...(filledVariant && {
-                    color: theme.palette[ownerState.color].contrastText,
-                    backgroundColor: theme.palette[ownerState.color].main,
-                }),
-                // OUTLINED
-                ...(outlinedVariant && {
-                    backgroundColor: "transparent",
-                    color: theme.palette[ownerState.color].main,
-                    border: `1px solid ${theme.palette[ownerState.color].main}`,
-                }),
-                // SOFT
-                ...(softVariant && {
-                    color: theme.palette[ownerState.color][
-                        isLight ? "dark" : "light"
-                    ],
-                    backgroundColor: alpha(
-                        theme.palette[ownerState.color].main,
-                        0.16
-                    ),
-                }),
+            // SOFT
+            ...(softVariant && {
+                color: isLight
+                    ? theme.palette.text.primary
+                    : theme.palette.common.white,
+                backgroundColor: alpha(theme.palette.grey[500], 0.16),
             }),
-        };
+        }),
+    };
 
-        return {
-            height: 28, // Increased height
-            minWidth: 28, // Increased minWidth
-            lineHeight: "24px", // Specified line height for better alignment
-            borderRadius: 8, // Increased border-radius
-            cursor: "default",
-            alignItems: "center",
-            whiteSpace: "nowrap",
-            display: "inline-flex",
-            justifyContent: "center",
-            textTransform: "capitalize",
-            padding: theme.spacing(0, 1.5), // Increased padding
-            color: theme.palette.grey[800],
-            fontSize: theme.typography.pxToRem(14), // Increased font size
-            fontFamily: theme.typography.fontFamily,
-            backgroundColor: theme.palette.grey[300],
-            fontWeight: theme.typography.fontWeightBold,
-            boxShadow: "0 2px 5px rgba(0,0,0,0.1)", // Subtle shadow
-            transition: "all 0.3s ease", // Smooth transitions
-            ...colorStyle,
-            ...defaultStyle,
-            opacity: ownerState.opacity || 1,
-        };
-    }
-);
+    const colorStyle = {
+        ...(ownerState.color !== "default" && {
+            // FILLED
+            ...(filledVariant && {
+                color: theme.palette[ownerState.color].contrastText,
+                backgroundColor: theme.palette[ownerState.color].main,
+            }),
+            // OUTLINED
+            ...(outlinedVariant && {
+                backgroundColor: "transparent",
+                color: theme.palette[ownerState.color].main,
+                border: `1px solid ${theme.palette[ownerState.color].main}`,
+            }),
+            // SOFT
+            ...(softVariant && {
+                color: theme.palette[ownerState.color][
+                    isLight ? "dark" : "light"
+                ],
+                backgroundColor: alpha(
+                    theme.palette[ownerState.color].main,
+                    0.16
+                ),
+            }),
+        }),
+    };
+
+    return {
+        height: 28, // Increased height
+        minWidth: 28, // Increased minWidth
+        lineHeight: "24px", // Specified line height for better alignment
+        borderRadius: 8, // Increased border-radius
+        cursor: "default",
+        alignItems: "center",
+        whiteSpace: "nowrap",
+        display: "inline-flex",
+        justifyContent: "center",
+        textTransform: "capitalize",
+        padding: theme.spacing(0, 1.5), // Increased padding
+        color: theme.palette.grey[800],
+        fontSize: theme.typography.pxToRem(14), // Increased font size
+        fontFamily: theme.typography.fontFamily,
+        backgroundColor: theme.palette.grey[300],
+        fontWeight: theme.typography.fontWeightBold,
+        boxShadow: "0 2px 5px rgba(0,0,0,0.1)", // Subtle shadow
+        transition: "all 0.3s ease", // Smooth transitions
+        ...colorStyle,
+        ...defaultStyle,
+        opacity: ownerState.opacity || 1,
+    };
+});

@@ -53,27 +53,33 @@ export const SeeMore = ({
     const [selectMultiple, setSelectMultiple] = useState(false);
     const [selectedImages, setSelectedImages] = useState<string[]>([]); // keys
     const toggleSelectMultiple = () => setSelectMultiple(!selectMultiple);
-    
-    
+
     const [compare, setCompare] = useState(false);
     const [compareImages, setCompareImages] = useState<string[]>([]); // keys
-    const [compareImage1, setCompareImage1] = useState<IPropertyImage | null>(null);
-    const [compareImage2, setCompareImage2] = useState<IPropertyImage | null>(null);
+    const [compareImage1, setCompareImage1] = useState<IPropertyImage | null>(
+        null
+    );
+    const [compareImage2, setCompareImage2] = useState<IPropertyImage | null>(
+        null
+    );
     const toggleCompare = () => {
-        setCompare(!compare)
+        setCompare(!compare);
     };
     const handleCompareBtnClick = () => {
-        console.log("Open Modal for Comparison")
-        setCompareImage1(files.find(image => image.key === compareImages[0]) || null);
-        setCompareImage2(files.find(image => image.key === compareImages[1]) || null);
+        console.log("Open Modal for Comparison");
+        setCompareImage1(
+            files.find((image) => image.key === compareImages[0]) || null
+        );
+        setCompareImage2(
+            files.find((image) => image.key === compareImages[1]) || null
+        );
         setCompareGalleryOpen(true);
-    }
+    };
 
     const [compareGalleryOpen, setCompareGalleryOpen] = useState(false);
     const closeCompareGallery = () => {
         setCompareGalleryOpen(false);
-    }
-
+    };
 
     const handleImageClick = (image: IPropertyImage) => {
         if (selectMultiple) {
@@ -84,10 +90,12 @@ export const SeeMore = ({
                     ? oldSelectedImages.filter((key) => key !== image.key) // remove
                     : [...oldSelectedImages, image.key]; // add
             });
-        } else if(compare){
+        } else if (compare) {
             if (compareImages.includes(image.key)) {
                 // If the image.key is already in the array, remove it
-                setCompareImages((prevImages) => prevImages.filter((key) => key !== image.key));
+                setCompareImages((prevImages) =>
+                    prevImages.filter((key) => key !== image.key)
+                );
             } else if (compareImages.length < 2) {
                 // If less than 2 images are selected, add the new image
                 setCompareImages((prevImages) => [...prevImages, image.key]);
@@ -104,19 +112,19 @@ export const SeeMore = ({
         const allKeys = files.map((file) => file.key);
         try {
             const keyIndex = allKeys.indexOf(key);
-        
+
             // Move the selected key to the front and reorder the keys array
             const reorderedKeys = [
                 key,
                 ...allKeys.slice(0, keyIndex),
                 ...allKeys.slice(keyIndex + 1),
-              ];
-          
-              onReorder(reorderedKeys)
-          } catch (error) {
+            ];
+
+            onReorder(reorderedKeys);
+        } catch (error) {
             console.error("Key not found in the array:", error);
-          }
-      };
+        }
+    };
 
     const handleReorderWithVisibility = (
         imageKeys: string[],
@@ -156,171 +164,168 @@ export const SeeMore = ({
 
     return (
         <>
-        <Dialog
-            open={open}
-            onClose={onClose}
-            scroll="body" // (1)
-            PaperProps={{
-                style: {
-                    overflow: "hidden", // (1)
-                    minWidth: "95vw",
-                    minHeight: "95vh",
-                },
-            }}
-        >
-            <DialogTitle
-                style={{
-                    position: "fixed",
-                    top: 0,
-                    minWidth: "95vw",
-                    zIndex: 2,
-                    backgroundColor: "#fff",
-                    borderBottom: "1px solid #ccc",
-                    padding: 7,
-                    boxSizing: "border-box",
+            <Dialog
+                open={open}
+                onClose={onClose}
+                scroll="body" // (1)
+                PaperProps={{
+                    style: {
+                        overflow: "hidden", // (1)
+                        minWidth: "95vw",
+                        minHeight: "95vh",
+                    },
                 }}
             >
-                <Box
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="space-between"
+                <DialogTitle
+                    style={{
+                        position: "fixed",
+                        top: 0,
+                        minWidth: "95vw",
+                        zIndex: 2,
+                        backgroundColor: "#fff",
+                        borderBottom: "1px solid #ccc",
+                        padding: 7,
+                        boxSizing: "border-box",
+                    }}
                 >
-                    <Box>
-                        Edit{" "}
-                        {selectMultiple
-                            ? `(${selectedImages.length} selected)`
-                            : ""}
-                    </Box>
-
-                    {progress && (
-                        <Box sx={{ width: "30%" }}>
-                            <ProgressBar value={progress} />
+                    <Box
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="space-between"
+                    >
+                        <Box>
+                            Edit{" "}
+                            {selectMultiple
+                                ? `(${selectedImages.length} selected)`
+                                : ""}
                         </Box>
-                    )}
 
-                    <Box display="flex" alignItems="center" gap={1}>
-                        {selectMultiple && selectedImages.length > 0 && (
-                            <>
-                                <Typography mr={1}>Make</Typography>
-                                <SoftButton
-                                    startIcon={<LockOpen />}
-                                    onClick={handleMakePublic}
-                                >
-                                    Public
-                                </SoftButton>
-                                <SoftButton
-                                    startIcon={<Lock />}
-                                    onClick={handleMakePrivate}
-                                >
-                                    Private
-                                </SoftButton>
-                                <SoftButton
-                                    color="error"
-                                    startIcon={<DeleteIcon />}
-                                    onClick={handleBulkDelete}
-                                >
-                                    Delete
-                                </SoftButton>
-                            </>
+                        {progress && (
+                            <Box sx={{ width: "30%" }}>
+                                <ProgressBar value={progress} />
+                            </Box>
                         )}
-                        {compare === false && (
-                            <>
-                                <Divider orientation="vertical" />
-                                <SoftButton
-                                    onClick={toggleSelectMultiple}
-                                    variant="outlined"
-                                    color={selectMultiple ? "error" : "primary"}
-                                >
-                                    {selectMultiple
-                                        ? "Cancel Select"
-                                        : "Select Multiple"}
-                                </SoftButton>
 
-                            </>
-                        )}
-                        {(compare === true && compareImages.length === 2) && (
-                            <>
-                                <SoftButton
-                                    color="primary"
-                                    onClick={handleCompareBtnClick}
-                                >
-                                    Compare
-                                </SoftButton>
+                        <Box display="flex" alignItems="center" gap={1}>
+                            {selectMultiple && selectedImages.length > 0 && (
+                                <>
+                                    <Typography mr={1}>Make</Typography>
+                                    <SoftButton
+                                        startIcon={<LockOpen />}
+                                        onClick={handleMakePublic}
+                                    >
+                                        Public
+                                    </SoftButton>
+                                    <SoftButton
+                                        startIcon={<Lock />}
+                                        onClick={handleMakePrivate}
+                                    >
+                                        Private
+                                    </SoftButton>
+                                    <SoftButton
+                                        color="error"
+                                        startIcon={<DeleteIcon />}
+                                        onClick={handleBulkDelete}
+                                    >
+                                        Delete
+                                    </SoftButton>
+                                </>
+                            )}
+                            {compare === false && (
+                                <>
+                                    <Divider orientation="vertical" />
+                                    <SoftButton
+                                        onClick={toggleSelectMultiple}
+                                        variant="outlined"
+                                        color={
+                                            selectMultiple ? "error" : "primary"
+                                        }
+                                    >
+                                        {selectMultiple
+                                            ? "Cancel Select"
+                                            : "Select Multiple"}
+                                    </SoftButton>
+                                </>
+                            )}
+                            {compare === true && compareImages.length === 2 && (
+                                <>
+                                    <SoftButton
+                                        color="primary"
+                                        onClick={handleCompareBtnClick}
+                                    >
+                                        Compare
+                                    </SoftButton>
+                                </>
+                            )}
+                            {selectMultiple === false && (
+                                <>
+                                    <Divider orientation="vertical" />
+                                    <SoftButton
+                                        onClick={toggleCompare}
+                                        variant="outlined"
+                                        color={compare ? "error" : "primary"}
+                                    >
+                                        {compare ? "Close" : "Compare Mode"}
+                                    </SoftButton>
+                                </>
+                            )}
 
-                            </>
-                        )}
-                        {selectMultiple === false && (
-                            <>
-                                <Divider orientation="vertical" />
-                                <SoftButton
-                                    onClick={toggleCompare}
-                                    variant="outlined"
-                                    color={compare ? "error" : "primary"}
-                                >
-                                    {compare
-                                        ? "Close"
-                                        : "Compare Mode"}
-                                </SoftButton>
-
-                            </>
-                        )}
-                        
-
-                        
-                       
-
-                        <IconButton
-                            onClick={() => onClose()}
-                            sx={{
-                                color: "grey",
-                            }}
-                        >
-                            <CloseIcon />
-                        </IconButton>
+                            <IconButton
+                                onClick={() => onClose()}
+                                sx={{
+                                    color: "grey",
+                                }}
+                            >
+                                <CloseIcon />
+                            </IconButton>
+                        </Box>
                     </Box>
-                </Box>
-            </DialogTitle>
-            <Divider />
-            <DialogContent
-                sx={{
-                    overflow: "hidden", // (1)
-                }}
-            >
-                <Box p={5}>
-                    {files.length > 25 ? (
-                        <Over25ImagesPreview
-                            files={files}
-                            selectMultiple={selectMultiple}
-                            selectedImages={selectedImages}
-                            compare={compare}
-                            compareImages={compareImages}
-                            onImageClick={handleImageClick}
-                            onReorder={onReorder}
-                            onReorderWithVisibility={
-                                handleReorderWithVisibility
-                            }
-                        />
-                    ) : (
-                        <MultiFilePreviewReorder
-                            files={files}
-                            selectMultiple={selectMultiple}
-                            selectedImages={selectedImages}
-                            compare={compare}
-                            compareImages={compareImages}
-                            columns={5}
-                            thumbnail={false}
-                            onImageClick={handleImageClick}
-                            onReorder={onReorder}
-                        />
-                    )}
-                </Box>
-            </DialogContent>
-        </Dialog>
-        {(compareImage1 && compareImage2) &&(
-            <CompareGallery open={compareGalleryOpen} image1={compareImage1} image2={compareImage2} onClose={closeCompareGallery} setMain={onSetMain} />
-        )}
-        
-        
+                </DialogTitle>
+                <Divider />
+                <DialogContent
+                    sx={{
+                        overflow: "hidden", // (1)
+                    }}
+                >
+                    <Box p={5}>
+                        {files.length > 25 ? (
+                            <Over25ImagesPreview
+                                files={files}
+                                selectMultiple={selectMultiple}
+                                selectedImages={selectedImages}
+                                compare={compare}
+                                compareImages={compareImages}
+                                onImageClick={handleImageClick}
+                                onReorder={onReorder}
+                                onReorderWithVisibility={
+                                    handleReorderWithVisibility
+                                }
+                            />
+                        ) : (
+                            <MultiFilePreviewReorder
+                                files={files}
+                                selectMultiple={selectMultiple}
+                                selectedImages={selectedImages}
+                                compare={compare}
+                                compareImages={compareImages}
+                                columns={5}
+                                thumbnail={false}
+                                onImageClick={handleImageClick}
+                                onReorder={onReorder}
+                            />
+                        )}
+                    </Box>
+                </DialogContent>
+            </Dialog>
+            {compareImage1 && compareImage2 && (
+                <CompareGallery
+                    open={compareGalleryOpen}
+                    image1={compareImage1}
+                    image2={compareImage2}
+                    onClose={closeCompareGallery}
+                    setMain={onSetMain}
+                />
+            )}
         </>
     );
 };

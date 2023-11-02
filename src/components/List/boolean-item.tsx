@@ -31,8 +31,6 @@ const ListBooleanItem: FC<ListBooleanItemProps> = (props) => {
                 px: disableGutters ? 0 : 3,
 
                 flex: 1,
-
-               
             }}
             {...other}
         >

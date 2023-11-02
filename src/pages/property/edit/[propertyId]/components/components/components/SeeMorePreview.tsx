@@ -32,7 +32,7 @@ export const Over25ImagesPreview = ({
     selectMultiple,
     selectedImages,
     compare,
-    compareImages,                            
+    compareImages,
     onImageClick,
     onReorder,
     onReorderWithVisibility,
@@ -43,10 +43,11 @@ export const Over25ImagesPreview = ({
             value: (
                 <SelectableItem
                     selectMultiple={selectMultiple}
-                    compare = {compare}
+                    compare={compare}
                     selected={
-                        (selectedImages.findIndex((key) => key === image.key) > -1) || 
-                        (compareImages.findIndex((key) => key === image.key) > -1 )
+                        selectedImages.findIndex((key) => key === image.key) >
+                            -1 ||
+                        compareImages.findIndex((key) => key === image.key) > -1
                     }
                     image={image}
                     index={index}

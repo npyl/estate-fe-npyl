@@ -94,7 +94,7 @@ export default function MultiFilePreviewReorder({
     selectMultiple = false,
     compare = false,
     selectedImages = [],
-    compareImages=[],
+    compareImages = [],
     onImageClick,
     onReorder,
 }: MultiFilePreviewReorder) {
@@ -109,8 +109,9 @@ export default function MultiFilePreviewReorder({
                         selectMultiple={selectMultiple}
                         compare={compare}
                         selected={
-                            (selectedImages.findIndex((key) => key === f.key) > -1) || 
-                            (compareImages.findIndex((key) => key === f.key) > -1 )
+                            selectedImages.findIndex((key) => key === f.key) >
+                                -1 ||
+                            compareImages.findIndex((key) => key === f.key) > -1
                         }
                         image={f}
                         index={index}

@@ -31,22 +31,22 @@ const colors = {
     online: "#43a047",
 };
 
-const StatusIndicatorRoot = styled("span")<StatusIndicatorRootProps>(
-    ({ ownerState }) => {
-        const size = sizes[ownerState.size];
-        const color = colors[ownerState.status];
+const StatusIndicatorRoot = styled("span")<StatusIndicatorRootProps>(({
+    ownerState,
+}) => {
+    const size = sizes[ownerState.size];
+    const color = colors[ownerState.status];
 
-        return {
-            backgroundColor: color,
-            borderRadius: "50%",
-            display: "inline-block",
-            flexGrow: 0,
-            flexShrink: 0,
-            height: size,
-            width: size,
-        };
-    }
-);
+    return {
+        backgroundColor: color,
+        borderRadius: "50%",
+        display: "inline-block",
+        flexGrow: 0,
+        flexShrink: 0,
+        height: size,
+        width: size,
+    };
+});
 
 export const StatusIndicator: FC<StatusIndicatorProps> = (props) => {
     const { size = "medium", status = "offline", ...other } = props;

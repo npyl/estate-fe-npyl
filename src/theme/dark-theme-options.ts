@@ -97,8 +97,8 @@ export const darkThemeOptions: ThemeOptions = {
                     },
                 },
             },
-        }
-        ,MuiInputLabel: {
+        },
+        MuiInputLabel: {
             styleOverrides: {
                 root: {
                     top: "-8px",
@@ -123,7 +123,8 @@ export const darkThemeOptions: ThemeOptions = {
             styleOverrides: {
                 root: {
                     padding: "0 5px!important",
-                },notchedOutline: {
+                },
+                notchedOutline: {
                     borderColor: divider,
                 },
             },

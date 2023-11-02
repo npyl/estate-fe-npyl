@@ -123,8 +123,8 @@ export function FullscreenContextProvider({
         };
     }, [fullscreenChangeListener]);
 
-    const handleAutoFullscreen = useEventCallback(() =>
-        (auto ? enter : null)?.()
+    const handleAutoFullscreen = useEventCallback(
+        () => (auto ? enter : null)?.()
     );
 
     React.useEffect(() => {

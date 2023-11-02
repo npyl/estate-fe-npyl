@@ -19,7 +19,7 @@ export default function FilterParentCategory() {
     const dispatch = useDispatch();
     const { t } = useTranslation();
     const data = useGlobals();
-    
+
     const parentCategories = useSelector(selectParentCategories);
 
     const propertyEnums = data?.property;
@@ -59,7 +59,12 @@ export default function FilterParentCategory() {
                         .filter(Boolean)
                         .join(", ");
                 }}
-                input={<OutlinedInput sx={{maxHeight: "38px", textAlign:"center"}} label={t("Parent Category")} />}
+                input={
+                    <OutlinedInput
+                        sx={{ maxHeight: "38px", textAlign: "center" }}
+                        label={t("Parent Category")}
+                    />
+                }
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
                 {parentCategoryEnums!.map(({ key, value }) => {

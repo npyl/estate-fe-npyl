@@ -16,7 +16,7 @@ export default function SaleSelect() {
     const dispatch = useDispatch();
     const data = useGlobals();
     const { t } = useTranslation();
-    
+
     const states = useSelector(selectStates);
 
     const stateEnum = data?.property?.state;
@@ -36,7 +36,9 @@ export default function SaleSelect() {
 
     return (
         <FormControl sx={{ minWidth: "130px" }}>
-            <StyledInputLabel id="demo-simple-select-label">{t("State")}</StyledInputLabel>
+            <StyledInputLabel id="demo-simple-select-label">
+                {t("State")}
+            </StyledInputLabel>
             <Select
                 multiple
                 labelId="demo-simple-select-label"
@@ -52,7 +54,12 @@ export default function SaleSelect() {
                         .filter(Boolean) // Remove any undefined values
                         .join(", ");
                 }}
-                input={<OutlinedInput sx={{maxHeight: "38px", textAlign:"center"}} label="Κατάσταση" />}
+                input={
+                    <OutlinedInput
+                        sx={{ maxHeight: "38px", textAlign: "center" }}
+                        label="Κατάσταση"
+                    />
+                }
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
                 {stateEnum.map(({ key, value }) => {

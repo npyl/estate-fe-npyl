@@ -133,10 +133,11 @@ export const DrawMultiple = ({
         // draw any imported shape
         shapes
             ?.filter((shape) => !!shape)
-            .map((shape) =>
-                shapeRefs.current?.push(
-                    drawShape(shape, map, !!drawing ? onShapeChange : null)
-                )
+            .map(
+                (shape) =>
+                    shapeRefs.current?.push(
+                        drawShape(shape, map, !!drawing ? onShapeChange : null)
+                    )
             );
     }, [ready, shapes]);
 

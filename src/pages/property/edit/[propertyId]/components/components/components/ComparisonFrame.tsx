@@ -5,7 +5,7 @@ const ComparisonFrame = styled("div")(() => ({
     flexDirection: "row",
     justifyContent: "space-evenly",
     alignItems: "center",
-    minHeight: "40vh"
+    minHeight: "40vh",
 }));
 
 export default ComparisonFrame;

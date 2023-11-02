@@ -3,7 +3,6 @@ import { Box, ListItemText, Typography } from "@mui/material";
 import type { FC } from "react";
 import StyledListItem from "./StyledListItem";
 
-
 type Direction = "horizontal" | "vertical";
 
 interface ListDateItemProps extends MuiListItemProps {
@@ -11,7 +10,6 @@ interface ListDateItemProps extends MuiListItemProps {
     label: string;
     value?: string;
 }
-    
 
 const ListDateItem: FC<ListDateItemProps> = ({
     align = "vertical",

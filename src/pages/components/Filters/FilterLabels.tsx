@@ -47,7 +47,7 @@ export default function FilterLabels(props: FilterLabelsProps) {
             })
             .join(", ");
     };
-    
+
     const handleChange = (event: SelectChangeEvent<typeof labels>) => {
         const {
             target: { value },
@@ -59,10 +59,12 @@ export default function FilterLabels(props: FilterLabelsProps) {
             )
         );
     };
-    
+
     return (
         <FormControl sx={{ minWidth: "130px", maxHeight: "38px" }}>
-            <StyledInputLabel sx={{ }} id="demo-simple-select-label">{t("Labels")}</StyledInputLabel>
+            <StyledInputLabel sx={{}} id="demo-simple-select-label">
+                {t("Labels")}
+            </StyledInputLabel>
             <Select
                 multiple
                 labelId="demo-simple-select-label"
@@ -71,7 +73,12 @@ export default function FilterLabels(props: FilterLabelsProps) {
                 renderValue={(selected) =>
                     renderLabelNames(selected as number[])
                 }
-                input={<OutlinedInput sx={{maxHeight: "38px", textAlign:"center"}} label="Ετικέτες" />}
+                input={
+                    <OutlinedInput
+                        sx={{ maxHeight: "38px", textAlign: "center" }}
+                        label="Ετικέτες"
+                    />
+                }
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
                 {labelOptions.map((option) => {
