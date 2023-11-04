@@ -1,6 +1,5 @@
 import {
     FetchBaseQueryError,
-    FetchBaseQueryMeta,
     createApi,
     fetchBaseQuery,
 } from "@reduxjs/toolkit/query/react";
@@ -10,7 +9,6 @@ import {
     IPropertyFilter,
     IPropertyResultResponse,
 } from "src/types/properties";
-
 import IPage from "src/types/page";
 import {
     IFileResponse,
@@ -24,6 +22,8 @@ import {
 
 import { ILabel } from "src/types/label";
 import { ICustomer } from "src/types/customer";
+
+import axios, { AxiosProgressEvent } from "axios";
 
 export interface BulkEditRequest {
     propertyIds: number[];
@@ -105,8 +105,8 @@ interface ReorderImagesWithSetImageVisibilityProps {
 
 interface UploadDocumentToAmazonProps {
     url: string;
-    contentType: string;
     image: File;
+    onProgressUpdate?: (p: number) => void;
 }
 
 interface UploadResponse {
@@ -628,29 +628,47 @@ export const properties = createApi({
             UploadDocumentToAmazonProps
         >({
             // INFO: upload to amazon
-            async queryFn(
-                { url, contentType, image },
-                api,
-                extraOptions,
-                baseQuery
-            ) {
+            async queryFn({ url, image, onProgressUpdate }) {
+                const { type } = image;
+
                 try {
-                    // PUT to amazon url
-                    const res0 = await fetch(url, {
-                        method: "PUT",
+                    const handleUploadProgress = ({
+                        loaded,
+                    }: AxiosProgressEvent) => {
+                        if (onProgressUpdate) {
+                            // Calculate and report the upload progress here
+                            const progress = Math.round(
+                                (loaded / image.size) * 100
+                            );
+
+                            onProgressUpdate(progress);
+                        }
+                    };
+
+                    const response = await axios.put(url, image, {
                         headers: {
-                            "Content-Type": contentType,
+                            "Content-Type": type,
                         },
-                        body: image,
+                        onUploadProgress: handleUploadProgress,
                     });
 
-                    if (!res0.ok) {
-                        throw new Error("Upload error: " + res0.statusText);
+                    if (response.status !== 200) {
+                        return {
+                            error: {
+                                error: response.statusText,
+                                status: "FETCH_ERROR",
+                            },
+                        };
                     }
 
-                    return { data: { success: true } };
+                    return { data: response.data };
                 } catch (error) {
-                    return { error: error as FetchBaseQueryError };
+                    return {
+                        error: {
+                            error: error.message,
+                            status: "FETCH_ERROR",
+                        },
+                    };
                 }
             },
             // WARN: Do not add the tags! We use Promise.all on uploadPropertyImage to wait for all the photos to upload.
