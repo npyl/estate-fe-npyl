@@ -14,9 +14,10 @@ interface IConfirmationDialogBox {
     onConfirm: () => void;
 }
 
-export const ConfirmationDialogBox: React.FC<IConfirmationDialogBox> = (props) => {
+export const ConfirmationDialogBox: React.FC<IConfirmationDialogBox> = (
+    props
+) => {
     const { open, onClose, text, onConfirm } = props;
-    
 
     return (
         <Dialog
@@ -34,10 +35,8 @@ export const ConfirmationDialogBox: React.FC<IConfirmationDialogBox> = (props) =
         >
             <DialogTitle>Confirm Action</DialogTitle>
             <DialogContent sx={{ padding: "0" }}>
-                <div style={{padding:"1rem 1.5rem"}}>
-                    <h2>
-                        {text}
-                    </h2>
+                <div style={{ padding: "1rem 1.5rem" }}>
+                    <h2>{text}</h2>
                 </div>
             </DialogContent>
             <DialogActions

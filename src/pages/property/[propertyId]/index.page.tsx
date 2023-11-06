@@ -83,23 +83,22 @@ const SingleProperty: NextPage = () => {
     const handleEdit = () => router.push(`/property/edit/${propertyId}`);
     const [cloneConfirmDialogOpen, setCloneConfirmDialogOpen] = useState(false);
 
-    const handleClone = () =>{
+    const handleClone = () => {
         setCloneConfirmDialogOpen(true);
-    }
-    const closeCloneConfirmaionDialog= () => {
+    };
+    const closeCloneConfirmaionDialog = () => {
         setCloneConfirmDialogOpen(false);
-    }
-        
-    const handleCloneConfirmation = () =>{
+    };
+
+    const handleCloneConfirmation = () => {
         closeCloneConfirmaionDialog();
         cloneProperty(+propertyId!)
-        .unwrap()
-        .then((newPropertyId) =>
-            router.push(`/property/edit/${newPropertyId}`)
-        );
-    }
-    
-        
+            .unwrap()
+            .then((newPropertyId) =>
+                router.push(`/property/edit/${newPropertyId}`)
+            );
+    };
+
     const handleDelete = () =>
         deleteProperty(+propertyId!).then(() => {
             router.push("/");
@@ -172,9 +171,13 @@ const SingleProperty: NextPage = () => {
                     <InitMap />
                 </Box>
             </TabPanel>
-            <ConfirmationDialogBox open={cloneConfirmDialogOpen} onClose={closeCloneConfirmaionDialog} text={"Are you Sure You want to Clone This Property?"} onConfirm={handleCloneConfirmation} />
+            <ConfirmationDialogBox
+                open={cloneConfirmDialogOpen}
+                onClose={closeCloneConfirmaionDialog}
+                text={"Are you Sure You want to Clone This Property?"}
+                onConfirm={handleCloneConfirmation}
+            />
         </Box>
-         
     );
 };
 
