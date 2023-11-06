@@ -253,6 +253,8 @@ const ImagesSection: React.FC = () => {
         (key?: string) => {
             if (!key) return;
 
+            const newThumbnailKey = files[0].key === key ? files[1].key : "";
+
             // Prepare Next Image to avoid jumping
             const index = files.findIndex((f) => f.key === key);
             if (index < 0) return;
@@ -262,7 +264,11 @@ const ImagesSection: React.FC = () => {
                 index === files.length - 1 ? files.length - 2 : index + 1;
             const nextImage = files.at(nextIndex);
 
-            deleteImage({ propertyId: +propertyId!, imageKey: key })
+            deleteImage({
+                propertyId: +propertyId!,
+                imageKey: key,
+                newThumbnailKey,
+            })
                 .then(() => setCurrentGalleryImage(nextImage))
                 .catch((reason) => console.error("deleteImage: ", reason));
         },

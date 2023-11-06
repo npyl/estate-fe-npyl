@@ -62,11 +62,12 @@ export const SeeMore = ({
     const [compareImage2, setCompareImage2] = useState<IPropertyImage | null>(
         null
     );
-    const toggleCompare = () => {
-        setCompare(!compare);
-    };
+
+    const [compareGalleryOpen, setCompareGalleryOpen] = useState(false);
+    const toggleCompare = () => setCompare(!compare);
+    const closeCompareGallery = () => setCompareGalleryOpen(false);
+
     const handleCompareBtnClick = () => {
-        console.log("Open Modal for Comparison");
         setCompareImage1(
             files.find((image) => image.key === compareImages[0]) || null
         );
@@ -74,11 +75,6 @@ export const SeeMore = ({
             files.find((image) => image.key === compareImages[1]) || null
         );
         setCompareGalleryOpen(true);
-    };
-
-    const [compareGalleryOpen, setCompareGalleryOpen] = useState(false);
-    const closeCompareGallery = () => {
-        setCompareGalleryOpen(false);
     };
 
     const handleImageClick = (image: IPropertyImage) => {
@@ -150,11 +146,19 @@ export const SeeMore = ({
         [selectedImages]
     );
 
+    const findNextAvailableThumbnail = useCallback(() => {
+        for (let j = 0; j < files.length; j++)
+            if (!!selectedImages.find((i) => i === files[j].key)) continue;
+            else return files[j].key;
+        return "";
+    }, [files, selectedImages]);
+
     const handleBulkDelete = useCallback(
         () =>
             bulkDeleteImages({
                 propertyId: +propertyId!,
                 imageKeys: selectedImages,
+                newThumbnailKey: findNextAvailableThumbnail(),
             }),
         [selectedImages]
     );
