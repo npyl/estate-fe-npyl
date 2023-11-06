@@ -19,32 +19,13 @@ export const notification = createApi({
             return headers;
         },
     }),
-    tagTypes: ["Notifications", "NotificationById"],
+    tagTypes: ["Notifications"],
     endpoints: (builder) => ({
         getNotifications: builder.query<ContactNotification[], void>({
             query: () => "",
             providesTags: ["Notifications"],
         }),
-        getNotificationById: builder.query<ContactNotification, number>({
-            query: (id: number) => `${id}`,
-            providesTags: ["NotificationById"],
-        }),
-        addNotification: builder.mutation<
-            ContactNotification,
-            ContactNotificationPOST
-        >({
-            query: (body: ContactNotificationPOST) => ({
-                url: "",
-                method: "POST",
-                body: body,
-            }),
-            invalidatesTags: ["Notifications", "NotificationById"],
-        }),
     }),
 });
 
-export const {
-    useGetNotificationsQuery,
-    useGetNotificationByIdQuery,
-    useAddNotificationMutation,
-} = notification;
+export const { useGetNotificationsQuery } = notification;

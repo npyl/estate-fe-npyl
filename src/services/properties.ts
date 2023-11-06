@@ -67,14 +67,13 @@ interface BulkDeletePropertyImagesParams {
     newThumbnailKey: string;
 }
 
-// TODO: for cleanup, merge these 3 into one type
-interface IDeleteImageProps {
+interface IDeleteFileProps {
     propertyId: number;
     imageKey: string;
+}
+interface IDeleteImageProps extends IDeleteFileProps {
     newThumbnailKey: string;
 }
-type IDeleteDocumentProps = IDeleteImageProps;
-type IDeleteBlueprintProps = IDeleteImageProps;
 
 interface IPropertyFilterParams {
     filter: IPropertyFilter;
@@ -686,8 +685,8 @@ export const properties = createApi({
             // WARN: Do not add the tags! addPropertyImage needs to be used optimistically, to explicitly set the url null and know to show a preview Image.
             // invalidatesTags: ["Properties", "PropertyById"],
         }),
-        deletePropertyBlueprint: builder.mutation<void, IDeleteBlueprintProps>({
-            query: ({ propertyId, imageKey }: IDeleteBlueprintProps) => ({
+        deletePropertyBlueprint: builder.mutation<void, IDeleteFileProps>({
+            query: ({ propertyId, imageKey }: IDeleteFileProps) => ({
                 url: `/${propertyId}/blueprint/${imageKey}`,
                 method: "DELETE",
             }),
@@ -732,11 +731,11 @@ export const properties = createApi({
             // WARN: Do not add the tags! addPropertyImage needs to be used optimistically, to explicitly set the url null and know to show a preview Image.
             // invalidatesTags: ["Properties", "PropertyById"],
         }),
-        deletePropertyDocument: builder.mutation<void, IDeleteDocumentProps>({
+        deletePropertyDocument: builder.mutation<void, IDeleteFileProps>({
             query: ({
                 propertyId,
                 imageKey: documentKey,
-            }: IDeleteDocumentProps) => ({
+            }: IDeleteFileProps) => ({
                 url: `/${propertyId}/document/${documentKey}`,
                 method: "DELETE",
             }),

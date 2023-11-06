@@ -15,8 +15,6 @@ export const logs = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/logs`,
         prepareHeaders: (headers) => {
-            // By default, if we have a token in the store, let's use that for authenticated requests
-
             headers.set(
                 "Authorization",
                 `Bearer  ${localStorage.getItem("accessToken")}`
@@ -25,7 +23,8 @@ export const logs = createApi({
             return headers;
         },
     }),
-    tagTypes: ["Logs", "CustomerByIdLogs", "PropertyByIdLogs"], //tags must be uniq
+    tagTypes: ["Logs", "CustomerByIdLogs", "PropertyByIdLogs"],
+
     endpoints: (builder) => ({
         adminLogsPaginated: builder.query<IPage<ILog>, ILogsParams>({
             query: (params: ILogsParams) => ({

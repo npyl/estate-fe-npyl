@@ -352,16 +352,14 @@ export const labels = createApi({
 
 export const {
     useGetLabelsQuery,
-    // property
+    // // property
     useCreateLabelForPropertyWithIDMutation,
     useAssignLabelToPropertyWithIDMutation,
     useDeleteLabelForPropertyWithIdMutation,
-
     // customer
     useCreateLabelForCustomerWithIDMutation,
     useAssignLabelToCustomerWithIDMutation,
     useDeleteLabelForCustomerWithIdMutation,
-
     // general
     useCreateLabelForPropertiesMutation,
     useCreateLabelForCustomersMutation,
@@ -369,7 +367,7 @@ export const {
     useDeletePropertyLabelMutation,
     useDeleteCustomerLabelMutation,
     useDeleteDocumentLabelMutation,
-
+    // for specific resourceId
     useCreateLabelForResourceMutation,
     useAssignLabelToResourceMutation,
     useDeleteLabelForResourceMutation,

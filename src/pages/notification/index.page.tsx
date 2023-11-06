@@ -10,17 +10,6 @@ import { CollapsibleTable, createRow } from "./components/CollapsibleTable";
 const NotificationPage: NextPage = () => {
     const { data: notifications } = useGetNotificationsQuery();
 
-    // // TODO: test data; remove
-    // const { data: notification1 } = useGetNotificationByIdQuery(1);
-    // const { data: notification2 } = useGetNotificationByIdQuery(2);
-
-    // const notifications = useMemo(() => {
-    //     if (!notification1 && !notification2) return [];
-    //     if (notification1 && !notification2) return [notification1];
-    //     if (!notification1 && notification2) return [notification2];
-    //     return [notification1, notification2];
-    // }, [notification1, notification2]);
-
     const rows = useMemo(
         () =>
             notifications?.map((notification: ContactNotification) =>
@@ -29,9 +18,8 @@ const NotificationPage: NextPage = () => {
         [notifications]
     );
 
-    const handleRemove = (index: number) => {
+    const handleRemove = (index: number) =>
         console.log("will delete notification: ", index);
-    };
 
     return (
         <>

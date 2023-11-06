@@ -71,15 +71,6 @@ export const tickets = createApi({
             providesTags: ["Board"],
         }),
 
-        // TODO: remove
-        createBoard: builder.mutation<void, void>({
-            query: () => ({
-                url: "",
-                method: "POST",
-            }),
-            invalidatesTags: ["Board"],
-        }),
-
         // Columns
         addColumn: builder.mutation<void, IKanbanColumnPOST>({
             query: (body: IKanbanColumnPOST) => ({
@@ -253,7 +244,6 @@ export const tickets = createApi({
 export const {
     // Board
     useGetBoardQuery,
-    useCreateBoardMutation,
 
     // Columns
     useAddColumnMutation,
