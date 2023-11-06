@@ -42,13 +42,8 @@ export const customers = createApi({
             return headers;
         },
     }),
-    tagTypes: [
-        "Customers",
-        "CustomerById",
+    tagTypes: ["Customers", "CustomerById"],
 
-        // Attributes
-        "CustomerByIdLabels",
-    ],
     endpoints: (builder) => ({
         allCustomers: builder.query<ICustomer[], void>({
             query: () => ({
@@ -56,23 +51,12 @@ export const customers = createApi({
             }),
             providesTags: ["Customers"],
         }),
-        allCustomersPaginated: builder.query<IPage<ICustomer>, ICustomerParams>(
-            {
-                query: (params: ICustomerParams) => ({
-                    url: "",
-                    params: params,
-                }),
-                providesTags: ["Customers"],
-            }
-        ),
+
         getCustomerById: builder.query<ICustomer, number>({
             query: (id: number) => `${id}`,
             providesTags: ["CustomerById"],
         }),
-        getCustomerLabels: builder.query<ILabel[], number>({
-            query: (id: number) => `${id}/labels`,
-            providesTags: ["CustomerByIdLabels"],
-        }),
+
         filterCustomers: builder.mutation<
             IPage<ICustomerResultResponse>,
             ICustomerFilterProps
@@ -143,12 +127,9 @@ export const customers = createApi({
 
 export const {
     useAllCustomersQuery,
-    useAllCustomersPaginatedQuery,
     useGetCustomerByIdQuery,
-    useLazyGetCustomerLabelsQuery,
     useFilterCustomersMutation,
     useSearchCustomerQuery,
-
     useCreateCustomerMutation,
     useEditCustomerMutation,
     useDeleteCustomerMutation,

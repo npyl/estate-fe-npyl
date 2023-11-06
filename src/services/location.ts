@@ -56,7 +56,6 @@ export const location = createApi({
 export const {
     useGetRegionsQuery,
     useGetMunicipalitiesQuery,
-    useLazyGetMunicipalitiesQuery,
     useGetNeighbourhoodsQuery,
     useGetClosestQuery,
 

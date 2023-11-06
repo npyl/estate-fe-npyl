@@ -1,6 +1,5 @@
 import {
     FetchBaseQueryError,
-    FetchBaseQueryMeta,
     createApi,
     fetchBaseQuery,
 } from "@reduxjs/toolkit/query/react";
@@ -65,15 +64,16 @@ interface BulkEditPropertyImagesParams {
 interface BulkDeletePropertyImagesParams {
     propertyId: number;
     imageKeys: string[];
+    newThumbnailKey: string;
 }
 
-// TODO: for cleanup, merge these 3 into one type
-interface IDeleteImageProps {
+interface IDeleteFileProps {
     propertyId: number;
     imageKey: string;
 }
-type IDeleteDocumentProps = IDeleteImageProps;
-type IDeleteBlueprintProps = IDeleteImageProps;
+interface IDeleteImageProps extends IDeleteFileProps {
+    newThumbnailKey: string;
+}
 
 interface IPropertyFilterParams {
     filter: IPropertyFilter;
@@ -356,24 +356,139 @@ export const properties = createApi({
             invalidatesTags: ["Properties", "PropertyById"],
         }),
         bulkDeletePropertyImages: builder.mutation<
-            void,
+            number,
             BulkDeletePropertyImagesParams
         >({
-            query: ({
-                propertyId,
-                imageKeys,
-            }: BulkDeletePropertyImagesParams) => ({
-                url: `/${propertyId}/images/delete/bulk`,
-                method: "DELETE",
-                body: imageKeys,
-            }),
+            //
+            //  Deletes apropertyImages by imageKeys (updates thumbnail if necessary)
+            //
+            async queryFn(
+                { propertyId, imageKeys, newThumbnailKey },
+                api,
+                extraOptions,
+                baseQuery
+            ) {
+                try {
+                    const deleteResponse = await baseQuery({
+                        url: `/${propertyId}/images/delete/bulk`,
+                        method: "DELETE",
+                        body: imageKeys,
+                    });
+
+                    if ("error" in deleteResponse) {
+                        throw deleteResponse.error;
+                    }
+
+                    // We didn't remove thumbnail => no need to do anything else
+                    if (!newThumbnailKey) return { data: 0 };
+
+                    // Then, set thumbnail
+                    const thumbnailResponse = await baseQuery({
+                        url: `${propertyId}/thumbnail/${newThumbnailKey}`,
+                        method: "POST",
+                    });
+
+                    if ("error" in thumbnailResponse) {
+                        throw thumbnailResponse.error;
+                    }
+
+                    return { data: 0 };
+                } catch (error) {
+                    return { error: error as FetchBaseQueryError };
+                }
+            },
+            onQueryStarted: async (
+                { imageKeys, propertyId },
+                { dispatch, queryFulfilled }
+            ) => {
+                const patchResult = dispatch(
+                    properties.util.updateQueryData(
+                        "getPropertyById",
+                        propertyId,
+                        (draft) => {
+                            draft.images = draft.images.filter(
+                                (i) => !imageKeys.some((k) => k === i.key)
+                            );
+
+                            // update thumbnail
+                            if (draft.images?.length > 0)
+                                draft.images[0].thumbnail = true;
+                        }
+                    )
+                );
+                try {
+                    await queryFulfilled;
+                } catch {
+                    patchResult.undo();
+                }
+            },
             invalidatesTags: ["Properties", "PropertyById"],
         }),
-        deletePropertyImage: builder.mutation<void, IDeleteImageProps>({
-            query: ({ propertyId, imageKey }: IDeleteImageProps) => ({
-                url: `/${propertyId}/image/${imageKey}`,
-                method: "DELETE",
-            }),
+        deletePropertyImage: builder.mutation<number, IDeleteImageProps>({
+            //
+            //  Deletes a propertyImage by imageKey (updates thumbnail if necessary)
+            //
+            async queryFn(
+                { propertyId, imageKey, newThumbnailKey },
+                api,
+                extraOptions,
+                baseQuery
+            ) {
+                try {
+                    const deleteResponse = await baseQuery({
+                        url: `/${propertyId}/image/${imageKey}`,
+                        method: "DELETE",
+                    });
+
+                    if ("error" in deleteResponse) {
+                        throw deleteResponse.error;
+                    }
+
+                    // We didn't remove thumbnail => no need to do anything else
+                    if (!newThumbnailKey) return { data: 0 };
+
+                    // Then, set thumbnail
+                    const thumbnailResponse = await baseQuery({
+                        url: `${propertyId}/thumbnail/${newThumbnailKey}`,
+                        method: "POST",
+                    });
+
+                    if ("error" in thumbnailResponse) {
+                        throw thumbnailResponse.error;
+                    }
+
+                    return { data: 0 };
+                } catch (error) {
+                    return { error: error as FetchBaseQueryError };
+                }
+            },
+            onQueryStarted: async (
+                { imageKey, propertyId, newThumbnailKey },
+                { dispatch, queryFulfilled }
+            ) => {
+                const patchResult = dispatch(
+                    properties.util.updateQueryData(
+                        "getPropertyById",
+                        propertyId,
+                        (draft) => {
+                            if (newThumbnailKey) {
+                                draft.images.shift(); // remove first element
+                                draft.images[0].thumbnail = true; // next element becomes thumbnail
+                            }
+                            // remove image
+                            else
+                                draft.images = draft.images.filter(
+                                    (i) => i.key !== imageKey
+                                );
+                        }
+                    )
+                );
+                try {
+                    await queryFulfilled;
+                } catch {
+                    patchResult.undo();
+                }
+            },
             invalidatesTags: ["Properties", "PropertyById"],
         }),
         reorderPropertyImages: builder.mutation<
@@ -412,7 +527,6 @@ export const properties = createApi({
                     return { error: error as FetchBaseQueryError };
                 }
             },
-
             onQueryStarted: async (
                 { id, body: imageKeys },
                 { dispatch, queryFulfilled }
@@ -422,6 +536,9 @@ export const properties = createApi({
                         "getPropertyById",
                         id,
                         (draft) => {
+                            // disable old thumbnail
+                            draft.images[0].thumbnail = false;
+
                             // reorder based on imageKeys
                             let reordered = imageKeys.map(
                                 (k) => draft.images.find((i) => i.key === k)!
@@ -441,7 +558,6 @@ export const properties = createApi({
                     patchResult.undo();
                 }
             },
-
             invalidatesTags: ["Properties", "PropertyById"],
         }),
         reorderPropertyImagesWithSetImageVisibility: builder.mutation<
@@ -504,6 +620,9 @@ export const properties = createApi({
                         "getPropertyById",
                         propertyId,
                         (draft) => {
+                            // disable old thumbnail
+                            draft.images[0].thumbnail = false;
+
                             // reorder based on imageKeys
                             const reordered = imageKeys.map(
                                 (k) => draft.images.find((i) => i.key === k)!
@@ -566,8 +685,8 @@ export const properties = createApi({
             // WARN: Do not add the tags! addPropertyImage needs to be used optimistically, to explicitly set the url null and know to show a preview Image.
             // invalidatesTags: ["Properties", "PropertyById"],
         }),
-        deletePropertyBlueprint: builder.mutation<void, IDeleteBlueprintProps>({
-            query: ({ propertyId, imageKey }: IDeleteBlueprintProps) => ({
+        deletePropertyBlueprint: builder.mutation<void, IDeleteFileProps>({
+            query: ({ propertyId, imageKey }: IDeleteFileProps) => ({
                 url: `/${propertyId}/blueprint/${imageKey}`,
                 method: "DELETE",
             }),
@@ -612,11 +731,11 @@ export const properties = createApi({
             // WARN: Do not add the tags! addPropertyImage needs to be used optimistically, to explicitly set the url null and know to show a preview Image.
             // invalidatesTags: ["Properties", "PropertyById"],
         }),
-        deletePropertyDocument: builder.mutation<void, IDeleteDocumentProps>({
+        deletePropertyDocument: builder.mutation<void, IDeleteFileProps>({
             query: ({
                 propertyId,
                 imageKey: documentKey,
-            }: IDeleteDocumentProps) => ({
+            }: IDeleteFileProps) => ({
                 url: `/${propertyId}/document/${documentKey}`,
                 method: "DELETE",
             }),

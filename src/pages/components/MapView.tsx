@@ -30,7 +30,7 @@ const MapView = ({ data }: Props) => {
         null
     );
 
-    const [orientation, setOrientation] = useState(false); // true -> vertical, false -> horizontal)
+    const [orientation, setOrientation] = useState(false); // true -> vertical, false -> horizontal
 
     // filter only properties with valid location.{lat,lng}
     const nonNullProperties = useMemo(
@@ -40,6 +40,12 @@ const MapView = ({ data }: Props) => {
 
     // properties we show
     const { properties, filtered } = useMemo(() => {
+        if (!!selectedMarker)
+            return {
+                properties: nonNullProperties,
+                filtered: nonNullProperties,
+            };
+
         if (!encodedShape) {
             return { properties: nonNullProperties, filtered: [] }; // No shape, no filtered properties
         }
@@ -62,7 +68,7 @@ const MapView = ({ data }: Props) => {
                     : nonNullProperties,
             filtered: filteredProperties,
         };
-    }, [nonNullProperties, encodedShape]);
+    }, [selectedMarker, nonNullProperties, encodedShape]);
 
     // respective markers
     const markers: IMapMarker[] = useMemo(
@@ -100,40 +106,7 @@ const MapView = ({ data }: Props) => {
 
         updateMainMarkerCoordinates(lat, lng);
     };
-    // const renderPropertyCards = () => {
-    //     if (filtered.length === 0) {
-    //         return null; // Don't render cards if there are no properties
-    //     }
 
-    //     // If there are properties, render the cards
-    //     return (
-    //         <Grid container>
-    //             {properties.map((item, index) => (
-    //                 <Grid
-    //                     mb={1}
-    //                     key={index}
-    //                     item
-    //                     xs={12}
-    //                     sm={orientation ? 12 : 6}
-    //                 >
-    //                     {orientation ? (
-    //                         <HorizontalCard
-    //                             activeMarker={activeMarker || -1}
-    //                             item={item}
-    //                             selectedMarker={selectedMarker}
-    //                         />
-    //                     ) : (
-    //                         <BookingItem
-    //                             activeMarker={activeMarker || -1}
-    //                             item={item}
-    //                             selectedMarker={selectedMarker}
-    //                         />
-    //                     )}
-    //                 </Grid>
-    //             ))}
-    //         </Grid>
-    //     );
-    // };
     return (
         <>
             <Box display={"flex"}>
@@ -143,9 +116,7 @@ const MapView = ({ data }: Props) => {
                         mainMarker={mainMarker}
                         activeMarker={activeMarker}
                         setActiveMarker={setActiveMarker}
-                        onMarkerClick={(marker) => {
-                            setSelectedMarker(marker);
-                        }}
+                        onMarkerClick={setSelectedMarker}
                         markers={markers}
                         onDraw={handleDraw}
                         onShapeChange={handleChange}
@@ -200,7 +171,7 @@ const MapView = ({ data }: Props) => {
                         </Grid>
                     )}
 
-                    {filtered.length <= 0 && (
+                    {filtered.length === 0 && (
                         <Box
                             sx={{
                                 display: "flex",

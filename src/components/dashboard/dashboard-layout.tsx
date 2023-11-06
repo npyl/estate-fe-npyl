@@ -1,15 +1,7 @@
 import HomeIcon from "@mui/icons-material/Home";
 import LabelImportantIcon from "@mui/icons-material/LabelImportant";
 
-import {
-    Box,
-    Button,
-    Divider,
-    Grid,
-    MenuItem,
-    Paper,
-    Typography,
-} from "@mui/material";
+import { Box, Button, Divider, Grid, MenuItem, Paper } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
@@ -21,13 +13,7 @@ import Subbar from "./dashboard-subbar";
 
 import { Users as UsersIcon } from "../../icons/users";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import { Add, CircleNotifications } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
-import PlusOneIcon from "@mui/icons-material/PlusOne"; // Import the new icon
-import { relative } from "path";
-import { Send as SendIcon } from "@mui/icons-material";
-import AddCircleIcon from "@mui/icons-material/AddCircle";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import { BsPlusCircle } from "react-icons/bs";
 
 interface DashboardLayoutProps {
@@ -56,7 +42,6 @@ const itemTypeToPath: { [key: string]: string } = {
     [managerItemType]: "/user/create",
     [ownerItemType]: "/customer/create",
     [labelItemType]: "/label",
-    [notificationItemType]: "/notification/create",
 };
 
 export const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
@@ -158,15 +143,6 @@ export const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
                                 >
                                     <LabelImportantIcon fontSize="small" />
                                     {t("Label")}
-                                </MenuItem>
-                                <MenuItem
-                                    onClick={(e) =>
-                                        startCreate(notificationItemType)
-                                    }
-                                    disableRipple
-                                >
-                                    <CircleNotifications fontSize="small" />
-                                    {t("Notification")}
                                 </MenuItem>
                                 <Divider sx={{ my: 0.5 }} />
                                 <MenuItem

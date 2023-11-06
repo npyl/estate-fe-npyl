@@ -124,7 +124,7 @@ const SingleProperty: NextPage = () => {
                     <Tab label={t("Tickets")} {...a11yProps(2)} />
                     <Tab label={t("Matching Customers")} {...a11yProps(3)} />
                     <Tab label={t("Photos")} {...a11yProps(4)} />
-                    <Tab label={t("Connections")} {...a11yProps(5)} />
+                    <Tab label={t("Integrations")} {...a11yProps(5)} />
                     <Tab label={t("Logs")} {...a11yProps(6)} />
                     <Tab label={t("Documents")} {...a11yProps(7)} />
                     <Tab label={t("Map")} {...a11yProps(8)} />
