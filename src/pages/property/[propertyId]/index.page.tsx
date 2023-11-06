@@ -45,6 +45,7 @@ import { useTranslation } from "react-i18next";
 import { useTabsContext } from "src/contexts/tabs";
 import PropertyLogs from "./sections/Logs";
 import Documents from "./sections/Documents";
+import { ConfirmationDialogBox } from "src/pages/components/ConfirmationDialogBox";
 
 function a11yProps(index: number) {
     return {
@@ -80,12 +81,24 @@ const SingleProperty: NextPage = () => {
         setValue(newValue);
 
     const handleEdit = () => router.push(`/property/edit/${propertyId}`);
-    const handleClone = () =>
+    const [cloneConfirmDialogOpen, setCloneConfirmDialogOpen] = useState(false);
+
+    const handleClone = () => {
+        setCloneConfirmDialogOpen(true);
+    };
+    const closeCloneConfirmaionDialog = () => {
+        setCloneConfirmDialogOpen(false);
+    };
+
+    const handleCloneConfirmation = () => {
+        closeCloneConfirmaionDialog();
         cloneProperty(+propertyId!)
             .unwrap()
             .then((newPropertyId) =>
                 router.push(`/property/edit/${newPropertyId}`)
             );
+    };
+
     const handleDelete = () =>
         deleteProperty(+propertyId!).then(() => {
             router.push("/");
@@ -158,6 +171,12 @@ const SingleProperty: NextPage = () => {
                     <InitMap />
                 </Box>
             </TabPanel>
+            <ConfirmationDialogBox
+                open={cloneConfirmDialogOpen}
+                onClose={closeCloneConfirmaionDialog}
+                text={"Are you Sure You want to Clone This Property?"}
+                onConfirm={handleCloneConfirmation}
+            />
         </Box>
     );
 };
