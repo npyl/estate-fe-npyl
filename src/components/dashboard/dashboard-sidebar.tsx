@@ -46,8 +46,13 @@ const getSections = (t: TFunction): Section[] => [
         title: t("main"),
         items: [
             {
-                title: t("Properties"),
+                title: t("Dashboard"),
                 path: "/",
+                icon: <HomeIcon fontSize="small" />,
+            },
+            {
+                title: t("Properties"),
+                path: "/property",
                 icon: <HomeIcon fontSize="small" />,
             },
 
