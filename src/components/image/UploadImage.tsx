@@ -1,8 +1,37 @@
-import { CircularProgress, Typography } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import Image from "./Image";
 import { UploadImageProps } from "./types";
 import { useEffect, useState } from "react";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { useConditionalMemo } from "src/hooks/useConditionalMemo";
+
+interface ProgressLabelProps {
+    progress: number;
+}
+
+const ProgressLabel = ({ progress }: ProgressLabelProps) => {
+    const staticProgress = useConditionalMemo(
+        () => progress,
+        (p) => p !== -1,
+        [progress]
+    );
+
+    return (
+        <Box
+            sx={{
+                backgroundColor: "black",
+                opacity: 0.7,
+                borderRadius: 2,
+                padding: 1,
+                position: "absolute",
+                top: "calc(2%)",
+                right: "calc(1%)",
+            }}
+        >
+            <Typography color={"white"}>{staticProgress} %</Typography>
+        </Box>
+    );
+};
 
 const UploadImage = ({
     animate = false,
@@ -37,18 +66,7 @@ const UploadImage = ({
                 />
             )}
 
-            {progress > 0 && !reached100 && (
-                <Typography
-                    sx={{
-                        position: "absolute",
-                        top: "calc(50% - 20px)",
-                        left: "calc(50% - 20px)",
-                        transform: "translate(-50%, -50%)",
-                    }}
-                >
-                    {progress}
-                </Typography>
-            )}
+            {!reached100 && <ProgressLabel progress={progress} />}
 
             {reached100 && (
                 <CheckCircleIcon
