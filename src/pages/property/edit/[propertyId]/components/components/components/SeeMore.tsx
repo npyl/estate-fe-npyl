@@ -26,7 +26,6 @@ import { CompareGallery } from "./CompareGallery";
 interface SeeMoreProps {
     open: boolean;
     files: IPropertyImage[];
-    progress?: number;
     onImageClick: (i: IPropertyImage) => void;
     onReorder: (items: string[]) => void;
     onClose: () => void;
@@ -37,7 +36,6 @@ interface SeeMoreProps {
 export const SeeMore = ({
     open,
     files,
-    progress,
     onImageClick,
     onReorder,
     onClose,

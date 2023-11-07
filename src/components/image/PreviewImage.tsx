@@ -1,10 +1,6 @@
 import { CircularProgress } from "@mui/material";
 import Image from "./Image";
-import { ImageProps } from ".";
-
-interface IPreviewImageProps extends ImageProps {
-    animate?: boolean;
-}
+import { IPreviewImageProps, ImageProps } from ".";
 
 const PreviewImage = ({
     animate = false,

@@ -86,7 +86,6 @@ const DocumentsSection: React.FC = () => {
         // PUT to amazon url
         const response = await uploadDocument({
             url,
-            contentType,
             image,
         });
 

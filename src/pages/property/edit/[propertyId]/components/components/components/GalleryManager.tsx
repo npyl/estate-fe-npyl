@@ -19,20 +19,7 @@ import ICarouselImage from "src/components/carousel/types";
 import { IPropertyImage } from "src/types/file";
 import { useRouter } from "next/router";
 import { LanguageButton } from "src/components/Language/LanguageButton";
-
-const useConditionalMemo = (
-    callback: () => number,
-    condition: (value: number) => boolean, // condition to accept new value
-    dependencies: any[]
-) => {
-    const value = useRef(0);
-    const newValue = useMemo(callback, dependencies);
-
-    // Update ONLY if condition is true
-    if (condition(newValue)) value.current = newValue;
-
-    return value.current;
-};
+import { useConditionalMemo } from "src/hooks/useConditionalMemo";
 
 interface IGalleryManager {
     open: boolean;
