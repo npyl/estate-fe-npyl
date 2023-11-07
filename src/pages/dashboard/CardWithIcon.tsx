@@ -2,7 +2,6 @@ import React from "react";
 import { Card, Stack, Box, Typography } from "@mui/material";
 
 interface CardWithIconProps {
-    iconSrc: string;
     title: string;
     subtitle: string;
 }

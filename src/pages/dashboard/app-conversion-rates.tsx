@@ -7,13 +7,27 @@ import useChart from "src/components/chart/use-chart";
 const DynamicChart = dynamic(() => import("src/components/chart/chart"), {
     ssr: false, // Disable server-side rendering for this component
 });
+interface ChartData {
+    label: string;
+    value: number;
+}
+
+interface AppConversionRatesProps {
+    title: string;
+    subheader: string;
+    chart: {
+        series: ChartData[];
+        colors: any | null;
+        options: any | null;
+    };
+}
 
 export default function AppConversionRates({
     title,
     subheader,
     chart,
     ...other
-}) {
+}: AppConversionRatesProps) {
     const { colors, series, options } = chart;
 
     const chartSeries = series.map((i) => i.value);
@@ -23,7 +37,7 @@ export default function AppConversionRates({
         tooltip: {
             marker: { show: false },
             y: {
-                formatter: (value) => value,
+                formatter: (value: number) => value,
                 title: {
                     formatter: () => "",
                 },

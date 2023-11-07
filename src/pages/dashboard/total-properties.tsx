@@ -22,8 +22,26 @@ const StyledChart = styled(DynamicChart)(({ theme }) => ({
         top: `calc(${CHART_HEIGHT - LEGEND_HEIGHT}px) !important`,
     },
 }));
+interface ChartData {
+    label: string;
+    value: number;
+}
+interface TotalPropertiesProps {
+    title: string;
+    subheader: string;
+    chart: {
+        series: ChartData[];
+        colors: any | null;
+        options: any | null;
+    };
+}
 
-export default function TotalProperties({ title, subheader, chart, ...other }) {
+export default function TotalProperties({
+    title,
+    subheader,
+    chart,
+    ...other
+}: TotalPropertiesProps) {
     const theme = useTheme();
 
     const { colors, series, options } = chart;
@@ -55,9 +73,9 @@ export default function TotalProperties({ title, subheader, chart, ...other }) {
         tooltip: {
             fillSeriesColor: false,
             y: {
-                formatter: (value) => value,
+                formatter: (value: number) => value,
                 title: {
-                    formatter: (seriesName) => `${seriesName}`,
+                    formatter: (seriesName: string) => `${seriesName}`,
                 },
             },
         },
