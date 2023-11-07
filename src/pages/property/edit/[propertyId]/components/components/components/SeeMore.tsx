@@ -202,12 +202,6 @@ export const SeeMore = ({
                                 : ""}
                         </Box>
 
-                        {progress && (
-                            <Box sx={{ width: "30%" }}>
-                                <ProgressBar value={progress} />
-                            </Box>
-                        )}
-
                         <Box display="flex" alignItems="center" gap={1}>
                             {selectMultiple && selectedImages.length > 0 && (
                                 <>
