@@ -55,6 +55,7 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
             doy: user?.doy || "",
             gemh: user?.gemh || "",
             status: "Active",
+            preferredLanguage: user?.preferredLanguage?.key || "ENGLISH",
         }),
         [user]
     );
@@ -214,6 +215,18 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
                                             </MenuItem>
                                             <MenuItem value="Inactive">
                                                 Inactive
+                                            </MenuItem>
+                                        </RHFSelect>
+                                        <RHFSelect
+                                            select
+                                            name="preferredLanguage"
+                                            label="Preferred Language"
+                                        >
+                                            <MenuItem value="ENGLISH">
+                                                English
+                                            </MenuItem>
+                                            <MenuItem value="GREEK">
+                                                Greek
                                             </MenuItem>
                                         </RHFSelect>
                                     </Grid>

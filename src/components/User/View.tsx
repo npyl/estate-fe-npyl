@@ -61,17 +61,12 @@ const ViewUser = ({ user }: ViewUserProps) => {
     const { setSelectedUser } = useSecurityContext();
 
     const [formOpen, setFormOpen] = useState(false);
-    const handleFormOpen = () => {
-        setSelectedUser(user!.id);
-        setFormOpen(true);
-    };
+    const handleFormOpen = () => setFormOpen(true);
     const handleFormClose = () => setFormOpen(false);
 
-    // TODO:
-    // profilePhoto: string;
-    // password: string;
-    // properties: IProperties[];
-    // propertyFilters: IPropertyFilter[];
+    useEffect(() => {
+        setSelectedUser(user!.id);
+    }, []);
 
     return (
         <Paper

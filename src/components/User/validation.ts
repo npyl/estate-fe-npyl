@@ -31,4 +31,6 @@ export const Schema = object().shape({
     gemh: numberString("GEMH"),
 
     status: string().oneOf(["Active", "Inactive"]),
+
+    preferredLanguage: string().oneOf(["ENGLISH", "GREEK"]),
 });
