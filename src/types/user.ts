@@ -1,3 +1,5 @@
+import { KeyValue } from "./KeyValue";
+import { PreferredLanguageType } from "./enums";
 import { IProperties } from "./properties";
 
 export interface IUser {
@@ -26,6 +28,8 @@ export interface IUser {
     isActive: boolean;
     joinedIn: string;
     registrationDate: string;
+
+    preferredLanguage: KeyValue<PreferredLanguageType>;
 }
 
 export interface IUserPOST {

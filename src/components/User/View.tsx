@@ -9,6 +9,7 @@ import { SoftButton } from "../SoftButton";
 import { UserForm } from "./Form";
 import { useEffect, useState } from "react";
 import { useSecurityContext } from "src/contexts/security";
+import ListLanguageItem from "../List/language-item";
 
 interface ViewUserProps {
     user?: IUser;
@@ -128,6 +129,11 @@ const ViewUser = ({ user }: ViewUserProps) => {
                         <ListItem
                             label={t("Last Name")}
                             value={user?.lastName || ""}
+                            align="horizontal"
+                        />
+                        <ListLanguageItem
+                            label={t("Preferred Language")}
+                            value={user?.preferredLanguage?.key || "ENGLISH"}
                             align="horizontal"
                         />
                     </List>
