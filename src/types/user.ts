@@ -1,3 +1,5 @@
+import { KeyValue } from "./KeyValue";
+import { PreferredLanguageType } from "./enums";
 import { IProperties } from "./properties";
 
 export interface IUser {
@@ -26,6 +28,8 @@ export interface IUser {
     isActive: boolean;
     joinedIn: string;
     registrationDate: string;
+
+    preferredLanguage: KeyValue<PreferredLanguageType>;
 }
 
 export interface IUserPOST {
@@ -46,4 +50,5 @@ export interface IUserPOST {
     doy?: string;
     gemh?: string;
     status?: string;
+    preferredLanguage?: string; // TODO: yup validator doesn't accept custom string type but should be PreferredLanguageType
 }

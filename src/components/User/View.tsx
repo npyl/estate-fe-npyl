@@ -9,6 +9,7 @@ import { SoftButton } from "../SoftButton";
 import { UserForm } from "./Form";
 import { useEffect, useState } from "react";
 import { useSecurityContext } from "src/contexts/security";
+import ListLanguageItem from "../List/language-item";
 
 interface ViewUserProps {
     user?: IUser;
@@ -60,17 +61,12 @@ const ViewUser = ({ user }: ViewUserProps) => {
     const { setSelectedUser } = useSecurityContext();
 
     const [formOpen, setFormOpen] = useState(false);
-    const handleFormOpen = () => {
-        setSelectedUser(user!.id);
-        setFormOpen(true);
-    };
+    const handleFormOpen = () => setFormOpen(true);
     const handleFormClose = () => setFormOpen(false);
 
-    // TODO:
-    // profilePhoto: string;
-    // password: string;
-    // properties: IProperties[];
-    // propertyFilters: IPropertyFilter[];
+    useEffect(() => {
+        setSelectedUser(user!.id);
+    }, []);
 
     return (
         <Paper
@@ -128,6 +124,11 @@ const ViewUser = ({ user }: ViewUserProps) => {
                         <ListItem
                             label={t("Last Name")}
                             value={user?.lastName || ""}
+                            align="horizontal"
+                        />
+                        <ListLanguageItem
+                            label={t("Preferred Language")}
+                            value={user?.preferredLanguage?.key || "ENGLISH"}
                             align="horizontal"
                         />
                     </List>

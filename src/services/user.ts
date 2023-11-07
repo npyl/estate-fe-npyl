@@ -28,29 +28,11 @@ export const user = createApi({
             void,
             { user: IUserPOST; profilePhoto?: File }
         >({
-            query: ({ user, profilePhoto }) => {
-                // Convert user object to JSON string
-                const userJson = JSON.stringify(user);
-
-                // Create a FormData instance to handle file uploads
-                const formData = new FormData();
-                formData.append("userForm", userJson);
-
-                // If a profilePhoto is provided, append it to the FormData
-                if (profilePhoto) {
-                    formData.append("profilePhoto", profilePhoto);
-                }
-
-                return {
-                    url: "/add",
-                    method: "POST",
-                    body: formData,
-                    // This is important as we don't want to manually set a multipart content type with boundary
-                    headers: {
-                        "Content-Type": undefined,
-                    },
-                };
-            },
+            query: ({ user, profilePhoto }) => ({
+                url: "/add",
+                method: "POST",
+                body: user,
+            }),
             invalidatesTags: ["Users"],
         }),
         allUsers: builder.query<IUser[], void>({

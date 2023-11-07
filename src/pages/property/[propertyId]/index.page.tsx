@@ -44,8 +44,9 @@ import { useTranslation } from "react-i18next";
 
 import { useTabsContext } from "src/contexts/tabs";
 import PropertyLogs from "./sections/Logs";
-import Documents from "./sections/Documents";
+import Documents from "./tabs/Documents";
 import { ConfirmationDialogBox } from "src/pages/components/ConfirmationDialogBox";
+import Integrations from "./tabs/Integrations";
 
 function a11yProps(index: number) {
     return {
@@ -159,7 +160,9 @@ const SingleProperty: NextPage = () => {
             <TabPanel value={value} index={4}>
                 <PhotosOnly data={data as any} />
             </TabPanel>
-            <TabPanel value={value} index={5}></TabPanel>
+            <TabPanel value={value} index={5}>
+                <Integrations />
+            </TabPanel>
             <TabPanel value={value} index={6}>
                 <PropertyLogs />
             </TabPanel>

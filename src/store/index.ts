@@ -20,7 +20,9 @@ import { location } from "../services/location";
 import { properties } from "../services/properties";
 import { security } from "../services/security";
 import { user } from "../services/user";
+import { listings } from "src/services/listings";
 import { rootReducer } from "./root-reducer";
+
 export const createStore = (
     options?: ConfigureStoreOptions["preloadedState"] | undefined
 ) =>
@@ -47,6 +49,7 @@ export const createStore = (
                 exports.middleware,
                 tickets.middleware,
                 logs.middleware,
+                listings.middleware,
                 rtkQueryErrorLogger
             ),
         ...options,

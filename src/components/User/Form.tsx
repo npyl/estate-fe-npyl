@@ -12,7 +12,7 @@ import {
     InputAdornment,
     MenuItem,
 } from "@mui/material";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSecurityContext } from "src/contexts/security";
 import { useAddUserMutation, useAllUsersQuery } from "src/services/user";
 import { IUser, IUserPOST } from "src/types/user";
@@ -27,8 +27,7 @@ interface UserFormProps {
 }
 
 export const UserForm = ({ open, onClose }: UserFormProps) => {
-    const { data: users } = useAllUsersQuery();
-    const [addUser] = useAddUserMutation();
+    const { data: users, isLoading } = useAllUsersQuery();
     const { selectedUser } = useSecurityContext();
 
     const user: IUser | null = useMemo(() => {
@@ -56,15 +55,23 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
             doy: user?.doy || "",
             gemh: user?.gemh || "",
             status: "Active",
+            preferredLanguage: user?.preferredLanguage?.key || "ENGLISH",
         }),
         [user]
     );
+
+    const [addUser] = useAddUserMutation();
 
     const methods = useForm<IUserPOST>({
         resolver: yupResolver(Schema),
         defaultValues,
         mode: "onChange",
     });
+
+    useEffect(() => {
+        if (isLoading) return;
+        methods.reset({ ...defaultValues });
+    }, [isLoading, defaultValues]);
 
     // Delete Dialog
     const [openDelete, setOpenDelete] = useState(false);
@@ -208,6 +215,18 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
                                             </MenuItem>
                                             <MenuItem value="Inactive">
                                                 Inactive
+                                            </MenuItem>
+                                        </RHFSelect>
+                                        <RHFSelect
+                                            select
+                                            name="preferredLanguage"
+                                            label="Preferred Language"
+                                        >
+                                            <MenuItem value="ENGLISH">
+                                                English
+                                            </MenuItem>
+                                            <MenuItem value="GREEK">
+                                                Greek
                                             </MenuItem>
                                         </RHFSelect>
                                     </Grid>

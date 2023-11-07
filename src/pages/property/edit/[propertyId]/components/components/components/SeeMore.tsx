@@ -26,7 +26,6 @@ import { CompareGallery } from "./CompareGallery";
 interface SeeMoreProps {
     open: boolean;
     files: IPropertyImage[];
-    progress?: number;
     onImageClick: (i: IPropertyImage) => void;
     onReorder: (items: string[]) => void;
     onClose: () => void;
@@ -37,7 +36,6 @@ interface SeeMoreProps {
 export const SeeMore = ({
     open,
     files,
-    progress,
     onImageClick,
     onReorder,
     onClose,
@@ -203,12 +201,6 @@ export const SeeMore = ({
                                 ? `(${selectedImages.length} selected)`
                                 : ""}
                         </Box>
-
-                        {progress && (
-                            <Box sx={{ width: "30%" }}>
-                                <ProgressBar value={progress} />
-                            </Box>
-                        )}
 
                         <Box display="flex" alignItems="center" gap={1}>
                             {selectMultiple && selectedImages.length > 0 && (

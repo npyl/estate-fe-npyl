@@ -22,6 +22,8 @@ import { SeeMore } from "./components/SeeMore";
 import UploadImages from "src/components/upload/UploadImages";
 import { useDispatch } from "react-redux";
 import { useDebouncedCallback } from "use-debounce";
+import { NoUploadProgress, UploadProgress } from "src/components/image";
+import { useUploadFileContext } from "src/contexts/uploadFile";
 
 const PREVIEW_IMAGES_COUNT = 5;
 
@@ -63,13 +65,7 @@ const ImagesSection: React.FC = () => {
     const [moreOpen, setMoreOpen] = useState(false);
 
     /* progress */
-    const [progress, setProgress] = useState<number>();
-    const resetProgress = useDebouncedCallback(
-        () => setProgress(undefined),
-        500
-    );
-    const incrementProgress = (s: number) =>
-        setProgress((progress) => progress! + s);
+    const { setUploadProgress } = useUploadFileContext();
 
     const previewImages = useMemo(
         () => files.slice(0, PREVIEW_IMAGES_COUNT),
@@ -114,12 +110,11 @@ const ImagesSection: React.FC = () => {
 
     const uploadFile = async (
         image: File | undefined,
-        fileResponse: IFileResponse,
-        step: number
+        fileResponse: IFileResponse
     ): Promise<UploadResponse> => {
         if (!image) throw new Error("null image!");
 
-        const { type: contentType, size } = image;
+        const { type: contentType, name: filename, size } = image;
         const { key, url, cdnUrl } = fileResponse;
 
         if (!contentType) throw new Error("contentType cannot be null");
@@ -128,29 +123,27 @@ const ImagesSection: React.FC = () => {
         // PUT to amazon url
         const response = await uploadImage({
             url,
-            contentType,
             image,
+            onProgressUpdate: (progress) =>
+                setUploadProgress({
+                    filename,
+                    progress,
+                }),
         });
 
         if (!response)
             throw new Error("Uploading the image failed: ", response);
-
-        incrementProgress(step);
 
         return { cdnUrl, key };
     };
 
     const handleDropMultiFile = useCallback(
         async (acceptedFiles: File[]) => {
-            setProgress(0.1);
-
-            const step = 100 / acceptedFiles.length;
-
             if (files.length === 0) {
                 // this is the first image we are adding; therefore it is the mainImage
                 addFile(acceptedFiles[0])
                     .then((fileResponse) =>
-                        uploadFile(acceptedFiles[0], fileResponse, step)
+                        uploadFile(acceptedFiles[0], fileResponse)
                     )
                     .then(({ key }) =>
                         setThumbnail({
@@ -174,16 +167,11 @@ const ImagesSection: React.FC = () => {
                 /* Upload Sequentially */
                 const uploadPromises = fileResponses.map(
                     (fileResponse, i) => () =>
-                        uploadFile(
-                            acceptedFiles.slice(1).at(i),
-                            fileResponse,
-                            step
-                        )
+                        uploadFile(acceptedFiles.slice(1).at(i), fileResponse)
                 );
 
                 executeSequentially(uploadPromises)
                     .then(invalidateTags)
-                    .then(resetProgress)
                     .catch((error) =>
                         console.error("SequentialUploadError:", error)
                     );
@@ -197,12 +185,11 @@ const ImagesSection: React.FC = () => {
                 /* Upload Sequentially */
                 const uploadPromises = fileResponses.map(
                     (fileResponse, i) => () =>
-                        uploadFile(acceptedFiles.at(i), fileResponse, step)
+                        uploadFile(acceptedFiles.at(i), fileResponse)
                 );
 
                 executeSequentially(uploadPromises)
                     .then(invalidateTags)
-                    .then(resetProgress)
                     .catch((error) =>
                         console.error("SequentialUploadError:", error)
                     );
@@ -359,7 +346,6 @@ const ImagesSection: React.FC = () => {
                 <SeeMore
                     open={moreOpen}
                     files={files}
-                    progress={progress}
                     onImageClick={handleImageClick}
                     onReorder={handleReorder}
                     onClose={handleCloseMore}

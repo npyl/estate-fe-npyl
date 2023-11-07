@@ -8,6 +8,7 @@ import CommercialFormSection from "./components/CommercialForm";
 import LandFormSection from "./components/LandForm";
 import OtherFormSection from "./components/OtherForm";
 import ResidentialFormSection from "./components/ResidentialForm";
+import { UploadFileProvider } from "src/contexts/uploadFile";
 
 interface IFormProps {
     resetEverything: () => void;
@@ -32,16 +33,18 @@ export default function Form({
     return (
         <Grid container spacing={1} paddingLeft={2} paddingTop={1}>
             {parentCategory !== "" && (
-                <Grid container mt={0} spacing={1}>
-                    {parentCategory === "RESIDENTIAL" && (
-                        <ResidentialFormSection />
-                    )}
-                    {parentCategory === "LAND" && <LandFormSection />}
-                    {parentCategory === "COMMERCIAL" && (
-                        <CommercialFormSection />
-                    )}
-                    {parentCategory === "OTHER" && <OtherFormSection />}
-                </Grid>
+                <UploadFileProvider>
+                    <Grid container mt={0} spacing={1}>
+                        {parentCategory === "RESIDENTIAL" && (
+                            <ResidentialFormSection />
+                        )}
+                        {parentCategory === "LAND" && <LandFormSection />}
+                        {parentCategory === "COMMERCIAL" && (
+                            <CommercialFormSection />
+                        )}
+                        {parentCategory === "OTHER" && <OtherFormSection />}
+                    </Grid>
+                </UploadFileProvider>
             )}
             <Grid
                 padding={2}

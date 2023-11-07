@@ -1,7 +1,9 @@
 import { Grid } from "@mui/material";
 import { motion } from "framer-motion";
-import { LabeledImage } from "src/components/image";
-import PreviewImage from "src/components/image/PreviewImage";
+import { useCallback } from "react";
+import { LabeledImage, UploadProgress } from "src/components/image";
+import UploadImage from "src/components/image/UploadImage";
+import { useUploadFileContext } from "src/contexts/uploadFile";
 import { IPropertyImage } from "src/types/file";
 
 // ----------------------------------------------------------------------
@@ -17,6 +19,14 @@ export default function ImagePreview({
     placeholder,
     onImageClick,
 }: ImagePreviewProps) {
+    const { uploadProgress } = useUploadFileContext();
+
+    const getProgress = useCallback(
+        (filename: string) =>
+            uploadProgress.filename === filename ? uploadProgress.progress : -1,
+        [uploadProgress]
+    );
+
     return (
         <Grid container spacing={0.5}>
             {images?.map((image, index) => (
@@ -36,7 +46,11 @@ export default function ImagePreview({
                             />
                         </motion.div>
                     ) : (
-                        <PreviewImage animate borderRadius={0.3} />
+                        <UploadImage
+                            animate
+                            progress={getProgress(image.filename)}
+                            borderRadius={0.3}
+                        />
                     )}
                 </Grid>
             ))}
