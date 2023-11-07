@@ -23,6 +23,8 @@ import { Scrollbar } from "../scrollbar";
 import { DashboardSidebarSection } from "./dashboard-sidebar-section";
 import { OrganizationPopover } from "./organization-popover";
 import HistoryIcon from "@mui/icons-material/History";
+import { AcademicCap } from "src/icons/academic-cap";
+import { ChartPie } from "src/icons/chart-pie";
 interface DashboardSidebarProps {
     onClose?: () => void;
     open?: boolean;
@@ -48,7 +50,7 @@ const getSections = (t: TFunction): Section[] => [
             {
                 title: t("Dashboard"),
                 path: "/",
-                icon: <HomeIcon fontSize="small" />,
+                icon: <ChartPie fontSize="small" />,
             },
             {
                 title: t("Properties"),
