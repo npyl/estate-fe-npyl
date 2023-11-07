@@ -1,4 +1,12 @@
-import { Box, Button, Paper, Typography } from "@mui/material";
+import {
+    Box,
+    Paper,
+    Stack,
+    Switch,
+    SwitchProps,
+    Typography,
+    styled,
+} from "@mui/material";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
 import { useDispatch } from "react-redux";
@@ -17,6 +25,30 @@ interface ListingCardProps {
 }
 
 const renderValue = (value: boolean) => (value ? "Published" : "No");
+
+const PublicSvg: React.FC = () => {
+    return (
+        <svg
+            width="36px"
+            height="36px"
+            viewBox="0 0 64 64"
+            xmlns="http://www.w3.org/2000/svg"
+            stroke-width="3"
+            stroke="#000000"
+            fill="none"
+        >
+            <path d="M39.93,55.72A24.86,24.86,0,1,1,56.86,32.15a37.24,37.24,0,0,1-.73,6" />
+            <path d="M37.86,51.1A47,47,0,0,1,32,56.7" />
+            <path d="M32,7A34.14,34.14,0,0,1,43.57,30a34.07,34.07,0,0,1,.09,4.85" />
+            <path d="M32,7A34.09,34.09,0,0,0,20.31,32.46c0,16.2,7.28,21,11.66,24.24" />
+            <line x1="10.37" y1="19.9" x2="53.75" y2="19.9" />
+            <line x1="32" y1="6.99" x2="32" y2="56.7" />
+            <line x1="11.05" y1="45.48" x2="37.04" y2="45.48" />
+            <line x1="7.14" y1="32.46" x2="56.86" y2="31.85" />
+            <path d="M53.57,57,58,52.56l-8-8,4.55-2.91a.38.38,0,0,0-.12-.7L39.14,37.37a.39.39,0,0,0-.46.46L42,53.41a.39.39,0,0,0,.71.13L45.57,49Z" />
+        </svg>
+    );
+};
 
 const SpitogatosSvg: React.FC = () => {
     return (
@@ -46,23 +78,103 @@ const SpitogatosSvg: React.FC = () => {
     );
 };
 
+interface LabeledSwitchProps extends SwitchProps {
+    labelOff: string;
+    labelOn: string;
+}
+
+const LabeledSwitch = styled(Switch)<LabeledSwitchProps>(
+    ({ theme, labelOn, labelOff }) => ({
+        width: "140px",
+        height: "50px",
+        padding: "0px",
+
+        "& .MuiSwitch-switchBase": {
+            color: "#818181",
+            padding: "1px",
+            "&.Mui-checked": {
+                color: theme.palette.success.main,
+                "& + .MuiSwitch-track": {
+                    backgroundColor: theme.palette.success.main,
+                },
+                "& .MuiSwitch-thumb": {
+                    color: theme.palette.background.paper,
+                },
+                "& + .MuiSwitch-track:before": {
+                    opacity: 0,
+                },
+                "& + .MuiSwitch-track:after": {
+                    opacity: 1,
+                },
+            },
+        },
+        "& .MuiSwitch-thumb": {
+            color: "white",
+            borderRadius: 5,
+            width: "35px",
+            height: "46px",
+            margin: "1px",
+        },
+        "& .MuiSwitch-track": {
+            backgroundColor: "#818181",
+            opacity: 1,
+            "&:before, &:after": {
+                content: '""',
+                position: "absolute",
+                top: "50%",
+                transform: "translateY(-50%)",
+                color: "white",
+                fontSize: 15,
+            },
+            "&:before": {
+                right: 8,
+                content: `"${labelOff}"`,
+            },
+            "&:after": {
+                left: 8,
+                content: `"${labelOn}"`,
+                opacity: 0,
+            },
+        },
+        "& .Mui-checked + .MuiSwitch-track": {
+            backgroundColor: "#23bf58",
+        },
+        "& .Mui-checked .MuiSwitch-thumb": {
+            color: "#23bf58",
+        },
+        "& .Mui-checked": {
+            transform: "translateX(101px)",
+        },
+    })
+);
+
 const ListingCard = ({ label, value, onClick }: ListingCardProps) => {
     const handleClick = () => onClick(label, value);
 
     return (
-        <Box p={5} border={1} borderRadius={1}>
-            {label === "PUBLIC_SITE" ? (
-                <Typography>Public</Typography>
-            ) : (
-                <SpitogatosSvg />
-            )}
+        <Stack
+            p={5}
+            border={1}
+            borderRadius={1}
+            direction={"row"}
+            maxWidth={"30%"}
+        >
+            <Box justifyItems={"center"} flex={1} flexDirection={"column"}>
+                {label === "PUBLIC_SITE" ? <PublicSvg /> : <SpitogatosSvg />}
+                <Typography>
+                    {label === "PUBLIC_SITE" ? "Public" : "Spitogatos.gr"}
+                </Typography>
+            </Box>
 
-            {`${renderValue(value)}`}
-
-            <Button variant="text" onClick={handleClick}>
-                {value ? "Unpublish" : "Publish"}
-            </Button>
-        </Box>
+            <LabeledSwitch
+                checked={value}
+                labelOn="Published"
+                labelOff="Unpublished"
+                onChange={handleClick}
+                name="checkedA"
+                inputProps={{ "aria-label": "secondary checkbox" }}
+            />
+        </Stack>
     );
 };
 
@@ -97,17 +209,22 @@ const Integrations = () => {
 
     return (
         <Paper elevation={10} sx={{ overflow: "auto", padding: "10px" }}>
-            {listings &&
-                Object.keys(listings).map((key) => (
-                    <ListingCard
-                        key={key}
-                        label={key as ListingTypes}
-                        value={listings[key as ListingTypes]}
-                        onClick={handleClick}
-                    />
-                ))}
+            <Stack gap={1}>
+                {listings &&
+                    Object.keys(listings).map((key) => (
+                        <ListingCard
+                            key={key}
+                            label={key as ListingTypes}
+                            value={listings[key as ListingTypes]}
+                            onClick={handleClick}
+                        />
+                    ))}
+            </Stack>
         </Paper>
     );
 };
 
 export default Integrations;
+function useStyles() {
+    throw new Error("Function not implemented.");
+}
