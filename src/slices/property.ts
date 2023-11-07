@@ -798,9 +798,6 @@ const slice = createSlice({
             const index = payload;
             state.labelIDs = state.labelIDs.filter((_, i) => i !== index);
         },
-        setDefaultState: (state: propertyState, action): void => {
-            state = initialState;
-        },
 
         setInitialState: (state: propertyState, action): void => {
             const payload: IProperties = action.payload;
