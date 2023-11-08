@@ -23,7 +23,7 @@ import { Scrollbar } from "../scrollbar";
 import { DashboardSidebarSection } from "./dashboard-sidebar-section";
 import { OrganizationPopover } from "./organization-popover";
 import HistoryIcon from "@mui/icons-material/History";
-import { AcademicCap } from "src/icons/academic-cap";
+import { useProfileQuery } from "src/services/user";
 import { ChartPie } from "src/icons/chart-pie";
 interface DashboardSidebarProps {
     onClose?: () => void;
@@ -33,6 +33,7 @@ interface DashboardSidebarProps {
 interface Item {
     title: string;
     children?: Item[];
+    adminOnly?: boolean;
     chip?: ReactNode;
     icon?: ReactNode;
     path?: string;
@@ -85,12 +86,14 @@ const getSections = (t: TFunction): Section[] => [
                 title: t("Logs"),
                 path: "/logs",
                 icon: <HistoryIcon fontSize="small" />,
+                adminOnly: true,
             },
 
             {
                 title: t("Security"),
                 path: "/security",
                 icon: <UsersIcon fontSize="small" />,
+                adminOnly: true,
             },
             // {
             //     title: t("Developers"),
@@ -144,7 +147,24 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
     const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up("md"), {
         noSsr: true,
     });
-    const sections = useMemo(() => getSections(t), [t]);
+    const isAdmin = useProfileQuery().data?.isAdmin ?? false;
+
+    const sections = useMemo(() => {
+        const sectionsData = getSections(t);
+
+        // Check if the user is not an admin (isAdmin is false)
+        if (!isAdmin) {
+            // Filter sections based on the adminOnly attribute
+            return sectionsData.map((section) => ({
+                ...section,
+                items: section.items.filter((item) => !item.adminOnly),
+            }));
+        }
+
+        // If the user is an admin, return all sections without filtering
+        return sectionsData;
+    }, [t, isAdmin]);
+
     const organizationsRef = useRef<HTMLButtonElement | null>(null);
     const [openOrganizationsPopover, setOpenOrganizationsPopover] =
         useState<boolean>(false);
