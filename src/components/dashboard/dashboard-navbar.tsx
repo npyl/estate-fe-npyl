@@ -22,6 +22,13 @@ import { LanguageButton } from "../Language/LanguageButton";
 import { SettingsButton } from "../settings-button";
 import { Logo } from "../logo";
 
+const StyledTypography = styled(Typography)`
+    color: ${({ theme }) =>
+        theme.palette.mode === "light"
+            ? theme.palette.neutral![900]
+            : theme.palette.grey[100]};
+`;
+
 interface DashboardNavbarProps extends AppBarProps {
     onOpenSidebar?: () => void;
 }
@@ -133,9 +140,9 @@ export const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                             />
                             {/* nick ama to svhseis se gamhsa */}
                             <Tooltip title="Alex Gamiesai file">
-                                <Typography color="neutral.900" variant={"h5"}>
+                                <StyledTypography variant="h5">
                                     PropertyPro v0.56
-                                </Typography>
+                                </StyledTypography>
                             </Tooltip>
                         </Link>
                     </Box>
