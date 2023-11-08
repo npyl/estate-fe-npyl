@@ -24,6 +24,7 @@ import { Create } from "./components/Create";
 import { Edit } from "./components/Edit";
 import { Preview } from "./components/Preview";
 import { IEditProps } from "./components/types";
+import { ConfirmationDialogBox } from "../components/ConfirmationDialogBox";
 
 const LabelsPage: NextPage = () => {
     const { t } = useTranslation();
@@ -139,7 +140,22 @@ const LabelsPage: NextPage = () => {
 
     const cancelEdit = () => setEditMode(false);
 
+    const [resource, setResource] = useState<string>("");
+    const [labelId, setLabelId] = useState<number>(0);
+    const [DeleteDialogOpen, setDeleteDialogOpen] = useState<boolean>(false);
+
     const handleDelete = (resource: string, labelId: number) => {
+        setResource(resource);
+        setLabelId(labelId);
+        setDeleteDialogOpen(true);
+    };
+
+    const cancelDelete = () => {
+        setDeleteDialogOpen(false);
+        setResource("");
+        setLabelId(0);
+    };
+    const handleDeleteConfirmation = () => {
         resource === propertySectionLabel &&
             deleteLabelForProperties(labelId).then(cancelEdit);
         resource === customerSectionLabel &&
@@ -161,6 +177,13 @@ const LabelsPage: NextPage = () => {
             )}
 
             <Preview onEdit={handleEdit} onDelete={handleDelete} />
+            <ConfirmationDialogBox
+                open={DeleteDialogOpen}
+                onClose={cancelDelete}
+                text={"Are you Sure You want to Delete This Label?"}
+                onConfirm={handleDeleteConfirmation}
+                action={"delete"}
+            />
         </Grid>
     );
 };
