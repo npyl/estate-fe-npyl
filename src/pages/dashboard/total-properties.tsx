@@ -31,8 +31,8 @@ interface TotalPropertiesProps {
     subheader: string;
     chart: {
         series: ChartData[];
-        colors: any | null;
-        options: any | null;
+        // colors: any | null;
+        // options: any | null;
     };
 }
 
@@ -44,7 +44,7 @@ export default function TotalProperties({
 }: TotalPropertiesProps) {
     const theme = useTheme();
 
-    const { colors, series, options } = chart;
+    const { series } = chart;
 
     const chartSeries = series.map((i) => i.value);
 
@@ -54,7 +54,7 @@ export default function TotalProperties({
                 enabled: true,
             },
         },
-        colors,
+        // colors,
         labels: series.map((i) => i.label),
         stroke: {
             colors: [theme.palette.background.paper],
@@ -88,7 +88,7 @@ export default function TotalProperties({
                 },
             },
         },
-        ...options,
+        // ...options,
     });
 
     return (

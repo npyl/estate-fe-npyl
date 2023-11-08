@@ -17,8 +17,8 @@ interface AppConversionRatesProps {
     subheader: string;
     chart: {
         series: ChartData[];
-        colors: any | null;
-        options: any | null;
+        // colors: any | null;
+        // options: any | null;
     };
 }
 
@@ -28,12 +28,12 @@ export default function AppConversionRates({
     chart,
     ...other
 }: AppConversionRatesProps) {
-    const { colors, series, options } = chart;
+    const { series } = chart;
 
     const chartSeries = series.map((i) => i.value);
 
     const chartOptions = useChart({
-        colors,
+        // colors,
         tooltip: {
             marker: { show: false },
             y: {
@@ -53,7 +53,7 @@ export default function AppConversionRates({
         xaxis: {
             categories: series.map((i) => i.label),
         },
-        ...options,
+        // ...options,
     });
 
     return (
