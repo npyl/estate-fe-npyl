@@ -141,7 +141,7 @@ const LabeledSwitch = styled(Switch)<LabeledSwitchProps>(
             color: "#23bf58",
         },
         "& .Mui-checked": {
-            transform: "translateX(100px)",
+            transform: "translateX(101px)",
         },
     })
 );
