@@ -14,6 +14,7 @@ import SuitableForForOtherSection from "./components/SuitableForForOther";
 import TechnicalFeaturesAndInteriorForOtherSection from "./components/TechnicalFeaturesAndInteriorForOther";
 import ROISection from "./components/ROI";
 import { useSelector } from "react-redux";
+import VideoLinkSection from "./components/VideoLink";
 
 import {
     selectState,
@@ -66,6 +67,7 @@ const OtherFormSection: React.FC = () => {
                         <SuitableForForOtherSection />
                         <BlueprintsSection />
                         <DocumentsSection />
+                        <VideoLinkSection />
                     </Stack>
                 </Grid>
                 <Grid item xs={6}>

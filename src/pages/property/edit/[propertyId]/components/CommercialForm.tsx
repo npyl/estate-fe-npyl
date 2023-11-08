@@ -17,6 +17,7 @@ import TechnicalFeaturesAndInteriorForCommercialSection from "./components/Techn
 
 import ROISection from "./components/ROI";
 import { useSelector, useDispatch } from "react-redux";
+import VideoLinkSection from "./components/VideoLink";
 
 import NotesSection from "./components/NotesSection";
 import {
@@ -72,6 +73,7 @@ const CommercialFormSection: React.FC<any> = () => {
                         <DistancesSection />
                         <BlueprintsSection />
                         <DocumentsSection />
+                        <VideoLinkSection />
                         <NotesSection />
                     </Stack>
                 </Grid>

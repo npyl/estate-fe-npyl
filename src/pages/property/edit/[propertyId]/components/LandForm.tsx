@@ -12,6 +12,7 @@ import SuitableForForLandSection from "./components/SuitableForForLand";
 import TechnicalFeaturesAndInteriorForLandSection from "./components/TechnicalFeaturesAndInteriorForLand";
 import ROISection from "./components/ROI";
 import { useSelector } from "react-redux";
+import VideoLinkSection from "./components/VideoLink";
 
 import {
     selectState,
@@ -62,6 +63,7 @@ const LandFormSection: React.FC<any> = () => {
                         <FeaturesForLandSection />
                         <BlueprintsSection />
                         <DocumentsSection />
+                        <VideoLinkSection />
                     </Stack>
                 </Grid>
                 <Grid item xs={6}>
