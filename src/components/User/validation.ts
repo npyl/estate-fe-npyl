@@ -13,7 +13,12 @@ export const Schema = object().shape({
         .email("Email must be a valid email address")
         .required("Email is required"),
 
-    password: string().required("Password is required"),
+    password: string()
+        .required("Password is required")
+        .matches(
+            /^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-zA-Z]).{8,}$/,
+            "Password must be at least 8 characters long and include at least one uppercase letter. Allowed: letters, numbers, or special characters."
+        ),
 
     mobilePhone: numberString("Mobile Phone").required(),
     homePhone: numberString("Home Phone"),

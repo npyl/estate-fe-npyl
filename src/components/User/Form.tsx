@@ -107,10 +107,12 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
                                         gap={2}
                                     >
                                         <RHFTextField
+                                            required
                                             name="firstName"
                                             label="First Name"
                                         />
                                         <RHFTextField
+                                            required
                                             name="email"
                                             label="Email"
                                         />
@@ -123,10 +125,12 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
                                             label="Office Phone"
                                         />
                                         <RHFTextField
+                                            required
                                             name="address"
                                             label="Address"
                                         />
                                         <RHFTextField
+                                            required
                                             name="zipCode"
                                             label="Zip code"
                                         />
@@ -145,12 +149,14 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
                                         gap={2}
                                     >
                                         <RHFTextField
+                                            required
                                             name="lastName"
                                             label="Last Name"
                                         />
                                         <RHFTextField
+                                            required
                                             name="password"
-                                            label="Password (todo)"
+                                            label="Password"
                                             type={
                                                 showPassword
                                                     ? "text"
@@ -186,6 +192,7 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
                                             }}
                                         />
                                         <RHFTextField
+                                            required
                                             name="mobilePhone"
                                             label="Mobile Phone"
                                         />
@@ -198,17 +205,19 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
                                             label="Call Center Number"
                                         />
                                         <RHFTextField
+                                            required
                                             name="city"
                                             label="City"
                                         />
                                         <RHFTextField
+                                            required
                                             name="region"
                                             label="Region"
                                         />
                                         <RHFSelect
                                             select
                                             name="status"
-                                            label="Status (not-supported)"
+                                            label="Status"
                                         >
                                             <MenuItem value="Active">
                                                 Active
