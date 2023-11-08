@@ -2,38 +2,23 @@ import type { NextPage } from "next";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { useCreatePropertyMutation } from "src/services/properties";
-
 import { useRouter } from "next/router";
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { LogoProgressIndicator } from "src/components/LogoProgressIndicator";
-import {
-    resetState,
-    selectCategory,
-    selectParentCategory,
-} from "src/slices/property";
 import Form from "./Form";
 
 const CreatePropertyPage: NextPage = () => {
     const router = useRouter();
-    const dispatch = useDispatch();
+
     const [
         create,
         { isSuccess, isLoading: isCreateLoading, data: createdPropertyId },
     ] = useCreatePropertyMutation();
 
-    const category = useSelector(selectCategory);
-    const parentCategory = useSelector(selectParentCategory);
-
-    useEffect(() => {
-        dispatch(resetState());
-    }, []);
-
-    const handleUpload = () => {
+    const handleUpload = (parentCategory: string, category: string) => {
         if (!category || !parentCategory) return;
 
         // perform POST
-        create({ parentCategory: parentCategory, category: category });
+        create({ parentCategory, category });
     };
 
     // redirect on success

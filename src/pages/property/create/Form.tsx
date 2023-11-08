@@ -14,36 +14,29 @@ import {
 } from "@mui/material";
 
 import * as React from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useGlobals } from "src/hooks/useGlobals";
-import {
-    selectCategory,
-    selectParentCategory,
-    setCategory,
-    setParentCategory,
-} from "src/slices/property";
 
 import { IGlobalProperty } from "src/types/global";
 
 import { Send as SendIcon } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import { KeyValue } from "src/types/KeyValue";
+import { useState } from "react";
 
 interface IFormProps {
-    performUpload?: () => void;
+    performUpload: (parentCategory: string, category: string) => void;
 }
 
 export default function Form({ performUpload }: IFormProps) {
-    const dispatch = useDispatch();
     const { t } = useTranslation();
+
+    const [category, setCategory] = useState("");
+    const [parentCategory, setParentCategory] = useState("");
 
     // enums
     const data = useGlobals();
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
     const parentCategoryEnum = enums?.parentCategory;
-
-    const category = useSelector(selectCategory) || "";
-    const parentCategory = useSelector(selectParentCategory) || "";
 
     if (!enums || !parentCategoryEnum || parentCategoryEnum.length === 0)
         return null;
@@ -57,10 +50,8 @@ export default function Form({ performUpload }: IFormProps) {
         OTHER: enums.otherCategory,
     };
 
-    const handleParentCategorySelect = (e: SelectChangeEvent<string>) => {
-        const selectedKey = e.target.value;
-        dispatch(setParentCategory(selectedKey));
-    };
+    const handleParentCategorySelect = (e: SelectChangeEvent<string>) =>
+        setParentCategory(e.target.value);
 
     const handleCategorySelect = (
         event: React.ChangeEvent<HTMLInputElement>
@@ -69,8 +60,9 @@ export default function Form({ performUpload }: IFormProps) {
         const selectedItem = subCategoriesMap[parentCategory!]?.find(
             (item) => item.key === selectedKey
         );
+
         if (selectedItem) {
-            dispatch(setCategory(selectedItem.key));
+            setCategory(selectedItem.key);
         }
     };
 
@@ -182,7 +174,9 @@ export default function Form({ performUpload }: IFormProps) {
                             variant="contained"
                             color="primary"
                             startIcon={<SendIcon />}
-                            onClick={performUpload}
+                            onClick={() =>
+                                performUpload(parentCategory, category)
+                            }
                             style={{
                                 backgroundColor: "#4CAF50",
                                 color: "white",

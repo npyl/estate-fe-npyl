@@ -9,15 +9,9 @@ import {
     resetState as resetNotes,
     setInitialState as setInitialNotesState,
 } from "src/slices/notes";
-import { resetState, selectAll, setInitialState } from "src/slices/property";
-// import {
-//     resetState as resetFiles,
-//     setInitialState as setInitialFilesState,
-// } from "src/slices/property/files";
+import { selectAll, setInitialState } from "src/slices/property";
 import Form from "./Form";
-
 import { useGetPropertyByIdQuery } from "src/services/properties";
-
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { LogoProgressIndicator } from "src/components/LogoProgressIndicator";
@@ -60,35 +54,22 @@ const EditPropertyPage: NextPage = () => {
             return;
         }
 
-        edit({ id: +propertyId!, body: bodyRef.current }).then(() => {
-            // removeTab(propertyId as string);
-            resetEverything();
-        });
+        edit({ id: +propertyId!, body: bodyRef.current }).then(resetEverything);
     });
 
     useEffect(() => {
         if (data) {
             dispatch(setInitialNotesState(data.notes));
-            dispatch(setInitialState(data));
-            // dispatch(
-            //     setInitialFilesState({
-            //         propertyImages: data?.images,
-            //         propertyBlueprints: data?.blueprints,
-            //     })
-            // );
+            dispatch(setInitialState({ data, id: +propertyId! }));
         }
     }, [data, propertyId]);
 
     const resetEverything = () => {
-        // dispatch(resetFiles());
         dispatch(resetLabels());
         dispatch(resetNotes());
-        dispatch(resetState());
     };
 
-    const handleRedirect = () => {
-        router.push(`/property/${propertyId}`);
-    };
+    const handleRedirect = () => router.push(`/property/${propertyId}`);
 
     return (
         <>

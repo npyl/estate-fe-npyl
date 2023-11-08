@@ -3,9 +3,17 @@ import { ILocation } from "src/types/location";
 import { IProperties, IPropertiesPOST } from "src/types/properties";
 import type { RootState } from "../store";
 
-type propertyState = IPropertiesPOST;
+interface propertyState {
+    id: number; // current property id (used as key)
+    properties: Record<number, IPropertiesPOST>;
+}
 
-const initialState: propertyState = {
+interface InitialStatePayload {
+    data: IProperties;
+    id: number;
+}
+
+const initialPropertyState: IPropertiesPOST = {
     code: "",
     title: "",
     state: "",
@@ -150,884 +158,932 @@ const initialState: propertyState = {
     labelIDs: [],
 };
 
+const initialState: propertyState = {
+    id: -1,
+    properties: {},
+};
+
 const slice = createSlice({
     name: "property",
     initialState,
     reducers: {
-        setCode(state: propertyState, action): void {
-            state.code = action.payload;
+        setCode({ id, properties }, action): void {
+            properties[id].code = action.payload;
         },
-        setOwner(state: propertyState, action): void {
-            state.ownerId = action.payload;
+        setOwner({ id, properties }, action): void {
+            properties[id].ownerId = action.payload;
         },
-        setRentalPeriodStart(state: propertyState, action): void {
-            state.rentalStart = action.payload;
-        },
-
-        setDebatablePrice(state: propertyState, action): void {
-            state.debatablePrice = action.payload;
-        },
-        setRentalPeriodEnd(state: propertyState, action): void {
-            state.rentalEnd = action.payload;
-        },
-        setParentCategory(state: propertyState, action): void {
-            state.parentCategory = action.payload;
-        },
-        setManager(state: propertyState, action): void {
-            state.managerId = action.payload;
-        },
-        setCategory(state: propertyState, action): void {
-            state.category = action.payload;
-        },
-        setState(state: propertyState, action): void {
-            state.state = action.payload;
-        },
-        setPrice(state: propertyState, action): void {
-            state.price = action.payload;
-        },
-        setRented(state: propertyState, action): void {
-            state.rented = action.payload;
+        setRentalPeriodStart({ id, properties }, action): void {
+            properties[id].rentalStart = action.payload;
         },
 
-        setCurrentRentPrice(state: propertyState, action): void {
-            state.currentRentPrice = action.payload;
+        setDebatablePrice({ id, properties }, action): void {
+            properties[id].debatablePrice = action.payload;
         },
-        setEstimatedRentPrice(state: propertyState, action): void {
-            state.estimatedRentPrice = action.payload;
+        setRentalPeriodEnd({ id, properties }, action): void {
+            properties[id].rentalEnd = action.payload;
+        },
+        setParentCategory({ id, properties }, action): void {
+            properties[id].parentCategory = action.payload;
+        },
+        setCategory({ id, properties }, action): void {
+            properties[id].category = action.payload;
+        },
+        setManager({ id, properties }, action): void {
+            properties[id].managerId = action.payload;
+        },
+        setState({ id, properties }, action): void {
+            properties[id].state = action.payload;
+        },
+        setPrice({ id, properties }, action): void {
+            properties[id].price = action.payload;
+        },
+        setRented({ id, properties }, action): void {
+            properties[id].rented = action.payload;
         },
 
-        setCoverageFactor(state: propertyState, action): void {
-            state.technicalFeatures.coverageFactor = action.payload;
+        setCurrentRentPrice({ id, properties }, action): void {
+            properties[id].currentRentPrice = action.payload;
         },
-        setKeyCode(state: propertyState, action): void {
-            state.keyCode = action.payload;
+        setEstimatedRentPrice({ id, properties }, action): void {
+            properties[id].estimatedRentPrice = action.payload;
         },
 
-        setBuildable(state: propertyState, action): void {
-            state.buildable = action.payload;
+        setCoverageFactor({ id, properties }, action): void {
+            properties[id].technicalFeatures.coverageFactor = action.payload;
         },
-        setDescription(state: propertyState, action): void {
-            state.description = action.payload;
+        setKeyCode({ id, properties }, action): void {
+            properties[id].keyCode = action.payload;
         },
-        setDescriptionText(state: propertyState, action): void {
-            state.descriptionText = action.payload;
+
+        setBuildable({ id, properties }, action): void {
+            properties[id].buildable = action.payload;
+        },
+        setDescription({ id, properties }, action): void {
+            properties[id].description = action.payload;
+        },
+        setDescriptionText({ id, properties }, action): void {
+            properties[id].descriptionText = action.payload;
         },
 
         // Location
-        setStreet(state: propertyState, action): void {
-            state.location.street = action.payload;
+        setStreet({ id, properties }, action): void {
+            properties[id].location.street = action.payload;
         },
-        setNumber(state: propertyState, action): void {
-            state.location.number = action.payload;
+        setNumber({ id, properties }, action): void {
+            properties[id].location.number = action.payload;
         },
-        setComplex(state: propertyState, action): void {
-            state.location.complex = action.payload;
+        setComplex({ id, properties }, action): void {
+            properties[id].location.complex = action.payload;
         },
-        setCity(state: propertyState, action): void {
-            state.location.city = action.payload;
+        setCity({ id, properties }, action): void {
+            properties[id].location.city = action.payload;
         },
-        setZipCode(state: propertyState, action): void {
-            state.location.zipCode = action.payload;
+        setZipCode({ id, properties }, action): void {
+            properties[id].location.zipCode = action.payload;
         },
-        setRegion(state: propertyState, action): void {
-            state.location.region = action.payload;
+        setRegion({ id, properties }, action): void {
+            properties[id].location.region = action.payload;
         },
-        setCountry(state: propertyState, action): void {
-            state.location.country = action.payload;
+        setCountry({ id, properties }, action): void {
+            properties[id].location.country = action.payload;
         },
-        setLatitude(state: propertyState, action): void {
-            state.location.lat = action.payload;
+        setLatitude({ id, properties }, action): void {
+            properties[id].location.lat = action.payload;
         },
-        setLongitude(state: propertyState, action): void {
-            state.location.lng = action.payload;
+        setLongitude({ id, properties }, action): void {
+            properties[id].location.lng = action.payload;
         },
 
-        setOrientation(state: propertyState, action): void {
-            state.details.orientation = action.payload;
+        setOrientation({ id, properties }, action): void {
+            properties[id].details.orientation = action.payload;
         },
-        setLandUse(state: propertyState, action): void {
-            state.details.landUse = action.payload;
+        setLandUse({ id, properties }, action): void {
+            properties[id].details.landUse = action.payload;
         },
-        setViewType(state: propertyState, action): void {
-            state.details.viewType = action.payload;
+        setViewType({ id, properties }, action): void {
+            properties[id].details.viewType = action.payload;
         },
-        setAccessibility(state: propertyState, action): void {
-            state.details.accessibility = action.payload;
+        setAccessibility({ id, properties }, action): void {
+            properties[id].details.accessibility = action.payload;
         },
-        setRooms(state: propertyState, action): void {
-            state.details.rooms = action.payload;
+        setRooms({ id, properties }, action): void {
+            properties[id].details.rooms = action.payload;
         },
-        setEnergyClass(state: propertyState, action): void {
-            state.heatingAndEnergy.energyClass = action.payload;
+        setEnergyClass({ id, properties }, action): void {
+            properties[id].heatingAndEnergy.energyClass = action.payload;
         },
-        setOffPeakElectricity(state: propertyState, action): void {
-            state.heatingAndEnergy.offPeakElectricity = action.payload;
+        setOffPeakElectricity({ id, properties }, action): void {
+            properties[id].heatingAndEnergy.offPeakElectricity = action.payload;
         },
-        setZoneType(state: propertyState, action): void {
-            state.details.zoneType = action.payload;
+        setZoneType({ id, properties }, action): void {
+            properties[id].details.zoneType = action.payload;
         },
-        setElectricityType(state: propertyState, action): void {
-            state.heatingAndEnergy.electricityType = action.payload;
+        setElectricityType({ id, properties }, action): void {
+            properties[id].heatingAndEnergy.electricityType = action.payload;
         },
-        setFloor(state: propertyState, action): void {
-            state.details.floor = action.payload;
+        setFloor({ id, properties }, action): void {
+            properties[id].details.floor = action.payload;
         },
-        setKitchens(state: propertyState, action): void {
-            state.details.kitchens = action.payload;
+        setKitchens({ id, properties }, action): void {
+            properties[id].details.kitchens = action.payload;
         },
-        setLayers(state: propertyState, action): void {
-            state.details.layers = action.payload;
+        setLayers({ id, properties }, action): void {
+            properties[id].details.layers = action.payload;
         },
-        setBathrooms(state: propertyState, action): void {
-            state.details.bathrooms = action.payload;
+        setBathrooms({ id, properties }, action): void {
+            properties[id].details.bathrooms = action.payload;
         },
-        setNumOfWC(state: propertyState, action): void {
-            state.details.wc = action.payload;
+        setNumOfWC({ id, properties }, action): void {
+            properties[id].details.wc = action.payload;
         },
-        setLivingRooms(state: propertyState, action): void {
-            state.details.livingrooms = action.payload;
+        setLivingRooms({ id, properties }, action): void {
+            properties[id].details.livingrooms = action.payload;
         },
-        setBedrooms(state: propertyState, action): void {
-            state.details.bedrooms = action.payload;
+        setBedrooms({ id, properties }, action): void {
+            properties[id].details.bedrooms = action.payload;
         },
-        setAvgUtils(state: propertyState, action): void {
-            state.averageUtils = action.payload;
+        setAvgUtils({ id, properties }, action): void {
+            properties[id].averageUtils = action.payload;
         },
 
         // Areas
-        setStoreroom(state: propertyState, action): void {
-            state.areas.storeroom = action.payload;
+        setStoreroom({ id, properties }, action): void {
+            properties[id].areas.storeroom = action.payload;
         },
-        setCovered(state: propertyState, action): void {
-            state.areas.covered = action.payload;
+        setCovered({ id, properties }, action): void {
+            properties[id].areas.covered = action.payload;
         },
-        setBasement(state: propertyState, action): void {
-            state.areas.basement = action.payload;
+        setBasement({ id, properties }, action): void {
+            properties[id].areas.basement = action.payload;
         },
-        setAttic(state: propertyState, action): void {
-            state.areas.attic = action.payload;
+        setAttic({ id, properties }, action): void {
+            properties[id].areas.attic = action.payload;
         },
-        setGarden(state: propertyState, action): void {
-            state.areas.garden = action.payload;
+        setGarden({ id, properties }, action): void {
+            properties[id].areas.garden = action.payload;
         },
-        setArea(state: propertyState, action): void {
-            state.area = action.payload;
+        setArea({ id, properties }, action): void {
+            properties[id].area = action.payload;
         },
-        setGroundFloor(state: propertyState, action): void {
-            state.areas.groundFloor = action.payload;
+        setGroundFloor({ id, properties }, action): void {
+            properties[id].areas.groundFloor = action.payload;
         },
-        setFirst(state: propertyState, action): void {
-            state.areas.first = action.payload;
+        setFirst({ id, properties }, action): void {
+            properties[id].areas.first = action.payload;
         },
-        setSecond(state: propertyState, action): void {
-            state.areas.second = action.payload;
+        setSecond({ id, properties }, action): void {
+            properties[id].areas.second = action.payload;
         },
-        setThird(state: propertyState, action): void {
-            state.areas.third = action.payload;
+        setThird({ id, properties }, action): void {
+            properties[id].areas.third = action.payload;
         },
-        setFourth(state: propertyState, action): void {
-            state.areas.fourth = action.payload;
+        setFourth({ id, properties }, action): void {
+            properties[id].areas.fourth = action.payload;
         },
-        setFifth(state: propertyState, action): void {
-            state.areas.fifth = action.payload;
-        },
-
-        setPlotArea(state: propertyState, action): void {
-            state.plotArea = action.payload;
+        setFifth({ id, properties }, action): void {
+            properties[id].areas.fifth = action.payload;
         },
 
-        setStoreroomBool(state: propertyState, action): void {
-            state.details.storeroom = action.payload;
+        setPlotArea({ id, properties }, action): void {
+            properties[id].plotArea = action.payload;
         },
-        setHeatingType(state: propertyState, action): void {
-            state.heatingAndEnergy.heatingType = action.payload;
+
+        setStoreroomBool({ id, properties }, action): void {
+            properties[id].details.storeroom = action.payload;
         },
-        setHeatingSystem(state: propertyState, action): void {
-            state.heatingAndEnergy.heatingSystem = action.payload;
+        setHeatingType({ id, properties }, action): void {
+            properties[id].heatingAndEnergy.heatingType = action.payload;
         },
-        setFloorHeating(state: propertyState, action): void {
-            state.heatingAndEnergy.floorHeating = action.payload;
+        setHeatingSystem({ id, properties }, action): void {
+            properties[id].heatingAndEnergy.heatingSystem = action.payload;
         },
-        setAirConditioning(state: propertyState, action): void {
-            state.heatingAndEnergy.airConditioning = action.payload;
+        setFloorHeating({ id, properties }, action): void {
+            properties[id].heatingAndEnergy.floorHeating = action.payload;
+        },
+        setAirConditioning({ id, properties }, action): void {
+            properties[id].heatingAndEnergy.airConditioning = action.payload;
         },
 
         // Parkings & Balconies
 
-        addParking(state: propertyState, { payload }) {
-            state.details.parkings.push(payload);
+        addParking({ id, properties }, { payload }) {
+            properties[id].details.parkings.push(payload);
         },
-        removeParking(state: propertyState, { payload }) {
+        removeParking({ id, properties }, { payload }) {
             const indexToRemove = payload;
             if (indexToRemove === null) return;
 
             const newArray = [
-                ...state.details.parkings.slice(0, indexToRemove),
-                ...state.details.parkings.slice(indexToRemove + 1),
+                ...properties[id].details.parkings.slice(0, indexToRemove),
+                ...properties[id].details.parkings.slice(indexToRemove + 1),
             ];
 
-            state.details.parkings = newArray;
+            properties[id].details.parkings = newArray;
         },
-        setParkingType(state: propertyState, { payload }) {
+        setParkingType({ id, properties }, { payload }) {
             const index = payload.parkingIndex;
             const type = payload.type;
             if (index === null || !type) return;
 
-            state.details.parkings[index].parkingType = type;
+            properties[id].details.parkings[index].parkingType = type;
         },
-        setParkingSpots(state: propertyState, { payload }) {
+        setParkingSpots({ id, properties }, { payload }) {
             const index = payload.parkingIndex;
             const spots = payload.spots;
             if (index === null || !spots) return;
 
-            state.details.parkings[index].spots = spots;
+            properties[id].details.parkings[index].spots = spots;
         },
-        addBalcony(state: propertyState, { payload }) {
-            state.details.balconies.push(payload);
+        addBalcony({ id, properties }, { payload }) {
+            properties[id].details.balconies.push(payload);
         },
-        removeBalcony(state: propertyState, { payload }) {
+        removeBalcony({ id, properties }, { payload }) {
             const indexToRemove = payload;
             if (
                 indexToRemove === null ||
-                indexToRemove > state.details.balconies.length
+                indexToRemove > properties[id].details.balconies.length
             )
                 return;
 
-            state.details.balconies = state.details.balconies.filter(
-                (_, i) => i !== indexToRemove
-            );
+            properties[id].details.balconies = properties[
+                id
+            ].details.balconies.filter((_, i) => i !== indexToRemove);
         },
 
-        setBalconySide(state: propertyState, { payload }) {
+        setBalconySide({ id, properties }, { payload }) {
             const index = payload.balconyIndex;
             const side = payload.side;
             if (index === null || !side) return;
 
-            state.details.balconies[index].side = side;
+            properties[id].details.balconies[index].side = side;
         },
-        setBalconyArea(state: propertyState, { payload }) {
+        setBalconyArea({ id, properties }, { payload }) {
             const index = payload.balconyIndex;
             const area = payload.area;
             if (index === null || !area) return;
 
-            state.details.balconies[index].area = area;
+            properties[id].details.balconies[index].area = area;
         },
 
-        setBalconies(state: propertyState, action) {
-            state.areas.balconies = action.payload;
+        setBalconies({ id, properties }, action) {
+            properties[id].areas.balconies = action.payload;
         },
-        setYearOfConstruction(state: propertyState, action): void {
-            state.construction.yearOfConstruction = action.payload;
+        setYearOfConstruction({ id, properties }, action): void {
+            properties[id].construction.yearOfConstruction = action.payload;
         },
-        setUnderConstruction(state: propertyState, action): void {
-            state.construction.underConstruction = action.payload;
+        setUnderConstruction({ id, properties }, action): void {
+            properties[id].construction.underConstruction = action.payload;
         },
-        setNewlyBuilt(state: propertyState, action): void {
-            state.construction.newlyBuilt = action.payload;
+        setNewlyBuilt({ id, properties }, action): void {
+            properties[id].construction.newlyBuilt = action.payload;
         },
-        setIncomplete(state: propertyState, action): void {
-            state.construction.incomplete = action.payload;
+        setIncomplete({ id, properties }, action): void {
+            properties[id].construction.incomplete = action.payload;
         },
-        setTotalFloorNumber(state: propertyState, action): void {
-            state.construction.totalFloorNumber = action.payload;
+        setTotalFloorNumber({ id, properties }, action): void {
+            properties[id].construction.totalFloorNumber = action.payload;
         },
-        setElevator(state: propertyState, action): void {
-            state.construction.elevator = action.payload;
+        setElevator({ id, properties }, action): void {
+            properties[id].construction.elevator = action.payload;
         },
-        setInternalStairs(state: propertyState, action): void {
-            state.construction.internalStairs = action.payload;
+        setInternalStairs({ id, properties }, action): void {
+            properties[id].construction.internalStairs = action.payload;
         },
-        setAvailableAfter(state: propertyState, action): void {
-            state.availableAfter = action.payload;
+        setAvailableAfter({ id, properties }, action): void {
+            properties[id].availableAfter = action.payload;
         },
-        setVideo(state: propertyState, action): void {
-            state.video = action.payload;
-        },
-
-        setNeoclassical(state: propertyState, action): void {
-            state.construction.neoclassical = action.payload;
-        },
-        setYearOfRenovation(state: propertyState, action): void {
-            state.construction.yearOfRenovation = action.payload;
-        },
-        setRenovated(state: propertyState, action): void {
-            state.construction.renovated = action.payload;
-        },
-        setNeedsRenovation(state: propertyState, action): void {
-            state.construction.needsRenovation = action.payload;
-        },
-        setPreserved(state: propertyState, action): void {
-            state.construction.preserved = action.payload;
-        },
-        setPublicTransportation(state: propertyState, action): void {
-            state.distances.publicTransport = action.payload;
-        },
-        setSea(state: propertyState, action): void {
-            state.distances.sea = action.payload;
-        },
-        setSchools(state: propertyState, action): void {
-            state.distances.schools = action.payload;
-        },
-        setSupermarket(state: propertyState, action): void {
-            state.distances.supermarket = action.payload;
-        },
-        setCafeRestaurant(state: propertyState, action): void {
-            state.distances.cafeRestaurant = action.payload;
-        },
-        setHospital(state: propertyState, action): void {
-            state.distances.hospital = action.payload;
-        },
-        setAirport(state: propertyState, action): void {
-            state.distances.airport = action.payload;
-        },
-        setPool(state: propertyState, action): void {
-            state.features.pool = action.payload;
+        setVideo({ id, properties }, action): void {
+            properties[id].video = action.payload;
         },
 
-        setAccessForDisable(state: propertyState, action): void {
-            state.features.accessForDisabled = action.payload;
+        setNeoclassical({ id, properties }, action): void {
+            properties[id].construction.neoclassical = action.payload;
+        },
+        setYearOfRenovation({ id, properties }, action): void {
+            properties[id].construction.yearOfRenovation = action.payload;
+        },
+        setRenovated({ id, properties }, action): void {
+            properties[id].construction.renovated = action.payload;
+        },
+        setNeedsRenovation({ id, properties }, action): void {
+            properties[id].construction.needsRenovation = action.payload;
+        },
+        setPreserved({ id, properties }, action): void {
+            properties[id].construction.preserved = action.payload;
+        },
+        setPublicTransportation({ id, properties }, action): void {
+            properties[id].distances.publicTransport = action.payload;
+        },
+        setSea({ id, properties }, action): void {
+            properties[id].distances.sea = action.payload;
+        },
+        setSchools({ id, properties }, action): void {
+            properties[id].distances.schools = action.payload;
+        },
+        setSupermarket({ id, properties }, action): void {
+            properties[id].distances.supermarket = action.payload;
+        },
+        setCafeRestaurant({ id, properties }, action): void {
+            properties[id].distances.cafeRestaurant = action.payload;
+        },
+        setHospital({ id, properties }, action): void {
+            properties[id].distances.hospital = action.payload;
+        },
+        setAirport({ id, properties }, action): void {
+            properties[id].distances.airport = action.payload;
+        },
+        setPool({ id, properties }, action): void {
+            properties[id].features.pool = action.payload;
         },
 
-        setSolarBoiler(state: propertyState, action): void {
-            state.heatingAndEnergy.solarBoiler = action.payload;
+        setAccessForDisable({ id, properties }, action): void {
+            properties[id].features.accessForDisabled = action.payload;
         },
 
-        setOffice(state: propertyState, action): void {
-            state.features.office = action.payload;
+        setSolarBoiler({ id, properties }, action): void {
+            properties[id].heatingAndEnergy.solarBoiler = action.payload;
         },
 
-        setInternet(state: propertyState, action): void {
-            state.features.internet = action.payload;
+        setOffice({ id, properties }, action): void {
+            properties[id].features.office = action.payload;
         },
 
-        setThermalInsulation(state: propertyState, action): void {
-            state.features.thermalInsulation = action.payload;
+        setInternet({ id, properties }, action): void {
+            properties[id].features.internet = action.payload;
         },
 
-        setSeaView(state: propertyState, action): void {
-            state.features.seaView = action.payload;
+        setThermalInsulation({ id, properties }, action): void {
+            properties[id].features.thermalInsulation = action.payload;
         },
 
-        setGuestroom(state: propertyState, action): void {
-            state.features.guestroom = action.payload;
+        setSeaView({ id, properties }, action): void {
+            properties[id].features.seaView = action.payload;
         },
 
-        setQuietArea(state: propertyState, action): void {
-            state.features.quietArea = action.payload;
+        setGuestroom({ id, properties }, action): void {
+            properties[id].features.guestroom = action.payload;
         },
 
-        setSoundInsulation(state: propertyState, action): void {
-            state.features.soundInsulation = action.payload;
+        setQuietArea({ id, properties }, action): void {
+            properties[id].features.quietArea = action.payload;
         },
 
-        setHas24HoursSecurity(state: propertyState, action): void {
-            state.features.has24HoursSecurity = action.payload;
+        setSoundInsulation({ id, properties }, action): void {
+            properties[id].features.soundInsulation = action.payload;
         },
 
-        setHasAttic(state: propertyState, action): void {
-            state.details.attic = action.payload;
+        setHas24HoursSecurity({ id, properties }, action): void {
+            properties[id].features.has24HoursSecurity = action.payload;
         },
 
-        setBarbeque(state: propertyState, action): void {
-            state.features.barbeque = action.payload;
+        setHasAttic({ id, properties }, action): void {
+            properties[id].details.attic = action.payload;
         },
 
-        setCctv(state: propertyState, action): void {
-            state.features.cctv = action.payload;
+        setBarbeque({ id, properties }, action): void {
+            properties[id].features.barbeque = action.payload;
         },
 
-        setCombinedKitchenAndDiningArea(state: propertyState, action): void {
-            state.features.combinedKitchenAndDiningArea = action.payload;
+        setCctv({ id, properties }, action): void {
+            properties[id].features.cctv = action.payload;
         },
 
-        setFireDetector(state: propertyState, action): void {
-            state.features.fireDetector = action.payload;
-        },
-
-        setHomeCinema(state: propertyState, action): void {
-            state.features.homeCinema = action.payload;
-        },
-        setJacuzzi(state: propertyState, action): void {
-            state.features.jacuzzi = action.payload;
-        },
-
-        setNearBusRoute(state: propertyState, action): void {
-            state.features.nearBusRoute = action.payload;
-        },
-
-        setPanoramicView(state: propertyState, action): void {
-            state.features.panoramicView = action.payload;
-        },
-
-        setPlayRoom(state: propertyState, action): void {
-            state.details.playroom = action.payload;
-        },
-
-        setSmartHome(state: propertyState, action): void {
-            state.features.smartHome = action.payload;
-        },
-
-        setMountainView(state: propertyState, action): void {
-            state.features.mountainView = action.payload;
-        },
-
-        setSeaFront(state: propertyState, action): void {
-            state.features.seaFront = action.payload;
-        },
-
-        setHeatedPool(state: propertyState, action): void {
-            state.features.heatedPool = action.payload;
-        },
-
-        setIndoorPool(state: propertyState, action): void {
-            state.features.indoorPool = action.payload;
-        },
-
-        setOrganizedGarden(state: propertyState, action): void {
-            state.features.organizedGarden = action.payload;
-        },
-
-        setWell(state: propertyState, action): void {
-            state.features.well = action.payload;
-        },
-
-        setDrilling(state: propertyState, action): void {
-            state.features.drilling = action.payload;
-        },
-
-        setMasonryFence(state: propertyState, action): void {
-            state.features.masonryFence = action.payload;
-        },
-
-        setAccessForDisabled(state: propertyState, action): void {
-            state.features.accessForDisabled = action.payload;
-        },
-
-        setIndependentHeatingPerRoom(state: propertyState, action): void {
-            state.features.independentHeatingPerRoom = action.payload;
-        },
-
-        setAdaptingToTheGround(state: propertyState, action): void {
-            state.features.adaptingToTheGround = action.payload;
-        },
-
-        setView(state: propertyState, action): void {
-            state.features.view = action.payload;
-        },
-
-        setFacade(state: propertyState, action): void {
-            state.features.facade = action.payload;
-        },
-        setLoadingDock(state: propertyState, action): void {
-            state.features.loadingDock = action.payload;
-        },
-
-        setCorner(state: propertyState, action): void {
-            state.features.corner = action.payload;
-        },
-
-        setVeranda(state: propertyState, action): void {
-            state.features.veranda = action.payload;
-        },
-
-        setTents(state: propertyState, action): void {
-            state.features.tents = action.payload;
-        },
-
-        setWithinResidentialZone(state: propertyState, action): void {
-            state.features.withinResidentialZone = action.payload;
-        },
-
-        setWithinCityPlan(state: propertyState, action): void {
-            state.features.withinCityPlan = action.payload;
-        },
-
-        setWalkableDistanceToBeach(state: propertyState, action): void {
-            state.features.walkableDistanceToBeach = action.payload;
-        },
-
-        setFloorApartment(state: propertyState, action): void {
-            state.details.floorApartment = action.payload;
-        },
-        setPenthouse(state: propertyState, action): void {
-            state.details.penthouse = action.payload;
-        },
-        setEntrances(state: propertyState, action): void {
-            state.technicalFeatures.entrances = action.payload;
-        },
-
-        setDisplayWindowsLength(state: propertyState, action): void {
-            state.technicalFeatures.displayWindowsLength = action.payload;
-        },
-
-        setSafetyDoor(state: propertyState, action): void {
-            state.technicalFeatures.safetyDoor = action.payload;
-        },
-
-        setAlarmSystem(state: propertyState, action): void {
-            state.technicalFeatures.alarmSystem = action.payload;
-        },
-
-        setPainted(state: propertyState, action): void {
-            state.technicalFeatures.painted = action.payload;
-        },
-
-        setFurnished(state: propertyState, action): void {
-            state.technicalFeatures.furnished = action.payload;
-        },
-
-        setFrameType(state: propertyState, action): void {
-            state.technicalFeatures.frameType = action.payload;
-        },
-
-        setPaneGlassType(state: propertyState, action): void {
-            state.technicalFeatures.paneGlassType = action.payload;
-        },
-
-        setWindowScreens(state: propertyState, action): void {
-            state.technicalFeatures.windowScreens = action.payload;
-        },
-
-        setFireplace(state: propertyState, action): void {
-            state.technicalFeatures.fireplace = action.payload;
-        },
-
-        setBright(state: propertyState, action): void {
-            state.technicalFeatures.bright = action.payload;
-        },
-
-        setLuxurious(state: propertyState, action): void {
-            state.technicalFeatures.luxurious = action.payload;
-        },
-
-        setElectricCarChargingFacilities(state: propertyState, action): void {
-            state.technicalFeatures.electricCarChargingFacilities =
+        setCombinedKitchenAndDiningArea({ id, properties }, action): void {
+            properties[id].features.combinedKitchenAndDiningArea =
                 action.payload;
         },
 
-        setReception(state: propertyState, action): void {
-            state.technicalFeatures.reception = action.payload;
+        setFireDetector({ id, properties }, action): void {
+            properties[id].features.fireDetector = action.payload;
         },
 
-        setPetsAllowed(state: propertyState, action): void {
-            state.technicalFeatures.petsAllowed = action.payload;
+        setHomeCinema({ id, properties }, action): void {
+            properties[id].features.homeCinema = action.payload;
+        },
+        setJacuzzi({ id, properties }, action): void {
+            properties[id].features.jacuzzi = action.payload;
         },
 
-        setFloorType(state: propertyState, action): void {
-            state.technicalFeatures.floorType = action.payload;
+        setNearBusRoute({ id, properties }, action): void {
+            properties[id].features.nearBusRoute = action.payload;
         },
 
-        setSatelliteTV(state: propertyState, action): void {
-            state.technicalFeatures.satelliteTV = action.payload;
+        setPanoramicView({ id, properties }, action): void {
+            properties[id].features.panoramicView = action.payload;
         },
 
-        setWiring(state: propertyState, action): void {
-            state.technicalFeatures.wiring = action.payload;
+        setPlayRoom({ id, properties }, action): void {
+            properties[id].details.playroom = action.payload;
         },
 
-        setLoadingUnloadingElevator(state: propertyState, action): void {
-            state.technicalFeatures.loadingUnloadingElevator = action.payload;
+        setSmartHome({ id, properties }, action): void {
+            properties[id].features.smartHome = action.payload;
         },
 
-        setFalseCeiling(state: propertyState, action): void {
-            state.technicalFeatures.falseCeiling = action.payload;
+        setMountainView({ id, properties }, action): void {
+            properties[id].features.mountainView = action.payload;
         },
 
-        setWithEquipment(state: propertyState, action): void {
-            state.technicalFeatures.withEquipment = action.payload;
+        setSeaFront({ id, properties }, action): void {
+            properties[id].features.seaFront = action.payload;
         },
 
-        setDoubleFrontage(state: propertyState, action): void {
-            state.technicalFeatures.doubleFrontage = action.payload;
+        setHeatedPool({ id, properties }, action): void {
+            properties[id].features.heatedPool = action.payload;
         },
 
-        setConsideration(state: propertyState, action): void {
-            state.technicalFeatures.consideration = action.payload;
+        setIndoorPool({ id, properties }, action): void {
+            properties[id].features.indoorPool = action.payload;
         },
 
-        setFloorToAreaRatio(state: propertyState, action): void {
-            state.technicalFeatures.floorToAreaRatio = action.payload;
-        },
-        setFacadeLength(state: propertyState, action): void {
-            state.technicalFeatures.facadeLength = action.payload;
+        setOrganizedGarden({ id, properties }, action): void {
+            properties[id].features.organizedGarden = action.payload;
         },
 
-        setInclination(state: propertyState, action): void {
-            state.technicalFeatures.inclination = action.payload;
+        setWell({ id, properties }, action): void {
+            properties[id].features.well = action.payload;
         },
 
-        setStudent(state: propertyState, action): void {
-            state.suitableFor.student = action.payload;
-        },
-        setAgriculturalUse(state: propertyState, action): void {
-            state.suitableFor.agriculturalUse = action.payload;
-        },
-        setCottage(state: propertyState, action): void {
-            state.suitableFor.cottage = action.payload;
+        setDrilling({ id, properties }, action): void {
+            properties[id].features.drilling = action.payload;
         },
 
-        setAuction(state: propertyState, action): void {
-            state.auction = action.payload;
-        },
-        setExclusive(state: propertyState, action): void {
-            state.exclusive = action.payload;
+        setMasonryFence({ id, properties }, action): void {
+            properties[id].features.masonryFence = action.payload;
         },
 
-        setTouristRental(state: propertyState, action): void {
-            state.suitableFor.touristRental = action.payload;
-        },
-        setInvestment(state: propertyState, action): void {
-            state.suitableFor.investment = action.payload;
-        },
-        setDoctorsOffice(state: propertyState, action): void {
-            state.suitableFor.doctorsOffice = action.payload;
-        },
-        setProfessionalUse(state: propertyState, action): void {
-            state.suitableFor.professionalUse = action.payload;
-        },
-        setRenovation(state: propertyState, action): void {
-            state.suitableFor.renovation = action.payload;
+        setAccessForDisabled({ id, properties }, action): void {
+            properties[id].features.accessForDisabled = action.payload;
         },
 
-        addLabel(state: propertyState, action): void {
-            if (!state.labelIDs.includes(action.payload))
-                state.labelIDs.push(action.payload);
+        setIndependentHeatingPerRoom({ id, properties }, action): void {
+            properties[id].features.independentHeatingPerRoom = action.payload;
         },
-        removeLabel(state: propertyState, { payload }): void {
+
+        setAdaptingToTheGround({ id, properties }, action): void {
+            properties[id].features.adaptingToTheGround = action.payload;
+        },
+
+        setView({ id, properties }, action): void {
+            properties[id].features.view = action.payload;
+        },
+
+        setFacade({ id, properties }, action): void {
+            properties[id].features.facade = action.payload;
+        },
+        setLoadingDock({ id, properties }, action): void {
+            properties[id].features.loadingDock = action.payload;
+        },
+
+        setCorner({ id, properties }, action): void {
+            properties[id].features.corner = action.payload;
+        },
+
+        setVeranda({ id, properties }, action): void {
+            properties[id].features.veranda = action.payload;
+        },
+
+        setTents({ id, properties }, action): void {
+            properties[id].features.tents = action.payload;
+        },
+
+        setWithinResidentialZone({ id, properties }, action): void {
+            properties[id].features.withinResidentialZone = action.payload;
+        },
+
+        setWithinCityPlan({ id, properties }, action): void {
+            properties[id].features.withinCityPlan = action.payload;
+        },
+
+        setWalkableDistanceToBeach({ id, properties }, action): void {
+            properties[id].features.walkableDistanceToBeach = action.payload;
+        },
+
+        setFloorApartment({ id, properties }, action): void {
+            properties[id].details.floorApartment = action.payload;
+        },
+        setPenthouse({ id, properties }, action): void {
+            properties[id].details.penthouse = action.payload;
+        },
+        setEntrances({ id, properties }, action): void {
+            properties[id].technicalFeatures.entrances = action.payload;
+        },
+
+        setDisplayWindowsLength({ id, properties }, action): void {
+            properties[id].technicalFeatures.displayWindowsLength =
+                action.payload;
+        },
+
+        setSafetyDoor({ id, properties }, action): void {
+            properties[id].technicalFeatures.safetyDoor = action.payload;
+        },
+
+        setAlarmSystem({ id, properties }, action): void {
+            properties[id].technicalFeatures.alarmSystem = action.payload;
+        },
+
+        setPainted({ id, properties }, action): void {
+            properties[id].technicalFeatures.painted = action.payload;
+        },
+
+        setFurnished({ id, properties }, action): void {
+            properties[id].technicalFeatures.furnished = action.payload;
+        },
+
+        setFrameType({ id, properties }, action): void {
+            properties[id].technicalFeatures.frameType = action.payload;
+        },
+
+        setPaneGlassType({ id, properties }, action): void {
+            properties[id].technicalFeatures.paneGlassType = action.payload;
+        },
+
+        setWindowScreens({ id, properties }, action): void {
+            properties[id].technicalFeatures.windowScreens = action.payload;
+        },
+
+        setFireplace({ id, properties }, action): void {
+            properties[id].technicalFeatures.fireplace = action.payload;
+        },
+
+        setBright({ id, properties }, action): void {
+            properties[id].technicalFeatures.bright = action.payload;
+        },
+
+        setLuxurious({ id, properties }, action): void {
+            properties[id].technicalFeatures.luxurious = action.payload;
+        },
+
+        setElectricCarChargingFacilities({ id, properties }, action): void {
+            properties[id].technicalFeatures.electricCarChargingFacilities =
+                action.payload;
+        },
+
+        setReception({ id, properties }, action): void {
+            properties[id].technicalFeatures.reception = action.payload;
+        },
+
+        setPetsAllowed({ id, properties }, action): void {
+            properties[id].technicalFeatures.petsAllowed = action.payload;
+        },
+
+        setFloorType({ id, properties }, action): void {
+            properties[id].technicalFeatures.floorType = action.payload;
+        },
+
+        setSatelliteTV({ id, properties }, action): void {
+            properties[id].technicalFeatures.satelliteTV = action.payload;
+        },
+
+        setWiring({ id, properties }, action): void {
+            properties[id].technicalFeatures.wiring = action.payload;
+        },
+
+        setLoadingUnloadingElevator({ id, properties }, action): void {
+            properties[id].technicalFeatures.loadingUnloadingElevator =
+                action.payload;
+        },
+
+        setFalseCeiling({ id, properties }, action): void {
+            properties[id].technicalFeatures.falseCeiling = action.payload;
+        },
+
+        setWithEquipment({ id, properties }, action): void {
+            properties[id].technicalFeatures.withEquipment = action.payload;
+        },
+
+        setDoubleFrontage({ id, properties }, action): void {
+            properties[id].technicalFeatures.doubleFrontage = action.payload;
+        },
+
+        setConsideration({ id, properties }, action): void {
+            properties[id].technicalFeatures.consideration = action.payload;
+        },
+
+        setFloorToAreaRatio({ id, properties }, action): void {
+            properties[id].technicalFeatures.floorToAreaRatio = action.payload;
+        },
+        setFacadeLength({ id, properties }, action): void {
+            properties[id].technicalFeatures.facadeLength = action.payload;
+        },
+
+        setInclination({ id, properties }, action): void {
+            properties[id].technicalFeatures.inclination = action.payload;
+        },
+
+        setStudent({ id, properties }, action): void {
+            properties[id].suitableFor.student = action.payload;
+        },
+        setAgriculturalUse({ id, properties }, action): void {
+            properties[id].suitableFor.agriculturalUse = action.payload;
+        },
+        setCottage({ id, properties }, action): void {
+            properties[id].suitableFor.cottage = action.payload;
+        },
+
+        setAuction({ id, properties }, action): void {
+            properties[id].auction = action.payload;
+        },
+        setExclusive({ id, properties }, action): void {
+            properties[id].exclusive = action.payload;
+        },
+
+        setTouristRental({ id, properties }, action): void {
+            properties[id].suitableFor.touristRental = action.payload;
+        },
+        setInvestment({ id, properties }, action): void {
+            properties[id].suitableFor.investment = action.payload;
+        },
+        setDoctorsOffice({ id, properties }, action): void {
+            properties[id].suitableFor.doctorsOffice = action.payload;
+        },
+        setProfessionalUse({ id, properties }, action): void {
+            properties[id].suitableFor.professionalUse = action.payload;
+        },
+        setRenovation({ id, properties }, action): void {
+            properties[id].suitableFor.renovation = action.payload;
+        },
+
+        addLabel({ id, properties }, action): void {
+            if (!properties[id].labelIDs.includes(action.payload))
+                properties[id].labelIDs.push(action.payload);
+        },
+        removeLabel({ id, properties }, { payload }): void {
             // INFO: removes based on array index (contrary to addLabel)
             const index = payload;
-            state.labelIDs = state.labelIDs.filter((_, i) => i !== index);
+            properties[id].labelIDs = properties[id].labelIDs.filter(
+                (_, i) => i !== index
+            );
         },
 
-        setInitialState: (state: propertyState, action): void => {
-            const payload: IProperties = action.payload;
-            const { details, heatingAndEnergy, technicalFeatures } = payload;
+        setInitialState: (state, action): void => {
+            const { properties } = state;
+            const payload: InitialStatePayload = action.payload;
+            const { data, id } = payload;
+            const { details, heatingAndEnergy, technicalFeatures } = data;
+
+            // Change current id
+            state.id = id;
+
+            if (!(id in properties)) {
+                properties[id] = { ...initialPropertyState };
+            }
+
+            console.log("selecting: ", id);
 
             // INFO: we don't get a valid value, use the one on the initialState which is non-null but always means "unset";
             //        this way we prevent nulls and at the same time show the values as empty
 
-            state.code = payload.code || state.code;
-            state.title = payload.title || state.title;
-            state.managerId = payload.manager?.id || state.managerId;
-            state.ownerId = payload.owner?.id || state.ownerId;
-            state.state = payload.state.key || state.state;
-            state.parentCategory =
-                payload.parentCategory.key || state.parentCategory;
-            state.category = payload.category.key || state.category;
-            state.area = payload.area || state.area;
-            state.plotArea = payload.plotArea || state.plotArea;
-            state.price = payload.price || state.price;
-            state.averageUtils = payload.averageUtils || state.averageUtils;
-            state.rented = payload.rented || state.rented;
+            properties[id].code = data.code || initialPropertyState.code;
+            properties[id].title = data.title || initialPropertyState.title;
+            properties[id].managerId =
+                data.manager?.id || initialPropertyState.managerId;
+            properties[id].ownerId =
+                data.owner?.id || initialPropertyState.ownerId;
+            properties[id].state =
+                data.state?.key || initialPropertyState.state;
+            properties[id].parentCategory =
+                data.parentCategory?.key || initialPropertyState.parentCategory;
+            properties[id].category =
+                data.category?.key || initialPropertyState.category;
+            properties[id].area = data.area || initialPropertyState.area;
+            properties[id].plotArea =
+                data.plotArea || initialPropertyState.plotArea;
+            properties[id].price = data.price || initialPropertyState.price;
+            properties[id].averageUtils =
+                data.averageUtils || initialPropertyState.averageUtils;
+            properties[id].rented = data.rented || initialPropertyState.rented;
 
-            state.currentRentPrice =
-                payload.currentRentPrice || state.currentRentPrice;
-            state.estimatedRentPrice =
-                payload.estimatedRentPrice || state.estimatedRentPrice;
-            state.rentalStart = payload.rentalStart || state.rentalStart;
-            state.rentalEnd = payload.rentalEnd || state.rentalEnd;
-            state.availableAfter =
-                payload.availableAfter || state.availableAfter;
-            state.keyCode = payload.keyCode || state.keyCode;
+            properties[id].currentRentPrice =
+                data.currentRentPrice || initialPropertyState.currentRentPrice;
+            properties[id].estimatedRentPrice =
+                data.estimatedRentPrice ||
+                initialPropertyState.estimatedRentPrice;
+            properties[id].rentalStart =
+                data.rentalStart || initialPropertyState.rentalStart;
+            properties[id].rentalEnd =
+                data.rentalEnd || initialPropertyState.rentalEnd;
+            properties[id].availableAfter =
+                data.availableAfter || initialPropertyState.availableAfter;
+            properties[id].keyCode =
+                data.keyCode || initialPropertyState.keyCode;
 
-            state.auction = payload.auction || state.auction;
-            state.exclusive = payload.exclusive || state.exclusive;
+            properties[id].auction =
+                data.auction || initialPropertyState.auction;
+            properties[id].exclusive =
+                data.exclusive || initialPropertyState.exclusive;
 
-            state.debatablePrice =
-                payload.debatablePrice || state.debatablePrice;
-            state.buildable = payload.buildable || state.buildable;
-            state.video = payload.video || state.video;
-            state.description = payload.description || state.description;
-            state.descriptionText =
-                payload.descriptionText || state.descriptionText;
+            properties[id].debatablePrice =
+                data.debatablePrice || initialPropertyState.debatablePrice;
+            properties[id].buildable =
+                data.buildable || initialPropertyState.buildable;
+            properties[id].video = data.video || initialPropertyState.video;
+            properties[id].description =
+                data.description || initialPropertyState.description;
+            properties[id].descriptionText =
+                data.descriptionText || initialPropertyState.descriptionText;
 
             // Details
-            state.details.floor =
-                details?.floor.key || initialState.details.floor;
-            state.details.bedrooms =
-                details?.bedrooms || initialState.details.bedrooms;
-            state.details.kitchens =
-                details?.kitchens || initialState.details.kitchens;
-            state.details.wc = details?.wc || initialState.details.wc;
-            state.details.layers =
-                details?.layers || initialState.details.layers;
-            state.details.livingrooms =
-                details?.livingrooms || initialState.details.livingrooms;
-            state.details.bathrooms =
-                details?.bathrooms || initialState.details.bathrooms;
-            state.details.rooms = details?.rooms || initialState.details.rooms;
-            state.details.attic = details?.attic || initialState.details.attic;
-            state.details.storeroom =
-                details?.storeroom || initialState.details.storeroom;
-            state.details.playroom =
-                details?.playroom || initialState.details.playroom;
-            state.details.floorApartment =
-                details?.floorApartment || initialState.details.floorApartment;
-            state.details.penthouse =
-                details?.penthouse || initialState.details.penthouse;
-            state.details.orientation =
-                details?.orientation.key || initialState.details.orientation;
-            state.details.viewType =
-                details?.viewType.key || initialState.details.viewType;
-            state.details.accessibility =
-                details?.accessibility.key ||
-                initialState.details.accessibility;
-            state.details.landUse =
-                details?.landUse.key || initialState.details.landUse;
-            state.details.zoneType =
-                details?.zoneType.key || initialState.details.zoneType;
-            state.details.parkings =
+            properties[id].details.floor =
+                details?.floor?.key || initialPropertyState.details.floor;
+            properties[id].details.bedrooms =
+                details?.bedrooms || initialPropertyState.details.bedrooms;
+            properties[id].details.kitchens =
+                details?.kitchens || initialPropertyState.details.kitchens;
+            properties[id].details.wc =
+                details?.wc || initialPropertyState.details.wc;
+            properties[id].details.layers =
+                details?.layers || initialPropertyState.details.layers;
+            properties[id].details.livingrooms =
+                details?.livingrooms ||
+                initialPropertyState.details.livingrooms;
+            properties[id].details.bathrooms =
+                details?.bathrooms || initialPropertyState.details.bathrooms;
+            properties[id].details.rooms =
+                details?.rooms || initialPropertyState.details.rooms;
+            properties[id].details.attic =
+                details?.attic || initialPropertyState.details.attic;
+            properties[id].details.storeroom =
+                details?.storeroom || initialPropertyState.details.storeroom;
+            properties[id].details.playroom =
+                details?.playroom || initialPropertyState.details.playroom;
+            properties[id].details.floorApartment =
+                details?.floorApartment ||
+                initialPropertyState.details.floorApartment;
+            properties[id].details.penthouse =
+                details?.penthouse || initialPropertyState.details.penthouse;
+            properties[id].details.orientation =
+                details?.orientation?.key ||
+                initialPropertyState.details.orientation;
+            properties[id].details.viewType =
+                details?.viewType?.key || initialPropertyState.details.viewType;
+            properties[id].details.accessibility =
+                details?.accessibility?.key ||
+                initialPropertyState.details.accessibility;
+            properties[id].details.landUse =
+                details?.landUse?.key || initialPropertyState.details.landUse;
+            properties[id].details.zoneType =
+                details?.zoneType?.key || initialPropertyState.details.zoneType;
+            properties[id].details.parkings =
                 details?.parkings.map((parking) => ({
                     spots: parking.spots,
-                    parkingType: parking.parkingType.key,
-                })) || initialState.details.parkings;
-            state.details.balconies =
+                    parkingType: parking.parkingType?.key,
+                })) || initialPropertyState.details.parkings;
+            properties[id].details.balconies =
                 details?.balconies.map((balcony) => ({
                     area: balcony.area,
-                    side: balcony.side.key,
-                })) || initialState.details.balconies;
+                    side: balcony.side?.key,
+                })) || initialPropertyState.details.balconies;
 
             // Heating & Energy
-            state.heatingAndEnergy.energyClass =
-                heatingAndEnergy?.energyClass.key ||
-                initialState.heatingAndEnergy.energyClass;
-            state.heatingAndEnergy.heatingType =
-                heatingAndEnergy?.heatingType.key ||
-                initialState.heatingAndEnergy.heatingType;
-            state.heatingAndEnergy.heatingSystem =
-                heatingAndEnergy?.heatingSystem.key ||
-                initialState.heatingAndEnergy.heatingSystem;
-            state.heatingAndEnergy.electricityType =
-                heatingAndEnergy?.electricityType.key ||
-                initialState.heatingAndEnergy.electricityType;
-            state.heatingAndEnergy.floorHeating =
+            properties[id].heatingAndEnergy.energyClass =
+                heatingAndEnergy?.energyClass?.key ||
+                initialPropertyState.heatingAndEnergy.energyClass;
+            properties[id].heatingAndEnergy.heatingType =
+                heatingAndEnergy?.heatingType?.key ||
+                initialPropertyState.heatingAndEnergy.heatingType;
+            properties[id].heatingAndEnergy.heatingSystem =
+                heatingAndEnergy?.heatingSystem?.key ||
+                initialPropertyState.heatingAndEnergy.heatingSystem;
+            properties[id].heatingAndEnergy.electricityType =
+                heatingAndEnergy?.electricityType?.key ||
+                initialPropertyState.heatingAndEnergy.electricityType;
+            properties[id].heatingAndEnergy.floorHeating =
                 heatingAndEnergy?.floorHeating ||
-                initialState.heatingAndEnergy.floorHeating;
-            state.heatingAndEnergy.airConditioning =
+                initialPropertyState.heatingAndEnergy.floorHeating;
+            properties[id].heatingAndEnergy.airConditioning =
                 heatingAndEnergy?.airConditioning ||
-                initialState.heatingAndEnergy.airConditioning;
-            state.heatingAndEnergy.solarBoiler =
+                initialPropertyState.heatingAndEnergy.airConditioning;
+            properties[id].heatingAndEnergy.solarBoiler =
                 heatingAndEnergy?.solarBoiler ||
-                initialState.heatingAndEnergy.solarBoiler;
-            state.heatingAndEnergy.offPeakElectricity =
+                initialPropertyState.heatingAndEnergy.solarBoiler;
+            properties[id].heatingAndEnergy.offPeakElectricity =
                 heatingAndEnergy?.offPeakElectricity ||
-                initialState.heatingAndEnergy.offPeakElectricity;
+                initialPropertyState.heatingAndEnergy.offPeakElectricity;
             // Suitable For
-            state.suitableFor = payload.suitableFor || initialState.suitableFor;
+            properties[id].suitableFor =
+                data.suitableFor || initialPropertyState.suitableFor;
             // Distances
-            state.distances = payload.distances || initialState.distances;
+            properties[id].distances =
+                data.distances || initialPropertyState.distances;
             // Construction
-            state.construction =
-                payload.construction || initialState.construction;
+            properties[id].construction =
+                data.construction || initialPropertyState.construction;
             // Features
-            state.features = payload.features || initialState.features;
+            properties[id].features =
+                data.features || initialPropertyState.features;
             // Technical Features
-            state.technicalFeatures.entrances =
+            properties[id].technicalFeatures.entrances =
                 technicalFeatures?.entrances ||
-                initialState.technicalFeatures.entrances;
-            state.technicalFeatures.displayWindowsLength =
+                initialPropertyState.technicalFeatures.entrances;
+            properties[id].technicalFeatures.displayWindowsLength =
                 technicalFeatures?.displayWindowsLength ||
-                initialState.technicalFeatures.displayWindowsLength;
-            state.technicalFeatures.safetyDoor =
+                initialPropertyState.technicalFeatures.displayWindowsLength;
+            properties[id].technicalFeatures.safetyDoor =
                 technicalFeatures?.safetyDoor ||
-                initialState.technicalFeatures.safetyDoor;
-            state.technicalFeatures.alarmSystem =
+                initialPropertyState.technicalFeatures.safetyDoor;
+            properties[id].technicalFeatures.alarmSystem =
                 technicalFeatures?.alarmSystem ||
-                initialState.technicalFeatures.alarmSystem;
-            state.technicalFeatures.painted =
+                initialPropertyState.technicalFeatures.alarmSystem;
+            properties[id].technicalFeatures.painted =
                 technicalFeatures?.painted ||
-                initialState.technicalFeatures.painted;
-            state.technicalFeatures.furnished =
-                technicalFeatures?.furnished.key ||
-                initialState.technicalFeatures.furnished;
-            state.technicalFeatures.frameType =
-                technicalFeatures?.frameType.key ||
-                initialState.technicalFeatures.frameType;
-            state.technicalFeatures.paneGlassType =
-                technicalFeatures?.paneGlassType.key ||
-                initialState.technicalFeatures.paneGlassType;
-            state.technicalFeatures.windowScreens =
+                initialPropertyState.technicalFeatures.painted;
+            properties[id].technicalFeatures.furnished =
+                technicalFeatures?.furnished?.key ||
+                initialPropertyState.technicalFeatures.furnished;
+            properties[id].technicalFeatures.frameType =
+                technicalFeatures?.frameType?.key ||
+                initialPropertyState.technicalFeatures.frameType;
+            properties[id].technicalFeatures.paneGlassType =
+                technicalFeatures?.paneGlassType?.key ||
+                initialPropertyState.technicalFeatures.paneGlassType;
+            properties[id].technicalFeatures.windowScreens =
                 technicalFeatures?.windowScreens ||
-                initialState.technicalFeatures.windowScreens;
-            state.technicalFeatures.fireplace =
+                initialPropertyState.technicalFeatures.windowScreens;
+            properties[id].technicalFeatures.fireplace =
                 technicalFeatures?.fireplace ||
-                initialState.technicalFeatures.fireplace;
-            state.technicalFeatures.bright =
+                initialPropertyState.technicalFeatures.fireplace;
+            properties[id].technicalFeatures.bright =
                 technicalFeatures?.bright ||
-                initialState.technicalFeatures.bright;
-            state.technicalFeatures.luxurious =
+                initialPropertyState.technicalFeatures.bright;
+            properties[id].technicalFeatures.luxurious =
                 technicalFeatures?.luxurious ||
-                initialState.technicalFeatures.luxurious;
-            state.technicalFeatures.electricCarChargingFacilities =
+                initialPropertyState.technicalFeatures.luxurious;
+            properties[id].technicalFeatures.electricCarChargingFacilities =
                 technicalFeatures?.electricCarChargingFacilities ||
-                initialState.technicalFeatures.electricCarChargingFacilities;
-            state.technicalFeatures.reception =
+                initialPropertyState.technicalFeatures
+                    .electricCarChargingFacilities;
+            properties[id].technicalFeatures.reception =
                 technicalFeatures?.reception ||
-                initialState.technicalFeatures.reception;
-            state.technicalFeatures.petsAllowed =
+                initialPropertyState.technicalFeatures.reception;
+            properties[id].technicalFeatures.petsAllowed =
                 technicalFeatures?.petsAllowed ||
-                initialState.technicalFeatures.petsAllowed;
-            state.technicalFeatures.floorType =
-                technicalFeatures?.floorType.key ||
-                initialState.technicalFeatures.floorType;
-            state.technicalFeatures.satelliteTV =
+                initialPropertyState.technicalFeatures.petsAllowed;
+            properties[id].technicalFeatures.floorType =
+                technicalFeatures?.floorType?.key ||
+                initialPropertyState.technicalFeatures.floorType;
+            properties[id].technicalFeatures.satelliteTV =
                 technicalFeatures?.satelliteTV ||
-                initialState.technicalFeatures.satelliteTV;
-            state.technicalFeatures.wiring =
+                initialPropertyState.technicalFeatures.satelliteTV;
+            properties[id].technicalFeatures.wiring =
                 technicalFeatures?.wiring ||
-                initialState.technicalFeatures.wiring;
-            state.technicalFeatures.loadingUnloadingElevator =
+                initialPropertyState.technicalFeatures.wiring;
+            properties[id].technicalFeatures.loadingUnloadingElevator =
                 technicalFeatures?.loadingUnloadingElevator ||
-                initialState.technicalFeatures.loadingUnloadingElevator;
-            state.technicalFeatures.falseCeiling =
+                initialPropertyState.technicalFeatures.loadingUnloadingElevator;
+            properties[id].technicalFeatures.falseCeiling =
                 technicalFeatures?.falseCeiling ||
-                initialState.technicalFeatures.falseCeiling;
-            state.technicalFeatures.withEquipment =
+                initialPropertyState.technicalFeatures.falseCeiling;
+            properties[id].technicalFeatures.withEquipment =
                 technicalFeatures?.withEquipment ||
-                initialState.technicalFeatures.withEquipment;
-            state.technicalFeatures.doubleFrontage =
+                initialPropertyState.technicalFeatures.withEquipment;
+            properties[id].technicalFeatures.doubleFrontage =
                 technicalFeatures?.doubleFrontage ||
-                initialState.technicalFeatures.doubleFrontage;
-            state.technicalFeatures.consideration =
+                initialPropertyState.technicalFeatures.doubleFrontage;
+            properties[id].technicalFeatures.consideration =
                 technicalFeatures?.consideration ||
-                initialState.technicalFeatures.consideration;
-            state.technicalFeatures.floorToAreaRatio =
+                initialPropertyState.technicalFeatures.consideration;
+            properties[id].technicalFeatures.floorToAreaRatio =
                 technicalFeatures?.floorToAreaRatio ||
-                initialState.technicalFeatures.floorToAreaRatio;
-            state.technicalFeatures.coverageFactor =
+                initialPropertyState.technicalFeatures.floorToAreaRatio;
+            properties[id].technicalFeatures.coverageFactor =
                 technicalFeatures?.coverageFactor ||
-                initialState.technicalFeatures.coverageFactor;
-            state.technicalFeatures.facadeLength =
+                initialPropertyState.technicalFeatures.coverageFactor;
+            properties[id].technicalFeatures.facadeLength =
                 technicalFeatures?.facadeLength ||
-                initialState.technicalFeatures.facadeLength;
-            state.technicalFeatures.inclination =
-                technicalFeatures?.inclination.key ||
-                initialState.technicalFeatures.inclination;
+                initialPropertyState.technicalFeatures.facadeLength;
+            properties[id].technicalFeatures.inclination =
+                technicalFeatures?.inclination?.key ||
+                initialPropertyState.technicalFeatures.inclination;
 
             // areas
-            state.areas = payload.areas || initialState.areas;
+            properties[id].areas = data.areas || initialPropertyState.areas;
 
             // Location (convert from ILocationPOST to ILocation)
-            const location: ILocation = payload.location;
-            state.location.city = location?.city || initialState.location.city;
-            state.location.country =
-                location?.country || initialState.location.country;
-            state.location.number =
-                location?.number || initialState.location.number;
-            state.location.region =
-                location?.region || initialState.location.region;
-            state.location.street =
-                location?.street || initialState.location.street;
-            state.location.zipCode =
-                location?.zipCode || initialState.location.zipCode;
-            state.location.complex =
-                location?.complex || initialState.location.complex;
-            state.location.lat = location?.lat || initialState.location.lat;
-            state.location.lng = location?.lng || initialState.location.lng;
+            const location: ILocation = data.location;
+            properties[id].location.city =
+                location?.city || initialPropertyState.location.city;
+            properties[id].location.country =
+                location?.country || initialPropertyState.location.country;
+            properties[id].location.number =
+                location?.number || initialPropertyState.location.number;
+            properties[id].location.region =
+                location?.region || initialPropertyState.location.region;
+            properties[id].location.street =
+                location?.street || initialPropertyState.location.street;
+            properties[id].location.zipCode =
+                location?.zipCode || initialPropertyState.location.zipCode;
+            properties[id].location.complex =
+                location?.complex || initialPropertyState.location.complex;
+            properties[id].location.lat =
+                location?.lat || initialPropertyState.location.lat;
+            properties[id].location.lng =
+                location?.lng || initialPropertyState.location.lng;
 
             // map labels
-            state.labelIDs = payload.labels
-                ? payload.labels
+            properties[id].labelIDs = data.labels
+                ? data.labels
                       .filter((label) => label.id) // where id not null
                       .map((label) => {
                           return label.id!;
@@ -1233,400 +1289,506 @@ export const {
     resetState,
 } = slice.actions;
 
-export const selectAll = ({ property }: RootState) => property;
+export const selectAll = ({
+    property: { id, properties },
+}: RootState): IPropertiesPOST | undefined => properties[id];
 
-export const selectCode = ({ property }: RootState) => property.code;
-export const selectRentalPeriodStart = ({ property }: RootState) =>
-    property.rentalStart;
-export const selectRentalPeriodEnd = ({ property }: RootState) =>
-    property.rentalEnd;
+export const selectCode = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.code;
+export const selectRentalPeriodStart = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.rentalStart;
+export const selectRentalPeriodEnd = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.rentalEnd;
 
-export const selectOwner = ({ property }: RootState) => property.ownerId;
-export const selectManager = ({ property }: RootState) => property.managerId;
-export const selectCategory = ({ property }: RootState) => property.category;
-export const selectState = ({ property }: RootState) => property.state;
-export const selectCurrentRentPrice = ({ property }: RootState) =>
-    property.currentRentPrice;
-export const selectEstimatedRentPrice = ({ property }: RootState) =>
-    property.estimatedRentPrice;
+export const selectOwner = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.ownerId;
+export const selectManager = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.managerId;
+export const selectCategory = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.category;
+export const selectState = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.state;
+export const selectCurrentRentPrice = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.currentRentPrice;
+export const selectEstimatedRentPrice = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.estimatedRentPrice;
 
-export const selectAuction = ({ property }: RootState) => property.auction;
-export const selectExclusive = ({ property }: RootState) => property.exclusive;
+export const selectAuction = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.auction;
+export const selectExclusive = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.exclusive;
 
-export const selectDebatablePrice = ({ property }: RootState) =>
-    property.debatablePrice;
-export const selectPrice = ({ property }: RootState) => property.price;
-export const selectArea = ({ property }: RootState) => property.area;
-export const selectPlotArea = ({ property }: RootState) => property.plotArea;
-export const selectParentCategory = ({ property }: RootState) =>
-    property.parentCategory;
-export const selectAvgUtils = ({ property }: RootState) =>
-    property.averageUtils;
-export const selectKeyCode = ({ property }: RootState) => property.keyCode;
-export const selectBuildable = ({ property }: RootState) => property.buildable;
-export const selectDescription = ({ property }: RootState) =>
-    property.description;
-export const selectDescriptionText = ({ property }: RootState) =>
-    property.descriptionText;
-export const selectAvailableAfter = ({ property }: RootState) =>
-    property.availableAfter;
-export const selectVideo = ({ property }: RootState) => property.video;
-export const selectRented = ({ property }: RootState) => property.rented;
+export const selectDebatablePrice = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.debatablePrice;
+export const selectPrice = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.price;
+export const selectArea = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.area;
+export const selectPlotArea = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.plotArea;
+export const selectParentCategory = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.parentCategory;
+export const selectAvgUtils = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.averageUtils;
+export const selectKeyCode = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.keyCode;
+export const selectBuildable = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.buildable;
+export const selectDescription = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.description;
+export const selectDescriptionText = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.descriptionText;
+export const selectAvailableAfter = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.availableAfter;
+export const selectVideo = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.video;
+export const selectRented = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.rented;
 
 // Location
-export const selectStreet = ({ property }: RootState) =>
-    property.location?.street;
-export const selectNumber = ({ property }: RootState) =>
-    property.location?.number;
-export const selectComplex = ({ property }: RootState) =>
-    property.location?.complex;
-export const selectCity = ({ property }: RootState) => property.location?.city;
-export const selectZipCode = ({ property }: RootState) =>
-    property.location?.zipCode;
-export const selectRegion = ({ property }: RootState) =>
-    property.location?.region;
-export const selectCountry = ({ property }: RootState) =>
-    property.location?.country;
-export const selectLatitude = ({ property }: RootState) =>
-    property.location?.lat;
-export const selectLongitude = ({ property }: RootState) =>
-    property.location?.lng;
+export const selectStreet = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.location?.street;
+export const selectNumber = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.location?.number;
+export const selectComplex = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.location?.complex;
+export const selectCity = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.location?.city;
+export const selectZipCode = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.location?.zipCode;
+export const selectRegion = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.location?.region;
+export const selectCountry = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.location?.country;
+export const selectLatitude = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.location?.lat;
+export const selectLongitude = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.location?.lng;
 
 // Details
-export const selectOrientation = ({ property }: RootState) =>
-    property.details?.orientation;
-export const selectLandUse = ({ property }: RootState) =>
-    property.details?.landUse;
-export const selectViewType = ({ property }: RootState) =>
-    property.details?.viewType;
-export const selectAccessibility = ({ property }: RootState) =>
-    property.details?.accessibility;
-export const selectFloor = ({ property }: RootState) => property.details?.floor;
-export const selectKitchens = ({ property }: RootState) =>
-    property.details?.kitchens;
-export const selectLayers = ({ property }: RootState) =>
-    property.details?.layers;
-export const selectBathrooms = ({ property }: RootState) =>
-    property.details?.bathrooms;
-export const selectNumOfWC = ({ property }: RootState) => property.details?.wc;
-export const selectLivingRooms = ({ property }: RootState) =>
-    property.details?.livingrooms;
-export const selectBedrooms = ({ property }: RootState) =>
-    property.details?.bedrooms;
-export const selectStoreroomBool = ({ property }: RootState) =>
-    property.details?.storeroom;
-export const selectRooms = ({ property }: RootState) => property.details?.rooms;
+export const selectOrientation = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.details?.orientation;
+export const selectLandUse = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.details?.landUse;
+export const selectViewType = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.details?.viewType;
+export const selectAccessibility = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.details?.accessibility;
+export const selectFloor = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.details?.floor;
+export const selectKitchens = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.details?.kitchens;
+export const selectLayers = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.details?.layers;
+export const selectBathrooms = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.details?.bathrooms;
+export const selectNumOfWC = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.details?.wc;
+export const selectLivingRooms = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.details?.livingrooms;
+export const selectBedrooms = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.details?.bedrooms;
+export const selectStoreroomBool = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.details?.storeroom;
+export const selectRooms = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.details?.rooms;
 
 // Heating
-export const selectElectricityType = ({ property }: RootState) =>
-    property.heatingAndEnergy?.electricityType;
-export const selectSolarBoiler = ({ property }: RootState) =>
-    property.heatingAndEnergy?.solarBoiler;
-export const selectEnergyClass = ({ property }: RootState) =>
-    property.heatingAndEnergy?.energyClass;
-export const selectOffPeakElectricity = ({ property }: RootState) =>
-    property.heatingAndEnergy?.offPeakElectricity;
-export const selectZoneType = ({ property }: RootState) =>
-    property.details?.zoneType;
-export const selectHeatingSystem = ({ property }: RootState) =>
-    property.heatingAndEnergy?.heatingSystem;
-export const selectHeatingType = ({ property }: RootState) =>
-    property.heatingAndEnergy?.heatingType;
-export const selectFloorHeating = ({ property }: RootState) =>
-    property.heatingAndEnergy?.floorHeating;
-export const selectAirConditioning = ({ property }: RootState) =>
-    property.heatingAndEnergy?.airConditioning;
+export const selectElectricityType = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.heatingAndEnergy?.electricityType;
+export const selectSolarBoiler = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.heatingAndEnergy?.solarBoiler;
+export const selectEnergyClass = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.heatingAndEnergy?.energyClass;
+export const selectOffPeakElectricity = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.heatingAndEnergy?.offPeakElectricity;
+export const selectZoneType = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.details?.zoneType;
+export const selectHeatingSystem = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.heatingAndEnergy?.heatingSystem;
+export const selectHeatingType = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.heatingAndEnergy?.heatingType;
+export const selectFloorHeating = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.heatingAndEnergy?.floorHeating;
+export const selectAirConditioning = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.heatingAndEnergy?.airConditioning;
 
 // Suitable For
-export const selectStudent = ({ property }: RootState) =>
-    property.suitableFor?.student;
-export const selectCottage = ({ property }: RootState) =>
-    property.suitableFor?.cottage;
-export const selectTouristRental = ({ property }: RootState) =>
-    property.suitableFor?.touristRental;
-export const selectInvestment = ({ property }: RootState) =>
-    property.suitableFor?.investment;
-export const selectDoctorsOffice = ({ property }: RootState) =>
-    property.suitableFor?.doctorsOffice;
-export const selectProfessionalUse = ({ property }: RootState) =>
-    property.suitableFor?.professionalUse;
-export const selectRenovation = ({ property }: RootState) =>
-    property.suitableFor?.renovation;
-export const selectAgriculturalUse = ({ property }: RootState) =>
-    property.suitableFor?.agriculturalUse;
+export const selectStudent = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.suitableFor?.student;
+export const selectCottage = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.suitableFor?.cottage;
+export const selectTouristRental = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.suitableFor?.touristRental;
+export const selectInvestment = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.suitableFor?.investment;
+export const selectDoctorsOffice = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.suitableFor?.doctorsOffice;
+export const selectProfessionalUse = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.suitableFor?.professionalUse;
+export const selectRenovation = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.suitableFor?.renovation;
+export const selectAgriculturalUse = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.suitableFor?.agriculturalUse;
 
 // Technical Features
-export const selectDisplayWindowsLength = ({ property }: RootState) =>
-    property.technicalFeatures?.displayWindowsLength;
+export const selectDisplayWindowsLength = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.technicalFeatures?.displayWindowsLength;
 
-export const selectSafetyDoor = ({ property }: RootState) =>
-    property.technicalFeatures?.safetyDoor;
+export const selectSafetyDoor = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.technicalFeatures?.safetyDoor;
 
-export const selectAlarmSystem = ({ property }: RootState) =>
-    property.technicalFeatures?.alarmSystem;
+export const selectAlarmSystem = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.technicalFeatures?.alarmSystem;
 
-export const selectPainted = ({ property }: RootState) =>
-    property.technicalFeatures?.painted;
+export const selectPainted = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.technicalFeatures?.painted;
 
-export const selectFurnished = ({ property }: RootState) =>
-    property.technicalFeatures?.furnished;
+export const selectFurnished = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.technicalFeatures?.furnished;
 
-export const selectFrameType = ({ property }: RootState) =>
-    property.technicalFeatures?.frameType;
+export const selectFrameType = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.technicalFeatures?.frameType;
 
-export const selectPaneGlassType = ({ property }: RootState) =>
-    property.technicalFeatures?.paneGlassType;
+export const selectPaneGlassType = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.technicalFeatures?.paneGlassType;
 
-export const selectWindowScreens = ({ property }: RootState) =>
-    property.technicalFeatures?.windowScreens;
+export const selectWindowScreens = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.technicalFeatures?.windowScreens;
 
-export const selectFireplace = ({ property }: RootState) =>
-    property.technicalFeatures?.fireplace;
+export const selectFireplace = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.technicalFeatures?.fireplace;
 
-export const selectBright = ({ property }: RootState) =>
-    property.technicalFeatures?.bright;
+export const selectBright = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.technicalFeatures?.bright;
 
-export const selectLuxurious = ({ property }: RootState) =>
-    property.technicalFeatures?.luxurious;
+export const selectLuxurious = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.technicalFeatures?.luxurious;
 
-export const selectElectricCarChargingFacilities = ({ property }: RootState) =>
-    property.technicalFeatures?.electricCarChargingFacilities;
+export const selectElectricCarChargingFacilities = ({
+    property: { id, properties },
+}: RootState) =>
+    properties[id]?.technicalFeatures?.electricCarChargingFacilities;
 
-export const selectReception = ({ property }: RootState) =>
-    property.technicalFeatures?.reception;
+export const selectReception = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.technicalFeatures?.reception;
 
-export const selectPetsAllowed = ({ property }: RootState) =>
-    property.technicalFeatures?.petsAllowed;
+export const selectPetsAllowed = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.technicalFeatures?.petsAllowed;
 
-export const selectFloorType = ({ property }: RootState) =>
-    property.technicalFeatures?.floorType;
+export const selectFloorType = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.technicalFeatures?.floorType;
 
-export const selectSatelliteTV = ({ property }: RootState) =>
-    property.technicalFeatures?.satelliteTV;
+export const selectSatelliteTV = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.technicalFeatures?.satelliteTV;
 
-export const selectWiring = ({ property }: RootState) =>
-    property.technicalFeatures?.wiring;
+export const selectWiring = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.technicalFeatures?.wiring;
 
-export const selectLoadingUnloadingElevator = ({ property }: RootState) =>
-    property.technicalFeatures?.loadingUnloadingElevator;
+export const selectLoadingUnloadingElevator = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.technicalFeatures?.loadingUnloadingElevator;
 
-export const selectFalseCeiling = ({ property }: RootState) =>
-    property.technicalFeatures?.falseCeiling;
+export const selectFalseCeiling = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.technicalFeatures?.falseCeiling;
 
-export const selectWithEquipment = ({ property }: RootState) =>
-    property.technicalFeatures?.withEquipment;
+export const selectWithEquipment = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.technicalFeatures?.withEquipment;
 
-export const selectDoubleFrontage = ({ property }: RootState) =>
-    property.technicalFeatures?.doubleFrontage;
+export const selectDoubleFrontage = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.technicalFeatures?.doubleFrontage;
 
-export const selectConsideration = ({ property }: RootState) =>
-    property.technicalFeatures?.consideration;
+export const selectConsideration = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.technicalFeatures?.consideration;
 
-export const selectFloorToAreaRatio = ({ property }: RootState) =>
-    property.technicalFeatures?.floorToAreaRatio;
+export const selectFloorToAreaRatio = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.technicalFeatures?.floorToAreaRatio;
 
-export const selectCoverageFactor = ({ property }: RootState) =>
-    property.technicalFeatures?.coverageFactor;
+export const selectCoverageFactor = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.technicalFeatures?.coverageFactor;
 
-export const selectFacadeLength = ({ property }: RootState) =>
-    property.technicalFeatures?.facadeLength;
+export const selectFacadeLength = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.technicalFeatures?.facadeLength;
 
-export const selectInclination = ({ property }: RootState) =>
-    property.technicalFeatures?.inclination;
+export const selectInclination = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.technicalFeatures?.inclination;
 
-export const selectEntrances = ({ property }: RootState) =>
-    property.technicalFeatures?.entrances;
+export const selectEntrances = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.technicalFeatures?.entrances;
 
 // Areas
-export const selectBalconiesArea = ({ property }: RootState) =>
-    property.areas?.balconies;
-export const selectCovered = ({ property }: RootState) =>
-    property.areas?.covered;
-export const selectBasement = ({ property }: RootState) =>
-    property.areas?.basement;
-export const selectGarden = ({ property }: RootState) => property.areas?.garden;
-export const selectStoreroom = ({ property }: RootState) =>
-    property.areas?.storeroom;
-export const selectAttic = ({ property }: RootState) => property.areas?.attic;
-export const selectGroundFloor = ({ property }: RootState) =>
-    property.areas?.groundFloor;
-export const selectFirst = ({ property }: RootState) => property.areas?.first;
-export const selectSecond = ({ property }: RootState) => property.areas?.second;
-export const selectThird = ({ property }: RootState) => property.areas?.third;
-export const selectFourth = ({ property }: RootState) => property.areas?.fourth;
-export const selectFifth = ({ property }: RootState) => property.areas?.fifth;
+export const selectBalconiesArea = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.areas?.balconies;
+export const selectCovered = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.areas?.covered;
+export const selectBasement = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.areas?.basement;
+export const selectGarden = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.areas?.garden;
+export const selectStoreroom = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.areas?.storeroom;
+export const selectAttic = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.areas?.attic;
+export const selectGroundFloor = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.areas?.groundFloor;
+export const selectFirst = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.areas?.first;
+export const selectSecond = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.areas?.second;
+export const selectThird = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.areas?.third;
+export const selectFourth = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.areas?.fourth;
+export const selectFifth = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.areas?.fifth;
 
 // Parkings & Balconies
-export const selectParkings = ({ property }: RootState) =>
-    property.details?.parkings;
-export const selectBalconies = ({ property }: RootState) =>
-    property.details?.balconies;
+export const selectParkings = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.details?.parkings;
+export const selectBalconies = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.details?.balconies;
 
 // Distances
-export const selectPublicTransportation = ({ property }: RootState) =>
-    property.distances?.publicTransport;
-export const selectSea = ({ property }: RootState) => property.distances?.sea;
-export const selectSchools = ({ property }: RootState) =>
-    property.distances?.schools;
-export const selectSupermarket = ({ property }: RootState) =>
-    property.distances?.supermarket;
-export const selectCafeRestaurant = ({ property }: RootState) =>
-    property.distances?.cafeRestaurant;
-export const selectHospital = ({ property }: RootState) =>
-    property.distances?.hospital;
-export const selectAirport = ({ property }: RootState) =>
-    property.distances?.airport;
+export const selectPublicTransportation = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.distances?.publicTransport;
+export const selectSea = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.distances?.sea;
+export const selectSchools = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.distances?.schools;
+export const selectSupermarket = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.distances?.supermarket;
+export const selectCafeRestaurant = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.distances?.cafeRestaurant;
+export const selectHospital = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.distances?.hospital;
+export const selectAirport = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.distances?.airport;
 
 // Construction
-export const selectYearOfConstruction = ({ property }: RootState) =>
-    property.construction?.yearOfConstruction;
-export const selectNewlyBuilt = ({ property }: RootState) =>
-    property.construction?.newlyBuilt;
-export const selectIncomplete = ({ property }: RootState) =>
-    property.construction?.incomplete;
-export const selectUnderConstruction = ({ property }: RootState) =>
-    property.construction?.underConstruction;
-export const selectTotalFloorNumber = ({ property }: RootState) =>
-    property.construction?.totalFloorNumber;
-export const selectElevator = ({ property }: RootState) =>
-    property.construction?.elevator;
-export const selectInternalStairs = ({ property }: RootState) =>
-    property.construction?.internalStairs;
-export const selectNeoclassical = ({ property }: RootState) =>
-    property.construction?.neoclassical;
-export const selectYearOfRenovation = ({ property }: RootState) =>
-    property.construction?.yearOfRenovation;
-export const selectRenovated = ({ property }: RootState) =>
-    property.construction?.renovated;
-export const selectNeedsRenovation = ({ property }: RootState) =>
-    property.construction?.needsRenovation;
-export const selectPreserved = ({ property }: RootState) =>
-    property.construction?.preserved;
+export const selectYearOfConstruction = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.construction?.yearOfConstruction;
+export const selectNewlyBuilt = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.construction?.newlyBuilt;
+export const selectIncomplete = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.construction?.incomplete;
+export const selectUnderConstruction = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.construction?.underConstruction;
+export const selectTotalFloorNumber = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.construction?.totalFloorNumber;
+export const selectElevator = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.construction?.elevator;
+export const selectInternalStairs = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.construction?.internalStairs;
+export const selectNeoclassical = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.construction?.neoclassical;
+export const selectYearOfRenovation = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.construction?.yearOfRenovation;
+export const selectRenovated = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.construction?.renovated;
+export const selectNeedsRenovation = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.construction?.needsRenovation;
+export const selectPreserved = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.construction?.preserved;
 
-export const selectPool = ({ property }: RootState) => property.features?.pool;
+export const selectPool = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.features?.pool;
 
-export const selectOffice = ({ property }: RootState) =>
-    property.features?.office;
+export const selectOffice = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.features?.office;
 
-export const selectInternet = ({ property }: RootState) =>
-    property.features?.internet;
+export const selectInternet = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.features?.internet;
 
-export const selectThermalInsulation = ({ property }: RootState) =>
-    property.features?.thermalInsulation;
+export const selectThermalInsulation = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.features?.thermalInsulation;
 
-export const selectSeaView = ({ property }: RootState) =>
-    property.features?.seaView;
+export const selectSeaView = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.features?.seaView;
 
-export const selectGuestroom = ({ property }: RootState) =>
-    property.features?.guestroom;
+export const selectGuestroom = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.features?.guestroom;
 
-export const selectQuietArea = ({ property }: RootState) =>
-    property.features?.quietArea;
+export const selectQuietArea = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.features?.quietArea;
 
-export const selectSoundInsulation = ({ property }: RootState) =>
-    property.features?.soundInsulation;
+export const selectSoundInsulation = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.features?.soundInsulation;
 
-export const selectHas24HoursSecurity = ({ property }: RootState) =>
-    property.features?.has24HoursSecurity;
+export const selectHas24HoursSecurity = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.features?.has24HoursSecurity;
 
-export const selectBarbeque = ({ property }: RootState) =>
-    property.features?.barbeque;
+export const selectBarbeque = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.features?.barbeque;
 
-export const selectCctv = ({ property }: RootState) => property.features?.cctv;
+export const selectCctv = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.features?.cctv;
 
-export const selectCombinedKitchenAndDiningArea = ({ property }: RootState) =>
-    property.features?.combinedKitchenAndDiningArea;
+export const selectCombinedKitchenAndDiningArea = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.features?.combinedKitchenAndDiningArea;
 
-export const selectFireDetector = ({ property }: RootState) =>
-    property.features?.fireDetector;
+export const selectFireDetector = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.features?.fireDetector;
 
-export const selectHomeCinema = ({ property }: RootState) =>
-    property.features?.homeCinema;
+export const selectHomeCinema = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.features?.homeCinema;
 
-export const selectJacuzzi = ({ property }: RootState) =>
-    property.features?.jacuzzi;
+export const selectJacuzzi = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.features?.jacuzzi;
 
-export const selectNearBusRoute = ({ property }: RootState) =>
-    property.features?.nearBusRoute;
+export const selectNearBusRoute = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.features?.nearBusRoute;
 
-export const selectPanoramicView = ({ property }: RootState) =>
-    property.features?.panoramicView;
+export const selectPanoramicView = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.features?.panoramicView;
 
-export const selectPlayRoom = ({ property }: RootState) =>
-    property.details?.playroom;
-export const selectHasAttic = ({ property }: RootState) =>
-    property.details?.attic;
+export const selectPlayRoom = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.details?.playroom;
+export const selectHasAttic = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.details?.attic;
 
 //Property Description
-export const selectFloorApartment = ({ property }: RootState) =>
-    property.details?.floorApartment;
-export const selectPenthouse = ({ property }: RootState) =>
-    property.details?.penthouse;
+export const selectFloorApartment = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.details?.floorApartment;
+export const selectPenthouse = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.details?.penthouse;
 
-export const selectAccessForDisable = ({ property }: RootState) =>
-    property.features?.accessForDisabled;
+export const selectAccessForDisable = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.features?.accessForDisabled;
 
-export const selectSmartHome = ({ property }: RootState) =>
-    property.features?.smartHome;
+export const selectSmartHome = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.features?.smartHome;
 
-export const selectMountainView = ({ property }: RootState) =>
-    property.features?.mountainView;
+export const selectMountainView = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.features?.mountainView;
 
-export const selectSeaFront = ({ property }: RootState) =>
-    property.features?.seaFront;
+export const selectSeaFront = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.features?.seaFront;
 
-export const selectHeatedPool = ({ property }: RootState) =>
-    property.features?.heatedPool;
+export const selectHeatedPool = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.features?.heatedPool;
 
-export const selectIndoorPool = ({ property }: RootState) =>
-    property.features?.indoorPool;
+export const selectIndoorPool = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.features?.indoorPool;
 
-export const selectOrganizedGarden = ({ property }: RootState) =>
-    property.features?.organizedGarden;
+export const selectOrganizedGarden = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.features?.organizedGarden;
 
-export const selectWell = ({ property }: RootState) => property.features?.well;
+export const selectWell = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.features?.well;
 
-export const selectDrilling = ({ property }: RootState) =>
-    property.features?.drilling;
+export const selectDrilling = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.features?.drilling;
 
-export const selectMasonryFence = ({ property }: RootState) =>
-    property.features?.masonryFence;
+export const selectMasonryFence = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.features?.masonryFence;
 
-export const selectAccessForDisabled = ({ property }: RootState) =>
-    property.features?.accessForDisabled;
+export const selectAccessForDisabled = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.features?.accessForDisabled;
 
-export const selectIndependentHeatingPerRoom = ({ property }: RootState) =>
-    property.features?.independentHeatingPerRoom;
+export const selectIndependentHeatingPerRoom = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.features?.independentHeatingPerRoom;
 
-export const selectAdaptingToTheGround = ({ property }: RootState) =>
-    property.features?.adaptingToTheGround;
+export const selectAdaptingToTheGround = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.features?.adaptingToTheGround;
 
-export const selectView = ({ property }: RootState) => property.features?.view;
+export const selectView = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.features?.view;
 
-export const selectFacade = ({ property }: RootState) =>
-    property.features?.facade;
+export const selectFacade = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.features?.facade;
 
-export const selectCorner = ({ property }: RootState) =>
-    property.features?.corner;
+export const selectCorner = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.features?.corner;
 
-export const selectVeranda = ({ property }: RootState) =>
-    property.features?.veranda;
+export const selectVeranda = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.features?.veranda;
 
-export const selectTents = ({ property }: RootState) =>
-    property.features?.tents;
+export const selectTents = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.features?.tents;
 
-export const selectWithinResidentialZone = ({ property }: RootState) =>
-    property.features?.withinResidentialZone;
+export const selectWithinResidentialZone = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.features?.withinResidentialZone;
 
-export const selectWithinCityPlan = ({ property }: RootState) =>
-    property.features?.withinCityPlan;
+export const selectWithinCityPlan = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.features?.withinCityPlan;
 
-export const selectWalkableDistanceToBeach = ({ property }: RootState) =>
-    property.features?.walkableDistanceToBeach;
+export const selectWalkableDistanceToBeach = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.features?.walkableDistanceToBeach;
 
-export const selectLoadingDock = ({ property }: RootState) =>
-    property.features?.loadingDock;
+export const selectLoadingDock = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.features?.loadingDock;
 
-export const selectLabelIDs = ({ property }: RootState) => property.labelIDs;
+export const selectLabelIDs = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.labelIDs;
 
 export const { reducer } = slice;
