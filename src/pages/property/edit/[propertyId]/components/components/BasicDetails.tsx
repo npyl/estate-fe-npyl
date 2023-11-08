@@ -43,6 +43,9 @@ import {
     selectRentalPeriodStart,
     selectRented,
     selectState,
+    selectCategory,
+    selectParentCategory,
+    // setters
     setArea,
     setExclusive,
     setAuction,
@@ -75,7 +78,6 @@ import { selectAvailableAfter } from "src/slices/property";
 import { IGlobalProperty } from "src/types/global";
 import { CodeField } from "./componentsFields/CodeField";
 import { KeyCodeField } from "./componentsFields/KeyCodeField";
-import { selectCategory, selectParentCategory } from "src/slices/property";
 import { KeyValue } from "src/types/KeyValue";
 import { DateObject } from "react-multi-date-picker";
 
@@ -161,7 +163,6 @@ const BasicSection: React.FC<any> = () => {
     const currentDate = new Date();
     const code = useSelector(selectCode);
     const owner = useSelector(selectOwner) || "";
-    const defOwner = useSelector(selectOwner) || "";
     const manager = useSelector(selectManager);
     const currentRentPrice = useSelector(selectCurrentRentPrice);
     const estimatedRentPrice = useSelector(selectEstimatedRentPrice);

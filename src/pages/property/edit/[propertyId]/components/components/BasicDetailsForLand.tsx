@@ -33,6 +33,8 @@ import {
     selectRentalPeriodStart,
     selectRented,
     selectState,
+    selectCategory,
+    // setters
     setArea,
     setAuction,
     setExclusive,
@@ -51,6 +53,8 @@ import {
     setRentalPeriodStart,
     setRented,
     setState,
+    setCategory,
+    selectParentCategory,
 } from "src/slices/property";
 
 import DatePicker from "src/components/DatePicker";
@@ -68,6 +72,7 @@ import { useTranslation } from "react-i18next";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { DateObject } from "react-multi-date-picker";
 import { IOSSwitch } from "./BasicDetails";
+import { KeyValue } from "src/types/KeyValue";
 
 const BasicForLandSection: React.FC<any> = () => {
     const router = useRouter();
@@ -98,7 +103,6 @@ const BasicForLandSection: React.FC<any> = () => {
     const currentDate = new Date();
     const code = useSelector(selectCode);
     const owner = useSelector(selectOwner) || "";
-    const defOwner = useSelector(selectOwner) || "";
     const manager = useSelector(selectManager);
     const currentRentPrice = useSelector(selectCurrentRentPrice);
     const estimatedRentPrice = useSelector(selectEstimatedRentPrice);
@@ -116,6 +120,28 @@ const BasicForLandSection: React.FC<any> = () => {
     const debatablePrice = useSelector(selectDebatablePrice);
     const exclusive = useSelector(selectExclusive);
     const stateEnum = enums?.state;
+
+    const parentCategory = useSelector(selectParentCategory) || "";
+    const category = useSelector(selectCategory) || "";
+
+    const subCategoriesMap: {
+        [key: string]: KeyValue[];
+    } | null = useMemo(
+        () =>
+            enums &&
+            enums.residentialCategory &&
+            enums.commercialCategory &&
+            enums.landCategory &&
+            enums.otherCategory
+                ? {
+                      RESIDENTIAL: enums.residentialCategory,
+                      COMMERCIAL: enums.commercialCategory,
+                      LAND: enums.landCategory,
+                      OTHER: enums.otherCategory,
+                  }
+                : null,
+        [enums]
+    );
 
     //
     //  Dates
@@ -176,6 +202,28 @@ const BasicForLandSection: React.FC<any> = () => {
                             }
                         />
                     </Grid>
+                    {subCategoriesMap && (
+                        <Grid item xs={6}>
+                            <TextField
+                                disabled={!parentCategory}
+                                fullWidth
+                                select
+                                label={t("Category")}
+                                value={category}
+                                onChange={(e) =>
+                                    dispatch(setCategory(e.target.value))
+                                }
+                            >
+                                {subCategoriesMap[parentCategory!]?.map(
+                                    ({ key, value }) => (
+                                        <MenuItem key={key} value={key}>
+                                            {value}
+                                        </MenuItem>
+                                    )
+                                ) || <MenuItem />}
+                            </TextField>
+                        </Grid>
+                    )}
                     <Grid item xs={6}>
                         <Autocomplete
                             disablePortal
