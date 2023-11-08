@@ -82,68 +82,76 @@ interface LabeledSwitchProps extends SwitchProps {
 }
 
 const LabeledSwitch = styled(Switch)<LabeledSwitchProps>(
-    ({ theme, labelOn, labelOff }) => ({
-        width: "140px",
-        height: "50px",
-        padding: "0px",
+    ({ theme, labelOn, labelOff }) => {
+        // Calculate the translate value based on the width of the track and the thumb
+        const thumbWidth = 35; // The width of the thumb
+        const trackPadding = 2 * 1; // Total padding (left + right)
+        const totalWidth = 140; // The total width of the switch
+        const translateXValue = totalWidth - thumbWidth - trackPadding - 2;
 
-        "& .MuiSwitch-switchBase": {
-            color: "#818181",
-            padding: "1px",
-            "&.Mui-checked": {
-                color: theme.palette.success.main,
-                "& + .MuiSwitch-track": {
-                    backgroundColor: theme.palette.success.main,
+        return {
+            width: `${totalWidth}px`,
+            height: "50px",
+            padding: "0px",
+
+            "& .MuiSwitch-switchBase": {
+                color: "#818181",
+                padding: "1px",
+                "&.Mui-checked": {
+                    color: theme.palette.success.main,
+                    "& + .MuiSwitch-track": {
+                        backgroundColor: theme.palette.success.main,
+                    },
+                    "& .MuiSwitch-thumb": {
+                        color: theme.palette.background.paper,
+                    },
+                    "& + .MuiSwitch-track:before": {
+                        opacity: 0,
+                    },
+                    "& + .MuiSwitch-track:after": {
+                        opacity: 1,
+                    },
                 },
-                "& .MuiSwitch-thumb": {
-                    color: theme.palette.background.paper,
+            },
+            "& .MuiSwitch-thumb": {
+                color: "white",
+                borderRadius: 5,
+                width: "35px",
+                height: "46px",
+                margin: "1px",
+            },
+            "& .MuiSwitch-track": {
+                backgroundColor: "#818181",
+                opacity: 1,
+                "&:before, &:after": {
+                    content: '""',
+                    position: "absolute",
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    color: "white",
+                    fontSize: 15,
                 },
-                "& + .MuiSwitch-track:before": {
+                "&:before": {
+                    right: 8,
+                    content: `"${labelOff}"`,
+                },
+                "&:after": {
+                    left: 8,
+                    content: `"${labelOn}"`,
                     opacity: 0,
                 },
-                "& + .MuiSwitch-track:after": {
-                    opacity: 1,
-                },
             },
-        },
-        "& .MuiSwitch-thumb": {
-            color: "white",
-            borderRadius: 5,
-            width: "35px",
-            height: "46px",
-            margin: "1px",
-        },
-        "& .MuiSwitch-track": {
-            backgroundColor: "#818181",
-            opacity: 1,
-            "&:before, &:after": {
-                content: '""',
-                position: "absolute",
-                top: "50%",
-                transform: "translateY(-50%)",
-                color: "white",
-                fontSize: 15,
+            "& .Mui-checked + .MuiSwitch-track": {
+                backgroundColor: "#23bf58",
             },
-            "&:before": {
-                right: 8,
-                content: `"${labelOff}"`,
+            "& .Mui-checked .MuiSwitch-thumb": {
+                color: "#23bf58",
             },
-            "&:after": {
-                left: 8,
-                content: `"${labelOn}"`,
-                opacity: 0,
+            "& .Mui-checked": {
+                transform: `translateX(${translateXValue}px)`,
             },
-        },
-        "& .Mui-checked + .MuiSwitch-track": {
-            backgroundColor: "#23bf58",
-        },
-        "& .Mui-checked .MuiSwitch-thumb": {
-            color: "#23bf58",
-        },
-        "& .Mui-checked": {
-            transform: "translateX(101px)",
-        },
-    })
+        };
+    }
 );
 
 const ListingCard = ({ label, value, onClick }: ListingCardProps) => {
