@@ -841,12 +841,25 @@ const slice = createSlice({
                 data.manager?.id || initialPropertyState.managerId;
             properties[id].ownerId =
                 data.owner?.id || initialPropertyState.ownerId;
-            properties[id].state =
-                data.state?.key || initialPropertyState.state;
-            properties[id].parentCategory =
-                data.parentCategory?.key || initialPropertyState.parentCategory;
-            properties[id].category =
-                data.category?.key || initialPropertyState.category;
+
+            // (1)
+            properties[id] = {
+                ...properties[id],
+                state: data.state?.key || initialPropertyState.state,
+            };
+            // (1)
+            properties[id] = {
+                ...properties[id],
+                parentCategory:
+                    data.parentCategory?.key ||
+                    initialPropertyState.parentCategory,
+            };
+            // (1)
+            properties[id] = {
+                ...properties[id],
+                category: data.category?.key || initialPropertyState.category,
+            };
+
             properties[id].area = data.area || initialPropertyState.area;
             properties[id].plotArea =
                 data.plotArea || initialPropertyState.plotArea;
@@ -885,8 +898,13 @@ const slice = createSlice({
                 data.descriptionText || initialPropertyState.descriptionText;
 
             // Details
-            properties[id].details.floor =
-                details?.floor?.key || initialPropertyState.details.floor;
+            // (1)
+            properties[id].details = {
+                ...properties[id].details,
+                floor:
+                    details?.floor?.key || initialPropertyState.details.floor,
+            };
+
             properties[id].details.bedrooms =
                 details?.bedrooms || initialPropertyState.details.bedrooms;
             properties[id].details.kitchens =
@@ -913,18 +931,44 @@ const slice = createSlice({
                 initialPropertyState.details.floorApartment;
             properties[id].details.penthouse =
                 details?.penthouse || initialPropertyState.details.penthouse;
-            properties[id].details.orientation =
-                details?.orientation?.key ||
-                initialPropertyState.details.orientation;
-            properties[id].details.viewType =
-                details?.viewType?.key || initialPropertyState.details.viewType;
-            properties[id].details.accessibility =
-                details?.accessibility?.key ||
-                initialPropertyState.details.accessibility;
-            properties[id].details.landUse =
-                details?.landUse?.key || initialPropertyState.details.landUse;
-            properties[id].details.zoneType =
-                details?.zoneType?.key || initialPropertyState.details.zoneType;
+
+            // (1)
+            properties[id].details = {
+                ...properties[id].details,
+                orientation:
+                    details?.orientation?.key ||
+                    initialPropertyState.details.orientation,
+            };
+            // (1)
+            properties[id].details = {
+                ...properties[id].details,
+                viewType:
+                    details?.viewType?.key ||
+                    initialPropertyState.details.viewType,
+            };
+            // (1)
+            properties[id].details = {
+                ...properties[id].details,
+                accessibility:
+                    details?.accessibility?.key ||
+                    initialPropertyState.details.accessibility,
+            };
+            // (1)
+            properties[id].details = {
+                ...properties[id].details,
+                landUse:
+                    details?.landUse?.key ||
+                    initialPropertyState.details.landUse,
+            };
+            // (1)
+            properties[id].details = {
+                ...properties[id].details,
+                zoneType:
+                    details?.zoneType?.key ||
+                    initialPropertyState.details.zoneType,
+            };
+
+            // TODO?:
             properties[id].details.parkings =
                 details?.parkings.map((parking) => ({
                     spots: parking.spots,
@@ -937,18 +981,35 @@ const slice = createSlice({
                 })) || initialPropertyState.details.balconies;
 
             // Heating & Energy
-            properties[id].heatingAndEnergy.energyClass =
-                heatingAndEnergy?.energyClass?.key ||
-                initialPropertyState.heatingAndEnergy.energyClass;
-            properties[id].heatingAndEnergy.heatingType =
-                heatingAndEnergy?.heatingType?.key ||
-                initialPropertyState.heatingAndEnergy.heatingType;
-            properties[id].heatingAndEnergy.heatingSystem =
-                heatingAndEnergy?.heatingSystem?.key ||
-                initialPropertyState.heatingAndEnergy.heatingSystem;
-            properties[id].heatingAndEnergy.electricityType =
-                heatingAndEnergy?.electricityType?.key ||
-                initialPropertyState.heatingAndEnergy.electricityType;
+            // (1)
+            properties[id].heatingAndEnergy = {
+                ...properties[id].heatingAndEnergy,
+                energyClass:
+                    heatingAndEnergy?.energyClass?.key ||
+                    initialPropertyState.heatingAndEnergy.energyClass,
+            };
+            // (1)
+            properties[id].heatingAndEnergy = {
+                ...properties[id].heatingAndEnergy,
+                heatingType:
+                    heatingAndEnergy?.heatingType?.key ||
+                    initialPropertyState.heatingAndEnergy.heatingType,
+            };
+            // (1)
+            properties[id].heatingAndEnergy = {
+                ...properties[id].heatingAndEnergy,
+                heatingSystem:
+                    heatingAndEnergy?.heatingSystem?.key ||
+                    initialPropertyState.heatingAndEnergy.heatingSystem,
+            };
+            // (1)
+            properties[id].heatingAndEnergy = {
+                ...properties[id].heatingAndEnergy,
+                electricityType:
+                    heatingAndEnergy?.electricityType?.key ||
+                    initialPropertyState.heatingAndEnergy.electricityType,
+            };
+
             properties[id].heatingAndEnergy.floorHeating =
                 heatingAndEnergy?.floorHeating ||
                 initialPropertyState.heatingAndEnergy.floorHeating;
@@ -961,6 +1022,7 @@ const slice = createSlice({
             properties[id].heatingAndEnergy.offPeakElectricity =
                 heatingAndEnergy?.offPeakElectricity ||
                 initialPropertyState.heatingAndEnergy.offPeakElectricity;
+
             // Suitable For
             properties[id].suitableFor =
                 data.suitableFor || initialPropertyState.suitableFor;
@@ -973,6 +1035,7 @@ const slice = createSlice({
             // Features
             properties[id].features =
                 data.features || initialPropertyState.features;
+
             // Technical Features
             properties[id].technicalFeatures.entrances =
                 technicalFeatures?.entrances ||
@@ -989,15 +1052,27 @@ const slice = createSlice({
             properties[id].technicalFeatures.painted =
                 technicalFeatures?.painted ||
                 initialPropertyState.technicalFeatures.painted;
-            properties[id].technicalFeatures.furnished =
-                technicalFeatures?.furnished?.key ||
-                initialPropertyState.technicalFeatures.furnished;
-            properties[id].technicalFeatures.frameType =
-                technicalFeatures?.frameType?.key ||
-                initialPropertyState.technicalFeatures.frameType;
-            properties[id].technicalFeatures.paneGlassType =
-                technicalFeatures?.paneGlassType?.key ||
-                initialPropertyState.technicalFeatures.paneGlassType;
+            // (1)
+            properties[id].technicalFeatures = {
+                ...properties[id].technicalFeatures,
+                furnished:
+                    technicalFeatures?.furnished?.key ||
+                    initialPropertyState.technicalFeatures.furnished,
+            };
+            // (1)
+            properties[id].technicalFeatures = {
+                ...properties[id].technicalFeatures,
+                frameType:
+                    technicalFeatures?.frameType?.key ||
+                    initialPropertyState.technicalFeatures.frameType,
+            };
+            // (1)
+            properties[id].technicalFeatures = {
+                ...properties[id].technicalFeatures,
+                paneGlassType:
+                    technicalFeatures?.paneGlassType?.key ||
+                    initialPropertyState.technicalFeatures.paneGlassType,
+            };
             properties[id].technicalFeatures.windowScreens =
                 technicalFeatures?.windowScreens ||
                 initialPropertyState.technicalFeatures.windowScreens;
@@ -1020,9 +1095,13 @@ const slice = createSlice({
             properties[id].technicalFeatures.petsAllowed =
                 technicalFeatures?.petsAllowed ||
                 initialPropertyState.technicalFeatures.petsAllowed;
-            properties[id].technicalFeatures.floorType =
-                technicalFeatures?.floorType?.key ||
-                initialPropertyState.technicalFeatures.floorType;
+            // (1)
+            properties[id].technicalFeatures = {
+                ...properties[id].technicalFeatures,
+                floorType:
+                    technicalFeatures?.floorType?.key ||
+                    initialPropertyState.technicalFeatures.floorType,
+            };
             properties[id].technicalFeatures.satelliteTV =
                 technicalFeatures?.satelliteTV ||
                 initialPropertyState.technicalFeatures.satelliteTV;
@@ -1053,33 +1132,37 @@ const slice = createSlice({
             properties[id].technicalFeatures.facadeLength =
                 technicalFeatures?.facadeLength ||
                 initialPropertyState.technicalFeatures.facadeLength;
-            properties[id].technicalFeatures.inclination =
-                technicalFeatures?.inclination?.key ||
-                initialPropertyState.technicalFeatures.inclination;
+            // (1)
+            properties[id].technicalFeatures = {
+                ...properties[id].technicalFeatures,
+                inclination:
+                    technicalFeatures?.inclination?.key ||
+                    initialPropertyState.technicalFeatures.inclination,
+            };
 
             // areas
             properties[id].areas = data.areas || initialPropertyState.areas;
 
             // Location (convert from ILocationPOST to ILocation)
             const location: ILocation = data.location;
-            properties[id].location.city =
-                location?.city || initialPropertyState.location.city;
-            properties[id].location.country =
-                location?.country || initialPropertyState.location.country;
-            properties[id].location.number =
-                location?.number || initialPropertyState.location.number;
-            properties[id].location.region =
-                location?.region || initialPropertyState.location.region;
-            properties[id].location.street =
-                location?.street || initialPropertyState.location.street;
-            properties[id].location.zipCode =
-                location?.zipCode || initialPropertyState.location.zipCode;
-            properties[id].location.complex =
-                location?.complex || initialPropertyState.location.complex;
-            properties[id].location.lat =
-                location?.lat || initialPropertyState.location.lat;
-            properties[id].location.lng =
-                location?.lng || initialPropertyState.location.lng;
+
+            properties[id].location = {
+                city: location?.city || initialPropertyState.location.city,
+                country:
+                    location?.country || initialPropertyState.location.country,
+                number:
+                    location?.number || initialPropertyState.location.number,
+                region:
+                    location?.region || initialPropertyState.location.region,
+                street:
+                    location?.street || initialPropertyState.location.street,
+                zipCode:
+                    location?.zipCode || initialPropertyState.location.zipCode,
+                complex:
+                    location?.complex || initialPropertyState.location.complex,
+                lat: location?.lat || initialPropertyState.location.lat,
+                lng: location?.lng || initialPropertyState.location.lng,
+            };
 
             // map labels
             properties[id].labelIDs = data.labels
