@@ -24,8 +24,6 @@ interface ListingCardProps {
     onClick: (label: ListingTypes, value: boolean) => void;
 }
 
-const renderValue = (value: boolean) => (value ? "Published" : "No");
-
 const PublicSvg: React.FC = () => {
     return (
         <svg
@@ -143,7 +141,7 @@ const LabeledSwitch = styled(Switch)<LabeledSwitchProps>(
             color: "#23bf58",
         },
         "& .Mui-checked": {
-            transform: "translateX(101px)",
+            transform: "translateX(100px)",
         },
     })
 );

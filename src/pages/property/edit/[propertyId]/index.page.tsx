@@ -24,8 +24,6 @@ const EditPropertyPage: NextPage = () => {
     const { pushTab } = useTabsContext();
     const { propertyId } = router.query;
 
-    // INFO: lazy is used on * because addImage doesn't cause invalidate (in contradiction to editImage)
-
     const { data } = useGetPropertyByIdQuery(+propertyId!);
     const [edit, { isLoading: isEditLoading }] = useEditPropertyMutation();
 
@@ -41,6 +39,9 @@ const EditPropertyPage: NextPage = () => {
                 id: (propertyId + "edit") as string,
                 label,
             });
+
+            dispatch(setInitialNotesState(data.notes));
+            dispatch(setInitialState({ data, id: +propertyId! }));
         }
     }, [data, propertyId]);
 
@@ -56,13 +57,6 @@ const EditPropertyPage: NextPage = () => {
 
         edit({ id: +propertyId!, body: bodyRef.current }).then(resetEverything);
     });
-
-    useEffect(() => {
-        if (data) {
-            dispatch(setInitialNotesState(data.notes));
-            dispatch(setInitialState({ data, id: +propertyId! }));
-        }
-    }, [data, propertyId]);
 
     const resetEverything = () => {
         dispatch(resetLabels());

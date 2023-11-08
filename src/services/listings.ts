@@ -15,20 +15,20 @@ export const listings = createApi({
     }),
 
     endpoints: (builder) => ({
-        addPublicListing: builder.mutation<string, number>({
+        addPublicListing: builder.mutation<void, number>({
             query: (propertyId: number) => ({
                 url: `/public/addListing/${propertyId}`,
                 method: "POST",
             }),
         }),
-        removePublicListing: builder.mutation<string, number>({
+        removePublicListing: builder.mutation<void, number>({
             query: (propertyId: number) => ({
                 url: `/public/removeListing/${propertyId}`,
                 method: "DELETE",
             }),
         }),
 
-        addSpitogatosListing: builder.mutation<string, number>({
+        addSpitogatosListing: builder.mutation<void, number>({
             query: (propertyId: number) => ({
                 url: `/spitogatos/addListing/${propertyId}`,
                 method: "POST",
