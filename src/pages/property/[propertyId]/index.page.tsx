@@ -67,6 +67,7 @@ const SingleProperty: NextPage = () => {
     const [deleteProperty] = useDeletePropertyMutation();
 
     const [value, setValue] = useState(0);
+    const [cloneConfirmDialogOpen, setCloneConfirmDialogOpen] = useState(false);
 
     useEffect(() => {
         if (data && propertyId) {
@@ -82,14 +83,9 @@ const SingleProperty: NextPage = () => {
         setValue(newValue);
 
     const handleEdit = () => router.push(`/property/edit/${propertyId}`);
-    const [cloneConfirmDialogOpen, setCloneConfirmDialogOpen] = useState(false);
 
-    const handleClone = () => {
-        setCloneConfirmDialogOpen(true);
-    };
-    const closeCloneConfirmaionDialog = () => {
-        setCloneConfirmDialogOpen(false);
-    };
+    const handleClone = () => setCloneConfirmDialogOpen(true);
+    const closeCloneConfirmaionDialog = () => setCloneConfirmDialogOpen(false);
 
     const handleCloneConfirmation = () => {
         closeCloneConfirmaionDialog();

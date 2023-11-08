@@ -163,7 +163,7 @@ const ListingCard = ({ label, value, onClick }: ListingCardProps) => {
             border={1}
             borderRadius={1}
             direction={"row"}
-            maxWidth={"30%"}
+            width={"400px"}
         >
             <Box justifyItems={"center"} flex={1} flexDirection={"column"}>
                 {label === "PUBLIC_SITE" ? <PublicSvg /> : <SpitogatosSvg />}
@@ -214,23 +214,41 @@ const Integrations = () => {
     };
 
     return (
-        <Paper elevation={10} sx={{ overflow: "auto", padding: "10px" }}>
-            <Stack gap={1}>
-                {listings &&
-                    Object.keys(listings).map((key) => (
-                        <ListingCard
-                            key={key}
-                            label={key as ListingTypes}
-                            value={listings[key as ListingTypes]}
-                            onClick={handleClick}
-                        />
-                    ))}
-            </Stack>
-        </Paper>
+        <Box
+            sx={{
+                position: "absolute", // Positioning the Box absolutely
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                display: "flex",
+                justifyContent: "center", // Center horizontally
+                alignItems: "center", // Center vertically
+            }}
+        >
+            <Paper
+                elevation={10}
+                sx={{
+                    overflow: "auto",
+                    padding: "10px",
+                    width: "auto",
+                    display: "inline-block",
+                }}
+            >
+                <Stack gap={1} direction={"row"}>
+                    {listings &&
+                        Object.keys(listings).map((key) => (
+                            <ListingCard
+                                key={key}
+                                label={key as ListingTypes}
+                                value={listings[key as ListingTypes]}
+                                onClick={handleClick}
+                            />
+                        ))}
+                </Stack>
+            </Paper>
+        </Box>
     );
 };
 
 export default Integrations;
-function useStyles() {
-    throw new Error("Function not implemented.");
-}

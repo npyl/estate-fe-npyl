@@ -826,11 +826,9 @@ const slice = createSlice({
             // Change current id
             state.id = id;
 
-            if (!(id in properties)) {
-                properties[id] = { ...initialPropertyState };
-            }
+            if (id in properties) return;
 
-            console.log("selecting: ", id);
+            properties[id] = { ...initialPropertyState };
 
             // INFO: we don't get a valid value, use the one on the initialState which is non-null but always means "unset";
             //        this way we prevent nulls and at the same time show the values as empty
