@@ -5,40 +5,75 @@ import {
     Button,
     Stack,
     DialogActions,
+    DialogContentText,
+    Typography,
 } from "@mui/material";
 
 interface IConfirmationDialogBox {
     open: boolean;
     text: string;
+    action: string;
     onClose: () => void;
     onConfirm: () => void;
 }
+import { HighlightOff as HighlightOffIcon } from "@mui/icons-material";
+import CopyAllIcon from "@mui/icons-material/CopyAll";
+import CrisisAlertIcon from "@mui/icons-material/CrisisAlert";
 
 export const ConfirmationDialogBox: React.FC<IConfirmationDialogBox> = (
     props
 ) => {
-    const { open, onClose, text, onConfirm } = props;
+    const { open, onClose, text, action, onConfirm } = props;
 
     return (
         <Dialog
-            fullWidth
+            maxWidth="xs"
             open={open}
-            sx={{
-                "& .MuiDialog-container": {
-                    "& .MuiPaper-root": {
-                        minWidth: "60vw",
-                    },
-                },
-            }}
             onClose={onClose}
             closeAfterTransition={true}
         >
-            <DialogTitle>Confirm Action</DialogTitle>
-            <DialogContent sx={{ padding: "0" }}>
-                <div style={{ padding: "1rem 1.5rem" }}>
-                    <h2>{text}</h2>
-                </div>
+            <DialogTitle sx={{ textAlign: "center" }}>
+                {action === "delete" ? ( // Check if the action prop is 'delete'
+                    <HighlightOffIcon
+                        sx={{
+                            fontSize: "100px",
+                            stroke: "Window",
+                            strokeWidth: 1.5,
+                            color: "error.main",
+                        }}
+                    />
+                ) : action === "clone" ? ( // Check if the action prop is 'clone'
+                    <CopyAllIcon
+                        sx={{
+                            fontSize: "100px",
+                            stroke: "Window",
+                            strokeWidth: 1.5,
+                            color: "error.main",
+                        }}
+                    />
+                ) : (
+                    <CrisisAlertIcon
+                        sx={{
+                            fontSize: "100px",
+                            stroke: "Window",
+                            strokeWidth: 1.5,
+                            color: "error.main",
+                        }}
+                    />
+                )}
+            </DialogTitle>
+            <DialogContent sx={{ textAlign: "center" }}>
+                <Typography variant="h5" fontWeight={400}>
+                    Are you sure?
+                </Typography>
             </DialogContent>
+            <DialogContentText ml={3} mr={3} sx={{ textAlign: "center" }}>
+                {text}
+                <br />
+                {action === "delete" // Check if the action prop is 'delete'
+                    ? "This process cannot be undone"
+                    : ""}
+            </DialogContentText>
             <DialogActions
                 sx={{
                     float: "right",

@@ -179,6 +179,7 @@ const SingleProperty: NextPage = () => {
                 onClose={closeCloneConfirmaionDialog}
                 text={"Are you Sure You want to Clone This Property?"}
                 onConfirm={handleCloneConfirmation}
+                action={"clone"}
             />
         </Box>
     );
