@@ -97,6 +97,7 @@ const LabeledSwitch = styled(Switch)<LabeledSwitchProps>(
             "& .MuiSwitch-switchBase": {
                 color: "#818181",
                 padding: "1px",
+
                 "&.Mui-checked": {
                     color: theme.palette.success.main,
                     "& + .MuiSwitch-track": {
@@ -111,6 +112,8 @@ const LabeledSwitch = styled(Switch)<LabeledSwitchProps>(
                     "& + .MuiSwitch-track:after": {
                         opacity: 1,
                     },
+
+                    transform: `translate(${translateXValue}px)`,
                 },
             },
             "& .MuiSwitch-thumb": {
@@ -146,9 +149,6 @@ const LabeledSwitch = styled(Switch)<LabeledSwitchProps>(
             },
             "& .Mui-checked .MuiSwitch-thumb": {
                 color: "#23bf58",
-            },
-            "& .Mui-checked": {
-                transform: `translateX(${translateXValue}px)`,
             },
         };
     }
@@ -216,23 +216,18 @@ const Integrations = () => {
     return (
         <Box
             sx={{
-                position: "absolute", // Positioning the Box absolutely
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
                 display: "flex",
-                justifyContent: "center", // Center horizontally
-                alignItems: "center", // Center vertically
+                justifyContent: "center",
+                alignItems: "center",
+                height: "80%",
+                width: "90%",
             }}
         >
             <Paper
                 elevation={10}
                 sx={{
-                    overflow: "auto",
                     padding: "10px",
-                    width: "auto",
-                    display: "inline-block",
+                    margin: "auto",
                 }}
             >
                 <Stack gap={1} direction={"row"}>

@@ -105,7 +105,7 @@ const SingleProperty: NextPage = () => {
     if (!data) return null;
 
     return (
-        <Box sx={{ width: "100%", paddingY: 1 }}>
+        <>
             <ViewHeader
                 onEdit={handleEdit}
                 onDelete={handleDelete}
@@ -127,49 +127,53 @@ const SingleProperty: NextPage = () => {
                     <Tab label={t("Map")} {...a11yProps(8)} />
                 </Tabs>
             </ViewHeader>
-            <TabPanel value={value} index={0}>
-                <MainContainer
-                    AddressSection={<AddressSection />}
-                    ImageSection={<ImageSection data={data} />}
-                    BasicSection={<BasicSection data={data} />}
-                    DetailsSection={<DetailsSection data={data} />}
-                    HeatingSection={<HeatingSection data={data} />}
-                    AreaSection={<AreaSection data={data} />}
-                    DistanceSection={<DistanceSection data={data} />}
-                    ParkingsSection={<ParkingsSection data={data} />}
-                    BalconiesSection={<BalconiesSection data={data} />}
-                    BlueprintsSection={<BlueprintsSection data={data} />}
-                    NotesSection={<NotesSection />}
-                    VideoSection={<VideoSection data={data} />}
-                    SuitableFor={<SuitableFor data={data} />}
-                    TechnicalFeatures={<TechnicalFeatures data={data} />}
-                    DescriptionSection={<DescriptionSection data={data} />}
-                    ConstructionSection={<ConstructionSection data={data} />}
-                    Features={<Features data={data as any} />}
-                />
-            </TabPanel>
-            <TabPanel value={value} index={1}></TabPanel>
-            <TabPanel value={value} index={2}></TabPanel>
-            <TabPanel value={value} index={3}>
-                <MatchingCustomersSection />
-            </TabPanel>
-            <TabPanel value={value} index={4}>
-                <PhotosOnly data={data as any} />
-            </TabPanel>
-            <TabPanel value={value} index={5}>
-                <Integrations />
-            </TabPanel>
-            <TabPanel value={value} index={6}>
-                <PropertyLogs />
-            </TabPanel>
-            <TabPanel value={value} index={7}>
-                <Documents />
-            </TabPanel>
-            <TabPanel value={value} index={8}>
-                <Box height={"400px"} width={"100%"}>
-                    <InitMap />
-                </Box>
-            </TabPanel>
+            <Box height={"100%"}>
+                <TabPanel value={value} index={0}>
+                    <MainContainer
+                        AddressSection={<AddressSection />}
+                        ImageSection={<ImageSection data={data} />}
+                        BasicSection={<BasicSection data={data} />}
+                        DetailsSection={<DetailsSection data={data} />}
+                        HeatingSection={<HeatingSection data={data} />}
+                        AreaSection={<AreaSection data={data} />}
+                        DistanceSection={<DistanceSection data={data} />}
+                        ParkingsSection={<ParkingsSection data={data} />}
+                        BalconiesSection={<BalconiesSection data={data} />}
+                        BlueprintsSection={<BlueprintsSection data={data} />}
+                        NotesSection={<NotesSection />}
+                        VideoSection={<VideoSection data={data} />}
+                        SuitableFor={<SuitableFor data={data} />}
+                        TechnicalFeatures={<TechnicalFeatures data={data} />}
+                        DescriptionSection={<DescriptionSection data={data} />}
+                        ConstructionSection={
+                            <ConstructionSection data={data} />
+                        }
+                        Features={<Features data={data as any} />}
+                    />
+                </TabPanel>
+                <TabPanel value={value} index={1}></TabPanel>
+                <TabPanel value={value} index={2}></TabPanel>
+                <TabPanel value={value} index={3}>
+                    <MatchingCustomersSection />
+                </TabPanel>
+                <TabPanel value={value} index={4}>
+                    <PhotosOnly data={data as any} />
+                </TabPanel>
+                <TabPanel value={value} index={5}>
+                    <Integrations />
+                </TabPanel>
+                <TabPanel value={value} index={6}>
+                    <PropertyLogs />
+                </TabPanel>
+                <TabPanel value={value} index={7}>
+                    <Documents />
+                </TabPanel>
+                <TabPanel value={value} index={8}>
+                    <Box height={"400px"} width={"100%"}>
+                        <InitMap />
+                    </Box>
+                </TabPanel>
+            </Box>
             <ConfirmationDialogBox
                 open={cloneConfirmDialogOpen}
                 onClose={closeCloneConfirmaionDialog}
@@ -177,7 +181,7 @@ const SingleProperty: NextPage = () => {
                 onConfirm={handleCloneConfirmation}
                 action={"clone"}
             />
-        </Box>
+        </>
     );
 };
 
