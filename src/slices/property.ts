@@ -1261,7 +1261,6 @@ export const {
     setCafeRestaurant,
     setHospital,
     setAirport,
-    resetAll,
     setCode,
     setOffPeakElectricity,
     setAuction,
@@ -1375,6 +1374,7 @@ export const {
     addLabel,
     removeLabel,
 
+    resetAll,
     resetState,
 } = slice.actions;
 
