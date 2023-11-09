@@ -67,7 +67,7 @@ interface IMapProps {
     search?: boolean;
 }
 
-const apiKey = "AIzaSyCW6oijpbC0JhlXRwPBtNIxy9e4sn7NnwU";
+const apiKey = "AIzaSyDKNARWExRGZXIsA3oKhRW0aZQmtXGuVbk";
 const athensLatLng = { lat: 37.98381, lng: 23.727539 };
 const libraries = ["drawing", "places", "geometry"] as Libraries;
 
