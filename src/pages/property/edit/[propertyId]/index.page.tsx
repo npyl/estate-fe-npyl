@@ -5,6 +5,7 @@ import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { useEditPropertyMutation } from "src/services/properties";
 import { resetState as resetLabels } from "src/slices/labels";
+import { resetAll } from "src/slices/property";
 import {
     resetState as resetNotes,
     setInitialState as setInitialNotesState,
@@ -62,6 +63,7 @@ const EditPropertyPage: NextPage = () => {
     const resetEverything = () => {
         dispatch(resetLabels());
         dispatch(resetNotes());
+        dispatch(resetAll());
     };
 
     const handleRedirect = () => router.push(`/property/${propertyId}`);

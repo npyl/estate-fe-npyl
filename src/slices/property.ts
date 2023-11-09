@@ -167,6 +167,13 @@ const slice = createSlice({
     name: "property",
     initialState,
     reducers: {
+        resetAll({ id, properties }): void {
+            const currentParentCategory = properties[id].parentCategory;
+            properties[id] = {
+                ...initialPropertyState,
+                parentCategory: currentParentCategory,
+            };
+        },
         setCode({ id, properties }, action): void {
             properties[id].code = action.payload;
         },
@@ -1254,6 +1261,7 @@ export const {
     setCafeRestaurant,
     setHospital,
     setAirport,
+    resetAll,
     setCode,
     setOffPeakElectricity,
     setAuction,
