@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
-import { useEffect, useRef } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { MutableRefObject, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
@@ -10,18 +10,15 @@ import {
     useEditCustomerMutation,
     useGetCustomerByIdQuery,
 } from "src/services/customers";
-import {
-    selectAll,
-    setInitialState as setInitialCustomerState,
-    resetState as resetCustomerState,
-} from "src/slices/customer";
+import { setInitialState as setInitialCustomerState } from "src/slices/customer";
 import {
     setInitialState as setInitialNotesState,
     resetState as resetNotesState,
 } from "src/slices/notes";
 import { resetState as resetLabelsState } from "src/slices/labels";
 import Form from "./components/Form";
-import { useAutosaveTab } from "src/hooks/useAutosaveTab";
+
+// (1): forces Form re-render (=> unmount when changing from /edit/x to /edit/y pages)
 
 const EditCustomer: NextPage = () => {
     const router = useRouter();
@@ -31,16 +28,6 @@ const EditCustomer: NextPage = () => {
 
     const { data } = useGetCustomerByIdQuery(+customerId!);
     const [edit, { isLoading: isEditLoading }] = useEditCustomerMutation();
-
-    useAutosaveTab(selectAll, (bodyRef) => {
-        if (bodyRef.current && bodyRef.current.id) {
-            edit({ customerId: +customerId!, body: bodyRef.current }).then(
-                () => {
-                    resetEverything();
-                }
-            );
-        }
-    });
 
     useEffect(() => {
         if (data && customerId) {
@@ -57,13 +44,21 @@ const EditCustomer: NextPage = () => {
                 id: (customerId + "edit") as string,
                 label,
             });
+
             dispatch(setInitialNotesState(data.notes));
             dispatch(setInitialCustomerState(data));
         }
     }, [data, customerId]);
 
+    const handleAutosave = (bodyRef: MutableRefObject<any>) => {
+        if (bodyRef.current && bodyRef.current.id) {
+            edit({ customerId: +customerId!, body: bodyRef.current }).then(
+                resetEverything
+            );
+        }
+    };
+
     const resetEverything = () => {
-        dispatch(resetCustomerState());
         dispatch(resetLabelsState());
         dispatch(resetNotesState());
     };
@@ -72,11 +67,15 @@ const EditCustomer: NextPage = () => {
 
     return (
         <>
-            <Form
-                performUpload={handleRedirect}
-                resetState={resetEverything}
-                handleCancel={handleRedirect}
-            />
+            {customerId && (
+                <Form
+                    key={customerId as string} // (1)
+                    onAutosave={handleAutosave}
+                    performUpload={handleRedirect}
+                    resetState={resetEverything}
+                    handleCancel={handleRedirect}
+                />
+            )}
             {isEditLoading && <LogoProgressIndicator />}
         </>
     );

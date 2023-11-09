@@ -7,19 +7,26 @@ import AddressDetails from "./AddressDetails";
 import CustomerInformation from "./CustomerInformation";
 import NotesSection from "./NotesSection";
 import DemandSection from "./DemandSection";
+import { useAutosaveTab } from "src/hooks/useAutosaveTab";
+import { selectAll } from "src/slices/customer";
+import { MutableRefObject } from "react";
 
 interface FormProps {
+    onAutosave: (bodyRef: MutableRefObject<any>) => void;
     performUpload: () => void;
     resetState: () => void;
     handleCancel: () => void;
 }
 
-const Form = ({ performUpload, resetState, handleCancel }: FormProps) => {
+const Form = ({
+    onAutosave,
+    performUpload,
+    resetState,
+    handleCancel,
+}: FormProps) => {
     const { t } = useTranslation();
 
-    const handleClick = async () => {
-        performUpload && performUpload();
-    };
+    useAutosaveTab(selectAll, onAutosave);
 
     return (
         <Grid paddingTop={1} paddingRight={0} container spacing={1}>
@@ -57,7 +64,7 @@ const Form = ({ performUpload, resetState, handleCancel }: FormProps) => {
                         <Button
                             variant="outlined"
                             startIcon={<DeleteIcon />}
-                            onClick={() => resetState()}
+                            onClick={resetState}
                         >
                             {t("Clear")}
                         </Button>
@@ -66,7 +73,7 @@ const Form = ({ performUpload, resetState, handleCancel }: FormProps) => {
                         <Button
                             variant="contained"
                             endIcon={<SendIcon />}
-                            onClick={handleClick}
+                            onClick={performUpload}
                         >
                             {t("Save")}
                         </Button>
