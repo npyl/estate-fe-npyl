@@ -167,13 +167,6 @@ const slice = createSlice({
     name: "property",
     initialState,
     reducers: {
-        resetAll({ id, properties }): void {
-            const currentParentCategory = properties[id].parentCategory;
-            properties[id] = {
-                ...initialPropertyState,
-                parentCategory: currentParentCategory,
-            };
-        },
         setCode({ id, properties }, action): void {
             properties[id].code = action.payload;
         },
@@ -675,6 +668,13 @@ const slice = createSlice({
         },
         setEntrances({ id, properties }, action): void {
             properties[id].technicalFeatures.entrances = action.payload;
+        },
+        resetAll({ id, properties }): void {
+            const currentParentCategory = properties[id].parentCategory;
+            properties[id] = {
+                ...initialPropertyState,
+                parentCategory: currentParentCategory,
+            };
         },
 
         setDisplayWindowsLength({ id, properties }, action): void {
