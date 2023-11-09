@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { MutableRefObject, useEffect } from "react";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { useEditPropertyMutation } from "src/services/properties";
@@ -9,14 +9,15 @@ import {
     resetState as resetNotes,
     setInitialState as setInitialNotesState,
 } from "src/slices/notes";
-import { selectAll, setInitialState } from "src/slices/property";
+import { setInitialState } from "src/slices/property";
 import Form from "./Form";
 import { useGetPropertyByIdQuery } from "src/services/properties";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { LogoProgressIndicator } from "src/components/LogoProgressIndicator";
 import { useTabsContext } from "src/contexts/tabs";
-import { useAutosaveTab } from "src/hooks/useAutosaveTab";
+
+// (1): forces Form re-render (=> unmount when changing from /edit/x to /edit/y pages)
 
 const EditPropertyPage: NextPage = () => {
     const dispatch = useDispatch();
@@ -45,7 +46,7 @@ const EditPropertyPage: NextPage = () => {
         }
     }, [data, propertyId]);
 
-    useAutosaveTab(selectAll, (bodyRef) => {
+    const handleAutosave = (bodyRef: MutableRefObject<any>) => {
         if (!bodyRef.current.code) {
             toast.error("Edit operation canceled. Code ID is required");
             return;
@@ -56,7 +57,7 @@ const EditPropertyPage: NextPage = () => {
         }
 
         edit({ id: +propertyId!, body: bodyRef.current }).then(resetEverything);
-    });
+    };
 
     const resetEverything = () => {
         dispatch(resetLabels());
@@ -67,8 +68,10 @@ const EditPropertyPage: NextPage = () => {
 
     return (
         <>
-            {data && (
+            {data && propertyId && (
                 <Form
+                    key={propertyId as string} // (1)
+                    onAutosave={handleAutosave}
                     performUpload={handleRedirect}
                     resetEverything={resetEverything}
                     handleCancel={handleRedirect}

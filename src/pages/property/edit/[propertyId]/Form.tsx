@@ -3,32 +3,36 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import { Button, Grid } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { selectParentCategory } from "src/slices/property";
+import { selectAll, selectParentCategory } from "src/slices/property";
 import CommercialFormSection from "./components/CommercialForm";
 import LandFormSection from "./components/LandForm";
 import OtherFormSection from "./components/OtherForm";
 import ResidentialFormSection from "./components/ResidentialForm";
 import { UploadFileProvider } from "src/contexts/uploadFile";
+import { MutableRefObject, useEffect } from "react";
+import { useAutosaveTab } from "src/hooks/useAutosaveTab";
 
 interface IFormProps {
+    onAutosave: (bodyRef: MutableRefObject<any>) => void;
     resetEverything: () => void;
     performUpload: () => void;
     handleCancel: () => void;
 }
 export default function Form({
+    onAutosave,
     performUpload,
     resetEverything,
     handleCancel,
 }: IFormProps) {
     const { t } = useTranslation();
 
+    useAutosaveTab(selectAll, onAutosave);
+
     // enums
     const parentCategory = useSelector(selectParentCategory);
 
-    const handleClick = () => {
-        // create our property draft
-        performUpload();
-    };
+    // create our property draft
+    const handleClick = () => performUpload();
 
     return (
         <Grid container spacing={1} paddingLeft={2} paddingTop={1}>
