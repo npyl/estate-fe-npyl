@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useMemo } from "react";
 import { IProperties } from "src/types/properties";
 import { Typography, Box, Paper, Divider, Grid } from "@mui/material";
 import { DraftEditor } from "src/components/draft-editor";
@@ -11,13 +11,12 @@ interface DescriptionSectionProps {
 const DescriptionSection: React.FC<DescriptionSectionProps> = (props) => {
     const { data } = props;
     const { t } = useTranslation();
-    const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
-    useEffect(() => {
-        if (!data?.description) return;
+    const editorState = useMemo(() => {
+        if (!data?.description) return EditorState.createEmpty();
 
         const contentState = convertFromRaw(JSON.parse(data?.description));
-        setEditorState(EditorState.createWithContent(contentState));
+        return EditorState.createWithContent(contentState);
     }, [data?.description]);
 
     return (
