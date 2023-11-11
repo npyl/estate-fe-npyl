@@ -6,14 +6,57 @@ import { SecurityProvider } from "src/contexts/security";
 import CardWithIcon from "./dashboard/CardWithIcon";
 import TotalProperties from "./dashboard/total-properties";
 import AppConversionRates from "./dashboard/app-conversion-rates";
+import AppWelcome from "./dashboard/app-welcome";
+import SeoIllustration from "./dashboard/SeoIllustration";
+import { useProfileQuery } from "src/services/user";
+import AppFeatured from "./dashboard/AppFeatured";
 
 const Dashboard: NextPage = () => {
+    const { firstName, lastName } = useProfileQuery().data ?? {};
+    const name = `${lastName} ${firstName}`;
+    const _appFeatured = [
+        {
+            id: "exampleId1",
+            title: "Example Title 1",
+            description: "Example Description 1",
+            image: "https://api-dev-minimal-v4.vercel.app/assets/images/covers/cover_1.jpg",
+        },
+        {
+            id: "exampleId2",
+            title: "Example Title 2",
+            description: "Example Description w",
+            image: "https://api-dev-minimal-v4.vercel.app/assets/images/covers/cover_2.jpg",
+        },
+        {
+            id: "exampleId3",
+            title: "Example Title 3",
+            description: "Example Description 3",
+            image: "https://api-dev-minimal-v4.vercel.app/assets/images/covers/cover_3.jpg",
+        },
+    ];
+
     return (
         <div style={{ margin: "20px" }}>
-            <Typography variant="h4" sx={{ mb: 5 }}>
-                Hi, Welcome back 👋
-            </Typography>
             <Grid container spacing={5} gap={5} mt={1}>
+                <Grid item xs={12} md={7}>
+                    <AppWelcome
+                        title={`Welcome back! \n ${name}`}
+                        description="If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything."
+                        img={
+                            <SeoIllustration
+                                sx={{
+                                    p: 3,
+                                    width: 360,
+                                    margin: { xs: "auto", md: "inherit" },
+                                }}
+                            />
+                        }
+                    />
+                </Grid>
+                <Grid item xs={12} md={4}>
+                    <AppFeatured list={_appFeatured} />
+                </Grid>
+
                 <Grid xs={2} sm={2} md={1.5} ml={3}>
                     <CardWithIcon
                         title={"1270"}
