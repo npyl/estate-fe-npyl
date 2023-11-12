@@ -12,7 +12,6 @@ import { useProfileQuery } from "src/services/user";
 import "react-slideshow-image/dist/styles.css";
 import StyledSlide from "src/components/dashboard/components/Slideshow";
 import { useAllPropertiesQuery } from "src/services/properties";
-import { IProperties } from "src/types/properties";
 import { useEffect, useState } from "react";
 
 const Dashboard: NextPage = () => {
@@ -20,18 +19,22 @@ const Dashboard: NextPage = () => {
     const name = `${lastName} ${firstName}`;
     const allProperties = useAllPropertiesQuery().data || [];
 
-    const [slideImages, setSlideImages] = useState<Array<{ url: string }>>([]);
+    const [slideImages, setSlideImages] = useState<
+        Array<{ url: string; code: string }>
+    >([]);
     useEffect(() => {
         // Sort properties by id in descending order and take the first 10
         const topProperties = [...allProperties]
             .sort((a, b) => b.id - a.id)
-            .slice(0, 5);
+            .slice(0, 9);
 
         const newSlideImages = topProperties
             .filter((property) => property.images && property.images[0]) // Filter out properties with no images
             .map((property) => ({
                 url: property.images[0],
+                code: property.code,
             }));
+        console.log(newSlideImages);
 
         setSlideImages(newSlideImages);
     }, [allProperties]);
@@ -58,32 +61,46 @@ const Dashboard: NextPage = () => {
                     <StyledSlide arrows={false} images={slideImages} />
                 </Grid>
 
-                <Grid xs={2} sm={2} md={1.5} ml={3}>
+                <Grid xs={2} sm={2} md={2} ml={3}>
                     <CardWithIcon
                         title={"1270"}
                         subtitle={"Total Properties"}
                     />
                 </Grid>
-                <Grid xs={2} sm={2} md={1.5}>
+                <Grid xs={2} sm={2} md={2}>
                     <CardWithIcon
                         title={"1130"}
                         subtitle={"Total Active Properties"}
                     />
                 </Grid>
 
-                <Grid xs={2} sm={2} md={1.5}>
+                <Grid xs={2} sm={2} md={2}>
                     <CardWithIcon
                         title={"765"}
                         subtitle={"Total Sold Properties"}
                     />
                 </Grid>
-                <Grid xs={2} sm={2} md={1.5}>
+                <Grid xs={2} sm={2} md={2}>
                     <CardWithIcon
                         title={"365"}
                         subtitle={"Total Rented Properties"}
                     />
                 </Grid>
-                <Grid xs={12} md={6} lg={7} ml={3}>
+                <Grid xs={12} md={6} lg={3} ml={3}>
+                    <TotalProperties
+                        title="Total Properties"
+                        subheader={"Properties Distribution"}
+                        chart={{
+                            series: [
+                                { label: "Residential", value: 4344 },
+                                { label: "Commercial", value: 5435 },
+                                { label: "Land", value: 1443 },
+                                { label: "Other", value: 4443 },
+                            ],
+                        }}
+                    />
+                </Grid>
+                <Grid xs={12} md={6} lg={7}>
                     <AppConversionRates
                         title="Total Properties per User"
                         subheader=""
@@ -99,20 +116,6 @@ const Dashboard: NextPage = () => {
                                 { label: "User 8", value: 1100 },
                                 { label: "User  9", value: 1200 },
                                 { label: "User 10", value: 1380 },
-                            ],
-                        }}
-                    />
-                </Grid>
-                <Grid xs={12} md={6} lg={3}>
-                    <TotalProperties
-                        title="Total Properties"
-                        subheader={"Properties Distribution"}
-                        chart={{
-                            series: [
-                                { label: "Residential", value: 4344 },
-                                { label: "Commercial", value: 5435 },
-                                { label: "Land", value: 1443 },
-                                { label: "Other", value: 4443 },
                             ],
                         }}
                     />
