@@ -9,31 +9,32 @@ import AppConversionRates from "./dashboard/app-conversion-rates";
 import AppWelcome from "./dashboard/app-welcome";
 import SeoIllustration from "./dashboard/SeoIllustration";
 import { useProfileQuery } from "src/services/user";
-import AppFeatured from "./dashboard/AppFeatured";
+import "react-slideshow-image/dist/styles.css";
+import StyledSlide from "src/components/dashboard/components/Slideshow";
+import { useAllPropertiesQuery } from "src/services/properties";
+import { IProperties } from "src/types/properties";
+import { useEffect, useState } from "react";
 
 const Dashboard: NextPage = () => {
     const { firstName, lastName } = useProfileQuery().data ?? {};
     const name = `${lastName} ${firstName}`;
-    const _appFeatured = [
-        {
-            id: "exampleId1",
-            title: "Example Title 1",
-            description: "Example Description 1",
-            image: "https://api-dev-minimal-v4.vercel.app/assets/images/covers/cover_1.jpg",
-        },
-        {
-            id: "exampleId2",
-            title: "Example Title 2",
-            description: "Example Description w",
-            image: "https://api-dev-minimal-v4.vercel.app/assets/images/covers/cover_2.jpg",
-        },
-        {
-            id: "exampleId3",
-            title: "Example Title 3",
-            description: "Example Description 3",
-            image: "https://api-dev-minimal-v4.vercel.app/assets/images/covers/cover_3.jpg",
-        },
-    ];
+    const allProperties = useAllPropertiesQuery().data || [];
+
+    const [slideImages, setSlideImages] = useState<Array<{ url: string }>>([]);
+    useEffect(() => {
+        // Sort properties by id in descending order and take the first 10
+        const topProperties = [...allProperties]
+            .sort((a, b) => b.id - a.id)
+            .slice(0, 5);
+
+        const newSlideImages = topProperties
+            .filter((property) => property.images && property.images[0]) // Filter out properties with no images
+            .map((property) => ({
+                url: property.images[0],
+            }));
+
+        setSlideImages(newSlideImages);
+    }, [allProperties]);
 
     return (
         <div style={{ margin: "20px" }}>
@@ -54,7 +55,7 @@ const Dashboard: NextPage = () => {
                     />
                 </Grid>
                 <Grid item xs={12} md={4}>
-                    <AppFeatured list={_appFeatured} />
+                    <StyledSlide arrows={false} images={slideImages} />
                 </Grid>
 
                 <Grid xs={2} sm={2} md={1.5} ml={3}>
