@@ -162,6 +162,7 @@ const LabelsPage: NextPage = () => {
             deleteLabelForCustomers(labelId).then(cancelEdit);
         resource === documentSectionLabel &&
             deleteLabelForDocuments(labelId).then(cancelEdit);
+        cancelDelete();
     };
 
     return (
