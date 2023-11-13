@@ -670,10 +670,10 @@ const slice = createSlice({
             properties[id].technicalFeatures.entrances = action.payload;
         },
         resetAll({ id, properties }): void {
-            const currentParentCategory = properties[id].parentCategory;
             properties[id] = {
                 ...initialPropertyState,
-                parentCategory: currentParentCategory,
+                parentCategory: properties[id].parentCategory,
+                category: properties[id].category,
             };
         },
 
