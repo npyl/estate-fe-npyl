@@ -1,10 +1,11 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { MutableRefObject, useEffect } from "react";
+import { MutableRefObject, useEffect, useState } from "react";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { useEditPropertyMutation } from "src/services/properties";
 import { resetState as resetLabels } from "src/slices/labels";
+import { resetAll } from "src/slices/property";
 import {
     resetState as resetNotes,
     setInitialState as setInitialNotesState,
@@ -16,10 +17,12 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { LogoProgressIndicator } from "src/components/LogoProgressIndicator";
 import { useTabsContext } from "src/contexts/tabs";
+import { ConfirmationDialogBox } from "src/pages/components/ConfirmationDialogBox";
 
 // (1): forces Form re-render (=> unmount when changing from /edit/x to /edit/y pages)
 
 const EditPropertyPage: NextPage = () => {
+    const [clearConfirmDialogOpen, setclearConfirmDialogOpen] = useState(false);
     const dispatch = useDispatch();
     const router = useRouter();
     const { pushTab } = useTabsContext();
@@ -60,8 +63,16 @@ const EditPropertyPage: NextPage = () => {
     };
 
     const resetEverything = () => {
+        setclearConfirmDialogOpen(true);
+    };
+    const closeClearConfirmDialog = () => {
+        setclearConfirmDialogOpen(false);
+    };
+    const confirmResetEverything = () => {
         dispatch(resetLabels());
         dispatch(resetNotes());
+        dispatch(resetAll());
+        closeClearConfirmDialog();
     };
 
     const handleRedirect = () => router.push(`/property/${propertyId}`);
@@ -82,6 +93,13 @@ const EditPropertyPage: NextPage = () => {
                 // loading indicator (incase POST request is taking alot of time)
                 isEditLoading && <LogoProgressIndicator />
             }
+            <ConfirmationDialogBox
+                action={"delete"}
+                open={clearConfirmDialogOpen}
+                onClose={closeClearConfirmDialog}
+                text="Are you sure you want to clear all fields?"
+                onConfirm={confirmResetEverything}
+            />
         </>
     );
 };

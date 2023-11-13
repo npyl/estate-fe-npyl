@@ -1,6 +1,11 @@
 import {
     Box,
+    Button,
+    FormControl,
+    FormControlLabel,
     Paper,
+    Radio,
+    RadioGroup,
     Stack,
     Switch,
     SwitchProps,
@@ -8,7 +13,7 @@ import {
     styled,
 } from "@mui/material";
 import { useRouter } from "next/router";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
     useAddPublicListingMutation,
@@ -31,7 +36,7 @@ const PublicSvg: React.FC = () => {
             height="36px"
             viewBox="0 0 64 64"
             xmlns="http://www.w3.org/2000/svg"
-            stroke-width="3"
+            strokeWidth="3"
             stroke="#000000"
             fill="none"
         >
@@ -81,91 +86,80 @@ interface LabeledSwitchProps extends SwitchProps {
     labelOn: string;
 }
 
-const LabeledSwitch = styled(Switch)<LabeledSwitchProps>(
-    ({ theme, labelOn, labelOff }) => {
-        // Calculate the translate value based on the width of the track and the thumb
-        const thumbWidth = 35; // The width of the thumb
-        const trackPadding = 2 * 1; // Total padding (left + right)
-        const totalWidth = 140; // The total width of the switch
-        const translateXValue = totalWidth - thumbWidth - trackPadding - 2;
+const LabeledSwitch = styled(
+    ({ labelOn, labelOff, ...props }: LabeledSwitchProps) => (
+        <Switch {...props} />
+    )
+)<LabeledSwitchProps>(({ theme, labelOn, labelOff }) => {
+    // Calculate the translate value based on the width of the track and the thumb
+    const thumbWidth = 35; // The width of the thumb
+    const trackPadding = 2 * 1; // Total padding (left + right)
+    const totalWidth = 140; // The total width of the switch
+    const translateXValue = totalWidth - thumbWidth - trackPadding - 2;
 
-        return {
-            width: `${totalWidth}px`,
-            height: "50px",
-            padding: "0px",
+    return {
+        width: `${totalWidth}px`,
+        height: "50px",
+        padding: "0px",
 
-            "& .MuiSwitch-switchBase": {
-                color: "#818181",
-                padding: "1px",
+        "& .MuiSwitch-switchBase": {
+            padding: "1px",
 
-                "&.Mui-checked": {
-                    color: theme.palette.success.main,
-                    "& + .MuiSwitch-track": {
-                        backgroundColor: theme.palette.success.main,
-                    },
-                    "& .MuiSwitch-thumb": {
-                        color: theme.palette.background.paper,
-                    },
-                    "& + .MuiSwitch-track:before": {
-                        opacity: 0,
-                    },
-                    "& + .MuiSwitch-track:after": {
-                        opacity: 1,
-                    },
-
-                    transform: `translate(${translateXValue}px)`,
+            "&.Mui-checked": {
+                "& + .MuiSwitch-track": {
+                    backgroundColor: "#2638a8",
+                    opacity: 1,
                 },
-            },
-            "& .MuiSwitch-thumb": {
-                color: "white",
-                borderRadius: 5,
-                width: "35px",
-                height: "46px",
-                margin: "1px",
-            },
-            "& .MuiSwitch-track": {
-                backgroundColor: "#818181",
-                opacity: 1,
-                "&:before, &:after": {
-                    content: '""',
-                    position: "absolute",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    color: "white",
-                    fontSize: 15,
+                "& .MuiSwitch-thumb": {
+                    color: theme.palette.background.paper,
                 },
-                "&:before": {
-                    right: 8,
-                    content: `"${labelOff}"`,
-                },
-                "&:after": {
-                    left: 8,
-                    content: `"${labelOn}"`,
+                "& + .MuiSwitch-track:before": {
                     opacity: 0,
                 },
+                "& + .MuiSwitch-track:after": {
+                    opacity: 1,
+                },
+
+                transform: `translate(${translateXValue}px)`,
             },
-            "& .Mui-checked + .MuiSwitch-track": {
-                backgroundColor: "#23bf58",
+        },
+        "& .MuiSwitch-thumb": {
+            color: "white",
+            borderRadius: 5,
+            width: "35px",
+            height: "46px",
+            margin: "1px",
+        },
+        "& .MuiSwitch-track": {
+            backgroundColor: theme.palette.neutral?.[500],
+            opacity: 1,
+            "&:before, &:after": {
+                content: '""',
+                position: "absolute",
+                top: "50%",
+                transform: "translateY(-50%)",
+                color: "white",
+                fontSize: 15,
             },
-            "& .Mui-checked .MuiSwitch-thumb": {
-                color: "#23bf58",
+            "&:before": {
+                right: 8,
+                content: `"${labelOff}"`,
             },
-        };
-    }
-);
+            "&:after": {
+                left: 8,
+                content: `"${labelOn}"`,
+                opacity: 0,
+            },
+        },
+    };
+});
 
 const ListingCard = ({ label, value, onClick }: ListingCardProps) => {
     const handleClick = () => onClick(label, value);
 
     return (
-        <Stack
-            p={5}
-            border={1}
-            borderRadius={1}
-            direction={"row"}
-            width={"400px"}
-        >
-            <Box justifyItems={"center"} flex={1} flexDirection={"column"}>
+        <Stack p={5} direction="row" width="400px">
+            <Box justifyItems="center" flex={1} flexDirection="column">
                 {label === "PUBLIC_SITE" ? <PublicSvg /> : <SpitogatosSvg />}
                 <Typography>
                     {label === "PUBLIC_SITE" ? "Public" : "Spitogatos.gr"}
@@ -184,14 +178,72 @@ const ListingCard = ({ label, value, onClick }: ListingCardProps) => {
     );
 };
 
-const Integrations = () => {
-    const dispatch = useDispatch();
+interface LeftProps {
+    onContinue: () => void;
+    onSelectLocationMode: (mode: string) => void;
+}
 
+const Left = ({ onContinue, onSelectLocationMode }: LeftProps) => (
+    <Paper
+        elevation={10}
+        sx={{
+            padding: 2,
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+        }}
+    >
+        <Typography variant="h4" mt={10} mb={10} sx={{ textAlign: "center" }}>
+            Location Details
+        </Typography>
+        <Typography variant="body1" mb={5} sx={{ textAlign: "center" }}>
+            Select which information will be visible to the user on Search
+            result pages:
+        </Typography>
+        <FormControl component="fieldset">
+            <RadioGroup
+                aria-label="location"
+                defaultValue="none"
+                name="radio-buttons-group"
+                onChange={(_, v) => onSelectLocationMode(v)}
+            >
+                <FormControlLabel
+                    value="none"
+                    control={<Radio />}
+                    label="Location not visible"
+                />
+                <FormControlLabel
+                    value="general"
+                    control={<Radio />}
+                    label="General location (circle)"
+                />
+                <FormControlLabel
+                    value="exact"
+                    control={<Radio />}
+                    label="Exact location (pin)"
+                />
+            </RadioGroup>
+        </FormControl>
+        <Button variant="contained" sx={{ marginTop: 5 }} onClick={onContinue}>
+            Continue »
+        </Button>
+    </Paper>
+);
+
+interface RightProps {
+    selected: boolean;
+}
+
+const Right = ({ selected }: RightProps) => {
     const router = useRouter();
     const { propertyId } = router.query;
 
     const { data: property } = useGetPropertyByIdQuery(+propertyId!);
     const listings = useMemo(() => property?.listings, [property?.listings]);
+
+    const dispatch = useDispatch();
 
     // Mutations
     const [publishPublicSite] = useAddPublicListingMutation();
@@ -214,34 +266,64 @@ const Integrations = () => {
     };
 
     return (
+        <Paper
+            elevation={selected ? 10 : 0}
+            sx={{
+                padding: 2,
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                opacity: selected ? 1 : 0.5,
+                backgroundColor: selected
+                    ? "background.paper"
+                    : "background.disabled",
+                pointerEvents: selected ? "auto" : "none",
+            }}
+        >
+            <Typography
+                variant="h4"
+                mt={10}
+                mb={5}
+                sx={{ textAlign: "center" }}
+            >
+                Websites to publish to:
+            </Typography>
+
+            {listings &&
+                Object.keys(listings).map((key) => (
+                    <ListingCard
+                        key={key}
+                        label={key as ListingTypes}
+                        value={listings[key as ListingTypes]}
+                        onClick={handleClick}
+                    />
+                ))}
+        </Paper>
+    );
+};
+
+const Integrations = () => {
+    const [locationMode, setLocationMode] = useState("");
+    const [selected, setSelected] = useState(false);
+
+    return (
         <Box
             sx={{
                 display: "flex",
+                flexDirection: "row",
                 justifyContent: "center",
                 alignItems: "center",
-                height: "80%",
-                width: "90%",
+                height: "100%",
+                gap: 1,
             }}
         >
-            <Paper
-                elevation={10}
-                sx={{
-                    padding: "10px",
-                    margin: "auto",
-                }}
-            >
-                <Stack gap={1} direction={"row"}>
-                    {listings &&
-                        Object.keys(listings).map((key) => (
-                            <ListingCard
-                                key={key}
-                                label={key as ListingTypes}
-                                value={listings[key as ListingTypes]}
-                                onClick={handleClick}
-                            />
-                        ))}
-                </Stack>
-            </Paper>
+            <Left
+                onContinue={() => setSelected(true)}
+                onSelectLocationMode={setLocationMode}
+            />
+            <Right selected={selected} />
         </Box>
     );
 };
