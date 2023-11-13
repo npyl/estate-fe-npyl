@@ -669,6 +669,13 @@ const slice = createSlice({
         setEntrances({ id, properties }, action): void {
             properties[id].technicalFeatures.entrances = action.payload;
         },
+        resetAll({ id, properties }): void {
+            const currentParentCategory = properties[id].parentCategory;
+            properties[id] = {
+                ...initialPropertyState,
+                parentCategory: currentParentCategory,
+            };
+        },
 
         setDisplayWindowsLength({ id, properties }, action): void {
             properties[id].technicalFeatures.displayWindowsLength =
@@ -1367,6 +1374,7 @@ export const {
     addLabel,
     removeLabel,
 
+    resetAll,
     resetState,
 } = slice.actions;
 

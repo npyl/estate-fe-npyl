@@ -45,6 +45,9 @@ const OnlyNumbersInput: React.FC<OnlyNumbersInputProps> = ({
 
         setDisplayValue(formattedValue);
     };
+    useEffect(() => {
+        setDisplayValue(value || "");
+    }, [value]);
 
     return (
         <TextField
