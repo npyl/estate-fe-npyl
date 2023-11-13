@@ -1,6 +1,11 @@
 import {
     Box,
+    Button,
+    FormControl,
+    FormControlLabel,
     Paper,
+    Radio,
+    RadioGroup,
     Stack,
     Switch,
     SwitchProps,
@@ -8,7 +13,7 @@ import {
     styled,
 } from "@mui/material";
 import { useRouter } from "next/router";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
     useAddPublicListingMutation,
@@ -158,14 +163,8 @@ const ListingCard = ({ label, value, onClick }: ListingCardProps) => {
     const handleClick = () => onClick(label, value);
 
     return (
-        <Stack
-            p={5}
-            border={1}
-            borderRadius={1}
-            direction={"row"}
-            width={"400px"}
-        >
-            <Box justifyItems={"center"} flex={1} flexDirection={"column"}>
+        <Stack p={5} direction="row" width="400px">
+            <Box justifyItems="center" flex={1} flexDirection="column">
                 {label === "PUBLIC_SITE" ? <PublicSvg /> : <SpitogatosSvg />}
                 <Typography>
                     {label === "PUBLIC_SITE" ? "Public" : "Spitogatos.gr"}
@@ -184,14 +183,72 @@ const ListingCard = ({ label, value, onClick }: ListingCardProps) => {
     );
 };
 
-const Integrations = () => {
-    const dispatch = useDispatch();
+interface LeftProps {
+    onContinue: () => void;
+    onSelectLocationMode: (mode: string) => void;
+}
 
+const Left = ({ onContinue, onSelectLocationMode }: LeftProps) => (
+    <Paper
+        elevation={10}
+        sx={{
+            padding: 2,
+            width: "100%",
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+        }}
+    >
+        <Typography variant="h4" mt={10} mb={10} sx={{ textAlign: "center" }}>
+            Location Details
+        </Typography>
+        <Typography variant="body1" mb={5} sx={{ textAlign: "center" }}>
+            Select which information will be visible to the user on Search
+            result pages:
+        </Typography>
+        <FormControl component="fieldset">
+            <RadioGroup
+                aria-label="location"
+                defaultValue="none"
+                name="radio-buttons-group"
+                onChange={(_, v) => onSelectLocationMode(v)}
+            >
+                <FormControlLabel
+                    value="none"
+                    control={<Radio />}
+                    label="Location not visible"
+                />
+                <FormControlLabel
+                    value="general"
+                    control={<Radio />}
+                    label="General location (circle)"
+                />
+                <FormControlLabel
+                    value="exact"
+                    control={<Radio />}
+                    label="Exact location (pin)"
+                />
+            </RadioGroup>
+        </FormControl>
+        <Button variant="contained" sx={{ marginTop: 5 }} onClick={onContinue}>
+            Continue »
+        </Button>
+    </Paper>
+);
+
+interface RightProps {
+    selected: boolean;
+}
+
+const Right = ({ selected }: RightProps) => {
     const router = useRouter();
     const { propertyId } = router.query;
 
     const { data: property } = useGetPropertyByIdQuery(+propertyId!);
     const listings = useMemo(() => property?.listings, [property?.listings]);
+
+    const dispatch = useDispatch();
 
     // Mutations
     const [publishPublicSite] = useAddPublicListingMutation();
@@ -214,34 +271,64 @@ const Integrations = () => {
     };
 
     return (
+        <Paper
+            elevation={selected ? 10 : 0}
+            sx={{
+                padding: 2,
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                opacity: selected ? 1 : 0.5,
+                backgroundColor: selected
+                    ? "background.paper"
+                    : "background.disabled",
+                pointerEvents: selected ? "auto" : "none",
+            }}
+        >
+            <Typography
+                variant="h4"
+                mt={10}
+                mb={5}
+                sx={{ textAlign: "center" }}
+            >
+                Websites to publish to:
+            </Typography>
+
+            {listings &&
+                Object.keys(listings).map((key) => (
+                    <ListingCard
+                        key={key}
+                        label={key as ListingTypes}
+                        value={listings[key as ListingTypes]}
+                        onClick={handleClick}
+                    />
+                ))}
+        </Paper>
+    );
+};
+
+const Integrations = () => {
+    const [locationMode, setLocationMode] = useState("");
+    const [selected, setSelected] = useState(false);
+
+    return (
         <Box
             sx={{
                 display: "flex",
+                flexDirection: "row",
                 justifyContent: "center",
                 alignItems: "center",
-                height: "80%",
-                width: "90%",
+                height: "100%",
+                gap: 1,
             }}
         >
-            <Paper
-                elevation={10}
-                sx={{
-                    padding: "10px",
-                    margin: "auto",
-                }}
-            >
-                <Stack gap={1} direction={"row"}>
-                    {listings &&
-                        Object.keys(listings).map((key) => (
-                            <ListingCard
-                                key={key}
-                                label={key as ListingTypes}
-                                value={listings[key as ListingTypes]}
-                                onClick={handleClick}
-                            />
-                        ))}
-                </Stack>
-            </Paper>
+            <Left
+                onContinue={() => setSelected(true)}
+                onSelectLocationMode={setLocationMode}
+            />
+            <Right selected={selected} />
         </Box>
     );
 };
