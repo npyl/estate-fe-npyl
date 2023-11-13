@@ -1,6 +1,5 @@
 import {
     selectDescription,
-    selectDescriptionText,
     setDescription,
     setDescriptionText,
 } from "src/slices/property";
@@ -8,7 +7,7 @@ import { Box, Card, CardContent, Grid, Typography } from "@mui/material";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { DraftEditor } from "src/components/draft-editor";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
@@ -19,7 +18,6 @@ const DescriptionSection: React.FC = () => {
     const dispatch = useDispatch();
 
     const description = useSelector(selectDescription);
-    const descriptionText = useSelector(selectDescriptionText);
 
     const [editorState, setEditorState] = useState<EditorState>(
         EditorState.createEmpty()
@@ -49,7 +47,7 @@ const DescriptionSection: React.FC = () => {
             const contentStateJSON = JSON.stringify(convertToRaw(contentState));
             dispatch(setDescription(contentStateJSON));
         },
-        300 // the delay in ms
+        100 // the delay in ms
     );
 
     return (
@@ -71,6 +69,9 @@ const DescriptionSection: React.FC = () => {
                         </Box>
                         <CardContent>
                             <DraftEditor
+                                sx={{
+                                    minHeight: "104px",
+                                }}
                                 editorState={editorState}
                                 onEditorStateChange={onEditorStateChange}
                             />

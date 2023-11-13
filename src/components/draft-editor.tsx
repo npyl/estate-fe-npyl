@@ -60,7 +60,6 @@ const DraftEditorRoot = styled("div")(({ theme }) => ({
         backgroundColor: theme.palette.background.paper,
         border: "none",
         boxShadow: theme.shadows[10],
-        overflowY: "auto",
         padding: 0,
     },
     "& .rdw-dropdown-optionwrapper:hover": {
@@ -78,22 +77,23 @@ const DraftEditorRoot = styled("div")(({ theme }) => ({
         border: "none",
         boxShadow: theme.shadows[10],
         width: 260,
+        height: "auto",
     },
     "& .rdw-colorpicker-modal-options": {
-        overflowY: "auto",
+        //overflow: "auto",
     },
     "& .rdw-link-modal": {
         backgroundColor: theme.palette.background.paper,
         border: "none",
         boxShadow: theme.shadows[10],
-        overflowY: "auto",
+        //overflowY: "auto",
         width: 260,
     },
     "& .rdw-embedded-modal": {
         backgroundColor: theme.palette.background.paper,
         border: "none",
         boxShadow: theme.shadows[10],
-        overflowY: "auto",
+        //overflowY: "auto",
         width: 260,
     },
     "& .rdw-embedded-modal-header": {
@@ -103,14 +103,14 @@ const DraftEditorRoot = styled("div")(({ theme }) => ({
         backgroundColor: theme.palette.background.paper,
         border: "none",
         boxShadow: theme.shadows[10],
-        overflowY: "auto",
+        //overflowY: "auto",
         width: 260,
     },
     "& .rdw-image-modal": {
         backgroundColor: theme.palette.background.paper,
         border: "none",
         boxShadow: theme.shadows[10],
-        overflowY: "auto",
+        //overflowY: "auto",
         width: 260,
     },
     "& .rdw-image-modal-header": {
@@ -125,6 +125,10 @@ const DraftEditorRoot = styled("div")(({ theme }) => ({
     },
     "& .public-DraftStyleDefault-block": {
         margin: 0,
+    },
+
+    "& .public-DraftEditor-content": {
+        overflowWrap: "anywhere !important", // Adding this line
     },
 }));
 
