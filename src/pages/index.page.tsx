@@ -12,31 +12,27 @@ import { useProfileQuery } from "src/services/user";
 import "react-slideshow-image/dist/styles.css";
 import StyledSlide from "src/components/dashboard/components/Slideshow";
 import { useAllPropertiesQuery } from "src/services/properties";
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 
 const Dashboard: NextPage = () => {
     const { firstName, lastName } = useProfileQuery().data ?? {};
     const name = `${lastName} ${firstName}`;
     const allProperties = useAllPropertiesQuery().data || [];
 
-    const [slideImages, setSlideImages] = useState<
-        Array<{ url: string; code: string }>
-    >([]);
-    useEffect(() => {
+    const slideImages = useMemo<{ url: string; code: string }[]>(() => {
         // Sort properties by id in descending order and take the first 10
-        const topProperties = [...allProperties]
+        const topProperties = allProperties
             .sort((a, b) => b.id - a.id)
             .slice(0, 9);
 
-        const newSlideImages = topProperties
-            .filter((property) => property.images && property.images[0]) // Filter out properties with no images
-            .map((property) => ({
-                url: property.images[0],
-                code: property.code,
-            }));
-        console.log(newSlideImages);
-
-        setSlideImages(newSlideImages);
+        return (
+            topProperties
+                .filter(({ images }) => images?.length > 0 && !!images[0]?.url)
+                .map(({ propertyImage, code }) => ({
+                    url: propertyImage.url!,
+                    code,
+                })) || []
+        );
     }, [allProperties]);
 
     return (

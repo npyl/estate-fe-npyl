@@ -8,7 +8,7 @@ import Carousel, {
     CarouselArrows,
 } from "src/components/carousel";
 import Image from "src/components/image/Image";
-import { MotionContainer } from "src/components/dashboard/components/custom/animate";
+import MotionContainer from "src/components/animate/MotionContainer";
 import { varFade } from "src/components/animate";
 // components
 
