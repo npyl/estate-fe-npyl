@@ -21,7 +21,7 @@ const Dashboard: NextPage = () => {
 
     const slideImages = useMemo<{ url: string; code: string }[]>(() => {
         // Sort properties by id in descending order and take the first 10
-        const topProperties = allProperties
+        const topProperties = [...allProperties]
             .sort((a, b) => b.id - a.id)
             .slice(0, 9);
 
