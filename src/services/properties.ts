@@ -24,6 +24,7 @@ import { ILabel } from "src/types/label";
 import { ICustomer } from "src/types/customer";
 
 import axios, { AxiosProgressEvent } from "axios";
+import { LocationDisplay } from "src/types/enums";
 
 export interface BulkEditRequest {
     propertyIds: number[];
@@ -112,6 +113,11 @@ interface UploadDocumentToAmazonProps {
 
 interface UploadResponse {
     success: boolean;
+}
+
+interface EditLocationDisplayProps {
+    propertyId: number;
+    display: LocationDisplay;
 }
 
 export const properties = createApi({
@@ -269,6 +275,14 @@ export const properties = createApi({
                 };
             },
             providesTags: ["Properties"],
+        }),
+        editLocationDisplay: builder.mutation<void, EditLocationDisplayProps>({
+            query: ({ propertyId, display }: EditLocationDisplayProps) => ({
+                url: `/edit/${propertyId}/locationdisplay`,
+                method: "PUT",
+                params: { display },
+            }),
+            invalidatesTags: ["PropertyById"],
         }),
 
         // checks
@@ -817,6 +831,7 @@ export const {
     useSuggestForPropertyQuery,
     useBulkEditPropertiesMutation,
     useBulkDeletePropertiesMutation,
+    useEditLocationDisplayMutation,
 
     // check
     useLazyCheckCodeExistsQuery,

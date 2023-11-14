@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { ILocation } from "src/types/location";
 import { IProperties, IPropertiesPOST } from "src/types/properties";
 import type { RootState } from "../store";
+import { LocationDisplay } from "src/types/enums";
 
 interface propertyState {
     id: number; // current property id (used as key)
@@ -112,6 +113,7 @@ const initialPropertyState: IPropertiesPOST = {
         city: "",
         region: "",
         country: "",
+        locationDisplay: LocationDisplay.NOT_VISIBLE,
     },
     features: {
         panoramicView: false,
@@ -1167,6 +1169,9 @@ const slice = createSlice({
                     location?.complex || initialPropertyState.location.complex,
                 lat: location?.lat || initialPropertyState.location.lat,
                 lng: location?.lng || initialPropertyState.location.lng,
+                locationDisplay:
+                    location?.locationDisplay ||
+                    initialPropertyState.location.locationDisplay,
             };
 
             // map labels
