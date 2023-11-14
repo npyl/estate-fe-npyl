@@ -1170,7 +1170,7 @@ const slice = createSlice({
                 lat: location?.lat || initialPropertyState.location.lat,
                 lng: location?.lng || initialPropertyState.location.lng,
                 locationDisplay:
-                    location?.locationDisplay ||
+                    (location?.locationDisplay.key as LocationDisplay) ||
                     initialPropertyState.location.locationDisplay,
             };
 
