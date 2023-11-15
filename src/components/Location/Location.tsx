@@ -19,7 +19,7 @@ import {
 } from "src/services/location";
 import { useTranslation } from "react-i18next";
 
-interface ILocationSectionProps extends ILocationPOST {
+interface ILocationSectionProps extends Omit<ILocationPOST, "locationDisplay"> {
     // redux setters
     setStreet: ActionCreatorWithPayload<any, string>;
     setNumber: ActionCreatorWithPayload<any, string>;

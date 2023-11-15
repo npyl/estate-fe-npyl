@@ -1,3 +1,6 @@
+import { KeyValue } from "./KeyValue";
+import { LocationDisplay } from "./enums";
+
 export interface ILocation {
     street: string;
     number: string;
@@ -8,6 +11,7 @@ export interface ILocation {
     country: string;
     lat: number;
     lng: number;
+    locationDisplay: KeyValue;
 }
 
 export interface ILocationPOST {
@@ -20,4 +24,5 @@ export interface ILocationPOST {
     country: string;
     lat?: number;
     lng?: number;
+    locationDisplay: LocationDisplay;
 }

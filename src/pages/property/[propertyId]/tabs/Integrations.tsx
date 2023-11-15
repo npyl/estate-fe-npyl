@@ -7,10 +7,7 @@ import {
     Radio,
     RadioGroup,
     Stack,
-    Switch,
-    SwitchProps,
     Typography,
-    styled,
 } from "@mui/material";
 import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
@@ -20,139 +17,22 @@ import {
     useAddSpitogatosListingMutation,
     useRemovePublicListingMutation,
 } from "src/services/listings";
-import { properties, useGetPropertyByIdQuery } from "src/services/properties";
+import {
+    properties,
+    useEditLocationDisplayMutation,
+    useGetPropertyByIdQuery,
+} from "src/services/properties";
 import { ListingTypes } from "src/types/listings";
+import { LabeledSwitch } from "../components/Switch";
+import { PublicSvg } from "../components/PublicSvg";
+import { SpitogatosSvg } from "../components/SpitogatosSvg";
+import { LocationDisplay } from "src/types/enums";
 
 interface ListingCardProps {
     label: ListingTypes;
     value: boolean;
     onClick: (label: ListingTypes, value: boolean) => void;
 }
-
-const PublicSvg: React.FC = () => {
-    return (
-        <svg
-            width="36px"
-            height="36px"
-            viewBox="0 0 64 64"
-            xmlns="http://www.w3.org/2000/svg"
-            strokeWidth="3"
-            stroke="#000000"
-            fill="none"
-        >
-            <path d="M39.93,55.72A24.86,24.86,0,1,1,56.86,32.15a37.24,37.24,0,0,1-.73,6" />
-            <path d="M37.86,51.1A47,47,0,0,1,32,56.7" />
-            <path d="M32,7A34.14,34.14,0,0,1,43.57,30a34.07,34.07,0,0,1,.09,4.85" />
-            <path d="M32,7A34.09,34.09,0,0,0,20.31,32.46c0,16.2,7.28,21,11.66,24.24" />
-            <line x1="10.37" y1="19.9" x2="53.75" y2="19.9" />
-            <line x1="32" y1="6.99" x2="32" y2="56.7" />
-            <line x1="11.05" y1="45.48" x2="37.04" y2="45.48" />
-            <line x1="7.14" y1="32.46" x2="56.86" y2="31.85" />
-            <path d="M53.57,57,58,52.56l-8-8,4.55-2.91a.38.38,0,0,0-.12-.7L39.14,37.37a.39.39,0,0,0-.46.46L42,53.41a.39.39,0,0,0,.71.13L45.57,49Z" />
-        </svg>
-    );
-};
-
-const SpitogatosSvg: React.FC = () => {
-    return (
-        <svg
-            version="1.1"
-            id="_x32_"
-            xmlns="http://www.w3.org/2000/svg"
-            xmlnsXlink="http://www.w3.org/1999/xlink"
-            width="36px"
-            height="36px"
-            fill="orange"
-            viewBox="0 0 512 512"
-            xmlSpace="preserve"
-        >
-            <g>
-                <path
-                    d="M481.875,299.344L512,292.219l-4.656-19.641l-24.25,5.734c0-0.328,0.016-0.641,0.016-0.969
-            c0-38.078-10.531-72.781-28.969-102.359c15.438-53.938-13.438-124.547-13.438-124.547S387.813,73,357.719,100.297
-            C327.109,91.063,292.578,88.094,256,88.094c-36.766,0-71.484,2.563-102.203,11.781c-30.156-27.109-82.5-49.438-82.5-49.438
-            S42.406,121.063,57.859,175c-18.422,29.578-28.984,64.281-28.984,102.344c0,0.328,0.031,0.641,0.031,0.969l-24.25-5.734L0,292.219
-            l30.109,7.125c2.672,23.578,9.672,44.75,20.234,63.422L12.875,377.75l7.484,18.75l41.203-16.484
-            c39.797,53.141,111.969,81.547,194.438,81.547c82.453,0,154.641-28.406,194.438-81.547l41.203,16.484l7.484-18.75l-37.469-14.984
-            C472.219,344.094,479.219,322.922,481.875,299.344z"
-                />
-            </g>
-        </svg>
-    );
-};
-
-interface LabeledSwitchProps extends SwitchProps {
-    labelOff: string;
-    labelOn: string;
-}
-
-const LabeledSwitch = styled(
-    ({ labelOn, labelOff, ...props }: LabeledSwitchProps) => (
-        <Switch {...props} />
-    )
-)<LabeledSwitchProps>(({ theme, labelOn, labelOff }) => {
-    // Calculate the translate value based on the width of the track and the thumb
-    const thumbWidth = 35; // The width of the thumb
-    const trackPadding = 2 * 1; // Total padding (left + right)
-    const totalWidth = 140; // The total width of the switch
-    const translateXValue = totalWidth - thumbWidth - trackPadding - 2;
-
-    return {
-        width: `${totalWidth}px`,
-        height: "50px",
-        padding: "0px",
-
-        "& .MuiSwitch-switchBase": {
-            padding: "1px",
-
-            "&.Mui-checked": {
-                "& + .MuiSwitch-track": {
-                    backgroundColor: "#2638a8",
-                    opacity: 1,
-                },
-                "& .MuiSwitch-thumb": {
-                    color: theme.palette.background.paper,
-                },
-                "& + .MuiSwitch-track:before": {
-                    opacity: 0,
-                },
-                "& + .MuiSwitch-track:after": {
-                    opacity: 1,
-                },
-
-                transform: `translate(${translateXValue}px)`,
-            },
-        },
-        "& .MuiSwitch-thumb": {
-            color: "white",
-            borderRadius: 5,
-            width: "35px",
-            height: "46px",
-            margin: "1px",
-        },
-        "& .MuiSwitch-track": {
-            backgroundColor: theme.palette.neutral?.[500],
-            opacity: 1,
-            "&:before, &:after": {
-                content: '""',
-                position: "absolute",
-                top: "50%",
-                transform: "translateY(-50%)",
-                color: "white",
-                fontSize: 15,
-            },
-            "&:before": {
-                right: 8,
-                content: `"${labelOff}"`,
-            },
-            "&:after": {
-                left: 8,
-                content: `"${labelOn}"`,
-                opacity: 0,
-            },
-        },
-    };
-});
 
 const ListingCard = ({ label, value, onClick }: ListingCardProps) => {
     const handleClick = () => onClick(label, value);
@@ -178,65 +58,93 @@ const ListingCard = ({ label, value, onClick }: ListingCardProps) => {
     );
 };
 
-interface LeftProps {
-    onContinue: () => void;
-    onSelectLocationMode: (mode: string) => void;
-}
+const Left = () => {
+    const router = useRouter();
+    const { propertyId } = router.query;
 
-const Left = ({ onContinue, onSelectLocationMode }: LeftProps) => (
-    <Paper
-        elevation={10}
-        sx={{
-            padding: 2,
-            width: "100%",
-            height: "100%",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-        }}
-    >
-        <Typography variant="h4" mt={10} mb={10} sx={{ textAlign: "center" }}>
-            Location Details
-        </Typography>
-        <Typography variant="body1" mb={5} sx={{ textAlign: "center" }}>
-            Select which information will be visible to the user on Search
-            result pages:
-        </Typography>
-        <FormControl component="fieldset">
-            <RadioGroup
-                aria-label="location"
-                defaultValue="none"
-                name="radio-buttons-group"
-                onChange={(_, v) => onSelectLocationMode(v)}
+    const { data: property } = useGetPropertyByIdQuery(+propertyId!);
+
+    const defaultValue = useMemo(
+        () =>
+            property?.location?.locationDisplay.key ||
+            LocationDisplay.NOT_VISIBLE,
+        [property]
+    );
+
+    const [locationDisplay, setLocationDisplay] = useState<LocationDisplay>();
+
+    const [editLocationDisplay] = useEditLocationDisplayMutation();
+
+    const handleUpdate = () =>
+        editLocationDisplay({
+            propertyId: +propertyId!,
+            display: locationDisplay!,
+        });
+
+    return (
+        <Paper
+            elevation={10}
+            sx={{
+                padding: 2,
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+            }}
+        >
+            <Typography
+                variant="h4"
+                mt={10}
+                mb={10}
+                sx={{ textAlign: "center" }}
             >
-                <FormControlLabel
-                    value="none"
-                    control={<Radio />}
-                    label="Location not visible"
-                />
-                <FormControlLabel
-                    value="general"
-                    control={<Radio />}
-                    label="General location (circle)"
-                />
-                <FormControlLabel
-                    value="exact"
-                    control={<Radio />}
-                    label="Exact location (pin)"
-                />
-            </RadioGroup>
-        </FormControl>
-        <Button variant="contained" sx={{ marginTop: 5 }} onClick={onContinue}>
-            Continue »
-        </Button>
-    </Paper>
-);
+                Location Details
+            </Typography>
+            <Typography variant="body1" mb={5} sx={{ textAlign: "center" }}>
+                Select which information will be visible to the user on Search
+                result pages:
+            </Typography>
+            <FormControl component="fieldset">
+                <RadioGroup
+                    aria-label="location"
+                    defaultValue={defaultValue}
+                    name="radio-buttons-group"
+                    onChange={(_, v) =>
+                        setLocationDisplay(v as LocationDisplay)
+                    }
+                >
+                    <FormControlLabel
+                        value={LocationDisplay.NOT_VISIBLE}
+                        control={<Radio />}
+                        label="Location not visible"
+                    />
+                    <FormControlLabel
+                        value={LocationDisplay.GENERAL}
+                        control={<Radio />}
+                        label="General location (circle)"
+                    />
+                    <FormControlLabel
+                        value={LocationDisplay.EXACT}
+                        control={<Radio />}
+                        label="Exact location (pin)"
+                    />
+                </RadioGroup>
+            </FormControl>
+            {!locationDisplay || locationDisplay === defaultValue ? null : (
+                <Button
+                    variant="contained"
+                    sx={{ marginTop: 5 }}
+                    onClick={handleUpdate}
+                >
+                    Update
+                </Button>
+            )}
+        </Paper>
+    );
+};
 
-interface RightProps {
-    selected: boolean;
-}
-
-const Right = ({ selected }: RightProps) => {
+const Right = () => {
     const router = useRouter();
     const { propertyId } = router.query;
 
@@ -267,7 +175,7 @@ const Right = ({ selected }: RightProps) => {
 
     return (
         <Paper
-            elevation={selected ? 10 : 0}
+            elevation={10}
             sx={{
                 padding: 2,
                 width: "100%",
@@ -275,11 +183,8 @@ const Right = ({ selected }: RightProps) => {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                opacity: selected ? 1 : 0.5,
-                backgroundColor: selected
-                    ? "background.paper"
-                    : "background.disabled",
-                pointerEvents: selected ? "auto" : "none",
+                opacity: 1,
+                backgroundColor: "background.paper",
             }}
         >
             <Typography
@@ -305,7 +210,6 @@ const Right = ({ selected }: RightProps) => {
 };
 
 const Integrations = () => {
-    const [locationMode, setLocationMode] = useState("");
     const [selected, setSelected] = useState(false);
 
     return (
@@ -319,11 +223,8 @@ const Integrations = () => {
                 gap: 1,
             }}
         >
-            <Left
-                onContinue={() => setSelected(true)}
-                onSelectLocationMode={setLocationMode}
-            />
-            <Right selected={selected} />
+            <Left />
+            <Right />
         </Box>
     );
 };
