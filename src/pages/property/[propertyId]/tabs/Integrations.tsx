@@ -66,7 +66,7 @@ const Left = () => {
 
     const defaultValue = useMemo(
         () =>
-            property?.location?.locationDisplay.key ||
+            property?.location?.locationDisplay?.key ||
             LocationDisplay.NOT_VISIBLE,
         [property]
     );
