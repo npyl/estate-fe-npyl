@@ -56,14 +56,12 @@ const TechnicalFeaturesAndInteriorForLandSection: React.FC<any> = () => {
             <Grid item xs={12} padding={1}>
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
-                        <TextField
+                        <OnlyNumbersInput
                             fullWidth
-                            type="number"
+                            acceptsDecimal
                             label={t("Floor To Area Ratio")}
                             value={floorToAreaRatio}
-                            onChange={(e) =>
-                                handleFloorToAreaRatioChange(e.target.value)
-                            }
+                            onChange={handleFloorToAreaRatioChange}
                         />
                     </Grid>
                     <Grid item xs={6}>

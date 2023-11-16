@@ -6,7 +6,8 @@ export interface OnlyNumbersInputProps
     extends Omit<TextFieldProps, "label" | "value" | "onChange" | "disabled"> {
     label: string;
     value?: number | string;
-    formatThousands?: boolean; // e.g. 1.000, 1.000.000, ...
+    formatThousands?: boolean;
+    acceptsDecimal?: boolean;
     onChange: (value: string) => void;
     adornment?: string;
     disabled?: boolean;
@@ -22,6 +23,7 @@ const OnlyNumbersInput: React.FC<OnlyNumbersInputProps> = ({
     onChange,
     adornment = "",
     disabled = false,
+    acceptsDecimal = false,
     ...props
 }) => {
     const [displayValue, setDisplayValue] = useState<string | number>(
@@ -34,8 +36,18 @@ const OnlyNumbersInput: React.FC<OnlyNumbersInputProps> = ({
     );
 
     const handleCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const input = event.target.value;
-        const numericValue = input.replace(/[^0-9]/g, "");
+        let input = event.target.value;
+
+        // Allow only one decimal point
+        let decimalRegex = acceptsDecimal
+            ? /[^0-9.,]|[.,](?=.*[.,])/g
+            : /[^0-9]/g;
+        let numericValue = input.replace(decimalRegex, "");
+
+        // Replace comma with period for decimal
+        if (acceptsDecimal && numericValue.includes(",")) {
+            numericValue = numericValue.replace(",", ".");
+        }
 
         debouncedOnChange(numericValue);
 
@@ -45,6 +57,7 @@ const OnlyNumbersInput: React.FC<OnlyNumbersInputProps> = ({
 
         setDisplayValue(formattedValue);
     };
+
     useEffect(() => {
         setDisplayValue(value || "");
     }, [value]);
@@ -60,9 +73,7 @@ const OnlyNumbersInput: React.FC<OnlyNumbersInputProps> = ({
             InputProps={{
                 endAdornment: adornment ? (
                     <InputAdornment position="end">{adornment}</InputAdornment>
-                ) : (
-                    <></>
-                ),
+                ) : null,
             }}
         />
     );
