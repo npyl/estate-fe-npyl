@@ -1,6 +1,6 @@
 import FlipIcon from "@mui/icons-material/Flip";
 import { Box, Button, Grid, Stack, Typography } from "@mui/material";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Map, { IMapAddress, IMapMarker } from "src/components/Map/Map";
 import { DrawShape, StopDraw } from "src/components/Map/types";
 import {
@@ -8,17 +8,21 @@ import {
     encodeShape,
     isPointInsideShapeData,
 } from "src/components/Map/util";
-import { IPropertyResultResponse } from "src/types/properties";
 import { useDebouncedCallback } from "use-debounce";
 import InfoIcon from "@mui/icons-material/Info";
 import { BookingItem } from "./BookingItem";
 import { HorizontalCard } from "./HorizontalCard";
+import { useMapViewPropertiesMutation } from "src/services/properties";
+import { selectAll } from "src/slices/filters";
+import { useSelector } from "react-redux";
 
-interface Props {
-    data: IPropertyResultResponse[];
-}
+const MapView = () => {
+    const [filter, { data }] = useMapViewPropertiesMutation({
+        selectFromResult: ({ data }) => ({
+            data: data?.content || [],
+        }),
+    });
 
-const MapView = ({ data }: Props) => {
     const [encodedShape, setEncodedShape] = useState<string>();
 
     const [activeMarker, setActiveMarker] = useState(null);
@@ -32,52 +36,42 @@ const MapView = ({ data }: Props) => {
 
     const [orientation, setOrientation] = useState(false); // true -> vertical, false -> horizontal
 
+    const allFilters = useSelector(selectAll);
+
     // filter only properties with valid location.{lat,lng}
     const nonNullProperties = useMemo(
         () => data.filter((p) => p.location?.lat && p.location?.lng),
         [data]
     );
 
+    useEffect(() => {
+        filter(allFilters);
+    }, [allFilters]);
+
     // properties we show
-    const { properties, filtered } = useMemo(() => {
-        if (!!selectedMarker)
-            return {
-                properties: nonNullProperties,
-                filtered: nonNullProperties,
-            };
+    const filtered = useMemo(() => {
+        if (!!selectedMarker) return nonNullProperties;
 
-        if (!encodedShape) {
-            return { properties: nonNullProperties, filtered: [] }; // No shape, no filtered properties
+        if (encodedShape) {
+            const shape = decodeShape(encodedShape);
+            if (!shape) return [];
+
+            return nonNullProperties.filter((p) =>
+                isPointInsideShapeData(p.location.lat!, p.location.lng!, shape)
+            );
         }
 
-        const shape = decodeShape(encodedShape);
-        if (!shape) {
-            return { properties: nonNullProperties, filtered: [] }; // Invalid shape, no filtered properties
-        }
-
-        // Properties within the drawn shape
-        const filteredProperties = nonNullProperties.filter((p) =>
-            isPointInsideShapeData(p.location.lat!, p.location.lng!, shape)
-        );
-
-        // If filtered is not empty, properties should match filtered
-        return {
-            properties:
-                filteredProperties.length > 0
-                    ? filteredProperties
-                    : nonNullProperties,
-            filtered: filteredProperties,
-        };
+        return nonNullProperties;
     }, [selectedMarker, nonNullProperties, encodedShape]);
 
     // respective markers
     const markers: IMapMarker[] = useMemo(
         () =>
-            properties.map(({ location }) => ({
+            data.map(({ location }) => ({
                 lat: location.lat!,
                 lng: location.lng!,
             })),
-        [properties]
+        [data]
     );
 
     const toggleOrientation = () => setOrientation(!orientation);
@@ -140,36 +134,35 @@ const MapView = ({ data }: Props) => {
                             <FlipIcon />
                         </Button>
                     </Stack>
-                    {filtered.length > 0 && (
-                        <Grid container>
-                            {properties.map((item, index) => (
-                                <Grid
-                                    mb={1}
-                                    key={index}
-                                    item
-                                    xs={12}
-                                    sm={orientation ? 12 : 6}
-                                    sx={{
-                                        backgroundColor: "background.default", // Use theme background color
-                                    }}
-                                >
-                                    {orientation ? (
-                                        <HorizontalCard
-                                            activeMarker={activeMarker || -1}
-                                            item={item}
-                                            selectedMarker={selectedMarker}
-                                        />
-                                    ) : (
-                                        <BookingItem
-                                            activeMarker={activeMarker || -1}
-                                            item={item}
-                                            selectedMarker={selectedMarker}
-                                        />
-                                    )}
-                                </Grid>
-                            ))}
-                        </Grid>
-                    )}
+
+                    <Grid container>
+                        {filtered.map((item, index) => (
+                            <Grid
+                                mb={1}
+                                key={index}
+                                item
+                                xs={12}
+                                sm={orientation ? 12 : 6}
+                                sx={{
+                                    backgroundColor: "background.default", // Use theme background color
+                                }}
+                            >
+                                {orientation ? (
+                                    <HorizontalCard
+                                        activeMarker={activeMarker || -1}
+                                        item={item}
+                                        selectedMarker={selectedMarker}
+                                    />
+                                ) : (
+                                    <BookingItem
+                                        activeMarker={activeMarker || -1}
+                                        item={item}
+                                        selectedMarker={selectedMarker}
+                                    />
+                                )}
+                            </Grid>
+                        ))}
+                    </Grid>
 
                     {filtered.length === 0 && (
                         <Box
