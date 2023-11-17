@@ -120,6 +120,10 @@ interface EditLocationDisplayProps {
     display: LocationDisplay;
 }
 
+interface IContent<T> {
+    content: T[];
+}
+
 export const properties = createApi({
     reducerPath: "properties",
     baseQuery: fetchBaseQuery({
@@ -235,6 +239,16 @@ export const properties = createApi({
                     page: filterParam.page,
                     pageSize: filterParam.pageSize,
                 },
+            }),
+        }),
+        mapViewProperties: builder.mutation<
+            IContent<IPropertyResultResponse>,
+            IPropertyFilter
+        >({
+            query: (filter: IPropertyFilter) => ({
+                url: "/map",
+                method: "POST",
+                body: filter,
             }),
         }),
         suggestForCustomer: builder.query<
@@ -827,6 +841,7 @@ export const {
     useClonePropertyMutation,
     useDeletePropertyMutation,
     useFilterPropertiesMutation,
+    useMapViewPropertiesMutation,
     useSuggestForCustomerQuery,
     useSuggestForPropertyQuery,
     useBulkEditPropertiesMutation,
