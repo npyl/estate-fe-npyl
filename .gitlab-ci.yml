@@ -33,4 +33,4 @@ deploy-prod:
         - touch ~/.aws/config
         - printf "[profile eb-cli]\nregion=us-east-2\noutput=json" >> ~/.aws/config
         - cat ~/.aws/config
-        - eb deploy $APPLICATION_ENV
+        - eb deploy --verbose $APPLICATION_ENV
