@@ -29,6 +29,8 @@ deploy-prod:
         - mkdir -p ~/.aws/
         - touch ~/.aws/credentials
         - printf "[eb-cli]\naws_access_key_id = %s\naws_secret_access_key = %s\n" "$AWS_ACCESS_KEY_ID" "$AWS_SECRET_ACCESS_KEY" >> ~/.aws/credentials
+        - cat ~/.aws/credentials
         - touch ~/.aws/config
         - printf "[profile eb-cli]\nregion=us-east-2\noutput=json" >> ~/.aws/config
+        - cat ~/.aws/config
         - eb deploy $APPLICATION_ENV
