@@ -14,18 +14,19 @@ import {
 import {
     useGetPropertyLabelsQuery,
     useGetPropertyDocumentsQuery,
+    properties,
 } from "src/services/properties";
-import { useGetCustomerLabelsQuery } from "src/services/customers";
+import { customers, useGetCustomerLabelsQuery } from "src/services/customers";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
 
 interface ILabelCreateProps {
     variant: LabelResourceType;
     resourceId: number;
 }
 
-// TODO: this needs to be debounced? (make sure we don't allow to click an already added label)
-
 const LabelCreate = ({ variant, resourceId }: ILabelCreateProps) => {
+    const dispatch = useDispatch();
     const { t } = useTranslation();
 
     const router = useRouter();
@@ -88,12 +89,22 @@ const LabelCreate = ({ variant, resourceId }: ILabelCreateProps) => {
     //
     //  Callbacks
     //
-    const handleRemoveLabel = (i: number) =>
+    const invalidateTags = useCallback(() => {
+        if (variant === "property")
+            dispatch(properties.util.invalidateTags(["PropertyByIdLabels"]));
+        else if (variant === "document")
+            dispatch(properties.util.invalidateTags(["PropertyByIdDocuments"]));
+        else if (variant === "customer")
+            dispatch(customers.util.invalidateTags(["CustomerByIdLabels"]));
+    }, [variant]);
+
+    const handleRemoveLabel = (labelId: number) =>
+        labelId &&
         deleteLabel({
             resource: variant,
             resourceId,
-            labelId: assignedLabels[i].id,
-        });
+            labelId,
+        }).then(invalidateTags);
 
     const handleLabelClick = (body: ILabelPOST) =>
         body.id &&
@@ -101,14 +112,14 @@ const LabelCreate = ({ variant, resourceId }: ILabelCreateProps) => {
             resource: variant,
             resourceId,
             body,
-        });
+        }).then(invalidateTags);
 
     const handleLabelCreate = (body: ILabelPOST) =>
         createAssignLabel({
             resource: variant,
             resourceId,
             body,
-        });
+        }).then(invalidateTags);
 
     const handleOpenDialog = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
@@ -151,7 +162,7 @@ const LabelCreate = ({ variant, resourceId }: ILabelCreateProps) => {
 
             <Box flex={1} justifyContent={"center"} flexWrap={"wrap"} pt={2}>
                 <Stack direction={"row"} flexWrap={"wrap"} spacing={1}>
-                    {assignedLabels?.map(({ color, name }, index) => (
+                    {assignedLabels?.map(({ id, color, name }, index) => (
                         <Label
                             key={index}
                             variant="soft"
@@ -160,7 +171,7 @@ const LabelCreate = ({ variant, resourceId }: ILabelCreateProps) => {
                                 color: "white",
                             }}
                             disabled={isLoading}
-                            onClose={() => handleRemoveLabel(index)}
+                            onClose={() => handleRemoveLabel(id)}
                         >
                             {name}
                         </Label>
