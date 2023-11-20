@@ -11,10 +11,12 @@ import {
     useDeleteLabelForResourceMutation,
     useGetLabelsQuery,
 } from "src/services/labels";
-import { properties, useGetPropertyByIdQuery } from "src/services/properties";
-import { customers, useGetCustomerByIdQuery } from "src/services/customers";
+import {
+    useGetPropertyLabelsQuery,
+    useGetPropertyDocumentsQuery,
+} from "src/services/properties";
+import { useGetCustomerLabelsQuery } from "src/services/customers";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
 
 interface ILabelCreateProps {
     variant: LabelResourceType;
@@ -25,7 +27,6 @@ interface ILabelCreateProps {
 
 const LabelCreate = ({ variant, resourceId }: ILabelCreateProps) => {
     const { t } = useTranslation();
-    const dispatch = useDispatch();
 
     const router = useRouter();
     const { propertyId } = router.query;
@@ -35,16 +36,19 @@ const LabelCreate = ({ variant, resourceId }: ILabelCreateProps) => {
     //
     //  Queries
     //
-    const { data: property } = useGetPropertyByIdQuery(resourceId, {
+    const { data: propertyLabels } = useGetPropertyLabelsQuery(resourceId, {
         skip: variant !== "property",
     });
-    const { data: document } = useGetPropertyByIdQuery(+propertyId!, {
-        skip: variant !== "document",
-        selectFromResult: ({ data }) => ({
-            data: data?.documents?.find((d) => d.id === resourceId),
-        }),
-    });
-    const { data: customer } = useGetCustomerByIdQuery(resourceId, {
+    const { data: documentLabels } = useGetPropertyDocumentsQuery(
+        +propertyId!,
+        {
+            skip: variant !== "document",
+            selectFromResult: ({ data }) => ({
+                data: data?.find((d) => d.id === resourceId)?.labels,
+            }),
+        }
+    );
+    const { data: customerLabels } = useGetCustomerLabelsQuery(resourceId, {
         skip: variant !== "customer",
     });
 
@@ -53,9 +57,12 @@ const LabelCreate = ({ variant, resourceId }: ILabelCreateProps) => {
     //
     //  Mutations
     //
-    const [createAssignLabel] = useCreateLabelForResourceMutation();
-    const [assignLabel] = useAssignLabelToResourceMutation();
-    const [deleteLabel] = useDeleteLabelForResourceMutation();
+    const [createAssignLabel, { isLoading: isCreateLoading }] =
+        useCreateLabelForResourceMutation();
+    const [assignLabel, { isLoading: isAssignLoading }] =
+        useAssignLabelToResourceMutation();
+    const [deleteLabel, { isLoading: isDeleteLoading }] =
+        useDeleteLabelForResourceMutation();
 
     const existingLabels = useMemo(() => {
         if (variant === "property") return labels?.propertyLabels || [];
@@ -66,12 +73,17 @@ const LabelCreate = ({ variant, resourceId }: ILabelCreateProps) => {
     }, [labels, variant]);
 
     const assignedLabels = useMemo(() => {
-        if (variant === "property") return property?.labels || [];
-        if (variant === "customer") return customer?.labels || [];
-        if (variant === "document") return document?.labels || [];
+        if (variant === "property") return propertyLabels || [];
+        if (variant === "customer") return customerLabels || [];
+        if (variant === "document") return documentLabels || [];
 
         return [];
-    }, [variant, property, document, customer]);
+    }, [variant, propertyLabels, documentLabels, customerLabels]);
+
+    const isLoading = useMemo(
+        () => isCreateLoading || isAssignLoading || isDeleteLoading,
+        [isCreateLoading, isAssignLoading, isDeleteLoading]
+    );
 
     //
     //  Callbacks
@@ -81,29 +93,22 @@ const LabelCreate = ({ variant, resourceId }: ILabelCreateProps) => {
             resource: variant,
             resourceId,
             labelId: assignedLabels[i].id,
-        }).then(invalidateTags);
+        });
 
-    const handleLabelClick = ({ id }: ILabelPOST) =>
-        id &&
+    const handleLabelClick = (body: ILabelPOST) =>
+        body.id &&
         assignLabel({
             resource: variant,
             resourceId,
-            labelId: id,
-        }).then(invalidateTags);
+            body,
+        });
 
     const handleLabelCreate = (body: ILabelPOST) =>
         createAssignLabel({
             resource: variant,
             resourceId,
             body,
-        }).then(invalidateTags);
-
-    const invalidateTags = useCallback(() => {
-        if (variant === "property" || variant === "document")
-            dispatch(properties.util.invalidateTags(["PropertyById"]));
-        else if (variant === "customer")
-            dispatch(customers.util.invalidateTags(["CustomerById"]));
-    }, [variant]);
+        });
 
     const handleOpenDialog = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
@@ -135,7 +140,11 @@ const LabelCreate = ({ variant, resourceId }: ILabelCreateProps) => {
                 <Typography flex={1} sx={{ justifyContent: "center" }}>
                     {t("Labels")}
                 </Typography>
-                <IconButton size="small" onClick={handleOpenDialog}>
+                <IconButton
+                    size="small"
+                    onClick={handleOpenDialog}
+                    disabled={isLoading}
+                >
                     <AddCircleIcon />
                 </IconButton>
             </Box>
@@ -150,6 +159,7 @@ const LabelCreate = ({ variant, resourceId }: ILabelCreateProps) => {
                                 bgcolor: color,
                                 color: "white",
                             }}
+                            disabled={isLoading}
                             onClose={() => handleRemoveLabel(index)}
                         >
                             {name}

@@ -17,15 +17,13 @@ interface LabelForResourceProps {
     resource: LabelResourceType;
     body: ILabelPOST;
 }
+type AssignLabelProps = LabelForResourceProps;
 
-interface AssignLabelProps {
+interface DeleteLabelProps {
     resource: LabelResourceType;
     resourceId: number;
     labelId: number;
 }
-type DeleteLabelProps = AssignLabelProps;
-
-// TODO: optimistic for documents
 
 const optimisticCreate = (
     resource: LabelResourceType,
@@ -38,32 +36,30 @@ const optimisticCreate = (
     if (resource === "property") {
         res = dispatch(
             properties.util.updateQueryData(
-                "getPropertyById",
+                "getPropertyLabels",
                 resourceId,
                 (draft) => {
-                    draft.labels.push(body as ILabel);
+                    draft.push(body as ILabel);
                 }
             )
         );
     } else if (resource === "customer") {
         res = dispatch(
             customers.util.updateQueryData(
-                "getCustomerById",
+                "getCustomerLabels",
                 resourceId,
                 (draft) => {
-                    draft.labels.push(body as ILabel);
+                    draft.push(body as ILabel);
                 }
             )
         );
     } else if (resource === "document") {
         res = dispatch(
             properties.util.updateQueryData(
-                "getPropertyById",
+                "getPropertyDocuments",
                 resourceId,
                 (draft) => {
-                    // draft.documents
-                    //     ?.at(resourceId)
-                    //     ?.labels.push(body as ILabel);
+                    // TODO: ...
                 }
             )
         );
@@ -83,32 +79,30 @@ const optimisticDelete = (
     if (resource === "property") {
         res = dispatch(
             properties.util.updateQueryData(
-                "getPropertyById",
+                "getPropertyLabels",
                 resourceId,
                 (draft) => {
-                    draft.labels.filter((l) => l.id !== labelId);
+                    return draft.filter((l) => l.id !== labelId);
                 }
             )
         );
     } else if (resource === "customer") {
         res = dispatch(
             customers.util.updateQueryData(
-                "getCustomerById",
+                "getCustomerLabels",
                 resourceId,
                 (draft) => {
-                    draft.labels.filter((l) => l.id !== labelId);
+                    return draft.filter((l) => l.id !== labelId);
                 }
             )
         );
     } else if (resource === "document") {
         res = dispatch(
             properties.util.updateQueryData(
-                "getPropertyById",
+                "getPropertyDocuments",
                 resourceId,
                 (draft) => {
-                    // draft.documents
-                    //     ?.at(resourceId)
-                    //     ?.labels.push(body as ILabel);
+                    // TODO: ...
                 }
             )
         );
@@ -224,11 +218,30 @@ export const labels = createApi({
             },
         }),
         assignLabelToResource: builder.mutation<ILabels, AssignLabelProps>({
-            query: ({ resource, resourceId, labelId }: AssignLabelProps) => ({
+            query: ({ resource, resourceId, body }: AssignLabelProps) => ({
                 url: `add/${resource}/${resourceId}`,
                 method: "POST",
-                params: { labelId },
+                params: { labelId: body.id },
             }),
+            onQueryStarted: async (
+                { resource, resourceId, body },
+                { dispatch, queryFulfilled }
+            ) => {
+                let patchResult = optimisticCreate(
+                    resource,
+                    resourceId,
+                    body,
+                    dispatch
+                );
+
+                if (!patchResult) throw new Error("Failure!");
+
+                try {
+                    await queryFulfilled;
+                } catch {
+                    patchResult.undo();
+                }
+            },
         }),
         deleteLabelForResource: builder.mutation<ILabels, DeleteLabelProps>({
             query: ({ resource, resourceId, labelId }: DeleteLabelProps) => ({
