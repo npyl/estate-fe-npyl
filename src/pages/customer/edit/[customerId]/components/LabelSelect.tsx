@@ -4,11 +4,9 @@ import {
     InputLabel,
     MenuItem,
     OutlinedInput,
-    OutlinedInputProps,
     Select,
     SelectChangeEvent,
 } from "@mui/material";
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Label } from "src/components/label";
 import { useGetLabelsQuery } from "src/services/labels";
