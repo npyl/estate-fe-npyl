@@ -17,8 +17,9 @@ const Label = forwardRef<HTMLSpanElement, LabelProps & { opacity?: number }>(
             color = "default",
             variant = "soft",
             opaque = false,
+            disabled,
+            opacity,
             onClose,
-            opacity, // Add this line
             sx,
             ...other
         },
@@ -65,6 +66,7 @@ const Label = forwardRef<HTMLSpanElement, LabelProps & { opacity?: number }>(
                         <IconButton
                             size="small"
                             aria-label="close"
+                            disabled={disabled}
                             onClick={onClose}
                         >
                             <CloseIcon sx={{ height: 16, width: 16 }} />

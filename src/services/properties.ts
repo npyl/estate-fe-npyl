@@ -149,6 +149,7 @@ export const properties = createApi({
         // attributes
         "PropertyByIdImages",
         "PropertyByIdLabels",
+        "PropertyByIdDocuments",
         "PropertyByIdBlueprints",
         "PropertyByIdZip",
     ],
@@ -169,6 +170,8 @@ export const properties = createApi({
             query: (code: string) => `code/${code}`,
             providesTags: ["Properties"],
         }),
+
+        // Attributes
         getPropertyAttribute: builder.query<any[], IGetPropertyAttributeProps>({
             query: (props: IGetPropertyAttributeProps) =>
                 `${props.propertyId}/${props.attributeName}`,
@@ -185,6 +188,10 @@ export const properties = createApi({
         getPropertyBlueprints: builder.query<IPropertyBlueprint[], number>({
             query: (propertyId: number) => `${propertyId}/blueprints`,
             providesTags: ["PropertyByIdBlueprints"],
+        }),
+        getPropertyDocuments: builder.query<IPropertyDocument[], number>({
+            query: (propertyId: number) => `${propertyId}/documents`,
+            providesTags: ["PropertyByIdDocuments"],
         }),
 
         // mutations
@@ -833,8 +840,7 @@ export const {
     useGetPropertyByIdQuery,
     useGetPropertyByCodeQuery,
     useLazyGetPropertyByCodeQuery,
-    useGetPropertyAttributeQuery,
-    useLazyGetPropertyLabelsQuery,
+
     // mutations
     useEditPropertyMutation,
     useCreatePropertyMutation,
@@ -871,4 +877,9 @@ export const {
     useDeletePropertyDocumentMutation,
 
     useUploadPropertyFileMutation,
+
+    // attributes
+    useGetPropertyAttributeQuery,
+    useGetPropertyLabelsQuery,
+    useGetPropertyDocumentsQuery,
 } = properties;

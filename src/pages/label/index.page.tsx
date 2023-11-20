@@ -6,12 +6,11 @@ import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { useAllCustomersQuery } from "src/services/customers";
 import {
-    useCreateLabelForCustomerWithIDMutation,
+    useCreateLabelForResourceMutation,
+    // general
     useCreateLabelForCustomersMutation,
     useCreateLabelForDocumentsMutation,
     useCreateLabelForPropertiesMutation,
-    useCreateLabelForPropertyWithIDMutation,
-    // General
     useDeletePropertyLabelMutation,
     useDeleteCustomerLabelMutation,
     useDeleteDocumentLabelMutation,
@@ -36,15 +35,11 @@ const LabelsPage: NextPage = () => {
     const [editMode, setEditMode] = useState(false);
     const [editedLabel, setEditedLabel] = useState<IEditProps>();
 
-    // TODO: replace with createAssign
-    const [createLabelForPropertyWithID] =
-        useCreateLabelForPropertyWithIDMutation();
-    const [createLabelForCustomerWithID] =
-        useCreateLabelForCustomerWithIDMutation();
-
     //
     //  Mutations
     //
+    const [createAssignLabel] = useCreateLabelForResourceMutation();
+
     const [createLabelForProperties] = useCreateLabelForPropertiesMutation();
     const [createLabelForCustomers] = useCreateLabelForCustomersMutation();
     const [createLabelForDocuments] = useCreateLabelForDocumentsMutation();
@@ -94,18 +89,20 @@ const LabelsPage: NextPage = () => {
 
                 if (!propertyId) return null;
 
-                createLabelForPropertyWithID({
-                    propertyId: propertyId,
-                    labelBody: label,
+                createAssignLabel({
+                    resource: "property",
+                    resourceId: propertyId,
+                    body: label,
                 });
             } else if (assigneeType === "customer") {
                 const customerId = customerIdForFullname(code);
 
                 if (!customerId) return null;
 
-                createLabelForCustomerWithID({
-                    customerId: customerId,
-                    labelBody: label,
+                createAssignLabel({
+                    resource: "customer",
+                    resourceId: customerId,
+                    body: label,
                 });
             }
         }

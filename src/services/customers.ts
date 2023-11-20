@@ -42,7 +42,7 @@ export const customers = createApi({
             return headers;
         },
     }),
-    tagTypes: ["Customers", "CustomerById"],
+    tagTypes: ["Customers", "CustomerById", "CustomerByIdLabels"],
 
     endpoints: (builder) => ({
         allCustomers: builder.query<ICustomer[], void>({
@@ -55,6 +55,11 @@ export const customers = createApi({
         getCustomerById: builder.query<ICustomer, number>({
             query: (id: number) => `${id}`,
             providesTags: ["CustomerById"],
+        }),
+
+        getCustomerLabels: builder.query<ILabel[], number>({
+            query: (customerId: number) => `/${customerId}/labels`,
+            providesTags: ["CustomerByIdLabels"],
         }),
 
         filterCustomers: builder.mutation<
@@ -135,4 +140,6 @@ export const {
     useDeleteCustomerMutation,
     useBulkEditCustomersMutation,
     useBulkDeleteCustomersMutation,
+
+    useGetCustomerLabelsQuery,
 } = customers;
