@@ -39,6 +39,20 @@ export interface IPropertyDetailsPOST {
     zoneType?: string;
     parkings: IPropertyDetailsParkingPOST[];
     balconies: IPropertyDetailsBalconyPOST[];
+
+    frontage?: number;
+    plotFrontage?: number;
+    buildingBalance?: number;
+    totalConstruction?: number;
+    permissibleBuildingHeight?: number;
+    permissibleFloors?: number;
+    legalAndTechnicalControl?: number;
+    irrigation?: number;
+    waterSupply?: number;
+    electricitySupply?: number;
+    setbackCoefficient?: number;
+    hasBuildingPermit?: number;
+    hasBuilding?: number;
 }
 
 export interface IPropertyDetails {
@@ -62,4 +76,18 @@ export interface IPropertyDetails {
     zoneType: KeyValue;
     parkings: IPropertyDetailsParking[];
     balconies: IPropertyDetailsBalcony[];
+
+    frontage: number;
+    plotFrontage: number;
+    buildingBalance: number;
+    totalConstruction: number;
+    permissibleBuildingHeight: number;
+    permissibleFloors: number;
+    legalAndTechnicalControl: number;
+    irrigation: number;
+    waterSupply: number;
+    electricitySupply: number;
+    setbackCoefficient: number;
+    hasBuildingPermit: number;
+    hasBuilding: number;
 }

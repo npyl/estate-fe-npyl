@@ -125,6 +125,7 @@ export interface IPropertyConstructionPOST {
     elevator: boolean;
     needsRenovation: boolean;
     preserved: boolean;
+    poolSize?: number;
 }
 
 export interface IPropertyConstruction {
@@ -140,6 +141,7 @@ export interface IPropertyConstruction {
     elevator: boolean;
     needsRenovation: boolean;
     preserved: boolean;
+    poolSize: number;
 }
 
 export interface IPropertyDistances {

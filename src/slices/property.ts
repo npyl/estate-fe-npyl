@@ -826,6 +826,47 @@ const slice = createSlice({
             );
         },
 
+        setPlotFrontage({ id, properties }, { payload }): void {
+            properties[id].details.plotFrontage = payload;
+        },
+        setBuildingBalance({ id, properties }, { payload }): void {
+            properties[id].details.buildingBalance = payload;
+        },
+        setTotalConstruction({ id, properties }, { payload }): void {
+            properties[id].details.totalConstruction = payload;
+        },
+        setPermissibleBuildingHeight({ id, properties }, { payload }): void {
+            properties[id].details.permissibleBuildingHeight = payload;
+        },
+        setPermissibleFloors({ id, properties }, { payload }): void {
+            properties[id].details.permissibleFloors = payload;
+        },
+        setLegalAndTechnicalControl({ id, properties }, { payload }): void {
+            properties[id].details.legalAndTechnicalControl = payload;
+        },
+        setIrrigation({ id, properties }, { payload }): void {
+            properties[id].details.irrigation = payload;
+        },
+        setWaterSupply({ id, properties }, { payload }): void {
+            properties[id].details.waterSupply = payload;
+        },
+        setElectrictiySupply({ id, properties }, { payload }): void {
+            properties[id].details.electricitySupply = payload;
+        },
+        setSetbackCoefficient({ id, properties }, { payload }): void {
+            properties[id].details.setbackCoefficient = payload;
+        },
+        setHasBuildingPermit({ id, properties }, { payload }): void {
+            properties[id].details.hasBuildingPermit = payload;
+        },
+        setHasBuilding({ id, properties }, { payload }): void {
+            properties[id].details.hasBuilding = payload;
+        },
+
+        setPoolSize({ id, properties }, { payload }): void {
+            properties[id].construction.poolSize = payload;
+        },
+
         setInitialState: (state, action): void => {
             const { properties } = state;
             const payload: InitialStatePayload = action.payload;
@@ -1286,6 +1327,20 @@ export const {
     setPrice,
     setRented,
 
+    setPlotFrontage,
+    setBuildingBalance,
+    setTotalConstruction,
+    setPermissibleBuildingHeight,
+    setPermissibleFloors,
+    setLegalAndTechnicalControl,
+    setIrrigation,
+    setWaterSupply,
+    setElectrictiySupply,
+    setSetbackCoefficient,
+    setHasBuildingPermit,
+    setHasBuilding,
+    setPoolSize,
+
     // ROI
 
     // Areas
@@ -1499,6 +1554,46 @@ export const selectStoreroomBool = ({
 }: RootState) => properties[id]?.details?.storeroom;
 export const selectRooms = ({ property: { id, properties } }: RootState) =>
     properties[id]?.details?.rooms;
+
+export const selectFrontage = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.details?.frontage;
+export const selectPlotFrontage = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.details?.plotFrontage;
+export const selectBuildingBalance = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.details?.buildingBalance;
+export const selectTotalConstruction = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.details?.totalConstruction;
+export const selectPermissibleBuildingHeight = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.details?.permissibleBuildingHeight;
+export const selectPermissibleFloors = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.details?.permissibleFloors;
+export const selectLegalAndTechnicalControl = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.details?.legalAndTechnicalControl;
+export const selectIrrigation = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.details?.irrigation;
+export const selectWaterSupply = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.details?.waterSupply;
+export const selectElectrictiySupply = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.details?.electricitySupply;
+export const selectSetbackCoefficient = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.details?.setbackCoefficient;
+export const selectHasBuildingPermit = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.details?.hasBuildingPermit;
+export const selectHasBuilding = ({
+    property: { id, properties },
+}: RootState) => properties[id]?.details?.hasBuilding;
+export const selectPoolSize = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.construction?.poolSize;
 
 // Heating
 export const selectElectricityType = ({
