@@ -167,8 +167,8 @@ const BasicForLandSection: React.FC<any> = () => {
                     px: 3,
                     py: 1.5,
                     display: "flex",
-                    justifyContent: "space-between", // This will push the child elements apart
-                    alignItems: "center", // This will align them vertically
+                    justifyContent: "space-between",
+                    alignItems: "center",
                 }}
             >
                 <Typography variant="h6">{t("Basic Details")}</Typography>
@@ -177,18 +177,13 @@ const BasicForLandSection: React.FC<any> = () => {
                         <IOSSwitch
                             value={exclusive}
                             checked={exclusive}
-                            onChange={(
-                                event: React.ChangeEvent<unknown>,
-                                checked: boolean
-                            ) => {
-                                dispatch(setExclusive(checked));
-                            }}
+                            onChange={(e, checked) =>
+                                dispatch(setExclusive(checked))
+                            }
                             name="exclusiveOption"
-                            // any other props you need
                         />
                     }
-                    label={t("Exclusive")} // or "iOS style" if you're keeping the original label
-                    // ... any other props you need
+                    label={t("Exclusive")}
                 />
             </Box>
 
@@ -227,7 +222,6 @@ const BasicForLandSection: React.FC<any> = () => {
                     <Grid item xs={6}>
                         <Autocomplete
                             disablePortal
-                            id="combo-box-demo"
                             options={ownerNames}
                             value={{
                                 label:
@@ -252,7 +246,6 @@ const BasicForLandSection: React.FC<any> = () => {
                     <Grid item xs={6}>
                         <TextField
                             fullWidth
-                            id="outlined-start-adornment"
                             select
                             label={t("Manager")}
                             value={manager}
@@ -276,12 +269,8 @@ const BasicForLandSection: React.FC<any> = () => {
 
                     <Grid item xs={6}>
                         <FormControl fullWidth>
-                            <InputLabel id="demo-simple-select-label">
-                                {t("State")}
-                            </InputLabel>
+                            <InputLabel>{t("State")}</InputLabel>
                             <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
                                 value={state}
                                 label={t("State")}
                                 onChange={(e) => {
@@ -366,7 +355,6 @@ const BasicForLandSection: React.FC<any> = () => {
                         sx={{ display: "inline-flex", alignItems: "center" }}
                     >
                         <Checkbox
-                            id="outlined-controlled"
                             value={rented}
                             checked={rented}
                             onChange={(
