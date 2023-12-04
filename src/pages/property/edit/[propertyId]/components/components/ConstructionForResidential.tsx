@@ -14,6 +14,7 @@ import {
     selectNeedsRenovation,
     selectNeoclassical,
     selectNewlyBuilt,
+    selectPoolSize,
     selectPreserved,
     selectRenovated,
     selectTotalFloorNumber,
@@ -26,6 +27,7 @@ import {
     setNeedsRenovation,
     setNeoclassical,
     setNewlyBuilt,
+    setPoolSize,
     setPreserved,
     setRenovated,
     setTotalFloorNumber,
@@ -58,6 +60,8 @@ const ConstructionForResidentialSection: React.FC<any> = (props) => {
     const renovated = useSelector(selectRenovated);
     const needsRenovation = useSelector(selectNeedsRenovation);
     const preserved = useSelector(selectPreserved);
+
+    const poolSize = useSelector(selectPoolSize);
 
     if (!details || !details.heatingSystem || !details.heatingType) return null;
 
@@ -104,6 +108,14 @@ const ConstructionForResidentialSection: React.FC<any> = (props) => {
                             onChange={(value) =>
                                 dispatch(setTotalFloorNumber(value))
                             }
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <OnlyNumbersInput
+                            fullWidth
+                            label={t("Pool Size")}
+                            value={poolSize}
+                            onChange={(v) => dispatch(setPoolSize(v))}
                         />
                     </Grid>
                     <Grid
