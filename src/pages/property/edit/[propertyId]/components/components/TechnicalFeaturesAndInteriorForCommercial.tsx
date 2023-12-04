@@ -5,35 +5,24 @@ import * as React from "react";
 import { Box } from "@mui/system";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useAllCustomersQuery } from "src/services/customers";
 import {
     selectAlarmSystem,
     selectBright,
-    selectConsideration,
-    selectCoverageFactor,
     selectDisplayWindowsLength,
     selectDoubleFrontage,
     selectElectricCarChargingFacilities,
     selectEntrances,
-    selectFacadeLength,
-    selectFalseCeiling,
     selectFireplace,
-    selectFloorToAreaRatio,
     selectFloorType,
-    selectFrameType,
-    selectFurnished,
-    selectInclination,
     selectLoadingUnloadingElevator,
     selectLuxurious,
     selectPainted,
-    selectPaneGlassType,
     selectPetsAllowed,
     selectReception,
     selectSafetyDoor,
     selectSatelliteTV,
     selectWindowScreens,
     selectWiring,
-    selectWithEquipment,
     setAlarmSystem,
     setBright,
     setDisplayWindowsLength,
@@ -55,11 +44,8 @@ import {
 
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 
-import { useState } from "react";
-import { useAllUsersQuery } from "src/services/user";
 import { useGlobals } from "src/hooks/useGlobals";
 
-import CustomNumberField from "./componentsFields/OnlyNumbersWithDot";
 import { useTranslation } from "react-i18next";
 import OnlyNumbersInput from "src/components/OnlyNumbers";
 
@@ -123,13 +109,13 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
             <Grid item xs={12} padding={1}>
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
-                        <CustomNumberField
+                        <OnlyNumbersInput
                             label={t("Display Window Length")}
                             value={displayWindowsLength?.toString() || ""}
-                            onChange={(event) =>
-                                handleChange(setDisplayWindowsLength, event)
+                            onChange={(v) =>
+                                dispatch(setDisplayWindowsLength(v))
                             }
-                            adorValue="m"
+                            adornment="m"
                         />
                     </Grid>
                     <Grid item xs={6}>
