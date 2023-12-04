@@ -55,6 +55,30 @@ import {
     setState,
     setCategory,
     selectParentCategory,
+    selectPlotFrontage,
+    selectBuildingBalance,
+    selectTotalConstruction,
+    selectPermissibleBuildingHeight,
+    selectPermissibleFloors,
+    selectLegalAndTechnicalControl,
+    selectIrrigation,
+    selectWaterSupply,
+    selectSetbackCoefficient,
+    selectHasBuildingPermit,
+    selectHasBuilding,
+    setPlotFrontage,
+    setBuildingBalance,
+    setTotalConstruction,
+    setPermissibleBuildingHeight,
+    setPermissibleFloors,
+    setSetbackCoefficient,
+    setLegalAndTechnicalControl,
+    setIrrigation,
+    setWaterSupply,
+    setElectrictiySupply,
+    selectElectrictiySupply,
+    setHasBuilding,
+    setHasBuildingPermit,
 } from "src/slices/property";
 
 import DatePicker from "src/components/DatePicker";
@@ -73,6 +97,39 @@ import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { DateObject } from "react-multi-date-picker";
 import { IOSSwitch } from "./BasicDetails";
 import { KeyValue } from "src/types/KeyValue";
+
+import { styled } from "@mui/system";
+
+const StyledGrid = styled(Grid)`
+    display: inline-flex;
+    align-items: center;
+    flex-direction: row;
+`;
+
+interface CustomCheckboxProps {
+    value?: boolean;
+    setter: ActionCreatorWithPayload<any, string>;
+    label: string;
+}
+
+const CustomCheckbox = ({ value, setter, label }: CustomCheckboxProps) => {
+    const dispatch = useDispatch();
+
+    return (
+        <StyledGrid item xs={2}>
+            <Checkbox
+                value={value}
+                checked={value}
+                onChange={(e, checked) => dispatch(setter(checked))}
+                sx={{ cursor: "default" }}
+                color="primary"
+            />
+            <Typography variant="body1" sx={{ ml: 0 }}>
+                {label}
+            </Typography>
+        </StyledGrid>
+    );
+};
 
 const BasicForLandSection: React.FC<any> = () => {
     const router = useRouter();
@@ -142,6 +199,23 @@ const BasicForLandSection: React.FC<any> = () => {
                 : null,
         [enums]
     );
+
+    const plotFrontage = useSelector(selectPlotFrontage);
+    const buildingBalance = useSelector(selectBuildingBalance);
+    const totalConstruction = useSelector(selectTotalConstruction);
+    const permissibleBuildingHeight = useSelector(
+        selectPermissibleBuildingHeight
+    );
+    const permissibleFloors = useSelector(selectPermissibleFloors);
+    const legalAndTechnicalControl = useSelector(
+        selectLegalAndTechnicalControl
+    );
+    const irrigation = useSelector(selectIrrigation);
+    const waterSupply = useSelector(selectWaterSupply);
+    const electricitySupply = useSelector(selectElectrictiySupply);
+    const setbackCoefficient = useSelector(selectSetbackCoefficient);
+    const hasBuildingPermit = useSelector(selectHasBuildingPermit);
+    const hasBuilding = useSelector(selectHasBuilding);
 
     //
     //  Dates
@@ -343,11 +417,57 @@ const BasicForLandSection: React.FC<any> = () => {
                     </Grid>
 
                     <Grid item xs={6}>
+                        <OnlyNumbersInput
+                            label={t("Plot Frontage")}
+                            value={plotFrontage}
+                            onChange={(v) => dispatch(setPlotFrontage(v))}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <OnlyNumbersInput
+                            label={t("Building Balance")}
+                            value={buildingBalance}
+                            onChange={(v) => dispatch(setBuildingBalance(v))}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <OnlyNumbersInput
+                            label={t("Total Construction")}
+                            value={totalConstruction}
+                            onChange={(v) => dispatch(setTotalConstruction(v))}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <OnlyNumbersInput
+                            label={t("Permissible Building Height")}
+                            value={permissibleBuildingHeight}
+                            onChange={(v) =>
+                                dispatch(setPermissibleBuildingHeight(v))
+                            }
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <OnlyNumbersInput
+                            label={t("Permissible Floors")}
+                            value={permissibleFloors}
+                            onChange={(v) => dispatch(setPermissibleFloors(v))}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <OnlyNumbersInput
+                            label={t("Setback Coefficient")}
+                            value={setbackCoefficient}
+                            onChange={(v) => dispatch(setSetbackCoefficient(v))}
+                        />
+                    </Grid>
+
+                    <Grid item xs={6}>
                         <LabelCreate
                             variant="property"
                             resourceId={+propertyId!}
                         />
                     </Grid>
+
                     <Grid
                         item
                         xs={2}
@@ -446,6 +566,32 @@ const BasicForLandSection: React.FC<any> = () => {
                             {t("Auction")}
                         </Typography>
                     </Grid>
+
+                    <CustomCheckbox
+                        label={t("Legal and Technical Control")}
+                        value={legalAndTechnicalControl}
+                        setter={setLegalAndTechnicalControl}
+                    />
+                    <CustomCheckbox
+                        label={t("Irrigation")}
+                        value={irrigation}
+                        setter={setIrrigation}
+                    />
+                    <CustomCheckbox
+                        label={t("Water Supply")}
+                        value={waterSupply}
+                        setter={setWaterSupply}
+                    />
+                    <CustomCheckbox
+                        label={t("Building Permit")}
+                        value={hasBuildingPermit}
+                        setter={setHasBuildingPermit}
+                    />
+                    <CustomCheckbox
+                        label={t("Contains Building")}
+                        value={hasBuilding}
+                        setter={setHasBuilding}
+                    />
 
                     <Grid item xs={12} padding={1}>
                         <Grid
