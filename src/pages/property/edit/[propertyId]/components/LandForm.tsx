@@ -1,6 +1,7 @@
-import { Grid } from "@mui/material";
-import Stack from "@mui/material/Stack";
+import { Grid, Stack } from "@mui/material";
+import { useSelector } from "react-redux";
 import * as React from "react";
+
 import BasicForLandSection from "./components/BasicDetailsForLand";
 import DescriptionSection from "./components/Description";
 import FeaturesForLandSection from "./components/FeaturesForLand";
@@ -11,46 +12,14 @@ import PropertyDescriptionForLandSection from "./components/PropertyDescriptionF
 import SuitableForForLandSection from "./components/SuitableForForLand";
 import TechnicalFeaturesAndInteriorForLandSection from "./components/TechnicalFeaturesAndInteriorForLand";
 import ROISection from "./components/ROI";
-import { useSelector } from "react-redux";
 import VideoLinkSection from "./components/VideoLink";
-
-import {
-    selectState,
-    selectStreet,
-    selectNumber,
-    selectCity,
-    selectZipCode,
-    selectRegion,
-    selectCountry,
-    selectLatitude,
-    selectLongitude,
-    selectComplex,
-    // setters
-    setStreet,
-    setNumber,
-    setComplex,
-    setCity,
-    setZipCode,
-    setRegion,
-    setCountry,
-    setLatitude,
-    setLongitude,
-} from "src/slices/property";
 import DocumentsSection from "./components/Documents";
 import DistancesSection from "./components/Distances";
 
+import { selectState } from "src/slices/property";
+
 const LandFormSection: React.FC<any> = () => {
     const state = useSelector(selectState);
-
-    const street = useSelector(selectStreet);
-    const number = useSelector(selectNumber);
-    const city = useSelector(selectCity);
-    const zipCode = useSelector(selectZipCode);
-    const complex = useSelector(selectComplex);
-    const region = useSelector(selectRegion);
-    const country = useSelector(selectCountry);
-    const lat = useSelector(selectLatitude);
-    const lng = useSelector(selectLongitude);
 
     return (
         <>
@@ -70,27 +39,7 @@ const LandFormSection: React.FC<any> = () => {
                 <Grid item xs={6}>
                     <Stack spacing={1}>
                         <ImageSection />
-                        <LocationSection
-                            street={street}
-                            number={number}
-                            city={city}
-                            zipCode={zipCode}
-                            region={region}
-                            country={country}
-                            complex={complex}
-                            lat={lat}
-                            lng={lng}
-                            // setters
-                            setStreet={setStreet}
-                            setNumber={setNumber}
-                            setCity={setCity}
-                            setZipCode={setZipCode}
-                            setComplex={setComplex}
-                            setRegion={setRegion}
-                            setCountry={setCountry}
-                            setLatitude={setLatitude}
-                            setLongitude={setLongitude}
-                        />
+                        <LocationSection />
                         <SuitableForForLandSection />
                         <DistancesSection />
                         <DescriptionSection />
