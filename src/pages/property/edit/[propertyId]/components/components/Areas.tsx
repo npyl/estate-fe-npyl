@@ -62,7 +62,6 @@ const AreasSection: React.FC<any> = () => {
                         <OnlyNumbersInput
                             label={t("Covered")}
                             value={covered}
-                            formatThousands
                             adornment="m²"
                             onChange={(value) => {
                                 dispatch(setCovered(value));
@@ -73,7 +72,6 @@ const AreasSection: React.FC<any> = () => {
                         <OnlyNumbersInput
                             label={t("Basement")}
                             value={basement}
-                            formatThousands
                             adornment="m²"
                             onChange={(value) => {
                                 dispatch(setBasement(value));
@@ -84,7 +82,6 @@ const AreasSection: React.FC<any> = () => {
                         <OnlyNumbersInput
                             label={t("Attic")}
                             value={attic}
-                            formatThousands
                             adornment="m²"
                             onChange={(value) => {
                                 dispatch(setAttic(value));
@@ -95,7 +92,6 @@ const AreasSection: React.FC<any> = () => {
                         <OnlyNumbersInput
                             label={t("Garden")}
                             value={garden}
-                            formatThousands
                             adornment="m²"
                             onChange={(value) => {
                                 dispatch(setGarden(value));
@@ -106,7 +102,6 @@ const AreasSection: React.FC<any> = () => {
                         <OnlyNumbersInput
                             label={t("Balconies")}
                             value={balconies}
-                            formatThousands
                             adornment="m²"
                             onChange={(value) => {
                                 dispatch(setBalconies(value));
@@ -117,7 +112,6 @@ const AreasSection: React.FC<any> = () => {
                         <OnlyNumbersInput
                             label={t("Storeroom")}
                             value={storeroom}
-                            formatThousands
                             adornment="m²"
                             onChange={(value) => {
                                 dispatch(setStoreroom(value));

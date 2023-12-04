@@ -336,7 +336,6 @@ const BasicSection: React.FC<any> = () => {
                         <OnlyNumbersInput
                             label={t("Area")}
                             value={area}
-                            formatThousands
                             onChange={(value) => {
                                 dispatch(setArea(value));
                             }}
@@ -367,7 +366,6 @@ const BasicSection: React.FC<any> = () => {
                         <OnlyNumbersInput
                             label={t("Price")}
                             value={price}
-                            formatThousands
                             onChange={(value) => {
                                 dispatch(setPrice(value));
                             }}
@@ -379,7 +377,6 @@ const BasicSection: React.FC<any> = () => {
                         <OnlyNumbersInput
                             label={t("Plot Area")}
                             value={plotArea}
-                            formatThousands
                             onChange={(value) => {
                                 dispatch(setPlotArea(value));
                             }}
@@ -408,7 +405,6 @@ const BasicSection: React.FC<any> = () => {
                         <OnlyNumbersInput
                             label={t("Estimated Rent Price")}
                             value={estimatedRentPrice}
-                            formatThousands
                             onChange={(value) => {
                                 dispatch(setEstimatedRentPrice(value));
                             }}
@@ -486,7 +482,6 @@ const BasicSection: React.FC<any> = () => {
                                 <OnlyNumbersInput
                                     label={t("Current Rent Price")}
                                     value={currentRentPrice}
-                                    formatThousands
                                     onChange={(value) => {
                                         dispatch(setCurrentRentPrice(value));
                                     }}
