@@ -9,20 +9,19 @@ import LandFormSection from "./components/LandForm";
 import OtherFormSection from "./components/OtherForm";
 import ResidentialFormSection from "./components/ResidentialForm";
 import { UploadFileProvider } from "src/contexts/uploadFile";
-import { MutableRefObject, useEffect } from "react";
+import { MutableRefObject } from "react";
 import { useAutosaveTab } from "src/hooks/useAutosaveTab";
-import { LoadingButton } from "@mui/lab";
-import { SaveButton } from "../../components/SaveButton";
+import { SaveButton } from "src/components/SaveButton";
 
 interface IFormProps {
-    isLoading: boolean;
+    isError: boolean;
     onAutosave: (bodyRef: MutableRefObject<any>) => void;
     resetEverything: () => void;
     performEdit: () => void;
     handleCancel: () => void;
 }
 export default function Form({
-    isLoading,
+    isError,
     onAutosave,
     performEdit,
     resetEverything,
@@ -82,8 +81,7 @@ export default function Form({
 
                 <Grid item>
                     <SaveButton
-                        loading={isLoading}
-                        disabled={isLoading}
+                        error={isError}
                         loadingPosition="start"
                         variant="contained"
                         startIcon={<SendIcon />}

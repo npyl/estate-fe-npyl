@@ -10,17 +10,20 @@ import DemandSection from "./DemandSection";
 import { useAutosaveTab } from "src/hooks/useAutosaveTab";
 import { selectAll } from "src/slices/customer";
 import { MutableRefObject } from "react";
+import { SaveButton } from "src/components/SaveButton";
 
 interface FormProps {
+    isError: boolean;
     onAutosave: (bodyRef: MutableRefObject<any>) => void;
-    performUpload: () => void;
+    performSave: () => void;
     resetState: () => void;
     handleCancel: () => void;
 }
 
 const Form = ({
+    isError,
     onAutosave,
-    performUpload,
+    performSave,
     resetState,
     handleCancel,
 }: FormProps) => {
@@ -70,13 +73,15 @@ const Form = ({
                         </Button>
                     </Grid>
                     <Grid item>
-                        <Button
+                        <SaveButton
+                            error={isError}
+                            loadingPosition="start"
                             variant="contained"
-                            endIcon={<SendIcon />}
-                            onClick={performUpload}
+                            startIcon={<SendIcon />}
+                            onClick={performSave}
                         >
                             {t("Save")}
-                        </Button>
+                        </SaveButton>
                     </Grid>
                 </Grid>
             </Grid>

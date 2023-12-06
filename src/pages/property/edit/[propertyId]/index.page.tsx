@@ -28,7 +28,7 @@ const EditPropertyPage: NextPage = () => {
     const { propertyId } = router.query;
 
     const { data } = useGetPropertyByIdQuery(+propertyId!);
-    const [edit, { isLoading, isSuccess }] = useEditPropertyMutation();
+    const [edit, { isError }] = useEditPropertyMutation();
 
     useEffect(() => {
         if (data && propertyId) {
@@ -77,7 +77,7 @@ const EditPropertyPage: NextPage = () => {
         <>
             <Form
                 key={propertyId as string} // (1)
-                isLoading={isLoading || isSuccess}
+                isError={isError}
                 onAutosave={handleAutosave}
                 performEdit={handleRedirect}
                 resetEverything={resetEverything}

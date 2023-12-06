@@ -8,7 +8,7 @@ import Form from "./Form";
 const CreatePropertyPage: NextPage = () => {
     const router = useRouter();
 
-    const [create, { isSuccess, isLoading }] = useCreatePropertyMutation();
+    const [create, { isError }] = useCreatePropertyMutation();
 
     const handleUpload = (parentCategory: string, category: string) =>
         category &&
@@ -18,9 +18,7 @@ const CreatePropertyPage: NextPage = () => {
             (res) => "data" in res && router.push(`/property/edit/${res.data}`)
         );
 
-    return (
-        <Form isLoading={isLoading || isSuccess} performCreate={handleUpload} />
-    );
+    return <Form isError={isError} performCreate={handleUpload} />;
 };
 
 CreatePropertyPage.getLayout = (page) => (

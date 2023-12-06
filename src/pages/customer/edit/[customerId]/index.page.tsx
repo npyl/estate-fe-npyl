@@ -27,7 +27,7 @@ const EditCustomer: NextPage = () => {
     const { customerId } = router.query;
 
     const { data } = useGetCustomerByIdQuery(+customerId!);
-    const [edit, { isLoading: isEditLoading }] = useEditCustomerMutation();
+    const [edit, { isError }] = useEditCustomerMutation();
 
     useEffect(() => {
         if (data && customerId) {
@@ -50,13 +50,11 @@ const EditCustomer: NextPage = () => {
         }
     }, [data, customerId]);
 
-    const handleAutosave = (bodyRef: MutableRefObject<any>) => {
-        if (bodyRef.current && bodyRef.current.id) {
-            edit({ customerId: +customerId!, body: bodyRef.current }).then(
-                resetEverything
-            );
-        }
-    };
+    const handleAutosave = (bodyRef: MutableRefObject<any>) =>
+        bodyRef.current?.id &&
+        edit({ customerId: +customerId!, body: bodyRef.current }).then(
+            resetEverything
+        );
 
     const resetEverything = () => {
         dispatch(resetLabelsState());
@@ -66,18 +64,14 @@ const EditCustomer: NextPage = () => {
     const handleRedirect = () => router.push(`/customer/${customerId}`);
 
     return (
-        <>
-            {customerId && (
-                <Form
-                    key={customerId as string} // (1)
-                    onAutosave={handleAutosave}
-                    performUpload={handleRedirect}
-                    resetState={resetEverything}
-                    handleCancel={handleRedirect}
-                />
-            )}
-            {isEditLoading && <LogoProgressIndicator />}
-        </>
+        <Form
+            key={customerId as string} // (1)
+            isError={isError}
+            onAutosave={handleAutosave}
+            performSave={handleRedirect}
+            resetState={resetEverything}
+            handleCancel={handleRedirect}
+        />
     );
 };
 
