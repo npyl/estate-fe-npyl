@@ -1,4 +1,4 @@
-import { Container, Grid, Tab, Tabs } from "@mui/material";
+import { Grid, Tab, Tabs } from "@mui/material";
 import { NextPage } from "next";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -9,7 +9,6 @@ import {
 } from "src/contexts/security";
 import TabPanel from "../../components/Tabs";
 import { AuthGuard } from "../../components/authentication/auth-guard";
-import { UserDashboardLayout } from "../../components/dashboard/user-dashboard-layout";
 import PermissionPage from "./components/permission";
 import UserPage from "./components/user";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
