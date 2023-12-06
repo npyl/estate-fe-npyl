@@ -2,7 +2,7 @@ import { InputAdornment, TextField, TextFieldProps } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
-export interface OnlyNumbersInputProps
+interface OnlyNumbersInputProps
     extends Omit<TextFieldProps, "label" | "value" | "onChange" | "disabled"> {
     label: string;
     value?: number | string;
