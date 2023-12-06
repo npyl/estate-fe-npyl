@@ -43,10 +43,10 @@ export default function Form({ isError, performCreate }: IFormProps) {
         [key: string]: KeyValue[];
     } = useMemo(
         () => ({
-            RESIDENTIAL: enums ? enums.residentialCategory : [],
-            COMMERCIAL: enums ? enums.commercialCategory : [],
-            LAND: enums ? enums.landCategory : [],
-            OTHER: enums ? enums.otherCategory : [],
+            RESIDENTIAL: enums?.residentialCategory || [],
+            COMMERCIAL: enums?.commercialCategory || [],
+            LAND: enums?.landCategory || [],
+            OTHER: enums?.otherCategory || [],
         }),
         [enums]
     );

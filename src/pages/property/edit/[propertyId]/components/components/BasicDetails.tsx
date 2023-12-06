@@ -129,20 +129,13 @@ const BasicSection: React.FC<any> = () => {
 
     const subCategoriesMap: {
         [key: string]: KeyValue[];
-    } | null = useMemo(
-        () =>
-            enums &&
-            enums.residentialCategory &&
-            enums.commercialCategory &&
-            enums.landCategory &&
-            enums.otherCategory
-                ? {
-                      RESIDENTIAL: enums.residentialCategory,
-                      COMMERCIAL: enums.commercialCategory,
-                      LAND: enums.landCategory,
-                      OTHER: enums.otherCategory,
-                  }
-                : null,
+    } = useMemo(
+        () => ({
+            RESIDENTIAL: enums?.residentialCategory || [],
+            COMMERCIAL: enums?.commercialCategory || [],
+            LAND: enums?.landCategory || [],
+            OTHER: enums?.otherCategory || [],
+        }),
         [enums]
     );
 
@@ -160,8 +153,6 @@ const BasicSection: React.FC<any> = () => {
         changeDate(dates, setRentalPeriodStart);
     const changeRentalPeriodEnd = (dates: DateObject | DateObject[]) =>
         changeDate(dates, setRentalPeriodEnd);
-
-    if (!enums || !propertyId || !subCategoriesMap) return null;
 
     return (
         <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
@@ -222,7 +213,7 @@ const BasicSection: React.FC<any> = () => {
                                         {value}
                                     </MenuItem>
                                 )
-                            ) || <MenuItem />}
+                            )}
                         </TextField>
                     </Grid>
 
@@ -294,13 +285,11 @@ const BasicSection: React.FC<any> = () => {
                                     dispatch(setState(e.target.value));
                                 }}
                             >
-                                {stateEnum.map((state, index) => {
-                                    return (
-                                        <MenuItem key={index} value={state.key}>
-                                            {state.value}
-                                        </MenuItem>
-                                    );
-                                })}
+                                {stateEnum?.map((state, index) => (
+                                    <MenuItem key={index} value={state.key}>
+                                        {state.value}
+                                    </MenuItem>
+                                ))}
                             </Select>
                         </FormControl>
                     </Grid>

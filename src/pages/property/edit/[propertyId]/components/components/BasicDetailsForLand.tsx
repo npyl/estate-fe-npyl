@@ -174,27 +174,21 @@ const BasicForLandSection: React.FC<any> = () => {
     const auction = useSelector(selectAuction);
     const debatablePrice = useSelector(selectDebatablePrice);
     const exclusive = useSelector(selectExclusive);
-    const stateEnum = enums?.state;
+
+    const stateEnum = enums?.state || [];
 
     const parentCategory = useSelector(selectParentCategory) || "";
     const category = useSelector(selectCategory) || "";
 
     const subCategoriesMap: {
         [key: string]: KeyValue[];
-    } | null = useMemo(
-        () =>
-            enums &&
-            enums.residentialCategory &&
-            enums.commercialCategory &&
-            enums.landCategory &&
-            enums.otherCategory
-                ? {
-                      RESIDENTIAL: enums.residentialCategory,
-                      COMMERCIAL: enums.commercialCategory,
-                      LAND: enums.landCategory,
-                      OTHER: enums.otherCategory,
-                  }
-                : null,
+    } = useMemo(
+        () => ({
+            RESIDENTIAL: enums?.residentialCategory || [],
+            COMMERCIAL: enums?.commercialCategory || [],
+            LAND: enums?.landCategory || [],
+            OTHER: enums?.otherCategory || [],
+        }),
         [enums]
     );
 
@@ -228,8 +222,6 @@ const BasicForLandSection: React.FC<any> = () => {
         changeDate(dates, setRentalPeriodStart);
     const changeRentalPeriodEnd = (dates: DateObject | DateObject[]) =>
         changeDate(dates, setRentalPeriodEnd);
-
-    if (!enums) return null;
 
     return (
         <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
@@ -268,28 +260,27 @@ const BasicForLandSection: React.FC<any> = () => {
                             }
                         />
                     </Grid>
-                    {subCategoriesMap && (
-                        <Grid item xs={6}>
-                            <TextField
-                                disabled={!parentCategory}
-                                fullWidth
-                                select
-                                label={t("Category")}
-                                value={category}
-                                onChange={(e) =>
-                                    dispatch(setCategory(e.target.value))
-                                }
-                            >
-                                {subCategoriesMap[parentCategory!]?.map(
-                                    ({ key, value }) => (
-                                        <MenuItem key={key} value={key}>
-                                            {value}
-                                        </MenuItem>
-                                    )
-                                ) || <MenuItem />}
-                            </TextField>
-                        </Grid>
-                    )}
+                    <Grid item xs={6}>
+                        <TextField
+                            disabled={!parentCategory}
+                            fullWidth
+                            select
+                            label={t("Category")}
+                            value={category}
+                            onChange={(e) =>
+                                dispatch(setCategory(e.target.value))
+                            }
+                        >
+                            {subCategoriesMap[parentCategory!]?.map(
+                                ({ key, value }) => (
+                                    <MenuItem key={key} value={key}>
+                                        {value}
+                                    </MenuItem>
+                                )
+                            )}
+                        </TextField>
+                    </Grid>
+
                     <Grid item xs={6}>
                         <Autocomplete
                             disablePortal
@@ -348,13 +339,11 @@ const BasicForLandSection: React.FC<any> = () => {
                                     dispatch(setState(e.target.value));
                                 }}
                             >
-                                {stateEnum.map((state, index) => {
-                                    return (
-                                        <MenuItem key={index} value={state.key}>
-                                            {state.value}
-                                        </MenuItem>
-                                    );
-                                })}
+                                {stateEnum.map((state, index) => (
+                                    <MenuItem key={index} value={state.key}>
+                                        {state.value}
+                                    </MenuItem>
+                                ))}
                             </Select>
                         </FormControl>
                     </Grid>

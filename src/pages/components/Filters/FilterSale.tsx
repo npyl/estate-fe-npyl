@@ -19,8 +19,7 @@ export default function SaleSelect() {
 
     const states = useSelector(selectStates);
 
-    const stateEnum = data?.property?.state;
-    if (!stateEnum) return null;
+    const stateEnum = data?.property?.state || [];
 
     const handleChange = (event: SelectChangeEvent<typeof states>) => {
         const {
@@ -62,15 +61,13 @@ export default function SaleSelect() {
                 }
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
-                {stateEnum.map(({ key, value }) => {
-                    return (
-                        <MenuItem key={key} value={key}>
-                            <Checkbox checked={states.indexOf(key) > -1} />
+                {stateEnum.map(({ key, value }) => (
+                    <MenuItem key={key} value={key}>
+                        <Checkbox checked={states.indexOf(key) > -1} />
 
-                            {value}
-                        </MenuItem>
-                    );
-                })}
+                        {value}
+                    </MenuItem>
+                ))}
             </Select>
         </FormControl>
     );

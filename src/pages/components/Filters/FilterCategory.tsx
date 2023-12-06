@@ -8,6 +8,7 @@ import {
     Select,
     SelectChangeEvent,
 } from "@mui/material";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useGlobals } from "src/hooks/useGlobals";
 import {
@@ -24,20 +25,22 @@ export default function FilterCategory() {
 
     const data = useGlobals();
 
-    const parentCategories = useSelector(selectParentCategories);
+    const parentCategories = useSelector(selectParentCategories) || [];
     const subCategories = useSelector(selectSubCategories);
     const propertyEnums = data?.property;
 
-    if (!propertyEnums || parentCategories.length === 0) return null;
-
     const subCategoriesMap: {
         [key: string]: KeyValue[];
-    } = {
-        RESIDENTIAL: propertyEnums?.residentialCategory ?? [],
-        COMMERCIAL: propertyEnums?.commercialCategory ?? [],
-        LAND: propertyEnums?.landCategory ?? [],
-        OTHER: propertyEnums?.otherCategory ?? [],
-    };
+    } = useMemo(
+        () => ({
+            RESIDENTIAL: propertyEnums?.residentialCategory || [],
+            COMMERCIAL: propertyEnums?.commercialCategory || [],
+            LAND: propertyEnums?.landCategory || [],
+            OTHER: propertyEnums?.otherCategory || [],
+        }),
+        [propertyEnums]
+    );
+
     const getSubCategoryValue = (key: string) => {
         for (let parentCategory of parentCategories) {
             const found = subCategoriesMap[parentCategory].find(

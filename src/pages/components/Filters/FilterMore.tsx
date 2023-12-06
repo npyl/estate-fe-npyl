@@ -83,11 +83,14 @@ export default function FilterMore({
     const { t } = useTranslation();
 
     const changedPropsCount = useSelector(sumOfChangedProperties);
+
     const enums = useGlobals();
+
     const propertyEnums = enums?.property;
     const detailsEnum = propertyEnums?.details;
-    const minFloor = detailsEnum?.floors;
-    const maxFloor = detailsEnum?.floors;
+    const minFloor = detailsEnum?.floors || [];
+    const maxFloor = detailsEnum?.floors || [];
+
     const frameType = useSelector(selectFrameType);
     const furnished = useSelector(selectFurnished);
     const heatingType = useSelector(selectHeatingType);

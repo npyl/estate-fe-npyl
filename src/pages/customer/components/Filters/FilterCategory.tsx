@@ -1,5 +1,4 @@
 import {
-    Box,
     Checkbox,
     FormControl,
     InputLabel,
@@ -9,6 +8,7 @@ import {
     Select,
     SelectChangeEvent,
 } from "@mui/material";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useGlobals } from "src/hooks/useGlobals";
 import {
@@ -32,14 +32,15 @@ export default function FilterCategory() {
 
     const subCategoriesMap: {
         [key: string]: KeyValue[];
-    } = {
-        RESIDENTIAL: propertyEnums?.residentialCategory ?? [],
-        COMMERCIAL: propertyEnums?.commercialCategory ?? [],
-        LAND: propertyEnums?.landCategory ?? [],
-        OTHER: propertyEnums?.otherCategory ?? [],
-    };
-
-    if (!propertyEnums || parentCategories.length === 0) return null;
+    } = useMemo(
+        () => ({
+            RESIDENTIAL: propertyEnums?.residentialCategory || [],
+            COMMERCIAL: propertyEnums?.commercialCategory || [],
+            LAND: propertyEnums?.landCategory || [],
+            OTHER: propertyEnums?.otherCategory || [],
+        }),
+        [propertyEnums]
+    );
 
     const handleChange = (event: SelectChangeEvent<typeof subCategories>) => {
         const {
