@@ -3,38 +3,23 @@ import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { useCreatePropertyMutation } from "src/services/properties";
 import { useRouter } from "next/router";
-import { LogoProgressIndicator } from "src/components/LogoProgressIndicator";
 import Form from "./Form";
 
 const CreatePropertyPage: NextPage = () => {
     const router = useRouter();
 
-    const [
-        create,
-        { isSuccess, isLoading: isCreateLoading, data: createdPropertyId },
-    ] = useCreatePropertyMutation();
+    const [create, { isSuccess, isLoading }] = useCreatePropertyMutation();
 
-    const handleUpload = (parentCategory: string, category: string) => {
-        if (!category || !parentCategory) return;
-
+    const handleUpload = (parentCategory: string, category: string) =>
+        category &&
+        parentCategory &&
         // perform POST
-        create({ parentCategory, category });
-    };
-
-    // redirect on success
-    isSuccess &&
-        createdPropertyId &&
-        router.push(`/property/edit/${createdPropertyId}`);
+        create({ parentCategory, category }).then(
+            (res) => "data" in res && router.push(`/property/edit/${res.data}`)
+        );
 
     return (
-        <>
-            <Form performUpload={handleUpload} />
-
-            {
-                // loading indicator (incase POST request is taking alot of time)
-                isCreateLoading && <LogoProgressIndicator />
-            }
-        </>
+        <Form isLoading={isLoading || isSuccess} performCreate={handleUpload} />
     );
 };
 

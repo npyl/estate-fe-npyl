@@ -26,6 +26,10 @@ import { ICustomer } from "src/types/customer";
 import axios, { AxiosProgressEvent } from "axios";
 import { LocationDisplay } from "src/types/enums";
 
+interface JustData<T> {
+    data: T;
+}
+
 export interface BulkEditRequest {
     propertyIds: number[];
     managerId?: number;
@@ -203,7 +207,10 @@ export const properties = createApi({
             }),
             invalidatesTags: ["Properties", "PropertyById"],
         }),
-        createProperty: builder.mutation<number, ICreatePropertyParams>({
+        createProperty: builder.mutation<
+            JustData<number>,
+            ICreatePropertyParams
+        >({
             query: (dataToSend: ICreatePropertyParams) => ({
                 url: "/create",
                 method: "POST",
