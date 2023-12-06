@@ -75,8 +75,6 @@ import {
     setLegalAndTechnicalControl,
     setIrrigation,
     setWaterSupply,
-    setElectrictiySupply,
-    selectElectrictiySupply,
     setHasBuilding,
     setHasBuildingPermit,
 } from "src/slices/property";
@@ -95,7 +93,7 @@ import { KeyCodeField } from "./components/KeyCodeField";
 import { useTranslation } from "react-i18next";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { DateObject } from "react-multi-date-picker";
-import { IOSSwitch } from "./BasicDetails";
+import { IOSSwitch } from "src/components/iOSSwitch";
 import { KeyValue } from "src/types/KeyValue";
 
 import { styled } from "@mui/system";
@@ -212,7 +210,6 @@ const BasicForLandSection: React.FC<any> = () => {
     );
     const irrigation = useSelector(selectIrrigation);
     const waterSupply = useSelector(selectWaterSupply);
-    const electricitySupply = useSelector(selectElectrictiySupply);
     const setbackCoefficient = useSelector(selectSetbackCoefficient);
     const hasBuildingPermit = useSelector(selectHasBuildingPermit);
     const hasBuilding = useSelector(selectHasBuilding);
