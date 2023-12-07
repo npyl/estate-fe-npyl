@@ -863,6 +863,10 @@ const slice = createSlice({
             properties[id].details.hasBuilding = payload;
         },
 
+        setFrontage({ id, properties }, { payload }): void {
+            properties[id].details.frontage = payload;
+        },
+
         setPoolSize({ id, properties }, { payload }): void {
             properties[id].construction.poolSize = payload;
         },
@@ -1340,6 +1344,7 @@ export const {
     setHasBuildingPermit,
     setHasBuilding,
     setPoolSize,
+    setFrontage,
 
     // ROI
 

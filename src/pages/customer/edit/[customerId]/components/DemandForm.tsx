@@ -72,15 +72,16 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
     const dispatch = useDispatch();
 
     const enums = useGlobals();
+    const propertyEnums = useMemo(() => enums?.property, [enums]);
 
-    const propertyEnums = useMemo(() => enums?.property || null, [enums]);
-    const stateEnum = propertyEnums?.state;
+    const stateEnum = propertyEnums?.state || [];
     const detailsEnum = propertyEnums?.details;
-    const parentCategoryEnum = propertyEnums?.parentCategory;
-    const furnishingEnum = detailsEnum?.furnished;
-    const timeframeEnum = enums?.customer?.timeframe;
-    const minFloors = detailsEnum?.floors;
-    const maxFloors = detailsEnum?.floors;
+    const parentCategoryEnum = propertyEnums?.parentCategory || [];
+    const furnishingEnum = detailsEnum?.furnished || [];
+    const timeframeEnum = enums?.customer?.timeframe || [];
+
+    const minFloors = detailsEnum?.floors || [];
+    const maxFloors = detailsEnum?.floors || [];
 
     const demands = useSelector(selectDemands);
     const demand = useMemo(() => demands.at(index) || null, [demands, index]);
@@ -159,12 +160,15 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
 
     const subCategoriesMap: {
         [key: string]: KeyValue[];
-    } = {
-        RESIDENTIAL: propertyEnums?.residentialCategory ?? [],
-        COMMERCIAL: propertyEnums?.commercialCategory ?? [],
-        LAND: propertyEnums?.landCategory ?? [],
-        OTHER: propertyEnums?.otherCategory ?? [],
-    };
+    } = useMemo(
+        () => ({
+            RESIDENTIAL: propertyEnums?.residentialCategory || [],
+            COMMERCIAL: propertyEnums?.commercialCategory || [],
+            LAND: propertyEnums?.landCategory || [],
+            OTHER: propertyEnums?.otherCategory || [],
+        }),
+        [propertyEnums]
+    );
 
     const propertyCodes: string[] =
         useAllPropertiesQuery(undefined, {
@@ -327,16 +331,6 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
             setMinYearOfConstruction,
             setMaxYearOfConstruction
         );
-    //fdd
-    if (
-        !propertyEnums ||
-        !stateEnum ||
-        !detailsEnum ||
-        !furnishingEnum ||
-        !parentCategoryEnum ||
-        !timeframeEnum
-    )
-        return null;
 
     return (
         <>
@@ -379,7 +373,7 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                                 return selected
                                     .map(
                                         (key) =>
-                                            parentCategoryEnum?.find(
+                                            parentCategoryEnum.find(
                                                 (item) => item.key === key
                                             )?.value
                                     )

@@ -20,8 +20,8 @@ const InformationSection: React.FC = () => {
     const { data } = useGetCustomerByIdQuery(+customerId!);
 
     const leadSource = data?.leadSource?.key as LeadSource;
-    const nationalitiesEnum = enums?.customer?.nationality;
-    const leadSourceEnum = enums?.customer?.leadSource;
+    const nationalitiesEnum = enums?.customer?.nationality || [];
+    const leadSourceEnum = enums?.customer?.leadSource || [];
 
     let displayNationality = "-";
     if (nationalitiesEnum && data?.nationality !== undefined) {

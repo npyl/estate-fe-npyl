@@ -8,7 +8,6 @@ import {
     MenuItem,
     Select,
     Box,
-    Button,
     SelectChangeEvent,
     Typography,
 } from "@mui/material";
@@ -21,13 +20,15 @@ import { IGlobalProperty } from "src/types/global";
 import { Send as SendIcon } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import { KeyValue } from "src/types/KeyValue";
-import { useState } from "react";
+import { useCallback, useMemo, useState } from "react";
+import { SaveButton } from "src/components/SaveButton";
 
 interface IFormProps {
-    performUpload: (parentCategory: string, category: string) => void;
+    isError: boolean;
+    performCreate: (parentCategory: string, category: string) => void;
 }
 
-export default function Form({ performUpload }: IFormProps) {
+export default function Form({ isError, performCreate }: IFormProps) {
     const { t } = useTranslation();
 
     const [category, setCategory] = useState("");
@@ -38,17 +39,22 @@ export default function Form({ performUpload }: IFormProps) {
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
     const parentCategoryEnum = enums?.parentCategory;
 
-    if (!enums || !parentCategoryEnum || parentCategoryEnum.length === 0)
-        return null;
-
     const subCategoriesMap: {
         [key: string]: KeyValue[];
-    } = {
-        RESIDENTIAL: enums.residentialCategory,
-        COMMERCIAL: enums.commercialCategory,
-        LAND: enums.landCategory,
-        OTHER: enums.otherCategory,
-    };
+    } = useMemo(
+        () => ({
+            RESIDENTIAL: enums?.residentialCategory || [],
+            COMMERCIAL: enums?.commercialCategory || [],
+            LAND: enums?.landCategory || [],
+            OTHER: enums?.otherCategory || [],
+        }),
+        [enums]
+    );
+
+    const handleSave = useCallback(
+        () => performCreate(parentCategory, category),
+        [parentCategory, category]
+    );
 
     const handleParentCategorySelect = (e: SelectChangeEvent<string>) =>
         setParentCategory(e.target.value);
@@ -124,19 +130,15 @@ export default function Form({ performUpload }: IFormProps) {
                                         label="Parent Category"
                                         onChange={handleParentCategorySelect}
                                     >
-                                        {parentCategoryEnum.map(
-                                            (parentCategory, index) => {
-                                                return (
-                                                    <MenuItem
-                                                        key={index}
-                                                        value={
-                                                            parentCategory.key
-                                                        }
-                                                    >
-                                                        {parentCategory.value}
-                                                    </MenuItem>
-                                                );
-                                            }
+                                        {parentCategoryEnum?.map(
+                                            ({ key, value }, index) => (
+                                                <MenuItem
+                                                    key={index}
+                                                    value={key}
+                                                >
+                                                    {value}
+                                                </MenuItem>
+                                            )
                                         )}
                                     </Select>
                                 </FormControl>
@@ -157,7 +159,7 @@ export default function Form({ performUpload }: IFormProps) {
                                                 {value}
                                             </MenuItem>
                                         )
-                                    ) || <MenuItem />}
+                                    )}
                                 </TextField>
                             </Grid>
                         </Grid>
@@ -170,24 +172,15 @@ export default function Form({ performUpload }: IFormProps) {
                         justifyContent="center"
                         marginTop={3}
                     >
-                        <Button
+                        <SaveButton
+                            error={isError}
+                            loadingPosition="start"
                             variant="contained"
-                            color="primary"
                             startIcon={<SendIcon />}
-                            onClick={() =>
-                                performUpload(parentCategory, category)
-                            }
-                            style={{
-                                backgroundColor: "#4CAF50",
-                                color: "white",
-                                padding: "10px 20px",
-                                fontSize: "16px",
-                                borderRadius: "5px",
-                                boxShadow: "0 2px 5px rgba(0, 0, 0, 0.5)",
-                            }}
+                            onClick={handleSave}
                         >
-                            {t("Continue")}
-                        </Button>
+                            {t("Save")}
+                        </SaveButton>
                     </Grid>
                 </Grid>
             </Stack>

@@ -11,11 +11,13 @@ import {
     selectIncomplete,
     selectInternalStairs,
     selectNewlyBuilt,
+    selectPoolSize,
     selectUnderConstruction,
     selectYearOfConstruction,
     setIncomplete,
     setInternalStairs,
     setNewlyBuilt,
+    setPoolSize,
     setUnderConstruction,
     setYearOfConstruction,
 } from "src/slices/property";
@@ -36,6 +38,8 @@ const ConstructionForOtherSection: React.FC<any> = (props) => {
     const newlyBuilt = useSelector(selectNewlyBuilt);
     const incomplete = useSelector(selectIncomplete);
     const internalStairs = useSelector(selectInternalStairs);
+
+    const poolSize = useSelector(selectPoolSize);
 
     if (!details || !details.heatingSystem || !details.heatingType) return null;
 
@@ -62,6 +66,15 @@ const ConstructionForOtherSection: React.FC<any> = (props) => {
                             onChange={(value) =>
                                 dispatch(setYearOfConstruction(value))
                             }
+                        />
+                    </Grid>
+
+                    <Grid item xs={6}>
+                        <OnlyNumbersInput
+                            fullWidth
+                            label={t("Pool Size")}
+                            value={poolSize}
+                            onChange={(v) => dispatch(setPoolSize(v))}
                         />
                     </Grid>
 

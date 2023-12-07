@@ -10,20 +10,6 @@ import {
 import InputBase from "@mui/material/InputBase";
 import { bgBlur } from "src/utils/cssStyles";
 
-export const StyledNavbarSearchPaper = styled(Paper)(({ theme }) => ({
-    backgroundColor: theme.palette.neutral![100],
-    p: "2px 4px",
-    display: "flex",
-    alignItems: "center",
-    width: 300,
-    borderRadius: 24,
-    border: `0.5px solid ${theme.palette.neutral![100]}`,
-
-    "&:hover": {
-        border: `0.5px solid ${theme.palette.primary.main}`,
-    },
-}));
-
 export const SearchInput = styled(InputBase)(({ theme }) => ({
     borderRadius: 24,
     backgroundColor: theme.palette.background.paper,

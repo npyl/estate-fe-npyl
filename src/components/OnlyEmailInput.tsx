@@ -2,7 +2,7 @@ import { TextField, TextFieldProps } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 
-export interface OnlyEmailInputProps
+interface OnlyEmailInputProps
     extends Omit<TextFieldProps, "label" | "value" | "onChange" | "disabled"> {
     label: string;
     value?: string;

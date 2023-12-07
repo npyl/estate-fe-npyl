@@ -46,13 +46,13 @@ export interface IPropertyDetailsPOST {
     totalConstruction?: number;
     permissibleBuildingHeight?: number;
     permissibleFloors?: number;
-    legalAndTechnicalControl?: number;
-    irrigation?: number;
-    waterSupply?: number;
-    electricitySupply?: number;
     setbackCoefficient?: number;
-    hasBuildingPermit?: number;
-    hasBuilding?: number;
+    legalAndTechnicalControl?: boolean;
+    irrigation?: boolean;
+    waterSupply?: boolean;
+    electricitySupply?: boolean;
+    hasBuildingPermit?: boolean;
+    hasBuilding?: boolean;
 }
 
 export interface IPropertyDetails {
@@ -83,11 +83,11 @@ export interface IPropertyDetails {
     totalConstruction: number;
     permissibleBuildingHeight: number;
     permissibleFloors: number;
-    legalAndTechnicalControl: number;
-    irrigation: number;
-    waterSupply: number;
-    electricitySupply: number;
     setbackCoefficient: number;
-    hasBuildingPermit: number;
-    hasBuilding: number;
+    legalAndTechnicalControl: boolean;
+    irrigation: boolean;
+    waterSupply: boolean;
+    electricitySupply: boolean;
+    hasBuildingPermit: boolean;
+    hasBuilding: boolean;
 }

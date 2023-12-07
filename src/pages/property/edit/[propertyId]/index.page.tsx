@@ -15,7 +15,6 @@ import Form from "./Form";
 import { useGetPropertyByIdQuery } from "src/services/properties";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { LogoProgressIndicator } from "src/components/LogoProgressIndicator";
 import { useTabsContext } from "src/contexts/tabs";
 import { ConfirmationDialogBox } from "src/pages/components/ConfirmationDialogBox";
 
@@ -29,7 +28,7 @@ const EditPropertyPage: NextPage = () => {
     const { propertyId } = router.query;
 
     const { data } = useGetPropertyByIdQuery(+propertyId!);
-    const [edit, { isLoading: isEditLoading }] = useEditPropertyMutation();
+    const [edit, { isError }] = useEditPropertyMutation();
 
     useEffect(() => {
         if (data && propertyId) {
@@ -62,12 +61,9 @@ const EditPropertyPage: NextPage = () => {
         edit({ id: +propertyId!, body: bodyRef.current }).then(resetEverything);
     };
 
-    const resetEverything = () => {
-        setclearConfirmDialogOpen(true);
-    };
-    const closeClearConfirmDialog = () => {
-        setclearConfirmDialogOpen(false);
-    };
+    const resetEverything = () => setclearConfirmDialogOpen(true);
+    const closeClearConfirmDialog = () => setclearConfirmDialogOpen(false);
+
     const confirmResetEverything = () => {
         dispatch(resetLabels());
         dispatch(resetNotes());
@@ -79,20 +75,15 @@ const EditPropertyPage: NextPage = () => {
 
     return (
         <>
-            {data && propertyId && (
-                <Form
-                    key={propertyId as string} // (1)
-                    onAutosave={handleAutosave}
-                    performUpload={handleRedirect}
-                    resetEverything={resetEverything}
-                    handleCancel={handleRedirect}
-                />
-            )}
+            <Form
+                key={propertyId as string} // (1)
+                isError={isError}
+                onAutosave={handleAutosave}
+                performEdit={handleRedirect}
+                resetEverything={resetEverything}
+                handleCancel={handleRedirect}
+            />
 
-            {
-                // loading indicator (incase POST request is taking alot of time)
-                isEditLoading && <LogoProgressIndicator />
-            }
             <ConfirmationDialogBox
                 action={"delete"}
                 open={clearConfirmDialogOpen}

@@ -1,108 +1,108 @@
 import { Grid, Stack } from "@mui/material";
+import {
+    AddressSection,
+    AreaSection,
+    BalconiesSection,
+    BasicSection,
+    BlueprintsSection,
+    DetailsSection,
+    DistanceSection,
+    HeatingSection,
+    ImageSection,
+    NotesSection,
+    ParkingsSection,
+    SuitableFor,
+    TechnicalFeatures,
+    VideoSection,
+} from "./sections";
+import ConstructionSection from "./sections/ConstructionSection";
+import { useRouter } from "next/router";
+import { useTabsContext } from "src/contexts/tabs";
+import { useGetPropertyByIdQuery } from "src/services/properties";
+import { useEffect } from "react";
+import Features from "./sections/FeaturesSection";
+import DescriptionSection from "./sections/DescriptionSection";
 
-interface MainContainerProps {
-    AddressSection: JSX.Element;
-    ImageSection: JSX.Element;
-    BasicSection: JSX.Element;
-    DescriptionSection: JSX.Element;
-    DetailsSection: JSX.Element;
-    HeatingSection: JSX.Element;
-    AreaSection: JSX.Element;
-    DistanceSection: JSX.Element;
-    ParkingsSection: JSX.Element;
-    BalconiesSection: JSX.Element;
-    BlueprintsSection: JSX.Element;
-    NotesSection: JSX.Element;
-    VideoSection: JSX.Element;
-    SuitableFor: JSX.Element;
-    TechnicalFeatures: JSX.Element;
-    ConstructionSection: JSX.Element;
-    Features: JSX.Element;
-}
+const MainContainer: React.FC = () => {
+    const router = useRouter();
+    const { propertyId } = router.query;
 
-const MainContainer: React.FC<MainContainerProps> = (props) => {
-    const {
-        AddressSection,
-        ImageSection,
-        BasicSection,
-        DescriptionSection,
-        DetailsSection,
-        HeatingSection,
-        AreaSection,
-        DistanceSection,
-        ParkingsSection,
-        BalconiesSection,
-        BlueprintsSection,
-        NotesSection,
-        VideoSection,
-        SuitableFor,
-        TechnicalFeatures,
-        ConstructionSection,
-        Features,
-    } = props;
+    const { pushTab } = useTabsContext();
 
-    return (
+    const { data } = useGetPropertyByIdQuery(+propertyId!); // basic details
+
+    useEffect(() => {
+        if (data && propertyId) {
+            pushTab({
+                path: `/property/${propertyId}`,
+                id: propertyId as string,
+                label: `Property ${data?.code || ""}`,
+            });
+        }
+    }, [data, propertyId]);
+
+    return data ? (
         <Grid container spacing={1}>
             <Grid item xs={8} order={"row"}>
                 <Stack spacing={1}>
                     <Grid item xs={12}>
-                        {ImageSection}
+                        <ImageSection data={data} />
                     </Grid>
                     <Grid item xs={12}>
-                        {DetailsSection}
+                        <DetailsSection data={data} />
                     </Grid>
                     <Grid item xs={12}>
-                        {ConstructionSection}
+                        <ConstructionSection data={data} />
                     </Grid>
                     <Grid item xs={12}>
-                        {TechnicalFeatures}
+                        <TechnicalFeatures data={data} />
                     </Grid>
                     <Grid item xs={12}>
-                        {Features}
+                        <Features data={data} />
                     </Grid>
                     <Grid item xs={12}>
-                        {DescriptionSection}
+                        <DescriptionSection data={data} />
                     </Grid>
                     <Grid item xs={12}>
-                        {AddressSection}
+                        <AddressSection />
                     </Grid>
                     <Grid item xs={12}>
-                        {VideoSection}
+                        <VideoSection data={data} />
                     </Grid>
                 </Stack>
             </Grid>
             <Grid item xs={4} order={"row"}>
                 <Stack spacing={1}>
                     <Grid item xs={12}>
-                        {BasicSection}
+                        <BasicSection data={data} />
                     </Grid>
                     <Grid item xs={12}>
-                        {HeatingSection}
+                        <HeatingSection data={data} />
                     </Grid>
                     <Grid item xs={12}>
-                        {AreaSection}
+                        <AreaSection data={data} />
                     </Grid>
                     <Grid item xs={12}>
-                        {DistanceSection}
+                        <DistanceSection data={data} />
                     </Grid>
                     <Grid item xs={12}>
-                        {SuitableFor}
+                        <SuitableFor data={data} />
                     </Grid>
                     <Grid item xs={12}>
-                        {BalconiesSection}
+                        <BalconiesSection data={data} />
                     </Grid>
                     <Grid item xs={12}>
-                        {ParkingsSection}
+                        <ParkingsSection data={data} />
                     </Grid>
                     <Grid item xs={12}>
-                        {NotesSection}
+                        <NotesSection />
                     </Grid>
                     <Grid item xs={12}>
-                        {BlueprintsSection}
+                        <BlueprintsSection data={data} />
                     </Grid>
                 </Stack>
             </Grid>
         </Grid>
-    );
+    ) : null;
 };
 export default MainContainer;

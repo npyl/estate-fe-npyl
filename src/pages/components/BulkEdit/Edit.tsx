@@ -141,7 +141,7 @@ export const EditState = ({ data, setData }: EditProps<string>) => {
     const { t } = useTranslation();
 
     const enums = useGlobals();
-    const stateEnum = enums?.property?.state;
+    const stateEnum = enums?.property?.state || [];
 
     return (
         <DefaultOrEdit label={t("State")} onDisable={() => setData("")}>
@@ -149,17 +149,11 @@ export const EditState = ({ data, setData }: EditProps<string>) => {
                 value={data}
                 onChange={(e) => setData(e.target.value as string)}
             >
-                {stateEnum ? (
-                    stateEnum.map((item, index) => {
-                        return (
-                            <MenuItem key={index} value={item.key}>
-                                {item.value}
-                            </MenuItem>
-                        );
-                    })
-                ) : (
-                    <MenuItem />
-                )}
+                {stateEnum.map((item, index) => (
+                    <MenuItem key={index} value={item.key}>
+                        {item.value}
+                    </MenuItem>
+                ))}
             </StyledSelect>
         </DefaultOrEdit>
     );

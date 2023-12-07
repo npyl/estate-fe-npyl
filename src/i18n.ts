@@ -449,10 +449,38 @@ const resources = {
             Preview: "Preview",
 
             /////////////////
+
+            "Pool Size": "Pool Size",
+            Frontage: "Frontage",
+            "Plot Frontage": "Plot Frontage",
+            "Building Balance": "Building Balance",
+            "Total Construction": "Total Construction",
+            "Permissible Building Height": "Permissible Building Height",
+            "Permissible Floors": "Permissible Floors",
+            "Legal and Technical Control": "Legal and Technical Control",
+            Irrigation: "Irrigation",
+            "Water Supply": "Water Supply",
+            "Electricity Supply": "Electricity Supply",
+            "Building Permit": "Building Permit",
+            "Contains Building": "Contains Building",
         },
     },
     gr: {
         translation: {
+            "Pool Size": "Μέγεθος Πισίνας",
+            Frontage: "Πρόσοψη",
+            "Plot Frontage": "Πρόσοψη Οικοπέδου",
+            "Building Balance": "Υπόλοιπο Δόμησησης",
+            "Total Construction": "Συνολική Δόμηση",
+            "Permissible Building Height": "Επιτρεπόμενο Ύψος Δόμησης",
+            "Permissible Floors": "Επιτρεπόμενοι Όροφοι",
+            "Legal and Technical Control": "Νομικός και Τεχνικός Έλεγχος",
+            Irrigation: "Ποτιστικό",
+            "Water Supply": "Παροχή Νερού",
+            "Electricity Supply": "Παροχή Ρεύματος",
+            "Building Permit": "Οικοδομική Άδεια",
+            "Contains Building": "Διαθέτει Κτίσμα",
+
             ID: "Κωδικός Ακινήτου",
             Properties: "Ακίνητα",
             Notifications: "Ενημερώσεις",

@@ -9,18 +9,21 @@ import LandFormSection from "./components/LandForm";
 import OtherFormSection from "./components/OtherForm";
 import ResidentialFormSection from "./components/ResidentialForm";
 import { UploadFileProvider } from "src/contexts/uploadFile";
-import { MutableRefObject, useEffect } from "react";
+import { MutableRefObject } from "react";
 import { useAutosaveTab } from "src/hooks/useAutosaveTab";
+import { SaveButton } from "src/components/SaveButton";
 
 interface IFormProps {
+    isError: boolean;
     onAutosave: (bodyRef: MutableRefObject<any>) => void;
     resetEverything: () => void;
-    performUpload: () => void;
+    performEdit: () => void;
     handleCancel: () => void;
 }
 export default function Form({
+    isError,
     onAutosave,
-    performUpload,
+    performEdit,
     resetEverything,
     handleCancel,
 }: IFormProps) {
@@ -32,7 +35,7 @@ export default function Form({
     const parentCategory = useSelector(selectParentCategory);
 
     // create our property draft
-    const handleClick = () => performUpload();
+    const handleSave = () => performEdit();
 
     return (
         <Grid container spacing={1} paddingLeft={2} paddingTop={1}>
@@ -77,13 +80,15 @@ export default function Form({
                 </Grid>
 
                 <Grid item>
-                    <Button
+                    <SaveButton
+                        error={isError}
+                        loadingPosition="start"
                         variant="contained"
-                        endIcon={<SendIcon />}
-                        onClick={handleClick}
+                        startIcon={<SendIcon />}
+                        onClick={handleSave}
                     >
                         {t("Save")}
-                    </Button>
+                    </SaveButton>
                 </Grid>
             </Grid>
         </Grid>

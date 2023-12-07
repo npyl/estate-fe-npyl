@@ -24,9 +24,7 @@ export default function FilterParentCategory() {
     const categories = useSelector(selectParentCategories);
 
     const propertyEnums = data?.property;
-    const categoryEnums = propertyEnums?.parentCategory;
-
-    if (!data) return null;
+    const categoryEnums = propertyEnums?.parentCategory || [];
 
     const handleChange = (event: SelectChangeEvent<typeof categories>) => {
         const {
@@ -51,7 +49,7 @@ export default function FilterParentCategory() {
                     return selected
                         .map(
                             (key) =>
-                                categoryEnums?.find((item) => item.key === key)
+                                categoryEnums.find((item) => item.key === key)
                                     ?.value
                         )
                         .filter(Boolean)
@@ -65,21 +63,19 @@ export default function FilterParentCategory() {
                 }
                 MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
             >
-                {categoryEnums!.map(({ key, value }) => {
-                    return (
-                        <MenuItem key={key} value={key}>
-                            <Checkbox
-                                checked={
-                                    categories &&
-                                    categories.length > 0 &&
-                                    categories.indexOf(key) > -1
-                                }
-                            />
+                {categoryEnums.map(({ key, value }) => (
+                    <MenuItem key={key} value={key}>
+                        <Checkbox
+                            checked={
+                                categories &&
+                                categories.length > 0 &&
+                                categories.indexOf(key) > -1
+                            }
+                        />
 
-                            {value}
-                        </MenuItem>
-                    );
-                })}
+                        {value}
+                    </MenuItem>
+                ))}
             </Select>
         </FormControl>
     );

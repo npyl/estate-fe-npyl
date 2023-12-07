@@ -55,6 +55,28 @@ import {
     setState,
     setCategory,
     selectParentCategory,
+    selectPlotFrontage,
+    selectBuildingBalance,
+    selectTotalConstruction,
+    selectPermissibleBuildingHeight,
+    selectPermissibleFloors,
+    selectLegalAndTechnicalControl,
+    selectIrrigation,
+    selectWaterSupply,
+    selectSetbackCoefficient,
+    selectHasBuildingPermit,
+    selectHasBuilding,
+    setPlotFrontage,
+    setBuildingBalance,
+    setTotalConstruction,
+    setPermissibleBuildingHeight,
+    setPermissibleFloors,
+    setSetbackCoefficient,
+    setLegalAndTechnicalControl,
+    setIrrigation,
+    setWaterSupply,
+    setHasBuilding,
+    setHasBuildingPermit,
 } from "src/slices/property";
 
 import DatePicker from "src/components/DatePicker";
@@ -71,8 +93,41 @@ import { KeyCodeField } from "./components/KeyCodeField";
 import { useTranslation } from "react-i18next";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { DateObject } from "react-multi-date-picker";
-import { IOSSwitch } from "./BasicDetails";
+import { IOSSwitch } from "src/components/iOSSwitch";
 import { KeyValue } from "src/types/KeyValue";
+
+import { styled } from "@mui/system";
+
+const StyledGrid = styled(Grid)`
+    display: inline-flex;
+    align-items: center;
+    flex-direction: row;
+`;
+
+interface CustomCheckboxProps {
+    value?: boolean;
+    setter: ActionCreatorWithPayload<any, string>;
+    label: string;
+}
+
+const CustomCheckbox = ({ value, setter, label }: CustomCheckboxProps) => {
+    const dispatch = useDispatch();
+
+    return (
+        <StyledGrid item xs={2}>
+            <Checkbox
+                value={value}
+                checked={value}
+                onChange={(e, checked) => dispatch(setter(checked))}
+                sx={{ cursor: "default" }}
+                color="primary"
+            />
+            <Typography variant="body1" sx={{ ml: 0 }}>
+                {label}
+            </Typography>
+        </StyledGrid>
+    );
+};
 
 const BasicForLandSection: React.FC<any> = () => {
     const router = useRouter();
@@ -119,29 +174,39 @@ const BasicForLandSection: React.FC<any> = () => {
     const auction = useSelector(selectAuction);
     const debatablePrice = useSelector(selectDebatablePrice);
     const exclusive = useSelector(selectExclusive);
-    const stateEnum = enums?.state;
+
+    const stateEnum = enums?.state || [];
 
     const parentCategory = useSelector(selectParentCategory) || "";
     const category = useSelector(selectCategory) || "";
 
     const subCategoriesMap: {
         [key: string]: KeyValue[];
-    } | null = useMemo(
-        () =>
-            enums &&
-            enums.residentialCategory &&
-            enums.commercialCategory &&
-            enums.landCategory &&
-            enums.otherCategory
-                ? {
-                      RESIDENTIAL: enums.residentialCategory,
-                      COMMERCIAL: enums.commercialCategory,
-                      LAND: enums.landCategory,
-                      OTHER: enums.otherCategory,
-                  }
-                : null,
+    } = useMemo(
+        () => ({
+            RESIDENTIAL: enums?.residentialCategory || [],
+            COMMERCIAL: enums?.commercialCategory || [],
+            LAND: enums?.landCategory || [],
+            OTHER: enums?.otherCategory || [],
+        }),
         [enums]
     );
+
+    const plotFrontage = useSelector(selectPlotFrontage);
+    const buildingBalance = useSelector(selectBuildingBalance);
+    const totalConstruction = useSelector(selectTotalConstruction);
+    const permissibleBuildingHeight = useSelector(
+        selectPermissibleBuildingHeight
+    );
+    const permissibleFloors = useSelector(selectPermissibleFloors);
+    const legalAndTechnicalControl = useSelector(
+        selectLegalAndTechnicalControl
+    );
+    const irrigation = useSelector(selectIrrigation);
+    const waterSupply = useSelector(selectWaterSupply);
+    const setbackCoefficient = useSelector(selectSetbackCoefficient);
+    const hasBuildingPermit = useSelector(selectHasBuildingPermit);
+    const hasBuilding = useSelector(selectHasBuilding);
 
     //
     //  Dates
@@ -158,8 +223,6 @@ const BasicForLandSection: React.FC<any> = () => {
     const changeRentalPeriodEnd = (dates: DateObject | DateObject[]) =>
         changeDate(dates, setRentalPeriodEnd);
 
-    if (!enums) return null;
-
     return (
         <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
             <Box
@@ -167,8 +230,8 @@ const BasicForLandSection: React.FC<any> = () => {
                     px: 3,
                     py: 1.5,
                     display: "flex",
-                    justifyContent: "space-between", // This will push the child elements apart
-                    alignItems: "center", // This will align them vertically
+                    justifyContent: "space-between",
+                    alignItems: "center",
                 }}
             >
                 <Typography variant="h6">{t("Basic Details")}</Typography>
@@ -177,18 +240,13 @@ const BasicForLandSection: React.FC<any> = () => {
                         <IOSSwitch
                             value={exclusive}
                             checked={exclusive}
-                            onChange={(
-                                event: React.ChangeEvent<unknown>,
-                                checked: boolean
-                            ) => {
-                                dispatch(setExclusive(checked));
-                            }}
+                            onChange={(e, checked) =>
+                                dispatch(setExclusive(checked))
+                            }
                             name="exclusiveOption"
-                            // any other props you need
                         />
                     }
-                    label={t("Exclusive")} // or "iOS style" if you're keeping the original label
-                    // ... any other props you need
+                    label={t("Exclusive")}
                 />
             </Box>
 
@@ -202,32 +260,30 @@ const BasicForLandSection: React.FC<any> = () => {
                             }
                         />
                     </Grid>
-                    {subCategoriesMap && (
-                        <Grid item xs={6}>
-                            <TextField
-                                disabled={!parentCategory}
-                                fullWidth
-                                select
-                                label={t("Category")}
-                                value={category}
-                                onChange={(e) =>
-                                    dispatch(setCategory(e.target.value))
-                                }
-                            >
-                                {subCategoriesMap[parentCategory!]?.map(
-                                    ({ key, value }) => (
-                                        <MenuItem key={key} value={key}>
-                                            {value}
-                                        </MenuItem>
-                                    )
-                                ) || <MenuItem />}
-                            </TextField>
-                        </Grid>
-                    )}
+                    <Grid item xs={6}>
+                        <TextField
+                            disabled={!parentCategory}
+                            fullWidth
+                            select
+                            label={t("Category")}
+                            value={category}
+                            onChange={(e) =>
+                                dispatch(setCategory(e.target.value))
+                            }
+                        >
+                            {subCategoriesMap[parentCategory!]?.map(
+                                ({ key, value }) => (
+                                    <MenuItem key={key} value={key}>
+                                        {value}
+                                    </MenuItem>
+                                )
+                            )}
+                        </TextField>
+                    </Grid>
+
                     <Grid item xs={6}>
                         <Autocomplete
                             disablePortal
-                            id="combo-box-demo"
                             options={ownerNames}
                             value={{
                                 label:
@@ -252,7 +308,6 @@ const BasicForLandSection: React.FC<any> = () => {
                     <Grid item xs={6}>
                         <TextField
                             fullWidth
-                            id="outlined-start-adornment"
                             select
                             label={t("Manager")}
                             value={manager}
@@ -276,25 +331,19 @@ const BasicForLandSection: React.FC<any> = () => {
 
                     <Grid item xs={6}>
                         <FormControl fullWidth>
-                            <InputLabel id="demo-simple-select-label">
-                                {t("State")}
-                            </InputLabel>
+                            <InputLabel>{t("State")}</InputLabel>
                             <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
                                 value={state}
                                 label={t("State")}
                                 onChange={(e) => {
                                     dispatch(setState(e.target.value));
                                 }}
                             >
-                                {stateEnum.map((state, index) => {
-                                    return (
-                                        <MenuItem key={index} value={state.key}>
-                                            {state.value}
-                                        </MenuItem>
-                                    );
-                                })}
+                                {stateEnum.map((state, index) => (
+                                    <MenuItem key={index} value={state.key}>
+                                        {state.value}
+                                    </MenuItem>
+                                ))}
                             </Select>
                         </FormControl>
                     </Grid>
@@ -302,7 +351,6 @@ const BasicForLandSection: React.FC<any> = () => {
                         <OnlyNumbersInput
                             label={t("Area")}
                             value={area}
-                            formatThousands
                             adornment="m²"
                             onChange={(value) => {
                                 dispatch(setArea(value));
@@ -313,7 +361,6 @@ const BasicForLandSection: React.FC<any> = () => {
                         <OnlyNumbersInput
                             label={t("Plot Area")}
                             value={plotArea}
-                            formatThousands
                             adornment="m²"
                             onChange={(value) => {
                                 dispatch(setPlotArea(value));
@@ -324,7 +371,6 @@ const BasicForLandSection: React.FC<any> = () => {
                         <OnlyNumbersInput
                             label={t("Price")}
                             value={price}
-                            formatThousands
                             adornment="€"
                             onChange={(value) => {
                                 dispatch(setPrice(value));
@@ -345,11 +391,55 @@ const BasicForLandSection: React.FC<any> = () => {
                         <OnlyNumbersInput
                             label={t("Estimated Rent Price")}
                             value={estimatedRentPrice}
-                            formatThousands
                             adornment="€"
                             onChange={(value) => {
                                 dispatch(setEstimatedRentPrice(value));
                             }}
+                        />
+                    </Grid>
+
+                    <Grid item xs={6}>
+                        <OnlyNumbersInput
+                            label={t("Plot Frontage")}
+                            value={plotFrontage}
+                            onChange={(v) => dispatch(setPlotFrontage(v))}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <OnlyNumbersInput
+                            label={t("Building Balance")}
+                            value={buildingBalance}
+                            onChange={(v) => dispatch(setBuildingBalance(v))}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <OnlyNumbersInput
+                            label={t("Total Construction")}
+                            value={totalConstruction}
+                            onChange={(v) => dispatch(setTotalConstruction(v))}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <OnlyNumbersInput
+                            label={t("Permissible Building Height")}
+                            value={permissibleBuildingHeight}
+                            onChange={(v) =>
+                                dispatch(setPermissibleBuildingHeight(v))
+                            }
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <OnlyNumbersInput
+                            label={t("Permissible Floors")}
+                            value={permissibleFloors}
+                            onChange={(v) => dispatch(setPermissibleFloors(v))}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <OnlyNumbersInput
+                            label={t("Setback Coefficient")}
+                            value={setbackCoefficient}
+                            onChange={(v) => dispatch(setSetbackCoefficient(v))}
                         />
                     </Grid>
 
@@ -359,6 +449,7 @@ const BasicForLandSection: React.FC<any> = () => {
                             resourceId={+propertyId!}
                         />
                     </Grid>
+
                     <Grid
                         item
                         xs={2}
@@ -366,7 +457,6 @@ const BasicForLandSection: React.FC<any> = () => {
                         sx={{ display: "inline-flex", alignItems: "center" }}
                     >
                         <Checkbox
-                            id="outlined-controlled"
                             value={rented}
                             checked={rented}
                             onChange={(
@@ -459,6 +549,32 @@ const BasicForLandSection: React.FC<any> = () => {
                         </Typography>
                     </Grid>
 
+                    <CustomCheckbox
+                        label={t("Legal and Technical Control")}
+                        value={legalAndTechnicalControl}
+                        setter={setLegalAndTechnicalControl}
+                    />
+                    <CustomCheckbox
+                        label={t("Irrigation")}
+                        value={irrigation}
+                        setter={setIrrigation}
+                    />
+                    <CustomCheckbox
+                        label={t("Water Supply")}
+                        value={waterSupply}
+                        setter={setWaterSupply}
+                    />
+                    <CustomCheckbox
+                        label={t("Building Permit")}
+                        value={hasBuildingPermit}
+                        setter={setHasBuildingPermit}
+                    />
+                    <CustomCheckbox
+                        label={t("Contains Building")}
+                        value={hasBuilding}
+                        setter={setHasBuilding}
+                    />
+
                     <Grid item xs={12} padding={1}>
                         <Grid
                             container
@@ -487,7 +603,6 @@ const BasicForLandSection: React.FC<any> = () => {
                                         <OnlyNumbersInput
                                             label={t("Current Rent Price")}
                                             value={currentRentPrice}
-                                            formatThousands
                                             onChange={(value) => {
                                                 dispatch(
                                                     setCurrentRentPrice(value)

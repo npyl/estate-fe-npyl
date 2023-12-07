@@ -1,14 +1,14 @@
 import { createContext, useCallback, useContext, useState } from "react";
 import { ITab } from "src/interfaces/tabs";
 
-export type ITabState = {
+type ITabState = {
     appTabs: ITab[];
     setAppTabs: React.Dispatch<React.SetStateAction<ITab[]>>;
     pushTab: (newTab: ITab) => void;
     removeTab: (identifier: string) => void;
 };
 
-export const TabsContext = createContext<ITabState | undefined>(undefined);
+const TabsContext = createContext<ITabState | undefined>(undefined);
 
 export const useTabsContext = () => {
     const context = useContext(TabsContext);

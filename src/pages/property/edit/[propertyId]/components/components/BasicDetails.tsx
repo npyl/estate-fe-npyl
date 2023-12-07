@@ -8,13 +8,9 @@ import {
     MenuItem,
     Paper,
     Select,
-    Switch,
-    SwitchProps,
     TextField,
     Typography,
-    styled,
 } from "@mui/material";
-import { useDebouncedCallback } from "use-debounce";
 import DatePicker from "src/components/DatePicker";
 
 import Autocomplete from "@mui/material/Autocomplete";
@@ -80,62 +76,8 @@ import { CodeField } from "./componentsFields/CodeField";
 import { KeyCodeField } from "./componentsFields/KeyCodeField";
 import { KeyValue } from "src/types/KeyValue";
 import { DateObject } from "react-multi-date-picker";
+import { IOSSwitch } from "src/components/iOSSwitch";
 
-export const IOSSwitch = styled((props: SwitchProps) => (
-    <Switch
-        focusVisibleClassName=".Mui-focusVisible"
-        disableRipple
-        {...props}
-    />
-))(({ theme }) => ({
-    width: 42,
-    height: 26,
-    padding: 0,
-    "& .MuiSwitch-switchBase": {
-        padding: 0,
-        margin: 2,
-        transitionDuration: "300ms",
-        "&.Mui-checked": {
-            transform: "translateX(16px)",
-            color: "#fff",
-            "& + .MuiSwitch-track": {
-                backgroundColor:
-                    theme.palette.mode === "dark" ? "#2ECA45" : "#65C466",
-                opacity: 1,
-                border: 0,
-            },
-            "&.Mui-disabled + .MuiSwitch-track": {
-                opacity: 0.5,
-            },
-        },
-        "&.Mui-focusVisible .MuiSwitch-thumb": {
-            color: "#33cf4d",
-            border: "6px solid #fff",
-        },
-        "&.Mui-disabled .MuiSwitch-thumb": {
-            color:
-                theme.palette.mode === "light"
-                    ? theme.palette.grey[100]
-                    : theme.palette.grey[600],
-        },
-        "&.Mui-disabled + .MuiSwitch-track": {
-            opacity: theme.palette.mode === "light" ? 0.7 : 0.3,
-        },
-    },
-    "& .MuiSwitch-thumb": {
-        boxSizing: "border-box",
-        width: 22,
-        height: 22,
-    },
-    "& .MuiSwitch-track": {
-        borderRadius: 26 / 2,
-        backgroundColor: theme.palette.mode === "light" ? "#E9E9EA" : "#39393D",
-        opacity: 1,
-        transition: theme.transitions.create(["background-color"], {
-            duration: 500,
-        }),
-    },
-}));
 const BasicSection: React.FC<any> = () => {
     const router = useRouter();
     const { t } = useTranslation();
@@ -187,20 +129,13 @@ const BasicSection: React.FC<any> = () => {
 
     const subCategoriesMap: {
         [key: string]: KeyValue[];
-    } | null = useMemo(
-        () =>
-            enums &&
-            enums.residentialCategory &&
-            enums.commercialCategory &&
-            enums.landCategory &&
-            enums.otherCategory
-                ? {
-                      RESIDENTIAL: enums.residentialCategory,
-                      COMMERCIAL: enums.commercialCategory,
-                      LAND: enums.landCategory,
-                      OTHER: enums.otherCategory,
-                  }
-                : null,
+    } = useMemo(
+        () => ({
+            RESIDENTIAL: enums?.residentialCategory || [],
+            COMMERCIAL: enums?.commercialCategory || [],
+            LAND: enums?.landCategory || [],
+            OTHER: enums?.otherCategory || [],
+        }),
         [enums]
     );
 
@@ -218,8 +153,6 @@ const BasicSection: React.FC<any> = () => {
         changeDate(dates, setRentalPeriodStart);
     const changeRentalPeriodEnd = (dates: DateObject | DateObject[]) =>
         changeDate(dates, setRentalPeriodEnd);
-
-    if (!enums || !propertyId || !subCategoriesMap) return null;
 
     return (
         <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
@@ -280,7 +213,7 @@ const BasicSection: React.FC<any> = () => {
                                         {value}
                                     </MenuItem>
                                 )
-                            ) || <MenuItem />}
+                            )}
                         </TextField>
                     </Grid>
 
@@ -336,7 +269,6 @@ const BasicSection: React.FC<any> = () => {
                         <OnlyNumbersInput
                             label={t("Area")}
                             value={area}
-                            formatThousands
                             onChange={(value) => {
                                 dispatch(setArea(value));
                             }}
@@ -353,13 +285,11 @@ const BasicSection: React.FC<any> = () => {
                                     dispatch(setState(e.target.value));
                                 }}
                             >
-                                {stateEnum.map((state, index) => {
-                                    return (
-                                        <MenuItem key={index} value={state.key}>
-                                            {state.value}
-                                        </MenuItem>
-                                    );
-                                })}
+                                {stateEnum?.map((state, index) => (
+                                    <MenuItem key={index} value={state.key}>
+                                        {state.value}
+                                    </MenuItem>
+                                ))}
                             </Select>
                         </FormControl>
                     </Grid>
@@ -367,7 +297,6 @@ const BasicSection: React.FC<any> = () => {
                         <OnlyNumbersInput
                             label={t("Price")}
                             value={price}
-                            formatThousands
                             onChange={(value) => {
                                 dispatch(setPrice(value));
                             }}
@@ -379,7 +308,6 @@ const BasicSection: React.FC<any> = () => {
                         <OnlyNumbersInput
                             label={t("Plot Area")}
                             value={plotArea}
-                            formatThousands
                             onChange={(value) => {
                                 dispatch(setPlotArea(value));
                             }}
@@ -408,7 +336,6 @@ const BasicSection: React.FC<any> = () => {
                         <OnlyNumbersInput
                             label={t("Estimated Rent Price")}
                             value={estimatedRentPrice}
-                            formatThousands
                             onChange={(value) => {
                                 dispatch(setEstimatedRentPrice(value));
                             }}
@@ -486,7 +413,6 @@ const BasicSection: React.FC<any> = () => {
                                 <OnlyNumbersInput
                                     label={t("Current Rent Price")}
                                     value={currentRentPrice}
-                                    formatThousands
                                     onChange={(value) => {
                                         dispatch(setCurrentRentPrice(value));
                                     }}

@@ -1,30 +1,24 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
-import { Send as SendIcon } from "@mui/icons-material";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { useCreateCustomerMutation } from "src/services/customers";
-import { BsPlusCircle } from "react-icons/bs";
+import { SaveButton } from "src/components/SaveButton";
+import SendIcon from "@mui/icons-material/Send";
+import { useTranslation } from "react-i18next";
+
 const CreateCustomer: NextPage = () => {
+    const { t } = useTranslation();
     const router = useRouter();
-    const [createCustomer] = useCreateCustomerMutation();
-    const [startCreation, setStartCreation] = useState(false);
+    const [createCustomer, { isError }] = useCreateCustomerMutation();
 
-    const handleCreateButtonClick = () => {
-        setStartCreation(true);
-    };
-
-    useEffect(() => {
-        if (!startCreation) return;
-
+    const handleSave = () =>
         createCustomer() // create customer
             .unwrap()
             .then((id) => router.push(`/customer/edit/${id}`)) // redirect
             .catch((reason) => toast.error("Failed to create customer!"));
-    }, [startCreation]);
 
     return (
         <Box
@@ -40,22 +34,15 @@ const CreateCustomer: NextPage = () => {
             <Typography variant="h3" gutterBottom>
                 Create a New Customer
             </Typography>
-            <Button
+            <SaveButton
+                error={isError}
+                loadingPosition="start"
                 variant="contained"
-                color="primary"
-                startIcon={<BsPlusCircle />}
-                onClick={handleCreateButtonClick}
-                style={{
-                    backgroundColor: "#4CAF50",
-                    color: "white",
-                    padding: "10px 20px",
-                    fontSize: "16px",
-                    borderRadius: "5px",
-                    boxShadow: "0 2px 5px rgba(0, 0, 0, 0.5)",
-                }}
+                startIcon={<SendIcon />}
+                onClick={handleSave}
             >
-                Create Customer
-            </Button>
+                {t("Save")}
+            </SaveButton>
         </Box>
     );
 };

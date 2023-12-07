@@ -1,5 +1,7 @@
 import { Grid, Stack } from "@mui/material";
+import { useSelector } from "react-redux";
 import * as React from "react";
+
 import AreasSection from "./components/Areas";
 import BalconiesSection from "./components/Balconies";
 import BasicSection from "./components/BasicDetails";
@@ -16,47 +18,14 @@ import PropertyDescriptionSection from "./components/PropertyDescription";
 import SuitableForForResidentialSection from "./components/SuitableForForResidential";
 import TechnicalFeaturesAndInteriorForResidentialSection from "./components/TechnicalFeaturesAndInteriorForResidential";
 import ROISection from "./components/ROI";
-import { useSelector } from "react-redux";
-
-import {
-    selectState,
-    selectStreet,
-    selectNumber,
-    selectCity,
-    selectZipCode,
-    selectRegion,
-    selectCountry,
-    selectComplex,
-    selectLatitude,
-    selectLongitude,
-    // setters
-    setStreet,
-    setNumber,
-    setComplex,
-    setCity,
-    setZipCode,
-    setRegion,
-    setCountry,
-    setLatitude,
-    setLongitude,
-} from "src/slices/property";
-
 import NotesSection from "./components/NotesSection";
 import VideoLinkSection from "./components/VideoLink";
 import DocumentsSection from "./components/Documents";
 
-const ResidentialFormSection: React.FC<any> = (props) => {
-    const state = useSelector(selectState);
+import { selectState } from "src/slices/property";
 
-    const street = useSelector(selectStreet);
-    const number = useSelector(selectNumber);
-    const city = useSelector(selectCity);
-    const zipCode = useSelector(selectZipCode);
-    const complex = useSelector(selectComplex);
-    const region = useSelector(selectRegion);
-    const country = useSelector(selectCountry);
-    const lat = useSelector(selectLatitude);
-    const lng = useSelector(selectLongitude);
+const ResidentialFormSection: React.FC = () => {
+    const state = useSelector(selectState);
 
     return (
         <>
@@ -81,27 +50,7 @@ const ResidentialFormSection: React.FC<any> = (props) => {
                     <Stack spacing={1}>
                         <ImageSection />
 
-                        <LocationSection
-                            street={street}
-                            number={number}
-                            city={city}
-                            zipCode={zipCode}
-                            region={region}
-                            country={country}
-                            complex={complex}
-                            lat={lat}
-                            lng={lng}
-                            // setters
-                            setStreet={setStreet}
-                            setNumber={setNumber}
-                            setCity={setCity}
-                            setZipCode={setZipCode}
-                            setComplex={setComplex}
-                            setRegion={setRegion}
-                            setCountry={setCountry}
-                            setLatitude={setLatitude}
-                            setLongitude={setLongitude}
-                        />
+                        <LocationSection />
 
                         <HeatingAndEnergySection />
 
@@ -116,7 +65,6 @@ const ResidentialFormSection: React.FC<any> = (props) => {
                     </Stack>
                 </Grid>
 
-                {/* <DetailsSection enums={property} /> */}
                 <Grid item xs={12}>
                     <FeaturesSection />
                 </Grid>

@@ -1,15 +1,13 @@
 import { Divider, Grid, Paper, TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { Box } from "@mui/system";
-import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import OnlyNumbersInput from "src/components/OnlyNumbers";
 import Map, { IMapMarker, IMapCoordinates, IMapAddress } from "../Map/Map";
 
-import { ILocationPOST } from "src/types/location";
 import { RegionSelect } from "./RegionSelect";
 import { MunicipSelect } from "./MunicipSelect";
 import { NeighbourSelect } from "./NeighbourSelect";
@@ -17,45 +15,44 @@ import {
     useGetClosestQuery,
     useLazyGetHierarchyByAreaIdQuery,
 } from "src/services/location";
+
+import {
+    selectStreet,
+    selectNumber,
+    selectCity,
+    selectZipCode,
+    selectRegion,
+    selectCountry,
+    selectLatitude,
+    selectLongitude,
+    selectComplex,
+    // setters
+    setStreet,
+    setNumber,
+    setCity,
+    setZipCode,
+    setComplex,
+    setRegion,
+    setCountry,
+    setLatitude,
+    setLongitude,
+} from "src/slices/property";
+
 import { useTranslation } from "react-i18next";
 
-interface ILocationSectionProps extends Omit<ILocationPOST, "locationDisplay"> {
-    // redux setters
-    setStreet: ActionCreatorWithPayload<any, string>;
-    setNumber: ActionCreatorWithPayload<any, string>;
-    setCity: ActionCreatorWithPayload<any, string>;
-    setZipCode: ActionCreatorWithPayload<any, string>;
-    setComplex: ActionCreatorWithPayload<any, string>;
-    setRegion: ActionCreatorWithPayload<any, string>;
-    setCountry: ActionCreatorWithPayload<any, string>;
-    setLatitude: ActionCreatorWithPayload<any, string>;
-    setLongitude: ActionCreatorWithPayload<any, string>;
-}
-const LocationSection = (props: ILocationSectionProps) => {
-    const {
-        street,
-        number,
-        city,
-        zipCode,
-        complex,
-        region,
-        country,
-        lat,
-        lng,
-
-        setStreet,
-        setNumber,
-        setCity,
-        setZipCode,
-        setComplex,
-        setRegion,
-        setCountry,
-        setLatitude,
-        setLongitude,
-    } = props;
-
+const LocationSection = () => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
+
+    const street = useSelector(selectStreet);
+    const number = useSelector(selectNumber);
+    const city = useSelector(selectCity);
+    const zipCode = useSelector(selectZipCode);
+    const complex = useSelector(selectComplex);
+    const region = useSelector(selectRegion);
+    const country = useSelector(selectCountry);
+    const lat = useSelector(selectLatitude);
+    const lng = useSelector(selectLongitude);
 
     const [getHierarchy] = useLazyGetHierarchyByAreaIdQuery();
 

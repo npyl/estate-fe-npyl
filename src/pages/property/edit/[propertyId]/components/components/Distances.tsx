@@ -20,9 +20,9 @@ import {
 } from "src/slices/property";
 import { useTranslation } from "react-i18next";
 
-import OnlyNumbersWithDot from "./componentsFields/OnlyNumbersWithDot";
+import OnlyNumbersInput from "src/components/OnlyNumbers";
 
-const DistancesSection: React.FC<any> = (props) => {
+const DistancesSection: React.FC = () => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
@@ -34,10 +34,7 @@ const DistancesSection: React.FC<any> = (props) => {
     const airport = useSelector(selectAirport);
     const sea = useSelector(selectSea);
 
-    const handleChange = (
-        setter: any,
-        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => dispatch(setter(event.target.value));
+    const handleChange = (setter: any, v: string) => dispatch(setter(v));
 
     return (
         <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
@@ -55,72 +52,69 @@ const DistancesSection: React.FC<any> = (props) => {
             <Grid item xs={12} padding={1}>
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
-                        <OnlyNumbersWithDot
+                        <OnlyNumbersInput
                             label={t("Public Transportation")}
                             value={publicTransportation?.toString() || ""}
-                            onChange={(event) =>
-                                handleChange(setPublicTransportation, event)
+                            acceptsDecimal
+                            onChange={(v) =>
+                                handleChange(setPublicTransportation, v)
                             }
-                            adorValue="km"
+                            adornment="km"
                         />
                     </Grid>
 
                     <Grid item xs={6}>
-                        <OnlyNumbersWithDot
+                        <OnlyNumbersInput
                             label={t("Sea")}
                             value={sea?.toString() || ""}
-                            onChange={(event) => handleChange(setSea, event)}
-                            adorValue="km"
+                            acceptsDecimal
+                            onChange={(v) => handleChange(setSea, v)}
+                            adornment="km"
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <OnlyNumbersWithDot
+                        <OnlyNumbersInput
                             label={t("Schools")}
                             value={schools?.toString() || ""}
-                            onChange={(event) =>
-                                handleChange(setSchools, event)
-                            }
-                            adorValue="km"
+                            acceptsDecimal
+                            onChange={(v) => handleChange(setSchools, v)}
+                            adornment="km"
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <OnlyNumbersWithDot
+                        <OnlyNumbersInput
                             label={t("Supermarket")}
                             value={supermarket?.toString() || ""}
-                            onChange={(event) =>
-                                handleChange(setSupermarket, event)
-                            }
-                            adorValue="km"
+                            acceptsDecimal
+                            onChange={(v) => handleChange(setSupermarket, v)}
+                            adornment="km"
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <OnlyNumbersWithDot
+                        <OnlyNumbersInput
                             label={t("Cafe-Restaurant")}
                             value={cafeRestaurant?.toString() || ""}
-                            onChange={(event) =>
-                                handleChange(setCafeRestaurant, event)
-                            }
-                            adorValue="km"
+                            acceptsDecimal
+                            onChange={(v) => handleChange(setCafeRestaurant, v)}
+                            adornment="km"
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <OnlyNumbersWithDot
+                        <OnlyNumbersInput
                             label={t("Hospital")}
                             value={hospital?.toString() || ""}
-                            onChange={(event) =>
-                                handleChange(setHospital, event)
-                            }
-                            adorValue="km"
+                            acceptsDecimal
+                            onChange={(v) => handleChange(setHospital, v)}
+                            adornment="km"
                         />
                     </Grid>
                     <Grid item xs={6}>
-                        <OnlyNumbersWithDot
+                        <OnlyNumbersInput
                             label={t("Airport")}
                             value={airport?.toString() || ""}
-                            onChange={(event) =>
-                                handleChange(setAirport, event)
-                            }
-                            adorValue="km"
+                            acceptsDecimal
+                            onChange={(v) => handleChange(setAirport, v)}
+                            adornment="km"
                         />
                     </Grid>
                 </Grid>

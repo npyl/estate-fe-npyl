@@ -14,6 +14,7 @@ import {
     selectNeedsRenovation,
     selectNeoclassical,
     selectNewlyBuilt,
+    selectPoolSize,
     selectPreserved,
     selectRenovated,
     selectTotalFloorNumber,
@@ -26,6 +27,7 @@ import {
     setNeedsRenovation,
     setNeoclassical,
     setNewlyBuilt,
+    setPoolSize,
     setPreserved,
     setRenovated,
     setTotalFloorNumber,
@@ -58,6 +60,8 @@ const ConstructionForResidentialSection: React.FC<any> = (props) => {
     const renovated = useSelector(selectRenovated);
     const needsRenovation = useSelector(selectNeedsRenovation);
     const preserved = useSelector(selectPreserved);
+
+    const poolSize = useSelector(selectPoolSize);
 
     if (!details || !details.heatingSystem || !details.heatingType) return null;
 
@@ -106,18 +110,14 @@ const ConstructionForResidentialSection: React.FC<any> = (props) => {
                             }
                         />
                     </Grid>
-                    <Grid
-                        item
-                        xs={3}
-                        flexDirection="row"
-                        sx={{ display: "inline-flex", alignItems: "center" }}
-                    />
-                    <Grid
-                        item
-                        xs={3}
-                        flexDirection="row"
-                        sx={{ display: "inline-flex", alignItems: "center" }}
-                    />
+                    <Grid item xs={6}>
+                        <OnlyNumbersInput
+                            fullWidth
+                            label={t("Pool Size")}
+                            value={poolSize}
+                            onChange={(v) => dispatch(setPoolSize(v))}
+                        />
+                    </Grid>
                     <Grid
                         item
                         xs={3}
@@ -127,12 +127,9 @@ const ConstructionForResidentialSection: React.FC<any> = (props) => {
                         <Checkbox
                             value={underConstruction}
                             checked={underConstruction}
-                            onChange={(
-                                event: React.ChangeEvent<unknown>,
-                                checked: boolean
-                            ) => {
-                                dispatch(setUnderConstruction(checked));
-                            }}
+                            onChange={(e, checked) =>
+                                dispatch(setUnderConstruction(checked))
+                            }
                             sx={{ cursor: "default" }}
                             color="primary"
                             inputProps={{ "aria-label": "Under Construction" }}
@@ -197,12 +194,9 @@ const ConstructionForResidentialSection: React.FC<any> = (props) => {
                         <Checkbox
                             value={elevator}
                             checked={elevator}
-                            onChange={(
-                                event: React.ChangeEvent<unknown>,
-                                checked: boolean
-                            ) => {
-                                dispatch(setElevator(checked));
-                            }}
+                            onChange={(e, checked) =>
+                                dispatch(setElevator(checked))
+                            }
                             sx={{ cursor: "default" }}
                             color="primary"
                             inputProps={{ "aria-label": "Elevator" }}
@@ -220,12 +214,9 @@ const ConstructionForResidentialSection: React.FC<any> = (props) => {
                         <Checkbox
                             value={internalStairs}
                             checked={internalStairs}
-                            onChange={(
-                                event: React.ChangeEvent<unknown>,
-                                checked: boolean
-                            ) => {
-                                dispatch(setInternalStairs(checked));
-                            }}
+                            onChange={(e, checked) =>
+                                dispatch(setInternalStairs(checked))
+                            }
                             sx={{ cursor: "default" }}
                             color="primary"
                             inputProps={{ "aria-label": "Internal stairs" }}
@@ -243,12 +234,9 @@ const ConstructionForResidentialSection: React.FC<any> = (props) => {
                         <Checkbox
                             value={newlyBuilt}
                             checked={newlyBuilt}
-                            onChange={(
-                                event: React.ChangeEvent<unknown>,
-                                checked: boolean
-                            ) => {
-                                dispatch(setNewlyBuilt(checked));
-                            }}
+                            onChange={(e, checked) =>
+                                dispatch(setNewlyBuilt(checked))
+                            }
                             sx={{ cursor: "default" }}
                             color="primary"
                             inputProps={{ "aria-label": "Newly Build" }}
@@ -266,12 +254,9 @@ const ConstructionForResidentialSection: React.FC<any> = (props) => {
                         <Checkbox
                             value={incomplete}
                             checked={incomplete}
-                            onChange={(
-                                event: React.ChangeEvent<unknown>,
-                                checked: boolean
-                            ) => {
-                                dispatch(setIncomplete(checked));
-                            }}
+                            onChange={(e, checked) =>
+                                dispatch(setIncomplete(checked))
+                            }
                             sx={{ cursor: "default" }}
                             color="primary"
                             inputProps={{ "aria-label": "Incomplete" }}
@@ -289,12 +274,9 @@ const ConstructionForResidentialSection: React.FC<any> = (props) => {
                         <Checkbox
                             value={neoclassical}
                             checked={neoclassical}
-                            onChange={(
-                                event: React.ChangeEvent<unknown>,
-                                checked: boolean
-                            ) => {
-                                dispatch(setNeoclassical(checked));
-                            }}
+                            onChange={(e, checked) =>
+                                dispatch(setNeoclassical(checked))
+                            }
                             sx={{ cursor: "default" }}
                             color="primary"
                             inputProps={{ "aria-label": "Neoclassical" }}
@@ -312,12 +294,9 @@ const ConstructionForResidentialSection: React.FC<any> = (props) => {
                         <Checkbox
                             value={preserved}
                             checked={preserved}
-                            onChange={(
-                                event: React.ChangeEvent<unknown>,
-                                checked: boolean
-                            ) => {
-                                dispatch(setPreserved(checked));
-                            }}
+                            onChange={(e, checked) =>
+                                dispatch(setPreserved(checked))
+                            }
                             sx={{ cursor: "default" }}
                             color="primary"
                             inputProps={{ "aria-label": "Preserved" }}

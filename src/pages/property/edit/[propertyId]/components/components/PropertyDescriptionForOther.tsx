@@ -10,6 +10,7 @@ import {
     selectAccessibility,
     selectBathrooms,
     selectFloor,
+    selectFrontage,
     selectLandUse,
     selectLayers,
     selectOrientation,
@@ -20,6 +21,7 @@ import {
     setAccessibility,
     setBathrooms,
     setFloor,
+    setFrontage,
     setLandUse,
     setLayers,
     setOrientation,
@@ -50,6 +52,8 @@ const PropertyDescriptionForOtherSection: React.FC<any> = (props) => {
     const viewType = useSelector(selectViewType) || "";
     const accessibility = useSelector(selectAccessibility) || "";
     const zoneType = useSelector(selectZoneType) || "";
+
+    const frontage = useSelector(selectFrontage);
 
     if (!details) return null;
 
@@ -217,6 +221,15 @@ const PropertyDescriptionForOtherSection: React.FC<any> = (props) => {
                                 </MenuItem>
                             ))}
                         </TextField>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <OnlyNumbersInput
+                            type="number"
+                            fullWidth
+                            label={t("Frontage")}
+                            value={frontage}
+                            onChange={(v) => dispatch(setFrontage(v))}
+                        />
                     </Grid>
                     <Grid
                         item

@@ -1,38 +1,5 @@
 import Box from "@mui/material/Box";
-import List from "@mui/material/List";
-import Stack, { StackProps } from "@mui/material/Stack";
 import { styled } from "@mui/material/styles";
-
-export const CheckboxList = styled(List, {
-    shouldForwardProp: (props) => props !== "horizontalOptions",
-})<{ horizontalOptions?: boolean }>(({ theme, horizontalOptions }) => ({
-    minWidth: 200,
-    maxHeight: 270,
-    overflowY: "auto",
-    scrollbarWidth: "thin",
-    ...(horizontalOptions
-        ? {
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(70px, 1fr))",
-              maxWidth: 420,
-              minWidth: 420,
-          }
-        : undefined),
-    "& .MuiListItemButton-root": {
-        "&:hover": {
-            background: theme.palette.primary.main,
-        },
-    },
-}));
-
-export const StyledDateStack = styled((props) => (
-    <Stack direction={"row"} spacing={1} {...props} />
-))<StackProps>(({ theme }) => ({
-    alignItems: "center",
-    background: theme.palette.primary.main,
-    padding: "4px 8px",
-    borderRadius: "6px",
-}));
 
 export const CalendarBox = styled(Box, {
     shouldForwardProp: (props) => props !== "isSingleDate",

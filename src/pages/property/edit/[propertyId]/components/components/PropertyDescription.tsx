@@ -43,6 +43,8 @@ import {
     setZoneType,
     setFloorApartment,
     selectFloorApartment,
+    selectFrontage,
+    setFrontage,
 } from "src/slices/property";
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 
@@ -73,6 +75,8 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
     const zoneType = useSelector(selectZoneType) || "";
     const orientation = useSelector(selectOrientation) || "";
     const floor = useSelector(selectFloor) || "";
+
+    const frontage = useSelector(selectFrontage);
 
     if (!enums || !details) return null;
 
@@ -290,21 +294,20 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
                             ))}
                         </TextField>
                     </Grid>
+                    <Grid item xs={6}>
+                        <OnlyNumbersInput
+                            type="number"
+                            fullWidth
+                            label={t("Frontage")}
+                            value={frontage}
+                            onChange={(v) => dispatch(setFrontage(v))}
+                        />
+                    </Grid>
+
+                    {/* Checkboxes */}
                     <Grid
                         item
-                        xs={3}
-                        flexDirection="row"
-                        sx={{ display: "inline-flex", alignItems: "center" }}
-                    />
-                    <Grid
-                        item
-                        xs={3}
-                        flexDirection="row"
-                        sx={{ display: "inline-flex", alignItems: "center" }}
-                    ></Grid>
-                    <Grid
-                        item
-                        xs={3}
+                        xs={2.4}
                         flexDirection="row"
                         sx={{ display: "inline-flex", alignItems: "center" }}
                     >
@@ -329,7 +332,7 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
                     </Grid>
                     <Grid
                         item
-                        xs={3}
+                        xs={2.4}
                         flexDirection="row"
                         sx={{ display: "inline-flex", alignItems: "center" }}
                     >
@@ -352,10 +355,9 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
                             {t("Playroom")}
                         </Typography>
                     </Grid>
-
                     <Grid
                         item
-                        xs={3}
+                        xs={2.4}
                         flexDirection="row"
                         sx={{ display: "inline-flex", alignItems: "center" }}
                     >
@@ -381,7 +383,7 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
 
                     <Grid
                         item
-                        xs={3}
+                        xs={2.4}
                         flexDirection="row"
                         sx={{ display: "inline-flex", alignItems: "center" }}
                     >
@@ -406,7 +408,7 @@ const PropertyDescriptionSection: React.FC<any> = (props) => {
                     </Grid>
                     <Grid
                         item
-                        xs={3}
+                        xs={2.4}
                         flexDirection="row"
                         sx={{ display: "inline-flex", alignItems: "center" }}
                     >
