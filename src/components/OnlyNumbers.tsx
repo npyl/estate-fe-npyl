@@ -38,6 +38,8 @@ const OnlyNumbersInput: React.FC<OnlyNumbersInputProps> = ({
         setLocalValue(values.formattedValue);
     };
 
+    // TODO: make it show thousands and work with acceptDecimal true / false
+
     return (
         <NumericFormat
             fullWidth
