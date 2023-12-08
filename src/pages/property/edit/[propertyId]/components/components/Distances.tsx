@@ -34,7 +34,7 @@ const DistancesSection: React.FC = () => {
     const airport = useSelector(selectAirport);
     const sea = useSelector(selectSea);
 
-    const handleChange = (setter: any, v: string) => dispatch(setter(v));
+    const handleChange = (setter: any, v: number) => dispatch(setter(v));
 
     return (
         <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
@@ -54,7 +54,7 @@ const DistancesSection: React.FC = () => {
                     <Grid item xs={6}>
                         <OnlyNumbersInput
                             label={t("Public Transportation")}
-                            value={publicTransportation?.toString() || ""}
+                            value={publicTransportation}
                             acceptsDecimal
                             onChange={(v) =>
                                 handleChange(setPublicTransportation, v)
@@ -66,7 +66,7 @@ const DistancesSection: React.FC = () => {
                     <Grid item xs={6}>
                         <OnlyNumbersInput
                             label={t("Sea")}
-                            value={sea?.toString() || ""}
+                            value={sea}
                             acceptsDecimal
                             onChange={(v) => handleChange(setSea, v)}
                             adornment="km"
@@ -75,7 +75,7 @@ const DistancesSection: React.FC = () => {
                     <Grid item xs={6}>
                         <OnlyNumbersInput
                             label={t("Schools")}
-                            value={schools?.toString() || ""}
+                            value={schools}
                             acceptsDecimal
                             onChange={(v) => handleChange(setSchools, v)}
                             adornment="km"
@@ -84,7 +84,7 @@ const DistancesSection: React.FC = () => {
                     <Grid item xs={6}>
                         <OnlyNumbersInput
                             label={t("Supermarket")}
-                            value={supermarket?.toString() || ""}
+                            value={supermarket}
                             acceptsDecimal
                             onChange={(v) => handleChange(setSupermarket, v)}
                             adornment="km"
@@ -93,7 +93,7 @@ const DistancesSection: React.FC = () => {
                     <Grid item xs={6}>
                         <OnlyNumbersInput
                             label={t("Cafe-Restaurant")}
-                            value={cafeRestaurant?.toString() || ""}
+                            value={cafeRestaurant}
                             acceptsDecimal
                             onChange={(v) => handleChange(setCafeRestaurant, v)}
                             adornment="km"
@@ -102,7 +102,7 @@ const DistancesSection: React.FC = () => {
                     <Grid item xs={6}>
                         <OnlyNumbersInput
                             label={t("Hospital")}
-                            value={hospital?.toString() || ""}
+                            value={hospital}
                             acceptsDecimal
                             onChange={(v) => handleChange(setHospital, v)}
                             adornment="km"
@@ -111,7 +111,7 @@ const DistancesSection: React.FC = () => {
                     <Grid item xs={6}>
                         <OnlyNumbersInput
                             label={t("Airport")}
-                            value={airport?.toString() || ""}
+                            value={airport}
                             acceptsDecimal
                             onChange={(v) => handleChange(setAirport, v)}
                             adornment="km"

@@ -1,36 +1,17 @@
 import { InputAdornment, TextField, TextFieldProps } from "@mui/material";
 import { useEffect, useState } from "react";
+import { NumberFormatValues, NumericFormat } from "react-number-format";
 import { useDebouncedCallback } from "use-debounce";
 
 interface OnlyNumbersInputProps
     extends Omit<TextFieldProps, "label" | "value" | "onChange" | "disabled"> {
     label: string;
-    value?: number | string;
+    value?: number;
     acceptsDecimal?: boolean;
-    onChange: (value: string) => void;
+    onChange: (value: number) => void;
     adornment?: string;
     disabled?: boolean;
 }
-
-const formatNumberWithPeriod = (num: string | number) => {
-    if (!num) return "";
-
-    let strNum = num.toString();
-
-    // Check if there is a decimal part
-    let hasDecimal = strNum.includes(",");
-
-    // Replace any existing periods before splitting
-    strNum = strNum.replace(/\./g, "");
-
-    let [integerPart, decimalPart] = strNum.split(",");
-
-    // Apply the thousand separator regex only to the integer part
-    integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-
-    // Rejoin the integer and decimal parts, if there was a decimal part originally
-    return hasDecimal ? `${integerPart},${decimalPart || ""}` : integerPart;
-};
 
 const OnlyNumbersInput: React.FC<OnlyNumbersInputProps> = ({
     label,
@@ -41,50 +22,38 @@ const OnlyNumbersInput: React.FC<OnlyNumbersInputProps> = ({
     acceptsDecimal = false,
     ...props
 }) => {
-    const [displayValue, setDisplayValue] = useState<string | number>(
-        value || ""
-    );
+    const [localValue, setLocalValue] = useState("");
 
-    const debouncedOnChange = useDebouncedCallback(
-        (value: string) => onChange(value),
+    useEffect(() => {
+        setLocalValue(value?.toString() || "");
+    }, [value]);
+
+    const debouncedChange = useDebouncedCallback(
+        (n: number) => onChange(n),
         50
     );
 
-    const handleCodeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        let input = event.target.value;
-
-        // Allow only one decimal point
-        let decimalRegex = acceptsDecimal
-            ? /[^0-9.,]|[.,](?=.*[.,])/g
-            : /[^0-9]/g;
-
-        let numericValue = input.replace(decimalRegex, "");
-
-        // Replace period with comma for decimal
-        if (
-            acceptsDecimal &&
-            numericValue.charAt(numericValue.length - 1) === "."
-        )
-            numericValue = `${numericValue.slice(0, numericValue.length - 1)},`;
-
-        // Format thousands
-        const formattedValue = formatNumberWithPeriod(numericValue);
-
-        debouncedOnChange(formattedValue);
-        setDisplayValue(formattedValue);
+    const handleChange = (values: NumberFormatValues) => {
+        debouncedChange(values.floatValue || 0);
+        setLocalValue(values.formattedValue);
     };
 
-    useEffect(() => {
-        setDisplayValue(value || "");
-    }, [value]);
+    // TODO: make it show thousands and work with acceptDecimal true / false
 
     return (
-        <TextField
+        <NumericFormat
             fullWidth
+            customInput={TextField}
             label={label}
-            value={displayValue}
-            onChange={handleCodeChange}
-            {...props}
+            onValueChange={handleChange}
+            value={localValue}
+            variant="outlined"
+            // thousandSeparator="."
+            decimalSeparator=","
+            allowedDecimalSeparators={[","]}
+            // fixedDecimalScale={acceptsDecimal}
+            // decimalScale={acceptsDecimal ? 2 : undefined}
+            // {...props}
             disabled={disabled}
             InputProps={{
                 endAdornment: adornment ? (

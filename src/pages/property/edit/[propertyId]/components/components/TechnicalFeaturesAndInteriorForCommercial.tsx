@@ -111,7 +111,7 @@ const TechnicalFeaturesAndInteriorForCommercialSection: React.FC<any> = (
                     <Grid item xs={6}>
                         <OnlyNumbersInput
                             label={t("Display Window Length")}
-                            value={displayWindowsLength?.toString() || ""}
+                            value={displayWindowsLength}
                             onChange={(v) =>
                                 dispatch(setDisplayWindowsLength(v))
                             }

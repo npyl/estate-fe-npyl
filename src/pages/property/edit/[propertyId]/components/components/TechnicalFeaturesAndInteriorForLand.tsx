@@ -29,11 +29,11 @@ const TechnicalFeaturesAndInteriorForLandSection: React.FC<any> = () => {
     const facadeLength = useSelector(selectFacadeLength);
     const inclination = useSelector(selectInclination);
 
-    const handleFloorToAreaRatioChange = (value: string) =>
+    const handleFloorToAreaRatioChange = (value: number) =>
         dispatch(setFloorToAreaRatio(value));
-    const handleCoverageFactorChange = (value: string) =>
+    const handleCoverageFactorChange = (value: number) =>
         dispatch(setCoverageFactor(value));
-    const handleFacadeLengthChange = (value: string) =>
+    const handleFacadeLengthChange = (value: number) =>
         dispatch(setFacadeLength(value));
     const handleInclinationChange = (value: string) =>
         dispatch(setInclination(value));

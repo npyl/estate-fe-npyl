@@ -172,28 +172,28 @@ const CustomerInformation: React.FC<any> = () => {
                     <Grid item xs={6}>
                         <OnlyNumbersInput
                             label={t("Mobile Phone")}
-                            value={mobilePhone}
-                            onChange={(value) => {
-                                dispatch(setMobilePhone(value));
-                            }}
+                            value={+mobilePhone}
+                            onChange={(value) =>
+                                dispatch(setMobilePhone(value.toString()))
+                            }
                         />
                     </Grid>
                     <Grid item xs={6}>
                         <OnlyNumbersInput
                             label={t("Home Phone")}
-                            value={homePhone}
-                            onChange={(value) => {
-                                dispatch(setHomePhone(value));
-                            }}
+                            value={+homePhone}
+                            onChange={(value) =>
+                                dispatch(setHomePhone(value.toString()))
+                            }
                         />
                     </Grid>
                     <Grid item xs={6}>
                         <OnlyNumbersInput
                             label={t("Fax")}
-                            value={fax}
-                            onChange={(value) => {
-                                dispatch(setFax(value));
-                            }}
+                            value={+fax}
+                            onChange={(value) =>
+                                dispatch(setFax(value.toString()))
+                            }
                         />
                     </Grid>
 

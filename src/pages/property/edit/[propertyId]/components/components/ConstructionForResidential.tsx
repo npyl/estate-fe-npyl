@@ -104,9 +104,9 @@ const ConstructionForResidentialSection: React.FC<any> = (props) => {
                         <OnlyNumbersInput
                             fullWidth
                             label={t("Total Floor Number")}
-                            value={totalFloorNumber}
+                            value={+totalFloorNumber}
                             onChange={(value) =>
-                                dispatch(setTotalFloorNumber(value))
+                                dispatch(setTotalFloorNumber(value.toString()))
                             }
                         />
                     </Grid>

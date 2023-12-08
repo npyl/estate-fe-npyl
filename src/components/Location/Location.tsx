@@ -281,7 +281,7 @@ const LocationSection = () => {
                     <Grid item xs={6}>
                         <OnlyNumbersInput
                             label={t("Zip Code")}
-                            value={zipCode || ""}
+                            value={zipCode}
                             onChange={(value) => dispatch(setZipCode(value))}
                         />
                     </Grid>
