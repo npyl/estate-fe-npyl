@@ -67,16 +67,23 @@ const OnlyNumbersInput: React.FC<OnlyNumbersInputProps> = ({
         )
             numericValue = `${numericValue.slice(0, numericValue.length - 1)},`;
 
+        debouncedOnChange(numericValue);
+
         // Format thousands
         const formattedValue = formatNumberWithPeriod(numericValue);
-
-        debouncedOnChange(formattedValue);
         setDisplayValue(formattedValue);
     };
 
     useEffect(() => {
-        setDisplayValue(value || "");
-    }, [value]);
+        let temp = value?.toString() || "";
+
+        if (acceptsDecimal && temp.charAt(temp.length - 1) === ".")
+            temp = `${temp.slice(0, temp.length - 1)},`;
+
+        const formattedValue = formatNumberWithPeriod(temp);
+
+        setDisplayValue(formattedValue || "");
+    }, [acceptsDecimal, value]);
 
     return (
         <TextField
