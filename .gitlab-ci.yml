@@ -1,9 +1,9 @@
 stages:
-  - Pull and Build
+  - pull and build
   - deploy
 
 build_image:
-  stage: Pull and Build
+  stage: pull and build
   
   tags:
     - estate-fe
@@ -22,3 +22,12 @@ build_image:
     - git restore .
   only:
     - main
+
+deploy:
+  stage: deploy
+  tags:
+    - estate-fe
+
+  script:
+    - export PM2_HOME="/root/.pm2"
+    - pm2 restart real_estate
