@@ -15,7 +15,10 @@ build_image:
 
   script:
     - cd /var/www/estate-fe
+    - git restore .
     - git pull origin main
     - npm ci
+    - npm run build
+    - git restore .
   only:
     - main
