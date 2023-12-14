@@ -1,17 +1,21 @@
 stages:
-  - build
+  - Pull and Build
   - deploy
 
-
-
 build_image:
-  stage: build
+  stage: Pull and Build
+  
   tags:
     - estate-fe
-    
+
+  cache:
+    paths:
+      - node_modules/
+      - .npm/
+
   script:
     - cd /var/www/estate-fe
     - git pull origin main
-    - npm run build
+    - npm ci
   only:
     - main
