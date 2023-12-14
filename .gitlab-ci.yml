@@ -7,7 +7,8 @@ stages:
 build_image:
   stage: build
   tags:
-    - deploy
+    - estate-fe
+    
   script:
     - cd /var/www/estate-fe
     - git pull origin main
