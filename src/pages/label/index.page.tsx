@@ -14,6 +14,7 @@ import {
     useDeletePropertyLabelMutation,
     useDeleteCustomerLabelMutation,
     useDeleteDocumentLabelMutation,
+    labels,
 } from "src/services/labels";
 import { useAllPropertiesQuery } from "src/services/properties";
 import { ICustomer } from "src/types/customer";
@@ -24,9 +25,12 @@ import { Edit } from "./components/Edit";
 import { Preview } from "./components/Preview";
 import { IEditProps } from "./components/types";
 import { ConfirmationDialogBox } from "../components/ConfirmationDialogBox";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 const LabelsPage: NextPage = () => {
     const { t } = useTranslation();
+    const dispatch = useDispatch();
 
     const propertySectionLabel = t("Property Labels");
     const customerSectionLabel = t("Customer Labels");
@@ -51,6 +55,9 @@ const LabelsPage: NextPage = () => {
     const { data: allProperties } = useAllPropertiesQuery();
     const { data: allCustomers } = useAllCustomersQuery();
 
+    const invalidateTags = () =>
+        dispatch(labels.util.invalidateTags(["Labels"]));
+
     const propertyIdForCode = useCallback(
         (code: string) =>
             allProperties?.find((property) => property.code === code)?.id || "",
@@ -65,6 +72,11 @@ const LabelsPage: NextPage = () => {
             )?.id || "",
         [allCustomers]
     );
+
+    const onSuccess = () => {
+        toast.success("Created & Assigned!");
+        invalidateTags();
+    };
 
     const createLabel = (
         labelName: string,
@@ -93,7 +105,7 @@ const LabelsPage: NextPage = () => {
                 resource,
                 resourceId,
                 body,
-            });
+            }).then(onSuccess);
         }
     };
     const editLabel = ({ id, name, color, resource }: IEditProps) => {
