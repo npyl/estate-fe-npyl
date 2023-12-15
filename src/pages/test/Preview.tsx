@@ -7,11 +7,16 @@ import {
     Typography,
     styled,
 } from "@mui/material";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ILabel } from "src/types/label";
 import { Label } from "src/components/label";
-import { useGetLabelsQuery } from "src/services/labels";
+import {
+    useDeleteCustomerLabelMutation,
+    useDeleteLabelForResourceMutation,
+    useDeletePropertyLabelMutation,
+    useGetLabelsQuery,
+} from "src/services/labels";
 import { Edit } from "@mui/icons-material";
 import { BsTrash } from "react-icons/bs";
 
@@ -23,11 +28,23 @@ interface StyledGridProps extends GridProps {
 const StyledGrid = styled(Grid)<StyledGridProps>(
     ({ theme, editMode, deleteMode }) => ({
         borderRadius: "15px",
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+
+        "& .item-mutation-icon": {
+            display: "none",
+        },
+
         "&:hover":
             editMode || deleteMode
                 ? {
                       backgroundColor: theme.palette.neutral?.[100] || "#ccc",
                       cursor: "pointer",
+
+                      "& .item-mutation-icon": {
+                          display: "block",
+                      },
                   }
                 : {},
         "&:active":
@@ -66,7 +83,7 @@ const Section = ({
             <Typography variant="h6" color={"text.secondary"} mb={2}>
                 {name}
             </Typography>
-            <Grid container flexWrap={"wrap"}>
+            <Grid container flexWrap={"wrap"} rowGap={0.2}>
                 {items?.map((label) => (
                     <StyledGrid
                         key={label.id}
@@ -87,6 +104,26 @@ const Section = ({
                         >
                             {label.name}
                         </Label>
+
+                        {editMode ? (
+                            <Edit
+                                className="item-mutation-icon"
+                                style={{
+                                    marginTop: 2,
+                                    marginRight: 5,
+                                    color: "#555",
+                                }}
+                            />
+                        ) : deleteMode ? (
+                            <BsTrash
+                                className="item-mutation-icon"
+                                style={{
+                                    marginTop: 7,
+                                    marginRight: 5,
+                                    color: "#555",
+                                }}
+                            />
+                        ) : null}
                     </StyledGrid>
                 ))}
             </Grid>
@@ -109,7 +146,7 @@ const Preview = () => {
                 labels?.customerLabels || [],
                 labels?.documentLabels || []
             ),
-        []
+        [labels]
     );
 
     const toggleEdit = () => {
@@ -120,8 +157,15 @@ const Preview = () => {
         setEditMode(false);
         setDeleteMode((old) => !old);
     };
+    const resetModes = () => {
+        setEditMode(false);
+        setDeleteMode(false);
+    };
 
-    const handleMutate = (id: number) => {};
+    const handleMutate = useCallback(
+        (id: number) => {},
+        [editMode, deleteMode]
+    );
 
     return (
         <Paper
