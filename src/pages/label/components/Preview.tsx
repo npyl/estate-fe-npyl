@@ -43,58 +43,51 @@ export const Preview = ({ onEdit, onDelete }: PreviewProps) => {
         <Grid component={Paper} item xs={12} sm p={2}>
             <Stack direction={"column"} spacing={3}>
                 <Typography variant="h5">{t("Already Existing")}</Typography>
-                {labelData &&
-                    Object.entries(labelData).map(([_, value], index) => {
-                        return (
-                            <Grid
-                                key={index}
-                                gap={1}
-                                container
-                                flex={1}
-                                direction={"column"}
-                            >
-                                <Typography
-                                    variant="h6"
-                                    color={"text.secondary"}
-                                >
-                                    {value.label}
-                                </Typography>
-                                <Stack
-                                    direction={"row"}
-                                    flexWrap={"wrap"}
-                                    gap={0.5}
-                                >
-                                    {value.data &&
-                                        value.data.map((label: ILabel) => (
-                                            <EditableLabel
-                                                key={label.id}
-                                                variant="soft"
-                                                sx={{
-                                                    borderRadius: 7,
-                                                    color: "white",
-                                                    bgcolor: label.color,
-                                                }}
-                                                onClose={() =>
-                                                    label.id &&
-                                                    onDelete(
-                                                        value.label,
-                                                        label.id
-                                                    )
-                                                }
-                                                onEdit={() =>
-                                                    onEdit({
-                                                        ...label,
-                                                        resource: value.label,
-                                                    })
-                                                }
-                                            >
-                                                {label.name}
-                                            </EditableLabel>
-                                        ))}
-                                </Stack>
-                            </Grid>
-                        );
-                    })}
+                {labelData
+                    ? Object.entries(labelData).map(([_, value], index) => (
+                          <Grid
+                              item
+                              key={index}
+                              gap={1}
+                              container
+                              flex={1}
+                              direction={"column"}
+                          >
+                              <Typography variant="h6" color={"text.secondary"}>
+                                  {value.label}
+                              </Typography>
+                              <Stack
+                                  direction={"row"}
+                                  flexWrap={"wrap"}
+                                  gap={0.5}
+                              >
+                                  {value.data?.map((label: ILabel) => (
+                                      <EditableLabel
+                                          key={label.id}
+                                          variant="soft"
+                                          sx={{
+                                              borderRadius: 7,
+                                              color: "white",
+                                              bgcolor: label.color,
+                                          }}
+                                          onClose={() =>
+                                              label.id &&
+                                              onDelete(value.label, label.id)
+                                          }
+                                          onEdit={() =>
+                                              onEdit({
+                                                  ...label,
+                                                  resource: value.label,
+                                              })
+                                          }
+                                      >
+                                          {label.name}
+                                      </EditableLabel>
+                                  ))}
+                              </Stack>
+                          </Grid>
+                      ))
+                    : null}
             </Stack>
         </Grid>
     );

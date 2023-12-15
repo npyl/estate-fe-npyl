@@ -17,6 +17,7 @@ import ROISection from "./components/ROI";
 import VideoLinkSection from "./components/VideoLink";
 import DocumentsSection from "./components/Documents";
 import { selectState } from "src/slices/property";
+import NotesSection from "./components/NotesSection";
 
 const OtherFormSection: React.FC = () => {
     const state = useSelector(selectState);
@@ -36,6 +37,7 @@ const OtherFormSection: React.FC = () => {
                         <BlueprintsSection />
                         <DocumentsSection />
                         <VideoLinkSection />
+                        <NotesSection />
                     </Stack>
                 </Grid>
                 <Grid item xs={6}>

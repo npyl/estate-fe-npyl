@@ -17,6 +17,7 @@ import DocumentsSection from "./components/Documents";
 import DistancesSection from "./components/Distances";
 
 import { selectState } from "src/slices/property";
+import NotesSection from "./components/NotesSection";
 
 const LandFormSection: React.FC<any> = () => {
     const state = useSelector(selectState);
@@ -34,6 +35,7 @@ const LandFormSection: React.FC<any> = () => {
                         <BlueprintsSection />
                         <DocumentsSection />
                         <VideoLinkSection />
+                        <NotesSection />
                     </Stack>
                 </Grid>
                 <Grid item xs={6}>

@@ -106,10 +106,6 @@ export const Create = ({ createLabel }: CreateProps) => {
             </Typography>
 
             <FormControl component={Stack} spacing={2} fullWidth>
-                <FormLabel>
-                    <Typography variant="subtitle2">{t("For")}</Typography>
-                </FormLabel>
-
                 <RadioGroup
                     row
                     value={assigneeType}
