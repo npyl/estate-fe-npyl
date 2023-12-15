@@ -332,6 +332,19 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
             setMaxYearOfConstruction
         );
 
+    const valueLabelFormat = useCallback(
+        (value: number, index: number): string => {
+            if (minFloors.length < value || maxFloors.length < value) return "";
+
+            return (
+                (index === 0
+                    ? minFloors[value]?.value
+                    : maxFloors[value]?.value) || ""
+            );
+        },
+        [minFloors, maxFloors]
+    );
+
     return (
         <>
             <Box
@@ -747,14 +760,7 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                                     );
                                 }}
                                 valueLabelDisplay="auto"
-                                valueLabelFormat={(
-                                    value: number,
-                                    index: number
-                                ) =>
-                                    index === 0
-                                        ? minFloors![value].value
-                                        : maxFloors![value].value
-                                }
+                                valueLabelFormat={valueLabelFormat}
                                 min={0}
                                 max={maxFloorsArray.length - 41}
                             />
