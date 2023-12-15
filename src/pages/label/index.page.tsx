@@ -1,6 +1,6 @@
 import { Grid } from "@mui/material";
 import type { NextPage } from "next";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
@@ -48,63 +48,52 @@ const LabelsPage: NextPage = () => {
     const [deleteLabelForCustomers] = useDeleteCustomerLabelMutation();
     const [deleteLabelForDocuments] = useDeleteDocumentLabelMutation();
 
-    const allProperties: IProperties[] = useAllPropertiesQuery().data || [];
-    const allCustomers: ICustomer[] = useAllCustomersQuery().data || [];
+    const { data: allProperties } = useAllPropertiesQuery();
+    const { data: allCustomers } = useAllCustomersQuery();
+
+    const propertyIdForCode = useCallback(
+        (code: string) =>
+            allProperties?.find((property) => property.code === code)?.id || "",
+        [allProperties]
+    );
+
+    const customerIdForFullname = useCallback(
+        (fullname: string) =>
+            allCustomers?.find(
+                (customer) =>
+                    customer.firstName + " " + customer.lastName === fullname
+            )?.id || "",
+        [allCustomers]
+    );
 
     const createLabel = (
         labelName: string,
         autocompleteValue: string,
         pickerColor: string,
-        assigneeType: LabelResourceType
+        resource: LabelResourceType
     ) => {
-        const propertyIdForCode = (code: string) => {
-            const property = allProperties.find(
-                (property) => property.code === code
-            );
-            return property?.id;
-        };
-        const customerIdForFullname = (fullname: string) => {
-            const customer = allCustomers.find(
-                (customer) =>
-                    customer.firstName + " " + customer.lastName === fullname
-            );
-            return customer?.id;
-        };
-
         const code = autocompleteValue;
-        const label = { color: pickerColor, name: labelName };
+        const body = { color: pickerColor, name: labelName };
 
         if (code === "") {
             // create without assign
-            if (assigneeType === "property") createLabelForProperties(label);
-            else if (assigneeType === "customer")
-                createLabelForCustomers(label);
-            else if (assigneeType === "document")
-                createLabelForDocuments(label);
+            if (resource === "property") createLabelForProperties(body);
+            else if (resource === "customer") createLabelForCustomers(body);
+            else if (resource === "document") createLabelForDocuments(body);
         } else {
             // create with assign
+            const resourceId =
+                resource === "property"
+                    ? propertyIdForCode(code)
+                    : customerIdForFullname(code);
 
-            if (assigneeType === "property") {
-                const propertyId = propertyIdForCode(code);
+            if (!resourceId) return;
 
-                if (!propertyId) return null;
-
-                createAssignLabel({
-                    resource: "property",
-                    resourceId: propertyId,
-                    body: label,
-                });
-            } else if (assigneeType === "customer") {
-                const customerId = customerIdForFullname(code);
-
-                if (!customerId) return null;
-
-                createAssignLabel({
-                    resource: "customer",
-                    resourceId: customerId,
-                    body: label,
-                });
-            }
+            createAssignLabel({
+                resource,
+                resourceId,
+                body,
+            });
         }
     };
     const editLabel = ({ id, name, color, resource }: IEditProps) => {
@@ -152,6 +141,7 @@ const LabelsPage: NextPage = () => {
         setResource("");
         setLabelId(0);
     };
+
     const handleDeleteConfirmation = () => {
         resource === propertySectionLabel &&
             deleteLabelForProperties(labelId).then(cancelEdit);
