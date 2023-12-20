@@ -31,3 +31,6 @@ deploy:
   script:
     - export PM2_HOME="/root/.pm2"
     - pm2 restart real_estate
+  only:
+    - main
+
