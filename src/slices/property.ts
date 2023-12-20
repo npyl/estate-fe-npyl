@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { LocationDisplay } from "src/types/enums";
 import { ILocation } from "src/types/location";
 import { IProperties, IPropertiesPOST } from "src/types/properties";
 import type { RootState } from "../store";
-import { LocationDisplay } from "src/types/enums";
 
 interface propertyState {
     id: number; // current property id (used as key)
@@ -224,6 +224,10 @@ const slice = createSlice({
         setDescription({ id, properties }, action): void {
             properties[id].description = action.payload;
         },
+        setTitle({ id, properties }, action): void {
+            properties[id].title = action.payload;
+        },
+
         setDescriptionText({ id, properties }, action): void {
             properties[id].descriptionText = action.payload;
         },
@@ -1374,7 +1378,7 @@ export const {
     setDescriptionText,
     setLatitude,
     setLongitude,
-
+    setTitle,
     setOrientation,
     setViewType,
     setAccessibility,
@@ -1494,6 +1498,8 @@ export const selectKeyCode = ({ property: { id, properties } }: RootState) =>
     properties[id]?.keyCode;
 export const selectBuildable = ({ property: { id, properties } }: RootState) =>
     properties[id]?.buildable;
+export const selectTitle = ({ property: { id, properties } }: RootState) =>
+    properties[id]?.title;
 export const selectDescription = ({
     property: { id, properties },
 }: RootState) => properties[id]?.description;

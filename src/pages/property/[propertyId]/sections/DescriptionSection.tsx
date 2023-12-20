@@ -1,9 +1,9 @@
-import React, { useMemo } from "react";
-import { IProperties } from "src/types/properties";
-import { Typography, Box, Paper, Divider, Grid } from "@mui/material";
-import { DraftEditor } from "src/components/draft-editor";
+import { Box, Divider, Grid, Paper, Typography } from "@mui/material";
 import { EditorState, convertFromRaw } from "draft-js";
+import React, { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { DraftEditor } from "src/components/draft-editor";
+import { IProperties } from "src/types/properties";
 interface DescriptionSectionProps {
     data: IProperties;
 }
@@ -25,13 +25,25 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = (props) => {
                 sx={{
                     px: 3,
                     py: 1.5,
+                    display: "grid",
+                    gap: 1,
+                }}
+            >
+                <Typography variant="h6">{t("Title")}</Typography>
+                <Typography variant="body1">{data?.title}</Typography>
+            </Box>
+            <Divider></Divider>
+            <Box
+                sx={{
+                    px: 3,
+                    py: 1.5,
                     display: "flex",
                     justifyContent: "left",
                 }}
             >
                 <Typography variant="h6">{t("Description")}</Typography>
             </Box>
-            <Divider></Divider>
+
             <Grid container spacing={0}>
                 <Grid item xs={12} order={"row"}>
                     <Box>
