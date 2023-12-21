@@ -8,7 +8,7 @@ import { useGetCustomerByIdQuery } from "src/services/customers";
 import { useRouter } from "next/router";
 import { LeadSource } from "src/types/global";
 import { useGlobals } from "src/hooks/useGlobals";
-import { TypeLabels } from "../../components/TypeLabels";
+import { TypeLabels } from "src/pages/customers/components/TypeLabels";
 
 const InformationSection: React.FC = () => {
     const { t } = useTranslation();

@@ -4,19 +4,22 @@ import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-import { LogoProgressIndicator } from "src/components/LogoProgressIndicator";
 import { useTabsContext } from "src/contexts/tabs";
 import {
-    useEditCustomerMutation,
+    useCreateOrUpdateCustomerMutation,
     useGetCustomerByIdQuery,
 } from "src/services/customers";
-import { setInitialState as setInitialCustomerState } from "src/slices/customer";
+import {
+    selectAll,
+    setInitialState as setInitialCustomerState,
+} from "src/slices/customer";
 import {
     setInitialState as setInitialNotesState,
     resetState as resetNotesState,
 } from "src/slices/notes";
 import { resetState as resetLabelsState } from "src/slices/labels";
-import Form from "./components/Form";
+import Form from "../../components/Form";
+import { useAutosaveTab } from "src/hooks/useAutosaveTab";
 
 // (1): forces Form re-render (=> unmount when changing from /edit/x to /edit/y pages)
 
@@ -27,7 +30,7 @@ const EditCustomer: NextPage = () => {
     const { customerId } = router.query;
 
     const { data } = useGetCustomerByIdQuery(+customerId!);
-    const [edit, { isError }] = useEditCustomerMutation();
+    const [edit, { isError }] = useCreateOrUpdateCustomerMutation();
 
     useEffect(() => {
         if (data && customerId) {
@@ -52,9 +55,9 @@ const EditCustomer: NextPage = () => {
 
     const handleAutosave = (bodyRef: MutableRefObject<any>) =>
         bodyRef.current?.id &&
-        edit({ customerId: +customerId!, body: bodyRef.current }).then(
-            resetEverything
-        );
+        edit({ ...bodyRef.current, id: +customerId! }).then(resetEverything);
+
+    useAutosaveTab(selectAll, handleAutosave);
 
     const resetEverything = () => {
         dispatch(resetLabelsState());
@@ -67,7 +70,6 @@ const EditCustomer: NextPage = () => {
         <Form
             key={customerId as string} // (1)
             isError={isError}
-            onAutosave={handleAutosave}
             performSave={handleRedirect}
             resetState={resetEverything}
             handleCancel={handleRedirect}

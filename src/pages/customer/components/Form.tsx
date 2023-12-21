@@ -7,14 +7,10 @@ import AddressDetails from "./AddressDetails";
 import CustomerInformation from "./CustomerInformation";
 import NotesSection from "./NotesSection";
 import DemandSection from "./DemandSection";
-import { useAutosaveTab } from "src/hooks/useAutosaveTab";
-import { selectAll } from "src/slices/customer";
-import { MutableRefObject } from "react";
 import { SaveButton } from "src/components/SaveButton";
 
 interface FormProps {
     isError: boolean;
-    onAutosave: (bodyRef: MutableRefObject<any>) => void;
     performSave: () => void;
     resetState: () => void;
     handleCancel: () => void;
@@ -22,14 +18,11 @@ interface FormProps {
 
 const Form = ({
     isError,
-    onAutosave,
     performSave,
     resetState,
     handleCancel,
 }: FormProps) => {
     const { t } = useTranslation();
-
-    useAutosaveTab(selectAll, onAutosave);
 
     return (
         <Grid paddingTop={1} paddingRight={0} container spacing={1}>

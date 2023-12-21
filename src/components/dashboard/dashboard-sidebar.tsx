@@ -61,7 +61,7 @@ const getSections = (t: TFunction): Section[] => [
 
             {
                 title: t("Customers"),
-                path: "/customer",
+                path: "/customers",
                 icon: <UsersIcon fontSize="small" />,
             },
 
