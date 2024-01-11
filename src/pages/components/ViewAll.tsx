@@ -1,13 +1,13 @@
 import GridViewIcon from "@mui/icons-material/GridView";
 import MapIcon from "@mui/icons-material/Map";
 import {
+    Box,
     ButtonGroup,
     IconButton,
     Paper,
     Skeleton,
     Stack,
     SvgIconTypeMap,
-    Box,
 } from "@mui/material";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import {
@@ -18,27 +18,27 @@ import {
     GridRowSelectionModel,
 } from "@mui/x-data-grid";
 import { FC, SetStateAction, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { DeleteDialog } from "src/components/Dialog/Delete";
+import ListLabelsItem from "src/components/List/labels-item";
 import Image from "src/components/image";
+import useLocalStorageScrollRestore from "src/hooks/useLocalStorageScrollRestore";
 import { Menu } from "src/icons/menu";
 import {
     useBulkDeletePropertiesMutation,
     useFilterPropertiesMutation,
 } from "src/services/properties";
-import DataGridTable from "../../components/DataGrid";
-import MapView from "./MapView";
-import MediaCard from "./MediaCard";
-import { FilterSection } from "./Filters";
-import FilterSortBy from "./Filters/FilterSortBy";
 import { selectAll, sumOfChangedProperties } from "src/slices/filters";
-import { useSelector } from "react-redux";
-import { useTranslation } from "react-i18next";
-import { BulkEdit } from "./BulkEdit/BulkEdit";
-import { DeleteDialog } from "src/components/Dialog/Delete";
-import ChosenFilters from "./Filters/ChosenFilters";
 import { KeyValue } from "src/types/KeyValue";
 import { ILabel } from "src/types/label";
-import ListLabelsItem from "src/components/List/labels-item";
-import useLocalStorageScrollRestore from "src/hooks/useLocalStorageScrollRestore";
+import DataGridTable from "../../components/DataGrid";
+import { BulkEdit } from "./BulkEdit/BulkEdit";
+import { FilterSection } from "./Filters";
+import ChosenFilters from "./Filters/ChosenFilters";
+import FilterSortBy from "./Filters/FilterSortBy";
+import MapView from "./MapView";
+import MediaCard from "./MediaCard";
 
 type optionType = "list" | "grid" | "map";
 
@@ -228,7 +228,7 @@ const ViewAll: FC = () => {
         {
             field: "propertyImage",
             headerName: t("Thumbnail") as string,
-            width: 180,
+            flex: 1,
             align: "center",
             headerAlign: "center",
             renderCell: renderImage,
@@ -236,13 +236,13 @@ const ViewAll: FC = () => {
         {
             field: "code",
             headerName: t("Code") as string,
-            width: 180,
+            flex: 1,
             headerAlign: "center",
             align: "center",
         },
         {
             field: "parentCategory",
-            width: 180,
+            flex: 1,
             align: "center",
             headerAlign: "center",
             headerName: t("Parent Category") as string,
@@ -250,7 +250,7 @@ const ViewAll: FC = () => {
         },
         {
             field: "category",
-            width: 180,
+            flex: 1,
             align: "center",
             headerAlign: "center",
             headerName: t("Category") as string,
@@ -258,7 +258,7 @@ const ViewAll: FC = () => {
         },
         {
             field: "price",
-            width: 180,
+            flex: 1,
             headerAlign: "center",
             align: "center",
             headerName: t("Price") as string,
@@ -270,14 +270,14 @@ const ViewAll: FC = () => {
         {
             field: "state",
             headerAlign: "center",
-            width: 180,
+            flex: 1,
             align: "center",
             headerName: t("State") as string,
             renderCell: statusColor,
         },
         {
             field: "area",
-            width: 180,
+            flex: 1,
             headerAlign: "center",
             align: "center",
             headerName: t("Area") as string,
@@ -288,7 +288,7 @@ const ViewAll: FC = () => {
         {
             field: "labels",
             headerAlign: "center",
-            width: 180,
+            flex: 1,
             align: "center",
             headerName: t("Labels") as string,
             renderCell: showLabel,
@@ -296,7 +296,7 @@ const ViewAll: FC = () => {
         {
             field: "createdAt",
             headerAlign: "center",
-            width: 180,
+            flex: 1,
             align: "center",
             headerName: t("Creation Date") as string,
             renderCell: (params) => new Date(params.value).toDateString(),
@@ -304,7 +304,7 @@ const ViewAll: FC = () => {
         {
             field: "updatedAt",
             headerAlign: "center",
-            width: 180,
+            flex: 1,
             align: "center",
             headerName: t("Updated At") as string,
             renderCell: (params) => new Date(params.value).toDateString(),

@@ -1,12 +1,12 @@
 import SearchIcon from "@mui/icons-material/Search";
 import { IconButton, InputAdornment, MenuItem, Select } from "@mui/material";
 import { FC, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useSearchCustomerQuery } from "src/services/customers";
 import { useSearchPropertyQuery } from "src/services/properties";
 import { useDebouncedCallback } from "use-debounce";
-import { SearchInput } from "./styles";
-import { useTranslation } from "react-i18next";
 import { SearchList } from "./components/SearchList";
-import { useSearchCustomerQuery } from "src/services/customers";
+import { SearchInput } from "./styles";
 
 type SearchCategory = "all" | "properties" | "customers";
 
@@ -71,6 +71,7 @@ export const DashboardNavbarSearch: FC = () => {
                             borderRight: "1px solid",
                             borderColor: "divider",
                             borderRadius: 0,
+                            marginLeft: "-10px",
                         }}
                         color={"primary"}
                         disableFocusRipple

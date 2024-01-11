@@ -110,6 +110,10 @@ export const darkThemeOptions: ThemeOptions = {
         },
         MuiInputBase: {
             styleOverrides: {
+                root: {
+                    color: text.secondary,
+                    height: "38px",
+                },
                 input: {
                     "&::placeholder": {
                         opacity: 1,
