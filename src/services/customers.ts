@@ -89,7 +89,7 @@ export const customers = createApi({
                 method: "POST",
                 body,
             }),
-            invalidatesTags: ["Customers"],
+            invalidatesTags: ["Customers", "CustomerById"],
         }),
 
         bulkDeleteCustomers: builder.mutation<void, number[]>({

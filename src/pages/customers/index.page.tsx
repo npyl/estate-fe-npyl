@@ -1,4 +1,4 @@
-import { Avatar, Box, Paper, Skeleton } from "@mui/material";
+import { Box, Paper, Skeleton } from "@mui/material";
 import {
     GridCallbackDetails,
     GridCellParams,
@@ -15,7 +15,7 @@ import { DeleteDialog } from "src/components/Dialog/Delete";
 import ListLabelsItem from "src/components/List/labels-item";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-import { UserCircle } from "src/icons/user-circle";
+import useLocalStorageScrollRestore from "src/hooks/useLocalStorageScrollRestore";
 import {
     useBulkDeleteCustomersMutation,
     useFilterCustomersMutation,
@@ -25,7 +25,6 @@ import { ILabel } from "src/types/label";
 import { FilterSection } from "./components";
 import { BulkEdit } from "./components/BulkEdit/BulkEdit";
 import { TypeLabels } from "./components/TypeLabels";
-import useLocalStorageScrollRestore from "src/hooks/useLocalStorageScrollRestore";
 
 const Customers: NextPage = () => {
     const { t } = useTranslation();
@@ -48,10 +47,6 @@ const Customers: NextPage = () => {
         [data?.totalElements]
     );
 
-    useEffect(() => {
-        revalidate();
-    }, [allFilters, page, pageSize]);
-
     const revalidate = () => {
         filterCustomers({
             filter: allFilters,
@@ -59,6 +54,7 @@ const Customers: NextPage = () => {
             pageSize: pageSize,
         });
     };
+
     function showLabel(params: GridCellParams) {
         if (!params.value || !Array.isArray(params.value)) return <></>;
 
@@ -107,72 +103,73 @@ const Customers: NextPage = () => {
     }
 
     const columns: GridColDef[] = [
-        {
-            field: "image",
-            headerName: "",
-            renderCell: (params: GridCellParams) => {
-                const firstName = params.row.firstName;
-                const lastName = params.row.lastName;
+        // {
+        //     field: "image",
+        //     headerName: "",
+        //     renderCell: (params: GridCellParams) => {
+        //         const firstName = params.row.firstName;
+        //         const lastName = params.row.lastName;
 
-                return (firstName && lastName) || firstName || lastName ? (
-                    <Avatar>
-                        {firstName[0]}
-                        {lastName[0]}
-                    </Avatar>
-                ) : (
-                    <Avatar>
-                        <UserCircle />
-                    </Avatar>
-                );
-            },
-        },
+        //         return (firstName && lastName) || firstName || lastName ? (
+        //             <Avatar>
+        //                 {firstName[0]}
+        //                 {lastName[0]}
+        //             </Avatar>
+        //         ) : (
+        //             <Avatar>
+        //                 <UserCircle />
+        //             </Avatar>
+        //         );
+        //     },
+        // },
 
         {
+            flex: 1,
             field: "firstName",
             headerName: t("First Name") || "",
-            width: 180,
             headerAlign: "center",
             align: "center",
         },
         {
+            flex: 1,
             field: "lastName",
             headerName: t("Last Name") || "",
-            width: 180,
             headerAlign: "center",
             align: "center",
         },
         {
+            flex: 1,
             field: "mobilePhone",
             headerName: t("Mobile Phone") || "",
-            width: 180,
             headerAlign: "center",
             align: "center",
         },
 
         {
+            flex: 1,
             field: "city",
             headerName: t("City") || "",
-            width: 180,
             headerAlign: "center",
             align: "center",
         },
         {
+            flex: 1,
             field: "category",
-            width: 180,
             headerAlign: "center",
             align: "center",
             headerName: t("Category") || "",
             renderCell: statusColor,
         },
         {
-            field: "labels",
             width: 180,
+            field: "labels",
             headerAlign: "center",
             align: "center",
             headerName: t("Labels") || "",
             renderCell: showLabel,
         },
     ];
+
     useEffect(() => {
         revalidate();
     }, [allFilters, page, pageSize]);
