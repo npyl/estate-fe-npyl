@@ -18,10 +18,6 @@ interface ICustomerParams {
     page: number;
     pageSize: number;
 }
-interface IEditCustomerProps {
-    customerId: number;
-    body: ICustomerPOST;
-}
 
 interface ICustomerFilterProps extends ICustomerParams {
     filter: ICustomerFilter;
@@ -78,7 +74,16 @@ export const customers = createApi({
             invalidatesTags: ["Customers"],
         }),
 
-        createOrUpdateCustomer: builder.mutation<number, ICustomerPOST>({
+        // INFO: draft
+        createCustomer: builder.mutation<number, void>({
+            query: () => ({
+                url: "/create",
+                method: "POST",
+            }),
+            invalidatesTags: ["Customers"],
+        }),
+
+        editCustomer: builder.mutation<number, ICustomerPOST>({
             query: (body) => ({
                 url: "",
                 method: "POST",
@@ -129,7 +134,8 @@ export const {
     useGetCustomerByIdQuery,
     useFilterCustomersMutation,
     useSearchCustomerQuery,
-    useCreateOrUpdateCustomerMutation,
+    useCreateCustomerMutation,
+    useEditCustomerMutation,
     useDeleteCustomerMutation,
     useBulkEditCustomersMutation,
     useBulkDeleteCustomersMutation,

@@ -6,7 +6,7 @@ import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { useTabsContext } from "src/contexts/tabs";
 import {
-    useCreateOrUpdateCustomerMutation,
+    useEditCustomerMutation,
     useGetCustomerByIdQuery,
 } from "src/services/customers";
 import {
@@ -30,7 +30,7 @@ const EditCustomer: NextPage = () => {
     const { customerId } = router.query;
 
     const { data } = useGetCustomerByIdQuery(+customerId!);
-    const [edit, { isError }] = useCreateOrUpdateCustomerMutation();
+    const [edit, { isError }] = useEditCustomerMutation();
 
     useEffect(() => {
         if (data && customerId) {
