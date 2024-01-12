@@ -1,28 +1,10 @@
-import HomeIcon from "@mui/icons-material/Home";
-import LabelImportantIcon from "@mui/icons-material/LabelImportant";
-
-import {
-    Box,
-    Button,
-    Divider,
-    Grid,
-    MenuItem,
-    Paper,
-    Typography,
-} from "@mui/material";
+import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import { FC, ReactNode, useState } from "react";
-import StyledMenu from "../StyledMenu";
 import { DashboardNavbar } from "./dashboard-navbar";
 import { DashboardSidebar } from "./dashboard-sidebar";
-import Subbar from "./dashboard-subbar";
-import { alpha } from "@mui/material/styles";
-
-import { Users as UsersIcon } from "../../icons/users";
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import { Add, CircleNotifications } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 
 interface UserDashboardLayoutProps {

@@ -35,12 +35,11 @@ const propertyItemType = "property-menu-item";
 const managerItemType = "manager-menu-item";
 const ownerItemType = "owner-menu-item";
 const labelItemType = "label-menu-item";
-const notificationItemType = "notification-menu-item";
 
 const itemTypeToPath: { [key: string]: string } = {
     [propertyItemType]: "/property/create",
     [managerItemType]: "/user/create",
-    [ownerItemType]: "/customer/create",
+    [ownerItemType]: "/customer",
     [labelItemType]: "/label",
 };
 

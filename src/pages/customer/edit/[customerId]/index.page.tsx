@@ -18,7 +18,7 @@ import {
     resetState as resetNotesState,
 } from "src/slices/notes";
 import { resetState as resetLabelsState } from "src/slices/labels";
-import Form from "../../components/Form";
+import Form from "./components/Form";
 import { useAutosaveTab } from "src/hooks/useAutosaveTab";
 
 // (1): forces Form re-render (=> unmount when changing from /edit/x to /edit/y pages)

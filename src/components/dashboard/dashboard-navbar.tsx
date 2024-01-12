@@ -52,19 +52,8 @@ const AccountButton = () => {
     const anchorRef = useRef<HTMLButtonElement | null>(null);
     const [openPopover, setOpenPopover] = useState<boolean>(false);
 
-    const handleOpenPopover = (): void => {
-        setOpenPopover(true);
-    };
-    const [messageVisible, setMessageVisible] = useState(false);
-
-    const showMessage = () => {
-        setMessageVisible(true);
-        // Optionally, hide the message after a few seconds
-        setTimeout(() => setMessageVisible(false), 3000);
-    };
-    const handleClosePopover = (): void => {
-        setOpenPopover(false);
-    };
+    const handleOpenPopover = () => setOpenPopover(true);
+    const handleClosePopover = () => setOpenPopover(false);
 
     return (
         <>
