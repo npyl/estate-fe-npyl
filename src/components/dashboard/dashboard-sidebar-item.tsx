@@ -5,7 +5,7 @@ import type { FC, ReactNode } from "react";
 import { useState } from "react";
 import { ChevronDown as ChevronDownIcon } from "../../icons/chevron-down";
 import { ChevronRight as ChevronRightIcon } from "../../icons/chevron-right";
-import usePreventCodeStateRouter from "../Router/Autosave";
+import useAutosaveRouter from "../Router/Autosave";
 
 interface DashboardSidebarItemProps extends ListItemProps {
     active?: boolean;
@@ -33,7 +33,7 @@ export const DashboardSidebarItem: FC<DashboardSidebarItemProps> = (props) => {
         ...other
     } = props;
     const [open, setOpen] = useState<boolean>(!!openProp);
-    const router = usePreventCodeStateRouter();
+    const router = useAutosaveRouter();
     const handleToggle = (): void => {
         setOpen((prevOpen) => !prevOpen);
     };

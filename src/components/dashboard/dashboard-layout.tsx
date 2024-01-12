@@ -14,7 +14,7 @@ import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import { useTranslation } from "react-i18next";
 import { BsPlusCircle } from "react-icons/bs";
 import { Users as UsersIcon } from "../../icons/users";
-import usePreventCodeStateRouter from "../Router/Autosave";
+import useAutosaveRouter from "../Router/Autosave";
 
 interface DashboardLayoutProps {
     children?: ReactNode;
@@ -45,7 +45,7 @@ const itemTypeToPath: { [key: string]: string } = {
 
 export const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
     const { t } = useTranslation();
-    const router = usePreventCodeStateRouter();
+    const router = useAutosaveRouter();
 
     const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
