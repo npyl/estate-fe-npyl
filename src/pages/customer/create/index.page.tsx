@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { MutableRefObject, useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import { AuthGuard } from "src/components/authentication/auth-guard";
@@ -8,17 +8,14 @@ import { selectAll } from "src/slices/customer";
 import { resetState as resetNotesState } from "src/slices/notes";
 import { resetState as resetLabelsState } from "src/slices/labels";
 import Form from "../components/Form";
-import { useAutosaveTab } from "src/hooks/useAutosaveTab";
 import { useCreateOrUpdateCustomerMutation } from "src/services/customers";
 import { useSelector } from "react-redux";
 
 const CreateCustomer: NextPage = () => {
     const router = useRouter();
-    const goingBackRef = useRef<boolean>(false);
     const dispatch = useDispatch();
 
-    const [create, { isError, isSuccess }] =
-        useCreateOrUpdateCustomerMutation();
+    const [create, { isError }] = useCreateOrUpdateCustomerMutation();
 
     const body = useSelector(selectAll);
 
@@ -31,13 +28,6 @@ const CreateCustomer: NextPage = () => {
         resetEverything();
     }, []);
 
-    useAutosaveTab(
-        selectAll,
-        (bodyRef: MutableRefObject<any>) =>
-            !isSuccess && // INFO: prevent autosave when user hits save button (<=> double-save)
-            create({ ...bodyRef.current })
-    );
-
     const handleSave = useCallback(
         () =>
             create(body)
@@ -46,7 +36,9 @@ const CreateCustomer: NextPage = () => {
         [body]
     );
 
-    const handleCancel = useCallback(() => router.back(), []);
+    const handleCancel = useCallback(() => {
+        router.back();
+    }, []);
 
     return (
         <Form

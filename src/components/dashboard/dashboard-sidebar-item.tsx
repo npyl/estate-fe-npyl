@@ -5,7 +5,7 @@ import type { FC, ReactNode } from "react";
 import { useState } from "react";
 import { ChevronDown as ChevronDownIcon } from "../../icons/chevron-down";
 import { ChevronRight as ChevronRightIcon } from "../../icons/chevron-right";
-import usePreventCodeStateRouter from "../Router/PreventCodeState";
+import usePreventCodeStateRouter from "../Router/Autosave";
 
 interface DashboardSidebarItemProps extends ListItemProps {
     active?: boolean;

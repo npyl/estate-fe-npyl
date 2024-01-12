@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { MutableRefObject, useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import { AuthGuard } from "src/components/authentication/auth-guard";
@@ -19,7 +19,7 @@ import {
 } from "src/slices/notes";
 import { resetState as resetLabelsState } from "src/slices/labels";
 import Form from "../../components/Form";
-import { useAutosaveTab } from "src/hooks/useAutosaveTab";
+import { useSelector } from "react-redux";
 
 // (1): forces Form re-render (=> unmount when changing from /edit/x to /edit/y pages)
 
@@ -31,6 +31,8 @@ const EditCustomer: NextPage = () => {
 
     const { data } = useGetCustomerByIdQuery(+customerId!);
     const [edit, { isError }] = useCreateOrUpdateCustomerMutation();
+
+    const body = useSelector(selectAll);
 
     useEffect(() => {
         if (data && customerId) {
@@ -53,26 +55,27 @@ const EditCustomer: NextPage = () => {
         }
     }, [data, customerId]);
 
-    const handleAutosave = (bodyRef: MutableRefObject<any>) =>
-        bodyRef.current?.id &&
-        edit({ ...bodyRef.current, id: +customerId! }).then(resetEverything);
-
-    useAutosaveTab(selectAll, handleAutosave);
-
-    const resetEverything = () => {
+    const resetEverything = useCallback(() => {
         dispatch(resetLabelsState());
         dispatch(resetNotesState());
-    };
+    }, []);
 
-    const handleRedirect = () => router.push(`/customer/${customerId}`);
+    const handleEdit = useCallback(() => {
+        edit(body).then(redirectToView);
+    }, [body]);
+
+    const redirectToView = useCallback(
+        () => router.push(`/customer/${customerId}`),
+        []
+    );
 
     return (
         <Form
             key={customerId as string} // (1)
             isError={isError}
-            performSave={handleRedirect}
+            performSave={handleEdit}
             resetState={resetEverything}
-            handleCancel={handleRedirect}
+            handleCancel={redirectToView}
         />
     );
 };

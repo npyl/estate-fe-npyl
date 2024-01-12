@@ -9,14 +9,12 @@ import LandFormSection from "./components/LandForm";
 import OtherFormSection from "./components/OtherForm";
 import ResidentialFormSection from "./components/ResidentialForm";
 import { UploadFileProvider } from "src/contexts/uploadFile";
-import { MutableRefObject, useCallback, useMemo } from "react";
-import { useAutosaveTab } from "src/hooks/useAutosaveTab";
+import { useCallback, useMemo } from "react";
 import { SaveButton } from "src/components/Button/Save";
 import PreventButton from "src/components/Button/Prevent";
 
 interface IFormProps {
     isError: boolean;
-    onAutosave: (bodyRef: MutableRefObject<any>) => void;
     resetEverything: () => void;
     performEdit: () => void;
     handleCancel: () => void;
@@ -24,14 +22,11 @@ interface IFormProps {
 
 export default function Form({
     isError,
-    onAutosave,
     performEdit,
     resetEverything,
     handleCancel,
 }: IFormProps) {
     const { t } = useTranslation();
-
-    useAutosaveTab(selectAll, onAutosave);
 
     // enums
     const parentCategory = useSelector(selectParentCategory);
