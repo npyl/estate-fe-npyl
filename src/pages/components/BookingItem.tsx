@@ -1,17 +1,26 @@
 "use client";
-import { Box, Divider, Paper, Stack, Typography } from "@mui/material";
+import AspectRatioIcon from "@mui/icons-material/AspectRatio";
+import BathtubOutlinedIcon from "@mui/icons-material/BathtubOutlined";
+import BedOutlinedIcon from "@mui/icons-material/BedOutlined";
+import RoomOutlinedIcon from "@mui/icons-material/RoomOutlined";
+import {
+    Box,
+    Chip,
+    Divider,
+    Grid,
+    Paper,
+    Stack,
+    Typography,
+} from "@mui/material";
+import { t } from "i18next";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useRef } from "react";
-import ICarouselImage from "src/components/carousel/types";
-import CarouselSimple from "src/components/CarouselSimple";
-import BedIcon from "@mui/icons-material/Bed";
-import RoomIcon from "@mui/icons-material/Room";
-import { Label } from "src/components/label";
-import { IPropertyResultResponse } from "src/types/properties";
-import { Bathroom, House } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
+import CarouselSimple from "src/components/CarouselSimple";
 import { IMapMarker } from "src/components/Map/Map";
-
+import ICarouselImage from "src/components/carousel/types";
+import { IPropertyResultResponse } from "src/types/properties";
+import { formatNumberWithCommas } from "src/utils/formatNumber";
 // ----------------------------------------------------------------------
 
 type BookingItemProps = {
@@ -28,8 +37,8 @@ const ForSaleLabel = () => {
             borderRadius={1}
             sx={{
                 position: "absolute",
-                top: 4,
-                left: 4,
+                top: 5,
+                left: 5,
                 backgroundColor: "rgb(235, 0, 0)",
                 color: "white",
                 zIndex: 1,
@@ -38,39 +47,6 @@ const ForSaleLabel = () => {
             textAlign={"center"}
         >
             <Typography fontSize={"14px"}>{t("For Sale")}</Typography>
-        </Box>
-    );
-};
-
-const TypeLabel = ({ value }: { value: string }) => {
-    return (
-        <Box
-            sx={{
-                position: "absolute",
-                left: 4,
-                bottom: 4,
-            }}
-        >
-            <Label opaque color="warning">
-                {value}
-            </Label>
-        </Box>
-    );
-};
-
-const PriceLabel = ({ value }: { value: number }) => {
-    if (!value) return null;
-    return (
-        <Box
-            sx={{
-                position: "absolute",
-                right: 4,
-                bottom: 4,
-            }}
-        >
-            <Label opaque color="success">
-                {value} €
-            </Label>
         </Box>
     );
 };
@@ -169,44 +145,93 @@ export const BookingItem = ({
                 </Box>
             )}
 
-            <Stack
-                direction="column"
-                gap={1}
-                p={1}
-                pb={3}
-                onClick={() => router.push(`property/${id}`)}
+            <Box
+                sx={{
+                    p: 2,
+                    display: "grid",
+                    gap: 0.5,
+                    cursor: "pointer",
+                }}
             >
-                <Stack direction="row" flex={1} flexWrap={"nowrap"}>
-                    <Stack direction={"row"} flex={1} gap={1}>
-                        <House color={"action"} fontSize="small" />
-                        <Typography variant="body2">{area} m²</Typography>
-                    </Stack>
-                    <Stack direction={"row"} flex={1} gap={1}>
-                        <BedIcon color={"action"} fontSize="small" />
-                        <Typography variant="body2">
-                            {details?.bedrooms}
-                        </Typography>
-                    </Stack>
-                    <Stack direction={"row"} gap={1}>
-                        <Bathroom color={"action"} fontSize="small" />
-                        <Typography variant="body2">
-                            {details?.bathrooms}
-                        </Typography>
-                    </Stack>
-                </Stack>
-
-                <Stack direction="row" flex={1} flexWrap={"nowrap"} gap={1}>
-                    <RoomIcon color="action" fontSize="small" />
-                    <Typography color={"text.secondary"} variant="body1">
-                        {location?.street} {location?.number},{" "}
-                        {location?.zipCode}
+                <Box
+                    sx={{
+                        display: "flex",
+                        alignItems: "center",
+                        color: "text.secondary",
+                        gap: 1.5,
+                    }}
+                >
+                    <RoomOutlinedIcon sx={{ fontSize: 20 }} />
+                    <Typography variant="body1">
+                        {location?.street ?? ""} {location?.number ?? ""}
                     </Typography>
-                </Stack>
-                <Divider />
-            </Stack>
+                </Box>
 
-            <TypeLabel value={parentCategory.value} />
-            <PriceLabel value={price} />
+                <Divider sx={{ my: 1, borderColor: "divider" }} />
+                <Grid container spacing={2}>
+                    <Grid item>
+                        <Box
+                            sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 1,
+                            }}
+                        >
+                            <BedOutlinedIcon />
+                            <Typography variant="body2" color="text.secondary">
+                                {details?.bedrooms || "N/A"} {t("beds")}
+                            </Typography>
+                        </Box>
+                    </Grid>
+                    <Grid item>
+                        <Box
+                            sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 1,
+                            }}
+                        >
+                            <BathtubOutlinedIcon />
+                            <Typography variant="body2" color="text.secondary">
+                                {details?.bathrooms || "N/A"} {t("baths")}
+                            </Typography>
+                        </Box>
+                    </Grid>
+                    <Grid item>
+                        <Box
+                            sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: 1,
+                            }}
+                        >
+                            <AspectRatioIcon />
+                            <Typography variant="body2" color="text.secondary">
+                                {area || "N/A"} m²
+                            </Typography>
+                        </Box>
+                    </Grid>
+                </Grid>
+                <Divider sx={{ my: 1, borderColor: "divider" }} />
+
+                {(parentCategory.value || price) && (
+                    <Stack
+                        direction={"row"}
+                        display={"flex"}
+                        justifyContent={"space-between"}
+                    >
+                        {parentCategory.value && (
+                            <Chip label={parentCategory.value} color="info" />
+                        )}
+                        {price && (
+                            <Chip
+                                label={`${formatNumberWithCommas(price)} €`}
+                                color="success"
+                            />
+                        )}
+                    </Stack>
+                )}
+            </Box>
         </Paper>
     );
 };

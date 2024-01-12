@@ -1,6 +1,6 @@
 import type { ListItemProps } from "@mui/material";
 import { Box, Button, Collapse, ListItem } from "@mui/material";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import PropTypes from "prop-types";
 import type { FC, ReactNode } from "react";
 import { useState } from "react";

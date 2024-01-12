@@ -1,5 +1,6 @@
 import type { ListProps } from "@mui/material";
 import { List, ListSubheader } from "@mui/material";
+import { t } from "i18next";
 import type { FC, ReactNode } from "react";
 import { DashboardSidebarItem } from "./dashboard-sidebar-item";
 
@@ -49,8 +50,11 @@ const reduceChildRoutes = ({
 }): Array<JSX.Element> => {
     const key = `${item.title}-${depth}`;
     const partialMatch =
-        item.path && item.path !== "/" ? path.includes(item.path) : false;
-    const exactMatch = path.split("?")[0] === item.path; // We don't compare query params
+        item.title === t("Dashboard") && path === "/"
+            ? true
+            : item.path && item.path !== "/"
+            ? path.includes(item.path)
+            : false;
 
     if (item.children) {
         acc.push(

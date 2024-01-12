@@ -75,14 +75,14 @@ const CustomerView: NextPage = () => {
             label: t("Customer Information"),
             content: (
                 <Grid container spacing={1}>
-                    <Grid item xs={6} order={"row"}>
+                    <Grid item xs={12} sm={6} order={"row"}>
                         <Stack spacing={1}>
                             <InformationSection />
                             <AddressSection />
                             <NotesCustomerSection />
                         </Stack>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={12} sm={6}>
                         <Stack spacing={1}>
                             {isBuyerOrLeaser && <MatchingPropertiesSection />}
                             {isSellerOrLessor && (

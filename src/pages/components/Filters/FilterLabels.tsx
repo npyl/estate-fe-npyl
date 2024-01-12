@@ -6,12 +6,12 @@ import {
     Select,
     SelectChangeEvent,
 } from "@mui/material";
-import { useDispatch } from "src/store";
+import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import Label from "src/components/label/Label";
 import { useGetLabelsQuery } from "src/services/labels";
-import { useMemo } from "react";
-import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
-import { useTranslation } from "react-i18next";
+import { useDispatch } from "src/store";
 
 import StyledInputLabel from "./components/StyledInputLabel";
 
@@ -61,7 +61,17 @@ export default function FilterLabels(props: FilterLabelsProps) {
     };
 
     return (
-        <FormControl sx={{ minWidth: "130px", maxHeight: "38px" }}>
+        <FormControl
+            sx={{
+                minWidth: "130px",
+                maxHeight: "38px",
+
+                display: {
+                    md: "none",
+                    lg: "flex",
+                },
+            }}
+        >
             <StyledInputLabel sx={{}} id="demo-simple-select-label">
                 {t("Labels")}
             </StyledInputLabel>

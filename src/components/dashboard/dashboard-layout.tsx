@@ -11,10 +11,10 @@ import { DashboardNavbar } from "./dashboard-navbar";
 import { DashboardSidebar } from "./dashboard-sidebar";
 import Subbar from "./dashboard-subbar";
 
-import { Users as UsersIcon } from "../../icons/users";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import { useTranslation } from "react-i18next";
 import { BsPlusCircle } from "react-icons/bs";
+import { Users as UsersIcon } from "../../icons/users";
 
 interface DashboardLayoutProps {
     children?: ReactNode;
@@ -67,6 +67,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
                         flex: "1 1 auto",
                         flexDirection: "column",
                         width: "100%",
+                        paddingX: 2,
                     }}
                 >
                     <Paper
