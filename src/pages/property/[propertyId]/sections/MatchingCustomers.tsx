@@ -21,7 +21,7 @@ import { UserCircle } from "src/icons/user-circle";
 import { useSuggestForPropertyQuery } from "src/services/properties";
 import { ILabel } from "src/types/label";
 import ListLabelsItem from "src/components/List/labels-item";
-import { TypeLabels } from "src/pages/customer/components/TypeLabels";
+import { TypeLabels } from "src/pages/customers/components/TypeLabels";
 
 const pageSize = 5;
 

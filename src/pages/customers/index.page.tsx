@@ -54,6 +54,7 @@ const Customers: NextPage = () => {
             pageSize: pageSize,
         });
     };
+
     function showLabel(params: GridCellParams) {
         if (!params.value || !Array.isArray(params.value)) return <></>;
 
@@ -168,6 +169,7 @@ const Customers: NextPage = () => {
             renderCell: showLabel,
         },
     ];
+
     useEffect(() => {
         revalidate();
     }, [allFilters, page, pageSize]);

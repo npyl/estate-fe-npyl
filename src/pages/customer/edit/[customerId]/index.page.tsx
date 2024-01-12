@@ -1,22 +1,25 @@
 import type { NextPage } from "next";
-import { MutableRefObject, useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-import { LogoProgressIndicator } from "src/components/LogoProgressIndicator";
 import { useTabsContext } from "src/contexts/tabs";
 import {
-    useEditCustomerMutation,
+    useCreateOrUpdateCustomerMutation,
     useGetCustomerByIdQuery,
 } from "src/services/customers";
-import { setInitialState as setInitialCustomerState } from "src/slices/customer";
+import {
+    selectAll,
+    setInitialState as setInitialCustomerState,
+} from "src/slices/customer";
 import {
     setInitialState as setInitialNotesState,
     resetState as resetNotesState,
 } from "src/slices/notes";
 import { resetState as resetLabelsState } from "src/slices/labels";
-import Form from "./components/Form";
+import Form from "../../components/Form";
+import { useSelector } from "react-redux";
 
 // (1): forces Form re-render (=> unmount when changing from /edit/x to /edit/y pages)
 
@@ -27,7 +30,9 @@ const EditCustomer: NextPage = () => {
     const { customerId } = router.query;
 
     const { data } = useGetCustomerByIdQuery(+customerId!);
-    const [edit, { isError }] = useEditCustomerMutation();
+    const [edit, { isError }] = useCreateOrUpdateCustomerMutation();
+
+    const body = useSelector(selectAll);
 
     useEffect(() => {
         if (data && customerId) {
@@ -50,27 +55,27 @@ const EditCustomer: NextPage = () => {
         }
     }, [data, customerId]);
 
-    const handleAutosave = (bodyRef: MutableRefObject<any>) =>
-        bodyRef.current?.id &&
-        edit({ customerId: +customerId!, body: bodyRef.current }).then(
-            resetEverything
-        );
-
-    const resetEverything = () => {
+    const resetEverything = useCallback(() => {
         dispatch(resetLabelsState());
         dispatch(resetNotesState());
-    };
+    }, []);
 
-    const handleRedirect = () => router.push(`/customer/${customerId}`);
+    const handleEdit = useCallback(() => {
+        edit(body).then(redirectToView);
+    }, [body]);
+
+    const redirectToView = useCallback(
+        () => router.push(`/customer/${customerId}`),
+        []
+    );
 
     return (
         <Form
             key={customerId as string} // (1)
             isError={isError}
-            onAutosave={handleAutosave}
-            performSave={handleRedirect}
+            performSave={handleEdit}
             resetState={resetEverything}
-            handleCancel={handleRedirect}
+            handleCancel={redirectToView}
         />
     );
 };

@@ -22,7 +22,7 @@ import { useDispatch } from "react-redux";
 
 interface ILabelCreateProps {
     variant: LabelResourceType;
-    resourceId: number;
+    resourceId: number; // > 0 valid, -1 invalid
 }
 
 const LabelCreate = ({ variant, resourceId }: ILabelCreateProps) => {
@@ -37,8 +37,8 @@ const LabelCreate = ({ variant, resourceId }: ILabelCreateProps) => {
     //
     //  Queries
     //
-    const { data: propertyLabels } = useGetPropertyLabelsQuery(resourceId, {
-        skip: variant !== "property",
+    const { data: propertyLabels } = useGetPropertyLabelsQuery(resourceId!, {
+        skip: variant !== "property" || resourceId === -1,
     });
     const { data: documentLabels } = useGetPropertyDocumentsQuery(
         +propertyId!,
@@ -49,8 +49,8 @@ const LabelCreate = ({ variant, resourceId }: ILabelCreateProps) => {
             }),
         }
     );
-    const { data: customerLabels } = useGetCustomerLabelsQuery(resourceId, {
-        skip: variant !== "customer",
+    const { data: customerLabels } = useGetCustomerLabelsQuery(resourceId!, {
+        skip: variant !== "customer" || resourceId === -1,
     });
 
     const { data: labels } = useGetLabelsQuery();

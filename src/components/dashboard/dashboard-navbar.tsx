@@ -52,19 +52,8 @@ const AccountButton = () => {
     const anchorRef = useRef<HTMLButtonElement | null>(null);
     const [openPopover, setOpenPopover] = useState<boolean>(false);
 
-    const handleOpenPopover = (): void => {
-        setOpenPopover(true);
-    };
-    const [messageVisible, setMessageVisible] = useState(false);
-
-    const showMessage = () => {
-        setMessageVisible(true);
-        // Optionally, hide the message after a few seconds
-        setTimeout(() => setMessageVisible(false), 3000);
-    };
-    const handleClosePopover = (): void => {
-        setOpenPopover(false);
-    };
+    const handleOpenPopover = () => setOpenPopover(true);
+    const handleClosePopover = () => setOpenPopover(false);
 
     return (
         <>
@@ -141,7 +130,7 @@ export const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                             {/* nick ama to svhseis se gamhsa */}
                             <Tooltip title="Alex Gamiesai file">
                                 <StyledTypography variant="h5">
-                                    PropertyPro v0.61
+                                    PropertyPro v0.62
                                 </StyledTypography>
                             </Tooltip>
                         </Link>

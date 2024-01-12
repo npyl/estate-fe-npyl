@@ -352,7 +352,7 @@ const CustomerInformation: React.FC<any> = () => {
                     <Grid item xs={6}>
                         <LabelCreate
                             variant="customer"
-                            resourceId={+customerId!}
+                            resourceId={customerId ? +customerId : -1}
                         />
                     </Grid>
                     <Grid item xs={12}>

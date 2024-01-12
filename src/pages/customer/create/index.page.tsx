@@ -1,49 +1,52 @@
-import { Box, Typography } from "@mui/material";
 import type { NextPage } from "next";
+import { useCallback, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
-import { toast } from "react-hot-toast";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-import { useCreateCustomerMutation } from "src/services/customers";
-import { SaveButton } from "src/components/SaveButton";
-import SendIcon from "@mui/icons-material/Send";
-import { useTranslation } from "react-i18next";
+import { selectAll } from "src/slices/customer";
+import { resetState as resetNotesState } from "src/slices/notes";
+import { resetState as resetLabelsState } from "src/slices/labels";
+import Form from "../components/Form";
+import { useCreateOrUpdateCustomerMutation } from "src/services/customers";
+import { useSelector } from "react-redux";
 
 const CreateCustomer: NextPage = () => {
-    const { t } = useTranslation();
     const router = useRouter();
-    const [createCustomer, { isError }] = useCreateCustomerMutation();
+    const dispatch = useDispatch();
 
-    const handleSave = () =>
-        createCustomer() // create customer
-            .unwrap()
-            .then((id) => router.push(`/customer/edit/${id}`)) // redirect
-            .catch((reason) => toast.error("Failed to create customer!"));
+    const [create, { isError }] = useCreateOrUpdateCustomerMutation();
+
+    const body = useSelector(selectAll);
+
+    const resetEverything = useCallback(() => {
+        dispatch(resetLabelsState());
+        dispatch(resetNotesState());
+    }, []);
+
+    useEffect(() => {
+        resetEverything();
+    }, []);
+
+    const handleSave = useCallback(
+        () =>
+            create(body)
+                .unwrap()
+                .then((id) => router.push(`/customer/${id}`)),
+        [body]
+    );
+
+    const handleCancel = useCallback(() => {
+        router.back();
+    }, []);
 
     return (
-        <Box
-            marginTop={4}
-            style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                height: "140px",
-            }}
-        >
-            <Typography variant="h3" gutterBottom>
-                Create a New Customer
-            </Typography>
-            <SaveButton
-                error={isError}
-                loadingPosition="start"
-                variant="contained"
-                startIcon={<SendIcon />}
-                onClick={handleSave}
-            >
-                {t("Save")}
-            </SaveButton>
-        </Box>
+        <Form
+            isError={isError}
+            performSave={handleSave}
+            resetState={resetEverything}
+            handleCancel={handleCancel}
+        />
     );
 };
 

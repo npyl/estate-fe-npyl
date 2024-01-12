@@ -1,11 +1,11 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { MutableRefObject, useEffect, useState } from "react";
+import { MutableRefObject, useCallback, useEffect, useState } from "react";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { useEditPropertyMutation } from "src/services/properties";
 import { resetState as resetLabels } from "src/slices/labels";
-import { resetAll } from "src/slices/property";
+import { resetAll, selectAll } from "src/slices/property";
 import {
     resetState as resetNotes,
     setInitialState as setInitialNotesState,
@@ -17,11 +17,11 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { useTabsContext } from "src/contexts/tabs";
 import { ConfirmationDialogBox } from "src/pages/components/ConfirmationDialogBox";
+import { useSelector } from "react-redux";
 
 // (1): forces Form re-render (=> unmount when changing from /edit/x to /edit/y pages)
 
 const EditPropertyPage: NextPage = () => {
-    const [clearConfirmDialogOpen, setclearConfirmDialogOpen] = useState(false);
     const dispatch = useDispatch();
     const router = useRouter();
     const { pushTab } = useTabsContext();
@@ -29,6 +29,10 @@ const EditPropertyPage: NextPage = () => {
 
     const { data } = useGetPropertyByIdQuery(+propertyId!);
     const [edit, { isError }] = useEditPropertyMutation();
+
+    const body = useSelector(selectAll);
+
+    const [clearConfirmDialogOpen, setclearConfirmDialogOpen] = useState(false);
 
     useEffect(() => {
         if (data && propertyId) {
@@ -48,40 +52,34 @@ const EditPropertyPage: NextPage = () => {
         }
     }, [data, propertyId]);
 
-    const handleAutosave = (bodyRef: MutableRefObject<any>) => {
-        if (!bodyRef.current.code) {
-            toast.error("Edit operation canceled. Code ID is required");
-            return;
-        }
-        if (!bodyRef.current.state) {
-            toast.error("Edit operation canceled. State is required");
-            return;
-        }
-
-        edit({ id: +propertyId!, body: bodyRef.current }).then(resetEverything);
-    };
-
     const resetEverything = () => setclearConfirmDialogOpen(true);
     const closeClearConfirmDialog = () => setclearConfirmDialogOpen(false);
 
-    const confirmResetEverything = () => {
+    const confirmResetEverything = useCallback(() => {
         dispatch(resetLabels());
         dispatch(resetNotes());
         dispatch(resetAll());
         closeClearConfirmDialog();
-    };
+    }, []);
 
-    const handleRedirect = () => router.push(`/property/${propertyId}`);
+    const handleEdit = useCallback(
+        () => body && edit({ body, id: +propertyId! }).then(redirectToView),
+        [body]
+    );
+
+    const redirectToView = useCallback(
+        () => router.push(`/property/${propertyId}`),
+        []
+    );
 
     return (
         <>
             <Form
                 key={propertyId as string} // (1)
                 isError={isError}
-                onAutosave={handleAutosave}
-                performEdit={handleRedirect}
+                performEdit={handleEdit}
                 resetEverything={resetEverything}
-                handleCancel={handleRedirect}
+                handleCancel={redirectToView}
             />
 
             <ConfirmationDialogBox

@@ -2,13 +2,6 @@ import { Box, Paper, PaperProps, Stack } from "@mui/material";
 import { useSelector } from "src/store";
 
 import { sumOfChangedProperties } from "src/slices/log";
-import FilterBuyerLeaserAndMore from "src/pages/customer/components/Filters/FilterBuyerLeaserAndMore";
-import FilterParentCategory from "src/pages/components/Filters/FilterParentCategory";
-import ChosenFilters from "src/pages/components/Filters/ChosenFilters";
-import FilterCategory from "src/pages/components/Filters/FilterCategory";
-import PriceSelect from "src/pages/components/Filters/FilterPrice";
-import FilterManager from "src/pages/customer/components/Filters/FilterManagedBy";
-import FilterStatus from "src/pages/customer/components/Filters/FilterStatus";
 import FilterActions from "./Filters/FilterActions";
 import FilterResources from "./Filters/FilterResources";
 import DateSelect from "./Filters/FilterDate";

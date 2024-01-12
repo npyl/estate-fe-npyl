@@ -9,33 +9,36 @@ import LandFormSection from "./components/LandForm";
 import OtherFormSection from "./components/OtherForm";
 import ResidentialFormSection from "./components/ResidentialForm";
 import { UploadFileProvider } from "src/contexts/uploadFile";
-import { MutableRefObject } from "react";
-import { useAutosaveTab } from "src/hooks/useAutosaveTab";
-import { SaveButton } from "src/components/SaveButton";
+import { useCallback, useMemo } from "react";
+import { SaveButton } from "src/components/Button/Save";
+import PreventButton from "src/components/Button/Prevent";
 
 interface IFormProps {
     isError: boolean;
-    onAutosave: (bodyRef: MutableRefObject<any>) => void;
     resetEverything: () => void;
     performEdit: () => void;
     handleCancel: () => void;
 }
+
 export default function Form({
     isError,
-    onAutosave,
     performEdit,
     resetEverything,
     handleCancel,
 }: IFormProps) {
     const { t } = useTranslation();
 
-    useAutosaveTab(selectAll, onAutosave);
-
     // enums
     const parentCategory = useSelector(selectParentCategory);
 
-    // create our property draft
-    const handleSave = () => performEdit();
+    const body = useSelector(selectAll);
+    const isCodeOrStateEmpty = useMemo(
+        () => body?.code?.length === 0 || body?.state?.length === 0,
+        [body?.code, body?.state]
+    );
+
+    // edit
+    const handleSave = useCallback(() => performEdit(), []);
 
     return (
         <Grid container spacing={1} paddingLeft={2} paddingTop={1}>
@@ -61,13 +64,15 @@ export default function Form({
                 spacing={1}
             >
                 <Grid item>
-                    <Button
+                    <PreventButton
+                        prevent={isCodeOrStateEmpty}
+                        preventMessage={t("Fill in Code and State!").toString()}
                         variant="outlined"
                         startIcon={<CancelIcon />}
                         onClick={handleCancel}
                     >
                         {t("Cancel")}
-                    </Button>
+                    </PreventButton>
                 </Grid>
                 <Grid item>
                     <Button
@@ -81,6 +86,8 @@ export default function Form({
 
                 <Grid item>
                     <SaveButton
+                        prevent={isCodeOrStateEmpty}
+                        preventMessage={t("Fill in Code and State!").toString()}
                         error={isError}
                         loadingPosition="start"
                         variant="contained"

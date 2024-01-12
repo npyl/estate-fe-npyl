@@ -1,28 +1,16 @@
 import ClearIcon from "@mui/icons-material/Clear";
 import { Button, Divider, IconButton } from "@mui/material";
 import { Stack } from "@mui/system";
-import { useRouter } from "next/router";
 import { Fragment, useMemo } from "react";
 import { ScrollBox } from "../ScrollBox";
-
 import { useTabsContext } from "src/contexts/tabs";
+import useAutosaveRouter from "src/components/Router/Autosave";
 
 const Subbar = () => {
-    const router = useRouter();
+    const router = useAutosaveRouter();
     const { appTabs, removeTab } = useTabsContext();
 
     const currentPath = useMemo(() => router.asPath, [router.asPath]);
-
-    // const handleSelectTab = (tab: ITabsProps) => {
-    //     resetPropertyState();
-    //     resetPropertyFilesState();
-    //     resetCustomerState();
-    //     resetCustomerMiscState();
-    //     resetLabelsState();
-    //     resetNotesState();
-
-    //     router.push(tab.path);
-    // };
 
     return (
         <ScrollBox sx={{ overflowX: "auto" }}>
