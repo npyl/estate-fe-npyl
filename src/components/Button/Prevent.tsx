@@ -1,5 +1,6 @@
 import { Button, ButtonProps } from "@mui/material";
 import { MouseEvent, useCallback } from "react";
+import { toast } from "react-toastify";
 
 interface PreventButtonProps extends ButtonProps {
     prevent?: boolean;
@@ -16,7 +17,7 @@ const PreventButton = ({
     const handleClick = useCallback(
         (e: MouseEvent<HTMLButtonElement>) => {
             if (prevent) {
-                alert(preventMessage);
+                toast.warning(preventMessage);
             } else onClick && onClick(e);
         },
         [prevent, preventMessage, onClick]

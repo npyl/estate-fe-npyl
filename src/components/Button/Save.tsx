@@ -1,6 +1,7 @@
 import { LoadingButton, LoadingButtonProps } from "@mui/lab";
 import { styled } from "@mui/material";
 import { MouseEvent, useCallback, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 const StyledButton = styled(LoadingButton)(({ loading }) => ({
     backgroundColor: loading ? "#ccc" : "#4CAF50",
@@ -37,7 +38,7 @@ export const SaveButton = ({
     const handleClick = useCallback(
         (e: MouseEvent<HTMLButtonElement>) => {
             if (prevent) {
-                alert(preventMessage);
+                toast.warning(preventMessage);
             } else {
                 setLoading(true);
                 onClick && onClick(e);

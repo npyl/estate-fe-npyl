@@ -1,10 +1,8 @@
 import {
     CircleNotifications,
     ConfirmationNumber,
-    Email,
     LabelImportant,
 } from "@mui/icons-material";
-
 import {
     Box,
     Drawer,
@@ -14,7 +12,6 @@ import {
     useMediaQuery,
 } from "@mui/material";
 import { TFunction } from "i18next";
-import { useRouter } from "next/router";
 import { FC, ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Home as HomeIcon } from "../../icons/home";
@@ -25,6 +22,8 @@ import { OrganizationPopover } from "./organization-popover";
 import HistoryIcon from "@mui/icons-material/History";
 import { useProfileQuery } from "src/services/user";
 import { ChartPie } from "src/icons/chart-pie";
+import { useRouter } from "next/router";
+
 interface DashboardSidebarProps {
     onClose?: () => void;
     open?: boolean;
@@ -88,54 +87,12 @@ const getSections = (t: TFunction): Section[] => [
                 icon: <HistoryIcon fontSize="small" />,
                 adminOnly: true,
             },
-
             {
                 title: t("Security"),
                 path: "/security",
                 icon: <UsersIcon fontSize="small" />,
                 adminOnly: true,
             },
-            // {
-            //     title: t("Developers"),
-            //     path: "/",
-            //     icon: <ManageAccounts fontSize="small" />,
-            // },
-            // {
-            //     title: t("Agents"),
-            //     path: "/",
-            //     icon: <LabelImportant fontSize="small" />,
-            // },
-            // {
-            //     title: t("Deals"),
-            //     path: "/",
-            //     icon: <Handshake fontSize="small" />,
-            // },
-
-            // {
-            //     title: t("Activities"),
-            //     path: "/",
-            //     icon: <LabelImportant fontSize="small" />,
-            // },
-            // {
-            //     title: t("Matches"),
-            //     path: "/",
-            //     icon: <JoinRight fontSize="small" />,
-            // },
-            // {
-            //     title: t("Reports"),
-            //     path: "/",
-            //     icon: <LabelImportant fontSize="small" />,
-            // },
-            // {
-            //     title: t("Audit Log"),
-            //     path: "/",
-            //     icon: <EventNote fontSize="small" />,
-            // },
-            // {
-            //     title: t("Admin"),
-            //     path: "/",
-            //     icon: <AdminPanelSettings fontSize="small" />,
-            // },
         ],
     },
 ];

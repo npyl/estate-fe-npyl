@@ -937,6 +937,9 @@ const resources = {
             "Edit Label": "Επεξεργασία Ετικέτας",
             "Label's name": "Όνομα Ετικέτας",
             Preview: "Προεπισκόπηση",
+
+            "Fill in Code and State!":
+                "Συμπληρώστε Κωδικό (Code) και Κατάσταση (State)!",
         },
     },
 };

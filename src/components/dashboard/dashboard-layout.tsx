@@ -3,7 +3,6 @@ import LabelImportantIcon from "@mui/icons-material/LabelImportant";
 
 import { Box, Button, Divider, Grid, MenuItem, Paper } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { useRouter } from "next/router";
 import PropTypes from "prop-types";
 import { FC, ReactNode, useState } from "react";
 import StyledMenu from "../StyledMenu";
@@ -15,6 +14,7 @@ import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 import { useTranslation } from "react-i18next";
 import { BsPlusCircle } from "react-icons/bs";
 import { Users as UsersIcon } from "../../icons/users";
+import usePreventCodeStateRouter from "../Router/PreventCodeState";
 
 interface DashboardLayoutProps {
     children?: ReactNode;
@@ -45,7 +45,7 @@ const itemTypeToPath: { [key: string]: string } = {
 
 export const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
     const { t } = useTranslation();
-    const router = useRouter();
+    const router = usePreventCodeStateRouter();
 
     const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
