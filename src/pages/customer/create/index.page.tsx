@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { MutableRefObject, useCallback } from "react";
+import { MutableRefObject, useCallback, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import { AuthGuard } from "src/components/authentication/auth-guard";
@@ -14,9 +14,11 @@ import { useSelector } from "react-redux";
 
 const CreateCustomer: NextPage = () => {
     const router = useRouter();
+    const goingBackRef = useRef<boolean>(false);
     const dispatch = useDispatch();
 
-    const [create, { isError }] = useCreateOrUpdateCustomerMutation();
+    const [create, { isError, isSuccess }] =
+        useCreateOrUpdateCustomerMutation();
 
     const body = useSelector(selectAll);
 
@@ -25,14 +27,25 @@ const CreateCustomer: NextPage = () => {
         dispatch(resetNotesState());
     }, []);
 
-    useAutosaveTab(selectAll, (bodyRef: MutableRefObject<any>) =>
-        create({ ...bodyRef.current }).then(resetEverything)
+    useEffect(() => {
+        resetEverything();
+    }, []);
+
+    useAutosaveTab(
+        selectAll,
+        (bodyRef: MutableRefObject<any>) =>
+            !isSuccess && // INFO: prevent autosave when user hits save button (<=> double-save)
+            create({ ...bodyRef.current })
     );
 
     const handleSave = useCallback(
-        () => create(body).then(resetEverything),
+        () =>
+            create(body)
+                .unwrap()
+                .then((id) => router.push(`/customer/${id}`)),
         [body]
     );
+
     const handleCancel = useCallback(() => router.back(), []);
 
     return (

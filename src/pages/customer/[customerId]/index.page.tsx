@@ -66,7 +66,7 @@ const CustomerView: NextPage = () => {
     const handleEdit = () => router.push(`/customer/edit/${customerId}`);
     const handleDelete = () =>
         deleteCustomer(+customerId!).then(() => {
-            router.push("/customer");
+            router.push("/customers");
             removeTab(customerId as string);
         });
 
