@@ -6,7 +6,7 @@ import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { useTabsContext } from "src/contexts/tabs";
 import {
-    useEditCustomerMutation,
+    useCreateOrUpdateCustomerMutation,
     useGetCustomerByIdQuery,
 } from "src/services/customers";
 import {
@@ -18,7 +18,7 @@ import {
     resetState as resetNotesState,
 } from "src/slices/notes";
 import { resetState as resetLabelsState } from "src/slices/labels";
-import Form from "./components/Form";
+import Form from "../../components/Form";
 import { useAutosaveTab } from "src/hooks/useAutosaveTab";
 
 // (1): forces Form re-render (=> unmount when changing from /edit/x to /edit/y pages)
@@ -30,7 +30,7 @@ const EditCustomer: NextPage = () => {
     const { customerId } = router.query;
 
     const { data } = useGetCustomerByIdQuery(+customerId!);
-    const [edit, { isError }] = useEditCustomerMutation();
+    const [edit, { isError }] = useCreateOrUpdateCustomerMutation();
 
     useEffect(() => {
         if (data && customerId) {

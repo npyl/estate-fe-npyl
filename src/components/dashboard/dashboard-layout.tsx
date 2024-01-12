@@ -39,7 +39,7 @@ const labelItemType = "label-menu-item";
 const itemTypeToPath: { [key: string]: string } = {
     [propertyItemType]: "/property/create",
     [managerItemType]: "/user/create",
-    [ownerItemType]: "/customer",
+    [ownerItemType]: "/customer/create",
     [labelItemType]: "/label",
 };
 

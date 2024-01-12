@@ -74,16 +74,7 @@ export const customers = createApi({
             invalidatesTags: ["Customers"],
         }),
 
-        // INFO: draft
-        createCustomer: builder.mutation<number, void>({
-            query: () => ({
-                url: "/create",
-                method: "POST",
-            }),
-            invalidatesTags: ["Customers"],
-        }),
-
-        editCustomer: builder.mutation<number, ICustomerPOST>({
+        createOrUpdateCustomer: builder.mutation<number, ICustomerPOST>({
             query: (body) => ({
                 url: "",
                 method: "POST",
@@ -134,8 +125,7 @@ export const {
     useGetCustomerByIdQuery,
     useFilterCustomersMutation,
     useSearchCustomerQuery,
-    useCreateCustomerMutation,
-    useEditCustomerMutation,
+    useCreateOrUpdateCustomerMutation,
     useDeleteCustomerMutation,
     useBulkEditCustomersMutation,
     useBulkDeleteCustomersMutation,

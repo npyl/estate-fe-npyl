@@ -13,7 +13,8 @@ const NotesSection: React.FC<any> = () => {
     const { customerId } = router.query;
 
     const notes =
-        useGetNotesByCustomerIdQuery(parseInt(customerId as string)).data || [];
+        useGetNotesByCustomerIdQuery(+customerId!, { skip: !customerId })
+            .data || [];
     const [addNote] = useAddNoteToCustomerWithIdMutation();
     const [deleteNote] = useDeleteWithIdMutation();
 
