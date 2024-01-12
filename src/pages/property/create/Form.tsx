@@ -21,7 +21,7 @@ import { Send as SendIcon } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import { KeyValue } from "src/types/KeyValue";
 import { useCallback, useMemo, useState } from "react";
-import { SaveButton } from "src/components/SaveButton";
+import { SaveButton } from "src/components/Button/Save";
 
 interface IFormProps {
     isError: boolean;

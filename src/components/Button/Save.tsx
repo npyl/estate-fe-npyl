@@ -1,6 +1,6 @@
 import { LoadingButton, LoadingButtonProps } from "@mui/lab";
 import { styled } from "@mui/material";
-import { useEffect, useState } from "react";
+import { MouseEvent, useCallback, useEffect, useState } from "react";
 
 const StyledButton = styled(LoadingButton)(({ loading }) => ({
     backgroundColor: loading ? "#ccc" : "#4CAF50",
@@ -16,24 +16,42 @@ const StyledButton = styled(LoadingButton)(({ loading }) => ({
 
 interface SaveButtonProps extends Omit<LoadingButtonProps, "loading"> {
     error: boolean;
+
+    prevent?: boolean;
+    preventMessage?: string;
 }
 
-export const SaveButton = ({ error, onClick, ...props }: SaveButtonProps) => {
+export const SaveButton = ({
+    prevent,
+    preventMessage,
+    error,
+    onClick,
+    ...props
+}: SaveButtonProps) => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (error) setLoading(false);
     }, [error]);
 
+    const handleClick = useCallback(
+        (e: MouseEvent<HTMLButtonElement>) => {
+            if (prevent) {
+                alert(preventMessage);
+            } else {
+                setLoading(true);
+                onClick && onClick(e);
+            }
+        },
+        [prevent, preventMessage, onClick]
+    );
+
     return (
         <StyledButton
             loading={loading}
             disabled={loading}
             {...props}
-            onClick={(e) => {
-                setLoading(true);
-                onClick && onClick(e);
-            }}
+            onClick={handleClick}
         />
     );
 };

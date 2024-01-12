@@ -7,7 +7,7 @@ import AddressDetails from "./AddressDetails";
 import CustomerInformation from "./CustomerInformation";
 import NotesSection from "./NotesSection";
 import DemandSection from "./DemandSection";
-import { SaveButton } from "src/components/SaveButton";
+import { SaveButton } from "src/components/Button/Save";
 
 interface FormProps {
     isError: boolean;

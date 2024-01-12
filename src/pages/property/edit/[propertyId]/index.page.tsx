@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { MutableRefObject, useEffect, useState } from "react";
+import { MutableRefObject, useCallback, useEffect, useState } from "react";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { useEditPropertyMutation } from "src/services/properties";
@@ -21,7 +21,6 @@ import { ConfirmationDialogBox } from "src/pages/components/ConfirmationDialogBo
 // (1): forces Form re-render (=> unmount when changing from /edit/x to /edit/y pages)
 
 const EditPropertyPage: NextPage = () => {
-    const [clearConfirmDialogOpen, setclearConfirmDialogOpen] = useState(false);
     const dispatch = useDispatch();
     const router = useRouter();
     const { pushTab } = useTabsContext();
@@ -29,6 +28,8 @@ const EditPropertyPage: NextPage = () => {
 
     const { data } = useGetPropertyByIdQuery(+propertyId!);
     const [edit, { isError }] = useEditPropertyMutation();
+
+    const [clearConfirmDialogOpen, setclearConfirmDialogOpen] = useState(false);
 
     useEffect(() => {
         if (data && propertyId) {
@@ -64,14 +65,17 @@ const EditPropertyPage: NextPage = () => {
     const resetEverything = () => setclearConfirmDialogOpen(true);
     const closeClearConfirmDialog = () => setclearConfirmDialogOpen(false);
 
-    const confirmResetEverything = () => {
+    const confirmResetEverything = useCallback(() => {
         dispatch(resetLabels());
         dispatch(resetNotes());
         dispatch(resetAll());
         closeClearConfirmDialog();
-    };
+    }, []);
 
-    const handleRedirect = () => router.push(`/property/${propertyId}`);
+    const handleRedirect = useCallback(
+        () => router.push(`/property/${propertyId}`),
+        []
+    );
 
     return (
         <>
