@@ -1,30 +1,26 @@
 import { IconButton, Tab, Tabs, Box, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { FC } from "react";
-import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import DemandForm from "./DemandForm";
-import {
-    addDemand,
-    removeDemands,
-    selectBuyer,
-    selectDemands,
-    selectLeaser,
-} from "src/slices/customer";
+import { addDemand, removeDemands, selectDemands } from "src/slices/customer";
 import { CloseIcon } from "yet-another-react-lightbox/core";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import { deletePropertyCode } from "src/slices/customer/misc";
 import Panel from "src/components/Panel";
+import { useFormContext } from "react-hook-form";
 
 const DemandSection: FC = () => {
-    const { t } = useTranslation();
+    const { watch } = useFormContext();
+
+    const leaser = watch("leaser");
+    const buyer = watch("buyer");
+
     const dispatch = useDispatch();
 
     const [index, setIndex] = useState(0);
 
     const demands = useSelector(selectDemands);
-    const leaser = useSelector(selectLeaser);
-    const buyer = useSelector(selectBuyer);
 
     const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
         if (newValue === demands.length) {

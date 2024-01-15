@@ -10,7 +10,8 @@ import { ICustomerPOST } from "src/types/customer";
 const CreateCustomer: NextPage = () => {
     const router = useRouter();
 
-    const [create, { isError }] = useCreateOrUpdateCustomerMutation();
+    const [create, { isError, isLoading }] =
+        useCreateOrUpdateCustomerMutation();
 
     const handleSave = useCallback(
         (body: ICustomerPOST) =>
@@ -23,7 +24,12 @@ const CreateCustomer: NextPage = () => {
     const handleCancel = useCallback(() => router.back(), []);
 
     return (
-        <Form isError={isError} onSave={handleSave} onCancel={handleCancel} />
+        <Form
+            isLoading={isLoading}
+            isError={isError}
+            onSave={handleSave}
+            onCancel={handleCancel}
+        />
     );
 };
 

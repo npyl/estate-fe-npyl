@@ -77,6 +77,7 @@ const getFIELDS = (
     <RHFTextField fullWidth name="homePhone" label={t("Home Phone")} />,
     <RHFTextField fullWidth name="fax" label={t("Fax")} />,
     <RHFSelect fullWidth name="nationality" label={t("Nationality")}>
+        <MenuItem value={""}>{t("Not selected")}</MenuItem>
         {nationalitiesEnum?.map(({ key, value }, i) => (
             <MenuItem key={i} value={key}>
                 {value}
@@ -95,10 +96,12 @@ const getFIELDS = (
         name="preferredLanguage"
         label={t("Preferred Language")}
     >
+        <MenuItem value={""}>{t("Not selected")}</MenuItem>
         <MenuItem value={"ENGLISH"}>{t("English")}</MenuItem>
         <MenuItem value={"GREEK"}>{t("Greek")}</MenuItem>
     </RHFSelect>,
     <RHFSelect fullWidth name="leadSource" label={t("Lead Source")}>
+        <MenuItem value={""}>{t("Not selected")}</MenuItem>
         {leadSourceEnum?.map(({ key, value }, i) => (
             <MenuItem key={i} value={key}>
                 {value}

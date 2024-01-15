@@ -16,6 +16,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { ICustomerPOST } from "src/types/customer";
 import { useCallback } from "react";
+import { LoadingButton } from "@mui/lab";
 
 interface ICustomerLocationYup {
     street: string;
@@ -31,9 +32,14 @@ interface ICustomerYup extends Partial<Omit<ICustomerPOST, "location">> {
     managedBy: number;
     mobilePhone: string;
     location: ICustomerLocationYup;
+
+    nationality: string;
+    preferredLanguage: string;
+    leadSource: string;
 }
 
 interface FormProps {
+    isLoading: boolean;
     isError: boolean;
     onSave: (body: ICustomerPOST) => void;
     onCancel: () => void;
@@ -48,6 +54,12 @@ const LoginSchema = Yup.object().shape({
         .email("Email must be a valid email address"),
     managedBy: Yup.number().positive("Please select a manager").required(),
     mobilePhone: Yup.string().required("Please enter Mobile Phone"),
+
+    // TODO: see if we can get these to be optional
+    nationality: Yup.string().required(),
+    preferredLanguage: Yup.string().required(),
+    leadSource: Yup.string().required(),
+
     // Address
     location: Yup.object().shape({
         street: Yup.string().required("Street is required"),
@@ -78,15 +90,19 @@ const defaultValues: ICustomerYup = {
     // prevent nulls:
     homePhone: "",
     fax: "",
-    nationality: "",
     idNumber: "",
     dateOfBirth: "",
     passportNumber: "",
+
+    // WARN: BE crashes if these are: ""
+    nationality: "",
     preferredLanguage: "",
     leadSource: "",
+
+    demands: [],
 };
 
-const Form = ({ isError, onSave, onCancel }: FormProps) => {
+const Form = ({ isLoading, isError, onSave, onCancel }: FormProps) => {
     const { t } = useTranslation();
 
     const methods = useForm<ICustomerYup>({
@@ -103,6 +119,7 @@ const Form = ({ isError, onSave, onCancel }: FormProps) => {
     const onSubmit = handleSubmit((data) => {
         try {
             // wtvr
+            onSave(data as ICustomerPOST);
             console.log("here!: ", data);
         } catch (error) {
             console.error(error);
@@ -145,24 +162,14 @@ const Form = ({ isError, onSave, onCancel }: FormProps) => {
                 >
                     {t("Clear")}
                 </Button>
-                <Button
+                <LoadingButton
+                    loading={isLoading && !isError}
                     variant="contained"
                     startIcon={<SendIcon />}
                     type="submit"
                 >
                     {t("Save")}
-                </Button>
-
-                {/* TODO: */}
-                {/* <SaveButton
-                    error={isError}
-                    loadingPosition="start"
-                    variant="contained"
-                    startIcon={<SendIcon />}
-                    type="submit"
-                >
-                    {t("Save")}
-                </SaveButton> */}
+                </LoadingButton>
             </Stack>
         </FormProvider>
     );
