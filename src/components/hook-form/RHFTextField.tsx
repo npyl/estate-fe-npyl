@@ -22,7 +22,7 @@ export default function RHFTextField({ name, ...other }: Props) {
                     value={
                         typeof field.value === "number" && field.value === 0
                             ? ""
-                            : field.value
+                            : field.value || ""
                     }
                     error={!!error}
                     helperText={error?.message}
