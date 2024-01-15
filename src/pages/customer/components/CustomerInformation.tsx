@@ -72,6 +72,7 @@ const getFIELDS = (
     <RHFTextField fullWidth name="lastName" label={t("Last Name")} />,
     <RHFTextField fullWidth name="email" label={t("Email")} />,
     <RHFSelect name="managedBy" label={t("Managed By")}>
+        <MenuItem value={-1}>{t("Not selected")}</MenuItem>
         {managers?.map(({ id, firstName, lastName }, i) => (
             <MenuItem key={i} value={id}>
                 {`${firstName} ${lastName}`}

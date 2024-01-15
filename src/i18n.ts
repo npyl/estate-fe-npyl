@@ -369,6 +369,7 @@ const resources = {
 
             //Create customer
 
+            "Not selected": "Μη επιλεγμένο",
             "Customer Information": "Customer Information",
             "First Name": "First Name",
             "Last Name": "Last Name",

@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { ICustomerPOST } from "src/types/customer";
+import { useCallback } from "react";
 
 interface ICustomerLocationYup {
     street: string;
@@ -34,9 +35,8 @@ interface ICustomerYup extends Partial<Omit<ICustomerPOST, "location">> {
 
 interface FormProps {
     isError: boolean;
-    performSave: () => void;
-    resetState: () => void;
-    handleCancel: () => void;
+    onSave: (body: ICustomerPOST) => void;
+    onCancel: () => void;
 }
 
 const LoginSchema = Yup.object().shape({
@@ -81,12 +81,7 @@ const defaultValues: ICustomerYup = {
     leadSource: "",
 };
 
-const Form = ({
-    isError,
-    performSave,
-    resetState,
-    handleCancel,
-}: FormProps) => {
+const Form = ({ isError, onSave, onCancel }: FormProps) => {
     const { t } = useTranslation();
 
     const methods = useForm<ICustomerYup>({
@@ -109,6 +104,8 @@ const Form = ({
             reset();
         }
     });
+
+    const handleClear = useCallback(() => reset(), []);
 
     return (
         <FormProvider methods={methods} onSubmit={onSubmit}>
@@ -134,14 +131,14 @@ const Form = ({
                 <Button
                     variant="outlined"
                     startIcon={<CancelIcon />}
-                    onClick={handleCancel}
+                    onClick={onCancel}
                 >
                     {t("Cancel")}
                 </Button>
                 <Button
                     variant="outlined"
                     startIcon={<DeleteIcon />}
-                    onClick={resetState}
+                    onClick={handleClear}
                 >
                     {t("Clear")}
                 </Button>

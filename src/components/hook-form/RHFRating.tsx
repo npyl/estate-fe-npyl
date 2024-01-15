@@ -19,11 +19,7 @@ export default function RHFRating({ name, ...other }: Props) {
             render={({ field, fieldState: { error } }) => (
                 <Rating
                     {...field}
-                    value={
-                        typeof field.value === "number" && field.value === 0
-                            ? ""
-                            : field.value
-                    }
+                    value={parseInt(field.value) || 0} // Convert to number, default to 0 if NaN
                     // error={!!error}
                     // helperText={error?.message}
                     {...other}
