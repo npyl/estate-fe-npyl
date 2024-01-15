@@ -118,7 +118,6 @@ const Form = ({ isLoading, isError, onSave, onCancel }: FormProps) => {
 
     const onSubmit = handleSubmit((data) => {
         try {
-            // wtvr
             onSave(data as ICustomerPOST);
             console.log("here!: ", data);
         } catch (error) {

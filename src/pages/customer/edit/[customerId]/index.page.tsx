@@ -17,7 +17,7 @@ const EditCustomer: NextPage = () => {
     const { customerId } = router.query;
 
     const { data } = useGetCustomerByIdQuery(+customerId!);
-    const [edit, { isError }] = useCreateOrUpdateCustomerMutation();
+    const [edit, { isError, isLoading }] = useCreateOrUpdateCustomerMutation();
 
     useEffect(() => {
         if (data && customerId) {
@@ -52,7 +52,12 @@ const EditCustomer: NextPage = () => {
     );
 
     return (
-        <Form isError={isError} onSave={handleEdit} onCancel={redirectToView} />
+        <Form
+            isLoading={isLoading}
+            isError={isError}
+            onSave={handleEdit}
+            onCancel={redirectToView}
+        />
     );
 };
 
