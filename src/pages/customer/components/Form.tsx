@@ -70,6 +70,11 @@ const defaultValues: ICustomerYup = {
 
     status: 0,
 
+    lessor: false,
+    leaser: false,
+    buyer: false,
+    seller: false,
+
     // prevent nulls:
     homePhone: "",
     fax: "",

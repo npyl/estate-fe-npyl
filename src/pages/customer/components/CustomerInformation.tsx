@@ -2,15 +2,8 @@ import { Box, Grid, MenuItem, Typography } from "@mui/material";
 import * as React from "react";
 import { useGlobals } from "src/hooks/useGlobals";
 import { useAllUsersQuery } from "src/services/user";
-
 import { LabelCreate } from "src/components/label";
-
-import { selectLeadSource } from "src/slices/customer";
-
-import { useSelector } from "react-redux";
-
 import { LeadSource } from "src/types/global";
-
 import CustomerTypeSelect from "./CustomerTypeSelect";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
@@ -20,6 +13,7 @@ import { TranslationType } from "src/types/translation";
 import { useMemo } from "react";
 import { IUser } from "src/types/user";
 import { KeyValue } from "src/types/KeyValue";
+import { useFormContext } from "react-hook-form";
 
 const Rating = () => {
     const { t } = useTranslation();
@@ -119,22 +113,20 @@ const getFIELDS = (
         variant="customer"
         resourceId={customerId ? +customerId : -1}
     />,
-    <CustomerTypeSelect />,
 ];
 
 const CustomerInformation: React.FC<any> = () => {
     const router = useRouter();
     const { t } = useTranslation();
-    const enums = useGlobals();
+    const { watch } = useFormContext();
 
     const { customerId } = router.query;
+    const enums = useGlobals();
+    const managers = useAllUsersQuery().data;
+    const leadSource = watch("leadSource");
 
     const nationalitiesEnum = enums?.customer?.nationality;
     const leadSourceEnum = enums?.customer?.leadSource;
-
-    const managers = useAllUsersQuery().data;
-
-    const leadSource = (useSelector(selectLeadSource) as LeadSource) || "";
 
     const FIELDS = useMemo(
         () =>
@@ -157,6 +149,9 @@ const CustomerInformation: React.FC<any> = () => {
                         {f}
                     </Grid>
                 ))}
+                <Grid item xs={12}>
+                    <CustomerTypeSelect />
+                </Grid>
             </Grid>
         </Panel>
     );
