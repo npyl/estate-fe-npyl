@@ -68,6 +68,8 @@ const defaultValues: ICustomerYup = {
         city: "",
     },
 
+    status: 0,
+
     // prevent nulls:
     homePhone: "",
     fax: "",

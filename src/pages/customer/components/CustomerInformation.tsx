@@ -1,13 +1,13 @@
-import { Box, Grid, MenuItem, Rating, Typography } from "@mui/material";
+import { Box, Grid, MenuItem, Typography } from "@mui/material";
 import * as React from "react";
 import { useGlobals } from "src/hooks/useGlobals";
 import { useAllUsersQuery } from "src/services/user";
 
 import { LabelCreate } from "src/components/label";
 
-import { selectLeadSource, selectStatus, setStatus } from "src/slices/customer";
+import { selectLeadSource } from "src/slices/customer";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { LeadSource } from "src/types/global";
 
@@ -15,17 +15,58 @@ import CustomerTypeSelect from "./CustomerTypeSelect";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
 import Panel from "src/components/Panel";
-import { RHFSelect, RHFTextField } from "src/components/hook-form";
+import { RHFSelect, RHFTextField, RHFRating } from "src/components/hook-form";
 import { TranslationType } from "src/types/translation";
 import { useMemo } from "react";
 import { IUser } from "src/types/user";
 import { KeyValue } from "src/types/KeyValue";
 
+const Rating = () => {
+    const { t } = useTranslation();
+
+    return (
+        <Box
+            sx={{
+                border: 1,
+                borderColor: "divider",
+                borderRadius: 1,
+                height: "100%",
+                px: 3,
+                py: 1.5,
+                display: "flex",
+                justifyContent: "center",
+            }}
+            flexDirection={"column"}
+        >
+            <Box
+                sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                }}
+            >
+                <Typography variant="h6">{t("Status")}</Typography>
+            </Box>
+
+            <Box
+                sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    py: 1.5,
+                }}
+            >
+                <RHFRating name="rating" />
+            </Box>
+        </Box>
+    );
+};
+
 const getFIELDS = (
     t: TranslationType,
     managers?: IUser[],
     nationalitiesEnum?: KeyValue<string>[],
-    leadSourceEnum?: KeyValue<string>[]
+    leadSourceEnum?: KeyValue<string>[],
+    leadSource?: LeadSource,
+    customerId?: string
 ) => [
     <RHFTextField fullWidth name="firstName" label={t("First Name")} />,
     <RHFTextField fullWidth name="lastName" label={t("Last Name")} />,
@@ -69,10 +110,18 @@ const getFIELDS = (
             </MenuItem>
         ))}
     </RHFSelect>,
+    leadSource === "CUSTOMER" ? (
+        <RHFTextField fullWidth name="suggestedBy" label={t("Suggested by")} />
+    ) : null,
+    <Rating />,
+    <LabelCreate
+        variant="customer"
+        resourceId={customerId ? +customerId : -1}
+    />,
+    <CustomerTypeSelect />,
 ];
 
 const CustomerInformation: React.FC<any> = () => {
-    const dispatch = useDispatch();
     const router = useRouter();
     const { t } = useTranslation();
     const enums = useGlobals();
@@ -84,12 +133,19 @@ const CustomerInformation: React.FC<any> = () => {
 
     const managers = useAllUsersQuery().data;
 
-    const status = useSelector(selectStatus) || 0;
     const leadSource = (useSelector(selectLeadSource) as LeadSource) || "";
 
     const FIELDS = useMemo(
-        () => getFIELDS(t, managers, nationalitiesEnum, leadSourceEnum),
-        [t, managers, nationalitiesEnum, leadSourceEnum]
+        () =>
+            getFIELDS(
+                t,
+                managers,
+                nationalitiesEnum,
+                leadSourceEnum,
+                leadSource,
+                customerId as string
+            ),
+        [t, managers, nationalitiesEnum, leadSourceEnum, leadSource, customerId]
     );
 
     return (
@@ -100,64 +156,6 @@ const CustomerInformation: React.FC<any> = () => {
                         {f}
                     </Grid>
                 ))}
-
-                <Grid item xs={6}>
-                    {leadSource === "CUSTOMER" ? (
-                        <RHFTextField
-                            fullWidth
-                            name="suggestedBy"
-                            label={t("Suggested by")}
-                        />
-                    ) : null}
-                </Grid>
-                <Grid item xs={6}>
-                    <Box
-                        sx={{
-                            border: 1,
-                            borderColor: "divider",
-                            borderRadius: 1,
-                            height: "100%",
-                            px: 3,
-                            py: 1.5,
-                            display: "flex",
-                            justifyContent: "center",
-                        }}
-                        flexDirection={"column"}
-                    >
-                        <Box
-                            sx={{
-                                display: "flex",
-                                justifyContent: "center",
-                            }}
-                        >
-                            <Typography variant="h6">{t("Status")}</Typography>
-                        </Box>
-
-                        <Box
-                            sx={{
-                                display: "flex",
-                                justifyContent: "center",
-                                py: 1.5,
-                            }}
-                        >
-                            <Rating
-                                value={status}
-                                onChange={(_event, newValue) => {
-                                    dispatch(setStatus(newValue));
-                                }}
-                            />
-                        </Box>
-                    </Box>
-                </Grid>
-                <Grid item xs={6}>
-                    <LabelCreate
-                        variant="customer"
-                        resourceId={customerId ? +customerId : -1}
-                    />
-                </Grid>
-                <Grid item xs={12}>
-                    <CustomerTypeSelect />
-                </Grid>
             </Grid>
         </Panel>
     );
