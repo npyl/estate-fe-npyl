@@ -67,6 +67,16 @@ const defaultValues: ICustomerYup = {
         number: "",
         city: "",
     },
+
+    // prevent nulls:
+    homePhone: "",
+    fax: "",
+    nationality: "",
+    idNumber: "",
+    dateOfBirth: "",
+    passportNumber: "",
+    preferredLanguage: "",
+    leadSource: "",
 };
 
 const Form = ({

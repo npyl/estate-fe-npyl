@@ -52,7 +52,7 @@ const getFIELDS = (
     <RHFTextField
         fullWidth
         name="passportNumber"
-        label={t("Passport Number")}
+        label={t("Passport number")}
     />,
     <RHFSelect
         fullWidth
