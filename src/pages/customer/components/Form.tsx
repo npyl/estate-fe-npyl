@@ -9,12 +9,46 @@ import NotesSection from "./NotesSection";
 import DemandSection from "./DemandSection";
 import { SaveButton } from "src/components/Button/Save";
 
+// Forms
+import FormProvider from "src/components/hook-form";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
+import { ICustomerPOST } from "src/types/customer";
+
+// required fields
+interface ICustomerYup extends Partial<ICustomerPOST> {
+    firstName: string;
+    lastName: string;
+    email: string;
+    managedBy: number;
+    mobilePhone: string;
+}
+
 interface FormProps {
     isError: boolean;
     performSave: () => void;
     resetState: () => void;
     handleCancel: () => void;
 }
+
+const LoginSchema = Yup.object().shape({
+    firstName: Yup.string().required("Enter First Name"),
+    lastName: Yup.string().required("Enter Last Name"),
+    email: Yup.string()
+        .required("Email is required")
+        .email("Email must be a valid email address"),
+    managedBy: Yup.number().positive("Please select a manager").required(),
+    mobilePhone: Yup.string().required("Please enter Mobile Phone"),
+});
+
+const defaultValues: ICustomerYup = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    managedBy: -1,
+    mobilePhone: "",
+};
 
 const Form = ({
     isError,
@@ -24,8 +58,29 @@ const Form = ({
 }: FormProps) => {
     const { t } = useTranslation();
 
+    const methods = useForm<ICustomerYup>({
+        resolver: yupResolver(LoginSchema),
+        defaultValues,
+    });
+
+    const {
+        reset,
+        handleSubmit,
+        // formState: { isSubmitting },
+    } = methods;
+
+    const onSubmit = handleSubmit((data) => {
+        try {
+            // wtvr
+            console.log("here!: ", data);
+        } catch (error) {
+            console.error(error);
+            reset();
+        }
+    });
+
     return (
-        <div>
+        <FormProvider methods={methods} onSubmit={onSubmit}>
             <Grid container paddingTop={1} paddingRight={1} spacing={1}>
                 <Grid item xs={6}>
                     <Stack spacing={1}>
@@ -59,17 +114,26 @@ const Form = ({
                 >
                     {t("Clear")}
                 </Button>
-                <SaveButton
+                <Button
+                    variant="contained"
+                    startIcon={<SendIcon />}
+                    type="submit"
+                >
+                    {t("Save")}
+                </Button>
+
+                {/* TODO: */}
+                {/* <SaveButton
                     error={isError}
                     loadingPosition="start"
                     variant="contained"
                     startIcon={<SendIcon />}
-                    onClick={performSave}
+                    type="submit"
                 >
                     {t("Save")}
-                </SaveButton>
+                </SaveButton> */}
             </Stack>
-        </div>
+        </FormProvider>
     );
 };
 
