@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { Popper, TextField, ClickAwayListener, Box } from "@mui/material";
+import {
+    Popper,
+    TextField,
+    ClickAwayListener,
+    Box,
+    TextFieldProps,
+} from "@mui/material";
 import { Calendar, DateObject } from "react-multi-date-picker";
 import { CalendarBox } from "./styled";
 import { motion, AnimatePresence } from "framer-motion";
@@ -21,13 +27,13 @@ const datePickerVariants = {
     },
 };
 
-type DatePickerProps = {
+export type DatePickerProps = Omit<TextFieldProps, "onSelect"> & {
     dateFrom?: string;
     dateTo?: string;
     date?: string;
     range?: boolean;
     label?: string;
-    onSelect: (dates: DateObject | DateObject[]) => void;
+    onSelect?: (dates: DateObject | DateObject[]) => void;
 };
 
 const DatePicker: React.FC<DatePickerProps> = ({
@@ -37,6 +43,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
     range = false,
     label = "",
     onSelect,
+    ...props
 }) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
@@ -64,6 +71,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
                             : new Date(date).toDateString()
                     }
                     label={label || "Select dates"}
+                    {...props}
                 />
                 <AnimatePresence>
                     {open && (

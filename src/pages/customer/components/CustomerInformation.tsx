@@ -14,6 +14,7 @@ import { useMemo } from "react";
 import { IUser } from "src/types/user";
 import { KeyValue } from "src/types/KeyValue";
 import { useFormContext } from "react-hook-form";
+import RHFDatePicker from "src/components/hook-form/RHFDatePicker";
 
 const Rating = () => {
     const { t } = useTranslation();
@@ -85,7 +86,11 @@ const getFIELDS = (
         ))}
     </RHFSelect>,
     <RHFTextField fullWidth name="idNumber" label={t("ID Number")} />,
-    <RHFTextField fullWidth name="dateOfBirth" label={t("Date of Birth")} />,
+    <RHFDatePicker
+        fullWidth
+        name="dateOfBirth"
+        label={t("Date of Birth").toString()}
+    />,
     <RHFTextField
         fullWidth
         name="passportNumber"
