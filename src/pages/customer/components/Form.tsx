@@ -25,9 +25,9 @@ const Form = ({
     const { t } = useTranslation();
 
     return (
-        <Grid paddingTop={1} paddingRight={0} container spacing={1}>
-            <Grid container item paddingTop={1} paddingRight={1} spacing={1}>
-                <Grid item xs={6} order={"row"}>
+        <div>
+            <Grid container paddingTop={1} paddingRight={1} spacing={1}>
+                <Grid item xs={6}>
                     <Stack spacing={1}>
                         <CustomerInformation />
                         <AddressDetails />
@@ -35,50 +35,41 @@ const Form = ({
                     </Stack>
                 </Grid>
                 <Grid item xs={6}>
-                    <Stack spacing={1}>
-                        <DemandSection />
-                    </Stack>
+                    <DemandSection />
                 </Grid>
             </Grid>
-            <Grid item xs={12} padding={2}>
-                <Grid
-                    container
-                    alignItems="center"
-                    justifyContent="flex-end"
-                    spacing={1}
+            <Stack
+                my={2}
+                display="flex"
+                justifyContent="flex-end"
+                direction="row"
+                spacing={1}
+            >
+                <Button
+                    variant="outlined"
+                    startIcon={<CancelIcon />}
+                    onClick={handleCancel}
                 >
-                    <Grid item>
-                        <Button
-                            variant="outlined"
-                            startIcon={<CancelIcon />}
-                            onClick={handleCancel}
-                        >
-                            {t("Cancel")}
-                        </Button>
-                    </Grid>
-                    <Grid item>
-                        <Button
-                            variant="outlined"
-                            startIcon={<DeleteIcon />}
-                            onClick={resetState}
-                        >
-                            {t("Clear")}
-                        </Button>
-                    </Grid>
-                    <Grid item>
-                        <SaveButton
-                            error={isError}
-                            loadingPosition="start"
-                            variant="contained"
-                            startIcon={<SendIcon />}
-                            onClick={performSave}
-                        >
-                            {t("Save")}
-                        </SaveButton>
-                    </Grid>
-                </Grid>
-            </Grid>
-        </Grid>
+                    {t("Cancel")}
+                </Button>
+                <Button
+                    variant="outlined"
+                    startIcon={<DeleteIcon />}
+                    onClick={resetState}
+                >
+                    {t("Clear")}
+                </Button>
+                <SaveButton
+                    error={isError}
+                    loadingPosition="start"
+                    variant="contained"
+                    startIcon={<SendIcon />}
+                    onClick={performSave}
+                >
+                    {t("Save")}
+                </SaveButton>
+            </Stack>
+        </div>
     );
 };
 

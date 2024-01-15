@@ -1,12 +1,4 @@
-import {
-    IconButton,
-    Paper,
-    Tab,
-    Tabs,
-    Typography,
-    Box,
-    Stack,
-} from "@mui/material";
+import { IconButton, Tab, Tabs, Box, Stack } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
@@ -22,6 +14,7 @@ import {
 import { CloseIcon } from "yet-another-react-lightbox/core";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import { deletePropertyCode } from "src/slices/customer/misc";
+import Panel from "src/components/Panel";
 
 const DemandSection: FC = () => {
     const { t } = useTranslation();
@@ -63,24 +56,7 @@ const DemandSection: FC = () => {
     if (!leaser && !buyer) return null;
 
     return (
-        <Paper
-            elevation={10}
-            sx={{
-                overflow: "auto",
-                padding: 0.5,
-            }}
-        >
-            <Box
-                sx={{
-                    display: "flex",
-                    justifyContent: "left",
-                }}
-            >
-                <Typography variant="h6" flex={1} mt={1.5} ml={3}>
-                    {t("Demand Forms")}
-                </Typography>
-            </Box>
-
+        <Panel label="Demand Forms">
             <Stack
                 sx={{ borderBottom: 1, borderColor: "divider" }}
                 direction={"row"}
@@ -119,7 +95,7 @@ const DemandSection: FC = () => {
             {demands.length > index && ( // prevent loading DemandForm too fast
                 <DemandForm index={index} />
             )}
-        </Paper>
+        </Panel>
     );
 };
 export default DemandSection;

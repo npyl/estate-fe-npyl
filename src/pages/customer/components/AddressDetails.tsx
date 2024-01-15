@@ -11,9 +11,10 @@ import {
 
 import { useSelector } from "react-redux";
 
-import { Box, Grid, Paper, TextField, Typography } from "@mui/material";
+import { Grid, TextField } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
+import Panel from "src/components/Panel";
 
 const AddressDetails: React.FC<any> = () => {
     const { t } = useTranslation();
@@ -29,24 +30,7 @@ const AddressDetails: React.FC<any> = () => {
     ) => dispatch(setter(event.target.value));
 
     return (
-        <Paper
-            elevation={10}
-            sx={{
-                overflow: "auto",
-                padding: 0.5,
-            }}
-        >
-            <Box
-                sx={{
-                    px: 3,
-                    py: 1.5,
-                    display: "flex",
-                    justifyContent: "left",
-                }}
-            >
-                <Typography variant="h6">{t("Address Details")}</Typography>
-            </Box>
-
+        <Panel label="Address Details">
             <Grid container spacing={2} p={1}>
                 <Grid item xs={6}>
                     <TextField
@@ -73,7 +57,7 @@ const AddressDetails: React.FC<any> = () => {
                     />
                 </Grid>
             </Grid>
-        </Paper>
+        </Panel>
     );
 };
 export default AddressDetails;

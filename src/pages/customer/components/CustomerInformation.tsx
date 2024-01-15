@@ -62,6 +62,7 @@ import DatePicker from "src/components/DatePicker";
 import OnlyLettersInput from "src/components/OnlyLetters";
 import OnlyEmailInput from "src/components/OnlyEmailInput";
 import { DateObject } from "react-multi-date-picker";
+import Panel from "src/components/Panel";
 
 const CustomerInformation: React.FC<any> = () => {
     const dispatch = useDispatch();
@@ -99,26 +100,7 @@ const CustomerInformation: React.FC<any> = () => {
         dispatch(setDateOfBirth((dates as DateObject).toDate().toISOString()));
 
     return (
-        <Paper
-            elevation={10}
-            sx={{
-                overflow: "auto",
-                padding: 0.5,
-            }}
-        >
-            <Box
-                sx={{
-                    px: 3,
-                    py: 1.5,
-                    display: "flex",
-                    justifyContent: "left",
-                }}
-            >
-                <Typography variant="h6">
-                    {t("Customer Information")}
-                </Typography>
-            </Box>
-
+        <Panel label="Customer Information">
             <Grid item xs={12} padding={1}>
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
@@ -360,7 +342,7 @@ const CustomerInformation: React.FC<any> = () => {
                     </Grid>
                 </Grid>
             </Grid>
-        </Paper>
+        </Panel>
     );
 };
 export default CustomerInformation;
