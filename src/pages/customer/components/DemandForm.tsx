@@ -13,8 +13,8 @@ import {
     TextField,
     Typography,
 } from "@mui/material";
-import { FC, useCallback, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { FC, useCallback, useMemo, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useGlobals } from "src/hooks/useGlobals";
 import {
     useAllPropertiesQuery,
@@ -23,33 +23,18 @@ import {
 import {
     // setters
     setCategory,
-    setFurnished,
     setMaxFloor,
-    setMinBathrooms,
-    setMinBedrooms,
-    setMinCovered,
     setMinFloor,
-    setMinPlot,
-    setMinPrice,
-    setMinYearOfConstruction,
-    setParentCategory,
-    setDemandLabels,
-    setState,
     setDemandCities,
     setDemandComplexes,
     setDemandRegions,
 } from "src/slices/customer";
-
 import { useTranslation } from "react-i18next";
 import { AreaOfPreference } from "./DemandForm/AreaOfPreference";
 import { LabelSelect } from "./LabelSelect";
 import PriorityFeatures from "./PriorityFeatures";
 import { KeyValue } from "src/types/KeyValue";
 import { DemandFormSlider } from "./DemandForm/components/DemandFormSlider";
-import {
-    selectPropertyCode,
-    setPropertyCode as setAutocompleteValue,
-} from "src/slices/customer/misc";
 import { IDemandFiltersPOST } from "src/types/demand";
 import { IProperties } from "src/types/properties";
 import { RHFSelect } from "src/components/hook-form";
@@ -134,12 +119,7 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
             [demandFilters]
         );
 
-    const propertyCode = useSelector(selectPropertyCode);
-
-    const autocompleteValue = useMemo(
-        () => propertyCode?.at(index) || "",
-        [propertyCode, index]
-    );
+    const [propertyCode, setPropertyCode] = useState<string>("");
 
     const subCategoriesMap: {
         [key: string]: KeyValue[];
@@ -168,53 +148,26 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
         (p: IProperties) => {
             if (!p) return;
 
-            dispatch(
-                setParentCategory({
-                    index,
-                    value: [p.parentCategory.key],
-                })
-            );
-            dispatch(setCategory({ index, value: [p.category.key] }));
-            dispatch(
-                setFurnished({
-                    index,
-                    value: [p.technicalFeatures.furnished.key],
-                })
-            );
-            dispatch(setState({ index, value: [p.state.key] }));
-            dispatch(
-                setMinBedrooms({
-                    index,
-                    value: p.details.bedrooms,
-                })
-            );
-            dispatch(
-                setMinBathrooms({
-                    index,
-                    value: p.details.bathrooms,
-                })
-            );
-            dispatch(
-                setMinCovered({
-                    index,
-                    value: p.technicalFeatures.coverageFactor,
-                })
-            );
-            dispatch(setMinPlot({ index, value: p.plotArea }));
-            dispatch(setMinPrice({ index, value: p.price }));
-            dispatch(setMinFloor({ index, value: p.details.floor.key }));
-            dispatch(
-                setMinYearOfConstruction({
-                    index,
-                    value: p.construction.yearOfConstruction,
-                })
-            );
+            const setDemandProperty = (key: string, value: any) =>
+                setValue(`demands[${index}].${key}`, value);
 
-            dispatch(
-                setDemandLabels({
-                    index,
-                    value: p.labels.map((label) => label.id),
-                })
+            setDemandProperty("parentCategory", p.parentCategory.key);
+            setDemandProperty("category", p.category.key);
+            setDemandProperty("furnished", p.technicalFeatures.furnished.key);
+            setDemandProperty("state", p.state.key);
+            setDemandProperty("minBedrooms", p.details.bedrooms);
+            setDemandProperty("minBathrooms", p.details.bathrooms);
+            setDemandProperty("minCovered", p.technicalFeatures.coverageFactor);
+            setDemandProperty("minPlot", p.plotArea);
+            setDemandProperty("minPrice", p.price);
+            setDemandProperty("minFloor", p.details.floor.key);
+            setDemandProperty(
+                "minYearOfConstruction",
+                p.construction.yearOfConstruction
+            );
+            setDemandProperty(
+                "labels",
+                p.labels.map((label) => label.id)
             );
         },
         [index]
@@ -222,7 +175,7 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
 
     const autocompleteChange = useCallback(
         (_event: any, value: string | null) => {
-            dispatch(setAutocompleteValue({ index, value: value || "" }));
+            setPropertyCode(value || "");
 
             if (value)
                 getPropertyByCode(value).unwrap().then(fillFromPropertyForCode);
@@ -273,7 +226,7 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
             <Box px={1.5}>
                 <Autocomplete
                     disablePortal
-                    value={autocompleteValue}
+                    value={propertyCode}
                     onChange={autocompleteChange}
                     options={propertyCodes}
                     renderInput={(params) => (
@@ -433,68 +386,70 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                     demandIndex={index}
                 />
 
-                <Typography variant="h6">{t("Floor")}</Typography>
-                <Grid
-                    container
-                    direction={"row"}
-                    spacing={1}
-                    paddingTop={2}
-                    paddingLeft={3}
-                    paddingRight={3}
-                >
-                    {minFloorsArray && maxFloorsArray && (
-                        <Slider
-                            getAriaLabel={() => "Floor Slider"}
-                            orientation="horizontal"
-                            value={[
-                                minFloorsArray.indexOf(minFloor),
-                                maxFloorsArray.indexOf(maxFloor),
-                            ]}
-                            onChange={(
-                                _event: any,
-                                newValue: number | number[],
-                                _activeThumb: number
-                            ) => {
-                                if (!Array.isArray(newValue)) return;
+                {minFloorsArray && maxFloorsArray && (
+                    <>
+                        <Typography variant="h6">{t("Floor")}</Typography>
+                        <Grid
+                            container
+                            direction={"row"}
+                            spacing={1}
+                            paddingTop={2}
+                            paddingLeft={3}
+                            paddingRight={3}
+                        >
+                            <Slider
+                                getAriaLabel={() => "Floor Slider"}
+                                orientation="horizontal"
+                                value={[
+                                    minFloorsArray.indexOf(minFloor),
+                                    maxFloorsArray.indexOf(maxFloor),
+                                ]}
+                                onChange={(
+                                    _event: any,
+                                    newValue: number | number[],
+                                    _activeThumb: number
+                                ) => {
+                                    if (!Array.isArray(newValue)) return;
 
-                                const min = minFloorsArray[newValue[0]];
-                                const max = maxFloorsArray[newValue[1]];
+                                    const min = minFloorsArray[newValue[0]];
+                                    const max = maxFloorsArray[newValue[1]];
 
-                                dispatch(
-                                    setMinFloor({
-                                        index,
-                                        value: min,
-                                    })
-                                );
-                                dispatch(
-                                    setMaxFloor({
-                                        index,
-                                        value: max,
-                                    })
-                                );
-                            }}
-                            valueLabelDisplay="auto"
-                            valueLabelFormat={valueLabelFormat}
-                            min={0}
-                            max={maxFloorsArray.length - 41}
-                        />
-                    )}
+                                    dispatch(
+                                        setMinFloor({
+                                            index,
+                                            value: min,
+                                        })
+                                    );
+                                    dispatch(
+                                        setMaxFloor({
+                                            index,
+                                            value: max,
+                                        })
+                                    );
+                                }}
+                                valueLabelDisplay="auto"
+                                valueLabelFormat={valueLabelFormat}
+                                min={0}
+                                max={maxFloorsArray.length - 41}
+                            />
 
-                    <RHFSelect name="minFloor" label={t("Min Floor")}>
-                        {minFloors?.map(({ key, value }, i) => (
-                            <MenuItem key={i} value={key}>
-                                {value}
-                            </MenuItem>
-                        ))}
-                    </RHFSelect>
-                    <RHFSelect name="maxFloor" label={t("Max Floor")}>
-                        {maxFloors?.map(({ key, value }, i) => (
-                            <MenuItem key={i} value={key}>
-                                {value}
-                            </MenuItem>
-                        ))}
-                    </RHFSelect>
-                </Grid>
+                            <RHFSelect name="minFloor" label={t("Min Floor")}>
+                                {minFloors?.map(({ key, value }, i) => (
+                                    <MenuItem key={i} value={key}>
+                                        {value}
+                                    </MenuItem>
+                                ))}
+                            </RHFSelect>
+                            <RHFSelect name="maxFloor" label={t("Max Floor")}>
+                                {maxFloors?.map(({ key, value }, i) => (
+                                    <MenuItem key={i} value={key}>
+                                        {value}
+                                    </MenuItem>
+                                ))}
+                            </RHFSelect>
+                        </Grid>
+                    </>
+                )}
             </Box>
 
             <AreaOfPreference
