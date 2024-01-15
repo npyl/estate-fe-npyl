@@ -5,10 +5,11 @@ import { useTranslation } from "react-i18next";
 
 interface PanelProps {
     label: string;
+    endNode?: React.ReactNode;
     children?: React.ReactNode;
 }
 
-const Panel = ({ label, children }: PanelProps) => {
+const Panel = ({ label, endNode, children }: PanelProps) => {
     const { t } = useTranslation();
     return (
         <Paper
@@ -23,10 +24,12 @@ const Panel = ({ label, children }: PanelProps) => {
                     px: 1.5,
                     py: 1.5,
                     display: "flex",
-                    justifyContent: "left",
+                    flexDirection: "row",
+                    justifyContent: !!endNode ? "space-between" : "left",
                 }}
             >
                 <Typography variant="h6">{t(label)}</Typography>
+                {endNode}
             </Box>
             {children}
         </Paper>
