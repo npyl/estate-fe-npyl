@@ -110,12 +110,10 @@ const Form = ({ isError, onSave, onCancel }: FormProps) => {
     return (
         <FormProvider methods={methods} onSubmit={onSubmit}>
             <Grid container paddingTop={1} paddingRight={1} spacing={1}>
-                <Grid item xs={6}>
-                    <Stack spacing={1}>
-                        <CustomerInformation />
-                        <AddressDetails />
-                        <NotesSection />
-                    </Stack>
+                <Grid item xs={6} display="flex" flexDirection="column" gap={1}>
+                    <CustomerInformation />
+                    <AddressDetails />
+                    <NotesSection />
                 </Grid>
                 <Grid item xs={6}>
                     <DemandSection />
