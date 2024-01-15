@@ -16,13 +16,20 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { ICustomerPOST } from "src/types/customer";
 
+interface ICustomerLocationYup {
+    street: string;
+    number: string;
+    city: string;
+}
+
 // required fields
-interface ICustomerYup extends Partial<ICustomerPOST> {
+interface ICustomerYup extends Partial<Omit<ICustomerPOST, "location">> {
     firstName: string;
     lastName: string;
     email: string;
     managedBy: number;
     mobilePhone: string;
+    location: ICustomerLocationYup;
 }
 
 interface FormProps {
@@ -33,6 +40,7 @@ interface FormProps {
 }
 
 const LoginSchema = Yup.object().shape({
+    // Customer Information
     firstName: Yup.string().required("Enter First Name"),
     lastName: Yup.string().required("Enter Last Name"),
     email: Yup.string()
@@ -40,6 +48,12 @@ const LoginSchema = Yup.object().shape({
         .email("Email must be a valid email address"),
     managedBy: Yup.number().positive("Please select a manager").required(),
     mobilePhone: Yup.string().required("Please enter Mobile Phone"),
+    // Address
+    location: Yup.object().shape({
+        street: Yup.string().required("Street is required"),
+        number: Yup.string().required("Number is required"),
+        city: Yup.string().required("City is required"),
+    }),
 });
 
 const defaultValues: ICustomerYup = {
@@ -48,6 +62,11 @@ const defaultValues: ICustomerYup = {
     email: "",
     managedBy: -1,
     mobilePhone: "",
+    location: {
+        street: "",
+        number: "",
+        city: "",
+    },
 };
 
 const Form = ({
