@@ -13,9 +13,10 @@ import FormProvider from "src/components/hook-form";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import { ICustomerPOST } from "src/types/customer";
-import { useCallback } from "react";
+import { ICustomer, ICustomerPOST } from "src/types/customer";
+import { useCallback, useEffect, useMemo } from "react";
 import { LoadingButton } from "@mui/lab";
+import { demandMapper } from "src/mappers/demand";
 
 interface ICustomerLocationYup {
     street: string;
@@ -38,6 +39,7 @@ interface ICustomerYup extends Partial<Omit<ICustomerPOST, "location">> {
 }
 
 interface FormProps {
+    customer?: ICustomer;
     isLoading: boolean;
     isError: boolean;
     onSave: (body: ICustomerPOST) => void;
@@ -67,53 +69,67 @@ const LoginSchema = Yup.object().shape({
     }),
 });
 
-const defaultValues: ICustomerYup = {
-    firstName: "",
-    lastName: "",
-    email: "",
-    managedBy: -1,
-    mobilePhone: "",
+const getDefaultValues = (customer?: ICustomer): ICustomerYup => ({
+    firstName: customer?.firstName || "",
+    lastName: customer?.lastName || "",
+    email: customer?.email || "",
+    managedBy: customer?.managedBy.id || -1,
+    mobilePhone: customer?.mobilePhone || "",
+
     location: {
-        street: "",
-        number: "",
-        city: "",
+        street: customer?.location?.street || "",
+        number: customer?.location?.number || "",
+        city: customer?.location?.city || "",
     },
 
-    status: 0,
+    status: customer?.status || 0,
 
-    lessor: false,
-    leaser: false,
-    buyer: false,
-    seller: false,
+    lessor: customer?.lessor || false,
+    leaser: customer?.leaser || false,
+    buyer: customer?.buyer || false,
+    seller: customer?.seller || false,
 
     // prevent nulls:
-    homePhone: "",
-    fax: "",
-    idNumber: "",
-    dateOfBirth: "",
-    passportNumber: "",
+    homePhone: customer?.homePhone || "",
+    fax: customer?.fax || "",
+    idNumber: customer?.idNumber || "",
+    dateOfBirth: customer?.dateOfBirth || "",
+    passportNumber: customer?.passportNumber || "",
 
-    // WARN: BE crashes if these are: ""
-    nationality: "",
-    preferredLanguage: "",
-    leadSource: "",
+    // WARN: BE crashes if these are: "" (therefore I have them required)
+    nationality: customer?.nationality.key || "",
+    preferredLanguage: customer?.preferredLanguage.key || "",
+    leadSource: customer?.leadSource.key || "",
 
-    demands: [],
-};
+    demands:
+        customer?.demands && customer?.demands?.length > 0
+            ? customer?.demands?.map(demandMapper)
+            : [],
+});
 
-const Form = ({ isLoading, isError, onSave, onCancel }: FormProps) => {
-    const { t } = useTranslation();
+const useCustomerForm = (customer?: ICustomer) => {
+    const defaultValues = useMemo(() => getDefaultValues(customer), [customer]);
 
     const methods = useForm<ICustomerYup>({
         resolver: yupResolver(LoginSchema),
-        defaultValues,
+        values: defaultValues,
     });
 
-    const {
-        reset,
-        handleSubmit,
-        // formState: { isSubmitting },
-    } = methods;
+    const { reset, handleSubmit } = methods;
+
+    return { methods, handleSubmit, reset };
+};
+
+const Form = ({
+    customer,
+    isLoading,
+    isError,
+    onSave,
+    onCancel,
+}: FormProps) => {
+    const { t } = useTranslation();
+
+    const { methods, handleSubmit, reset } = useCustomerForm(customer);
 
     const onSubmit = handleSubmit((data) => {
         try {

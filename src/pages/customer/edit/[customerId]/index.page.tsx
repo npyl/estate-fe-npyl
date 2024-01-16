@@ -16,16 +16,16 @@ const EditCustomer: NextPage = () => {
     const { pushTab } = useTabsContext();
     const { customerId } = router.query;
 
-    const { data } = useGetCustomerByIdQuery(+customerId!);
+    const { data: customer } = useGetCustomerByIdQuery(+customerId!);
     const [edit, { isError, isLoading }] = useCreateOrUpdateCustomerMutation();
 
     useEffect(() => {
-        if (data && customerId) {
-            const isFirstEdit = data.createdAt === data.updatedAt;
+        if (customer && customerId) {
+            const isFirstEdit = customer.createdAt === customer.updatedAt;
             const label = `${isFirstEdit ? "Create" : "Edit"} customer ${
-                (data?.firstName &&
-                    data?.lastName &&
-                    `${data.firstName} ${data.lastName}`) ||
+                (customer?.firstName &&
+                    customer?.lastName &&
+                    `${customer.firstName} ${customer.lastName}`) ||
                 ""
             }`;
 
@@ -39,11 +39,12 @@ const EditCustomer: NextPage = () => {
             // dispatch(setInitialNotesState(data.notes));
             // dispatch(setInitialCustomerState(data));
         }
-    }, [data, customerId]);
+    }, [customer, customerId]);
 
     const handleEdit = useCallback(
-        (body: ICustomerPOST) => edit(body).then(redirectToView),
-        []
+        (body: ICustomerPOST) =>
+            edit({ ...body, id: +customerId! }).then(redirectToView),
+        [customerId]
     );
 
     const redirectToView = useCallback(
@@ -53,6 +54,7 @@ const EditCustomer: NextPage = () => {
 
     return (
         <Form
+            customer={customer}
             isLoading={isLoading}
             isError={isError}
             onSave={handleEdit}
