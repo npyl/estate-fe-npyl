@@ -1,79 +1,33 @@
 import * as React from "react";
 
-import {
-    selectNumber,
-    selectStreet,
-    setStreet,
-    setNumber,
-    setCity,
-    selectCity,
-} from "src/slices/customer";
-
-import { useSelector } from "react-redux";
-
-import { Box, Grid, Paper, TextField, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useDispatch } from "react-redux";
+import Panel from "src/components/Panel";
+import { RHFTextField } from "src/components/hook-form";
+import { TranslationType } from "src/types/translation";
+import { useMemo } from "react";
+
+const getFIELDS = (t: TranslationType) => [
+    <RHFTextField fullWidth name="location.street" label={t("Street")} />,
+    <RHFTextField fullWidth name="location.number" label={t("Number")} />,
+    <RHFTextField fullWidth name="location.city" label={t("City")} />,
+];
 
 const AddressDetails: React.FC<any> = () => {
     const { t } = useTranslation();
-    const dispatch = useDispatch();
 
-    const street = useSelector(selectStreet);
-    const city = useSelector(selectCity);
-    const number = useSelector(selectNumber);
-
-    const handleChange = (
-        setter: any,
-        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => dispatch(setter(event.target.value));
+    const FIELDS = useMemo(() => getFIELDS(t), [t]);
 
     return (
-        <Paper
-            elevation={10}
-            sx={{
-                overflow: "auto",
-                padding: 0.5,
-            }}
-        >
-            <Box
-                sx={{
-                    px: 3,
-                    py: 1.5,
-                    display: "flex",
-                    justifyContent: "left",
-                }}
-            >
-                <Typography variant="h6">{t("Address Details")}</Typography>
-            </Box>
-
+        <Panel label="Address Details">
             <Grid container spacing={2} p={1}>
-                <Grid item xs={6}>
-                    <TextField
-                        fullWidth
-                        label={t("Street")}
-                        value={street}
-                        onChange={(event) => handleChange(setStreet, event)}
-                    />
-                </Grid>
-                <Grid item xs={6}>
-                    <TextField
-                        fullWidth
-                        label={t("Number")}
-                        value={number}
-                        onChange={(event) => handleChange(setNumber, event)}
-                    />
-                </Grid>
-                <Grid item xs={6}>
-                    <TextField
-                        fullWidth
-                        label={t("City")}
-                        value={city}
-                        onChange={(event) => handleChange(setCity, event)}
-                    />
-                </Grid>
+                {FIELDS.map((f, i) => (
+                    <Grid key={i} item xs={6}>
+                        {f}
+                    </Grid>
+                ))}
             </Grid>
-        </Paper>
+        </Panel>
     );
 };
 export default AddressDetails;

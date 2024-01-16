@@ -1,15 +1,15 @@
 // form
 import { Controller, useFormContext } from "react-hook-form";
 // @mui
-import { TextField, TextFieldProps } from "@mui/material";
+import { Rating, RatingProps } from "@mui/material";
 
 // ----------------------------------------------------------------------
 
-type Props = TextFieldProps & {
+type Props = RatingProps & {
     name: string;
 };
 
-export default function RHFTextField({ name, ...other }: Props) {
+export default function RHFRating({ name, ...other }: Props) {
     const { control } = useFormContext();
 
     return (
@@ -17,15 +17,11 @@ export default function RHFTextField({ name, ...other }: Props) {
             name={name}
             control={control}
             render={({ field, fieldState: { error } }) => (
-                <TextField
+                <Rating
                     {...field}
-                    value={
-                        typeof field.value === "number" && field.value === 0
-                            ? ""
-                            : field.value || ""
-                    }
-                    error={!!error}
-                    helperText={error?.message}
+                    value={parseInt(field.value) || 0} // Convert to number, default to 0 if NaN
+                    // error={!!error}
+                    // helperText={error?.message}
                     {...other}
                 />
             )}

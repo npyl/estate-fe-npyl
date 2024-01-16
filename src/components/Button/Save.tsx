@@ -26,6 +26,7 @@ export const SaveButton = ({
     prevent,
     preventMessage,
     error,
+    type,
     onClick,
     ...props
 }: SaveButtonProps) => {
@@ -51,8 +52,9 @@ export const SaveButton = ({
         <StyledButton
             loading={loading}
             disabled={loading}
-            {...props}
+            type={type}
             onClick={handleClick}
+            {...props}
         />
     );
 };

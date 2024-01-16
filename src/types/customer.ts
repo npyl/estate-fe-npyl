@@ -6,7 +6,8 @@ import { INote } from "./note";
 import { IProperties } from "./properties";
 import { IUser } from "./user";
 
-interface CustomerLocationPOST extends Omit<ILocationPOST, "locationDisplay"> {}
+interface ICustomerLocationPOST
+    extends Omit<ILocationPOST, "locationDisplay"> {}
 
 export interface ICustomerResultResponse {
     id: number;
@@ -89,7 +90,7 @@ export interface ICustomerPOST {
     leadSource?: string;
     preferredLanguage?: string;
     suggestedBy: string;
-    location: CustomerLocationPOST;
+    location: ICustomerLocationPOST;
     ownedProperties: IProperties[];
     labelIDs: number[];
     demands: IDemandPOST[];

@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import * as React from "react";
-import { NoteCreate } from "src/components/Note";
+import { NoteCreate, Placeholder } from "src/components/Note";
 
 import {
     useAddNoteToCustomerWithIdMutation,
@@ -24,7 +24,7 @@ const NotesSection: React.FC<any> = () => {
     const hadleRemove = (index: number) =>
         notes && notes[index].id && deleteNote(notes[index].id!);
 
-    if (!customerId) return null;
+    if (!customerId) return <Placeholder />;
 
     return (
         <NoteCreate

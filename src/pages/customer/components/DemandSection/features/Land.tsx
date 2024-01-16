@@ -1,16 +1,13 @@
 import { Box, Divider, Grid, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { selectPriorityFeatures } from "src/slices/customer";
-import CheckboxItem from "./components/CheckboxItem";
-import { IFeatureSectionProps } from "./types/FeatureSectionProps";
+import CheckboxItem from "../components/CheckboxItem";
+import { IFeatureSectionProps } from "./types";
 
-const FeaturesForOtherSection = (props: IFeatureSectionProps) => {
-    const { index, onChange: handleChange } = props;
-
+const FeaturesForLandSection = ({
+    features,
+    onChange: handleChange,
+}: IFeatureSectionProps) => {
     const { t } = useTranslation();
-
-    const features = useSelector(selectPriorityFeatures)[index];
 
     return (
         <>
@@ -28,7 +25,7 @@ const FeaturesForOtherSection = (props: IFeatureSectionProps) => {
                 }}
             >
                 <Typography variant="h6">
-                    {t("Features for Other Category")}
+                    {t("Features for Land Category")}
                 </Typography>
             </Box>
             <Grid item xs={12} padding={1}>
@@ -36,38 +33,31 @@ const FeaturesForOtherSection = (props: IFeatureSectionProps) => {
                     <CheckboxItem
                         label={t("Panoramic View")}
                         value={!!features?.panoramicView}
-                        sliceKey={"panoramicView"}
+                        sliceKey="panoramicView"
                         onChange={handleChange}
                     />
                     <CheckboxItem
-                        label={t("Alarm System")}
-                        value={!!features?.alarmSystem}
-                        sliceKey={"alarmSystem"}
+                        label={t("Corner")}
+                        value={!!features?.corner}
+                        sliceKey="corner"
                         onChange={handleChange}
                     />
                     <CheckboxItem
                         label={t("Facade")}
                         value={!!features?.facade}
-                        sliceKey={"facade"}
+                        sliceKey="facade"
                         onChange={handleChange}
                     />
                     <CheckboxItem
-                        label={t("Loading Dock")}
-                        value={!!features?.loadingDock}
-                        sliceKey={"loadingDock"}
-                        onChange={handleChange}
-                    />
-
-                    <CheckboxItem
-                        label={t("Veranda")}
-                        value={!!features?.veranda}
-                        sliceKey={"veranda"}
+                        label={t("Within City Plan")}
+                        value={!!features?.withinCityPlan}
+                        sliceKey="withinCityPlan"
                         onChange={handleChange}
                     />
                     <CheckboxItem
-                        label={t("View")}
-                        value={!!features?.view}
-                        sliceKey={"view"}
+                        label={t("Within Residential Zone")}
+                        value={!!features?.withinResidentialZone}
+                        sliceKey="withinResidentialZone"
                         onChange={handleChange}
                     />
                 </Grid>
@@ -75,4 +65,4 @@ const FeaturesForOtherSection = (props: IFeatureSectionProps) => {
         </>
     );
 };
-export default FeaturesForOtherSection;
+export default FeaturesForLandSection;

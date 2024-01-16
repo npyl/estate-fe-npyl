@@ -38,10 +38,33 @@ const labelItemType = "label-menu-item";
 
 const itemTypeToPath: { [key: string]: string } = {
     [propertyItemType]: "/property/create",
-    [managerItemType]: "/user/create",
     [ownerItemType]: "/customer/create",
     [labelItemType]: "/label",
+    [managerItemType]: "/user/create",
 };
+
+const MENU_ITEMS = [
+    {
+        label: "Property",
+        path: propertyItemType,
+        icon: <HomeIcon />,
+    },
+    {
+        label: "Customer",
+        path: ownerItemType,
+        icon: <UsersIcon />,
+    },
+    {
+        label: "Label",
+        path: labelItemType,
+        icon: <LabelImportantIcon />,
+    },
+    {
+        label: "Manager",
+        path: managerItemType,
+        icon: <ManageAccountsIcon />,
+    },
+];
 
 export const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
     const { t } = useTranslation();
@@ -113,47 +136,23 @@ export const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
                                 </Button>
                             </Box>
                             <StyledMenu
-                                id="create-menu"
-                                MenuListProps={{
-                                    "aria-labelledby": "create-menu-button",
-                                }}
                                 anchorEl={anchorEl}
                                 open={open}
                                 onClose={hideDropdown}
                             >
-                                <MenuItem
-                                    onClick={(e) =>
-                                        startCreate(propertyItemType)
-                                    }
-                                    disableRipple
-                                >
-                                    <HomeIcon />
-                                    {t("Property")}
-                                </MenuItem>
-                                <MenuItem
-                                    onClick={(e) => startCreate(ownerItemType)}
-                                    disableRipple
-                                >
-                                    <UsersIcon fontSize="small" />
-                                    {t("Customer")}
-                                </MenuItem>
-                                <MenuItem
-                                    onClick={(e) => startCreate(labelItemType)}
-                                    disableRipple
-                                >
-                                    <LabelImportantIcon fontSize="small" />
-                                    {t("Label")}
-                                </MenuItem>
-                                <Divider sx={{ my: 0.5 }} />
-                                <MenuItem
-                                    onClick={(e) =>
-                                        startCreate(managerItemType)
-                                    }
-                                    disableRipple
-                                >
-                                    <ManageAccountsIcon fontSize="small" />
-                                    {t("Manager")}
-                                </MenuItem>
+                                {MENU_ITEMS.map(({ label, path, icon }, i) => (
+                                    <MenuItem
+                                        key={i}
+                                        onClick={() => {
+                                            startCreate(path);
+                                            hideDropdown();
+                                        }}
+                                        disableRipple
+                                    >
+                                        {icon}
+                                        {t(label)}
+                                    </MenuItem>
+                                ))}
                             </StyledMenu>
                         </Grid>
                     </Paper>

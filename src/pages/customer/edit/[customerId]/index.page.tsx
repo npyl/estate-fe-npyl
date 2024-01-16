@@ -1,6 +1,5 @@
 import type { NextPage } from "next";
 import { useCallback, useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
@@ -9,38 +8,24 @@ import {
     useCreateOrUpdateCustomerMutation,
     useGetCustomerByIdQuery,
 } from "src/services/customers";
-import {
-    selectAll,
-    setInitialState as setInitialCustomerState,
-} from "src/slices/customer";
-import {
-    setInitialState as setInitialNotesState,
-    resetState as resetNotesState,
-} from "src/slices/notes";
-import { resetState as resetLabelsState } from "src/slices/labels";
 import Form from "../../components/Form";
-import { useSelector } from "react-redux";
-
-// (1): forces Form re-render (=> unmount when changing from /edit/x to /edit/y pages)
+import { ICustomerPOST } from "src/types/customer";
 
 const EditCustomer: NextPage = () => {
     const router = useRouter();
-    const dispatch = useDispatch();
     const { pushTab } = useTabsContext();
     const { customerId } = router.query;
 
-    const { data } = useGetCustomerByIdQuery(+customerId!);
-    const [edit, { isError }] = useCreateOrUpdateCustomerMutation();
-
-    const body = useSelector(selectAll);
+    const { data: customer } = useGetCustomerByIdQuery(+customerId!);
+    const [edit, { isError, isLoading }] = useCreateOrUpdateCustomerMutation();
 
     useEffect(() => {
-        if (data && customerId) {
-            const isFirstEdit = data.createdAt === data.updatedAt;
+        if (customer && customerId) {
+            const isFirstEdit = customer.createdAt === customer.updatedAt;
             const label = `${isFirstEdit ? "Create" : "Edit"} customer ${
-                (data?.firstName &&
-                    data?.lastName &&
-                    `${data.firstName} ${data.lastName}`) ||
+                (customer?.firstName &&
+                    customer?.lastName &&
+                    `${customer.firstName} ${customer.lastName}`) ||
                 ""
             }`;
 
@@ -50,19 +35,17 @@ const EditCustomer: NextPage = () => {
                 label,
             });
 
-            dispatch(setInitialNotesState(data.notes));
-            dispatch(setInitialCustomerState(data));
+            // TODO: ...
+            // dispatch(setInitialNotesState(data.notes));
+            // dispatch(setInitialCustomerState(data));
         }
-    }, [data, customerId]);
+    }, [customer, customerId]);
 
-    const resetEverything = useCallback(() => {
-        dispatch(resetLabelsState());
-        dispatch(resetNotesState());
-    }, []);
-
-    const handleEdit = useCallback(() => {
-        edit(body).then(redirectToView);
-    }, [body]);
+    const handleEdit = useCallback(
+        (body: ICustomerPOST) =>
+            edit({ ...body, id: +customerId! }).then(redirectToView),
+        [customerId]
+    );
 
     const redirectToView = useCallback(
         () => router.push(`/customer/${customerId}`),
@@ -71,11 +54,11 @@ const EditCustomer: NextPage = () => {
 
     return (
         <Form
-            key={customerId as string} // (1)
+            customer={customer}
+            isLoading={isLoading}
             isError={isError}
-            performSave={handleEdit}
-            resetState={resetEverything}
-            handleCancel={redirectToView}
+            onSave={handleEdit}
+            onCancel={redirectToView}
         />
     );
 };

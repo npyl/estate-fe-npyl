@@ -369,6 +369,7 @@ const resources = {
 
             //Create customer
 
+            "Not selected": "Μη επιλεγμένο",
             "Customer Information": "Customer Information",
             "First Name": "First Name",
             "Last Name": "Last Name",
@@ -467,6 +468,7 @@ const resources = {
     },
     gr: {
         translation: {
+            "Available only on View / Edit": "Μόνο στην Εμφάνιση / Επεξεργασία",
             "Pool Size": "Μέγεθος Πισίνας",
             Frontage: "Πρόσοψη",
             "Plot Frontage": "Πρόσοψη Οικοπέδου",
