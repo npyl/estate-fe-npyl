@@ -1,8 +1,8 @@
-import { Grid, InputAdornment, Typography } from "@mui/material";
+import { Grid, InputAdornment, SliderProps, Typography } from "@mui/material";
 import { FC } from "react";
 import { RHFDoubleSlider, RHFTextField } from "src/components/hook-form";
 
-interface DemandFormSliderProps {
+type DemandFormSliderProps = Omit<SliderProps, "min" | "max"> & {
     label: any;
     min: string;
     max: string;
@@ -11,7 +11,7 @@ interface DemandFormSliderProps {
     demandIndex: number;
     adornment?: string;
     step?: number;
-}
+};
 
 export const DemandFormSlider: FC<DemandFormSliderProps> = ({
     label,

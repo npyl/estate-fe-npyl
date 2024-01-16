@@ -5,6 +5,7 @@ import {
     Grid,
     InputLabel,
     MenuItem,
+    Slider,
     Stack,
     Typography,
 } from "@mui/material";
@@ -35,6 +36,55 @@ interface DemandFormProps {
 
 const leaserName = "leaser";
 const buyerName = "buyer";
+
+const useDemandEnums = () => {
+    const enums = useGlobals();
+
+    const { propertyEnums, timeframeEnum } = useMemo(
+        () => ({
+            propertyEnums: enums?.property,
+            timeframeEnum: enums?.customer?.timeframe || [],
+        }),
+        [enums]
+    );
+    const { stateEnum, detailsEnum, parentCategoryEnum } = useMemo(
+        () => ({
+            stateEnum: propertyEnums?.state || [],
+            detailsEnum: propertyEnums?.details,
+            parentCategoryEnum: propertyEnums?.parentCategory || [],
+        }),
+        [propertyEnums]
+    );
+    const {
+        furnishingEnum,
+        minFloors,
+        maxFloors,
+        minFloorsKeys,
+        maxFloorsKeys,
+    } = useMemo(
+        () => ({
+            furnishingEnum: detailsEnum?.furnished || [],
+            minFloors: detailsEnum?.floors || [],
+            maxFloors: detailsEnum?.floors || [],
+            minFloorsKeys: detailsEnum?.floors?.map((i) => i.key) || [],
+            maxFloorsKeys: detailsEnum?.floors?.map((i) => i.key) || [],
+        }),
+        [detailsEnum]
+    );
+
+    return {
+        propertyEnums,
+        timeframeEnum,
+        stateEnum,
+        detailsEnum,
+        parentCategoryEnum,
+        furnishingEnum,
+        minFloors,
+        maxFloors,
+        minFloorsKeys,
+        maxFloorsKeys,
+    };
+};
 
 const getFIELDS = (
     t: TranslationType,
@@ -86,42 +136,99 @@ const getFIELDS = (
     </FormControl>,
 ];
 
+interface FloorSliderProps {
+    index: number;
+    onDemandFilterName: (k: keyof IDemandFiltersPOST) => any;
+}
+
+const FloorSlider = ({ onDemandFilterName }: FloorSliderProps) => {
+    const { t } = useTranslation();
+    const { watch, setValue } = useFormContext();
+    const { minFloors, maxFloors, minFloorsKeys, maxFloorsKeys } =
+        useDemandEnums();
+
+    const minName = onDemandFilterName("minFloor");
+    const maxName = onDemandFilterName("maxFloor");
+
+    const minFloor = watch(minName) || -1;
+    const maxFloor = watch(maxName) || -1;
+
+    const valueLabelFormat = useCallback(
+        (value: number, index: number): string => {
+            if (minFloors.length < value || maxFloors.length < value) return "";
+
+            return (
+                (index === 0
+                    ? minFloors[value]?.value
+                    : maxFloors[value]?.value) || ""
+            );
+        },
+        [minFloors, maxFloors]
+    );
+
+    const handleChange = useCallback(
+        (e: any, v: number | number[]) => {
+            if (!Array.isArray(v)) return;
+
+            const min = minFloorsKeys[v[0]];
+            const max = maxFloorsKeys[v[1]];
+
+            setValue(minName, min);
+            setValue(maxName, max);
+        },
+        [minName, maxName]
+    );
+
+    return (
+        <>
+            <Typography variant="h6">{t("Floor")}</Typography>
+            <Slider
+                orientation="horizontal"
+                value={[
+                    minFloorsKeys.indexOf(minFloor),
+                    maxFloorsKeys.indexOf(maxFloor),
+                ]}
+                onChange={handleChange}
+                valueLabelDisplay="auto"
+                valueLabelFormat={valueLabelFormat}
+                min={0}
+                max={maxFloorsKeys.length - 41}
+            />
+            <Grid container direction="row" spacing={1.5}>
+                <Grid item xs={6}>
+                    <RHFSelect fullWidth name={minName} label={t("Min Floor")}>
+                        {minFloors?.map(({ key, value }, i) => (
+                            <MenuItem key={i} value={key}>
+                                {value}
+                            </MenuItem>
+                        ))}
+                    </RHFSelect>
+                </Grid>
+                <Grid item xs={6}>
+                    <RHFSelect fullWidth name={maxName} label={t("Max Floor")}>
+                        {maxFloors?.map(({ key, value }, i) => (
+                            <MenuItem key={i} value={key}>
+                                {value}
+                            </MenuItem>
+                        ))}
+                    </RHFSelect>
+                </Grid>
+            </Grid>
+        </>
+    );
+};
+
 const DemandForm: FC<DemandFormProps> = ({ index }) => {
     const { t } = useTranslation();
     const { watch } = useFormContext();
 
-    const enums = useGlobals();
-    const { propertyEnums, timeframeEnum } = useMemo(
-        () => ({
-            propertyEnums: enums?.property,
-            timeframeEnum: enums?.customer?.timeframe || [],
-        }),
-        [enums]
-    );
-    const { stateEnum, detailsEnum, parentCategoryEnum } = useMemo(
-        () => ({
-            stateEnum: propertyEnums?.state || [],
-            detailsEnum: propertyEnums?.details,
-            parentCategoryEnum: propertyEnums?.parentCategory || [],
-        }),
-        [propertyEnums]
-    );
     const {
+        propertyEnums,
+        parentCategoryEnum,
         furnishingEnum,
-        minFloors,
-        maxFloors,
-        minFloorsArray,
-        maxFloorsArray,
-    } = useMemo(
-        () => ({
-            furnishingEnum: detailsEnum?.furnished || [],
-            minFloors: detailsEnum?.floors || [],
-            maxFloors: detailsEnum?.floors || [],
-            minFloorsArray: detailsEnum?.floors?.map((i) => i.key) || [],
-            maxFloorsArray: detailsEnum?.floors?.map((i) => i.key) || [],
-        }),
-        [detailsEnum]
-    );
+        stateEnum,
+        timeframeEnum,
+    } = useDemandEnums();
 
     const leaser = watch(leaserName);
     const buyer = watch(buyerName);
@@ -150,19 +257,6 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
             OTHER: propertyEnums?.otherCategory || [],
         }),
         [propertyEnums]
-    );
-
-    const valueLabelFormat = useCallback(
-        (value: number, index: number): string => {
-            if (minFloors.length < value || maxFloors.length < value) return "";
-
-            return (
-                (index === 0
-                    ? minFloors[value]?.value
-                    : maxFloors[value]?.value) || ""
-            );
-        },
-        [minFloors, maxFloors]
     );
 
     const FIELDS = useMemo(
@@ -297,41 +391,10 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                     demandIndex={index}
                 />
 
-                {minFloorsArray && maxFloorsArray ? (
-                    <DemandFormSlider
-                        label={t("Floor")}
-                        min="minFloor"
-                        max="maxFloor"
-                        defaultMin={0}
-                        defaultMax={maxFloorsArray.length - 41}
-                        demandIndex={index}
-
-                        // value={[
-                        //     minFloorsArray.indexOf(minFloor),
-                        //     maxFloorsArray.indexOf(maxFloor),
-                        // ]}
-                        // onChange={(
-                        //     _event: any,
-                        //     newValue: number | number[],
-                        //     _activeThumb: number
-                        // ) => {
-                        //     if (!Array.isArray(newValue)) return;
-
-                        //     const min = minFloorsArray[newValue[0]];
-                        //     const max = maxFloorsArray[newValue[1]];
-
-                        //     setValue(
-                        //         getDemandFilterName("minFloor"),
-                        //         min
-                        //     );
-                        //     setValue(
-                        //         getDemandFilterName("maxFloor"),
-                        //         max
-                        //     );
-                        // }}
-                        // valueLabelFormat={valueLabelFormat}
-                    />
-                ) : null}
+                <FloorSlider
+                    index={index}
+                    onDemandFilterName={getDemandFilterName}
+                />
             </Stack>
 
             <AreaOfPreference
