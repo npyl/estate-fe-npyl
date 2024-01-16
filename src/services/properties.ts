@@ -200,10 +200,10 @@ export const properties = createApi({
 
         // mutations
         editProperty: builder.mutation<number, IEditPropertyProps>({
-            query: (props: IEditPropertyProps) => ({
-                url: `/edit/${props.id}`,
+            query: ({ body, id }: IEditPropertyProps) => ({
+                url: `/edit/${id}`,
                 method: "POST",
-                body: props.body,
+                body,
             }),
             invalidatesTags: ["Properties", "PropertyById"],
         }),
