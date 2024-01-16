@@ -23,8 +23,8 @@ export const DemandFormSlider: FC<DemandFormSliderProps> = ({
     adornment,
     step = 1,
 }) => {
-    const minName = `demands[${demandIndex}].${min}`;
-    const maxName = `demands[${demandIndex}].${max}`;
+    const minName = `demands[${demandIndex}].filters.${min}`;
+    const maxName = `demands[${demandIndex}].filters.${max}`;
 
     return (
         <>

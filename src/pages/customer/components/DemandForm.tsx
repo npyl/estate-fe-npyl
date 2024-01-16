@@ -1,14 +1,4 @@
-import {
-    Box,
-    Divider,
-    FormControl,
-    Grid,
-    InputLabel,
-    MenuItem,
-    Slider,
-    Stack,
-    Typography,
-} from "@mui/material";
+import { Box, Divider, Grid, Slider, Stack, Typography } from "@mui/material";
 import { FC, useCallback, useMemo } from "react";
 import { useGlobals } from "src/hooks/useGlobals";
 import { useTranslation } from "react-i18next";
@@ -19,7 +9,6 @@ import { KeyValue } from "src/types/KeyValue";
 import { DemandFormSlider } from "./DemandForm/components/DemandFormSlider";
 import { IDemandFiltersPOST, IDemandPOST } from "src/types/demand";
 import { useFormContext } from "react-hook-form";
-import { RHFSelect } from "src/components/hook-form";
 import { TranslationType } from "src/types/translation";
 
 import Select from "./DemandForm/components/Select";
@@ -109,7 +98,7 @@ const getFIELDS = (
     />,
 
     <MultiSelect
-        name={getDemandFilterName("state")}
+        name={getDemandFilterName("states")}
         label={t("State")}
         options={stateEnum}
     />,

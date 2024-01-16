@@ -57,7 +57,7 @@ const Rating = () => {
                     py: 1.5,
                 }}
             >
-                <RHFRating name="rating" />
+                <RHFRating name="status" />
             </Box>
         </Box>
     );
