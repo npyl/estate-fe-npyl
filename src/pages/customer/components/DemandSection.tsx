@@ -1,4 +1,4 @@
-import { IconButton, Tab, Tabs, Box, Stack } from "@mui/material";
+import { IconButton, Tab, Tabs, Box, Stack, Typography } from "@mui/material";
 import React, { useCallback, useEffect, useState } from "react";
 import { FC } from "react";
 import DemandForm from "./DemandForm";
@@ -106,18 +106,15 @@ const DemandSection: FC = () => {
                     {demands.map((d, i) => (
                         <Tab
                             key={i}
-                            label={
-                                <Box display="flex" alignItems="center">
-                                    {`Demand ${i + 1}`}
-                                    <IconButton
-                                        size="small"
-                                        onClick={(e) => handleDeleteTab(i)}
-                                    >
-                                        <CloseIcon
-                                            style={{ transform: "scale(0.5)" }}
-                                        />
-                                    </IconButton>
-                                </Box>
+                            label={`Demand ${i + 1}`}
+                            sx={{
+                                display: "flex",
+                                flexDirection: "row-reverse",
+                                alignItems: "center",
+                                gap: 2,
+                            }}
+                            icon={
+                                <CloseIcon onClick={() => handleDeleteTab(i)} />
                             }
                         />
                     ))}

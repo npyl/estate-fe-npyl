@@ -37,8 +37,8 @@ import { KeyValue } from "src/types/KeyValue";
 import { DemandFormSlider } from "./DemandForm/components/DemandFormSlider";
 import { IDemandFiltersPOST } from "src/types/demand";
 import { IProperties } from "src/types/properties";
-import { RHFSelect } from "src/components/hook-form";
 import { useFormContext } from "react-hook-form";
+import { RHFSelect } from "src/components/hook-form";
 
 interface DemandFormProps {
     index: number;
@@ -47,6 +47,51 @@ interface DemandFormProps {
 const demandsName = "demands";
 const leaserName = "leaser";
 const buyerName = "buyer";
+
+interface MultiSelectProps {
+    name: string;
+    label: string;
+    options: KeyValue[];
+}
+
+const MultiSelect = ({ name, label, options }: MultiSelectProps) => {
+    const { watch, setValue } = useFormContext();
+
+    const values = (watch(name) as string[]) || [];
+
+    const renderValue = useCallback(
+        (selected: string[]) =>
+            selected
+                .map((key) => options.find((item) => item.key === key)?.value)
+                .filter(Boolean)
+                .join(", "),
+        [options]
+    );
+
+    const handleChange = useCallback(
+        (e: SelectChangeEvent<string[]>) => setValue(name, e.target.value),
+        [name]
+    );
+
+    return (
+        <RHFSelect
+            multiple
+            fullWidth
+            name={name}
+            input={<OutlinedInput label={label} />}
+            onChange={handleChange}
+            renderValue={renderValue}
+            value={values}
+        >
+            {options.map(({ key, value }, i) => (
+                <MenuItem key={i} value={key}>
+                    <Checkbox checked={values?.indexOf(key) > -1} />
+                    {value}
+                </MenuItem>
+            ))}
+        </RHFSelect>
+    );
+};
 
 const DemandForm: FC<DemandFormProps> = ({ index }) => {
     const { t } = useTranslation();
@@ -97,10 +142,21 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
 
     const stepValue = buyer ? 25000 : leaser ? 100 : 100; // default to 100 if neither is true
 
+    const [propertyCode, setPropertyCode] = useState<string>("");
+
     const extractOrDefault = useCallback(
         (key: string, defaultValue: any) =>
             (demandFilters as IDemandFiltersPOST)[key] || defaultValue,
         [demandFilters]
+    );
+
+    const getDemandFilterName = useCallback(
+        (name: string) => `demands[${index}].filters.${name}`,
+        [index]
+    );
+    const getDemandName = useCallback(
+        (name: string) => `demands[${index}].${name}`,
+        [index]
     );
 
     const { minFloor, maxFloor, parentCategories, category, furnished, state } =
@@ -118,8 +174,6 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
             }),
             [demandFilters]
         );
-
-    const [propertyCode, setPropertyCode] = useState<string>("");
 
     const subCategoriesMap: {
         [key: string]: KeyValue[];
@@ -234,16 +288,11 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                     )}
                 />
 
-                <RHFSelect name="parentCategory" label={t("Parent Category")}>
-                    {parentCategoryEnum.map(({ key, value }, i) => (
-                        <MenuItem key={i} value={key}>
-                            <Checkbox
-                                checked={parentCategories.indexOf(key) > -1}
-                            />
-                            {value}
-                        </MenuItem>
-                    ))}
-                </RHFSelect>
+                <MultiSelect
+                    name={getDemandFilterName("parentCategory")}
+                    label={t("Parent Category")}
+                    options={parentCategoryEnum}
+                />
 
                 {parentCategories?.map((e, i) => {
                     // Find the name (value) of the selected parent category using its key (e)
@@ -303,27 +352,24 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                     );
                 })}
 
-                <RHFSelect name="furnished" label={t("Furnishing")}>
-                    {furnishingEnum.map(({ key, value }, i) => (
-                        <MenuItem key={i} value={key}>
-                            <Checkbox checked={furnished.indexOf(key) > -1} />
-                            {value}
-                        </MenuItem>
-                    ))}
-                </RHFSelect>
+                <MultiSelect
+                    name={getDemandFilterName("furnished")}
+                    label={t("Furnishing")}
+                    options={furnishingEnum}
+                />
 
-                <RHFSelect name="state" label={t("State")}>
-                    {stateEnum.map(({ key, value }, i) => (
-                        <MenuItem key={i} value={key}>
-                            <Checkbox checked={state.indexOf(key) > -1} />
-                            {value}
-                        </MenuItem>
-                    ))}
-                </RHFSelect>
+                <MultiSelect
+                    name={getDemandFilterName("state")}
+                    label={t("State")}
+                    options={stateEnum}
+                />
 
                 <LabelSelect index={index} />
 
-                <RHFSelect name="timeFrame" label={t("Time Frame")}>
+                <RHFSelect
+                    name={getDemandName("timeFrame")}
+                    label={t("Time Frame")}
+                >
                     {timeframeEnum.map(({ key, value }, i) => (
                         <MenuItem key={i} value={key}>
                             {value}
@@ -398,7 +444,6 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                             paddingRight={3}
                         >
                             <Slider
-                                getAriaLabel={() => "Floor Slider"}
                                 orientation="horizontal"
                                 value={[
                                     minFloorsArray.indexOf(minFloor),
@@ -433,20 +478,16 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                                 max={maxFloorsArray.length - 41}
                             />
 
-                            <RHFSelect name="minFloor" label={t("Min Floor")}>
-                                {minFloors?.map(({ key, value }, i) => (
-                                    <MenuItem key={i} value={key}>
-                                        {value}
-                                    </MenuItem>
-                                ))}
-                            </RHFSelect>
-                            <RHFSelect name="maxFloor" label={t("Max Floor")}>
-                                {maxFloors?.map(({ key, value }, i) => (
-                                    <MenuItem key={i} value={key}>
-                                        {value}
-                                    </MenuItem>
-                                ))}
-                            </RHFSelect>
+                            <MultiSelect
+                                name={getDemandFilterName("minFloor")}
+                                label={t("Min Floor")}
+                                options={minFloors}
+                            />
+                            <MultiSelect
+                                name={getDemandFilterName("maxFloor")}
+                                label={t("Max Floor")}
+                                options={maxFloors}
+                            />
                         </Grid>
                     </>
                 )}

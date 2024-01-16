@@ -1,16 +1,16 @@
 // form
 import { Controller, useFormContext } from "react-hook-form";
 // @mui
-import { TextField, TextFieldProps } from "@mui/material";
+import { Select, SelectProps } from "@mui/material";
 
 // ----------------------------------------------------------------------
 
-type Props = TextFieldProps & {
+type Props<T> = SelectProps<T> & {
     name: string;
     children: React.ReactNode;
 };
 
-export default function RHFSelect({ name, children, ...other }: Props) {
+export default function RHFSelect<T>({ name, children, ...other }: Props<T>) {
     const { control } = useFormContext();
     if (!children) {
         return null;
@@ -20,17 +20,9 @@ export default function RHFSelect({ name, children, ...other }: Props) {
             name={name}
             control={control}
             render={({ field, fieldState: { error } }) => (
-                <TextField
-                    {...field}
-                    select
-                    fullWidth
-                    // SelectProps={{ native: true }}
-                    error={!!error}
-                    helperText={error?.message}
-                    {...other}
-                >
+                <Select<T> {...field} error={!!error} {...other}>
                     {children}
-                </TextField>
+                </Select>
             )}
         />
     );
