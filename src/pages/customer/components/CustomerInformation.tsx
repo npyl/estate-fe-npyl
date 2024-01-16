@@ -11,7 +11,7 @@ import { useGlobals } from "src/hooks/useGlobals";
 import { useAllUsersQuery } from "src/services/user";
 import { LabelCreate } from "src/components/label";
 import { LeadSource } from "src/types/global";
-import CustomerTypeSelect from "./CustomerTypeSelect";
+import CustomerTypeSelect from "./CustomerInfoSection/TypeSelect";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
 import Panel from "src/components/Panel";
@@ -22,7 +22,7 @@ import { IUser } from "src/types/user";
 import { KeyValue } from "src/types/KeyValue";
 import { useFormContext } from "react-hook-form";
 import RHFDatePicker from "src/components/hook-form/RHFDatePicker";
-import Select from "./DemandForm/components/Select";
+import Select from "./components/Select";
 
 const Rating = () => {
     const { t } = useTranslation();

@@ -2,18 +2,18 @@ import { Box, Divider, Grid, Slider, Stack, Typography } from "@mui/material";
 import { FC, useCallback, useMemo } from "react";
 import { useGlobals } from "src/hooks/useGlobals";
 import { useTranslation } from "react-i18next";
-import { AreaOfPreference } from "./DemandForm/AreaOfPreference";
+import { AreaOfPreference } from "./AreaOfPreference";
 import { LabelSelect } from "./LabelSelect";
 import PriorityFeatures from "./PriorityFeatures";
 import { KeyValue } from "src/types/KeyValue";
-import { DemandFormSlider } from "./DemandForm/components/DemandFormSlider";
+import { DemandFormSlider } from "./components/Slider";
 import { IDemandFiltersPOST, IDemandPOST } from "src/types/demand";
 import { useFormContext } from "react-hook-form";
 import { TranslationType } from "src/types/translation";
 
-import Select from "./DemandForm/components/Select";
-import MultiSelect from "./DemandForm/components/MultiSelect";
-import DemandAutocomplete from "./DemandForm/Autocomplete";
+import Select from "../components/Select";
+import MultiSelect from "./components/MultiSelect";
+import DemandAutocomplete from "./Autocomplete";
 
 interface DemandFormProps {
     index: number;

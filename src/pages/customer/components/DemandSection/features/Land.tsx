@@ -1,7 +1,7 @@
 import { Box, Divider, Grid, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import CheckboxItem from "./components/CheckboxItem";
-import { IFeatureSectionProps } from "./types/FeatureSectionProps";
+import CheckboxItem from "../components/CheckboxItem";
+import { IFeatureSectionProps } from "./types";
 
 const FeaturesForLandSection = ({
     features,

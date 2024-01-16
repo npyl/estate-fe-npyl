@@ -1,7 +1,7 @@
-import { IconButton, Tab, Tabs, Box, Stack, Typography } from "@mui/material";
-import React, { useCallback, useEffect, useState } from "react";
+import { IconButton, Tab, Tabs, Stack } from "@mui/material";
+import { useCallback, useState } from "react";
 import { FC } from "react";
-import DemandForm from "./DemandForm";
+import DemandForm from "./DemandSection/Form";
 import { CloseIcon } from "yet-another-react-lightbox/core";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import Panel from "src/components/Panel";

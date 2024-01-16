@@ -6,8 +6,7 @@ import { useTranslation } from "react-i18next";
 import AddressDetails from "./AddressDetails";
 import CustomerInformation from "./CustomerInformation";
 import NotesSection from "./NotesSection";
-import DemandSection from "./DemandSection";
-import { SaveButton } from "src/components/Button/Save";
+import DemandSection from "./Demand";
 
 // Forms
 import FormProvider from "src/components/hook-form";

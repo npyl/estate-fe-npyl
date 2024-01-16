@@ -1,10 +1,7 @@
 import { Grid } from "@mui/material";
 import { useCallback } from "react";
 
-import FeaturesSection from "./DemandForm/Features";
-import FeaturesForCommercialSection from "./DemandForm/FeaturesForCommercial";
-import FeaturesForLandSection from "./DemandForm/FeaturesForLand";
-import FeaturesForOtherSection from "./DemandForm/FeaturesForOther";
+import { Residential, Commercial, Land, Other } from "./features";
 
 import { useFormContext } from "react-hook-form";
 
@@ -33,28 +30,22 @@ const PriorityFeatures = ({ index, parentCategory }: PriorityFeaturesProps) => {
             <Grid item xs={12} padding={1}>
                 <Grid container spacing={2}>
                     {parentCategory === "RESIDENTIAL" && (
-                        <FeaturesSection
+                        <Residential
                             features={features}
                             onChange={handleChange}
                         />
                     )}
                     {parentCategory === "LAND" && (
-                        <FeaturesForLandSection
+                        <Commercial
                             features={features}
                             onChange={handleChange}
                         />
                     )}
                     {parentCategory === "COMMERCIAL" && (
-                        <FeaturesForCommercialSection
-                            features={features}
-                            onChange={handleChange}
-                        />
+                        <Land features={features} onChange={handleChange} />
                     )}
                     {parentCategory === "OTHER" && (
-                        <FeaturesForOtherSection
-                            features={features}
-                            onChange={handleChange}
-                        />
+                        <Other features={features} onChange={handleChange} />
                     )}
                 </Grid>
             </Grid>
