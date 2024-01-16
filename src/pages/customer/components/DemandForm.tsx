@@ -7,7 +7,6 @@ import {
     InputLabel,
     MenuItem,
     OutlinedInput,
-    Select,
     SelectChangeEvent,
     Slider,
     TextField,
@@ -21,8 +20,6 @@ import {
     useLazyGetPropertyByCodeQuery,
 } from "src/services/properties";
 import {
-    // setters
-    setCategory,
     setMaxFloor,
     setMinFloor,
     setDemandCities,
@@ -35,7 +32,7 @@ import { LabelSelect } from "./LabelSelect";
 import PriorityFeatures from "./PriorityFeatures";
 import { KeyValue } from "src/types/KeyValue";
 import { DemandFormSlider } from "./DemandForm/components/DemandFormSlider";
-import { IDemandFiltersPOST } from "src/types/demand";
+import { IDemandFiltersPOST, IDemandPOST } from "src/types/demand";
 import { IProperties } from "src/types/properties";
 import { useFormContext } from "react-hook-form";
 import { RHFSelect } from "src/components/hook-form";
@@ -44,7 +41,6 @@ interface DemandFormProps {
     index: number;
 }
 
-const demandsName = "demands";
 const leaserName = "leaser";
 const buyerName = "buyer";
 
@@ -74,22 +70,25 @@ const MultiSelect = ({ name, label, options }: MultiSelectProps) => {
     );
 
     return (
-        <RHFSelect
-            multiple
-            fullWidth
-            name={name}
-            input={<OutlinedInput label={label} />}
-            onChange={handleChange}
-            renderValue={renderValue}
-            value={values}
-        >
-            {options.map(({ key, value }, i) => (
-                <MenuItem key={i} value={key}>
-                    <Checkbox checked={values?.indexOf(key) > -1} />
-                    {value}
-                </MenuItem>
-            ))}
-        </RHFSelect>
+        <FormControl fullWidth variant="outlined">
+            <InputLabel>{label}</InputLabel>
+            <RHFSelect
+                multiple
+                fullWidth
+                name={name}
+                input={<OutlinedInput />}
+                onChange={handleChange}
+                renderValue={renderValue}
+                value={values}
+            >
+                {options.map(({ key, value }, i) => (
+                    <MenuItem key={i} value={key}>
+                        <Checkbox checked={values?.indexOf(key) > -1} />
+                        {value}
+                    </MenuItem>
+                ))}
+            </RHFSelect>
+        </FormControl>
     );
 };
 
@@ -133,10 +132,6 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
         [detailsEnum]
     );
 
-    const demands = watch(demandsName);
-    const demand = useMemo(() => demands.at(index), [demands, index]);
-    const demandFilters = useMemo(() => demand?.filters, [demand?.filters]);
-
     const leaser = watch(leaserName);
     const buyer = watch(buyerName);
 
@@ -144,36 +139,19 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
 
     const [propertyCode, setPropertyCode] = useState<string>("");
 
-    const extractOrDefault = useCallback(
-        (key: string, defaultValue: any) =>
-            (demandFilters as IDemandFiltersPOST)[key] || defaultValue,
-        [demandFilters]
-    );
-
     const getDemandFilterName = useCallback(
-        (name: string) => `demands[${index}].filters.${name}`,
+        (name: keyof IDemandFiltersPOST) => `demands[${index}].filters.${name}`,
         [index]
     );
     const getDemandName = useCallback(
-        (name: string) => `demands[${index}].${name}`,
+        (name: keyof IDemandPOST) => `demands[${index}].${name}`,
         [index]
     );
 
-    const { minFloor, maxFloor, parentCategories, category, furnished, state } =
-        useMemo(
-            () => ({
-                minFloor: extractOrDefault("minFloor", ""),
-                maxFloor: extractOrDefault("maxFloor", ""),
-                parentCategories: extractOrDefault(
-                    "parentCategories",
-                    []
-                ) as string[],
-                category: extractOrDefault("categories", []),
-                state: extractOrDefault("states", []),
-                furnished: extractOrDefault("furnished", []),
-            }),
-            [demandFilters]
-        );
+    const parentCategories =
+        (watch(getDemandFilterName("parentCategories")) as string[]) || [];
+    const minFloor = watch(getDemandFilterName("minFloor")) || "";
+    const maxFloor = watch(getDemandFilterName("maxFloor")) || "";
 
     const subCategoriesMap: {
         [key: string]: KeyValue[];
@@ -202,24 +180,24 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
         (p: IProperties) => {
             if (!p) return;
 
-            const setDemandProperty = (key: string, value: any) =>
-                setValue(`demands[${index}].${key}`, value);
+            const setFilter = (key: keyof IDemandFiltersPOST, value: any) =>
+                setValue(`demands[${index}].filters.${key}`, value);
 
-            setDemandProperty("parentCategory", p.parentCategory.key);
-            setDemandProperty("category", p.category.key);
-            setDemandProperty("furnished", p.technicalFeatures.furnished.key);
-            setDemandProperty("state", p.state.key);
-            setDemandProperty("minBedrooms", p.details.bedrooms);
-            setDemandProperty("minBathrooms", p.details.bathrooms);
-            setDemandProperty("minCovered", p.technicalFeatures.coverageFactor);
-            setDemandProperty("minPlot", p.plotArea);
-            setDemandProperty("minPrice", p.price);
-            setDemandProperty("minFloor", p.details.floor.key);
-            setDemandProperty(
+            setFilter("parentCategories", p.parentCategory.key);
+            setFilter("categories", p.category.key);
+            setFilter("furnished", p.technicalFeatures.furnished.key);
+            setFilter("state", p.state.key);
+            setFilter("minBedrooms", p.details.bedrooms);
+            setFilter("minBathrooms", p.details.bathrooms);
+            setFilter("minCovered", p.technicalFeatures.coverageFactor);
+            setFilter("minPlot", p.plotArea);
+            setFilter("minPrice", p.price);
+            setFilter("minFloor", p.details.floor.key);
+            setFilter(
                 "minYearOfConstruction",
                 p.construction.yearOfConstruction
             );
-            setDemandProperty(
+            setFilter(
                 "labels",
                 p.labels.map((label) => label.id)
             );
@@ -236,19 +214,6 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
         },
         [index]
     );
-
-    const handleChange11 = (event: SelectChangeEvent<typeof category>) => {
-        const {
-            target: { value },
-        } = event;
-        dispatch(
-            setCategory({
-                // On autofill we get a stringified value.
-                index,
-                value: typeof value === "string" ? value.split(",") : value,
-            })
-        );
-    };
 
     const valueLabelFormat = useCallback(
         (value: number, index: number): string => {
@@ -289,68 +254,29 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                 />
 
                 <MultiSelect
-                    name={getDemandFilterName("parentCategory")}
+                    name={getDemandFilterName("parentCategories")}
                     label={t("Parent Category")}
                     options={parentCategoryEnum}
                 />
 
-                {parentCategories?.map((e, i) => {
-                    // Find the name (value) of the selected parent category using its key (e)
-                    const parentCategoryName = parentCategoryEnum.find(
-                        (item) => item.key === e
-                    )?.value;
+                <Grid container>
+                    {parentCategories?.map((e, i) => {
+                        // Find the name (value) of the selected parent category using its key (e)
+                        const pc = parentCategoryEnum.find(
+                            (item) => item.key === e
+                        )?.value;
 
-                    return (
-                        <Grid key={i} item xs={6}>
-                            <FormControl fullWidth variant="outlined">
-                                <InputLabel>
-                                    {`${t("Category")} (${parentCategoryName})`}
-                                </InputLabel>
-
-                                <Select
-                                    multiple
-                                    value={category}
-                                    onChange={handleChange11}
-                                    renderValue={(selected: string[]) => {
-                                        return selected
-                                            .map((key) => {
-                                                // Find the corresponding category from subCategoriesMap using the key
-                                                const category =
-                                                    subCategoriesMap[e]?.find(
-                                                        (item) =>
-                                                            item.key === key
-                                                    );
-                                                // Return the value of the category or undefined
-                                                return category?.value;
-                                            })
-                                            .filter(Boolean) // Remove any undefined or null values
-                                            .join(", "); // Join the values with a comma
-                                    }}
-                                    input={<OutlinedInput label="Κατάσταση" />}
-                                    MenuProps={{
-                                        PaperProps: {
-                                            sx: { maxHeight: "60vh" },
-                                        },
-                                    }}
-                                >
-                                    {subCategoriesMap[e]?.map(
-                                        ({ key, value }, i) => (
-                                            <MenuItem key={i} value={key}>
-                                                <Checkbox
-                                                    checked={
-                                                        category.indexOf(key) >
-                                                        -1
-                                                    }
-                                                />
-                                                {value}
-                                            </MenuItem>
-                                        )
-                                    )}
-                                </Select>
-                            </FormControl>
-                        </Grid>
-                    );
-                })}
+                        return (
+                            <Grid key={i} item xs={6}>
+                                <MultiSelect
+                                    name={getDemandFilterName("categories")}
+                                    label={`${t("Category")} (${pc})`}
+                                    options={subCategoriesMap[e]}
+                                />
+                            </Grid>
+                        );
+                    })}
+                </Grid>
 
                 <MultiSelect
                     name={getDemandFilterName("furnished")}
@@ -367,7 +293,7 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                 <LabelSelect index={index} />
 
                 <RHFSelect
-                    name={getDemandName("timeFrame")}
+                    name={getDemandName("timeframe")}
                     label={t("Time Frame")}
                 >
                     {timeframeEnum.map(({ key, value }, i) => (
