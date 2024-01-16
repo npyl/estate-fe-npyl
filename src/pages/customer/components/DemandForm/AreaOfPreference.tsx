@@ -1,9 +1,7 @@
 import { Box, Divider, Grid, Typography } from "@mui/material";
-import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { t } from "i18next";
 import { FC, useCallback, useEffect, useMemo, useState } from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useFormContext } from "react-hook-form";
 import { MunicipSelect } from "src/components/Location/MunicipSelect";
 import { NeighbourSelect } from "src/components/Location/NeighbourSelect";
 import { RegionSelect } from "src/components/Location/RegionSelect";
@@ -18,28 +16,14 @@ import {
     useGetClosestQuery,
     useLazyGetHierarchyByAreaIdQuery,
 } from "src/services/location";
-import {
-    selectShapes,
-    setShapes,
-    addShape,
-    selectDemandRegions,
-    selectDemandCities,
-    selectDemandComplexes,
-} from "src/slices/customer";
+import { IDemandFiltersPOST, IDemandPOST } from "src/types/demand";
 import { useDebouncedCallback } from "use-debounce";
 
 interface ILocationSectionProps {
     index: number;
-    // redux setters
-    setCities: ActionCreatorWithPayload<any, string>;
-    setComplexes: ActionCreatorWithPayload<any, string>;
-    setRegions: ActionCreatorWithPayload<any, string>;
+    onGetDemandName: (k: keyof IDemandPOST) => any;
+    onGetDemandFilterName: (k: keyof IDemandFiltersPOST) => any;
 }
-
-const indexedData = (index: number, value: any) => ({
-    index,
-    value,
-});
 
 enum ZOOM_LEVELS {
     REGION = 10,
@@ -51,21 +35,26 @@ const nullCoord = -1;
 
 export const AreaOfPreference: FC<ILocationSectionProps> = ({
     index,
-    setCities,
-    setComplexes,
-    setRegions,
+    onGetDemandName,
+    onGetDemandFilterName,
 }) => {
-    const dispatch = useDispatch();
+    const { watch, setValue } = useFormContext();
 
-    const regions = useSelector(selectDemandRegions);
-    const cities = useSelector(selectDemandCities);
-    const complexes = useSelector(selectDemandComplexes);
-
-    const allShapes = useSelector(selectShapes); // all demands' shapes
-    const shapes = useMemo(
-        () => (allShapes && allShapes.length > index && allShapes[index]) || [], // current demand's shapes (by demand index)
-        [allShapes, index]
+    const { regionsName, citiesName, complexesName, shapesName } = useMemo(
+        () => ({
+            regionsName: onGetDemandFilterName("regions"),
+            citiesName: onGetDemandFilterName("cities"),
+            complexesName: onGetDemandFilterName("complexes"),
+            shapesName: onGetDemandName("shapes"),
+        }),
+        [onGetDemandName, onGetDemandFilterName]
     );
+
+    const regions = (watch(regionsName) as string[]) || [];
+    const cities = (watch(citiesName) as string[]) || [];
+    const complexes = (watch(complexesName) as string[]) || [];
+    const shapes = (watch(shapesName) as string[]) || [];
+
     const shapeData = useMemo(
         () =>
             shapes
@@ -101,26 +90,22 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
     );
 
     useEffect(() => {
-        if (!closest || index === null || index === undefined) return;
+        if (!closest) return;
 
         // update slice
         if (closest.level === 2) {
             setZoom(ZOOM_LEVELS.MUNICIP);
 
-            dispatch(
-                setRegions(indexedData(index, [closest.parentID.toString()]))
-            );
-            dispatch(
-                setCities(indexedData(index, [closest.areaID.toString()]))
-            );
+            setValue(regionsName, [closest.parentID.toString()]);
+            setValue(citiesName, [closest.areaID.toString()]);
         } else if (closest.level === 3) {
             setZoom(ZOOM_LEVELS.NEIGHB);
 
             const neighbId = closest.areaID;
             const municipId = closest.parentID;
 
-            dispatch(setComplexes(indexedData(index, [neighbId.toString()])));
-            dispatch(setCities(indexedData(index, [municipId.toString()])));
+            setValue(complexesName, [neighbId.toString()]);
+            setValue(citiesName, [municipId.toString()]);
 
             // For region
             getHierarchy(municipId)
@@ -129,23 +114,21 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
                     const regionId = municipHierarchy.parentID;
                     if (!regionId) return;
 
-                    dispatch(
-                        setRegions(indexedData(index, [regionId.toString()]))
-                    );
+                    setValue(regionsName, [regionId.toString()]);
                 })
                 .catch((reason) => console.log("getHierarchy: ", reason));
         }
-    }, [index, closest]);
+    }, [closest, regionsName, citiesName, complexesName]);
 
     const handleDraw = useCallback(
         (s: DrawShape | StopDraw) => {
-            if (!s) dispatch(setShapes(indexedData(index, []))); // clear
+            if (!s) setValue(shapesName, []); // clear
             else {
                 const encoded = encodeShape(s);
-                dispatch(addShape(indexedData(index, encoded)));
+                setValue(shapesName, [...shapes, encoded]); // add
             }
         },
-        [index, shapes]
+        [shapesName, shapes]
     );
     const handleShapeChange = useDebouncedCallback(
         useCallback(
@@ -163,9 +146,9 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
                         : shapeString
                 );
 
-                dispatch(setShapes(indexedData(index, updatedShapes)));
+                setValue(shapesName, updatedShapes);
             },
-            [index, shapes]
+            [shapesName, shapes]
         ),
         100
     );
@@ -217,44 +200,36 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
             updateMainMarkerCoordinates(lat, lng);
             setZoom(ZOOM_LEVELS.REGION);
 
-            // update slice
-            dispatch(setRegions(indexedData(index, [regionCode])));
+            // update
+            setValue(regionsName, [regionCode]);
         },
-        [index]
+        [regionsName]
     );
     const handleMunicipChange = useCallback(
         (municipCode: string, lat: number, lng: number) => {
             updateMainMarkerCoordinates(lat, lng);
             setZoom(ZOOM_LEVELS.MUNICIP);
 
-            // update slice
-            dispatch(setCities(indexedData(index, [municipCode])));
+            // update
+            setValue(citiesName, [municipCode]);
         },
-        [index]
+        [citiesName]
     );
     const handleNeighbourChange = useCallback(
         (neighbourCode: string, lat: number, lng: number) => {
             updateMainMarkerCoordinates(lat, lng);
             setZoom(ZOOM_LEVELS.NEIGHB);
 
-            // update slice
-            dispatch(setComplexes(indexedData(index, [neighbourCode])));
+            // updates
+            setValue(complexesName, [neighbourCode]);
         },
-        [index]
+        [complexesName]
     );
 
-    const regionCode = useMemo(
-        () => regions?.at(index)?.at(0) || "",
-        [regions, index]
-    );
-    const cityCode = useMemo(
-        () => cities?.at(index)?.at(0) || "",
-        [cities, index]
-    );
-    const complexCode = useMemo(
-        () => complexes?.at(index)?.at(0) || "",
-        [complexes, index]
-    );
+    // TODO: support multiple?
+    const regionCode = useMemo(() => regions?.at(0) || "", [regions]);
+    const cityCode = useMemo(() => cities?.at(0) || "", [cities]);
+    const complexCode = useMemo(() => complexes.at(0) || "", [complexes]);
 
     return (
         <>

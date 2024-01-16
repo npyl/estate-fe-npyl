@@ -11,11 +11,6 @@ import {
 } from "@mui/material";
 import { FC, useCallback, useMemo } from "react";
 import { useGlobals } from "src/hooks/useGlobals";
-import {
-    setDemandCities,
-    setDemandComplexes,
-    setDemandRegions,
-} from "src/slices/customer";
 import { useTranslation } from "react-i18next";
 import { AreaOfPreference } from "./DemandForm/AreaOfPreference";
 import { LabelSelect } from "./LabelSelect";
@@ -137,7 +132,6 @@ const getFIELDS = (
 ];
 
 interface FloorSliderProps {
-    index: number;
     onDemandFilterName: (k: keyof IDemandFiltersPOST) => any;
 }
 
@@ -391,18 +385,13 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                     demandIndex={index}
                 />
 
-                <FloorSlider
-                    index={index}
-                    onDemandFilterName={getDemandFilterName}
-                />
+                <FloorSlider onDemandFilterName={getDemandFilterName} />
             </Stack>
 
             <AreaOfPreference
                 index={index}
-                // setters
-                setCities={setDemandCities}
-                setComplexes={setDemandComplexes}
-                setRegions={setDemandRegions}
+                onGetDemandName={getDemandName}
+                onGetDemandFilterName={getDemandFilterName}
             />
 
             {parentCategories?.map((e, i) => (
