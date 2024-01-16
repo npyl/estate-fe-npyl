@@ -1,29 +1,16 @@
 import {
-    Autocomplete,
     Box,
-    Checkbox,
     Divider,
     FormControl,
     Grid,
     InputLabel,
     MenuItem,
-    OutlinedInput,
-    SelectChangeEvent,
-    Slider,
     Stack,
-    TextField,
     Typography,
 } from "@mui/material";
-import { FC, useCallback, useMemo, useState } from "react";
-import { useDispatch } from "react-redux";
+import { FC, useCallback, useMemo } from "react";
 import { useGlobals } from "src/hooks/useGlobals";
 import {
-    useAllPropertiesQuery,
-    useLazyGetPropertyByCodeQuery,
-} from "src/services/properties";
-import {
-    setMaxFloor,
-    setMinFloor,
     setDemandCities,
     setDemandComplexes,
     setDemandRegions,
@@ -35,10 +22,12 @@ import PriorityFeatures from "./PriorityFeatures";
 import { KeyValue } from "src/types/KeyValue";
 import { DemandFormSlider } from "./DemandForm/components/DemandFormSlider";
 import { IDemandFiltersPOST, IDemandPOST } from "src/types/demand";
-import { IProperties } from "src/types/properties";
 import { useFormContext } from "react-hook-form";
 import { RHFSelect } from "src/components/hook-form";
 import { TranslationType } from "src/types/translation";
+
+import MultiSelect from "./DemandForm/components/MultiSelect";
+import DemandAutocomplete from "./DemandForm/Autocomplete";
 
 interface DemandFormProps {
     index: number;
@@ -46,129 +35,6 @@ interface DemandFormProps {
 
 const leaserName = "leaser";
 const buyerName = "buyer";
-
-interface MultiSelectProps {
-    name: string;
-    label: string;
-    options: KeyValue[];
-}
-
-const MultiSelect = ({ name, label, options }: MultiSelectProps) => {
-    const { watch, setValue } = useFormContext();
-
-    const values = (watch(name) as string[]) || [];
-
-    const renderValue = useCallback(
-        (selected: string[]) =>
-            selected
-                .map((key) => options.find((item) => item.key === key)?.value)
-                .filter(Boolean)
-                .join(", "),
-        [options]
-    );
-
-    const handleChange = useCallback(
-        (e: SelectChangeEvent<string[]>) => setValue(name, e.target.value),
-        [name]
-    );
-
-    return (
-        <FormControl fullWidth variant="outlined">
-            <InputLabel>{label}</InputLabel>
-            <RHFSelect
-                multiple
-                fullWidth
-                name={name}
-                input={<OutlinedInput />}
-                onChange={handleChange}
-                renderValue={renderValue}
-                value={values}
-            >
-                {options.map(({ key, value }, i) => (
-                    <MenuItem key={i} value={key}>
-                        <Checkbox checked={values?.indexOf(key) > -1} />
-                        {value}
-                    </MenuItem>
-                ))}
-            </RHFSelect>
-        </FormControl>
-    );
-};
-
-interface DemandAutocompleteProps {
-    index: number;
-}
-
-const DemandAutocomplete = ({ index }: DemandAutocompleteProps) => {
-    const { setValue } = useFormContext();
-    const { t } = useTranslation();
-
-    const [propertyCode, setPropertyCode] = useState<string>("");
-
-    const [getPropertyByCode] = useLazyGetPropertyByCodeQuery();
-
-    const propertyCodes: string[] =
-        useAllPropertiesQuery(undefined, {
-            selectFromResult: ({ data }) => ({
-                data: data
-                    ?.filter((property) => property.code !== null)
-                    .map((property) => {
-                        return property.code;
-                    }),
-            }),
-        }).data || [];
-
-    const fillFromPropertyForCode = useCallback(
-        (p: IProperties) => {
-            if (!p) return;
-
-            const setFilter = (key: keyof IDemandFiltersPOST, value: any) =>
-                setValue(`demands[${index}].filters.${key}`, value);
-
-            setFilter("parentCategories", p.parentCategory.key);
-            setFilter("categories", p.category.key);
-            setFilter("furnished", p.technicalFeatures.furnished.key);
-            setFilter("state", p.state.key);
-            setFilter("minBedrooms", p.details.bedrooms);
-            setFilter("minBathrooms", p.details.bathrooms);
-            setFilter("minCovered", p.technicalFeatures.coverageFactor);
-            setFilter("minPlot", p.plotArea);
-            setFilter("minPrice", p.price);
-            setFilter("minFloor", p.details.floor.key);
-            setFilter(
-                "minYearOfConstruction",
-                p.construction.yearOfConstruction
-            );
-            setFilter(
-                "labels",
-                p.labels.map((label) => label.id)
-            );
-        },
-        [index]
-    );
-
-    const autocompleteChange = useCallback(
-        (_event: any, value: string | null) => {
-            setPropertyCode(value || "");
-
-            if (value)
-                getPropertyByCode(value).unwrap().then(fillFromPropertyForCode);
-        },
-        [index]
-    );
-
-    return (
-        <Autocomplete
-            disablePortal
-            value={propertyCode}
-            onChange={autocompleteChange}
-            options={propertyCodes}
-            renderInput={(params) => (
-                <TextField {...params} label={t("Property Code")} />
-            )}
-        />
-    );
-};
 
 const getFIELDS = (
     t: TranslationType,
@@ -223,7 +89,6 @@ const getFIELDS = (
 const DemandForm: FC<DemandFormProps> = ({ index }) => {
     const { t } = useTranslation();
     const { watch } = useFormContext();
-    const dispatch = useDispatch();
 
     const enums = useGlobals();
     const { propertyEnums, timeframeEnum } = useMemo(
@@ -274,8 +139,6 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
 
     const parentCategories =
         (watch(getDemandFilterName("parentCategories")) as string[]) || [];
-    const minFloor = watch(getDemandFilterName("minFloor")) || "";
-    const maxFloor = watch(getDemandFilterName("maxFloor")) || "";
 
     const subCategoriesMap: {
         [key: string]: KeyValue[];
@@ -434,65 +297,41 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                     demandIndex={index}
                 />
 
-                {minFloorsArray && maxFloorsArray && (
-                    <>
-                        <Typography variant="h6">{t("Floor")}</Typography>
-                        <Grid
-                            container
-                            direction={"row"}
-                            spacing={1}
-                            paddingTop={2}
-                            paddingLeft={3}
-                            paddingRight={3}
-                        >
-                            <Slider
-                                orientation="horizontal"
-                                value={[
-                                    minFloorsArray.indexOf(minFloor),
-                                    maxFloorsArray.indexOf(maxFloor),
-                                ]}
-                                onChange={(
-                                    _event: any,
-                                    newValue: number | number[],
-                                    _activeThumb: number
-                                ) => {
-                                    if (!Array.isArray(newValue)) return;
+                {minFloorsArray && maxFloorsArray ? (
+                    <DemandFormSlider
+                        label={t("Floor")}
+                        min="minFloor"
+                        max="maxFloor"
+                        defaultMin={0}
+                        defaultMax={maxFloorsArray.length - 41}
+                        demandIndex={index}
 
-                                    const min = minFloorsArray[newValue[0]];
-                                    const max = maxFloorsArray[newValue[1]];
+                        // value={[
+                        //     minFloorsArray.indexOf(minFloor),
+                        //     maxFloorsArray.indexOf(maxFloor),
+                        // ]}
+                        // onChange={(
+                        //     _event: any,
+                        //     newValue: number | number[],
+                        //     _activeThumb: number
+                        // ) => {
+                        //     if (!Array.isArray(newValue)) return;
 
-                                    dispatch(
-                                        setMinFloor({
-                                            index,
-                                            value: min,
-                                        })
-                                    );
-                                    dispatch(
-                                        setMaxFloor({
-                                            index,
-                                            value: max,
-                                        })
-                                    );
-                                }}
-                                valueLabelDisplay="auto"
-                                valueLabelFormat={valueLabelFormat}
-                                min={0}
-                                max={maxFloorsArray.length - 41}
-                            />
+                        //     const min = minFloorsArray[newValue[0]];
+                        //     const max = maxFloorsArray[newValue[1]];
 
-                            <MultiSelect
-                                name={getDemandFilterName("minFloor")}
-                                label={t("Min Floor")}
-                                options={minFloors}
-                            />
-                            <MultiSelect
-                                name={getDemandFilterName("maxFloor")}
-                                label={t("Max Floor")}
-                                options={maxFloors}
-                            />
-                        </Grid>
-                    </>
-                )}
+                        //     setValue(
+                        //         getDemandFilterName("minFloor"),
+                        //         min
+                        //     );
+                        //     setValue(
+                        //         getDemandFilterName("maxFloor"),
+                        //         max
+                        //     );
+                        // }}
+                        // valueLabelFormat={valueLabelFormat}
+                    />
+                ) : null}
             </Stack>
 
             <AreaOfPreference
