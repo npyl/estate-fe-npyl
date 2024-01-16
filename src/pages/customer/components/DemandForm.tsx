@@ -22,6 +22,7 @@ import { useFormContext } from "react-hook-form";
 import { RHFSelect } from "src/components/hook-form";
 import { TranslationType } from "src/types/translation";
 
+import Select from "./DemandForm/components/Select";
 import MultiSelect from "./DemandForm/components/MultiSelect";
 import DemandAutocomplete from "./DemandForm/Autocomplete";
 
@@ -115,20 +116,11 @@ const getFIELDS = (
 
     <LabelSelect index={index} />,
 
-    <FormControl fullWidth variant="outlined">
-        <InputLabel>{t("Time Frame")}</InputLabel>
-        <RHFSelect
-            fullWidth
-            name={getDemandName("timeframe")}
-            label={t("Time Frame")}
-        >
-            {timeframeEnum.map(({ key, value }, i) => (
-                <MenuItem key={i} value={key}>
-                    {value}
-                </MenuItem>
-            ))}
-        </RHFSelect>
-    </FormControl>,
+    <Select
+        name={getDemandName("timeframe")}
+        label={t("Time Frame")}
+        options={timeframeEnum}
+    />,
 ];
 
 interface FloorSliderProps {
@@ -174,7 +166,7 @@ const FloorSlider = ({ onDemandFilterName }: FloorSliderProps) => {
     );
 
     return (
-        <>
+        <Box>
             <Typography variant="h6">{t("Floor")}</Typography>
             <Slider
                 orientation="horizontal"
@@ -190,27 +182,86 @@ const FloorSlider = ({ onDemandFilterName }: FloorSliderProps) => {
             />
             <Grid container direction="row" spacing={1.5}>
                 <Grid item xs={6}>
-                    <RHFSelect fullWidth name={minName} label={t("Min Floor")}>
-                        {minFloors?.map(({ key, value }, i) => (
-                            <MenuItem key={i} value={key}>
-                                {value}
-                            </MenuItem>
-                        ))}
-                    </RHFSelect>
+                    <Select
+                        name={minName}
+                        label={t("Min Floor")}
+                        options={minFloors}
+                    />
                 </Grid>
                 <Grid item xs={6}>
-                    <RHFSelect fullWidth name={maxName} label={t("Max Floor")}>
-                        {maxFloors?.map(({ key, value }, i) => (
-                            <MenuItem key={i} value={key}>
-                                {value}
-                            </MenuItem>
-                        ))}
-                    </RHFSelect>
+                    <Select
+                        name={maxName}
+                        label={t("Max Floor")}
+                        options={maxFloors}
+                    />
                 </Grid>
             </Grid>
-        </>
+        </Box>
     );
 };
+
+const getSLIDERS = (
+    t: TranslationType,
+    index: number,
+    stepValue: number,
+    onDemandFilterName: (k: keyof IDemandFiltersPOST) => any
+) => [
+    <DemandFormSlider
+        label={t("Price")}
+        min="minPrice"
+        max="maxPrice"
+        defaultMin={0}
+        defaultMax={1000000}
+        demandIndex={index}
+        adornment="€"
+        step={stepValue}
+    />,
+    <DemandFormSlider
+        label={t("Size")}
+        min="minCovered"
+        max="maxCovered"
+        defaultMin={0}
+        defaultMax={300}
+        demandIndex={index}
+        adornment="m²"
+        step={10}
+    />,
+    <DemandFormSlider
+        label={t("Size of Plot")}
+        min="minPlot"
+        max="maxPlot"
+        defaultMin={0}
+        defaultMax={500}
+        demandIndex={index}
+        adornment="m²"
+        step={10}
+    />,
+    <DemandFormSlider
+        label={t("Bedrooms")}
+        min="minBedrooms"
+        max="maxBedrooms"
+        defaultMin={0}
+        defaultMax={10}
+        demandIndex={index}
+    />,
+    <DemandFormSlider
+        label={t("Bathrooms")}
+        min="minBathrooms"
+        max="maxBathrooms"
+        defaultMin={0}
+        defaultMax={10}
+        demandIndex={index}
+    />,
+    <DemandFormSlider
+        label={t("Year of Construction")}
+        min="minYearOfConstruction"
+        max="maxYearOfConstruction"
+        defaultMin={1960}
+        defaultMax={new Date().getFullYear()}
+        demandIndex={index}
+    />,
+    <FloorSlider onDemandFilterName={onDemandFilterName} />,
+];
 
 const DemandForm: FC<DemandFormProps> = ({ index }) => {
     const { t } = useTranslation();
@@ -281,6 +332,11 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
         ]
     );
 
+    const SLIDERS = useMemo(
+        () => getSLIDERS(t, index, stepValue, getDemandFilterName),
+        [t, index, stepValue, getDemandFilterName]
+    );
+
     return (
         <>
             <Box
@@ -330,62 +386,13 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                     </>
                 ) : null}
 
-                <DemandFormSlider
-                    label={t("Price")}
-                    min="minPrice"
-                    max="maxPrice"
-                    defaultMin={0}
-                    defaultMax={1000000}
-                    demandIndex={index}
-                    adornment="€"
-                    step={stepValue}
-                />
-                <DemandFormSlider
-                    label={t("Size")}
-                    min="minCovered"
-                    max="maxCovered"
-                    defaultMin={0}
-                    defaultMax={300}
-                    demandIndex={index}
-                    adornment="m²"
-                    step={10}
-                />
-                <DemandFormSlider
-                    label={t("Size of Plot")}
-                    min="minPlot"
-                    max="maxPlot"
-                    defaultMin={0}
-                    defaultMax={500}
-                    demandIndex={index}
-                    adornment="m²"
-                    step={10}
-                />
-                <DemandFormSlider
-                    label={t("Bedrooms")}
-                    min="minBedrooms"
-                    max="maxBedrooms"
-                    defaultMin={0}
-                    defaultMax={10}
-                    demandIndex={index}
-                />
-                <DemandFormSlider
-                    label={t("Bathrooms")}
-                    min="minBathrooms"
-                    max="maxBathrooms"
-                    defaultMin={0}
-                    defaultMax={10}
-                    demandIndex={index}
-                />
-                <DemandFormSlider
-                    label={t("Year of Construction")}
-                    min="minYearOfConstruction"
-                    max="maxYearOfConstruction"
-                    defaultMin={1960}
-                    defaultMax={new Date().getFullYear()}
-                    demandIndex={index}
-                />
-
-                <FloorSlider onDemandFilterName={getDemandFilterName} />
+                <Grid container>
+                    {SLIDERS.map((s, i) => (
+                        <Grid key={i} xs={6} item>
+                            {s}
+                        </Grid>
+                    ))}
+                </Grid>
             </Stack>
 
             <AreaOfPreference

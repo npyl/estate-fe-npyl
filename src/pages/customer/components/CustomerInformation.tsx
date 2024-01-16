@@ -1,4 +1,11 @@
-import { Box, Grid, MenuItem, Typography } from "@mui/material";
+import {
+    Box,
+    FormControl,
+    Grid,
+    InputLabel,
+    MenuItem,
+    Typography,
+} from "@mui/material";
 import * as React from "react";
 import { useGlobals } from "src/hooks/useGlobals";
 import { useAllUsersQuery } from "src/services/user";
@@ -15,6 +22,7 @@ import { IUser } from "src/types/user";
 import { KeyValue } from "src/types/KeyValue";
 import { useFormContext } from "react-hook-form";
 import RHFDatePicker from "src/components/hook-form/RHFDatePicker";
+import Select from "./DemandForm/components/Select";
 
 const Rating = () => {
     const { t } = useTranslation();
@@ -57,34 +65,36 @@ const Rating = () => {
 
 const getFIELDS = (
     t: TranslationType,
-    managers?: IUser[],
-    nationalitiesEnum?: KeyValue<string>[],
-    leadSourceEnum?: KeyValue<string>[],
+    managers: IUser[],
+    nationalitiesEnum: KeyValue<string>[],
+    leadSourceEnum: KeyValue<string>[],
     leadSource?: LeadSource,
     customerId?: string
 ) => [
     <RHFTextField fullWidth name="firstName" label={t("First Name")} />,
     <RHFTextField fullWidth name="lastName" label={t("Last Name")} />,
     <RHFTextField fullWidth name="email" label={t("Email")} />,
-    <RHFSelect name="managedBy" label={t("Managed By")}>
-        <MenuItem value={-1}>{t("Not selected")}</MenuItem>
-        {managers?.map(({ id, firstName, lastName }, i) => (
-            <MenuItem key={i} value={id}>
-                {`${firstName} ${lastName}`}
-            </MenuItem>
-        ))}
-    </RHFSelect>,
+    <FormControl fullWidth variant="outlined">
+        <InputLabel>{t("Managed By")}</InputLabel>
+        <RHFSelect name="managedBy" label={t("Managed By")}>
+            <MenuItem value={-1}>{t("Not selected")}</MenuItem>
+            {managers?.map(({ id, firstName, lastName }, i) => (
+                <MenuItem key={i} value={id}>
+                    {`${firstName} ${lastName}`}
+                </MenuItem>
+            ))}
+        </RHFSelect>
+    </FormControl>,
     <RHFTextField fullWidth name="mobilePhone" label={t("Mobile Phone")} />,
     <RHFTextField fullWidth name="homePhone" label={t("Home Phone")} />,
     <RHFTextField fullWidth name="fax" label={t("Fax")} />,
-    <RHFSelect fullWidth name="nationality" label={t("Nationality")}>
-        <MenuItem value={""}>{t("Not selected")}</MenuItem>
-        {nationalitiesEnum?.map(({ key, value }, i) => (
-            <MenuItem key={i} value={key}>
-                {value}
-            </MenuItem>
-        ))}
-    </RHFSelect>,
+    <Select
+        name="nationality"
+        label={t("Nationality")}
+        withEmptyOption
+        emptyValue=""
+        options={nationalitiesEnum}
+    />,
     <RHFTextField fullWidth name="idNumber" label={t("ID Number")} />,
     <RHFDatePicker
         fullWidth
@@ -96,23 +106,25 @@ const getFIELDS = (
         name="passportNumber"
         label={t("Passport number")}
     />,
-    <RHFSelect
-        fullWidth
-        name="preferredLanguage"
-        label={t("Preferred Language")}
-    >
-        <MenuItem value={""}>{t("Not selected")}</MenuItem>
-        <MenuItem value={"ENGLISH"}>{t("English")}</MenuItem>
-        <MenuItem value={"GREEK"}>{t("Greek")}</MenuItem>
-    </RHFSelect>,
-    <RHFSelect fullWidth name="leadSource" label={t("Lead Source")}>
-        <MenuItem value={""}>{t("Not selected")}</MenuItem>
-        {leadSourceEnum?.map(({ key, value }, i) => (
-            <MenuItem key={i} value={key}>
-                {value}
-            </MenuItem>
-        ))}
-    </RHFSelect>,
+    <FormControl fullWidth variant="outlined">
+        <InputLabel>{t("Preferred Language")}</InputLabel>
+        <RHFSelect
+            fullWidth
+            name="preferredLanguage"
+            label={t("Preferred Language")}
+        >
+            <MenuItem value="">{t("Not selected")}</MenuItem>
+            <MenuItem value="ENGLISH">{t("English")}</MenuItem>
+            <MenuItem value="GREEK">{t("Greek")}</MenuItem>
+        </RHFSelect>
+    </FormControl>,
+    <Select
+        name="leadSource"
+        label={t("Lead Source")}
+        withEmptyOption
+        emptyValue=""
+        options={leadSourceEnum}
+    />,
     leadSource === "CUSTOMER" ? (
         <RHFTextField fullWidth name="suggestedBy" label={t("Suggested by")} />
     ) : null,
@@ -130,11 +142,11 @@ const CustomerInformation: React.FC<any> = () => {
 
     const { customerId } = router.query;
     const enums = useGlobals();
-    const managers = useAllUsersQuery().data;
+    const managers = useAllUsersQuery().data || [];
     const leadSource = watch("leadSource");
 
-    const nationalitiesEnum = enums?.customer?.nationality;
-    const leadSourceEnum = enums?.customer?.leadSource;
+    const nationalitiesEnum = enums?.customer?.nationality || [];
+    const leadSourceEnum = enums?.customer?.leadSource || [];
 
     const FIELDS = useMemo(
         () =>
