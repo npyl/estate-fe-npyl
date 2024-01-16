@@ -2,6 +2,7 @@ import {
     Autocomplete,
     Box,
     Checkbox,
+    Divider,
     FormControl,
     Grid,
     InputLabel,
@@ -9,6 +10,7 @@ import {
     OutlinedInput,
     SelectChangeEvent,
     Slider,
+    Stack,
     TextField,
     Typography,
 } from "@mui/material";
@@ -36,6 +38,7 @@ import { IDemandFiltersPOST, IDemandPOST } from "src/types/demand";
 import { IProperties } from "src/types/properties";
 import { useFormContext } from "react-hook-form";
 import { RHFSelect } from "src/components/hook-form";
+import { TranslationType } from "src/types/translation";
 
 interface DemandFormProps {
     index: number;
@@ -92,78 +95,17 @@ const MultiSelect = ({ name, label, options }: MultiSelectProps) => {
     );
 };
 
-const DemandForm: FC<DemandFormProps> = ({ index }) => {
+interface DemandAutocompleteProps {
+    index: number;
+}
+
+const DemandAutocomplete = ({ index }: DemandAutocompleteProps) => {
+    const { setValue } = useFormContext();
     const { t } = useTranslation();
-    const { watch, setValue } = useFormContext();
-    const dispatch = useDispatch();
-
-    const [getPropertyByCode] = useLazyGetPropertyByCodeQuery();
-
-    const enums = useGlobals();
-    const { propertyEnums, timeframeEnum } = useMemo(
-        () => ({
-            propertyEnums: enums?.property,
-            timeframeEnum: enums?.customer?.timeframe || [],
-        }),
-        [enums]
-    );
-    const { stateEnum, detailsEnum, parentCategoryEnum } = useMemo(
-        () => ({
-            stateEnum: propertyEnums?.state || [],
-            detailsEnum: propertyEnums?.details,
-            parentCategoryEnum: propertyEnums?.parentCategory || [],
-        }),
-        [propertyEnums]
-    );
-    const {
-        furnishingEnum,
-        minFloors,
-        maxFloors,
-        minFloorsArray,
-        maxFloorsArray,
-    } = useMemo(
-        () => ({
-            furnishingEnum: detailsEnum?.furnished || [],
-            minFloors: detailsEnum?.floors || [],
-            maxFloors: detailsEnum?.floors || [],
-            minFloorsArray: detailsEnum?.floors?.map((i) => i.key) || [],
-            maxFloorsArray: detailsEnum?.floors?.map((i) => i.key) || [],
-        }),
-        [detailsEnum]
-    );
-
-    const leaser = watch(leaserName);
-    const buyer = watch(buyerName);
-
-    const stepValue = buyer ? 25000 : leaser ? 100 : 100; // default to 100 if neither is true
 
     const [propertyCode, setPropertyCode] = useState<string>("");
 
-    const getDemandFilterName = useCallback(
-        (name: keyof IDemandFiltersPOST) => `demands[${index}].filters.${name}`,
-        [index]
-    );
-    const getDemandName = useCallback(
-        (name: keyof IDemandPOST) => `demands[${index}].${name}`,
-        [index]
-    );
-
-    const parentCategories =
-        (watch(getDemandFilterName("parentCategories")) as string[]) || [];
-    const minFloor = watch(getDemandFilterName("minFloor")) || "";
-    const maxFloor = watch(getDemandFilterName("maxFloor")) || "";
-
-    const subCategoriesMap: {
-        [key: string]: KeyValue[];
-    } = useMemo(
-        () => ({
-            RESIDENTIAL: propertyEnums?.residentialCategory || [],
-            COMMERCIAL: propertyEnums?.commercialCategory || [],
-            LAND: propertyEnums?.landCategory || [],
-            OTHER: propertyEnums?.otherCategory || [],
-        }),
-        [propertyEnums]
-    );
+    const [getPropertyByCode] = useLazyGetPropertyByCodeQuery();
 
     const propertyCodes: string[] =
         useAllPropertiesQuery(undefined, {
@@ -215,6 +157,138 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
         [index]
     );
 
+    return (
+        <Autocomplete
+            disablePortal
+            value={propertyCode}
+            onChange={autocompleteChange}
+            options={propertyCodes}
+            renderInput={(params) => (
+                <TextField {...params} label={t("Property Code")} />
+            )}
+        />
+    );
+};
+
+const getFIELDS = (
+    t: TranslationType,
+    index: number,
+    // ---
+    parentCategoryEnum: KeyValue[],
+    furnishingEnum: KeyValue[],
+    stateEnum: KeyValue[],
+    timeframeEnum: KeyValue[],
+    // ---
+    getDemandFilterName: (k: keyof IDemandFiltersPOST) => any,
+    getDemandName: (k: keyof IDemandPOST) => any
+) => [
+    <DemandAutocomplete index={index} />,
+
+    <MultiSelect
+        name={getDemandFilterName("parentCategories")}
+        label={t("Parent Category")}
+        options={parentCategoryEnum}
+    />,
+
+    <MultiSelect
+        name={getDemandFilterName("furnished")}
+        label={t("Furnishing")}
+        options={furnishingEnum}
+    />,
+
+    <MultiSelect
+        name={getDemandFilterName("state")}
+        label={t("State")}
+        options={stateEnum}
+    />,
+
+    <LabelSelect index={index} />,
+
+    <FormControl fullWidth variant="outlined">
+        <InputLabel>{t("Time Frame")}</InputLabel>
+        <RHFSelect
+            fullWidth
+            name={getDemandName("timeframe")}
+            label={t("Time Frame")}
+        >
+            {timeframeEnum.map(({ key, value }, i) => (
+                <MenuItem key={i} value={key}>
+                    {value}
+                </MenuItem>
+            ))}
+        </RHFSelect>
+    </FormControl>,
+];
+
+const DemandForm: FC<DemandFormProps> = ({ index }) => {
+    const { t } = useTranslation();
+    const { watch } = useFormContext();
+    const dispatch = useDispatch();
+
+    const enums = useGlobals();
+    const { propertyEnums, timeframeEnum } = useMemo(
+        () => ({
+            propertyEnums: enums?.property,
+            timeframeEnum: enums?.customer?.timeframe || [],
+        }),
+        [enums]
+    );
+    const { stateEnum, detailsEnum, parentCategoryEnum } = useMemo(
+        () => ({
+            stateEnum: propertyEnums?.state || [],
+            detailsEnum: propertyEnums?.details,
+            parentCategoryEnum: propertyEnums?.parentCategory || [],
+        }),
+        [propertyEnums]
+    );
+    const {
+        furnishingEnum,
+        minFloors,
+        maxFloors,
+        minFloorsArray,
+        maxFloorsArray,
+    } = useMemo(
+        () => ({
+            furnishingEnum: detailsEnum?.furnished || [],
+            minFloors: detailsEnum?.floors || [],
+            maxFloors: detailsEnum?.floors || [],
+            minFloorsArray: detailsEnum?.floors?.map((i) => i.key) || [],
+            maxFloorsArray: detailsEnum?.floors?.map((i) => i.key) || [],
+        }),
+        [detailsEnum]
+    );
+
+    const leaser = watch(leaserName);
+    const buyer = watch(buyerName);
+
+    const stepValue = buyer ? 25000 : leaser ? 100 : 100; // default to 100 if neither is true
+
+    const getDemandFilterName = useCallback(
+        (name: keyof IDemandFiltersPOST) => `demands[${index}].filters.${name}`,
+        [index]
+    );
+    const getDemandName = useCallback(
+        (name: keyof IDemandPOST) => `demands[${index}].${name}`,
+        [index]
+    );
+
+    const parentCategories =
+        (watch(getDemandFilterName("parentCategories")) as string[]) || [];
+    const minFloor = watch(getDemandFilterName("minFloor")) || "";
+    const maxFloor = watch(getDemandFilterName("maxFloor")) || "";
+
+    const subCategoriesMap: {
+        [key: string]: KeyValue[];
+    } = useMemo(
+        () => ({
+            RESIDENTIAL: propertyEnums?.residentialCategory || [],
+            COMMERCIAL: propertyEnums?.commercialCategory || [],
+            LAND: propertyEnums?.landCategory || [],
+            OTHER: propertyEnums?.otherCategory || [],
+        }),
+        [propertyEnums]
+    );
+
     const valueLabelFormat = useCallback(
         (value: number, index: number): string => {
             if (minFloors.length < value || maxFloors.length < value) return "";
@@ -226,6 +300,34 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
             );
         },
         [minFloors, maxFloors]
+    );
+
+    const FIELDS = useMemo(
+        () =>
+            getFIELDS(
+                t,
+                index,
+                // ---
+                parentCategoryEnum,
+                furnishingEnum,
+                stateEnum,
+                timeframeEnum,
+                // ---
+                getDemandFilterName,
+                getDemandName
+            ),
+        [
+            t,
+            index,
+            // ---
+            parentCategoryEnum,
+            furnishingEnum,
+            stateEnum,
+            timeframeEnum,
+            // ---
+            getDemandFilterName,
+            getDemandName,
+        ]
     );
 
     return (
@@ -242,66 +344,40 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                 </Typography>
             </Box>
 
-            <Box px={1.5}>
-                <Autocomplete
-                    disablePortal
-                    value={propertyCode}
-                    onChange={autocompleteChange}
-                    options={propertyCodes}
-                    renderInput={(params) => (
-                        <TextField {...params} label={t("Property Code")} />
-                    )}
-                />
-
-                <MultiSelect
-                    name={getDemandFilterName("parentCategories")}
-                    label={t("Parent Category")}
-                    options={parentCategoryEnum}
-                />
-
-                <Grid container>
-                    {parentCategories?.map((e, i) => {
-                        // Find the name (value) of the selected parent category using its key (e)
-                        const pc = parentCategoryEnum.find(
-                            (item) => item.key === e
-                        )?.value;
-
-                        return (
-                            <Grid key={i} item xs={6}>
-                                <MultiSelect
-                                    name={getDemandFilterName("categories")}
-                                    label={`${t("Category")} (${pc})`}
-                                    options={subCategoriesMap[e]}
-                                />
-                            </Grid>
-                        );
-                    })}
+            <Stack px={1.5} gap={1.5}>
+                <Grid container spacing={1.5}>
+                    {FIELDS.map((f, i) => (
+                        <Grid key={i} item xs={6}>
+                            {f}
+                        </Grid>
+                    ))}
                 </Grid>
 
-                <MultiSelect
-                    name={getDemandFilterName("furnished")}
-                    label={t("Furnishing")}
-                    options={furnishingEnum}
-                />
+                {parentCategories?.length > 0 ? (
+                    <>
+                        <Divider />
+                        <Grid container spacing={1.5}>
+                            {parentCategories?.map((e, i) => {
+                                // Find the name (value) of the selected parent category using its key (e)
+                                const pc = parentCategoryEnum.find(
+                                    (item) => item.key === e
+                                )?.value;
 
-                <MultiSelect
-                    name={getDemandFilterName("state")}
-                    label={t("State")}
-                    options={stateEnum}
-                />
-
-                <LabelSelect index={index} />
-
-                <RHFSelect
-                    name={getDemandName("timeframe")}
-                    label={t("Time Frame")}
-                >
-                    {timeframeEnum.map(({ key, value }, i) => (
-                        <MenuItem key={i} value={key}>
-                            {value}
-                        </MenuItem>
-                    ))}
-                </RHFSelect>
+                                return (
+                                    <Grid key={i} item xs={6}>
+                                        <MultiSelect
+                                            name={getDemandFilterName(
+                                                "categories"
+                                            )}
+                                            label={`${t("Category")} (${pc})`}
+                                            options={subCategoriesMap[e]}
+                                        />
+                                    </Grid>
+                                );
+                            })}
+                        </Grid>
+                    </>
+                ) : null}
 
                 <DemandFormSlider
                     label={t("Price")}
@@ -417,7 +493,7 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                         </Grid>
                     </>
                 )}
-            </Box>
+            </Stack>
 
             <AreaOfPreference
                 index={index}
