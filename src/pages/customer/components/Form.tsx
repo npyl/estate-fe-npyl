@@ -5,7 +5,7 @@ import { Button, Grid, Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import AddressDetails from "./AddressDetails";
 import CustomerInformation from "./CustomerInformation";
-import NotesSection from "./NotesSection";
+import NotesSection from "./Notes";
 import DemandSection from "./Demand";
 
 // Forms
