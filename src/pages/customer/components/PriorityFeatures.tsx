@@ -1,14 +1,12 @@
-import { Box, Grid, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
+import { useCallback } from "react";
 
 import FeaturesSection from "./DemandForm/Features";
 import FeaturesForCommercialSection from "./DemandForm/FeaturesForCommercial";
 import FeaturesForLandSection from "./DemandForm/FeaturesForLand";
 import FeaturesForOtherSection from "./DemandForm/FeaturesForOther";
 
-import { useDispatch } from "react-redux";
-import { setPriorityFeature } from "src/slices/customer";
-import { useTranslation } from "react-i18next";
-import { IPropertyFeatures } from "src/types/features";
+import { useFormContext } from "react-hook-form";
 
 interface PriorityFeaturesProps {
     index: number;
@@ -16,14 +14,19 @@ interface PriorityFeaturesProps {
 }
 
 const PriorityFeatures = ({ index, parentCategory }: PriorityFeaturesProps) => {
-    const dispatch = useDispatch();
-    const { t } = useTranslation();
+    const { watch, setValue } = useFormContext();
 
-    const handleChange = (key: string, checked: boolean) => {
-        dispatch(
-            setPriorityFeature({ index, key: key as keyof IPropertyFeatures })
-        );
-    };
+    const getName = useCallback(
+        (key: string) => `demands[${index}].priorityFeatures.${key}`,
+        [index]
+    );
+
+    const features = watch(`demands[${index}].priorityFeatures`);
+
+    const handleChange = useCallback(
+        (key: string, checked: boolean) => setValue(getName(key), checked),
+        [getName]
+    );
 
     return (
         <>
@@ -31,25 +34,25 @@ const PriorityFeatures = ({ index, parentCategory }: PriorityFeaturesProps) => {
                 <Grid container spacing={2}>
                     {parentCategory === "RESIDENTIAL" && (
                         <FeaturesSection
-                            index={index}
+                            features={features}
                             onChange={handleChange}
                         />
                     )}
                     {parentCategory === "LAND" && (
                         <FeaturesForLandSection
-                            index={index}
+                            features={features}
                             onChange={handleChange}
                         />
                     )}
                     {parentCategory === "COMMERCIAL" && (
                         <FeaturesForCommercialSection
-                            index={index}
+                            features={features}
                             onChange={handleChange}
                         />
                     )}
                     {parentCategory === "OTHER" && (
                         <FeaturesForOtherSection
-                            index={index}
+                            features={features}
                             onChange={handleChange}
                         />
                     )}

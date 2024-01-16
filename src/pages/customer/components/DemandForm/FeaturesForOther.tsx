@@ -5,12 +5,11 @@ import { selectPriorityFeatures } from "src/slices/customer";
 import CheckboxItem from "./components/CheckboxItem";
 import { IFeatureSectionProps } from "./types/FeatureSectionProps";
 
-const FeaturesForOtherSection = (props: IFeatureSectionProps) => {
-    const { index, onChange: handleChange } = props;
-
+const FeaturesForOtherSection = ({
+    features,
+    onChange: handleChange,
+}: IFeatureSectionProps) => {
     const { t } = useTranslation();
-
-    const features = useSelector(selectPriorityFeatures)[index];
 
     return (
         <>

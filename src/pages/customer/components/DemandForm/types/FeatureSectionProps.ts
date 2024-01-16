@@ -1,4 +1,6 @@
+import { IPropertyFeatures } from "src/types/features";
+
 export interface IFeatureSectionProps {
-    index: number;
+    features: IPropertyFeatures;
     onChange: (key: string, checked: boolean) => void;
 }
