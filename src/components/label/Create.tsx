@@ -1,4 +1,4 @@
-import { Box, IconButton, Stack, Typography } from "@mui/material";
+import { Box, BoxProps, IconButton, Stack, Typography } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useCallback, useMemo, useState } from "react";
 import Label from "src/components/label/Label";
@@ -20,12 +20,12 @@ import { customers, useGetCustomerLabelsQuery } from "src/services/customers";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 
-interface ILabelCreateProps {
+interface ILabelCreateProps extends BoxProps {
     variant: LabelResourceType;
     resourceId: number; // > 0 valid, -1 invalid
 }
 
-const LabelCreate = ({ variant, resourceId }: ILabelCreateProps) => {
+const LabelCreate = ({ variant, resourceId, ...props }: ILabelCreateProps) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
@@ -139,6 +139,7 @@ const LabelCreate = ({ variant, resourceId }: ILabelCreateProps) => {
                 display: "flex",
             }}
             flexDirection={"column"}
+            {...props}
         >
             <Box
                 sx={{

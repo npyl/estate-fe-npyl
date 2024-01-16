@@ -468,6 +468,7 @@ const resources = {
     },
     gr: {
         translation: {
+            "Available only on View / Edit": "Μόνο στην Εμφάνιση / Επεξεργασία",
             "Pool Size": "Μέγεθος Πισίνας",
             Frontage: "Πρόσοψη",
             "Plot Frontage": "Πρόσοψη Οικοπέδου",

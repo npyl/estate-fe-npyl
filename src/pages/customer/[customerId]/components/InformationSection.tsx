@@ -9,6 +9,7 @@ import { useRouter } from "next/router";
 import { LeadSource } from "src/types/global";
 import { useGlobals } from "src/hooks/useGlobals";
 import { TypeLabels } from "src/pages/customers/components/TypeLabels";
+import { LabelCreate } from "src/components/label";
 
 const InformationSection: React.FC = () => {
     const { t } = useTranslation();
@@ -172,9 +173,14 @@ const InformationSection: React.FC = () => {
                                 align="horizontal"
                             />
                         )}
-                        <ListLabelsItem
-                            label={t("Labels")}
-                            labels={data?.labels || "-"}
+
+                        <LabelCreate
+                            mt={1}
+                            ml={3}
+                            mr={1}
+                            minHeight={"70px"}
+                            variant="customer"
+                            resourceId={customerId ? +customerId : -1}
                         />
                     </List>
                 </Grid>

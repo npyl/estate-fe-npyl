@@ -9,7 +9,10 @@ import {
 import * as React from "react";
 import { useGlobals } from "src/hooks/useGlobals";
 import { useAllUsersQuery } from "src/services/user";
-import { LabelCreate } from "src/components/label";
+import {
+    LabelCreate,
+    Placeholder as LabelPlaceholder,
+} from "src/components/label";
 import { LeadSource } from "src/types/global";
 import CustomerTypeSelect from "./CustomerInfoSection/TypeSelect";
 import { useTranslation } from "react-i18next";
@@ -129,10 +132,11 @@ const getFIELDS = (
         <RHFTextField fullWidth name="suggestedBy" label={t("Suggested by")} />
     ) : null,
     <Rating />,
-    <LabelCreate
-        variant="customer"
-        resourceId={customerId ? +customerId : -1}
-    />,
+    customerId ? (
+        <LabelCreate variant="customer" resourceId={+customerId} />
+    ) : (
+        <LabelPlaceholder />
+    ),
 ];
 
 const CustomerInformation: React.FC<any> = () => {
