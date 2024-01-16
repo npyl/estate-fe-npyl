@@ -214,11 +214,7 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
                                             name="region"
                                             label="Region"
                                         />
-                                        <RHFSelect
-                                            select
-                                            name="status"
-                                            label="Status"
-                                        >
+                                        <RHFSelect name="status" label="Status">
                                             <MenuItem value="Active">
                                                 Active
                                             </MenuItem>
@@ -227,7 +223,6 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
                                             </MenuItem>
                                         </RHFSelect>
                                         <RHFSelect
-                                            select
                                             name="preferredLanguage"
                                             label="Preferred Language"
                                         >
