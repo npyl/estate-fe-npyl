@@ -103,7 +103,7 @@ const getFIELDS = (
         options={stateEnum}
     />,
 
-    <LabelSelect index={index} />,
+    <LabelSelect onDemandFiltersName={getDemandFilterName} />,
 
     <Select
         name={getDemandName("timeframe")}

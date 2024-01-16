@@ -7,37 +7,35 @@ import {
     Select,
     SelectChangeEvent,
 } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
+import { useCallback } from "react";
+import { useFormContext } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import { Label } from "src/components/label";
 import { useGetLabelsQuery } from "src/services/labels";
-import { selectDemandLabels, setDemandLabels } from "src/slices/customer";
+import { IDemandFiltersPOST } from "src/types/demand";
 
 interface LabelSelectProps {
-    index: number;
+    onDemandFiltersName: (k: keyof IDemandFiltersPOST) => any;
 }
 
-export const LabelSelect: React.FC<LabelSelectProps> = ({ index }) => {
-    const dispatch = useDispatch();
+export const LabelSelect: React.FC<LabelSelectProps> = ({
+    onDemandFiltersName,
+}) => {
+    const { t } = useTranslation();
+    const { watch, setValue } = useFormContext();
 
-    const labels: number[] = useSelector(selectDemandLabels)[index] || [];
+    const labelsName = onDemandFiltersName("labels");
+    const labels = (watch(labelsName) as number[]) || [];
+
     const { data } = useGetLabelsQuery();
-    const labelOptions = data?.propertyLabels;
+    const labelOptions = data?.propertyLabels || [];
 
-    if (!labelOptions) return null;
-
-    const handleChange = (event: SelectChangeEvent<typeof labels>) => {
-        const {
-            target: { value },
-        } = event;
-        dispatch(
-            setDemandLabels({
-                index,
-                value:
-                    // On autofill we get a stringified value.
-                    typeof value === "string" ? value.split(",") : value,
-            })
-        );
-    };
+    const handleChange = useCallback(
+        (event: SelectChangeEvent<number[]>) => {
+            setValue(labelsName, event.target.value);
+        },
+        [labelsName]
+    );
 
     const nameForId = (id: number) =>
         labelOptions.find((option) => option.id === id)?.name;
@@ -47,35 +45,29 @@ export const LabelSelect: React.FC<LabelSelectProps> = ({ index }) => {
 
     return (
         <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Ετικέτες</InputLabel>
+            <InputLabel>{t("Labels")}</InputLabel>
             <Select
                 multiple
-                labelId="demo-simple-select-label"
                 value={labels}
                 onChange={handleChange}
                 renderValue={renderValue}
-                input={<OutlinedInput label="Ετικέτες" />}
-                MenuProps={{ PaperProps: { sx: { maxHeight: "60vh" } } }}
+                input={<OutlinedInput />}
             >
-                {labelOptions.map((option) => {
-                    return (
-                        <MenuItem key={option.id} value={option.id}>
-                            <Checkbox
-                                checked={labels.indexOf(option.id!) > -1}
-                            />
-                            <Label
-                                variant="soft"
-                                sx={{
-                                    bgcolor: option.color,
-                                    borderRadius: 7,
-                                    color: "white",
-                                }}
-                            >
-                                {option.name}
-                            </Label>
-                        </MenuItem>
-                    );
-                })}
+                {labelOptions.map(({ id, color, name }) => (
+                    <MenuItem key={id} value={id}>
+                        <Checkbox checked={labels.indexOf(id!) > -1} />
+                        <Label
+                            variant="soft"
+                            sx={{
+                                bgcolor: color,
+                                borderRadius: 7,
+                                color: "white",
+                            }}
+                        >
+                            {name}
+                        </Label>
+                    </MenuItem>
+                ))}
             </Select>
         </FormControl>
     );
