@@ -1,139 +1,88 @@
-import {
-    Grid,
-    MenuItem,
-    Paper,
-    TextField,
-    Typography,
-    Box,
-    IconButton,
-} from "@mui/material";
+import { MenuItem, IconButton, Stack } from "@mui/material";
 import { AddCircle, Cancel } from "@mui/icons-material";
 import * as React from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { useGlobals } from "src/hooks/useGlobals";
-import {
-    selectBalconies,
-    setBalconySide,
-    setBalconyArea,
-    addBalcony,
-    removeBalcony,
-} from "src/slices/property";
-import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
-import OnlyNumbersInput from "src/components/OnlyNumbers";
+import { IGlobalPropertyDetails } from "src/types/global";
 import { useTranslation } from "react-i18next";
+import { useFormContext } from "react-hook-form";
+import Panel from "src/components/Panel";
+import { IPropertyDetailsBalconyPOST } from "src/types/details";
+import { useCallback, useMemo } from "react";
+import { RHFOnlyNumbers, RHFTextField } from "src/components/hook-form";
 
-const BalconiesSection: React.FC<any> = (props) => {
-    const dispatch = useDispatch();
-    const { t } = useTranslation();
+const useEnums = () => {
     const data = useGlobals();
+    const details = useMemo(
+        () => (data?.property?.details as IGlobalPropertyDetails) || [],
+        [data]
+    );
+    return { details };
+};
 
-    const enums: IGlobalProperty = data?.property as IGlobalProperty;
-    const details = enums?.details as IGlobalPropertyDetails;
+const BalconiesSection: React.FC = () => {
+    const { t } = useTranslation();
+    const { watch, setValue } = useFormContext();
+    const { details } = useEnums();
 
-    const balconies = useSelector(selectBalconies) || [];
-    const isAnyBalconiesIncomplete = () => {
-        for (let balconie of balconies) {
-            if (
-                !balconie.side ||
-                balconie.side === "" ||
-                !balconie.area ||
-                balconie.area <= 0
-            ) {
-                return true; // there's an incomplete parking entry
-            }
-        }
-        return false; // all parking entries are complete
-    };
+    const balconies =
+        (watch("details.balconies") as IPropertyDetailsBalconyPOST[]) || [];
 
-    const canAddBalconie = () => {
-        return !isAnyBalconiesIncomplete();
-    };
-    if (!details || !details.balconySide) return null;
+    const addBalcony = useCallback(
+        () =>
+            setValue("details.balconies", [
+                ...balconies,
+                {
+                    side: "",
+                    area: 0,
+                },
+            ]),
+        [balconies]
+    );
+
+    const removeBalcony = useCallback(
+        (index: number) =>
+            setValue(
+                "details.balconies",
+                balconies?.filter((b, i) => i !== index)
+            ),
+        [balconies]
+    );
 
     return (
-        <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
-            <Box
-                sx={{
-                    px: 3,
-                    py: 1.5,
-                    display: "flex",
-                    justifyContent: "left",
-                }}
-            >
-                <Typography variant="h6" flex={1}>
-                    {t("Balconies")}
-                </Typography>
-                <IconButton
-                    onClick={() => {
-                        dispatch(addBalcony({}));
-                    }}
-                    disabled={!canAddBalconie()}
-                >
+        <Panel
+            label={t("Balconies")}
+            endNode={
+                <IconButton onClick={addBalcony}>
                     <AddCircle />
                 </IconButton>
-            </Box>
+            }
+        >
+            {balconies?.map((b, i) => (
+                <Stack direction="row" spacing={1.5} px={1.5}>
+                    <RHFTextField
+                        fullWidth
+                        select
+                        name={`details.balconies[${i}].side`}
+                        label={t("Side")}
+                    >
+                        {details?.balconySide?.map(({ key, value }) => (
+                            <MenuItem key={key} value={key}>
+                                {value}
+                            </MenuItem>
+                        ))}
+                    </RHFTextField>
 
-            <Grid item xs={12} padding={1}>
-                {balconies.map((balcony, index) => {
-                    return (
-                        <Grid container spacing={1} key={index}>
-                            <Grid item xs={5.5}>
-                                <TextField
-                                    fullWidth
-                                    id="outlined-select-currency"
-                                    select
-                                    label={t("Side")}
-                                    value={balcony.side || ""}
-                                    onChange={(
-                                        event: React.ChangeEvent<HTMLInputElement>
-                                    ) => {
-                                        dispatch(
-                                            setBalconySide({
-                                                balconyIndex: index,
-                                                side: event.target.value,
-                                            })
-                                        );
-                                    }}
-                                >
-                                    {details?.balconySide?.map(
-                                        ({ key, value }) => (
-                                            <MenuItem key={key} value={key}>
-                                                {value}
-                                            </MenuItem>
-                                        )
-                                    )}
-                                </TextField>
-                            </Grid>
+                    <RHFOnlyNumbers
+                        label={t("Area")}
+                        name={`details.balconies[${i}].area`}
+                    />
 
-                            <Grid item xs={5.5}>
-                                <OnlyNumbersInput
-                                    label={t("Area")}
-                                    value={balcony.area}
-                                    onChange={(value) => {
-                                        dispatch(
-                                            setBalconyArea({
-                                                balconyIndex: index,
-                                                area: value,
-                                            })
-                                        );
-                                    }}
-                                />
-                            </Grid>
-
-                            <Grid item xs={1}>
-                                <IconButton
-                                    onClick={() => {
-                                        dispatch(removeBalcony(index));
-                                    }}
-                                >
-                                    <Cancel />
-                                </IconButton>
-                            </Grid>
-                        </Grid>
-                    );
-                })}
-            </Grid>
-        </Paper>
+                    <IconButton onClick={() => removeBalcony(i)}>
+                        <Cancel />
+                    </IconButton>
+                </Stack>
+            ))}
+        </Panel>
     );
 };
 export default BalconiesSection;

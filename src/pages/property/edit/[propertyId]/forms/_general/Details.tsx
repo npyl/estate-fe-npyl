@@ -18,7 +18,6 @@ import {
     selectAvgUtils,
     selectBathrooms,
     selectBedrooms,
-    selectCovered,
     selectElectricityType,
     selectEnergyClass,
     selectFloor,
@@ -86,7 +85,6 @@ const DetailsSection: React.FC<any> = (props) => {
     const livingRooms = useSelector(selectLivingRooms);
     const bedrooms = useSelector(selectBedrooms);
     const Storerooms = useSelector(selectStoreroom);
-    const covered = useSelector(selectCovered);
     const avgUtils = useSelector(selectAvgUtils);
     const heatingType = useSelector(selectHeatingType);
     const heatingSystem = useSelector(selectHeatingSystem);

@@ -1,11 +1,16 @@
-import { Grid, MenuItem, TextField } from "@mui/material";
+import {
+    Grid,
+    MenuItem,
+    TextField,
+    Autocomplete as MuiAutocomplete,
+} from "@mui/material";
 
 import * as React from "react";
 
 import { useAllCustomersQuery } from "src/services/customers";
 
 import { useRouter } from "next/router";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { LabelCreate } from "src/components/label";
 import { useGlobals } from "src/hooks/useGlobals";
@@ -18,7 +23,6 @@ import { KeyValue } from "src/types/KeyValue";
 import Panel from "src/components/Panel";
 
 import {
-    RHFAutocomplete,
     RHFSwitch,
     RHFOnlyNumbers,
     RHFDatePicker,
@@ -43,19 +47,11 @@ const useEnums = () => {
     return enums;
 };
 
-const BasicSection: React.FC<any> = () => {
-    const router = useRouter();
-    const { watch } = useFormContext();
-    const { t } = useTranslation();
-    const { propertyEnums, stateEnum } = useEnums();
+const Autocomplete = () => {
+    const { watch, setValue } = useFormContext();
 
-    // get list of owners & managers
     const { data: owners } = useAllCustomersQuery();
-    const { data: managers } = useAllUsersQuery();
 
-    const { propertyId } = router.query;
-    const parentCategory = watch("parentCategory") || "";
-    const rented = watch("rented");
     const owner = watch("ownerId");
 
     const ownerNames = useMemo(
@@ -68,6 +64,38 @@ const BasicSection: React.FC<any> = () => {
                 })) || [],
         [owners]
     );
+
+    const handleChange = useCallback(
+        (e: any, v: any | null) => setValue("ownerId", v.value),
+        []
+    );
+
+    return (
+        <MuiAutocomplete
+            disablePortal
+            options={ownerNames}
+            value={{
+                label:
+                    ownerNames.find((i) => i.value == owner)?.label ?? "Owner",
+                value: owner,
+            }}
+            onChange={handleChange}
+            renderInput={(params) => <TextField {...params} label="Owner" />}
+        />
+    );
+};
+
+const BasicSection: React.FC<any> = () => {
+    const router = useRouter();
+    const { watch } = useFormContext();
+    const { t } = useTranslation();
+    const { propertyEnums, stateEnum } = useEnums();
+
+    const { data: managers } = useAllUsersQuery();
+
+    const { propertyId } = router.query;
+    const parentCategory = watch("parentCategory") || "";
+    const rented = watch("rented");
 
     const subCategoriesMap: {
         [key: string]: KeyValue[];
@@ -113,7 +141,7 @@ const BasicSection: React.FC<any> = () => {
                             fullWidth
                             select
                             label={t("Manager")}
-                            name="manager"
+                            name="managerId"
                         >
                             {managers?.map(({ firstName, lastName, id }, i) => (
                                 <MenuItem key={i} value={id}>
@@ -123,20 +151,7 @@ const BasicSection: React.FC<any> = () => {
                         </RHFTextField>
                     </Grid>
                     <Grid item xs={6}>
-                        <RHFAutocomplete
-                            disablePortal
-                            name="owner"
-                            options={ownerNames}
-                            value={{
-                                label:
-                                    ownerNames.find((i) => i.value == owner)
-                                        ?.label ?? "Owner",
-                                value: owner,
-                            }}
-                            renderInput={(params) => (
-                                <TextField {...params} label="Owner" />
-                            )}
-                        />
+                        <Autocomplete />
                     </Grid>
                     <Grid item xs={6}>
                         <RHFOnlyNumbers

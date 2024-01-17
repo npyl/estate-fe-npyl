@@ -7,7 +7,6 @@ export { default as Details } from "./Details";
 export { default as Distances } from "./Distances";
 export { default as Documents } from "./Documents";
 export { default as Features } from "./Features";
-export { default as FloorAreasInput } from "./FloorAreasInput";
 export { default as Images } from "./Images";
 export { default as Notes } from "./Notes";
 export { default as Parking } from "./Parking";

@@ -1,140 +1,88 @@
-import {
-    Grid,
-    MenuItem,
-    Paper,
-    TextField,
-    Typography,
-    Box,
-    IconButton,
-} from "@mui/material";
+import { MenuItem, IconButton, Stack } from "@mui/material";
 import { AddCircle, Cancel } from "@mui/icons-material";
 import * as React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
-import {
-    selectParkings,
-    setParkingType,
-    setParkingSpots,
-    addParking,
-    removeParking,
-} from "src/slices/property";
 import { useGlobals } from "src/hooks/useGlobals";
-import OnlyNumbersInput from "src/components/OnlyNumbers";
+import { IGlobalPropertyDetails } from "src/types/global";
 import { useTranslation } from "react-i18next";
+import { useFormContext } from "react-hook-form";
+import Panel from "src/components/Panel";
+import { IPropertyDetailsParkingPOST } from "src/types/details";
+import { useCallback, useMemo } from "react";
+import { RHFOnlyNumbers, RHFTextField } from "src/components/hook-form";
 
-const ParkingSection: React.FC<any> = () => {
-    const dispatch = useDispatch();
-    const { t } = useTranslation();
-
+const useEnums = () => {
     const data = useGlobals();
-    const enums: IGlobalProperty = data?.property as IGlobalProperty;
-    const details = enums?.details as IGlobalPropertyDetails;
+    const details = useMemo(
+        () => (data?.property?.details as IGlobalPropertyDetails) || [],
+        [data]
+    );
+    return { details };
+};
 
-    const parkings = useSelector(selectParkings) || [];
+const Parking: React.FC = () => {
+    const { t } = useTranslation();
+    const { watch, setValue } = useFormContext();
+    const { details } = useEnums();
 
-    const isAnyParkingIncomplete = () => {
-        for (let parking of parkings) {
-            if (
-                !parking.parkingType ||
-                parking.parkingType === "" ||
-                !parking.spots ||
-                parking.spots <= 0
-            ) {
-                return true; // there's an incomplete parking entry
-            }
-        }
-        return false; // all parking entries are complete
-    };
+    const parkings =
+        (watch("details.parkings") as IPropertyDetailsParkingPOST[]) || [];
 
-    const canAddParking = () => {
-        return !isAnyParkingIncomplete();
-    };
-    if (!details || !details.parkingType) return null;
+    const addParking = useCallback(
+        () =>
+            setValue("details.parkings", [
+                ...parkings,
+                {
+                    side: "",
+                    area: 0,
+                },
+            ]),
+        [parkings]
+    );
+
+    const removeParking = useCallback(
+        (index: number) =>
+            setValue(
+                "details.parkings",
+                parkings?.filter((b, i) => i !== index)
+            ),
+        [parkings]
+    );
 
     return (
-        <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
-            <Box
-                sx={{
-                    px: 3,
-                    py: 1.5,
-                    display: "flex",
-                    justifyContent: "left",
-                }}
-            >
-                <Typography variant="h6" flex={1}>
-                    {t("Parking")}
-                </Typography>
-                <IconButton
-                    onClick={() => {
-                        dispatch(addParking({}));
-                    }}
-                    disabled={!canAddParking()}
-                >
+        <Panel
+            label={t("Balconies")}
+            endNode={
+                <IconButton onClick={addParking}>
                     <AddCircle />
                 </IconButton>
-            </Box>
+            }
+        >
+            {parkings?.map((b, i) => (
+                <Stack direction="row" spacing={1.5} px={1.5}>
+                    <RHFTextField
+                        fullWidth
+                        select
+                        name={`details.parkings[${i}].parkingType`}
+                        label={t("Parking Type")}
+                    >
+                        {details?.parkingType?.map(({ key, value }) => (
+                            <MenuItem key={key} value={key}>
+                                {value}
+                            </MenuItem>
+                        ))}
+                    </RHFTextField>
 
-            <Grid item xs={12} padding={1}>
-                {parkings.map((parking, index) => {
-                    return (
-                        <Grid container spacing={1} key={index}>
-                            <Grid item xs={5.5}>
-                                <TextField
-                                    fullWidth
-                                    id="outlined-select-currency"
-                                    select
-                                    label={t("Type")}
-                                    value={parking.parkingType || ""}
-                                    onChange={(
-                                        event: React.ChangeEvent<HTMLInputElement>
-                                    ) => {
-                                        dispatch(
-                                            setParkingType({
-                                                parkingIndex: index,
-                                                type: event.target.value,
-                                            })
-                                        );
-                                    }}
-                                >
-                                    {details?.parkingType?.map(
-                                        ({ key, value }) => (
-                                            <MenuItem key={key} value={key}>
-                                                {value}
-                                            </MenuItem>
-                                        )
-                                    )}
-                                </TextField>
-                            </Grid>
+                    <RHFOnlyNumbers
+                        label={t("Spots")}
+                        name={`details.parkings[${i}].spots`}
+                    />
 
-                            <Grid item xs={5.5}>
-                                <OnlyNumbersInput
-                                    label={t("Number of Spots")}
-                                    value={parking.spots}
-                                    onChange={(value) => {
-                                        dispatch(
-                                            setParkingSpots({
-                                                parkingIndex: index,
-                                                spots: value,
-                                            })
-                                        );
-                                    }}
-                                />
-                            </Grid>
-
-                            <Grid item xs={1}>
-                                <IconButton
-                                    onClick={() => {
-                                        dispatch(removeParking(index));
-                                    }}
-                                >
-                                    <Cancel />
-                                </IconButton>
-                            </Grid>
-                        </Grid>
-                    );
-                })}
-            </Grid>
-        </Paper>
+                    <IconButton onClick={() => removeParking(i)}>
+                        <Cancel />
+                    </IconButton>
+                </Stack>
+            ))}
+        </Panel>
     );
 };
-export default ParkingSection;
+export default Parking;

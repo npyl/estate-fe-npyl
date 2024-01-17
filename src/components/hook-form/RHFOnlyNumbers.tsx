@@ -7,6 +7,7 @@ import { InputAdornment, TextField, TextFieldProps } from "@mui/material";
 
 type Props = TextFieldProps & {
     name: string;
+    acceptsDecimal?: boolean;
     adornment?: string;
 };
 
