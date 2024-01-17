@@ -24,7 +24,6 @@ const getFEATURES = (t: TranslationType): Feature[] => [
         label: t("Panoramic View"),
         value: "panoramicView",
     },
-
     {
         label: t("Within City Plan"),
         value: "withinCityPlan",

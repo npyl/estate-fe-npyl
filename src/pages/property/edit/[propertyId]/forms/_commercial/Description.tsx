@@ -6,6 +6,7 @@ import {
     RHFCheckbox,
     RHFOnlyNumbers,
     RHFTextField,
+    Select,
 } from "src/components/hook-form";
 import { useGlobals } from "src/hooks/useGlobals";
 import { IGlobalPropertyDetails } from "src/types/global";
@@ -20,18 +21,11 @@ const Description: React.FC = () => {
         <Panel label={t("Property Description")}>
             <Grid container spacing={2}>
                 <Grid item xs={6}>
-                    <RHFTextField
-                        fullWidth
-                        select
+                    <Select
                         label={t("Floor")}
                         name="details.floor"
-                    >
-                        {details?.floors?.map(({ value, key }) => (
-                            <MenuItem key={key} value={key}>
-                                {value}
-                            </MenuItem>
-                        ))}
-                    </RHFTextField>
+                        options={details?.floors}
+                    />
                 </Grid>
 
                 <Grid item xs={6}>
@@ -62,48 +56,27 @@ const Description: React.FC = () => {
                 </Grid>
 
                 <Grid item xs={6}>
-                    <RHFTextField
-                        fullWidth
-                        select
+                    <Select
                         label={t("Accessibility")}
-                        name="details.accessibility"
-                    >
-                        {details?.accessibility?.map(({ key, value }) => (
-                            <MenuItem key={key} value={key}>
-                                {value}
-                            </MenuItem>
-                        ))}
-                    </RHFTextField>
+                        name={"details.accessibility"}
+                        options={details?.accessibility}
+                    />
                 </Grid>
 
                 <Grid item xs={6}>
-                    <RHFTextField
-                        fullWidth
-                        select
+                    <Select
                         label={t("Land Use")}
-                        name="details.landUse"
-                    >
-                        {details?.landUse?.map(({ key, value }) => (
-                            <MenuItem key={key} value={key}>
-                                {value}
-                            </MenuItem>
-                        ))}
-                    </RHFTextField>
+                        name={"details.landUse"}
+                        options={details?.landUse}
+                    />
                 </Grid>
 
                 <Grid item xs={6}>
-                    <RHFTextField
-                        fullWidth
-                        select
+                    <Select
                         label={t("Zone")}
                         name="details.zoneType"
-                    >
-                        {details?.zoneType?.map(({ key, value }) => (
-                            <MenuItem key={key} value={key}>
-                                {value}
-                            </MenuItem>
-                        ))}
-                    </RHFTextField>
+                        options={details?.zoneType}
+                    />
                 </Grid>
 
                 <Grid item xs={6}>

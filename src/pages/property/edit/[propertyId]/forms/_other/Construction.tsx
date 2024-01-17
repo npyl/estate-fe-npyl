@@ -1,179 +1,57 @@
-import { Grid, Paper } from "@mui/material";
-import Checkbox from "@mui/material/Checkbox";
-import Typography from "@mui/material/Typography";
-import { Box } from "@mui/system";
+import { Grid } from "@mui/material";
 import * as React from "react";
-import { useSelector } from "react-redux";
-import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
-
-import { useDispatch } from "react-redux";
-import {
-    selectIncomplete,
-    selectInternalStairs,
-    selectNewlyBuilt,
-    selectPoolSize,
-    selectUnderConstruction,
-    selectYearOfConstruction,
-    setIncomplete,
-    setInternalStairs,
-    setNewlyBuilt,
-    setPoolSize,
-    setUnderConstruction,
-    setYearOfConstruction,
-} from "src/slices/property";
-import { useGlobals } from "src/hooks/useGlobals";
 import { useTranslation } from "react-i18next";
-import OnlyNumbersInput from "src/components/OnlyNumbers";
+import Panel from "src/components/Panel";
+import { RHFCheckbox, RHFOnlyNumbers } from "src/components/hook-form";
 
 const ConstructionForOtherSection: React.FC<any> = (props) => {
     const { t } = useTranslation();
-    const dispatch = useDispatch();
-    const data = useGlobals();
-
-    const enums: IGlobalProperty = data?.property as IGlobalProperty;
-    const details = enums?.details as IGlobalPropertyDetails;
-
-    const yearOfConstruction = useSelector(selectYearOfConstruction);
-    const underConstruction = useSelector(selectUnderConstruction);
-    const newlyBuilt = useSelector(selectNewlyBuilt);
-    const incomplete = useSelector(selectIncomplete);
-    const internalStairs = useSelector(selectInternalStairs);
-
-    const poolSize = useSelector(selectPoolSize);
-
-    if (!details || !details.heatingSystem || !details.heatingType) return null;
 
     return (
-        <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
-            <Box
-                sx={{
-                    px: 3,
-                    py: 1.5,
-                    display: "flex",
-                    justifyContent: "center",
-                }}
-            >
-                <Typography variant="h6">{t("Construction")}</Typography>
-            </Box>
+        <Panel label={t("Construction")}>
+            <Grid container spacing={2}>
+                <Grid item xs={6}>
+                    <RHFOnlyNumbers
+                        fullWidth
+                        label={t("Year of Construction")}
+                        name="construction.yearOfConstruction"
+                    />
+                </Grid>
 
-            <Grid item xs={12} padding={1}>
-                <Grid container spacing={2}>
-                    <Grid item xs={6}>
-                        <OnlyNumbersInput
-                            fullWidth
-                            label={t("Year of Construction")}
-                            value={yearOfConstruction}
-                            onChange={(value) =>
-                                dispatch(setYearOfConstruction(value))
-                            }
-                        />
-                    </Grid>
+                <Grid item xs={6}>
+                    <RHFOnlyNumbers
+                        fullWidth
+                        label={t("Pool Size")}
+                        name="construction.poolSize"
+                    />
+                </Grid>
 
-                    <Grid item xs={6}>
-                        <OnlyNumbersInput
-                            fullWidth
-                            label={t("Pool Size")}
-                            value={poolSize}
-                            onChange={(v) => dispatch(setPoolSize(v))}
-                        />
-                    </Grid>
-
-                    <Grid
-                        item
-                        xs={3}
-                        flexDirection="row"
-                        sx={{ display: "inline-flex", alignItems: "center" }}
-                    >
-                        <Checkbox
-                            value={underConstruction}
-                            checked={underConstruction}
-                            onChange={(
-                                event: React.ChangeEvent<unknown>,
-                                checked: boolean
-                            ) => {
-                                dispatch(setUnderConstruction(checked));
-                            }}
-                            sx={{ cursor: "default" }}
-                            color="primary"
-                            inputProps={{ "aria-label": "Under Construction" }}
-                        />
-                        <Typography variant="body1" sx={{ ml: 0 }}>
-                            {t("Under Construction")}
-                        </Typography>
-                    </Grid>
-
-                    <Grid
-                        item
-                        xs={3}
-                        flexDirection="row"
-                        sx={{ display: "inline-flex", alignItems: "center" }}
-                    >
-                        <Checkbox
-                            value={internalStairs}
-                            checked={internalStairs}
-                            onChange={(
-                                event: React.ChangeEvent<unknown>,
-                                checked: boolean
-                            ) => {
-                                dispatch(setInternalStairs(checked));
-                            }}
-                            sx={{ cursor: "default" }}
-                            color="primary"
-                            inputProps={{ "aria-label": "Internal stairs" }}
-                        />
-                        <Typography variant="body1" sx={{ ml: 0 }}>
-                            {t("Internal Stairs")}
-                        </Typography>
-                    </Grid>
-                    <Grid
-                        item
-                        xs={3}
-                        flexDirection="row"
-                        sx={{ display: "inline-flex", alignItems: "center" }}
-                    >
-                        <Checkbox
-                            value={newlyBuilt}
-                            checked={newlyBuilt}
-                            onChange={(
-                                event: React.ChangeEvent<unknown>,
-                                checked: boolean
-                            ) => {
-                                dispatch(setNewlyBuilt(checked));
-                            }}
-                            sx={{ cursor: "default" }}
-                            color="primary"
-                            inputProps={{ "aria-label": "Newly Build" }}
-                        />
-                        <Typography variant="body1" sx={{ ml: 0 }}>
-                            {t("Newly Build")}
-                        </Typography>
-                    </Grid>
-                    <Grid
-                        item
-                        xs={3}
-                        flexDirection="row"
-                        sx={{ display: "inline-flex", alignItems: "center" }}
-                    >
-                        <Checkbox
-                            value={incomplete}
-                            checked={incomplete}
-                            onChange={(
-                                event: React.ChangeEvent<unknown>,
-                                checked: boolean
-                            ) => {
-                                dispatch(setIncomplete(checked));
-                            }}
-                            sx={{ cursor: "default" }}
-                            color="primary"
-                            inputProps={{ "aria-label": "Incomplete" }}
-                        />
-                        <Typography variant="body1" sx={{ ml: 0 }}>
-                            {t("Incomplete")}
-                        </Typography>
-                    </Grid>
+                <Grid item xs={3}>
+                    <RHFCheckbox
+                        name={"construction.underConstruction"}
+                        label={t("Under Construction")}
+                    />
+                </Grid>
+                <Grid item xs={3}>
+                    <RHFCheckbox
+                        name={"construction.internalStairs"}
+                        label={t("Internal Stairs")}
+                    />
+                </Grid>
+                <Grid item xs={3}>
+                    <RHFCheckbox
+                        name={"construction.newlyBuilt"}
+                        label={t("Newly Build")}
+                    />
+                </Grid>
+                <Grid item xs={3}>
+                    <RHFCheckbox
+                        name={"construction.incomplete"}
+                        label={t("Incomplete")}
+                    />
                 </Grid>
             </Grid>
-        </Paper>
+        </Panel>
     );
 };
 export default ConstructionForOtherSection;
