@@ -1,5 +1,5 @@
 import { Box, Card, CardContent, CardHeader, Typography } from "@mui/material";
-import { use, useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import { SoftButton } from "src/components/SoftButton";
@@ -17,12 +17,10 @@ import {
     IPropertyImage,
     IPropertyImagePOST,
 } from "src/types/file";
-import { GalleryManager } from "./components/GalleryManager";
-import { SeeMore } from "./components/SeeMore";
+import { GalleryManager } from "../components/GalleryManager";
+import { SeeMore } from "../components/SeeMore";
 import UploadImages from "src/components/upload/UploadImages";
 import { useDispatch } from "react-redux";
-import { useDebouncedCallback } from "use-debounce";
-import { NoUploadProgress, UploadProgress } from "src/components/image";
 import { useUploadFileContext } from "src/contexts/uploadFile";
 
 const PREVIEW_IMAGES_COUNT = 5;

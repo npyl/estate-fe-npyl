@@ -1,0 +1,69 @@
+import { Grid, Stack } from "@mui/material";
+import * as React from "react";
+
+import { useSelector } from "react-redux";
+
+import {
+    Areas,
+    BasicDetails,
+    Distances,
+    Blueprints,
+    Images,
+    VideoLink,
+    Notes,
+    Documents,
+    ROI,
+} from "./_general";
+
+import {
+    Construction,
+    Description,
+    Features,
+    HeatingAndEnergy,
+    SuitableFor,
+    TechnicalFeaturesAndInterior,
+} from "./_commercial";
+
+import LocationSection from "src/components/Location/Location";
+
+import { selectState } from "src/slices/property";
+
+const CommercialFormSection: React.FC<any> = () => {
+    const state = useSelector(selectState);
+
+    return (
+        <>
+            <Grid container paddingTop={1} spacing={1}>
+                <Grid item xs={6} order={"row"}>
+                    <Stack spacing={1}>
+                        <BasicDetails />
+                        {state === "Sale" && <ROI />}
+                        <Description />
+                        <HeatingAndEnergy />
+                        <Areas />
+                        <Distances />
+                        <Blueprints />
+                        <Documents />
+                        <VideoLink />
+                        <Notes />
+                    </Stack>
+                </Grid>
+                <Grid item xs={6}>
+                    <Stack spacing={1}>
+                        <Images />
+                        <LocationSection />
+                        <SuitableFor />
+                        <Construction />
+                        <TechnicalFeaturesAndInterior />
+                        <Description />
+                    </Stack>
+                </Grid>
+
+                <Grid item xs={12}>
+                    <Features />
+                </Grid>
+            </Grid>
+        </>
+    );
+};
+export default CommercialFormSection;

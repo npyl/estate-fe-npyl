@@ -28,7 +28,7 @@ import {
 } from "src/slices/property";
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 
-const PropertyDescriptionForCommercialSection: React.FC<any> = (props) => {
+const Description: React.FC<any> = (props) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
@@ -216,4 +216,4 @@ const PropertyDescriptionForCommercialSection: React.FC<any> = (props) => {
         </Paper>
     );
 };
-export default PropertyDescriptionForCommercialSection;
+export default Description;

@@ -23,7 +23,7 @@ import {
 import { useGlobals } from "src/hooks/useGlobals";
 import { useTranslation } from "react-i18next";
 
-const HeatingAndEnergyForCommercialSection: React.FC<any> = (props) => {
+const HeatingAndEnergy: React.FC<any> = (props) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
@@ -226,4 +226,4 @@ const HeatingAndEnergyForCommercialSection: React.FC<any> = (props) => {
         </Paper>
     );
 };
-export default HeatingAndEnergyForCommercialSection;
+export default HeatingAndEnergy;

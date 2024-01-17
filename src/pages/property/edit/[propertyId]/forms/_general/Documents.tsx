@@ -12,7 +12,7 @@ import {
     useUploadPropertyFileMutation,
 } from "src/services/properties";
 import { IFileResponse, IPropertyDocumentPOST } from "src/types/file";
-import { PDFViewer } from "./components/PDFViewer";
+import { PDFViewer } from "../components/PDFViewer";
 
 interface UploadResponse {
     key: string;

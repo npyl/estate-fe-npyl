@@ -28,8 +28,6 @@ import {
     selectWalkableDistanceToBeach,
     setAccessForDisable,
     setAdaptingToTheGround,
-    setAlarmSystem,
-    setBright,
     setCctv,
     setCorner,
     setFacade,
@@ -46,7 +44,7 @@ import {
     setWalkableDistanceToBeach,
 } from "src/slices/property";
 
-const FeaturesForCommercialSection: React.FC<any> = (props) => {
+const Features: React.FC<any> = (props) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
     const accessForDisable = useSelector(selectAccessForDisable);
@@ -473,4 +471,4 @@ const FeaturesForCommercialSection: React.FC<any> = (props) => {
         </Paper>
     );
 };
-export default FeaturesForCommercialSection;
+export default Features;

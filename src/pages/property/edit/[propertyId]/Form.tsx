@@ -2,60 +2,60 @@ import { Delete as DeleteIcon, Send as SendIcon } from "@mui/icons-material";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { Button, Grid } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { selectAll, selectParentCategory } from "src/slices/property";
-import CommercialFormSection from "./components/CommercialForm";
-import LandFormSection from "./components/LandForm";
-import OtherFormSection from "./components/OtherForm";
-import ResidentialFormSection from "./components/ResidentialForm";
+import { Residential, Commercial, Land, Other } from "./forms";
 import { UploadFileProvider } from "src/contexts/uploadFile";
 import { useCallback, useMemo } from "react";
 import { SaveButton } from "src/components/Button/Save";
 import PreventButton from "src/components/Button/Prevent";
+import { IProperties, IPropertiesPOST } from "src/types/properties";
+import { reset } from "numeral";
 
 interface IFormProps {
+    property?: IProperties;
+    isLoading: boolean;
     isError: boolean;
-    resetEverything: () => void;
-    performEdit: () => void;
-    handleCancel: () => void;
+    onClear: () => void;
+    onSave: (body: IPropertiesPOST) => void;
+    onCancel: () => void;
 }
 
 export default function Form({
+    property,
+    isLoading,
     isError,
-    performEdit,
-    resetEverything,
-    handleCancel,
+    onSave,
+    onClear,
+    onCancel,
 }: IFormProps) {
     const { t } = useTranslation();
 
     // enums
-    const parentCategory = useSelector(selectParentCategory);
-
-    const body = useSelector(selectAll);
-    const isCodeOrStateEmpty = useMemo(
-        () => body?.code?.length === 0 || body?.state?.length === 0,
-        [body?.code, body?.state]
+    const parentCategory = useMemo(
+        () => property?.parentCategory?.key,
+        [property?.parentCategory]
     );
 
-    // edit
-    const handleSave = useCallback(() => performEdit(), []);
+    const handleClear = useCallback(() => {
+        reset();
+        onClear();
+    }, []);
+
+    const handleSave = useCallback(() => {
+        // onSave();
+    }, []);
 
     return (
         <Grid container spacing={1} paddingLeft={2} paddingTop={1}>
-            {parentCategory !== "" && (
+            {!!property ? (
                 <UploadFileProvider>
                     <Grid container mt={0} spacing={1}>
-                        {parentCategory === "RESIDENTIAL" && (
-                            <ResidentialFormSection />
-                        )}
-                        {parentCategory === "LAND" && <LandFormSection />}
-                        {parentCategory === "COMMERCIAL" && (
-                            <CommercialFormSection />
-                        )}
-                        {parentCategory === "OTHER" && <OtherFormSection />}
+                        {parentCategory === "RESIDENTIAL" && <Residential />}
+                        {parentCategory === "COMMERCIAL" && <Commercial />}
+                        {parentCategory === "LAND" && <Land />}
+                        {parentCategory === "OTHER" && <Other />}
                     </Grid>
                 </UploadFileProvider>
-            )}
+            ) : null}
             <Grid
                 padding={2}
                 container
@@ -65,11 +65,11 @@ export default function Form({
             >
                 <Grid item>
                     <PreventButton
-                        prevent={isCodeOrStateEmpty}
-                        preventMessage={t("Fill in Code and State!").toString()}
+                        // prevent={isCodeOrStateEmpty}
+                        // preventMessage={t("Fill in Code and State!").toString()}
                         variant="outlined"
                         startIcon={<CancelIcon />}
-                        onClick={handleCancel}
+                        onClick={onCancel}
                     >
                         {t("Cancel")}
                     </PreventButton>
@@ -78,7 +78,7 @@ export default function Form({
                     <Button
                         variant="outlined"
                         startIcon={<DeleteIcon />}
-                        onClick={resetEverything}
+                        onClick={handleClear}
                     >
                         {t("Clear")}
                     </Button>
@@ -86,8 +86,8 @@ export default function Form({
 
                 <Grid item>
                     <SaveButton
-                        prevent={isCodeOrStateEmpty}
-                        preventMessage={t("Fill in Code and State!").toString()}
+                        // prevent={isCodeOrStateEmpty}
+                        // preventMessage={t("Fill in Code and State!").toString()}
                         error={isError}
                         loadingPosition="start"
                         variant="contained"

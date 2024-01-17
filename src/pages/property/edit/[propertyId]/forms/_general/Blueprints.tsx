@@ -16,7 +16,7 @@ import {
 } from "src/services/properties";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-import { BlueprintViewer } from "./components/BlueprintViewer";
+import { BlueprintViewer } from "../components/BlueprintViewer";
 
 interface UploadResponse {
     key: string;

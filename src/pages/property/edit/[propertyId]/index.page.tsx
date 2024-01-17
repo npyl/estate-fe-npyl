@@ -1,50 +1,30 @@
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { useEditPropertyMutation } from "src/services/properties";
-import { resetState as resetLabels } from "src/slices/labels";
-import { resetAll, selectAll } from "src/slices/property";
-import {
-    resetState as resetNotes,
-    setInitialState as setInitialNotesState,
-} from "src/slices/notes";
-import { setInitialState } from "src/slices/property";
 import Form from "./Form";
 import { useGetPropertyByIdQuery } from "src/services/properties";
-import { useDispatch } from "react-redux";
 import { useTabsContext } from "src/contexts/tabs";
 import { ConfirmationDialogBox } from "src/pages/components/ConfirmationDialogBox";
-import { useSelector } from "react-redux";
 import { IPropertiesPOST } from "src/types/properties";
 
-// (1): forces Form re-render (=> unmount when changing from /edit/x to /edit/y pages)
-
 const EditPropertyPage: NextPage = () => {
-    const dispatch = useDispatch();
     const router = useRouter();
     const { pushTab } = useTabsContext();
     const { propertyId } = router.query;
 
-    const { data } = useGetPropertyByIdQuery(+propertyId!);
-    const [edit, { isError }] = useEditPropertyMutation();
-
-    // ------- REMOVE -------
-    const body = useSelector(selectAll);
-    const bodyRef = useRef<IPropertiesPOST | undefined>(body);
-    useEffect(() => {
-        bodyRef.current = body;
-    }, [body]);
-    // ------- REMOVE -------
+    const { data: property } = useGetPropertyByIdQuery(+propertyId!);
+    const [edit, { isError, isLoading }] = useEditPropertyMutation();
 
     const [clearConfirmDialogOpen, setclearConfirmDialogOpen] = useState(false);
 
     useEffect(() => {
-        if (data && propertyId) {
-            const isFirstEdit = data.createdAt === data.updatedAt;
+        if (property && propertyId) {
+            const isFirstEdit = property.createdAt === property.updatedAt;
             const label = `${isFirstEdit ? "Create" : "Edit"} property ${
-                data?.code || ""
+                property?.code || ""
             }`;
 
             pushTab({
@@ -53,27 +33,14 @@ const EditPropertyPage: NextPage = () => {
                 label,
             });
 
-            dispatch(setInitialNotesState(data.notes));
-            dispatch(setInitialState({ data, id: +propertyId! }));
+            // dispatch(setInitialNotesState(property.notes));
+            // dispatch(setInitialState({ property, id: +propertyId! }));
         }
-    }, [data, propertyId]);
-
-    const resetEverything = () => setclearConfirmDialogOpen(true);
-    const closeClearConfirmDialog = () => setclearConfirmDialogOpen(false);
-
-    const confirmResetEverything = useCallback(() => {
-        dispatch(resetLabels());
-        dispatch(resetNotes());
-        dispatch(resetAll());
-        closeClearConfirmDialog();
-    }, []);
+    }, [property, propertyId]);
 
     const handleEdit = useCallback(
-        () =>
-            bodyRef.current &&
-            edit({ body: bodyRef.current, id: +propertyId! }).then(
-                redirectToView
-            ),
+        (body: IPropertiesPOST) =>
+            edit({ body, id: +propertyId! }).then(redirectToView),
         []
     );
 
@@ -82,14 +49,18 @@ const EditPropertyPage: NextPage = () => {
         []
     );
 
+    const resetEverything = () => setclearConfirmDialogOpen(true);
+    const closeClearConfirmDialog = () => setclearConfirmDialogOpen(false);
+
     return (
         <>
             <Form
-                key={propertyId as string} // (1)
+                property={property}
+                isLoading={isLoading}
                 isError={isError}
-                performEdit={handleEdit}
-                resetEverything={resetEverything}
-                handleCancel={redirectToView}
+                onSave={handleEdit}
+                onClear={resetEverything}
+                onCancel={redirectToView}
             />
 
             <ConfirmationDialogBox
@@ -97,7 +68,7 @@ const EditPropertyPage: NextPage = () => {
                 open={clearConfirmDialogOpen}
                 onClose={closeClearConfirmDialog}
                 text="Are you sure you want to clear all fields?"
-                onConfirm={confirmResetEverything}
+                onConfirm={closeClearConfirmDialog}
             />
         </>
     );

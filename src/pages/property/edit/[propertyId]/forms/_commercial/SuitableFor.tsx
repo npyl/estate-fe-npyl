@@ -5,7 +5,6 @@ import * as React from "react";
 import { Box } from "@mui/system";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useAllCustomersQuery } from "src/services/customers";
 import {
     selectCottage,
     selectDoctorsOffice,
@@ -22,11 +21,10 @@ import {
 import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 
 import { useState } from "react";
-import { useAllUsersQuery } from "src/services/user";
 import { useGlobals } from "src/hooks/useGlobals";
 import { useTranslation } from "react-i18next";
 
-const SuitableForForCommercialSection: React.FC<any> = (props) => {
+const SuitableFor: React.FC<any> = (props) => {
     const [rentalPeriodStart, setRentalPeriodStart] = useState<Date | null>(
         new Date()
     );
@@ -139,4 +137,4 @@ const SuitableForForCommercialSection: React.FC<any> = (props) => {
     );
 };
 
-export default SuitableForForCommercialSection;
+export default SuitableFor;

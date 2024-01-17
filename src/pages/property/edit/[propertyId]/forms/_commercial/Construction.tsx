@@ -35,7 +35,7 @@ import { useGlobals } from "src/hooks/useGlobals";
 import { useTranslation } from "react-i18next";
 import OnlyNumbersInput from "src/components/OnlyNumbers";
 
-const ConstructionForCommercialSection: React.FC<any> = (props) => {
+const Construction: React.FC<any> = (props) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
     const data = useGlobals();
@@ -313,4 +313,4 @@ const ConstructionForCommercialSection: React.FC<any> = (props) => {
         </Paper>
     );
 };
-export default ConstructionForCommercialSection;
+export default Construction;
