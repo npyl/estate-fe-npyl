@@ -1,13 +1,8 @@
-import { Grid, MenuItem } from "@mui/material";
+import { Grid } from "@mui/material";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import Panel from "src/components/Panel";
-import {
-    RHFCheckbox,
-    RHFOnlyNumbers,
-    RHFTextField,
-    Select,
-} from "src/components/hook-form";
+import { RHFCheckbox, RHFOnlyNumbers, Select } from "src/components/hook-form";
 import { useGlobals } from "src/hooks/useGlobals";
 import { IGlobalPropertyDetails } from "src/types/global";
 

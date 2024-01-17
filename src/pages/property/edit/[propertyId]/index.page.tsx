@@ -32,9 +32,6 @@ const EditPropertyPage: NextPage = () => {
                 id: (propertyId + "edit") as string,
                 label,
             });
-
-            // dispatch(setInitialNotesState(property.notes));
-            // dispatch(setInitialState({ property, id: +propertyId! }));
         }
     }, [property, propertyId]);
 

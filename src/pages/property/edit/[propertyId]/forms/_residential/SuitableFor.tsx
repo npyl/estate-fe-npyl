@@ -1,240 +1,59 @@
-import { Checkbox, Grid, Paper } from "@mui/material";
-import Typography from "@mui/material/Typography";
+import { Grid } from "@mui/material";
 import * as React from "react";
-
-import { Box } from "@mui/system";
-
-import { useDispatch, useSelector } from "react-redux";
-import { useAllCustomersQuery } from "src/services/customers";
-import {
-    selectCottage,
-    selectDoctorsOffice,
-    selectInvestment,
-    selectProfessionalUse,
-    selectRenovation,
-    selectStudent,
-    selectTouristRental,
-    setCottage,
-    setDoctorsOffice,
-    setInvestment,
-    setProfessionalUse,
-    setRenovation,
-    setStudent,
-    setTouristRental,
-} from "src/slices/property";
-
-import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
-
-import { useState } from "react";
-import { useAllUsersQuery } from "src/services/user";
-import { useGlobals } from "src/hooks/useGlobals";
 import { useTranslation } from "react-i18next";
+import Panel from "src/components/Panel";
+import { RHFCheckbox } from "src/components/hook-form";
 
-const SuitableForForResidentialSection: React.FC<any> = (props) => {
-    const dispatch = useDispatch();
+const SuitableFor: React.FC<any> = (props) => {
     const { t } = useTranslation();
 
-    const [rentalPeriodStart, setRentalPeriodStart] = useState<Date | null>(
-        new Date()
-    );
-
-    const data = useGlobals();
-    const enums: IGlobalProperty = data?.property as IGlobalProperty;
-    const details = enums?.details as IGlobalPropertyDetails;
-
-    const student = useSelector(selectStudent);
-
-    const cottage = useSelector(selectCottage);
-    const touristRental = useSelector(selectTouristRental);
-    const investment = useSelector(selectInvestment);
-    const doctorsOffice = useSelector(selectDoctorsOffice);
-    const professionalUse = useSelector(selectProfessionalUse);
-    const renovation = useSelector(selectRenovation);
-
-    // get list of owners & managers
-    const { data: owners } = useAllCustomersQuery();
-    const { data: managers } = useAllUsersQuery();
-    if (!enums) return null;
     return (
-        <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
-            <Box
-                sx={{
-                    px: 3,
-                    py: 1.5,
-                    display: "flex",
-                    justifyContent: "left",
-                }}
-            >
-                <Typography variant="h6">{t("Suitable For")}</Typography>
-            </Box>
+        <Panel label={t("Suitable For")}>
+            <Grid container spacing={2}>
+                <Grid item xs={3}>
+                    <RHFCheckbox
+                        name="suitableFor.renovation"
+                        label={t("Renovation")}
+                    />
+                </Grid>
 
-            <Grid item xs={12} padding={1}>
-                <Grid container spacing={2}>
-                    <Grid
-                        item
-                        xs={3}
-                        flexDirection="row"
-                        sx={{ display: "inline-flex", alignItems: "center" }}
-                    >
-                        <Checkbox
-                            value={student}
-                            checked={student}
-                            onChange={(
-                                event: React.ChangeEvent<unknown>,
-                                checked: boolean
-                            ) => {
-                                dispatch(setStudent(checked));
-                            }}
-                            sx={{ cursor: "default" }}
-                            color="primary"
-                            inputProps={{ "aria-label": "Student" }}
-                        />
-                        <Typography variant="body1" sx={{ ml: 0 }}>
-                            {t("Student")}
-                        </Typography>
-                    </Grid>
-                    <Grid
-                        item
-                        xs={3}
-                        flexDirection="row"
-                        sx={{ display: "inline-flex", alignItems: "center" }}
-                    >
-                        <Checkbox
-                            value={cottage}
-                            checked={cottage}
-                            onChange={(
-                                event: React.ChangeEvent<unknown>,
-                                checked: boolean
-                            ) => {
-                                dispatch(setCottage(checked));
-                            }}
-                            sx={{ cursor: "default" }}
-                            color="primary"
-                            inputProps={{ "aria-label": "Cottage" }}
-                        />
-                        <Typography variant="body1" sx={{ ml: 0 }}>
-                            {t("Cottage")}
-                        </Typography>
-                    </Grid>
-                    <Grid
-                        item
-                        xs={3}
-                        flexDirection="row"
-                        sx={{ display: "inline-flex", alignItems: "center" }}
-                    >
-                        <Checkbox
-                            value={renovation}
-                            checked={renovation}
-                            onChange={(
-                                event: React.ChangeEvent<unknown>,
-                                checked: boolean
-                            ) => {
-                                dispatch(setRenovation(checked));
-                            }}
-                            sx={{ cursor: "default" }}
-                            color="primary"
-                            inputProps={{ "aria-label": "Renovation" }}
-                        />
-                        <Typography variant="body1" sx={{ ml: 0 }}>
-                            {t("Renovation")}
-                        </Typography>
-                    </Grid>
-                    <Grid
-                        item
-                        xs={3}
-                        flexDirection="row"
-                        sx={{ display: "inline-flex", alignItems: "center" }}
-                    >
-                        <Checkbox
-                            value={investment}
-                            checked={investment}
-                            onChange={(
-                                event: React.ChangeEvent<unknown>,
-                                checked: boolean
-                            ) => {
-                                dispatch(setInvestment(checked));
-                            }}
-                            sx={{ cursor: "default" }}
-                            color="primary"
-                            inputProps={{ "aria-label": "Investment" }}
-                        />
-                        <Typography variant="body1" sx={{ ml: 0 }}>
-                            {t("Investment")}
-                        </Typography>
-                    </Grid>
-                    <Grid
-                        item
-                        xs={3}
-                        flexDirection="row"
-                        sx={{ display: "inline-flex", alignItems: "center" }}
-                    >
-                        <Checkbox
-                            value={touristRental}
-                            checked={touristRental}
-                            onChange={(
-                                event: React.ChangeEvent<unknown>,
-                                checked: boolean
-                            ) => {
-                                dispatch(setTouristRental(checked));
-                            }}
-                            sx={{ cursor: "default" }}
-                            color="primary"
-                            inputProps={{ "aria-label": "Tourist Rental" }}
-                        />
-                        <Typography variant="body1" sx={{ ml: 0 }}>
-                            {t("Tourist Rental")}
-                        </Typography>
-                    </Grid>
-                    <Grid
-                        item
-                        xs={3}
-                        flexDirection="row"
-                        sx={{ display: "inline-flex", alignItems: "center" }}
-                    >
-                        <Checkbox
-                            value={doctorsOffice}
-                            checked={doctorsOffice}
-                            onChange={(
-                                event: React.ChangeEvent<unknown>,
-                                checked: boolean
-                            ) => {
-                                dispatch(setDoctorsOffice(checked));
-                            }}
-                            sx={{ cursor: "default" }}
-                            color="primary"
-                            inputProps={{ "aria-label": "Doctors Office" }}
-                        />
-                        <Typography variant="body1" sx={{ ml: 0 }}>
-                            {t("Doctor's Office")}
-                        </Typography>
-                    </Grid>
-                    <Grid
-                        item
-                        xs={3}
-                        flexDirection="row"
-                        sx={{ display: "inline-flex", alignItems: "center" }}
-                    >
-                        <Checkbox
-                            value={professionalUse}
-                            checked={professionalUse}
-                            onChange={(
-                                event: React.ChangeEvent<unknown>,
-                                checked: boolean
-                            ) => {
-                                dispatch(setProfessionalUse(checked));
-                            }}
-                            sx={{ cursor: "default" }}
-                            color="primary"
-                            inputProps={{ "aria-label": " Professional Use" }}
-                        />
-                        <Typography variant="body1" sx={{ ml: 0 }}>
-                            {t("Professional Use")}
-                        </Typography>
-                    </Grid>
+                <Grid item xs={3}>
+                    <RHFCheckbox
+                        name="suitableFor.investment"
+                        label={t("Investment")}
+                    />
+                </Grid>
+
+                <Grid item xs={3}>
+                    <RHFCheckbox
+                        name="suitableFor.doctorsOffice"
+                        label={t("Doctor's Office")}
+                    />
+                </Grid>
+
+                <Grid item xs={3}>
+                    <RHFCheckbox
+                        name="suitableFor.cottage"
+                        label={t("Cottage")}
+                    />
+                </Grid>
+
+                <Grid item xs={3}>
+                    <RHFCheckbox
+                        name="suitableFor.touristRental"
+                        label={t("Tourist Rental")}
+                    />
+                </Grid>
+
+                <Grid item xs={3}>
+                    <RHFCheckbox
+                        name="suitableFor.professionalUse"
+                        label={t("Professional use")}
+                    />
                 </Grid>
             </Grid>
-        </Paper>
+        </Panel>
     );
 };
 
-export default SuitableForForResidentialSection;
+export default SuitableFor;
