@@ -5,13 +5,11 @@ import { Box } from "@mui/system";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-
 import { useDispatch } from "react-redux";
 import {
     selectAccessForDisable,
     selectAdaptingToTheGround,
     selectAlarmSystem,
-    selectBright,
     selectCctv,
     selectCorner,
     selectFacade,
@@ -47,11 +45,11 @@ import {
 const Features: React.FC<any> = (props) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
+
     const accessForDisable = useSelector(selectAccessForDisable);
     const pool = useSelector(selectPool);
     const internet = useSelector(selectInternet);
     const quietArea = useSelector(selectQuietArea);
-    const bright = useSelector(selectBright);
     const soundInsulation = useSelector(selectSoundInsulation);
     const has24HoursSecurity = useSelector(selectHas24HoursSecurity);
     const alarmSystem = useSelector(selectAlarmSystem);
