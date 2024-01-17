@@ -1,16 +1,7 @@
-import {
-    Grid,
-    MenuItem,
-    TextField,
-    Autocomplete as MuiAutocomplete,
-} from "@mui/material";
-
+import { Grid, MenuItem } from "@mui/material";
 import * as React from "react";
-
-import { useAllCustomersQuery } from "src/services/customers";
-
 import { useRouter } from "next/router";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { LabelCreate } from "src/components/label";
 import { useGlobals } from "src/hooks/useGlobals";
@@ -32,6 +23,7 @@ import {
 } from "src/components/hook-form";
 
 import { useFormContext } from "react-hook-form";
+import Autocomplete from "../components/Autocomplete";
 
 const useEnums = () => {
     const data = useGlobals();
@@ -45,44 +37,6 @@ const useEnums = () => {
     );
 
     return enums;
-};
-
-const Autocomplete = () => {
-    const { watch, setValue } = useFormContext();
-
-    const { data: owners } = useAllCustomersQuery();
-
-    const owner = watch("ownerId");
-
-    const ownerNames = useMemo(
-        () =>
-            owners
-                ?.filter(({ seller, lessor }) => seller || lessor)
-                .map(({ firstName, lastName, id }) => ({
-                    label: `${firstName} ${lastName}`,
-                    value: id,
-                })) || [],
-        [owners]
-    );
-
-    const handleChange = useCallback(
-        (e: any, v: any | null) => setValue("ownerId", v.value),
-        []
-    );
-
-    return (
-        <MuiAutocomplete
-            disablePortal
-            options={ownerNames}
-            value={{
-                label:
-                    ownerNames.find((i) => i.value == owner)?.label ?? "Owner",
-                value: owner,
-            }}
-            onChange={handleChange}
-            renderInput={(params) => <TextField {...params} label="Owner" />}
-        />
-    );
 };
 
 const BasicSection: React.FC<any> = () => {
