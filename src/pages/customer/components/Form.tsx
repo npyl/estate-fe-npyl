@@ -8,15 +8,16 @@ import CustomerInformation from "./CustomerInformation";
 import NotesSection from "./Notes";
 import DemandSection from "./Demand";
 
+import { useCallback, useMemo } from "react";
+import { LoadingButton } from "@mui/lab";
+import { demandMapper } from "src/mappers/demand";
+import { ICustomer, ICustomerPOST } from "src/types/customer";
+
 // Forms
 import FormProvider from "src/components/hook-form";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import { ICustomer, ICustomerPOST } from "src/types/customer";
-import { useCallback, useEffect, useMemo } from "react";
-import { LoadingButton } from "@mui/lab";
-import { demandMapper } from "src/mappers/demand";
 
 interface ICustomerLocationYup {
     street: string;
