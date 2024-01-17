@@ -25,11 +25,22 @@ interface IFormProps {
 }
 
 // required fields
-interface IPropertyYup extends Partial<IProperties> {}
+interface IPropertyYup extends Partial<IPropertiesPOST> {
+    code: string;
+    state: string;
+}
 
-const LoginSchema = Yup.object().shape({});
+const LoginSchema = Yup.object().shape({
+    code: Yup.string().required(),
+    state: Yup.string().required(),
+});
 
-const getDefaultValues = (property?: IProperties): IPropertyYup => ({});
+const getDefaultValues = (property?: IProperties): IPropertyYup => ({
+    code: "",
+    state: "",
+
+    parentCategory: property?.parentCategory.key || "",
+});
 
 const usePropertyForm = (property?: IProperties) => {
     const defaultValues = useMemo(() => getDefaultValues(property), [property]);

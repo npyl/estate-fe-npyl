@@ -25,7 +25,7 @@ import { IUser } from "src/types/user";
 import { KeyValue } from "src/types/KeyValue";
 import { useFormContext } from "react-hook-form";
 import RHFDatePicker from "src/components/hook-form/RHFDatePicker";
-import Select from "./components/Select";
+import Select from "../../../components/hook-form/Select";
 
 const Rating = () => {
     const { t } = useTranslation();

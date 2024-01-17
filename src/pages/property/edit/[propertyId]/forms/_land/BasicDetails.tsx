@@ -253,12 +253,7 @@ const BasicForLandSection: React.FC<any> = () => {
             <Grid item xs={12} padding={1}>
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
-                        <CodeField
-                            code={code}
-                            onChange={(event) =>
-                                dispatch(setCode(event.target.value))
-                            }
-                        />
+                        <CodeField />
                     </Grid>
                     <Grid item xs={6}>
                         <TextField
@@ -379,12 +374,7 @@ const BasicForLandSection: React.FC<any> = () => {
                     </Grid>
 
                     <Grid item xs={6}>
-                        <KeyCodeField
-                            keyCode={keyCode}
-                            onChange={(event) =>
-                                dispatch(setKeyCode(event.target.value))
-                            }
-                        />
+                        <KeyCodeField />
                     </Grid>
 
                     <Grid item xs={6}>

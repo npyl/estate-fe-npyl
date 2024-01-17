@@ -1,16 +1,17 @@
 import { TextField, TextFieldProps } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
+import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { RHFTextField } from "src/components/hook-form";
 import { useLazyCheckKeyCodeExistsQuery } from "src/services/properties";
 
-export interface KeyCodeFieldProps extends Omit<TextFieldProps, "label"> {
-    keyCode: string;
-}
+export interface KeyCodeFieldProps extends Omit<TextFieldProps, "label"> {}
 
 export const KeyCodeField = (props: KeyCodeFieldProps) => {
-    const { keyCode, onChange, ...rest } = props;
-
     const { t } = useTranslation();
+    const { watch } = useFormContext();
+
+    const keyCode = watch("keyCode");
 
     const [initialKeyCode] = useState(keyCode);
     const [error, setError] = useState("");
@@ -34,14 +35,13 @@ export const KeyCodeField = (props: KeyCodeFieldProps) => {
     }, [keyCode]);
 
     return (
-        <TextField
+        <RHFTextField
             fullWidth
+            name="keyCode"
             label={t("Key Code")}
-            value={keyCode}
-            onChange={onChange}
             error={!!error}
             helperText={error}
-            {...rest}
+            {...props}
         />
     );
 };

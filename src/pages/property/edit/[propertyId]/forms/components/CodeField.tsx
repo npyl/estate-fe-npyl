@@ -1,16 +1,17 @@
-import { TextField, TextFieldProps } from "@mui/material";
-import { useEffect, useMemo, useState } from "react";
+import { TextFieldProps } from "@mui/material";
+import { useEffect, useState } from "react";
+import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { RHFTextField } from "src/components/hook-form";
 import { useLazyCheckCodeExistsQuery } from "src/services/properties";
 
-export interface CodeFieldProps extends Omit<TextFieldProps, "label"> {
-    code: string;
-}
+export interface CodeFieldProps extends Omit<TextFieldProps, "label"> {}
 
 export const CodeField = (props: CodeFieldProps) => {
-    const { code, onChange, ...rest } = props;
-
     const { t } = useTranslation();
+    const { watch } = useFormContext();
+
+    const code = watch("code");
 
     const [initialCode] = useState(code);
     const [error, setError] = useState("");
@@ -34,14 +35,13 @@ export const CodeField = (props: CodeFieldProps) => {
     }, [code]);
 
     return (
-        <TextField
+        <RHFTextField
             fullWidth
+            name="code"
             label={t("Code")}
-            value={code}
-            onChange={onChange}
             error={!!error}
             helperText={error}
-            {...rest}
+            {...props}
         />
     );
 };
