@@ -3,33 +3,12 @@ import * as React from "react";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Panel from "src/components/Panel";
-import { RHFCheckbox } from "src/components/hook-form";
 import { TranslationType } from "src/types/translation";
-
-interface ICheckboxItemProps {
-    label: string;
-    value: string;
-    variant?: "features" | "technicalFeatures";
-}
-
-const CheckboxItem = ({
-    value,
-    label,
-    variant = "features",
-}: ICheckboxItemProps) => {
-    const name = useMemo(() => `${variant}.${value}`, [variant, value]);
-
-    return (
-        <Grid item xs={3}>
-            <RHFCheckbox name={name} label={label} />
-        </Grid>
-    );
-};
+import CheckboxItem from "../components/CheckboxItem";
 
 interface Feature {
     value: string;
     label: string;
-    variant?: "features" | "technicalFeatures";
 }
 
 const getFEATURES = (t: TranslationType): Feature[] => [
@@ -100,7 +79,7 @@ const getFEATURES = (t: TranslationType): Feature[] => [
     },
 ];
 
-const Features: React.FC<any> = (props) => {
+const Features: React.FC = () => {
     const { t } = useTranslation();
 
     const FEATURES = useMemo(() => getFEATURES(t), [t]);
@@ -115,4 +94,5 @@ const Features: React.FC<any> = (props) => {
         </Panel>
     );
 };
+
 export default Features;
