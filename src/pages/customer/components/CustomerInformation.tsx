@@ -80,7 +80,7 @@ const getFIELDS = (
     <FormControl fullWidth variant="outlined">
         <InputLabel>{t("Managed By")}</InputLabel>
         <RHFSelect name="managedBy" label={t("Managed By")}>
-            <MenuItem value={-1}>{t("Not selected")}</MenuItem>
+            <MenuItem value="">{t("Not selected")}</MenuItem>
             {managers?.map(({ id, firstName, lastName }, i) => (
                 <MenuItem key={i} value={id}>
                     {`${firstName} ${lastName}`}
