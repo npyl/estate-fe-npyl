@@ -1,78 +1,72 @@
-import { Grid, MenuItem } from "@mui/material";
+import { Grid } from "@mui/material";
 import * as React from "react";
 import { IGlobalPropertyDetails } from "src/types/global";
 import { useGlobals } from "src/hooks/useGlobals";
 import { useTranslation } from "react-i18next";
 import Panel from "src/components/Panel";
-import { RHFCheckbox, RHFTextField } from "src/components/hook-form";
+import { RHFCheckbox, Select } from "src/components/hook-form";
+import { useMemo } from "react";
 
-const HeatingAndEnergy: React.FC<any> = (props) => {
-    const { t } = useTranslation();
-
+const useEnums = () => {
     const data = useGlobals();
-    const details = data?.property?.details as IGlobalPropertyDetails;
+    const details = useMemo(
+        () => data?.property?.details as IGlobalPropertyDetails,
+        [data]
+    );
+    const enums = useMemo(
+        () => ({
+            heatingType: details?.heatingType || [],
+            energyClass: details?.energyClass || [],
+            heatingSystem: details?.heatingSystem || [],
+            electricityType: details?.electricityType || [],
+        }),
+        [details]
+    );
+    return enums;
+};
+
+const HeatingAndEnergy: React.FC = () => {
+    const { t } = useTranslation();
+    const { heatingType, energyClass, heatingSystem, electricityType } =
+        useEnums();
 
     return (
         <Panel label={t("Heating and Energy")}>
             <Grid container spacing={2}>
                 <Grid item xs={6}>
-                    <RHFTextField
+                    <Select
                         fullWidth
-                        select
                         label={t("Heating Type")}
                         name="heatingAndEnergy.heatingType"
-                    >
-                        {details?.heatingType?.map(({ key, value }) => (
-                            <MenuItem key={key} value={key}>
-                                {value}
-                            </MenuItem>
-                        ))}
-                    </RHFTextField>
+                        options={heatingType}
+                    />
                 </Grid>
 
                 <Grid item xs={6}>
-                    <RHFTextField
+                    <Select
                         fullWidth
-                        select
                         label={t("Energy Class")}
                         name="heatingAndEnergy.energyClass"
-                    >
-                        {details?.energyClass?.map(({ key, value }) => (
-                            <MenuItem key={key} value={key}>
-                                {value}
-                            </MenuItem>
-                        ))}
-                    </RHFTextField>
+                        options={energyClass}
+                    />
                 </Grid>
 
                 <Grid item xs={6}>
-                    <RHFTextField
+                    <Select
                         fullWidth
-                        select
                         label={t("Heating System")}
                         name="heatingAndEnergy.heatingSystem"
-                    >
-                        {details?.heatingSystem?.map(({ key, value }) => (
-                            <MenuItem key={key} value={key}>
-                                {value}
-                            </MenuItem>
-                        ))}
-                    </RHFTextField>
+                        options={heatingSystem}
+                    />
                 </Grid>
 
                 <Grid item xs={6}>
-                    <RHFTextField
+                    <Select
                         fullWidth
-                        select
                         label={t("Electricity Type")}
                         name="heatingAndEnergy.electricityType"
-                    >
-                        {details?.electricityType?.map(({ key, value }) => (
-                            <MenuItem key={key} value={key}>
-                                {value}
-                            </MenuItem>
-                        ))}
-                    </RHFTextField>
+                        options={electricityType}
+                    />
                 </Grid>
 
                 <Grid item xs={3}>

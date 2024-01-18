@@ -1,17 +1,34 @@
 import { Grid } from "@mui/material";
 import * as React from "react";
-import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
+import { IGlobalPropertyDetails } from "src/types/global";
 import { useGlobals } from "src/hooks/useGlobals";
 import { useTranslation } from "react-i18next";
 import Panel from "src/components/Panel";
 import { RHFCheckbox, Select } from "src/components/hook-form";
+import { useMemo } from "react";
 
-const HeatingAndEnergySection: React.FC = () => {
-    const { t } = useTranslation();
-
+const useEnums = () => {
     const data = useGlobals();
-    const enums: IGlobalProperty = data?.property as IGlobalProperty;
-    const details = enums?.details as IGlobalPropertyDetails;
+    const details = useMemo(
+        () => data?.property?.details as IGlobalPropertyDetails,
+        [data]
+    );
+    const enums = useMemo(
+        () => ({
+            heatingType: details?.heatingType || [],
+            energyClass: details?.energyClass || [],
+            heatingSystem: details?.heatingSystem || [],
+            electricityType: details?.electricityType || [],
+        }),
+        [details]
+    );
+    return enums;
+};
+
+const HeatingAndEnergy: React.FC = () => {
+    const { t } = useTranslation();
+    const { heatingType, energyClass, heatingSystem, electricityType } =
+        useEnums();
 
     return (
         <Panel label={t("Heating and Energy")}>
@@ -20,7 +37,7 @@ const HeatingAndEnergySection: React.FC = () => {
                     <Select
                         label={t("Heating Type")}
                         name="heatingAndEnergy.heatingType"
-                        options={details?.heatingType}
+                        options={heatingType}
                     />
                 </Grid>
 
@@ -28,7 +45,7 @@ const HeatingAndEnergySection: React.FC = () => {
                     <Select
                         label={t("Energy Class")}
                         name="heatingAndEnergy.energyClass"
-                        options={details?.energyClass}
+                        options={energyClass}
                     />
                 </Grid>
 
@@ -36,7 +53,7 @@ const HeatingAndEnergySection: React.FC = () => {
                     <Select
                         label={t("Heating System")}
                         name="heatingAndEnergy.heatingSystem"
-                        options={details?.heatingSystem}
+                        options={heatingSystem}
                     />
                 </Grid>
 
@@ -44,7 +61,7 @@ const HeatingAndEnergySection: React.FC = () => {
                     <Select
                         label={t("Electricity Type")}
                         name="heatingAndEnergy.electricityType"
-                        options={details?.electricityType}
+                        options={electricityType}
                     />
                 </Grid>
 
@@ -79,4 +96,4 @@ const HeatingAndEnergySection: React.FC = () => {
         </Panel>
     );
 };
-export default HeatingAndEnergySection;
+export default HeatingAndEnergy;
