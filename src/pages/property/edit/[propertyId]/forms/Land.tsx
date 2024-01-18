@@ -1,0 +1,59 @@
+import { Grid, Stack } from "@mui/material";
+import * as React from "react";
+
+import {
+    BasicDetails,
+    Description,
+    Features,
+    SuitableFor,
+    TechnicalFeaturesAndInterior,
+} from "./_land";
+
+import {
+    Distances,
+    Blueprints,
+    Images,
+    VideoLink,
+    Notes,
+    Documents,
+    ROI,
+    DescriptionEditor,
+} from "./_general";
+
+import LocationSection from "src/components/Location/Location";
+import { useFormContext } from "react-hook-form";
+
+const LandFormSection: React.FC<any> = () => {
+    const { watch } = useFormContext();
+    const state = watch("state");
+
+    return (
+        <>
+            <Grid container paddingTop={1} spacing={1}>
+                <Grid item xs={6} order={"row"}>
+                    <Stack spacing={1}>
+                        <BasicDetails />
+                        {state === "Sale" && <ROI />}
+                        <TechnicalFeaturesAndInterior />
+                        <Description />
+                        <Features />
+                        <Blueprints />
+                        <Documents />
+                        <VideoLink />
+                        <Notes />
+                    </Stack>
+                </Grid>
+                <Grid item xs={6}>
+                    <Stack spacing={1}>
+                        <Images />
+                        <LocationSection />
+                        <SuitableFor />
+                        <Distances />
+                        <DescriptionEditor />
+                    </Stack>
+                </Grid>
+            </Grid>
+        </>
+    );
+};
+export default LandFormSection;

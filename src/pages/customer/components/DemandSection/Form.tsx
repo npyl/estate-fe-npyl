@@ -11,7 +11,7 @@ import { IDemandFiltersPOST, IDemandPOST } from "src/types/demand";
 import { useFormContext } from "react-hook-form";
 import { TranslationType } from "src/types/translation";
 
-import Select from "../components/Select";
+import Select from "../../../../components/hook-form/Select";
 import MultiSelect from "./components/MultiSelect";
 import DemandAutocomplete from "./Autocomplete";
 

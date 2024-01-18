@@ -31,7 +31,7 @@ const Panel = ({ label, endNode, children }: PanelProps) => {
                 <Typography variant="h6">{t(label)}</Typography>
                 {endNode}
             </Box>
-            {children}
+            <Box px={1.5}>{children}</Box>
         </Paper>
     );
 };

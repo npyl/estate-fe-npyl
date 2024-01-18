@@ -34,10 +34,6 @@ const EditCustomer: NextPage = () => {
                 id: (customerId + "edit") as string,
                 label,
             });
-
-            // TODO: ...
-            // dispatch(setInitialNotesState(data.notes));
-            // dispatch(setInitialCustomerState(data));
         }
     }, [customer, customerId]);
 

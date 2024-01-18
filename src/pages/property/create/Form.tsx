@@ -21,14 +21,19 @@ import { Send as SendIcon } from "@mui/icons-material";
 import { useTranslation } from "react-i18next";
 import { KeyValue } from "src/types/KeyValue";
 import { useCallback, useMemo, useState } from "react";
-import { SaveButton } from "src/components/Button/Save";
+import { LoadingButton } from "@mui/lab";
 
 interface IFormProps {
+    isLoading: boolean;
     isError: boolean;
     performCreate: (parentCategory: string, category: string) => void;
 }
 
-export default function Form({ isError, performCreate }: IFormProps) {
+export default function Form({
+    isLoading,
+    isError,
+    performCreate,
+}: IFormProps) {
     const { t } = useTranslation();
 
     const [category, setCategory] = useState("");
@@ -172,15 +177,14 @@ export default function Form({ isError, performCreate }: IFormProps) {
                         justifyContent="center"
                         marginTop={3}
                     >
-                        <SaveButton
-                            error={isError}
-                            loadingPosition="start"
+                        <LoadingButton
+                            loading={isLoading && !isError}
                             variant="contained"
                             startIcon={<SendIcon />}
                             onClick={handleSave}
                         >
                             {t("Save")}
-                        </SaveButton>
+                        </LoadingButton>
                     </Grid>
                 </Grid>
             </Stack>

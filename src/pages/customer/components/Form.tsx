@@ -8,15 +8,16 @@ import CustomerInformation from "./CustomerInformation";
 import NotesSection from "./Notes";
 import DemandSection from "./Demand";
 
+import { useCallback, useMemo } from "react";
+import { LoadingButton } from "@mui/lab";
+import { demandMapper } from "src/mappers/demand";
+import { ICustomer, ICustomerPOST } from "src/types/customer";
+
 // Forms
 import FormProvider from "src/components/hook-form";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import { ICustomer, ICustomerPOST } from "src/types/customer";
-import { useCallback, useEffect, useMemo } from "react";
-import { LoadingButton } from "@mui/lab";
-import { demandMapper } from "src/mappers/demand";
 
 interface ICustomerLocationYup {
     street: string;
@@ -25,17 +26,12 @@ interface ICustomerLocationYup {
 }
 
 // required fields
-interface ICustomerYup extends Partial<Omit<ICustomerPOST, "location">> {
+interface ICustomerYup
+    extends Partial<Omit<ICustomerPOST, "location" | "managedBy">> {
     firstName: string;
     lastName: string;
-    email: string;
-    managedBy: number;
-    mobilePhone: string;
-    location: ICustomerLocationYup;
-
-    nationality: string;
-    preferredLanguage: string;
-    leadSource: string;
+    managedBy?: string | number;
+    location?: ICustomerLocationYup;
 }
 
 interface FormProps {
@@ -47,33 +43,16 @@ interface FormProps {
 }
 
 const LoginSchema = Yup.object().shape({
-    // Customer Information
     firstName: Yup.string().required("Enter First Name"),
     lastName: Yup.string().required("Enter Last Name"),
-    email: Yup.string()
-        .required("Email is required")
-        .email("Email must be a valid email address"),
-    managedBy: Yup.number().positive("Please select a manager").required(),
-    mobilePhone: Yup.string().required("Please enter Mobile Phone"),
-
-    // TODO: see if we can get these to be optional
-    nationality: Yup.string().required(),
-    preferredLanguage: Yup.string().required(),
-    leadSource: Yup.string().required(),
-
-    // Address
-    location: Yup.object().shape({
-        street: Yup.string().required("Street is required"),
-        number: Yup.string().required("Number is required"),
-        city: Yup.string().required("City is required"),
-    }),
+    email: Yup.string().email("Email must be a valid email address").optional(),
 });
 
 const getDefaultValues = (customer?: ICustomer): ICustomerYup => ({
     firstName: customer?.firstName || "",
     lastName: customer?.lastName || "",
     email: customer?.email || "",
-    managedBy: customer?.managedBy.id || -1,
+    managedBy: customer?.managedBy.id || "",
     mobilePhone: customer?.mobilePhone || "",
 
     location: {
@@ -133,7 +112,14 @@ const Form = ({
 
     const onSubmit = handleSubmit((data) => {
         try {
-            onSave(data as ICustomerPOST);
+            onSave({
+                ...(data as ICustomerPOST),
+                // TODO: see if this can be done cleaner (and change managedBy to just ?: number)
+                managedBy: (data?.managedBy as number) || undefined,
+                nationality: data?.nationality || undefined,
+                preferredLanguage: data?.preferredLanguage || undefined,
+                leadSource: data?.leadSource || undefined,
+            });
             console.log("here!: ", data);
         } catch (error) {
             console.error(error);

@@ -577,216 +577,216 @@ const slice = createSlice({
     },
 });
 
-export const {
-    toggleLeaser,
-    toggleLessor,
-    toggleSeller,
-    toggleBuyer,
-    //demands
-    removeDemands,
+// export const {
+//     toggleLeaser,
+//     toggleLessor,
+//     toggleSeller,
+//     toggleBuyer,
+//     //demands
+//     removeDemands,
 
-    setDemands,
-    addDemand,
+//     setDemands,
+//     addDemand,
 
-    setId,
-    setManagedBy,
-    setSuggestedBy,
-    setFirstName,
-    setLastName,
-    setEmail,
-    setMobilePhone,
-    setHomePhone,
-    setStatus,
-    setFax,
-    setNationality,
-    setIdNumber,
-    setPassportNumber,
-    setDateOfBirth,
-    setLeadSource,
-    setPreferredLanguage,
+//     setId,
+//     setManagedBy,
+//     setSuggestedBy,
+//     setFirstName,
+//     setLastName,
+//     setEmail,
+//     setMobilePhone,
+//     setHomePhone,
+//     setStatus,
+//     setFax,
+//     setNationality,
+//     setIdNumber,
+//     setPassportNumber,
+//     setDateOfBirth,
+//     setLeadSource,
+//     setPreferredLanguage,
 
-    // labels
-    addLabelID,
-    removeLabel,
+//     // labels
+//     addLabelID,
+//     removeLabel,
 
-    // location
-    setStreet,
-    setNumber,
-    setComplex,
-    setCity,
-    setZipCode,
-    setRegion,
-    setCountry,
-    setLatitude,
-    setLongitude,
+//     // location
+//     setStreet,
+//     setNumber,
+//     setComplex,
+//     setCity,
+//     setZipCode,
+//     setRegion,
+//     setCountry,
+//     setLatitude,
+//     setLongitude,
 
-    // demand
-    setMinBedrooms,
-    setMaxBedrooms,
-    setMinBathrooms,
-    setMaxBathrooms,
-    setFurnished,
-    setMaxCovered,
-    setMinCovered,
-    setMinPlot,
-    setMaxPlot,
-    setMinYearOfConstruction,
-    setMaxYearOfConstruction,
-    setMinFloor,
-    setMaxFloor,
-    setParentCategory,
-    setCategory,
-    setState,
-    setMinPrice,
-    setMaxPrice,
-    setDemandLabels,
-    setTimeFrame,
-    setShapes,
-    addShape,
+//     // demand
+//     setMinBedrooms,
+//     setMaxBedrooms,
+//     setMinBathrooms,
+//     setMaxBathrooms,
+//     setFurnished,
+//     setMaxCovered,
+//     setMinCovered,
+//     setMinPlot,
+//     setMaxPlot,
+//     setMinYearOfConstruction,
+//     setMaxYearOfConstruction,
+//     setMinFloor,
+//     setMaxFloor,
+//     setParentCategory,
+//     setCategory,
+//     setState,
+//     setMinPrice,
+//     setMaxPrice,
+//     setDemandLabels,
+//     setTimeFrame,
+//     setShapes,
+//     addShape,
 
-    //Demand Location
-    setDemandComplexes,
-    setDemandCities,
-    setDemandRegions,
+//     //Demand Location
+//     setDemandComplexes,
+//     setDemandCities,
+//     setDemandRegions,
 
-    // priority features
-    setPriorityFeature,
+//     // priority features
+//     setPriorityFeature,
 
-    setInitialState,
-    clearDemands,
-    resetState,
-} = slice.actions;
+//     setInitialState,
+//     clearDemands,
+//     resetState,
+// } = slice.actions;
 
-export const selectAll = ({ customer }: RootState) => customer;
+// export const selectAll = ({ customer }: RootState) => customer;
 
-export const selectLeaser = ({ customer }: RootState) => customer.leaser;
-export const selectLessor = ({ customer }: RootState) => customer.lessor;
-export const selectSeller = ({ customer }: RootState) => customer.seller;
-export const selectBuyer = ({ customer }: RootState) => customer.buyer;
+// export const selectLeaser = ({ customer }: RootState) => customer.leaser;
+// export const selectLessor = ({ customer }: RootState) => customer.lessor;
+// export const selectSeller = ({ customer }: RootState) => customer.seller;
+// export const selectBuyer = ({ customer }: RootState) => customer.buyer;
 
-export const selectFirstName = ({ customer }: RootState) => customer.firstName;
-export const selectLastName = ({ customer }: RootState) => customer.lastName;
-export const selectEmail = ({ customer }: RootState) => customer.email;
-export const selectMobilePhone = ({ customer }: RootState) =>
-    customer.mobilePhone;
-export const selectHomePhone = ({ customer }: RootState) => customer.homePhone;
-export const selectManagedBy = ({ customer }: RootState) => customer.managedBy;
-export const selectStatus = ({ customer }: RootState) => customer.status;
-export const selectFax = ({ customer }: RootState) => customer.fax;
-export const selectNationality = ({ customer }: RootState) =>
-    customer.nationality;
-export const selectIdNumber = ({ customer }: RootState) => customer.idNumber;
-export const selectPassportNumber = ({ customer }: RootState) =>
-    customer.passportNumber;
-export const selectDateOfBirth = ({ customer }: RootState) =>
-    customer.dateOfBirth;
-export const selectLeadSource = ({ customer }: RootState) =>
-    customer.leadSource;
-export const selectPreferredLanguage = ({ customer }: RootState) =>
-    customer.preferredLanguage;
-export const selectSuggestedBy = ({ customer }: RootState) =>
-    customer.suggestedBy;
-export const selectLocation = ({ customer }: RootState) => customer.location;
-export const selectOwnedProperties = ({ customer }: RootState) =>
-    customer.ownedProperties;
-export const selectLabelIDs = ({ customer }: RootState) => customer.labelIDs;
-export const selectDemands = ({ customer }: RootState) => customer.demands;
+// export const selectFirstName = ({ customer }: RootState) => customer.firstName;
+// export const selectLastName = ({ customer }: RootState) => customer.lastName;
+// export const selectEmail = ({ customer }: RootState) => customer.email;
+// export const selectMobilePhone = ({ customer }: RootState) =>
+//     customer.mobilePhone;
+// export const selectHomePhone = ({ customer }: RootState) => customer.homePhone;
+// export const selectManagedBy = ({ customer }: RootState) => customer.managedBy;
+// export const selectStatus = ({ customer }: RootState) => customer.status;
+// export const selectFax = ({ customer }: RootState) => customer.fax;
+// export const selectNationality = ({ customer }: RootState) =>
+//     customer.nationality;
+// export const selectIdNumber = ({ customer }: RootState) => customer.idNumber;
+// export const selectPassportNumber = ({ customer }: RootState) =>
+//     customer.passportNumber;
+// export const selectDateOfBirth = ({ customer }: RootState) =>
+//     customer.dateOfBirth;
+// export const selectLeadSource = ({ customer }: RootState) =>
+//     customer.leadSource;
+// export const selectPreferredLanguage = ({ customer }: RootState) =>
+//     customer.preferredLanguage;
+// export const selectSuggestedBy = ({ customer }: RootState) =>
+//     customer.suggestedBy;
+// export const selectLocation = ({ customer }: RootState) => customer.location;
+// export const selectOwnedProperties = ({ customer }: RootState) =>
+//     customer.ownedProperties;
+// export const selectLabelIDs = ({ customer }: RootState) => customer.labelIDs;
+// export const selectDemands = ({ customer }: RootState) => customer.demands;
 
-// Location
-export const selectStreet = ({ customer }: RootState) =>
-    customer.location.street;
-export const selectNumber = ({ customer }: RootState) =>
-    customer.location.number;
-export const selectComplex = ({ customer }: RootState) =>
-    customer.location.complex;
-export const selectCity = ({ customer }: RootState) => customer.location.city;
-export const selectZipCode = ({ customer }: RootState) =>
-    customer.location.zipCode;
-export const selectRegion = ({ customer }: RootState) =>
-    customer.location.region;
-export const selectCountry = ({ customer }: RootState) =>
-    customer.location.country;
-export const selectLatitude = ({ customer }: RootState) =>
-    customer.location.lat;
-export const selectLongitude = ({ customer }: RootState) =>
-    customer.location.lng;
+// // Location
+// export const selectStreet = ({ customer }: RootState) =>
+//     customer.location.street;
+// export const selectNumber = ({ customer }: RootState) =>
+//     customer.location.number;
+// export const selectComplex = ({ customer }: RootState) =>
+//     customer.location.complex;
+// export const selectCity = ({ customer }: RootState) => customer.location.city;
+// export const selectZipCode = ({ customer }: RootState) =>
+//     customer.location.zipCode;
+// export const selectRegion = ({ customer }: RootState) =>
+//     customer.location.region;
+// export const selectCountry = ({ customer }: RootState) =>
+//     customer.location.country;
+// export const selectLatitude = ({ customer }: RootState) =>
+//     customer.location.lat;
+// export const selectLongitude = ({ customer }: RootState) =>
+//     customer.location.lng;
 
-// Priority Features
-export const selectPriorityFeatures = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.priorityFeatures);
+// // Priority Features
+// export const selectPriorityFeatures = ({ customer }: RootState) =>
+//     customer.demands.map((d) => d.priorityFeatures);
 
-export const selectMinBedrooms = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters?.minBedrooms);
+// export const selectMinBedrooms = ({ customer }: RootState) =>
+//     customer.demands.map((d) => d.filters?.minBedrooms);
 
-export const selectMaxBedrooms = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters?.maxBedrooms);
+// export const selectMaxBedrooms = ({ customer }: RootState) =>
+//     customer.demands.map((d) => d.filters?.maxBedrooms);
 
-export const selectMinBathrooms = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters?.minBathrooms);
+// export const selectMinBathrooms = ({ customer }: RootState) =>
+//     customer.demands.map((d) => d.filters?.minBathrooms);
 
-export const selectMaxBathrooms = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters?.maxBathrooms);
+// export const selectMaxBathrooms = ({ customer }: RootState) =>
+//     customer.demands.map((d) => d.filters?.maxBathrooms);
 
-export const selectFurnished = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters?.furnished);
+// export const selectFurnished = ({ customer }: RootState) =>
+//     customer.demands.map((d) => d.filters?.furnished);
 
-export const selectMaxCovered = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters?.maxCovered);
+// export const selectMaxCovered = ({ customer }: RootState) =>
+//     customer.demands.map((d) => d.filters?.maxCovered);
 
-export const selectMinCovered = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters?.minCovered);
+// export const selectMinCovered = ({ customer }: RootState) =>
+//     customer.demands.map((d) => d.filters?.minCovered);
 
-export const selectMinPlot = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters?.minPlot);
+// export const selectMinPlot = ({ customer }: RootState) =>
+//     customer.demands.map((d) => d.filters?.minPlot);
 
-export const selectMaxPlot = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters?.maxPlot);
+// export const selectMaxPlot = ({ customer }: RootState) =>
+//     customer.demands.map((d) => d.filters?.maxPlot);
 
-export const selectMinYearOfConstruction = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters?.minYearOfConstruction);
+// export const selectMinYearOfConstruction = ({ customer }: RootState) =>
+//     customer.demands.map((d) => d.filters?.minYearOfConstruction);
 
-export const selectMaxYearOfConstruction = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters?.maxYearOfConstruction);
+// export const selectMaxYearOfConstruction = ({ customer }: RootState) =>
+//     customer.demands.map((d) => d.filters?.maxYearOfConstruction);
 
-export const selectMinFloor = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters?.minFloor);
+// export const selectMinFloor = ({ customer }: RootState) =>
+//     customer.demands.map((d) => d.filters?.minFloor);
 
-export const selectMaxFloor = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters?.maxFloor);
+// export const selectMaxFloor = ({ customer }: RootState) =>
+//     customer.demands.map((d) => d.filters?.maxFloor);
 
-export const selectParentCategory = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters?.parentCategories);
+// export const selectParentCategory = ({ customer }: RootState) =>
+//     customer.demands.map((d) => d.filters?.parentCategories);
 
-export const selectCategory = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters?.categories);
+// export const selectCategory = ({ customer }: RootState) =>
+//     customer.demands.map((d) => d.filters?.categories);
 
-export const selectState = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters?.states);
+// export const selectState = ({ customer }: RootState) =>
+//     customer.demands.map((d) => d.filters?.states);
 
-export const selectMinPrice = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters?.minPrice);
+// export const selectMinPrice = ({ customer }: RootState) =>
+//     customer.demands.map((d) => d.filters?.minPrice);
 
-export const selectMaxPrice = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters?.maxPrice);
+// export const selectMaxPrice = ({ customer }: RootState) =>
+//     customer.demands.map((d) => d.filters?.maxPrice);
 
-export const selectDemandLabels = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters?.labels);
+// export const selectDemandLabels = ({ customer }: RootState) =>
+//     customer.demands.map((d) => d.filters?.labels);
 
-export const selectTimeFrame = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.timeframe);
+// export const selectTimeFrame = ({ customer }: RootState) =>
+//     customer.demands.map((d) => d.timeframe);
 
-// array of string-arrays a.k.a. string[][]
-export const selectShapes = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.shapes);
+// // array of string-arrays a.k.a. string[][]
+// export const selectShapes = ({ customer }: RootState) =>
+//     customer.demands.map((d) => d.shapes);
 
-//Demand Location
+// //Demand Location
 
-export const selectDemandComplexes = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters?.complexes);
-export const selectDemandCities = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters?.cities);
+// export const selectDemandComplexes = ({ customer }: RootState) =>
+//     customer.demands.map((d) => d.filters?.complexes);
+// export const selectDemandCities = ({ customer }: RootState) =>
+//     customer.demands.map((d) => d.filters?.cities);
 
-export const selectDemandRegions = ({ customer }: RootState) =>
-    customer.demands.map((d) => d.filters?.regions);
+// export const selectDemandRegions = ({ customer }: RootState) =>
+//     customer.demands.map((d) => d.filters?.regions);
 
 export const { reducer } = slice;

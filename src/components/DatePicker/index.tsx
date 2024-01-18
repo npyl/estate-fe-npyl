@@ -5,10 +5,12 @@ import {
     ClickAwayListener,
     Box,
     TextFieldProps,
+    styled,
 } from "@mui/material";
 import { Calendar, DateObject } from "react-multi-date-picker";
 import { CalendarBox } from "./styled";
 import { motion, AnimatePresence } from "framer-motion";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 
 const datePickerVariants = {
     hidden: {
@@ -36,6 +38,18 @@ export type DatePickerProps = Omit<TextFieldProps, "onSelect"> & {
     onSelect?: (dates: DateObject | DateObject[]) => void;
 };
 
+const StyledTextField = styled(TextField)({
+    "& .MuiInputBase-input": {
+        cursor: "pointer",
+    },
+});
+
+const StyledCalendarIcon = styled(CalendarMonthIcon)({
+    cursor: "pointer",
+});
+
+const id = "date-picker-popper";
+
 const DatePicker: React.FC<DatePickerProps> = ({
     dateFrom = "",
     dateTo = "",
@@ -53,12 +67,11 @@ const DatePicker: React.FC<DatePickerProps> = ({
     const handleClickAway = () => setAnchorEl(null);
 
     const open = Boolean(anchorEl);
-    const id = open ? "date-picker-popper" : undefined;
 
     return (
         <ClickAwayListener onClickAway={handleClickAway}>
             <Box>
-                <TextField
+                <StyledTextField
                     fullWidth
                     onClick={handleClick}
                     value={
@@ -71,6 +84,10 @@ const DatePicker: React.FC<DatePickerProps> = ({
                             : new Date(date).toDateString()
                     }
                     label={label || "Select dates"}
+                    InputProps={{
+                        readOnly: true,
+                        endAdornment: <StyledCalendarIcon />,
+                    }}
                     {...props}
                 />
                 <AnimatePresence>

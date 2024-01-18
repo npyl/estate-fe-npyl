@@ -1,7 +1,5 @@
 import { Box, Divider, Grid, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { selectPriorityFeatures } from "src/slices/customer";
 import CheckboxItem from "../components/CheckboxItem";
 import { IFeatureSectionProps } from "./types";
 

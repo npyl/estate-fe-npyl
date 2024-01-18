@@ -9,7 +9,6 @@ import {
 import ListLabelsItem from "src/components/List/labels-item";
 import { IProperties, ParentCategory } from "src/types/properties";
 import { IUser } from "src/types/user";
-import PopupWindow from "./PopopWindowROI";
 import { ICustomer } from "src/types/customer";
 import ListOwnerItem from "src/components/List/owner-item";
 import { useTranslation } from "react-i18next";
@@ -131,10 +130,6 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
 
     const manager: IUser = data?.manager;
     const owner: ICustomer = data?.owner;
-
-    const handleClosePopup = () => {
-        setShowPopup(false);
-    };
 
     const handleOpenPopup = () => {
         setShowPopup((prevShowPopup) => !prevShowPopup);
@@ -422,7 +417,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                     </Grid>
                 </Paper>
             </Grid>
-            {showPopup && (
+            {/* {showPopup && (
                 <Grid item xs={12}>
                     <Paper elevation={10} sx={{ overflow: "auto" }}>
                         <Box
@@ -443,7 +438,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                         </Grid>
                     </Paper>
                 </Grid>
-            )}
+            )} */}
         </Grid>
     );
 };

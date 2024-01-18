@@ -25,7 +25,7 @@ import { IUser } from "src/types/user";
 import { KeyValue } from "src/types/KeyValue";
 import { useFormContext } from "react-hook-form";
 import RHFDatePicker from "src/components/hook-form/RHFDatePicker";
-import Select from "./components/Select";
+import Select from "src/components/hook-form/Select";
 
 const Rating = () => {
     const { t } = useTranslation();
@@ -80,7 +80,7 @@ const getFIELDS = (
     <FormControl fullWidth variant="outlined">
         <InputLabel>{t("Managed By")}</InputLabel>
         <RHFSelect name="managedBy" label={t("Managed By")}>
-            <MenuItem value={-1}>{t("Not selected")}</MenuItem>
+            <MenuItem value="">{t("Not selected")}</MenuItem>
             {managers?.map(({ id, firstName, lastName }, i) => (
                 <MenuItem key={i} value={id}>
                     {`${firstName} ${lastName}`}
@@ -94,8 +94,6 @@ const getFIELDS = (
     <Select
         name="nationality"
         label={t("Nationality")}
-        withEmptyOption
-        emptyValue=""
         options={nationalitiesEnum}
     />,
     <RHFTextField fullWidth name="idNumber" label={t("ID Number")} />,
@@ -124,8 +122,6 @@ const getFIELDS = (
     <Select
         name="leadSource"
         label={t("Lead Source")}
-        withEmptyOption
-        emptyValue=""
         options={leadSourceEnum}
     />,
     leadSource === "CUSTOMER" ? (
