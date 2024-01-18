@@ -10,11 +10,8 @@ import { IProperties, IPropertiesPOST } from "src/types/properties";
 
 // Form
 import FormProvider from "src/components/hook-form";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as Yup from "yup";
 import { LoadingButton } from "@mui/lab";
-import { IPropertyDetailsPOST } from "src/types/details";
+import usePropertyForm from "./hook";
 
 interface IFormProps {
     property?: IProperties;
@@ -24,53 +21,6 @@ interface IFormProps {
     onSave: (body: IPropertiesPOST) => void;
     onCancel: () => void;
 }
-
-interface DetailsYup extends Partial<IPropertyDetailsPOST> {}
-
-// required fields
-interface IPropertyYup extends Partial<Omit<IPropertiesPOST, "details">> {
-    code: string;
-    state: string;
-
-    details?: DetailsYup;
-}
-
-const LoginSchema = Yup.object().shape({
-    code: Yup.string().required(),
-    state: Yup.string().required(),
-});
-
-const getEnumKey = (key?: string) => key || undefined;
-
-const getDefaultValues = (property?: IProperties): IPropertyYup => ({
-    code: property?.code || "",
-    state: property?.state?.key || "",
-
-    category: getEnumKey(property?.category?.key),
-    parentCategory: getEnumKey(property?.parentCategory?.key),
-
-    details: {
-        orientation: getEnumKey(property?.details?.orientation?.key),
-        accessibility: getEnumKey(property?.details?.accessibility?.key),
-        landUse: getEnumKey(property?.details?.landUse?.key),
-        floor: getEnumKey(property?.details?.floor?.key),
-        zoneType: getEnumKey(property?.details?.zoneType?.key),
-        viewType: getEnumKey(property?.details?.viewType?.key),
-    },
-});
-
-const usePropertyForm = (property?: IProperties) => {
-    const defaultValues = useMemo(() => getDefaultValues(property), [property]);
-
-    const methods = useForm<IPropertyYup>({
-        resolver: yupResolver(LoginSchema),
-        values: defaultValues,
-    });
-
-    const { reset, handleSubmit } = methods;
-
-    return { methods, handleSubmit, reset };
-};
 
 export default function Form({
     property,

@@ -114,9 +114,7 @@ const BasicForLandSection: React.FC<any> = () => {
                         label={t("Manager")}
                         name="managerId"
                     >
-                        <MenuItem value={undefined}>
-                            {t(`Not selected`)}
-                        </MenuItem>
+                        <MenuItem value={""}>{t(`Not selected`)}</MenuItem>
                         {managers?.map(({ firstName, lastName, id }, i) => (
                             <MenuItem key={i} value={id}>
                                 {`${firstName} ${lastName}`}

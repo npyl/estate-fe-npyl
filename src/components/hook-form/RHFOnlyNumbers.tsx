@@ -11,7 +11,12 @@ type Props = TextFieldProps & {
     adornment?: string;
 };
 
-export default function RHFOnlyNumbers({ name, adornment, ...other }: Props) {
+export default function RHFOnlyNumbers({
+    name,
+    acceptsDecimal,
+    adornment,
+    ...other
+}: Props) {
     const { control } = useFormContext();
 
     return (

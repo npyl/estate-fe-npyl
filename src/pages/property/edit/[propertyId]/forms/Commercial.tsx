@@ -13,6 +13,7 @@ import {
     Notes,
     Documents,
     ROI,
+    DescriptionEditor,
 } from "./_general";
 
 import {
@@ -55,7 +56,7 @@ const CommercialFormSection: React.FC<any> = () => {
                         <SuitableFor />
                         <Construction />
                         <TechnicalFeaturesAndInterior />
-                        <Description />
+                        <DescriptionEditor />
                     </Stack>
                 </Grid>
 
