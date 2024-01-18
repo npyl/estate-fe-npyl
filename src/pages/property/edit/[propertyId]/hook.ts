@@ -168,6 +168,7 @@ const getDefaultValues = (property?: IProperties): IPropertyYup => ({
     plotArea: property?.plotArea || undefined,
     averageUtils: property?.averageUtils || undefined,
     estimatedRentPrice: property?.estimatedRentPrice || undefined,
+    currentRentPrice: property?.currentRentPrice || undefined,
 
     category: getEnumKey(property?.category?.key),
     parentCategory: getEnumKey(property?.parentCategory?.key),

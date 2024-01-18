@@ -34,7 +34,7 @@ const getFEATURES = (t: TranslationType) => [
 
     {
         label: t("False Ceiling"),
-        name: "technicalFeatures.falceCeiling",
+        name: "technicalFeatures.falseCeiling",
     },
     {
         label: t("With Equipment"),

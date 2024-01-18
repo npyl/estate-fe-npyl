@@ -27,23 +27,23 @@ const getCHECKBOXES = (t: TranslationType) => [
     { name: "buildable", label: t("Buildable") },
     { name: "auction", label: t("Auction") },
     {
-        name: "legalAndTechnicalControl",
+        name: "details.legalAndTechnicalControl",
         label: t("Legal and Technical Control"),
     },
     {
-        name: "irrigation",
+        name: "details.irrigation",
         label: t("Irrigation"),
     },
     {
-        name: "waterSupply",
+        name: "details.waterSupply",
         label: t("Water Supply"),
     },
     {
-        name: "hasBuildingPermit",
+        name: "details.hasBuildingPermit",
         label: t("Building Permit"),
     },
     {
-        name: "hasBuilding",
+        name: "details.hasBuilding",
         label: t("Contains Building"),
     },
 ];
