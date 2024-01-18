@@ -17,7 +17,7 @@ const useEnums = () => {
         [data]
     );
     const balconySide = useMemo(
-        () => details?.balconySide,
+        () => details?.balconySide || [],
         [details?.balconySide]
     );
     return { balconySide };

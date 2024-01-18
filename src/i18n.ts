@@ -369,7 +369,6 @@ const resources = {
 
             //Create customer
 
-            "Not selected": "Μη επιλεγμένο",
             "Customer Information": "Customer Information",
             "First Name": "First Name",
             "Last Name": "Last Name",
@@ -942,6 +941,8 @@ const resources = {
 
             "Fill in Code and State!":
                 "Συμπληρώστε Κωδικό (Code) και Κατάσταση (State)!",
+
+            "Not selected": "Μη επιλεγμένο",
         },
     },
 };

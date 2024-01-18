@@ -146,7 +146,7 @@ const BasicSection: React.FC<any> = () => {
 
                     <Grid item xs={6}>
                         <RHFOnlyNumbers
-                            name="avgUtils"
+                            name="averageUtils"
                             label={t("Average Utils")}
                             adornment="€/Month"
                         />
@@ -200,13 +200,13 @@ const BasicSection: React.FC<any> = () => {
                             </Grid>
                             <Grid item xs={6}>
                                 <RHFDatePicker
-                                    name="rentalPeriodStart"
+                                    name="rentalStart"
                                     label={t("Rental Period Start").toString()}
                                 />
                             </Grid>
                             <Grid item xs={6}>
                                 <RHFDatePicker
-                                    name="rentalPeriodEnd"
+                                    name="rentalEnd"
                                     label={t("Rental Period End").toString()}
                                 />
                             </Grid>

@@ -17,7 +17,7 @@ const useEnums = () => {
         [data]
     );
     const parkingType = useMemo(
-        () => details?.parkingType,
+        () => details?.parkingType || [],
         [details?.parkingType]
     );
     return { parkingType };

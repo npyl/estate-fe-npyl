@@ -248,7 +248,7 @@ const BasicForLandSection: React.FC<any> = () => {
                                 </Grid>
                                 <Grid item xs={6}>
                                     <RHFDatePicker
-                                        name="rentalPeriodStart"
+                                        name="rentalStart"
                                         label={t(
                                             "Rental Period Start"
                                         ).toString()}
@@ -256,7 +256,7 @@ const BasicForLandSection: React.FC<any> = () => {
                                 </Grid>
                                 <Grid item xs={6}>
                                     <RHFDatePicker
-                                        name="rentalPeriodEnd"
+                                        name="rentalEnd"
                                         label={t(
                                             "Rental Period End"
                                         ).toString()}

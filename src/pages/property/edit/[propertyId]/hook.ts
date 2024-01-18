@@ -31,12 +31,17 @@ type OmitList =
     | "heatingAndEnergy"
     | "technicalFeatures"
     | "features"
-    | "construction";
+    | "construction"
+    | "managerId"
+    | "ownerId";
 
 // required fields
 interface IPropertyYup extends Partial<Omit<IPropertiesPOST, OmitList>> {
     code: string;
     state: string;
+
+    managerId?: number | "";
+    ownerId?: number | "";
 
     details?: DetailsYup;
     suitableFor?: SuitableForYup;
@@ -99,6 +104,7 @@ const LoginSchema = Yup.object().shape({
         "Key Code already exists",
         async (value) => await keyCodeIsUnique(value)
     ),
+
     state: Yup.string().required(),
 });
 
@@ -153,6 +159,15 @@ const getDefaultValues = (property?: IProperties): IPropertyYup => ({
     code: property?.code || "",
     state: property?.state?.key || "",
     keyCode: property?.keyCode || "",
+
+    managerId: property?.manager?.id || "",
+    ownerId: property?.owner?.id || "",
+
+    area: property?.area || undefined,
+    price: property?.price || undefined,
+    plotArea: property?.plotArea || undefined,
+    averageUtils: property?.averageUtils || undefined,
+    estimatedRentPrice: property?.estimatedRentPrice || undefined,
 
     category: getEnumKey(property?.category?.key),
     parentCategory: getEnumKey(property?.parentCategory?.key),
