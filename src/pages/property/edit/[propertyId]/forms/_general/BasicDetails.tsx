@@ -63,6 +63,11 @@ const BasicSection: React.FC<any> = () => {
         [propertyEnums]
     );
 
+    const categories = useMemo(
+        () => subCategoriesMap[parentCategory!] || [],
+        [subCategoriesMap, parentCategory]
+    );
+
     return (
         <Panel
             label={t("Basic Details").toString()}
@@ -74,21 +79,12 @@ const BasicSection: React.FC<any> = () => {
                         <CodeField />
                     </Grid>
                     <Grid item xs={6}>
-                        <RHFTextField
+                        <Select
                             disabled={!parentCategory}
-                            fullWidth
-                            select
                             label={t("Category")}
                             name="category"
-                        >
-                            {subCategoriesMap[parentCategory!]?.map(
-                                ({ key, value }) => (
-                                    <MenuItem key={key} value={key}>
-                                        {value}
-                                    </MenuItem>
-                                )
-                            )}
-                        </RHFTextField>
+                            options={categories}
+                        />
                     </Grid>
                     <Grid item xs={6}>
                         <RHFTextField
@@ -97,6 +93,9 @@ const BasicSection: React.FC<any> = () => {
                             label={t("Manager")}
                             name="managerId"
                         >
+                            <MenuItem value={undefined}>
+                                {t(`Not selected`)}
+                            </MenuItem>
                             {managers?.map(({ firstName, lastName, id }, i) => (
                                 <MenuItem key={i} value={id}>
                                     {`${firstName} ${lastName}`}

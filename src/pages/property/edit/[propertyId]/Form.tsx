@@ -43,18 +43,19 @@ const LoginSchema = Yup.object().shape({
 const getEnumKey = (key?: string) => key || undefined;
 
 const getDefaultValues = (property?: IProperties): IPropertyYup => ({
-    code: "",
-    state: "",
+    code: property?.code || "",
+    state: property?.state?.key || "",
 
-    parentCategory: getEnumKey(property?.parentCategory.key),
+    category: getEnumKey(property?.category?.key),
+    parentCategory: getEnumKey(property?.parentCategory?.key),
 
     details: {
-        orientation: getEnumKey(property?.details?.orientation.key),
-        accessibility: getEnumKey(property?.details?.accessibility.key),
-        landUse: getEnumKey(property?.details?.landUse.key),
-        floor: getEnumKey(property?.details?.floor.key),
-        zoneType: getEnumKey(property?.details?.zoneType.key),
-        viewType: getEnumKey(property?.details?.viewType.key),
+        orientation: getEnumKey(property?.details?.orientation?.key),
+        accessibility: getEnumKey(property?.details?.accessibility?.key),
+        landUse: getEnumKey(property?.details?.landUse?.key),
+        floor: getEnumKey(property?.details?.floor?.key),
+        zoneType: getEnumKey(property?.details?.zoneType?.key),
+        viewType: getEnumKey(property?.details?.viewType?.key),
     },
 });
 

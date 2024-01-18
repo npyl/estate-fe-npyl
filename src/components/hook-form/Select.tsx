@@ -2,14 +2,15 @@ import { FormControl, InputLabel, MenuItem } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { RHFSelect } from "src/components/hook-form";
 import { KeyValue } from "src/types/KeyValue";
+import { RHFSelectProps } from "./RHFSelect";
 
-interface SelectProps {
+type SelectProps<T = string> = Omit<RHFSelectProps<T>, "children"> & {
     name: string;
     label: string;
     withEmptyOption?: boolean;
     emptyValue?: any;
     options: KeyValue[];
-}
+};
 
 const Select = ({
     name,
