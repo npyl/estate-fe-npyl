@@ -1,13 +1,7 @@
-import { Divider, Grid, Paper, TextField } from "@mui/material";
-import Typography from "@mui/material/Typography";
+import { Divider, Grid, TextField } from "@mui/material";
 import { Box } from "@mui/system";
-import * as React from "react";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-
-import OnlyNumbersInput from "src/components/OnlyNumbers";
 import Map, { IMapMarker, IMapCoordinates, IMapAddress } from "../Map/Map";
-
 import { RegionSelect } from "./RegionSelect";
 import { MunicipSelect } from "./MunicipSelect";
 import { NeighbourSelect } from "./NeighbourSelect";
@@ -15,46 +9,22 @@ import {
     useGetClosestQuery,
     useLazyGetHierarchyByAreaIdQuery,
 } from "src/services/location";
-
-import {
-    selectStreet,
-    selectNumber,
-    selectCity,
-    selectZipCode,
-    selectRegion,
-    selectCountry,
-    selectLatitude,
-    selectLongitude,
-    selectComplex,
-    // setters
-    setStreet,
-    setNumber,
-    setCity,
-    setZipCode,
-    setComplex,
-    setRegion,
-    setCountry,
-    setLatitude,
-    setLongitude,
-} from "src/slices/property";
-
 import { useTranslation } from "react-i18next";
+import { useFormContext } from "react-hook-form";
+import { RHFOnlyNumbers, RHFTextField } from "../hook-form";
+import Panel from "../Panel";
 
 const LocationSection = () => {
-    const dispatch = useDispatch();
+    const { watch, setValue } = useFormContext();
     const { t } = useTranslation();
 
-    const street = useSelector(selectStreet);
-    const number = useSelector(selectNumber);
-    const city = useSelector(selectCity);
-    const zipCode = useSelector(selectZipCode);
-    const complex = useSelector(selectComplex);
-    const region = useSelector(selectRegion);
-    const country = useSelector(selectCountry);
-    const lat = useSelector(selectLatitude);
-    const lng = useSelector(selectLongitude);
-
     const [getHierarchy] = useLazyGetHierarchyByAreaIdQuery();
+
+    const lat = watch("location.latitude");
+    const lng = watch("location.longitude");
+    const region = watch("location.region");
+    const city = watch("location.city");
+    const complex = watch("location.complex");
 
     // Fields
     const [x, setX] = useState<number>(lat || -1);
@@ -89,18 +59,13 @@ const LocationSection = () => {
         setMainMarker(newMarker);
 
         // update slice
-        dispatch(setLatitude(lat));
-        dispatch(setLongitude(lng));
+        setValue("location.latitude", lat);
+        setValue("location.longitude", lng);
 
         // show x, y
         setX(lat);
         setY(lng);
     };
-
-    const handleChange = (
-        setter: any,
-        event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => dispatch(setter(event.target.value));
 
     const handleRegionChange = (
         regionCode: string,
@@ -109,8 +74,8 @@ const LocationSection = () => {
     ) => {
         updateMainMarkerCoordinates(lat, lng);
 
-        // update slice
-        dispatch(setRegion(regionCode));
+        // update
+        setValue("location.region", regionCode);
     };
     const handleMunicipChange = (
         municipCode: string,
@@ -119,8 +84,8 @@ const LocationSection = () => {
     ) => {
         updateMainMarkerCoordinates(lat, lng);
 
-        // update slice
-        dispatch(setCity(municipCode));
+        // update
+        setValue("location.city", municipCode);
     };
     const handleNeighbourChange = (
         neighbourCode: string,
@@ -129,8 +94,8 @@ const LocationSection = () => {
     ) => {
         updateMainMarkerCoordinates(lat, lng);
 
-        // update slice
-        dispatch(setComplex(neighbourCode));
+        // update
+        setValue("location.complex", neighbourCode);
     };
 
     //
@@ -142,11 +107,12 @@ const LocationSection = () => {
         setOnDragEndCoord({ lat, lng });
         updateMainMarkerCoordinates(lat, lng);
 
-        // update slice
-        dispatch(setStreet(address.street));
-        dispatch(setNumber(address.number));
-        dispatch(setZipCode(address.zipCode));
+        // update
+        setValue("location.street", address.street);
+        setValue("location.number", address.number);
+        setValue("location.zipCode", address.zipCode);
     };
+
     const handleMarkerDragEnd = (
         marker: IMapMarker,
         newLat: number,
@@ -158,10 +124,10 @@ const LocationSection = () => {
         setOnDragEndCoord({ lat: newLat, lng: newLng });
         updateMainMarkerCoordinates(newLat, newLng);
 
-        // update slice
-        dispatch(setStreet(address.street));
-        dispatch(setNumber(address.number));
-        dispatch(setZipCode(address.zipCode));
+        // update
+        setValue("location.street", address.street);
+        setValue("location.number", address.number);
+        setValue("location.zipCode", address.zipCode);
     };
     const handleSearchSelect = (
         address: IMapAddress,
@@ -173,10 +139,10 @@ const LocationSection = () => {
         setOnDragEndCoord({ lat, lng });
         updateMainMarkerCoordinates(lat, lng);
 
-        // update slice
-        dispatch(setStreet(address.street));
-        dispatch(setNumber(address.number));
-        dispatch(setZipCode(address.zipCode));
+        // update
+        setValue("location.street", address.street);
+        setValue("location.number", address.number);
+        setValue("location.zipCode", address.zipCode);
     };
 
     useEffect(() => {
@@ -184,14 +150,14 @@ const LocationSection = () => {
 
         // update slice
         if (closest.level === 2) {
-            dispatch(setRegion(closest.parentID.toString()));
-            dispatch(setCity(closest.areaID.toString()));
+            setValue("location.region", closest.parentID.toString());
+            setValue("location.city", closest.areaID.toString());
         } else if (closest.level === 3) {
             const neighbId = closest.areaID;
             const municipId = closest.parentID;
 
-            dispatch(setComplex(neighbId.toString()));
-            dispatch(setCity(municipId.toString()));
+            setValue("location.city", neighbId.toString());
+            setValue("location.complex", municipId.toString());
 
             // For region
             getHierarchy(municipId)
@@ -200,129 +166,111 @@ const LocationSection = () => {
                     const regionId = municipHierarchy.parentID;
                     if (!regionId) return;
 
-                    dispatch(setRegion(regionId.toString()));
+                    setValue("location.region", regionId.toString());
                 })
                 .catch((reason) => console.log("getHierarchy: ", reason));
         }
     }, [closest]);
 
     return (
-        <Paper elevation={10} sx={{ padding: 0.5, overflow: "auto" }}>
-            <Box
-                sx={{
-                    px: 3,
-                    py: 1.5,
-                    display: "flex",
-                    justifyContent: "left",
-                }}
-            >
-                <Typography variant="h6">{t("Location")}</Typography>
-            </Box>
-            <Divider></Divider>
-            <Grid item xs={12} padding={1}>
-                <Box display={"flex"} pb={2}>
-                    <Box height={`50vh`} width={"100%"}>
-                        <Map
-                            drawing={false}
-                            search
-                            markers={[mainMarker]}
-                            mainMarker={mainMarker}
-                            onDragEnd={handleMarkerDragEnd}
-                            onClick={handleMapClick}
-                            onSearchSelect={handleSearchSelect}
-                            activeMarker={activeMarker}
-                            setActiveMarker={setActiveMarker}
-                        />
-                    </Box>
+        <Panel label={t("Location")}>
+            <Divider />
+            <Box display={"flex"} pb={2}>
+                <Box height={`50vh`} width={"100%"}>
+                    <Map
+                        drawing={false}
+                        search
+                        markers={[mainMarker]}
+                        mainMarker={mainMarker}
+                        onDragEnd={handleMarkerDragEnd}
+                        onClick={handleMapClick}
+                        onSearchSelect={handleSearchSelect}
+                        activeMarker={activeMarker}
+                        setActiveMarker={setActiveMarker}
+                    />
                 </Box>
+            </Box>
 
-                <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        <Grid container direction={"row"} spacing={2}>
-                            <Grid item xs={4}>
-                                <RegionSelect
-                                    regionCode={region}
-                                    onChange={handleRegionChange}
-                                />
-                            </Grid>
-                            <Grid item xs={4}>
-                                <MunicipSelect
-                                    regionCode={region}
-                                    municipCode={city}
-                                    onChange={handleMunicipChange}
-                                />
-                            </Grid>
-                            <Grid item xs={4}>
-                                <NeighbourSelect
-                                    municipCode={city}
-                                    neighbourCode={complex}
-                                    onChange={handleNeighbourChange}
-                                />
-                            </Grid>
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <Grid container direction={"row"} spacing={2}>
+                        <Grid item xs={4}>
+                            <RegionSelect
+                                regionCode={region}
+                                onChange={handleRegionChange}
+                            />
+                        </Grid>
+                        <Grid item xs={4}>
+                            <MunicipSelect
+                                regionCode={region}
+                                municipCode={city}
+                                onChange={handleMunicipChange}
+                            />
+                        </Grid>
+                        <Grid item xs={4}>
+                            <NeighbourSelect
+                                municipCode={city}
+                                neighbourCode={complex}
+                                onChange={handleNeighbourChange}
+                            />
                         </Grid>
                     </Grid>
-
-                    <Grid item xs={6}>
-                        <TextField
-                            fullWidth
-                            label={t("Street")}
-                            value={street}
-                            onChange={(event) => handleChange(setStreet, event)}
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <TextField
-                            fullWidth
-                            label={t("Number")}
-                            value={number}
-                            onChange={(event) => handleChange(setNumber, event)}
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <OnlyNumbersInput
-                            label={t("Zip Code")}
-                            value={zipCode}
-                            onChange={(value) => dispatch(setZipCode(value))}
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <TextField
-                            fullWidth
-                            label={t("Country")}
-                            value={country}
-                            onChange={(event) =>
-                                handleChange(setCountry, event)
-                            }
-                        />
-                    </Grid>
                 </Grid>
 
-                <Divider sx={{ mt: 2, mb: 1 }} />
-
-                <Grid container spacing={2}>
-                    <Grid item xs={6}>
-                        <TextField
-                            fullWidth
-                            label={t("Latitude")}
-                            value={x || ""}
-                            InputProps={{
-                                readOnly: true,
-                            }}
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <TextField
-                            fullWidth
-                            label={t("Longitude")}
-                            value={y || ""}
-                            InputProps={{
-                                readOnly: true,
-                            }}
-                        />
-                    </Grid>
+                <Grid item xs={6}>
+                    <RHFTextField
+                        fullWidth
+                        label={t("Street")}
+                        name="location.street"
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <RHFTextField
+                        fullWidth
+                        label={t("Number")}
+                        name="location.number"
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <RHFOnlyNumbers
+                        label={t("Zip Code")}
+                        name="location.zipCode"
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <RHFTextField
+                        fullWidth
+                        label={t("Country")}
+                        name="location.country"
+                    />
                 </Grid>
             </Grid>
-        </Paper>
+
+            <Divider sx={{ mt: 2, mb: 1 }} />
+
+            <Grid container spacing={2}>
+                <Grid item xs={6}>
+                    <TextField
+                        fullWidth
+                        label={t("Latitude")}
+                        value={x || ""}
+                        InputProps={{
+                            readOnly: true,
+                        }}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <TextField
+                        fullWidth
+                        label={t("Longitude")}
+                        value={y || ""}
+                        InputProps={{
+                            readOnly: true,
+                        }}
+                    />
+                </Grid>
+            </Grid>
+        </Panel>
     );
 };
 export default LocationSection;

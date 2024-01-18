@@ -25,7 +25,7 @@ import { IUser } from "src/types/user";
 import { KeyValue } from "src/types/KeyValue";
 import { useFormContext } from "react-hook-form";
 import RHFDatePicker from "src/components/hook-form/RHFDatePicker";
-import Select from "../../../components/hook-form/Select";
+import Select from "src/components/hook-form/Select";
 
 const Rating = () => {
     const { t } = useTranslation();
@@ -94,8 +94,6 @@ const getFIELDS = (
     <Select
         name="nationality"
         label={t("Nationality")}
-        withEmptyOption
-        emptyValue=""
         options={nationalitiesEnum}
     />,
     <RHFTextField fullWidth name="idNumber" label={t("ID Number")} />,
@@ -124,8 +122,6 @@ const getFIELDS = (
     <Select
         name="leadSource"
         label={t("Lead Source")}
-        withEmptyOption
-        emptyValue=""
         options={leadSourceEnum}
     />,
     leadSource === "CUSTOMER" ? (
