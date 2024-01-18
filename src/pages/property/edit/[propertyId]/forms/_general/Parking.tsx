@@ -1,4 +1,4 @@
-import { MenuItem, IconButton, Stack } from "@mui/material";
+import { IconButton, Stack } from "@mui/material";
 import { AddCircle, Cancel } from "@mui/icons-material";
 import * as React from "react";
 import { useGlobals } from "src/hooks/useGlobals";
@@ -8,21 +8,25 @@ import { useFormContext } from "react-hook-form";
 import Panel from "src/components/Panel";
 import { IPropertyDetailsParkingPOST } from "src/types/details";
 import { useCallback, useMemo } from "react";
-import { RHFOnlyNumbers, RHFTextField } from "src/components/hook-form";
+import { RHFOnlyNumbers, Select } from "src/components/hook-form";
 
 const useEnums = () => {
     const data = useGlobals();
     const details = useMemo(
-        () => (data?.property?.details as IGlobalPropertyDetails) || [],
+        () => data?.property?.details as IGlobalPropertyDetails,
         [data]
     );
-    return { details };
+    const parkingType = useMemo(
+        () => details?.parkingType,
+        [details?.parkingType]
+    );
+    return { parkingType };
 };
 
 const Parking: React.FC = () => {
     const { t } = useTranslation();
     const { watch, setValue } = useFormContext();
-    const { details } = useEnums();
+    const { parkingType } = useEnums();
 
     const parkings =
         (watch("details.parkings") as IPropertyDetailsParkingPOST[]) || [];
@@ -58,19 +62,13 @@ const Parking: React.FC = () => {
             }
         >
             {parkings?.map((b, i) => (
-                <Stack direction="row" spacing={1.5} px={1.5}>
-                    <RHFTextField
+                <Stack key={i} direction="row" spacing={1.5} px={1.5}>
+                    <Select
                         fullWidth
-                        select
                         name={`details.parkings[${i}].parkingType`}
                         label={t("Parking Type")}
-                    >
-                        {details?.parkingType?.map(({ key, value }) => (
-                            <MenuItem key={key} value={key}>
-                                {value}
-                            </MenuItem>
-                        ))}
-                    </RHFTextField>
+                        options={parkingType}
+                    />
 
                     <RHFOnlyNumbers
                         label={t("Spots")}
