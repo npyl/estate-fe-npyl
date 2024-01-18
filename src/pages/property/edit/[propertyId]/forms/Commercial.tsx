@@ -1,8 +1,6 @@
 import { Grid, Stack } from "@mui/material";
 import * as React from "react";
 
-import { useSelector } from "react-redux";
-
 import {
     Areas,
     BasicDetails,
@@ -27,10 +25,11 @@ import {
 
 import LocationSection from "src/components/Location/Location";
 
-import { selectState } from "src/slices/property";
+import { useFormContext } from "react-hook-form";
 
 const CommercialFormSection: React.FC<any> = () => {
-    const state = useSelector(selectState);
+    const { watch } = useFormContext();
+    const state = watch("state");
 
     return (
         <>

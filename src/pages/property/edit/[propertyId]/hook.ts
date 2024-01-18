@@ -73,6 +73,7 @@ const getDefaultValues = (property?: IProperties): IPropertyYup => ({
         paneGlassType: getEnumKey(
             property?.technicalFeatures?.paneGlassType?.key
         ),
+        inclination: getEnumKey(property?.technicalFeatures?.inclination?.key),
     },
 });
 

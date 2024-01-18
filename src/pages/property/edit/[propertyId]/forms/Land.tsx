@@ -1,5 +1,4 @@
 import { Grid, Stack } from "@mui/material";
-import { useSelector } from "react-redux";
 import * as React from "react";
 
 import {
@@ -18,14 +17,15 @@ import {
     Notes,
     Documents,
     ROI,
+    DescriptionEditor,
 } from "./_general";
 
 import LocationSection from "src/components/Location/Location";
-
-import { selectState } from "src/slices/property";
+import { useFormContext } from "react-hook-form";
 
 const LandFormSection: React.FC<any> = () => {
-    const state = useSelector(selectState);
+    const { watch } = useFormContext();
+    const state = watch("state");
 
     return (
         <>
@@ -49,7 +49,7 @@ const LandFormSection: React.FC<any> = () => {
                         <LocationSection />
                         <SuitableFor />
                         <Distances />
-                        <Description />
+                        <DescriptionEditor />
                     </Stack>
                 </Grid>
             </Grid>
