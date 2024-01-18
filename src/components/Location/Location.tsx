@@ -59,8 +59,8 @@ const LocationSection = () => {
         setMainMarker(newMarker);
 
         // update slice
-        setValue("location.latitude", lat);
-        setValue("location.longitude", lng);
+        setValue("location.lat", lat);
+        setValue("location.lng", lng);
 
         // show x, y
         setX(lat);

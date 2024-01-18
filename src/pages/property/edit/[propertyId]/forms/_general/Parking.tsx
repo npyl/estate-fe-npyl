@@ -36,8 +36,8 @@ const Parking: React.FC = () => {
             setValue("details.parkings", [
                 ...parkings,
                 {
-                    side: "",
-                    area: 0,
+                    parkingType: "",
+                    spots: 0,
                 },
             ]),
         [parkings]
@@ -54,7 +54,7 @@ const Parking: React.FC = () => {
 
     return (
         <Panel
-            label={t("Balconies")}
+            label={t("Parkings")}
             endNode={
                 <IconButton onClick={addParking}>
                     <AddCircle />
@@ -62,7 +62,7 @@ const Parking: React.FC = () => {
             }
         >
             {parkings?.map((b, i) => (
-                <Stack key={i} direction="row" spacing={1.5} px={1.5}>
+                <Stack key={i} direction="row" spacing={1.5}>
                     <Select
                         fullWidth
                         name={`details.parkings[${i}].parkingType`}

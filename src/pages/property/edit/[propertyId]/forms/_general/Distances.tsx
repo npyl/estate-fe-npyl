@@ -14,7 +14,7 @@ const DistancesSection: React.FC = () => {
                     <RHFOnlyNumbers
                         fullWidth
                         label={t("Public Transportation")}
-                        name="distances.publicTransportation"
+                        name="distances.publicTransport"
                         acceptsDecimal
                         adornment="km"
                     />

@@ -62,7 +62,7 @@ const BalconiesSection: React.FC = () => {
             }
         >
             {balconies?.map((b, i) => (
-                <Stack key={i} direction="row" spacing={1.5} px={1.5}>
+                <Stack key={i} direction="row" spacing={1.5}>
                     <Select
                         fullWidth
                         name={`details.balconies[${i}].side`}

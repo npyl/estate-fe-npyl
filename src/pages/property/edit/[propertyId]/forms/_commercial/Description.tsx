@@ -52,7 +52,7 @@ const Description: React.FC = () => {
                     <RHFOnlyNumbers
                         fullWidth
                         label={t("Number of WC")}
-                        name="details.numOfWC"
+                        name="details.wc"
                         placeholder="1,2,3..."
                     />
                 </Grid>

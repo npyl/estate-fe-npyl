@@ -72,7 +72,7 @@ const Description: React.FC = () => {
                     <RHFOnlyNumbers
                         fullWidth
                         label={t("Living Rooms")}
-                        name="details.livingRooms"
+                        name="details.livingrooms"
                         placeholder="1,2,3..."
                     />
                 </Grid>
@@ -81,7 +81,7 @@ const Description: React.FC = () => {
                     <RHFOnlyNumbers
                         fullWidth
                         label={t("Number of WC")}
-                        name="details.numOfWC"
+                        name="details.wc"
                         placeholder="1,2,3..."
                     />
                 </Grid>
@@ -153,11 +153,10 @@ const Description: React.FC = () => {
                     />
                 </Grid>
 
-                {/* Checkboxes */}
                 <Grid item xs={2.4}>
                     <RHFCheckbox
                         label={t("Attic")}
-                        name={"details.hasAttic"}
+                        name="details.attic"
                         placeholder="Attic"
                     />
                 </Grid>
