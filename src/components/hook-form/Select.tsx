@@ -24,9 +24,7 @@ const Select = ({
         <FormControl fullWidth variant="outlined">
             <InputLabel>{label}</InputLabel>
             <RHFSelect fullWidth name={name} label={label}>
-                {withEmptyOption ? (
-                    <MenuItem value={emptyValue}>{t("Not selected")}</MenuItem>
-                ) : null}
+                <MenuItem value={undefined}>{t("Not selected")}</MenuItem>
                 {options.map(({ key, value }, i) => (
                     <MenuItem key={i} value={key}>
                         {value}

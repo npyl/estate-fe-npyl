@@ -1,16 +1,32 @@
 import { Grid } from "@mui/material";
 import * as React from "react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Panel from "src/components/Panel";
 import { RHFCheckbox, RHFOnlyNumbers, Select } from "src/components/hook-form";
 import { useGlobals } from "src/hooks/useGlobals";
-import { IGlobalPropertyDetails } from "src/types/global";
+
+const useEnums = () => {
+    const data = useGlobals();
+    const details = useMemo(() => data?.property?.details, [data]);
+
+    const enums = useMemo(
+        () => ({
+            orientation: details?.orientation || [],
+            accessibility: details?.accessibility || [],
+            landUse: details?.landUse || [],
+            floors: details?.floors || [],
+            zoneType: details?.zoneType || [],
+        }),
+        [details]
+    );
+
+    return enums;
+};
 
 const Description: React.FC = () => {
     const { t } = useTranslation();
-
-    const data = useGlobals();
-    const details = data?.property?.details as IGlobalPropertyDetails;
+    const { floors, accessibility, landUse, zoneType } = useEnums();
 
     return (
         <Panel label={t("Property Description")}>
@@ -19,7 +35,7 @@ const Description: React.FC = () => {
                     <Select
                         label={t("Floor")}
                         name="details.floor"
-                        options={details?.floors}
+                        options={floors}
                     />
                 </Grid>
 
@@ -54,7 +70,7 @@ const Description: React.FC = () => {
                     <Select
                         label={t("Accessibility")}
                         name={"details.accessibility"}
-                        options={details?.accessibility}
+                        options={accessibility}
                     />
                 </Grid>
 
@@ -62,7 +78,7 @@ const Description: React.FC = () => {
                     <Select
                         label={t("Land Use")}
                         name={"details.landUse"}
-                        options={details?.landUse}
+                        options={landUse}
                     />
                 </Grid>
 
@@ -70,7 +86,7 @@ const Description: React.FC = () => {
                     <Select
                         label={t("Zone")}
                         name="details.zoneType"
-                        options={details?.zoneType}
+                        options={zoneType}
                     />
                 </Grid>
 

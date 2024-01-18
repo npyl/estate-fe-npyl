@@ -1,17 +1,34 @@
 import { Grid } from "@mui/material";
 import * as React from "react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Panel from "src/components/Panel";
 import { RHFCheckbox, RHFOnlyNumbers, Select } from "src/components/hook-form";
 import { useGlobals } from "src/hooks/useGlobals";
-import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 
-const PropertyDescriptionForOtherSection: React.FC<any> = (props) => {
-    const { t } = useTranslation();
-
+const useEnums = () => {
     const data = useGlobals();
-    const enums: IGlobalProperty = data?.property as IGlobalProperty;
-    const details = enums?.details as IGlobalPropertyDetails;
+    const details = useMemo(() => data?.property?.details, [data]);
+
+    const enums = useMemo(
+        () => ({
+            orientation: details?.orientation || [],
+            accessibility: details?.accessibility || [],
+            landUse: details?.landUse || [],
+            floors: details?.floors || [],
+            zoneType: details?.zoneType || [],
+            viewType: details?.viewType || [],
+        }),
+        [details]
+    );
+
+    return enums;
+};
+
+const Description: React.FC = () => {
+    const { t } = useTranslation();
+    const { floors, accessibility, landUse, zoneType, orientation, viewType } =
+        useEnums();
 
     return (
         <Panel label={t("Property Description")}>
@@ -20,7 +37,7 @@ const PropertyDescriptionForOtherSection: React.FC<any> = (props) => {
                     <Select
                         label={t("Floor")}
                         name="details.floor"
-                        options={details?.floors}
+                        options={floors}
                     />
                 </Grid>
                 <Grid item xs={6}>
@@ -52,35 +69,35 @@ const PropertyDescriptionForOtherSection: React.FC<any> = (props) => {
                     <Select
                         label={t("Orientation")}
                         name="details.orientation"
-                        options={details?.orientation}
+                        options={orientation}
                     />
                 </Grid>
                 <Grid item xs={6}>
                     <Select
                         label={t("View")}
                         name="details.viewType"
-                        options={details?.viewType}
+                        options={viewType}
                     />
                 </Grid>
                 <Grid item xs={6}>
                     <Select
                         label={t("Zone")}
                         name="details.zoneType"
-                        options={details?.zoneType}
+                        options={zoneType}
                     />
                 </Grid>
                 <Grid item xs={6}>
                     <Select
                         label={t("Accessibility")}
                         name={"details.accessibility"}
-                        options={details?.accessibility}
+                        options={accessibility}
                     />
                 </Grid>
                 <Grid item xs={6}>
                     <Select
                         label={t("Land Use")}
                         name={"details.landUse"}
-                        options={details?.landUse}
+                        options={landUse}
                     />
                 </Grid>
                 <Grid item xs={6}>
@@ -101,4 +118,4 @@ const PropertyDescriptionForOtherSection: React.FC<any> = (props) => {
         </Panel>
     );
 };
-export default PropertyDescriptionForOtherSection;
+export default Description;

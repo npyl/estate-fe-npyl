@@ -1,33 +1,34 @@
-import { Checkbox, Grid } from "@mui/material";
-import Typography from "@mui/material/Typography";
+import { Grid } from "@mui/material";
 import * as React from "react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import Panel from "src/components/Panel";
 import { RHFCheckbox, RHFOnlyNumbers, Select } from "src/components/hook-form";
 import { useGlobals } from "src/hooks/useGlobals";
-import {
-    selectHasAttic,
-    selectPenthouse,
-    selectPlayRoom,
-    selectStoreroomBool,
-    selectFloorApartment,
-} from "src/slices/property";
-import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
 
-const PropertyDescriptionSection: React.FC = () => {
-    const { t } = useTranslation();
-
+const useEnums = () => {
     const data = useGlobals();
-    const enums: IGlobalProperty = data?.property as IGlobalProperty;
-    const details = enums?.details as IGlobalPropertyDetails;
+    const details = useMemo(() => data?.property?.details, [data]);
 
-    const hasAttic = useSelector(selectHasAttic);
-    const playroom = useSelector(selectPlayRoom);
-    const penthouse = useSelector(selectPenthouse);
-    const floorApartment = useSelector(selectFloorApartment);
+    const enums = useMemo(
+        () => ({
+            orientation: details?.orientation || [],
+            accessibility: details?.accessibility || [],
+            landUse: details?.landUse || [],
+            floors: details?.floors || [],
+            zoneType: details?.zoneType || [],
+            viewType: details?.viewType || [],
+        }),
+        [details]
+    );
 
-    const storeroomBool = useSelector(selectStoreroomBool);
+    return enums;
+};
+
+const Description: React.FC = () => {
+    const { t } = useTranslation();
+    const { floors, accessibility, landUse, zoneType, orientation, viewType } =
+        useEnums();
 
     return (
         <Panel label={"Property Description"}>
@@ -36,7 +37,7 @@ const PropertyDescriptionSection: React.FC = () => {
                     <Select
                         label={t("Floor")}
                         name="details.floor"
-                        options={details?.floors}
+                        options={floors}
                     />
                 </Grid>
 
@@ -98,7 +99,7 @@ const PropertyDescriptionSection: React.FC = () => {
                     <Select
                         label={t("View")}
                         name="details.viewType"
-                        options={details?.viewType}
+                        options={viewType}
                     />
                 </Grid>
 
@@ -106,7 +107,7 @@ const PropertyDescriptionSection: React.FC = () => {
                     <Select
                         label={t("Accessibility")}
                         name={"details.accessibility"}
-                        options={details?.accessibility}
+                        options={accessibility}
                     />
                 </Grid>
 
@@ -114,7 +115,7 @@ const PropertyDescriptionSection: React.FC = () => {
                     <Select
                         label={t("Land Use")}
                         name={"details.landUse"}
-                        options={details?.landUse}
+                        options={landUse}
                     />
                 </Grid>
 
@@ -122,7 +123,7 @@ const PropertyDescriptionSection: React.FC = () => {
                     <Select
                         label={t("Zone")}
                         name="details.zoneType"
-                        options={details?.zoneType}
+                        options={zoneType}
                     />
                 </Grid>
 
@@ -139,7 +140,7 @@ const PropertyDescriptionSection: React.FC = () => {
                     <Select
                         label={t("Orientation")}
                         name="details.orientation"
-                        options={details?.orientation}
+                        options={orientation}
                     />
                 </Grid>
 
@@ -192,4 +193,4 @@ const PropertyDescriptionSection: React.FC = () => {
         </Panel>
     );
 };
-export default PropertyDescriptionSection;
+export default Description;

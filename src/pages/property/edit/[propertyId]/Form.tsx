@@ -14,6 +14,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { LoadingButton } from "@mui/lab";
+import { IPropertyDetailsPOST } from "src/types/details";
 
 interface IFormProps {
     property?: IProperties;
@@ -24,10 +25,14 @@ interface IFormProps {
     onCancel: () => void;
 }
 
+interface DetailsYup extends Partial<IPropertyDetailsPOST> {}
+
 // required fields
-interface IPropertyYup extends Partial<IPropertiesPOST> {
+interface IPropertyYup extends Partial<Omit<IPropertiesPOST, "details">> {
     code: string;
     state: string;
+
+    details?: DetailsYup;
 }
 
 const LoginSchema = Yup.object().shape({
@@ -35,11 +40,22 @@ const LoginSchema = Yup.object().shape({
     state: Yup.string().required(),
 });
 
+const getEnumKey = (key?: string) => key || undefined;
+
 const getDefaultValues = (property?: IProperties): IPropertyYup => ({
     code: "",
     state: "",
 
-    parentCategory: property?.parentCategory.key || "",
+    parentCategory: getEnumKey(property?.parentCategory.key),
+
+    details: {
+        orientation: getEnumKey(property?.details?.orientation.key),
+        accessibility: getEnumKey(property?.details?.accessibility.key),
+        landUse: getEnumKey(property?.details?.landUse.key),
+        floor: getEnumKey(property?.details?.floor.key),
+        zoneType: getEnumKey(property?.details?.zoneType.key),
+        viewType: getEnumKey(property?.details?.viewType.key),
+    },
 });
 
 const usePropertyForm = (property?: IProperties) => {
