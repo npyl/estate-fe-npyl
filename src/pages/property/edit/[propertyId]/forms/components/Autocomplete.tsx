@@ -20,7 +20,7 @@ const Autocomplete = () => {
     );
 
     const handleChange = useCallback(
-        (e: any, v: any | null) => setValue("ownerId", v.value),
+        (e: any, v: any | null) => setValue("ownerId", v?.value || ""),
         []
     );
 
@@ -29,8 +29,7 @@ const Autocomplete = () => {
             disablePortal
             options={ownerNames}
             value={{
-                label:
-                    ownerNames.find((i) => i.value == owner)?.label ?? "Owner",
+                label: ownerNames.find((i) => i.value == owner)?.label ?? "",
                 value: owner,
             }}
             onChange={handleChange}
