@@ -97,7 +97,7 @@ const useEnums = () => {
     );
     const enums = useMemo(
         () => ({
-            floorType: details?.heatingType || [],
+            floorType: details?.floorType || [],
         }),
         [details]
     );
