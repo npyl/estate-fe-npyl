@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import {
     IProperties,
     IPropertiesPOST,
@@ -52,7 +52,8 @@ interface IPropertyYup extends Partial<Omit<IPropertiesPOST, OmitList>> {
 }
 
 // Custom validation function
-const codeIsUnique = async (code?: string) => {
+const codeIsUnique = async (initialCode: string, code?: string) => {
+    if (initialCode === code) return true; // INFO: during edit initialCode and code are equal
     if (!code) return true;
 
     try {
@@ -72,12 +73,13 @@ const codeIsUnique = async (code?: string) => {
 };
 
 // Custom validation function
-const keyCodeIsUnique = async (code?: string) => {
-    if (!code) return true;
+const keyCodeIsUnique = async (initialKeyCode: string, keyCode?: string) => {
+    if (initialKeyCode === keyCode) return true; // INFO: during edit initialCode and code are equal
+    if (!keyCode) return true;
 
     try {
         const promise = dispatch(
-            properties.endpoints.checkKeyCodeExists.initiate(code)
+            properties.endpoints.checkKeyCodeExists.initiate(keyCode)
         );
         const { data: exists } = await promise;
 
@@ -91,22 +93,23 @@ const keyCodeIsUnique = async (code?: string) => {
     }
 };
 
-const LoginSchema = Yup.object().shape({
-    code: Yup.string()
-        .test(
-            "codeIsUnique",
-            "Code already exists",
-            async (value) => await codeIsUnique(value)
-        )
-        .required(),
-    keyCode: Yup.string().test(
-        "keyCodeIsUnique",
-        "Key Code already exists",
-        async (value) => await keyCodeIsUnique(value)
-    ),
+const getLoginSchema = (initialCode: string, initialKeyCode: string) =>
+    Yup.object().shape({
+        code: Yup.string()
+            .test(
+                "codeIsUnique",
+                "Code already exists",
+                async (value) => await codeIsUnique(initialCode, value)
+            )
+            .required(),
+        keyCode: Yup.string().test(
+            "keyCodeIsUnique",
+            "Key Code already exists",
+            async (value) => await keyCodeIsUnique(initialKeyCode, value)
+        ),
 
-    state: Yup.string().required(),
-});
+        state: Yup.string().required(),
+    });
 
 const getEnumKey = (key?: string, fix?: boolean) =>
     key || (fix ? undefined : "");
@@ -274,6 +277,15 @@ const getDefaultValues = (property?: IProperties): IPropertyYup => ({
 
 const usePropertyForm = (property?: IProperties) => {
     const defaultValues = useMemo(() => getDefaultValues(property), [property]);
+
+    // INFO: keep them as initial state
+    const [initialCode] = useState(property?.code || "");
+    const [initialKeyCode] = useState(property?.keyCode || "");
+
+    const LoginSchema = useMemo(
+        () => getLoginSchema(initialCode, initialKeyCode),
+        [initialCode, initialKeyCode]
+    );
 
     const methods = useForm<IPropertyYup>({
         resolver: yupResolver(LoginSchema),
