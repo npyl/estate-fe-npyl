@@ -5,8 +5,6 @@ import { NextRouter, useRouter } from "next/router";
 import { usePathname } from "next/navigation";
 import { useTranslation } from "react-i18next";
 
-import { selectAll as propertySelectAll } from "src/slices/property";
-import { selectAll as customerSelectAll } from "src/slices/customer";
 import { useEditPropertyMutation } from "src/services/properties";
 import { useCreateOrUpdateCustomerMutation } from "src/services/customers";
 import { Url } from "next/dist/shared/lib/router/router";
@@ -21,27 +19,26 @@ const useSave = (isEditProperty: boolean, isEditCustomer: boolean) => {
     const router = useRouter();
     const { propertyId, customerId } = router.query;
 
-    const propertyBody = useSelector(propertySelectAll);
-    const customerBody = useSelector(customerSelectAll);
+    // const propertyBody = useSelector(propertySelectAll);
+    // const customerBody = useSelector(customerSelectAll);
 
     const [editProperty] = useEditPropertyMutation();
     const [editCustomer] = useCreateOrUpdateCustomerMutation();
 
     const save = useCallback(() => {
-        if (isEditProperty && propertyBody)
-            editProperty({ body: propertyBody, id: +propertyId! }).then(
-                infoToast
-            );
-        if (isEditCustomer)
-            editCustomer({ ...customerBody, id: +customerId! }).then(infoToast);
-
-        // Debug:
-        if (isEditProperty && propertyBody) {
-            console.log("autosaving property!");
-        } else if (isEditCustomer) {
-            console.log("autosaving customer!");
-        }
-    }, [isEditProperty, isEditCustomer, propertyBody, customerBody]);
+        // if (isEditProperty && propertyBody)
+        //     editProperty({ body: propertyBody, id: +propertyId! }).then(
+        //         infoToast
+        //     );
+        // if (isEditCustomer)
+        //     editCustomer({ ...customerBody, id: +customerId! }).then(infoToast);
+        // // Debug:
+        // if (isEditProperty && propertyBody) {
+        //     console.log("autosaving property!");
+        // } else if (isEditCustomer) {
+        //     console.log("autosaving customer!");
+        // }
+    }, [isEditProperty, isEditCustomer /*, propertyBody, customerBody */]);
 
     return { save };
 };
@@ -54,7 +51,7 @@ const useAutosaveRouter = (): NextRouter => {
     const { t } = useTranslation();
     const pathname = usePathname();
 
-    const body = useSelector(propertySelectAll);
+    // const body = useSelector(propertySelectAll);
 
     const isEditProperty = useMemo(
         () => pathname.includes("property/edit"),
@@ -70,12 +67,14 @@ const useAutosaveRouter = (): NextRouter => {
     //
     //  edit property & code or state empty => cannot redirect
     //
-    const cannotRedirect = useMemo(
-        () =>
-            isEditProperty &&
-            (body?.code?.length === 0 || body?.state?.length === 0),
-        [isEditProperty, body?.code, body?.state]
-    );
+    // const cannotRedirect = useMemo(
+    //     () =>
+    //         isEditProperty &&
+    //         (body?.code?.length === 0 || body?.state?.length === 0),
+    //     [isEditProperty, body?.code, body?.state]
+    // );
+
+    const cannotRedirect = false;
 
     const router = useConditionalRouter(
         cannotRedirect,
