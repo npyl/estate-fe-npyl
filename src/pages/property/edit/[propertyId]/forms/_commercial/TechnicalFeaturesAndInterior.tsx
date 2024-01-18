@@ -1,18 +1,15 @@
-import { Grid, MenuItem } from "@mui/material";
+import { Grid } from "@mui/material";
 import * as React from "react";
 import { IGlobalPropertyDetails } from "src/types/global";
 import { useGlobals } from "src/hooks/useGlobals";
 import { useTranslation } from "react-i18next";
 import Panel from "src/components/Panel";
-import {
-    RHFCheckbox,
-    RHFOnlyNumbers,
-    RHFTextField,
-} from "src/components/hook-form";
+import { RHFCheckbox, RHFOnlyNumbers, Select } from "src/components/hook-form";
 import { TranslationType } from "src/types/translation";
 import { useMemo } from "react";
+import { KeyValue } from "src/types/KeyValue";
 
-const getFIELDS = (t: TranslationType, details?: IGlobalPropertyDetails) => [
+const getFIELDS = (t: TranslationType, floorType: KeyValue[]) => [
     <RHFOnlyNumbers
         label={t("Display Window Length")}
         name="technicalFeatures.displayWindowsLength"
@@ -25,18 +22,12 @@ const getFIELDS = (t: TranslationType, details?: IGlobalPropertyDetails) => [
         name="technicalFeatures.entrances"
     />,
 
-    <RHFTextField
+    <Select
         fullWidth
-        select
         label={t("Floor Type")}
         name="technicalFeatures.floorType"
-    >
-        {details?.floorType?.map(({ key, value }) => (
-            <MenuItem key={key} value={key}>
-                {value}
-            </MenuItem>
-        ))}
-    </RHFTextField>,
+        options={floorType}
+    />,
 ];
 
 const getFEATURES = (t: TranslationType) => [
@@ -98,13 +89,26 @@ const getFEATURES = (t: TranslationType) => [
     },
 ];
 
+const useEnums = () => {
+    const data = useGlobals();
+    const details = useMemo(
+        () => data?.property?.details as IGlobalPropertyDetails,
+        [data]
+    );
+    const enums = useMemo(
+        () => ({
+            floorType: details?.heatingType || [],
+        }),
+        [details]
+    );
+    return enums;
+};
+
 const TechnicalFeaturesAndInterior: React.FC = () => {
     const { t } = useTranslation();
+    const { floorType } = useEnums();
 
-    const data = useGlobals();
-    const details = data?.property?.details as IGlobalPropertyDetails;
-
-    const FIELDS = useMemo(() => getFIELDS(t, details), [t, details]);
+    const FIELDS = useMemo(() => getFIELDS(t, floorType), [t, floorType]);
     const FEATURES = useMemo(() => getFEATURES(t), [t]);
 
     return (

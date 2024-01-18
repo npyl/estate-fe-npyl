@@ -1,8 +1,6 @@
 import { Grid } from "@mui/material";
 import * as React from "react";
-import { useSelector } from "react-redux";
-import { selectSatelliteTV } from "src/slices/property";
-import { IGlobalProperty, IGlobalPropertyDetails } from "src/types/global";
+import { IGlobalPropertyDetails } from "src/types/global";
 import { useGlobals } from "src/hooks/useGlobals";
 import { useTranslation } from "react-i18next";
 import Panel from "src/components/Panel";
@@ -62,12 +60,28 @@ const getFEATURES = (t: TranslationType) => [
     },
 ];
 
+const useEnums = () => {
+    const data = useGlobals();
+    const details = useMemo(
+        () => data?.property?.details as IGlobalPropertyDetails,
+        [data]
+    );
+    const enums = useMemo(
+        () => ({
+            furnished: details?.furnished || [],
+            frameType: details?.frameType || [],
+            panelGlassType: details?.panelGlassType || [],
+            floorType: details?.floorType || [],
+        }),
+        [details]
+    );
+    return enums;
+};
+
 const TechnicalFeaturesAndInteriorForResidentialSection: React.FC = () => {
     const { t } = useTranslation();
 
-    const data = useGlobals();
-    const enums: IGlobalProperty = data?.property as IGlobalProperty;
-    const details = enums?.details as IGlobalPropertyDetails;
+    const { furnished, frameType, panelGlassType, floorType } = useEnums();
 
     const FEATURES = useMemo(() => getFEATURES(t), [t]);
 
@@ -78,28 +92,28 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC = () => {
                     <Select
                         label={t("Furnished")}
                         name="technicalFeatures.furnished"
-                        options={details?.furnished}
+                        options={furnished}
                     />
                 </Grid>
                 <Grid item xs={6}>
                     <Select
                         label={t("Frame Type")}
                         name="technicalFeatures.frameType"
-                        options={details?.frameType}
+                        options={frameType}
                     />
                 </Grid>
                 <Grid item xs={6}>
                     <Select
                         label={t("Pane Glass Type")}
                         name="technicalFeatures.paneGlassType"
-                        options={details?.panelGlassType}
+                        options={panelGlassType}
                     />
                 </Grid>
                 <Grid item xs={6}>
                     <Select
                         label={t("Floor Type")}
                         name="technicalFeatures.floorType"
-                        options={details?.floorType}
+                        options={floorType}
                     />
                 </Grid>
 
