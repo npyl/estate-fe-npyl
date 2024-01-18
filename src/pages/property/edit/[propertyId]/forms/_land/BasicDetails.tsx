@@ -6,8 +6,6 @@ import { useAllUsersQuery } from "src/services/user";
 import { IGlobalProperty } from "src/types/global";
 import { useMemo } from "react";
 import { useRouter } from "next/router";
-import { CodeField } from "../components/CodeField";
-import { KeyCodeField } from "../components/KeyCodeField";
 import { useTranslation } from "react-i18next";
 import { KeyValue } from "src/types/KeyValue";
 import Panel from "src/components/Panel";
@@ -94,7 +92,7 @@ const BasicForLandSection: React.FC<any> = () => {
         >
             <Grid container spacing={2}>
                 <Grid item xs={6}>
-                    <CodeField />
+                    <RHFTextField fullWidth name="code" label={t("Code")} />
                 </Grid>
                 <Grid item xs={6}>
                     <Select
@@ -159,7 +157,11 @@ const BasicForLandSection: React.FC<any> = () => {
                 </Grid>
 
                 <Grid item xs={6}>
-                    <KeyCodeField />
+                    <RHFTextField
+                        fullWidth
+                        name="keyCode"
+                        label={t("Key Code")}
+                    />
                 </Grid>
 
                 <Grid item xs={6}>

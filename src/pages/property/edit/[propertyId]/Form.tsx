@@ -11,7 +11,7 @@ import { IProperties, IPropertiesPOST } from "src/types/properties";
 // Form
 import FormProvider from "src/components/hook-form";
 import { LoadingButton } from "@mui/lab";
-import usePropertyForm from "./hook";
+import usePropertyForm, { fixDropdowns } from "./hook";
 
 interface IFormProps {
     property?: IProperties;
@@ -42,7 +42,10 @@ export default function Form({
 
     const onSubmit = handleSubmit((data) => {
         try {
-            onSave(data as unknown as IPropertiesPOST);
+            onSave({
+                ...(data as IPropertiesPOST),
+                ...(fixDropdowns(data as IPropertiesPOST) as IPropertiesPOST),
+            });
             console.log("here!: ", data);
         } catch (error) {
             console.error(error);

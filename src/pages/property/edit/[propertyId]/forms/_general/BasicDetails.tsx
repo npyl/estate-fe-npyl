@@ -7,8 +7,6 @@ import { LabelCreate } from "src/components/label";
 import { useGlobals } from "src/hooks/useGlobals";
 import { useAllUsersQuery } from "src/services/user";
 import { IGlobalProperty } from "src/types/global";
-import { CodeField } from "../components/CodeField";
-import { KeyCodeField } from "../components/KeyCodeField";
 import { KeyValue } from "src/types/KeyValue";
 
 import Panel from "src/components/Panel";
@@ -76,7 +74,7 @@ const BasicSection: React.FC<any> = () => {
             <Grid item xs={12} padding={1}>
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
-                        <CodeField />
+                        <RHFTextField fullWidth name="code" label={t("Code")} />
                     </Grid>
                     <Grid item xs={6}>
                         <Select
@@ -164,7 +162,11 @@ const BasicSection: React.FC<any> = () => {
                     </Grid>
 
                     <Grid item xs={6}>
-                        <KeyCodeField />
+                        <RHFTextField
+                            fullWidth
+                            name="keyCode"
+                            label={t("Key Code")}
+                        />
                     </Grid>
                 </Grid>
             </Grid>

@@ -10,6 +10,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { IPropertyDetailsPOST } from "src/types/details";
+import { properties } from "src/services/properties";
+import { dispatch } from "src/store";
 
 interface DetailsYup extends Partial<IPropertyDetailsPOST> {}
 interface HeatingAndEnergyYup extends Partial<IPropertyHeatingAndEnergyPOST> {}
@@ -32,17 +34,66 @@ interface IPropertyYup
     technicalFeatures?: TechnicalFeaturesYup;
 }
 
+// Custom validation function
+const codeIsUnique = async (code?: string) => {
+    if (!code) return true;
+
+    try {
+        const promise = dispatch(
+            properties.endpoints.checkCodeExists.initiate(code)
+        );
+        const { data: exists } = await promise;
+
+        // Removing the corresponding cache subscription
+        promise.unsubscribe();
+
+        return !exists;
+    } catch (error) {
+        console.error("Error in API call:", error);
+        return false;
+    }
+};
+
+// Custom validation function
+const keyCodeIsUnique = async (code?: string) => {
+    if (!code) return true;
+
+    try {
+        const promise = dispatch(
+            properties.endpoints.checkKeyCodeExists.initiate(code)
+        );
+        const { data: exists } = await promise;
+
+        // Removing the corresponding cache subscription
+        promise.unsubscribe();
+
+        return !exists;
+    } catch (error) {
+        console.error("Error in API call:", error);
+        return false;
+    }
+};
+
 const LoginSchema = Yup.object().shape({
-    code: Yup.string().required(),
+    code: Yup.string()
+        .test(
+            "codeIsUnique",
+            "Code already exists",
+            async (value) => await codeIsUnique(value)
+        )
+        .required(),
+    keyCode: Yup.string().test(
+        "keyCodeIsUnique",
+        "Key Code already exists",
+        async (value) => await keyCodeIsUnique(value)
+    ),
     state: Yup.string().required(),
 });
 
-const getEnumKey = (key?: string) => key || "";
+const getEnumKey = (key?: string, fix?: boolean) =>
+    key || (fix ? undefined : "");
 
-const getDefaultValues = (property?: IProperties): IPropertyYup => ({
-    code: property?.code || "",
-    state: property?.state?.key || "",
-
+const getDropdowns = (property?: IProperties) => ({
     category: getEnumKey(property?.category?.key),
     parentCategory: getEnumKey(property?.parentCategory?.key),
 
@@ -75,6 +126,52 @@ const getDefaultValues = (property?: IProperties): IPropertyYup => ({
         ),
         inclination: getEnumKey(property?.technicalFeatures?.inclination?.key),
     },
+});
+
+export const fixDropdowns = (property?: IPropertiesPOST) => ({
+    category: getEnumKey(property?.category, true),
+    parentCategory: getEnumKey(property?.parentCategory, true),
+
+    details: {
+        orientation: getEnumKey(property?.details?.orientation, true),
+        accessibility: getEnumKey(property?.details?.accessibility, true),
+        landUse: getEnumKey(property?.details?.landUse, true),
+        floor: getEnumKey(property?.details?.floor, true),
+        zoneType: getEnumKey(property?.details?.zoneType, true),
+        viewType: getEnumKey(property?.details?.viewType, true),
+    },
+
+    heatingAndEnergy: {
+        electricityType: getEnumKey(
+            property?.heatingAndEnergy?.electricityType,
+            true
+        ),
+        heatingSystem: getEnumKey(
+            property?.heatingAndEnergy?.heatingSystem,
+            true
+        ),
+        energyClass: getEnumKey(property?.heatingAndEnergy?.energyClass, true),
+        heatingType: getEnumKey(property?.heatingAndEnergy?.heatingType, true),
+    },
+
+    technicalFeatures: {
+        floorType: getEnumKey(property?.technicalFeatures?.floorType, true),
+        frameType: getEnumKey(property?.technicalFeatures?.frameType, true),
+        furnished: getEnumKey(property?.technicalFeatures?.furnished, true),
+        paneGlassType: getEnumKey(
+            property?.technicalFeatures?.paneGlassType,
+            true
+        ),
+        inclination: getEnumKey(property?.technicalFeatures?.inclination, true),
+    },
+});
+
+const getDefaultValues = (property?: IProperties): IPropertyYup => ({
+    code: property?.code || "",
+    state: property?.state?.key || "",
+    keyCode: property?.keyCode || "",
+
+    ...getDropdowns(property),
 });
 
 const usePropertyForm = (property?: IProperties) => {
