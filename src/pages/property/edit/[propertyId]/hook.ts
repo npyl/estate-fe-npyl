@@ -316,7 +316,59 @@ const getDefaultValues = (property?: IProperties): IPropertyYup => ({
     },
 
     features: {
-        ...reduceFeatures(property?.features),
+        panoramicView: notNot(property?.features?.panoramicView),
+        seaView: notNot(property?.features?.seaView),
+        mountainView: notNot(property?.features?.mountainView),
+        seaFront: notNot(property?.features?.seaFront),
+        walkableDistanceToBeach: notNot(
+            property?.features?.walkableDistanceToBeach
+        ),
+        quietArea: notNot(property?.features?.quietArea),
+        bright: notNot(property?.features?.bright),
+
+        nearBusRoute: notNot(property?.features?.nearBusRoute),
+        smartHome: notNot(property?.features?.smartHome),
+        guestroom: notNot(property?.features?.guestroom),
+        office: notNot(property?.features?.office),
+        homeCinema: notNot(property?.features?.homeCinema),
+
+        combinedKitchenAndDiningArea: notNot(
+            property?.features?.combinedKitchenAndDiningArea
+        ),
+        soundInsulation: notNot(property?.features?.soundInsulation),
+        thermalInsulation: notNot(property?.features?.thermalInsulation),
+        heatedPool: notNot(property?.features?.heatedPool),
+        indoorPool: notNot(property?.features?.indoorPool),
+        organizedGarden: notNot(property?.features?.organizedGarden),
+        jacuzzi: notNot(property?.features?.jacuzzi),
+        well: notNot(property?.features?.well),
+
+        drilling: notNot(property?.features?.drilling),
+        masonryFence: notNot(property?.features?.masonryFence),
+        accessForDisabled: notNot(property?.features?.accessForDisabled),
+        alarmSystem: notNot(property?.features?.alarmSystem),
+        has24HoursSecurity: notNot(property?.features?.has24HoursSecurity),
+        cctv: notNot(property?.features?.cctv),
+        internet: notNot(property?.features?.internet),
+        fireDetector: notNot(property?.features?.fireDetector),
+
+        independentHeatingPerRoom: notNot(
+            property?.features?.independentHeatingPerRoom
+        ),
+        adaptingToTheGround: notNot(property?.features?.adaptingToTheGround),
+        barbeque: notNot(property?.features?.barbeque),
+        pool: notNot(property?.features?.pool),
+        view: notNot(property?.features?.view),
+        facade: notNot(property?.features?.facade),
+
+        corner: notNot(property?.features?.corner),
+        veranda: notNot(property?.features?.veranda),
+        tents: notNot(property?.features?.tents),
+        withinResidentialZone: notNot(
+            property?.features?.withinResidentialZone
+        ),
+        withinCityPlan: notNot(property?.features?.withinCityPlan),
+        loadingDock: notNot(property?.features?.loadingDock),
     },
 
     labelIDs: property?.labels
