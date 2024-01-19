@@ -1,6 +1,8 @@
+import { Box } from "@mui/material";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Label, LabelColor } from "src/components/label";
+import useResponsive from "src/hooks/useResponsive";
 
 interface TypeProps {
     seller: boolean;
@@ -34,8 +36,12 @@ export const TypeLabels = ({ seller, lessor, leaser, buyer }: TypeProps) => {
         [seller, lessor, leaser, buyer]
     );
 
+    const belowXl = useResponsive("down", "xl");
+    const belowSm = useResponsive("down", "sm");
+    const belowXs = useResponsive("down", "xs");
+
     return (
-        <>
+        <Box display="flex" flexDirection="row" flexWrap="wrap">
             {Object.entries(map).map(([type, { value, color }]) =>
                 value ? (
                     <Label
@@ -44,10 +50,16 @@ export const TypeLabels = ({ seller, lessor, leaser, buyer }: TypeProps) => {
                         opaque
                         color={color as LabelColor}
                     >
-                        {t(type)}
+                        {belowXs
+                            ? t(type).slice(0, 1)
+                            : belowSm
+                            ? t(type).slice(0, 2)
+                            : belowXl
+                            ? t(type).slice(0, 3)
+                            : t(type)}
                     </Label>
                 ) : null
             )}
-        </>
+        </Box>
     );
 };
