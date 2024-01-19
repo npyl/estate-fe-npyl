@@ -9,6 +9,37 @@ import Panel from "src/components/Panel";
 import { IPropertyDetailsParkingPOST } from "src/types/details";
 import { useCallback, useMemo } from "react";
 import { RHFOnlyNumbers, Select } from "src/components/hook-form";
+import { KeyValue } from "src/types/KeyValue";
+import uuidv4 from "src/utils/uuidv4";
+
+interface ParkingProps {
+    options: KeyValue[];
+    index: number;
+    onRemove: () => void;
+}
+
+const Parking = ({ options, index, onRemove }: ParkingProps) => {
+    const { t } = useTranslation();
+    return (
+        <Stack direction="row" spacing={1.5}>
+            <Select
+                fullWidth
+                name={`details.parkings[${index}].parkingType`}
+                label={t("Parking Type")}
+                options={options}
+            />
+
+            <RHFOnlyNumbers
+                label={t("Spots")}
+                name={`details.parkings[${index}].spots`}
+            />
+
+            <IconButton onClick={onRemove}>
+                <Cancel />
+            </IconButton>
+        </Stack>
+    );
+};
 
 const useEnums = () => {
     const data = useGlobals();
@@ -23,7 +54,7 @@ const useEnums = () => {
     return { parkingType };
 };
 
-const Parking: React.FC = () => {
+const ParkingSection: React.FC = () => {
     const { t } = useTranslation();
     const { watch, setValue } = useFormContext();
     const { parkingType } = useEnums();
@@ -52,6 +83,19 @@ const Parking: React.FC = () => {
         [parkings]
     );
 
+    const PARKINGS = useMemo(
+        () =>
+            parkings?.map((b, i) => (
+                <Parking
+                    key={uuidv4()}
+                    index={i}
+                    options={parkingType}
+                    onRemove={() => removeParking(i)}
+                />
+            )),
+        [parkings, removeParking]
+    );
+
     return (
         <Panel
             label={t("Parkings")}
@@ -61,26 +105,9 @@ const Parking: React.FC = () => {
                 </IconButton>
             }
         >
-            {parkings?.map((b, i) => (
-                <Stack key={i} direction="row" spacing={1.5}>
-                    <Select
-                        fullWidth
-                        name={`details.parkings[${i}].parkingType`}
-                        label={t("Parking Type")}
-                        options={parkingType}
-                    />
-
-                    <RHFOnlyNumbers
-                        label={t("Spots")}
-                        name={`details.parkings[${i}].spots`}
-                    />
-
-                    <IconButton onClick={() => removeParking(i)}>
-                        <Cancel />
-                    </IconButton>
-                </Stack>
-            ))}
+            {PARKINGS}
         </Panel>
     );
 };
-export default Parking;
+
+export default ParkingSection;

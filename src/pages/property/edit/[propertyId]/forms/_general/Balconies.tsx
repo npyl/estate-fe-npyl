@@ -9,6 +9,37 @@ import Panel from "src/components/Panel";
 import { IPropertyDetailsBalconyPOST } from "src/types/details";
 import { useCallback, useMemo } from "react";
 import { RHFOnlyNumbers, Select } from "src/components/hook-form";
+import { KeyValue } from "src/types/KeyValue";
+import uuidv4 from "src/utils/uuidv4";
+
+interface BalconyProps {
+    options: KeyValue[];
+    index: number;
+    onRemove: () => void;
+}
+
+const Balcony = ({ options, index, onRemove }: BalconyProps) => {
+    const { t } = useTranslation();
+    return (
+        <Stack direction="row" spacing={1.5}>
+            <Select
+                fullWidth
+                name={`details.balconies[${index}].side`}
+                label={t("Side")}
+                options={options}
+            />
+
+            <RHFOnlyNumbers
+                label={t("Area")}
+                name={`details.balconies[${index}].area`}
+            />
+
+            <IconButton onClick={onRemove}>
+                <Cancel />
+            </IconButton>
+        </Stack>
+    );
+};
 
 const useEnums = () => {
     const data = useGlobals();
@@ -52,6 +83,19 @@ const BalconiesSection: React.FC = () => {
         [balconies]
     );
 
+    const BALCONIES = useMemo(
+        () =>
+            balconies?.map((b, i) => (
+                <Balcony
+                    key={uuidv4()}
+                    index={i}
+                    options={balconySide}
+                    onRemove={() => removeBalcony(i)}
+                />
+            )),
+        [balconies, removeBalcony]
+    );
+
     return (
         <Panel
             label={t("Balconies")}
@@ -61,25 +105,7 @@ const BalconiesSection: React.FC = () => {
                 </IconButton>
             }
         >
-            {balconies?.map((b, i) => (
-                <Stack key={i} direction="row" spacing={1.5}>
-                    <Select
-                        fullWidth
-                        name={`details.balconies[${i}].side`}
-                        label={t("Side")}
-                        options={balconySide}
-                    />
-
-                    <RHFOnlyNumbers
-                        label={t("Area")}
-                        name={`details.balconies[${i}].area`}
-                    />
-
-                    <IconButton onClick={() => removeBalcony(i)}>
-                        <Cancel />
-                    </IconButton>
-                </Stack>
-            ))}
+            {BALCONIES}
         </Panel>
     );
 };

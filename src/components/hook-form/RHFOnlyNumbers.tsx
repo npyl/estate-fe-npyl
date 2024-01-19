@@ -39,11 +39,14 @@ export default function RHFOnlyNumbers({
                     fullWidth
                     customInput={TextField}
                     label={label}
-                    decimalSeparator={acceptsDecimal ? "," : ""}
-                    thousandSeparator={"."}
+                    // TODO: fix this:
+                    // thousandSeparator={"."}
                     onValueChange={handleChange}
                     value={localValue}
-                    allowedDecimalSeparators={[","]}
+                    decimalSeparator={acceptsDecimal ? "," : undefined}
+                    allowedDecimalSeparators={
+                        acceptsDecimal ? [","] : undefined
+                    }
                     allowNegative={false}
                     disabled={disabled}
                     error={Boolean(error)}
