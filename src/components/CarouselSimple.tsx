@@ -85,12 +85,12 @@ export default function CarouselSimple({
                     asNavFor={nav1}
                     ref={carousel1}
                 >
-                    {data.map((item, index) => (
+                    {data.map(({ id, title, url, hidden }, index) => (
                         <LabeledImage
-                            key={item.id}
-                            alt={item.title}
-                            src={item.image}
-                            hidden={item.hidden}
+                            key={id}
+                            alt={title}
+                            src={url || ""}
+                            hidden={hidden}
                             label={mainLabel && index === 0 ? mainLabel : ""}
                             onClick={() => {
                                 onImageClick && onImageClick();

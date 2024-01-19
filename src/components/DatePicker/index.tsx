@@ -7,7 +7,7 @@ import {
     TextFieldProps,
     styled,
 } from "@mui/material";
-import { Calendar, DateObject } from "react-multi-date-picker";
+import { Calendar, CalendarProps, DateObject } from "react-multi-date-picker";
 import { CalendarBox } from "./styled";
 import { motion, AnimatePresence } from "framer-motion";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
@@ -35,6 +35,7 @@ export type DatePickerProps = Omit<TextFieldProps, "onSelect"> & {
     date?: string;
     range?: boolean;
     label?: string;
+    pickerProps?: Omit<CalendarProps, "value">;
     onSelect?: (dates: DateObject | DateObject[]) => void;
 };
 
@@ -56,6 +57,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
     date = "",
     range = false,
     label = "",
+    pickerProps,
     onSelect,
     ...props
 }) => {
@@ -123,7 +125,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
                                         showOtherDays
                                         weekStartDayIndex={1}
                                         format="DD/MM/YYYY"
-                                        maxDate={new Date()}
+                                        {...pickerProps}
                                     />
                                 </CalendarBox>
                             </motion.div>

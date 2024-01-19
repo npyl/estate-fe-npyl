@@ -41,8 +41,7 @@ import PreviewImage from "./image/PreviewImage";
 import { useLazyDownloadImagesQuery } from "src/services/exports";
 import { useRouter } from "next/router";
 import { CloseIcon } from "yet-another-react-lightbox/core";
-import { padding } from "@mui/system";
-import { IPropertyImage } from "src/types/file";
+import ICarouselImage from "./carousel/types";
 
 // ----------------------------------------------------------------------
 
@@ -50,13 +49,7 @@ const THUMB_SIZE = 150;
 const THUMB_SIZEy = 100;
 
 type Props = {
-    data: {
-        id: string;
-        hidden: boolean;
-        title: string;
-        image: string;
-        description: string;
-    }[];
+    data: ICarouselImage[];
 };
 
 type StyledThumbnailsContainerProps = {
@@ -177,12 +170,12 @@ export default function CarouselThumbnail({ data }: Props) {
             }}
         >
             <Carousel {...carouselSettings1} asNavFor={nav2} ref={carousel1}>
-                {data.map((item, index) =>
-                    item.image ? (
+                {data.map(({ id, title, url }, index) =>
+                    url ? (
                         <Image
-                            key={item.id}
-                            alt={item.title}
-                            src={item.image}
+                            key={id}
+                            alt={title}
+                            src={url}
                             ratio="16/9"
                             onClick={() => {
                                 setClickedImageIndex(index);
@@ -212,13 +205,13 @@ export default function CarouselThumbnail({ data }: Props) {
                     asNavFor={nav1}
                     ref={carousel2}
                 >
-                    {data.map((item, index) =>
-                        item.image ? (
+                    {data.map(({ id, title, url }, index) =>
+                        url ? (
                             <Image
-                                key={item.id}
+                                key={id}
                                 disabledEffect
-                                alt={item.title}
-                                src={item.image}
+                                alt={title}
+                                src={url}
                                 sx={{
                                     width: THUMB_SIZE,
                                     height: THUMB_SIZEy,
@@ -250,8 +243,8 @@ export default function CarouselThumbnail({ data }: Props) {
         </Box>
     );
 
-    const _images = data.map((item, index) => {
-        return { src: item.image };
+    const _images = data.map((item) => {
+        return { src: item.url || "" };
     });
 
     const fullscreenRef = useRef<FullscreenRef>(null);
@@ -392,8 +385,9 @@ export function OnlyPhotosCarousel({ data }: Props) {
             setNav2(carousel2.current);
         }
     }, []);
-    const _images = data.map((item, index) => {
-        return { src: item.image };
+
+    const _images = data.map((item) => {
+        return { src: item.url || "" };
     });
 
     const handleExport = async (hidden: boolean) => {
@@ -428,12 +422,12 @@ export function OnlyPhotosCarousel({ data }: Props) {
                     item,
                     index // Here is the inclusion of the index
                 ) =>
-                    item.image ? (
+                    item.url ? (
                         <LabeledImage
                             key={item.id}
                             hidden={item.hidden}
                             alt={item.title}
-                            src={item.image}
+                            src={item.url}
                             ratio="16/9"
                             onClick={() => {
                                 setClickedImageIndex(index);
@@ -465,11 +459,11 @@ export function OnlyPhotosCarousel({ data }: Props) {
                         item,
                         index // Here is the inclusion of the index
                     ) =>
-                        item.image ? (
+                        item.url ? (
                             <Image
                                 key={item.id}
                                 alt={item.title}
-                                src={item.image}
+                                src={item.url}
                                 ratio="16/9"
                                 onClick={() => {
                                     setClickedImageIndex(index);
@@ -501,11 +495,11 @@ export function OnlyPhotosCarousel({ data }: Props) {
                         item,
                         index // Here is the inclusion of the index
                     ) =>
-                        item.image ? (
+                        item.url ? (
                             <Image
                                 key={item.id}
                                 alt={item.title}
-                                src={item.image}
+                                src={item.url}
                                 ratio="16/9"
                                 onClick={() => {
                                     setClickedImageIndex(index);

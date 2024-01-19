@@ -1,5 +1,5 @@
 // form
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { DateObject } from "react-multi-date-picker";
 // datepicker
@@ -14,7 +14,14 @@ type Props = DatePickerProps & {
 export default function RHFDatePicker({ name, ...other }: Props) {
     const { control, setValue, watch } = useFormContext();
 
-    const [visibleDate, setVisibleDate] = useState<string>(watch(name) || "");
+    const date = watch(name);
+    const [visibleDate, setVisibleDate] = useState<string>(date || "");
+
+    // initial
+    useEffect(
+        () => setVisibleDate(date ? new Date(date).toDateString() : ""),
+        [date]
+    );
 
     const handleSelect = useCallback((dates: DateObject | DateObject[]) => {
         const date = (dates as DateObject).toDate();

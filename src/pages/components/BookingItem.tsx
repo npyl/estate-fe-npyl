@@ -1,4 +1,5 @@
 "use client";
+
 import AspectRatioIcon from "@mui/icons-material/AspectRatio";
 import BathtubOutlinedIcon from "@mui/icons-material/BathtubOutlined";
 import BedOutlinedIcon from "@mui/icons-material/BedOutlined";
@@ -18,7 +19,6 @@ import { useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import CarouselSimple from "src/components/CarouselSimple";
 import { IMapMarker } from "src/components/Map/Map";
-import ICarouselImage from "src/components/carousel/types";
 import { IPropertyResultResponse } from "src/types/properties";
 import { formatNumberWithCommas } from "src/utils/formatNumber";
 // ----------------------------------------------------------------------
@@ -89,27 +89,15 @@ export const BookingItem = ({
         }
     }, [isActive]);
 
-    const _carouselImages: ICarouselImage[] = useMemo(() => {
-        if (images && images.length > 0) {
-            return images.map((image, index) => ({
-                id: `${index}`,
-                title: "Image",
-                image: image,
-                description: "",
-                path: "/repository",
-            }));
-        } else {
-            return [
-                {
-                    id: "default",
-                    title: "Default Image",
-                    image: defaultImage,
-                    description: "Default image description",
-                    path: "/repository",
-                },
-            ];
-        }
-    }, [images]);
+    const convertedImages = useMemo(
+        () =>
+            images.map((url, index) => ({
+                id: index,
+                url: url || defaultImage,
+                title: "",
+            })) || [],
+        [images]
+    );
 
     return (
         <Paper
@@ -135,15 +123,13 @@ export const BookingItem = ({
         >
             {state.key === "SALE" && <ForSaleLabel />}
 
-            {_carouselImages.length > 0 && (
-                <Box sx={{ position: "relative" }}>
-                    <CarouselSimple
-                        onImageClick={() => router.push(`property/${id}`)}
-                        data={_carouselImages}
-                        ratio="4/3"
-                    />
-                </Box>
-            )}
+            <Box sx={{ position: "relative" }}>
+                <CarouselSimple
+                    onImageClick={() => router.push(`property/${id}`)}
+                    data={convertedImages}
+                    ratio="4/3"
+                />
+            </Box>
 
             <Box
                 sx={{

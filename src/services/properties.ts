@@ -25,6 +25,7 @@ import { ICustomer } from "src/types/customer";
 
 import axios, { AxiosProgressEvent } from "axios";
 import { LocationDisplay } from "src/types/enums";
+import { IOpenAIDetailsPOST } from "src/types/openai";
 
 interface JustData<T> {
     data: T;
@@ -285,9 +286,10 @@ export const properties = createApi({
             }),
             providesTags: ["SuggestedCustomers"],
         }),
+        // INFO: This is permanent delete (requires login by admin); later I will introduce an archiveProperty mutation aswell
         deleteProperty: builder.mutation<IProperties, number>({
             query: (id: number) => ({
-                url: `${id}`,
+                url: `/archive/${id}`,
                 method: "DELETE",
             }),
             invalidatesTags: ["Properties"],
@@ -837,6 +839,15 @@ export const properties = createApi({
             //          This is because, every photo contains a non-null url, but it is not ready for fetching.
             // invalidatesTags: ["Properties", "PropertyById"],
         }),
+
+        generateDescription: builder.mutation<string, IOpenAIDetailsPOST>({
+            query: (body: IOpenAIDetailsPOST) => ({
+                url: `/description/generate`,
+                method: "POST",
+                body,
+                responseHandler: "text",
+            }),
+        }),
     }),
 });
 
@@ -884,6 +895,8 @@ export const {
     useDeletePropertyDocumentMutation,
 
     useUploadPropertyFileMutation,
+
+    useGenerateDescriptionMutation,
 
     // attributes
     useGetPropertyAttributeQuery,

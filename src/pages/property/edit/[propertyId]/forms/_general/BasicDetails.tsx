@@ -14,14 +14,14 @@ import Panel from "src/components/Panel";
 import {
     RHFSwitch,
     RHFOnlyNumbers,
-    RHFDatePicker,
-    RHFCheckbox,
     Select,
     RHFTextField,
+    RHFCheckbox,
 } from "src/components/hook-form";
 
 import { useFormContext } from "react-hook-form";
 import Autocomplete from "../components/Autocomplete";
+import Rent from "./Rent";
 
 const useEnums = () => {
     const data = useGlobals();
@@ -47,7 +47,6 @@ const BasicSection: React.FC<any> = () => {
 
     const { propertyId } = router.query;
     const parentCategory = watch("parentCategory") || "";
-    const rented = watch("rented");
 
     const subCategoriesMap: {
         [key: string]: KeyValue[];
@@ -174,55 +173,9 @@ const BasicSection: React.FC<any> = () => {
                     </Grid>
                 </Grid>
             </Grid>
-            <Grid item xs={12} p={1}>
-                <RHFCheckbox name="rented" label={t("Rented")} />
-
-                <Grid
-                    container
-                    spacing={0}
-                    sx={{
-                        padding: "10px",
-                        border: "1px solid #000000",
-                        borderRadius: "10px",
-                    }}
-                >
-                    <Grid item xs={12}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={6}>
-                                <RHFDatePicker
-                                    name="availableAfter"
-                                    label={t("Available After").toString()}
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <RHFOnlyNumbers
-                                    name="currentRentPrice"
-                                    label={t("Current Rent Price")}
-                                    adornment="€"
-                                    disabled={!rented}
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <RHFDatePicker
-                                    name="rentalStart"
-                                    label={t("Rental Period Start").toString()}
-                                />
-                            </Grid>
-                            <Grid item xs={6}>
-                                <RHFDatePicker
-                                    name="rentalEnd"
-                                    label={t("Rental Period End").toString()}
-                                />
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </Grid>
-                <RHFCheckbox
-                    name="debatablePrice"
-                    label={t("Debatable Price")}
-                />
-                <RHFCheckbox name="auction" label={t("Auction")} />
-            </Grid>
+            <Rent />
+            <RHFCheckbox name="debatablePrice" label={t("Debatable Price")} />
+            <RHFCheckbox name="auction" label={t("Auction")} />
         </Panel>
     );
 };

@@ -77,7 +77,6 @@ const Customers: NextPage = () => {
             "customerPaginationState",
             JSON.stringify(paginationState)
         );
-        //console.log("currentPage:"+model.page)
     };
     function statusColor(params: GridCellParams) {
         const labels = (
@@ -90,16 +89,6 @@ const Customers: NextPage = () => {
         );
 
         return <div>{labels}</div>;
-    }
-
-    function labels(params: GridCellParams) {
-        const label = (
-            <ListLabelsItem
-                labels={params.row.labels || "-"}
-                label={""}
-            ></ListLabelsItem>
-        );
-        return <div>{label}</div>;
     }
 
     const columns: GridColDef[] = [
