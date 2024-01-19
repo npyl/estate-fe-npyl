@@ -285,9 +285,10 @@ export const properties = createApi({
             }),
             providesTags: ["SuggestedCustomers"],
         }),
+        // INFO: This is permanent delete (requires login by admin); later I will introduce an archiveProperty mutation aswell
         deleteProperty: builder.mutation<IProperties, number>({
             query: (id: number) => ({
-                url: `${id}`,
+                url: `/archive/${id}`,
                 method: "DELETE",
             }),
             invalidatesTags: ["Properties"],
