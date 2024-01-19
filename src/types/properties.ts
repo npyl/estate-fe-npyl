@@ -166,7 +166,7 @@ export interface IPropertyTechnicalFeaturesPOST {
     frameType?: string;
     paneGlassType?: string;
     floorType?: string;
-    inclination: string;
+    inclination?: string;
 
     windowScreens: boolean;
     fireplace: boolean;

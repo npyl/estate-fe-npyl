@@ -8,7 +8,7 @@ import CustomerInformation from "./CustomerInformation";
 import NotesSection from "./Notes";
 import DemandSection from "./Demand";
 
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { LoadingButton } from "@mui/lab";
 import { demandMapper } from "src/mappers/demand";
 import { ICustomer, ICustomerPOST } from "src/types/customer";
@@ -43,8 +43,8 @@ interface FormProps {
 }
 
 const LoginSchema = Yup.object().shape({
-    firstName: Yup.string().required("Enter First Name"),
-    lastName: Yup.string().required("Enter Last Name"),
+    firstName: Yup.string().required("First Name is required"),
+    lastName: Yup.string().required("Last Name is required"),
     email: Yup.string().email("Email must be a valid email address").optional(),
 });
 
@@ -94,7 +94,18 @@ const useCustomerForm = (customer?: ICustomer) => {
         values: defaultValues,
     });
 
-    const { reset, handleSubmit } = methods;
+    const {
+        reset,
+        handleSubmit,
+        formState: { errors },
+    } = methods;
+
+    const haveError = useMemo(() => Object.keys(errors).length > 0, [errors]);
+
+    // Scroll to top on error
+    useEffect(() => {
+        if (haveError) window.scrollTo(0, 0);
+    }, [haveError]);
 
     return { methods, handleSubmit, reset };
 };

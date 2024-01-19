@@ -92,7 +92,11 @@ const BasicForLandSection: React.FC<any> = () => {
         >
             <Grid container spacing={2}>
                 <Grid item xs={6}>
-                    <RHFTextField fullWidth name="code" label={t("Code")} />
+                    <RHFTextField
+                        fullWidth
+                        name="code"
+                        label={t("Code") + " *"}
+                    />
                 </Grid>
                 <Grid item xs={6}>
                     <Select
@@ -124,7 +128,7 @@ const BasicForLandSection: React.FC<any> = () => {
                 <Grid item xs={6}>
                     <Select
                         name="state"
-                        label={t("State")}
+                        label={t("State") + " *"}
                         options={stateEnum}
                     />
                 </Grid>
