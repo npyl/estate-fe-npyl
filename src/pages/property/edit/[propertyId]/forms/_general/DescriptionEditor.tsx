@@ -1,6 +1,11 @@
 import { LoadingButton } from "@mui/lab";
 import { Typography } from "@mui/material";
-import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
+import {
+    ContentState,
+    EditorState,
+    convertFromRaw,
+    convertToRaw,
+} from "draft-js";
 import * as React from "react";
 import { useCallback, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
@@ -72,18 +77,13 @@ const DescriptionSection: React.FC = () => {
         debouncedSetDescription(newEditorState);
     }, []);
 
-    const setFromRaw = useCallback((raw: string) => {
-        // convert description (string representing JSON) to JSON and set state
-        const contentState = convertFromRaw(JSON.parse(raw));
-        setEditorState(EditorState.createWithContent(contentState));
-    }, []);
-
     // first load
     useEffect(() => {
         if (!description) return;
 
         // convert description (string representing JSON) to JSON and set state
-        setFromRaw(description);
+        const contentState = convertFromRaw(JSON.parse(description));
+        setEditorState(EditorState.createWithContent(contentState));
     }, []);
 
     const debouncedSetDescription = useDebouncedCallback(
@@ -99,7 +99,13 @@ const DescriptionSection: React.FC = () => {
     );
 
     const handleGenerate = useCallback(
-        () => generateDescription(openAIDetails).unwrap().then(setFromRaw),
+        () =>
+            generateDescription(openAIDetails)
+                .unwrap()
+                .then((s) => {
+                    const contentState = ContentState.createFromText(s);
+                    setEditorState(EditorState.createWithContent(contentState));
+                }),
         [openAIDetails]
     );
 

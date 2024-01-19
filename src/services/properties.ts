@@ -845,6 +845,7 @@ export const properties = createApi({
                 url: `/description/generate`,
                 method: "POST",
                 body,
+                responseHandler: "text",
             }),
         }),
     }),
