@@ -15,7 +15,6 @@ const Panel = ({ label, endNode, children }: PanelProps) => {
         <Paper
             elevation={10}
             sx={{
-                overflow: "auto",
                 padding: 0.5,
             }}
         >

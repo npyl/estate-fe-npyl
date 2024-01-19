@@ -1,35 +1,89 @@
-import { Box, Card, CardContent, Typography } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import { Typography } from "@mui/material";
 import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import Panel from "src/components/Panel";
 import { DraftEditor } from "src/components/draft-editor";
 import { RHFTextField } from "src/components/hook-form";
+import { useGenerateDescriptionMutation } from "src/services/properties";
+import { IOpenAIDetailsPOST } from "src/types/openai";
 import { useDebouncedCallback } from "use-debounce";
+
+const useOpenAIDetails = (): { openAIDetails: IOpenAIDetailsPOST } => {
+    const { watch } = useFormContext();
+
+    return {
+        openAIDetails: {
+            category: watch("category"),
+            state: watch("state"),
+            price: watch("price"),
+            location: watch(""),
+            plotArea: watch("plotArea"),
+            yearOfConstruction: watch("construction.yearOfConstruction"),
+            yearOfRenovation: watch("construction.yearOfRenovation"),
+            furnished: watch("technicalFeatures.furnished"),
+            floor: watch("details.floor"),
+            layers: watch("details.layers"),
+            kitchens: watch("details.kitchens"),
+            bathrooms: watch("details.bathrooms"),
+            livingrooms: watch("details.livingrooms"),
+            frameType: watch("technicalFeatures.frameType"),
+            floorType: watch("technicalFeatures.floorType"),
+            energyClass: watch("heatingAndEnergy.energyClass"),
+            balconies: watch("areas.balconies"),
+
+            attic: watch("details.attic"),
+            storeroom: watch("details.storeroom"),
+            safetyDoor: watch("technicalFeatures.safetyDoor"),
+            fireplace: watch("technicalFeatures.fireplace"),
+            suitableForStudent: watch("suitableFor.student"),
+            pool: watch("features.pool"),
+
+            distanceFromPublicTransportation: watch(
+                "distances.publicTransport"
+            ),
+            distanceFromSea: watch("distances.sea"),
+            distanceFromSupermarket: watch("distances.supermarket"),
+
+            language: "Greek",
+        },
+    };
+};
 
 const DescriptionSection: React.FC = () => {
     const { t } = useTranslation();
     const { watch, setValue } = useFormContext();
 
+    const [generateDescription, { isLoading }] =
+        useGenerateDescriptionMutation();
+
+    const { openAIDetails } = useOpenAIDetails();
     const description = watch("description");
 
     const [editorState, setEditorState] = useState<EditorState>(
         EditorState.createEmpty()
     );
 
-    const onEditorStateChange = (newEditorState: EditorState) => {
+    const onEditorStateChange = useCallback((newEditorState: EditorState) => {
         setEditorState(newEditorState);
         debouncedSetDescription(newEditorState);
-    };
+    }, []);
+
+    const setFromRaw = useCallback((raw: string) => {
+        // convert description (string representing JSON) to JSON and set state
+        const contentState = convertFromRaw(JSON.parse(raw));
+        setEditorState(EditorState.createWithContent(contentState));
+    }, []);
 
     // first load
     useEffect(() => {
         if (!description) return;
 
         // convert description (string representing JSON) to JSON and set state
-        const contentState = convertFromRaw(JSON.parse(description));
-        setEditorState(EditorState.createWithContent(contentState));
+        setFromRaw(description);
     }, []);
 
     const debouncedSetDescription = useDebouncedCallback(
@@ -44,42 +98,38 @@ const DescriptionSection: React.FC = () => {
         100 // the delay in ms
     );
 
+    const handleGenerate = useCallback(
+        () => generateDescription(openAIDetails).unwrap().then(setFromRaw),
+        [openAIDetails]
+    );
+
     return (
-        <Card>
-            <Box
+        <Panel
+            label={t("Title")}
+            endNode={
+                <LoadingButton
+                    loading={isLoading}
+                    loadingPosition="start"
+                    variant="outlined"
+                    onClick={handleGenerate}
+                >
+                    {isLoading ? t("Generating...") : t("Generate Description")}
+                </LoadingButton>
+            }
+        >
+            <RHFTextField fullWidth name="title" />
+
+            <Typography variant="h6" flex={1}>
+                {t("Description")}
+            </Typography>
+            <DraftEditor
                 sx={{
-                    px: 3,
-                    py: 1.5,
-                    display: "grid",
+                    minHeight: "200px",
                 }}
-            >
-                <Typography variant="h6" flex={1}>
-                    {t("Title")}
-                </Typography>
-                <RHFTextField fullWidth name="title" />
-            </Box>
-            <Box
-                sx={{
-                    px: 3,
-                    py: 1.5,
-                    display: "flex",
-                    justifyContent: "left",
-                }}
-            >
-                <Typography variant="h6" flex={1}>
-                    {t("Description")}
-                </Typography>
-            </Box>
-            <CardContent>
-                <DraftEditor
-                    sx={{
-                        minHeight: "104px",
-                    }}
-                    editorState={editorState}
-                    onEditorStateChange={onEditorStateChange}
-                />
-            </CardContent>
-        </Card>
+                editorState={editorState}
+                onEditorStateChange={onEditorStateChange}
+            />
+        </Panel>
     );
 };
 

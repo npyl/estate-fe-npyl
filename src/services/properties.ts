@@ -25,6 +25,7 @@ import { ICustomer } from "src/types/customer";
 
 import axios, { AxiosProgressEvent } from "axios";
 import { LocationDisplay } from "src/types/enums";
+import { IOpenAIDetailsPOST } from "src/types/openai";
 
 interface JustData<T> {
     data: T;
@@ -838,6 +839,14 @@ export const properties = createApi({
             //          This is because, every photo contains a non-null url, but it is not ready for fetching.
             // invalidatesTags: ["Properties", "PropertyById"],
         }),
+
+        generateDescription: builder.mutation<string, IOpenAIDetailsPOST>({
+            query: (body: IOpenAIDetailsPOST) => ({
+                url: `/description/generate`,
+                method: "POST",
+                body,
+            }),
+        }),
     }),
 });
 
@@ -885,6 +894,8 @@ export const {
     useDeletePropertyDocumentMutation,
 
     useUploadPropertyFileMutation,
+
+    useGenerateDescriptionMutation,
 
     // attributes
     useGetPropertyAttributeQuery,
