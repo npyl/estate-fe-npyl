@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { Delete } from "@mui/icons-material";
 import { SoftButton } from "src/components/SoftButton";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useEditPropertyImageMutation } from "src/services/properties";
 
 import CarouselSimple from "src/components/CarouselSimple";
@@ -68,26 +68,11 @@ export const GalleryManager: React.FC<IGalleryManager> = (props) => {
 
     const [showControl, setShowControl] = useState(false);
 
-    //
-    //  Carousel
-    //
-    const _carouselImages: ICarouselImage[] = useMemo(
-        () =>
-            images.map((image) => ({
-                id: image.key,
-                title: "Image",
-                image: image.url!,
-                description: "",
-                hidden: image.hidden,
-                path: "/repository",
-            })),
-        [images]
-    );
     // Update Carousel Index *ONLY* if we have a seriously valid index
     const carouselIndex = useConditionalMemo(
-        () => _carouselImages.findIndex((e) => e.id === currentImage?.key),
+        () => images.findIndex((e) => e.key === currentImage?.key),
         (newValue) => newValue !== -1,
-        [currentImage, _carouselImages]
+        [currentImage, images]
     );
 
     const handleUpdate = useCallback(() => {
@@ -107,7 +92,7 @@ export const GalleryManager: React.FC<IGalleryManager> = (props) => {
 
     const handleImageChange = (i: ICarouselImage) => {
         handleClear();
-        onChange(i.id);
+        onChange(i.key!);
     };
 
     const handleClear = () => {
@@ -153,7 +138,7 @@ export const GalleryManager: React.FC<IGalleryManager> = (props) => {
                         <CarouselSimple
                             onImageChange={handleImageChange}
                             mainLabel="main"
-                            data={_carouselImages}
+                            data={images as ICarouselImage[]}
                             initialIndex={carouselIndex}
                         />
                     </Grid>

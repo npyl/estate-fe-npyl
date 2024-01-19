@@ -238,7 +238,7 @@ const ImagesSection: React.FC = () => {
         (key?: string) => {
             if (!key) return;
 
-            const newThumbnailKey = files[0].key === key ? files[1].key : "";
+            const newThumbnailKey = files[0]?.key === key ? files[1]?.key : "";
 
             // Prepare Next Image to avoid jumping
             const index = files.findIndex((f) => f.key === key);

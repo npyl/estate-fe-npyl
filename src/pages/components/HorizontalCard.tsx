@@ -18,6 +18,8 @@ function truncate(str: string, n: number) {
     return str.length > n ? str.substr(0, n - 1) + "..." : str;
 }
 
+const defaultImage = "/static/noImage.png";
+
 export function HorizontalCard({
     item,
     activeMarker,
@@ -49,17 +51,15 @@ export function HorizontalCard({
         }
     }, [isActive]);
 
-    const _carouselImages: ICarouselImage[] = useMemo(() => {
-        return images && images.length > 0
-            ? images.map((image, index) => ({
-                  id: `${index}`,
-                  title: "Image",
-                  image: image,
-                  description: "",
-                  path: "/repository",
-              }))
-            : [];
-    }, [images]);
+    const convertedImages = useMemo(
+        () =>
+            images.map((url, index) => ({
+                id: index,
+                url: url || defaultImage,
+                title: "",
+            })) || [],
+        [images]
+    );
 
     return (
         <Grid
@@ -87,7 +87,7 @@ export function HorizontalCard({
                 <CarouselSimple
                     ratio="1/1"
                     onImageClick={() => router.push(`property/${id}`)}
-                    data={_carouselImages}
+                    data={convertedImages}
                 />
             </Grid>
             <Grid

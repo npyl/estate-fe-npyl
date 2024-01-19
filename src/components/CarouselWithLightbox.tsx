@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 // @mui
-import { Box, Stack } from "@mui/material";
+import { Box } from "@mui/material";
 
 import CarouselArrowIndex from "./carousel/CarouselArrowIndex";
 import Carousel from "./carousel";
@@ -23,18 +23,12 @@ import "yet-another-react-lightbox/plugins/counter.css";
 import "yet-another-react-lightbox/styles.css";
 
 import { FullscreenRef } from "yet-another-react-lightbox";
+import ICarouselImage from "./carousel/types";
 
 // ----------------------------------------------------------------------
 
-const THUMB_SIZE = 64;
-
 type Props = {
-    data: {
-        id: string;
-        title: string;
-        image: string;
-        description: string;
-    }[];
+    data: ICarouselImage[];
 };
 
 // ----------------------------------------------------------------------
@@ -82,11 +76,11 @@ export default function CarouselWithLightbox({ data }: Props) {
             }}
         >
             <Carousel {...carouselSettings1} asNavFor={nav1} ref={carousel1}>
-                {data.map((item, index) => (
+                {data.map(({ id, title, url }, index) => (
                     <Image
-                        key={item.id}
-                        alt={item.title}
-                        src={item.image}
+                        key={id}
+                        alt={title}
+                        src={url || ""}
                         ratio="16/9"
                         borderRadius={2}
                         padding={1}
@@ -106,7 +100,7 @@ export default function CarouselWithLightbox({ data }: Props) {
     );
 
     const _images = data.map((item, index) => {
-        return { src: item.image };
+        return { src: item.url || "" };
     });
 
     const fullscreenRef = useRef<FullscreenRef>(null);

@@ -1,8 +1,7 @@
-export default interface ICarouselImage {
-    id: string;
-    title: string;
-    image: string;
-    description: string;
-    hidden?: boolean;
-    path: string;
+import { IPropertyBlueprint, IPropertyImage } from "src/types/file";
+
+type GeneralFile = IPropertyImage & IPropertyBlueprint;
+
+export default interface ICarouselImage extends Partial<GeneralFile> {
+    url: string; // required
 }
