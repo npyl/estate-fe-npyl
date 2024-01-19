@@ -1,39 +1,15 @@
 import { useMemo, useState } from "react";
-import {
-    IProperties,
-    IPropertiesPOST,
-    IPropertyConstructionPOST,
-    IPropertyHeatingAndEnergyPOST,
-    IPropertySuitableFor,
-    IPropertyTechnicalFeaturesPOST,
-} from "src/types/properties";
+import { IProperties, IPropertiesPOST } from "src/types/properties";
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import { IPropertyDetailsPOST } from "src/types/details";
 import { properties } from "src/services/properties";
 import { dispatch } from "src/store";
 import { LocationDisplay } from "src/types/enums";
 import { IPropertyFeatures } from "src/types/features";
 
-interface DetailsYup extends Partial<IPropertyDetailsPOST> {}
-interface HeatingAndEnergyYup extends Partial<IPropertyHeatingAndEnergyPOST> {}
-interface TechnicalFeaturesYup
-    extends Partial<IPropertyTechnicalFeaturesPOST> {}
-interface SuitableForYup extends Partial<IPropertySuitableFor> {}
-interface FeaturesYup extends Partial<IPropertyFeatures> {}
-interface ConstructionYup extends Partial<IPropertyConstructionPOST> {}
-
-type OmitList =
-    | "details"
-    | "suitableFor"
-    | "heatingAndEnergy"
-    | "technicalFeatures"
-    | "features"
-    | "construction"
-    | "managerId"
-    | "ownerId";
+type OmitList = "managerId" | "ownerId";
 
 // required fields
 interface IPropertyYup extends Partial<Omit<IPropertiesPOST, OmitList>> {
@@ -42,13 +18,6 @@ interface IPropertyYup extends Partial<Omit<IPropertiesPOST, OmitList>> {
 
     managerId?: number | "";
     ownerId?: number | "";
-
-    details?: DetailsYup;
-    suitableFor?: SuitableForYup;
-    heatingAndEnergy?: HeatingAndEnergyYup;
-    technicalFeatures?: TechnicalFeaturesYup;
-    features?: FeaturesYup;
-    construction?: ConstructionYup;
 }
 
 // Custom validation function
@@ -113,6 +82,7 @@ const getLoginSchema = (initialCode: string, initialKeyCode: string) =>
 
 const getEnumKey = (key?: string, fix?: boolean) =>
     key || (fix ? undefined : "");
+const notNot = (bool?: boolean) => !!bool;
 
 export const fixDropdowns = (property?: IPropertiesPOST) => ({
     category: getEnumKey(property?.category, true),
@@ -158,6 +128,18 @@ export const fixDropdowns = (property?: IPropertiesPOST) => ({
     },
 });
 
+const reduceFeatures = (features?: IPropertyFeatures): IPropertyFeatures => {
+    if (!features) {
+        return {} as IPropertyFeatures;
+    }
+
+    return Object.keys(features).reduce((acc, key) => {
+        acc[key as keyof IPropertyFeatures] =
+            !!features[key as keyof IPropertyFeatures];
+        return acc;
+    }, {} as IPropertyFeatures);
+};
+
 const getDefaultValues = (property?: IProperties): IPropertyYup => ({
     code: property?.code || "",
     state: property?.state?.key || "",
@@ -177,27 +159,41 @@ const getDefaultValues = (property?: IProperties): IPropertyYup => ({
     parentCategory: getEnumKey(property?.parentCategory?.key),
 
     title: property?.title || "",
-    rented: property?.rented,
+    rented: notNot(property?.rented),
 
     rentalStart: property?.rentalStart || "",
     rentalEnd: property?.rentalEnd || "",
     availableAfter: property?.availableAfter || "",
-    auction: property?.auction,
-    exclusive: property?.exclusive,
+    auction: notNot(property?.auction),
+    exclusive: notNot(property?.exclusive),
 
-    debatablePrice: property?.debatablePrice,
-    buildable: property?.buildable,
+    debatablePrice: notNot(property?.debatablePrice),
+    buildable: notNot(property?.buildable),
     video: property?.video || "",
     description: property?.description || "",
     descriptionText: property?.descriptionText || "",
 
     suitableFor: {
-        ...property?.suitableFor,
+        agriculturalUse: notNot(property?.suitableFor?.agriculturalUse),
+        cottage: notNot(property?.suitableFor?.cottage),
+        doctorsOffice: notNot(property?.suitableFor?.doctorsOffice),
+        investment: notNot(property?.suitableFor?.investment),
+        professionalUse: notNot(property?.suitableFor?.professionalUse),
+        renovation: notNot(property?.suitableFor?.renovation),
+        student: notNot(property?.suitableFor?.student),
+        touristRental: notNot(property?.suitableFor?.touristRental),
     },
 
     heatingAndEnergy: {
-        ...property?.heatingAndEnergy,
+        // booleans
+        airConditioning: notNot(property?.heatingAndEnergy?.airConditioning),
+        floorHeating: notNot(property?.heatingAndEnergy?.floorHeating),
+        offPeakElectricity: notNot(
+            property?.heatingAndEnergy?.offPeakElectricity
+        ),
+        solarBoiler: notNot(property?.heatingAndEnergy?.solarBoiler),
 
+        // dropdowns
         electricityType: getEnumKey(
             property?.heatingAndEnergy?.electricityType?.key
         ),
@@ -216,11 +212,46 @@ const getDefaultValues = (property?: IProperties): IPropertyYup => ({
 
     construction: {
         ...property?.construction,
+
+        elevator: notNot(property?.construction?.elevator),
+        incomplete: notNot(property?.construction?.incomplete),
+        internalStairs: notNot(property?.construction?.internalStairs),
+        needsRenovation: notNot(property?.construction?.needsRenovation),
+        neoclassical: notNot(property?.construction?.neoclassical),
+        newlyBuilt: notNot(property?.construction?.newlyBuilt),
+        preserved: notNot(property?.construction?.preserved),
+        renovated: notNot(property?.construction?.renovated),
+        underConstruction: notNot(property?.construction?.underConstruction),
     },
 
     technicalFeatures: {
+        // boolean
+        alarmSystem: notNot(property?.technicalFeatures?.alarmSystem),
+        bright: notNot(property?.technicalFeatures?.bright),
+        consideration: notNot(property?.technicalFeatures?.consideration),
+        doubleFrontage: notNot(property?.technicalFeatures?.doubleFrontage),
+        electricCarChargingFacilities: notNot(
+            property?.technicalFeatures?.electricCarChargingFacilities
+        ),
+        falseCeiling: notNot(property?.technicalFeatures?.falseCeiling),
+        fireplace: notNot(property?.technicalFeatures?.fireplace),
+        loadingUnloadingElevator: notNot(
+            property?.technicalFeatures?.loadingUnloadingElevator
+        ),
+        luxurious: notNot(property?.technicalFeatures?.luxurious),
+        painted: notNot(property?.technicalFeatures?.painted),
+        petsAllowed: notNot(property?.technicalFeatures?.petsAllowed),
+        reception: notNot(property?.technicalFeatures?.reception),
+        safetyDoor: notNot(property?.technicalFeatures?.safetyDoor),
+        satelliteTV: notNot(property?.technicalFeatures?.satelliteTV),
+        windowScreens: notNot(property?.technicalFeatures?.windowScreens),
+        wiring: notNot(property?.technicalFeatures?.wiring),
+        withEquipment: notNot(property?.technicalFeatures?.withEquipment),
+
+        // numeric
         ...property?.technicalFeatures,
 
+        // dropdowns
         floorType: getEnumKey(property?.technicalFeatures?.floorType?.key),
         frameType: getEnumKey(property?.technicalFeatures?.frameType?.key),
         furnished: getEnumKey(property?.technicalFeatures?.furnished?.key),
@@ -231,8 +262,25 @@ const getDefaultValues = (property?: IProperties): IPropertyYup => ({
     },
 
     details: {
+        // boolean
+        attic: notNot(property?.details?.attic),
+        electricitySupply: notNot(property?.details?.electricitySupply),
+        floorApartment: notNot(property?.details?.floorApartment),
+        hasBuilding: notNot(property?.details?.hasBuilding),
+        hasBuildingPermit: notNot(property?.details?.hasBuildingPermit),
+        irrigation: notNot(property?.details?.irrigation),
+        legalAndTechnicalControl: notNot(
+            property?.details?.legalAndTechnicalControl
+        ),
+        penthouse: notNot(property?.details?.penthouse),
+        playroom: notNot(property?.details?.playroom),
+        storeroom: notNot(property?.details?.storeroom),
+        waterSupply: notNot(property?.details?.waterSupply),
+
+        // numeric
         ...property?.details,
 
+        // mappings
         balconies:
             property?.details?.balconies.map(({ area, side }) => ({
                 area,
@@ -244,6 +292,7 @@ const getDefaultValues = (property?: IProperties): IPropertyYup => ({
                 parkingType: parkingType?.key,
             })) || [],
 
+        // dropdowns
         orientation: getEnumKey(property?.details?.orientation?.key),
         accessibility: getEnumKey(property?.details?.accessibility?.key),
         landUse: getEnumKey(property?.details?.landUse?.key),
@@ -267,7 +316,7 @@ const getDefaultValues = (property?: IProperties): IPropertyYup => ({
     },
 
     features: {
-        ...property?.features,
+        ...reduceFeatures(property?.features),
     },
 
     labelIDs: property?.labels
