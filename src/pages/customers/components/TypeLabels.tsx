@@ -36,9 +36,7 @@ export const TypeLabels = ({ seller, lessor, leaser, buyer }: TypeProps) => {
         [seller, lessor, leaser, buyer]
     );
 
-    const belowXl = useResponsive("down", "xl");
     const belowSm = useResponsive("down", "sm");
-    const belowXs = useResponsive("down", "xs");
 
     return (
         <Box display="flex" flexDirection="row" flexWrap="wrap">
@@ -50,13 +48,7 @@ export const TypeLabels = ({ seller, lessor, leaser, buyer }: TypeProps) => {
                         opaque
                         color={color as LabelColor}
                     >
-                        {belowXs
-                            ? t(type).slice(0, 1)
-                            : belowSm
-                            ? t(type).slice(0, 2)
-                            : belowXl
-                            ? t(type).slice(0, 3)
-                            : t(type)}
+                        {belowSm ? t(type).slice(0, 3) : t(type)}
                     </Label>
                 ) : null
             )}
