@@ -74,8 +74,8 @@ const getFIELDS = (
     leadSource?: LeadSource,
     customerId?: string
 ) => [
-    <RHFTextField fullWidth name="firstName" label={t("First Name")} />,
-    <RHFTextField fullWidth name="lastName" label={t("Last Name")} />,
+    <RHFTextField fullWidth name="firstName" label={t("First Name") + " *"} />,
+    <RHFTextField fullWidth name="lastName" label={t("Last Name") + " *"} />,
     <RHFTextField fullWidth name="email" label={t("Email")} />,
     <FormControl fullWidth variant="outlined">
         <InputLabel>{t("Managed By")}</InputLabel>

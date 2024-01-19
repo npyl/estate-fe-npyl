@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { IProperties, IPropertiesPOST } from "src/types/properties";
 
 import { useForm } from "react-hook-form";
@@ -7,7 +7,6 @@ import * as Yup from "yup";
 import { properties } from "src/services/properties";
 import { dispatch } from "src/store";
 import { LocationDisplay } from "src/types/enums";
-import { IPropertyFeatures } from "src/types/features";
 
 type OmitList = "managerId" | "ownerId";
 
@@ -71,6 +70,7 @@ const getLoginSchema = (initialCode: string, initialKeyCode: string) =>
                 async (value) => await codeIsUnique(initialCode, value)
             )
             .required(),
+
         keyCode: Yup.string().test(
             "keyCodeIsUnique",
             "Key Code already exists",
@@ -127,18 +127,6 @@ export const fixDropdowns = (property?: IPropertiesPOST) => ({
         inclination: getEnumKey(property?.technicalFeatures?.inclination, true),
     },
 });
-
-const reduceFeatures = (features?: IPropertyFeatures): IPropertyFeatures => {
-    if (!features) {
-        return {} as IPropertyFeatures;
-    }
-
-    return Object.keys(features).reduce((acc, key) => {
-        acc[key as keyof IPropertyFeatures] =
-            !!features[key as keyof IPropertyFeatures];
-        return acc;
-    }, {} as IPropertyFeatures);
-};
 
 const getDefaultValues = (property?: IProperties): IPropertyYup => ({
     code: property?.code || "",
@@ -393,7 +381,18 @@ const usePropertyForm = (property?: IProperties) => {
         values: defaultValues,
     });
 
-    const { reset, handleSubmit } = methods;
+    const {
+        reset,
+        handleSubmit,
+        formState: { errors },
+    } = methods;
+
+    const haveError = useMemo(() => Object.keys(errors).length > 0, [errors]);
+
+    // Scroll to top on error
+    useEffect(() => {
+        if (haveError) window.scrollTo(0, 0);
+    }, [haveError]);
 
     return { methods, handleSubmit, reset };
 };
