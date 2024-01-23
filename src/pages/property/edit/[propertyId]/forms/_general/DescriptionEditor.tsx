@@ -7,7 +7,7 @@ import {
     convertToRaw,
 } from "draft-js";
 import * as React from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import Panel from "src/components/Panel";
@@ -17,46 +17,75 @@ import { useGenerateDescriptionMutation } from "src/services/properties";
 import { IOpenAIDetailsPOST } from "src/types/openai";
 import { useDebouncedCallback } from "use-debounce";
 
+// Utility function to join elements with a comma, excluding nullish or empty values
+const joinWithComma = (...elements: (string | null | undefined)[]): string => {
+    return elements.filter((el) => el !== "" && el != null).join(", ");
+};
+
 const useOpenAIDetails = (): { openAIDetails: IOpenAIDetailsPOST } => {
     const { watch } = useFormContext();
 
+    const region = watch("location.region");
+    const city = watch("location.city");
+    const complex = watch("location.complex");
+
+    const street = watch("location.street");
+    const number = watch("location.number");
+    const zipCode = watch("location.zipCode");
+
+    const location = useMemo(
+        () => joinWithComma(region, city, complex, street, number, zipCode),
+        [region, city, complex, street, number, zipCode]
+    );
+
     return {
         openAIDetails: {
-            category: watch("category"),
-            state: watch("state"),
+            location,
             price: watch("price"),
-            location: watch(""),
             plotArea: watch("plotArea"),
             yearOfConstruction: watch("construction.yearOfConstruction"),
             yearOfRenovation: watch("construction.yearOfRenovation"),
-            furnished: watch("technicalFeatures.furnished"),
-            floor: watch("details.floor"),
             layers: watch("details.layers"),
             kitchens: watch("details.kitchens"),
             bathrooms: watch("details.bathrooms"),
             livingrooms: watch("details.livingrooms"),
-            frameType: watch("technicalFeatures.frameType"),
-            floorType: watch("technicalFeatures.floorType"),
-            energyClass: watch("heatingAndEnergy.energyClass"),
             balconies: watch("areas.balconies"),
-
             attic: watch("details.attic"),
             storeroom: watch("details.storeroom"),
             safetyDoor: watch("technicalFeatures.safetyDoor"),
             fireplace: watch("technicalFeatures.fireplace"),
             suitableForStudent: watch("suitableFor.student"),
             pool: watch("features.pool"),
-
             distanceFromPublicTransportation: watch(
                 "distances.publicTransport"
             ),
             distanceFromSea: watch("distances.sea"),
             distanceFromSupermarket: watch("distances.supermarket"),
-
             language: "Greek",
+
+            // Dropdowns
+            category: watch("category"),
+            state: watch("state"),
+            furnished: watch("technicalFeatures.furnished"),
+            floor: watch("details.floor"),
+            frameType: watch("technicalFeatures.frameType"),
+            floorType: watch("technicalFeatures.floorType"),
+            energyClass: watch("heatingAndEnergy.energyClass"),
         },
     };
 };
+
+const getEnumKey = (key?: string) => (key !== "" ? key : undefined);
+
+const fixDropdowns = (details?: IOpenAIDetailsPOST) => ({
+    category: getEnumKey(details?.category),
+    state: getEnumKey(details?.state),
+    furnished: getEnumKey(details?.furnished),
+    floor: getEnumKey(details?.floor),
+    frameType: getEnumKey(details?.frameType),
+    floorType: getEnumKey(details?.floorType),
+    energyClass: getEnumKey(details?.energyClass),
+});
 
 const DescriptionSection: React.FC = () => {
     const { t } = useTranslation();
@@ -100,7 +129,10 @@ const DescriptionSection: React.FC = () => {
 
     const handleGenerate = useCallback(
         () =>
-            generateDescription(openAIDetails)
+            generateDescription({
+                ...openAIDetails,
+                ...fixDropdowns(openAIDetails),
+            })
                 .unwrap()
                 .then((s) => {
                     const contentState = ContentState.createFromText(s);
