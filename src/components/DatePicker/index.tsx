@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { forwardRef, useState } from "react";
 import {
     Popper,
     TextField,
@@ -51,90 +51,99 @@ const StyledCalendarIcon = styled(CalendarMonthIcon)({
 
 const id = "date-picker-popper";
 
-const DatePicker: React.FC<DatePickerProps> = ({
-    dateFrom = "",
-    dateTo = "",
-    date = "",
-    range = false,
-    label = "",
-    pickerProps,
-    onSelect,
-    ...props
-}) => {
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+const DatePicker = forwardRef<HTMLDivElement, DatePickerProps>(
+    (
+        {
+            dateFrom = "",
+            dateTo = "",
+            date = "",
+            range = false,
+            label = "",
+            pickerProps,
+            onSelect,
+            ...props
+        },
+        ref
+    ) => {
+        const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-    const handleClick = (event: React.MouseEvent<HTMLElement>) =>
-        setAnchorEl(anchorEl ? null : event.currentTarget);
+        const handleClick = (event: React.MouseEvent<HTMLElement>) =>
+            setAnchorEl(anchorEl ? null : event.currentTarget);
 
-    const handleClickAway = () => setAnchorEl(null);
+        const handleClickAway = () => setAnchorEl(null);
 
-    const open = Boolean(anchorEl);
+        const open = Boolean(anchorEl);
 
-    return (
-        <ClickAwayListener onClickAway={handleClickAway}>
-            <Box>
-                <StyledTextField
-                    fullWidth
-                    onClick={handleClick}
-                    value={
-                        range
-                            ? `${new Date(
-                                  dateFrom
-                              ).toDateString()} - ${new Date(
-                                  dateTo
-                              ).toDateString()}`
-                            : new Date(date).toDateString()
-                    }
-                    label={label || "Select dates"}
-                    InputProps={{
-                        readOnly: true,
-                        endAdornment: <StyledCalendarIcon />,
-                    }}
-                    {...props}
-                />
-                <AnimatePresence>
-                    {open && (
-                        <Popper
-                            id={id}
-                            open={open}
-                            anchorEl={anchorEl}
-                            sx={{
-                                zIndex: 1000,
-                                backgroundColor: "white",
-                            }}
-                        >
-                            <motion.div
-                                initial="hidden"
-                                animate="visible"
-                                exit="hidden"
-                                variants={datePickerVariants}
+        return (
+            <ClickAwayListener onClickAway={handleClickAway}>
+                <Box>
+                    <StyledTextField
+                        ref={ref}
+                        fullWidth
+                        onClick={handleClick}
+                        value={
+                            range
+                                ? `${new Date(
+                                      dateFrom
+                                  ).toDateString()} - ${new Date(
+                                      dateTo
+                                  ).toDateString()}`
+                                : new Date(date).toDateString()
+                        }
+                        label={label || "Select dates"}
+                        InputProps={{
+                            readOnly: true,
+                            endAdornment: <StyledCalendarIcon />,
+                        }}
+                        {...props}
+                    />
+                    <AnimatePresence>
+                        {open && (
+                            <Popper
+                                id={id}
+                                open={open}
+                                anchorEl={anchorEl}
+                                sx={{
+                                    zIndex: 1000,
+                                    backgroundColor: "white",
+                                }}
                             >
-                                <CalendarBox isSingleDate>
-                                    <Calendar
-                                        value={
-                                            range
-                                                ? [dateFrom || "", dateTo || ""]
-                                                : date || ""
-                                        }
-                                        onChange={onSelect}
-                                        range={range}
-                                        rangeHover
-                                        highlightToday={true}
-                                        numberOfMonths={1}
-                                        monthYearSeparator=" "
-                                        showOtherDays
-                                        weekStartDayIndex={1}
-                                        format="DD/MM/YYYY"
-                                        {...pickerProps}
-                                    />
-                                </CalendarBox>
-                            </motion.div>
-                        </Popper>
-                    )}
-                </AnimatePresence>
-            </Box>
-        </ClickAwayListener>
-    );
-};
+                                <motion.div
+                                    initial="hidden"
+                                    animate="visible"
+                                    exit="hidden"
+                                    variants={datePickerVariants}
+                                >
+                                    <CalendarBox isSingleDate>
+                                        <Calendar
+                                            value={
+                                                range
+                                                    ? [
+                                                          dateFrom || "",
+                                                          dateTo || "",
+                                                      ]
+                                                    : date || ""
+                                            }
+                                            onChange={onSelect}
+                                            range={range}
+                                            rangeHover
+                                            highlightToday={true}
+                                            numberOfMonths={1}
+                                            monthYearSeparator=" "
+                                            showOtherDays
+                                            weekStartDayIndex={1}
+                                            format="DD/MM/YYYY"
+                                            {...pickerProps}
+                                        />
+                                    </CalendarBox>
+                                </motion.div>
+                            </Popper>
+                        )}
+                    </AnimatePresence>
+                </Box>
+            </ClickAwayListener>
+        );
+    }
+);
 
 export default DatePicker;

@@ -23,11 +23,20 @@ export default function RHFOnlyNumbers({
 }: Props) {
     const { control, setValue } = useFormContext();
 
-    const [localValue, setLocalValue] = useState("");
+    // INFO: *ONLY* used if we are reading values from BE (e.g. on edit mode where we have initial value)
+    //       Instead of using our local displayValue, we use field.value (which has an initial value coming from BE)
+    //       Since numeric-format does not expose a format() method, we run our own.
+    const getFormattedValue = useCallback((value?: string | number | null) => {
+        // Basically, we just convert the "." (decimal separator) to a greek ","
+        if (value === 0 || value === null || value === undefined) return "";
+        return value.toString().replace(/\./g, ",");
+    }, []);
+
+    const [displayValue, setDisplayValue] = useState("");
 
     const handleChange = useCallback((values: NumberFormatValues) => {
         setValue(name, values.floatValue || 0);
-        setLocalValue(values.formattedValue);
+        setDisplayValue(values.formattedValue);
     }, []);
 
     return (
@@ -37,20 +46,20 @@ export default function RHFOnlyNumbers({
             render={({ field, fieldState: { error } }) => (
                 <NumericFormat
                     fullWidth
-                    customInput={TextField}
                     label={label}
-                    // TODO: fix this:
-                    // thousandSeparator={"."}
-                    onValueChange={handleChange}
-                    value={localValue}
-                    decimalSeparator={acceptsDecimal ? "," : undefined}
-                    allowedDecimalSeparators={
-                        acceptsDecimal ? [","] : undefined
-                    }
-                    allowNegative={false}
+                    customInput={TextField}
                     disabled={disabled}
+                    value={displayValue || getFormattedValue(field.value)}
+                    // formatting
+                    decimalSeparator={acceptsDecimal ? "," : ""}
+                    allowedDecimalSeparators={acceptsDecimal ? [",", "."] : []}
+                    allowNegative={false}
+                    onValueChange={handleChange}
+                    valueIsNumericString
+                    // error
                     error={Boolean(error)}
                     helperText={error ? error.message : null}
+                    // adornment
                     InputProps={{
                         endAdornment: adornment ? (
                             <InputAdornment position="end">
