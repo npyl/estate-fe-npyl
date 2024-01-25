@@ -1,6 +1,6 @@
-import { Grid, InputBase, InputAdornment, IconButton } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
-import { alpha } from "@mui/material/styles";
+import { Grid, IconButton, InputAdornment, InputBase } from "@mui/material";
+import { alpha } from "@mui/system";
 
 import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";

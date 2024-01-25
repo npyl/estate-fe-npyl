@@ -1,12 +1,6 @@
 // @mui
-import {
-    IconButton,
-    IconButtonProps,
-    Stack,
-    StackProps,
-    styled,
-} from "@mui/material";
-import { alpha, useTheme } from "@mui/material/styles";
+import { IconButton, IconButtonProps, Stack, StackProps } from "@mui/material";
+import { alpha, styled, useTheme } from "@mui/material/styles";
 //
 import { IconifyProps } from "../iconify";
 //

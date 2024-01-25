@@ -4,9 +4,8 @@ import {
     ButtonProps,
     DialogContent,
     DialogContentProps,
-    styled,
 } from "@mui/material";
-
+import { styled } from "@mui/material/styles";
 interface PriceButtonProps extends ButtonProps {
     open: boolean;
 }

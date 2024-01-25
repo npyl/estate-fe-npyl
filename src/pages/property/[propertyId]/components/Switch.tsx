@@ -1,5 +1,5 @@
-import { Switch, SwitchProps, styled } from "@mui/material";
-
+import { Switch, SwitchProps } from "@mui/material";
+import { styled } from "@mui/material/styles";
 interface LabeledSwitchProps extends SwitchProps {
     labelOff: string;
     labelOn: string;

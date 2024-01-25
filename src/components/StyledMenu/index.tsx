@@ -1,6 +1,6 @@
 import { Menu, MenuProps } from "@mui/material";
 
-import { styled, alpha } from "@mui/material/styles";
+import { alpha, styled } from "@mui/material/styles";
 
 const StyledMenu = styled((props: MenuProps) => (
     <Menu

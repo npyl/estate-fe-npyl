@@ -1,4 +1,6 @@
-import { CircularProgress, SvgIconProps, createSvgIcon } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
+import { SvgIconProps } from "@mui/material/SvgIcon";
+import { createSvgIcon } from "@mui/material/utils";
 
 // First, create the icon with createSvgIcon
 const DocumentSvg = createSvgIcon(

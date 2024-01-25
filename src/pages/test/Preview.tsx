@@ -1,24 +1,12 @@
-import {
-    Box,
-    Button,
-    Grid,
-    GridProps,
-    Paper,
-    Typography,
-    styled,
-} from "@mui/material";
+import { Edit } from "@mui/icons-material";
+import { Box, Button, Grid, GridProps, Paper, Typography } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ILabel } from "src/types/label";
-import { Label } from "src/components/label";
-import {
-    useDeleteCustomerLabelMutation,
-    useDeleteLabelForResourceMutation,
-    useDeletePropertyLabelMutation,
-    useGetLabelsQuery,
-} from "src/services/labels";
-import { Edit } from "@mui/icons-material";
 import { BsTrash } from "react-icons/bs";
+import { Label } from "src/components/label";
+import { useGetLabelsQuery } from "src/services/labels";
+import { ILabel } from "src/types/label";
 
 interface StyledGridProps extends GridProps {
     editMode: boolean;

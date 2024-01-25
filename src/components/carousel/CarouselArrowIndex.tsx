@@ -1,6 +1,6 @@
 // @mui
-import { useTheme, styled, Theme } from "@mui/material/styles";
-import { Typography, Box, IconButton, SxProps } from "@mui/material";
+import { Box, IconButton, SxProps, Typography } from "@mui/material";
+import { Theme, styled, useTheme } from "@mui/material/styles";
 // utils
 import { bgBlur } from "../../utils/cssStyles";
 //

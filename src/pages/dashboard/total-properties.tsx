@@ -1,6 +1,8 @@
-import PropTypes from "prop-types";
-import { Card, CardHeader, styled, useTheme } from "@mui/material";
+import { Card, CardHeader } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import useTheme from "@mui/system/useTheme";
 import dynamic from "next/dynamic"; // Import 'next/dynamic'
+import PropTypes from "prop-types";
 import useChart from "src/components/chart/use-chart";
 
 // Define the dynamic import for the Chart component

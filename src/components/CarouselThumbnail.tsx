@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import {
     Box,
     Button,
+    CircularProgress,
     Dialog,
     DialogActions,
     DialogContent,
@@ -14,6 +15,7 @@ import {
     Tabs,
 } from "@mui/material";
 import { alpha, styled } from "@mui/material/styles";
+
 // utils
 import { bgGradient } from "src/utils/cssStyles";
 // components
@@ -22,10 +24,10 @@ import Image, { LabeledImage } from "src/components/image";
 
 import Lightbox, { ThumbnailsRef } from "yet-another-react-lightbox";
 import Captions from "yet-another-react-lightbox/plugins/captions";
+import Counter from "yet-another-react-lightbox/plugins/counter";
 import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
 import Video from "yet-another-react-lightbox/plugins/video";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
-import Counter from "yet-another-react-lightbox/plugins/counter";
 
 // INFO: This is a custom implementation of yet-another-react-lightbox/plugins/fullscreen that triggers the events: fullscreen and fullscreenExited
 import Fullscreen from "./lightbox-plugins/fullscreen";
@@ -34,14 +36,13 @@ import HideGallery from "./lightbox-plugins/hideGallery";
 import "yet-another-react-lightbox/plugins/captions.css";
 import "yet-another-react-lightbox/plugins/thumbnails.css";
 import "yet-another-react-lightbox/styles.css";
-import "yet-another-react-lightbox/styles.css";
 
-import { FullscreenRef } from "yet-another-react-lightbox";
-import PreviewImage from "./image/PreviewImage";
-import { useLazyDownloadImagesQuery } from "src/services/exports";
 import { useRouter } from "next/router";
+import { useLazyDownloadImagesQuery } from "src/services/exports";
+import { FullscreenRef } from "yet-another-react-lightbox";
 import { CloseIcon } from "yet-another-react-lightbox/core";
 import ICarouselImage from "./carousel/types";
+import PreviewImage from "./image/PreviewImage";
 
 // ----------------------------------------------------------------------
 
@@ -339,7 +340,7 @@ const downloadBlob = (blob: Blob, hidden: boolean): void => {
 export function OnlyPhotosCarousel({ data }: Props) {
     const router = useRouter();
     const { propertyId } = router.query;
-
+    const [loading, setLoading] = useState(false);
     const initialPluginList = [
         Captions,
         Fullscreen,
@@ -391,12 +392,16 @@ export function OnlyPhotosCarousel({ data }: Props) {
     });
 
     const handleExport = async (hidden: boolean) => {
+        setLoading(true);
         downloadZip({
             propertyId: +propertyId!,
             hidden,
         })
             .unwrap()
-            .then((e) => downloadBlob(e, hidden));
+            .then((e) => {
+                downloadBlob(e, hidden);
+                setLoading(false);
+            });
     };
 
     const handleDownload = () => {
@@ -613,10 +618,19 @@ export function OnlyPhotosCarousel({ data }: Props) {
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>
-                    <Button color="primary" onClick={() => handleExport(true)}>
+                    {loading && <CircularProgress size={"24px"} />}
+                    <Button
+                        color="primary"
+                        disabled={loading}
+                        onClick={() => handleExport(true)}
+                    >
                         All photos
                     </Button>
-                    <Button color="primary" onClick={() => handleExport(false)}>
+                    <Button
+                        color="primary"
+                        disabled={loading}
+                        onClick={() => handleExport(false)}
+                    >
                         Public photos
                     </Button>
                 </DialogActions>

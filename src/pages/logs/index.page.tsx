@@ -1,29 +1,30 @@
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import {
+    Avatar,
+    Box,
+    Chip,
+    Divider,
+    Grid,
+    Pagination,
+    Paper,
+    Stack,
+    Typography,
+} from "@mui/material";
+import { green, purple, yellow } from "@mui/material/colors";
+import { alpha } from "@mui/material/styles";
+import useTheme from "@mui/system/useTheme";
+import { format } from "date-fns"; // for date formatting
+import { NextPage } from "next";
+import Link from "next/link";
 import { FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { format } from "date-fns"; // for date formatting
-import { useFilterLogsMutation } from "src/services/logs";
-import Link from "next/link";
-import {
-    Box,
-    Paper,
-    Typography,
-    Pagination,
-    Skeleton,
-    Stack,
-    Grid,
-} from "@mui/material";
-import { ILog } from "src/types/logs"; // import your log type
-import { NextPage } from "next";
+import { useSelector } from "react-redux";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-import { alpha } from "@mui/material/styles";
-import { Avatar, useTheme, Divider } from "@mui/material";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import { green, yellow, purple } from "@mui/material/colors";
-import { Chip } from "@mui/material";
-import { FilterLogSection } from "./components";
-import { useSelector } from "react-redux";
+import { useFilterLogsMutation } from "src/services/logs";
 import { selectAll } from "src/slices/log";
+import { ILog } from "src/types/logs"; // import your log type
+import { FilterLogSection } from "./components";
 // import { parse, formatISO, utcToZonedTime } from "date-fns";
 
 export interface LogCardProps {

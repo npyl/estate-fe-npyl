@@ -1,5 +1,5 @@
 module.exports = {
-    reactStrictMode: false,
+    reactStrictMode: true,
     pageExtensions: ["page.tsx", "page.ts", "page.jsx", "page.js"],
 
     eslint: {
@@ -7,6 +7,16 @@ module.exports = {
         // your project has ESLint errors.
         ignoreDuringBuilds: true,
     },
+
+    modularizeImports: {
+        "@mui/material": {
+            transform: "@mui/material/{{member}}",
+        },
+        "@mui/icons-material": {
+            transform: "@mui/icons-material/{{member}}",
+        },
+    },
+
     webpack(config) {
         config.module.rules.push({
             test: /\.svg$/,

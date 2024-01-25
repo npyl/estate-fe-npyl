@@ -1,16 +1,16 @@
-import React, { forwardRef, useState } from "react";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import {
+    Box,
+    ClickAwayListener,
     Popper,
     TextField,
-    ClickAwayListener,
-    Box,
     TextFieldProps,
-    styled,
 } from "@mui/material";
+import { styled } from "@mui/material/styles";
+import { AnimatePresence, motion } from "framer-motion";
+import React, { forwardRef, useState } from "react";
 import { Calendar, CalendarProps, DateObject } from "react-multi-date-picker";
 import { CalendarBox } from "./styled";
-import { motion, AnimatePresence } from "framer-motion";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 
 const datePickerVariants = {
     hidden: {

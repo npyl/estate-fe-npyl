@@ -1,7 +1,8 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
-import { Button, Stack, Typography, styled } from "@mui/material";
+import { Button, Stack, Typography } from "@mui/material";
 import { DrawShape, ShapeData, StopDraw } from "./types";
 import { drawShape, encodeShape, setShapeEvents } from "./util";
+import { styled } from "@mui/material/styles";
 
 interface SvgIconProps {
     children: ReactNode;

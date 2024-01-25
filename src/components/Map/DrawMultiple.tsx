@@ -1,5 +1,6 @@
+import { Button, Stack, SvgIconProps, Typography } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import { useEffect, useRef, useState } from "react";
-import { Button, Stack, SvgIconProps, Typography, styled } from "@mui/material";
 import { DrawShape, ShapeData, StopDraw } from "./types";
 import { drawShape, encodeShape, setShapeEvents } from "./util";
 
@@ -133,11 +134,10 @@ export const DrawMultiple = ({
         // draw any imported shape
         shapes
             ?.filter((shape) => !!shape)
-            .map(
-                (shape) =>
-                    shapeRefs.current?.push(
-                        drawShape(shape, map, !!drawing ? onShapeChange : null)
-                    )
+            .map((shape) =>
+                shapeRefs.current?.push(
+                    drawShape(shape, map, !!drawing ? onShapeChange : null)
+                )
             );
     }, [ready, shapes]);
 

@@ -1,3 +1,4 @@
+import { LocationOff } from "@mui/icons-material";
 import DirectionsBusIcon from "@mui/icons-material/DirectionsBus";
 import LocalAirportIcon from "@mui/icons-material/LocalAirport";
 import LocalBarIcon from "@mui/icons-material/LocalBar";
@@ -7,21 +8,19 @@ import LocalHospitalIcon from "@mui/icons-material/LocalHospital";
 import SchoolIcon from "@mui/icons-material/School";
 import {
     Box,
-    Button,
     Paper,
     Slider,
     ToggleButton,
     ToggleButtonGroup,
     Typography,
-    useTheme,
 } from "@mui/material";
+import useTheme from "@mui/system/useTheme";
 import { useRouter } from "next/router";
 import React, { useEffect, useMemo, useReducer, useRef, useState } from "react";
+import { useLoadApi } from "src/components/Map/Map";
 import { useGetPropertyByIdQuery } from "src/services/properties";
 import { useDebouncedCallback } from "use-debounce";
 import RelatedPlaces from "./RelatedPlaces";
-import { useLoadApi } from "src/components/Map/Map";
-import { LocationOff } from "@mui/icons-material";
 const containerStyle = {
     width: "100%",
     height: "65vh",

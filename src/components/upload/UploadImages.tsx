@@ -2,18 +2,18 @@ import { DropzoneOptions, useDropzone } from "react-dropzone";
 // @mui
 import {
     Box,
-    Stack,
     Button,
-    Typography,
+    Stack,
     StackProps,
     SxProps,
     Theme,
+    Typography,
 } from "@mui/material";
-import { styled, alpha } from "@mui/material/styles";
+import { alpha, styled } from "@mui/material/styles";
 // assets
+import { IPropertyImage } from "src/types/file";
 import { UploadIllustration } from "../../assets/illustrations";
 import RejectionFiles from "./errors/RejectionFiles";
-import { IPropertyImage } from "src/types/file";
 import ImagePreview from "./preview/ImagePreview";
 
 export interface UploadProps extends DropzoneOptions {

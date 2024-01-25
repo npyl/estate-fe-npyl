@@ -1,13 +1,7 @@
-import {
-    Paper,
-    Popper,
-    PopperProps,
-    Stack,
-    StackProps,
-    alpha,
-    styled,
-} from "@mui/material";
+import { Popper, PopperProps, Stack, StackProps } from "@mui/material";
 import InputBase from "@mui/material/InputBase";
+import { styled } from "@mui/material/styles";
+import { alpha } from "@mui/system";
 import { bgBlur } from "src/utils/cssStyles";
 
 export const SearchInput = styled(InputBase)(({ theme }) => ({

@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import { styled, alpha } from "@mui/system";
+import { alpha, styled } from "@mui/system";
 
 export const SoftButton = styled(Button)(({ theme, color = "primary" }) => ({
     color: theme.palette[color].main,

@@ -4,8 +4,8 @@ import {
     OutlinedInput,
     Select,
     TextField,
-    styled,
 } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import OnlyNumbersInput from "src/components/OnlyNumbers";
 
 export const StyledButton = styled(Button)<ButtonProps>(({ theme }) => ({
