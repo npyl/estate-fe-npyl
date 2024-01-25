@@ -38,7 +38,6 @@ export default function RHFOnlyNumbers({
 
     const handleChange = useCallback((values: NumberFormatValues) => {
         setValue(name, values.floatValue || 0);
-        console.log("got: ", values.floatValue);
         setDisplayValue(values.formattedValue);
     }, []);
 
