@@ -13,6 +13,8 @@ type Props = TextFieldProps & {
     adornment?: string;
 };
 
+// (*): See https://github.com/s-yadav/react-number-format/issues/61
+
 export default function RHFOnlyNumbers({
     name,
     label,
@@ -36,6 +38,7 @@ export default function RHFOnlyNumbers({
 
     const handleChange = useCallback((values: NumberFormatValues) => {
         setValue(name, values.floatValue || 0);
+        console.log("got: ", values.floatValue);
         setDisplayValue(values.formattedValue);
     }, []);
 
@@ -51,8 +54,10 @@ export default function RHFOnlyNumbers({
                     disabled={disabled}
                     value={displayValue || getFormattedValue(field.value)}
                     // formatting
-                    decimalSeparator={acceptsDecimal ? "," : ""}
-                    allowedDecimalSeparators={acceptsDecimal ? [",", "."] : []}
+                    decimalSeparator=","
+                    allowedDecimalSeparators={[",", "."]}
+                    decimalScale={acceptsDecimal ? undefined : 0} // (*)
+                    fixedDecimalScale={acceptsDecimal} // (*)
                     allowNegative={false}
                     onValueChange={handleChange}
                     valueIsNumericString
