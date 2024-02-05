@@ -77,7 +77,7 @@ export const useLoadApi = () =>
     useJsApiLoader({
         id: "google-map-script",
         googleMapsApiKey: apiKey,
-        libraries: libraries,
+        libraries: libraries as any,
     });
 
 // Helper function to extract the address component value based on the type
