@@ -173,8 +173,8 @@ const LocationSection = () => {
             <Box display={"flex"} pb={2}>
                 <Box height={`50vh`} width={"100%"}>
                     <Map
-                        drawing={false}
                         search
+                        drawing={false}
                         markers={[mainMarker]}
                         mainMarker={mainMarker}
                         onDragEnd={handleMarkerDragEnd}

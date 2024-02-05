@@ -1,11 +1,11 @@
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useRef } from "react";
 import { CustomDrawingComponent } from "./Draw";
 import { DrawMultiple } from "./DrawMultiple";
 import SearchOnMap from "./Search";
 import { DrawShape, ShapeData, StopDraw } from "./types";
-
 import { setKey, fromLatLng, geocode, RequestType } from "react-geocode";
+import uuidv4 from "src/utils/uuidv4";
 
 export declare type Libraries = (
     | "drawing"
@@ -123,7 +123,9 @@ const Map = ({
 }: IMapProps) => {
     const { isLoaded } = useLoadApi();
 
-    const [map, setMap] = React.useState(null);
+    const map = useRef(null);
+
+    console.log("RE_RENDER");
 
     // center is based on mainMarker's latLng
     const center = useMemo(
@@ -131,22 +133,57 @@ const Map = ({
         [mainMarker?.lat, mainMarker?.lng]
     );
 
-    const onLoad = useCallback((map: any) => {
-        const bounds = new window.google.maps.LatLngBounds(athensLatLng);
-
+    const onLoad = useCallback((_map: any) => {
         // geocode
         setKey(apiKey);
 
-        map.current?.fitBounds(bounds);
+        const bounds = new window.google.maps.LatLngBounds(athensLatLng);
+        _map.current?.fitBounds(bounds);
 
-        setMap(map);
+        map.current = _map;
 
-        onReady && onReady(map);
+        onReady?.(_map);
     }, []);
 
     const onUnmount = useCallback(() => {
-        setMap(null);
+        map.current = null;
     }, []);
+
+    const MARKERS = useMemo(
+        () =>
+            isLoaded
+                ? markers?.map((marker, ind) => {
+                      const { lat, lng } = marker;
+
+                      if (!lat || !lng) return null;
+
+                      console.log("wtvr: ", lat, lng);
+
+                      return (
+                          <Marker
+                              key={uuidv4()}
+                              position={{ lat, lng }}
+                              onMouseUp={() => setActiveMarker?.(ind)}
+                              animation={
+                                  marker !== mainMarker && activeMarker === ind
+                                      ? google.maps.Animation.BOUNCE
+                                      : undefined // Set to null when not active
+                              }
+                              onClick={() => {
+                                  onMarkerClick?.(marker);
+                                  // Start the bounce animation, then stop after 2 seconds
+                                  setActiveMarker?.(ind);
+                              }}
+                              draggable={marker === mainMarker}
+                              onDragEnd={(e: google.maps.MapMouseEvent) =>
+                                  onMarkerDragEnd(e.latLng, ind)
+                              }
+                          />
+                      );
+                  })
+                : [],
+        [isLoaded, markers]
+    );
 
     const getAddressFromLatLng = useCallback(
         async (lat: number, lng: number) => {
@@ -251,9 +288,10 @@ const Map = ({
             onLoad={onLoad}
             onUnmount={onUnmount}
         >
+            {/* Draw One */}
             {!multipleShapes ? (
                 <CustomDrawingComponent
-                    map={map}
+                    map={map.current}
                     drawing={drawing}
                     shape={shape}
                     onDraw={(shape) => onDraw && onDraw(shape)}
@@ -262,9 +300,11 @@ const Map = ({
                     }
                 />
             ) : null}
+
+            {/* Draw Multiple */}
             {multipleShapes ? (
                 <DrawMultiple
-                    map={map}
+                    map={map.current}
                     drawing={drawing}
                     shapes={shapes}
                     onDraw={(shape) => onDraw && onDraw(shape)}
@@ -273,39 +313,57 @@ const Map = ({
                     }
                 />
             ) : null}
+
+            {/* Search */}
             {search ? (
                 <SearchOnMap onSearchSelect={handleSearchSelect} />
             ) : null}
 
-            {markers?.map((marker, ind) => {
-                const { lat, lng } = marker;
-
-                if (!lat || !lng) return null;
-
-                return (
-                    <Marker
-                        key={ind}
-                        position={{ lat, lng }}
-                        onMouseUp={() => setActiveMarker?.(ind)}
-                        animation={
-                            marker !== mainMarker && activeMarker === ind
-                                ? google.maps.Animation.BOUNCE
-                                : undefined // Set to null when not active
-                        }
-                        onClick={() => {
-                            onMarkerClick?.(marker);
-                            // Start the bounce animation, then stop after 2 seconds
-                            setActiveMarker?.(ind);
-                        }}
-                        draggable={marker === mainMarker}
-                        onDragEnd={(e: google.maps.MapMouseEvent) =>
-                            onMarkerDragEnd(e.latLng, ind)
-                        }
-                    />
-                );
-            })}
+            {/* Markers */}
+            {MARKERS}
         </GoogleMap>
     ) : null;
 };
 
-export default React.memo(Map);
+const areEqual = (prevProps: IMapProps, nextProps: IMapProps): boolean => {
+    return (
+        // ------
+        // Simple
+        // ------
+        prevProps.zoom === nextProps.zoom &&
+        prevProps.drawing === nextProps.drawing &&
+        prevProps.search === nextProps.search &&
+        prevProps.shape === nextProps.shape && // TODO: improve this; shallow for now
+        prevProps.activeMarker === nextProps.activeMarker &&
+        prevProps.multipleShapes === nextProps.multipleShapes &&
+        // mainMarker
+        prevProps.mainMarker?.lat === nextProps.mainMarker?.lat &&
+        prevProps.mainMarker?.lng === nextProps?.mainMarker?.lng &&
+        // ---------
+        // Callbacks
+        // ---------
+        prevProps.onReady === nextProps.onReady &&
+        prevProps.onClick === nextProps.onClick &&
+        prevProps.onMarkerClick === nextProps.onMarkerClick &&
+        prevProps.onDragEnd === nextProps.onDragEnd &&
+        prevProps.onDraw === nextProps.onDraw &&
+        prevProps.onShapeChange === nextProps.onShapeChange &&
+        prevProps.onSearchSelect === nextProps.onSearchSelect &&
+        prevProps.setActiveMarker === nextProps.setActiveMarker &&
+        // --------
+        // Arrays
+        // --------
+        // markers
+        prevProps.markers?.length === nextProps.markers?.length &&
+        !!prevProps.markers?.every(
+            ({ lat, lng }) =>
+                !!nextProps.markers?.find(
+                    (nm) => nm.lat === lat && nm.lng === lng
+                )
+        ) &&
+        // shapes
+        prevProps.shapes === nextProps.shapes // TODO: improve this; shallow for now
+    );
+};
+
+export default React.memo(Map, areEqual);
