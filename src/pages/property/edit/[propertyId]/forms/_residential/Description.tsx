@@ -154,11 +154,7 @@ const Description: React.FC = () => {
                 </Grid>
 
                 <Grid item xs={2.4}>
-                    <RHFCheckbox
-                        label={t("Attic")}
-                        name="details.attic"
-                        placeholder="Attic"
-                    />
+                    <RHFCheckbox label={t("Attic")} name="details.attic" />
                 </Grid>
 
                 <Grid item xs={2.4}>
