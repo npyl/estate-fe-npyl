@@ -301,6 +301,7 @@ const getDefaultValues = (property?: IProperties): IPropertyYup => ({
             LocationDisplay.NOT_VISIBLE,
         lat: property?.location?.lat,
         lng: property?.location?.lng,
+        zipCode: property?.location?.zipCode,
     },
 
     features: {

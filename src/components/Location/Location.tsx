@@ -1,23 +1,18 @@
 import { Divider, Grid, TextField } from "@mui/material";
 import { Box } from "@mui/system";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import Map, { IMapMarker, IMapCoordinates, IMapAddress } from "../Map/Map";
+import { useCallback, useMemo } from "react";
+import Map, { IMapMarker, IMapAddress } from "../Map/Map";
 import { RegionSelect } from "./RegionSelect";
 import { MunicipSelect } from "./MunicipSelect";
 import { NeighbourSelect } from "./NeighbourSelect";
 import {
-    useGetClosestQuery,
+    useLazyGetClosestQuery,
     useLazyGetHierarchyByAreaIdQuery,
 } from "src/services/location";
 import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
 import { RHFOnlyNumbers, RHFTextField } from "../hook-form";
 import Panel from "../Panel";
-
-const nullCoord = -1;
-
-// const test = watch("location.zipCode");
-// console.log("test: ", test);
 
 const LocationSection = () => {
     const { watch, setValue } = useFormContext();
@@ -39,19 +34,7 @@ const LocationSection = () => {
         [lat, lng]
     );
 
-    const [onDragEndCoord, setOnDragEndCoord] = useState<IMapCoordinates>({
-        lat: nullCoord,
-        lng: nullCoord,
-    });
-
-    const closest = useGetClosestQuery(
-        { latitude: onDragEndCoord.lat, longitude: onDragEndCoord.lng },
-        {
-            skip:
-                onDragEndCoord.lat === nullCoord &&
-                onDragEndCoord.lng === nullCoord,
-        }
-    ).data;
+    const [getClosestQuery] = useLazyGetClosestQuery();
 
     const updateMainMarkerCoordinates = useCallback(
         (lat: number, lng: number) => {
@@ -96,7 +79,7 @@ const LocationSection = () => {
         (lat: number, lng: number, address: IMapAddress) => {
             if (!lat || !lng) return;
 
-            setOnDragEndCoord({ lat, lng });
+            getClosest(lat, lng);
             updateMainMarkerCoordinates(lat, lng);
 
             // update
@@ -114,7 +97,7 @@ const LocationSection = () => {
             newLng: number,
             address: IMapAddress
         ) => {
-            setOnDragEndCoord({ lat: newLat, lng: newLng });
+            getClosest(newLat, newLng);
             updateMainMarkerCoordinates(newLat, newLng);
 
             // update
@@ -129,7 +112,7 @@ const LocationSection = () => {
         (address: IMapAddress, lat: number, lng: number) => {
             if (!lat || !lng) return;
 
-            setOnDragEndCoord({ lat, lng });
+            getClosest(lat, lng);
             updateMainMarkerCoordinates(lat, lng);
 
             // update
@@ -140,8 +123,16 @@ const LocationSection = () => {
         []
     );
 
-    useEffect(() => {
-        if (!closest) return;
+    const getClosest = useCallback(async (lat: number, lng: number) => {
+        const { data: closest, error } = await getClosestQuery({
+            latitude: lat,
+            longitude: lng,
+        });
+
+        if (!closest) {
+            console.error("Error getting closest: ", error);
+            return;
+        }
 
         // update slice
         if (closest.level === 2) {
@@ -151,8 +142,8 @@ const LocationSection = () => {
             const neighbId = closest.areaID;
             const municipId = closest.parentID;
 
-            setValue("location.city", neighbId.toString());
-            setValue("location.complex", municipId.toString());
+            setValue("location.complex", neighbId.toString());
+            setValue("location.city", municipId.toString());
 
             // For region
             getHierarchy(municipId)
@@ -165,7 +156,7 @@ const LocationSection = () => {
                 })
                 .catch((reason) => console.log("getHierarchy: ", reason));
         }
-    }, [closest]);
+    }, []);
 
     return (
         <Panel label={t("Location")}>

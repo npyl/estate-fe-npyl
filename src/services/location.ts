@@ -59,5 +59,6 @@ export const {
     useGetNeighbourhoodsQuery,
     useGetClosestQuery,
 
+    useLazyGetClosestQuery,
     useLazyGetHierarchyByAreaIdQuery,
 } = location;
