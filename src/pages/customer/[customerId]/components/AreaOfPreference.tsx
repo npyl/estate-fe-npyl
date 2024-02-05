@@ -212,8 +212,6 @@ export const AreaOfPreference: React.FC<AreaOfPreferenceProps> = ({
                     drawing={false}
                     shapes={shapeData}
                     onReady={(m) => setMap(m)}
-                    activeMarker={null}
-                    setActiveMarker={() => {}}
                 />
             </Box>
         </>

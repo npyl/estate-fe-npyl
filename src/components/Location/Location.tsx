@@ -1,12 +1,12 @@
 import { Divider, Grid, TextField } from "@mui/material";
 import { Box } from "@mui/system";
-import { useEffect, useState } from "react";
-import Map, { IMapMarker, IMapCoordinates, IMapAddress } from "../Map/Map";
+import { useCallback, useMemo } from "react";
+import Map, { IMapMarker, IMapAddress } from "../Map/Map";
 import { RegionSelect } from "./RegionSelect";
 import { MunicipSelect } from "./MunicipSelect";
 import { NeighbourSelect } from "./NeighbourSelect";
 import {
-    useGetClosestQuery,
+    useLazyGetClosestQuery,
     useLazyGetHierarchyByAreaIdQuery,
 } from "src/services/location";
 import { useTranslation } from "react-i18next";
@@ -20,133 +20,119 @@ const LocationSection = () => {
 
     const [getHierarchy] = useLazyGetHierarchyByAreaIdQuery();
 
-    const lat = watch("location.latitude");
-    const lng = watch("location.longitude");
+    const lat = watch("location.lat");
+    const lng = watch("location.lng");
     const region = watch("location.region");
     const city = watch("location.city");
     const complex = watch("location.complex");
 
-    // Fields
-    const [x, setX] = useState<number>(lat || -1);
-    const [y, setY] = useState<number>(lng || -1);
+    const mainMarker = useMemo<IMapMarker>(
+        () => ({
+            lat,
+            lng,
+        }),
+        [lat, lng]
+    );
 
-    const [activeMarker, setActiveMarker] = useState(null);
-    const [mainMarker, setMainMarker] = useState<IMapMarker>({
-        lat: lat ? lat : 37.98381,
-        lng: lng ? lng : 23.727539,
-    });
+    const [getClosestQuery] = useLazyGetClosestQuery();
 
-    const nullCoord = -1;
+    const updateMainMarkerCoordinates = useCallback(
+        (lat: number, lng: number) => {
+            setValue("location.lat", lat);
+            setValue("location.lng", lng);
+        },
+        []
+    );
 
-    const [onDragEndCoord, setOnDragEndCoord] = useState<IMapCoordinates>({
-        lat: nullCoord,
-        lng: nullCoord,
-    });
+    const handleRegionChange = useCallback(
+        (regionCode: string, lat: number, lng: number) => {
+            updateMainMarkerCoordinates(lat, lng);
 
-    const closest = useGetClosestQuery(
-        { latitude: onDragEndCoord.lat, longitude: onDragEndCoord.lng },
-        {
-            skip:
-                onDragEndCoord.lat === nullCoord &&
-                onDragEndCoord.lng === nullCoord,
-        }
-    ).data;
+            // update
+            setValue("location.region", regionCode);
+        },
+        []
+    );
+    const handleMunicipChange = useCallback(
+        (municipCode: string, lat: number, lng: number) => {
+            updateMainMarkerCoordinates(lat, lng);
 
-    const updateMainMarkerCoordinates = (lat: number, lng: number) => {
-        let newMarker = mainMarker;
-        newMarker.lat = lat;
-        newMarker.lng = lng;
-        setMainMarker(newMarker);
+            // update
+            setValue("location.city", municipCode);
+        },
+        []
+    );
+    const handleNeighbourChange = useCallback(
+        (neighbourCode: string, lat: number, lng: number) => {
+            updateMainMarkerCoordinates(lat, lng);
 
-        // update slice
-        setValue("location.lat", lat);
-        setValue("location.lng", lng);
-
-        // show x, y
-        setX(lat);
-        setY(lng);
-    };
-
-    const handleRegionChange = (
-        regionCode: string,
-        lat: number,
-        lng: number
-    ) => {
-        updateMainMarkerCoordinates(lat, lng);
-
-        // update
-        setValue("location.region", regionCode);
-    };
-    const handleMunicipChange = (
-        municipCode: string,
-        lat: number,
-        lng: number
-    ) => {
-        updateMainMarkerCoordinates(lat, lng);
-
-        // update
-        setValue("location.city", municipCode);
-    };
-    const handleNeighbourChange = (
-        neighbourCode: string,
-        lat: number,
-        lng: number
-    ) => {
-        updateMainMarkerCoordinates(lat, lng);
-
-        // update
-        setValue("location.complex", neighbourCode);
-    };
+            // update
+            setValue("location.complex", neighbourCode);
+        },
+        []
+    );
 
     //
     // Map
     //
-    const handleMapClick = (lat: number, lng: number, address: IMapAddress) => {
-        if (!lat || !lng) return;
+    const handleMapClick = useCallback(
+        (lat: number, lng: number, address: IMapAddress) => {
+            if (!lat || !lng) return;
 
-        setOnDragEndCoord({ lat, lng });
-        updateMainMarkerCoordinates(lat, lng);
+            getClosest(lat, lng);
+            updateMainMarkerCoordinates(lat, lng);
 
-        // update
-        setValue("location.street", address.street);
-        setValue("location.number", address.number);
-        setValue("location.zipCode", address.zipCode);
-    };
+            // update
+            setValue("location.street", address.street);
+            setValue("location.number", address.number);
+            setValue("location.zipCode", address.zipCode);
+        },
+        []
+    );
 
-    const handleMarkerDragEnd = (
-        marker: IMapMarker,
-        newLat: number,
-        newLng: number,
-        address: IMapAddress
-    ) => {
-        if (!marker || marker !== mainMarker) return; // we only care about mainMarker drag
+    const handleMarkerDragEnd = useCallback(
+        (
+            marker: IMapMarker,
+            newLat: number,
+            newLng: number,
+            address: IMapAddress
+        ) => {
+            getClosest(newLat, newLng);
+            updateMainMarkerCoordinates(newLat, newLng);
 
-        setOnDragEndCoord({ lat: newLat, lng: newLng });
-        updateMainMarkerCoordinates(newLat, newLng);
+            // update
+            setValue("location.street", address.street);
+            setValue("location.number", address.number);
+            setValue("location.zipCode", address.zipCode);
+        },
+        []
+    );
 
-        // update
-        setValue("location.street", address.street);
-        setValue("location.number", address.number);
-        setValue("location.zipCode", address.zipCode);
-    };
-    const handleSearchSelect = (
-        address: IMapAddress,
-        lat: number,
-        lng: number
-    ) => {
-        if (!lat || !lng) return;
+    const handleSearchSelect = useCallback(
+        (address: IMapAddress, lat: number, lng: number) => {
+            if (!lat || !lng) return;
 
-        setOnDragEndCoord({ lat, lng });
-        updateMainMarkerCoordinates(lat, lng);
+            getClosest(lat, lng);
+            updateMainMarkerCoordinates(lat, lng);
 
-        // update
-        setValue("location.street", address.street);
-        setValue("location.number", address.number);
-        setValue("location.zipCode", address.zipCode);
-    };
+            // update
+            setValue("location.street", address.street);
+            setValue("location.number", address.number);
+            setValue("location.zipCode", address.zipCode);
+        },
+        []
+    );
 
-    useEffect(() => {
-        if (!closest) return;
+    const getClosest = useCallback(async (lat: number, lng: number) => {
+        const { data: closest, error } = await getClosestQuery({
+            latitude: lat,
+            longitude: lng,
+        });
+
+        if (!closest) {
+            console.error("Error getting closest: ", error);
+            return;
+        }
 
         // update slice
         if (closest.level === 2) {
@@ -156,8 +142,8 @@ const LocationSection = () => {
             const neighbId = closest.areaID;
             const municipId = closest.parentID;
 
-            setValue("location.city", neighbId.toString());
-            setValue("location.complex", municipId.toString());
+            setValue("location.complex", neighbId.toString());
+            setValue("location.city", municipId.toString());
 
             // For region
             getHierarchy(municipId)
@@ -170,7 +156,7 @@ const LocationSection = () => {
                 })
                 .catch((reason) => console.log("getHierarchy: ", reason));
         }
-    }, [closest]);
+    }, []);
 
     return (
         <Panel label={t("Location")}>
@@ -178,15 +164,13 @@ const LocationSection = () => {
             <Box display={"flex"} pb={2}>
                 <Box height={`50vh`} width={"100%"}>
                     <Map
-                        drawing={false}
                         search
+                        drawing={false}
                         markers={[mainMarker]}
                         mainMarker={mainMarker}
                         onDragEnd={handleMarkerDragEnd}
                         onClick={handleMapClick}
                         onSearchSelect={handleSearchSelect}
-                        activeMarker={activeMarker}
-                        setActiveMarker={setActiveMarker}
                     />
                 </Box>
             </Box>
@@ -253,7 +237,7 @@ const LocationSection = () => {
                     <TextField
                         fullWidth
                         label={t("Latitude")}
-                        value={x || ""}
+                        value={lat ? parseFloat(lat).toFixed(4) : ""}
                         InputProps={{
                             readOnly: true,
                         }}
@@ -263,7 +247,7 @@ const LocationSection = () => {
                     <TextField
                         fullWidth
                         label={t("Longitude")}
-                        value={y || ""}
+                        value={lng ? parseFloat(lng).toFixed(4) : ""}
                         InputProps={{
                             readOnly: true,
                         }}

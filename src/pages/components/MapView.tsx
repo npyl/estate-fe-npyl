@@ -25,7 +25,7 @@ const MapView = () => {
 
     const [encodedShape, setEncodedShape] = useState<string>();
 
-    const [activeMarker, setActiveMarker] = useState(null);
+    const [activeMarker, setActiveMarker] = useState<number>();
     const [mainMarker, setMainMarker] = useState<IMapMarker>({
         lat: 37.98381,
         lng: 23.727539,

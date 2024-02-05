@@ -19,6 +19,8 @@ import {
 import { IDemandFiltersPOST, IDemandPOST } from "src/types/demand";
 import { useDebouncedCallback } from "use-debounce";
 
+// TODO: convert closest to lazy which is faster
+
 interface ILocationSectionProps {
     index: number;
     onGetDemandName: (k: keyof IDemandPOST) => any;
@@ -70,7 +72,7 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
     const [y, setY] = useState<number>();
     const [zoom, setZoom] = useState<number>(ZOOM_LEVELS.REGION);
 
-    const [activeMarker, setActiveMarker] = useState(null);
+    const [activeMarker, setActiveMarker] = useState<number>();
     const [mainMarker, setMainMarker] = useState<IMapMarker>({
         lat: x ? x : 37.98381,
         lng: y ? y : 23.727539,

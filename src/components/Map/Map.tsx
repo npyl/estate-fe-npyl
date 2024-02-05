@@ -1,9 +1,11 @@
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useRef } from "react";
 import { CustomDrawingComponent } from "./Draw";
 import { DrawMultiple } from "./DrawMultiple";
 import SearchOnMap from "./Search";
 import { DrawShape, ShapeData, StopDraw } from "./types";
+import { setKey, fromLatLng, geocode, RequestType } from "react-geocode";
+import uuidv4 from "src/utils/uuidv4";
 
 export declare type Libraries = (
     | "drawing"
@@ -59,8 +61,8 @@ interface IMapProps {
     shape?: ShapeData;
     shapes?: ShapeData[];
     mainMarker?: IMapMarker;
-    activeMarker: number | null;
-    setActiveMarker: any;
+    activeMarker?: number;
+    setActiveMarker?: any;
 
     drawing?: boolean;
     multipleShapes?: boolean;
@@ -71,12 +73,22 @@ const apiKey = "AIzaSyDKNARWExRGZXIsA3oKhRW0aZQmtXGuVbk";
 const athensLatLng = { lat: 37.98381, lng: 23.727539 };
 const libraries = ["drawing", "places", "geometry"] as Libraries;
 
-export const useLoadApi = () => {
-    return useJsApiLoader({
+export const useLoadApi = () =>
+    useJsApiLoader({
         id: "google-map-script",
         googleMapsApiKey: apiKey,
         libraries: libraries,
     });
+
+// Helper function to extract the address component value based on the type
+const getAddressComponent = (
+    addressComponents: google.maps.GeocoderAddressComponent[],
+    type: string
+) => {
+    const component = addressComponents.find((component) =>
+        component.types.includes(type)
+    );
+    return component ? component.long_name : "";
 };
 
 //--------------------------------------------------------
@@ -110,134 +122,126 @@ const Map = ({
     search = false,
 }: IMapProps) => {
     const { isLoaded } = useLoadApi();
-    const [geocoder, setGeocoder] = useState<google.maps.Geocoder>();
 
-    const [map, setMap] = React.useState(null);
-    const [mapRef, setMapRef] = useState<any>();
+    const map = useRef(null);
+
+    console.log("RE_RENDER");
 
     // center is based on mainMarker's latLng
-    const center = useMemo(() => {
-        return mainMarker
-            ? { lat: mainMarker.lat, lng: mainMarker.lng }
-            : athensLatLng;
-    }, [mainMarker?.lat, mainMarker?.lng]);
+    const center = useMemo(
+        () => (mainMarker?.lat && mainMarker?.lng ? mainMarker : athensLatLng),
+        [mainMarker?.lat, mainMarker?.lng]
+    );
 
-    const onLoad = useCallback((map: any) => {
-        const bounds = new window.google.maps.LatLngBounds(center);
-        setGeocoder(new window.google.maps.Geocoder());
+    const onLoad = useCallback((_map: any) => {
+        // geocode
+        setKey(apiKey);
 
-        if (map.current) {
-            map.current.fitBounds(bounds);
-        }
+        const bounds = new window.google.maps.LatLngBounds(athensLatLng);
+        _map.current?.fitBounds(bounds);
 
-        setMap(map);
+        map.current = _map;
 
-        onReady && onReady(map);
+        onReady?.(_map);
     }, []);
 
     const onUnmount = useCallback(() => {
-        setMap(null);
+        map.current = null;
     }, []);
 
-    // Helper function to extract the address component value based on the type
-    const getAddressComponent = (
-        addressComponents: google.maps.GeocoderAddressComponent[],
-        type: string
-    ) => {
-        const component = addressComponents.find((component) =>
-            component.types.includes(type)
-        );
-        return component ? component.long_name : "";
-    };
+    const getAddressFromLatLng = useCallback(
+        async (lat: number, lng: number) => {
+            const response = await geocode(RequestType.LATLNG, `${lat},${lng}`);
+            if (!response) {
+                console.error("Geocode failed: ", response);
+                return {};
+            }
 
-    const getAddressFromLatLng = async (
-        lat: number,
-        lng: number
-    ): Promise<IMapAddress> => {
-        if (!geocoder) throw new Error("Geocoder is not initialised!");
+            const { results } = response;
+            if (!results || results?.length === 0) {
+                console.error("Results are faulty: ", results);
+                return {};
+            }
 
-        const { results } = await geocoder.geocode({
-            location: { lat, lng },
-        });
+            // Access the address components from the first result
+            const addressComponents = results[0].address_components;
 
-        if (!results || results.length === 0 || !results[0])
-            throw new Error("Geocoder failed");
+            console.log("geo: ", results[0]);
 
-        // Access the address components from the first result
-        const addressComponents = results[0].address_components;
+            // Extract the desired address details from address components
+            const street = getAddressComponent(addressComponents, "route");
+            const number = getAddressComponent(
+                addressComponents,
+                "street_number"
+            );
+            const zipCode = getAddressComponent(
+                addressComponents,
+                "postal_code"
+            ).replace(/\s/g, ""); // remove spaces
 
-        // Extract the desired address details from address components
-        const street = getAddressComponent(addressComponents, "route");
-        const number = getAddressComponent(addressComponents, "street_number");
-        const zipCode = getAddressComponent(
-            addressComponents,
-            "postal_code"
-        ).replace(/\s/g, ""); // remove spaces
-
-        return { street, number, zipCode };
-    };
+            return { street, number, zipCode };
+        },
+        [fromLatLng]
+    );
 
     //
     //	Map
     //
-    const handleMapClick = (event: google.maps.MapMouseEvent) => {
+    const handleMapClick = useCallback((event: google.maps.MapMouseEvent) => {
         const latLng = event.latLng;
         const lat = latLng?.lat();
         const lng = latLng?.lng();
 
-        if (!lat || !lng) return;
+        if (lat === undefined || lng === undefined) return;
 
         onClick &&
             getAddressFromLatLng(lat, lng).then((response) =>
-                onClick(lat, lng, response)
+                onClick(lat, lng, response as IMapAddress)
             );
-    };
+    }, []);
 
     //
     // 	Markers
     //
-    const handleMarkerClick = (marker: IMapMarker) => {
-        setTimeout(() => {
-            mapRef?.panTo({ lat: marker.lat, lng: marker.lng });
-        }, 500);
+    const onMarkerDragEnd = useCallback(
+        (latLng: any, index: number) => {
+            if (!markers) return;
+            if (markers?.length < index) return;
 
-        onMarkerClick && onMarkerClick(marker); // <-- Directly use onMarkerClick
-    };
+            const lat = latLng.lat();
+            const lng = latLng.lng();
 
-    const handleMarkerMouseOver = (marker: any) => {
-        setActiveMarker(marker);
-    };
-    const onMarkerDragEnd = (
-        latLng: any,
-        index: number,
-        markers: IMapMarker[]
-    ) => {
-        const lat = latLng.lat();
-        const lng = latLng.lng();
+            // also call parent callback
+            onDragEnd &&
+                getAddressFromLatLng(lat, lng).then((response) =>
+                    onDragEnd(markers[index], lat, lng, response as IMapAddress)
+                );
+        },
+        [markers]
+    );
 
-        // also call parent callback
-        onDragEnd &&
-            getAddressFromLatLng(lat, lng).then((response) =>
-                onDragEnd(markers[index], lat, lng, response)
+    const handleSearchSelect = useCallback(
+        (
+            addressComponent: google.maps.GeocoderAddressComponent[],
+            lat: number,
+            lng: number
+        ) => {
+            console.log("a: ", addressComponent);
+
+            const street = getAddressComponent(addressComponent, "route");
+            const number = getAddressComponent(
+                addressComponent,
+                "street_number"
             );
-    };
+            const zipCode = getAddressComponent(
+                addressComponent,
+                "postal_code"
+            ).replace(/\s/g, ""); // remove spaces
 
-    const handleSearchSelect = (
-        addressComponent: google.maps.GeocoderAddressComponent[],
-        lat: number,
-        lng: number
-    ) => {
-        console.log("a: ", addressComponent);
-
-        const street = getAddressComponent(addressComponent, "route");
-        const number = getAddressComponent(addressComponent, "street_number");
-        const zipCode = getAddressComponent(
-            addressComponent,
-            "postal_code"
-        ).replace(/\s/g, ""); // remove spaces
-
-        onSearchSelect?.({ street, number, zipCode }, lat, lng);
-    };
+            onSearchSelect?.({ street, number, zipCode }, lat, lng);
+        },
+        []
+    );
 
     return isLoaded ? (
         <GoogleMap
@@ -248,9 +252,10 @@ const Map = ({
             onLoad={onLoad}
             onUnmount={onUnmount}
         >
-            {!multipleShapes && (
+            {/* Draw One */}
+            {!multipleShapes ? (
                 <CustomDrawingComponent
-                    map={map}
+                    map={map.current}
                     drawing={drawing}
                     shape={shape}
                     onDraw={(shape) => onDraw && onDraw(shape)}
@@ -258,10 +263,12 @@ const Map = ({
                         onShapeChange && onShapeChange("", newEncodedShape)
                     }
                 />
-            )}
-            {multipleShapes && (
+            ) : null}
+
+            {/* Draw Multiple */}
+            {multipleShapes ? (
                 <DrawMultiple
-                    map={map}
+                    map={map.current}
                     drawing={drawing}
                     shapes={shapes}
                     onDraw={(shape) => onDraw && onDraw(shape)}
@@ -269,40 +276,83 @@ const Map = ({
                         onShapeChange && onShapeChange(oldShape, newShape)
                     }
                 />
-            )}
-            {search && <SearchOnMap onSearchSelect={handleSearchSelect} />}
+            ) : null}
 
+            {/* Search */}
+            {search ? (
+                <SearchOnMap onSearchSelect={handleSearchSelect} />
+            ) : null}
+
+            {/* Markers */}
             {markers?.map((marker, ind) => {
                 const { lat, lng } = marker;
-
-                if (!lat || !lng) return <></>;
+                if (!lat || !lng) return null;
 
                 return (
                     <Marker
-                        key={ind}
+                        key={uuidv4()}
                         position={{ lat, lng }}
-                        onMouseUp={() => handleMarkerMouseOver(ind)}
+                        onMouseUp={() => setActiveMarker?.(ind)}
                         animation={
                             marker !== mainMarker && activeMarker === ind
                                 ? google.maps.Animation.BOUNCE
                                 : undefined // Set to null when not active
                         }
                         onClick={() => {
-                            handleMarkerClick(marker);
+                            onMarkerClick?.(marker);
                             // Start the bounce animation, then stop after 2 seconds
-                            setActiveMarker(ind);
+                            setActiveMarker?.(ind);
                         }}
                         draggable={marker === mainMarker}
                         onDragEnd={(e: google.maps.MapMouseEvent) =>
-                            onMarkerDragEnd(e.latLng, ind, markers)
+                            onMarkerDragEnd(e.latLng, ind)
                         }
                     />
                 );
             })}
         </GoogleMap>
-    ) : (
-        <></>
+    ) : null;
+};
+
+const areEqual = (prevProps: IMapProps, nextProps: IMapProps): boolean => {
+    return (
+        // ------
+        // Simple
+        // ------
+        prevProps.zoom === nextProps.zoom &&
+        prevProps.drawing === nextProps.drawing &&
+        prevProps.search === nextProps.search &&
+        prevProps.shape === nextProps.shape && // TODO: improve this; shallow for now
+        prevProps.activeMarker === nextProps.activeMarker &&
+        prevProps.multipleShapes === nextProps.multipleShapes &&
+        // mainMarker
+        prevProps.mainMarker?.lat === nextProps.mainMarker?.lat &&
+        prevProps.mainMarker?.lng === nextProps?.mainMarker?.lng &&
+        // ---------
+        // Callbacks
+        // ---------
+        prevProps.onReady === nextProps.onReady &&
+        prevProps.onClick === nextProps.onClick &&
+        prevProps.onMarkerClick === nextProps.onMarkerClick &&
+        prevProps.onDragEnd === nextProps.onDragEnd &&
+        prevProps.onDraw === nextProps.onDraw &&
+        prevProps.onShapeChange === nextProps.onShapeChange &&
+        prevProps.onSearchSelect === nextProps.onSearchSelect &&
+        prevProps.setActiveMarker === nextProps.setActiveMarker &&
+        // --------
+        // Arrays
+        // --------
+        // markers
+        prevProps.markers?.length === nextProps.markers?.length &&
+        !!prevProps.markers?.every(
+            ({ lat, lng }) =>
+                !!nextProps.markers?.find(
+                    (nm) => nm.lat === lat && nm.lng === lng
+                )
+        ) &&
+        // shapes
+        prevProps.shapes === nextProps.shapes // TODO: improve this; shallow for now
     );
 };
 
-export default React.memo(Map);
+export default React.memo(Map, areEqual);

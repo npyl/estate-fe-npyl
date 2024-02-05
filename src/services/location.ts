@@ -41,7 +41,7 @@ export const location = createApi({
         getClosest: builder.query<IGeoLocation, IGetClosestParams>({
             query: (params: IGetClosestParams) => ({
                 url: "/hierarchy/closest",
-                params: params,
+                params,
             }),
         }),
 
@@ -59,5 +59,6 @@ export const {
     useGetNeighbourhoodsQuery,
     useGetClosestQuery,
 
+    useLazyGetClosestQuery,
     useLazyGetHierarchyByAreaIdQuery,
 } = location;
