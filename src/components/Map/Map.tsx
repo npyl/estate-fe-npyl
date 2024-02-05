@@ -149,42 +149,6 @@ const Map = ({
         map.current = null;
     }, []);
 
-    const MARKERS = useMemo(
-        () =>
-            isLoaded
-                ? markers?.map((marker, ind) => {
-                      const { lat, lng } = marker;
-
-                      if (!lat || !lng) return null;
-
-                      console.log("wtvr: ", lat, lng);
-
-                      return (
-                          <Marker
-                              key={uuidv4()}
-                              position={{ lat, lng }}
-                              onMouseUp={() => setActiveMarker?.(ind)}
-                              animation={
-                                  marker !== mainMarker && activeMarker === ind
-                                      ? google.maps.Animation.BOUNCE
-                                      : undefined // Set to null when not active
-                              }
-                              onClick={() => {
-                                  onMarkerClick?.(marker);
-                                  // Start the bounce animation, then stop after 2 seconds
-                                  setActiveMarker?.(ind);
-                              }}
-                              draggable={marker === mainMarker}
-                              onDragEnd={(e: google.maps.MapMouseEvent) =>
-                                  onMarkerDragEnd(e.latLng, ind)
-                              }
-                          />
-                      );
-                  })
-                : [],
-        [isLoaded, markers]
-    );
-
     const getAddressFromLatLng = useCallback(
         async (lat: number, lng: number) => {
             const response = await geocode(RequestType.LATLNG, `${lat},${lng}`);
@@ -320,7 +284,32 @@ const Map = ({
             ) : null}
 
             {/* Markers */}
-            {MARKERS}
+            {markers?.map((marker, ind) => {
+                const { lat, lng } = marker;
+                if (!lat || !lng) return null;
+
+                return (
+                    <Marker
+                        key={uuidv4()}
+                        position={{ lat, lng }}
+                        onMouseUp={() => setActiveMarker?.(ind)}
+                        animation={
+                            marker !== mainMarker && activeMarker === ind
+                                ? google.maps.Animation.BOUNCE
+                                : undefined // Set to null when not active
+                        }
+                        onClick={() => {
+                            onMarkerClick?.(marker);
+                            // Start the bounce animation, then stop after 2 seconds
+                            setActiveMarker?.(ind);
+                        }}
+                        draggable={marker === mainMarker}
+                        onDragEnd={(e: google.maps.MapMouseEvent) =>
+                            onMarkerDragEnd(e.latLng, ind)
+                        }
+                    />
+                );
+            })}
         </GoogleMap>
     ) : null;
 };
