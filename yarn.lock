@@ -1781,6 +1781,11 @@
     "@types/draft-js" "*"
     "@types/react" "*"
 
+"@types/react-geocode@^0.2.4":
+  version "0.2.4"
+  resolved "https://registry.yarnpkg.com/@types/react-geocode/-/react-geocode-0.2.4.tgz#e78b3209963f6bc689c26ff63f20e52f5477a5e7"
+  integrity sha512-vkDID5kZwYRplECuUtAbPnRN9XyrzE+9lxl0VBV+h7pFDOc6hn+0xieswO7Wrzne/J9HstA3Nlb6OeMuuQxjuw==
+
 "@types/react-lazy-load-image-component@^1.5.2":
   version "1.6.3"
   resolved "https://registry.yarnpkg.com/@types/react-lazy-load-image-component/-/react-lazy-load-image-component-1.6.3.tgz#f5382f7925d9b8421ded31ac9b2d76985b80edb8"
