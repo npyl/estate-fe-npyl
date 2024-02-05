@@ -4,7 +4,6 @@ import { CustomDrawingComponent } from "./Draw";
 import { DrawMultiple } from "./DrawMultiple";
 import SearchOnMap from "./Search";
 import { DrawShape, ShapeData, StopDraw } from "./types";
-import { setKey, fromLatLng, geocode, RequestType } from "react-geocode";
 import uuidv4 from "src/utils/uuidv4";
 
 export declare type Libraries = (
@@ -123,7 +122,8 @@ const Map = ({
 }: IMapProps) => {
     const { isLoaded } = useLoadApi();
 
-    const map = useRef(null);
+    const mapRef = useRef<google.maps.Map>();
+    const geocoderRef = useRef<google.maps.Geocoder>();
 
     console.log("RE_RENDER");
 
@@ -134,30 +134,32 @@ const Map = ({
     );
 
     const onLoad = useCallback((_map: any) => {
-        // geocode
-        setKey(apiKey);
+        // geocoder
+        geocoderRef.current = new window.google.maps.Geocoder();
 
+        // map
         const bounds = new window.google.maps.LatLngBounds(athensLatLng);
         _map.current?.fitBounds(bounds);
-
-        map.current = _map;
+        mapRef.current = _map;
 
         onReady?.(_map);
     }, []);
 
     const onUnmount = useCallback(() => {
-        map.current = null;
+        mapRef.current = undefined;
     }, []);
 
     const getAddressFromLatLng = useCallback(
         async (lat: number, lng: number) => {
-            const response = await geocode(RequestType.LATLNG, `${lat},${lng}`);
-            if (!response) {
-                console.error("Geocode failed: ", response);
+            if (!geocoderRef.current) {
+                console.error("Geocoder is not available!");
                 return {};
             }
 
-            const { results } = response;
+            const { results } = await geocoderRef.current.geocode({
+                location: { lat, lng },
+            });
+
             if (!results || results?.length === 0) {
                 console.error("Results are faulty: ", results);
                 return {};
@@ -181,7 +183,7 @@ const Map = ({
 
             return { street, number, zipCode };
         },
-        [fromLatLng]
+        []
     );
 
     //
@@ -243,7 +245,9 @@ const Map = ({
         []
     );
 
-    return isLoaded ? (
+    if (!isLoaded) return null;
+
+    return (
         <GoogleMap
             mapContainerStyle={containerStyle}
             center={center}
@@ -255,7 +259,7 @@ const Map = ({
             {/* Draw One */}
             {!multipleShapes ? (
                 <CustomDrawingComponent
-                    map={map.current}
+                    map={mapRef.current}
                     drawing={drawing}
                     shape={shape}
                     onDraw={(shape) => onDraw && onDraw(shape)}
@@ -268,7 +272,7 @@ const Map = ({
             {/* Draw Multiple */}
             {multipleShapes ? (
                 <DrawMultiple
-                    map={map.current}
+                    map={mapRef.current}
                     drawing={drawing}
                     shapes={shapes}
                     onDraw={(shape) => onDraw && onDraw(shape)}
@@ -311,7 +315,7 @@ const Map = ({
                 );
             })}
         </GoogleMap>
-    ) : null;
+    );
 };
 
 const areEqual = (prevProps: IMapProps, nextProps: IMapProps): boolean => {
