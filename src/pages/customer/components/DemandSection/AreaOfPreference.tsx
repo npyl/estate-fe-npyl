@@ -1,25 +1,19 @@
 import { Box, Divider, Grid, Typography } from "@mui/material";
 import { t } from "i18next";
-import { FC, useCallback, useEffect, useMemo, useState } from "react";
+import { FC, useCallback, useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { MunicipSelect } from "src/components/Location/MunicipSelect";
 import { NeighbourSelect } from "src/components/Location/NeighbourSelect";
 import { RegionSelect } from "src/components/Location/RegionSelect";
-import Map, {
-    IMapAddress,
-    IMapCoordinates,
-    IMapMarker,
-} from "src/components/Map/Map";
+import Map, { IMapAddress, IMapMarker } from "src/components/Map/Map";
 import { DrawShape, ShapeData, StopDraw } from "src/components/Map/types";
 import { decodeShape, encodeShape } from "src/components/Map/util";
 import {
-    useGetClosestQuery,
+    useLazyGetClosestQuery,
     useLazyGetHierarchyByAreaIdQuery,
 } from "src/services/location";
 import { IDemandFiltersPOST, IDemandPOST } from "src/types/demand";
 import { useDebouncedCallback } from "use-debounce";
-
-// TODO: convert closest to lazy which is faster
 
 interface ILocationSectionProps {
     index: number;
@@ -32,8 +26,6 @@ enum ZOOM_LEVELS {
     MUNICIP = 13,
     NEIGHB = 16,
 }
-
-const nullCoord = -1;
 
 export const AreaOfPreference: FC<ILocationSectionProps> = ({
     index,
@@ -65,62 +57,56 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
         [shapes] // current demand's decoded shapes
     );
 
+    const [getClosestQuery] = useLazyGetClosestQuery();
     const [getHierarchy] = useLazyGetHierarchyByAreaIdQuery();
 
     // Fields
-    const [x, setX] = useState<number>();
-    const [y, setY] = useState<number>();
+
     const [zoom, setZoom] = useState<number>(ZOOM_LEVELS.REGION);
 
-    const [activeMarker, setActiveMarker] = useState<number>();
-    const [mainMarker, setMainMarker] = useState<IMapMarker>({
-        lat: x ? x : 37.98381,
-        lng: y ? y : 23.727539,
-    });
-    const [onDragEndCoord, setOnDragEndCoord] = useState<IMapCoordinates>({
-        lat: nullCoord,
-        lng: nullCoord,
+    const [mainMarker, setMainMarker] = useState({
+        lat: 37.98381,
+        lng: 23.727539,
     });
 
-    const { data: closest } = useGetClosestQuery(
-        { latitude: onDragEndCoord.lat, longitude: onDragEndCoord.lng },
-        {
-            skip:
-                onDragEndCoord.lat === nullCoord &&
-                onDragEndCoord.lng === nullCoord,
-        }
+    const getClosest = useCallback(
+        async (lat: number, lng: number) => {
+            const { data: closest } = await getClosestQuery({
+                latitude: lat,
+                longitude: lng,
+            });
+
+            if (!closest) return;
+
+            // update slice
+            if (closest.level === 2) {
+                setZoom(ZOOM_LEVELS.MUNICIP);
+
+                setValue(regionsName, [closest.parentID.toString()]);
+                setValue(citiesName, [closest.areaID.toString()]);
+            } else if (closest.level === 3) {
+                setZoom(ZOOM_LEVELS.NEIGHB);
+
+                const neighbId = closest.areaID;
+                const municipId = closest.parentID;
+
+                setValue(complexesName, [neighbId.toString()]);
+                setValue(citiesName, [municipId.toString()]);
+
+                // For region
+                getHierarchy(municipId)
+                    .unwrap()
+                    .then((municipHierarchy) => {
+                        const regionId = municipHierarchy.parentID;
+                        if (!regionId) return;
+
+                        setValue(regionsName, [regionId.toString()]);
+                    })
+                    .catch((reason) => console.log("getHierarchy: ", reason));
+            }
+        },
+        [regionsName, citiesName, complexesName]
     );
-
-    useEffect(() => {
-        if (!closest) return;
-
-        // update slice
-        if (closest.level === 2) {
-            setZoom(ZOOM_LEVELS.MUNICIP);
-
-            setValue(regionsName, [closest.parentID.toString()]);
-            setValue(citiesName, [closest.areaID.toString()]);
-        } else if (closest.level === 3) {
-            setZoom(ZOOM_LEVELS.NEIGHB);
-
-            const neighbId = closest.areaID;
-            const municipId = closest.parentID;
-
-            setValue(complexesName, [neighbId.toString()]);
-            setValue(citiesName, [municipId.toString()]);
-
-            // For region
-            getHierarchy(municipId)
-                .unwrap()
-                .then((municipHierarchy) => {
-                    const regionId = municipHierarchy.parentID;
-                    if (!regionId) return;
-
-                    setValue(regionsName, [regionId.toString()]);
-                })
-                .catch((reason) => console.log("getHierarchy: ", reason));
-        }
-    }, [closest, regionsName, citiesName, complexesName]);
 
     const handleDraw = useCallback(
         (s: DrawShape | StopDraw) => {
@@ -155,16 +141,10 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
         100
     );
 
-    const updateMainMarkerCoordinates = (lat: number, lng: number) => {
-        let newMarker = mainMarker;
-        newMarker.lat = lat;
-        newMarker.lng = lng;
-        setMainMarker(newMarker);
-
-        // show x, y
-        setX(lat);
-        setY(lng);
-    };
+    const updateMainMarkerCoordinates = useCallback(
+        (lat: number, lng: number) => setMainMarker({ lat, lng }),
+        []
+    );
 
     //
     // Map
@@ -172,7 +152,7 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
     const handleMapClick = (lat: number, lng: number, address: IMapAddress) => {
         if (!lat || !lng) return;
 
-        setOnDragEndCoord({ lat, lng });
+        getClosest(lat, lng);
         updateMainMarkerCoordinates(lat, lng);
     };
     const handleMarkerDragEnd = (
@@ -183,7 +163,7 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
     ) => {
         if (!marker || marker !== mainMarker) return; // we only care about mainMarker drag
 
-        setOnDragEndCoord({ lat: newLat, lng: newLng });
+        getClosest(newLat, newLng);
         updateMainMarkerCoordinates(newLat, newLng);
     };
     const handleSearchSelect = (
@@ -193,7 +173,7 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
     ) => {
         if (!lat || !lng) return;
 
-        setOnDragEndCoord({ lat, lng });
+        getClosest(lat, lng);
         updateMainMarkerCoordinates(lat, lng);
     };
 
@@ -257,7 +237,6 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
                         zoom={zoom}
                         search
                         multipleShapes
-                        activeMarker={activeMarker}
                         mainMarker={mainMarker}
                         shapes={shapeData}
                         onDraw={handleDraw}
@@ -265,7 +244,6 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
                         onDragEnd={handleMarkerDragEnd}
                         onClick={handleMapClick}
                         onSearchSelect={handleSearchSelect}
-                        setActiveMarker={setActiveMarker}
                     />
                 </Box>
                 <Grid container spacing={2} padding={1} paddingTop={3}>
