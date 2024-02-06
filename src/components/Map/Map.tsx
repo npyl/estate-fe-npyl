@@ -122,7 +122,6 @@ const Map = ({
 }: IMapProps) => {
     const { isLoaded } = useLoadApi();
 
-    // const mapRef = useRef<google.maps.Map>();
     const [map, setMap] = useState<google.maps.Map>();
     const geocoderRef = useRef<google.maps.Geocoder>();
 
@@ -138,11 +137,8 @@ const Map = ({
         // geocoder
         geocoderRef.current = new window.google.maps.Geocoder();
 
-        // console.log("onLoad: ", map);
-
         // map
         setMap(map);
-        // mapRef.current = map;
 
         onReady?.(map);
     }, []);
