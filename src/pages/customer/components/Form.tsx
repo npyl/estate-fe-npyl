@@ -52,7 +52,7 @@ const getDefaultValues = (customer?: ICustomer): ICustomerYup => ({
     firstName: customer?.firstName || "",
     lastName: customer?.lastName || "",
     email: customer?.email || "",
-    managedBy: customer?.managedBy.id || "",
+    managedBy: customer?.managedBy?.id || "",
     mobilePhone: customer?.mobilePhone || "",
 
     location: {
@@ -76,9 +76,9 @@ const getDefaultValues = (customer?: ICustomer): ICustomerYup => ({
     passportNumber: customer?.passportNumber || "",
 
     // WARN: BE crashes if these are: "" (therefore I have them required)
-    nationality: customer?.nationality.key || "",
-    preferredLanguage: customer?.preferredLanguage.key || "",
-    leadSource: customer?.leadSource.key || "",
+    nationality: customer?.nationality?.key || "",
+    preferredLanguage: customer?.preferredLanguage?.key || "",
+    leadSource: customer?.leadSource?.key || "",
 
     demands:
         customer?.demands && customer?.demands?.length > 0
