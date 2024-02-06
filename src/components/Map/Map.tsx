@@ -90,88 +90,6 @@ const getAddressComponent = (
     return component ? component.long_name : "";
 };
 
-interface MarkerProps {
-    onMarkerClick?: (marker: IMapMarker) => void;
-    onDragEnd?: (
-        marker: IMapMarker,
-        newLat: number,
-        newLng: number,
-        address: IMapAddress
-    ) => void;
-
-    markers?: IMapMarker[];
-    mainMarker?: IMapMarker;
-    activeMarker?: number;
-    setActiveMarker?: any;
-
-    getAddressFromLatLng: (
-        lat: number,
-        lng: number
-    ) => Promise<{
-        street?: string;
-        number?: string;
-        zipCode?: string;
-    }>;
-}
-
-const Markers = ({
-    markers,
-    mainMarker,
-    activeMarker,
-    setActiveMarker,
-    getAddressFromLatLng,
-    onDragEnd,
-    onMarkerClick,
-}: MarkerProps) => {
-    const onMarkerDragEnd = useCallback(
-        (latLng: any, index: number) => {
-            if (!markers) return;
-            if (markers?.length < index) return;
-            const lat = latLng.lat();
-            const lng = latLng.lng();
-            // also call parent callback
-            onDragEnd &&
-                getAddressFromLatLng(lat, lng).then((response) =>
-                    onDragEnd(markers[index], lat, lng, response as IMapAddress)
-                );
-        },
-        [markers]
-    );
-
-    const MARKERS = useMemo(
-        () =>
-            markers?.map((marker, ind) => {
-                const { lat, lng } = marker;
-                if (!lat || !lng) return null;
-
-                return (
-                    <MarkerF
-                        key={uuidv4()}
-                        position={{ lat, lng }}
-                        onMouseUp={() => setActiveMarker?.(ind)}
-                        animation={
-                            marker !== mainMarker && activeMarker === ind
-                                ? google.maps.Animation.BOUNCE
-                                : undefined // Set to null when not active
-                        }
-                        onClick={() => {
-                            onMarkerClick?.(marker);
-                            // Start the bounce animation, then stop after 2 seconds
-                            setActiveMarker?.(ind);
-                        }}
-                        draggable={marker === mainMarker}
-                        onDragEnd={(e: google.maps.MapMouseEvent) =>
-                            onMarkerDragEnd(e.latLng, ind)
-                        }
-                    />
-                );
-            }) || null,
-        [markers, mainMarker]
-    );
-
-    return MARKERS;
-};
-
 //--------------------------------------------------------
 //
 //  markers: ...
@@ -285,6 +203,20 @@ const Map = ({
     //
     // 	Markers
     //
+    const onMarkerDragEnd = useCallback(
+        (latLng: any, index: number) => {
+            if (!markers) return;
+            if (markers?.length < index) return;
+            const lat = latLng.lat();
+            const lng = latLng.lng();
+            // also call parent callback
+            onDragEnd &&
+                getAddressFromLatLng(lat, lng).then((response) =>
+                    onDragEnd(markers[index], lat, lng, response as IMapAddress)
+                );
+        },
+        [markers]
+    );
 
     const handleSearchSelect = useCallback(
         (
@@ -307,6 +239,37 @@ const Map = ({
             onSearchSelect?.({ street, number, zipCode }, lat, lng);
         },
         []
+    );
+
+    const MARKERS = useMemo(
+        () =>
+            markers?.map((marker, ind) => {
+                const { lat, lng } = marker;
+                if (!lat || !lng) return null;
+
+                return (
+                    <MarkerF
+                        key={uuidv4()}
+                        position={{ lat, lng }}
+                        onMouseUp={() => setActiveMarker?.(ind)}
+                        animation={
+                            marker !== mainMarker && activeMarker === ind
+                                ? google.maps.Animation.BOUNCE
+                                : undefined // Set to null when not active
+                        }
+                        onClick={() => {
+                            onMarkerClick?.(marker);
+                            // Start the bounce animation, then stop after 2 seconds
+                            setActiveMarker?.(ind);
+                        }}
+                        draggable={marker === mainMarker}
+                        onDragEnd={(e: google.maps.MapMouseEvent) =>
+                            onMarkerDragEnd(e.latLng, ind)
+                        }
+                    />
+                );
+            }),
+        [markers, mainMarker]
     );
 
     if (!isLoaded) return null;
@@ -352,15 +315,7 @@ const Map = ({
             ) : null}
 
             {/* Markers */}
-            <Markers
-                markers={markers}
-                mainMarker={mainMarker}
-                activeMarker={activeMarker}
-                setActiveMarker={setActiveMarker}
-                onDragEnd={onDragEnd}
-                onMarkerClick={onMarkerClick}
-                getAddressFromLatLng={getAddressFromLatLng}
-            />
+            {MARKERS}
         </GoogleMap>
     );
 };
