@@ -11,63 +11,21 @@ import {
     TableRow,
     Typography,
 } from "@mui/material";
-
 import {
     KeyboardArrowUp as KeyboardArrowUpIcon,
     KeyboardArrowDown as KeyboardArrowDownIcon,
 } from "@mui/icons-material";
-
 import { Fragment, useState } from "react";
-
 import { ContactNotification } from "src/types/notification";
 import Iconify from "src/components/iconify";
 import { useTranslation } from "react-i18next";
 
-export function createRow(props: ContactNotification) {
-    const {
-        customerName,
-        customerEmail,
-        customerMobile,
-        message,
-        notificationDate,
-        notificationType,
-        propertyCode,
-        tourDate,
-        tourTime,
-        tourType,
-        viewed,
-    } = props;
+type TourType = "inPerson" | "inVideo";
 
-    return {
-        customerName,
-        customerEmail,
-        customerMobile,
-        message,
-        notificationDate,
-        notificationType,
-        propertyCode,
-        tourDate,
-        tourTime,
-        tourType,
-        history: [
-            {
-                date: "2020-01-05",
-                customerId: "11091700",
-                amount: 3,
-            },
-            {
-                date: "2020-01-02",
-                customerId: "Anonymous",
-                amount: 1,
-            },
-        ],
-    };
-}
+const getDate = (s?: string) => (s ? new Date(s).toDateString() : "");
+const isLiveTour = (s?: TourType) => s === "inPerson" || s === "inVideo";
 
-function Row(props: {
-    row: ReturnType<typeof createRow>;
-    onRemove: () => void;
-}) {
+function Row(props: { row: ContactNotification; onRemove: () => void }) {
     const { row, onRemove } = props;
 
     const { t } = useTranslation();
@@ -94,11 +52,13 @@ function Row(props: {
                 </TableCell>
                 <TableCell align="right">{row.customerEmail}</TableCell>
                 <TableCell align="right">{row.customerMobile}</TableCell>
-                <TableCell align="right">{row.message}</TableCell>
-                <TableCell align="right">{row.notificationDate}</TableCell>
+                <TableCell align="right">
+                    {getDate(row.notificationDate)}
+                </TableCell>
+                <TableCell align="right">{row.tourType}</TableCell>
 
                 <TableCell align="right">
-                    <IconButton onClick={onRemove}>
+                    <IconButton onClick={onRemove} disabled>
                         <Iconify icon={"eva:trash-2-outline"} />
                     </IconButton>
                 </TableCell>
@@ -106,54 +66,62 @@ function Row(props: {
             <TableRow>
                 <TableCell
                     style={{ paddingBottom: 0, paddingTop: 0 }}
-                    colSpan={6}
+                    colSpan={7}
                 >
                     <Collapse in={open} timeout="auto" unmountOnExit>
                         <Box sx={{ margin: 1 }}>
-                            <Typography
-                                variant="h6"
-                                gutterBottom
-                                component="div"
+                            <Table
+                                size="small"
+                                sx={{
+                                    "& .MuiTableCell-root": {
+                                        borderBottom: "none",
+                                        borderRadius: "5px",
+                                    },
+                                }}
                             >
-                                {t("History")}
-                            </Typography>
-                            <Table size="small" aria-label="purchases">
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell> {t("Date")}</TableCell>
-                                        <TableCell> {t("Customer")}</TableCell>
-                                        <TableCell align="right">
-                                            {" "}
-                                            {t("Amount")}
+                                        <TableCell>
+                                            {t("Property Code")}
                                         </TableCell>
-                                        <TableCell align="right">
-                                            {" "}
-                                            {t("Total price ($)")}
-                                        </TableCell>
+                                        <TableCell>{t("Message")}</TableCell>
+
+                                        {/* Show only if we have live tour */}
+                                        {isLiveTour(
+                                            row.tourType as TourType
+                                        ) ? (
+                                            <>
+                                                <TableCell>
+                                                    {t("Tour Date")}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {t("Tour Time")}
+                                                </TableCell>
+                                            </>
+                                        ) : null}
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {row.history.map((historyRow) => (
-                                        <TableRow key={historyRow.date}>
-                                            <TableCell
-                                                component="th"
-                                                scope="row"
-                                            >
-                                                {historyRow.date}
-                                            </TableCell>
-                                            <TableCell>
-                                                {historyRow.customerId}
-                                            </TableCell>
-                                            <TableCell align="right">
-                                                {historyRow.amount}
-                                            </TableCell>
-                                            <TableCell align="right">
-                                                {Math.round(
-                                                    historyRow.amount * -1 * 100
-                                                ) / 100}
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
+                                    <TableRow>
+                                        <TableCell>
+                                            {row.propertyCode}
+                                        </TableCell>
+                                        <TableCell>{row.message}</TableCell>
+
+                                        {/* Show only if we have live tour */}
+                                        {isLiveTour(
+                                            row.tourType as TourType
+                                        ) ? (
+                                            <>
+                                                <TableCell>
+                                                    {getDate(row.tourDate)}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {row.tourTime}
+                                                </TableCell>
+                                            </>
+                                        ) : null}
+                                    </TableRow>
                                 </TableBody>
                             </Table>
                         </Box>
@@ -165,33 +133,38 @@ function Row(props: {
 }
 
 export const CollapsibleTable = (props: {
-    rows: ReturnType<typeof createRow>[];
+    rows: ContactNotification[];
     onRemove: (index: number) => void;
 }) => {
     const { rows, onRemove } = props;
     const { t } = useTranslation();
 
     return (
-        <TableContainer component={Paper}>
-            <Table aria-label="collapsible table">
+        <TableContainer
+            component={Paper}
+            sx={{
+                mt: 1,
+            }}
+        >
+            <Table aria-label="collapsible table" sx={{ tableLayout: "fixed" }}>
                 <TableHead>
                     <TableRow>
                         <TableCell />
-                        <TableCell> {t("Name")}</TableCell>
-                        <TableCell align="right"> {t("Email")}</TableCell>
-                        <TableCell align="right"> {t("Mobile")}</TableCell>
-                        <TableCell align="right"> {t("Message")}</TableCell>
-                        <TableCell align="right">
-                            {" "}
+                        <TableCell align="left">{t("Name")}</TableCell>
+                        <TableCell align="center">{t("Email")}</TableCell>
+                        <TableCell align="center">{t("Mobile")}</TableCell>
+                        <TableCell align="center">
                             {t("Notification Date")}
                         </TableCell>
+                        <TableCell align="right">{t("Type")}</TableCell>
+
                         <TableCell />
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {rows.map((row, index) => (
                         <Row
-                            key={row.customerName}
+                            key={index}
                             row={row}
                             onRemove={() => onRemove(index)}
                         />
