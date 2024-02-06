@@ -30,7 +30,7 @@ const SvgIcon = ({ children, ...props }: SvgIconProps) => (
 );
 
 interface DrawingComponentProps {
-    mapRef: MutableRefObject<google.maps.Map | undefined>;
+    map?: google.maps.Map;
     drawing: boolean;
     shape?: ShapeData;
     onDraw: (shape: DrawShape | StopDraw) => void;
@@ -38,7 +38,7 @@ interface DrawingComponentProps {
 }
 
 export const CustomDrawingComponent = ({
-    mapRef,
+    map,
     drawing,
     shape,
     onDraw,
@@ -48,7 +48,7 @@ export const CustomDrawingComponent = ({
     const shapeRef = useRef<DrawShape | StopDraw>(null);
 
     useEffect(() => {
-        if (!mapRef.current) {
+        if (!map) {
             throw "Please DONT pass an undefined mapRef";
         }
 
@@ -90,7 +90,7 @@ export const CustomDrawingComponent = ({
         });
 
         // Set the map for the DrawingManager
-        drawingManager.setMap(mapRef.current);
+        drawingManager.setMap(map);
 
         google.maps.event.addListener(
             drawingManager,
@@ -133,7 +133,7 @@ export const CustomDrawingComponent = ({
             drawingManagerRef.current = null;
             drawingManager.setMap(null);
         };
-    }, []);
+    }, [map]);
 
     useEffect(() => {
         if (!drawingManagerRef.current) return;
@@ -143,7 +143,7 @@ export const CustomDrawingComponent = ({
         shapeRef.current = shape
             ? drawShape(
                   shape,
-                  mapRef.current!,
+                  map!,
                   !!drawing && onShapeChange
                       ? (old, newShape) => onShapeChange(newShape)
                       : null

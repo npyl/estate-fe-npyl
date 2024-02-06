@@ -166,7 +166,7 @@ const LocationSection = () => {
                     <Map
                         search
                         zoom={10}
-                        drawing={false}
+                        drawing={true}
                         markers={[mainMarker]}
                         mainMarker={mainMarker}
                         onDragEnd={handleMarkerDragEnd}

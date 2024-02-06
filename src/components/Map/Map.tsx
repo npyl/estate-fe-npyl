@@ -1,5 +1,5 @@
 import { GoogleMap, MarkerF, useJsApiLoader } from "@react-google-maps/api";
-import React, { useCallback, useMemo, useRef } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import { CustomDrawingComponent } from "./Draw";
 import { DrawMultiple } from "./DrawMultiple";
 import SearchOnMap from "./Search";
@@ -122,7 +122,8 @@ const Map = ({
 }: IMapProps) => {
     const { isLoaded } = useLoadApi();
 
-    const mapRef = useRef<google.maps.Map>();
+    // const mapRef = useRef<google.maps.Map>();
+    const [map, setMap] = useState<google.maps.Map>();
     const geocoderRef = useRef<google.maps.Geocoder>();
 
     console.log("RE_RENDER");
@@ -137,14 +138,17 @@ const Map = ({
         // geocoder
         geocoderRef.current = new window.google.maps.Geocoder();
 
+        // console.log("onLoad: ", map);
+
         // map
-        mapRef.current = map;
+        setMap(map);
+        // mapRef.current = map;
 
         onReady?.(map);
     }, []);
 
     const onUnmount = useCallback(() => {
-        mapRef.current = undefined;
+        // mapRef.current = undefined;
     }, []);
 
     const getAddressFromLatLng = useCallback(
@@ -274,6 +278,8 @@ const Map = ({
 
     if (!isLoaded) return null;
 
+    // console.log("mapREf: ", mapRef.current);
+
     return (
         <GoogleMap
             mapContainerStyle={containerStyle}
@@ -284,9 +290,9 @@ const Map = ({
             onUnmount={onUnmount}
         >
             {/* Draw One */}
-            {!multipleShapes ? (
+            {!multipleShapes && map ? (
                 <CustomDrawingComponent
-                    mapRef={mapRef}
+                    map={map}
                     drawing={drawing}
                     shape={shape}
                     onDraw={(shape) => onDraw && onDraw(shape)}
@@ -297,9 +303,9 @@ const Map = ({
             ) : null}
 
             {/* Draw Multiple */}
-            {multipleShapes ? (
+            {multipleShapes && map ? (
                 <DrawMultiple
-                    mapRef={mapRef}
+                    map={map}
                     drawing={drawing}
                     shapes={shapes}
                     onDraw={(shape) => onDraw && onDraw(shape)}
@@ -310,7 +316,7 @@ const Map = ({
             ) : null}
 
             {/* Search */}
-            {search ? (
+            {search && map ? (
                 <SearchOnMap onSearchSelect={handleSearchSelect} />
             ) : null}
 
