@@ -108,16 +108,13 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
         [regionsName, citiesName, complexesName]
     );
 
-    const handleDraw = useCallback(
-        (s: DrawShape | StopDraw) => {
-            if (!s) setValue(shapesName, []); // clear
-            else {
-                const encoded = encodeShape(s);
-                setValue(shapesName, [...shapes, encoded]); // add
-            }
-        },
-        [shapesName, shapes]
-    );
+    const handleDraw = (s: DrawShape | StopDraw) => {
+        if (!s) setValue(shapesName, []); // clear
+        else {
+            const encoded = encodeShape(s);
+            setValue(shapesName, [...watch(shapesName), encoded]); // add
+        }
+    };
     const handleShapeChange = useDebouncedCallback(
         useCallback(
             (encodedOldShape: string, encodedNewShape: string) => {
