@@ -1,5 +1,5 @@
 import { GoogleMap, MarkerF, useJsApiLoader } from "@react-google-maps/api";
-import React, { MutableRefObject, useCallback, useMemo, useRef } from "react";
+import React, { useCallback, useMemo, useRef } from "react";
 import { CustomDrawingComponent } from "./Draw";
 import { DrawMultiple } from "./DrawMultiple";
 import SearchOnMap from "./Search";
@@ -91,8 +91,6 @@ const getAddressComponent = (
 };
 
 interface MarkerProps {
-    mapRef: MutableRefObject<google.maps.Map | undefined>;
-
     onMarkerClick?: (marker: IMapMarker) => void;
     onDragEnd?: (
         marker: IMapMarker,
@@ -117,7 +115,6 @@ interface MarkerProps {
 }
 
 const Markers = ({
-    mapRef,
     markers,
     mainMarker,
     activeMarker,
@@ -223,8 +220,6 @@ const Map = ({
         geocoderRef.current = new window.google.maps.Geocoder();
 
         // map
-        const bounds = new window.google.maps.LatLngBounds(athensLatLng);
-        map.fitBounds(bounds);
         mapRef.current = map;
 
         onReady?.(map);
@@ -358,7 +353,6 @@ const Map = ({
 
             {/* Markers */}
             <Markers
-                mapRef={mapRef}
                 markers={markers}
                 mainMarker={mainMarker}
                 activeMarker={activeMarker}
