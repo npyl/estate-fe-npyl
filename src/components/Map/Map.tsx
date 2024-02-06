@@ -278,8 +278,6 @@ const Map = ({
 
     if (!isLoaded) return null;
 
-    // console.log("mapREf: ", mapRef.current);
-
     return (
         <GoogleMap
             mapContainerStyle={containerStyle}
@@ -289,35 +287,41 @@ const Map = ({
             onLoad={onLoad}
             onUnmount={onUnmount}
         >
-            {/* Draw One */}
-            {!multipleShapes && map ? (
-                <CustomDrawingComponent
-                    map={map}
-                    drawing={drawing}
-                    shape={shape}
-                    onDraw={(shape) => onDraw && onDraw(shape)}
-                    onShapeChange={(newEncodedShape) =>
-                        onShapeChange && onShapeChange("", newEncodedShape)
-                    }
-                />
-            ) : null}
+            {map ? (
+                <>
+                    {/* Draw One */}
+                    {!multipleShapes ? (
+                        <CustomDrawingComponent
+                            map={map}
+                            drawing={drawing}
+                            shape={shape}
+                            onDraw={(shape) => onDraw && onDraw(shape)}
+                            onShapeChange={(newEncodedShape) =>
+                                onShapeChange &&
+                                onShapeChange("", newEncodedShape)
+                            }
+                        />
+                    ) : null}
 
-            {/* Draw Multiple */}
-            {multipleShapes && map ? (
-                <DrawMultiple
-                    map={map}
-                    drawing={drawing}
-                    shapes={shapes}
-                    onDraw={(shape) => onDraw && onDraw(shape)}
-                    onShapeChange={(oldShape, newShape) =>
-                        onShapeChange && onShapeChange(oldShape, newShape)
-                    }
-                />
-            ) : null}
+                    {/* Draw Multiple */}
+                    {multipleShapes ? (
+                        <DrawMultiple
+                            map={map}
+                            drawing={drawing}
+                            shapes={shapes}
+                            onDraw={(shape) => onDraw && onDraw(shape)}
+                            onShapeChange={(oldShape, newShape) =>
+                                onShapeChange &&
+                                onShapeChange(oldShape, newShape)
+                            }
+                        />
+                    ) : null}
 
-            {/* Search */}
-            {search && map ? (
-                <SearchOnMap onSearchSelect={handleSearchSelect} />
+                    {/* Search */}
+                    {search ? (
+                        <SearchOnMap onSearchSelect={handleSearchSelect} />
+                    ) : null}
+                </>
             ) : null}
 
             {/* Markers */}
@@ -363,7 +367,13 @@ const areEqual = (prevProps: IMapProps, nextProps: IMapProps): boolean => {
                 )
         ) &&
         // shapes
-        prevProps.shapes === nextProps.shapes // TODO: improve this; shallow for now
+        prevProps.shapes?.length === nextProps.shapes?.length &&
+        !!prevProps.shapes?.map(
+            (ps) =>
+                !!nextProps.shapes?.find(
+                    (ns) => JSON.stringify(ps) === JSON.stringify(ns)
+                )
+        )
     );
 };
 

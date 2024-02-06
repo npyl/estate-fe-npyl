@@ -140,7 +140,7 @@ export const DrawMultiple = ({
                     drawShape(shape, map!, !!drawing ? onShapeChange : null)
                 )
             );
-    }, [shapes]);
+    }, [map, shapes]);
 
     const startDrawing = () =>
         drawingManagerRef.current?.setDrawingMode(
