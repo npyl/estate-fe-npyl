@@ -3,47 +3,61 @@ import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-import { useEditPropertyMutation } from "src/services/properties";
+import {
+    useEditPropertyMutation,
+    useLazyGetPropertyByIdQuery,
+} from "src/services/properties";
 import Form from "./Form";
-import { useGetPropertyByIdQuery } from "src/services/properties";
 import { useTabsContext } from "src/contexts/tabs";
 import { ConfirmationDialogBox } from "src/pages/components/ConfirmationDialogBox";
 import { IPropertiesPOST } from "src/types/properties";
 
-const EditPropertyPage: NextPage = () => {
+const useLoadProperty = () => {
     const router = useRouter();
     const { pushTab } = useTabsContext();
+
+    const [getProperty, { data: property }] = useLazyGetPropertyByIdQuery();
+
     const { propertyId } = router.query;
 
-    const { data: property } = useGetPropertyByIdQuery(+propertyId!);
+    useEffect(() => {
+        if (!propertyId) return;
+
+        getProperty(+propertyId!)
+            .unwrap()
+            .then((p) => {
+                const isFirstEdit = p.createdAt === p.updatedAt;
+                const label = `${isFirstEdit ? "Create" : "Edit"} property ${
+                    p.code || ""
+                }`;
+
+                pushTab({
+                    path: `/property/edit/${propertyId}`,
+                    id: (propertyId + "edit") as string,
+                    label,
+                });
+            });
+    }, [propertyId]);
+
+    return { property, propertyId };
+};
+
+const EditPropertyPage: NextPage = () => {
+    const router = useRouter();
+    const { property, propertyId } = useLoadProperty();
     const [edit, { isError, isLoading }] = useEditPropertyMutation();
 
     const [clearConfirmDialogOpen, setclearConfirmDialogOpen] = useState(false);
 
-    useEffect(() => {
-        if (property && propertyId) {
-            const isFirstEdit = property.createdAt === property.updatedAt;
-            const label = `${isFirstEdit ? "Create" : "Edit"} property ${
-                property?.code || ""
-            }`;
-
-            pushTab({
-                path: `/property/edit/${propertyId}`,
-                id: (propertyId + "edit") as string,
-                label,
-            });
-        }
-    }, [property, propertyId]);
-
     const handleEdit = useCallback(
         (body: IPropertiesPOST) =>
             edit({ body, id: +propertyId! }).then(redirectToView),
-        []
+        [propertyId]
     );
 
     const redirectToView = useCallback(
         () => router.push(`/property/${propertyId}`),
-        []
+        [propertyId]
     );
 
     const resetEverything = () => setclearConfirmDialogOpen(true);

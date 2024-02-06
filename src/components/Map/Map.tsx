@@ -1,5 +1,5 @@
 import { GoogleMap, MarkerF, useJsApiLoader } from "@react-google-maps/api";
-import React, { useCallback, useMemo, useRef } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import { CustomDrawingComponent } from "./Draw";
 import { DrawMultiple } from "./DrawMultiple";
 import SearchOnMap from "./Search";
@@ -122,7 +122,7 @@ const Map = ({
 }: IMapProps) => {
     const { isLoaded } = useLoadApi();
 
-    const mapRef = useRef<google.maps.Map>();
+    const [map, setMap] = useState<google.maps.Map>();
     const geocoderRef = useRef<google.maps.Geocoder>();
 
     console.log("RE_RENDER");
@@ -138,13 +138,13 @@ const Map = ({
         geocoderRef.current = new window.google.maps.Geocoder();
 
         // map
-        mapRef.current = map;
+        setMap(map);
 
         onReady?.(map);
     }, []);
 
     const onUnmount = useCallback(() => {
-        mapRef.current = undefined;
+        // mapRef.current = undefined;
     }, []);
 
     const getAddressFromLatLng = useCallback(
@@ -283,35 +283,41 @@ const Map = ({
             onLoad={onLoad}
             onUnmount={onUnmount}
         >
-            {/* Draw One */}
-            {!multipleShapes ? (
-                <CustomDrawingComponent
-                    mapRef={mapRef}
-                    drawing={drawing}
-                    shape={shape}
-                    onDraw={(shape) => onDraw && onDraw(shape)}
-                    onShapeChange={(newEncodedShape) =>
-                        onShapeChange && onShapeChange("", newEncodedShape)
-                    }
-                />
-            ) : null}
+            {map ? (
+                <>
+                    {/* Draw One */}
+                    {!multipleShapes ? (
+                        <CustomDrawingComponent
+                            map={map}
+                            drawing={drawing}
+                            shape={shape}
+                            onDraw={(shape) => onDraw && onDraw(shape)}
+                            onShapeChange={(newEncodedShape) =>
+                                onShapeChange &&
+                                onShapeChange("", newEncodedShape)
+                            }
+                        />
+                    ) : null}
 
-            {/* Draw Multiple */}
-            {multipleShapes ? (
-                <DrawMultiple
-                    mapRef={mapRef}
-                    drawing={drawing}
-                    shapes={shapes}
-                    onDraw={(shape) => onDraw && onDraw(shape)}
-                    onShapeChange={(oldShape, newShape) =>
-                        onShapeChange && onShapeChange(oldShape, newShape)
-                    }
-                />
-            ) : null}
+                    {/* Draw Multiple */}
+                    {multipleShapes ? (
+                        <DrawMultiple
+                            map={map}
+                            drawing={drawing}
+                            shapes={shapes}
+                            onDraw={(shape) => onDraw && onDraw(shape)}
+                            onShapeChange={(oldShape, newShape) =>
+                                onShapeChange &&
+                                onShapeChange(oldShape, newShape)
+                            }
+                        />
+                    ) : null}
 
-            {/* Search */}
-            {search ? (
-                <SearchOnMap onSearchSelect={handleSearchSelect} />
+                    {/* Search */}
+                    {search ? (
+                        <SearchOnMap onSearchSelect={handleSearchSelect} />
+                    ) : null}
+                </>
             ) : null}
 
             {/* Markers */}
@@ -357,7 +363,13 @@ const areEqual = (prevProps: IMapProps, nextProps: IMapProps): boolean => {
                 )
         ) &&
         // shapes
-        prevProps.shapes === nextProps.shapes // TODO: improve this; shallow for now
+        prevProps.shapes?.length === nextProps.shapes?.length &&
+        !!prevProps.shapes?.map(
+            (ps) =>
+                !!nextProps.shapes?.find(
+                    (ns) => JSON.stringify(ps) === JSON.stringify(ns)
+                )
+        )
     );
 };
 

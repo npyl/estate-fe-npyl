@@ -6,36 +6,49 @@ import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { useTabsContext } from "src/contexts/tabs";
 import {
     useCreateOrUpdateCustomerMutation,
-    useGetCustomerByIdQuery,
+    useLazyGetCustomerByIdQuery,
 } from "src/services/customers";
 import Form from "../../components/Form";
 import { ICustomerPOST } from "src/types/customer";
 
-const EditCustomer: NextPage = () => {
+const useLoadCustomer = () => {
     const router = useRouter();
     const { pushTab } = useTabsContext();
+
+    const [getCustomer, { data: customer }] = useLazyGetCustomerByIdQuery();
+
     const { customerId } = router.query;
 
-    const { data: customer } = useGetCustomerByIdQuery(+customerId!);
-    const [edit, { isError, isLoading }] = useCreateOrUpdateCustomerMutation();
-
     useEffect(() => {
-        if (customer && customerId) {
-            const isFirstEdit = customer.createdAt === customer.updatedAt;
-            const label = `${isFirstEdit ? "Create" : "Edit"} customer ${
-                (customer?.firstName &&
-                    customer?.lastName &&
-                    `${customer.firstName} ${customer.lastName}`) ||
-                ""
-            }`;
+        if (!customerId) return;
 
-            pushTab({
-                path: `/customer/edit/${customerId}`,
-                id: (customerId + "edit") as string,
-                label,
+        getCustomer(+customerId!)
+            .unwrap()
+            .then((c) => {
+                const isFirstEdit = c.createdAt === c.updatedAt;
+                const label = `${isFirstEdit ? "Create" : "Edit"} customer ${
+                    (c?.firstName &&
+                        c?.lastName &&
+                        `${c.firstName} ${c.lastName}`) ||
+                    ""
+                }`;
+
+                pushTab({
+                    path: `/customer/edit/${customerId}`,
+                    id: (customerId + "edit") as string,
+                    label,
+                });
             });
-        }
-    }, [customer, customerId]);
+    }, [customerId]);
+
+    return { customer, customerId };
+};
+
+const EditCustomer: NextPage = () => {
+    const router = useRouter();
+    const { customer, customerId } = useLoadCustomer();
+
+    const [edit, { isError, isLoading }] = useCreateOrUpdateCustomerMutation();
 
     const handleEdit = useCallback(
         (body: ICustomerPOST) =>
@@ -45,7 +58,7 @@ const EditCustomer: NextPage = () => {
 
     const redirectToView = useCallback(
         () => router.push(`/customer/${customerId}`),
-        []
+        [customerId]
     );
 
     return (

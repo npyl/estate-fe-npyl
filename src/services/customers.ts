@@ -131,4 +131,6 @@ export const {
     useBulkDeleteCustomersMutation,
 
     useGetCustomerLabelsQuery,
+
+    useLazyGetCustomerByIdQuery,
 } = customers;

@@ -25,7 +25,7 @@ const SvgIcon = ({ children, ...props }: SvgIconProps) => (
 );
 
 interface DrawMultipleProps {
-    mapRef: MutableRefObject<google.maps.Map | undefined>;
+    map?: google.maps.Map;
     drawing: boolean;
     shapes?: ShapeData[];
     onDraw: (shape: DrawShape | StopDraw) => void;
@@ -33,7 +33,7 @@ interface DrawMultipleProps {
 }
 
 export const DrawMultiple = ({
-    mapRef,
+    map,
     drawing,
     shapes,
     onDraw,
@@ -42,11 +42,9 @@ export const DrawMultiple = ({
     const drawingManagerRef = useRef<any>(null);
     const shapeRefs = useRef<(DrawShape | StopDraw)[]>([]);
 
-    console.log("multiple!");
-
     useEffect(() => {
-        if (!mapRef.current) {
-            throw "DONT pass an undefined mapRef";
+        if (!map) {
+            throw "Please DONT pass an undefined mapRef";
         }
 
         // Create a new instance of the DrawingManager
@@ -88,7 +86,7 @@ export const DrawMultiple = ({
         });
 
         // Set the map for the DrawingManager
-        drawingManager.setMap(mapRef.current);
+        drawingManager.setMap(map);
 
         google.maps.event.addListener(
             drawingManager,
@@ -124,7 +122,7 @@ export const DrawMultiple = ({
             drawingManagerRef.current = null;
             drawingManager.setMap(null);
         };
-    }, []);
+    }, [map]);
 
     useEffect(() => {
         if (!drawingManagerRef.current) return;
@@ -139,14 +137,10 @@ export const DrawMultiple = ({
             .filter((shape) => !!shape)
             .map((shape) =>
                 shapeRefs.current?.push(
-                    drawShape(
-                        shape,
-                        mapRef.current!,
-                        !!drawing ? onShapeChange : null
-                    )
+                    drawShape(shape, map!, !!drawing ? onShapeChange : null)
                 )
             );
-    }, [shapes]);
+    }, [map, shapes]);
 
     const startDrawing = () =>
         drawingManagerRef.current?.setDrawingMode(

@@ -858,6 +858,7 @@ export const {
     useGetPropertyByIdQuery,
     useGetPropertyByCodeQuery,
     useLazyGetPropertyByCodeQuery,
+    useLazyGetPropertyByIdQuery,
 
     // mutations
     useEditPropertyMutation,

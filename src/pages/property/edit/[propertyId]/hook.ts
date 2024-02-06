@@ -23,6 +23,7 @@ interface IPropertyYup extends Partial<Omit<IPropertiesPOST, OmitList>> {
 const codeIsUnique = async (initialCode: string, code?: string) => {
     if (initialCode === code) return true; // INFO: during edit initialCode and code are equal
     if (!code) return true;
+    if (!initialCode && !!code) return true; // INFO: on page refresh, initialCode does not get the initial value because property is not yet fetched
 
     try {
         const promise = dispatch(
@@ -44,6 +45,7 @@ const codeIsUnique = async (initialCode: string, code?: string) => {
 const keyCodeIsUnique = async (initialKeyCode: string, keyCode?: string) => {
     if (initialKeyCode === keyCode) return true; // INFO: during edit initialCode and code are equal
     if (!keyCode) return true;
+    if (!initialKeyCode && !!keyCode) return true; // INFO: on page refresh, initialKeyCode does not get the initial value because property is not yet fetched
 
     try {
         const promise = dispatch(

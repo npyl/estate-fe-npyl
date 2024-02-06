@@ -240,7 +240,7 @@ const MatchingPropertiesSection: React.FC = () => {
 
     const handlePaginationChange = (model: GridPaginationModel) =>
         setPage(model.page);
-    console.log("eimai malakas:", properties?.length);
+
     if (properties?.length === 0) {
         // !propertiesPage ||
         // !Array.isArray(propertiesPage.content) ||

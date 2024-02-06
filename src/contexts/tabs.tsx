@@ -26,6 +26,7 @@ const useTabsState = () => {
     const pushTab = useCallback(
         (value: ITab) => {
             const exists = appTabs.some((item) => item.id === value.id);
+            console.log("exists: ", exists);
             if (!exists) {
                 // add
                 setAppTabs((prev) => [...prev, value]);

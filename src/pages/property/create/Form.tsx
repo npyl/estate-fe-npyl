@@ -89,12 +89,7 @@ export default function Form({
             }}
         >
             <Stack spacing={2} direction="column">
-                <Grid
-                    container
-                    xs={12}
-                    justifyContent="center"
-                    alignItems="center"
-                >
+                <Grid container justifyContent="center" alignItems="center">
                     <Grid
                         item
                         xs={12}
@@ -164,19 +159,13 @@ export default function Form({
                                                 {value}
                                             </MenuItem>
                                         )
-                                    )}
+                                    ) || []}
                                 </TextField>
                             </Grid>
                         </Grid>
                     </Grid>
 
-                    <Grid
-                        item
-                        xs={12}
-                        container
-                        justifyContent="center"
-                        marginTop={3}
-                    >
+                    <Grid item container justifyContent="center" marginTop={3}>
                         <LoadingButton
                             loading={isLoading && !isError}
                             variant="contained"
