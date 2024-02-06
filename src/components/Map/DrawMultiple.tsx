@@ -44,16 +44,10 @@ export const DrawMultiple = ({
 
     console.log("multiple!");
 
-    // drawing manager ready
-    const [ready, setReady] = useState(false);
-
     useEffect(() => {
         if (!mapRef.current) {
-            console.log("is-null!");
-            return;
+            throw "DONT pass an undefined mapRef";
         }
-
-        console.log("is-not-null!!!!!!!!!!!!!!!");
 
         // Create a new instance of the DrawingManager
         const drawingManager = new google.maps.drawing.DrawingManager({
@@ -125,16 +119,16 @@ export const DrawMultiple = ({
         // Store the reference to the DrawingManager
         drawingManagerRef.current = drawingManager;
 
-        setReady(true);
-
         return () => {
             // Cleanup when the component unmounts
+            drawingManagerRef.current = null;
             drawingManager.setMap(null);
         };
     }, []);
 
     useEffect(() => {
-        if (!ready || !shapes) return;
+        if (!drawingManagerRef.current) return;
+        if (!shapes) return;
 
         // clear map of any shape
         shapeRefs.current?.forEach((shape) => shape?.setMap(null));
@@ -142,7 +136,7 @@ export const DrawMultiple = ({
 
         // draw any imported shape
         shapes
-            ?.filter((shape) => !!shape)
+            .filter((shape) => !!shape)
             .map((shape) =>
                 shapeRefs.current?.push(
                     drawShape(
@@ -152,7 +146,7 @@ export const DrawMultiple = ({
                     )
                 )
             );
-    }, [ready, shapes]);
+    }, [shapes]);
 
     const startDrawing = () =>
         drawingManagerRef.current?.setDrawingMode(

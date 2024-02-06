@@ -1,10 +1,4 @@
-import {
-    MutableRefObject,
-    ReactNode,
-    useEffect,
-    useRef,
-    useState,
-} from "react";
+import { MutableRefObject, ReactNode, useEffect, useRef } from "react";
 import { Button, Stack, Typography } from "@mui/material";
 import { DrawShape, ShapeData, StopDraw } from "./types";
 import { drawShape, encodeShape, setShapeEvents } from "./util";
@@ -53,11 +47,10 @@ export const CustomDrawingComponent = ({
     const drawingManagerRef = useRef<any>(null);
     const shapeRef = useRef<DrawShape | StopDraw>(null);
 
-    // drawing manager ready
-    const [ready, setReady] = useState(false);
-
     useEffect(() => {
-        if (!mapRef.current) return;
+        if (!mapRef.current) {
+            throw "Please DONT pass an undefined mapRef";
+        }
 
         // Create a new instance of the DrawingManager
         const drawingManager = new google.maps.drawing.DrawingManager({
@@ -135,16 +128,15 @@ export const CustomDrawingComponent = ({
         // Store the reference to the DrawingManager
         drawingManagerRef.current = drawingManager;
 
-        setReady(true);
-
         return () => {
             // Cleanup when the component unmounts
+            drawingManagerRef.current = null;
             drawingManager.setMap(null);
         };
     }, []);
 
     useEffect(() => {
-        if (!ready) return;
+        if (!drawingManagerRef.current) return;
 
         // draw any imported shape
         shapeRef.current?.setMap(null);
@@ -159,7 +151,7 @@ export const CustomDrawingComponent = ({
             : null;
 
         // INFO: we need to support null/undefined shape, because it can mean user cleared the shape OR we loaded a new map on a new demand form
-    }, [ready, shape]);
+    }, [shape]);
 
     const startDrawing = () => {
         shapeRef.current?.setMap(null);
