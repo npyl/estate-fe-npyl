@@ -165,7 +165,7 @@ const Markers = ({
                         }
                     />
                 );
-            }),
+            }) || null,
         [markers, mainMarker]
     );
 
