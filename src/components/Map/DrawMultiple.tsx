@@ -1,6 +1,6 @@
 import { Button, Stack, SvgIconProps, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { useEffect, useRef, useState } from "react";
+import { MutableRefObject, useEffect, useRef, useState } from "react";
 import { DrawShape, ShapeData, StopDraw } from "./types";
 import { drawShape, encodeShape, setShapeEvents } from "./util";
 
@@ -25,7 +25,7 @@ const SvgIcon = ({ children, ...props }: SvgIconProps) => (
 );
 
 interface DrawMultipleProps {
-    map: any;
+    mapRef: MutableRefObject<google.maps.Map | undefined>;
     drawing: boolean;
     shapes?: ShapeData[];
     onDraw: (shape: DrawShape | StopDraw) => void;
@@ -33,7 +33,7 @@ interface DrawMultipleProps {
 }
 
 export const DrawMultiple = ({
-    map,
+    mapRef,
     drawing,
     shapes,
     onDraw,
@@ -42,10 +42,19 @@ export const DrawMultiple = ({
     const drawingManagerRef = useRef<any>(null);
     const shapeRefs = useRef<(DrawShape | StopDraw)[]>([]);
 
+    console.log("multiple!");
+
     // drawing manager ready
     const [ready, setReady] = useState(false);
 
     useEffect(() => {
+        if (!mapRef.current) {
+            console.log("is-null!");
+            return;
+        }
+
+        console.log("is-not-null!!!!!!!!!!!!!!!");
+
         // Create a new instance of the DrawingManager
         const drawingManager = new google.maps.drawing.DrawingManager({
             drawingControl: false,
@@ -85,7 +94,7 @@ export const DrawMultiple = ({
         });
 
         // Set the map for the DrawingManager
-        drawingManager.setMap(map);
+        drawingManager.setMap(mapRef.current);
 
         google.maps.event.addListener(
             drawingManager,
@@ -122,7 +131,7 @@ export const DrawMultiple = ({
             // Cleanup when the component unmounts
             drawingManager.setMap(null);
         };
-    }, [map]);
+    }, []);
 
     useEffect(() => {
         if (!ready || !shapes) return;
@@ -136,7 +145,11 @@ export const DrawMultiple = ({
             ?.filter((shape) => !!shape)
             .map((shape) =>
                 shapeRefs.current?.push(
-                    drawShape(shape, map, !!drawing ? onShapeChange : null)
+                    drawShape(
+                        shape,
+                        mapRef.current!,
+                        !!drawing ? onShapeChange : null
+                    )
                 )
             );
     }, [ready, shapes]);

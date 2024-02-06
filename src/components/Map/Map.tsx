@@ -133,16 +133,16 @@ const Map = ({
         [mainMarker?.lat, mainMarker?.lng]
     );
 
-    const onLoad = useCallback((_map: any) => {
+    const onLoad = useCallback((map: google.maps.Map) => {
         // geocoder
         geocoderRef.current = new window.google.maps.Geocoder();
 
         // map
         const bounds = new window.google.maps.LatLngBounds(athensLatLng);
-        _map.current?.fitBounds(bounds);
-        mapRef.current = _map;
+        map.fitBounds(bounds);
+        mapRef.current = map;
 
-        onReady?.(_map);
+        onReady?.(map);
     }, []);
 
     const onUnmount = useCallback(() => {
@@ -259,7 +259,7 @@ const Map = ({
             {/* Draw One */}
             {!multipleShapes ? (
                 <CustomDrawingComponent
-                    map={mapRef.current}
+                    mapRef={mapRef}
                     drawing={drawing}
                     shape={shape}
                     onDraw={(shape) => onDraw && onDraw(shape)}
@@ -272,7 +272,7 @@ const Map = ({
             {/* Draw Multiple */}
             {multipleShapes ? (
                 <DrawMultiple
-                    map={mapRef.current}
+                    mapRef={mapRef}
                     drawing={drawing}
                     shapes={shapes}
                     onDraw={(shape) => onDraw && onDraw(shape)}

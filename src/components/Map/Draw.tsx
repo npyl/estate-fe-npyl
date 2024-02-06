@@ -1,4 +1,10 @@
-import { ReactNode, useEffect, useRef, useState } from "react";
+import {
+    MutableRefObject,
+    ReactNode,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
 import { Button, Stack, Typography } from "@mui/material";
 import { DrawShape, ShapeData, StopDraw } from "./types";
 import { drawShape, encodeShape, setShapeEvents } from "./util";
@@ -30,7 +36,7 @@ const SvgIcon = ({ children, ...props }: SvgIconProps) => (
 );
 
 interface DrawingComponentProps {
-    map: any;
+    mapRef: MutableRefObject<google.maps.Map | undefined>;
     drawing: boolean;
     shape?: ShapeData;
     onDraw: (shape: DrawShape | StopDraw) => void;
@@ -38,7 +44,7 @@ interface DrawingComponentProps {
 }
 
 export const CustomDrawingComponent = ({
-    map,
+    mapRef,
     drawing,
     shape,
     onDraw,
@@ -51,6 +57,8 @@ export const CustomDrawingComponent = ({
     const [ready, setReady] = useState(false);
 
     useEffect(() => {
+        if (!mapRef.current) return;
+
         // Create a new instance of the DrawingManager
         const drawingManager = new google.maps.drawing.DrawingManager({
             drawingControl: false,
@@ -89,7 +97,7 @@ export const CustomDrawingComponent = ({
         });
 
         // Set the map for the DrawingManager
-        drawingManager.setMap(map);
+        drawingManager.setMap(mapRef.current);
 
         google.maps.event.addListener(
             drawingManager,
@@ -133,7 +141,7 @@ export const CustomDrawingComponent = ({
             // Cleanup when the component unmounts
             drawingManager.setMap(null);
         };
-    }, [map]);
+    }, []);
 
     useEffect(() => {
         if (!ready) return;
@@ -143,7 +151,7 @@ export const CustomDrawingComponent = ({
         shapeRef.current = shape
             ? drawShape(
                   shape,
-                  map,
+                  mapRef.current!,
                   !!drawing && onShapeChange
                       ? (old, newShape) => onShapeChange(newShape)
                       : null
