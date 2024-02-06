@@ -165,6 +165,7 @@ const LocationSection = () => {
                 <Box height={`50vh`} width={"100%"}>
                     <Map
                         search
+                        zoom={10}
                         drawing={false}
                         markers={[mainMarker]}
                         mainMarker={mainMarker}

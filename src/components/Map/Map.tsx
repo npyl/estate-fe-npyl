@@ -1,4 +1,4 @@
-import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+import { GoogleMap, MarkerF, useJsApiLoader } from "@react-google-maps/api";
 import React, { useCallback, useMemo, useRef } from "react";
 import { CustomDrawingComponent } from "./Draw";
 import { DrawMultiple } from "./DrawMultiple";
@@ -90,6 +90,88 @@ const getAddressComponent = (
     return component ? component.long_name : "";
 };
 
+interface MarkerProps {
+    onMarkerClick?: (marker: IMapMarker) => void;
+    onDragEnd?: (
+        marker: IMapMarker,
+        newLat: number,
+        newLng: number,
+        address: IMapAddress
+    ) => void;
+
+    markers?: IMapMarker[];
+    mainMarker?: IMapMarker;
+    activeMarker?: number;
+    setActiveMarker?: any;
+
+    getAddressFromLatLng: (
+        lat: number,
+        lng: number
+    ) => Promise<{
+        street?: string;
+        number?: string;
+        zipCode?: string;
+    }>;
+}
+
+const Markers = ({
+    markers,
+    mainMarker,
+    activeMarker,
+    setActiveMarker,
+    getAddressFromLatLng,
+    onDragEnd,
+    onMarkerClick,
+}: MarkerProps) => {
+    const onMarkerDragEnd = useCallback(
+        (latLng: any, index: number) => {
+            if (!markers) return;
+            if (markers?.length < index) return;
+            const lat = latLng.lat();
+            const lng = latLng.lng();
+            // also call parent callback
+            onDragEnd &&
+                getAddressFromLatLng(lat, lng).then((response) =>
+                    onDragEnd(markers[index], lat, lng, response as IMapAddress)
+                );
+        },
+        [markers]
+    );
+
+    const MARKERS = useMemo(
+        () =>
+            markers?.map((marker, ind) => {
+                const { lat, lng } = marker;
+                if (!lat || !lng) return null;
+
+                return (
+                    <MarkerF
+                        key={uuidv4()}
+                        position={{ lat, lng }}
+                        onMouseUp={() => setActiveMarker?.(ind)}
+                        animation={
+                            marker !== mainMarker && activeMarker === ind
+                                ? google.maps.Animation.BOUNCE
+                                : undefined // Set to null when not active
+                        }
+                        onClick={() => {
+                            onMarkerClick?.(marker);
+                            // Start the bounce animation, then stop after 2 seconds
+                            setActiveMarker?.(ind);
+                        }}
+                        draggable={marker === mainMarker}
+                        onDragEnd={(e: google.maps.MapMouseEvent) =>
+                            onMarkerDragEnd(e.latLng, ind)
+                        }
+                    />
+                );
+            }),
+        [markers, mainMarker]
+    );
+
+    return MARKERS;
+};
+
 //--------------------------------------------------------
 //
 //  markers: ...
@@ -133,16 +215,14 @@ const Map = ({
         [mainMarker?.lat, mainMarker?.lng]
     );
 
-    const onLoad = useCallback((_map: any) => {
+    const onLoad = useCallback((map: google.maps.Map) => {
         // geocoder
         geocoderRef.current = new window.google.maps.Geocoder();
 
         // map
-        const bounds = new window.google.maps.LatLngBounds(athensLatLng);
-        _map.current?.fitBounds(bounds);
-        mapRef.current = _map;
+        mapRef.current = map;
 
-        onReady?.(_map);
+        onReady?.(map);
     }, []);
 
     const onUnmount = useCallback(() => {
@@ -205,22 +285,6 @@ const Map = ({
     //
     // 	Markers
     //
-    const onMarkerDragEnd = useCallback(
-        (latLng: any, index: number) => {
-            if (!markers) return;
-            if (markers?.length < index) return;
-
-            const lat = latLng.lat();
-            const lng = latLng.lng();
-
-            // also call parent callback
-            onDragEnd &&
-                getAddressFromLatLng(lat, lng).then((response) =>
-                    onDragEnd(markers[index], lat, lng, response as IMapAddress)
-                );
-        },
-        [markers]
-    );
 
     const handleSearchSelect = useCallback(
         (
@@ -259,7 +323,7 @@ const Map = ({
             {/* Draw One */}
             {!multipleShapes ? (
                 <CustomDrawingComponent
-                    map={mapRef.current}
+                    mapRef={mapRef}
                     drawing={drawing}
                     shape={shape}
                     onDraw={(shape) => onDraw && onDraw(shape)}
@@ -272,7 +336,7 @@ const Map = ({
             {/* Draw Multiple */}
             {multipleShapes ? (
                 <DrawMultiple
-                    map={mapRef.current}
+                    mapRef={mapRef}
                     drawing={drawing}
                     shapes={shapes}
                     onDraw={(shape) => onDraw && onDraw(shape)}
@@ -288,32 +352,15 @@ const Map = ({
             ) : null}
 
             {/* Markers */}
-            {markers?.map((marker, ind) => {
-                const { lat, lng } = marker;
-                if (!lat || !lng) return null;
-
-                return (
-                    <Marker
-                        key={uuidv4()}
-                        position={{ lat, lng }}
-                        onMouseUp={() => setActiveMarker?.(ind)}
-                        animation={
-                            marker !== mainMarker && activeMarker === ind
-                                ? google.maps.Animation.BOUNCE
-                                : undefined // Set to null when not active
-                        }
-                        onClick={() => {
-                            onMarkerClick?.(marker);
-                            // Start the bounce animation, then stop after 2 seconds
-                            setActiveMarker?.(ind);
-                        }}
-                        draggable={marker === mainMarker}
-                        onDragEnd={(e: google.maps.MapMouseEvent) =>
-                            onMarkerDragEnd(e.latLng, ind)
-                        }
-                    />
-                );
-            })}
+            <Markers
+                markers={markers}
+                mainMarker={mainMarker}
+                activeMarker={activeMarker}
+                setActiveMarker={setActiveMarker}
+                onDragEnd={onDragEnd}
+                onMarkerClick={onMarkerClick}
+                getAddressFromLatLng={getAddressFromLatLng}
+            />
         </GoogleMap>
     );
 };

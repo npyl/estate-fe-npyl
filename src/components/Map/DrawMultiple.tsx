@@ -1,6 +1,6 @@
 import { Button, Stack, SvgIconProps, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { useEffect, useRef, useState } from "react";
+import { MutableRefObject, useEffect, useRef, useState } from "react";
 import { DrawShape, ShapeData, StopDraw } from "./types";
 import { drawShape, encodeShape, setShapeEvents } from "./util";
 
@@ -25,7 +25,7 @@ const SvgIcon = ({ children, ...props }: SvgIconProps) => (
 );
 
 interface DrawMultipleProps {
-    map: any;
+    mapRef: MutableRefObject<google.maps.Map | undefined>;
     drawing: boolean;
     shapes?: ShapeData[];
     onDraw: (shape: DrawShape | StopDraw) => void;
@@ -33,7 +33,7 @@ interface DrawMultipleProps {
 }
 
 export const DrawMultiple = ({
-    map,
+    mapRef,
     drawing,
     shapes,
     onDraw,
@@ -42,10 +42,13 @@ export const DrawMultiple = ({
     const drawingManagerRef = useRef<any>(null);
     const shapeRefs = useRef<(DrawShape | StopDraw)[]>([]);
 
-    // drawing manager ready
-    const [ready, setReady] = useState(false);
+    console.log("multiple!");
 
     useEffect(() => {
+        if (!mapRef.current) {
+            throw "DONT pass an undefined mapRef";
+        }
+
         // Create a new instance of the DrawingManager
         const drawingManager = new google.maps.drawing.DrawingManager({
             drawingControl: false,
@@ -85,7 +88,7 @@ export const DrawMultiple = ({
         });
 
         // Set the map for the DrawingManager
-        drawingManager.setMap(map);
+        drawingManager.setMap(mapRef.current);
 
         google.maps.event.addListener(
             drawingManager,
@@ -116,16 +119,16 @@ export const DrawMultiple = ({
         // Store the reference to the DrawingManager
         drawingManagerRef.current = drawingManager;
 
-        setReady(true);
-
         return () => {
             // Cleanup when the component unmounts
+            drawingManagerRef.current = null;
             drawingManager.setMap(null);
         };
-    }, [map]);
+    }, []);
 
     useEffect(() => {
-        if (!ready || !shapes) return;
+        if (!drawingManagerRef.current) return;
+        if (!shapes) return;
 
         // clear map of any shape
         shapeRefs.current?.forEach((shape) => shape?.setMap(null));
@@ -133,13 +136,17 @@ export const DrawMultiple = ({
 
         // draw any imported shape
         shapes
-            ?.filter((shape) => !!shape)
+            .filter((shape) => !!shape)
             .map((shape) =>
                 shapeRefs.current?.push(
-                    drawShape(shape, map, !!drawing ? onShapeChange : null)
+                    drawShape(
+                        shape,
+                        mapRef.current!,
+                        !!drawing ? onShapeChange : null
+                    )
                 )
             );
-    }, [ready, shapes]);
+    }, [shapes]);
 
     const startDrawing = () =>
         drawingManagerRef.current?.setDrawingMode(

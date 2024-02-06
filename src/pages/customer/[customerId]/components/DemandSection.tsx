@@ -9,7 +9,6 @@ import ListLabelsItem from "src/components/List/labels-item";
 import { useGetCustomerByIdQuery } from "src/services/customers";
 import { useGetLabelsQuery } from "src/services/labels";
 import { AreaOfPreference } from "./AreaOfPreference";
-import FeaturesSection from "src/pages/property/[propertyId]/sections/FeaturesSection";
 import FeaturesDemandSection from "./FeaturesDemandSection";
 
 interface DemandSectionProps {
@@ -69,11 +68,10 @@ const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
 
     const selectedLabels = useMemo(
         () =>
-            propertyLabels?.filter(
-                (propertyLabel) =>
-                    demandFilterLabelIDs?.find(
-                        (labelID) => labelID === propertyLabel.id
-                    )
+            propertyLabels?.filter((propertyLabel) =>
+                demandFilterLabelIDs?.find(
+                    (labelID) => labelID === propertyLabel.id
+                )
             ) || [],
         [propertyLabels, demandFilterLabelIDs]
     );
