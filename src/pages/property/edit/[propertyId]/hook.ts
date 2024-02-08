@@ -266,6 +266,7 @@ const getDefaultValues = (property?: IProperties): IPropertyYup => ({
         playroom: notNot(property?.details?.playroom),
         storeroom: notNot(property?.details?.storeroom),
         waterSupply: notNot(property?.details?.waterSupply),
+        goldenVisa: notNot(property?.details?.goldenVisa),
 
         // numeric
         ...property?.details,
