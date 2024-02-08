@@ -83,9 +83,6 @@ export const AccountPopover: FC<AccountPopoverProps> = (props) => {
                     }}
                 >
                     <Typography variant="body1">{user?.username}</Typography>
-                    <Typography color="textSecondary" variant="body2">
-                        {user?.screenName}
-                    </Typography>
                 </Box>
             </Box>
             <Divider />

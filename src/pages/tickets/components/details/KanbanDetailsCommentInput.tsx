@@ -22,9 +22,9 @@ export default function KanbanDetailsCommentInput() {
     return (
         <Stack direction="row" spacing={2} sx={{ py: 3, px: 2.5 }}>
             <CustomAvatar
-                src={user?.photoURL}
-                alt={user?.displayName}
-                name={user?.displayName}
+                src={user?.profilePhoto}
+                alt={user?.username}
+                name={user?.username}
             />
 
             <Paper variant="outlined" sx={{ p: 1, flexGrow: 1 }}>
