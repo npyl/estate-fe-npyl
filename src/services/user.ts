@@ -49,6 +49,13 @@ export const user = createApi({
             }),
             invalidatesTags: ["Users"],
         }),
+
+        isAdmin: builder.query<boolean, number>({
+            query: (userId) => ({
+                url: `${userId}/isAdmin`,
+            }),
+            providesTags: ["Users"],
+        }),
     }),
 });
 
@@ -57,4 +64,6 @@ export const {
     useAddUserMutation,
     useAllUsersQuery,
     useToggleActiveUserMutation,
+    useLazyIsAdminQuery,
+    useLazyProfileQuery,
 } = user;

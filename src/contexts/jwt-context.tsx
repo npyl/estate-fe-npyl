@@ -1,19 +1,17 @@
-import { skipToken } from "@reduxjs/toolkit/dist/query";
 import type { FC, ReactNode } from "react";
-import { createContext, useEffect, useMemo, useReducer } from "react";
+import { createContext, useEffect, useReducer } from "react";
 import { useLoginMutation, useRegisterMutation } from "../services/auth";
-import { useProfileQuery } from "../services/user";
-import type { IUser } from "../types/user";
+import { IUser } from "src/types/user";
+import { useLazyProfileQuery } from "src/services/user";
 
 interface State {
+    platform: "JWT";
     isInitialized: boolean;
     isAuthenticated: boolean;
     user: IUser | null;
 }
 
 export interface AuthContextValue extends State {
-    platform: "JWT";
-    profileData: any;
     signin: (username: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
     signup: (username: string, password: string) => Promise<void>;
@@ -61,6 +59,7 @@ type Action = InitializeAction | LoginAction | LogoutAction | RegisterAction;
 type Handler = (state: State, action: any) => State;
 
 const initialState: State = {
+    platform: "JWT",
     isAuthenticated: false,
     isInitialized: false,
     user: null,
@@ -82,6 +81,7 @@ const handlers: Record<ActionType, Handler> = {
 
         return {
             ...state,
+            isInitialized: true,
             isAuthenticated: true,
             user,
         };
@@ -107,79 +107,67 @@ const reducer = (state: State, action: Action): State =>
 
 export const AuthContext = createContext<AuthContextValue>({
     ...initialState,
-    platform: "JWT",
-    profileData: {},
     signin: () => Promise.resolve(),
     logout: () => Promise.resolve(),
     signup: () => Promise.resolve(),
 });
 
-export const AuthProvider: FC<AuthProviderProps> = (props) => {
-    const { children } = props;
+export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     const [state, dispatch] = useReducer(reducer, initialState);
-    const [login, { isLoading, isSuccess: loginSuccess }] = useLoginMutation();
 
-    const skipRequest = useMemo(() => {
-        return (
-            loginSuccess && !!globalThis?.localStorage?.getItem("accessToken")
-        );
-    }, [globalThis?.localStorage?.getItem("accessToken"), loginSuccess]);
-
-    const {
-        data: profileData,
-        isLoading: userLoading,
-        isSuccess,
-        isUninitialized,
-        isError,
-    } = useProfileQuery(undefined, { skip: !skipRequest });
-
+    const [login, { isSuccess }] = useLoginMutation();
     const [register] = useRegisterMutation();
+    const [getProfile] = useLazyProfileQuery();
 
     useEffect(() => {
-        const initialize = async (): Promise<void> => {
-            try {
-                if (isError) {
-                    localStorage.removeItem("accessToken");
-                    dispatch({ type: ActionType.LOGOUT });
-                } else if (
-                    isSuccess ||
-                    globalThis?.localStorage?.getItem("accessToken")
-                ) {
-                    dispatch({
-                        type: ActionType.INITIALIZE,
-                        payload: {
-                            isAuthenticated: true,
-                            user: profileData!,
-                        },
-                    });
-                } else {
-                    dispatch({
-                        type: ActionType.INITIALIZE,
-                        payload: {
-                            isAuthenticated: false,
-                            user: null,
-                        },
-                    });
-                }
-            } catch (err) {
-                localStorage.removeItem("accessToken");
-                dispatch({ type: ActionType.LOGOUT });
-            }
-        };
-
         initialize();
-    }, [profileData, isError, loginSuccess]);
+    }, [isSuccess]);
+
+    const initialize = async (): Promise<void> => {
+        if (globalThis?.localStorage?.getItem("accessToken")) {
+            const user = await getProfile().unwrap();
+            if (!user) {
+                throw "Failed to get profile!";
+            }
+
+            dispatch({
+                type: ActionType.INITIALIZE,
+                payload: {
+                    isAuthenticated: true,
+                    user,
+                },
+            });
+        } else {
+            dispatch({
+                type: ActionType.INITIALIZE,
+                payload: {
+                    isAuthenticated: false,
+                    user: null,
+                },
+            });
+        }
+    };
 
     const signin = async (
         username: string,
         password: string
     ): Promise<void> => {
-        const loginRes = await login({ username, password }).unwrap();
+        const loginRes = await login({
+            username,
+            password,
+        }).unwrap();
+
         localStorage.setItem("accessToken", loginRes.token);
-        dispatch({
+
+        const user = await getProfile().unwrap();
+        if (!user) {
+            throw "Failed getting profile!";
+        }
+
+        await dispatch({
             type: ActionType.LOGIN,
             payload: {
-                user: profileData!,
+                user,
             },
         });
     };
@@ -189,31 +177,17 @@ export const AuthProvider: FC<AuthProviderProps> = (props) => {
         dispatch({ type: ActionType.LOGOUT });
     };
 
-    const signup = async (
-        username: string,
-        password: string
-    ): Promise<void> => {
+    const signup = async (username: string, password: string): Promise<void> =>
         await register({
             username,
             password,
         }).unwrap();
-        // localStorage.setItem("accessToken", accessToken.token);
-        // const user = await profile().unwrap();
-
-        // dispatch({
-        //   type: ActionType.REGISTER,
-        //   payload: {
-        //     user,
-        //   },
-        // });
-    };
 
     return (
         <AuthContext.Provider
             value={{
                 ...state,
                 platform: "JWT",
-                profileData,
                 signin,
                 logout,
                 signup,
