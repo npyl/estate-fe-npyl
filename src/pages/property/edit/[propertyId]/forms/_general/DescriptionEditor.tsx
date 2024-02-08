@@ -6,6 +6,7 @@ import {
     convertFromRaw,
     convertToRaw,
 } from "draft-js";
+import { useRouter } from "next/router";
 import * as React from "react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
@@ -13,7 +14,10 @@ import { useTranslation } from "react-i18next";
 import Panel from "src/components/Panel";
 import { DraftEditor } from "src/components/draft-editor";
 import { RHFTextField } from "src/components/hook-form";
-import { useGenerateDescriptionMutation } from "src/services/properties";
+import {
+    useGenerateDescriptionMutation,
+    useGetPropertyByIdQuery,
+} from "src/services/properties";
 import { IOpenAIDetailsPOST } from "src/types/openai";
 import { useDebouncedCallback } from "use-debounce";
 
@@ -107,15 +111,32 @@ const fixDropdowns = (details?: IOpenAIDetailsPOST) => ({
     energyClass: getEnumKey(details?.energyClass),
 });
 
+const useGetDescription = () => {
+    // TODO: maybe find a better way to do this...
+    // NOTE: we do not rely on watch() because it causes problem with our flow (useEffect & Draft Editor)
+
+    const router = useRouter();
+    const { propertyId } = router.query;
+
+    const { data: property } = useGetPropertyByIdQuery(+propertyId!);
+
+    const description = useMemo(
+        () => property?.description || "",
+        [property?.description]
+    );
+
+    return { description };
+};
+
 const DescriptionSection: React.FC = () => {
     const { t } = useTranslation();
-    const { watch, setValue } = useFormContext();
+    const { setValue } = useFormContext();
+
+    const { openAIDetails } = useOpenAIDetails();
+    const { description } = useGetDescription();
 
     const [generateDescription, { isLoading }] =
         useGenerateDescriptionMutation();
-
-    const { openAIDetails } = useOpenAIDetails();
-    const description = watch("description");
 
     const [editorState, setEditorState] = useState<EditorState>(
         EditorState.createEmpty()
@@ -126,14 +147,13 @@ const DescriptionSection: React.FC = () => {
         debouncedSetDescription(newEditorState);
     }, []);
 
-    // first load
     useEffect(() => {
         if (!description) return;
 
         // convert description (string representing JSON) to JSON and set state
         const contentState = convertFromRaw(JSON.parse(description));
         setEditorState(EditorState.createWithContent(contentState));
-    }, []);
+    }, [description]);
 
     const debouncedSetDescription = useDebouncedCallback(
         (newEditorState: EditorState) => {
@@ -156,7 +176,11 @@ const DescriptionSection: React.FC = () => {
                 .unwrap()
                 .then((s) => {
                     const contentState = ContentState.createFromText(s);
-                    setEditorState(EditorState.createWithContent(contentState));
+                    const editorState =
+                        EditorState.createWithContent(contentState);
+
+                    // update editorState, description & descriptionText
+                    onEditorStateChange(editorState);
                 }),
         [openAIDetails]
     );
