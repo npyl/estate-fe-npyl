@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Divider, Grid } from "@mui/material";
 import * as React from "react";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -182,6 +182,13 @@ const Description: React.FC = () => {
                     <RHFCheckbox
                         name="details.floorApartment"
                         label={t("Floor Apartment")}
+                    />
+                </Grid>
+
+                <Grid item>
+                    <RHFCheckbox
+                        name="details.goldenVisa"
+                        label={t("Golden Visa")}
                     />
                 </Grid>
             </Grid>

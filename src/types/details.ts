@@ -53,6 +53,8 @@ export interface IPropertyDetailsPOST {
     electricitySupply?: boolean;
     hasBuildingPermit?: boolean;
     hasBuilding?: boolean;
+
+    goldenVisa?: boolean;
 }
 
 export interface IPropertyDetails {
@@ -90,4 +92,6 @@ export interface IPropertyDetails {
     electricitySupply: boolean;
     hasBuildingPermit: boolean;
     hasBuilding: boolean;
+
+    goldenVisa?: boolean;
 }

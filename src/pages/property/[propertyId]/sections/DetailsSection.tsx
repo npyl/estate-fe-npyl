@@ -31,6 +31,7 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Storeroom",
         "Penthouse",
         "Floor Apartment",
+        "Golden Visa",
     ],
     COMMERCIAL: [
         "Floor",
@@ -282,6 +283,14 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                     <ListItem
                         label={t("View")}
                         value={details?.viewType.value || "-"}
+                        align="horizontal"
+                    />
+                );
+            case "Golden Visa":
+                return (
+                    <ListBooleanItem
+                        label={t("Golden Visa")}
+                        status={details?.goldenVisa || false}
                         align="horizontal"
                     />
                 );

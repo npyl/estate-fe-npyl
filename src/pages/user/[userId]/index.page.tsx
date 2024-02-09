@@ -1,13 +1,13 @@
 import { Grid } from "@mui/material";
 import type { NextPage } from "next";
 import { useEffect, useMemo } from "react";
-import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-import { useAllUsersQuery, useProfileQuery } from "src/services/user";
+import { useAllUsersQuery } from "src/services/user";
 import { useTabsContext } from "src/contexts/tabs";
 import ViewUser from "src/components/User/View";
 import { useRouter } from "next/router";
 import { SecurityProvider } from "src/contexts/security";
+import { AdminGuard } from "src/components/authentication/admin-guard";
 
 const User: NextPage = () => {
     const router = useRouter();
@@ -43,11 +43,11 @@ const User: NextPage = () => {
 };
 
 User.getLayout = (page) => (
-    <AuthGuard>
+    <AdminGuard>
         <DashboardLayout>
             <SecurityProvider>{page}</SecurityProvider>
         </DashboardLayout>
-    </AuthGuard>
+    </AdminGuard>
 );
 
 export default User;

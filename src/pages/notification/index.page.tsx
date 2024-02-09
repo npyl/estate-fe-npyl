@@ -1,8 +1,8 @@
 import type { NextPage } from "next";
-import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { useGetNotificationsQuery } from "src/services/notification";
 import { CollapsibleTable } from "./components/CollapsibleTable";
+import { AdminGuard } from "src/components/authentication/admin-guard";
 
 const NotificationPage: NextPage = () => {
     const { data: notifications } = useGetNotificationsQuery();
@@ -16,9 +16,9 @@ const NotificationPage: NextPage = () => {
 };
 
 NotificationPage.getLayout = (page) => (
-    <AuthGuard>
+    <AdminGuard>
         <DashboardLayout>{page}</DashboardLayout>
-    </AuthGuard>
+    </AdminGuard>
 );
 
 export default NotificationPage;
