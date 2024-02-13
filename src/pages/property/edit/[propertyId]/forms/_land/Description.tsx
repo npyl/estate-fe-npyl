@@ -56,7 +56,7 @@ const PropertyDescriptionForLandSection: React.FC<any> = () => {
                         fullWidth
                         label={t("Distance From Sea")}
                         name="distances.sea"
-                        adornment="km"
+                        adornment="m"
                     />
                 </Grid>
                 <Grid item xs={6}>
