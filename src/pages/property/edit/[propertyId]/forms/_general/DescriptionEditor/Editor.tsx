@@ -7,18 +7,23 @@ import {
     convertToRaw,
 } from "draft-js";
 import * as React from "react";
-import { useCallback, useState, useMemo } from "react";
+import { useCallback, useState, useMemo, useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import Panel from "src/components/Panel";
 import { DraftEditor } from "src/components/draft-editor";
 import { RHFTextField } from "src/components/hook-form";
-import { useGenerateDescriptionMutation } from "src/services/properties";
+import {
+    useGenerateDescriptionMutation,
+    useLazyGetPropertyByIdQuery,
+} from "src/services/properties";
 import { useOpenAIDetails } from "./hooks";
 import ChatGPTIcon from "./GPTIcon";
 import fixDropdowns from "./stupid";
 import TabbedBox from "./TabbedBox";
 import { Language } from "src/components/Language/types";
+import { useRouter } from "next/router";
+import { IProperties } from "src/types/properties";
 
 const TABS: {
     label: string;
@@ -27,6 +32,38 @@ const TABS: {
     { label: "EN", value: "en" },
     { label: "GR", value: "gr" },
 ];
+
+const useInitialDescriptionState = (
+    setEditorState: (s: EditorState) => void
+) => {
+    const { setValue } = useFormContext();
+    const { propertyId } = useRouter().query;
+    const [getProperty] = useLazyGetPropertyByIdQuery();
+
+    const setInitialState = useCallback((p: IProperties) => {
+        const descriptions = p?.descriptions || [];
+
+        Object.entries(descriptions)?.forEach(
+            ([lang, { description, title }], i) => {
+                const state = convertFromRaw(JSON.parse(description));
+
+                const plainText = state.getPlainText();
+                const contentStateJSON = JSON.stringify(convertToRaw(state));
+
+                setValue(`descriptions[${i}].descriptionText`, plainText);
+                setValue(`descriptions[${i}].description`, contentStateJSON);
+                setValue(`descriptions[${i}].title`, title);
+
+                if (i === 0)
+                    setEditorState(EditorState.createWithContent(state));
+            }
+        );
+    }, []);
+
+    useEffect(() => {
+        getProperty(+propertyId!).unwrap().then(setInitialState);
+    }, []);
+};
 
 const DescriptionSection: React.FC = () => {
     const { t, i18n } = useTranslation();
@@ -40,6 +77,9 @@ const DescriptionSection: React.FC = () => {
     const [editorState, setEditorState] = useState<EditorState>(
         EditorState.createEmpty()
     );
+
+    // --- Initial State ---
+    useInitialDescriptionState(setEditorState);
 
     // ---
     const [lang, setLang] = useState<Language>("en");
