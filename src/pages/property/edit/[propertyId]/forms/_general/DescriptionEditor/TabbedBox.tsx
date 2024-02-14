@@ -2,6 +2,7 @@ import { Box, Tab } from "@mui/material";
 import { useMemo } from "react";
 
 interface TabbedBoxProps<T = string> {
+    disabled?: boolean; // prevent from selecting a tab
     tabs: { label: string; value: T }[];
     selected: string;
     endNode?: React.ReactNode;
@@ -10,6 +11,7 @@ interface TabbedBoxProps<T = string> {
 }
 
 const TabbedBox = <T extends unknown>({
+    disabled,
     tabs,
     selected,
     endNode,
@@ -23,24 +25,27 @@ const TabbedBox = <T extends unknown>({
                     sx={{
                         ...(value === selected
                             ? {
-                                  border: "1px solid #ccc",
-                                  borderTopLeftRadius: "15px",
-                                  borderTopRightRadius: "15px",
+                                  border: "1px solid #aaa",
                                   borderBottom: 0,
                               }
                             : {
-                                  borderBottom: "1px solid #ccc",
+                                  borderBottom: "1px solid #aaa",
+                                  "&:hover": {
+                                      backgroundColor: "#eee",
+                                  },
                               }),
+                        borderTopLeftRadius: "15px",
+                        borderTopRightRadius: "15px",
                         px: 2,
                         py: 0,
                     }}
                     key={i}
                     label={label}
                     value={value}
-                    onClick={() => onSelect(value)}
+                    onClick={() => !disabled && onSelect(value)}
                 />
             )),
-        [selected]
+        [selected, disabled]
     );
 
     return (

@@ -66,10 +66,8 @@ const useInitialDescriptionState = (
 };
 
 const DescriptionSection: React.FC = () => {
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
     const { setValue, watch } = useFormContext();
-
-    const { openAIDetails } = useOpenAIDetails(i18n.language as Language);
 
     const [generateDescription, { isLoading }] =
         useGenerateDescriptionMutation();
@@ -96,6 +94,8 @@ const DescriptionSection: React.FC = () => {
 
     const title = useMemo(() => name("title"), [name]);
     // ---
+
+    const { openAIDetails } = useOpenAIDetails(lang);
 
     const onEditorStateChange = useCallback(
         (newEditorState: EditorState) => {
@@ -167,6 +167,7 @@ const DescriptionSection: React.FC = () => {
                 selected={lang}
                 endNode={chatGPTButton}
                 onSelect={handleTabChange}
+                disabled={isLoading}
             >
                 <Typography variant="h6" flex={1}>
                     {`${t("Title")} (${lang})`}
