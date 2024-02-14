@@ -1,5 +1,6 @@
 import { KeyValue } from "./KeyValue";
 import { ICustomer } from "./customer";
+import { DescriptionEntry, DescriptionEntryPOST } from "./description";
 import { IPropertyDetails, IPropertyDetailsPOST } from "./details";
 import { IPropertyFeatures } from "./features";
 import { IPropertyBlueprint, IPropertyDocument, IPropertyImage } from "./file";
@@ -267,7 +268,6 @@ export interface IPropertyDistances {
 
 export interface IPropertiesPOST {
     code: string;
-    title: string;
     rentalStart: string;
     rentalEnd: string;
     availableAfter: string;
@@ -276,8 +276,7 @@ export interface IPropertiesPOST {
     parentCategory?: string;
     category?: string;
     video: string;
-    description: string;
-    descriptionText: string;
+    descriptions: DescriptionEntryPOST[];
 
     managerId?: number;
     ownerId?: number;
@@ -309,14 +308,13 @@ export interface IPropertiesPOST {
 
 export interface IProperties {
     code: string;
-    title: string;
     rentalStart: string;
     rentalEnd: string;
     availableAfter: string;
     keyCode: string;
     video: string;
-    description: string;
-    descriptionText: string;
+    descriptions: Record<string, DescriptionEntry>;
+
     createdAt: string;
     updatedAt: string;
 

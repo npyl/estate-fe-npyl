@@ -16,7 +16,7 @@ const DistancesSection: React.FC = () => {
                         label={t("Public Transportation")}
                         name="distances.publicTransport"
                         acceptsDecimal
-                        adornment="km"
+                        adornment="m"
                     />
                 </Grid>
 
@@ -26,7 +26,7 @@ const DistancesSection: React.FC = () => {
                         label={t("Sea")}
                         name="distances.sea"
                         acceptsDecimal
-                        adornment="km"
+                        adornment="m"
                     />
                 </Grid>
                 <Grid item xs={6}>
@@ -35,7 +35,7 @@ const DistancesSection: React.FC = () => {
                         label={t("Schools")}
                         name="distances.schools"
                         acceptsDecimal
-                        adornment="km"
+                        adornment="m"
                     />
                 </Grid>
                 <Grid item xs={6}>
@@ -44,7 +44,7 @@ const DistancesSection: React.FC = () => {
                         label={t("Supermarket")}
                         name="distances.supermarket"
                         acceptsDecimal
-                        adornment="km"
+                        adornment="m"
                     />
                 </Grid>
                 <Grid item xs={6}>
@@ -53,7 +53,7 @@ const DistancesSection: React.FC = () => {
                         label={t("Cafe-Restaurant")}
                         name="distances.cafeRestaurant"
                         acceptsDecimal
-                        adornment="km"
+                        adornment="m"
                     />
                 </Grid>
                 <Grid item xs={6}>
@@ -62,7 +62,7 @@ const DistancesSection: React.FC = () => {
                         label={t("Hospital")}
                         name="distances.hospital"
                         acceptsDecimal
-                        adornment="km"
+                        adornment="m"
                     />
                 </Grid>
                 <Grid item xs={6}>
@@ -71,7 +71,7 @@ const DistancesSection: React.FC = () => {
                         label={t("Airport")}
                         name="distances.airport"
                         acceptsDecimal
-                        adornment="km"
+                        adornment="m"
                     />
                 </Grid>
             </Grid>

@@ -62,7 +62,7 @@ const BasicForLandSection: React.FC<any> = () => {
     const { data: managers } = useAllUsersQuery();
 
     const { propertyId } = router.query;
-    const rented = watch("rented");
+
     const parentCategory = watch("parentCategory") || "";
 
     const subCategoriesMap: {

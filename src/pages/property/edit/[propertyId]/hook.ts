@@ -135,6 +135,21 @@ const getDefaultValues = (property?: IProperties): IPropertyYup => ({
     state: property?.state?.key || "",
     keyCode: property?.keyCode || "",
 
+    descriptions: [
+        {
+            description: property?.descriptions[0]?.description || "",
+            descriptionText: property?.descriptions[0]?.descriptionText || "",
+            title: property?.descriptions[0]?.title || "",
+            language: "en",
+        },
+        {
+            description: property?.descriptions[1]?.description || "",
+            descriptionText: property?.descriptions[1]?.descriptionText || "",
+            title: property?.descriptions[1]?.title || "",
+            language: "gr",
+        },
+    ],
+
     managerId: property?.manager?.id || "",
     ownerId: property?.owner?.id || "",
 
@@ -148,7 +163,6 @@ const getDefaultValues = (property?: IProperties): IPropertyYup => ({
     category: getEnumKey(property?.category?.key),
     parentCategory: getEnumKey(property?.parentCategory?.key),
 
-    title: property?.title || "",
     rented: notNot(property?.rented),
 
     rentalStart: property?.rentalStart || "",
@@ -160,8 +174,6 @@ const getDefaultValues = (property?: IProperties): IPropertyYup => ({
     debatablePrice: notNot(property?.debatablePrice),
     buildable: notNot(property?.buildable),
     video: property?.video || "",
-    description: property?.description || "",
-    descriptionText: property?.descriptionText || "",
 
     suitableFor: {
         agriculturalUse: notNot(property?.suitableFor?.agriculturalUse),

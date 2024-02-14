@@ -3,8 +3,9 @@ import { IProperties, ParentCategory } from "src/types/properties";
 
 import { Typography, Box, Paper, Divider, Grid } from "@mui/material";
 
-import { List, ListItem } from "src/components/List";
+import { List } from "src/components/List";
 import { useTranslation } from "react-i18next";
+import DistanceListItem from "src/components/List/distance";
 
 interface DistanceSectionProps {
     data: IProperties;
@@ -81,82 +82,58 @@ const DistanceSection: React.FC<DistanceSectionProps> = (props) => {
         switch (field) {
             case "Schools":
                 return (
-                    <ListItem
+                    <DistanceListItem
                         label={t("Schools")}
-                        value={
-                            distances?.schools
-                                ? `${distances.schools} m²`
-                                : "- m²"
-                        }
+                        value={distances?.schools}
                         align="horizontal"
                     />
                 );
             case "Supermarket":
                 return (
-                    <ListItem
+                    <DistanceListItem
                         label={t("Supermarket")}
-                        value={
-                            distances?.supermarket
-                                ? `${distances.supermarket} m²`
-                                : "- m²"
-                        }
+                        value={distances?.supermarket}
                         align="horizontal"
                     />
                 );
             case "Cafe-Restaurant":
                 return (
-                    <ListItem
+                    <DistanceListItem
                         label={t("Cafe-Restaurant")}
-                        value={
-                            distances?.cafeRestaurant
-                                ? `${distances.cafeRestaurant} m²`
-                                : "- m²"
-                        }
+                        value={distances?.cafeRestaurant}
                         align="horizontal"
                     />
                 );
             case "Hospital":
                 return (
-                    <ListItem
+                    <DistanceListItem
                         label={t("Hospital")}
-                        value={
-                            distances?.hospital
-                                ? `${distances.hospital} m²`
-                                : "- m²"
-                        }
+                        value={distances?.hospital}
                         align="horizontal"
                     />
                 );
 
             case "Sea":
                 return (
-                    <ListItem
+                    <DistanceListItem
                         label={t("From Sea")}
-                        value={distances?.sea ? `${distances.sea} m²` : "- m²"}
+                        value={distances?.sea}
                         align="horizontal"
                     />
                 );
             case "Public Transportation":
                 return (
-                    <ListItem
+                    <DistanceListItem
                         label={t("Public Transportation")}
-                        value={
-                            distances?.publicTransport
-                                ? `${distances.publicTransport}  m²`
-                                : "-  m²"
-                        }
+                        value={distances?.publicTransport}
                         align="horizontal"
                     />
                 );
             case "Airport":
                 return (
-                    <ListItem
+                    <DistanceListItem
                         label={t("Airport")}
-                        value={
-                            distances?.airport
-                                ? `${distances.airport}  m²`
-                                : "-  m²"
-                        }
+                        value={distances?.airport}
                         align="horizontal"
                     />
                 );

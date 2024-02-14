@@ -11,8 +11,16 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { SoftButton } from "src/components/SoftButton";
-import { ReactNode, useState } from "react";
+import { ReactNode, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useGetPropertyByIdQuery } from "src/services/properties";
+import { useRouter } from "next/router";
+
+const useGetProperty = () => {
+    const { propertyId } = useRouter().query;
+    const { data: property } = useGetPropertyByIdQuery(+propertyId!);
+    return { property };
+};
 
 interface IViewHeaderProps {
     onEdit: VoidFunction;
@@ -26,6 +34,24 @@ const ViewHeader = (props: IViewHeaderProps) => {
     const { t } = useTranslation();
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
+    const { property } = useGetProperty();
+    const { hasPublic, hasSpitogato } = useMemo(
+        () => ({
+            hasPublic: property?.listings?.PUBLIC_SITE || false,
+            hasSpitogato: property?.listings?.SPITOGATOS || false,
+        }),
+        [property]
+    );
+
+    const openPublic = useCallback(
+        () =>
+            window.open(
+                `https://www.luxuryhomes.gr/property-detail/${property?.id}`,
+                "_blank"
+            ),
+        [property?.id]
+    );
+
     return (
         <Paper sx={{ borderColor: "divider", paddingX: 2, marginTop: 1 }}>
             <Grid container direction={"row"}>
@@ -33,11 +59,17 @@ const ViewHeader = (props: IViewHeaderProps) => {
                     {children}
                 </Grid>
                 <Grid item sx={{ mt: 1, mb: 1 }}>
+                    {hasPublic ? (
+                        <Button variant="contained" onClick={openPublic}>
+                            Public
+                        </Button>
+                    ) : null}
+
                     {onClone && (
                         <Button
                             variant="outlined"
                             color="secondary"
-                            sx={{ mr: 1 }}
+                            sx={{ mx: 1 }}
                             onClick={onClone}
                         >
                             {t("Clone")}
