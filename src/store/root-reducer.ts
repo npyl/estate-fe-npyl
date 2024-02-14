@@ -15,7 +15,6 @@ import { tickets } from "src/services/tickets"; // a.k.a. kanban
 import { logs } from "src/services/logs";
 import { listings } from "src/services/listings";
 
-import { reducer as customerReducer } from "../slices/customer";
 import { reducer as customerFiltersReducer } from "../slices/customer/filters";
 import { reducer as customerMiscReducer } from "../slices/customer/misc";
 import { reducer as filtersReducer } from "../slices/filters";
@@ -45,7 +44,6 @@ export const rootReducer = combineReducers({
     // property
     filters: filtersReducer,
     // customer
-    customer: customerReducer,
     customerMisc: customerMiscReducer,
     customerFilters: customerFiltersReducer,
     // general
