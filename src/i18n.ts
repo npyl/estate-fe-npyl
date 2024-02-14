@@ -854,6 +854,8 @@ const resources = {
 
             //Suitable For
 
+            "Translate from greek": "Μετάφραση από ελληνικά",
+
             "Suitable For": "Κατάλληλο Για",
             Student: "Φοιτητικό",
             Cottage: "Εξοχική Κατοικία",
