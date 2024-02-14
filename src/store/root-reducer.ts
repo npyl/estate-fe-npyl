@@ -23,7 +23,6 @@ import kanbanReducer from "../slices/kanban";
 import { reducer as labelsReducer } from "../slices/labels";
 import { reducer as notesReducer } from "../slices/notes";
 import { reducer as notificationReducer } from "../slices/notification";
-import { reducer as propertyReducer } from "../slices/property";
 import { reducer as securityReducer } from "../slices/security";
 import { reducer as logReducer } from "../slices/log";
 
@@ -44,7 +43,6 @@ export const rootReducer = combineReducers({
     [listings.reducerPath]: listings.reducer,
 
     // property
-    property: propertyReducer,
     filters: filtersReducer,
     // customer
     customer: customerReducer,
