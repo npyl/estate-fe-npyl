@@ -1,7 +1,7 @@
-import { useRouter } from "next/router";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { useGetPropertyByIdQuery } from "src/services/properties";
+import { useTranslation } from "react-i18next";
+import { Language } from "src/components/Language/types";
 import { IOpenAIDetailsPOST } from "src/types/openai";
 
 // Utility function to join elements with a comma, excluding nullish or empty values
@@ -9,7 +9,9 @@ const joinWithComma = (...elements: (string | null | undefined)[]): string => {
     return elements.filter((el) => el !== "" && el != null).join(", ");
 };
 
-export const useOpenAIDetails = (): { openAIDetails: IOpenAIDetailsPOST } => {
+export const useOpenAIDetails = (
+    language: Language
+): { openAIDetails: IOpenAIDetailsPOST } => {
     const { watch } = useFormContext();
 
     const region = watch("location.region");
@@ -48,7 +50,7 @@ export const useOpenAIDetails = (): { openAIDetails: IOpenAIDetailsPOST } => {
             ),
             distanceFromSea: watch("distances.sea"),
             distanceFromSupermarket: watch("distances.supermarket"),
-            language: "Greek",
+            language,
 
             // Dropdowns
             category: watch("category"),
@@ -60,21 +62,4 @@ export const useOpenAIDetails = (): { openAIDetails: IOpenAIDetailsPOST } => {
             energyClass: watch("heatingAndEnergy.energyClass"),
         },
     };
-};
-
-export const useGetDescription = () => {
-    // TODO: maybe find a better way to do this...
-    // NOTE: we do not rely on watch() because it causes problem with our flow (useEffect & Draft Editor)
-
-    const router = useRouter();
-    const { propertyId } = router.query;
-
-    const { data: property } = useGetPropertyByIdQuery(+propertyId!);
-
-    const description = useMemo(
-        () => property?.description || "",
-        [property?.description]
-    );
-
-    return { description };
 };

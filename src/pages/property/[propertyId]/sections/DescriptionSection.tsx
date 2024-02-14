@@ -1,23 +1,21 @@
 import { Box, Divider, Grid, Paper, Typography } from "@mui/material";
 import { EditorState, convertFromRaw } from "draft-js";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { DraftEditor } from "src/components/draft-editor";
-import { IProperties } from "src/types/properties";
-interface DescriptionSectionProps {
-    data: IProperties;
-}
+import { useGetDescription } from "../hooks";
 
-const DescriptionSection: React.FC<DescriptionSectionProps> = (props) => {
-    const { data } = props;
+const DescriptionSection = () => {
     const { t } = useTranslation();
 
-    const editorState = useMemo(() => {
-        if (!data?.description) return EditorState.createEmpty();
+    const { description, title } = useGetDescription();
 
-        const contentState = convertFromRaw(JSON.parse(data?.description));
+    const editorState = useMemo(() => {
+        if (!description) return EditorState.createEmpty();
+
+        const contentState = convertFromRaw(JSON.parse(description));
         return EditorState.createWithContent(contentState);
-    }, [data?.description]);
+    }, [description]);
 
     return (
         <Paper elevation={10} sx={{ overflow: "auto" }}>
@@ -30,7 +28,7 @@ const DescriptionSection: React.FC<DescriptionSectionProps> = (props) => {
                 }}
             >
                 <Typography variant="h6">{t("Title")}</Typography>
-                <Typography variant="body1">{data?.title}</Typography>
+                <Typography variant="body1">{title}</Typography>
             </Box>
             <Divider></Divider>
             <Box

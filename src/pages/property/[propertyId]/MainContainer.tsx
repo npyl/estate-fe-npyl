@@ -61,7 +61,7 @@ const MainContainer: React.FC = () => {
                         <Features data={data} />
                     </Grid>
                     <Grid item xs={12}>
-                        <DescriptionSection data={data} />
+                        <DescriptionSection />
                     </Grid>
                     <Grid item xs={12}>
                         <AddressSection />

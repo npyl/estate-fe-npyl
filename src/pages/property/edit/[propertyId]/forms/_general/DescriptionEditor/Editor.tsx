@@ -1,5 +1,5 @@
 import { LoadingButton } from "@mui/lab";
-import { Tab, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import {
     ContentState,
     EditorState,
@@ -7,33 +7,32 @@ import {
     convertToRaw,
 } from "draft-js";
 import * as React from "react";
-import { useCallback, useEffect, useState, useMemo } from "react";
+import { useCallback, useState, useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import Panel from "src/components/Panel";
 import { DraftEditor } from "src/components/draft-editor";
 import { RHFTextField } from "src/components/hook-form";
 import { useGenerateDescriptionMutation } from "src/services/properties";
-import { useDebouncedCallback } from "use-debounce";
-import { useGetDescription, useOpenAIDetails } from "./hooks";
+import { useOpenAIDetails } from "./hooks";
 import ChatGPTIcon from "./GPTIcon";
 import fixDropdowns from "./stupid";
 import TabbedBox from "./TabbedBox";
+import { Language } from "src/components/Language/types";
 
 const TABS: {
     label: string;
-    value: "EN" | "GR";
+    value: Language;
 }[] = [
-    { label: "EN", value: "EN" },
-    { label: "GR", value: "GR" },
+    { label: "EN", value: "en" },
+    { label: "GR", value: "gr" },
 ];
 
 const DescriptionSection: React.FC = () => {
-    const { t } = useTranslation();
-    const { setValue } = useFormContext();
+    const { t, i18n } = useTranslation();
+    const { setValue, watch } = useFormContext();
 
-    const { openAIDetails } = useOpenAIDetails();
-    const { description } = useGetDescription();
+    const { openAIDetails } = useOpenAIDetails(i18n.language as Language);
 
     const [generateDescription, { isLoading }] =
         useGenerateDescriptionMutation();
@@ -42,29 +41,34 @@ const DescriptionSection: React.FC = () => {
         EditorState.createEmpty()
     );
 
-    const onEditorStateChange = useCallback((newEditorState: EditorState) => {
-        setEditorState(newEditorState);
-        debouncedSetDescription(newEditorState);
-    }, []);
+    // ---
+    const [lang, setLang] = useState<Language>("en");
 
-    useEffect(() => {
-        if (!description) return;
+    const index = useMemo(
+        () => TABS.findIndex(({ value }) => lang === value),
+        [lang]
+    );
 
-        // convert description (string representing JSON) to JSON and set state
-        const contentState = convertFromRaw(JSON.parse(description));
-        setEditorState(EditorState.createWithContent(contentState));
-    }, [description]);
+    const name = useCallback(
+        (s: string) => `descriptions[${index}].${s}`,
+        [index]
+    );
 
-    const debouncedSetDescription = useDebouncedCallback(
+    const title = useMemo(() => name("title"), [name]);
+    // ---
+
+    const onEditorStateChange = useCallback(
         (newEditorState: EditorState) => {
+            setEditorState(newEditorState);
+
             const contentState = newEditorState.getCurrentContent();
             const plainText = contentState.getPlainText();
-            setValue("descriptionText", plainText);
+            setValue(name("descriptionText"), plainText);
 
             const contentStateJSON = JSON.stringify(convertToRaw(contentState));
-            setValue("description", contentStateJSON);
+            setValue(name("description"), contentStateJSON);
         },
-        100 // the delay in ms
+        [name]
     );
 
     const handleGenerate = useCallback(
@@ -82,11 +86,8 @@ const DescriptionSection: React.FC = () => {
                     // update editorState, description & descriptionText
                     onEditorStateChange(editorState);
                 }),
-        [openAIDetails]
+        [openAIDetails, onEditorStateChange]
     );
-
-    // --------
-    const [lang, setLang] = useState<"EN" | "GR">("GR");
 
     const chatGPTButton = useMemo(
         () => (
@@ -103,18 +104,35 @@ const DescriptionSection: React.FC = () => {
         [isLoading, handleGenerate]
     );
 
+    const handleTabChange = useCallback((s: Language) => {
+        setLang(s);
+
+        const index = TABS.findIndex(({ value }) => s === value);
+        const description = watch(`descriptions[${index}].description`);
+
+        if (!description) {
+            setEditorState(EditorState.createEmpty());
+            return;
+        }
+
+        // convert description (string representing JSON) to JSON and set state
+        const contentState = convertFromRaw(JSON.parse(description));
+        setEditorState(EditorState.createWithContent(contentState));
+    }, []);
+
     return (
         <Panel label={t("")}>
-            <TabbedBox<"EN" | "GR">
+            <TabbedBox<Language>
                 tabs={TABS}
                 selected={lang}
                 endNode={chatGPTButton}
-                onSelect={setLang}
+                onSelect={handleTabChange}
             >
                 <Typography variant="h6" flex={1}>
                     {`${t("Title")} (${lang})`}
                 </Typography>
-                <RHFTextField fullWidth name="title" />
+                {/* NOTE: RHF does not support dynamic name by default; use key to alleviate this */}
+                <RHFTextField fullWidth key={title} name={title} />
                 <Typography variant="h6" flex={1}>
                     {`${t("Description")} (${lang})`}
                 </Typography>
