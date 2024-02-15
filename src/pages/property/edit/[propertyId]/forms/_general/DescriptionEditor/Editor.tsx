@@ -25,6 +25,8 @@ import { useRouter } from "next/router";
 import { IProperties } from "src/types/properties";
 import { IOpenAIDetailsPOST } from "src/types/openai";
 
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
 const TABS: {
     label: string;
     value: Language;
@@ -47,7 +49,9 @@ const useInitialDescriptionState = (
             ([lang, { description, title }]) => {
                 const i = TABS.findIndex(({ value }) => value === lang);
 
-                const state = convertFromRaw(JSON.parse(description));
+                const state = description
+                    ? convertFromRaw(JSON.parse(description))
+                    : ContentState.createFromText("");
 
                 const plainText = state.getPlainText();
                 const contentStateJSON = JSON.stringify(convertToRaw(state));
@@ -205,9 +209,10 @@ const DescriptionSection: React.FC = () => {
     const title = useMemo(() => name("title"), [name]);
     // ---
 
-    const onEditorStateChange = useCallback(
-        (newEditorState: EditorState) => {
-            setEditorState(newEditorState);
+    const debouncedValuesChange = useCallback(
+        async (newEditorState: EditorState) => {
+            // NOTE: useDebouncedCallback has memoization errors => use a custom debounce
+            await sleep(100);
 
             const contentState = newEditorState.getCurrentContent();
             const plainText = contentState.getPlainText();
@@ -219,9 +224,15 @@ const DescriptionSection: React.FC = () => {
         [name]
     );
 
-    const handleTabChange = useCallback((s: Language) => {
-        setLang(s);
+    const onEditorStateChange = useCallback(
+        (newEditorState: EditorState) => {
+            setEditorState(newEditorState);
+            debouncedValuesChange(newEditorState);
+        },
+        [debouncedValuesChange]
+    );
 
+    const handleTabChange = useCallback((s: Language) => {
         const index = TABS.findIndex(({ value }) => s === value);
         const description = watch(`descriptions[${index}].description`);
 
@@ -233,6 +244,8 @@ const DescriptionSection: React.FC = () => {
         // convert description (string representing JSON) to JSON and set state
         const contentState = convertFromRaw(JSON.parse(description));
         setEditorState(EditorState.createWithContent(contentState));
+
+        setLang(s);
     }, []);
 
     const onChatTextChange = useCallback(
