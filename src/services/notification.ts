@@ -1,8 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import {
-    ContactNotification,
-    ContactNotificationPOST,
-} from "src/types/notification";
+import { ContactNotification } from "src/types/notification";
 
 export const notification = createApi({
     reducerPath: "contactNotification",

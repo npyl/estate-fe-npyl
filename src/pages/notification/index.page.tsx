@@ -1,17 +1,34 @@
 import type { NextPage } from "next";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-import { useGetNotificationsQuery } from "src/services/notification";
-import { CollapsibleTable } from "./components/CollapsibleTable";
 import { AdminGuard } from "src/components/authentication/admin-guard";
+import { Box, Grid, Tab, Tabs } from "@mui/material";
+import Listings from "./listings";
+import Tours from "./tours";
+import { useState } from "react";
+import TabPanel from "src/components/Tabs";
 
 const NotificationPage: NextPage = () => {
-    const { data: notifications } = useGetNotificationsQuery();
-
-    const handleRemove = (index: number) =>
-        console.log("will delete notification: ", index);
+    const [tab, setTab] = useState(0);
 
     return (
-        <CollapsibleTable rows={notifications || []} onRemove={handleRemove} />
+        <>
+            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                <Tabs
+                    value={tab}
+                    onChange={(e, v) => setTab(v)}
+                    aria-label="basic tabs example"
+                >
+                    <Tab label="Tours" value={0} />
+                    <Tab label="Listings" value={1} />
+                </Tabs>
+            </Box>
+            <TabPanel value={tab} index={0}>
+                <Tours />
+            </TabPanel>
+            <TabPanel value={tab} index={1}>
+                <Listings />
+            </TabPanel>
+        </>
     );
 };
 

@@ -2,14 +2,11 @@ import {
     Box,
     Collapse,
     IconButton,
-    Paper,
     Table,
     TableBody,
     TableCell,
-    TableContainer,
     TableHead,
     TableRow,
-    Typography,
 } from "@mui/material";
 import {
     KeyboardArrowUp as KeyboardArrowUpIcon,
@@ -25,7 +22,7 @@ type TourType = "inPerson" | "inVideo";
 const getDate = (s?: string) => (s ? new Date(s).toDateString() : "");
 const isLiveTour = (s?: TourType) => s === "inPerson" || s === "inVideo";
 
-function Row(props: { row: ContactNotification; onRemove: () => void }) {
+function TourRow(props: { row: ContactNotification; onRemove: () => void }) {
     const { row, onRemove } = props;
 
     const { t } = useTranslation();
@@ -132,45 +129,4 @@ function Row(props: { row: ContactNotification; onRemove: () => void }) {
     );
 }
 
-export const CollapsibleTable = (props: {
-    rows: ContactNotification[];
-    onRemove: (index: number) => void;
-}) => {
-    const { rows, onRemove } = props;
-    const { t } = useTranslation();
-
-    return (
-        <TableContainer
-            component={Paper}
-            sx={{
-                mt: 1,
-            }}
-        >
-            <Table aria-label="collapsible table" sx={{ tableLayout: "fixed" }}>
-                <TableHead>
-                    <TableRow>
-                        <TableCell />
-                        <TableCell align="left">{t("Name")}</TableCell>
-                        <TableCell align="center">{t("Email")}</TableCell>
-                        <TableCell align="center">{t("Mobile")}</TableCell>
-                        <TableCell align="center">
-                            {t("Notification Date")}
-                        </TableCell>
-                        <TableCell align="right">{t("Type")}</TableCell>
-
-                        <TableCell />
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {rows.map((row, index) => (
-                        <Row
-                            key={index}
-                            row={row}
-                            onRemove={() => onRemove(index)}
-                        />
-                    ))}
-                </TableBody>
-            </Table>
-        </TableContainer>
-    );
-};
+export default TourRow;

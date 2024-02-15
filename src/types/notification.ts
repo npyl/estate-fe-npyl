@@ -1,3 +1,5 @@
+import { ILocation } from "./location";
+
 export interface ContactNotificationPOST {
     customerName?: string;
     customerEmail?: string;
@@ -9,6 +11,8 @@ export interface ContactNotificationPOST {
     tourTime?: string;
     tourType?: string;
 }
+
+export type NotificationType = "listing" | "contact" | "tour";
 
 export interface ContactNotification {
     customerName: string;
@@ -24,5 +28,34 @@ export interface ContactNotification {
     notificationDate: string;
     viewed: boolean;
 
-    notificationType: string;
+    notificationType: NotificationType;
+
+    // If notificationType is listing, this object contains data
+    listingDetails: ListingNotification;
+}
+
+export interface IListingLocation extends Omit<ILocation, "locationDisplay"> {}
+
+// response
+export interface ListingNotification {
+    fullName: string;
+    email: string;
+    mobilePhone: string;
+
+    category: string;
+    parentCategory: string;
+    state: string;
+    title: string;
+    description: string;
+
+    location: IListingLocation;
+
+    area: number;
+    bedrooms: number;
+    bathrooms: number;
+    floors: number;
+
+    price: number;
+
+    photo: string;
 }
