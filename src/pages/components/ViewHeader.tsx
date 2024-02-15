@@ -18,7 +18,10 @@ import { useRouter } from "next/router";
 
 const useGetProperty = () => {
     const { propertyId } = useRouter().query;
-    const { data: property } = useGetPropertyByIdQuery(+propertyId!);
+    // Skip for customer page
+    const { data: property } = useGetPropertyByIdQuery(+propertyId!, {
+        skip: !propertyId,
+    });
     return { property };
 };
 
