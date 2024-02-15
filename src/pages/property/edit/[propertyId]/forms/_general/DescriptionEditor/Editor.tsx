@@ -233,6 +233,8 @@ const DescriptionSection: React.FC = () => {
     );
 
     const handleTabChange = useCallback((s: Language) => {
+        setLang(s);
+
         const index = TABS.findIndex(({ value }) => s === value);
         const description = watch(`descriptions[${index}].description`);
 
@@ -244,8 +246,6 @@ const DescriptionSection: React.FC = () => {
         // convert description (string representing JSON) to JSON and set state
         const contentState = convertFromRaw(JSON.parse(description));
         setEditorState(EditorState.createWithContent(contentState));
-
-        setLang(s);
     }, []);
 
     const onChatTextChange = useCallback(
