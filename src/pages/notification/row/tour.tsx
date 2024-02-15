@@ -1,65 +1,40 @@
 import {
     Box,
     Collapse,
-    IconButton,
     Table,
     TableBody,
     TableCell,
     TableHead,
     TableRow,
 } from "@mui/material";
-import {
-    KeyboardArrowUp as KeyboardArrowUpIcon,
-    KeyboardArrowDown as KeyboardArrowDownIcon,
-} from "@mui/icons-material";
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { ContactNotification } from "src/types/notification";
-import Iconify from "src/components/iconify";
 import { useTranslation } from "react-i18next";
+import BasicRow from "./basic";
+import useToggle from "src/hooks/useToggle";
 
 type TourType = "inPerson" | "inVideo";
 
 const getDate = (s?: string) => (s ? new Date(s).toDateString() : "");
 const isLiveTour = (s?: TourType) => s === "inPerson" || s === "inVideo";
 
-function TourRow(props: { row: ContactNotification; onRemove: () => void }) {
-    const { row, onRemove } = props;
+interface TourRowProps {
+    row: ContactNotification;
+    onRemove: () => void;
+}
 
+function TourRow({ row, onRemove }: TourRowProps) {
     const { t } = useTranslation();
-    const [open, setOpen] = useState(false);
+    const [open, toggleOpen] = useToggle(false);
 
     return (
         <Fragment>
-            <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
-                <TableCell>
-                    <IconButton
-                        aria-label="expand row"
-                        size="small"
-                        onClick={() => setOpen(!open)}
-                    >
-                        {open ? (
-                            <KeyboardArrowUpIcon />
-                        ) : (
-                            <KeyboardArrowDownIcon />
-                        )}
-                    </IconButton>
-                </TableCell>
-                <TableCell component="th" scope="row">
-                    {row.customerName}
-                </TableCell>
-                <TableCell align="right">{row.customerEmail}</TableCell>
-                <TableCell align="right">{row.customerMobile}</TableCell>
-                <TableCell align="right">
-                    {getDate(row.notificationDate)}
-                </TableCell>
-                <TableCell align="right">{row.tourType}</TableCell>
-
-                <TableCell align="right">
-                    <IconButton onClick={onRemove} disabled>
-                        <Iconify icon={"eva:trash-2-outline"} />
-                    </IconButton>
-                </TableCell>
-            </TableRow>
+            <BasicRow
+                row={row}
+                open={open}
+                onToggle={toggleOpen}
+                onRemove={onRemove}
+            />
             <TableRow>
                 <TableCell
                     style={{ paddingBottom: 0, paddingTop: 0 }}

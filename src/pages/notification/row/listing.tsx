@@ -1,62 +1,102 @@
-import { Collapse, IconButton, TableCell, TableRow } from "@mui/material";
 import {
-    KeyboardArrowUp as KeyboardArrowUpIcon,
-    KeyboardArrowDown as KeyboardArrowDownIcon,
-} from "@mui/icons-material";
-import { Fragment, useState } from "react";
-import { ListingNotification } from "src/types/notification";
-import Iconify from "src/components/iconify";
+    Box,
+    Collapse,
+    Skeleton,
+    Table,
+    TableBody,
+    TableCell,
+    TableHead,
+    TableRow,
+} from "@mui/material";
+import { Fragment } from "react";
+import { ContactNotification } from "src/types/notification";
+import BasicRow from "./basic";
+import useToggle from "src/hooks/useToggle";
+import { useTranslation } from "react-i18next";
+import { useGetNotificationByIdQuery } from "src/services/notification";
 import { ListingCard } from "./card";
 
 interface ListingRowProps {
-    row: ListingNotification;
+    row: ContactNotification;
     onRemove: () => void;
 }
 
+interface CollapsibleProps {
+    id?: number;
+    open: boolean;
+}
+
+const Collapsible = ({ id, open }: CollapsibleProps) => {
+    const { t } = useTranslation();
+
+    const { data: listing, isLoading } = useGetNotificationByIdQuery(id!, {
+        skip: !id && !open,
+        selectFromResult: ({ data, isLoading }) => ({
+            data: data?.listingDetails,
+            isLoading,
+        }),
+    });
+
+    console.log("data: ", listing);
+
+    return (
+        <TableRow>
+            <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
+                <Collapse in={open} timeout="auto" unmountOnExit>
+                    <Box sx={{ margin: 1 }}>
+                        <Table
+                            size="small"
+                            sx={{
+                                "& .MuiTableCell-root": {
+                                    borderBottom: "none",
+                                    borderRadius: "5px",
+                                },
+                            }}
+                        >
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>{t("Message")}</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                <TableRow></TableRow>
+                            </TableBody>
+                        </Table>
+
+                        {isLoading ? (
+                            <Skeleton
+                                animation="wave"
+                                width="50%"
+                                height="50px"
+                            />
+                        ) : (
+                            <Box
+                                display="flex"
+                                flexDirection="row"
+                                justifyContent="center"
+                            >
+                                <ListingCard item={listing} />
+                            </Box>
+                        )}
+                    </Box>
+                </Collapse>
+            </TableCell>
+        </TableRow>
+    );
+};
+
 function ListingRow({ row, onRemove }: ListingRowProps) {
-    const [open, setOpen] = useState(false);
+    const [open, toggleOpen] = useToggle(false);
 
     return (
         <Fragment>
-            <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
-                <TableCell>
-                    <IconButton
-                        aria-label="expand row"
-                        size="small"
-                        onClick={() => setOpen(!open)}
-                    >
-                        {open ? (
-                            <KeyboardArrowUpIcon />
-                        ) : (
-                            <KeyboardArrowDownIcon />
-                        )}
-                    </IconButton>
-                </TableCell>
-                <TableCell component="th" scope="row">
-                    {row?.fullName}
-                </TableCell>
-                <TableCell align="right">{row?.email}</TableCell>
-                <TableCell align="right">{row?.mobilePhone}</TableCell>
-                <TableCell align="right">{row?.parentCategory}</TableCell>
-                <TableCell align="right">{row?.category}</TableCell>
-                <TableCell align="right">{row?.state}</TableCell>
-
-                <TableCell align="right">
-                    <IconButton onClick={onRemove} disabled>
-                        <Iconify icon={"eva:trash-2-outline"} />
-                    </IconButton>
-                </TableCell>
-            </TableRow>
-            <TableRow>
-                <TableCell
-                    style={{ paddingBottom: 0, paddingTop: 0 }}
-                    colSpan={7}
-                >
-                    <Collapse in={open} timeout="auto" unmountOnExit>
-                        <ListingCard item={row} />
-                    </Collapse>
-                </TableCell>
-            </TableRow>
+            <BasicRow
+                row={row}
+                open={open}
+                onToggle={toggleOpen}
+                onRemove={onRemove}
+            />
+            {open ? <Collapsible id={row?.id} open={open} /> : null}
         </Fragment>
     );
 }

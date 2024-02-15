@@ -1,5 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { ContactNotification } from "src/types/notification";
+import {
+    ContactNotification,
+    ContactNotificationExtended,
+    ListingNotification,
+} from "src/types/notification";
 
 export const notification = createApi({
     reducerPath: "contactNotification",
@@ -16,13 +20,20 @@ export const notification = createApi({
             return headers;
         },
     }),
-    tagTypes: ["Notifications"],
+    tagTypes: ["Notifications", "NotificationById"],
     endpoints: (builder) => ({
         getNotifications: builder.query<ContactNotification[], void>({
             query: () => "",
             providesTags: ["Notifications"],
         }),
+        getNotificationById: builder.query<ContactNotificationExtended, number>(
+            {
+                query: (id) => `${id}`,
+                providesTags: ["NotificationById"],
+            }
+        ),
     }),
 });
 
-export const { useGetNotificationsQuery } = notification;
+export const { useGetNotificationsQuery, useGetNotificationByIdQuery } =
+    notification;

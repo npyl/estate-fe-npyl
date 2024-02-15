@@ -7,7 +7,6 @@ const Listings = () => {
             data:
                 // extract ListingNotification from inside ContactNotification
                 data?.filter((d) => d.notificationType === "listing"),
-            // ?.map(({ listingDetails }) => listingDetails) || [],
         }),
     });
 

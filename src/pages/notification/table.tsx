@@ -7,33 +7,22 @@ import {
     TableHead,
     TableRow,
 } from "@mui/material";
-import {
-    ContactNotification,
-    ListingNotification,
-    NotificationType,
-} from "src/types/notification";
+import { ContactNotification, NotificationType } from "src/types/notification";
 import { useTranslation } from "react-i18next";
 import TourRow from "./row/tour";
 import ListingRow from "./row/listing";
 
-const COLUMNS: Record<NotificationType, string[]> = {
-    contact: ["Name", "Email", "Mobile", "Notification Date", "Type"],
-
-    listing: [
-        "Full Name",
-        "Email",
-        "Mobile",
-        "Parent Category",
-        "Category",
-        "State",
-    ],
-
-    tour: [],
-};
+const COLUMNS: string[] = [
+    "Name",
+    "Email",
+    "Mobile",
+    "Notification Date",
+    "Type",
+];
 
 interface TableProps {
     variant: NotificationType;
-    rows: (ListingNotification | ContactNotification)[];
+    rows: ContactNotification[];
     onRemove: (index: number) => void;
 }
 
@@ -51,12 +40,12 @@ const CollapsibleTable = ({ variant, rows, onRemove }: TableProps) => {
                 <TableHead>
                     <TableRow>
                         <TableCell />
-                        {COLUMNS[variant].map((c, i) => (
+                        {COLUMNS.map((c, i) => (
                             <TableCell
                                 align={
                                     i === 0
                                         ? "left"
-                                        : i === COLUMNS[variant].length - 1
+                                        : i === COLUMNS.length - 1
                                         ? "right"
                                         : "center"
                                 }
@@ -73,14 +62,14 @@ const CollapsibleTable = ({ variant, rows, onRemove }: TableProps) => {
                         ? rows.map((row, i) => (
                               <ListingRow
                                   key={i}
-                                  row={row as ListingNotification}
+                                  row={row}
                                   onRemove={() => onRemove(i)}
                               />
                           ))
                         : rows.map((row, i) => (
                               <TourRow
                                   key={i}
-                                  row={row as ContactNotification}
+                                  row={row}
                                   onRemove={() => onRemove(i)}
                               />
                           ))}

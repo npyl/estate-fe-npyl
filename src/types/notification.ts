@@ -15,6 +15,8 @@ export interface ContactNotificationPOST {
 export type NotificationType = "listing" | "contact" | "tour";
 
 export interface ContactNotification {
+    id?: number;
+
     customerName: string;
     customerEmail: string;
     customerMobile: string;
@@ -29,8 +31,9 @@ export interface ContactNotification {
     viewed: boolean;
 
     notificationType: NotificationType;
+}
 
-    // If notificationType is listing, this object contains data
+export interface ContactNotificationExtended extends ContactNotification {
     listingDetails: ListingNotification;
 }
 

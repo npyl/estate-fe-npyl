@@ -19,7 +19,7 @@ import { ListingNotification } from "src/types/notification";
 import { formatNumberWithCommas } from "src/utils/formatNumber";
 
 type BookingItemProps = {
-    item: ListingNotification;
+    item?: ListingNotification;
 };
 
 const ForSaleLabel = () => {
@@ -53,8 +53,9 @@ export const ListingCard = ({ item }: BookingItemProps) => {
         <Paper
             ref={itemRef}
             sx={{
+                width: "500px",
+                height: "300px",
                 position: "relative",
-
                 mt: 2,
                 mx: 1.5,
                 pb: 2,
