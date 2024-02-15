@@ -8,10 +8,10 @@ import {
     useSecurityContext,
 } from "src/contexts/security";
 import TabPanel from "../../components/Tabs";
-import { AuthGuard } from "../../components/authentication/auth-guard";
 import PermissionPage from "./components/permission";
 import UserPage from "./components/user";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
+import { AdminGuard } from "src/components/authentication/admin-guard";
 
 const SecurityPage: NextPage = () => {
     const { t } = useTranslation();
@@ -55,11 +55,11 @@ const SecurityPage: NextPage = () => {
 };
 
 SecurityPage.getLayout = (page) => (
-    <AuthGuard>
+    <AdminGuard>
         <DashboardLayout>
             <SecurityProvider>{page}</SecurityProvider>
         </DashboardLayout>
-    </AuthGuard>
+    </AdminGuard>
 );
 
 export default SecurityPage;
