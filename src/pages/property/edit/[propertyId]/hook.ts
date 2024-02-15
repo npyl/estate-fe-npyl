@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { IProperties, IPropertiesPOST } from "src/types/properties";
 
 import { useForm } from "react-hook-form";
@@ -20,10 +20,9 @@ interface IPropertyYup extends Partial<Omit<IPropertiesPOST, OmitList>> {
 }
 
 // Custom validation function
-const codeIsUnique = async (initialCode: string, code?: string) => {
+const codeIsUnique = async (initialCode: string | null, code?: string) => {
+    if (!code) return true; // allow empty => we can clean the code
     if (initialCode === code) return true; // INFO: during edit initialCode and code are equal
-    if (!code) return true;
-    if (!initialCode && !!code) return true; // INFO: on page refresh, initialCode does not get the initial value because property is not yet fetched
 
     try {
         const promise = dispatch(
@@ -42,10 +41,12 @@ const codeIsUnique = async (initialCode: string, code?: string) => {
 };
 
 // Custom validation function
-const keyCodeIsUnique = async (initialKeyCode: string, keyCode?: string) => {
+const keyCodeIsUnique = async (
+    initialKeyCode: string | null,
+    keyCode?: string
+) => {
+    if (!keyCode) return true; // allow empty => we can clean the code
     if (initialKeyCode === keyCode) return true; // INFO: during edit initialCode and code are equal
-    if (!keyCode) return true;
-    if (!initialKeyCode && !!keyCode) return true; // INFO: on page refresh, initialKeyCode does not get the initial value because property is not yet fetched
 
     try {
         const promise = dispatch(
@@ -63,7 +64,10 @@ const keyCodeIsUnique = async (initialKeyCode: string, keyCode?: string) => {
     }
 };
 
-const getLoginSchema = (initialCode: string, initialKeyCode: string) =>
+const getLoginSchema = (
+    initialCode: string | null,
+    initialKeyCode: string | null
+) =>
     Yup.object().shape({
         code: Yup.string()
             .test(
@@ -418,13 +422,9 @@ const getDefaultValues = (property?: IProperties): IPropertyYup => {
 const usePropertyForm = (property?: IProperties) => {
     const defaultValues = useMemo(() => getDefaultValues(property), [property]);
 
-    // INFO: keep them as initial state
-    const [initialCode] = useState(property?.code || "");
-    const [initialKeyCode] = useState(property?.keyCode || "");
-
-    const LoginSchema = useMemo(
-        () => getLoginSchema(initialCode, initialKeyCode),
-        [initialCode, initialKeyCode]
+    const LoginSchema = getLoginSchema(
+        property?.code || null,
+        property?.keyCode || null
     );
 
     const methods = useForm<IPropertyYup>({
