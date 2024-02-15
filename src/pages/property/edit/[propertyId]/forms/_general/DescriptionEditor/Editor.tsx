@@ -157,7 +157,7 @@ const ChatGPTResult = ({
             <TextField
                 value={text}
                 multiline
-                rows={10}
+                rows={30}
                 sx={{
                     "& .MuiInputBase-root": {
                         height: "auto!important",
@@ -165,7 +165,7 @@ const ChatGPTResult = ({
                     "& .MuiInputBase-input.MuiOutlinedInput-input": {
                         padding: 1,
                     },
-                    minHeight: "200px",
+                    minHeight: "700px",
                 }}
             />
         </>
