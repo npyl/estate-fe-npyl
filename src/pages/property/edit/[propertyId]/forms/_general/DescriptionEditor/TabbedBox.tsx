@@ -1,4 +1,4 @@
-import { Box, Tab } from "@mui/material";
+import { Box, Paper, Tab } from "@mui/material";
 import { useMemo } from "react";
 
 interface TabbedBoxProps<T = string> {
@@ -27,6 +27,7 @@ const TabbedBox = <T extends unknown>({
                             ? {
                                   border: "1px solid #aaa",
                                   borderBottom: 0,
+                                  backgroundColor: "background.paper",
                               }
                             : {
                                   borderBottom: "1px solid #aaa",
@@ -49,8 +50,16 @@ const TabbedBox = <T extends unknown>({
     );
 
     return (
-        <>
-            <Box display={"flex"} flexDirection={"row"}>
+        <Box>
+            <Box
+                display={"flex"}
+                flexDirection={"row"}
+                sx={{
+                    borderTopLeftRadius: "15px",
+                    borderTopRightRadius: "15px",
+                    backgroundColor: "background.paper",
+                }}
+            >
                 <Box
                     sx={{
                         ml: 1.7,
@@ -64,6 +73,7 @@ const TabbedBox = <T extends unknown>({
                         borderBottom: "1px solid #ccc",
                         display: "flex",
                         flexDirection: "row",
+                        alignItems: "center",
                         justifyContent: "flex-end",
                     }}
                 >
@@ -71,20 +81,27 @@ const TabbedBox = <T extends unknown>({
                 </Box>
             </Box>
             <Box
-                p={1.5}
                 sx={{
-                    borderRadius: "15px",
-                    borderLeft: "1px solid #ccc",
-                    borderRight: "1px solid #ccc",
-                    borderBottom: "1px solid #ccc",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 2,
+                    backgroundColor: "background.paper",
                 }}
             >
-                {children}
+                <Box
+                    component={Paper}
+                    p={1.5}
+                    sx={{
+                        borderRadius: "15px",
+                        borderLeft: "1px solid #ccc",
+                        borderRight: "1px solid #ccc",
+                        borderBottom: "1px solid #ccc",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 2,
+                    }}
+                >
+                    {children}
+                </Box>
             </Box>
-        </>
+        </Box>
     );
 };
 
