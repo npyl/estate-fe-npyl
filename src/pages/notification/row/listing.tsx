@@ -26,6 +26,16 @@ interface CollapsibleProps {
     open: boolean;
 }
 
+// title: string;
+// description: string;
+
+// area: number;
+// bedrooms: number;
+// bathrooms: number;
+// floors: number;
+
+// location: IListingLocation;
+
 const Collapsible = ({ id, open }: CollapsibleProps) => {
     const { t } = useTranslation();
 
@@ -42,43 +52,50 @@ const Collapsible = ({ id, open }: CollapsibleProps) => {
     return (
         <TableRow>
             <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
-                <Collapse in={open} timeout="auto" unmountOnExit>
-                    <Box sx={{ margin: 1 }}>
-                        <Table
-                            size="small"
-                            sx={{
-                                "& .MuiTableCell-root": {
-                                    borderBottom: "none",
-                                    borderRadius: "5px",
-                                },
-                            }}
-                        >
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>{t("Message")}</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                <TableRow></TableRow>
-                            </TableBody>
-                        </Table>
+                <Collapse
+                    in={open}
+                    timeout="auto"
+                    unmountOnExit
+                    sx={{
+                        p: 2,
+                        height: "600px",
+                    }}
+                >
+                    <Table
+                        size="small"
+                        sx={{
+                            "& .MuiTableCell-root": {
+                                borderBottom: "none",
+                                borderRadius: "5px",
+                            },
+                        }}
+                    >
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>{t("Title")}</TableCell>
+                                <TableCell>{t("Description")}</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            <TableRow>
+                                <TableCell>{listing?.title}</TableCell>
+                                <TableCell>{listing?.description}</TableCell>
+                            </TableRow>
+                        </TableBody>
+                    </Table>
 
-                        {isLoading ? (
-                            <Skeleton
-                                animation="wave"
-                                width="50%"
-                                height="50px"
-                            />
-                        ) : (
-                            <Box
-                                display="flex"
-                                flexDirection="row"
-                                justifyContent="center"
-                            >
-                                <ListingCard item={listing} />
-                            </Box>
-                        )}
-                    </Box>
+                    {isLoading ? (
+                        <Skeleton animation="wave" width="50%" height="50px" />
+                    ) : (
+                        <Box
+                            display={"flex"}
+                            flexDirection={"row"}
+                            justifyContent={"center"}
+                            height={"100%"}
+                        >
+                            <ListingCard item={listing} />
+                        </Box>
+                    )}
                 </Collapse>
             </TableCell>
         </TableRow>

@@ -2,18 +2,9 @@ import AspectRatioIcon from "@mui/icons-material/AspectRatio";
 import BathtubOutlinedIcon from "@mui/icons-material/BathtubOutlined";
 import BedOutlinedIcon from "@mui/icons-material/BedOutlined";
 import RoomOutlinedIcon from "@mui/icons-material/RoomOutlined";
-import {
-    Box,
-    Chip,
-    Divider,
-    Grid,
-    Paper,
-    Stack,
-    Typography,
-} from "@mui/material";
+import { Box, Chip, Divider, Grid, Stack, Typography } from "@mui/material";
 import { t } from "i18next";
 import Image from "next/image";
-import { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { ListingNotification } from "src/types/notification";
 import { formatNumberWithCommas } from "src/utils/formatNumber";
@@ -47,38 +38,27 @@ const ForSaleLabel = () => {
 const defaultImage = "/static/noImage.png";
 
 export const ListingCard = ({ item }: BookingItemProps) => {
-    const itemRef = useRef<HTMLDivElement | null>(null);
-
     return (
-        <Paper
-            ref={itemRef}
+        <Box
             sx={{
-                width: "500px",
-                height: "300px",
-                position: "relative",
-                mt: 2,
-                mx: 1.5,
-                pb: 2,
-                border: 0,
-                borderRadius: 1,
+                // position: "relative",
+                // mt: 2,
+                // mx: 1.5,
+                // pb: 2,
                 boxShadow: `rgba(0, 0, 0, 0.25) 0px 5px 15px`,
-                fontWeight: "normal",
+                // fontWeight: "normal",
                 "&:hover": {
                     cursor: "pointer",
                     boxShadow: `rgba(0, 0, 0, 0.65) 0px 5px 15px`,
                 },
+                borderRadius: "15px",
+                backgroundColor: "background.paper",
             }}
         >
             {item?.state?.key === "SALE" && <ForSaleLabel />}
 
-            <Box sx={{ position: "relative" }}>
-                <Image
-                    alt=""
-                    src={item?.photo || defaultImage}
-                    width={0}
-                    height={0}
-                    fill
-                />
+            <Box sx={{ position: "relative", height: "100%" }}>
+                <Image src={item?.photo || defaultImage} fill alt="" />
             </Box>
 
             <Box
@@ -167,6 +147,6 @@ export const ListingCard = ({ item }: BookingItemProps) => {
                     ) : null}
                 </Stack>
             </Box>
-        </Paper>
+        </Box>
     );
 };

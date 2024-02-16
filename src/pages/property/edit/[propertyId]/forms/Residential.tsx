@@ -28,6 +28,7 @@ import {
 import LocationSection from "src/components/Location/Location";
 
 import { useFormContext } from "react-hook-form";
+import Public from "./_general/Public";
 
 const ResidentialFormSection: React.FC = () => {
     const { watch } = useFormContext();
@@ -62,6 +63,7 @@ const ResidentialFormSection: React.FC = () => {
                         <TechnicalFeaturesAndInterior />
                         <SuitableFor />
                         <DescriptionEditor />
+                        <Public />
                     </Stack>
                 </Grid>
 
