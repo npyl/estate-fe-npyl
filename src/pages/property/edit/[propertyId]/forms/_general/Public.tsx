@@ -9,7 +9,10 @@ const getFEATURES = (t: TranslationType) => [
         label: t("Sea Front"),
         value: "features.seaFront",
     },
-    // TODO: luxury home
+    {
+        label: t("Luxurious"),
+        value: "technicalFeatures.luxurious",
+    },
     {
         label: t("Mountain View"),
         value: "features.mountainView",
