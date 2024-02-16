@@ -865,6 +865,7 @@ const resources = {
             "Professional Use": "Επαγγελματική Χρήση",
             Renovation: "Ανακαίνιση",
             "Agricultural Use": "Γεωργική Χρήση",
+            "Public Features": "Χαρακτηριστικά για Public",
 
             //Description
 

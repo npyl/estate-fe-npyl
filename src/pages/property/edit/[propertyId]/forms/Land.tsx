@@ -22,6 +22,7 @@ import {
 
 import LocationSection from "src/components/Location/Location";
 import { useFormContext } from "react-hook-form";
+import Public from "./_general/Public";
 
 const LandFormSection: React.FC<any> = () => {
     const { watch } = useFormContext();
@@ -50,6 +51,7 @@ const LandFormSection: React.FC<any> = () => {
                         <SuitableFor />
                         <Distances />
                         <DescriptionEditor />
+                        <Public />
                     </Stack>
                 </Grid>
             </Grid>
