@@ -1,3 +1,4 @@
+import { KeyValue } from "./KeyValue";
 import { ILocation } from "./location";
 
 export interface ContactNotificationPOST {
@@ -45,9 +46,9 @@ export interface ListingNotification {
     email: string;
     mobilePhone: string;
 
-    category: string;
-    parentCategory: string;
-    state: string;
+    category: KeyValue;
+    parentCategory: KeyValue;
+    state: KeyValue;
     title: string;
     description: string;
 

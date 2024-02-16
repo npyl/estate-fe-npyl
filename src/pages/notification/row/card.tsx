@@ -69,7 +69,7 @@ export const ListingCard = ({ item }: BookingItemProps) => {
                 },
             }}
         >
-            {item?.state === "SALE" && <ForSaleLabel />}
+            {item?.state?.key === "SALE" && <ForSaleLabel />}
 
             <Box sx={{ position: "relative" }}>
                 <Image
@@ -151,25 +151,21 @@ export const ListingCard = ({ item }: BookingItemProps) => {
                 </Grid>
                 <Divider sx={{ my: 1, borderColor: "divider" }} />
 
-                {(item?.parentCategory || item?.price) && (
-                    <Stack
-                        direction={"row"}
-                        display={"flex"}
-                        justifyContent={"space-between"}
-                    >
-                        {item?.parentCategory && (
-                            <Chip label={item?.parentCategory} color="info" />
-                        )}
-                        {item?.price && (
-                            <Chip
-                                label={`${formatNumberWithCommas(
-                                    item?.price
-                                )} €`}
-                                color="success"
-                            />
-                        )}
-                    </Stack>
-                )}
+                <Stack
+                    direction={"row"}
+                    display={"flex"}
+                    justifyContent={"space-between"}
+                >
+                    {item?.parentCategory?.key ? (
+                        <Chip label={item?.parentCategory.key} color="info" />
+                    ) : null}
+                    {item?.price ? (
+                        <Chip
+                            label={`${formatNumberWithCommas(item?.price)} €`}
+                            color="success"
+                        />
+                    ) : null}
+                </Stack>
             </Box>
         </Paper>
     );
