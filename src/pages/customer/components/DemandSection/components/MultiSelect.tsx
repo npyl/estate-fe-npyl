@@ -5,11 +5,22 @@ import {
     MenuItem,
     OutlinedInput,
     SelectChangeEvent,
+    styled,
 } from "@mui/material";
 import { useCallback } from "react";
 import { KeyValue } from "src/types/KeyValue";
 import { useFormContext } from "react-hook-form";
 import { RHFSelect } from "src/components/hook-form";
+
+// InputLabel that works well with a big label content
+const BigInputLabel = styled(InputLabel)(({ theme }) => ({
+    // Styles applied when the label is shrunk
+    "&.MuiInputLabel-shrink": {
+        backgroundColor: "white",
+        paddingLeft: theme.spacing(0.8),
+        paddingRight: theme.spacing(0.8),
+    },
+}));
 
 interface MultiSelectProps {
     name: string;
@@ -38,7 +49,7 @@ const MultiSelect = ({ name, label, options }: MultiSelectProps) => {
 
     return (
         <FormControl fullWidth variant="outlined">
-            <InputLabel>{label}</InputLabel>
+            <BigInputLabel>{label}</BigInputLabel>
             <RHFSelect
                 multiple
                 fullWidth

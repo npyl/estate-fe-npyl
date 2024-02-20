@@ -96,11 +96,22 @@ const ParkingSection: React.FC = () => {
         [parkings, removeParking]
     );
 
+    const lastIndex = useMemo(
+        () => (parkings.length > 0 ? parkings.length - 1 : 0),
+        [parkings.length]
+    );
+    const lastParkingType = watch(`details.parkings[${lastIndex}].parkingType`);
+    const lastSpots = watch(`details.parkings[${lastIndex}].spots`);
+    const disabled = useMemo(
+        () => parkings.length > 0 && (!lastParkingType || !lastSpots),
+        [parkings.length, lastParkingType, lastSpots]
+    );
+
     return (
         <Panel
             label={t("Parkings")}
             endNode={
-                <IconButton onClick={addParking}>
+                <IconButton disabled={disabled} onClick={addParking}>
                     <AddCircle />
                 </IconButton>
             }

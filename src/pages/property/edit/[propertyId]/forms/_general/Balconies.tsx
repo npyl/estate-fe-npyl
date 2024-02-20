@@ -96,11 +96,22 @@ const BalconiesSection: React.FC = () => {
         [balconies, removeBalcony]
     );
 
+    const lastIndex = useMemo(
+        () => (balconies.length > 0 ? balconies.length - 1 : 0),
+        [balconies.length]
+    );
+    const lastArea = watch(`details.balconies[${lastIndex}].area`);
+    const lastSide = watch(`details.balconies[${lastIndex}].side`);
+    const disabled = useMemo(
+        () => balconies.length > 0 && (!lastArea || !lastSide),
+        [balconies.length, lastArea, lastSide]
+    );
+
     return (
         <Panel
             label={t("Balconies")}
             endNode={
-                <IconButton onClick={addBalcony}>
+                <IconButton disabled={disabled} onClick={addBalcony}>
                     <AddCircle />
                 </IconButton>
             }

@@ -1,5 +1,5 @@
 // @mui
-import { Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import { DropResult } from "react-beautiful-dnd";
 // redux
 
@@ -145,7 +145,15 @@ export default function KanbanPage() {
     };
 
     return (
-        <Stack direction={"row"} mt={3} flex={1} gap={3}>
+        <Box
+            sx={{
+                display: "flex",
+                flexDirection: "row",
+                mt: 3,
+                gap: 3,
+                justifyContent: "space-between",
+            }}
+        >
             {board && items ? (
                 <TwoDimentionsDnd
                     items={items}
@@ -157,6 +165,6 @@ export default function KanbanPage() {
             )}
 
             <KanbanColumnAdd />
-        </Stack>
+        </Box>
     );
 }

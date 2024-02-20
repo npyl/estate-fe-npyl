@@ -10,22 +10,25 @@ import {
 import TabPanel from "src/components/Tabs";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-import MainContainer from "./MainContainer";
 
 import ViewHeader from "src/pages/components/ViewHeader";
 
 import "photoswipe/dist/photoswipe.css";
-import InitMap from "./Map";
 import MatchingCustomersSection from "./sections/MatchingCustomers";
 import { PhotosOnly } from "./sections/PhotosOnly";
 
 import { useTranslation } from "react-i18next";
-
 import { useTabsContext } from "src/contexts/tabs";
 import PropertyLogs from "./sections/Logs";
-import Documents from "./tabs/Documents";
 import { ConfirmationDialogBox } from "src/pages/components/ConfirmationDialogBox";
-import Integrations from "./tabs/Integrations";
+
+import {
+    Documents,
+    Integrations,
+    StreetView,
+    Map,
+    MainContainer,
+} from "./tabs";
 
 function a11yProps(index: number) {
     return {
@@ -91,6 +94,7 @@ const SingleProperty: NextPage = () => {
                     <Tab label={t("Logs")} {...a11yProps(6)} />
                     <Tab label={t("Documents")} {...a11yProps(7)} />
                     <Tab label={t("Map")} {...a11yProps(8)} />
+                    <Tab label={t("Street View")} {...a11yProps(9)} />
                 </Tabs>
             </ViewHeader>
             <Box height={"100%"}>
@@ -120,8 +124,11 @@ const SingleProperty: NextPage = () => {
                 </TabPanel>
                 <TabPanel value={value} index={8}>
                     <Box height={"400px"} width={"100%"}>
-                        <InitMap />
+                        <Map />
                     </Box>
+                </TabPanel>
+                <TabPanel value={value} index={9}>
+                    <StreetView />
                 </TabPanel>
             </Box>
             <ConfirmationDialogBox
