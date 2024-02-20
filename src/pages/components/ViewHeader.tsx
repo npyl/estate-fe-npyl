@@ -21,13 +21,11 @@ import { useRouter } from "next/router";
 import { SpitogatosSvg } from "src/assets/SpitogatosSvg";
 import { PublicSvg } from "src/assets/PublicSvg";
 import GoogleEarthSvg from "src/assets/GoogleEarth";
+import { usePathname } from "next/navigation";
 
 const useGetProperty = () => {
     const { propertyId } = useRouter().query;
-    // Skip for customer page
-    const { data: property } = useGetPropertyByIdQuery(+propertyId!, {
-        skip: !propertyId,
-    });
+    const { data: property } = useGetPropertyByIdQuery(+propertyId!);
     return { property };
 };
 
@@ -95,6 +93,10 @@ interface IViewHeaderProps {
 const ViewHeader = (props: IViewHeaderProps) => {
     const { onDelete, onEdit, onClone, children } = props;
     const { t } = useTranslation();
+    const pathname = usePathname();
+
+    const isProperty = useMemo(() => pathname.includes("property"), [pathname]);
+
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
     return (
@@ -111,7 +113,7 @@ const ViewHeader = (props: IViewHeaderProps) => {
                     {children}
                 </Stack>
                 <Stack flexDirection="row" alignItems="center">
-                    <OpenIn />
+                    {isProperty ? <OpenIn /> : null}
 
                     {onClone ? (
                         <Button

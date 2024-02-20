@@ -5,8 +5,8 @@ import {
     MenuItem,
     OutlinedInput,
     SelectChangeEvent,
-    styled,
 } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import { useCallback } from "react";
 import { KeyValue } from "src/types/KeyValue";
 import { useFormContext } from "react-hook-form";
