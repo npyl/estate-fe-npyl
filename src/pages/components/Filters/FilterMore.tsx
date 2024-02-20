@@ -61,6 +61,10 @@ import { ClearableDialogContent } from "./components/ClearableDialogContent";
 import { StyledDialogContent } from "./styles";
 import { useTranslation } from "react-i18next";
 import { useGlobals } from "src/hooks/useGlobals";
+import FieldSelect from "./components/FieldSelect";
+import { useMemo } from "react";
+import { TranslationType } from "src/types/translation";
+import { KeyValue } from "src/types/KeyValue";
 
 // ----------------------------------------------------------------------
 
@@ -72,28 +76,78 @@ type Props = {
     onResetFilter: VoidFunction;
 };
 
+const useEnums = () => {
+    const enums = useGlobals();
+
+    const details = useMemo(() => enums?.property?.details, [enums]);
+
+    return {
+        frameTypeEnum: details?.frameType || [],
+        furnishedEnum: details?.furnished || [],
+        heatingTypeEnum: details?.heatingType || [],
+        minFloorEnum: details?.floors || [],
+        maxFloorEnum: details?.floors || [],
+    };
+};
+
+const getFEILDS = (
+    t: TranslationType,
+    frameType: string[],
+    furnished: string[],
+    heatingType: string[],
+    frameTypeEnum: KeyValue[],
+    furnishedEnum: KeyValue[],
+    heatingTypeEnum: KeyValue[]
+) => [
+    {
+        id: "frameType",
+        values: frameType,
+        title: t("Frame Type"),
+        options: frameTypeEnum,
+        onClick: toggleFrameType,
+        onReset: resetFrameType,
+    },
+    {
+        id: "Furnished",
+        values: furnished,
+        title: t("Furnished"),
+        options: furnishedEnum,
+        onClick: toggleFurnished,
+        onReset: resetFurnished,
+    },
+    {
+        id: "heatingType",
+        title: t("Heating Type"),
+        values: heatingType,
+        options: heatingTypeEnum,
+        onClick: toggleHeatingType,
+        onReset: resetHeatingType,
+    },
+];
+
 export default function FilterMore({
     open,
     onApply,
     onClose,
     onResetFilter,
 }: Props) {
-    const dispatch = useDispatch();
-    const data = useGlobals();
     const { t } = useTranslation();
+    const {
+        frameTypeEnum,
+        furnishedEnum,
+        heatingTypeEnum,
+        minFloorEnum,
+        maxFloorEnum,
+    } = useEnums();
+
+    const dispatch = useDispatch();
 
     const changedPropsCount = useSelector(sumOfChangedProperties);
-
-    const enums = useGlobals();
-
-    const propertyEnums = enums?.property;
-    const detailsEnum = propertyEnums?.details;
-    const minFloor = detailsEnum?.floors || [];
-    const maxFloor = detailsEnum?.floors || [];
 
     const frameType = useSelector(selectFrameType);
     const furnished = useSelector(selectFurnished);
     const heatingType = useSelector(selectHeatingType);
+
     const minYear = useSelector(selectMinConstructionYear) || 0;
     const maxYear = useSelector(selectMaxConstructionYear) || 0;
     const minBedrooms = useSelector(selectMinBedrooms) || 0;
@@ -102,32 +156,31 @@ export default function FilterMore({
     const maxFloors = useSelector(selectMaxFloor) || 0;
     const labels = useSelector(selectLabels) || [];
 
-    const fields = [
-        {
-            id: "frameType",
-            values: frameType,
-            title: t("Frame Type"),
-            options: data?.property.details.frameType,
-            onClick: toggleFrameType,
-            onReset: resetFrameType,
-        },
-        {
-            id: "Furnished",
-            values: furnished,
-            title: t("Furnished"),
-            options: data?.property.details.furnished,
-            onClick: toggleFurnished,
-            onReset: resetFurnished,
-        },
-        {
-            id: "heatingType",
-            title: t("Heating Type"),
-            values: heatingType,
-            options: data?.property.details.heatingType,
-            onClick: toggleHeatingType,
-            onReset: resetHeatingType,
-        },
-    ];
+    const fields = useMemo(
+        () =>
+            getFEILDS(
+                t,
+                // values
+                frameType,
+                furnished,
+                heatingType,
+                // enums
+                frameTypeEnum,
+                furnishedEnum,
+                heatingTypeEnum
+            ),
+        [
+            t,
+            // values
+            frameType,
+            furnished,
+            heatingType,
+            // enums
+            frameTypeEnum,
+            furnishedEnum,
+            heatingTypeEnum,
+        ]
+    );
 
     return (
         <Dialog maxWidth="md" open={open} onClose={onClose} scroll={"body"}>
@@ -280,18 +333,16 @@ export default function FilterMore({
                             },
                         }}
                     >
-                        {minFloor
-                            ? minFloor.map(
-                                  ({ key, value }, minFloorsSelectIndex) => (
-                                      <MenuItem
-                                          key={minFloorsSelectIndex}
-                                          value={key}
-                                      >
-                                          {value}
-                                      </MenuItem>
-                                  )
-                              )
-                            : null}
+                        {minFloorEnum.map(
+                            ({ key, value }, minFloorsSelectIndex) => (
+                                <MenuItem
+                                    key={minFloorsSelectIndex}
+                                    value={key}
+                                >
+                                    {value}
+                                </MenuItem>
+                            )
+                        )}
                     </Select>
                     <Typography>- {t("to")}</Typography>
                     <Select
@@ -315,48 +366,21 @@ export default function FilterMore({
                             },
                         }}
                     >
-                        {maxFloor
-                            ? maxFloor.map(
-                                  ({ key, value }, minFloorsSelectIndex) => (
-                                      <MenuItem
-                                          key={minFloorsSelectIndex}
-                                          value={key}
-                                      >
-                                          {value}
-                                      </MenuItem>
-                                  )
-                              )
-                            : null}
+                        {maxFloorEnum.map(
+                            ({ key, value }, minFloorsSelectIndex) => (
+                                <MenuItem
+                                    key={minFloorsSelectIndex}
+                                    value={key}
+                                >
+                                    {value}
+                                </MenuItem>
+                            )
+                        )}
                     </Select>
                 </Stack>
             </ClearableDialogContent>
-            {fields.map((field) => (
-                <ClearableDialogContent
-                    key={field.id}
-                    dividers
-                    reset={field.onReset}
-                >
-                    <Typography>{field.title}</Typography>
-                    <Stack direction={"row"} spacing={1}>
-                        {field.options &&
-                            field.options.map((e) => (
-                                <Button
-                                    variant={
-                                        field.values.includes(e.key)
-                                            ? "contained"
-                                            : "outlined"
-                                    }
-                                    color={"primary"}
-                                    key={e.key}
-                                    onClick={() =>
-                                        dispatch(field.onClick(e.key))
-                                    }
-                                >
-                                    {e.value}
-                                </Button>
-                            ))}
-                    </Stack>
-                </ClearableDialogContent>
+            {fields.map(({ id, ...field }) => (
+                <FieldSelect {...field} key={id} />
             ))}
             <ClearableDialogContent dividers reset={resetConstructionYear}>
                 <Typography>{t("Construction Year")}</Typography>
