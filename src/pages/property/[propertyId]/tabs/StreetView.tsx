@@ -1,10 +1,24 @@
-import { Box } from "@mui/material";
+import { useGetPropertyByIdQuery } from "src/services/properties";
+import { useRouter } from "next/router";
+import { StreetViewMap } from "src/components/Map";
 
-const StreetView = () => {
+export interface IMapCoord {
+    lat: number;
+    lng: number;
+}
+
+export const StreetView = () => {
+    const router = useRouter();
+    const { propertyId } = router.query;
+
+    const { data } = useGetPropertyByIdQuery(+propertyId!);
+
+    if (!data?.location) return null;
+
     return (
-        <Box height={"400px"} width={"100%"}>
-            {/* <Map /> */}
-        </Box>
+        <StreetViewMap
+            center={{ lat: data?.location?.lat, lng: data?.location?.lng }}
+        />
     );
 };
 

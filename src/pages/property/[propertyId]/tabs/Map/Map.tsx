@@ -17,7 +17,7 @@ import {
 import useTheme from "@mui/system/useTheme";
 import { useRouter } from "next/router";
 import React, { useEffect, useMemo, useReducer, useRef, useState } from "react";
-import { useLoadApi } from "src/components/Map/Map";
+import { useLoadApi } from "src/components/Map";
 import { useGetPropertyByIdQuery } from "src/services/properties";
 import { useDebouncedCallback } from "use-debounce";
 import RelatedPlaces from "./RelatedPlaces";

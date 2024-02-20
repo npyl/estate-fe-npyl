@@ -16,7 +16,7 @@ import * as React from "react";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import DataGridTable from "src/components/DataGrid";
-import { useLoadApi } from "src/components/Map/Map";
+import { useLoadApi } from "src/components/Map";
 import { ShapeData } from "src/components/Map/types";
 import { decodeShape, isPointInsideShapeData } from "src/components/Map/util";
 import Image from "src/components/image";

@@ -5,14 +5,7 @@ import { DrawMultiple } from "./DrawMultiple";
 import SearchOnMap from "./Search";
 import { DrawShape, ShapeData, StopDraw } from "./types";
 import uuidv4 from "src/utils/uuidv4";
-
-export declare type Libraries = (
-    | "drawing"
-    | "geometry"
-    | "localContext"
-    | "places"
-    | "visualization"
-)[];
+import useLoadApi from "./hook";
 
 const containerStyle = {
     width: "100%",
@@ -68,16 +61,7 @@ interface IMapProps {
     search?: boolean;
 }
 
-const apiKey = "AIzaSyDKNARWExRGZXIsA3oKhRW0aZQmtXGuVbk";
 const athensLatLng = { lat: 37.98381, lng: 23.727539 };
-const libraries = ["drawing", "places", "geometry"] as Libraries;
-
-export const useLoadApi = () =>
-    useJsApiLoader({
-        id: "google-map-script",
-        googleMapsApiKey: apiKey,
-        libraries: libraries as any,
-    });
 
 // Helper function to extract the address component value based on the type
 const getAddressComponent = (

@@ -127,7 +127,7 @@ const SingleProperty: NextPage = () => {
                         <Map />
                     </Box>
                 </TabPanel>
-                <TabPanel value={value} index={8}>
+                <TabPanel value={value} index={9}>
                     <StreetView />
                 </TabPanel>
             </Box>
