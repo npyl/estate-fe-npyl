@@ -1,11 +1,14 @@
 import {
+    Box,
     Button,
     Dialog,
     DialogContent,
     DialogContentText,
     DialogTitle,
     Grid,
+    IconButton,
     Paper,
+    Stack,
     Typography,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -15,6 +18,9 @@ import { ReactNode, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useGetPropertyByIdQuery } from "src/services/properties";
 import { useRouter } from "next/router";
+import { SpitogatosSvg } from "src/assets/SpitogatosSvg";
+import { PublicSvg } from "src/assets/PublicSvg";
+import GoogleEarthSvg from "src/assets/GoogleEarth";
 
 const useGetProperty = () => {
     const { propertyId } = useRouter().query;
@@ -25,17 +31,8 @@ const useGetProperty = () => {
     return { property };
 };
 
-interface IViewHeaderProps {
-    onEdit: VoidFunction;
-    onDelete: VoidFunction;
-    onClone?: VoidFunction;
-    children?: ReactNode;
-}
-
-const ViewHeader = (props: IViewHeaderProps) => {
-    const { onDelete, onEdit, onClone, children } = props;
+const OpenIn = () => {
     const { t } = useTranslation();
-    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
     const { property } = useGetProperty();
     const { hasPublic, hasSpitogato } = useMemo(
@@ -55,20 +52,68 @@ const ViewHeader = (props: IViewHeaderProps) => {
         [property?.id]
     );
 
-    return (
-        <Paper sx={{ borderColor: "divider", paddingX: 2, marginTop: 1 }}>
-            <Grid container direction={"row"}>
-                <Grid item flex={1}>
-                    {children}
-                </Grid>
-                <Grid item sx={{ mt: 1, mb: 1 }}>
-                    {hasPublic ? (
-                        <Button variant="contained" onClick={openPublic}>
-                            Public
-                        </Button>
-                    ) : null}
+    const openSpitogato = useCallback(() => {}, [property?.id]);
 
-                    {onClone && (
+    const openGoogleEarth = useCallback(() => {}, []);
+
+    return (
+        <Stack
+            flexDirection="row"
+            gap={0.5}
+            alignItems="center"
+            sx={{
+                border: "1px solid #ccc",
+                borderRadius: "10px",
+                px: 1,
+            }}
+        >
+            <Typography>{t("Open in")}</Typography>
+            {hasPublic ? (
+                <IconButton size="small" onClick={openPublic}>
+                    <PublicSvg />
+                </IconButton>
+            ) : null}
+            {hasSpitogato ? (
+                <IconButton size="small" onClick={openSpitogato}>
+                    <SpitogatosSvg />
+                </IconButton>
+            ) : null}
+            <IconButton size="small" onClick={openGoogleEarth}>
+                <GoogleEarthSvg />
+            </IconButton>
+        </Stack>
+    );
+};
+
+interface IViewHeaderProps {
+    onEdit: VoidFunction;
+    onDelete: VoidFunction;
+    onClone?: VoidFunction;
+    children?: ReactNode;
+}
+
+const ViewHeader = (props: IViewHeaderProps) => {
+    const { onDelete, onEdit, onClone, children } = props;
+    const { t } = useTranslation();
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+
+    return (
+        <Paper
+            sx={{
+                borderColor: "divider",
+                paddingLeft: 2,
+                paddingRight: 1,
+                marginTop: 1,
+            }}
+        >
+            <Stack flexDirection="row" alignItems="center">
+                <Stack flex={1} flexDirection="row">
+                    {children}
+                </Stack>
+                <Stack flexDirection="row" alignItems="center">
+                    <OpenIn />
+
+                    {onClone ? (
                         <Button
                             variant="outlined"
                             color="secondary"
@@ -77,7 +122,7 @@ const ViewHeader = (props: IViewHeaderProps) => {
                         >
                             {t("Clone")}
                         </Button>
-                    )}
+                    ) : null}
                     <Button
                         variant="outlined"
                         color="secondary"
@@ -95,7 +140,7 @@ const ViewHeader = (props: IViewHeaderProps) => {
                         {t("Delete")}
                     </SoftButton>
 
-                    {deleteDialogOpen && (
+                    {deleteDialogOpen ? (
                         <Dialog
                             maxWidth="xs"
                             open={deleteDialogOpen}
@@ -141,9 +186,9 @@ const ViewHeader = (props: IViewHeaderProps) => {
                                 </SoftButton>
                             </DialogContent>
                         </Dialog>
-                    )}
-                </Grid>
-            </Grid>
+                    ) : null}
+                </Stack>
+            </Stack>
         </Paper>
     );
 };

@@ -24,8 +24,8 @@ import {
 } from "src/services/properties";
 import { ListingTypes } from "src/types/listings";
 import { LabeledSwitch } from "../components/Switch";
-import { PublicSvg } from "../components/PublicSvg";
-import { SpitogatosSvg } from "../components/SpitogatosSvg";
+import { PublicSvg } from "src/assets/PublicSvg";
+import { SpitogatosSvg } from "src/assets/SpitogatosSvg";
 import { LocationDisplay } from "src/types/enums";
 
 interface ListingCardProps {
