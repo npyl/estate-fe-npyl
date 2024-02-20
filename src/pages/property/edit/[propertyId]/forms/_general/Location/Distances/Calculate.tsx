@@ -45,7 +45,7 @@ const CalculateDistances = ({ map }: Props) => {
         const searchPromises = SERVICES.map(({ service, RHFName }) => {
             return new Promise((resolve, reject) => {
                 const request = {
-                    location: new google.maps.LatLng(lat, lng),
+                    location: currentLocation,
                     radius: 10000, // Specify the radius in meters
                     type: service,
                 };
@@ -56,6 +56,16 @@ const CalculateDistances = ({ map }: Props) => {
                         results: google.maps.places.PlaceResult[] | null,
                         status: google.maps.places.PlacesServiceStatus
                     ) => {
+                        // ZERO RESULTS
+                        if (
+                            status ===
+                            google.maps.places.PlacesServiceStatus.ZERO_RESULTS
+                        ) {
+                            resolve(0);
+                            return;
+                        }
+
+                        // INVALID RESULTS
                         if (
                             !results ||
                             status !== google.maps.places.PlacesServiceStatus.OK
@@ -63,6 +73,7 @@ const CalculateDistances = ({ map }: Props) => {
                             console.error(
                                 "Got no results or some other error!"
                             );
+                            reject("Got no results or some other error!");
                             return;
                         }
 
@@ -108,6 +119,12 @@ const CalculateDistances = ({ map }: Props) => {
                 setLoading(false);
             });
     }, [t, lat, lng]);
+
+    // CLEAR
+    useEffect(() => {
+        if (!lat || !lng) return;
+        SERVICES.forEach(({ RHFName }) => setValue(RHFName, undefined));
+    }, [lat, lng]);
 
     // INITIALISE
     useEffect(() => {
