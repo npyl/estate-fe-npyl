@@ -1,7 +1,7 @@
 import { Divider, Grid, TextField } from "@mui/material";
 import { Box } from "@mui/system";
-import { useCallback, useMemo } from "react";
-import Map, { IMapMarker, IMapAddress } from "../Map/Map";
+import { useCallback, useMemo, useState } from "react";
+import Map, { IMapAddress, IMapMarker } from "src/components/Map/Map";
 import { RegionSelect } from "./RegionSelect";
 import { MunicipSelect } from "./MunicipSelect";
 import { NeighbourSelect } from "./NeighbourSelect";
@@ -11,12 +11,15 @@ import {
 } from "src/services/location";
 import { useTranslation } from "react-i18next";
 import { useFormContext } from "react-hook-form";
-import { RHFOnlyNumbers, RHFTextField } from "../hook-form";
-import Panel from "../Panel";
+import { RHFOnlyNumbers, RHFTextField } from "src/components/hook-form";
+import Panel from "src/components/Panel";
+import DistancesSection from "./Distances/Distances";
 
 const LocationSection = () => {
     const { watch, setValue } = useFormContext();
     const { t } = useTranslation();
+
+    const [map, setMap] = useState<google.maps.Map>();
 
     const [getHierarchy] = useLazyGetHierarchyByAreaIdQuery();
 
@@ -159,103 +162,110 @@ const LocationSection = () => {
     }, []);
 
     return (
-        <Panel label={t("Location")}>
-            <Divider />
-            <Box display={"flex"} pb={2}>
-                <Box height={`50vh`} width={"100%"}>
-                    <Map
-                        search
-                        zoom={10}
-                        drawing={false}
-                        markers={[mainMarker]}
-                        mainMarker={mainMarker}
-                        onDragEnd={handleMarkerDragEnd}
-                        onClick={handleMapClick}
-                        onSearchSelect={handleSearchSelect}
-                    />
+        <>
+            <Panel label={t("Location")}>
+                <Divider />
+                <Box display={"flex"} pb={2}>
+                    <Box height={`50vh`} width={"100%"}>
+                        <Map
+                            onReady={setMap}
+                            search
+                            zoom={10}
+                            drawing={false}
+                            markers={[mainMarker]}
+                            mainMarker={mainMarker}
+                            onDragEnd={handleMarkerDragEnd}
+                            onClick={handleMapClick}
+                            onSearchSelect={handleSearchSelect}
+                        />
+                    </Box>
                 </Box>
-            </Box>
 
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <Grid container direction={"row"} spacing={2}>
-                        <Grid item xs={4}>
-                            <RegionSelect
-                                regionCode={region}
-                                onChange={handleRegionChange}
-                            />
+                <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                        <Grid container direction={"row"} spacing={2}>
+                            <Grid item xs={4}>
+                                <RegionSelect
+                                    regionCode={region}
+                                    onChange={handleRegionChange}
+                                />
+                            </Grid>
+                            <Grid item xs={4}>
+                                <MunicipSelect
+                                    regionCode={region}
+                                    municipCode={city}
+                                    onChange={handleMunicipChange}
+                                />
+                            </Grid>
+                            <Grid item xs={4}>
+                                <NeighbourSelect
+                                    municipCode={city}
+                                    neighbourCode={complex}
+                                    onChange={handleNeighbourChange}
+                                />
+                            </Grid>
                         </Grid>
-                        <Grid item xs={4}>
-                            <MunicipSelect
-                                regionCode={region}
-                                municipCode={city}
-                                onChange={handleMunicipChange}
-                            />
-                        </Grid>
-                        <Grid item xs={4}>
-                            <NeighbourSelect
-                                municipCode={city}
-                                neighbourCode={complex}
-                                onChange={handleNeighbourChange}
-                            />
-                        </Grid>
+                    </Grid>
+
+                    <Grid item xs={6}>
+                        <RHFTextField
+                            fullWidth
+                            label={t("Street")}
+                            name="location.street"
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <RHFTextField
+                            fullWidth
+                            label={t("Number")}
+                            name="location.number"
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <RHFOnlyNumbers
+                            label={t("Zip Code")}
+                            name="location.zipCode"
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <RHFTextField
+                            fullWidth
+                            label={t("Country")}
+                            name="location.country"
+                        />
                     </Grid>
                 </Grid>
 
-                <Grid item xs={6}>
-                    <RHFTextField
-                        fullWidth
-                        label={t("Street")}
-                        name="location.street"
-                    />
-                </Grid>
-                <Grid item xs={6}>
-                    <RHFTextField
-                        fullWidth
-                        label={t("Number")}
-                        name="location.number"
-                    />
-                </Grid>
-                <Grid item xs={6}>
-                    <RHFOnlyNumbers
-                        label={t("Zip Code")}
-                        name="location.zipCode"
-                    />
-                </Grid>
-                <Grid item xs={6}>
-                    <RHFTextField
-                        fullWidth
-                        label={t("Country")}
-                        name="location.country"
-                    />
-                </Grid>
-            </Grid>
+                <Divider sx={{ mt: 2, mb: 1 }} />
 
-            <Divider sx={{ mt: 2, mb: 1 }} />
+                <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                        <TextField
+                            fullWidth
+                            label={t("Latitude")}
+                            value={lat ? parseFloat(lat).toFixed(4) : ""}
+                            InputProps={{
+                                readOnly: true,
+                            }}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <TextField
+                            fullWidth
+                            label={t("Longitude")}
+                            value={lng ? parseFloat(lng).toFixed(4) : ""}
+                            InputProps={{
+                                readOnly: true,
+                            }}
+                        />
+                    </Grid>
+                </Grid>
 
-            <Grid container spacing={2}>
-                <Grid item xs={6}>
-                    <TextField
-                        fullWidth
-                        label={t("Latitude")}
-                        value={lat ? parseFloat(lat).toFixed(4) : ""}
-                        InputProps={{
-                            readOnly: true,
-                        }}
-                    />
-                </Grid>
-                <Grid item xs={6}>
-                    <TextField
-                        fullWidth
-                        label={t("Longitude")}
-                        value={lng ? parseFloat(lng).toFixed(4) : ""}
-                        InputProps={{
-                            readOnly: true,
-                        }}
-                    />
-                </Grid>
-            </Grid>
-        </Panel>
+                <Divider sx={{ mt: 2, mb: 1 }} />
+            </Panel>
+
+            <DistancesSection map={map} />
+        </>
     );
 };
 export default LocationSection;

@@ -23,7 +23,7 @@ import {
     TechnicalFeaturesAndInterior,
 } from "./_commercial";
 
-import LocationSection from "src/components/Location/Location";
+import LocationSection from "src/pages/property/edit/[propertyId]/forms/_general/Location/Location";
 
 import { useFormContext } from "react-hook-form";
 import Public from "./_general/Public";
@@ -42,7 +42,6 @@ const CommercialFormSection: React.FC<any> = () => {
                         <Description />
                         <HeatingAndEnergy />
                         <Areas />
-                        <Distances />
                         <Blueprints />
                         <Documents />
                         <VideoLink />

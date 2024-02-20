@@ -867,6 +867,10 @@ const resources = {
             "Agricultural Use": "Γεωργική Χρήση",
             "Public Features": "Χαρακτηριστικά για Public",
 
+            Calculate: "Υπολογισμός",
+            "Fill in property location first":
+                "Συμπληρώστε την τοποθεσία του ακινήτου πρώτα",
+
             //Description
 
             Description: "Περιγραφή",
