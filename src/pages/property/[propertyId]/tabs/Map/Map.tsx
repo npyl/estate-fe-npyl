@@ -21,6 +21,7 @@ import { useLoadApi } from "src/components/Map/Map";
 import { useGetPropertyByIdQuery } from "src/services/properties";
 import { useDebouncedCallback } from "use-debounce";
 import RelatedPlaces from "./RelatedPlaces";
+
 const containerStyle = {
     width: "100%",
     height: "65vh",
