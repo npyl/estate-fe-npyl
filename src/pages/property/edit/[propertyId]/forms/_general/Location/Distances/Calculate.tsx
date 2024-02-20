@@ -1,5 +1,5 @@
-import { Button } from "@mui/material";
-import { useCallback, useEffect, useRef } from "react";
+import { LoadingButton } from "@mui/lab";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { toast } from "react-toastify";
@@ -20,7 +20,9 @@ interface Props {
 
 const CalculateDistances = ({ map }: Props) => {
     const { t } = useTranslation();
-    const { watch } = useFormContext();
+    const { watch, setValue } = useFormContext();
+
+    const [loading, setLoading] = useState(false);
 
     const lat = watch("location.lat");
     const lng = watch("location.lng");
@@ -38,28 +40,73 @@ const CalculateDistances = ({ map }: Props) => {
             return;
         }
 
-        SERVICES.forEach(({ service, RHFName }) => {
-            const request = {
-                location: new google.maps.LatLng(lat, lng),
-                radius: 10000, // Specify the radius in meters
-                type: service,
-            };
+        const currentLocation = new google.maps.LatLng(lat, lng);
 
-            serviceRef.current!.nearbySearch(
-                request,
-                (
-                    results: google.maps.places.PlaceResult[] | null,
-                    status: google.maps.places.PlacesServiceStatus
-                ) => {
-                    if (!results) return;
+        const searchPromises = SERVICES.map(({ service, RHFName }) => {
+            return new Promise((resolve, reject) => {
+                const request = {
+                    location: new google.maps.LatLng(lat, lng),
+                    radius: 10000, // Specify the radius in meters
+                    type: service,
+                };
 
-                    console.log("service: ", service, " results: ", results);
+                serviceRef.current!.nearbySearch(
+                    request,
+                    (
+                        results: google.maps.places.PlaceResult[] | null,
+                        status: google.maps.places.PlacesServiceStatus
+                    ) => {
+                        if (
+                            !results ||
+                            status !== google.maps.places.PlacesServiceStatus.OK
+                        ) {
+                            console.error(
+                                "Got no results or some other error!"
+                            );
+                            return;
+                        }
 
-                    // 1. find closest
-                    // 2. set rhfname
-                }
-            );
+                        let closestPlace = null;
+                        let shortestDistance = Number.MAX_VALUE;
+
+                        // find min distance
+                        results.forEach((place) => {
+                            if (!place.geometry || !place.geometry.location)
+                                return;
+
+                            const distance =
+                                google.maps.geometry.spherical.computeDistanceBetween(
+                                    currentLocation,
+                                    place.geometry.location
+                                );
+
+                            if (distance < shortestDistance) {
+                                shortestDistance = distance;
+                                closestPlace = place;
+                            }
+                        });
+
+                        // Set result
+                        if (closestPlace) {
+                            setValue(RHFName, shortestDistance.toFixed(1));
+                        }
+
+                        resolve(shortestDistance.toFixed(1)); // Resolve the promise with the result
+                    }
+                );
+            });
         });
+
+        //
+        //  Execute
+        //
+        setLoading(true);
+        Promise.all(searchPromises)
+            .then((d) => setLoading(false))
+            .catch((error) => {
+                console.error("An error occurred during the search:", error);
+                setLoading(false);
+            });
     }, [t, lat, lng]);
 
     // INITIALISE
@@ -69,9 +116,13 @@ const CalculateDistances = ({ map }: Props) => {
     }, [map]);
 
     return (
-        <Button variant="outlined" onClick={handleCalculate}>
-            {t("Calculate")}
-        </Button>
+        <LoadingButton
+            loading={loading}
+            variant="outlined"
+            onClick={handleCalculate}
+        >
+            {t("Calculate (within") + " 10km)"}
+        </LoadingButton>
     );
 };
 
