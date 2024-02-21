@@ -1,149 +1,177 @@
 import { Grid, List } from "@mui/material";
 import { ListItem } from "src/components/List";
 import { ILocation } from "src/types/location";
-
 import { useMemo } from "react";
-
 import { useTranslation } from "react-i18next";
 import {
     useGetMunicipalitiesQuery,
     useGetNeighbourhoodsQuery,
     useGetRegionsQuery,
 } from "src/services/location";
-import router from "next/router";
+import { usePathname } from "next/navigation";
+import { IGeoLocation } from "src/types/geolocation";
 
 interface ViewLocationProps {
     location: ILocation;
 }
 
-const isNumberString = (input: string): boolean => !isNaN(Number(input));
+const isNumberString = (input: string | undefined): boolean =>
+    !isNaN(Number(input));
 
-export const ViewLocation = ({ location }: ViewLocationProps) => {
+interface CustomerProps {
+    street: string;
+    number: string;
+    city: string;
+}
+
+const Customer = ({ street, number, city }: CustomerProps) => {
     const { t } = useTranslation();
-    const { customerId } = router.query;
-    // const { data } = useGetCustomerByIdQuery(parseInt(customerId as string)); // basic details
+
+    return (
+        <>
+            <Grid container>
+                <Grid item xs={6} padding={0}>
+                    <List>
+                        <ListItem
+                            label={t("Street")}
+                            value={street || "-"}
+                            align="horizontal"
+                        />
+
+                        <ListItem
+                            label={t("Number")}
+                            value={number || "-"}
+                            align="horizontal"
+                        />
+                    </List>
+                </Grid>
+
+                <Grid item xs={6} padding={0}>
+                    <List>
+                        <ListItem
+                            label={t("City")}
+                            value={city || "-"}
+                            align="horizontal"
+                        />
+                    </List>
+                </Grid>
+            </Grid>
+        </>
+    );
+};
+
+const useHumanReadable = (
+    code: string | undefined,
+    data: IGeoLocation[] | undefined
+) => {
+    const { i18n } = useTranslation();
+
+    const greekVersion = useMemo(() => i18n.language === "gr", [i18n.language]);
+
+    const result = useMemo(() => {
+        if (!code) return "";
+
+        if (!isNumberString(code)) return code;
+
+        const found = data?.find((r) => r.areaID === +code);
+
+        return (greekVersion ? found?.nameGR : found?.nameEN) || "";
+    }, [code, data, greekVersion]);
+
+    return result;
+};
+
+interface PropertyProps {
+    location?: ILocation;
+}
+
+const Property = ({ location }: PropertyProps) => {
+    const { t } = useTranslation();
+
+    console.log("property!");
+
     const { data: regions } = useGetRegionsQuery();
-    const { data: municips } = useGetMunicipalitiesQuery(+location?.region, {
+    const { data: municips } = useGetMunicipalitiesQuery(+location?.region!, {
         skip: !isNumberString(location?.region),
     });
-    const { data: neighbs } = useGetNeighbourhoodsQuery(+location?.city, {
+    const { data: neighbs } = useGetNeighbourhoodsQuery(+location?.city!, {
         skip: !isNumberString(location?.city),
     });
 
     // region is most of the types a code; translate to human readable form; otherwise just return the string
-    const region: string = useMemo(() => {
-        if (!location?.region) return "";
-
-        return isNumberString(location.region)
-            ? regions?.filter((r) => r.areaID === +location.region)[0]
-                  ?.nameGR || ""
-            : location.region;
-    }, [location?.region, regions]);
+    const region = useHumanReadable(location?.region, regions);
 
     // city is most of the types a code; translate to human readable form; otherwise just return the string
-    const city = useMemo(() => {
-        if (!location?.city) return "";
-
-        return isNumberString(location.city)
-            ? municips?.filter((m) => m.areaID === +location.city)[0]?.nameGR ||
-                  ""
-            : location.city;
-    }, [location?.city]);
+    const city = useHumanReadable(location?.city, municips);
 
     // neighb is most of the types a code; translate to human readable form; otherwise just return the string
-    const neighb = useMemo(() => {
-        if (!location?.complex) return "";
+    const neighb = useHumanReadable(location?.complex, neighbs);
 
-        return isNumberString(location.complex)
-            ? neighbs?.filter((n) => n.areaID === +location.complex)[0]
-                  ?.nameGR || ""
-            : location.complex;
-    }, [location?.complex]);
+    return (
+        <>
+            <Grid container>
+                <Grid item xs={6} padding={0}>
+                    <List>
+                        <ListItem
+                            label={t("Street")}
+                            value={location?.street || "-"}
+                            align="horizontal"
+                        />
 
-    if (customerId !== undefined) {
-        return (
-            <>
-                <Grid container>
-                    <Grid item xs={6} padding={0}>
-                        <List>
-                            <ListItem
-                                label={t("Street")}
-                                value={location?.street || "-"}
-                                align="horizontal"
-                            />
+                        <ListItem
+                            label={t("Number")}
+                            value={location?.number || "-"}
+                            align="horizontal"
+                        />
 
-                            <ListItem
-                                label={t("Number")}
-                                value={location?.number || "-"}
-                                align="horizontal"
-                            />
-                        </List>
-                    </Grid>
-
-                    <Grid item xs={6} padding={0}>
-                        <List>
-                            <ListItem
-                                label={t("City")}
-                                value={city || "-"}
-                                align="horizontal"
-                            />
-                        </List>
-                    </Grid>
+                        <ListItem
+                            label={t("City")}
+                            value={city || "-"}
+                            align="horizontal"
+                        />
+                    </List>
                 </Grid>
-            </>
-        );
-    } else {
-        return (
-            <>
-                <Grid container>
-                    <Grid item xs={6} padding={0}>
-                        <List>
-                            <ListItem
-                                label={t("Street")}
-                                value={location?.street || "-"}
-                                align="horizontal"
-                            />
 
-                            <ListItem
-                                label={t("Number")}
-                                value={location?.number || "-"}
-                                align="horizontal"
-                            />
-
-                            <ListItem
-                                label={t("City")}
-                                value={city || "-"}
-                                align="horizontal"
-                            />
-                        </List>
-                    </Grid>
-
-                    <Grid item xs={6} padding={0}>
-                        <List>
-                            <ListItem
-                                label={t("Zip Code")}
-                                value={location?.zipCode || "-"}
-                                align="horizontal"
-                            />
-                            <ListItem
-                                label={t("Region")}
-                                value={region || "-"}
-                                align="horizontal"
-                            />
-                            <ListItem
-                                label={t("Country")}
-                                value={location?.country || "-"}
-                                align="horizontal"
-                            />
-                            <ListItem
-                                label={t("Neighborhood")}
-                                value={neighb || "-"}
-                                align="horizontal"
-                            />
-                        </List>
-                    </Grid>
+                <Grid item xs={6} padding={0}>
+                    <List>
+                        <ListItem
+                            label={t("Zip Code")}
+                            value={location?.zipCode || "-"}
+                            align="horizontal"
+                        />
+                        <ListItem
+                            label={t("Region")}
+                            value={region || "-"}
+                            align="horizontal"
+                        />
+                        <ListItem
+                            label={t("Country")}
+                            value={location?.country || "-"}
+                            align="horizontal"
+                        />
+                        <ListItem
+                            label={t("Neighborhood")}
+                            value={neighb || "-"}
+                            align="horizontal"
+                        />
+                    </List>
                 </Grid>
-            </>
-        );
-    }
+            </Grid>
+        </>
+    );
+};
+
+export const ViewLocation = ({ location }: ViewLocationProps) => {
+    const pathname = usePathname();
+    const isProperty = useMemo(() => pathname.includes("property"), [pathname]);
+
+    return isProperty ? (
+        <Property location={location} />
+    ) : (
+        <Customer
+            street={location?.street}
+            number={location?.number}
+            city={location?.city}
+        />
+    );
 };
