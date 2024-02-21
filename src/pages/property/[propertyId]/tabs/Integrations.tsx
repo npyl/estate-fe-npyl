@@ -205,28 +205,28 @@ const Right = () => {
                         onClick={handleClick}
                     />
                 ))}
+
+            <Box>
+                <Typography variant="h4">Upload Google Earth</Typography>
+            </Box>
         </Paper>
     );
 };
 
-const Integrations = () => {
-    const [selected, setSelected] = useState(false);
-
-    return (
-        <Box
-            sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "100%",
-                gap: 1,
-            }}
-        >
-            <Left />
-            <Right />
-        </Box>
-    );
-};
+const Integrations = () => (
+    <Box
+        sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+            gap: 1,
+        }}
+    >
+        <Left />
+        <Right />
+    </Box>
+);
 
 export default Integrations;

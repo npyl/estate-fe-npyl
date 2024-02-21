@@ -26,6 +26,7 @@ import { ICustomer } from "src/types/customer";
 import axios, { AxiosProgressEvent } from "axios";
 import { LocationDisplay } from "src/types/enums";
 import { IOpenAIDetailsPOST } from "src/types/openai";
+import { IGoogleEarthPOST } from "src/types/googleEarth";
 
 interface JustData<T> {
     data: T;
@@ -127,6 +128,11 @@ interface EditLocationDisplayProps {
 
 interface IContent<T> {
     content: T[];
+}
+
+interface UploadGoogleEarthFile {
+    propertyId: number;
+    body: IGoogleEarthPOST;
 }
 
 export const properties = createApi({
@@ -848,6 +854,23 @@ export const properties = createApi({
                 responseHandler: "text",
             }),
         }),
+
+        //
+        //  Google Earth
+        //
+        addGoogleEarth: builder.mutation<IFileResponse, UploadGoogleEarthFile>({
+            query: ({ propertyId, body }) => ({
+                url: `/${propertyId}/google-earth`,
+                method: "POST",
+                body,
+            }),
+        }),
+        deleteGoogleEarth: builder.mutation<IFileResponse, number>({
+            query: (propertyId) => ({
+                url: `/${propertyId}/google-earth`,
+                method: "DELETE",
+            }),
+        }),
     }),
 });
 
@@ -903,4 +926,10 @@ export const {
     useGetPropertyAttributeQuery,
     useGetPropertyLabelsQuery,
     useGetPropertyDocumentsQuery,
+
+    //
+    //  Google Earth
+    //
+    useAddGoogleEarthMutation,
+    useDeleteGoogleEarthMutation,
 } = properties;

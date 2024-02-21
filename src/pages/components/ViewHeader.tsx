@@ -33,12 +33,19 @@ const OpenIn = () => {
     const { t } = useTranslation();
 
     const { property } = useGetProperty();
-    const { hasPublic, hasSpitogato } = useMemo(
+    const { hasPublic, hasSpitogato, hasGoogleEarth } = useMemo(
         () => ({
             hasPublic: property?.listings?.PUBLIC_SITE || false,
             hasSpitogato: property?.listings?.SPITOGATOS || false,
+            hasGoogleEarth: !!property?.googleEarth,
         }),
         [property]
+    );
+
+    // Hide this component if we have nothing...
+    const hasNothing = useMemo(
+        () => !hasPublic && !hasSpitogato && !hasGoogleEarth,
+        [hasPublic, hasSpitogato, hasGoogleEarth]
     );
 
     const openPublic = useCallback(
@@ -54,7 +61,7 @@ const OpenIn = () => {
 
     const openGoogleEarth = useCallback(() => {}, []);
 
-    return (
+    return hasNothing ? null : (
         <Stack
             flexDirection="row"
             gap={0.5}
@@ -76,9 +83,11 @@ const OpenIn = () => {
                     <SpitogatosSvg />
                 </IconButton>
             ) : null}
-            <IconButton size="small" onClick={openGoogleEarth}>
-                <GoogleEarthSvg />
-            </IconButton>
+            {hasGoogleEarth ? (
+                <IconButton size="small" onClick={openGoogleEarth}>
+                    <GoogleEarthSvg />
+                </IconButton>
+            ) : null}
         </Stack>
     );
 };
