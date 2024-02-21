@@ -2,9 +2,6 @@ import { Divider, Grid, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { useCallback, useMemo, useState } from "react";
 import Map, { IMapAddress, IMapMarker } from "src/components/Map/Map";
-import { RegionSelect } from "./RegionSelect";
-import { MunicipSelect } from "./MunicipSelect";
-import { NeighbourSelect } from "./NeighbourSelect";
 import {
     useLazyGetClosestQuery,
     useLazyGetHierarchyByAreaIdQuery,
@@ -14,6 +11,11 @@ import { useFormContext } from "react-hook-form";
 import { RHFOnlyNumbers, RHFTextField } from "src/components/hook-form";
 import Panel from "src/components/Panel";
 import DistancesSection from "./Distances/Distances";
+import {
+    MunicipSelect,
+    NeighbourSelect,
+    RegionSelect,
+} from "src/components/Location";
 
 const LocationSection = () => {
     const { watch, setValue } = useFormContext();

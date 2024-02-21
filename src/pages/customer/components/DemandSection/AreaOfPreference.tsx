@@ -2,9 +2,10 @@ import { Box, Divider, Grid, Typography } from "@mui/material";
 import { t } from "i18next";
 import { FC, useCallback, useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { MunicipSelect } from "src/pages/property/edit/[propertyId]/forms/_general/Location/MunicipSelect";
-import { NeighbourSelect } from "src/pages/property/edit/[propertyId]/forms/_general/Location/NeighbourSelect";
-import { RegionSelect } from "src/pages/property/edit/[propertyId]/forms/_general/Location/RegionSelect";
+import MunicipSelect from "src/components/Location/MunicipSelect";
+import NeighbourSelect from "src/components/Location/NeighbourSelect";
+import RegionSelect from "src/components/Location/RegionSelect";
+
 import Map, { IMapAddress, IMapMarker } from "src/components/Map/Map";
 import { DrawShape, ShapeData, StopDraw } from "src/components/Map/types";
 import { decodeShape, encodeShape } from "src/components/Map/util";
