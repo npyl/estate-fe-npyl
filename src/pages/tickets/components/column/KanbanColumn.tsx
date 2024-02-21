@@ -1,11 +1,11 @@
 import { useMemo, useState } from "react";
-import { Draggable, Droppable } from "react-beautiful-dnd";
+import { Droppable } from "react-beautiful-dnd";
 // @mui
-import { Button, Paper, Stack } from "@mui/material";
+import { Box, Button, Paper, Stack } from "@mui/material";
 // @types
-import { IKanbanCard, IKanbanCardPOST, IKanbanColumn } from "src/types/kanban";
+import { IKanbanCardPOST, IKanbanColumn } from "src/types/kanban";
 // components
-import Iconify from "../../../../components/iconify";
+import Iconify from "src/components/iconify";
 //
 import KanbanTaskAdd from "../KanbanTaskAdd";
 import KanbanColumnToolBar from "./KanbanColumnToolBar";
@@ -75,7 +75,7 @@ export default function KanbanColumn({ column }: Props) {
                                 : "background.default",
                     }}
                 >
-                    <Stack spacing={3}>
+                    <Stack spacing={3} position="relative">
                         <KanbanColumnToolBar
                             columnName={column.name}
                             onDelete={handleDeleteColumn}
@@ -95,35 +95,34 @@ export default function KanbanColumn({ column }: Props) {
                                         onDeleteTask={handleDeleteTask}
                                         card={card}
                                     />
-                                ) : (
-                                    <></>
-                                );
+                                ) : null;
                             })}
-                        </Stack>
-
-                        <Stack spacing={2} sx={{ pb: 3 }}>
-                            {openAddTask && (
-                                <KanbanTaskAdd
-                                    onAddTask={handleAddTask}
-                                    onCloseAddTask={handleCloseAddTask}
-                                />
-                            )}
-
-                            <Button
-                                fullWidth
-                                size="large"
-                                color="inherit"
-                                startIcon={
-                                    <Iconify icon="eva:plus-fill" mb={2} />
-                                }
-                                onClick={handleToggleAddTask}
-                                sx={{ fontSize: 14 }}
-                            >
-                                Add Task
-                            </Button>
                         </Stack>
                     </Stack>
                     {provided.placeholder}
+
+                    {/* Add Task button */}
+                    <Box my={3}>
+                        {openAddTask && (
+                            <KanbanTaskAdd
+                                onAddTask={handleAddTask}
+                                onCloseAddTask={handleCloseAddTask}
+                            />
+                        )}
+
+                        <Button
+                            fullWidth
+                            size="large"
+                            color="inherit"
+                            startIcon={<Iconify icon="eva:plus-fill" mb={2} />}
+                            onClick={handleToggleAddTask}
+                            sx={{
+                                fontSize: 14,
+                            }}
+                        >
+                            Add Task
+                        </Button>
+                    </Box>
                 </Paper>
             )}
         </Droppable>

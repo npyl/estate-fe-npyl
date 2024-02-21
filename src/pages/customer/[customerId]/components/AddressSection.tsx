@@ -2,7 +2,7 @@ import { Box, Divider, Paper, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
-import { ViewLocation } from "src/pages/property/edit/[propertyId]/forms/_general/Location/View";
+import { ViewLocation } from "src/components/Location/View";
 import { useGetCustomerByIdQuery } from "src/services/customers";
 
 const AddressSection: React.FC = () => {

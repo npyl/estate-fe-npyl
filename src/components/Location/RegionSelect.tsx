@@ -16,7 +16,7 @@ interface IRegionSelectProps {
     onChange: (regionCode: string, lat: number, lng: number) => void;
 }
 
-export const RegionSelect = (props: IRegionSelectProps) => {
+const RegionSelect = (props: IRegionSelectProps) => {
     const { regionCode, onChange } = props;
     const { t } = useTranslation();
     const regions = useGetRegionsQuery(undefined).data || [];
@@ -59,3 +59,5 @@ export const RegionSelect = (props: IRegionSelectProps) => {
         </FormControl>
     );
 };
+
+export default RegionSelect;

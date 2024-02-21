@@ -17,7 +17,7 @@ interface IMunicipSelectProps {
     onChange: (municipCode: string, lat: number, lng: number) => void;
 }
 
-export const MunicipSelect = (props: IMunicipSelectProps) => {
+const MunicipSelect = (props: IMunicipSelectProps) => {
     const { municipCode, regionCode, onChange } = props;
     const { t } = useTranslation();
     const municips =
@@ -74,3 +74,5 @@ export const MunicipSelect = (props: IMunicipSelectProps) => {
         </FormControl>
     );
 };
+
+export default MunicipSelect;

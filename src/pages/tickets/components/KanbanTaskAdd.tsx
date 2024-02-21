@@ -1,10 +1,8 @@
 import { useState } from "react";
 // @mui
 import {
-    Box,
     Checkbox,
     ClickAwayListener,
-    IconButton,
     InputBase,
     Paper,
     Stack,
@@ -20,6 +18,7 @@ import { IKanbanCardPOST } from "src/types/kanban";
 import Iconify from "../../../components/iconify";
 //
 import KanbanContactsDialog from "./KanbanContactsDialog";
+import { EnterOverlay } from "./EnterOverlay";
 
 // ----------------------------------------------------------------------
 
@@ -38,8 +37,6 @@ export default function KanbanTaskAdd({ onAddTask, onCloseAddTask }: Props) {
 
     const [completed, setCompleted] = useState(false);
 
-    const [openContacts, setOpenContacts] = useState(false);
-
     // const {
     //     startDate,
     //     endDate,
@@ -52,9 +49,6 @@ export default function KanbanTaskAdd({ onAddTask, onCloseAddTask }: Props) {
     //     isError,
     //     shortLabel,
     // } = useDateRangePicker(new Date(), new Date());
-
-    const handleOpenContacts = () => setOpenContacts(true);
-    const handleCloseContacts = () => setOpenContacts(false);
 
     const handleAddTask = () =>
         onAddTask({
@@ -88,15 +82,17 @@ export default function KanbanTaskAdd({ onAddTask, onCloseAddTask }: Props) {
         <ClickAwayListener onClickAway={handleClickAddTask}>
             <div>
                 <Paper variant="outlined">
-                    <InputBase
-                        multiline
-                        fullWidth
-                        placeholder="Task name"
-                        value={name}
-                        onChange={(event) => setName(event.target.value)}
-                        onKeyUp={handleKeyUpAddTask}
-                        sx={{ px: 2, pt: 2 }}
-                    />
+                    <EnterOverlay show={!!name}>
+                        <InputBase
+                            multiline
+                            fullWidth
+                            placeholder="Task name"
+                            value={name}
+                            onChange={(event) => setName(event.target.value)}
+                            onKeyUp={handleKeyUpAddTask}
+                            sx={{ px: 2, pt: 2 }}
+                        />
+                    </EnterOverlay>
 
                     <Stack
                         direction="row"
@@ -116,51 +112,10 @@ export default function KanbanTaskAdd({ onAddTask, onCloseAddTask }: Props) {
                                 }
                             />
                         </Tooltip>
-
-                        <Stack
-                            direction="row"
-                            spacing={1.5}
-                            alignItems="center"
-                        >
-                            <Tooltip
-                                title="Assign"
-                                onClick={handleOpenContacts}
-                            >
-                                <IconButton size="small">
-                                    <Iconify icon="eva:people-fill" />
-                                </IconButton>
-                            </Tooltip>
-
-                            {/* {isSelectedValuePicker ? (
-                                <Box
-                                    onClick={onOpenPicker}
-                                    sx={{
-                                        cursor: "pointer",
-                                        typography: "caption",
-                                        "&:hover": { opacity: 0.72 },
-                                    }}
-                                >
-                                    {shortLabel}
-                                </Box>
-                            ) : (
-                                <Tooltip title="Due date">
-                                    <IconButton
-                                        size="small"
-                                        onClick={onOpenPicker}
-                                    >
-                                        <Iconify icon="eva:calendar-fill" />
-                                    </IconButton>
-                                </Tooltip>
-                            )} */}
-                        </Stack>
                     </Stack>
                 </Paper>
 
-                <KanbanContactsDialog
-                    open={openContacts}
-                    toggleAssignee={() => {}}
-                    onClose={handleCloseContacts}
-                />
+                <KanbanContactsDialog toggleAssignee={() => {}} />
 
                 {/* <DateRangePicker
                     variant="calendar"

@@ -2,7 +2,7 @@ import { useCallback, useState } from "react";
 // @mui
 import { Stack } from "@mui/material";
 // components
-import { UploadBox } from "../../../../components/upload";
+import { UploadBox } from "src/components/upload";
 
 // ----------------------------------------------------------------------
 

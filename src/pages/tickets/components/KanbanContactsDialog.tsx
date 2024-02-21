@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useCallback, useState } from "react";
 // @mui
 import {
     Avatar,
@@ -13,13 +13,16 @@ import {
     ListItemText,
     TextField,
     Typography,
+    IconButton,
+    Tooltip,
 } from "@mui/material";
+import { alpha } from "@mui/material/styles";
 // components
 import { useTranslation } from "react-i18next";
 import { Scrollbar } from "src/components/scrollbar";
 import { useAllUsersQuery } from "src/services/user";
 import { IUser } from "src/types/user";
-import Iconify from "../../../components/iconify";
+import Iconify from "src/components/iconify";
 
 // ----------------------------------------------------------------------
 
@@ -27,9 +30,7 @@ const ITEM_HEIGHT = 64;
 
 type Props = {
     assignees?: IUser[];
-    open: boolean;
     toggleAssignee: (userId: number) => void;
-    onClose: VoidFunction;
 };
 
 interface AssigneeItemProps {
@@ -86,18 +87,23 @@ const AssigneeItem: FC<AssigneeItemProps> = ({ user, assigned, onClick }) => {
 
 export default function KanbanContactsDialog({
     assignees = [],
-    open,
     toggleAssignee,
-    onClose,
 }: Props) {
     const { t } = useTranslation();
 
+    const { data: users } = useAllUsersQuery();
+
     const [searchContacts, setSearchContacts] = useState("");
 
-    const handleSearchContacts = (event: React.ChangeEvent<HTMLInputElement>) =>
-        setSearchContacts(event.target.value);
+    const handleSearchContacts = useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>) =>
+            setSearchContacts(event.target.value),
+        []
+    );
 
-    const { data: users } = useAllUsersQuery();
+    const [openAssignees, setOpenAssignees] = useState(false);
+    const handleOpenAssignees = useCallback(() => setOpenAssignees(true), []);
+    const handleCloseAssignees = useCallback(() => setOpenAssignees(false), []);
 
     // const dataFiltered = applyFilter({
     //     inputData: _contacts,
@@ -109,59 +115,85 @@ export default function KanbanContactsDialog({
     if (!users) return null;
 
     return (
-        <Dialog fullWidth maxWidth="xs" open={open} onClose={onClose}>
-            <DialogTitle sx={{ pb: 0 }}>
-                {t("Users")}
-                <Typography component="span">{` (${users.length})`}</Typography>
-            </DialogTitle>
-
-            <Box sx={{ px: 3, py: 2.5 }}>
-                <TextField
-                    fullWidth
-                    value={searchContacts}
-                    onChange={handleSearchContacts}
-                    placeholder="Search..."
-                    inputProps={{
-                        startAdornment: (
-                            <InputAdornment position="start">
-                                <Iconify icon="eva:search-fill" />
-                            </InputAdornment>
-                        ),
+        <>
+            <Tooltip title="Add assignee">
+                <IconButton
+                    onClick={handleOpenAssignees}
+                    sx={{
+                        p: 1,
+                        ml: 0.5,
+                        bgcolor: (theme) =>
+                            alpha(theme.palette.grey[500], 0.08),
+                        border: (theme) =>
+                            `dashed 1px ${theme.palette.divider}`,
                     }}
-                />
-            </Box>
+                >
+                    <Iconify icon="eva:plus-fill" />
+                </IconButton>
+            </Tooltip>
 
-            <DialogContent sx={{ p: 0 }}>
-                {/* {isNotFound ? (
+            {openAssignees ? (
+                <Dialog
+                    fullWidth
+                    maxWidth="xs"
+                    open={openAssignees}
+                    onClose={handleCloseAssignees}
+                >
+                    <DialogTitle sx={{ pb: 0 }}>
+                        {t("Users")}
+                        <Typography component="span">{` (${users.length})`}</Typography>
+                    </DialogTitle>
+
+                    <Box sx={{ px: 3, py: 2.5 }}>
+                        <TextField
+                            fullWidth
+                            value={searchContacts}
+                            onChange={handleSearchContacts}
+                            placeholder="Search..."
+                            inputProps={{
+                                startAdornment: (
+                                    <InputAdornment position="start">
+                                        <Iconify icon="eva:search-fill" />
+                                    </InputAdornment>
+                                ),
+                            }}
+                        />
+                    </Box>
+
+                    <DialogContent sx={{ p: 0 }}>
+                        {/* {isNotFound ? (
                     <SearchNotFound
                         query={searchContacts}
                         sx={{ mt: 3, mb: 10 }}
                     />
                 ) : ( */}
-                <Scrollbar
-                    sx={{
-                        px: 2.5,
-                        height: ITEM_HEIGHT * 6,
-                    }}
-                >
-                    {users?.map((user, i) => (
-                        <AssigneeItem
-                            key={i}
-                            assigned={
-                                assignees.findIndex((a) => a.id === user.id) !==
-                                -1
-                            }
-                            user={user}
-                            onClick={toggleAssignee}
-                        />
-                    ))}
-                    {/* {dataFiltered.map((contact) => {
+                        <Scrollbar
+                            sx={{
+                                px: 2.5,
+                                height: ITEM_HEIGHT * 6,
+                            }}
+                        >
+                            {users?.map((user, i) => (
+                                <AssigneeItem
+                                    key={i}
+                                    assigned={
+                                        assignees.findIndex(
+                                            (a) => a.id === user.id
+                                        ) !== -1
+                                    }
+                                    user={user}
+                                    onClick={toggleAssignee}
+                                />
+                            ))}
+                            {/* {dataFiltered.map((contact) => {
                             
                         }) */}
-                </Scrollbar>
-                {/* )} */}
-            </DialogContent>
-        </Dialog>
+                        </Scrollbar>
+                        {/* )} */}
+                    </DialogContent>
+                </Dialog>
+            ) : null}
+        </>
     );
 }
 

@@ -17,7 +17,7 @@ interface NeighbourSelectProps {
     onChange: (neighbourCode: string, lat: number, lng: number) => void;
 }
 
-export const NeighbourSelect = (props: NeighbourSelectProps) => {
+const NeighbourSelect = (props: NeighbourSelectProps) => {
     const { municipCode, neighbourCode, onChange } = props;
     const { t } = useTranslation();
     const neighbours =
@@ -72,3 +72,5 @@ export const NeighbourSelect = (props: NeighbourSelectProps) => {
         </FormControl>
     );
 };
+
+export default NeighbourSelect;
