@@ -2,7 +2,7 @@ import { useState } from "react";
 // @mui
 import { Button, ClickAwayListener, Paper, TextField } from "@mui/material";
 // components
-import Iconify from "../../../../components/iconify";
+import Iconify from "src/components/iconify";
 
 import { useAddColumnMutation } from "src/services/tickets";
 
@@ -21,8 +21,13 @@ export default function KanbanColumnAdd() {
     const handleChangeName = (event: React.ChangeEvent<HTMLInputElement>) =>
         setName(event.target.value);
 
-    const handleCreateColumn = async () =>
-        addColumn({ name }).then((res) => handleClose());
+    const handleCreateColumn = async () => {
+        if (!name) {
+            handleClose();
+            return;
+        }
+        addColumn({ name }).then(handleClose);
+    };
 
     const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter") {

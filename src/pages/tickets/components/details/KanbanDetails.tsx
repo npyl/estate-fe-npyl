@@ -1,43 +1,21 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 // @mui
-import {
-    Avatar,
-    Divider,
-    Drawer,
-    IconButton,
-    Stack,
-    TextField,
-    Tooltip,
-} from "@mui/material";
-import { alpha, styled } from "@mui/material/styles";
+import { Avatar, Divider, Drawer, Stack } from "@mui/material";
 // @types
-import { IKanbanCard } from "src/types/kanban";
+import { IKanbanCard, IKanbanCardPOST } from "src/types/kanban";
 // components
 import { Scrollbar } from "src/components/scrollbar";
-
-import Iconify from "../../../../components/iconify";
-//
+// Kanban
 import KanbanContactsDialog from "../KanbanContactsDialog";
-import KanbanInputName from "../KanbanInputName";
 import KanbanDetailsAttachments from "./KanbanDetailsAttachments";
 import KanbanDetailsCommentInput from "./KanbanDetailsCommentInput";
 import KanbanDetailsCommentList from "./KanbanDetailsCommentList";
 import KanbanDetailsPrioritizes from "./KanbanDetailsPrioritizes";
 import KanbanDetailsToolbar from "./KanbanDetailsToolbar";
 import { useEditCardMutation } from "src/services/tickets";
-
-// ----------------------------------------------------------------------
-
-const StyledLabel = styled("span")(({ theme }) => ({
-    ...theme.typography.caption,
-    width: 120,
-    flexShrink: 0,
-    color: theme.palette.text.secondary,
-}));
-
-const StyledTextField = styled(TextField)(({ theme }) => ({
-    "& .MuiInputBase-root": { height: "100%!important" },
-}));
+import { StyledLabel } from "./styled";
+import Description from "./Description";
+import Name from "./Name";
 
 // ----------------------------------------------------------------------
 
@@ -54,21 +32,11 @@ export default function KanbanDetails({
     onCloseDetails,
     onDeleteTask,
 }: Props) {
-    const { id, completed, priority, name, description, user } = useMemo(
-        () => task,
-        [task]
-    );
+    const { id, completed, priority, name, description, user } = task;
 
     const [liked, setLiked] = useState(false);
 
-    const [taskName, setTaskName] = useState(task.name);
-    const [taskDescription, setTaskDescription] = useState(task.description);
-
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const renameRef = useRef<HTMLInputElement>(null);
-    const descriptionRef = useRef<HTMLInputElement>(null);
-
-    const [openAssignees, setOpenAssignees] = useState(false);
 
     // TODO:
     // const {
@@ -86,49 +54,22 @@ export default function KanbanDetails({
 
     const [editCard] = useEditCardMutation();
 
-    const handleLiked = () => setLiked(!liked);
+    const handleLiked = useCallback(() => setLiked((old) => !old), []);
     const handleClickAttach = () => fileInputRef.current?.click();
 
-    const handleChangeTaskName = (event: React.ChangeEvent<HTMLInputElement>) =>
-        setTaskName(event.target.value);
-    const handleChangeTaskDescription = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => setTaskDescription(event.target.value);
-
-    const handleUpdateTaskName = useCallback(
-        (event: React.KeyboardEvent<HTMLInputElement>) => {
-            if (event.key === "Enter" && renameRef.current) {
-                renameRef.current.blur();
-
-                editCard({
-                    id,
-                    name: taskName,
-                    description,
-                    priority,
-                    completed,
-                    userIds: user.map((u) => u.id),
-                });
-            }
-        },
-        [id, taskName, description, priority, completed, user]
-    );
-
-    const handleUpdateTaskDescription = useCallback(
-        (event: React.KeyboardEvent<HTMLInputElement>) => {
-            if (event.key === "Enter" && descriptionRef.current) {
-                descriptionRef.current.blur();
-
-                editCard({
-                    id,
-                    name,
-                    description: taskDescription,
-                    priority,
-                    completed,
-                    userIds: user.map((u) => u.id),
-                });
-            }
-        },
-        [id, name, taskDescription, priority, completed, user]
+    const handleUpdate = useCallback(
+        (card: Partial<IKanbanCardPOST>) =>
+            editCard({
+                id,
+                name,
+                description,
+                priority,
+                completed,
+                userIds: user.map((u) => u.id),
+                // updated fields from a component:
+                ...card,
+            }),
+        [id, name, description, priority, completed, user]
     );
 
     const toggleCompleted = useCallback(
@@ -176,9 +117,6 @@ export default function KanbanDetails({
         [id, name, description, priority, completed, user]
     );
 
-    const handleOpenAssignees = () => setOpenAssignees(true);
-    const handleCloseAssignees = () => setOpenAssignees(false);
-
     return (
         <Drawer
             open={openDetails}
@@ -196,7 +134,7 @@ export default function KanbanDetails({
             }}
         >
             <KanbanDetailsToolbar
-                taskName={task.name}
+                taskName={name}
                 fileInputRef={fileInputRef}
                 liked={liked}
                 completed={completed}
@@ -212,13 +150,7 @@ export default function KanbanDetails({
             <Scrollbar>
                 <Stack spacing={3} sx={{ px: 2.5, pt: 3, pb: 5 }}>
                     {/* Task name */}
-                    <KanbanInputName
-                        inputRef={renameRef}
-                        placeholder="Task name"
-                        value={taskName || name}
-                        onChange={handleChangeTaskName}
-                        onKeyUp={handleUpdateTaskName}
-                    />
+                    <Name taskName={name} onUpdate={handleUpdate} />
 
                     {/* Assignee */}
                     <Stack direction="row">
@@ -242,30 +174,9 @@ export default function KanbanDetails({
                                 />
                             ))}
 
-                            <Tooltip title="Add assignee">
-                                <IconButton
-                                    onClick={handleOpenAssignees}
-                                    sx={{
-                                        p: 1,
-                                        ml: 0.5,
-                                        bgcolor: (theme) =>
-                                            alpha(
-                                                theme.palette.grey[500],
-                                                0.08
-                                            ),
-                                        border: (theme) =>
-                                            `dashed 1px ${theme.palette.divider}`,
-                                    }}
-                                >
-                                    <Iconify icon="eva:plus-fill" />
-                                </IconButton>
-                            </Tooltip>
-
                             <KanbanContactsDialog
                                 assignees={task.user}
-                                open={openAssignees}
                                 toggleAssignee={handleToggleAssignee}
-                                onClose={handleCloseAssignees}
                             />
                         </Stack>
                     </Stack>
@@ -332,25 +243,10 @@ export default function KanbanDetails({
                     </Stack>
 
                     {/* Description */}
-                    <Stack direction="row">
-                        <StyledLabel> Description </StyledLabel>
-
-                        <StyledTextField
-                            fullWidth
-                            multiline
-                            size="small"
-                            rows={5}
-                            ref={descriptionRef}
-                            value={taskDescription || description}
-                            onChange={handleChangeTaskDescription}
-                            onKeyUp={handleUpdateTaskDescription}
-                            InputProps={{
-                                sx: {
-                                    typography: "body2",
-                                },
-                            }}
-                        />
-                    </Stack>
+                    <Description
+                        taskDescription={description}
+                        onUpdate={handleUpdate}
+                    />
 
                     {/* Attachments */}
                     <Stack direction="row">

@@ -5,8 +5,8 @@ import { Box, Checkbox, Paper, Typography } from "@mui/material";
 // @types
 import { IKanbanCard } from "src/types/kanban";
 // components
-import Iconify from "../../../components/iconify";
-import Image from "../../../components/image";
+import Iconify from "src/components/iconify";
+import Image from "src/components/image";
 //
 import KanbanDetails from "./details/KanbanDetails";
 import { useEditCardMutation } from "src/services/tickets";
