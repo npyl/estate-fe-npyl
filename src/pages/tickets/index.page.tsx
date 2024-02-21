@@ -1,10 +1,6 @@
 // @mui
-import { Box, Stack } from "@mui/material";
+import { Box } from "@mui/material";
 import { DropResult } from "react-beautiful-dnd";
-// redux
-
-// utils
-import { hideScrollbarX } from "../../utils/cssStyles";
 // layouts
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 // sections
@@ -144,6 +140,16 @@ export default function KanbanPage() {
         }
     };
 
+    // Make sure each column has a decent size
+    const columns = useMemo(() => {
+        const count = board?.columns?.length;
+        if (!count) return 0;
+
+        if (count >= COLUMNS) return COLUMNS;
+        if (count === 2) return 2;
+        return 1;
+    }, [board?.columns?.length]);
+
     return (
         <Box
             sx={{
@@ -157,7 +163,7 @@ export default function KanbanPage() {
             {board && items ? (
                 <TwoDimentionsDnd
                     items={items}
-                    columns={COLUMNS}
+                    columns={columns}
                     onDragEnd={handleDragEnd}
                 />
             ) : (

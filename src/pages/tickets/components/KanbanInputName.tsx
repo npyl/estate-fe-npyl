@@ -7,6 +7,7 @@ export default function KanbanInputName({ sx, ...other }: InputBaseProps) {
     return (
         <InputBase
             sx={{
+                width: "100%",
                 flexGrow: 1,
                 "& .MuiInputBase-input": {
                     py: 1,

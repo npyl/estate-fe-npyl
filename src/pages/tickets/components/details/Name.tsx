@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { IKanbanCardPOST } from "src/types/kanban";
 // kanban
 import KanbanInputName from "../KanbanInputName";
+import { EnterOverlay } from "../EnterOverlay";
 
 interface NameProps {
     taskName: string;
@@ -10,12 +11,14 @@ interface NameProps {
 }
 
 const Name = ({ taskName, onUpdate }: NameProps) => {
+    const [initialState, setInitialState] = useState("");
     const [name, setName] = useState("");
 
     const renameRef = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         setName(taskName);
+        setInitialState(taskName);
     }, [taskName]);
 
     const handleChange = useCallback(
@@ -36,13 +39,15 @@ const Name = ({ taskName, onUpdate }: NameProps) => {
     );
 
     return (
-        <KanbanInputName
-            inputRef={renameRef}
-            placeholder="Task name"
-            value={name}
-            onChange={handleChange}
-            onKeyUp={handleUpdate}
-        />
+        <EnterOverlay show={name !== initialState}>
+            <KanbanInputName
+                inputRef={renameRef}
+                placeholder="Task name"
+                value={name}
+                onChange={handleChange}
+                onKeyUp={handleUpdate}
+            />
+        </EnterOverlay>
     );
 };
 

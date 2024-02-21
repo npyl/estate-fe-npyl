@@ -1,4 +1,4 @@
-import { ChangeEvent, useMemo, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 // @mui
 import { Box, Checkbox, Paper, Typography } from "@mui/material";
@@ -20,12 +20,7 @@ type Props = {
 };
 
 export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
-    if (!card) return null;
-
-    const { id, name, attachments, completed, priority, user } = useMemo(
-        () => card,
-        [card]
-    );
+    const { id, name, attachments, completed, priority, user } = card;
 
     const [editCard] = useEditCardMutation();
 
@@ -42,6 +37,8 @@ export default function KanbanTaskCard({ card, onDeleteTask, index }: Props) {
             completed: !completed,
             userIds: user.map((u) => u.id),
         });
+
+    if (!card) return null;
 
     return (
         <>

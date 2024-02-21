@@ -5,6 +5,7 @@ import { Button, ClickAwayListener, Paper, TextField } from "@mui/material";
 import Iconify from "src/components/iconify";
 
 import { useAddColumnMutation } from "src/services/tickets";
+import { EnterOverlay } from "../EnterOverlay";
 
 // ----------------------------------------------------------------------
 
@@ -39,17 +40,19 @@ export default function KanbanColumnAdd() {
         <Paper sx={{ minWidth: 280, width: 280, maxHeight: 38 }}>
             {open ? (
                 <ClickAwayListener onClickAway={handleCreateColumn}>
-                    <TextField
-                        autoFocus
-                        fullWidth
-                        placeholder="New section"
-                        value={name}
-                        onChange={handleChangeName}
-                        onKeyUp={handleKeyUp}
-                        InputProps={{
-                            sx: { typography: "h6" },
-                        }}
-                    />
+                    <EnterOverlay show={!!name}>
+                        <TextField
+                            autoFocus
+                            fullWidth
+                            placeholder="New section"
+                            value={name}
+                            onChange={handleChangeName}
+                            onKeyUp={handleKeyUp}
+                            InputProps={{
+                                sx: { typography: "h6" },
+                            }}
+                        />
+                    </EnterOverlay>
                 </ClickAwayListener>
             ) : (
                 <Button

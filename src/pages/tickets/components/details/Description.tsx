@@ -6,6 +6,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { IKanbanCardPOST } from "src/types/kanban";
 // styled
 import { StyledLabel, StyledTextField } from "./styled";
+import { EnterOverlay } from "../EnterOverlay";
 
 // ----------------------------------------------------------------------
 
@@ -19,10 +20,12 @@ const Description = ({ taskDescription, onUpdate }: DescriptionProps) => {
 
     const descriptionRef = useRef<HTMLInputElement>(null);
 
+    const [initialState, setInitialState] = useState("");
     const [description, setDescription] = useState("");
 
     useEffect(() => {
         setDescription(taskDescription);
+        setInitialState(taskDescription);
     }, [taskDescription]);
 
     const handleChange = useCallback(
@@ -48,21 +51,23 @@ const Description = ({ taskDescription, onUpdate }: DescriptionProps) => {
         <Stack direction="row">
             <StyledLabel>{t("Description")}</StyledLabel>
 
-            <StyledTextField
-                fullWidth
-                multiline
-                size="small"
-                rows={5}
-                ref={descriptionRef}
-                value={description}
-                onChange={handleChange}
-                onKeyUp={handleUpdate}
-                InputProps={{
-                    sx: {
-                        typography: "body2",
-                    },
-                }}
-            />
+            <EnterOverlay show={description !== initialState}>
+                <StyledTextField
+                    fullWidth
+                    multiline
+                    size="small"
+                    rows={5}
+                    ref={descriptionRef}
+                    value={description}
+                    onChange={handleChange}
+                    onKeyUp={handleUpdate}
+                    InputProps={{
+                        sx: {
+                            typography: "body2",
+                        },
+                    }}
+                />
+            </EnterOverlay>
         </Stack>
     );
 };
