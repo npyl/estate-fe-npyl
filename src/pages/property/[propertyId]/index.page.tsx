@@ -29,6 +29,7 @@ import {
     Map,
     MainContainer,
 } from "./tabs";
+import { UploadFileProvider } from "src/contexts/uploadFile";
 
 function a11yProps(index: number) {
     return {
@@ -144,7 +145,9 @@ const SingleProperty: NextPage = () => {
 
 SingleProperty.getLayout = (page) => (
     <AuthGuard>
-        <DashboardLayout>{page}</DashboardLayout>
+        <DashboardLayout>
+            <UploadFileProvider>{page}</UploadFileProvider>
+        </DashboardLayout>
     </AuthGuard>
 );
 

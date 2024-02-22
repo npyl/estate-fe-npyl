@@ -23,10 +23,11 @@ import {
     useGetPropertyByIdQuery,
 } from "src/services/properties";
 import { ListingTypes } from "src/types/listings";
-import { LabeledSwitch } from "../components/Switch";
+import { LabeledSwitch } from "../../components/Switch";
 import { PublicSvg } from "src/assets/PublicSvg";
 import { SpitogatosSvg } from "src/assets/SpitogatosSvg";
 import { LocationDisplay } from "src/types/enums";
+import GoogleEarth from "./GoogleEarth/GoogleEarth";
 
 interface ListingCardProps {
     label: ListingTypes;
@@ -208,6 +209,7 @@ const Right = () => {
 
             <Box>
                 <Typography variant="h4">Upload Google Earth</Typography>
+                <GoogleEarth />
             </Box>
         </Paper>
     );

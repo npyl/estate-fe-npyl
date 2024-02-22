@@ -1,11 +1,9 @@
 import {
-    Box,
     Button,
     Dialog,
     DialogContent,
     DialogContentText,
     DialogTitle,
-    Grid,
     IconButton,
     Paper,
     Stack,
@@ -16,18 +14,11 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { SoftButton } from "src/components/SoftButton";
 import { ReactNode, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useGetPropertyByIdQuery } from "src/services/properties";
-import { useRouter } from "next/router";
 import { SpitogatosSvg } from "src/assets/SpitogatosSvg";
 import { PublicSvg } from "src/assets/PublicSvg";
 import GoogleEarthSvg from "src/assets/GoogleEarth";
 import { usePathname } from "next/navigation";
-
-const useGetProperty = () => {
-    const { propertyId } = useRouter().query;
-    const { data: property } = useGetPropertyByIdQuery(+propertyId!);
-    return { property };
-};
+import { useGetProperty } from "src/hooks/property/hook";
 
 const OpenIn = () => {
     const { t } = useTranslation();

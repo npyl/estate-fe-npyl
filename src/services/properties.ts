@@ -113,7 +113,7 @@ interface ReorderImagesWithSetImageVisibilityProps {
 
 interface UploadDocumentToAmazonProps {
     url: string;
-    image: File;
+    file: File /* image, blueprint, document, google earth */;
     onProgressUpdate?: (p: number) => void;
 }
 
@@ -128,11 +128,6 @@ interface EditLocationDisplayProps {
 
 interface IContent<T> {
     content: T[];
-}
-
-interface UploadGoogleEarthFile {
-    propertyId: number;
-    body: IGoogleEarthPOST;
 }
 
 export const properties = createApi({
@@ -798,8 +793,8 @@ export const properties = createApi({
             UploadDocumentToAmazonProps
         >({
             // INFO: upload to amazon
-            async queryFn({ url, image, onProgressUpdate }) {
-                const { type } = image;
+            async queryFn({ url, file, onProgressUpdate }) {
+                const { type } = file;
 
                 try {
                     const handleUploadProgress = ({
@@ -808,14 +803,14 @@ export const properties = createApi({
                         if (onProgressUpdate) {
                             // Calculate and report the upload progress here
                             const progress = Math.round(
-                                (loaded / image.size) * 100
+                                (loaded / file.size) * 100
                             );
 
                             onProgressUpdate(progress);
                         }
                     };
 
-                    const response = await axios.put(url, image, {
+                    const response = await axios.put(url, file, {
                         headers: {
                             "Content-Type": type,
                         },
@@ -858,9 +853,12 @@ export const properties = createApi({
         //
         //  Google Earth
         //
-        addGoogleEarth: builder.mutation<IFileResponse, UploadGoogleEarthFile>({
-            query: ({ propertyId, body }) => ({
-                url: `/${propertyId}/google-earth`,
+        addGoogleEarth: builder.mutation<
+            IFileResponse,
+            IPropertyAddFileParams<IGoogleEarthPOST>
+        >({
+            query: ({ id, body }) => ({
+                url: `/${id}/google-earth`,
                 method: "POST",
                 body,
             }),

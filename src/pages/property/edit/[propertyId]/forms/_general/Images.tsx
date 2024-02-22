@@ -121,7 +121,7 @@ const ImagesSection: React.FC = () => {
         // PUT to amazon url
         const response = await uploadImage({
             url,
-            image,
+            file: image,
             onProgressUpdate: (progress) =>
                 setUploadProgress({
                     filename,

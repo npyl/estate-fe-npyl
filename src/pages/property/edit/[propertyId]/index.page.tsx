@@ -11,6 +11,7 @@ import Form from "./Form";
 import { useTabsContext } from "src/contexts/tabs";
 import { ConfirmationDialogBox } from "src/pages/components/ConfirmationDialogBox";
 import { IPropertiesPOST } from "src/types/properties";
+import { UploadFileProvider } from "src/contexts/uploadFile";
 
 const useLoadProperty = () => {
     const router = useRouter();
@@ -87,7 +88,9 @@ const EditPropertyPage: NextPage = () => {
 
 EditPropertyPage.getLayout = (page) => (
     <AuthGuard>
-        <DashboardLayout>{page}</DashboardLayout>
+        <DashboardLayout>
+            <UploadFileProvider>{page}</UploadFileProvider>
+        </DashboardLayout>
     </AuthGuard>
 );
 
