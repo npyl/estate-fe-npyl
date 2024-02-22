@@ -1,18 +1,8 @@
 // @mui
-import {
-    Button,
-    IconButton,
-    InputBase,
-    Paper,
-    Stack,
-    Tooltip,
-} from "@mui/material";
-// auth
-
+import { Button, InputBase, Paper, Stack } from "@mui/material";
 // components
 import { useAuth } from "src/hooks/use-auth";
-import { CustomAvatar } from "../../../../components/custom-avatar";
-import Iconify from "../../../../components/iconify";
+import { CustomAvatar } from "src/components/custom-avatar";
 
 // ----------------------------------------------------------------------
 
@@ -36,19 +26,11 @@ export default function KanbanDetailsCommentInput() {
                     sx={{ px: 1 }}
                 />
 
-                <Stack direction="row" alignItems="center">
-                    <Stack direction="row" flexGrow={1}>
-                        <Tooltip title="Add photo">
-                            <IconButton size="small">
-                                <Iconify icon="ic:round-add-photo-alternate" />
-                            </IconButton>
-                        </Tooltip>
-
-                        <IconButton size="small">
-                            <Iconify icon="eva:attach-2-fill" />
-                        </IconButton>
-                    </Stack>
-
+                <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="flex-end"
+                >
                     <Button variant="contained">Comment</Button>
                 </Stack>
             </Paper>

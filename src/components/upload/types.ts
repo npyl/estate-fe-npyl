@@ -18,7 +18,7 @@ export interface CustomFile extends File {
 
 export type IPropertyFile = IPropertyBlueprint | IPropertyDocument;
 
-export type UploadVariant = "image" | "document" | undefined;
+export type UploadVariant = "image" | "document" | "googleEarth" | undefined;
 
 export interface UploadProps extends DropzoneOptions {
     error?: boolean;

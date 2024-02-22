@@ -72,12 +72,12 @@ const DocumentsSection: React.FC = () => {
     };
 
     const uploadFile = async (
-        image: File | undefined,
+        file: File | undefined,
         fileResponse: IFileResponse
     ): Promise<UploadResponse> => {
-        if (!image) throw new Error("null image!");
+        if (!file) throw new Error("null image!");
 
-        const { type: contentType, size } = image;
+        const { type: contentType, size } = file;
         const { key, url, cdnUrl } = fileResponse;
 
         if (!contentType) throw new Error("contentType cannot be null");
@@ -86,7 +86,7 @@ const DocumentsSection: React.FC = () => {
         // PUT to amazon url
         const response = await uploadDocument({
             url,
-            image,
+            file,
         });
 
         if (!response)

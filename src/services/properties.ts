@@ -26,6 +26,7 @@ import { ICustomer } from "src/types/customer";
 import axios, { AxiosProgressEvent } from "axios";
 import { LocationDisplay } from "src/types/enums";
 import { IOpenAIDetailsPOST } from "src/types/openai";
+import { IGoogleEarthPOST } from "src/types/googleEarth";
 
 interface JustData<T> {
     data: T;
@@ -112,7 +113,7 @@ interface ReorderImagesWithSetImageVisibilityProps {
 
 interface UploadDocumentToAmazonProps {
     url: string;
-    image: File;
+    file: File /* image, blueprint, document, google earth */;
     onProgressUpdate?: (p: number) => void;
 }
 
@@ -792,8 +793,8 @@ export const properties = createApi({
             UploadDocumentToAmazonProps
         >({
             // INFO: upload to amazon
-            async queryFn({ url, image, onProgressUpdate }) {
-                const { type } = image;
+            async queryFn({ url, file, onProgressUpdate }) {
+                const { type } = file;
 
                 try {
                     const handleUploadProgress = ({
@@ -802,14 +803,14 @@ export const properties = createApi({
                         if (onProgressUpdate) {
                             // Calculate and report the upload progress here
                             const progress = Math.round(
-                                (loaded / image.size) * 100
+                                (loaded / file.size) * 100
                             );
 
                             onProgressUpdate(progress);
                         }
                     };
 
-                    const response = await axios.put(url, image, {
+                    const response = await axios.put(url, file, {
                         headers: {
                             "Content-Type": type,
                         },
@@ -846,6 +847,26 @@ export const properties = createApi({
                 method: "POST",
                 body,
                 responseHandler: "text",
+            }),
+        }),
+
+        //
+        //  Google Earth
+        //
+        addGoogleEarth: builder.mutation<
+            IFileResponse,
+            IPropertyAddFileParams<IGoogleEarthPOST>
+        >({
+            query: ({ id, body }) => ({
+                url: `/${id}/google-earth`,
+                method: "POST",
+                body,
+            }),
+        }),
+        deleteGoogleEarth: builder.mutation<IFileResponse, number>({
+            query: (propertyId) => ({
+                url: `/${propertyId}/google-earth`,
+                method: "DELETE",
             }),
         }),
     }),
@@ -903,4 +924,10 @@ export const {
     useGetPropertyAttributeQuery,
     useGetPropertyLabelsQuery,
     useGetPropertyDocumentsQuery,
+
+    //
+    //  Google Earth
+    //
+    useAddGoogleEarthMutation,
+    useDeleteGoogleEarthMutation,
 } = properties;

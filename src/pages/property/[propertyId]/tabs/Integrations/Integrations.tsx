@@ -23,10 +23,11 @@ import {
     useGetPropertyByIdQuery,
 } from "src/services/properties";
 import { ListingTypes } from "src/types/listings";
-import { LabeledSwitch } from "../components/Switch";
+import { LabeledSwitch } from "../../components/Switch";
 import { PublicSvg } from "src/assets/PublicSvg";
 import { SpitogatosSvg } from "src/assets/SpitogatosSvg";
 import { LocationDisplay } from "src/types/enums";
+import GoogleEarth from "./GoogleEarth/GoogleEarth";
 
 interface ListingCardProps {
     label: ListingTypes;
@@ -205,28 +206,29 @@ const Right = () => {
                         onClick={handleClick}
                     />
                 ))}
+
+            <Box>
+                <Typography variant="h4">Upload Google Earth</Typography>
+                <GoogleEarth />
+            </Box>
         </Paper>
     );
 };
 
-const Integrations = () => {
-    const [selected, setSelected] = useState(false);
-
-    return (
-        <Box
-            sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "100%",
-                gap: 1,
-            }}
-        >
-            <Left />
-            <Right />
-        </Box>
-    );
-};
+const Integrations = () => (
+    <Box
+        sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "100%",
+            gap: 1,
+        }}
+    >
+        <Left />
+        <Right />
+    </Box>
+);
 
 export default Integrations;

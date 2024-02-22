@@ -1,22 +1,14 @@
 import { useDropzone } from "react-dropzone";
 // @mui
-import {
-    Box,
-    Button,
-    IconButton,
-    Stack,
-    StackProps,
-    Typography,
-} from "@mui/material";
+import { Box, Button, IconButton, Stack } from "@mui/material";
 import { alpha, styled } from "@mui/material/styles";
-// assets
-import { UploadIllustration } from "../../assets/illustrations";
 //
 import Iconify from "../iconify";
 //
 import RejectionFiles from "./errors/RejectionFiles";
 import MultiFilePreview from "./preview/MultiFilePreview";
 import { UploadProps } from "./types";
+import Placeholder from "./placeholder";
 
 // ----------------------------------------------------------------------
 
@@ -173,35 +165,5 @@ export default function Upload({
 
             {helperText && helperText}
         </Box>
-    );
-}
-
-// ----------------------------------------------------------------------
-
-function Placeholder({ sx, ...other }: StackProps) {
-    return (
-        <Stack
-            alignItems="center"
-            justifyContent="center"
-            direction={{
-                xs: "column",
-                md: "row",
-            }}
-            sx={{
-                width: 1,
-                textAlign: {
-                    xs: "center",
-                    md: "left",
-                },
-                ...sx,
-            }}
-            {...other}
-        >
-            <UploadIllustration sx={{ width: 100 }} />
-
-            <Typography gutterBottom variant="h5">
-                Drop or Select files
-            </Typography>
-        </Stack>
     );
 }

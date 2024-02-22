@@ -35,7 +35,12 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
     COMMERCIAL: [
         "Display Window Length",
         "Entrances",
+        // ---
+        "Furnished",
+        "Frame Type",
+        "Pane Glass Type",
         "Floor Type",
+        // ---
         "Safety Door",
         "Alarm System",
         "Painted",

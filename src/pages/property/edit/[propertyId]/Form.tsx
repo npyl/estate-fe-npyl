@@ -3,7 +3,6 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import { Button, Grid } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { Residential, Commercial, Land, Other } from "./forms";
-import { UploadFileProvider } from "src/contexts/uploadFile";
 import { useCallback, useMemo } from "react";
 import PreventButton from "src/components/Button/Prevent";
 import { IProperties, IPropertiesPOST } from "src/types/properties";
@@ -62,16 +61,12 @@ export default function Form({
         <FormProvider methods={methods} onSubmit={onSubmit}>
             <Grid container spacing={1} paddingLeft={2} paddingTop={1}>
                 {!!property ? (
-                    <UploadFileProvider>
-                        <Grid container mt={0} spacing={1}>
-                            {parentCategory === "RESIDENTIAL" && (
-                                <Residential />
-                            )}
-                            {parentCategory === "COMMERCIAL" && <Commercial />}
-                            {parentCategory === "LAND" && <Land />}
-                            {parentCategory === "OTHER" && <Other />}
-                        </Grid>
-                    </UploadFileProvider>
+                    <Grid container mt={0} spacing={1}>
+                        {parentCategory === "RESIDENTIAL" && <Residential />}
+                        {parentCategory === "COMMERCIAL" && <Commercial />}
+                        {parentCategory === "LAND" && <Land />}
+                        {parentCategory === "OTHER" && <Other />}
+                    </Grid>
                 ) : null}
                 <Grid
                     padding={2}

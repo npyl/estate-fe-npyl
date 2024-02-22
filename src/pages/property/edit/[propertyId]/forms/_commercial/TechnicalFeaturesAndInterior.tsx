@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Divider, Grid } from "@mui/material";
 import * as React from "react";
 import { IGlobalPropertyDetails } from "src/types/global";
 import { useGlobals } from "src/hooks/useGlobals";
@@ -9,7 +9,13 @@ import { TranslationType } from "src/types/translation";
 import { useMemo } from "react";
 import { KeyValue } from "src/types/KeyValue";
 
-const getFIELDS = (t: TranslationType, floorType: KeyValue[]) => [
+const getFIELDS = (
+    t: TranslationType,
+    furnished: KeyValue[],
+    frameType: KeyValue[],
+    panelGlassType: KeyValue[],
+    floorType: KeyValue[]
+) => [
     <RHFOnlyNumbers
         label={t("Display Window Length")}
         name="technicalFeatures.displayWindowsLength"
@@ -20,6 +26,22 @@ const getFIELDS = (t: TranslationType, floorType: KeyValue[]) => [
         fullWidth
         label={t("Entrances")}
         name="technicalFeatures.entrances"
+    />,
+
+    <Select
+        label={t("Furnished")}
+        name="technicalFeatures.furnished"
+        options={furnished}
+    />,
+    <Select
+        label={t("Frame Type")}
+        name="technicalFeatures.frameType"
+        options={frameType}
+    />,
+    <Select
+        label={t("Pane Glass Type")}
+        name="technicalFeatures.paneGlassType"
+        options={panelGlassType}
     />,
 
     <Select
@@ -98,6 +120,9 @@ const useEnums = () => {
     const enums = useMemo(
         () => ({
             floorType: details?.floorType || [],
+            furnished: details?.furnished || [],
+            frameType: details?.frameType || [],
+            panelGlassType: details?.panelGlassType || [],
         }),
         [details]
     );
@@ -106,9 +131,12 @@ const useEnums = () => {
 
 const TechnicalFeaturesAndInterior: React.FC = () => {
     const { t } = useTranslation();
-    const { floorType } = useEnums();
+    const { furnished, frameType, panelGlassType, floorType } = useEnums();
 
-    const FIELDS = useMemo(() => getFIELDS(t, floorType), [t, floorType]);
+    const FIELDS = useMemo(
+        () => getFIELDS(t, furnished, frameType, panelGlassType, floorType),
+        [t, furnished, frameType, panelGlassType, floorType]
+    );
     const FEATURES = useMemo(() => getFEATURES(t), [t]);
 
     return (

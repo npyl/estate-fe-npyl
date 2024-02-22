@@ -4,6 +4,7 @@ import { DescriptionEntry, DescriptionEntryPOST } from "./description";
 import { IPropertyDetails, IPropertyDetailsPOST } from "./details";
 import { IPropertyFeatures } from "./features";
 import { IPropertyBlueprint, IPropertyDocument, IPropertyImage } from "./file";
+import IGoogleEarth from "./googleEarth";
 import { ILabel } from "./label";
 import { Listings } from "./listings";
 import { ILocation, ILocationPOST } from "./location";
@@ -355,6 +356,8 @@ export interface IProperties {
     labels: ILabel[];
 
     listings: Listings;
+
+    googleEarth: IGoogleEarth;
 }
 
 export type ParentCategory = "RESIDENTIAL" | "COMMERCIAL" | "LAND" | "OTHER";

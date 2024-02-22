@@ -1,11 +1,9 @@
 import {
-    Box,
     Button,
     Dialog,
     DialogContent,
     DialogContentText,
     DialogTitle,
-    Grid,
     IconButton,
     Paper,
     Stack,
@@ -16,29 +14,29 @@ import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { SoftButton } from "src/components/SoftButton";
 import { ReactNode, useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useGetPropertyByIdQuery } from "src/services/properties";
-import { useRouter } from "next/router";
 import { SpitogatosSvg } from "src/assets/SpitogatosSvg";
 import { PublicSvg } from "src/assets/PublicSvg";
 import GoogleEarthSvg from "src/assets/GoogleEarth";
 import { usePathname } from "next/navigation";
-
-const useGetProperty = () => {
-    const { propertyId } = useRouter().query;
-    const { data: property } = useGetPropertyByIdQuery(+propertyId!);
-    return { property };
-};
+import { useGetProperty } from "src/hooks/property/hook";
 
 const OpenIn = () => {
     const { t } = useTranslation();
 
     const { property } = useGetProperty();
-    const { hasPublic, hasSpitogato } = useMemo(
+    const { hasPublic, hasSpitogato, hasGoogleEarth } = useMemo(
         () => ({
             hasPublic: property?.listings?.PUBLIC_SITE || false,
             hasSpitogato: property?.listings?.SPITOGATOS || false,
+            hasGoogleEarth: !!property?.googleEarth,
         }),
         [property]
+    );
+
+    // Hide this component if we have nothing...
+    const hasNothing = useMemo(
+        () => !hasPublic && !hasSpitogato && !hasGoogleEarth,
+        [hasPublic, hasSpitogato, hasGoogleEarth]
     );
 
     const openPublic = useCallback(
@@ -54,7 +52,7 @@ const OpenIn = () => {
 
     const openGoogleEarth = useCallback(() => {}, []);
 
-    return (
+    return hasNothing ? null : (
         <Stack
             flexDirection="row"
             gap={0.5}
@@ -76,9 +74,11 @@ const OpenIn = () => {
                     <SpitogatosSvg />
                 </IconButton>
             ) : null}
-            <IconButton size="small" onClick={openGoogleEarth}>
-                <GoogleEarthSvg />
-            </IconButton>
+            {hasGoogleEarth ? (
+                <IconButton size="small" onClick={openGoogleEarth}>
+                    <GoogleEarthSvg />
+                </IconButton>
+            ) : null}
         </Stack>
     );
 };
