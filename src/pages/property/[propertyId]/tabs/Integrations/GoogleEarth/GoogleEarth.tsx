@@ -1,9 +1,11 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 import { useAddGoogleEarthMutation } from "src/services/properties";
 import useUploadFile from "./hook";
 import Upload from "./Upload";
-import { Box, Button } from "@mui/material";
 import { useGetProperty } from "src/hooks/property/hook";
+
+const KML_CONTENT_TYPE = "application/vnd.google-earth.kml+xml";
+const KMZ_CONTENT_TYPE = "application/vnd.google-earth.kmz";
 
 const GoogleEarth = () => {
     const { property } = useGetProperty();
@@ -17,41 +19,24 @@ const GoogleEarth = () => {
     const { addFile, uploadFile, invalidatePropertyTags } =
         useUploadFile(addGoogleEarth);
 
-    const [loading, setLoading] = useState(false);
-
     const handleDrop = useCallback(async (acceptedFiles: File[]) => {
         if (acceptedFiles.length > 1) return;
 
-        setLoading(true);
+        const contentType = acceptedFiles[0].name.includes(".kmz")
+            ? KMZ_CONTENT_TYPE
+            : KML_CONTENT_TYPE;
 
-        const response = await addFile(acceptedFiles[0]);
-        const result = await uploadFile(acceptedFiles[0], response);
-
-        setLoading(false);
+        const response = await addFile(acceptedFiles[0], contentType);
+        const result = await uploadFile(
+            acceptedFiles[0],
+            response,
+            contentType
+        );
 
         invalidatePropertyTags();
     }, []);
 
-    const openKML = () => {
-        const kmlFileUrl = property?.googleEarth?.url;
-        if (!kmlFileUrl) return;
-
-        // URL encode the KML file URL
-        const encodedKmlFileUrl = encodeURIComponent(kmlFileUrl);
-
-        // Generate the Google Earth URL with the encoded KML file URL
-        const googleEarthUrl = `https://earth.google.com/web/@?dg=feature&ap=ml%7B${encodedKmlFileUrl}%7D`;
-
-        // Open the Google Earth URL in a new tab
-        window.open(googleEarthUrl, "_blank");
-    };
-
-    return (
-        <Box>
-            <Upload onDrop={handleDrop} files={files} />
-            <Button onClick={openKML}>Open</Button>
-        </Box>
-    );
+    return <Upload onDrop={handleDrop} files={files} />;
 };
 
 export default GoogleEarth;

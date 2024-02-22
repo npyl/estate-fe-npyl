@@ -50,7 +50,10 @@ const OpenIn = () => {
 
     const openSpitogato = useCallback(() => {}, [property?.id]);
 
-    const openGoogleEarth = useCallback(() => {}, []);
+    const openGoogleEarth = useCallback(
+        () => window.open(property?.googleEarth?.url, "_blank"),
+        [property?.googleEarth?.url]
+    );
 
     return hasNothing ? null : (
         <Stack
