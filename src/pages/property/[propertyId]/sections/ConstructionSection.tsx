@@ -35,6 +35,7 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Under Construction",
         "Renovated",
         "Needs Renovation",
+        "Elevator",
         "Internal Stairs",
         "Newly Build",
         "Incomplete",

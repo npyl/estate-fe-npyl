@@ -90,6 +90,12 @@ const Construction: React.FC<any> = (props) => {
                 </Grid>
                 <Grid item xs={3}>
                     <RHFCheckbox
+                        name={"construction.elevator"}
+                        label={t("Elevator")}
+                    />
+                </Grid>
+                <Grid item xs={3}>
+                    <RHFCheckbox
                         name={"construction.preserved"}
                         label={t("Preserved")}
                     />
