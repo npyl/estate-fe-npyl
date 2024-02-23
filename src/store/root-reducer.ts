@@ -18,10 +18,6 @@ import { listings } from "src/services/listings";
 import { reducer as customerFiltersReducer } from "../slices/customer/filters";
 import { reducer as customerMiscReducer } from "../slices/customer/misc";
 import { reducer as filtersReducer } from "../slices/filters";
-import kanbanReducer from "../slices/kanban";
-import { reducer as labelsReducer } from "../slices/labels";
-import { reducer as notesReducer } from "../slices/notes";
-import { reducer as notificationReducer } from "../slices/notification";
 import { reducer as securityReducer } from "../slices/security";
 import { reducer as logReducer } from "../slices/log";
 
@@ -47,10 +43,6 @@ export const rootReducer = combineReducers({
     customerMisc: customerMiscReducer,
     customerFilters: customerFiltersReducer,
     // general
-    notes: notesReducer,
-    labelsStore: labelsReducer,
-    notification: notificationReducer,
-    kanban: kanbanReducer,
     securitySlice: securityReducer,
     logsFilters: logReducer,
 });

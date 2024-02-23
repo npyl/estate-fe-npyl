@@ -16,45 +16,55 @@ const useUploadFile = (addMethod: any) => {
 
     const [uploadMethod] = useUploadPropertyFileMutation();
 
-    const addFile = useCallback(async (image: File): Promise<IFileResponse> => {
-        const { name: filename, type: contentType, size } = image;
+    const addFile = useCallback(
+        async (
+            image: File,
+            customContentType?: string // NOTE: in case it cannot be found automatically
+        ): Promise<IFileResponse> => {
+            const { name: filename, type: contentType, size } = image;
 
-        if (!filename || !contentType)
-            throw new Error("filename or contentType cannot be null");
+            if (!filename || (!contentType && !customContentType))
+                throw new Error("filename or contentType cannot be null");
 
-        const body = {
-            filename,
-            contentType,
-        };
+            const body = {
+                filename,
+                contentType: contentType || customContentType,
+            };
 
-        // get amazon url
-        const response = await addMethod({
-            id: +propertyId!,
-            body: body,
-        });
+            // get amazon url
+            const response = await addMethod({
+                id: +propertyId!,
+                body: body,
+            });
 
-        if ("error" in response) return Promise.reject(response.error);
+            if ("error" in response) return Promise.reject(response.error);
 
-        return Promise.resolve(response.data);
-    }, []);
+            return Promise.resolve(response.data);
+        },
+        []
+    );
 
     const uploadFile = useCallback(
         async (
             file: File | undefined,
-            fileResponse: IFileResponse
+            fileResponse: IFileResponse,
+            customContentType?: string // NOTE: in case it cannot be found automatically
         ): Promise<UploadResponse> => {
             if (!file) throw new Error("null image!");
 
             const { type: contentType, size } = file;
             const { key, url, cdnUrl } = fileResponse;
 
-            if (!contentType) throw new Error("contentType cannot be null");
+            if (!contentType && !customContentType)
+                throw new Error("contentType cannot be null");
             if (!key || !url || !cdnUrl) throw new Error("checks2 nulls");
 
             // PUT to amazon url
             const response = await uploadMethod({
                 url,
-                file,
+                file: customContentType
+                    ? { ...file, type: customContentType }
+                    : file,
             });
 
             if (!response)

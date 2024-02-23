@@ -1,5 +1,5 @@
-import { KeyValue } from "./KeyValue";
-import { ILocation } from "./location";
+import { ListingNotification } from "./listing";
+import IWorkForUs from "./workForUs";
 
 export interface ContactNotificationPOST {
     customerName?: string;
@@ -13,7 +13,7 @@ export interface ContactNotificationPOST {
     tourType?: string;
 }
 
-export type NotificationType = "listing" | "contact" | "tour";
+export type NotificationType = "listing" | "contact" | "tour" | "workForUs";
 
 export interface ContactNotification {
     id?: number;
@@ -36,30 +36,5 @@ export interface ContactNotification {
 
 export interface ContactNotificationExtended extends ContactNotification {
     listingDetails: ListingNotification;
-}
-
-export interface IListingLocation extends Omit<ILocation, "locationDisplay"> {}
-
-// response
-export interface ListingNotification {
-    fullName: string;
-    email: string;
-    mobilePhone: string;
-
-    category: KeyValue;
-    parentCategory: KeyValue;
-    state: KeyValue;
-    title: string;
-    description: string;
-
-    location: IListingLocation;
-
-    area: number;
-    bedrooms: number;
-    bathrooms: number;
-    floors: number;
-
-    price: number;
-
-    photo: string;
+    workForUsDetails: IWorkForUs;
 }
