@@ -45,7 +45,6 @@ export default function Form({
                 ...(data as IPropertiesPOST),
                 ...(fixDropdowns(data as IPropertiesPOST) as IPropertiesPOST),
             });
-            console.log("here!: ", data);
         } catch (error) {
             console.error(error);
             reset();
@@ -77,8 +76,6 @@ export default function Form({
                 >
                     <Grid item>
                         <PreventButton
-                            // prevent={isCodeOrStateEmpty}
-                            // preventMessage={t("Fill in Code and State!").toString()}
                             variant="outlined"
                             startIcon={<CancelIcon />}
                             onClick={onCancel}
@@ -98,9 +95,6 @@ export default function Form({
 
                     <Grid item>
                         <LoadingButton
-                            // TODO:
-                            // prevent={isCodeOrStateEmpty}
-                            // preventMessage={t("Fill in Code and State!").toString()}
                             loading={isLoading && !isError}
                             variant="contained"
                             startIcon={<SendIcon />}
