@@ -26,16 +26,6 @@ interface CollapsibleProps {
     open: boolean;
 }
 
-// title: string;
-// description: string;
-
-// area: number;
-// bedrooms: number;
-// bathrooms: number;
-// floors: number;
-
-// location: IListingLocation;
-
 const Collapsible = ({ id, open }: CollapsibleProps) => {
     const { t } = useTranslation();
 

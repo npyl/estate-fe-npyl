@@ -1,5 +1,5 @@
 import { useGetNotificationsQuery } from "src/services/notification";
-import CollapsibleTable from "../table";
+import Table from "../table";
 
 const Tours = () => {
     const { data: tours } = useGetNotificationsQuery(undefined, {
@@ -7,7 +7,9 @@ const Tours = () => {
             data:
                 // select only notifications with notificationType !== "listing"
                 data?.filter(
-                    ({ notificationType }) => notificationType !== "listing"
+                    ({ notificationType }) =>
+                        notificationType === "contact" ||
+                        notificationType === "tour"
                 ) || [],
         }),
     });
@@ -16,11 +18,7 @@ const Tours = () => {
         console.log("will delete notification: ", index);
 
     return (
-        <CollapsibleTable
-            variant="contact"
-            rows={tours || []}
-            onRemove={handleRemove}
-        />
+        <Table variant="contact" rows={tours || []} onRemove={handleRemove} />
     );
 };
 

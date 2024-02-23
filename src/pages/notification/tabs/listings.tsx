@@ -1,5 +1,5 @@
 import { useGetNotificationsQuery } from "src/services/notification";
-import CollapsibleTable from "../table";
+import Table from "../table";
 
 const Listings = () => {
     const { data: listings } = useGetNotificationsQuery(undefined, {
@@ -16,7 +16,7 @@ const Listings = () => {
         console.log("will delete notification: ", index);
 
     return (
-        <CollapsibleTable
+        <Table
             variant="listing"
             rows={listings || []}
             onRemove={handleRemove}

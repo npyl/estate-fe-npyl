@@ -1,6 +1,6 @@
 import {
     Paper,
-    Table,
+    Table as MuiTable,
     TableBody,
     TableCell,
     TableContainer,
@@ -9,8 +9,10 @@ import {
 } from "@mui/material";
 import { ContactNotification, NotificationType } from "src/types/notification";
 import { useTranslation } from "react-i18next";
+// rows
 import TourRow from "./row/tour";
 import ListingRow from "./row/listing";
+import WorkApplicationRow from "./row/workApplication";
 
 const COLUMNS: string[] = [
     "Name",
@@ -26,7 +28,7 @@ interface TableProps {
     onRemove: (index: number) => void;
 }
 
-const CollapsibleTable = ({ variant, rows, onRemove }: TableProps) => {
+const Table = ({ variant, rows, onRemove }: TableProps) => {
     const { t } = useTranslation();
 
     return (
@@ -36,7 +38,10 @@ const CollapsibleTable = ({ variant, rows, onRemove }: TableProps) => {
                 mt: 1,
             }}
         >
-            <Table aria-label="collapsible table" sx={{ tableLayout: "fixed" }}>
+            <MuiTable
+                aria-label="collapsible table"
+                sx={{ tableLayout: "fixed" }}
+            >
                 <TableHead>
                     <TableRow>
                         <TableCell />
@@ -66,6 +71,14 @@ const CollapsibleTable = ({ variant, rows, onRemove }: TableProps) => {
                                   onRemove={() => onRemove(i)}
                               />
                           ))
+                        : variant === "workForUs"
+                        ? rows.map((row, i) => (
+                              <WorkApplicationRow
+                                  key={i}
+                                  row={row}
+                                  onRemove={() => onRemove(i)}
+                              />
+                          ))
                         : rows.map((row, i) => (
                               <TourRow
                                   key={i}
@@ -74,9 +87,9 @@ const CollapsibleTable = ({ variant, rows, onRemove }: TableProps) => {
                               />
                           ))}
                 </TableBody>
-            </Table>
+            </MuiTable>
         </TableContainer>
     );
 };
 
-export default CollapsibleTable;
+export default Table;

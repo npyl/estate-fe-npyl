@@ -4,47 +4,33 @@ import { AdminGuard } from "src/components/authentication/admin-guard";
 import { Box, Tab, Tabs } from "@mui/material";
 import { useState } from "react";
 import TabPanel from "src/components/Tabs";
-import { useTranslation } from "react-i18next";
 import { Tours, Listings, WorkApplications } from "./tabs";
 
-const TABS = [
-    {
-        label: "Tours",
-        component: <Tours />,
-    },
-    {
-        label: "Listings",
-        component: <Listings />,
-    },
-    {
-        label: "Work Applications",
-        tab: <WorkApplications />,
-    },
-];
-
 const NotificationPage: NextPage = () => {
-    const { t } = useTranslation();
-
     const [tab, setTab] = useState(0);
 
     return (
         <>
-            <Box borderColor="divider">
+            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
                 <Tabs
                     value={tab}
                     onChange={(e, v) => setTab(v)}
                     aria-label="basic tabs example"
                 >
-                    {TABS.map(({ label }, i) => (
-                        <Tab label={t(label)} value={i} />
-                    ))}
+                    <Tab label="Tours" value={0} />
+                    <Tab label="Listings" value={1} />
+                    <Tab label="Work Applications" value={2} />
                 </Tabs>
             </Box>
-            {TABS.map(({ component }, i) => (
-                <TabPanel key={i} value={tab} index={i}>
-                    {component}
-                </TabPanel>
-            ))}
+            <TabPanel value={tab} index={0}>
+                <Tours />
+            </TabPanel>
+            <TabPanel value={tab} index={1}>
+                <Listings />
+            </TabPanel>
+            <TabPanel value={tab} index={2}>
+                <WorkApplications />
+            </TabPanel>
         </>
     );
 };
