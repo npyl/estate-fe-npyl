@@ -6,7 +6,7 @@ import { Box, Chip, Divider, Grid, Stack, Typography } from "@mui/material";
 import { t } from "i18next";
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
-import { ListingNotification } from "src/types/notification";
+import { ListingNotification } from "src/types/notification/listing";
 import { formatNumberWithCommas } from "src/utils/formatNumber";
 
 type BookingItemProps = {
