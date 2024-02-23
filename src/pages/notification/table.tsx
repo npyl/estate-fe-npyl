@@ -14,13 +14,7 @@ import TourRow from "./row/tour";
 import ListingRow from "./row/listing";
 import WorkApplicationRow from "./row/workApplication";
 
-const COLUMNS: string[] = [
-    "Name",
-    "Email",
-    "Mobile",
-    "Notification Date",
-    "Type",
-];
+const COLUMNS: string[] = ["Name", "Email", "Mobile", "Notification Date"];
 
 interface TableProps {
     variant: NotificationType;
@@ -59,6 +53,9 @@ const Table = ({ variant, rows, onRemove }: TableProps) => {
                                 {t(c)}
                             </TableCell>
                         ))}
+                        {variant === "contact" || variant === "tour" ? (
+                            <TableCell align="right"> {t("Type")}</TableCell>
+                        ) : null}
                         <TableCell />
                     </TableRow>
                 </TableHead>

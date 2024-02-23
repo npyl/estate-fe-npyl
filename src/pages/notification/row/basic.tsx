@@ -3,7 +3,7 @@ import {
     KeyboardArrowUp as KeyboardArrowUpIcon,
     KeyboardArrowDown as KeyboardArrowDownIcon,
 } from "@mui/icons-material";
-import { ContactNotification } from "src/types/notification";
+import { ContactNotification, NotificationType } from "src/types/notification";
 import Iconify from "src/components/iconify";
 
 const getDate = (s?: string) => (s ? new Date(s).toDateString() : "");
@@ -11,11 +11,18 @@ const getDate = (s?: string) => (s ? new Date(s).toDateString() : "");
 interface BasicRowProps {
     row: ContactNotification;
     open: boolean;
+    variant?: "showType" | "dontShowType";
     onToggle: () => void;
     onRemove: () => void;
 }
 
-const BasicRow = ({ row, open, onToggle, onRemove }: BasicRowProps) => (
+const BasicRow = ({
+    variant = "dontShowType",
+    row,
+    open,
+    onToggle,
+    onRemove,
+}: BasicRowProps) => (
     <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
         <TableCell>
             <IconButton aria-label="expand row" size="small" onClick={onToggle}>
@@ -28,7 +35,9 @@ const BasicRow = ({ row, open, onToggle, onRemove }: BasicRowProps) => (
         <TableCell align="right">{row.customerEmail}</TableCell>
         <TableCell align="right">{row.customerMobile}</TableCell>
         <TableCell align="right">{getDate(row.notificationDate)}</TableCell>
-        <TableCell align="right">{row.tourType}</TableCell>
+        {variant === "showType" ? (
+            <TableCell align="right">{row.tourType}</TableCell>
+        ) : null}
 
         <TableCell align="right">
             <IconButton onClick={onRemove} disabled>

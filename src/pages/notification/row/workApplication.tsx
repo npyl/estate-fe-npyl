@@ -155,6 +155,7 @@ function WorkApplication({ row, onRemove }: ListingRowProps) {
             <BasicRow
                 row={row}
                 open={open}
+                variant="dontShowType"
                 onToggle={toggleOpen}
                 onRemove={onRemove}
             />

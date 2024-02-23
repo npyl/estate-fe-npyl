@@ -32,6 +32,7 @@ function TourRow({ row, onRemove }: TourRowProps) {
             <BasicRow
                 row={row}
                 open={open}
+                variant="showType"
                 onToggle={toggleOpen}
                 onRemove={onRemove}
             />
