@@ -1,5 +1,5 @@
 import { useGetNotificationsQuery } from "src/services/notification";
-import CollapsibleTable from "./table";
+import CollapsibleTable from "../table";
 
 const Listings = () => {
     const { data: listings } = useGetNotificationsQuery(undefined, {
