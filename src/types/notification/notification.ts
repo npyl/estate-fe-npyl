@@ -1,5 +1,5 @@
-import { KeyValue } from "./KeyValue";
-import { ILocation } from "./location";
+import { KeyValue } from "../KeyValue";
+import { ILocation } from "../location";
 
 export interface ContactNotificationPOST {
     customerName?: string;
@@ -13,7 +13,7 @@ export interface ContactNotificationPOST {
     tourType?: string;
 }
 
-export type NotificationType = "listing" | "contact" | "tour";
+export type NotificationType = "listing" | "contact" | "tour" | "workForUs";
 
 export interface ContactNotification {
     id?: number;
