@@ -63,7 +63,7 @@ const useUploadFile = (addMethod: any) => {
             const response = await uploadMethod({
                 url,
                 file: customContentType
-                    ? { ...file, type: customContentType }
+                    ? new File([file], file.name, { type: customContentType })
                     : file,
             });
 
