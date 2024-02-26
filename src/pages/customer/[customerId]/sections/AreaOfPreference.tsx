@@ -103,9 +103,7 @@ export const ViewLocationMini = ({
     );
 };
 
-export const AreaOfPreference: React.FC<AreaOfPreferenceProps> = ({
-    index,
-}) => {
+const AreaOfPreference: React.FC<AreaOfPreferenceProps> = ({ index }) => {
     const { t } = useTranslation();
 
     const { customer: data } = useGetCustomer();
@@ -214,3 +212,5 @@ export const AreaOfPreference: React.FC<AreaOfPreferenceProps> = ({
         </>
     );
 };
+
+export default AreaOfPreference;

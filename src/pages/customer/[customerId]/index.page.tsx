@@ -8,19 +8,22 @@ import {
     useDeleteCustomerMutation,
     useGetCustomerByIdQuery,
 } from "src/services/customers";
-import AddressSection from "./components/AddressSection";
-import DemandSection from "./components/DemandSection";
-import InformationSection from "./components/InformationSection";
-import MatchingPropertiesSection from "./components/Matching";
-import NotesCustomerSection from "./components/NotesSection";
-import OwnedCustomerPropertiesSection from "./components/OwnedPropertiesSection";
+
+import {
+    Address,
+    Demand,
+    Information,
+    MatchingProperties,
+    Notes,
+    OwnedProperties,
+    Logs,
+} from "./sections";
 
 import TabPanel from "src/components/Tabs";
 import ViewHeader from "src/pages/components/ViewHeader";
 
 import { useTranslation } from "react-i18next";
 import { useTabsContext } from "src/contexts/tabs";
-import CustomerLogs from "./components/Logs";
 
 function a11yProps(index: number) {
     return {
@@ -77,17 +80,15 @@ const CustomerView: NextPage = () => {
                 <Grid container spacing={1}>
                     <Grid item xs={12} sm={6} order={"row"}>
                         <Stack spacing={1}>
-                            <InformationSection />
-                            <AddressSection />
-                            <NotesCustomerSection />
+                            <Information />
+                            <Address />
+                            <Notes />
                         </Stack>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <Stack spacing={1}>
-                            {isBuyerOrLeaser && <MatchingPropertiesSection />}
-                            {isSellerOrLessor && (
-                                <OwnedCustomerPropertiesSection />
-                            )}
+                            {isBuyerOrLeaser && <MatchingProperties />}
+                            {isSellerOrLessor && <OwnedProperties />}
                         </Stack>
                     </Grid>
                 </Grid>
@@ -100,22 +101,22 @@ const CustomerView: NextPage = () => {
             content: (
                 <Stack spacing={1}>
                     {demands?.map((d, i) => (
-                        <DemandSection key={i} index={i} />
+                        <Demand key={i} index={i} />
                     ))}
                 </Stack>
             ),
         },
         isSellerOrLessor && {
             label: t("Owned Properties"),
-            content: <OwnedCustomerPropertiesSection />,
+            content: <OwnedProperties />,
         },
         isBuyerOrLeaser && {
             label: t("Matching Properties"),
-            content: <MatchingPropertiesSection />,
+            content: <MatchingProperties />,
         },
         {
             label: t("Logs"),
-            content: <CustomerLogs />,
+            content: <Logs />,
         },
     ].filter((tab): tab is TabConfig => Boolean(tab));
 
