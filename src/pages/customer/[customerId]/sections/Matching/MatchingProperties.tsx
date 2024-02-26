@@ -5,7 +5,7 @@ import {
     GridPaginationModel,
 } from "@mui/x-data-grid";
 import * as React from "react";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import DataGridTable from "src/components/DataGrid";
 import { useLoadApi } from "src/components/Map";
@@ -82,7 +82,6 @@ function statusColor(params: GridCellParams) {
             {status}
         </Box>
     );
-    ``;
 }
 
 const renderImage = (params: GridCellParams) => (
@@ -217,8 +216,10 @@ const MatchingPropertiesSection: React.FC = () => {
 
     const columns = useMemo(() => getColumns(t), [t]);
 
-    const handlePaginationChange = (model: GridPaginationModel) =>
-        setPage(model.page);
+    const handlePaginationChange = useCallback(
+        (model: GridPaginationModel) => setPage(model.page),
+        []
+    );
 
     if (properties?.length === 0) {
         return <Placeholder />;
