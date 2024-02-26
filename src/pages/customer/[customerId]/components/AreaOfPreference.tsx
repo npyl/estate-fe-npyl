@@ -1,11 +1,9 @@
 import { Box, Typography } from "@mui/material";
-import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Map from "src/components/Map/Map";
 import { ShapeData } from "src/components/Map/types";
 import { decodeShape } from "src/components/Map/util";
-import { useGetCustomerByIdQuery } from "src/services/customers";
 import {
     useGetMunicipalitiesQuery,
     useGetNeighbourhoodsQuery,
@@ -14,6 +12,7 @@ import {
 
 import { Grid, List } from "@mui/material";
 import { ListItem } from "src/components/List";
+import useGetCustomer from "src/hooks/customer/hook";
 
 interface AreaOfPreferenceProps {
     index: number; // index of demand
@@ -108,10 +107,8 @@ export const AreaOfPreference: React.FC<AreaOfPreferenceProps> = ({
     index,
 }) => {
     const { t } = useTranslation();
-    const router = useRouter();
-    const { customerId } = router.query;
 
-    const { data } = useGetCustomerByIdQuery(+customerId!);
+    const { customer: data } = useGetCustomer();
 
     const demand = useMemo(
         () => data?.demands[index] || null,

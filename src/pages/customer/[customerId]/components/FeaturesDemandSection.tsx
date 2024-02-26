@@ -1,11 +1,9 @@
 import { Box, Divider, Grid, Paper, Typography } from "@mui/material";
-import router from "next/router";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { List, ListBooleanItem } from "src/components/List";
-import { useGetCustomerByIdQuery } from "src/services/customers";
-import { ICustomer } from "src/types/customer";
-import { IDemand, ParentCategory } from "src/types/demand";
+import useGetCustomer from "src/hooks/customer/hook";
+import { ParentCategory } from "src/types/demand";
 
 interface FeaturesProps {
     index: number;
@@ -84,8 +82,9 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
 
 const Features: React.FC<FeaturesProps> = ({ index }) => {
     const { t } = useTranslation();
-    const { customerId } = router.query;
-    const { data } = useGetCustomerByIdQuery(+customerId!);
+
+    const { customer: data } = useGetCustomer();
+
     const demands = data?.demands[index];
     const features = demands?.priorityFeatures;
 

@@ -1,15 +1,14 @@
 import { Divider, Grid, List, Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { useRouter } from "next/router";
 import * as React from "react";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { ListItem } from "src/components/List";
 import ListLabelsItem from "src/components/List/labels-item";
-import { useGetCustomerByIdQuery } from "src/services/customers";
 import { useGetLabelsQuery } from "src/services/labels";
 import { AreaOfPreference } from "./AreaOfPreference";
 import FeaturesDemandSection from "./FeaturesDemandSection";
+import useGetCustomer from "src/hooks/customer/hook";
 
 interface DemandSectionProps {
     index: number;
@@ -51,12 +50,10 @@ const getRangeDisplayValueString = (
 };
 
 const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
-    const router = useRouter();
     const { t } = useTranslation();
 
-    const { customerId } = router.query;
+    const { customer: data } = useGetCustomer();
 
-    const { data } = useGetCustomerByIdQuery(+customerId!); // basic details
     const { data: allLabels } = useGetLabelsQuery();
 
     const propertyLabels = allLabels?.propertyLabels;

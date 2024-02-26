@@ -11,7 +11,7 @@ import {
 import AddressSection from "./components/AddressSection";
 import DemandSection from "./components/DemandSection";
 import InformationSection from "./components/InformationSection";
-import MatchingPropertiesSection from "./components/MatchingPropertiesSection";
+import MatchingPropertiesSection from "./components/Matching";
 import NotesCustomerSection from "./components/NotesSection";
 import OwnedCustomerPropertiesSection from "./components/OwnedPropertiesSection";
 

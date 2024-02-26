@@ -1,17 +1,9 @@
-import {
-    Box,
-    Container,
-    Divider,
-    Grid,
-    Paper,
-    Typography,
-} from "@mui/material";
+import { Box, Divider, Paper, Typography } from "@mui/material";
 import {
     GridCellParams,
     GridColDef,
     GridPaginationModel,
 } from "@mui/x-data-grid";
-import { useRouter } from "next/router";
 import * as React from "react";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -20,10 +12,12 @@ import { useLoadApi } from "src/components/Map";
 import { ShapeData } from "src/components/Map/types";
 import { decodeShape, isPointInsideShapeData } from "src/components/Map/util";
 import Image from "src/components/image";
-import { useGetCustomerByIdQuery } from "src/services/customers";
+import useGetCustomer from "src/hooks/customer/hook";
 import { useSuggestForCustomerQuery } from "src/services/properties";
 import { KeyValue } from "src/types/KeyValue";
 import { IProperties } from "src/types/properties";
+import { TranslationType } from "src/types/translation";
+import Placeholder from "./Placeholder";
 
 type PropertyStatus =
     | "SOLD"
@@ -95,18 +89,80 @@ const renderImage = (params: GridCellParams) => (
     <Image src={`${params.formattedValue}` || ""} alt="" ratio="16/9" />
 );
 
+const getColumns = (t: TranslationType): GridColDef[] => [
+    {
+        field: "propertyImageUrl",
+        headerName: t("Thumbnail") || "",
+        width: 180,
+        align: "center",
+        headerAlign: "center",
+        renderCell: renderImage,
+    },
+    {
+        field: "code",
+        headerName: t("Reference ID") || "",
+        width: 180,
+        headerAlign: "center",
+
+        align: "center",
+    },
+    {
+        field: "parentCategory",
+        headerName: t("Category") || "",
+        width: 180,
+        align: "center",
+        headerAlign: "center",
+        renderCell: (params) => params.value?.key,
+    },
+    {
+        field: "category",
+        headerName: t("Subcategory") || "",
+        width: 180,
+        align: "center",
+        headerAlign: "center",
+        renderCell: (params) => params.value?.key,
+    },
+    {
+        field: "price",
+        width: 180,
+        headerAlign: "center",
+        align: "center",
+        headerName: t("Price") || "",
+        renderCell: (params: GridCellParams) => {
+            return params.value ? `${params.value} €` : "";
+        },
+    },
+    {
+        field: "state",
+        headerAlign: "center",
+        width: 180,
+        align: "center",
+        headerName: t("Status") || "",
+        renderCell: statusColor,
+    },
+    {
+        field: "area",
+        width: 180,
+        headerAlign: "center",
+        align: "center",
+        headerName: t("Area") || "",
+        renderCell: (params: GridCellParams) => {
+            return params.value ? `${params.value} m²` : "";
+        },
+    },
+];
+
 const pageSize = 5;
 
 const MatchingPropertiesSection: React.FC = () => {
-    const router = useRouter();
     const { t } = useTranslation();
 
     const { isLoaded } = useLoadApi(); // google maps api
-    const { customerId } = router.query;
+
+    const { customer, customerId } = useGetCustomer();
 
     const [page, setPage] = useState(0);
 
-    const { data: customer } = useGetCustomerByIdQuery(+customerId!);
     const { data: propertiesPage } = useSuggestForCustomerQuery({
         customerId: +customerId!,
         page,
@@ -123,8 +179,6 @@ const MatchingPropertiesSection: React.FC = () => {
     const properties = useMemo(() => {
         if (!isLoaded) return [];
         if (!propertiesPage?.content) return [];
-
-        // console.log("pP: ", propertiesPage?.content);
 
         const haveNoShapes = demands?.every((demand) => {
             const shapes = demand?.shapes;
@@ -145,18 +199,6 @@ const MatchingPropertiesSection: React.FC = () => {
                         // For every shape
                         const shapeData = decodeShape(shape);
 
-                        // console.log(
-                        //     "Shape: ",
-                        //     shape,
-                        //     " relative: ",
-                        //     shapeData
-                        //         ? filterPropertiesInShape(
-                        //               propertiesPage?.content,
-                        //               shapeData
-                        //           )
-                        //         : []
-                        // );
-
                         // Return filtered properties
                         return shapeData
                             ? filterPropertiesInShape(
@@ -169,114 +211,17 @@ const MatchingPropertiesSection: React.FC = () => {
             })
             .flat();
 
-        // console.log("res: ", res, " unique: ", [...new Set(res)]);
-
         // Keep only the unique entries
         return [...new Set(res)];
     }, [isLoaded, propertiesPage, demands]);
 
-    const columns: GridColDef[] = [
-        {
-            field: "propertyImageUrl",
-            headerName: t("Thumbnail") || "",
-            width: 180,
-            align: "center",
-            headerAlign: "center",
-            renderCell: renderImage,
-        },
-        {
-            field: "code",
-            headerName: t("Reference ID") || "",
-            width: 180,
-            headerAlign: "center",
-
-            align: "center",
-        },
-        {
-            field: "parentCategory",
-            headerName: t("Category") || "",
-            width: 180,
-            align: "center",
-            headerAlign: "center",
-            renderCell: (params) => params.value?.key,
-        },
-        {
-            field: "category",
-            headerName: t("Subcategory") || "",
-            width: 180,
-            align: "center",
-            headerAlign: "center",
-            renderCell: (params) => params.value?.key,
-        },
-        {
-            field: "price",
-            width: 180,
-            headerAlign: "center",
-            align: "center",
-            headerName: t("Price") || "",
-            renderCell: (params: GridCellParams) => {
-                return params.value ? `${params.value} €` : "";
-            },
-        },
-        {
-            field: "state",
-            headerAlign: "center",
-            width: 180,
-            align: "center",
-            headerName: t("Status") || "",
-            renderCell: statusColor,
-        },
-        {
-            field: "area",
-            width: 180,
-            headerAlign: "center",
-            align: "center",
-            headerName: t("Area") || "",
-            renderCell: (params: GridCellParams) => {
-                return params.value ? `${params.value} m²` : "";
-            },
-        },
-    ];
+    const columns = useMemo(() => getColumns(t), [t]);
 
     const handlePaginationChange = (model: GridPaginationModel) =>
         setPage(model.page);
 
     if (properties?.length === 0) {
-        // !propertiesPage ||
-        // !Array.isArray(propertiesPage.content) ||
-        // propertiesPage.content.length === 0
-        return (
-            <Container
-                style={{
-                    height: "50vh",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "top",
-                }}
-            >
-                <Grid
-                    container
-                    direction="column"
-                    alignItems="center"
-                    spacing={2}
-                >
-                    <Grid item>
-                        <span style={{ fontSize: "50px" }}>🏠</span>
-                    </Grid>
-                    <Grid item>
-                        <Typography
-                            variant="h5"
-                            style={{
-                                textAlign: "center",
-                                color: "rgba(0, 0, 0, 0.7)",
-                            }}
-                        >
-                            {t("There are no matching properties")}
-                        </Typography>
-                    </Grid>
-                </Grid>
-            </Container>
-        );
+        return <Placeholder />;
     }
 
     return (
@@ -297,24 +242,18 @@ const MatchingPropertiesSection: React.FC = () => {
             >
                 <Typography variant="h6">{t("Matching Properties")}</Typography>
             </Box>
-            <Divider></Divider>
-            <Grid container>
-                <Grid item xs={12}>
-                    <Paper>
-                        <DataGridTable
-                            rows={properties || []}
-                            columns={columns}
-                            resource={"property"}
-                            sortingBy={"firstName"}
-                            sortingOrder={"asc"}
-                            page={page}
-                            pageSize={pageSize}
-                            totalRows={totalRows}
-                            onPaginationModelChange={handlePaginationChange}
-                        />
-                    </Paper>
-                </Grid>
-            </Grid>
+            <Divider />
+            <DataGridTable
+                rows={properties || []}
+                columns={columns}
+                resource={"property"}
+                sortingBy={"firstName"}
+                sortingOrder={"asc"}
+                page={page}
+                pageSize={pageSize}
+                totalRows={totalRows}
+                onPaginationModelChange={handlePaginationChange}
+            />
         </Paper>
     );
 };

@@ -1,16 +1,13 @@
 import { Box, Divider, Paper, Typography } from "@mui/material";
-import { useRouter } from "next/router";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { ViewLocation } from "src/components/Location/View";
-import { useGetCustomerByIdQuery } from "src/services/customers";
+import useGetCustomer from "src/hooks/customer/hook";
 
 const AddressSection: React.FC = () => {
-    const router = useRouter();
     const { t } = useTranslation();
-    const { customerId } = router.query;
-    const { data } = useGetCustomerByIdQuery(parseInt(customerId as string)); // basic details
-    const location = data?.location;
+    const { customer } = useGetCustomer();
+    const location = customer?.location;
 
     if (!location) return null;
 

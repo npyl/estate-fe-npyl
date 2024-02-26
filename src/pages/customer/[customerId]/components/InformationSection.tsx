@@ -3,22 +3,17 @@ import { Box } from "@mui/system";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { ListItem, ListManagerItem } from "src/components/List";
-import ListLabelsItem from "src/components/List/labels-item";
-import { useGetCustomerByIdQuery } from "src/services/customers";
-import { useRouter } from "next/router";
 import { LeadSource } from "src/types/global";
 import { useGlobals } from "src/hooks/useGlobals";
 import { TypeLabels } from "src/pages/customers/components/TypeLabels";
 import { LabelCreate } from "src/components/label";
+import useGetCustomer from "src/hooks/customer/hook";
 
 const InformationSection: React.FC = () => {
     const { t } = useTranslation();
-    const router = useRouter();
     const enums = useGlobals();
 
-    const { customerId } = router.query;
-
-    const { data } = useGetCustomerByIdQuery(+customerId!);
+    const { customer: data, customerId } = useGetCustomer();
 
     const leadSource = data?.leadSource?.key as LeadSource;
     const nationalitiesEnum = enums?.customer?.nationality || [];
