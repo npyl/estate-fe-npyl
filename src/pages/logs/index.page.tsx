@@ -1,6 +1,7 @@
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import {
     Avatar,
+    Badge,
     Box,
     Button,
     Chip,
@@ -188,7 +189,6 @@ export const LogCard: FC<LogCardProps> = ({ log }) => {
 
 const Logs: NextPage = () => {
     const { t } = useTranslation();
-    const theme = useTheme();
     const [open, setOpen] = useState(false);
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
@@ -214,16 +214,15 @@ const Logs: NextPage = () => {
     };
 
     // Main content to render
-    const content = data?.content.map((log) => (
-        <LogCard key={log.createdAt} log={log} />
+    const content = data?.content.map((log, index) => (
+        <LogCard key={index} log={log} />
     ));
-
+    console.log(checkFields(allFilters));
     return (
         <Box>
             <Box>
                 {isMobile ? (
-                    <Button
-                        onClick={() => setOpen(true)}
+                    <Box
                         sx={{
                             borderRadius: "24px",
                             position: "fixed",
@@ -232,12 +231,22 @@ const Logs: NextPage = () => {
                             left: 0,
                             right: 0,
                             margin: "auto",
-                            width: "30%",
+                            width: "90px",
                         }}
-                        variant={"contained"}
                     >
-                        {t("Filters")}
-                    </Button>
+                        <Badge
+                            variant="dot"
+                            badgeContent={checkFields(allFilters) ? 1 : 0}
+                            color="error"
+                        >
+                            <Button
+                                onClick={() => setOpen(true)}
+                                variant={"contained"}
+                            >
+                                {t("Filters")}
+                            </Button>
+                        </Badge>
+                    </Box>
                 ) : (
                     <FilterLogSection />
                 )}
@@ -288,3 +297,30 @@ Logs.getLayout = (page) => (
 );
 
 export default Logs;
+
+function checkFields(obj: any) {
+    // List of fields to check in the object
+    const fieldsToCheck = [
+        "resources",
+        "actions",
+        "users",
+        "fromDate",
+        "toDate",
+    ];
+
+    // Iterate over the list of fields
+    for (let field of fieldsToCheck) {
+        const value = obj[field];
+
+        // Check if the field exists
+        if (value !== undefined) {
+            // Check if it's an array with length > 0 or a non-array value
+            if (Array.isArray(value) ? value.length > 0 : true) {
+                return true; // Return true if the field meets the criteria
+            }
+        }
+    }
+
+    // Return false if none of the fields meet the criteria
+    return false;
+}
