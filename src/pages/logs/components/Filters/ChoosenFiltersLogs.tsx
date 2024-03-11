@@ -65,19 +65,11 @@ const ChosenFiltersLogs = () => {
         },
         [getUserName, getLabelNames] // include all functions used within the useCallback
     );
-    // const getUserName = useCallback(
-    //     (userId: number) => {
-    //         const user = users?.find((user) => user.id === userId);
-    //         return user ? `${user.firstName} ${user.lastName}` : "Unknown";
-    //     },
-    //     [users]
-    // );
-
     // Adjusted logic to ensure date pair is treated as a single unit
     let dateRangeRendered = false;
     return (
         <Grid container direction="row">
-            {ids.map((key, index) => {
+            {ids.map((key) => {
                 // Special handling for date range, ensuring it's rendered only once
                 if (
                     !dateRangeRendered &&
@@ -116,13 +108,10 @@ const ChosenFiltersLogs = () => {
                 if (key !== "fromDate" && key !== "toDate") {
                     const values = changedProps[key];
                     if (!values) return null;
-
-                    const label = key === "users" ? t("User") : t("Filter");
                     const valuesToDisplay = getDisplayValue(key, values);
-
                     return (
                         <Chip
-                            key={index} // Consider using something unique rather than 'index'
+                            key={key} // Consider using something unique rather than 'index'
                             label={`${t(key)}: ${valuesToDisplay}`} // Assuming 't(key)' gets the correct label for the filter
                             onDelete={() => dispatch(deleteFilter(key))}
                             sx={{ m: 0.5 }}

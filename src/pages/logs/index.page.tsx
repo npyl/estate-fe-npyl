@@ -2,7 +2,9 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import {
     Avatar,
     Box,
+    Button,
     Chip,
+    Container,
     Divider,
     Grid,
     Pagination,
@@ -15,18 +17,21 @@ import { alpha } from "@mui/material/styles";
 import useTheme from "@mui/system/useTheme";
 import { format } from "date-fns"; // for date formatting
 import { NextPage } from "next";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
+import useResponsive from "src/hooks/useResponsive";
 import { useFilterLogsMutation } from "src/services/logs";
 import { selectAll } from "src/slices/log";
 import { ILog } from "src/types/logs"; // import your log type
 import { FilterLogSection } from "./components";
-// import { parse, formatISO, utcToZonedTime } from "date-fns";
-
+const SwipeableDrawer = dynamic(
+    () => import("../../components/SwipeableDrawer")
+);
 export interface LogCardProps {
     log: ILog;
 }
@@ -34,11 +39,6 @@ export interface LogCardProps {
 export const LogCard: FC<LogCardProps> = ({ log }) => {
     const theme = useTheme();
     const formattedDate = format(new Date(log.createdAt), "dd-MM-yyyy hh:mm");
-
-    // date changer for filters
-    // const date = new Date(log.createdAt);
-    // const datei = Math.floor(date.getTime());
-    // console.log(datei); // logs the Unix timestamp in seconds
 
     let resourceDescription: JSX.Element;
     if (log?.resourceType?.key === "PROPERTY") {
@@ -115,12 +115,13 @@ export const LogCard: FC<LogCardProps> = ({ log }) => {
             style={{
                 backgroundColor: getLabelColor(), // color based on action
                 color: "#FFFFFF", // set text color to white
-                position: "absolute", // absolutely position this element
+                position: "relative", // absolutely position this element
                 top: theme.spacing(1), // spacing from the top
                 right: theme.spacing(1), // spacing from the right
             }}
         />
     );
+
     return (
         <Paper
             elevation={3}
@@ -131,8 +132,6 @@ export const LogCard: FC<LogCardProps> = ({ log }) => {
                 backgroundColor: getCardBackgroundColor(), // set background color here
             }}
         >
-            {" "}
-            {actionLabel}
             <Grid container spacing={2}>
                 {/* Left: User info and Action */}
                 <Grid item style={{ flexShrink: 0 }}>
@@ -169,6 +168,9 @@ export const LogCard: FC<LogCardProps> = ({ log }) => {
                         {formattedDate}
                     </Typography>
                 </Grid>
+                <Grid item xs={3} textAlign={"end"}>
+                    {actionLabel}
+                </Grid>
             </Grid>
             <Divider
                 style={{
@@ -178,6 +180,7 @@ export const LogCard: FC<LogCardProps> = ({ log }) => {
                     borderColor: "rgba(0, 0, 0, 0.3)",
                 }}
             />
+
             {/* Optional: Additional content can go here (e.g., if you want to expand on details or add interactive elements) */}
         </Paper>
     );
@@ -186,11 +189,12 @@ export const LogCard: FC<LogCardProps> = ({ log }) => {
 const Logs: NextPage = () => {
     const { t } = useTranslation();
     const theme = useTheme();
+    const [open, setOpen] = useState(false);
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
     const allFilters = useSelector(selectAll);
     const [filterLogs, { data }] = useFilterLogsMutation();
-
+    const isMobile = useResponsive("down", 500);
     useEffect(() => {
         revalidate();
     }, [allFilters, page, pageSize]);
@@ -217,10 +221,29 @@ const Logs: NextPage = () => {
     return (
         <Box>
             <Box>
-                <FilterLogSection />
+                {isMobile ? (
+                    <Button
+                        onClick={() => setOpen(true)}
+                        sx={{
+                            borderRadius: "24px",
+                            position: "fixed",
+                            bottom: "2%",
+                            zIndex: 2,
+                            left: 0,
+                            right: 0,
+                            margin: "auto",
+                            width: "30%",
+                        }}
+                        variant={"contained"}
+                    >
+                        {t("Filters")}
+                    </Button>
+                ) : (
+                    <FilterLogSection />
+                )}
             </Box>
             <Stack spacing={2}>{content}</Stack>
-            {data && ( // Only display pagination when data is loaded
+            {data && data.totalPages > 0 ? ( // Only display pagination when data is loaded
                 <Box
                     display="flex" // Establishes a flex container
                     justifyContent="center" // Centers items on the main axis
@@ -236,7 +259,25 @@ const Logs: NextPage = () => {
                         showLastButton
                     />
                 </Box>
+            ) : (
+                <Container maxWidth="sm">
+                    <Box
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                        minHeight="500px" // Adjust the height as needed
+                    >
+                        <Typography variant="subtitle1" color="textSecondary">
+                            No results
+                        </Typography>
+                    </Box>
+                </Container>
             )}
+            <SwipeableDrawer
+                content={<FilterLogSection />}
+                open={open}
+                setOpen={setOpen}
+            />
         </Box>
     );
 };

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "src/store";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 
-import { DateRangePicker } from "react-date-range";
+import { DateRange, DateRangePicker } from "react-date-range";
 import { StyledPriceButton } from "src/pages/components/Filters/styles";
 import {
     selectFromDate,
@@ -18,6 +18,7 @@ import {
 import { addDays } from "date-fns"; // make sure you've installed date-fns as it's a peer dependency
 import "react-date-range/dist/styles.css"; // main CSS file
 import "react-date-range/dist/theme/default.css"; // theme CSS file
+import useResponsive from "src/hooks/useResponsive";
 
 const DateSelect = () => {
     const dispatch = useDispatch();
@@ -67,44 +68,49 @@ const DateSelect = () => {
             return `${fromDateStr} - ${toDateStr}`;
         }
     };
-
+    const isMobile = useResponsive("down", 500);
     return (
-        <>
-            <ClickAwayListener onClickAway={() => setOpen(false)}>
-                <Box>
-                    <StyledPriceButton
-                        open={open}
-                        variant="outlined"
-                        endIcon={
-                            open ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />
-                        }
-                        onClick={handleClick}
+        <ClickAwayListener onClickAway={() => setOpen(false)}>
+            <Box>
+                <StyledPriceButton
+                    open={open}
+                    variant="outlined"
+                    endIcon={open ? <ArrowDropUpIcon /> : <ArrowDropDownIcon />}
+                    onClick={handleClick}
+                >
+                    {renderLabel()}
+                </StyledPriceButton>
+                <Popper
+                    open={open}
+                    anchorEl={anchorEl}
+                    placement="bottom-start"
+                    style={{ zIndex: 9999 }} // Ensure it's on top of other components
+                >
+                    <Grid
+                        item
+                        xs={12}
+                        style={{ background: "white", padding: "16px" }}
                     >
-                        {renderLabel()}
-                    </StyledPriceButton>
-                    <Popper
-                        open={open}
-                        anchorEl={anchorEl}
-                        placement="bottom-start"
-                        style={{ zIndex: 9999 }} // Ensure it's on top of other components
-                    >
-                        <Grid
-                            item
-                            xs={12}
-                            style={{ background: "white", padding: "16px" }}
-                        >
+                        {isMobile ? (
+                            <DateRange
+                                editableDateInputs={true}
+                                onChange={handleSelect}
+                                moveRangeOnFirstSelection={false}
+                                ranges={state}
+                            />
+                        ) : (
                             <DateRangePicker
                                 onChange={handleSelect}
                                 moveRangeOnFirstSelection={false}
                                 months={2}
                                 ranges={state}
-                                direction="horizontal"
+                                direction="vertical"
                             />
-                        </Grid>
-                    </Popper>
-                </Box>
-            </ClickAwayListener>
-        </>
+                        )}
+                    </Grid>
+                </Popper>
+            </Box>
+        </ClickAwayListener>
     );
 };
 
