@@ -19,7 +19,7 @@ deploy_application:
     - echo "Deploying application..."
     - docker stop estate-frontend
     - docker rm estate-frontend
-    - docker run -d --name estate-fe --network my-bridge-network -p 3000:3000 --log-driver=awslogs --log-opt awslogs-region=eu-south-1 --log-opt awslogs-group=estate-backend --log-opt awslogs-stream=estate-frontend estate-fe
+    - docker run -d --name estate-fe --network my-bridge-network -p 3000:3000 --log-driver=awslogs --log-opt awslogs-region=eu-south-1 --log-opt awslogs-group=estate-frontend --log-opt awslogs-stream=estate-frontend estate-fe
 
   only:
     - main
