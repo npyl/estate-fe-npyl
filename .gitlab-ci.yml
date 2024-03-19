@@ -1,36 +1,25 @@
 stages:
-  - pull and build
+  - build
   - deploy
-
 build_image:
-  stage: pull and build
-  
+  stage: build
   tags:
     - estate-fe
-
-  cache:
-    paths:
-      - node_modules/
-      - .npm/
-
   script:
     - cd /var/www/estate-fe
-    - git restore .
     - git pull origin main
-    - npm ci
-    - npm run build
-    - git restore .
+    - docker build -t estate-fe .
   only:
     - main
-
-deploy:
+deploy_application:
   stage: deploy
   tags:
     - estate-fe
-
   script:
-    - export PM2_HOME="/root/.pm2"
-    - pm2 restart real_estate
+    - echo "Deploying application..."
+    - docker stop estate-frontend
+    - docker rm estate-frontend
+    - docker run -d --name estate-fe --network my-bridge-network -p 3000:3000 --log-driver=awslogs --log-opt awslogs-region=eu-south-1 --log-opt awslogs-group=estate-backend --log-opt awslogs-stream=estate-frontend estate-fe
+
   only:
     - main
-
