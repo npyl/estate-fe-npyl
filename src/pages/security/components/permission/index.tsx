@@ -1,6 +1,4 @@
 import ClearIcon from "@mui/icons-material/Clear";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import SaveIcon from "@mui/icons-material/Save";
 import SendIcon from "@mui/icons-material/Send";
 import {
     Button,
@@ -15,7 +13,6 @@ import {
 import Box from "@mui/material/Box";
 import Select from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
-import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
 import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -26,7 +23,7 @@ import {
     useSavePresetMutation,
     useSaveRelationshipMutation,
 } from "src/services/security";
-import { useAllUsersQuery } from "src/services/user";
+import { useAllUsersQuery, useDeleteUserMutation } from "src/services/user";
 import SavePresetDialog from "../PresetModal";
 import PermissionsTable from "./PermissionsTable";
 
@@ -38,6 +35,7 @@ const PermissionPage: FC = () => {
     const [saveRelationship, { isLoading }] = useSaveRelationshipMutation();
     const [savePreset] = useSavePresetMutation();
     const [deletePreset] = useDeletePresetMutation();
+    const [deleteUser] = useDeleteUserMutation();
     const { data: users } = useAllUsersQuery();
     const {
         data,
@@ -83,47 +81,8 @@ const PermissionPage: FC = () => {
                                         color={"neutral.400"}
                                         variant={"body2"}
                                     >
-                                        Source User:{" "}
+                                        {t("Source User")}:
                                     </Typography>
-                                    <Tooltip
-                                        title={
-                                            <Box>
-                                                <Box>
-                                                    <span
-                                                        style={{
-                                                            fontStyle: "italic",
-                                                        }}
-                                                    >
-                                                        In {selectedUser}'s tab,
-                                                        you can establish
-                                                        permissions that are
-                                                        applicable to all
-                                                        properties within the
-                                                        system.
-                                                    </span>
-                                                </Box>
-                                                <Box>
-                                                    <span
-                                                        style={{
-                                                            fontStyle: "italic",
-                                                        }}
-                                                    >
-                                                        In the tabs for other
-                                                        users, you have the
-                                                        ability to include or
-                                                        remove permissions
-                                                        specifically for the
-                                                        user {selectedUser}.
-                                                    </span>
-                                                </Box>
-                                            </Box>
-                                        }
-                                    >
-                                        <InfoOutlinedIcon
-                                            color={"info"}
-                                            fontSize="small"
-                                        />
-                                    </Tooltip>
                                 </Box>
 
                                 <Select
@@ -174,7 +133,7 @@ const PermissionPage: FC = () => {
                                     color={"neutral.400"}
                                     variant={"body2"}
                                 >
-                                    Target user:
+                                    {t("Target user")}:
                                 </Typography>
                             </FormLabel>
                             <RadioGroup
@@ -217,22 +176,8 @@ const PermissionPage: FC = () => {
                                         color={"neutral.400"}
                                         variant={"body2"}
                                     >
-                                        Select preset:
+                                        {t("Select preset")}:
                                     </Typography>
-                                    <Tooltip
-                                        title={
-                                            <span>
-                                                You can select a saved preset to
-                                                apply to the releationship
-                                                between source and target user
-                                            </span>
-                                        }
-                                    >
-                                        <InfoOutlinedIcon
-                                            color={"info"}
-                                            fontSize="small"
-                                        />
-                                    </Tooltip>
                                 </Box>
 
                                 <Select
@@ -253,12 +198,12 @@ const PermissionPage: FC = () => {
                                         >
                                             {presets?.find(
                                                 (e) => e.id === selected
-                                            )?.name ?? "None"}
+                                            )?.name ?? t("None")}
                                         </Typography>
                                     )}
                                 >
                                     <MenuItem value={-1}>
-                                        <Typography>None</Typography>
+                                        <Typography>{t("None")}</Typography>
                                     </MenuItem>
                                     {presets &&
                                         presets.length > 0 &&
@@ -289,16 +234,8 @@ const PermissionPage: FC = () => {
                                     onClick={() => setOpenPresetModal(true)}
                                 >
                                     <Typography variant={"body2"}>
-                                        Save
+                                        {t("Save")}
                                     </Typography>
-
-                                    <SaveIcon
-                                        sx={{
-                                            marginLeft: 0.5,
-                                            fontSize: "14px",
-                                        }}
-                                        color={isDirty ? "inherit" : "disabled"}
-                                    />
                                 </Button>
                                 <Button
                                     variant={"outlined"}
@@ -311,7 +248,7 @@ const PermissionPage: FC = () => {
                                     }}
                                 >
                                     <Typography variant={"body2"}>
-                                        Delete
+                                        {t("Delete")}
                                     </Typography>
                                     <ClearIcon
                                         sx={{

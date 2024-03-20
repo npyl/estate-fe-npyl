@@ -9,12 +9,14 @@ import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import { FC } from "react";
 
+import { useTranslation } from "react-i18next";
 import NestedTable from "./NestedTable";
 import { StateTypes, categories } from "./constants";
 
 interface PermissionsTableProps {}
 
 const PermissionsTable: FC<PermissionsTableProps> = () => {
+    const { t } = useTranslation();
     return (
         <Box
             sx={{
@@ -32,7 +34,9 @@ const PermissionsTable: FC<PermissionsTableProps> = () => {
                     <TableHead>
                         <TableRow>
                             <TableCell colSpan={11} align="left">
-                                <Typography variant={"h6"}>Sale</Typography>
+                                <Typography variant={"h6"}>
+                                    {t("Sale")}
+                                </Typography>
                             </TableCell>
                         </TableRow>
                     </TableHead>
@@ -53,7 +57,9 @@ const PermissionsTable: FC<PermissionsTableProps> = () => {
                     <TableHead>
                         <TableRow>
                             <TableCell colSpan={11} align="left">
-                                <Typography variant={"h6"}>Rent</Typography>
+                                <Typography variant={"h6"}>
+                                    {t("Rent")}
+                                </Typography>
                             </TableCell>
                         </TableRow>
                     </TableHead>
@@ -75,7 +81,7 @@ const PermissionsTable: FC<PermissionsTableProps> = () => {
                         <TableRow>
                             <TableCell colSpan={11}>
                                 <Typography variant={"h6"}>
-                                    Sold/Rented
+                                    {t("Sold")}/ {t("Rented")}
                                 </Typography>
                             </TableCell>
                         </TableRow>

@@ -5,7 +5,6 @@ import {
     Checkbox,
     FormControl,
     FormControlLabel,
-    FormLabel,
     Grid,
     Paper,
     Radio,
@@ -15,11 +14,11 @@ import {
     Typography,
 } from "@mui/material";
 import React, { useState } from "react";
-import { useAllPropertiesQuery } from "src/services/properties";
-import { useAllCustomersQuery } from "src/services/customers";
 import { SliderPicker } from "react-color";
-import { Label } from "src/components/label";
 import { useTranslation } from "react-i18next";
+import { Label } from "src/components/label";
+import { useAllCustomersQuery } from "src/services/customers";
+import { useAllPropertiesQuery } from "src/services/properties";
 import { LabelResourceType } from "src/types/label";
 
 interface CreateProps {

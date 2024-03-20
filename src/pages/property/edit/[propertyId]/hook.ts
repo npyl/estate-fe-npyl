@@ -1,12 +1,12 @@
 import { useEffect, useMemo } from "react";
 import { IProperties, IPropertiesPOST } from "src/types/properties";
 
-import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as Yup from "yup";
+import { useForm } from "react-hook-form";
 import { properties } from "src/services/properties";
 import { dispatch } from "src/store";
 import { LocationDisplay } from "src/types/enums";
+import * as Yup from "yup";
 
 type OmitList = "managerId" | "ownerId";
 
@@ -140,7 +140,7 @@ const getDefaultValues = (property?: IProperties): IPropertyYup => {
         ? Object.keys(property?.descriptions)?.findIndex((k) => k === "en")
         : -1;
     const indexGR = property?.descriptions
-        ? Object.keys(property?.descriptions)?.findIndex((k) => k === "gr")
+        ? Object.keys(property?.descriptions)?.findIndex((k) => k === "el")
         : -1;
 
     const descriptionGR =
@@ -166,7 +166,7 @@ const getDefaultValues = (property?: IProperties): IPropertyYup => {
                 description: descriptionGR,
                 descriptionText: descriptionTextGR,
                 title: titleGR,
-                language: "gr",
+                language: "el",
             },
             {
                 description: descriptionEN,

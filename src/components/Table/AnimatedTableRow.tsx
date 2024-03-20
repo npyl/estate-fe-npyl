@@ -1,6 +1,6 @@
 // AnimatedTableRow.tsx
-import React from "react";
 import { MotionProps, motion } from "framer-motion";
+import React from "react";
 
 interface AnimatedTableRowProps extends MotionProps {
     onClick: () => void;
@@ -11,10 +11,7 @@ const variants = {
         backgroundColor: "transparent",
         transition: { duration: 0.3, ease: "easeOut" },
     },
-    hover: {
-        backgroundColor: "#f0f0f0",
-        transition: { duration: 0.8, ease: "easeIn" },
-    },
+
     pressed: {
         scale: 0.995,
         transition: { duration: 0.2, ease: "easeIn" },
@@ -28,7 +25,6 @@ const AnimatedTableRow: React.FC<AnimatedTableRowProps> = ({
 }) => {
     return (
         <motion.tr
-            whileHover="hover"
             whileTap="pressed"
             variants={variants}
             onClick={onClick}

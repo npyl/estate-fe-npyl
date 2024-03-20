@@ -1,4 +1,4 @@
-export type Language = "en" | "gr";
+export type Language = "en" | "el";
 
 export type LanguageOptions = {
     [key in Language]: {

@@ -1,15 +1,15 @@
 import { Grid, List } from "@mui/material";
-import { ListItem } from "src/components/List";
-import { ILocation } from "src/types/location";
+import { usePathname } from "next/navigation";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import { ListItem } from "src/components/List";
 import {
     useGetMunicipalitiesQuery,
     useGetNeighbourhoodsQuery,
     useGetRegionsQuery,
 } from "src/services/location";
-import { usePathname } from "next/navigation";
 import { IGeoLocation } from "src/types/geolocation";
+import { ILocation } from "src/types/location";
 
 interface ViewLocationProps {
     location: ILocation;
@@ -66,7 +66,7 @@ const useHumanReadable = (
 ) => {
     const { i18n } = useTranslation();
 
-    const greekVersion = useMemo(() => i18n.language === "gr", [i18n.language]);
+    const greekVersion = useMemo(() => i18n.language === "el", [i18n.language]);
 
     const result = useMemo(() => {
         if (!code) return "";

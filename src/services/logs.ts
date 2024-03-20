@@ -6,6 +6,7 @@ export interface ILogsParams {
     id?: number;
     page: number;
     pageSize: number;
+    language?: string;
 }
 interface ILogFilterProps extends ILogsParams {
     filter: ILogFilterPOST;
@@ -31,7 +32,7 @@ export const logs = createApi({
                 url: "",
                 params: params,
                 headers: {
-                    "Accept-Language": "en",
+                    "Accept-Language": params.language ?? "en",
                 },
             }),
             providesTags: ["Logs"],
@@ -42,7 +43,7 @@ export const logs = createApi({
                 url: `/customer/${params.id}`,
                 params: params,
                 headers: {
-                    "Accept-Language": "en",
+                    "Accept-Language": params.language ?? "en",
                 },
             }),
             providesTags: ["CustomerByIdLogs"],
@@ -52,7 +53,7 @@ export const logs = createApi({
                 url: `/property/${params.id}`,
                 params: params,
                 headers: {
-                    "Accept-Language": "en",
+                    "Accept-Language": params.language ?? "en",
                 },
             }),
             providesTags: ["PropertyByIdLogs"],
@@ -67,7 +68,7 @@ export const logs = createApi({
                     pageSize: props.pageSize,
                 },
                 headers: {
-                    "Accept-Language": "en",
+                    "Accept-Language": props.language,
                 },
             }),
             invalidatesTags: ["Logs"],

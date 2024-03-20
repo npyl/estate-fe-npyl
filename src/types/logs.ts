@@ -1,11 +1,4 @@
-import { number } from "prop-types";
 import { KeyValue } from "./KeyValue";
-import { ICustomer } from "./customer";
-import { IDemand, IDemandPOST } from "./demand";
-import { ILabel } from "./label";
-import { ILocation, ILocationPOST } from "./location";
-import { INote } from "./note";
-import { IProperties } from "./properties";
 import { IUser } from "./user";
 
 export interface ILog {
@@ -13,7 +6,7 @@ export interface ILog {
     action?: KeyValue;
     resourceType?: KeyValue;
     createdAt: number;
-
+    message?: string;
     propertyId?: number;
     propertyCode?: string;
     customerId?: number;

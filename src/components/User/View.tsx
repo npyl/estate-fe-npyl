@@ -1,15 +1,15 @@
 import { Avatar, Box, Divider, Grid, Paper, Typography } from "@mui/material";
 
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { IUser } from "src/types/user";
 import { List, ListItem } from "src/components/List";
-import { UserCircle } from "src/icons/user-circle";
 import { Label } from "src/components/label";
+import { useSecurityContext } from "src/contexts/security";
+import { UserCircle } from "src/icons/user-circle";
+import { IUser } from "src/types/user";
+import ListLanguageItem from "../List/language-item";
 import { SoftButton } from "../SoftButton";
 import { UserForm } from "./Form";
-import { useEffect, useState } from "react";
-import { useSecurityContext } from "src/contexts/security";
-import ListLanguageItem from "../List/language-item";
 
 interface ViewUserProps {
     user?: IUser;
@@ -47,9 +47,10 @@ const RenderUsername = ({ username }: { username?: string }) => {
     );
 };
 const RenderIsAdmin = ({ isAdmin }: { isAdmin?: boolean }) => {
+    const { t } = useTranslation();
     return isAdmin ? (
         <Label color="warning" opaque>
-            Admin
+            {t("Admin")}
         </Label>
     ) : (
         <></>
@@ -185,7 +186,7 @@ const ViewUser = ({ user }: ViewUserProps) => {
                             align="horizontal"
                         />
                         <ListItem
-                            label={t("ZipCode")}
+                            label={t("Zip code")}
                             value={user?.zipCode || ""}
                             align="horizontal"
                         />
@@ -206,12 +207,12 @@ const ViewUser = ({ user }: ViewUserProps) => {
                 <Grid item xs={6} padding={0}>
                     <List>
                         <ListItem
-                            label={t("AFM")}
+                            label={t("ΑΦΜ")}
                             value={user?.afm || ""}
                             align="horizontal"
                         />
                         <ListItem
-                            label={t("DOY")}
+                            label={t("ΔΟΥ")}
                             value={user?.doy || ""}
                             align="horizontal"
                         />
@@ -220,7 +221,7 @@ const ViewUser = ({ user }: ViewUserProps) => {
                 <Grid item xs={6} padding={0}>
                     <List>
                         <ListItem
-                            label={t("GEMH")}
+                            label={t("ΓΕΜΥ")}
                             value={user?.gemh || ""}
                             align="horizontal"
                         />

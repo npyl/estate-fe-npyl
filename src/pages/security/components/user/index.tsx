@@ -1,3 +1,5 @@
+import EditIcon from "@mui/icons-material/Edit";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import {
     Button,
     FormGroup,
@@ -10,20 +12,19 @@ import {
     TableHead,
     TableRow,
 } from "@mui/material";
+import FormControlLabel from "@mui/material/FormControlLabel";
 import { useRouter } from "next/router";
 import React, { FC, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import AnimatedTableRow from "src/components/Table/AnimatedTableRow";
+import { UserForm } from "src/components/User/Form";
+import { IOSSwitch } from "src/components/iOSSwitch";
+import { Label } from "src/components/label";
 import { useSecurityContext } from "src/contexts/security";
 import {
     useAllUsersQuery,
     useToggleActiveUserMutation,
 } from "src/services/user";
-import { UserForm } from "src/components/User/Form";
-import AnimatedTableRow from "src/components/Table/AnimatedTableRow";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import { Label } from "src/components/label";
-import EditIcon from "@mui/icons-material/Edit";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import { IOSSwitch } from "src/components/iOSSwitch";
 
 type Props = {
     changeTab: (event: React.SyntheticEvent, newValue: number) => void;
@@ -91,7 +92,7 @@ const UserPage: FC<Props> = ({ changeTab }) => {
         setSelectedUser(userId);
         router.push(`/user/${userId}`);
     };
-
+    const { t } = useTranslation();
     return (
         <div>
             <Button
@@ -100,19 +101,19 @@ const UserPage: FC<Props> = ({ changeTab }) => {
                 style={{ marginBottom: "20px" }}
                 onClick={handleOpenUserForm}
             >
-                Create User
+                {t("Create User")}
             </Button>
             <TableContainer component={Paper}>
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>First Name</TableCell>
-                            <TableCell>Last Name</TableCell>
-                            <TableCell>Email</TableCell>
-                            <TableCell>Status</TableCell>
-                            <TableCell>Mobile Phone</TableCell>
-                            <TableCell>Update</TableCell>
-                            <TableCell>Permissions</TableCell>
+                            <TableCell>{t("First Name")}</TableCell>
+                            <TableCell>{t("Last Name")}</TableCell>
+                            <TableCell>{t("Email")}</TableCell>
+                            <TableCell>{t("Status")}</TableCell>
+                            <TableCell>{t("Mobile Phone")}</TableCell>
+                            <TableCell>{t("Update")}</TableCell>
+                            <TableCell>{t("Permissions")}</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -127,7 +128,7 @@ const UserPage: FC<Props> = ({ changeTab }) => {
                                 <TableCell>
                                     {user.isAdmin ? (
                                         <Label opaque color="info">
-                                            Admin
+                                            {t("Admin")}
                                         </Label>
                                     ) : (
                                         <FormGroup>

@@ -15,11 +15,11 @@ import {
 
 import { Close as CloseIcon } from "@mui/icons-material";
 import * as React from "react";
-import Label from "src/components/label/Label";
+import { useMemo, useState } from "react";
 import { SliderPicker } from "react-color";
-import { ILabel, ILabelPOST, LabelResourceType } from "src/types/label";
 import { useTranslation } from "react-i18next";
-import { useState } from "react";
+import Label from "src/components/label/Label";
+import { ILabel, ILabelPOST, LabelResourceType } from "src/types/label";
 
 interface AddLabelDialog {
     open: boolean;
@@ -44,19 +44,22 @@ export const AddLabelDialog = ({
     onCreate,
     onClose,
 }: AddLabelDialog) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     const [error, setError] = useState("");
 
     const [pickerColor, setPickerColor] = useState("#22194d");
     const [labelName, setLabelName] = useState("");
 
-    const title =
-        variant === "property"
-            ? "Property Labels"
-            : variant === "customer"
-            ? "Customer Labels"
-            : "Document Labels";
+    const title = useMemo(
+        () =>
+            variant === "property"
+                ? t("Property Labels")
+                : variant === "customer"
+                ? t("Customer Labels")
+                : t("Document Labels"),
+        [i18n.language]
+    );
 
     const handleChangeComplete = (color: any) => setPickerColor(color.hex);
 

@@ -1,7 +1,7 @@
 import {
+    Middleware,
     MiddlewareAPI,
     isRejectedWithValue,
-    Middleware,
 } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 
@@ -25,6 +25,6 @@ export const rtkQueryErrorLogger: Middleware =
                     "Something went wrong"
             );
         }
-
+        console.log(action);
         return next(action);
     };

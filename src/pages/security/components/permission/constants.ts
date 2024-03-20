@@ -24,16 +24,16 @@ export enum ActionsHeadCells {
     accessHidden = "accessHidden",
 }
 export enum ActionsHeadCellsLabels {
-    create = "Create",
-    view = "View",
-    edit = "Edit",
-    delete = "Delete",
-    accessOwner = "See owner",
-    accessLocation = "See location",
-    accessPrice = "See price",
-    accessActive = "See active",
-    accessInactive = "See inactive",
-    accessHidden = "See hidden",
+    create = "Create Permission",
+    view = "View Permission",
+    edit = "Edit Permission",
+    delete = "Delete Permission",
+    accessOwner = "See owner Permission",
+    accessLocation = "See location Permission",
+    accessPrice = "See price Permission",
+    accessActive = "See active Permission",
+    accessInactive = "See inactive Permission",
+    accessHidden = "See hidden Permission",
 }
 
 export const categories = ["Residential", "Commercial", "Land", "Other"];

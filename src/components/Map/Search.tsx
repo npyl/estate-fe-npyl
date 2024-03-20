@@ -38,7 +38,7 @@ const SearchOnMap: FC<SearchOnMapProps> = ({ onSearchSelect }) => {
         // get street, number, zipCode
         const results = await getGeocode({
             placeId: o.place_id,
-            language: "gr",
+            language: "el",
         });
         if (results.length === 0) return null;
 

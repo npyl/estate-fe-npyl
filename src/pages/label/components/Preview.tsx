@@ -1,10 +1,10 @@
-import { Grid, Stack, Typography, Paper } from "@mui/material";
+import { Grid, Paper, Stack, Typography } from "@mui/material";
+import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { EditableLabel } from "src/components/label";
+import { useGetLabelsQuery } from "src/services/labels";
 import { ILabel } from "src/types/label";
 import { IEditProps } from "./types";
-import { useTranslation } from "react-i18next";
-import { useMemo } from "react";
-import { useGetLabelsQuery } from "src/services/labels";
 
 interface PreviewProps {
     onEdit: (label: IEditProps) => void;
@@ -12,7 +12,7 @@ interface PreviewProps {
 }
 
 export const Preview = ({ onEdit, onDelete }: PreviewProps) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     const propertySectionLabel = t("Property Labels");
     const customerSectionLabel = t("Customer Labels");
@@ -36,13 +36,18 @@ export const Preview = ({ onEdit, onDelete }: PreviewProps) => {
                     data: labels?.documentLabels || [],
                 },
             }),
-            [labels]
+            [labels, i18n.language]
         );
 
     return (
         <Grid component={Paper} item xs={12} sm p={2}>
-            <Stack direction={"column"} spacing={3}>
-                <Typography variant="h5">{t("Already Existing")}</Typography>
+            <Stack
+                direction={"column"}
+                spacing={3}
+                overflow={"auto"}
+                maxHeight={"calc(100vh - 110px)"}
+            >
+                <Typography variant="h5">{t("My labels")}</Typography>
                 {labelData
                     ? Object.entries(labelData).map(([_, value], index) => (
                           <Grid

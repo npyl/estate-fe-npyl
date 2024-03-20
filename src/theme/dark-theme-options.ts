@@ -169,6 +169,7 @@ export const darkThemeOptions: ThemeOptions = {
                 },
             },
         },
+
         MuiTableHead: {
             styleOverrides: {
                 root: {

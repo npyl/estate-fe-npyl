@@ -1,24 +1,37 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import {
+    Box,
     Button,
     Dialog,
     DialogActions,
     DialogContent,
-    DialogContentText,
     DialogTitle,
+    FormControl,
     Grid,
     IconButton,
     InputAdornment,
     MenuItem,
+    Select,
+    Stack,
+    TextField,
+    Typography,
 } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
-import { useSecurityContext } from "src/contexts/security";
-import { useAddUserMutation, useAllUsersQuery } from "src/services/user";
-import { IUser, IUserPOST } from "src/types/user";
 import { FormProvider, useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 import { RHFSelect, RHFTextField } from "src/components/hook-form";
 import Iconify from "src/components/iconify";
+import { useSecurityContext } from "src/contexts/security";
+import {
+    useAddUserMutation,
+    useAllUsersQuery,
+    useDeleteUserMutation,
+    useProfileQuery,
+    useResetPasswordMutation,
+} from "src/services/user";
+import { IUser, IUserPOST } from "src/types/user";
 import { Schema } from "./validation";
 
 interface UserFormProps {
@@ -28,8 +41,12 @@ interface UserFormProps {
 
 export const UserForm = ({ open, onClose }: UserFormProps) => {
     const { data: users, isLoading } = useAllUsersQuery();
+    const [newPassword, setNewPassword] = useState("");
     const { selectedUser } = useSecurityContext();
-
+    const [resetPassword] = useResetPasswordMutation();
+    const { data: profile } = useProfileQuery();
+    const [transferId, setTransferId] = useState<number | null>(null);
+    const { t } = useTranslation();
     const user: IUser | null = useMemo(() => {
         if (!users || selectedUser === -1) return null;
 
@@ -75,13 +92,28 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
 
     // Delete Dialog
     const [openDelete, setOpenDelete] = useState(false);
+    const [openReset, setOpenReset] = useState(false);
     const handleOpenDelete = () => setOpenDelete(true);
     const handleCloseDelete = () => setOpenDelete(false);
-
+    const [deleteUser] = useDeleteUserMutation();
     const [showPassword, setShowPassword] = useState(false);
 
-    const handleDelete = () => {};
-    const handleResetPassword = () => {};
+    const handleDelete = () => {
+        deleteUser({ userId: selectedUser, transferId: transferId }).then(
+            (e: any) => {
+                handleCloseDelete();
+                onClose();
+                !e.error && toast.success("Success");
+            }
+        );
+    };
+    const handleResetPassword = () => {
+        resetPassword({ userId: selectedUser, newPassword }).then(
+            (e: any) => !e.error && toast.success("Success")
+        );
+        setOpenReset(false);
+        onClose();
+    };
 
     const onSubmit = ({ status, ...user }: IUserPOST) =>
         addUser({ user, profilePhoto: undefined });
@@ -89,7 +121,9 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
     return (
         <>
             <Dialog open={open} onClose={onClose} maxWidth={"lg"}>
-                <DialogTitle>{user ? "Update" : "Create"} User</DialogTitle>
+                <DialogTitle>
+                    {t(user ? "User Update" : "Create User")}
+                </DialogTitle>
                 <FormProvider {...methods}>
                     <form onSubmit={methods.handleSubmit(onSubmit)}>
                         <DialogContent>
@@ -109,36 +143,42 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
                                         <RHFTextField
                                             required
                                             name="firstName"
-                                            label="First Name"
+                                            label={t("First Name")}
                                         />
                                         <RHFTextField
                                             required
                                             name="email"
-                                            label="Email"
+                                            label={t("Email")}
                                         />
                                         <RHFTextField
                                             name="businessPhone"
-                                            label="Business Phone"
+                                            label={t("Business Phone")}
                                         />
                                         <RHFTextField
                                             name="officePhone"
-                                            label="Office Phone"
+                                            label={t("Office Phone")}
                                         />
                                         <RHFTextField
                                             required
                                             name="address"
-                                            label="Address"
+                                            label={t("Address")}
                                         />
                                         <RHFTextField
                                             required
                                             name="zipCode"
-                                            label="Zip code"
+                                            label={t("Zip code")}
                                         />
-                                        <RHFTextField name="afm" label="ΑΦΜ" />
-                                        <RHFTextField name="doy" label="ΔΟΥ" />
+                                        <RHFTextField
+                                            name="afm"
+                                            label={t("ΑΦΜ")}
+                                        />
+                                        <RHFTextField
+                                            name="doy"
+                                            label={t("ΔΟΥ")}
+                                        />
                                         <RHFTextField
                                             name="gemh"
-                                            label="ΓΕΜΥ"
+                                            label={t("ΓΕΜΥ")}
                                         />
                                     </Grid>
                                 </Grid>
@@ -151,12 +191,12 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
                                         <RHFTextField
                                             required
                                             name="lastName"
-                                            label="Last Name"
+                                            label={t("Last Name")}
                                         />
                                         <RHFTextField
                                             required
                                             name="password"
-                                            label="Password"
+                                            label={t("Password")}
                                             type={
                                                 showPassword
                                                     ? "text"
@@ -194,43 +234,46 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
                                         <RHFTextField
                                             required
                                             name="mobilePhone"
-                                            label="Mobile Phone"
+                                            label={t("Mobile Phone")}
                                         />
                                         <RHFTextField
                                             name="homePhone"
-                                            label="Home Phone"
+                                            label={t("Home Phone")}
                                         />
                                         <RHFTextField
                                             name="callCenterNumber"
-                                            label="Call Center Number"
+                                            label={t("Call Center Number")}
                                         />
                                         <RHFTextField
                                             required
                                             name="city"
-                                            label="City"
+                                            label={t("City")}
                                         />
                                         <RHFTextField
                                             required
                                             name="region"
-                                            label="Region"
+                                            label={t("Region")}
                                         />
-                                        <RHFSelect name="status" label="Status">
+                                        <RHFSelect
+                                            name="status"
+                                            label={t("Status")}
+                                        >
                                             <MenuItem value="Active">
-                                                Active
+                                                {t("Active")}
                                             </MenuItem>
                                             <MenuItem value="Inactive">
-                                                Inactive
+                                                {t("Inactive")}
                                             </MenuItem>
                                         </RHFSelect>
                                         <RHFSelect
                                             name="preferredLanguage"
-                                            label="Preferred Language"
+                                            label={t("Preferred Language")}
                                         >
                                             <MenuItem value="ENGLISH">
-                                                English
+                                                {t("English")}
                                             </MenuItem>
                                             <MenuItem value="GREEK">
-                                                Greek
+                                                {t("Greek")}
                                             </MenuItem>
                                         </RHFSelect>
                                     </Grid>
@@ -240,29 +283,40 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
                         {user && (
                             <DialogActions>
                                 <Button
-                                    onClick={handleResetPassword}
+                                    onClick={() => setOpenReset(true)}
                                     color="primary"
                                 >
-                                    Reset Password
+                                    {t("Reset Password")}
                                 </Button>
-                                <Button
-                                    onClick={handleOpenDelete}
-                                    color="secondary"
-                                    sx={{
-                                        backgroundColor: "red",
-                                        color: "white",
-                                    }}
-                                >
-                                    Delete User
-                                </Button>
+                                {profile?.id !== selectedUser && (
+                                    <Button
+                                        onClick={handleOpenDelete}
+                                        color="error"
+                                        variant="contained"
+                                    >
+                                        <Typography>
+                                            {t("Delete User")}
+                                        </Typography>
+                                    </Button>
+                                )}
                             </DialogActions>
                         )}
                         <DialogActions>
-                            <Button type="submit" color="primary">
-                                {user ? "Update" : "Create"}
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                            >
+                                <Typography>
+                                    {user ? t("Update") : t("Create")}
+                                </Typography>
                             </Button>
-                            <Button onClick={onClose} color="secondary">
-                                Cancel
+                            <Button
+                                variant="outlined"
+                                onClick={onClose}
+                                color="secondary"
+                            >
+                                <Typography>{t("Cancel")}</Typography>
                             </Button>
                         </DialogActions>
                     </form>
@@ -271,18 +325,89 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
             {/* Delete Dialog */}
             {openDelete && (
                 <Dialog open={openDelete} onClose={handleCloseDelete}>
-                    <DialogTitle>Confirm Deletion</DialogTitle>
+                    <DialogTitle>{t("Confirm Deletion")}</DialogTitle>
                     <DialogContent>
-                        <DialogContentText>
-                            Are you sure you want to delete the user?
-                        </DialogContentText>
+                        {t("Are you sure you want to delete the user?")}
+                        <FormControl>
+                            <Stack direction={"column"} pt={0.5}>
+                                <Box display="flex" alignItems={"center"}>
+                                    <Typography
+                                        sx={{ display: "flex" }}
+                                        color={"neutral.400"}
+                                        variant={"body2"}
+                                    >
+                                        {t(
+                                            "Select user to transfer properties"
+                                        )}
+                                        :
+                                    </Typography>
+                                </Box>
+
+                                <Select
+                                    labelId="demo-simple-select-label"
+                                    value={transferId ?? -1}
+                                    onChange={(e) => {
+                                        setTransferId(+e.target.value!);
+                                    }}
+                                    renderValue={(selected) => (
+                                        <Typography
+                                            sx={{
+                                                whiteSpace: "nowrap",
+                                                overflow: "hidden",
+                                                textOverflow: "ellipsis",
+                                            }}
+                                        >
+                                            {
+                                                users?.find(
+                                                    (e) => e.id === selected
+                                                )?.username
+                                            }
+                                        </Typography>
+                                    )}
+                                >
+                                    {users &&
+                                        users.length > 0 &&
+                                        users.map((user: IUser) => (
+                                            <MenuItem
+                                                key={user.id}
+                                                value={user.id}
+                                            >
+                                                {user.username}
+                                            </MenuItem>
+                                        ))}
+                                </Select>
+                            </Stack>
+                        </FormControl>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleCloseDelete} color="primary">
-                            Cancel
+                            {t("Cancel")}
                         </Button>
                         <Button onClick={handleDelete} color="secondary">
-                            Delete
+                            {t("Delete")}
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+            )}
+            {openReset && (
+                <Dialog open={openReset} onClose={() => setOpenReset(false)}>
+                    <DialogTitle>{t("Reset Password")}</DialogTitle>
+                    <Box p={1}>
+                        <TextField
+                            label={"Password"}
+                            value={newPassword}
+                            onChange={(e) => setNewPassword(e.target.value)}
+                        />
+                    </Box>
+                    <DialogActions>
+                        <Button
+                            onClick={() => setOpenReset(false)}
+                            color="primary"
+                        >
+                            {t("Cancel")}
+                        </Button>
+                        <Button onClick={handleResetPassword} color="secondary">
+                            {t("Reset")}
                         </Button>
                     </DialogActions>
                 </Dialog>

@@ -10,7 +10,7 @@ export const useGlobals = () => {
 
     useEffect(() => {
         /* INFO: backend wants it el (not gr) */
-        const language = i18n.language === "gr" ? "el" : i18n.language;
+        const language = i18n.language === "el" ? "el" : i18n.language;
 
         getGlobals(language)
             .unwrap()

@@ -1,8 +1,6 @@
 import {
     Button,
     Collapse,
-    IconButton,
-    Skeleton,
     Table,
     TableBody,
     TableCell,
@@ -10,12 +8,12 @@ import {
     TableRow,
 } from "@mui/material";
 import { Fragment, useCallback, useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import DocumentSvg from "src/assets/Document";
+import useToggle from "src/hooks/useToggle";
+import { useGetNotificationByIdQuery } from "src/services/notification";
 import { ContactNotification } from "src/types/notification";
 import BasicRow from "./basic";
-import useToggle from "src/hooks/useToggle";
-import { useTranslation } from "react-i18next";
-import { useGetNotificationByIdQuery } from "src/services/notification";
-import DocumentSvg from "src/assets/Document";
 
 interface ListingRowProps {
     row: ContactNotification;
@@ -37,7 +35,7 @@ const Collapsible = ({ id, open }: CollapsibleProps) => {
         }),
     });
 
-    const greekVersion = useMemo(() => i18n.language === "gr", [i18n.language]);
+    const greekVersion = useMemo(() => i18n.language === "el", [i18n.language]);
     const workRegion = useMemo(
         () =>
             (greekVersion

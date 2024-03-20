@@ -56,6 +56,31 @@ export const user = createApi({
             }),
             providesTags: ["Users"],
         }),
+        deleteUser: builder.mutation<
+            void,
+            { userId: number; transferId: number | null }
+        >({
+            query: ({ userId, transferId }) => ({
+                url: transferId
+                    ? `${userId}?transferTo=${transferId}`
+                    : `${userId}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Users"],
+        }),
+        resetPassword: builder.mutation<
+            void,
+            { userId: number; newPassword: string }
+        >({
+            query: ({ userId, newPassword }) => ({
+                url: "reset-password",
+                method: "PATCH",
+                body: {
+                    userId,
+                    newPassword,
+                },
+            }),
+        }),
     }),
 });
 
@@ -66,4 +91,6 @@ export const {
     useToggleActiveUserMutation,
     useLazyIsAdminQuery,
     useLazyProfileQuery,
+    useDeleteUserMutation,
+    useResetPasswordMutation,
 } = user;

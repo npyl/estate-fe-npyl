@@ -1197,7 +1197,7 @@
   dependencies:
     glob "7.1.7"
 
-"@next/swc-win32-x64-msvc@13.2.4":
+"@next/swc-darwin-x64@13.2.4":
   version "13.2.4"
 
 "@nodelib/fs.scandir@2.1.5":

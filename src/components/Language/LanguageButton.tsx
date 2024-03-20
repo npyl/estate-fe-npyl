@@ -7,7 +7,7 @@ import { Language } from "./types";
 
 const languages: Record<Language, string> = {
     en: "/static/icons/uk_flag.svg",
-    gr: "/static/icons/gr_flag.svg",
+    el: "/static/icons/gr_flag.svg",
 };
 
 interface LanguageButtonProps extends ButtonProps {

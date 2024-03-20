@@ -6,24 +6,24 @@ import {
     convertFromRaw,
     convertToRaw,
 } from "draft-js";
+import { useRouter } from "next/router";
 import * as React from "react";
-import { useCallback, useState, useMemo, useEffect } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { Language } from "src/components/Language/types";
 import { DraftEditor } from "src/components/draft-editor";
 import { RHFTextField } from "src/components/hook-form";
 import {
     useGenerateDescriptionMutation,
     useLazyGetPropertyByIdQuery,
 } from "src/services/properties";
-import { useOpenAIDetails } from "./hooks";
-import ChatGPTIcon from "./GPTIcon";
-import fixDropdowns from "./stupid";
-import TabbedBox from "./TabbedBox";
-import { Language } from "src/components/Language/types";
-import { useRouter } from "next/router";
-import { IProperties } from "src/types/properties";
 import { IOpenAIDetailsPOST } from "src/types/openai";
+import { IProperties } from "src/types/properties";
+import ChatGPTIcon from "./GPTIcon";
+import TabbedBox from "./TabbedBox";
+import { useOpenAIDetails } from "./hooks";
+import fixDropdowns from "./stupid";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -31,7 +31,7 @@ const TABS: {
     label: string;
     value: Language;
 }[] = [
-    { label: "GR", value: "gr" },
+    { label: "GR", value: "el" },
     { label: "EN", value: "en" },
 ];
 
@@ -194,7 +194,7 @@ const DescriptionSection: React.FC = () => {
     useInitialDescriptionState(setEditorState);
 
     // ---
-    const [lang, setLang] = useState<Language>("gr");
+    const [lang, setLang] = useState<Language>("el");
 
     const index = useMemo(
         () => TABS.findIndex(({ value }) => lang === value),

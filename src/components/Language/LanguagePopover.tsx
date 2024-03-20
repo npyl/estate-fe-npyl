@@ -26,7 +26,7 @@ const languageOptions: LanguageOptions = {
         icon: "/static/icons/uk_flag.svg",
         label: "English",
     },
-    gr: {
+    el: {
         icon: "/static/icons/gr_flag.svg",
         label: "Greek",
     },

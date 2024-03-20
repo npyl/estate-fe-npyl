@@ -11,6 +11,7 @@ import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import * as React from "react";
 import { memo, useCallback, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useSecurityContext } from "src/contexts/security";
 import { IActions, IRoles } from "src/interfaces/roles";
 import {
@@ -190,6 +191,7 @@ const NestedTable = ({ row, state }: Props) => {
         },
         [data?.permissionResponses]
     );
+    const { t } = useTranslation();
     return useMemo(
         () => (
             <React.Fragment>
@@ -209,7 +211,7 @@ const NestedTable = ({ row, state }: Props) => {
                                     <KeyboardArrowDownIcon />
                                 )}
                             </IconButton>
-                            <Typography variant={"h6"}>{row}</Typography>
+                            <Typography variant={"h6"}>{t(row)}</Typography>
                             <Checkbox
                                 onChange={(e) =>
                                     handleStateCheckboxChange(e, row)
@@ -242,7 +244,7 @@ const NestedTable = ({ row, state }: Props) => {
                                                 sx={{ width: "20%" }}
                                                 align="left"
                                             >
-                                                Type
+                                                {t("Type")}
                                             </TableCell>
                                             {actions.map((action) => (
                                                 <TableCell
@@ -253,13 +255,13 @@ const NestedTable = ({ row, state }: Props) => {
                                                         display={"flex"}
                                                         alignItems={"center"}
                                                     >
-                                                        {
+                                                        {t(
                                                             ActionsHeadCellsLabels[
                                                                 ActionsHeadCells[
                                                                     action as keyof typeof ActionsHeadCells
                                                                 ] as keyof typeof ActionsHeadCellsLabels
                                                             ]
-                                                        }
+                                                        )}
                                                         <Checkbox
                                                             disableFocusRipple
                                                             disableRipple
@@ -306,7 +308,7 @@ const NestedTable = ({ row, state }: Props) => {
                                                         }
                                                     >
                                                         <TableCell colSpan={1}>
-                                                            {subCategory}
+                                                            {t(subCategory)}
                                                             <Checkbox
                                                                 size="small"
                                                                 onChange={(e) =>

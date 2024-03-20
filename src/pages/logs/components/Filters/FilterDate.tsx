@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "src/store";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 
-import { DateRange, DateRangePicker } from "react-date-range";
+import { DateRange } from "react-date-range";
 import { StyledPriceButton } from "src/pages/components/Filters/styles";
 import {
     selectFromDate,
@@ -99,10 +99,10 @@ const DateSelect = () => {
                                 ranges={state}
                             />
                         ) : (
-                            <DateRangePicker
+                            <DateRange
                                 onChange={handleSelect}
                                 moveRangeOnFirstSelection={false}
-                                months={2}
+                                months={1}
                                 ranges={state}
                                 direction="vertical"
                             />

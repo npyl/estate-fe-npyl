@@ -2,31 +2,29 @@ import { Grid } from "@mui/material";
 import type { NextPage } from "next";
 import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { useAllCustomersQuery } from "src/services/customers";
 import {
-    useCreateLabelForResourceMutation,
+    labels,
     // general
     useCreateLabelForCustomersMutation,
     useCreateLabelForDocumentsMutation,
     useCreateLabelForPropertiesMutation,
-    useDeletePropertyLabelMutation,
+    useCreateLabelForResourceMutation,
     useDeleteCustomerLabelMutation,
     useDeleteDocumentLabelMutation,
-    labels,
+    useDeletePropertyLabelMutation,
 } from "src/services/labels";
 import { useAllPropertiesQuery } from "src/services/properties";
-import { ICustomer } from "src/types/customer";
 import { LabelResourceType } from "src/types/label";
-import { IProperties } from "src/types/properties";
+import { ConfirmationDialogBox } from "../components/ConfirmationDialogBox";
 import { Create } from "./components/Create";
 import { Edit } from "./components/Edit";
 import { Preview } from "./components/Preview";
 import { IEditProps } from "./components/types";
-import { ConfirmationDialogBox } from "../components/ConfirmationDialogBox";
-import { useDispatch } from "react-redux";
-import { toast } from "react-toastify";
 
 const LabelsPage: NextPage = () => {
     const { t } = useTranslation();

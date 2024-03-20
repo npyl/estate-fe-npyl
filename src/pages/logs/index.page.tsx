@@ -41,38 +41,6 @@ export const LogCard: FC<LogCardProps> = ({ log }) => {
     const theme = useTheme();
     const formattedDate = format(new Date(log.createdAt), "dd-MM-yyyy hh:mm");
 
-    let resourceDescription: JSX.Element;
-    if (log?.resourceType?.key === "PROPERTY") {
-        resourceDescription = (
-            <span>
-                with property code{" "}
-                <Link href={`/property/${log.propertyId}`} passHref>
-                    {log.propertyCode}
-                </Link>
-            </span>
-        );
-    } else if (log?.resourceType?.key === "CUSTOMER" && log.customer) {
-        // Assuming log.customer has an 'id' field for the route
-        resourceDescription = (
-            <span>
-                with name{" "}
-                <Link href={`/customer/${log.customerId}`} passHref>
-                    {log.customer} {/* Adjust if the field is different */}
-                </Link>
-            </span>
-        );
-    } else if (log?.resourceType?.key === "IMAGE") {
-        resourceDescription = (
-            <span>
-                to the property with code{" "}
-                <Link href={`/property/${log.propertyCode}`} passHref>
-                    {log.propertyCode}
-                </Link>
-            </span>
-        );
-    } else {
-        resourceDescription = <span></span>;
-    }
     const getCardBackgroundColor = () => {
         switch (log?.action?.key) {
             case "CREATE":
@@ -146,12 +114,25 @@ export const LogCard: FC<LogCardProps> = ({ log }) => {
                 </Grid>
                 <Grid item xs>
                     <Typography variant="subtitle1">
-                        <strong>
-                            {log?.user?.firstName} {log?.user?.lastName}
-                        </strong>{" "}
-                        {log?.action?.value?.toLowerCase()} a{" "}
-                        {log?.resourceType?.value?.toLowerCase()}{" "}
-                        {resourceDescription}
+                        <>
+                            <strong>
+                                {log?.user?.firstName} {log?.user?.lastName}{" "}
+                            </strong>
+                            {log?.message}{" "}
+                            <Link
+                                href={
+                                    log?.customerId
+                                        ? `/customer/${log?.customerId}`
+                                        : `/property/${log?.propertyCode}`
+                                }
+                                passHref
+                            >
+                                {" "}
+                                {log?.customerId
+                                    ? log?.customerId
+                                    : log?.propertyCode}
+                            </Link>
+                        </>
                     </Typography>
                     <Typography
                         variant="caption"
@@ -188,7 +169,7 @@ export const LogCard: FC<LogCardProps> = ({ log }) => {
 };
 
 const Logs: NextPage = () => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [open, setOpen] = useState(false);
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(10);
@@ -204,6 +185,7 @@ const Logs: NextPage = () => {
             filter: allFilters,
             page: page,
             pageSize: pageSize,
+            language: i18n.language,
         });
     };
     const handlePageChange = (
@@ -219,8 +201,8 @@ const Logs: NextPage = () => {
     ));
     console.log(checkFields(allFilters));
     return (
-        <Box>
-            <Box>
+        <Box sx={{ paddingY: 4 }}>
+            <Box pb={2}>
                 {isMobile ? (
                     <Box
                         sx={{
