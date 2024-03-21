@@ -25,6 +25,6 @@ export const rtkQueryErrorLogger: Middleware =
                     "Something went wrong"
             );
         }
-        console.log(action);
+
         return next(action);
     };

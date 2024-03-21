@@ -18,7 +18,7 @@ export const useGetDescription = () => {
         // no elements
         if (Object.entries(property?.descriptions).length === 0)
             return { description: "", title: "" };
-
+        console.log(property, i18n.language);
         const selected = property?.descriptions[i18n.language];
 
         return { description: selected.description, title: selected.title };

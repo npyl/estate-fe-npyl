@@ -1,12 +1,12 @@
-import { Grid } from "@mui/material";
+import Box from "@mui/material/Box";
 import type { NextPage } from "next";
 import { useEffect } from "react";
+import ViewUser from "src/components/User/View";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
-import { useProfileQuery } from "src/services/user";
-import { useTabsContext } from "src/contexts/tabs";
-import ViewUser from "src/components/User/View";
 import { SecurityProvider } from "src/contexts/security";
+import { useTabsContext } from "src/contexts/tabs";
+import { useProfileQuery } from "src/services/user";
 
 const Profile: NextPage = () => {
     const { data: profile } = useProfileQuery();
@@ -22,15 +22,7 @@ const Profile: NextPage = () => {
         }
     }, [profile]);
 
-    return (
-        <Grid container spacing={1} mt={1}>
-            <Grid item xs={3.5} />
-            <Grid item xs={5} order={"row"}>
-                {profile && <ViewUser user={profile} />}
-            </Grid>
-            <Grid item xs={3.5} />
-        </Grid>
-    );
+    return <Box paddingY={4}>{profile && <ViewUser user={profile} />}</Box>;
 };
 
 Profile.getLayout = (page) => (

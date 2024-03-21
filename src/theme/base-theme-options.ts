@@ -191,6 +191,13 @@ export const baseThemeOptions: ThemeOptions = {
                 },
             },
         },
+        MuiListItem: {
+            styleOverrides: {
+                root: {
+                    height: "46px",
+                },
+            },
+        },
         MuiOutlinedInput: {
             styleOverrides: {
                 input: {

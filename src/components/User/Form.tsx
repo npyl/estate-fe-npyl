@@ -43,7 +43,8 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
     const { data: users, isLoading } = useAllUsersQuery();
     const [newPassword, setNewPassword] = useState("");
     const { selectedUser } = useSecurityContext();
-    const [resetPassword] = useResetPasswordMutation();
+    const [resetPassword, { isLoading: isResetLoading }] =
+        useResetPasswordMutation();
     const { data: profile } = useProfileQuery();
     const [transferId, setTransferId] = useState<number | null>(null);
     const { t } = useTranslation();
@@ -55,6 +56,7 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
 
     const defaultValues = useMemo(
         () => ({
+            id: selectedUser !== -1 ? selectedUser : null,
             firstName: user?.firstName || "",
             lastName: user?.lastName || "",
             email: user?.email || "",
@@ -77,7 +79,7 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
         [user]
     );
 
-    const [addUser] = useAddUserMutation();
+    const [addUser, { isLoading: isAddUserLoading }] = useAddUserMutation();
 
     const methods = useForm<IUserPOST>({
         resolver: yupResolver(Schema),
@@ -95,7 +97,8 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
     const [openReset, setOpenReset] = useState(false);
     const handleOpenDelete = () => setOpenDelete(true);
     const handleCloseDelete = () => setOpenDelete(false);
-    const [deleteUser] = useDeleteUserMutation();
+    const [deleteUser, { isLoading: isDeleteUserLoading }] =
+        useDeleteUserMutation();
     const [showPassword, setShowPassword] = useState(false);
 
     const handleDelete = () => {
@@ -115,8 +118,10 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
         onClose();
     };
 
-    const onSubmit = ({ status, ...user }: IUserPOST) =>
+    const onSubmit = ({ status, ...user }: IUserPOST) => {
         addUser({ user, profilePhoto: undefined });
+        onClose();
+    };
 
     return (
         <>
@@ -303,6 +308,7 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
                         )}
                         <DialogActions>
                             <Button
+                                disabled={isAddUserLoading}
                                 type="submit"
                                 variant="contained"
                                 color="primary"
@@ -383,7 +389,11 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
                         <Button onClick={handleCloseDelete} color="primary">
                             {t("Cancel")}
                         </Button>
-                        <Button onClick={handleDelete} color="secondary">
+                        <Button
+                            disabled={isDeleteUserLoading}
+                            onClick={handleDelete}
+                            color="secondary"
+                        >
                             {t("Delete")}
                         </Button>
                     </DialogActions>
@@ -406,7 +416,11 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
                         >
                             {t("Cancel")}
                         </Button>
-                        <Button onClick={handleResetPassword} color="secondary">
+                        <Button
+                            disabled={isResetLoading}
+                            onClick={handleResetPassword}
+                            color="secondary"
+                        >
                             {t("Reset")}
                         </Button>
                     </DialogActions>

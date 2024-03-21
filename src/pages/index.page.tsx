@@ -1,18 +1,18 @@
-import { Grid, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 import type { NextPage } from "next";
+import { useMemo } from "react";
+import "react-slideshow-image/dist/styles.css";
 import { AuthGuard } from "src/components/authentication/auth-guard";
+import StyledSlide from "src/components/dashboard/components/Slideshow";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { SecurityProvider } from "src/contexts/security";
+import { useAllPropertiesQuery } from "src/services/properties";
+import { useProfileQuery } from "src/services/user";
 import CardWithIcon from "./dashboard/CardWithIcon";
-import TotalProperties from "./dashboard/total-properties";
+import SeoIllustration from "./dashboard/SeoIllustration";
 import AppConversionRates from "./dashboard/app-conversion-rates";
 import AppWelcome from "./dashboard/app-welcome";
-import SeoIllustration from "./dashboard/SeoIllustration";
-import { useProfileQuery } from "src/services/user";
-import "react-slideshow-image/dist/styles.css";
-import StyledSlide from "src/components/dashboard/components/Slideshow";
-import { useAllPropertiesQuery } from "src/services/properties";
-import { useMemo } from "react";
+import TotalProperties from "./dashboard/total-properties";
 
 const Dashboard: NextPage = () => {
     const { firstName, lastName } = useProfileQuery().data ?? {};
@@ -57,32 +57,32 @@ const Dashboard: NextPage = () => {
                     <StyledSlide arrows={false} images={slideImages} />
                 </Grid>
 
-                <Grid xs={2} sm={2} md={2} ml={3}>
+                <Grid item xs={2} sm={2} md={2} ml={3}>
                     <CardWithIcon
                         title={"1270"}
                         subtitle={"Total Properties"}
                     />
                 </Grid>
-                <Grid xs={2} sm={2} md={2}>
+                <Grid item xs={2} sm={2} md={2}>
                     <CardWithIcon
                         title={"1130"}
                         subtitle={"Total Active Properties"}
                     />
                 </Grid>
 
-                <Grid xs={2} sm={2} md={2}>
+                <Grid item xs={2} sm={2} md={2}>
                     <CardWithIcon
                         title={"765"}
                         subtitle={"Total Sold Properties"}
                     />
                 </Grid>
-                <Grid xs={2} sm={2} md={2}>
+                <Grid item xs={2} sm={2} md={2}>
                     <CardWithIcon
                         title={"365"}
                         subtitle={"Total Rented Properties"}
                     />
                 </Grid>
-                <Grid xs={12} md={6} lg={3} ml={3}>
+                <Grid item xs={12} md={6} lg={3} ml={3}>
                     <TotalProperties
                         title="Total Properties"
                         subheader={"Properties Distribution"}
@@ -96,7 +96,7 @@ const Dashboard: NextPage = () => {
                         }}
                     />
                 </Grid>
-                <Grid xs={12} md={6} lg={7}>
+                <Grid item xs={12} md={6} lg={7}>
                     <AppConversionRates
                         title="Total Properties per User"
                         subheader=""

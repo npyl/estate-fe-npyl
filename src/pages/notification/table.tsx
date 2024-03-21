@@ -1,20 +1,19 @@
 import {
-    Paper,
     Table as MuiTable,
+    Paper,
     TableBody,
     TableCell,
     TableContainer,
     TableHead,
     TableRow,
 } from "@mui/material";
-import { ContactNotification, NotificationType } from "src/types/notification";
 import { useTranslation } from "react-i18next";
+import { ContactNotification, NotificationType } from "src/types/notification";
 // rows
-import TourRow from "./row/tour";
+import { useMemo } from "react";
 import ListingRow from "./row/listing";
+import TourRow from "./row/tour";
 import WorkApplicationRow from "./row/workApplication";
-
-const COLUMNS: string[] = ["Name", "Email", "Mobile", "Notification Date"];
 
 interface TableProps {
     variant: NotificationType;
@@ -24,7 +23,15 @@ interface TableProps {
 
 const Table = ({ variant, rows, onRemove }: TableProps) => {
     const { t } = useTranslation();
-
+    const COLUMNS: string[] = useMemo(
+        () => [
+            t("Name"),
+            t("Email"),
+            t("Mobile Phone"),
+            t("Notification Date"),
+        ],
+        [t]
+    );
     return (
         <TableContainer
             component={Paper}
