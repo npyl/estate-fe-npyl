@@ -9,16 +9,17 @@ import {
     TableRow,
 } from "@mui/material";
 import { Fragment } from "react";
+import { useTranslation } from "react-i18next";
+import useToggle from "src/hooks/useToggle";
+import { useGetNotificationByIdQuery } from "src/services/notification";
 import { ContactNotification } from "src/types/notification";
 import BasicRow from "./basic";
-import useToggle from "src/hooks/useToggle";
-import { useTranslation } from "react-i18next";
-import { useGetNotificationByIdQuery } from "src/services/notification";
 import { ListingCard } from "./card";
 
 interface ListingRowProps {
     row: ContactNotification;
     onRemove: () => void;
+    loading: boolean;
 }
 
 interface CollapsibleProps {
@@ -37,11 +38,12 @@ const Collapsible = ({ id, open }: CollapsibleProps) => {
         }),
     });
 
-    console.log("data: ", listing);
-
     return (
         <TableRow>
-            <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
+            <TableCell
+                style={{ paddingBottom: 0, paddingTop: 0, paddingRight: 0 }}
+                colSpan={6}
+            >
                 <Collapse
                     in={open}
                     timeout="auto"
@@ -56,7 +58,7 @@ const Collapsible = ({ id, open }: CollapsibleProps) => {
                         sx={{
                             "& .MuiTableCell-root": {
                                 borderBottom: "none",
-                                borderRadius: "5px",
+                                borderRadius: "0px",
                             },
                         }}
                     >
@@ -92,7 +94,7 @@ const Collapsible = ({ id, open }: CollapsibleProps) => {
     );
 };
 
-function ListingRow({ row, onRemove }: ListingRowProps) {
+function ListingRow({ row, onRemove, loading }: ListingRowProps) {
     const [open, toggleOpen] = useToggle(false);
 
     return (
@@ -103,6 +105,7 @@ function ListingRow({ row, onRemove }: ListingRowProps) {
                 variant="dontShowType"
                 onToggle={toggleOpen}
                 onRemove={onRemove}
+                loading={loading}
             />
             {open ? <Collapsible id={row?.id} open={open} /> : null}
         </Fragment>

@@ -1,5 +1,5 @@
 import { ButtonProps, IconButton } from "@mui/material";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Image from "../image/Image";
 import { LanguagePopover } from "./LanguagePopover";
@@ -41,6 +41,14 @@ export const LanguageButton = ({
             ],
         [updatesGlobalLanguage, i18n.language, language]
     );
+
+    useEffect(() => {
+        const savedLanguage = localStorage.getItem("language");
+        if (savedLanguage) {
+            setLanguage(savedLanguage as Language);
+            i18n.changeLanguage(savedLanguage);
+        }
+    }, [i18n]);
 
     return (
         <>

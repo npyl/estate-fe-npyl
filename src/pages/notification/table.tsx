@@ -18,10 +18,11 @@ import WorkApplicationRow from "./row/workApplication";
 interface TableProps {
     variant: NotificationType;
     rows: ContactNotification[];
-    onRemove: (index: number) => void;
+    onRemove: (index?: number) => void;
+    loading: boolean;
 }
 
-const Table = ({ variant, rows, onRemove }: TableProps) => {
+const Table = ({ variant, rows, onRemove, loading }: TableProps) => {
     const { t } = useTranslation();
     const COLUMNS: string[] = useMemo(
         () => [
@@ -72,7 +73,8 @@ const Table = ({ variant, rows, onRemove }: TableProps) => {
                               <ListingRow
                                   key={i}
                                   row={row}
-                                  onRemove={() => onRemove(i)}
+                                  onRemove={() => onRemove(row.id)}
+                                  loading={loading}
                               />
                           ))
                         : variant === "workForUs"
@@ -80,14 +82,16 @@ const Table = ({ variant, rows, onRemove }: TableProps) => {
                               <WorkApplicationRow
                                   key={i}
                                   row={row}
-                                  onRemove={() => onRemove(i)}
+                                  onRemove={() => onRemove(row.id)}
+                                  loading={loading}
                               />
                           ))
                         : rows.map((row, i) => (
                               <TourRow
                                   key={i}
                                   row={row}
-                                  onRemove={() => onRemove(i)}
+                                  onRemove={() => onRemove(row.id)}
+                                  loading={loading}
                               />
                           ))}
                 </TableBody>

@@ -20,7 +20,10 @@ export const logs = createApi({
                 "Authorization",
                 `Bearer  ${localStorage.getItem("accessToken")}`
             );
-
+            headers.set(
+                "Accept-Language",
+                `${localStorage.getItem("language") ?? "el"}`
+            );
             return headers;
         },
     }),
@@ -31,9 +34,6 @@ export const logs = createApi({
             query: (params: ILogsParams) => ({
                 url: "",
                 params: params,
-                headers: {
-                    "Accept-Language": params.language ?? "en",
-                },
             }),
             providesTags: ["Logs"],
         }),
@@ -42,9 +42,6 @@ export const logs = createApi({
             query: (params: ILogsParams) => ({
                 url: `/customer/${params.id}`,
                 params: params,
-                headers: {
-                    "Accept-Language": params.language ?? "en",
-                },
             }),
             providesTags: ["CustomerByIdLogs"],
         }),
@@ -52,9 +49,6 @@ export const logs = createApi({
             query: (params: ILogsParams) => ({
                 url: `/property/${params.id}`,
                 params: params,
-                headers: {
-                    "Accept-Language": params.language ?? "en",
-                },
             }),
             providesTags: ["PropertyByIdLogs"],
         }),
@@ -66,9 +60,6 @@ export const logs = createApi({
                 params: {
                     page: props.page,
                     pageSize: props.pageSize,
-                },
-                headers: {
-                    "Accept-Language": props.language,
                 },
             }),
             invalidatesTags: ["Logs"],

@@ -1,12 +1,13 @@
-import { IconButton, TableCell, TableRow } from "@mui/material";
 import {
-    KeyboardArrowUp as KeyboardArrowUpIcon,
     KeyboardArrowDown as KeyboardArrowDownIcon,
+    KeyboardArrowUp as KeyboardArrowUpIcon,
 } from "@mui/icons-material";
-import { ContactNotification, NotificationType } from "src/types/notification";
+import { IconButton, TableCell, TableRow } from "@mui/material";
 import Iconify from "src/components/iconify";
+import { ContactNotification } from "src/types/notification";
 
-const getDate = (s?: string) => (s ? new Date(s).toDateString() : "");
+export const getDate = (s?: string) =>
+    s ? new Date(s).toISOString().split("T")[0] : "";
 
 interface BasicRowProps {
     row: ContactNotification;
@@ -14,6 +15,7 @@ interface BasicRowProps {
     variant?: "showType" | "dontShowType";
     onToggle: () => void;
     onRemove: () => void;
+    loading: boolean;
 }
 
 const BasicRow = ({
@@ -22,6 +24,7 @@ const BasicRow = ({
     open,
     onToggle,
     onRemove,
+    loading,
 }: BasicRowProps) => (
     <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
         <TableCell>
@@ -29,10 +32,19 @@ const BasicRow = ({
                 {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
             </IconButton>
         </TableCell>
-        <TableCell component="th" scope="row">
+        <TableCell
+            sx={{ textOverflow: "ellipsis", overflow: "auto" }}
+            component="th"
+            scope="row"
+        >
             {row.customerName}
         </TableCell>
-        <TableCell align="right">{row.customerEmail}</TableCell>
+        <TableCell
+            sx={{ textOverflow: "ellipsis", overflow: "auto" }}
+            align="right"
+        >
+            {row.customerEmail}
+        </TableCell>
         <TableCell align="right">{row.customerMobile}</TableCell>
         <TableCell align="right">{getDate(row.notificationDate)}</TableCell>
         {variant === "showType" ? (
@@ -40,7 +52,7 @@ const BasicRow = ({
         ) : null}
 
         <TableCell align="right">
-            <IconButton onClick={onRemove} disabled>
+            <IconButton onClick={onRemove} disabled={loading}>
                 <Iconify icon={"eva:trash-2-outline"} />
             </IconButton>
         </TableCell>

@@ -1,7 +1,11 @@
-import { useGetNotificationsQuery } from "src/services/notification";
+import {
+    useDeleteNotificationMutation,
+    useGetNotificationsQuery,
+} from "src/services/notification";
 import Table from "../table";
 
 const Tours = () => {
+    const [deleteNotification, { isLoading }] = useDeleteNotificationMutation();
     const { data: tours } = useGetNotificationsQuery(undefined, {
         selectFromResult: ({ data }) => ({
             data:
@@ -14,11 +18,16 @@ const Tours = () => {
         }),
     });
 
-    const handleRemove = (index: number) =>
-        console.log("will delete notification: ", index);
-
+    const handleRemove = (index = -1) => {
+        deleteNotification(index);
+    };
     return (
-        <Table variant="contact" rows={tours || []} onRemove={handleRemove} />
+        <Table
+            variant="contact"
+            rows={tours || []}
+            onRemove={handleRemove}
+            loading={isLoading}
+        />
     );
 };
 

@@ -15,6 +15,10 @@ export const notification = createApi({
                 "Authorization",
                 `Bearer  ${localStorage.getItem("accessToken")}`
             );
+            headers.set(
+                "Accept-Language",
+                `${localStorage.getItem("language") ?? "el"}`
+            );
 
             return headers;
         },
@@ -22,7 +26,10 @@ export const notification = createApi({
     tagTypes: ["Notifications", "NotificationById"],
     endpoints: (builder) => ({
         getNotifications: builder.query<ContactNotification[], void>({
-            query: () => "",
+            query: () => ({
+                url: "",
+            }),
+
             providesTags: ["Notifications"],
         }),
         getNotificationById: builder.query<ContactNotificationExtended, number>(
@@ -31,8 +38,21 @@ export const notification = createApi({
                 providesTags: ["NotificationById"],
             }
         ),
+        deleteNotification: builder.mutation<
+            ContactNotificationExtended,
+            number
+        >({
+            query: (id) => ({
+                url: `${id}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Notifications"],
+        }),
     }),
 });
 
-export const { useGetNotificationsQuery, useGetNotificationByIdQuery } =
-    notification;
+export const {
+    useGetNotificationsQuery,
+    useGetNotificationByIdQuery,
+    useDeleteNotificationMutation,
+} = notification;

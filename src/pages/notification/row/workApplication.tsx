@@ -18,6 +18,7 @@ import BasicRow from "./basic";
 interface ListingRowProps {
     row: ContactNotification;
     onRemove: () => void;
+    loading: boolean;
 }
 
 interface CollapsibleProps {
@@ -86,14 +87,17 @@ const Collapsible = ({ id, open }: CollapsibleProps) => {
 
     return (
         <TableRow>
-            <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={7}>
+            <TableCell
+                style={{ paddingBottom: 0, paddingTop: 0, paddingRight: 0 }}
+                colSpan={6}
+            >
                 <Collapse
                     in={open}
                     timeout="auto"
                     unmountOnExit
                     sx={{
                         p: 2,
-                        height: "600px",
+                        height: "auto",
                     }}
                 >
                     <Table
@@ -101,7 +105,7 @@ const Collapsible = ({ id, open }: CollapsibleProps) => {
                         sx={{
                             "& .MuiTableCell-root": {
                                 borderBottom: "none",
-                                borderRadius: "5px",
+                                borderRadius: "0px",
                             },
                         }}
                     >
@@ -145,7 +149,7 @@ const Collapsible = ({ id, open }: CollapsibleProps) => {
     );
 };
 
-function WorkApplication({ row, onRemove }: ListingRowProps) {
+function WorkApplication({ row, onRemove, loading }: ListingRowProps) {
     const [open, toggleOpen] = useToggle(false);
 
     return (
@@ -156,6 +160,7 @@ function WorkApplication({ row, onRemove }: ListingRowProps) {
                 variant="dontShowType"
                 onToggle={toggleOpen}
                 onRemove={onRemove}
+                loading={loading}
             />
             {open ? <Collapsible id={row?.id} open={open} /> : null}
         </Fragment>

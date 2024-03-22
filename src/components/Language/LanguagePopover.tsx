@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 import Image from "next/image";
 import PropTypes from "prop-types";
-import type { FC } from "react";
+import { FC } from "react";
 import { toast } from "react-hot-toast";
 import { useTranslation } from "react-i18next";
 import { Language, LanguageOptions } from "./types";
@@ -46,6 +46,7 @@ export const LanguagePopover: FC<LanguagePopoverProps> = (props) => {
     const handleChange = async (language: Language): Promise<void> => {
         onClose?.();
         onChange?.(language);
+        localStorage.setItem("language", language);
 
         if (updatesGlobalLanguage)
             i18n.changeLanguage(language).then(() =>

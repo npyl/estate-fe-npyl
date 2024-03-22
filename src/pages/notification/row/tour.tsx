@@ -8,22 +8,22 @@ import {
     TableRow,
 } from "@mui/material";
 import { Fragment } from "react";
-import { ContactNotification } from "src/types/notification";
 import { useTranslation } from "react-i18next";
-import BasicRow from "./basic";
 import useToggle from "src/hooks/useToggle";
+import { ContactNotification } from "src/types/notification";
+import BasicRow, { getDate } from "./basic";
 
 type TourType = "inPerson" | "inVideo";
 
-const getDate = (s?: string) => (s ? new Date(s).toDateString() : "");
 const isLiveTour = (s?: TourType) => s === "inPerson" || s === "inVideo";
 
 interface TourRowProps {
     row: ContactNotification;
     onRemove: () => void;
+    loading: boolean;
 }
 
-function TourRow({ row, onRemove }: TourRowProps) {
+function TourRow({ row, onRemove, loading }: TourRowProps) {
     const { t } = useTranslation();
     const [open, toggleOpen] = useToggle(false);
 
@@ -35,10 +35,11 @@ function TourRow({ row, onRemove }: TourRowProps) {
                 variant="showType"
                 onToggle={toggleOpen}
                 onRemove={onRemove}
+                loading={loading}
             />
             <TableRow>
                 <TableCell
-                    style={{ paddingBottom: 0, paddingTop: 0 }}
+                    style={{ paddingBottom: 0, paddingTop: 0, paddingRight: 0 }}
                     colSpan={7}
                 >
                     <Collapse in={open} timeout="auto" unmountOnExit>
@@ -48,7 +49,7 @@ function TourRow({ row, onRemove }: TourRowProps) {
                                 sx={{
                                     "& .MuiTableCell-root": {
                                         borderBottom: "none",
-                                        borderRadius: "5px",
+                                        borderRadius: "0px",
                                     },
                                 }}
                             >
