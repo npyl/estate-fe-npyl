@@ -60,7 +60,7 @@ export default function CarouselSimple({
 
     useEffect(() => {
         if (!initialIndex) return;
-        console.log("changing to: ", initialIndex);
+
         carousel1.current?.slickGoTo(initialIndex, false);
     }, [initialIndex]);
 

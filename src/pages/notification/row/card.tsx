@@ -3,7 +3,7 @@ import BathtubOutlinedIcon from "@mui/icons-material/BathtubOutlined";
 import BedOutlinedIcon from "@mui/icons-material/BedOutlined";
 import RoomOutlinedIcon from "@mui/icons-material/RoomOutlined";
 import { Box, Chip, Divider, Grid, Stack, Typography } from "@mui/material";
-import { t } from "i18next";
+
 import Image from "next/image";
 import { useTranslation } from "react-i18next";
 import { ListingNotification } from "src/types/notification/listing";
@@ -38,6 +38,7 @@ const ForSaleLabel = () => {
 const defaultImage = "/static/noImage.png";
 
 export const ListingCard = ({ item }: BookingItemProps) => {
+    const { t } = useTranslation();
     return (
         <Box
             sx={{

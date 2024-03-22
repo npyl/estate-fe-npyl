@@ -1,6 +1,6 @@
-import PropTypes from "prop-types";
 import { Box, Card, CardHeader } from "@mui/material";
 import dynamic from "next/dynamic"; // Import 'next/dynamic'
+import PropTypes from "prop-types";
 import useChart from "src/components/chart/use-chart";
 
 // Define the dynamic import for the Chart component
@@ -57,7 +57,7 @@ export default function AppConversionRates({
     });
 
     return (
-        <Card {...other}>
+        <Card sx={{ minHeight: 468 }} {...other}>
             <CardHeader title={title} subheader={subheader} />
             <Box sx={{ mx: 3 }}>
                 {/* Render the dynamic Chart component */}

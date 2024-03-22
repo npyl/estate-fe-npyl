@@ -95,7 +95,7 @@ export default function TotalProperties({
 
     return (
         <Card {...other}>
-            <CardHeader title={title} subheader={subheader} sx={{ mb: 5 }} />
+            <CardHeader title={title} subheader={subheader} sx={{ my: 1 }} />
 
             <StyledChart
                 dir="ltr"

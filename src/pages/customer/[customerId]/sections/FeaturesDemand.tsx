@@ -102,7 +102,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
         </Grid>
     );
 
-    console.log("the data is:", features);
     const propertyFeatures = (category: ParentCategory) => {
         const fieldsForCategory = BASIC_DETAIL_FIELDS[category];
         if (!fieldsForCategory) return null;

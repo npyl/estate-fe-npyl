@@ -5,18 +5,18 @@ import { Button, Grid, Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import AddressDetails from "./AddressDetails";
 import CustomerInformation from "./CustomerInformation";
-import NotesSection from "./Notes";
 import DemandSection from "./Demand";
+import NotesSection from "./Notes";
 
-import { useCallback, useEffect, useMemo } from "react";
 import { LoadingButton } from "@mui/lab";
+import { useCallback, useEffect, useMemo } from "react";
 import { demandMapper } from "src/mappers/demand";
 import { ICustomer, ICustomerPOST } from "src/types/customer";
 
 // Forms
-import FormProvider from "src/components/hook-form";
-import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+import FormProvider from "src/components/hook-form";
 import * as Yup from "yup";
 
 interface ICustomerLocationYup {
@@ -131,7 +131,6 @@ const Form = ({
                 preferredLanguage: data?.preferredLanguage || undefined,
                 leadSource: data?.leadSource || undefined,
             });
-            console.log("here!: ", data);
         } catch (error) {
             console.error(error);
             reset();

@@ -1,11 +1,14 @@
 import { Grid } from "@mui/material";
+
 import type { NextPage } from "next";
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import "react-slideshow-image/dist/styles.css";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import StyledSlide from "src/components/dashboard/components/Slideshow";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { SecurityProvider } from "src/contexts/security";
+import { useGetDashboardQuery } from "src/services/dashboard";
 import { useAllPropertiesQuery } from "src/services/properties";
 import { useProfileQuery } from "src/services/user";
 import CardWithIcon from "./dashboard/CardWithIcon";
@@ -15,10 +18,11 @@ import AppWelcome from "./dashboard/app-welcome";
 import TotalProperties from "./dashboard/total-properties";
 
 const Dashboard: NextPage = () => {
+    const { t } = useTranslation();
     const { firstName, lastName } = useProfileQuery().data ?? {};
     const name = `${lastName} ${firstName}`;
     const allProperties = useAllPropertiesQuery().data || [];
-
+    const { data } = useGetDashboardQuery();
     const slideImages = useMemo<{ url: string; code: string }[]>(() => {
         // Sort properties by id in descending order and take the first 10
         const topProperties = [...allProperties]
@@ -37,7 +41,7 @@ const Dashboard: NextPage = () => {
 
     return (
         <div style={{ margin: "20px" }}>
-            <Grid container spacing={5} gap={5} mt={1}>
+            <Grid container spacing={3} mt={1}>
                 <Grid item xs={12} md={7}>
                     <AppWelcome
                         title={`Welcome back! \n ${name}`}
@@ -57,64 +61,79 @@ const Dashboard: NextPage = () => {
                     <StyledSlide arrows={false} images={slideImages} />
                 </Grid>
 
-                <Grid item xs={2} sm={2} md={2} ml={3}>
+                <Grid item xs={12} sm={6} md={3}>
                     <CardWithIcon
-                        title={"1270"}
-                        subtitle={"Total Properties"}
+                        title={data?.totalProperties.toString() ?? ""}
+                        subtitle={t("Total Properties")}
                     />
                 </Grid>
-                <Grid item xs={2} sm={2} md={2}>
+                <Grid item xs={12} sm={6} md={3}>
                     <CardWithIcon
-                        title={"1130"}
-                        subtitle={"Total Active Properties"}
+                        title={data?.totalActiveProperties.toString() ?? ""}
+                        subtitle={t("Total Active Properties")}
                     />
                 </Grid>
 
-                <Grid item xs={2} sm={2} md={2}>
+                <Grid item xs={12} sm={6} md={3}>
                     <CardWithIcon
-                        title={"765"}
-                        subtitle={"Total Sold Properties"}
+                        title={data?.totalSoldProperties.toString() ?? ""}
+                        subtitle={t("Total Sold Properties")}
                     />
                 </Grid>
-                <Grid item xs={2} sm={2} md={2}>
+                <Grid item xs={12} sm={6} md={3}>
                     <CardWithIcon
-                        title={"365"}
+                        title={data?.totalRentedProperties.toString() ?? ""}
                         subtitle={"Total Rented Properties"}
                     />
                 </Grid>
-                <Grid item xs={12} md={6} lg={3} ml={3}>
-                    <TotalProperties
-                        title="Total Properties"
-                        subheader={"Properties Distribution"}
-                        chart={{
-                            series: [
-                                { label: "Residential", value: 4344 },
-                                { label: "Commercial", value: 5435 },
-                                { label: "Land", value: 1443 },
-                                { label: "Other", value: 4443 },
-                            ],
-                        }}
-                    />
-                </Grid>
-                <Grid item xs={12} md={6} lg={7}>
-                    <AppConversionRates
-                        title="Total Properties per User"
-                        subheader=""
-                        chart={{
-                            series: [
-                                { label: "User 1", value: 400 },
-                                { label: "User 2", value: 430 },
-                                { label: "User 3", value: 448 },
-                                { label: "User 4", value: 470 },
-                                { label: "User 5", value: 540 },
-                                { label: "User 6", value: 580 },
-                                { label: "User 7", value: 690 },
-                                { label: "User 8", value: 1100 },
-                                { label: "User  9", value: 1200 },
-                                { label: "User 10", value: 1380 },
-                            ],
-                        }}
-                    />
+                <Grid item container spacing={3} xs={12}>
+                    <Grid item xs={12} sm={6}>
+                        <TotalProperties
+                            title={t("Total Properties")}
+                            subheader={t("Properties Distribution")}
+                            chart={{
+                                series: [
+                                    {
+                                        label: t("Residential"),
+                                        value:
+                                            data?.propertiesDistribution
+                                                .residential ?? 0,
+                                    },
+                                    {
+                                        label: t("Commercial"),
+                                        value:
+                                            data?.propertiesDistribution
+                                                .commercial ?? 0,
+                                    },
+                                    {
+                                        label: t("Land"),
+                                        value:
+                                            data?.propertiesDistribution.land ??
+                                            0,
+                                    },
+                                    {
+                                        label: t("Other"),
+                                        value:
+                                            data?.propertiesDistribution
+                                                .other ?? 0,
+                                    },
+                                ],
+                            }}
+                        />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <AppConversionRates
+                            title={t("Total Properties per User")}
+                            subheader=""
+                            chart={{
+                                series:
+                                    data?.propertiesPerUserList.map((e) => ({
+                                        label: e.user,
+                                        value: e.properties,
+                                    })) ?? [],
+                            }}
+                        />
+                    </Grid>
                 </Grid>
             </Grid>
         </div>

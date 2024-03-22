@@ -22,8 +22,6 @@ const slice = createSlice({
         setPropertyCode(state: MiscProps, action: ISetValueForIndex): void {
             const { index, value } = action.payload;
 
-            console.log("setting: ", value, " for: ", index);
-
             if (index > state.propertyCode.length)
                 state.propertyCode.push(value);
             else state.propertyCode[index] = value;

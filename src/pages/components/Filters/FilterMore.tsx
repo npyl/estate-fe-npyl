@@ -16,55 +16,55 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "src/store";
 
 import {
+    // reset
+    resetBasic,
+    resetBedrooms,
+    resetConstructionYear,
+    resetFloor,
+    resetFrameType,
+    resetFurnished,
+    resetHeatingType,
     selectFrameType,
     selectFurnished,
     selectHeatingType,
+    selectLabels,
     selectMaxBedrooms,
     selectMaxConstructionYear,
     selectMaxFloor,
     selectMinBedrooms,
     selectMinConstructionYear,
     selectMinFloor,
-    selectLabels,
-    sumOfChangedProperties,
-    // setters
-    toggleFrameType,
-    toggleFurnished,
-    toggleHeatingType,
+    setLabels,
     setMaxBedrooms,
     setMaxConstructionYear,
     setMaxFloor,
     setMinBedrooms,
     setMinConstructionYear,
     setMinFloor,
-    setLabels,
-    // reset
-    resetBasic,
-    resetBedrooms,
-    resetFloor,
-    resetFrameType,
-    resetHeatingType,
-    resetFurnished,
-    resetConstructionYear,
+    sumOfChangedProperties,
+    // setters
+    toggleFrameType,
+    toggleFurnished,
+    toggleHeatingType,
 } from "src/slices/filters";
 
 import ChosenFilters from "./ChosenFilters";
-import SaleSelect from "./FilterSale";
-import CategorySelect from "./FilterParentCategory";
 import SubCategorySelect from "./FilterCategory";
-import PriceSelect from "./FilterPrice";
-import FilterLabels from "./FilterLabels";
 import CodeSelect from "./FilterCode";
+import FilterLabels from "./FilterLabels";
 import ManagerSelect from "./FilterManager";
+import CategorySelect from "./FilterParentCategory";
+import PriceSelect from "./FilterPrice";
+import SaleSelect from "./FilterSale";
 
-import { ClearableDialogContent } from "./components/ClearableDialogContent";
-import { StyledDialogContent } from "./styles";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useGlobals } from "src/hooks/useGlobals";
-import FieldSelect from "./components/FieldSelect";
-import { useMemo } from "react";
-import { TranslationType } from "src/types/translation";
 import { KeyValue } from "src/types/KeyValue";
+import { TranslationType } from "src/types/translation";
+import { ClearableDialogContent } from "./components/ClearableDialogContent";
+import FieldSelect from "./components/FieldSelect";
+import { StyledDialogContent } from "./styles";
 
 // ----------------------------------------------------------------------
 
@@ -391,7 +391,6 @@ export default function FilterMore({
                             dispatch(setMinConstructionYear(newValue[0]));
                             dispatch(setMaxConstructionYear(newValue[1]));
                         }
-                        console.log(newValue);
                     }}
                     min={1960}
                     max={new Date().getFullYear()}

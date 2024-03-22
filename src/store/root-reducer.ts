@@ -1,25 +1,26 @@
 import { combineReducers } from "@reduxjs/toolkit";
 
+import { dashboard } from "src/services/dashboard";
 import { labels } from "src/services/labels";
+import { listings } from "src/services/listings";
+import { logs } from "src/services/logs";
 import { note } from "src/services/note";
 import { notification } from "src/services/notification";
+import { tickets } from "src/services/tickets"; // a.k.a. kanban
 import { auth } from "../services/auth";
 import { customers } from "../services/customers";
+import { exports } from "../services/exports";
 import { global } from "../services/global";
 import { location } from "../services/location";
 import { properties } from "../services/properties";
 import { security } from "../services/security";
 import { user } from "../services/user";
-import { exports } from "../services/exports";
-import { tickets } from "src/services/tickets"; // a.k.a. kanban
-import { logs } from "src/services/logs";
-import { listings } from "src/services/listings";
 
 import { reducer as customerFiltersReducer } from "../slices/customer/filters";
 import { reducer as customerMiscReducer } from "../slices/customer/misc";
 import { reducer as filtersReducer } from "../slices/filters";
-import { reducer as securityReducer } from "../slices/security";
 import { reducer as logReducer } from "../slices/log";
+import { reducer as securityReducer } from "../slices/security";
 
 export const rootReducer = combineReducers({
     [location.reducerPath]: location.reducer,
@@ -36,6 +37,7 @@ export const rootReducer = combineReducers({
     [tickets.reducerPath]: tickets.reducer,
     [logs.reducerPath]: logs.reducer,
     [listings.reducerPath]: listings.reducer,
+    [dashboard.reducerPath]: dashboard.reducer,
 
     // property
     filters: filtersReducer,

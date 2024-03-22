@@ -199,7 +199,7 @@ const Logs: NextPage = () => {
     const content = data?.content.map((log, index) => (
         <LogCard key={index} log={log} />
     ));
-    console.log(checkFields(allFilters));
+
     return (
         <Box sx={{ paddingY: 4 }}>
             <Box pb={2}>

@@ -1,7 +1,8 @@
 import type { ListProps } from "@mui/material";
 import { List, ListSubheader } from "@mui/material";
-import { t } from "i18next";
+
 import type { FC, ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 import { DashboardSidebarItem } from "./dashboard-sidebar-item";
 
 interface Item {
@@ -48,6 +49,7 @@ const reduceChildRoutes = ({
     item: Item;
     path: string;
 }): Array<JSX.Element> => {
+    const { t } = useTranslation();
     const key = `${item.title}-${depth}`;
     const partialMatch =
         item.title === t("Dashboard") && path === "/"

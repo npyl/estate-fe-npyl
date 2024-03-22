@@ -1,5 +1,4 @@
-import React from "react";
-import { Card, Stack, Box, Typography } from "@mui/material";
+import { Card, Stack, Typography } from "@mui/material";
 
 interface CardWithIconProps {
     title: string;

@@ -1,12 +1,11 @@
 import { Box, Tab, Tabs } from "@mui/material";
-import { t } from "i18next";
 import type { NextPage } from "next";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import TabPanel from "src/components/Tabs";
 import { AdminGuard } from "src/components/authentication/admin-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { Listings, Tours, WorkApplications } from "./tabs";
-import { useTranslation } from "react-i18next";
 
 const NotificationPage: NextPage = () => {
     const [tab, setTab] = useState(0);

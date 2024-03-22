@@ -13,7 +13,7 @@ import {
     Stack,
     Typography,
 } from "@mui/material";
-import { t } from "i18next";
+
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
@@ -98,7 +98,7 @@ export const BookingItem = ({
             })) || [],
         [images]
     );
-
+    const { t } = useTranslation();
     return (
         <Paper
             ref={itemRef}

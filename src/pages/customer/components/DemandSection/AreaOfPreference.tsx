@@ -1,7 +1,8 @@
 import { Box, Divider, Grid, Typography } from "@mui/material";
-import { t } from "i18next";
+
 import { FC, useCallback, useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 import MunicipSelect from "src/components/Location/MunicipSelect";
 import NeighbourSelect from "src/components/Location/NeighbourSelect";
 import RegionSelect from "src/components/Location/RegionSelect";
@@ -34,7 +35,7 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
     onGetDemandFilterName,
 }) => {
     const { watch, setValue } = useFormContext();
-
+    const { t } = useTranslation();
     const { regionsName, citiesName, complexesName, shapesName } = useMemo(
         () => ({
             regionsName: onGetDemandFilterName("regions"),
@@ -119,13 +120,6 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
     const handleShapeChange = useDebouncedCallback(
         useCallback(
             (encodedOldShape: string, encodedNewShape: string) => {
-                console.log(
-                    "comparing: ",
-                    encodedOldShape,
-                    " with: ",
-                    encodedNewShape
-                );
-
                 const updatedShapes = shapes.map((shapeString) =>
                     shapeString === encodedOldShape
                         ? encodedNewShape
