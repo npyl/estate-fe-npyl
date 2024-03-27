@@ -1,4 +1,4 @@
-import { ThemeOptions } from "@mui/material";
+import { ThemeOptions, alpha } from "@mui/material";
 
 // Colors
 
@@ -125,11 +125,15 @@ export const darkThemeOptions: ThemeOptions = {
         },
         MuiOutlinedInput: {
             styleOverrides: {
-                root: {
-                    padding: "0 5px!important",
-                },
                 notchedOutline: {
                     borderColor: divider,
+                },
+                root: {
+                    padding: "0 5px!important",
+
+                    "&:hover .MuiOutlinedInput-notchedOutline": {
+                        borderColor: neutral[500],
+                    },
                 },
             },
         },
