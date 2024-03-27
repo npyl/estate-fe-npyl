@@ -14,18 +14,26 @@ export const StyledPriceButton = styled(Button, {
     shouldForwardProp: (prop) => prop !== "open",
 })<PriceButtonProps>(({ theme, open }) => ({
     backgroundColor: theme.palette.background.paper,
-
     fontWeight: 400,
-    color: theme.palette.neutral?.[500],
+    color:
+        theme.palette.mode === "dark"
+            ? theme.palette.neutral?.[400]
+            : theme.palette.text.secondary,
     fontSize: "16px",
     border: open
         ? `2px solid ${theme.palette.primary.main}`
         : `1px solid ${theme.palette.divider}`,
+
     "&:hover": {
         border: open
             ? `2px solid ${theme.palette.primary.main}`
             : `1px solid ${theme.palette.common.black}`,
-        background: theme.palette.common.white,
+        // Look like OutlinedInput
+        borderColor:
+            theme.palette.mode === "dark"
+                ? theme.palette.neutral?.[500]
+                : theme.palette.divider[200],
+        backgroundColor: "transparent",
     },
 }));
 
