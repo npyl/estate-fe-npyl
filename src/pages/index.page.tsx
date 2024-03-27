@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 
 import type { NextPage } from "next";
 import { useMemo } from "react";
@@ -40,7 +40,7 @@ const Dashboard: NextPage = () => {
     }, [allProperties]);
 
     return (
-        <div style={{ margin: "20px" }}>
+        <Box m="20px">
             <Grid container spacing={3} mt={1}>
                 <Grid item xs={12} md={7}>
                     <AppWelcome
@@ -136,7 +136,7 @@ const Dashboard: NextPage = () => {
                     </Grid>
                 </Grid>
             </Grid>
-        </div>
+        </Box>
     );
 };
 

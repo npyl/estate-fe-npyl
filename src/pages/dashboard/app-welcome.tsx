@@ -1,15 +1,14 @@
 // @mui
 import { styled } from "@mui/material/styles";
-import { Typography, CardProps, Stack } from "@mui/material";
+import { Typography, CardProps, Stack, Card } from "@mui/material";
 
 // ----------------------------------------------------------------------
 
-const StyledRoot = styled("div")(({ theme }) => ({
+const StyledRoot = styled(Card)(({ theme }) => ({
     height: "100%",
     display: "flex",
     overflow: "hidden",
     position: "relative",
-    color: theme.palette.primary.dark,
     borderRadius: Number(theme.shape.borderRadius) * 2,
     flexDirection: "column",
     [theme.breakpoints.up("md")]: {
@@ -24,7 +23,6 @@ const StyledBg = styled("div")(({ theme }) => ({
     width: "100%",
     height: "100%",
     position: "absolute",
-    backgroundColor: theme.palette.common.white,
     "&:before": {
         top: 0,
         left: 0,
