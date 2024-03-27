@@ -42,13 +42,16 @@ export const StyledBox = styled(Box)(({ theme }) => ({
     border: 0,
     boxShadow: `rgba(99, 99, 99, 0.2) 0px 2px 8px 0px`,
     borderRadius: 15,
-    background: theme.palette.common.white,
+    background:
+        theme.palette.mode === "dark"
+            ? theme.palette.neutral?.[900]
+            : theme.palette.common.white,
     p: 1,
 }));
 
 export const StyledDialogContent = styled(DialogContent, {
     shouldForwardProp: (prop) => prop !== "open",
-})<DialogContentProps>(({ theme }) => ({
+})<DialogContentProps>({
     maxHeight: "none",
     overflow: "visible",
-}));
+});
