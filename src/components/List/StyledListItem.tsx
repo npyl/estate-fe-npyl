@@ -6,13 +6,13 @@ const StyledListItem = styled(MuiListItem)(({ theme }) => ({
     "&:nth-of-type(odd)": {
         background:
             theme.palette.mode === "dark"
-                ? "transparent"
+                ? theme.palette.neutral?.[900]
                 : theme.palette.background.paper,
     },
     "&:nth-of-type(even)": {
         background:
             theme.palette.mode === "dark"
-                ? theme.palette.background.default
+                ? theme.palette.neutral?.[800]
                 : theme.palette.grey[50],
     },
 }));
