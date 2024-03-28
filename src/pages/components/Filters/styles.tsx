@@ -6,6 +6,7 @@ import {
     DialogContentProps,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
+
 interface PriceButtonProps extends ButtonProps {
     open: boolean;
 }
@@ -44,7 +45,7 @@ export const StyledBox = styled(Box)(({ theme }) => ({
     borderRadius: 15,
     background:
         theme.palette.mode === "dark"
-            ? theme.palette.neutral?.[900]
+            ? theme.palette.neutral?.[800]
             : theme.palette.common.white,
     p: 1,
 }));
