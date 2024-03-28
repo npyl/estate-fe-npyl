@@ -5,7 +5,7 @@ import {
     Box,
     Grid,
     List,
-    ListItem,
+    ListItem as MuiListItem,
     ListItemText,
     Popper,
     TextField,
@@ -25,35 +25,55 @@ import {
 import { useDispatch, useSelector } from "src/store";
 import { StyledBox, StyledPriceButton } from "./styles";
 import { useTranslation } from "react-i18next";
+import { styled } from "@mui/material/styles";
 
-const PriceSelect = ({ type }: { type: string }) => {
+const ListItem = styled(MuiListItem)(({ theme }) => ({
+    cursor: "pointer",
+    borderRadius: "10px",
+    "&:hover": {
+        backgroundColor:
+            theme.palette.mode === "light"
+                ? theme.palette.neutral?.[200]
+                : theme.palette.neutral?.[700],
+    },
+}));
+
+interface Props {
+    type: string;
+}
+
+const PriceSelect = ({ type }: Props) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
-    const setMinValue = useMemo(() => {
-        if (type === "price") {
-            return setMinPrice;
-        }
-        return setMinArea;
-    }, [type]);
-    const setMaxValue = useMemo(() => {
-        if (type === "price") {
-            return setMaxPrice;
-        }
-        return setMaxArea;
-    }, [type]);
 
-    const selectMinValue = useMemo(() => {
-        if (type === "price") {
-            return selectMinPrice;
-        }
-        return selectMinArea;
-    }, [type]);
-    const selectMaxValue = useMemo(() => {
-        if (type === "price") {
-            return selectMaxPrice;
-        }
-        return selectMaxArea;
-    }, [type]);
+    const {
+        setMinValue,
+        setMaxValue,
+        selectMinValue,
+        selectMaxValue,
+        symbol,
+        label,
+    } = useMemo(
+        () =>
+            type === "price"
+                ? {
+                      setMinValue: setMinPrice,
+                      setMaxValue: setMaxPrice,
+                      selectMinValue: selectMinPrice,
+                      selectMaxValue: selectMaxPrice,
+                      symbol: "€",
+                      label: "Price",
+                  }
+                : {
+                      setMinValue: setMinArea,
+                      setMaxValue: setMaxArea,
+                      selectMinValue: selectMinArea,
+                      selectMaxValue: selectMaxArea,
+                      symbol: "m²",
+                      label: "Area",
+                  },
+        [type]
+    );
 
     const valueMin = useSelector(selectMinValue) || 0;
     const valueMax = useSelector(selectMaxValue) || 0;
@@ -74,19 +94,6 @@ const PriceSelect = ({ type }: { type: string }) => {
         const newValue = event.target.value;
         dispatch(setMaxValue(isNaN(newValue) ? "" : newValue));
     };
-    const symbol = useMemo(() => {
-        if (type === "price") {
-            return "€";
-        }
-        return "m²";
-    }, [type]);
-
-    const label = useMemo(() => {
-        if (type === "price") {
-            return "Price";
-        }
-        return "Area";
-    }, [type, t]);
 
     const values = useMemo(() => {
         return generateNumbers(states, type);
@@ -129,7 +136,7 @@ const PriceSelect = ({ type }: { type: string }) => {
                         placement="bottom-start"
                     >
                         <StyledBox>
-                            <Grid container padding={1} spacing={3}>
+                            <Grid container p={1} spacing={3}>
                                 <Grid item xs={12} sm={6}>
                                     <TextField
                                         label={`${symbol} ${t("from")}`}
@@ -144,13 +151,6 @@ const PriceSelect = ({ type }: { type: string }) => {
                                         }}
                                     >
                                         <ListItem
-                                            sx={{
-                                                cursor: "pointer",
-                                                "&:hover": {
-                                                    backgroundColor:
-                                                        "neutral.200",
-                                                },
-                                            }}
                                             onClick={() =>
                                                 dispatch(setMinValue(undefined))
                                             }
@@ -161,13 +161,6 @@ const PriceSelect = ({ type }: { type: string }) => {
                                         </ListItem>
                                         {values.map((option) => (
                                             <ListItem
-                                                sx={{
-                                                    cursor: "pointer",
-                                                    "&:hover": {
-                                                        backgroundColor:
-                                                            "neutral.200",
-                                                    },
-                                                }}
                                                 key={option}
                                                 onClick={() =>
                                                     option > valueMax &&
@@ -207,13 +200,6 @@ const PriceSelect = ({ type }: { type: string }) => {
                                         }}
                                     >
                                         <ListItem
-                                            sx={{
-                                                cursor: "pointer",
-                                                "&:hover": {
-                                                    backgroundColor:
-                                                        "neutral.200",
-                                                },
-                                            }}
                                             onClick={() =>
                                                 dispatch(setMaxValue(undefined))
                                             }
@@ -224,13 +210,6 @@ const PriceSelect = ({ type }: { type: string }) => {
                                         </ListItem>
                                         {values.map((option) => (
                                             <ListItem
-                                                sx={{
-                                                    cursor: "pointer",
-                                                    "&:hover": {
-                                                        backgroundColor:
-                                                            "neutral.200",
-                                                    },
-                                                }}
                                                 key={option}
                                                 onClick={() =>
                                                     option < valueMin

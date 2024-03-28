@@ -39,6 +39,7 @@ import ChosenFilters from "./Filters/ChosenFilters";
 import FilterSortBy from "./Filters/FilterSortBy";
 import MapView from "./MapView";
 import MediaCard from "./MediaCard";
+import { ViewModeButton } from "./styles";
 
 type optionType = "list" | "grid" | "map";
 
@@ -366,7 +367,8 @@ const ViewAll: FC = () => {
             >
                 <Stack direction={"row"} flex={1} flexWrap={"wrap"}>
                     <FilterSection />
-                    <Stack direction={"row"} spacing={2}>
+
+                    <Stack direction={"row"} spacing={1}>
                         <FilterSortBy
                             onSorting={(
                                 sortingBy: SetStateAction<string>,
@@ -376,40 +378,21 @@ const ViewAll: FC = () => {
                                 setSortingOrder(sortingOrder);
                             }}
                         />
-                        <Box
-                            sx={{
-                                alignItems: "center",
-                                justifyContent: "center",
-                            }}
-                        >
-                            <ButtonGroup
-                                size="small"
-                                aria-label="small button group"
-                            >
-                                {viewOptions.map((option) => (
-                                    <IconButton
-                                        sx={{
-                                            height: 38,
-                                            width: 38,
-                                            marginLeft: 1, // Add spacing here
 
-                                            color:
-                                                optionView === option.id
-                                                    ? "primary.main"
-                                                    : "neutral.300",
-                                            border:
-                                                optionView === option.id
-                                                    ? "1px solid blue"
-                                                    : "1px solid lightgrey",
-                                        }}
-                                        key={option.id}
-                                        onClick={() => setOptionView(option.id)}
-                                    >
-                                        <option.icon />
-                                    </IconButton>
-                                ))}
-                            </ButtonGroup>
-                        </Box>
+                        <ButtonGroup size="small">
+                            {viewOptions.map((option) => (
+                                <ViewModeButton
+                                    key={option.id}
+                                    selected={optionView === option.id}
+                                    onClick={() => setOptionView(option.id)}
+                                    sx={{
+                                        ml: 1,
+                                    }}
+                                >
+                                    <option.icon />
+                                </ViewModeButton>
+                            ))}
+                        </ButtonGroup>
                     </Stack>
                 </Stack>
                 {changedPropertyFilters > 0 && (

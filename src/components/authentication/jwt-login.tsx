@@ -1,4 +1,9 @@
-import { Box, Button, FormHelperText, TextField } from "@mui/material";
+import {
+    Button,
+    FormHelperText,
+    TextField as MuiTextField,
+} from "@mui/material";
+import { styled } from "@mui/material/styles";
 import { useFormik } from "formik";
 import { useRouter } from "next/router";
 import type { FC } from "react";
@@ -7,11 +12,22 @@ import { useAuth } from "../../hooks/use-auth";
 import { useMounted } from "../../hooks/use-mounted";
 import { useTranslation } from "react-i18next";
 
+const Form = styled("form")(({ theme }) => ({
+    display: "flex",
+    flexDirection: "column",
+    rowGap: theme.spacing(2),
+}));
+
+const TextField = styled(MuiTextField)({
+    margin: 0,
+});
+
 export const JWTLogin: FC = (props) => {
-    const isMounted = useMounted();
-    const router = useRouter();
     const { t } = useTranslation();
+    const router = useRouter();
+    const isMounted = useMounted();
     const { signin } = useAuth();
+
     const formik = useFormik({
         initialValues: {
             email: "",
@@ -49,7 +65,7 @@ export const JWTLogin: FC = (props) => {
     });
 
     return (
-        <form noValidate onSubmit={formik.handleSubmit} {...props}>
+        <Form noValidate onSubmit={formik.handleSubmit} {...props}>
             <TextField
                 autoFocus
                 error={Boolean(formik.touched.email && formik.errors.email)}
@@ -78,23 +94,17 @@ export const JWTLogin: FC = (props) => {
                 value={formik.values.password}
             />
             {formik.errors.submit && (
-                <Box sx={{ mt: 3 }}>
-                    <FormHelperText error>
-                        {formik.errors.submit}
-                    </FormHelperText>
-                </Box>
+                <FormHelperText error>{formik.errors.submit}</FormHelperText>
             )}
-            <Box sx={{ mt: 2 }}>
-                <Button
-                    disabled={formik.isSubmitting}
-                    fullWidth
-                    size="large"
-                    type="submit"
-                    variant="contained"
-                >
-                    {t("Log In")}
-                </Button>
-            </Box>
-        </form>
+            <Button
+                disabled={formik.isSubmitting}
+                fullWidth
+                size="large"
+                type="submit"
+                variant="contained"
+            >
+                {t("Log In")}
+            </Button>
+        </Form>
     );
 };

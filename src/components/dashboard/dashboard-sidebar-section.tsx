@@ -1,9 +1,8 @@
 import type { ListProps } from "@mui/material";
 import { List, ListSubheader } from "@mui/material";
-
 import type { FC, ReactNode } from "react";
 import { useTranslation } from "react-i18next";
-import { DashboardSidebarItem } from "./dashboard-sidebar-item";
+import DashboardSidebarItem from "./dashboard-sidebar-item";
 
 interface Item {
     path?: string;

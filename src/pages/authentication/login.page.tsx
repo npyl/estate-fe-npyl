@@ -1,4 +1,4 @@
-import { Box, Card, Container, Divider, Link, Typography } from "@mui/material";
+import { Box, Card, Container, Link, Typography } from "@mui/material";
 import type { NextPage } from "next";
 import Head from "next/head";
 import { useEffect } from "react";
@@ -10,10 +10,6 @@ import { gtm } from "../../lib/gtm";
 import { useTranslation } from "react-i18next";
 
 type Platform = "JWT";
-
-const platformIcons: { [key in Platform]: string } = {
-    JWT: "/static/icons/jwt.svg",
-};
 
 const Login: NextPage = () => {
     const { t } = useTranslation();
@@ -79,7 +75,11 @@ const Login: NextPage = () => {
                                 }}
                             />
                         </Link>
-                        <Typography variant="h4" sx={{ fontWeight: 600 }}>
+                        <Typography
+                            variant="h4"
+                            color="black"
+                            sx={{ fontWeight: 600 }}
+                        >
                             {t("Log in")}
                         </Typography>
                         <Typography

@@ -1,16 +1,22 @@
 import {
-    Grid,
     Stack,
-    Paper,
+    Paper as MuiPaper,
     Typography,
     IconButton,
     Avatar,
 } from "@mui/material";
 import { CustomAvatar } from "../custom-avatar";
-
+import { styled } from "@mui/material/styles";
 import { INote } from "src/types/note";
 
 import Iconify from "src/components/iconify/Iconify";
+
+const Paper = styled(MuiPaper)(({ theme }) => ({
+    backgroundColor:
+        theme.palette.mode === "light"
+            ? "#fce9a4"
+            : theme.palette.neutral?.[700],
+}));
 
 interface NoteProps {
     note: INote;
@@ -29,7 +35,7 @@ const Note: React.FC<NoteProps> = (props) => {
     const username = note.creator.firstName + " " + note.creator.lastName;
 
     return (
-        <Stack direction="row" spacing={2}>
+        <Stack direction="row" spacing={1}>
             {note.creator.firstName && note.creator.lastName ? (
                 <Avatar>
                     {note.creator.firstName[0]}
@@ -44,42 +50,31 @@ const Note: React.FC<NoteProps> = (props) => {
 
             <Paper
                 sx={{
-                    p: 1,
-                    flexGrow: 2,
-                    bgcolor: "#fce9a4",
+                    p: 1.5,
+                    flexGrow: 1,
                 }}
             >
-                <div style={{ width: "100%" }}>
-                    <Stack
-                        justifyContent="space-between"
-                        direction={{ xs: "column", sm: "row" }}
-                        alignItems={{ sm: "center" }}
-                        sx={{ mb: 1 }}
-                    >
-                        <Typography variant="subtitle2">{username}</Typography>
-
-                        <Typography
-                            variant="caption"
-                            sx={{ color: "text.disabled" }}
-                        >
-                            {formattedDate}
-                        </Typography>
-                    </Stack>
-                </div>
-
-                <Stack direction={"row"}>
+                <Stack
+                    justifyContent="space-between"
+                    direction={{ xs: "column", sm: "row" }}
+                    alignItems={{ sm: "center" }}
+                >
+                    <Typography variant="subtitle2">{username}</Typography>
                     <Typography
-                        variant="body2"
-                        sx={{ color: "text.secondary" }}
-                        flex={1}
+                        variant="caption"
+                        sx={{ color: "text.disabled" }}
                     >
+                        {formattedDate}
+                    </Typography>
+                </Stack>
+
+                <Stack direction="row" justifyContent="space-between" mt={1}>
+                    <Typography variant="body2" color="text.secondary">
                         {note.content.toString()}
                     </Typography>
-                    <Grid item>
-                        <IconButton onClick={onRemove}>
-                            <Iconify icon={"eva:trash-2-outline"} />
-                        </IconButton>
-                    </Grid>
+                    <IconButton onClick={onRemove}>
+                        <Iconify icon="eva:trash-2-outline" fontSize="20px" />
+                    </IconButton>
                 </Stack>
             </Paper>
         </Stack>
