@@ -68,12 +68,12 @@ const Note: React.FC<NoteProps> = (props) => {
                     </Typography>
                 </Stack>
 
-                <Stack direction="row" justifyContent="space-between">
+                <Stack direction="row" justifyContent="space-between" mt={1}>
                     <Typography variant="body2" color="text.secondary">
                         {note.content.toString()}
                     </Typography>
                     <IconButton onClick={onRemove}>
-                        <Iconify icon={"eva:trash-2-outline"} />
+                        <Iconify icon="eva:trash-2-outline" fontSize="20px" />
                     </IconButton>
                 </Stack>
             </Paper>
