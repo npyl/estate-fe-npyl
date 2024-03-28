@@ -15,6 +15,7 @@ import { useTranslation } from "react-i18next";
 import { BsPlusCircle } from "react-icons/bs";
 import { Users as UsersIcon } from "../../icons/users";
 import useAutosaveRouter from "../Router/Autosave";
+import { Restaurant } from "@mui/icons-material";
 
 interface DashboardLayoutProps {
     children?: ReactNode;
