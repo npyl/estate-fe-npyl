@@ -45,7 +45,7 @@ export const StyledBox = styled(Box)(({ theme }) => ({
     borderRadius: 15,
     background:
         theme.palette.mode === "dark"
-            ? theme.palette.neutral?.[800]
+            ? theme.palette.neutral?.[900]
             : theme.palette.common.white,
     p: 1,
 }));

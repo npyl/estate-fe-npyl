@@ -3,7 +3,7 @@ import MapIcon from "@mui/icons-material/Map";
 import {
     Box,
     ButtonGroup,
-    IconButton,
+    Chip,
     Paper,
     Skeleton,
     Stack,
@@ -40,6 +40,9 @@ import FilterSortBy from "./Filters/FilterSortBy";
 import MapView from "./MapView";
 import MediaCard from "./MediaCard";
 import { ViewModeButton } from "./styles";
+import { Label } from "src/components/label";
+import { styled } from "@mui/material/styles";
+import getBorderColor from "src/theme/borderColor";
 
 type optionType = "list" | "grid" | "map";
 
@@ -149,12 +152,36 @@ function statusColor(params: GridCellParams) {
     );
 }
 
+const MoreChip = styled(Chip)(({ theme }) => ({
+    width: "min-content",
+    height: "min-content",
+    paddingTop: theme.spacing(0.4),
+    paddingBottom: theme.spacing(0.4),
+
+    backgroundColor: `${getBorderColor(theme)} !important`,
+    "&:hover": {
+        backgroundColor: `${theme.palette.action.focus} !important`,
+    },
+}));
+
 function showLabel(params: GridCellParams) {
     if (!params.value || !Array.isArray(params.value)) return <></>;
 
     const labels: ILabel[] = params.value as ILabel[];
 
-    return <ListLabelsItem labels={labels} label={""} />;
+    const more = labels.slice(2).length;
+
+    return (
+        <Stack spacing={0.5} alignItems="center">
+            {labels.slice(0, 2).map(({ id, color, name }) => (
+                <Label key={id} sx={{ bgcolor: color }}>
+                    {name}
+                </Label>
+            ))}
+
+            {more > 0 ? <MoreChip label={`+${more} labels`} /> : null}
+        </Stack>
+    );
 }
 
 //format value number with dots
@@ -211,7 +238,9 @@ const ViewAll: FC = () => {
         () => (data?.totalElements ? data?.totalElements : 100000),
         [data?.totalElements]
     );
-    const observerRef = useLocalStorageScrollRestore();
+
+    useLocalStorageScrollRestore();
+
     useEffect(() => {
         const storedPagination = localStorage.getItem(
             "propertyPaginationState"

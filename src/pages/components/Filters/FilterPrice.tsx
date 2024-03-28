@@ -34,7 +34,7 @@ const ListItem = styled(MuiListItem)(({ theme }) => ({
         backgroundColor:
             theme.palette.mode === "light"
                 ? theme.palette.neutral?.[200]
-                : theme.palette.neutral?.[700],
+                : theme.palette.neutral?.[800],
     },
 }));
 
