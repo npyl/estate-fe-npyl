@@ -5,7 +5,6 @@ import { Button, ClickAwayListener, Paper, TextField } from "@mui/material";
 import Iconify from "src/components/iconify";
 
 import { useAddColumnMutation } from "src/services/tickets";
-import { EnterOverlay } from "../EnterOverlay";
 
 // ----------------------------------------------------------------------
 
@@ -17,7 +16,10 @@ export default function KanbanColumnAdd() {
     const [addColumn] = useAddColumnMutation();
 
     const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleClose = () => {
+        setOpen(false);
+        setName("");
+    };
 
     const handleChangeName = (event: React.ChangeEvent<HTMLInputElement>) =>
         setName(event.target.value);
@@ -40,19 +42,17 @@ export default function KanbanColumnAdd() {
         <Paper sx={{ minWidth: 280, width: 280, maxHeight: 38 }}>
             {open ? (
                 <ClickAwayListener onClickAway={handleCreateColumn}>
-                    <EnterOverlay show={!!name}>
-                        <TextField
-                            autoFocus
-                            fullWidth
-                            placeholder="New section"
-                            value={name}
-                            onChange={handleChangeName}
-                            onKeyUp={handleKeyUp}
-                            InputProps={{
-                                sx: { typography: "h6" },
-                            }}
-                        />
-                    </EnterOverlay>
+                    <TextField
+                        autoFocus
+                        fullWidth
+                        placeholder="New section"
+                        value={name}
+                        onChange={handleChangeName}
+                        onKeyUp={handleKeyUp}
+                        InputProps={{
+                            sx: { typography: "h6" },
+                        }}
+                    />
                 </ClickAwayListener>
             ) : (
                 <Button
@@ -60,7 +60,7 @@ export default function KanbanColumnAdd() {
                     size="large"
                     color="inherit"
                     variant="outlined"
-                    startIcon={<Iconify icon="eva:plus-fill" mb={2} />}
+                    startIcon={<Iconify icon="eva:plus-fill" mb={1.5} />}
                     onClick={handleOpen}
                 >
                     Add section

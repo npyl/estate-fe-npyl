@@ -6,13 +6,6 @@ import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 // sections
 import { KanbanColumn, KanbanColumnAdd } from "./components";
 
-import {
-    useGetBoardQuery,
-    useMoveCardMutation,
-    useReorderCardMutation,
-    useReorderColumnMutation,
-} from "src/services/tickets";
-import { SkeletonKanbanColumn } from "src/components/skeleton";
 import { useMemo } from "react";
 import {
     TwoDimentionsDnd,
@@ -23,6 +16,13 @@ import {
     DroppableTypeItem,
     TwoDimentionsDndItem,
 } from "src/components/TwoDimentionsDnd/types";
+import { SkeletonKanbanColumn } from "src/components/skeleton";
+import {
+    useGetBoardQuery,
+    useMoveCardMutation,
+    useReorderCardMutation,
+    useReorderColumnMutation,
+} from "src/services/tickets";
 import { DroppableTypeTask } from "./components/column/KanbanColumn";
 
 KanbanPage.getLayout = (page: React.ReactElement) => (
@@ -157,7 +157,7 @@ export default function KanbanPage() {
                 flexDirection: "row",
                 mt: 3,
                 gap: 3,
-                justifyContent: "space-between",
+                justifyContent: { xs: "center", sm: "space-between" },
             }}
         >
             {board && items ? (

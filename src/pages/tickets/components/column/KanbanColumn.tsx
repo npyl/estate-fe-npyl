@@ -7,8 +7,6 @@ import { IKanbanCardPOST, IKanbanColumn } from "src/types/kanban";
 // components
 import Iconify from "src/components/iconify";
 //
-import KanbanTaskAdd from "../KanbanTaskAdd";
-import KanbanColumnToolBar from "./KanbanColumnToolBar";
 import {
     useAddCardMutation,
     useDeleteCardMutation,
@@ -16,7 +14,9 @@ import {
     useEditColumnMutation,
     useGetBoardQuery,
 } from "src/services/tickets";
+import KanbanTaskAdd from "../KanbanTaskAdd";
 import KanbanTaskCard from "../KanbanTaskCard";
+import KanbanColumnToolBar from "./KanbanColumnToolBar";
 
 // ----------------------------------------------------------------------
 
@@ -114,7 +114,9 @@ export default function KanbanColumn({ column }: Props) {
                             fullWidth
                             size="large"
                             color="inherit"
-                            startIcon={<Iconify icon="eva:plus-fill" mb={2} />}
+                            startIcon={
+                                <Iconify icon="eva:plus-fill" mb={1.5} />
+                            }
                             onClick={handleToggleAddTask}
                             sx={{
                                 fontSize: 14,

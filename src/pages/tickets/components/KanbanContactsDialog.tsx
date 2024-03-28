@@ -7,22 +7,22 @@ import {
     Dialog,
     DialogContent,
     DialogTitle,
+    IconButton,
     InputAdornment,
     ListItem,
     ListItemAvatar,
     ListItemText,
     TextField,
-    Typography,
-    IconButton,
     Tooltip,
+    Typography,
 } from "@mui/material";
 import { alpha } from "@mui/material/styles";
 // components
 import { useTranslation } from "react-i18next";
+import Iconify from "src/components/iconify";
 import { Scrollbar } from "src/components/scrollbar";
 import { useAllUsersQuery } from "src/services/user";
 import { IUser } from "src/types/user";
-import Iconify from "src/components/iconify";
 
 // ----------------------------------------------------------------------
 
@@ -128,7 +128,7 @@ export default function KanbanContactsDialog({
                             `dashed 1px ${theme.palette.divider}`,
                     }}
                 >
-                    <Iconify icon="eva:plus-fill" />
+                    <Iconify icon="eva:plus-fill" mb={0.5} mr={0.5} />
                 </IconButton>
             </Tooltip>
 

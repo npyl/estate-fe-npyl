@@ -63,7 +63,11 @@ export default function KanbanDetailsToolbar({
                     color={completed ? "primary" : "inherit"}
                     startIcon={
                         completed && (
-                            <Iconify icon="eva:checkmark-fill" width={16} />
+                            <Iconify
+                                icon="eva:checkmark-fill"
+                                width={16}
+                                mb={1.5}
+                            />
                         )
                     }
                     onClick={onCompleted}
@@ -77,16 +81,6 @@ export default function KanbanDetailsToolbar({
                     justifyContent="flex-end"
                     flexGrow={1}
                 >
-                    <Tooltip title="Like this">
-                        <IconButton
-                            color={liked ? "default" : "primary"}
-                            size="small"
-                            onClick={onLike}
-                        >
-                            <Iconify icon="ic:round-thumb-up" />
-                        </IconButton>
-                    </Tooltip>
-
                     <Tooltip title="Attachment">
                         <IconButton size="small" onClick={onAttach}>
                             <Iconify icon="eva:attach-2-fill" />
