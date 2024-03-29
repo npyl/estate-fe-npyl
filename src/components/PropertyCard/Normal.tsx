@@ -53,7 +53,7 @@ const ForSaleLabel = () => {
 
 const defaultImage = "/static/noImage.png";
 
-export const BookingItem = ({
+const BookingItem = ({
     item,
     activeMarker,
     selectedMarker,
@@ -221,3 +221,5 @@ export const BookingItem = ({
         </Paper>
     );
 };
+
+export default BookingItem;

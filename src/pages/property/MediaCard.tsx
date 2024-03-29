@@ -1,7 +1,7 @@
 "use client";
 
 import { Grid, GridProps } from "@mui/material";
-import { BookingItem } from "./BookingItem";
+import PropertyCard from "@/components/PropertyCard";
 import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { useFilterPropertiesMutation } from "src/services/properties";
@@ -38,7 +38,7 @@ export default function MediaCard({ sx, ...other }: Props) {
         <Grid container sx={{ pb: 2 }} {...other}>
             {content?.map((item, index) => (
                 <Grid item key={index} xs={12} sm={4}>
-                    <BookingItem item={item} selectedMarker={null} />
+                    <PropertyCard item={item} selectedMarker={null} />
                 </Grid>
             ))}
         </Grid>

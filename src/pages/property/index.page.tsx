@@ -7,8 +7,8 @@ import { OverridableComponent } from "@mui/material/OverridableComponent";
 import { SetStateAction, useState } from "react";
 import { FilterSection } from "../components/Filters";
 import FilterSortBy from "../components/Filters/FilterSortBy";
-import { ViewModeButton } from "../components/styles";
-import MediaCard from "../components/MediaCard";
+import { ViewModeButton } from "./styles";
+import MediaCard from "./MediaCard";
 import ChosenFilters from "../components/Filters/ChosenFilters";
 import { Menu } from "src/icons/menu";
 import GridViewIcon from "@mui/icons-material/GridView";
@@ -16,7 +16,7 @@ import MapIcon from "@mui/icons-material/Map";
 import { useSelector } from "react-redux";
 import { sumOfChangedProperties } from "src/slices/filters";
 import useDialog from "src/hooks/useDialog";
-import MapView from "../components/MapView";
+import MapView from "./MapView";
 
 type optionType = "list" | "grid" | "map";
 

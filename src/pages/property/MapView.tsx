@@ -10,8 +10,7 @@ import {
 } from "src/components/Map/util";
 import { useDebouncedCallback } from "use-debounce";
 import InfoIcon from "@mui/icons-material/Info";
-import { BookingItem } from "./BookingItem";
-import { HorizontalCard } from "./HorizontalCard";
+import PropertyCard, { PropertyCardH } from "@/components/PropertyCard";
 import { useMapViewPropertiesMutation } from "src/services/properties";
 import { selectAll } from "src/slices/filters";
 import { useSelector } from "react-redux";
@@ -148,13 +147,13 @@ const MapView = () => {
                                 }}
                             >
                                 {orientation ? (
-                                    <HorizontalCard
+                                    <PropertyCardH
                                         activeMarker={activeMarker || -1}
                                         item={item}
                                         selectedMarker={selectedMarker}
                                     />
                                 ) : (
-                                    <BookingItem
+                                    <PropertyCard
                                         activeMarker={activeMarker || -1}
                                         item={item}
                                         selectedMarker={selectedMarker}
