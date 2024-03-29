@@ -5,12 +5,19 @@ import { Box, IconButton } from "@mui/material";
 //
 import { StyledLabel } from "./styles";
 import { LabelProps } from "./types";
-
+// icons
 import { Close as CloseIcon } from "@mui/icons-material";
 
 // ----------------------------------------------------------------------
 
-const Label = forwardRef<HTMLSpanElement, LabelProps & { opacity?: number }>(
+const iconStyle = {
+    minWidth: 16,
+    minHeight: 16,
+    "& svg, img": { width: 1, height: 1, objectFit: "cover" },
+};
+const radius = 10;
+
+const Label = forwardRef<HTMLSpanElement, LabelProps>(
     (
         {
             children,
@@ -27,28 +34,18 @@ const Label = forwardRef<HTMLSpanElement, LabelProps & { opacity?: number }>(
     ) => {
         const theme = useTheme();
 
-        const iconStyle = {
-            minWidth: 16,
-            minHeight: 16,
-            "& svg, img": { width: 1, height: 1, objectFit: "cover" },
-        };
-        const radius = 10;
-
         return (
             <StyledLabel
                 ref={ref}
-                // component="span"
-                ownerState={{ color, variant, opacity }} // Pass opacity here
+                ownerState={{ color, variant, opacity }}
                 sx={{
-                    pl: 0.75,
-                    pr: 0.75,
-                    m: 0.13,
+                    px: 0.75,
                     borderRadius: radius,
                 }}
                 theme={theme}
                 {...other}
             >
-                {!opaque && (
+                {opaque ? null : (
                     <Box
                         sx={{
                             mr: 0.75,
@@ -62,16 +59,14 @@ const Label = forwardRef<HTMLSpanElement, LabelProps & { opacity?: number }>(
                 {children}
 
                 {onClose && (
-                    <Box ml={1}>
-                        <IconButton
-                            size="small"
-                            aria-label="close"
-                            disabled={disabled}
-                            onClick={onClose}
-                        >
-                            <CloseIcon sx={{ height: 16, width: 16 }} />
-                        </IconButton>
-                    </Box>
+                    <IconButton
+                        size="small"
+                        aria-label="close"
+                        disabled={disabled}
+                        onClick={onClose}
+                    >
+                        <CloseIcon sx={{ height: 16, width: 16 }} />
+                    </IconButton>
                 )}
             </StyledLabel>
         );

@@ -60,74 +60,72 @@ const Home: NextPage = () => {
     const [isBulkEditOpen, openBulkEdit, closeBulkEdit] = useDialog();
 
     return (
-        <>
-            <Box
+        <Box
+            sx={{
+                position: "relative",
+                height: "100%", // WARN: make sure height is full so that bulk edit is full even if DataGrid is small
+            }}
+        >
+            <Paper
                 sx={{
-                    position: "relative",
-                    height: "100%", // WARN: make sure height is full so that bulk edit is full even if DataGrid is small
+                    p: 1,
+                    my: 1,
+                    marginRight: isBulkEditOpen ? 40 : 0,
                 }}
             >
-                <Paper
-                    sx={{
-                        p: 1,
-                        my: 1,
-                        marginRight: isBulkEditOpen ? 40 : 0,
-                    }}
-                >
-                    <Stack direction={"row"} flex={1} flexWrap={"wrap"}>
-                        <FilterSection />
+                <Stack direction={"row"} flex={1} flexWrap={"wrap"}>
+                    <FilterSection />
 
-                        <Stack direction={"row"} spacing={1}>
-                            <FilterSortBy
-                                onSorting={(
-                                    sortingBy: SetStateAction<string>,
-                                    sortingOrder: SetStateAction<string>
-                                ) => {
-                                    setSortingBy(sortingBy);
-                                    setSortingOrder(sortingOrder);
-                                }}
-                            />
-
-                            <ButtonGroup size="small">
-                                {viewOptions.map((option) => (
-                                    <ViewModeButton
-                                        key={option.id}
-                                        selected={optionView === option.id}
-                                        onClick={() => setOptionView(option.id)}
-                                        sx={{
-                                            ml: 1,
-                                        }}
-                                    >
-                                        <option.icon />
-                                    </ViewModeButton>
-                                ))}
-                            </ButtonGroup>
-                        </Stack>
-                    </Stack>
-
-                    {changedPropertyFilters > 0 && (
-                        <Box overflow={"auto"} mt={1}>
-                            <ChosenFilters />
-                        </Box>
-                    )}
-                </Paper>
-
-                <>
-                    {optionView === "list" && (
-                        <ViewAll
-                            sortingBy={sortingBy}
-                            sortingOrder={sortingOrder}
-                            // ...
-                            isBulkEditOpen={isBulkEditOpen}
-                            onBulkEditOpen={openBulkEdit}
-                            onBulkEditClose={closeBulkEdit}
+                    <Stack direction={"row"} spacing={1}>
+                        <FilterSortBy
+                            onSorting={(
+                                sortingBy: SetStateAction<string>,
+                                sortingOrder: SetStateAction<string>
+                            ) => {
+                                setSortingBy(sortingBy);
+                                setSortingOrder(sortingOrder);
+                            }}
                         />
-                    )}
-                    {optionView === "grid" && <MediaCard />}
-                    {optionView === "map" && <MapView />}
-                </>
-            </Box>
-        </>
+
+                        <ButtonGroup size="small">
+                            {viewOptions.map((option) => (
+                                <ViewModeButton
+                                    key={option.id}
+                                    selected={optionView === option.id}
+                                    onClick={() => setOptionView(option.id)}
+                                    sx={{
+                                        ml: 1,
+                                    }}
+                                >
+                                    <option.icon />
+                                </ViewModeButton>
+                            ))}
+                        </ButtonGroup>
+                    </Stack>
+                </Stack>
+
+                {changedPropertyFilters > 0 && (
+                    <Box overflow={"auto"} mt={1}>
+                        <ChosenFilters />
+                    </Box>
+                )}
+            </Paper>
+
+            <>
+                {optionView === "list" && (
+                    <ViewAll
+                        sortingBy={sortingBy}
+                        sortingOrder={sortingOrder}
+                        // ...
+                        isBulkEditOpen={isBulkEditOpen}
+                        onBulkEditOpen={openBulkEdit}
+                        onBulkEditClose={closeBulkEdit}
+                    />
+                )}
+                {optionView === "grid" && <MediaCard />}
+                {optionView === "map" && <MapView />}
+            </>
+        </Box>
     );
 };
 
