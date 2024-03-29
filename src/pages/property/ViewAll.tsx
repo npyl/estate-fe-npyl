@@ -1,15 +1,14 @@
-import GridViewIcon from "@mui/icons-material/GridView";
-import MapIcon from "@mui/icons-material/Map";
 import {
     Box,
-    ButtonGroup,
     Chip,
+    ChipProps,
+    Grid,
     Paper,
+    Popper,
     Skeleton,
     Stack,
-    SvgIconTypeMap,
+    IconButton,
 } from "@mui/material";
-import { OverridableComponent } from "@mui/material/OverridableComponent";
 import {
     GridCallbackDetails,
     GridCellParams,
@@ -17,61 +16,25 @@ import {
     GridPaginationModel,
     GridRowSelectionModel,
 } from "@mui/x-data-grid";
-import { FC, SetStateAction, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState, MouseEvent } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { DeleteDialog } from "src/components/Dialog/Delete";
-import ListLabelsItem from "src/components/List/labels-item";
 import Image from "src/components/image";
 import useLocalStorageScrollRestore from "src/hooks/useLocalStorageScrollRestore";
-import { Menu } from "src/icons/menu";
 import {
     useBulkDeletePropertiesMutation,
     useFilterPropertiesMutation,
 } from "src/services/properties";
-import { selectAll, sumOfChangedProperties } from "src/slices/filters";
+import { selectAll } from "src/slices/filters";
 import { KeyValue } from "src/types/KeyValue";
 import { ILabel } from "src/types/label";
 import DataGridTable from "../../components/DataGrid";
-import { BulkEdit } from "./BulkEdit/BulkEdit";
-import { FilterSection } from "./Filters";
-import ChosenFilters from "./Filters/ChosenFilters";
-import FilterSortBy from "./Filters/FilterSortBy";
-import MapView from "./MapView";
-import MediaCard from "./MediaCard";
-import { ViewModeButton } from "./styles";
+import { BulkEdit } from "../components/BulkEdit/BulkEdit";
 import { Label } from "src/components/label";
 import { styled } from "@mui/material/styles";
 import getBorderColor from "src/theme/borderColor";
-
-type optionType = "list" | "grid" | "map";
-
-type viewOptionsType = {
-    id: optionType;
-    icon: OverridableComponent<SvgIconTypeMap<{}, "svg">> & {
-        muiName: string;
-    };
-    label: string;
-};
-
-const viewOptions: viewOptionsType[] = [
-    {
-        id: "list",
-        icon: Menu,
-        label: "List",
-        // url:
-    },
-    {
-        id: "grid",
-        icon: GridViewIcon,
-        label: "Grid",
-    },
-    {
-        id: "map",
-        icon: MapIcon,
-        label: "Map",
-    },
-];
+import { Close } from "@mui/icons-material";
 
 const defaultImage = "/static/noImage.png";
 
@@ -110,6 +73,7 @@ type PropertyStatus =
 type Color = string;
 
 type StatusColors = Record<PropertyStatus, Color>;
+
 const STATUS_COLORS: StatusColors = {
     SOLD: "#79798a",
     SALE: "#57825e",
@@ -152,7 +116,7 @@ function statusColor(params: GridCellParams) {
     );
 }
 
-const MoreChip = styled(Chip)(({ theme }) => ({
+const StyledChip = styled(Chip)(({ theme }) => ({
     width: "min-content",
     height: "min-content",
     paddingTop: theme.spacing(0.4),
@@ -163,6 +127,64 @@ const MoreChip = styled(Chip)(({ theme }) => ({
         backgroundColor: `${theme.palette.action.focus} !important`,
     },
 }));
+
+interface MoreChipProps extends ChipProps {
+    labels: ILabel[];
+}
+
+const MoreChip = ({ labels, ...props }: MoreChipProps) => {
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+
+    const open = Boolean(anchorEl);
+    const id = open ? "simple-popper" : undefined;
+
+    const handleOpen = useCallback((e: MouseEvent<HTMLElement>) => {
+        e.stopPropagation();
+        setAnchorEl(e.currentTarget);
+    }, []);
+    const handleClose = useCallback(() => setAnchorEl(null), []);
+
+    return (
+        <>
+            <StyledChip {...props} onClick={handleOpen} />
+
+            <Popper id={id} open={open} anchorEl={anchorEl}>
+                <Paper
+                    sx={{
+                        p: 2,
+                        width: "300px",
+                    }}
+                >
+                    <Stack alignItems="flex-end">
+                        <IconButton onClick={handleClose}>
+                            <Close />
+                        </IconButton>
+                    </Stack>
+                    <Grid container>
+                        {labels.map(({ id, name, color }) => (
+                            <Grid
+                                item
+                                xs={6}
+                                key={id}
+                                sx={{
+                                    overflowX: "hidden",
+                                }}
+                            >
+                                <Label
+                                    sx={{
+                                        bgcolor: color,
+                                    }}
+                                >
+                                    {name}
+                                </Label>
+                            </Grid>
+                        ))}
+                    </Grid>
+                </Paper>
+            </Popper>
+        </>
+    );
+};
 
 function showLabel(params: GridCellParams) {
     if (!params.value || !Array.isArray(params.value)) return <></>;
@@ -179,7 +201,9 @@ function showLabel(params: GridCellParams) {
                 </Label>
             ))}
 
-            {more > 0 ? <MoreChip label={`+${more} labels`} /> : null}
+            {more > 0 ? (
+                <MoreChip label={`+${more} labels`} labels={labels} />
+            ) : null}
         </Stack>
     );
 }
@@ -193,24 +217,31 @@ const formatNumberWithPeriod = (num: any) => {
     return numericValue.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 };
 
-const ViewAll: FC = () => {
+interface ViewAllProps {
+    sortingBy: string;
+    sortingOrder: string;
+    // ...
+    isBulkEditOpen: boolean;
+    onBulkEditOpen: VoidFunction;
+    onBulkEditClose: VoidFunction;
+}
+
+const ViewAll = ({
+    sortingBy,
+    sortingOrder,
+    // ...
+    isBulkEditOpen,
+    onBulkEditOpen,
+    onBulkEditClose,
+}: ViewAllProps) => {
     const { t } = useTranslation();
 
-    const [bulkEditOpen, setBulkEditOpen] = useState(false);
     const [bulkDeleteDialogOpen, setBulkDeleteDialogOpen] = useState(false);
     const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
 
-    const changedPropertyFilters = useSelector(sumOfChangedProperties);
-
-    // sorting
-    const [sortingBy, setSortingBy] = useState("updatedAt");
-    const [sortingOrder, setSortingOrder] = useState("desc");
     // pagination
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(25);
-
-    // view
-    const [optionView, setOptionView] = useState<optionType>("list");
 
     const allFilters = useSelector(selectAll);
 
@@ -361,10 +392,10 @@ const ViewAll: FC = () => {
 
     // Bulk Edit
     const handleBulkEdit = (selectedRows: GridRowSelectionModel) => {
-        setBulkEditOpen(true);
+        onBulkEditOpen();
         setSelectedRows(selectedRows);
     };
-    const closeBulkEdit = () => setBulkEditOpen(false);
+
     const handleBulkEditSave = () => revalidate();
 
     // Bulk Delete
@@ -388,84 +419,29 @@ const ViewAll: FC = () => {
                 height: "100%", // WARN: make sure height is full so that bulk edit is full even if DataGrid is small
             }}
         >
-            <Paper
-                sx={{
-                    p: 1,
-                    marginRight: bulkEditOpen ? 40 : 0,
-                }}
-            >
-                <Stack direction={"row"} flex={1} flexWrap={"wrap"}>
-                    <FilterSection />
-
-                    <Stack direction={"row"} spacing={1}>
-                        <FilterSortBy
-                            onSorting={(
-                                sortingBy: SetStateAction<string>,
-                                sortingOrder: SetStateAction<string>
-                            ) => {
-                                setSortingBy(sortingBy);
-                                setSortingOrder(sortingOrder);
-                            }}
-                        />
-
-                        <ButtonGroup size="small">
-                            {viewOptions.map((option) => (
-                                <ViewModeButton
-                                    key={option.id}
-                                    selected={optionView === option.id}
-                                    onClick={() => setOptionView(option.id)}
-                                    sx={{
-                                        ml: 1,
-                                    }}
-                                >
-                                    <option.icon />
-                                </ViewModeButton>
-                            ))}
-                        </ButtonGroup>
-                    </Stack>
-                </Stack>
-                {changedPropertyFilters > 0 && (
-                    <Box overflow={"auto"} mt={1}>
-                        <ChosenFilters />
-                    </Box>
-                )}
-            </Paper>
-
             {rows && !isLoading ? (
                 <>
-                    {optionView === "list" && (
-                        <Paper
-                            sx={{ mt: 1 }}
-                            style={{
-                                marginRight: bulkEditOpen ? 320 : 0,
-                            }}
-                        >
-                            <DataGridTable
-                                rows={rows}
-                                columns={columns}
-                                sortingBy={sortingBy}
-                                sortingOrder={sortingOrder}
-                                page={page}
-                                pageSize={pageSize}
-                                totalRows={totalRows}
-                                onPaginationModelChange={
-                                    handlePaginationModelChange
-                                }
-                                onBulkDelete={openBulkDeleteDialog}
-                                onBulkEdit={handleBulkEdit}
-                            />
-                        </Paper>
-                    )}
-                    {optionView === "grid" && (
-                        <Paper sx={{ marginTop: 2 }}>
-                            <MediaCard data={rows} />
-                        </Paper>
-                    )}
-                    {optionView === "map" && (
-                        <Paper sx={{ marginTop: 2 }}>
-                            <MapView />
-                        </Paper>
-                    )}
+                    <Paper
+                        sx={{ mt: 1 }}
+                        style={{
+                            marginRight: isBulkEditOpen ? 320 : 0,
+                        }}
+                    >
+                        <DataGridTable
+                            rows={rows}
+                            columns={columns}
+                            sortingBy={sortingBy}
+                            sortingOrder={sortingOrder}
+                            page={page}
+                            pageSize={pageSize}
+                            totalRows={totalRows}
+                            onPaginationModelChange={
+                                handlePaginationModelChange
+                            }
+                            onBulkDelete={openBulkDeleteDialog}
+                            onBulkEdit={handleBulkEdit}
+                        />
+                    </Paper>
                 </>
             ) : (
                 <Paper sx={{ mt: 2 }}>
@@ -486,10 +462,10 @@ const ViewAll: FC = () => {
             )}
 
             <BulkEdit
-                open={bulkEditOpen}
+                open={isBulkEditOpen}
                 selectedIds={selectedRows.map((row) => +row)}
                 onSave={handleBulkEditSave}
-                onClose={closeBulkEdit}
+                onClose={onBulkEditClose}
             />
             <DeleteDialog
                 multiple

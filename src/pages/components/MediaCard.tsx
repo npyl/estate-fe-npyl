@@ -1,20 +1,42 @@
 "use client";
-import { BoxProps, Grid } from "@mui/material";
-import { IPropertyResultResponse } from "src/types/properties";
+
+import { Grid, GridProps } from "@mui/material";
 import { BookingItem } from "./BookingItem";
+import { useEffect, useMemo, useState } from "react";
+import { useSelector } from "react-redux";
+import { useFilterPropertiesMutation } from "src/services/properties";
+import { selectAll } from "src/slices/filters";
 
 // ----------------------------------------------------------------------
 
-interface Props extends BoxProps {
+interface Props extends GridProps {
     title?: string;
     subheader?: string;
-    data: IPropertyResultResponse[];
 }
 
-export default function MediaCard({ data, sx, ...other }: Props) {
+export default function MediaCard({ sx, ...other }: Props) {
+    // pagination
+    const [page, setPage] = useState(0);
+    const [pageSize, setPageSize] = useState(25);
+
+    const allFilters = useSelector(selectAll);
+
+    const [filterProperties, { isLoading, data }] =
+        useFilterPropertiesMutation();
+
+    useEffect(() => {
+        filterProperties({
+            filter: allFilters,
+            page: page,
+            pageSize: pageSize,
+        });
+    }, [allFilters]);
+
+    const content = useMemo(() => data?.content || [], [data]);
+
     return (
-        <Grid container sx={{ pb: 2, ...sx }}>
-            {data.map((item, index) => (
+        <Grid container sx={{ pb: 2 }} {...other}>
+            {content?.map((item, index) => (
                 <Grid item key={index} xs={12} sm={4}>
                     <BookingItem item={item} selectedMarker={null} />
                 </Grid>
