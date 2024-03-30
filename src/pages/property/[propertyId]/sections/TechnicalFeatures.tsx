@@ -120,7 +120,6 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                     <ListItem
                         label={t("Entrances")}
                         value={technicalFeatures?.entrances || "-"}
-                        align="horizontal"
                     />
                 );
             case "Display Windows Length":
@@ -128,7 +127,6 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                     <ListItem
                         label={t("Display Windows Length")}
                         value={technicalFeatures?.displayWindowsLength || "-"}
-                        align="horizontal"
                     />
                 );
             case "Safety Door":
@@ -136,7 +134,6 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Safety Door")}
                         status={technicalFeatures?.safetyDoor}
-                        align="horizontal"
                     />
                 );
             case "Alarm System":
@@ -144,7 +141,6 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Alarm System")}
                         status={technicalFeatures?.alarmSystem}
-                        align="horizontal"
                     />
                 );
             case "Painted":
@@ -152,7 +148,6 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Painted")}
                         status={technicalFeatures?.painted}
-                        align="horizontal"
                     />
                 );
             case "Furnished":
@@ -160,7 +155,6 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                     <ListItem
                         label={t("Furnished")}
                         value={technicalFeatures?.furnished?.value || "-"}
-                        align="horizontal"
                     />
                 );
             case "Frame Type":
@@ -168,7 +162,6 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                     <ListItem
                         label={t("Frame Type")}
                         value={technicalFeatures?.frameType?.value || "-"}
-                        align="horizontal"
                     />
                 );
             case "Pane Glass Type":
@@ -176,7 +169,6 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                     <ListItem
                         label={t("Pane Glass Type")}
                         value={technicalFeatures?.paneGlassType?.value || "-"}
-                        align="horizontal"
                     />
                 );
             case "Window Screens":
@@ -184,7 +176,6 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Window Screens")}
                         status={technicalFeatures?.windowScreens}
-                        align="horizontal"
                     />
                 );
             case "Fireplace":
@@ -192,7 +183,6 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Fireplace")}
                         status={technicalFeatures?.fireplace}
-                        align="horizontal"
                     />
                 );
             case "Bright":
@@ -200,7 +190,6 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Bright")}
                         status={technicalFeatures?.bright}
-                        align="horizontal"
                     />
                 );
             case "Luxurious":
@@ -208,7 +197,6 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Luxurious")}
                         status={technicalFeatures?.luxurious}
-                        align="horizontal"
                     />
                 );
             case "Electric Car Charging Facilities":
@@ -218,7 +206,6 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                         status={
                             technicalFeatures?.electricCarChargingFacilities
                         }
-                        align="horizontal"
                     />
                 );
             case "Reception":
@@ -226,7 +213,6 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Reception")}
                         status={technicalFeatures?.reception}
-                        align="horizontal"
                     />
                 );
             case "Pets Allowed":
@@ -234,7 +220,6 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Pets Allowed")}
                         status={technicalFeatures?.petsAllowed}
-                        align="horizontal"
                     />
                 );
             case "Floor Type":
@@ -242,7 +227,6 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                     <ListItem
                         label={t("Floor Type")}
                         value={technicalFeatures?.floorType?.value || "-"}
-                        align="horizontal"
                     />
                 );
 
@@ -251,7 +235,6 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Satellite TV")}
                         status={technicalFeatures?.satelliteTV}
-                        align="horizontal"
                     />
                 );
 
@@ -260,7 +243,6 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Wiring")}
                         status={technicalFeatures?.wiring}
-                        align="horizontal"
                     />
                 );
             case "Loading - Unloading Elevator":
@@ -268,7 +250,6 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Loading - Unloading Elevator")}
                         status={technicalFeatures?.loadingUnloadingElevator}
-                        align="horizontal"
                     />
                 );
             case "False Ceiling":
@@ -276,7 +257,6 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("False Ceiling")}
                         status={technicalFeatures?.falseCeiling}
-                        align="horizontal"
                     />
                 );
             case "With Equipment":
@@ -284,7 +264,6 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("With Equipment")}
                         status={technicalFeatures?.withEquipment}
-                        align="horizontal"
                     />
                 );
             case "Double Frontage":
@@ -292,7 +271,6 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Double Frontage")}
                         status={technicalFeatures?.doubleFrontage}
-                        align="horizontal"
                     />
                 );
             case "Consideration":
@@ -300,7 +278,6 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Consideration")}
                         status={technicalFeatures?.consideration}
-                        align="horizontal"
                     />
                 );
             case "Floor To Area Ratio":
@@ -308,7 +285,6 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                     <ListItem
                         label={t("Floor to Area Ratio")}
                         value={technicalFeatures?.floorToAreaRatio || "-"}
-                        align="horizontal"
                     />
                 );
             case "Coverage Factor":
@@ -316,7 +292,6 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                     <ListItem
                         label={t("Coverage Factor")}
                         value={technicalFeatures?.coverageFactor || "-"}
-                        align="horizontal"
                     />
                 );
             case "Facade Length":
@@ -324,7 +299,6 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                     <ListItem
                         label={t("Facade Length")}
                         value={technicalFeatures?.facadeLength || "-"}
-                        align="horizontal"
                     />
                 );
             case "Inclination":
@@ -332,7 +306,6 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
                     <ListItem
                         label={t("Inclination")}
                         value={technicalFeatures?.inclination?.value || "-"}
-                        align="horizontal"
                     />
                 );
         }

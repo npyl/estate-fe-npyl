@@ -7,7 +7,7 @@ import { Label } from "src/components/label";
 import { useSecurityContext } from "src/contexts/security";
 import { UserCircle } from "src/icons/user-circle";
 import { IUser } from "src/types/user";
-import ListLanguageItem from "../List/Items/language-item";
+import ListLanguageItem from "../List/Items/language";
 import { SoftButton } from "../SoftButton";
 import { UserForm } from "./Form";
 
@@ -111,12 +111,10 @@ const ViewUser = ({ user }: ViewUserProps) => {
                         <ListItem
                             label={t("First Name")}
                             value={user?.firstName || ""}
-                            align="horizontal"
                         />
                         <ListItem
                             label={t("Email")}
                             value={user?.email || ""}
-                            align="horizontal"
                         />
                     </List>
                 </Grid>
@@ -125,12 +123,10 @@ const ViewUser = ({ user }: ViewUserProps) => {
                         <ListItem
                             label={t("Last Name")}
                             value={user?.lastName || ""}
-                            align="horizontal"
                         />
                         <ListLanguageItem
                             label={t("Preferred Language")}
                             value={user?.preferredLanguage?.key || "ENGLISH"}
-                            align="horizontal"
                         />
                     </List>
                 </Grid>
@@ -142,17 +138,14 @@ const ViewUser = ({ user }: ViewUserProps) => {
                         <ListItem
                             label={t("Mobile Phone")}
                             value={user?.mobilePhone || ""}
-                            align="horizontal"
                         />
                         <ListItem
                             label={t("Home Phone")}
                             value={user?.homePhone || ""}
-                            align="horizontal"
                         />
                         <ListItem
                             label={t("Business Phone")}
                             value={user?.businessPhone || ""}
-                            align="horizontal"
                         />
                     </List>
                 </Grid>
@@ -161,12 +154,10 @@ const ViewUser = ({ user }: ViewUserProps) => {
                         <ListItem
                             label={t("Office Phone")}
                             value={user?.officePhone || ""}
-                            align="horizontal"
                         />
                         <ListItem
                             label={t("Call Center Number")}
                             value={user?.callCenterNumber || ""}
-                            align="horizontal"
                         />
                     </List>
                 </Grid>
@@ -178,17 +169,11 @@ const ViewUser = ({ user }: ViewUserProps) => {
                         <ListItem
                             label={t("Region")}
                             value={user?.region || ""}
-                            align="horizontal"
                         />
-                        <ListItem
-                            label={t("City")}
-                            value={user?.city || ""}
-                            align="horizontal"
-                        />
+                        <ListItem label={t("City")} value={user?.city || ""} />
                         <ListItem
                             label={t("Zip code")}
                             value={user?.zipCode || ""}
-                            align="horizontal"
                         />
                     </List>
                 </Grid>
@@ -197,7 +182,6 @@ const ViewUser = ({ user }: ViewUserProps) => {
                         <ListItem
                             label={t("Address")}
                             value={user?.address || ""}
-                            align="horizontal"
                         />
                     </List>
                 </Grid>
@@ -206,25 +190,13 @@ const ViewUser = ({ user }: ViewUserProps) => {
             <Grid container>
                 <Grid item xs={6} padding={0}>
                     <List>
-                        <ListItem
-                            label={t("ΑΦΜ")}
-                            value={user?.afm || ""}
-                            align="horizontal"
-                        />
-                        <ListItem
-                            label={t("ΔΟΥ")}
-                            value={user?.doy || ""}
-                            align="horizontal"
-                        />
+                        <ListItem label={t("ΑΦΜ")} value={user?.afm || ""} />
+                        <ListItem label={t("ΔΟΥ")} value={user?.doy || ""} />
                     </List>
                 </Grid>
                 <Grid item xs={6} padding={0}>
                     <List>
-                        <ListItem
-                            label={t("ΓΕΜΥ")}
-                            value={user?.gemh || ""}
-                            align="horizontal"
-                        />
+                        <ListItem label={t("ΓΕΜΥ")} value={user?.gemh || ""} />
                     </List>
                 </Grid>
             </Grid>
@@ -239,7 +211,6 @@ const ViewUser = ({ user }: ViewUserProps) => {
                                     ? new Date(user?.joinedIn).toDateString()
                                     : ""
                             }
-                            align="horizontal"
                         />
                     </List>
                 </Grid>
@@ -254,7 +225,6 @@ const ViewUser = ({ user }: ViewUserProps) => {
                                       ).toDateString()
                                     : ""
                             }
-                            align="horizontal"
                         />
                     </List>
                 </Grid>

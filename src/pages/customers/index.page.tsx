@@ -12,7 +12,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import DataGridTable from "src/components/DataGrid";
 import { DeleteDialog } from "src/components/Dialog/Delete";
-import ListLabelsItem from "@/components/List/Items/labels-item";
+import ListLabelsItem from "@/components/List/Items/labels";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import useLocalStorageScrollRestore from "src/hooks/useLocalStorageScrollRestore";

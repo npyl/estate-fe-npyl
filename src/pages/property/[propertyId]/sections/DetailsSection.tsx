@@ -112,7 +112,6 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                     <ListItem
                         label={t("Floor")}
                         value={details?.floor.value || "-"}
-                        align="horizontal"
                     />
                 );
             case "Layers":
@@ -120,7 +119,6 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                     <ListItem
                         label={t("Layers")}
                         value={details?.layers || "-"}
-                        align="horizontal"
                     />
                 );
             case "Bedrooms":
@@ -128,7 +126,6 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                     <ListItem
                         label={t("Bedrooms")}
                         value={details?.bedrooms || "-"}
-                        align="horizontal"
                     />
                 );
             case "Kitchens":
@@ -136,7 +133,6 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                     <ListItem
                         label={t("Kitchens")}
                         value={details?.kitchens || "-"}
-                        align="horizontal"
                     />
                 );
             case "Bathrooms":
@@ -144,23 +140,15 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                     <ListItem
                         label={t("Bathrooms")}
                         value={details?.bathrooms || "-"}
-                        align="horizontal"
                     />
                 );
             case "W/C":
-                return (
-                    <ListItem
-                        label={t("W/C")}
-                        value={details?.wc || "-"}
-                        align="horizontal"
-                    />
-                );
+                return <ListItem label={t("W/C")} value={details?.wc || "-"} />;
             case "Living Rooms":
                 return (
                     <ListItem
                         label={t("Living Rooms")}
                         value={details?.livingrooms || "-"}
-                        align="horizontal"
                     />
                 );
             case "View Type":
@@ -168,7 +156,6 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                     <ListItem
                         label={t("View Type")}
                         value={details?.viewType.value || "-"}
-                        align="horizontal"
                     />
                 );
             case "Zone Type":
@@ -176,7 +163,6 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                     <ListItem
                         label={t("Zone Type")}
                         value={details?.zoneType.value || "-"}
-                        align="horizontal"
                     />
                 );
             case "Land Use":
@@ -184,7 +170,6 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                     <ListItem
                         label={t("Land Use")}
                         value={details?.landUse.value || "-"}
-                        align="horizontal"
                     />
                 );
             case "Accessibility":
@@ -192,7 +177,6 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                     <ListItem
                         label={t("Accessibility")}
                         value={details?.accessibility.value || "-"}
-                        align="horizontal"
                     />
                 );
             case "Rooms":
@@ -200,7 +184,6 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                     <ListItem
                         label={t("Rooms")}
                         value={details?.rooms || "-"}
-                        align="horizontal"
                     />
                 );
             case "Orientation":
@@ -208,7 +191,6 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                     <ListItem
                         label={t("Orientation")}
                         value={details?.orientation.value || "-"}
-                        align="horizontal"
                     />
                 );
             case "Floor Apartment":
@@ -216,7 +198,6 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                     <ListBooleanItem
                         label={t("Floor Apartment")}
                         status={details?.floorApartment}
-                        align="horizontal"
                     />
                 );
             case "Penthouse":
@@ -224,7 +205,6 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                     <ListBooleanItem
                         label={t("Penthouse")}
                         status={details?.penthouse}
-                        align="horizontal"
                     />
                 );
             case "Storeroom":
@@ -232,7 +212,6 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                     <ListBooleanItem
                         label={t("Storeroom")}
                         status={details?.storeroom}
-                        align="horizontal"
                     />
                 );
 
@@ -241,7 +220,6 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                     <ListBooleanItem
                         label={t("Attic")}
                         status={details?.attic}
-                        align="horizontal"
                     />
                 );
 
@@ -250,7 +228,6 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                     <ListBooleanItem
                         label={t("Playroom")}
                         status={details?.playroom}
-                        align="horizontal"
                     />
                 );
 
@@ -259,7 +236,6 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                     <ListItem
                         label={t("Distance From Sea")}
                         value={distances?.sea || "-"}
-                        align="horizontal"
                     />
                 );
             case "Number of WC":
@@ -267,7 +243,6 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                     <ListItem
                         label={t("Number of WC")}
                         value={details?.wc || "-"}
-                        align="horizontal"
                     />
                 );
             case "Zone":
@@ -275,7 +250,6 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                     <ListItem
                         label={t("Zone")}
                         value={details?.zoneType.value || "-"}
-                        align="horizontal"
                     />
                 );
             case "View":
@@ -283,7 +257,6 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                     <ListItem
                         label={t("View")}
                         value={details?.viewType.value || "-"}
-                        align="horizontal"
                     />
                 );
             case "Golden Visa":
@@ -291,7 +264,6 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
                     <ListBooleanItem
                         label={t("Golden Visa")}
                         status={details?.goldenVisa || false}
-                        align="horizontal"
                     />
                 );
         }

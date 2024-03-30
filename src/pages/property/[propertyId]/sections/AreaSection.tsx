@@ -42,37 +42,31 @@ const AreaSection: React.FC<AreaSectionProps> = (props) => {
                                     ? areas.groundFloor + "m²"
                                     : "- m²"
                             }
-                            align="horizontal"
                         />
 
                         <ListItem
                             label={t("First")}
                             value={areas?.first ? areas.first + "m²" : "- m²"}
-                            align="horizontal"
                         />
 
                         <ListItem
                             label={t("Second")}
                             value={areas?.second ? areas.second + "m²" : "- m²"}
-                            align="horizontal"
                         />
 
                         <ListItem
                             label={t("Third")}
                             value={areas?.third ? areas.third + "m²" : "- m²"}
-                            align="horizontal"
                         />
 
                         <ListItem
                             label={t("Fourth")}
                             value={areas?.fourth ? areas.fourth + "m²" : "- m²"}
-                            align="horizontal"
                         />
 
                         <ListItem
                             label={t("Fifth")}
                             value={areas?.fifth ? areas.fifth + "m²" : "- m²"}
-                            align="horizontal"
                         />
                     </List>
                 </Grid>
@@ -83,7 +77,6 @@ const AreaSection: React.FC<AreaSectionProps> = (props) => {
                             value={
                                 areas?.covered ? areas.covered + "m²" : "- m²"
                             }
-                            align="horizontal"
                         />
 
                         <ListItem
@@ -91,19 +84,16 @@ const AreaSection: React.FC<AreaSectionProps> = (props) => {
                             value={
                                 areas?.basement ? areas.basement + "m²" : "- m²"
                             }
-                            align="horizontal"
                         />
 
                         <ListItem
                             label={t("Attic")}
                             value={areas?.attic ? areas.attic + "m²" : "- m²"}
-                            align="horizontal"
                         />
 
                         <ListItem
                             label={t("Garden")}
                             value={areas?.garden ? areas.garden + "m²" : "- m²"}
-                            align="horizontal"
                         />
 
                         <ListItem
@@ -113,7 +103,6 @@ const AreaSection: React.FC<AreaSectionProps> = (props) => {
                                     ? areas.balconies + "m²"
                                     : "- m²"
                             }
-                            align="horizontal"
                         />
 
                         <ListItem
@@ -123,7 +112,6 @@ const AreaSection: React.FC<AreaSectionProps> = (props) => {
                                     ? areas.storeroom + "m²"
                                     : "- m²"
                             }
-                            align="horizontal"
                         />
                     </List>
                 </Grid>

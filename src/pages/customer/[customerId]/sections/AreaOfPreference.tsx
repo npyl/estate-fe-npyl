@@ -72,31 +72,15 @@ export const ViewLocationMini = ({
         <Grid container>
             <Grid item xs={6}>
                 <List>
-                    {region && (
-                        <ListItem
-                            label={t("Region")}
-                            value={region}
-                            align="horizontal"
-                        />
-                    )}
+                    {region && <ListItem label={t("Region")} value={region} />}
                     {neighb && (
-                        <ListItem
-                            label={t("Neighborhood")}
-                            value={neighb}
-                            align="horizontal"
-                        />
+                        <ListItem label={t("Neighborhood")} value={neighb} />
                     )}
                 </List>
             </Grid>
             <Grid item xs={6}>
                 <List>
-                    {city && (
-                        <ListItem
-                            label={t("City")}
-                            value={city}
-                            align="horizontal"
-                        />
-                    )}
+                    {city && <ListItem label={t("City")} value={city} />}
                 </List>
             </Grid>
         </Grid>

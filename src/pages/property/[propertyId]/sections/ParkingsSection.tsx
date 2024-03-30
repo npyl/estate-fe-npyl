@@ -59,12 +59,10 @@ const ParkingsSection: React.FC<ParkingsSectionProps> = (props) => {
                                         <ListItem
                                             label={t("Parking Type")}
                                             value={parking?.parkingType.value}
-                                            align="horizontal"
                                         />
                                         <ListItem
                                             label={t("Spots")}
                                             value={parking?.spots}
-                                            align="horizontal"
                                         />
                                     </List>
                                 </Grid>

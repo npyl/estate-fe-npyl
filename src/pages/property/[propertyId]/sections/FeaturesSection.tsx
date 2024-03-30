@@ -123,7 +123,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Panoramic View")}
                         status={features?.panoramicView}
-                        align="horizontal"
                     />
                 );
             case "Corner":
@@ -131,7 +130,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Corner")}
                         status={features?.corner}
-                        align="horizontal"
                     />
                 );
             case "Facade":
@@ -139,7 +137,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Facade")}
                         status={features?.facade}
-                        align="horizontal"
                     />
                 );
             case "Organized Garden":
@@ -147,7 +144,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Organized Garden")}
                         status={features?.organizedGarden}
-                        align="horizontal"
                     />
                 );
             case "Drilling":
@@ -155,7 +151,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Drilling")}
                         status={features?.drilling}
-                        align="horizontal"
                     />
                 );
             case "Adapting to the Ground":
@@ -163,7 +158,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Adapting to the Ground")}
                         status={features?.adaptingToTheGround}
-                        align="horizontal"
                     />
                 );
             case "Pool":
@@ -171,7 +165,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Pool")}
                         status={features?.pool}
-                        align="horizontal"
                     />
                 );
             case "Barbeque":
@@ -179,7 +172,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Barbeque")}
                         status={features?.barbeque}
-                        align="horizontal"
                     />
                 );
             case "Sea View":
@@ -187,7 +179,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Sea View")}
                         status={features?.seaView}
-                        align="horizontal"
                     />
                 );
             case "Mountain View":
@@ -195,7 +186,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Mountain View")}
                         status={features?.mountainView}
-                        align="horizontal"
                     />
                 );
             case "Sea Front":
@@ -203,7 +193,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Sea Front")}
                         status={features?.seaFront}
-                        align="horizontal"
                     />
                 );
             case "Smart Home":
@@ -211,7 +200,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Smart Home")}
                         status={features?.smartHome}
-                        align="horizontal"
                     />
                 );
             case "Thermal Insulation":
@@ -219,7 +207,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Thermal Insulation")}
                         status={features?.thermalInsulation}
-                        align="horizontal"
                     />
                 );
             case "Jacuzzi":
@@ -227,7 +214,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Jacuzzi")}
                         status={features?.jacuzzi}
-                        align="horizontal"
                     />
                 );
             case "Internet":
@@ -235,7 +221,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Internet")}
                         status={features?.internet}
-                        align="horizontal"
                     />
                 );
             case "Walkable Distance to Beach":
@@ -243,7 +228,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Walkable Distance to Beach")}
                         status={features?.walkableDistanceToBeach}
-                        align="horizontal"
                     />
                 );
             case "Quiet Area":
@@ -251,7 +235,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Quiet Area")}
                         status={features?.quietArea}
-                        align="horizontal"
                     />
                 );
             case "View":
@@ -259,7 +242,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("View")}
                         status={features?.view}
-                        align="horizontal"
                     />
                 );
             case "Near Bus Route":
@@ -267,7 +249,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Near Bus Route")}
                         status={features?.nearBusRoute}
-                        align="horizontal"
                     />
                 );
             case "Guestroom":
@@ -275,7 +256,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Guestroom")}
                         status={features?.guestroom}
-                        align="horizontal"
                     />
                 );
 
@@ -284,7 +264,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Bright")}
                         status={features?.bright}
-                        align="horizontal"
                     />
                 );
             case "Alarm System":
@@ -292,7 +271,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Alarm System")}
                         status={features?.alarmSystem}
-                        align="horizontal"
                     />
                 );
             case "Office":
@@ -300,7 +278,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Office")}
                         status={features?.office}
-                        align="horizontal"
                     />
                 );
             case "Home Cinema":
@@ -308,7 +285,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Home Cinema")}
                         status={features?.homeCinema}
-                        align="horizontal"
                     />
                 );
             case "Combined Kitchen and Dinning Area":
@@ -316,7 +292,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Combined Kitchen and Dinning Area")}
                         status={features?.combinedKitchenAndDiningArea}
-                        align="horizontal"
                     />
                 );
             case "Sound Insulation":
@@ -324,7 +299,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Sound Insulation")}
                         status={features?.soundInsulation}
-                        align="horizontal"
                     />
                 );
             case "Veranda":
@@ -332,7 +306,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Veranda")}
                         status={features?.veranda}
-                        align="horizontal"
                     />
                 );
             case "Well":
@@ -340,7 +313,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Well")}
                         status={features?.well}
-                        align="horizontal"
                     />
                 );
             case "Masonry Fence":
@@ -348,7 +320,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Masonry Fence")}
                         status={features?.masonryFence}
-                        align="horizontal"
                     />
                 );
             case "Access for Disabled":
@@ -356,7 +327,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Access for Disabled")}
                         status={features?.accessForDisabled}
-                        align="horizontal"
                     />
                 );
             case "Tents":
@@ -364,7 +334,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Tents")}
                         status={features?.tents}
-                        align="horizontal"
                     />
                 );
             case "Heated Pool":
@@ -372,7 +341,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Heated Pool")}
                         status={features?.heatedPool}
-                        align="horizontal"
                     />
                 );
             case "Has 24 Hours Security":
@@ -380,7 +348,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Has 24 Hours Security")}
                         status={features?.has24HoursSecurity}
-                        align="horizontal"
                     />
                 );
             case "CCTV":
@@ -388,7 +355,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("CCTV")}
                         status={features?.cctv}
-                        align="horizontal"
                     />
                 );
             case "Fire Detector":
@@ -396,7 +362,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Fire Detector")}
                         status={features?.fireDetector}
-                        align="horizontal"
                     />
                 );
             case "Independent Heating Per Room":
@@ -404,7 +369,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Independent Heating Per Room")}
                         status={features?.independentHeatingPerRoom}
-                        align="horizontal"
                     />
                 );
             case "Indoor Pool":
@@ -412,7 +376,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Indoor Pool")}
                         status={features?.indoorPool}
-                        align="horizontal"
                     />
                 );
             case "Within City Plan":
@@ -420,7 +383,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Within City Plan")}
                         status={features?.withinCityPlan}
-                        align="horizontal"
                     />
                 );
             case "Within Residential Zone":
@@ -428,7 +390,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Within Residential Zone")}
                         status={features?.withinResidentialZone}
-                        align="horizontal"
                     />
                 );
             case "Loading Dock":
@@ -436,7 +397,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     <ListBooleanItem
                         label={t("Loading Dock")}
                         status={features?.loadingDock}
-                        align="horizontal"
                     />
                 );
         }

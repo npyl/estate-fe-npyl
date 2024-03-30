@@ -46,7 +46,11 @@ const ListItem: FC<ListItemProps> = (props) => {
                 primary={<Typography variant="subtitle2">{label}</Typography>}
                 secondary={
                     children || (
-                        <Typography color="text.secondary" variant="body2">
+                        <Typography
+                            color="text.secondary"
+                            variant="body2"
+                            textAlign="right"
+                        >
                             {value?.toString() || ""}
                         </Typography>
                     )

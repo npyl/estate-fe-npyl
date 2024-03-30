@@ -103,7 +103,6 @@ const ConstructionSection: React.FC<ConstructionSectionProps> = ({ data }) => {
                     <ListItem
                         label={t("Year Of Construction")}
                         value={construction?.yearOfConstruction || "-"}
-                        align="horizontal"
                     />
                 );
             case "Year of Renovation":
@@ -111,7 +110,6 @@ const ConstructionSection: React.FC<ConstructionSectionProps> = ({ data }) => {
                     <ListItem
                         label={t("Year Of Renovation")}
                         value={construction?.yearOfRenovation || "-"}
-                        align="horizontal"
                     />
                 );
             case "Total Floor Number":
@@ -119,7 +117,6 @@ const ConstructionSection: React.FC<ConstructionSectionProps> = ({ data }) => {
                     <ListItem
                         label={t("Total Floor Number")}
                         value={construction?.totalFloorNumber || "-"}
-                        align="horizontal"
                     />
                 );
             case "Under Construction":
@@ -127,7 +124,6 @@ const ConstructionSection: React.FC<ConstructionSectionProps> = ({ data }) => {
                     <ListBooleanItem
                         label={t("Under Construction")}
                         status={construction?.underConstruction}
-                        align="horizontal"
                     />
                 );
             case "Renovated":
@@ -135,7 +131,6 @@ const ConstructionSection: React.FC<ConstructionSectionProps> = ({ data }) => {
                     <ListBooleanItem
                         label={t("Renovated")}
                         status={construction?.renovated}
-                        align="horizontal"
                     />
                 );
             case "Needs Renovation":
@@ -143,7 +138,6 @@ const ConstructionSection: React.FC<ConstructionSectionProps> = ({ data }) => {
                     <ListBooleanItem
                         label={t("Needs Renovation")}
                         status={construction?.needsRenovation}
-                        align="horizontal"
                     />
                 );
             case "Elevator":
@@ -151,7 +145,6 @@ const ConstructionSection: React.FC<ConstructionSectionProps> = ({ data }) => {
                     <ListBooleanItem
                         label={t("Elevator")}
                         status={construction?.elevator}
-                        align="horizontal"
                     />
                 );
             case "Internal Stairs":
@@ -159,7 +152,6 @@ const ConstructionSection: React.FC<ConstructionSectionProps> = ({ data }) => {
                     <ListBooleanItem
                         label={t("Internal Stairs")}
                         status={construction?.internalStairs}
-                        align="horizontal"
                     />
                 );
             case "Newly Build":
@@ -167,7 +159,6 @@ const ConstructionSection: React.FC<ConstructionSectionProps> = ({ data }) => {
                     <ListBooleanItem
                         label={t("Newly Built")}
                         status={construction?.newlyBuilt}
-                        align="horizontal"
                     />
                 );
             case "Incomplete":
@@ -175,7 +166,6 @@ const ConstructionSection: React.FC<ConstructionSectionProps> = ({ data }) => {
                     <ListBooleanItem
                         label={t("Incomplete")}
                         status={construction?.incomplete}
-                        align="horizontal"
                     />
                 );
             case "Neoclassical":
@@ -183,7 +173,6 @@ const ConstructionSection: React.FC<ConstructionSectionProps> = ({ data }) => {
                     <ListBooleanItem
                         label={t("Neoclassical")}
                         status={construction?.neoclassical}
-                        align="horizontal"
                     />
                 );
             case "Preserved":
@@ -191,7 +180,6 @@ const ConstructionSection: React.FC<ConstructionSectionProps> = ({ data }) => {
                     <ListBooleanItem
                         label={t("Preserved")}
                         status={construction?.preserved}
-                        align="horizontal"
                     />
                 );
         }

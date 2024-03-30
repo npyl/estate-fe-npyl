@@ -85,7 +85,6 @@ const DistanceSection: React.FC<DistanceSectionProps> = (props) => {
                     <DistanceListItem
                         label={t("Schools")}
                         value={distances?.schools}
-                        align="horizontal"
                     />
                 );
             case "Supermarket":
@@ -93,7 +92,6 @@ const DistanceSection: React.FC<DistanceSectionProps> = (props) => {
                     <DistanceListItem
                         label={t("Supermarket")}
                         value={distances?.supermarket}
-                        align="horizontal"
                     />
                 );
             case "Cafe-Restaurant":
@@ -101,7 +99,6 @@ const DistanceSection: React.FC<DistanceSectionProps> = (props) => {
                     <DistanceListItem
                         label={t("Cafe-Restaurant")}
                         value={distances?.cafeRestaurant}
-                        align="horizontal"
                     />
                 );
             case "Hospital":
@@ -109,7 +106,6 @@ const DistanceSection: React.FC<DistanceSectionProps> = (props) => {
                     <DistanceListItem
                         label={t("Hospital")}
                         value={distances?.hospital}
-                        align="horizontal"
                     />
                 );
 
@@ -118,7 +114,6 @@ const DistanceSection: React.FC<DistanceSectionProps> = (props) => {
                     <DistanceListItem
                         label={t("From Sea")}
                         value={distances?.sea}
-                        align="horizontal"
                     />
                 );
             case "Public Transportation":
@@ -126,7 +121,6 @@ const DistanceSection: React.FC<DistanceSectionProps> = (props) => {
                     <DistanceListItem
                         label={t("Public Transportation")}
                         value={distances?.publicTransport}
-                        align="horizontal"
                     />
                 );
             case "Airport":
@@ -134,7 +128,6 @@ const DistanceSection: React.FC<DistanceSectionProps> = (props) => {
                     <DistanceListItem
                         label={t("Airport")}
                         value={distances?.airport}
-                        align="horizontal"
                     />
                 );
         }

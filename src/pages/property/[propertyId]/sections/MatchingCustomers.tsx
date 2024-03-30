@@ -20,7 +20,7 @@ import DataGridTable from "src/components/DataGrid";
 import { UserCircle } from "src/icons/user-circle";
 import { useSuggestForPropertyQuery } from "src/services/properties";
 import { ILabel } from "src/types/label";
-import ListLabelsItem from "@/components/List/Items/labels-item";
+import ListLabelsItem from "@/components/List/Items/labels";
 import { TypeLabels } from "src/pages/customers/components/TypeLabels";
 
 const pageSize = 5;

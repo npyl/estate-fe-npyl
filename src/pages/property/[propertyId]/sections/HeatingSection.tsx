@@ -84,7 +84,6 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
                     <ListItem
                         label={t("Energy Class")}
                         value={heating?.energyClass.value || "-"}
-                        align="horizontal"
                     />
                 );
             case "Heating Type":
@@ -92,7 +91,6 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
                     <ListItem
                         label={t("Heating Type")}
                         value={heating?.heatingType.value || "-"}
-                        align="horizontal"
                     />
                 );
             case "Heating System":
@@ -100,7 +98,6 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
                     <ListItem
                         label={t("Heating System")}
                         value={heating?.heatingSystem.value || "-"}
-                        align="horizontal"
                     />
                 );
             case "Electricity Type":
@@ -108,7 +105,6 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
                     <ListItem
                         label={t("Electricity Type")}
                         value={heating?.electricityType.value || "-"}
-                        align="horizontal"
                     />
                 );
             case "Floor Heating":
@@ -116,7 +112,6 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
                     <ListBooleanItem
                         label={t("Floor Heating")}
                         status={heating?.floorHeating}
-                        align="horizontal"
                     />
                 );
             case "Air Conditioning":
@@ -124,7 +119,6 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
                     <ListBooleanItem
                         label={t("Air Conditioning")}
                         status={heating?.airConditioning}
-                        align="horizontal"
                     />
                 );
 
@@ -133,7 +127,6 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
                     <ListBooleanItem
                         label={t("Solar Boiler")}
                         status={heating?.solarBoiler}
-                        align="horizontal"
                     />
                 );
             case "Off Peak Electricity":
@@ -141,7 +134,6 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
                     <ListBooleanItem
                         label={t("Off Peak Electricity")}
                         status={heating?.offPeakElectricity}
-                        align="horizontal"
                     />
                 );
         }
