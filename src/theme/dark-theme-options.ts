@@ -5,6 +5,7 @@ import { ThemeOptions, alpha } from "@mui/material";
 const neutral = {
     100: "#F3F4F6",
     200: "#E5E7EB",
+    250: "#DBDEE3",
     300: "#D1D5DB",
     350: "#EEE",
     400: "#9CA3AF",

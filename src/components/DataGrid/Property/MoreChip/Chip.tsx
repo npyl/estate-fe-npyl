@@ -1,22 +1,21 @@
-import {
-    ChipProps,
-    Grid,
-    Paper,
-    Popper,
-    Stack,
-    IconButton,
-} from "@mui/material";
+// Chip with popover
+
+import { ChipProps, Grid, Popper, IconButton, Typography } from "@mui/material";
 import { useCallback, useState, MouseEvent } from "react";
 import { ILabel } from "src/types/label";
 import { Label } from "src/components/label";
 import { Close } from "@mui/icons-material";
-import StyledChip from "./styles";
+import StyledChip, { StyledPaper } from "./styles";
+import { useTranslation } from "react-i18next";
+import { SpaceBetween } from "@/components/styled";
 
 interface MoreChipProps extends ChipProps {
     labels: ILabel[];
 }
 
 const MoreChip = ({ labels, ...props }: MoreChipProps) => {
+    const { t } = useTranslation();
+
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
     const open = Boolean(anchorEl);
@@ -33,18 +32,19 @@ const MoreChip = ({ labels, ...props }: MoreChipProps) => {
             <StyledChip {...props} onClick={handleOpen} />
 
             <Popper id={id} open={open} anchorEl={anchorEl}>
-                <Paper
+                <StyledPaper
+                    elevation={20}
                     sx={{
-                        p: 2,
-                        width: "300px",
+                        mt: 1,
                     }}
                 >
-                    <Stack alignItems="flex-end">
-                        <IconButton onClick={handleClose}>
+                    <SpaceBetween alignItems="center">
+                        <Typography variant="h6">{t("All labels")}</Typography>
+                        <IconButton size="small" onClick={handleClose}>
                             <Close />
                         </IconButton>
-                    </Stack>
-                    <Grid container>
+                    </SpaceBetween>
+                    <Grid container mt={1} spacing={1}>
                         {labels.map(({ id, name, color }) => (
                             <Grid
                                 item
@@ -64,7 +64,7 @@ const MoreChip = ({ labels, ...props }: MoreChipProps) => {
                             </Grid>
                         ))}
                     </Grid>
-                </Paper>
+                </StyledPaper>
             </Popper>
         </>
     );
