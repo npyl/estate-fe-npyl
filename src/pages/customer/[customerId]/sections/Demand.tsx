@@ -4,7 +4,7 @@ import * as React from "react";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { ListItem } from "src/components/List";
-import ListLabelsItem from "src/components/List/labels-item";
+import ListLabelsItem from "@/components/List/Items/labels-item";
 import { useGetLabelsQuery } from "src/services/labels";
 import AreaOfPreference from "./AreaOfPreference";
 import FeaturesDemandSection from "./FeaturesDemand";

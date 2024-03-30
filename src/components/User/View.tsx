@@ -7,7 +7,7 @@ import { Label } from "src/components/label";
 import { useSecurityContext } from "src/contexts/security";
 import { UserCircle } from "src/icons/user-circle";
 import { IUser } from "src/types/user";
-import ListLanguageItem from "../List/language-item";
+import ListLanguageItem from "../List/Items/language-item";
 import { SoftButton } from "../SoftButton";
 import { UserForm } from "./Form";
 

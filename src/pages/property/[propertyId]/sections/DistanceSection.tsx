@@ -5,7 +5,7 @@ import { Typography, Box, Paper, Divider, Grid } from "@mui/material";
 
 import { List } from "src/components/List";
 import { useTranslation } from "react-i18next";
-import DistanceListItem from "src/components/List/distance";
+import DistanceListItem from "@/components/List/Items/distance";
 
 interface DistanceSectionProps {
     data: IProperties;

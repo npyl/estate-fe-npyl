@@ -1,6 +1,6 @@
 import { Typography } from "@mui/material";
 import type { FC } from "react";
-import ListItem from "./item";
+import ListItem from "../item";
 import type { ListItemProps as MuiListItemProps } from "@mui/material";
 import ClearIcon from "@mui/icons-material/Clear";
 import DoneIcon from "@mui/icons-material/Done";

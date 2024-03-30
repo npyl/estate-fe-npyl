@@ -1,9 +1,9 @@
 import { ListItemProps, Typography, Box } from "@mui/material";
 import type { FC } from "react";
-import Label from "../label/Label";
+import Label from "../../label/Label";
 
 import { ILabel } from "src/types/label";
-import ListItem from "./item";
+import ListItem from "../item";
 
 type Direction = "horizontal" | "vertical";
 

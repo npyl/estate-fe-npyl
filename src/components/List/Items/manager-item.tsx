@@ -3,7 +3,7 @@ import { styled } from "@mui/material/styles";
 import { useRouter } from "next/router";
 import { FC, useCallback, useState } from "react";
 import { IUser } from "src/types/user";
-import ListItem from "./item";
+import ListItem from "../item";
 import { useProfileQuery } from "src/services/user";
 import { useTranslation } from "react-i18next";
 

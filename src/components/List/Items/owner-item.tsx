@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import type { FC } from "react";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import ListItem from "./item";
+import ListItem from "../item";
 import { useProfileQuery } from "src/services/user";
 import { ICustomer } from "src/types/customer";
 

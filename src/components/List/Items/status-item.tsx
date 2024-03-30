@@ -2,7 +2,7 @@ import type { ListItemProps } from "@mui/material";
 import { Box, Typography } from "@mui/material";
 import type { FC } from "react";
 
-import ListItem from "./item";
+import ListItem from "../item";
 
 import Brightness1Icon from "@mui/icons-material/Brightness1";
 

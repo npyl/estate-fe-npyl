@@ -1,6 +1,6 @@
 import type { ListItemProps as MuiListItemProps } from "@mui/material";
 import { Box, ListItemText, Typography } from "@mui/material";
-import StyledListItem from "./StyledListItem";
+import StyledListItem from "../styled";
 import type { FC } from "react";
 
 type Direction = "horizontal" | "vertical";

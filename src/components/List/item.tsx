@@ -1,11 +1,9 @@
-import type {
-    ListItemTextProps,
-    ListItemProps as MuiListItemProps,
-} from "@mui/material";
+import type { ListItemTextProps } from "@mui/material";
 import { ListItemText, Typography } from "@mui/material";
-import StyledListItem from "./StyledListItem";
+import StyledListItem from "./styled";
 import { styled } from "@mui/material/styles";
 import type { FC } from "react";
+import ListItemProps, { Direction } from "./types";
 
 interface CustomProps extends ListItemTextProps {
     align?: Direction;
@@ -24,14 +22,6 @@ const CustomListItemText = styled(ListItemText)<CustomProps>(({ align }) => ({
 }));
 
 // --------------------------------------------------------------------------------
-
-type Direction = "horizontal" | "vertical";
-
-interface ListItemProps extends MuiListItemProps {
-    align?: Direction;
-    label: string;
-    value?: any | null;
-}
 
 const ListItem: FC<ListItemProps> = (props) => {
     const {
@@ -56,7 +46,7 @@ const ListItem: FC<ListItemProps> = (props) => {
                 primary={<Typography variant="subtitle2">{label}</Typography>}
                 secondary={
                     children || (
-                        <Typography color="textSecondary" variant="body2">
+                        <Typography color="text.secondary" variant="body2">
                             {value?.toString() || ""}
                         </Typography>
                     )
