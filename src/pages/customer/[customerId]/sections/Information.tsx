@@ -82,17 +82,10 @@ const InformationSection: React.FC = () => {
                             label={t("email")}
                             value={data?.email || "-"}
                         />
-                        {data.managedBy != null ? (
-                            <ListManagerItem
-                                label={t("Managed By")}
-                                manager={data.managedBy} // You don't need the || "-" here because you're already checking if it's not null
-                            />
-                        ) : (
-                            <ListItem
-                                label={t("Managed By")}
-                                value={"-"} // Displaying '-' when managedBy is null
-                            />
-                        )}
+                        <ListManagerItem
+                            label={t("Managed By").toString()}
+                            manager={data.managedBy}
+                        />
                         <ListItem
                             label={t("Mobile Phone")}
                             value={data?.mobilePhone || "-"}
