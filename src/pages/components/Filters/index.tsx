@@ -1,17 +1,15 @@
 import TuneIcon from "@mui/icons-material/Tune";
 import { Badge, Stack } from "@mui/material";
-import { useState } from "react";
 import { useDispatch, useSelector } from "src/store";
-
-// import CountrySelect from "./FilterCities";
-// import SubAreas from "./FilterSubAreas";
+// Filters
 import FilterParentCategory from "./FilterParentCategory";
 import FilterCategory from "./FilterCategory";
 import FilterLabels from "./FilterLabels";
 import FilterMore from "./FilterMore";
 import PriceSelect from "./FilterPrice";
 import SaleSelect from "./FilterSale";
-import { StyledPriceButton } from "./styles";
+
+import { StyledPriceButton } from "@/components/Filters";
 
 import {
     selectLabels,
@@ -20,10 +18,10 @@ import {
     resetState,
 } from "src/slices/filters";
 
+import useDialog from "@/hooks/useDialog";
+
 export const FilterSection = () => {
     const dispatch = useDispatch();
-
-    const [openFilter, setOpenFilter] = useState(false);
 
     const changedPropertyFilters = useSelector(sumOfChangedProperties);
     const labels = useSelector(selectLabels) || [];
@@ -32,17 +30,7 @@ export const FilterSection = () => {
         dispatch(resetState());
     };
 
-    const handleOpenFilter = () => {
-        setOpenFilter(true);
-    };
-
-    const handleApplyFilter = () => {
-        // setFilter(changedProps);
-    };
-
-    const handleCloseFilter = () => {
-        setOpenFilter(false);
-    };
+    const [isDialogOpen, openDialog, closeDialog] = useDialog();
 
     return (
         <>
@@ -62,21 +50,21 @@ export const FilterSection = () => {
                     open={false}
                     disableRipple
                     color="inherit"
-                    onClick={handleOpenFilter}
+                    onClick={openDialog}
                 >
                     <Badge badgeContent={changedPropertyFilters} color="error">
                         <TuneIcon />
                     </Badge>
                 </StyledPriceButton>
-                {openFilter && (
+
+                {isDialogOpen ? (
                     <FilterMore
-                        open={openFilter}
-                        onOpen={handleOpenFilter}
-                        onApply={handleApplyFilter}
-                        onClose={handleCloseFilter}
+                        open={isDialogOpen}
+                        onOpen={openDialog}
+                        onClose={closeDialog}
                         onResetFilter={handleResetFilter}
                     />
-                )}
+                ) : null}
             </Stack>
         </>
     );

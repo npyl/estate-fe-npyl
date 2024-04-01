@@ -7,7 +7,7 @@ import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 
 import { DateRange } from "react-date-range";
-import { StyledPriceButton } from "src/pages/components/Filters/styles";
+import { StyledPriceButton } from "@/components/Filters";
 import {
     selectFromDate,
     selectToDate,
