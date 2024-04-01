@@ -6,7 +6,11 @@ import { useTranslation } from "react-i18next";
 import DataGrid from "@/components/DataGrid/Property";
 import Panel from "@/components/Panel";
 
-const OwnedCustomerPropertiesSection: React.FC = () => {
+interface Props {
+    variant?: "default" | "small";
+}
+
+const OwnedCustomerPropertiesSection = ({ variant }: Props) => {
     const router = useRouter();
     const { t } = useTranslation();
     const { customerId } = router.query;
@@ -66,6 +70,7 @@ const OwnedCustomerPropertiesSection: React.FC = () => {
             <DataGrid
                 rows={transformedData}
                 resource="property"
+                columnVariant={variant}
                 // ...
                 sortingBy="firstName"
                 sortingOrder={"asc"}
