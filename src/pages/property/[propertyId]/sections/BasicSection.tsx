@@ -253,7 +253,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 return (
                     <ListItem label={"ROI"}>
                         <Button
-                            sx={{ flex: 1, float: "right", height: "22px" }}
+                            sx={{ height: "22px" }}
                             variant="outlined"
                             onClick={handleOpenPopup}
                         >
