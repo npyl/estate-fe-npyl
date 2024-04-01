@@ -11,20 +11,20 @@ export default function FilterSortBy({ onSorting }: IFilterSortByProps) {
     const sortByFilterOptions = [
         { value: "default", label: t("Default Sorting") },
         {
-            value: t("Ascending_Price"),
-            label: "Rising Price ",
+            value: "Ascending_Price",
+            label: t("Rising Price"),
         },
         {
-            value: t("Descending_Price"),
-            label: "Falling Price ",
+            value: "Descending_Price",
+            label: t("Falling Price"),
         },
         {
-            value: t("Ascending_Area"),
-            label: "Rising Area",
+            value: "Ascending_Area",
+            label: t("Rising Area"),
         },
         {
-            value: t("Descending_Area"),
-            label: "Falling Price",
+            value: "Descending_Area",
+            label: t("Falling Area"),
         },
     ];
 

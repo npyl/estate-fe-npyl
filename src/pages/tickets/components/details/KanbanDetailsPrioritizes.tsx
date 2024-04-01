@@ -3,14 +3,9 @@ import { Box, FormControlLabel, Radio, RadioGroup, Stack } from "@mui/material";
 import { alpha } from "@mui/material/styles";
 // components
 import Iconify from "../../../../components/iconify";
+import { useTranslation } from "react-i18next";
 
 // ----------------------------------------------------------------------
-
-const PRIORITIZES_OPTIONS = [
-    { value: 0, label: "Low", color: "info" },
-    { value: 1, label: "Medium", color: "warning" },
-    { value: 2, label: "High", color: "error" },
-] as const;
 
 type Props = {
     priority: number;
@@ -21,6 +16,14 @@ export default function KanbanDetailsPrioritizes({
     priority,
     onChangePrioritize,
 }: Props) {
+    const { t } = useTranslation();
+
+    const PRIORITIZES_OPTIONS = [
+        { value: 0, label: t("Low"), color: "info" },
+        { value: 1, label: t("Medium"), color: "warning" },
+        { value: 2, label: t("High"), color: "error" },
+    ] as const;
+
     return (
         <RadioGroup row value={priority} onChange={onChangePrioritize}>
             {PRIORITIZES_OPTIONS.map((option) => {

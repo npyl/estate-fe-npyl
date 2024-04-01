@@ -120,7 +120,7 @@ const OwnedCustomerPropertiesSection: React.FC = () => {
 
     const columns: GridColDef[] = [
         {
-            field: "propertyImageUrl",
+            field: "propertyImageUrl", // -> propertyImage
             headerName: t("Thumbnail") || "",
             width: 180,
             align: "center",

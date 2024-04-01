@@ -3,11 +3,12 @@ import { Button, InputBase, Paper, Stack } from "@mui/material";
 // components
 import { useAuth } from "src/hooks/use-auth";
 import { CustomAvatar } from "src/components/custom-avatar";
-
+import { useTranslation } from "react-i18next";
 // ----------------------------------------------------------------------
 
 export default function KanbanDetailsCommentInput() {
     const { user } = useAuth();
+    const { t } = useTranslation();
 
     return (
         <Stack direction="row" spacing={2} sx={{ py: 3, px: 2.5 }}>
@@ -22,7 +23,7 @@ export default function KanbanDetailsCommentInput() {
                     fullWidth
                     multiline
                     rows={2}
-                    placeholder="Type a message"
+                    placeholder={t("Type a message") as string}
                     sx={{ px: 1 }}
                 />
 
@@ -31,7 +32,7 @@ export default function KanbanDetailsCommentInput() {
                     alignItems="center"
                     justifyContent="flex-end"
                 >
-                    <Button variant="contained">Comment</Button>
+                    <Button variant="contained">{t("Comment")}</Button>
                 </Stack>
             </Paper>
         </Stack>
