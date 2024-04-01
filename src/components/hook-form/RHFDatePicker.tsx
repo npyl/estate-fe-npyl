@@ -1,49 +1,40 @@
-// form
-import { useCallback, useEffect, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import { DateObject } from "react-multi-date-picker";
-// datepicker
-import DatePicker, { DatePickerProps } from "src/components/DatePicker";
+import {
+    DatePickerProps,
+    DatePicker as MuiDatePicker,
+} from "@mui/x-date-pickers";
+import Stack from "@mui/material/Stack";
+import { FormHelperText, Typography } from "@mui/material";
+import dayjs from "dayjs";
 
-// ----------------------------------------------------------------------
-
-type Props = DatePickerProps & {
+interface Props extends DatePickerProps<any> {
+    label: string;
     name: string;
-};
+}
 
-export default function RHFDatePicker({ name, ...other }: Props) {
-    const { control, setValue, watch } = useFormContext();
-
-    const date = watch(name);
-    const [visibleDate, setVisibleDate] = useState<string>(date || "");
-
-    // initial
-    useEffect(
-        () => setVisibleDate(date ? new Date(date).toDateString() : ""),
-        [date]
-    );
-
-    const handleSelect = useCallback((dates: DateObject | DateObject[]) => {
-        const date = (dates as DateObject).toDate();
-        setValue(name, date.toISOString());
-        setVisibleDate(date.toLocaleDateString());
-    }, []);
+// INFO: value prop must be an ISO date string
+const DatePicker = ({ name, label, ...others }: Props) => {
+    const { control } = useFormContext();
 
     return (
         <Controller
             name={name}
             control={control}
-            render={({ field, fieldState: { error } }) => (
-                <DatePicker
-                    {...field}
-                    value={visibleDate}
-                    date={field.value}
-                    error={!!error}
-                    helperText={error?.message}
-                    onSelect={handleSelect}
-                    {...other}
-                />
+            render={({ field: { value, ...field }, fieldState: { error } }) => (
+                <Stack spacing={1}>
+                    <Typography variant="subtitle1">{label}</Typography>
+                    <MuiDatePicker
+                        {...field}
+                        {...others}
+                        value={value ? dayjs(value) : null}
+                    />
+                    {error ? (
+                        <FormHelperText error>{error?.message}</FormHelperText>
+                    ) : null}
+                </Stack>
             )}
         />
     );
-}
+};
+
+export default DatePicker;

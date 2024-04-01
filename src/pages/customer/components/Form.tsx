@@ -18,6 +18,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import FormProvider from "src/components/hook-form";
 import * as Yup from "yup";
+import dayjs from "dayjs";
 
 interface ICustomerLocationYup {
     street: string;
@@ -72,7 +73,9 @@ const getDefaultValues = (customer?: ICustomer): ICustomerYup => ({
     homePhone: customer?.homePhone || "",
     fax: customer?.fax || "",
     idNumber: customer?.idNumber || "",
-    dateOfBirth: customer?.dateOfBirth || "",
+    dateOfBirth: customer?.dateOfBirth
+        ? dayjs(customer.dateOfBirth).toISOString()
+        : "",
     passportNumber: customer?.passportNumber || "",
 
     // WARN: BE crashes if these are: "" (therefore I have them required)

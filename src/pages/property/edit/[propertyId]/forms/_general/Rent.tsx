@@ -8,6 +8,7 @@ import {
     RHFOnlyNumbers,
 } from "src/components/hook-form";
 import { styled } from "@mui/material/styles";
+import dayjs from "dayjs";
 
 const StyledBox = styled(Box)(({ theme }) => ({
     border: "1px dashed",
@@ -43,13 +44,18 @@ const Rent = () => {
                 <Grid container spacing={2}>
                     <Grid item xs={12} lg={6}>
                         <RHFDatePicker
-                            fullWidth
                             name="availableAfter"
                             label={t("Available After").toString()}
                         />
                     </Grid>
 
-                    <Grid item xs={12} lg={6}>
+                    <Grid
+                        item
+                        xs={12}
+                        lg={6}
+                        display="flex"
+                        alignItems="flex-end"
+                    >
                         <RHFOnlyNumbers
                             name="currentRentPrice"
                             label={t("Current Rent Price")}
@@ -61,10 +67,8 @@ const Rent = () => {
                     <Grid item xs={12} lg={6}>
                         <RHFDatePicker
                             name="rentalStart"
-                            pickerProps={{
-                                minDate: availDate,
-                            }}
                             label={t("Rental Period Start").toString()}
+                            minDate={availDate ? dayjs(availDate) : null}
                         />
                     </Grid>
 
@@ -72,9 +76,7 @@ const Rent = () => {
                         <RHFDatePicker
                             name="rentalEnd"
                             label={t("Rental Period End").toString()}
-                            pickerProps={{
-                                minDate: startDate,
-                            }}
+                            minDate={startDate ? dayjs(startDate) : null}
                         />
                     </Grid>
                 </Grid>

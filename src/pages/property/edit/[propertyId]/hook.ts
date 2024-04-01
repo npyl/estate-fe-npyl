@@ -7,6 +7,7 @@ import { properties } from "src/services/properties";
 import { dispatch } from "src/store";
 import { LocationDisplay } from "src/types/enums";
 import * as Yup from "yup";
+import dayjs from "dayjs";
 
 type OmitList = "managerId" | "ownerId";
 
@@ -191,9 +192,16 @@ const getDefaultValues = (property?: IProperties): IPropertyYup => {
 
         rented: notNot(property?.rented),
 
-        rentalStart: property?.rentalStart || "",
-        rentalEnd: property?.rentalEnd || "",
-        availableAfter: property?.availableAfter || "",
+        rentalStart: property?.rentalStart
+            ? dayjs(property?.rentalStart).toISOString()
+            : "",
+        rentalEnd: property?.rentalEnd
+            ? dayjs(property?.rentalEnd).toISOString()
+            : "",
+        availableAfter: property?.availableAfter
+            ? dayjs(property.availableAfter).toISOString()
+            : "",
+
         auction: notNot(property?.auction),
         exclusive: notNot(property?.exclusive),
 

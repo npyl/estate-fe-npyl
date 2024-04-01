@@ -26,6 +26,10 @@ import { createEmotionCache } from "../utils/create-emotion-cache";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import { TabsProvider } from "src/contexts/tabs";
 
+// DatePicker
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+
 type EnhancedAppProps = AppProps & {
     Component: NextPage;
     emotionCache: EmotionCache;
@@ -78,11 +82,18 @@ const App: FC<EnhancedAppProps> = (props) => {
                                                 !auth.isInitialized ? (
                                                     <SplashScreen />
                                                 ) : (
-                                                    getLayout(
-                                                        <Component
-                                                            {...pageProps}
-                                                        />
-                                                    )
+                                                    // DatePicker
+                                                    <LocalizationProvider
+                                                        dateAdapter={
+                                                            AdapterDayjs
+                                                        }
+                                                    >
+                                                        {getLayout(
+                                                            <Component
+                                                                {...pageProps}
+                                                            />
+                                                        )}
+                                                    </LocalizationProvider>
                                                 )
                                             }
                                         </AuthConsumer>
