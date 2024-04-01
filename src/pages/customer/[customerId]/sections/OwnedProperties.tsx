@@ -1,79 +1,17 @@
-import { Divider, Grid, Paper, Typography } from "@mui/material";
-import { Box, Container, typography } from "@mui/system";
+import { Grid, Typography, Container } from "@mui/material";
 import * as React from "react";
 import { useGetCustomerByIdQuery } from "src/services/customers";
-import { GridCellParams, GridColDef } from "@mui/x-data-grid";
 import { useRouter } from "next/router";
-import DataGridTable from "src/components/DataGrid";
-import Image from "src/components/image";
 import { useTranslation } from "react-i18next";
-import { KeyValue } from "src/types/KeyValue";
-
-type PropertyStatus =
-    | "SOLD"
-    | "SALE"
-    | "RENTED"
-    | "UNAVAILABLE"
-    | "RENT"
-    | "TAKEN"
-    | "UNDER_CONSTRUCTION"
-    | "UNDER_MAINTENANCE";
-
-type Color = string;
-
-type StatusColors = Record<PropertyStatus, Color>;
-
-const STATUS_COLORS: StatusColors = {
-    SOLD: "#79798a",
-    SALE: "#57825e",
-    RENT: "#bd9e39",
-    RENTED: "#3e78c2",
-    UNAVAILABLE: "#c72c2e",
-    TAKEN: "#7d673e",
-    UNDER_CONSTRUCTION: "#A300D8",
-    UNDER_MAINTENANCE: "#E0067C",
-};
-function statusColor(params: GridCellParams) {
-    if (!params.value) return <></>;
-
-    const value = params.value as KeyValue;
-    const status = value?.key?.trim();
-
-    if (!value || !status) return <></>;
-
-    const statusUpper = status?.toUpperCase() as PropertyStatus;
-    const color = STATUS_COLORS[statusUpper] || "#537f91"; // default color if status is not recognized
-
-    return (
-        <Box
-            sx={{
-                width: 150,
-                height: 30,
-                bgcolor: color,
-                color: "white",
-                borderRadius: "20px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-            }}
-        >
-            {status}
-        </Box>
-    );
-}
-function renderImage(params: GridCellParams) {
-    return (
-        <>
-            <Image src={`${params.formattedValue}` || ""} alt="" ratio="16/9" />
-        </>
-    );
-}
+import DataGrid from "@/components/DataGrid/Property";
+import Panel from "@/components/Panel";
 
 const OwnedCustomerPropertiesSection: React.FC = () => {
     const router = useRouter();
     const { t } = useTranslation();
     const { customerId } = router.query;
     const { data } = useGetCustomerByIdQuery(parseInt(customerId as string)); // basic details
+
     if (
         !data ||
         !Array.isArray(data.ownedProperties) ||
@@ -118,105 +56,25 @@ const OwnedCustomerPropertiesSection: React.FC = () => {
         propertyImageUrl: property.propertyImage?.url,
     }));
 
-    const columns: GridColDef[] = [
-        {
-            field: "propertyImageUrl",
-            headerName: t("Thumbnail") || "",
-            width: 180,
-            align: "center",
-            headerAlign: "center",
-            renderCell: renderImage,
-        },
-        {
-            field: "code",
-            headerName: t("Reference ID") || "",
-            width: 180,
-            headerAlign: "center",
-
-            align: "center",
-        },
-        {
-            field: "parentCategory",
-            headerName: t("Category") || "",
-            width: 180,
-            align: "center",
-            headerAlign: "center",
-            renderCell: (params) => params.value?.key,
-        },
-        {
-            field: "category",
-            headerName: t("Subcategory") || "",
-            width: 180,
-            align: "center",
-            headerAlign: "center",
-            renderCell: (params) => params.value?.key,
-        },
-        {
-            field: "price",
-            width: 180,
-            headerAlign: "center",
-            align: "center",
-            headerName: t("Price") || "",
-            renderCell: (params: GridCellParams) => {
-                return params.value ? `${params.value} €` : "";
-            },
-        },
-        {
-            field: "state",
-            headerAlign: "center",
-            width: 180,
-            align: "center",
-            headerName: t("Status") || "",
-            renderCell: statusColor,
-        },
-        {
-            field: "area",
-            width: 180,
-            headerAlign: "center",
-            align: "center",
-            headerName: t("Area") || "",
-            renderCell: (params: GridCellParams) => {
-                return params.value ? `${params.value} m²` : "";
-            },
-        },
-    ];
-
     return (
-        <Paper
-            elevation={10}
-            sx={{
-                overflow: "auto",
-                padding: 0,
+        <Panel
+            label={t("Owned Properties")}
+            childrenSx={{
+                p: 0,
             }}
         >
-            <Box
-                sx={{
-                    px: 3,
-                    py: 1.5,
-                    display: "flex",
-                    justifyContent: "left",
-                }}
-            >
-                <Typography variant="h6">{t("Owned Properties")}</Typography>
-            </Box>
-            <Divider></Divider>
-            <Grid container>
-                <Grid item xs={12}>
-                    <Paper>
-                        <DataGridTable
-                            rows={transformedData}
-                            columns={columns}
-                            resource={"property"}
-                            sortingBy={"firstName"}
-                            sortingOrder={"asc"}
-                            page={0}
-                            pageSize={10}
-                            totalRows={25}
-                        />
-                    </Paper>
-                </Grid>
-            </Grid>
-        </Paper>
+            <DataGrid
+                rows={transformedData}
+                resource="property"
+                // ...
+                sortingBy="firstName"
+                sortingOrder={"asc"}
+                // ...
+                page={0}
+                pageSize={10}
+                totalRows={25}
+            />
+        </Panel>
     );
 };
 

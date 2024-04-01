@@ -1,18 +1,13 @@
-import { Box, Paper, Skeleton } from "@mui/material";
+import { Box, Paper } from "@mui/material";
 import {
     GridCallbackDetails,
-    GridCellParams,
-    GridColDef,
     GridPaginationModel,
     GridRowSelectionModel,
 } from "@mui/x-data-grid";
 import type { NextPage } from "next";
 import { useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import DataGridTable from "src/components/DataGrid";
 import { DeleteDialog } from "src/components/Dialog/Delete";
-import ListLabelsItem from "@/components/List/Items/labels";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import useLocalStorageScrollRestore from "src/hooks/useLocalStorageScrollRestore";
@@ -21,14 +16,11 @@ import {
     useFilterCustomersMutation,
 } from "src/services/customers";
 import { selectAll } from "src/slices/customer/filters";
-import { ILabel } from "src/types/label";
 import { FilterSection } from "./components";
 import { BulkEdit } from "./components/BulkEdit/BulkEdit";
-import { TypeLabels } from "./components/TypeLabels";
+import DataGrid from "@/components/DataGrid/Customer";
 
 const Customers: NextPage = () => {
-    const { t } = useTranslation();
-
     const allFilters = useSelector(selectAll);
 
     const [bulkEditOpen, setBulkEditOpen] = useState(false);
@@ -40,7 +32,7 @@ const Customers: NextPage = () => {
     const [pageSize, setPageSize] = useState(25);
 
     const [bulkDeleteCustomers] = useBulkDeleteCustomersMutation();
-    const [filterCustomers, { data }] = useFilterCustomersMutation();
+    const [filterCustomers, { data, isLoading }] = useFilterCustomersMutation();
 
     const totalRows = useMemo(
         () => (data?.totalElements ? data?.totalElements : 100000),
@@ -55,17 +47,6 @@ const Customers: NextPage = () => {
         });
     };
 
-    function showLabel(params: GridCellParams) {
-        if (!params.value || !Array.isArray(params.value)) return <></>;
-
-        const labels: ILabel[] = params.value as ILabel[];
-
-        return (
-            <div style={{ display: "flex", justifyContent: "center" }}>
-                <ListLabelsItem labels={labels} label={""} />
-            </div>
-        );
-    }
     const handlePaginationModelChange = (
         model: GridPaginationModel,
         details: GridCallbackDetails
@@ -78,97 +59,12 @@ const Customers: NextPage = () => {
             JSON.stringify(paginationState)
         );
     };
-    function statusColor(params: GridCellParams) {
-        const labels = (
-            <TypeLabels
-                seller={params.row.seller}
-                lessor={params.row.lessor}
-                leaser={params.row.leaser}
-                buyer={params.row.buyer}
-            />
-        );
-
-        return <div>{labels}</div>;
-    }
-
-    const columns: GridColDef[] = [
-        // {
-        //     field: "image",
-        //     headerName: "",
-        //     renderCell: (params: GridCellParams) => {
-        //         const firstName = params.row.firstName;
-        //         const lastName = params.row.lastName;
-
-        //         return (firstName && lastName) || firstName || lastName ? (
-        //             <Avatar>
-        //                 {firstName[0]}
-        //                 {lastName[0]}
-        //             </Avatar>
-        //         ) : (
-        //             <Avatar>
-        //                 <UserCircle />
-        //             </Avatar>
-        //         );
-        //     },
-        // },
-
-        {
-            flex: 1,
-            field: "firstName",
-            headerName: t("First Name") || "",
-            headerAlign: "center",
-            align: "center",
-        },
-        {
-            flex: 1,
-            field: "lastName",
-            headerName: t("Last Name") || "",
-            headerAlign: "center",
-            align: "center",
-        },
-        {
-            flex: 1,
-            field: "mobilePhone",
-            headerName: t("Mobile Phone") || "",
-            headerAlign: "center",
-            align: "center",
-        },
-
-        {
-            flex: 1,
-            field: "city",
-            headerName: t("City") || "",
-            headerAlign: "center",
-            align: "center",
-        },
-        {
-            flex: 1,
-            field: "category",
-            headerAlign: "center",
-            align: "center",
-            headerName: t("Category") || "",
-            renderCell: statusColor,
-        },
-        {
-            width: 180,
-            field: "labels",
-            headerAlign: "center",
-            align: "center",
-            headerName: t("Labels") || "",
-            renderCell: showLabel,
-        },
-    ];
 
     useEffect(() => {
         revalidate();
     }, [allFilters, page, pageSize]);
 
     const rows = useMemo(() => data?.content || [], [data?.content]);
-
-    const renderSkeletonCell = () => <Skeleton width={150} animation="wave" />;
-    const skeletonRows = Array.from({ length: 2 }, (_, index) => ({
-        id: index + 1,
-    }));
 
     const openBulkDeleteDialog = (selectedRows: GridRowSelectionModel) => {
         setBulkDeleteDialogOpen(true);
@@ -189,7 +85,9 @@ const Customers: NextPage = () => {
     };
     const closeBulkEdit = () => setBulkEditOpen(false);
     const handleBulkEditSave = () => revalidate();
-    const observerRef = useLocalStorageScrollRestore();
+
+    useLocalStorageScrollRestore();
+
     useEffect(() => {
         const storedPagination = localStorage.getItem(
             "customerPaginationState"
@@ -218,35 +116,20 @@ const Customers: NextPage = () => {
             />
 
             <Paper sx={{ mt: 1, marginRight: bulkEditOpen ? 40 : 0 }}>
-                {rows ? (
-                    <DataGridTable
-                        rows={rows}
-                        columns={columns}
-                        resource={"customer"}
-                        sortingBy={"firstName"}
-                        sortingOrder={sortingOrder}
-                        page={page}
-                        pageSize={pageSize}
-                        totalRows={totalRows}
-                        onPaginationModelChange={handlePaginationModelChange}
-                        onBulkEdit={openBulkEdit}
-                        onBulkDelete={openBulkDeleteDialog}
-                    />
-                ) : (
-                    <DataGridTable
-                        rows={skeletonRows}
-                        columns={columns.map((column) => ({
-                            ...column,
-                            renderCell: renderSkeletonCell,
-                        }))}
-                        sortingBy={""}
-                        sortingOrder={sortingOrder}
-                        page={page}
-                        pageSize={pageSize}
-                        totalRows={totalRows}
-                        onPaginationModelChange={handlePaginationModelChange}
-                    />
-                )}
+                <DataGrid
+                    skeleton={isLoading}
+                    rows={rows}
+                    // ...
+                    sortingBy="firstName"
+                    sortingOrder={sortingOrder}
+                    page={page}
+                    pageSize={pageSize}
+                    totalRows={totalRows}
+                    // ...
+                    onPaginationModelChange={handlePaginationModelChange}
+                    onBulkEdit={openBulkEdit}
+                    onBulkDelete={openBulkDeleteDialog}
+                />
             </Paper>
 
             <BulkEdit

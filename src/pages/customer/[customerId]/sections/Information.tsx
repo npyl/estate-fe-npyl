@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { ListItem, ListManagerItem } from "src/components/List";
 import { LeadSource } from "src/types/global";
 import { useGlobals } from "src/hooks/useGlobals";
-import { TypeLabels } from "src/pages/customers/components/TypeLabels";
+import { TypeLabels } from "@/components/TypeLabels";
 import { LabelCreate } from "src/components/label";
 import useGetCustomer from "src/hooks/customer/hook";
 

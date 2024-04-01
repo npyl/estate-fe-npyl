@@ -87,7 +87,9 @@ const CustomerView: NextPage = () => {
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <Stack spacing={1}>
-                            {isBuyerOrLeaser && <MatchingProperties />}
+                            {isBuyerOrLeaser && (
+                                <MatchingProperties variant="small" />
+                            )}
                             {isSellerOrLessor && <OwnedProperties />}
                         </Stack>
                     </Grid>

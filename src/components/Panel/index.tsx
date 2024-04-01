@@ -1,4 +1,4 @@
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, Paper, SxProps, Theme, Typography } from "@mui/material";
 import * as React from "react";
 
 import { useTranslation } from "react-i18next";
@@ -7,9 +7,11 @@ interface PanelProps {
     label: string;
     endNode?: React.ReactNode;
     children?: React.ReactNode;
+
+    childrenSx?: SxProps<Theme>;
 }
 
-const Panel = ({ label, endNode, children }: PanelProps) => {
+const Panel = ({ label, endNode, childrenSx, children }: PanelProps) => {
     const { t } = useTranslation();
     return (
         <Paper
@@ -30,7 +32,7 @@ const Panel = ({ label, endNode, children }: PanelProps) => {
                 <Typography variant="h6">{t(label)}</Typography>
                 {endNode}
             </Box>
-            <Box px={1.5} pb={1.5}>
+            <Box px={1.5} pb={1.5} sx={childrenSx}>
                 {children}
             </Box>
         </Paper>

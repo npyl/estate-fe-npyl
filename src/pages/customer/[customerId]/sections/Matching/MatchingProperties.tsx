@@ -1,4 +1,3 @@
-import { Box, Divider, Paper, Typography } from "@mui/material";
 import { GridPaginationModel } from "@mui/x-data-grid";
 import * as React from "react";
 import { useCallback, useMemo, useState } from "react";
@@ -10,7 +9,8 @@ import useGetCustomer from "src/hooks/customer/hook";
 import { useSuggestForCustomerQuery } from "src/services/properties";
 import { IProperties } from "src/types/properties";
 import Placeholder from "./Placeholder";
-import PropertyTable from "./PropertyTable";
+import DataGrid from "@/components/DataGrid/Property";
+import Panel from "@/components/Panel";
 
 const filterPropertiesInShape = (
     properties: IProperties[],
@@ -25,7 +25,11 @@ const filterPropertiesInShape = (
 
 const pageSize = 5;
 
-const MatchingPropertiesSection: React.FC = () => {
+interface Props {
+    variant?: "default" | "small";
+}
+
+const MatchingPropertiesSection = ({ variant = "default" }: Props) => {
     const { t } = useTranslation();
 
     const { isLoaded } = useLoadApi(); // google maps api
@@ -96,32 +100,25 @@ const MatchingPropertiesSection: React.FC = () => {
     }
 
     return (
-        <Paper
-            elevation={10}
-            sx={{
-                overflow: "auto",
-                padding: 0,
+        <Panel
+            label={t("Matching Properties")}
+            childrenSx={{
+                p: 0,
             }}
         >
-            <Box
-                sx={{
-                    px: 3,
-                    py: 1.5,
-                    display: "flex",
-                    justifyContent: "left",
-                }}
-            >
-                <Typography variant="h6">{t("Matching Properties")}</Typography>
-            </Box>
-            <Divider />
-            <PropertyTable
+            <DataGrid
                 rows={properties || []}
                 totalRows={totalRows}
+                columnVariant={variant}
+                // ...
+                sortingBy="firstName"
+                sortingOrder="asc"
+                // ...
                 page={page}
                 pageSize={pageSize}
-                onPaginationChange={handlePaginationChange}
+                onPaginationModelChange={handlePaginationChange}
             />
-        </Paper>
+        </Panel>
     );
 };
 
