@@ -10,6 +10,16 @@ import { usePathname } from "next/navigation";
 import { useGetProperty } from "src/hooks/property/hook";
 import { DeleteDialog } from "src/components/Dialog/Delete";
 import useDialog from "src/hooks/useDialog";
+import { styled } from "@mui/material/styles";
+import { getBorderColor2 } from "@/theme/borderColor";
+
+const CustomStack = styled(Stack)(({ theme }) => ({
+    border: "1px solid",
+    borderColor: getBorderColor2(theme),
+    borderRadius: "10px",
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+}));
 
 const OpenIn = () => {
     const { t } = useTranslation();
@@ -47,16 +57,7 @@ const OpenIn = () => {
     );
 
     return hasNothing ? null : (
-        <Stack
-            flexDirection="row"
-            gap={0.5}
-            alignItems="center"
-            sx={{
-                border: "1px solid #ccc",
-                borderRadius: "10px",
-                px: 1,
-            }}
-        >
+        <CustomStack flexDirection="row" gap={0.5} alignItems="center">
             <Typography>{t("Open in")}</Typography>
             {hasPublic ? (
                 <IconButton size="small" onClick={openPublic}>
@@ -73,7 +74,7 @@ const OpenIn = () => {
                     <GoogleEarthSvg />
                 </IconButton>
             ) : null}
-        </Stack>
+        </CustomStack>
     );
 };
 
