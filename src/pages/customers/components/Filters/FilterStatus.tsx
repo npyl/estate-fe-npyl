@@ -1,6 +1,26 @@
-import { Box, FormControl, Rating } from "@mui/material";
+import { FormControl, Rating } from "@mui/material";
 import { useSelector, useDispatch } from "react-redux";
 import { selectStatus, setStatus } from "src/slices/customer/filters";
+import { styled } from "@mui/material/styles";
+import { getBorderColor2 } from "@/theme/borderColor";
+
+const StyledRating = styled(Rating)(({ theme }) => ({
+    borderRadius: "7px",
+    border: "1px solid",
+    // ...
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+    paddingTop: theme.spacing(0.72),
+    paddingBottom: theme.spacing(0.72),
+    // ...
+    borderColor: getBorderColor2(theme),
+    "&:hover": {
+        borderColor:
+            theme.palette.mode === "light"
+                ? "black"
+                : theme.palette.neutral?.[500],
+    },
+}));
 
 export default function FilterStatus() {
     const dispatch = useDispatch();
@@ -18,26 +38,15 @@ export default function FilterStatus() {
 
     return (
         <FormControl sx={{ width: 135 }}>
-            <Box
-                sx={{
-                    border: "1px solid #ddd",
-                    borderRadius: 1,
-                    p: 0.1,
-                    ":hover": {
-                        border: "1px solid #000",
-                    },
-                }}
-            >
-                <Rating
-                    sx={{
-                        mt: 0.5,
-                        ml: 0.5,
-                    }}
-                    name="simple-controlled"
-                    value={status}
-                    onChange={onChange}
-                />
-            </Box>
+            <StyledRating
+                // sx={{
+                //     mt: 0.5,
+                //     ml: 0.5,
+                // }}
+                name="simple-controlled"
+                value={status}
+                onChange={onChange}
+            />
         </FormControl>
     );
 }
