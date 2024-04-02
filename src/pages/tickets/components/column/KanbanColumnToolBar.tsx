@@ -71,7 +71,6 @@ export default function KanbanColumnToolBar({
                 justifyContent="space-between"
                 alignItems="center"
                 spacing={1}
-                sx={{ pt: 3 }}
             >
                 <KanbanInputName
                     inputRef={renameRef}
@@ -115,10 +114,10 @@ export default function KanbanColumnToolBar({
             <ConfirmDialog
                 open={openConfirm}
                 onClose={handleCloseConfirm}
-                title="Delete"
+                title={t("Delete")}
                 content={
                     <>
-                        Are you sure want to delete column?
+                        {t("Are you sure want to delete column?")}
                         <Box
                             sx={{
                                 typography: "caption",
@@ -126,8 +125,10 @@ export default function KanbanColumnToolBar({
                                 mt: 2,
                             }}
                         >
-                            <strong> NOTE: </strong> All tasks related to this
-                            category will also be deleted.
+                            <strong> {t("NOTE")}: </strong>{" "}
+                            {t(
+                                "All tasks related to this category will also be deleted."
+                            )}
                         </Box>
                     </>
                 }
@@ -140,7 +141,7 @@ export default function KanbanColumnToolBar({
                             handleCloseConfirm();
                         }}
                     >
-                        Delete
+                        {t("Delete")}
                     </Button>
                 }
             />

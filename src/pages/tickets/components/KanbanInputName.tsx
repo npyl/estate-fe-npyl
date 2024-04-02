@@ -25,6 +25,7 @@ export default function KanbanInputName({ sx, ...other }: InputBaseProps) {
                             `solid 1px ${theme.palette.text.primary}`,
                     },
                 },
+                height: "min-content",
                 ...sx,
             }}
             {...other}

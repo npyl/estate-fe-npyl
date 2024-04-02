@@ -7,6 +7,7 @@ import useResponsive from "../../../../hooks/useResponsive";
 import ConfirmDialog from "../../../../components/confirm-dialog";
 import Iconify from "../../../../components/iconify";
 import { useTranslation } from "react-i18next";
+import { SpaceBetween } from "@/components/styled";
 // ----------------------------------------------------------------------
 
 type Props = {
@@ -47,58 +48,41 @@ export default function KanbanDetailsToolbar({
     const { t } = useTranslation();
     return (
         <>
-            <Stack p={2.5} direction="row" alignItems="center">
-                {!isDesktop && (
-                    <>
+            <SpaceBetween p={2.5} direction="row" alignItems="center">
+                <Stack direction="row" spacing={1}>
+                    {!isDesktop ? (
                         <Tooltip title="Back">
-                            <IconButton onClick={onCloseDetails} sx={{ mr: 1 }}>
+                            <IconButton onClick={onCloseDetails}>
                                 <Iconify icon="eva:arrow-ios-back-fill" />
                             </IconButton>
                         </Tooltip>
-                    </>
-                )}
+                    ) : null}
 
-                <Button
-                    size="small"
-                    variant="outlined"
-                    color={completed ? "primary" : "inherit"}
-                    startIcon={
-                        completed && (
-                            <Iconify
-                                icon="eva:checkmark-fill"
-                                width={16}
-                                mb={1.5}
-                            />
-                        )
-                    }
-                    onClick={onCompleted}
-                >
-                    {completed ? t("Completed") : t("Mark Complete")}
-                </Button>
-
-                <Stack
-                    direction="row"
-                    spacing={1}
-                    justifyContent="flex-end"
-                    flexGrow={1}
-                >
-                    <Tooltip title={t("Attachment")}>
-                        <IconButton size="small" onClick={onAttach}>
-                            <Iconify icon="eva:attach-2-fill" />
-                        </IconButton>
-                    </Tooltip>
-
-                    <Tooltip title={t("Delete task")}>
-                        <IconButton onClick={handleOpenConfirm} size="small">
-                            <Iconify icon="eva:trash-2-outline" />
-                        </IconButton>
-                    </Tooltip>
-
-                    <IconButton size="small">
-                        <Iconify icon="eva:more-vertical-fill" />
-                    </IconButton>
+                    <Button
+                        size="small"
+                        variant="outlined"
+                        color={completed ? "primary" : "inherit"}
+                        startIcon={
+                            completed && (
+                                <Iconify
+                                    icon="eva:checkmark-fill"
+                                    width={16}
+                                    mb={1.5}
+                                />
+                            )
+                        }
+                        onClick={onCompleted}
+                    >
+                        {completed ? t("Completed") : t("Mark Complete")}
+                    </Button>
                 </Stack>
-            </Stack>
+
+                <Tooltip title={t("Delete task")}>
+                    <IconButton onClick={handleOpenConfirm} size="small">
+                        <Iconify icon="eva:trash-2-outline" />
+                    </IconButton>
+                </Tooltip>
+            </SpaceBetween>
 
             <input ref={fileInputRef} type="file" style={{ display: "none" }} />
 

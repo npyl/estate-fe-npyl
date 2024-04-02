@@ -58,7 +58,7 @@ const Label = forwardRef<HTMLSpanElement, LabelProps>(
 
                 {children}
 
-                {onClose && (
+                {onClose ? (
                     <IconButton
                         size="small"
                         aria-label="close"
@@ -67,7 +67,7 @@ const Label = forwardRef<HTMLSpanElement, LabelProps>(
                     >
                         <CloseIcon sx={{ height: 16, width: 16 }} />
                     </IconButton>
-                )}
+                ) : null}
             </StyledLabel>
         );
     }

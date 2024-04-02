@@ -1,10 +1,56 @@
-import { Grid, Paper, Stack, Typography } from "@mui/material";
-import { useMemo } from "react";
+import { Grid, IconButton, Paper, Stack, Typography } from "@mui/material";
+import { Edit as EditIcon, Delete as DeleteIcon } from "@mui/icons-material";
+import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { EditableLabel } from "src/components/label";
+import { Label, LabelProps } from "src/components/label";
 import { useGetLabelsQuery } from "src/services/labels";
 import { ILabel } from "src/types/label";
 import { IEditProps } from "./types";
+
+interface HoverableLabelProps extends LabelProps {
+    onEdit: VoidFunction;
+    onDelete: VoidFunction;
+}
+
+const HoverableLabel = ({
+    onEdit,
+    onDelete,
+    children,
+    ...props
+}: HoverableLabelProps) => {
+    const [hovered, setHovered] = useState(false);
+    const onMouseEnter = useCallback(() => setHovered(true), []);
+    const onMouseLeave = useCallback(() => setHovered(false), []);
+
+    return (
+        <Label
+            {...props}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+        >
+            {children}
+
+            {hovered ? (
+                <>
+                    <IconButton onClick={onEdit}>
+                        <EditIcon
+                            sx={{
+                                fontSize: "15px",
+                            }}
+                        />
+                    </IconButton>
+                    <IconButton onClick={onDelete}>
+                        <DeleteIcon
+                            sx={{
+                                fontSize: "15px",
+                            }}
+                        />
+                    </IconButton>
+                </>
+            ) : null}
+        </Label>
+    );
+};
 
 interface PreviewProps {
     onEdit: (label: IEditProps) => void;
@@ -61,13 +107,9 @@ export const Preview = ({ onEdit, onDelete }: PreviewProps) => {
                               <Typography variant="h6" color={"text.secondary"}>
                                   {value.label}
                               </Typography>
-                              <Stack
-                                  direction={"row"}
-                                  flexWrap={"wrap"}
-                                  gap={0.5}
-                              >
+                              <Stack direction="row" flexWrap="wrap" gap={0.5}>
                                   {value.data?.map((label: ILabel) => (
-                                      <EditableLabel
+                                      <HoverableLabel
                                           key={label.id}
                                           variant="soft"
                                           sx={{
@@ -75,7 +117,7 @@ export const Preview = ({ onEdit, onDelete }: PreviewProps) => {
                                               color: "white",
                                               bgcolor: label.color,
                                           }}
-                                          onClose={() =>
+                                          onDelete={() =>
                                               label.id &&
                                               onDelete(value.label, label.id)
                                           }
@@ -87,7 +129,7 @@ export const Preview = ({ onEdit, onDelete }: PreviewProps) => {
                                           }
                                       >
                                           {label.name}
-                                      </EditableLabel>
+                                      </HoverableLabel>
                                   ))}
                               </Stack>
                           </Grid>

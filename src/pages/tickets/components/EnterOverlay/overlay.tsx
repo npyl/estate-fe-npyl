@@ -11,14 +11,7 @@ const EnterOverlay = ({ show, children }: EnterOverlayProps) => (
     <Box position="relative">
         {children}
         {show ? (
-            <Box
-                position="absolute"
-                top="50%"
-                right={5}
-                style={{
-                    transform: "translateY(-50%)",
-                }}
-            >
+            <Box position="absolute" bottom={2} right={2}>
                 <EnterSvg />
             </Box>
         ) : null}

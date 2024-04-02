@@ -1,25 +1,22 @@
-import { useState } from "react";
+import { useState, KeyboardEvent, ChangeEvent } from "react";
 // @mui
 import {
     Checkbox,
     ClickAwayListener,
     InputBase,
     Paper,
-    Stack,
     Tooltip,
 } from "@mui/material";
 
 // @types
 import { IKanbanCardPOST } from "src/types/kanban";
-// components
-// import DateRangePicker, {
-//     useDateRangePicker,
-// } from "src/components/date-range-picker";
-import Iconify from "../../../components/iconify";
+import Iconify from "@/components/iconify";
 //
 import KanbanContactsDialog from "./KanbanContactsDialog";
 import { EnterOverlay } from "./EnterOverlay";
 import { useTranslation } from "react-i18next";
+import { SpaceBetween } from "@/components/styled";
+
 // ----------------------------------------------------------------------
 
 const defaultTask = {
@@ -33,6 +30,8 @@ type Props = {
 };
 
 export default function KanbanTaskAdd({ onAddTask, onCloseAddTask }: Props) {
+    const { t } = useTranslation();
+
     const [name, setName] = useState("");
 
     const [completed, setCompleted] = useState(false);
@@ -63,9 +62,7 @@ export default function KanbanTaskAdd({ onAddTask, onCloseAddTask }: Props) {
             completed,
         });
 
-    const handleKeyUpAddTask = (
-        event: React.KeyboardEvent<HTMLInputElement>
-    ) => {
+    const handleKeyUpAddTask = (event: KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter" && name.trim() !== "") handleAddTask();
     };
 
@@ -74,11 +71,8 @@ export default function KanbanTaskAdd({ onAddTask, onCloseAddTask }: Props) {
         else onCloseAddTask();
     };
 
-    const handleChangeCompleted = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => setCompleted(event.target.checked);
-
-    const { t } = useTranslation();
+    const handleChangeCompleted = (event: ChangeEvent<HTMLInputElement>) =>
+        setCompleted(event.target.checked);
 
     return (
         <ClickAwayListener onClickAway={handleClickAddTask}>
@@ -92,15 +86,13 @@ export default function KanbanTaskAdd({ onAddTask, onCloseAddTask }: Props) {
                             value={name}
                             onChange={(event) => setName(event.target.value)}
                             onKeyUp={handleKeyUpAddTask}
-                            sx={{ px: 2, pt: 2 }}
+                            sx={{ p: 2, height: "min-content" }}
                         />
                     </EnterOverlay>
 
-                    <Stack
-                        direction="row"
-                        justifyContent="space-between"
-                        sx={{ pl: 1, pr: 1.5, pb: 2 }}
-                    >
+                    <SpaceBetween sx={{ px: 1.5, pb: 2 }}>
+                        <KanbanContactsDialog toggleAssignee={() => {}} />
+
                         <Tooltip title={t("Mark complete")}>
                             <Checkbox
                                 disableRipple
@@ -114,10 +106,8 @@ export default function KanbanTaskAdd({ onAddTask, onCloseAddTask }: Props) {
                                 }
                             />
                         </Tooltip>
-                    </Stack>
+                    </SpaceBetween>
                 </Paper>
-
-                <KanbanContactsDialog toggleAssignee={() => {}} />
 
                 {/* <DateRangePicker
                     variant="calendar"

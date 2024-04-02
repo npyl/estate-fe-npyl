@@ -1,6 +1,6 @@
 import { useCallback, useRef, useState } from "react";
 // @mui
-import { Avatar, Divider, Drawer, Stack } from "@mui/material";
+import { Avatar, Divider, Drawer, Stack, Button } from "@mui/material";
 // @types
 import { IKanbanCard, IKanbanCardPOST } from "src/types/kanban";
 // components
@@ -33,7 +33,17 @@ export default function KanbanDetails({
     onCloseDetails,
     onDeleteTask,
 }: Props) {
-    const { id, completed, priority, name, description, user } = task;
+    const {
+        id,
+        completed,
+        priority,
+        name,
+        description,
+        user,
+        due,
+        comments,
+        attachments,
+    } = task;
 
     const [liked, setLiked] = useState(false);
 
@@ -116,6 +126,23 @@ export default function KanbanDetails({
             });
         },
         [id, name, description, priority, completed, user]
+    );
+
+    const handleAttachmentsChange = useCallback(
+        (_attachments: string[]) => {
+            editCard({
+                id,
+                attachments: _attachments,
+                comments,
+                completed,
+                description,
+                due,
+                name,
+                priority,
+                userIds: user.map((u) => u.id),
+            });
+        },
+        [id, user, comments, description, completed, due, name, priority]
     );
 
     const { t } = useTranslation();
@@ -258,6 +285,7 @@ export default function KanbanDetails({
                         </StyledLabel>
                         <KanbanDetailsAttachments
                             attachments={task.attachments}
+                            onChange={handleAttachmentsChange}
                         />
                     </Stack>
                 </Stack>

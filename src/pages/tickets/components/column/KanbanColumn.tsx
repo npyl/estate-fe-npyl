@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Droppable } from "react-beautiful-dnd";
 // @mui
-import { Box, Button, Paper, Stack } from "@mui/material";
+import { Button, Paper, Stack } from "@mui/material";
 // @types
 import { IKanbanCardPOST, IKanbanColumn } from "src/types/kanban";
 // components
@@ -18,6 +18,23 @@ import KanbanTaskAdd from "../KanbanTaskAdd";
 import KanbanTaskCard from "../KanbanTaskCard";
 import KanbanColumnToolBar from "./KanbanColumnToolBar";
 import { useTranslation } from "react-i18next";
+import { styled } from "@mui/material/styles";
+
+// ----------------------------------------------------------------------
+
+const StyledPaper = styled(Paper)(({ theme }) => ({
+    padding: theme.spacing(2),
+
+    borderRadius: theme.spacing(1),
+    borderStyle: "dashed",
+
+    backgroundColor:
+        theme.palette.mode === "light"
+            ? theme.palette.grey?.[100]
+            : theme.palette.background.default,
+
+    minWidth: "min-content",
+}));
 
 // ----------------------------------------------------------------------
 
@@ -28,6 +45,8 @@ type Props = {
 export const DroppableTypeTask = "TASK";
 
 export default function KanbanColumn({ column }: Props) {
+    const { t } = useTranslation();
+
     const { data: board } = useGetBoardQuery();
     const cards = useMemo(() => board?.cards || [], [board]);
 
@@ -53,7 +72,6 @@ export default function KanbanColumn({ column }: Props) {
             handleCloseAddTask()
         );
 
-    const { t } = useTranslation();
     // NOTE: backend doesn't delete columnOrder when a column is deleted!
     if (!column) return null;
 
@@ -63,55 +81,47 @@ export default function KanbanColumn({ column }: Props) {
             type={DroppableTypeTask}
         >
             {(provided) => (
-                <Paper
+                <StyledPaper
                     {...provided.droppableProps}
                     ref={provided.innerRef}
                     variant="outlined"
-                    sx={{
-                        px: 2,
-                        borderRadius: 1,
-                        borderStyle: "dashed",
-                        bgcolor: (theme) =>
-                            theme.palette.mode === "light"
-                                ? "grey.100"
-                                : "background.default",
-                    }}
                 >
-                    <Stack spacing={3} position="relative">
+                    {provided.placeholder}
+
+                    <Stack
+                        spacing={1}
+                        // NOTE: a minimum height helps a dropped card not fall on the column name glitch
+                        minHeight={150}
+                    >
                         <KanbanColumnToolBar
                             columnName={column.name}
                             onDelete={handleDeleteColumn}
                             onUpdate={handleUpdateColumn}
                         />
 
-                        <Stack spacing={2} sx={{ width: 280 }}>
-                            {column.cardOrder.map((cardId, index) => {
-                                const card = cards?.find(
-                                    (c) => c.id === cardId
-                                );
+                        {column.cardOrder.map((cardId, index) => {
+                            const card = cards?.find((c) => c.id === cardId);
 
-                                return card ? (
-                                    <KanbanTaskCard
-                                        key={index}
-                                        index={index}
-                                        onDeleteTask={handleDeleteTask}
-                                        card={card}
-                                    />
-                                ) : null;
-                            })}
-                        </Stack>
-                    </Stack>
-                    {provided.placeholder}
+                            return card ? (
+                                <KanbanTaskCard
+                                    key={index}
+                                    index={index}
+                                    onDeleteTask={handleDeleteTask}
+                                    card={card}
+                                />
+                            ) : null;
+                        })}
 
-                    {/* Add Task button */}
-                    <Box my={3}>
-                        {openAddTask && (
+                        {/* Add Task button */}
+                        {openAddTask ? (
                             <KanbanTaskAdd
                                 onAddTask={handleAddTask}
                                 onCloseAddTask={handleCloseAddTask}
                             />
-                        )}
+                        ) : null}
+                    </Stack>
 
+                    {!openAddTask ? (
                         <Button
                             fullWidth
                             size="large"
@@ -121,13 +131,13 @@ export default function KanbanColumn({ column }: Props) {
                             }
                             onClick={handleToggleAddTask}
                             sx={{
-                                fontSize: 14,
+                                mt: 2,
                             }}
                         >
                             {t("Add Task")}
                         </Button>
-                    </Box>
-                </Paper>
+                    ) : null}
+                </StyledPaper>
             )}
         </Droppable>
     );
