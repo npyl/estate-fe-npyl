@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Droppable } from "react-beautiful-dnd";
 // @mui
-import { Box, Button, Paper, Stack } from "@mui/material";
+import { Button, Paper, Stack } from "@mui/material";
 // @types
 import { IKanbanCardPOST, IKanbanColumn } from "src/types/kanban";
 // components
@@ -23,8 +23,7 @@ import { styled } from "@mui/material/styles";
 // ----------------------------------------------------------------------
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
-    paddingLeft: theme.spacing(2),
-    paddingRight: theme.spacing(2),
+    padding: theme.spacing(2),
 
     borderRadius: theme.spacing(1),
     borderStyle: "dashed",
@@ -87,60 +86,57 @@ export default function KanbanColumn({ column }: Props) {
                     ref={provided.innerRef}
                     variant="outlined"
                 >
-                    <Stack spacing={3} position="relative">
+                    {provided.placeholder}
+
+                    <Stack
+                        spacing={1}
+                        // NOTE: a minimum height helps a dropped card not fall on the column name glitch
+                        minHeight={150}
+                    >
                         <KanbanColumnToolBar
                             columnName={column.name}
                             onDelete={handleDeleteColumn}
                             onUpdate={handleUpdateColumn}
                         />
 
-                        <Stack
-                            spacing={2}
-                            // NOTE: a minimum height helps a dropped card not fall on the column name glitch
-                            minHeight={150}
-                        >
-                            {column.cardOrder.map((cardId, index) => {
-                                const card = cards?.find(
-                                    (c) => c.id === cardId
-                                );
+                        {column.cardOrder.map((cardId, index) => {
+                            const card = cards?.find((c) => c.id === cardId);
 
-                                return card ? (
-                                    <KanbanTaskCard
-                                        key={index}
-                                        index={index}
-                                        onDeleteTask={handleDeleteTask}
-                                        card={card}
-                                    />
-                                ) : null;
-                            })}
-                        </Stack>
-                    </Stack>
+                            return card ? (
+                                <KanbanTaskCard
+                                    key={index}
+                                    index={index}
+                                    onDeleteTask={handleDeleteTask}
+                                    card={card}
+                                />
+                            ) : null;
+                        })}
 
-                    {provided.placeholder}
-
-                    {/* Add Task button */}
-                    <Box my={3}>
+                        {/* Add Task button */}
                         {openAddTask ? (
                             <KanbanTaskAdd
                                 onAddTask={handleAddTask}
                                 onCloseAddTask={handleCloseAddTask}
                             />
                         ) : null}
+                    </Stack>
 
-                        {!openAddTask ? (
-                            <Button
-                                fullWidth
-                                size="large"
-                                color="inherit"
-                                startIcon={
-                                    <Iconify icon="eva:plus-fill" mb={1.5} />
-                                }
-                                onClick={handleToggleAddTask}
-                            >
-                                {t("Add Task")}
-                            </Button>
-                        ) : null}
-                    </Box>
+                    {!openAddTask ? (
+                        <Button
+                            fullWidth
+                            size="large"
+                            color="inherit"
+                            startIcon={
+                                <Iconify icon="eva:plus-fill" mb={1.5} />
+                            }
+                            onClick={handleToggleAddTask}
+                            sx={{
+                                mt: 2,
+                            }}
+                        >
+                            {t("Add Task")}
+                        </Button>
+                    ) : null}
                 </StyledPaper>
             )}
         </Droppable>

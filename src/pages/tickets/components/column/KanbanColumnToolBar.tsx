@@ -71,7 +71,6 @@ export default function KanbanColumnToolBar({
                 justifyContent="space-between"
                 alignItems="center"
                 spacing={1}
-                sx={{ pt: 3 }}
             >
                 <KanbanInputName
                     inputRef={renameRef}
