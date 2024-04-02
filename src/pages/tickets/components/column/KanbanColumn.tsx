@@ -101,31 +101,31 @@ export default function KanbanColumn({ column }: Props) {
                             })}
                         </Stack>
                     </Stack>
+
                     {provided.placeholder}
 
                     {/* Add Task button */}
                     <Box my={3}>
-                        {openAddTask && (
+                        {openAddTask ? (
                             <KanbanTaskAdd
                                 onAddTask={handleAddTask}
                                 onCloseAddTask={handleCloseAddTask}
                             />
-                        )}
+                        ) : null}
 
-                        <Button
-                            fullWidth
-                            size="large"
-                            color="inherit"
-                            startIcon={
-                                <Iconify icon="eva:plus-fill" mb={1.5} />
-                            }
-                            onClick={handleToggleAddTask}
-                            sx={{
-                                fontSize: 14,
-                            }}
-                        >
-                            {t("Add Task")}
-                        </Button>
+                        {!openAddTask ? (
+                            <Button
+                                fullWidth
+                                size="large"
+                                color="inherit"
+                                startIcon={
+                                    <Iconify icon="eva:plus-fill" mb={1.5} />
+                                }
+                                onClick={handleToggleAddTask}
+                            >
+                                {t("Add Task")}
+                            </Button>
+                        ) : null}
                     </Box>
                 </Paper>
             )}

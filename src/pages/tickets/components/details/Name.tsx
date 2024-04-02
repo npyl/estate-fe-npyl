@@ -44,6 +44,7 @@ const Name = ({ taskName, onUpdate }: NameProps) => {
     return (
         <EnterOverlay show={name !== initialState}>
             <KanbanInputName
+                multiline
                 inputRef={renameRef}
                 placeholder={t("Task name") as string}
                 value={name}
