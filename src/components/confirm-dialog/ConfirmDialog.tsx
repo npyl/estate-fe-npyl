@@ -8,7 +8,7 @@ import {
 } from "@mui/material";
 //
 import { ConfirmDialogProps } from "./types";
-
+import { useTranslation } from "react-i18next";
 // ----------------------------------------------------------------------
 
 export default function ConfirmDialog({
@@ -19,6 +19,7 @@ export default function ConfirmDialog({
     onClose,
     ...other
 }: ConfirmDialogProps) {
+    const { t } = useTranslation();
     return (
         <Dialog
             fullWidth
@@ -40,7 +41,7 @@ export default function ConfirmDialog({
                 {action}
 
                 <Button variant="outlined" color="inherit" onClick={onClose}>
-                    Cancel
+                    {t("Close")}
                 </Button>
             </DialogActions>
         </Dialog>

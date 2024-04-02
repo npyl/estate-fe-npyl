@@ -6,7 +6,7 @@ import useResponsive from "../../../../hooks/useResponsive";
 // components
 import ConfirmDialog from "../../../../components/confirm-dialog";
 import Iconify from "../../../../components/iconify";
-
+import { useTranslation } from "react-i18next";
 // ----------------------------------------------------------------------
 
 type Props = {
@@ -44,6 +44,7 @@ export default function KanbanDetailsToolbar({
         setOpenConfirm(false);
     };
 
+    const { t } = useTranslation();
     return (
         <>
             <Stack p={2.5} direction="row" alignItems="center">
@@ -72,7 +73,7 @@ export default function KanbanDetailsToolbar({
                     }
                     onClick={onCompleted}
                 >
-                    {completed ? "Completed" : "Mark Complete"}
+                    {completed ? t("Completed") : t("Mark Complete")}
                 </Button>
 
                 <Stack
@@ -81,13 +82,13 @@ export default function KanbanDetailsToolbar({
                     justifyContent="flex-end"
                     flexGrow={1}
                 >
-                    <Tooltip title="Attachment">
+                    <Tooltip title={t("Attachment")}>
                         <IconButton size="small" onClick={onAttach}>
                             <Iconify icon="eva:attach-2-fill" />
                         </IconButton>
                     </Tooltip>
 
-                    <Tooltip title="Delete task">
+                    <Tooltip title={t("Delete task")}>
                         <IconButton onClick={handleOpenConfirm} size="small">
                             <Iconify icon="eva:trash-2-outline" />
                         </IconButton>
@@ -104,10 +105,11 @@ export default function KanbanDetailsToolbar({
             <ConfirmDialog
                 open={openConfirm}
                 onClose={handleCloseConfirm}
-                title="Delete"
+                title={t("Delete")}
                 content={
                     <>
-                        Are you sure want to delete{" "}
+                        {t("Are you sure want to delete")}
+                        {""}
                         <strong> {taskName} </strong>?
                     </>
                 }
@@ -117,7 +119,7 @@ export default function KanbanDetailsToolbar({
                         color="error"
                         onClick={onDelete}
                     >
-                        Delete
+                        {t("Delete")}
                     </Button>
                 }
             />

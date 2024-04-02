@@ -19,7 +19,7 @@ import Iconify from "../../../components/iconify";
 //
 import KanbanContactsDialog from "./KanbanContactsDialog";
 import { EnterOverlay } from "./EnterOverlay";
-
+import { useTranslation } from "react-i18next";
 // ----------------------------------------------------------------------
 
 const defaultTask = {
@@ -78,6 +78,8 @@ export default function KanbanTaskAdd({ onAddTask, onCloseAddTask }: Props) {
         event: React.ChangeEvent<HTMLInputElement>
     ) => setCompleted(event.target.checked);
 
+    const { t } = useTranslation();
+
     return (
         <ClickAwayListener onClickAway={handleClickAddTask}>
             <div>
@@ -86,7 +88,7 @@ export default function KanbanTaskAdd({ onAddTask, onCloseAddTask }: Props) {
                         <InputBase
                             multiline
                             fullWidth
-                            placeholder="Task name"
+                            placeholder={t("Task name") as string}
                             value={name}
                             onChange={(event) => setName(event.target.value)}
                             onKeyUp={handleKeyUpAddTask}
@@ -99,7 +101,7 @@ export default function KanbanTaskAdd({ onAddTask, onCloseAddTask }: Props) {
                         justifyContent="space-between"
                         sx={{ pl: 1, pr: 1.5, pb: 2 }}
                     >
-                        <Tooltip title="Mark complete">
+                        <Tooltip title={t("Mark complete")}>
                             <Checkbox
                                 disableRipple
                                 checked={completed}

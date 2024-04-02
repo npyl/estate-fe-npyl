@@ -17,6 +17,7 @@ import {
 import KanbanTaskAdd from "../KanbanTaskAdd";
 import KanbanTaskCard from "../KanbanTaskCard";
 import KanbanColumnToolBar from "./KanbanColumnToolBar";
+import { useTranslation } from "react-i18next";
 
 // ----------------------------------------------------------------------
 
@@ -52,6 +53,7 @@ export default function KanbanColumn({ column }: Props) {
             handleCloseAddTask()
         );
 
+    const { t } = useTranslation();
     // NOTE: backend doesn't delete columnOrder when a column is deleted!
     if (!column) return null;
 
@@ -122,7 +124,7 @@ export default function KanbanColumn({ column }: Props) {
                                 fontSize: 14,
                             }}
                         >
-                            Add Task
+                            {t("Add Task")}
                         </Button>
                     </Box>
                 </Paper>

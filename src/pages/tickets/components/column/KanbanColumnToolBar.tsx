@@ -7,6 +7,7 @@ import Iconify from "../../../../components/iconify";
 import MenuPopover from "../../../../components/menu-popover";
 //
 import KanbanInputName from "../KanbanInputName";
+import { useTranslation } from "react-i18next";
 
 // ----------------------------------------------------------------------
 
@@ -61,6 +62,8 @@ export default function KanbanColumnToolBar({
         }
     };
 
+    const { t } = useTranslation();
+
     return (
         <>
             <Stack
@@ -100,12 +103,12 @@ export default function KanbanColumnToolBar({
                     sx={{ color: "error.main" }}
                 >
                     <Iconify icon="eva:trash-2-outline" />
-                    Delete section
+                    {t("Delete section")}
                 </MenuItem>
 
                 <MenuItem onClick={handleClickRename}>
                     <Iconify icon="eva:edit-fill" />
-                    Rename section
+                    {t("Rename section")}
                 </MenuItem>
             </MenuPopover>
 
