@@ -1,10 +1,10 @@
 // @mui
-import { Box } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import { DropResult } from "react-beautiful-dnd";
 // layouts
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 // sections
-import { KanbanColumn, KanbanColumnAdd } from "./components";
+import { KanbanColumn } from "./components";
 
 import { useMemo } from "react";
 import {
@@ -24,6 +24,7 @@ import {
     useReorderColumnMutation,
 } from "src/services/tickets";
 import { DroppableTypeTask } from "./components/column/KanbanColumn";
+import KanbanColumnAdd from "./components/column/KanbanColumnAdd";
 
 KanbanPage.getLayout = (page: React.ReactElement) => (
     <DashboardLayout>{page}</DashboardLayout>
@@ -151,24 +152,23 @@ export default function KanbanPage() {
     }, [board?.columns?.length]);
 
     return (
-        <Box
-            sx={{
-                display: "flex",
-                flexDirection: "row",
-                mt: 3,
-                gap: 3,
-                justifyContent: { xs: "center", sm: "space-between" },
-            }}
-        >
-            {board && items ? (
-                <TwoDimentionsDnd
-                    items={items}
-                    columns={columns}
-                    onDragEnd={handleDragEnd}
-                />
-            ) : (
-                <SkeletonKanbanColumn />
-            )}
+        <Box position="relative" mt={2}>
+            <Container
+                maxWidth="xl"
+                sx={{
+                    mt: 10,
+                }}
+            >
+                {board && items ? (
+                    <TwoDimentionsDnd
+                        items={items}
+                        columns={columns}
+                        onDragEnd={handleDragEnd}
+                    />
+                ) : (
+                    <SkeletonKanbanColumn />
+                )}
+            </Container>
 
             <KanbanColumnAdd />
         </Box>

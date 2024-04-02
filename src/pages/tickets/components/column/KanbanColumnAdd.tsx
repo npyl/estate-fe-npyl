@@ -1,73 +1,95 @@
-import { useState } from "react";
-// @mui
-import { Button, ClickAwayListener, Paper, TextField } from "@mui/material";
-// components
-import Iconify from "src/components/iconify";
+import Fab from "@mui/material/Fab";
+import AddIcon from "@mui/icons-material/Add";
+import Dialog from "@mui/material/Dialog";
+import useDialog from "@/hooks/useDialog";
+import {
+    Button,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    IconButton,
+    TextField,
+} from "@mui/material";
+import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useAddColumnMutation } from "src/services/tickets";
+import { Close as CloseIcon } from "@mui/icons-material";
+import { useAddColumnMutation } from "@/services/tickets";
 
-// ----------------------------------------------------------------------
+interface Props {
+    onClose: () => void;
+}
 
-export default function KanbanColumnAdd() {
+const AddTaskDialog = ({ onClose }: Props) => {
+    const { t } = useTranslation();
+
     const [name, setName] = useState("");
-
-    const [open, setOpen] = useState(false);
 
     const [addColumn] = useAddColumnMutation();
 
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => {
-        setOpen(false);
-        setName("");
-    };
-
-    const handleChangeName = (event: React.ChangeEvent<HTMLInputElement>) =>
-        setName(event.target.value);
-
-    const handleCreateColumn = async () => {
-        if (!name) {
-            handleClose();
-            return;
-        }
-        addColumn({ name }).then(handleClose);
-    };
-
-    const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === "Enter") {
-            handleCreateColumn();
-        }
-    };
-
-    const { t } = useTranslation();
+    const handleAdd = useCallback(() => {
+        addColumn({ name });
+        onClose();
+    }, [name]);
 
     return (
-        <Paper sx={{ minWidth: 280, width: 280, maxHeight: 38 }}>
-            {open ? (
-                <ClickAwayListener onClickAway={handleCreateColumn}>
-                    <TextField
-                        autoFocus
-                        fullWidth
-                        placeholder="New section"
-                        value={name}
-                        onChange={handleChangeName}
-                        onKeyUp={handleKeyUp}
-                        InputProps={{
-                            sx: { typography: "h6" },
-                        }}
-                    />
-                </ClickAwayListener>
-            ) : (
-                <Button
-                    fullWidth
-                    size="large"
-                    color="inherit"
-                    variant="outlined"
-                    startIcon={<Iconify icon="eva:plus-fill" mb={1.5} />}
-                    onClick={handleOpen}
+        <Dialog open onClose={onClose}>
+            <DialogTitle
+                sx={{
+                    position: "relative",
+                    p: 2,
+                }}
+            >
+                {t("Add Task")}
+
+                <IconButton
+                    sx={{
+                        position: "absolute",
+                        top: 7,
+                        right: 7,
+                    }}
+                    onClick={onClose}
                 >
-                    {t("Add section")}
-                </Button>
-            )}
-        </Paper>
+                    <CloseIcon />
+                </IconButton>
+            </DialogTitle>
+            <DialogContent
+                sx={{
+                    p: 2,
+                }}
+            >
+                <TextField
+                    placeholder={t("Name").toString()}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                />
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={handleAdd}>{t("Add")}</Button>
+            </DialogActions>
+        </Dialog>
     );
-}
+};
+
+const KanbanColumnAdd2 = () => {
+    const [isOpen, openDialog, closeDialog] = useDialog();
+
+    return (
+        <>
+            <Fab
+                color="primary"
+                sx={{
+                    position: "absolute",
+                    top: 2,
+                    right: 2,
+                }}
+                onClick={openDialog}
+            >
+                <AddIcon />
+            </Fab>
+
+            {isOpen ? <AddTaskDialog onClose={closeDialog} /> : null}
+        </>
+    );
+};
+
+export default KanbanColumnAdd2;
