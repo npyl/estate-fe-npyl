@@ -18,6 +18,24 @@ import KanbanTaskAdd from "../KanbanTaskAdd";
 import KanbanTaskCard from "../KanbanTaskCard";
 import KanbanColumnToolBar from "./KanbanColumnToolBar";
 import { useTranslation } from "react-i18next";
+import { styled } from "@mui/material/styles";
+
+// ----------------------------------------------------------------------
+
+const StyledPaper = styled(Paper)(({ theme }) => ({
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+
+    borderRadius: theme.spacing(1),
+    borderStyle: "dashed",
+
+    backgroundColor:
+        theme.palette.mode === "light"
+            ? theme.palette.grey?.[100]
+            : theme.palette.background.default,
+
+    minWidth: "min-content",
+}));
 
 // ----------------------------------------------------------------------
 
@@ -28,6 +46,8 @@ type Props = {
 export const DroppableTypeTask = "TASK";
 
 export default function KanbanColumn({ column }: Props) {
+    const { t } = useTranslation();
+
     const { data: board } = useGetBoardQuery();
     const cards = useMemo(() => board?.cards || [], [board]);
 
@@ -53,7 +73,6 @@ export default function KanbanColumn({ column }: Props) {
             handleCloseAddTask()
         );
 
-    const { t } = useTranslation();
     // NOTE: backend doesn't delete columnOrder when a column is deleted!
     if (!column) return null;
 
@@ -63,19 +82,10 @@ export default function KanbanColumn({ column }: Props) {
             type={DroppableTypeTask}
         >
             {(provided) => (
-                <Paper
+                <StyledPaper
                     {...provided.droppableProps}
                     ref={provided.innerRef}
                     variant="outlined"
-                    sx={{
-                        px: 2,
-                        borderRadius: 1,
-                        borderStyle: "dashed",
-                        bgcolor: (theme) =>
-                            theme.palette.mode === "light"
-                                ? "grey.100"
-                                : "background.default",
-                    }}
                 >
                     <Stack spacing={3} position="relative">
                         <KanbanColumnToolBar
@@ -84,7 +94,11 @@ export default function KanbanColumn({ column }: Props) {
                             onUpdate={handleUpdateColumn}
                         />
 
-                        <Stack spacing={2} sx={{ width: 280 }}>
+                        <Stack
+                            spacing={2}
+                            // NOTE: a minimum height helps a dropped card not fall on the column name glitch
+                            minHeight={150}
+                        >
                             {column.cardOrder.map((cardId, index) => {
                                 const card = cards?.find(
                                     (c) => c.id === cardId
@@ -127,7 +141,7 @@ export default function KanbanColumn({ column }: Props) {
                             </Button>
                         ) : null}
                     </Box>
-                </Paper>
+                </StyledPaper>
             )}
         </Droppable>
     );
