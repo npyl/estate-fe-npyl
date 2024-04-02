@@ -1,4 +1,4 @@
-import { BoxProps, StackProps } from "@mui/material";
+import { StackProps } from "@mui/material";
 
 // ----------------------------------------------------------------------
 
