@@ -250,9 +250,13 @@ const resources = {
             Medium: "Medium",
             High: "High",
             Priority: "Priority",
+            "All tasks related to this category will also be deleted.":
+                "All tasks related to this category will also be deleted.",
+            "Are you sure want to delete column? ":
+                "Are you sure want to delete column? ",
 
             //Notes
-
+            NOTE: "NOTE",
             Notes: "Notes",
             "Write a comment...": "Write a comment...",
             "Upload Images": "Upload Images",
@@ -766,6 +770,10 @@ const resources = {
             Low: "Χαμηλή",
             Medium: "Μέτρια",
             High: "Υψηλή",
+            "All tasks related to this category will also be deleted.":
+                "Όλες οι εργασίες που σχετίζονται με αυτή την κατηγορία θα διαγραφούν.",
+            "Are you sure want to delete column?":
+                "Είστε σίγουροι ότι θέλετε να διαγράψετε την στήλη;",
 
             //Areas
 
@@ -839,6 +847,7 @@ const resources = {
             Flat: "Επίπεδο",
             Inclined: "Επικλινές",
             Amphitheater: "Αμφιθεατρικό",
+            NOTE: "Σημείωση",
             Notes: "Σημειώσεις",
             "Write a comment...": "Γράψτε ένα σχόλιο...",
             "Write a note...": "Γράψτε μια σημείωση...",
