@@ -1,16 +1,29 @@
 // @mui
-import { Box, FormControlLabel, Radio, RadioGroup, Stack } from "@mui/material";
+import {
+    Box,
+    FormControlLabel,
+    PaletteColor,
+    Radio,
+    RadioGroup,
+    Stack,
+    Theme,
+} from "@mui/material";
 import { alpha } from "@mui/material/styles";
 // components
-import Iconify from "../../../../components/iconify";
+import Iconify from "@/components/iconify";
 import { useTranslation } from "react-i18next";
 import React, { useMemo } from "react";
+import { Palette } from "@mui/material/styles/createPalette";
 // ----------------------------------------------------------------------
 
 type Props = {
     priority: number;
     onChangePrioritize: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
+
+// INFO: helper for fixing type errors (not perfect)
+const getPaletteColor = (theme: Theme, color: keyof Palette): PaletteColor =>
+    theme.palette[color] as PaletteColor;
 
 export default function KanbanDetailsPrioritizes({
     priority,
@@ -20,9 +33,9 @@ export default function KanbanDetailsPrioritizes({
 
     const PRIORITIZES_OPTIONS = useMemo(
         () => [
-            { value: 0, label: t("Low"), color: "info" },
-            { value: 1, label: t("Medium"), color: "warning" },
-            { value: 2, label: t("High"), color: "error" },
+            { value: 0, label: t("Low"), color: "info" as keyof Palette },
+            { value: 1, label: t("Medium"), color: "warning" as keyof Palette },
+            { value: 2, label: t("High"), color: "error" as keyof Palette },
         ],
         [t]
     );
@@ -55,14 +68,17 @@ export default function KanbanDetailsPrioritizes({
                                     )}`,
                                 ...(selected && {
                                     color: (theme) =>
-                                        theme.palette[option.color].main,
+                                        getPaletteColor(theme, option.color)
+                                            .main,
                                     border: (theme) =>
                                         `solid 1px ${
-                                            theme.palette[option.color].main
+                                            getPaletteColor(theme, option.color)
+                                                .main
                                         }`,
                                     bgcolor: (theme) =>
                                         alpha(
-                                            theme.palette[option.color].main,
+                                            getPaletteColor(theme, option.color)
+                                                .main,
                                             0.08
                                         ),
                                 }),
@@ -85,8 +101,10 @@ export default function KanbanDetailsPrioritizes({
                                             height: 8,
                                             borderRadius: "50%",
                                             bgcolor: (theme) =>
-                                                theme.palette[option.color]
-                                                    .main,
+                                                getPaletteColor(
+                                                    theme,
+                                                    option.color
+                                                ).main,
                                         }}
                                     />
                                 )}
