@@ -53,13 +53,15 @@ const AssigneeItem: FC<AssigneeItemProps> = ({ user, assigned, onClick }) => {
                     size="small"
                     color={assigned ? "primary" : "inherit"}
                     startIcon={
-                        <Iconify
-                            icon={
-                                assigned
-                                    ? "eva:checkmark-fill"
-                                    : "eva:plus-fill"
-                            }
-                        />
+                        <Box sx={{ marginBottom: "4px" }}>
+                            <Iconify
+                                icon={
+                                    assigned
+                                        ? "eva:checkmark-fill"
+                                        : "eva:plus-fill"
+                                }
+                            />
+                        </Box>
                     }
                     onClick={() => onClick(user.id)}
                 >

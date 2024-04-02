@@ -4,7 +4,7 @@ import { alpha } from "@mui/material/styles";
 // components
 import Iconify from "../../../../components/iconify";
 import { useTranslation } from "react-i18next";
-
+import React, { useMemo } from "react";
 // ----------------------------------------------------------------------
 
 type Props = {
@@ -18,11 +18,14 @@ export default function KanbanDetailsPrioritizes({
 }: Props) {
     const { t } = useTranslation();
 
-    const PRIORITIZES_OPTIONS = [
-        { value: 0, label: t("Low"), color: "info" },
-        { value: 1, label: t("Medium"), color: "warning" },
-        { value: 2, label: t("High"), color: "error" },
-    ] as const;
+    const PRIORITIZES_OPTIONS = useMemo(
+        () => [
+            { value: 0, label: t("Low"), color: "info" },
+            { value: 1, label: t("Medium"), color: "warning" },
+            { value: 2, label: t("High"), color: "error" },
+        ],
+        [t]
+    );
 
     return (
         <RadioGroup row value={priority} onChange={onChangePrioritize}>

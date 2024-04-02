@@ -23,10 +23,7 @@ const Iconify = forwardRef<SVGSVGElement, Props>(
         }, [iconRef, ref]);
 
         return (
-            <Box
-                sx={{ width: width, height: width, marginBottom: "4px", ...sx }}
-                {...other}
-            >
+            <Box sx={{ width: width, height: width, ...sx }} {...other}>
                 <Icon ref={iconRef} icon={icon} />
             </Box>
         );
