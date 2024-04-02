@@ -1,3 +1,4 @@
+import getBorderColor from "@/theme/borderColor";
 import { Switch, SwitchProps } from "@mui/material";
 import { styled } from "@mui/material/styles";
 interface LabeledSwitchProps extends SwitchProps {
@@ -42,13 +43,15 @@ export const LabeledSwitch = styled(
                 transform: `translate(${translateXValue}px)`,
             },
         },
+
         "& .MuiSwitch-thumb": {
-            color: "white",
+            backgroundColor: "white",
             borderRadius: 5,
             width: "35px",
             height: "46px",
             margin: "1px",
         },
+
         "& .MuiSwitch-track": {
             backgroundColor: theme.palette.neutral?.[500],
             opacity: 1,

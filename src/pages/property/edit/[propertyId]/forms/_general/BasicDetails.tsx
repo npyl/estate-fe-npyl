@@ -70,109 +70,102 @@ const BasicSection: React.FC<any> = () => {
             label={t("Basic Details").toString()}
             endNode={<RHFSwitch name="exclusive" label={t("Exclusive")} />} // TODO: iOS switch
         >
-            <Grid item xs={12} padding={1}>
-                <Grid container spacing={2}>
-                    <Grid item xs={6}>
-                        <RHFTextField
-                            fullWidth
-                            name="code"
-                            label={t("Code") + " *"}
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Select
-                            disabled={!parentCategory}
-                            label={t("Category")}
-                            name="category"
-                            options={categories}
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <RHFTextField
-                            fullWidth
-                            select
-                            label={t("Manager")}
-                            name="managerId"
-                        >
-                            <MenuItem value={undefined}>
-                                {t(`Not selected`)}
+            <Grid container spacing={2}>
+                <Grid item xs={6}>
+                    <RHFTextField
+                        fullWidth
+                        name="code"
+                        label={t("Code") + " *"}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <Select
+                        disabled={!parentCategory}
+                        label={t("Category")}
+                        name="category"
+                        options={categories}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <RHFTextField
+                        fullWidth
+                        select
+                        label={t("Manager")}
+                        name="managerId"
+                    >
+                        <MenuItem value={undefined}>
+                            {t(`Not selected`)}
+                        </MenuItem>
+                        {managers?.map(({ firstName, lastName, id }, i) => (
+                            <MenuItem key={i} value={id}>
+                                {`${firstName} ${lastName}`}
                             </MenuItem>
-                            {managers?.map(({ firstName, lastName, id }, i) => (
-                                <MenuItem key={i} value={id}>
-                                    {`${firstName} ${lastName}`}
-                                </MenuItem>
-                            ))}
-                        </RHFTextField>
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Autocomplete />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <RHFOnlyNumbers
-                            fullWidth
-                            name="area"
-                            label={t("Area")}
-                            adornment="m²"
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <Select
-                            name="state"
-                            label={t("State") + " *"}
-                            options={stateEnum}
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <RHFOnlyNumbers
-                            fullWidth
-                            name="price"
-                            label={t("Price")}
-                            adornment="€"
-                        />
-                    </Grid>
+                        ))}
+                    </RHFTextField>
+                </Grid>
+                <Grid item xs={6}>
+                    <Autocomplete />
+                </Grid>
+                <Grid item xs={6}>
+                    <RHFOnlyNumbers
+                        fullWidth
+                        name="area"
+                        label={t("Area")}
+                        adornment="m²"
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <Select
+                        name="state"
+                        label={t("State") + " *"}
+                        options={stateEnum}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <RHFOnlyNumbers
+                        fullWidth
+                        name="price"
+                        label={t("Price")}
+                        adornment="€"
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <RHFOnlyNumbers
+                        fullWidth
+                        name="plotArea"
+                        label={t("Plot Area")}
+                        adornment="m²"
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <LabelCreate variant="property" resourceId={+propertyId!} />
+                </Grid>
+                <Grid item xs={6}>
+                    <RHFOnlyNumbers
+                        name="averageUtils"
+                        label={t("Average Utils")}
+                        adornment="€/Month"
+                    />
+                </Grid>
 
-                    <Grid item xs={6}>
-                        <RHFOnlyNumbers
-                            fullWidth
-                            name="plotArea"
-                            label={t("Plot Area")}
-                            adornment="m²"
-                        />
-                    </Grid>
+                <Grid item xs={6}>
+                    <RHFOnlyNumbers
+                        fullWidth
+                        name="estimatedRentPrice"
+                        label={t("Estimated Rent Price")}
+                        adornment="€"
+                    />
+                </Grid>
 
-                    <Grid item xs={6}>
-                        <LabelCreate
-                            variant="property"
-                            resourceId={+propertyId!}
-                        />
-                    </Grid>
-
-                    <Grid item xs={6}>
-                        <RHFOnlyNumbers
-                            name="averageUtils"
-                            label={t("Average Utils")}
-                            adornment="€/Month"
-                        />
-                    </Grid>
-
-                    <Grid item xs={6}>
-                        <RHFOnlyNumbers
-                            fullWidth
-                            name="estimatedRentPrice"
-                            label={t("Estimated Rent Price")}
-                            adornment="€"
-                        />
-                    </Grid>
-
-                    <Grid item xs={6}>
-                        <RHFTextField
-                            fullWidth
-                            name="keyCode"
-                            label={t("Key Code")}
-                        />
-                    </Grid>
+                <Grid item xs={6}>
+                    <RHFTextField
+                        fullWidth
+                        name="keyCode"
+                        label={t("Key Code")}
+                    />
                 </Grid>
             </Grid>
+
             <Rent />
             <RHFCheckbox name="debatablePrice" label={t("Debatable Price")} />
             <RHFCheckbox name="auction" label={t("Auction")} />

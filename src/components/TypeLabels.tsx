@@ -39,7 +39,7 @@ export const TypeLabels = ({ seller, lessor, leaser, buyer }: TypeProps) => {
     const belowSm = useResponsive("down", "sm");
 
     return (
-        <Box display="flex" flexDirection="row" flexWrap="wrap">
+        <Box display="flex" flexDirection="row" flexWrap="wrap" gap={0.7}>
             {Object.entries(map).map(([type, { value, color }]) =>
                 value ? (
                     <Label

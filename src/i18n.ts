@@ -157,6 +157,12 @@ const resources = {
             Garden: "Garden",
             Balconies: "Balconies",
 
+            "Default Sorting": "Default Sorting",
+            "Rising Price": "Rising Price",
+            "Falling Price": "Falling Price",
+            "Failing Area": "Falling Area",
+            "Rising Area": "Rising Area",
+
             //Distances
 
             Distances: "Distances",
@@ -221,6 +227,29 @@ const resources = {
             Flat: "Flat",
             Inclined: "Inclined",
             Amphitheater: "Amphitheater",
+
+            // Tickets
+            "Add section": "Add section",
+            "Add Task": "Add task",
+            "Delete section": "Delete section",
+            "Rename section": "Rename section",
+            "Task name": "Task name",
+            "Mark Complete": "Mark Complete",
+            Completed: "Completed",
+            "Type a message": "Type a message",
+            Comment: "Comment",
+            "Search...": "Search ...",
+            "Are you sure want to delete": "Are you sure you want to delete",
+            "Delete task": "Delete task",
+            Attachments: "Attachments",
+            "Add assignee": "Add assignee",
+            assigned: "assigned",
+            assign: "assign",
+            Assignee: "Assignee",
+            Low: "Low",
+            Medium: "Medium",
+            High: "High",
+            Priority: "Priority",
 
             //Notes
 
@@ -708,6 +737,35 @@ const resources = {
             Neoclassical: "Νεοκλασικό",
             Preserved: "Διατηρητέο",
             "Floor Apartment": "Οροφοδιαμέρισμα",
+            "Default Sorting": "Προεπιλεγμενη Ταξινόμηση",
+            "Rising Price": "Αύξουσα Τιμή",
+            "Falling Price": "Φθίνουσα Τιμή",
+            "Falling Area": "Φθίνουσα Εμβαδό",
+            "Rising Area": "Αύξουσα Εμβαδό",
+
+            // Tickets
+            "Add section": "Προσθήκη Τμήματος",
+            "Add Task": "Προσθήκη Εργασίας",
+            "Delete section": "Διαγραφή Τμήματος",
+            "Rename section": "Μετονομασία Τμήματος",
+            "Task name": "Όνομα Εργασίας",
+            "Mark Complete": "Σήμανση Ολοκληρωμένου",
+            Completed: "Ολοκληρώθηκε",
+            Assignee: "Ανάθεση",
+            Priority: "Προτεραιότητα",
+            Attachments: "Συνημμένα",
+            "Type a message": "Πληκτρολογήστε ένα μήνυμα",
+            Comment: "Σχόλιο",
+            "Search...": "Αναζήτηση ...",
+            "Are you sure want to delete":
+                "Είστε σίγουροι ότι θέλετε να διαγράψετε την εργασία;",
+            "Delete task": "Διαγραφή εργασίας",
+            "Add assignee": "Προσθήκη αναθέτη",
+            assigned: "ανατεθειμένο",
+            assign: "ανάθεση",
+            Low: "Χαμηλή",
+            Medium: "Μέτρια",
+            High: "Υψηλή",
 
             //Areas
 

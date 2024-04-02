@@ -18,11 +18,11 @@ import {
 } from "@mui/material";
 import { alpha } from "@mui/material/styles";
 // components
-import { useTranslation } from "react-i18next";
 import Iconify from "src/components/iconify";
 import { Scrollbar } from "src/components/scrollbar";
 import { useAllUsersQuery } from "src/services/user";
 import { IUser } from "src/types/user";
+import { useTranslation } from "react-i18next";
 
 // ----------------------------------------------------------------------
 
@@ -40,6 +40,8 @@ interface AssigneeItemProps {
 }
 
 const AssigneeItem: FC<AssigneeItemProps> = ({ user, assigned, onClick }) => {
+    const { t } = useTranslation();
+
     if (!user.firstName || !user.lastName) return <></>;
 
     return (
@@ -51,17 +53,19 @@ const AssigneeItem: FC<AssigneeItemProps> = ({ user, assigned, onClick }) => {
                     size="small"
                     color={assigned ? "primary" : "inherit"}
                     startIcon={
-                        <Iconify
-                            icon={
-                                assigned
-                                    ? "eva:checkmark-fill"
-                                    : "eva:plus-fill"
-                            }
-                        />
+                        <Box sx={{ marginBottom: "4px" }}>
+                            <Iconify
+                                icon={
+                                    assigned
+                                        ? "eva:checkmark-fill"
+                                        : "eva:plus-fill"
+                                }
+                            />
+                        </Box>
                     }
                     onClick={() => onClick(user.id)}
                 >
-                    {assigned ? "assigned" : "assign"}
+                    {assigned ? t("assigned") : t("assign")}
                 </Button>
             }
             sx={{ height: ITEM_HEIGHT }}
@@ -116,7 +120,7 @@ export default function KanbanContactsDialog({
 
     return (
         <>
-            <Tooltip title="Add assignee">
+            <Tooltip title={t("Add assignee")}>
                 <IconButton
                     onClick={handleOpenAssignees}
                     sx={{
@@ -149,7 +153,7 @@ export default function KanbanContactsDialog({
                             fullWidth
                             value={searchContacts}
                             onChange={handleSearchContacts}
-                            placeholder="Search..."
+                            placeholder={t("Search...") as string}
                             inputProps={{
                                 startAdornment: (
                                     <InputAdornment position="start">

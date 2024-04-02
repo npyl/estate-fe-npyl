@@ -65,7 +65,6 @@ const SuitableFor: React.FC<SuitableForProps> = (props) => {
                     <ListBooleanItem
                         label={t("Student")}
                         status={suitableFor?.student}
-                        align="horizontal"
                     />
                 );
             case "Cottage":
@@ -73,7 +72,6 @@ const SuitableFor: React.FC<SuitableForProps> = (props) => {
                     <ListBooleanItem
                         label={t("Cottage")}
                         status={suitableFor?.cottage}
-                        align="horizontal"
                     />
                 );
             case "Tourist Rental":
@@ -81,7 +79,6 @@ const SuitableFor: React.FC<SuitableForProps> = (props) => {
                     <ListBooleanItem
                         label={t("Tourist Rental")}
                         status={suitableFor?.touristRental}
-                        align="horizontal"
                     />
                 );
             case "Investment":
@@ -89,7 +86,6 @@ const SuitableFor: React.FC<SuitableForProps> = (props) => {
                     <ListBooleanItem
                         label={t("Investment")}
                         status={suitableFor?.investment}
-                        align="horizontal"
                     />
                 );
             case "Doctors Office":
@@ -97,7 +93,6 @@ const SuitableFor: React.FC<SuitableForProps> = (props) => {
                     <ListBooleanItem
                         label={t("Doctors Office")}
                         status={suitableFor?.doctorsOffice}
-                        align="horizontal"
                     />
                 );
             case "Professional Usage":
@@ -105,7 +100,6 @@ const SuitableFor: React.FC<SuitableForProps> = (props) => {
                     <ListBooleanItem
                         label={t("Professional Usage")}
                         status={suitableFor?.professionalUse}
-                        align="horizontal"
                     />
                 );
             case "Renovation":
@@ -113,7 +107,6 @@ const SuitableFor: React.FC<SuitableForProps> = (props) => {
                     <ListBooleanItem
                         label={t("Renovation")}
                         status={suitableFor?.renovation}
-                        align="horizontal"
                     />
                 );
             case "Argiciltural Use":
@@ -121,7 +114,6 @@ const SuitableFor: React.FC<SuitableForProps> = (props) => {
                     <ListBooleanItem
                         label={t("Argiciltural Use")}
                         status={suitableFor?.agriculturalUse}
-                        align="horizontal"
                     />
                 );
             case "Doctor's Office":
@@ -129,7 +121,6 @@ const SuitableFor: React.FC<SuitableForProps> = (props) => {
                     <ListBooleanItem
                         label={t("Doctor's Office")}
                         status={suitableFor?.doctorsOffice}
-                        align="horizontal"
                     />
                 );
             case "Professional Use":
@@ -137,7 +128,6 @@ const SuitableFor: React.FC<SuitableForProps> = (props) => {
                     <ListBooleanItem
                         label={t("Professional Use")}
                         status={suitableFor?.professionalUse}
-                        align="horizontal"
                     />
                 );
             case "Agricultural Use":
@@ -145,7 +135,6 @@ const SuitableFor: React.FC<SuitableForProps> = (props) => {
                     <ListBooleanItem
                         label={t("Agricultural Use")}
                         status={suitableFor?.agriculturalUse}
-                        align="horizontal"
                     />
                 );
         }

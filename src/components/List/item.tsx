@@ -1,19 +1,31 @@
-import type { ListItemProps as MuiListItemProps } from "@mui/material";
-import { Box, ListItemText, Typography } from "@mui/material";
-import StyledListItem from "./StyledListItem";
+import type { ListItemTextProps } from "@mui/material";
+import { ListItemText, Typography } from "@mui/material";
+import StyledListItem from "./styled";
+import { styled } from "@mui/material/styles";
 import type { FC } from "react";
+import ListItemProps, { Direction } from "./types";
 
-type Direction = "horizontal" | "vertical";
-
-interface ListItemProps extends MuiListItemProps {
+interface CustomProps extends ListItemTextProps {
     align?: Direction;
-    label: string;
-    value?: any | null;
 }
+
+const CustomListItemText = styled(ListItemText)<CustomProps>(({ align }) => ({
+    display: "flex",
+    // horizontal vs. vertical mode
+    ...(align === "horizontal"
+        ? {
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+          }
+        : {}),
+}));
+
+// --------------------------------------------------------------------------------
 
 const ListItem: FC<ListItemProps> = (props) => {
     const {
-        align = "vertical",
+        align = "horizontal",
         children,
         disableGutters,
         value,
@@ -28,32 +40,21 @@ const ListItem: FC<ListItemProps> = (props) => {
             }}
             {...other}
         >
-            <ListItemText
+            <CustomListItemText
+                align={align}
                 disableTypography
                 primary={<Typography variant="subtitle2">{label}</Typography>}
                 secondary={
-                    <Box
-                        sx={{
-                            flex: 1,
-                        }}
-                    >
-                        {children || (
-                            <Typography
-                                color="textSecondary"
-                                variant="body2"
-                                sx={{
-                                    float: "right",
-                                }}
-                            >
-                                {value?.toString() || ""}
-                            </Typography>
-                        )}
-                    </Box>
+                    children || (
+                        <Typography
+                            color="text.secondary"
+                            variant="body2"
+                            textAlign="right"
+                        >
+                            {value?.toString() || ""}
+                        </Typography>
+                    )
                 }
-                sx={{
-                    display: "flex",
-                    my: 0,
-                }}
             />
         </StyledListItem>
     );

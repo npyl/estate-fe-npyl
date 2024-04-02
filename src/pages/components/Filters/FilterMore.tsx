@@ -71,7 +71,6 @@ import { StyledDialogContent } from "./styles";
 type Props = {
     open: boolean;
     onOpen: VoidFunction;
-    onApply: VoidFunction;
     onClose: VoidFunction;
     onResetFilter: VoidFunction;
 };
@@ -125,12 +124,7 @@ const getFEILDS = (
     },
 ];
 
-export default function FilterMore({
-    open,
-    onApply,
-    onClose,
-    onResetFilter,
-}: Props) {
+export default function FilterMore({ open, onClose, onResetFilter }: Props) {
     const { t } = useTranslation();
     const {
         frameTypeEnum,
@@ -408,17 +402,6 @@ export default function FilterMore({
             <DialogActions sx={{ justifyContent: "space-between" }}>
                 <Button color={"secondary"} onClick={onResetFilter}>
                     {t("Clear all")}
-                </Button>
-
-                <Button
-                    color={"secondary"}
-                    variant="outlined"
-                    onClick={() => {
-                        onApply();
-                        onClose();
-                    }}
-                >
-                    {t("Apply")}
                 </Button>
             </DialogActions>
         </Dialog>

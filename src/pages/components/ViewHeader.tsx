@@ -1,24 +1,25 @@
-import {
-    Button,
-    Dialog,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    IconButton,
-    Paper,
-    Stack,
-    Typography,
-} from "@mui/material";
+import { Button, IconButton, Paper, Stack, Typography } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import { SoftButton } from "src/components/SoftButton";
-import { ReactNode, useCallback, useMemo, useState } from "react";
+import { ReactNode, useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { SpitogatosSvg } from "src/assets/SpitogatosSvg";
 import { PublicSvg } from "src/assets/PublicSvg";
 import GoogleEarthSvg from "src/assets/GoogleEarth";
 import { usePathname } from "next/navigation";
 import { useGetProperty } from "src/hooks/property/hook";
+import { DeleteDialog } from "src/components/Dialog/Delete";
+import useDialog from "src/hooks/useDialog";
+import { styled } from "@mui/material/styles";
+import { getBorderColor2 } from "@/theme/borderColor";
+
+const CustomStack = styled(Stack)(({ theme }) => ({
+    border: "1px solid",
+    borderColor: getBorderColor2(theme),
+    borderRadius: "10px",
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+}));
 
 const OpenIn = () => {
     const { t } = useTranslation();
@@ -56,16 +57,7 @@ const OpenIn = () => {
     );
 
     return hasNothing ? null : (
-        <Stack
-            flexDirection="row"
-            gap={0.5}
-            alignItems="center"
-            sx={{
-                border: "1px solid #ccc",
-                borderRadius: "10px",
-                px: 1,
-            }}
-        >
+        <CustomStack flexDirection="row" gap={0.5} alignItems="center">
             <Typography>{t("Open in")}</Typography>
             {hasPublic ? (
                 <IconButton size="small" onClick={openPublic}>
@@ -82,7 +74,7 @@ const OpenIn = () => {
                     <GoogleEarthSvg />
                 </IconButton>
             ) : null}
-        </Stack>
+        </CustomStack>
     );
 };
 
@@ -100,7 +92,7 @@ const ViewHeader = (props: IViewHeaderProps) => {
 
     const isProperty = useMemo(() => pathname.includes("property"), [pathname]);
 
-    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const [isDeleteOpen, openDelete, closeDelete] = useDialog();
 
     return (
         <Paper
@@ -139,58 +131,18 @@ const ViewHeader = (props: IViewHeaderProps) => {
 
                     <SoftButton
                         color="error"
-                        onClick={() => setDeleteDialogOpen(true)}
+                        onClick={openDelete}
                         startIcon={<DeleteIcon />}
                     >
                         {t("Delete")}
                     </SoftButton>
 
-                    {deleteDialogOpen ? (
-                        <Dialog
-                            maxWidth="xs"
-                            open={deleteDialogOpen}
-                            onClose={() => setDeleteDialogOpen(false)}
-                            closeAfterTransition={true}
-                        >
-                            <DialogTitle sx={{ textAlign: "center" }}>
-                                <HighlightOffIcon
-                                    sx={{
-                                        fontSize: "100px",
-                                        stroke: "Window",
-                                        strokeWidth: 1.5,
-                                        color: "error.main",
-                                    }}
-                                />
-                            </DialogTitle>
-                            <DialogContent sx={{ textAlign: "center" }}>
-                                <Typography variant="h5" fontWeight={400}>
-                                    {t("Are you sure?")}
-                                </Typography>
-                            </DialogContent>
-                            <DialogContentText
-                                ml={3}
-                                mr={3}
-                                sx={{ textAlign: "center" }}
-                            >
-                                {t("Do you really want to delete this record?")}
-                                <br />
-                                {t("This process cannot be undone")}
-                            </DialogContentText>
-                            <DialogContent sx={{ textAlign: "center" }}>
-                                <Button
-                                    sx={{ mr: 1 }}
-                                    variant="outlined"
-                                    color="secondary"
-                                    onClick={() => setDeleteDialogOpen(false)}
-                                >
-                                    {t("No")}
-                                </Button>
-
-                                <SoftButton color="error" onClick={onDelete}>
-                                    {t("Yes")}
-                                </SoftButton>
-                            </DialogContent>
-                        </Dialog>
+                    {isDeleteOpen ? (
+                        <DeleteDialog
+                            open={isDeleteOpen}
+                            onClose={closeDelete}
+                            onDelete={onDelete}
+                        />
                     ) : null}
                 </Stack>
             </Stack>

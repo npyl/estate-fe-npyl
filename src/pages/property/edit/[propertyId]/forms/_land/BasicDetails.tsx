@@ -222,9 +222,9 @@ const BasicForLandSection: React.FC<any> = () => {
                         <RHFCheckbox {...c} />
                     </Grid>
                 ))}
-
-                <Rent />
             </Grid>
+
+            <Rent />
         </Panel>
     );
 };

@@ -5,7 +5,6 @@ import {
     Box,
     Grid,
     List,
-    ListItem as MuiListItem,
     ListItemText,
     Popper,
     TextField,
@@ -23,20 +22,12 @@ import {
     setMinPrice,
 } from "src/slices/filters";
 import { useDispatch, useSelector } from "src/store";
-import { StyledBox, StyledPriceButton } from "./styles";
 import { useTranslation } from "react-i18next";
-import { styled } from "@mui/material/styles";
-
-const ListItem = styled(MuiListItem)(({ theme }) => ({
-    cursor: "pointer",
-    borderRadius: "10px",
-    "&:hover": {
-        backgroundColor:
-            theme.palette.mode === "light"
-                ? theme.palette.neutral?.[200]
-                : theme.palette.neutral?.[700],
-    },
-}));
+import {
+    ListItem,
+    StyledBox,
+    StyledPriceButton,
+} from "@/components/Filters/styled";
 
 interface Props {
     type: string;

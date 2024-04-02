@@ -128,7 +128,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Panoramic View")}
                         status={features?.panoramicView ?? false}
-                        align="horizontal"
                     />
                 );
 
@@ -137,7 +136,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Corner")}
                         status={features?.corner ?? false}
-                        align="horizontal"
                     />
                 );
             case "Facade":
@@ -145,7 +143,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Facade")}
                         status={features?.facade ?? false}
-                        align="horizontal"
                     />
                 );
             case "Organized Garden":
@@ -153,7 +150,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Organized Garden")}
                         status={features?.organizedGarden ?? false}
-                        align="horizontal"
                     />
                 );
             case "Drilling":
@@ -161,7 +157,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Drilling")}
                         status={features?.drilling ?? false}
-                        align="horizontal"
                     />
                 );
             case "Adapting to the Ground":
@@ -169,7 +164,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Adapting to the Ground")}
                         status={features?.adaptingToTheGround ?? false}
-                        align="horizontal"
                     />
                 );
             case "Pool":
@@ -177,7 +171,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Pool")}
                         status={features?.pool ?? false}
-                        align="horizontal"
                     />
                 );
             case "Barbeque":
@@ -185,7 +178,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Barbeque")}
                         status={features?.barbeque ?? false}
-                        align="horizontal"
                     />
                 );
             case "Sea View":
@@ -193,7 +185,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Sea View")}
                         status={features?.seaView ?? false}
-                        align="horizontal"
                     />
                 );
             case "Mountain View":
@@ -201,7 +192,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Mountain View")}
                         status={features?.mountainView ?? false}
-                        align="horizontal"
                     />
                 );
             case "Sea Front":
@@ -209,7 +199,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Sea Front")}
                         status={features?.seaFront ?? false}
-                        align="horizontal"
                     />
                 );
             case "Smart Home":
@@ -217,7 +206,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Smart Home")}
                         status={features?.smartHome ?? false}
-                        align="horizontal"
                     />
                 );
             case "Thermal Insulation":
@@ -225,7 +213,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Thermal Insulation")}
                         status={features?.thermalInsulation ?? false}
-                        align="horizontal"
                     />
                 );
             case "Jacuzzi":
@@ -233,7 +220,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Jacuzzi")}
                         status={features?.jacuzzi ?? false}
-                        align="horizontal"
                     />
                 );
             case "Internet":
@@ -241,7 +227,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Internet")}
                         status={features?.internet ?? false}
-                        align="horizontal"
                     />
                 );
             case "Walkable Distance to Beach":
@@ -249,7 +234,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Walkable Distance to Beach")}
                         status={features?.walkableDistanceToBeach ?? false}
-                        align="horizontal"
                     />
                 );
             case "Quiet Area":
@@ -257,7 +241,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Quiet Area")}
                         status={features?.quietArea ?? false}
-                        align="horizontal"
                     />
                 );
             case "View":
@@ -265,7 +248,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("View")}
                         status={features?.view ?? false}
-                        align="horizontal"
                     />
                 );
             case "Near Bus Route":
@@ -273,7 +255,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Near Bus Route")}
                         status={features?.nearBusRoute ?? false}
-                        align="horizontal"
                     />
                 );
             case "Guestroom":
@@ -281,7 +262,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Guestroom")}
                         status={features?.guestroom ?? false}
-                        align="horizontal"
                     />
                 );
 
@@ -290,7 +270,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Bright")}
                         status={features?.bright ?? false}
-                        align="horizontal"
                     />
                 );
             case "Alarm System":
@@ -298,7 +277,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Alarm System")}
                         status={features?.alarmSystem ?? false}
-                        align="horizontal"
                     />
                 );
             case "Office":
@@ -306,7 +284,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Office")}
                         status={features?.office ?? false}
-                        align="horizontal"
                     />
                 );
             case "Home Cinema":
@@ -314,7 +291,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Home Cinema")}
                         status={features?.homeCinema ?? false}
-                        align="horizontal"
                     />
                 );
             case "Combined Kitchen and Dinning Area":
@@ -322,7 +298,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Combined Kitchen and Dinning Area")}
                         status={features?.combinedKitchenAndDiningArea ?? false}
-                        align="horizontal"
                     />
                 );
             case "Sound Insulation":
@@ -330,7 +305,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Sound Insulation")}
                         status={features?.soundInsulation ?? false}
-                        align="horizontal"
                     />
                 );
             case "Veranda":
@@ -338,7 +312,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Veranda")}
                         status={features?.veranda ?? false}
-                        align="horizontal"
                     />
                 );
             case "Well":
@@ -346,7 +319,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Well")}
                         status={features?.well ?? false}
-                        align="horizontal"
                     />
                 );
             case "Masonry Fence":
@@ -354,7 +326,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Masonry Fence")}
                         status={features?.masonryFence ?? false}
-                        align="horizontal"
                     />
                 );
             case "Access for Disabled":
@@ -362,7 +333,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Access for Disabled")}
                         status={features?.accessForDisabled ?? false}
-                        align="horizontal"
                     />
                 );
             case "Tents":
@@ -370,7 +340,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Tents")}
                         status={features?.tents ?? false}
-                        align="horizontal"
                     />
                 );
             case "Heated Pool":
@@ -378,7 +347,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Heated Pool")}
                         status={features?.heatedPool ?? false}
-                        align="horizontal"
                     />
                 );
             case "Has 24 Hours Security":
@@ -386,7 +354,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Has 24 Hours Security")}
                         status={features?.has24HoursSecurity ?? false}
-                        align="horizontal"
                     />
                 );
             case "CCTV":
@@ -394,7 +361,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("CCTV")}
                         status={features?.cctv ?? false}
-                        align="horizontal"
                     />
                 );
             case "Fire Detector":
@@ -402,7 +368,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Fire Detector")}
                         status={features?.fireDetector ?? false}
-                        align="horizontal"
                     />
                 );
             case "Independent Heating Per Room":
@@ -410,7 +375,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Independent Heating Per Room")}
                         status={features?.independentHeatingPerRoom ?? false}
-                        align="horizontal"
                     />
                 );
             case "Indoor Pool":
@@ -418,7 +382,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Indoor Pool")}
                         status={features?.indoorPool ?? false}
-                        align="horizontal"
                     />
                 );
             case "Within City Plan":
@@ -426,7 +389,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Within City Plan")}
                         status={features?.withinCityPlan ?? false}
-                        align="horizontal"
                     />
                 );
             case "Within Residential Zone":
@@ -434,7 +396,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Within Residential Zone")}
                         status={features?.withinResidentialZone ?? false}
-                        align="horizontal"
                     />
                 );
             case "Loading Dock":
@@ -442,7 +403,6 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
                     <ListBooleanItem
                         label={t("Loading Dock")}
                         status={features?.loadingDock ?? false}
-                        align="horizontal"
                     />
                 );
         }

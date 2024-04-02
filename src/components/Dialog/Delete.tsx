@@ -8,8 +8,16 @@ import {
 } from "@mui/material";
 import { SoftButton } from "../SoftButton";
 import { useTranslation } from "react-i18next";
-
+import { styled } from "@mui/material/styles";
 import { HighlightOff as HighlightOffIcon } from "@mui/icons-material";
+
+const DeleteIcon = styled(HighlightOffIcon)(({ theme }) => ({
+    fontSize: "100px",
+    stroke:
+        theme.palette.mode === "dark" ? theme.palette.neutral?.[900] : "Window",
+    strokeWidth: 1.5,
+    color: theme.palette.error.main,
+}));
 
 interface DeleteDialogProps {
     open: boolean;
@@ -34,14 +42,7 @@ export const DeleteDialog = ({
             closeAfterTransition={true}
         >
             <DialogTitle sx={{ textAlign: "center" }}>
-                <HighlightOffIcon
-                    sx={{
-                        fontSize: "100px",
-                        stroke: "Window",
-                        strokeWidth: 1.5,
-                        color: "error.main",
-                    }}
-                />
+                <DeleteIcon />
             </DialogTitle>
             <DialogContent sx={{ textAlign: "center" }}>
                 <Typography variant="h5" fontWeight={400}>

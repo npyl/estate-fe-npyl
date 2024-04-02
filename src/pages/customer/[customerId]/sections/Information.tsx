@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { ListItem, ListManagerItem } from "src/components/List";
 import { LeadSource } from "src/types/global";
 import { useGlobals } from "src/hooks/useGlobals";
-import { TypeLabels } from "src/pages/customers/components/TypeLabels";
+import { TypeLabels } from "@/components/TypeLabels";
 import { LabelCreate } from "src/components/label";
 import useGetCustomer from "src/hooks/customer/hook";
 
@@ -73,45 +73,28 @@ const InformationSection: React.FC = () => {
                         <ListItem
                             label={t("First Name")}
                             value={data?.firstName || "-"}
-                            align="horizontal"
                         />
                         <ListItem
                             label={t("Last Name")}
                             value={data?.lastName || "-"}
-                            align="horizontal"
                         />
                         <ListItem
                             label={t("email")}
                             value={data?.email || "-"}
-                            align="horizontal"
                         />
-                        {data.managedBy != null ? (
-                            <ListManagerItem
-                                label={t("Managed By")}
-                                manager={data.managedBy} // You don't need the || "-" here because you're already checking if it's not null
-                            />
-                        ) : (
-                            <ListItem
-                                label={t("Managed By")}
-                                value={"-"} // Displaying '-' when managedBy is null
-                                align="horizontal"
-                            />
-                        )}
+                        <ListManagerItem
+                            label={t("Managed By").toString()}
+                            manager={data.managedBy}
+                        />
                         <ListItem
                             label={t("Mobile Phone")}
                             value={data?.mobilePhone || "-"}
-                            align="horizontal"
                         />
                         <ListItem
                             label={t("Home Phone")}
                             value={data?.homePhone || "-"}
-                            align="horizontal"
                         />
-                        <ListItem
-                            label={t("Fax")}
-                            value={data?.fax || "-"}
-                            align="horizontal"
-                        />
+                        <ListItem label={t("Fax")} value={data?.fax || "-"} />
 
                         <div style={{ display: "flex", alignItems: "center" }}>
                             <ListItem label={t("Status")} />
@@ -129,13 +112,11 @@ const InformationSection: React.FC = () => {
                         <ListItem
                             label={t("Nationality")}
                             value={displayNationality || "-"}
-                            align="horizontal"
                         />
 
                         <ListItem
                             label={t("ID Number")}
                             value={data?.idNumber || "-"}
-                            align="horizontal"
                         />
                         <ListItem
                             label={t("Date of Birth")}
@@ -144,28 +125,23 @@ const InformationSection: React.FC = () => {
                                     ? new Date(data?.dateOfBirth).toDateString()
                                     : "-"
                             }
-                            align="horizontal"
                         />
                         <ListItem
                             label={t("Passport Number")}
                             value={data?.passportNumber || "-"}
-                            align="horizontal"
                         />
                         <ListItem
                             label={t("Preferred Language")}
                             value={data?.preferredLanguage.value || "-"}
-                            align="horizontal"
                         />
                         <ListItem
                             label={t("Lead Source")}
                             value={displayLeadSource}
-                            align="horizontal"
                         />
                         {displayLeadSource === "Customer" && (
                             <ListItem
                                 label={t("Suggested by")}
                                 value={data?.suggestedBy || "-"}
-                                align="horizontal"
                             />
                         )}
 

@@ -19,11 +19,13 @@ interface IConfirmationDialogBox {
 import { HighlightOff as HighlightOffIcon } from "@mui/icons-material";
 import CopyAllIcon from "@mui/icons-material/CopyAll";
 import CrisisAlertIcon from "@mui/icons-material/CrisisAlert";
+import { useTranslation } from "react-i18next";
 
 export const ConfirmationDialogBox: React.FC<IConfirmationDialogBox> = (
     props
 ) => {
     const { open, onClose, text, action, onConfirm } = props;
+    const { t } = useTranslation();
 
     return (
         <Dialog
@@ -92,7 +94,7 @@ export const ConfirmationDialogBox: React.FC<IConfirmationDialogBox> = (
                         color="secondary"
                         onClick={onClose}
                     >
-                        Cancel
+                        {t("Cancel")}
                     </Button>
                 </Stack>
             </DialogActions>

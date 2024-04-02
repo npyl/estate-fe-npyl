@@ -1,4 +1,4 @@
-import { Divider, Grid, TextField } from "@mui/material";
+import { Divider, Grid, Stack, TextField } from "@mui/material";
 import { Box } from "@mui/system";
 import { useCallback, useMemo, useState } from "react";
 import Map, { IMapAddress, IMapMarker } from "src/components/Map/Map";
@@ -166,7 +166,6 @@ const LocationSection = () => {
     return (
         <>
             <Panel label={t("Location")}>
-                <Divider />
                 <Box display={"flex"} pb={2}>
                     <Box height={`50vh`} width={"100%"}>
                         <Map
@@ -238,32 +237,26 @@ const LocationSection = () => {
                     </Grid>
                 </Grid>
 
-                <Divider sx={{ mt: 2, mb: 1 }} />
+                <Divider sx={{ my: 2 }} />
 
-                <Grid container spacing={2}>
-                    <Grid item xs={6}>
-                        <TextField
-                            fullWidth
-                            label={t("Latitude")}
-                            value={lat ? parseFloat(lat).toFixed(4) : ""}
-                            InputProps={{
-                                readOnly: true,
-                            }}
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <TextField
-                            fullWidth
-                            label={t("Longitude")}
-                            value={lng ? parseFloat(lng).toFixed(4) : ""}
-                            InputProps={{
-                                readOnly: true,
-                            }}
-                        />
-                    </Grid>
-                </Grid>
-
-                <Divider sx={{ mt: 2, mb: 1 }} />
+                <Stack spacing={2} direction="row">
+                    <TextField
+                        fullWidth
+                        label={t("Latitude")}
+                        value={lat ? parseFloat(lat).toFixed(4) : ""}
+                        InputProps={{
+                            readOnly: true,
+                        }}
+                    />
+                    <TextField
+                        fullWidth
+                        label={t("Longitude")}
+                        value={lng ? parseFloat(lng).toFixed(4) : ""}
+                        InputProps={{
+                            readOnly: true,
+                        }}
+                    />
+                </Stack>
             </Panel>
 
             <DistancesSection map={map} />

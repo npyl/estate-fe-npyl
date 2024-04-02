@@ -20,7 +20,7 @@ function truncate(str: string, n: number) {
 
 const defaultImage = "/static/noImage.png";
 
-export function HorizontalCard({
+function HorizontalCard({
     item,
     activeMarker,
     selectedMarker,
@@ -183,3 +183,5 @@ export function HorizontalCard({
         </Grid>
     );
 }
+
+export default HorizontalCard;

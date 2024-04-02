@@ -10,7 +10,9 @@ import { lightThemeOptions } from "./light-theme-options";
 interface Neutral {
     100: string;
     200: string;
+    250: string;
     300: string;
+    350: string;
     400: string;
     500: string;
     600: string;

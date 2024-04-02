@@ -1,0 +1,35 @@
+import { Stack } from "@mui/material";
+import type { FC } from "react";
+import Label from "@/components/label/Label";
+import { ILabel } from "src/types/label";
+import ListItem from "../item";
+import { useTranslation } from "react-i18next";
+import ListItemProps from "../types";
+
+interface ListLabelsItemProps extends ListItemProps {
+    labels: ILabel[];
+}
+
+const ListLabelsItem: FC<ListLabelsItemProps> = ({ labels, ...other }) => {
+    const { t } = useTranslation();
+
+    return (
+        <ListItem
+            {...other}
+            label={t("Labels").toString()}
+            sx={{
+                height: "fit-content",
+            }}
+        >
+            <Stack spacing={1}>
+                {labels.map(({ color, name }, i) => (
+                    <Label key={i} sx={{ bgcolor: color, mr: 1 }}>
+                        {name}
+                    </Label>
+                ))}
+            </Stack>
+        </ListItem>
+    );
+};
+
+export default ListLabelsItem;

@@ -1,4 +1,4 @@
-import { BoxProps } from "@mui/material";
+import { BoxProps, StackProps } from "@mui/material";
 
 // ----------------------------------------------------------------------
 
@@ -13,10 +13,11 @@ export type LabelColor =
 
 export type LabelVariant = "filled" | "outlined" | "soft";
 
-export interface LabelProps extends BoxProps {
+export interface LabelProps extends StackProps {
     opaque?: boolean; // makes the label an opaque colored box (just like it used to be)
     disabled?: boolean;
-    onClose?: () => void;
     color?: LabelColor;
     variant?: LabelVariant;
+    opacity?: number;
+    onClose?: () => void;
 }

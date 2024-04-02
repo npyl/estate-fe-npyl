@@ -4,6 +4,7 @@ import { IKanbanCardPOST } from "src/types/kanban";
 // kanban
 import KanbanInputName from "../KanbanInputName";
 import { EnterOverlay } from "../EnterOverlay";
+import { useTranslation } from "react-i18next";
 
 interface NameProps {
     taskName: string;
@@ -15,6 +16,8 @@ const Name = ({ taskName, onUpdate }: NameProps) => {
     const [name, setName] = useState("");
 
     const renameRef = useRef<HTMLInputElement>(null);
+
+    const { t } = useTranslation();
 
     useEffect(() => {
         setName(taskName);
@@ -42,7 +45,7 @@ const Name = ({ taskName, onUpdate }: NameProps) => {
         <EnterOverlay show={name !== initialState}>
             <KanbanInputName
                 inputRef={renameRef}
-                placeholder="Task name"
+                placeholder={t("Task name") as string}
                 value={name}
                 onChange={handleChange}
                 onKeyUp={handleUpdate}

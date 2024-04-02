@@ -4,7 +4,7 @@ import * as React from "react";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { ListItem } from "src/components/List";
-import ListLabelsItem from "src/components/List/labels-item";
+import ListLabelsItem from "@/components/List/Items/labels";
 import { useGetLabelsQuery } from "src/services/labels";
 import AreaOfPreference from "./AreaOfPreference";
 import FeaturesDemandSection from "./FeaturesDemand";
@@ -127,19 +127,16 @@ const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
                                 value={demandFilters?.parentCategories
                                     ?.map((i) => i.value)
                                     ?.join(", ")}
-                                align="horizontal"
                             />
                             <ListItem
                                 label={t("Furnished")}
                                 value={demandFilters?.furnished
                                     ?.map((i) => i.value)
                                     ?.join(", ")}
-                                align="horizontal"
                             />
                             <ListLabelsItem
                                 label={t("Labels")}
                                 labels={selectedLabels}
-                                align="horizontal"
                             />
                             <ListItem
                                 label={t("Construction")}
@@ -147,7 +144,6 @@ const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
                                     demandFilters?.minYearOfConstruction,
                                     demandFilters?.maxYearOfConstruction
                                 )}
-                                align="horizontal"
                             />
                             <ListItem
                                 label={t("Bedrooms")}
@@ -155,7 +151,6 @@ const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
                                     demandFilters?.minBedrooms,
                                     demandFilters?.maxBedrooms
                                 )}
-                                align="horizontal"
                             />
                             <ListItem
                                 label={t("Covered")}
@@ -165,7 +160,6 @@ const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
                                         demandFilters?.maxCovered
                                     ) + " m²"
                                 }
-                                align="horizontal"
                             />
                             <ListItem
                                 label={t("Price")}
@@ -175,7 +169,6 @@ const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
                                         demandFilters?.maxPrice
                                     ) + " €"
                                 }
-                                align="horizontal"
                             />
                         </List>
                     </Grid>
@@ -187,19 +180,16 @@ const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
                                 value={demandFilters?.categories
                                     ?.map((i) => i.value)
                                     ?.join(", ")}
-                                align="horizontal"
                             />
                             <ListItem
                                 label={t("State")}
                                 value={demandFilters?.states
                                     ?.map((i) => i.value)
                                     ?.join(", ")}
-                                align="horizontal"
                             />
                             <ListItem
                                 label={t("Time Frame")}
                                 value={demand?.timeframe.value}
-                                align="horizontal"
                             />
                             <ListItem
                                 label={t("Bathrooms")}
@@ -207,7 +197,6 @@ const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
                                     demandFilters?.minBathrooms,
                                     demandFilters?.maxBathrooms
                                 )}
-                                align="horizontal"
                             />
                             <ListItem
                                 label={t("Plot")}
@@ -217,7 +206,6 @@ const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
                                         demandFilters?.maxPlot
                                     ) + " m²"
                                 }
-                                align="horizontal"
                             />
 
                             <ListItem
@@ -226,7 +214,6 @@ const DemandSection: React.FC<DemandSectionProps> = ({ index }) => {
                                     demandFilters?.minFloor.value,
                                     demandFilters?.maxFloor.value
                                 )}
-                                align="horizontal"
                             />
                         </List>
                     </Grid>

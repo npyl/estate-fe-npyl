@@ -22,7 +22,11 @@
             {
                 "name": "next"
             }
-        ]
+        ],
+        "paths": {
+            "@/*": ["./src/*"],
+            "public/*": ["./public/*"]
+        }
     },
     "include": ["src", ".next/types/**/*.ts"],
     "exclude": ["node_modules"]

@@ -32,27 +32,15 @@ const Customer = ({ street, number, city }: CustomerProps) => {
             <Grid container>
                 <Grid item xs={6} padding={0}>
                     <List>
-                        <ListItem
-                            label={t("Street")}
-                            value={street || "-"}
-                            align="horizontal"
-                        />
+                        <ListItem label={t("Street")} value={street || "-"} />
 
-                        <ListItem
-                            label={t("Number")}
-                            value={number || "-"}
-                            align="horizontal"
-                        />
+                        <ListItem label={t("Number")} value={number || "-"} />
                     </List>
                 </Grid>
 
                 <Grid item xs={6} padding={0}>
                     <List>
-                        <ListItem
-                            label={t("City")}
-                            value={city || "-"}
-                            align="horizontal"
-                        />
+                        <ListItem label={t("City")} value={city || "-"} />
                     </List>
                 </Grid>
             </Grid>
@@ -115,20 +103,14 @@ const Property = ({ location }: PropertyProps) => {
                         <ListItem
                             label={t("Street")}
                             value={location?.street || "-"}
-                            align="horizontal"
                         />
 
                         <ListItem
                             label={t("Number")}
                             value={location?.number || "-"}
-                            align="horizontal"
                         />
 
-                        <ListItem
-                            label={t("City")}
-                            value={city || "-"}
-                            align="horizontal"
-                        />
+                        <ListItem label={t("City")} value={city || "-"} />
                     </List>
                 </Grid>
 
@@ -137,22 +119,15 @@ const Property = ({ location }: PropertyProps) => {
                         <ListItem
                             label={t("Zip Code")}
                             value={location?.zipCode || "-"}
-                            align="horizontal"
                         />
-                        <ListItem
-                            label={t("Region")}
-                            value={region || "-"}
-                            align="horizontal"
-                        />
+                        <ListItem label={t("Region")} value={region || "-"} />
                         <ListItem
                             label={t("Country")}
                             value={location?.country || "-"}
-                            align="horizontal"
                         />
                         <ListItem
                             label={t("Neighborhood")}
                             value={neighb || "-"}
-                            align="horizontal"
                         />
                     </List>
                 </Grid>

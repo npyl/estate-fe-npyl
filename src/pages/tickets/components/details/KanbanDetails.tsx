@@ -16,6 +16,7 @@ import { useEditCardMutation } from "src/services/tickets";
 import { StyledLabel } from "./styled";
 import Description from "./Description";
 import Name from "./Name";
+import { useTranslation } from "react-i18next";
 
 // ----------------------------------------------------------------------
 
@@ -117,6 +118,8 @@ export default function KanbanDetails({
         [id, name, description, priority, completed, user]
     );
 
+    const { t } = useTranslation();
+
     return (
         <Drawer
             open={openDetails}
@@ -157,7 +160,7 @@ export default function KanbanDetails({
                         <StyledLabel
                             sx={{ height: 40, lineHeight: "40px", my: 0.5 }}
                         >
-                            Assignee
+                            {t("Assignee")}
                         </StyledLabel>
 
                         <Stack
@@ -234,7 +237,7 @@ export default function KanbanDetails({
 
                     {/* Priority */}
                     <Stack direction="row" alignItems="center">
-                        <StyledLabel>Priority</StyledLabel>
+                        <StyledLabel>{t("Priority")}</StyledLabel>
 
                         <KanbanDetailsPrioritizes
                             priority={priority}
@@ -250,7 +253,9 @@ export default function KanbanDetails({
 
                     {/* Attachments */}
                     <Stack direction="row">
-                        <StyledLabel sx={{ py: 0.5 }}>Attachments</StyledLabel>
+                        <StyledLabel sx={{ py: 0.5 }}>
+                            {t("Attachments")}
+                        </StyledLabel>
                         <KanbanDetailsAttachments
                             attachments={task.attachments}
                         />

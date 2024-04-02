@@ -216,19 +216,16 @@ const Right = () => {
 };
 
 const Integrations = () => (
-    <Box
-        sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100%",
-            gap: 1,
-        }}
+    <Stack
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+        height={1}
+        spacing={1}
     >
         <Left />
         <Right />
-    </Box>
+    </Stack>
 );
 
 export default Integrations;

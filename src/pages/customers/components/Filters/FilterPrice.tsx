@@ -5,21 +5,18 @@ import {
     Box,
     Grid,
     List,
-    ListItem,
     ListItemText,
     Popper,
     TextField,
 } from "@mui/material";
 import { useMemo, useState } from "react";
-
 import { useDispatch, useSelector } from "src/store";
-
 import { useTranslation } from "react-i18next";
 import {
     StyledBox,
     StyledPriceButton,
-} from "src/pages/components/Filters/styles";
-
+    ListItem,
+} from "@/components/Filters/styled";
 import {
     selectMaxArea,
     selectMaxPrice,
@@ -150,13 +147,6 @@ const PriceSelect = ({ type }: { type: string }) => {
                                         }}
                                     >
                                         <ListItem
-                                            sx={{
-                                                cursor: "pointer",
-                                                "&:hover": {
-                                                    backgroundColor:
-                                                        "neutral.200",
-                                                },
-                                            }}
                                             onClick={() =>
                                                 dispatch(setMinValue(undefined))
                                             }
@@ -167,13 +157,6 @@ const PriceSelect = ({ type }: { type: string }) => {
                                         </ListItem>
                                         {values.map((option) => (
                                             <ListItem
-                                                sx={{
-                                                    cursor: "pointer",
-                                                    "&:hover": {
-                                                        backgroundColor:
-                                                            "neutral.200",
-                                                    },
-                                                }}
                                                 key={option}
                                                 onClick={() =>
                                                     option > valueMax &&
@@ -213,13 +196,6 @@ const PriceSelect = ({ type }: { type: string }) => {
                                         }}
                                     >
                                         <ListItem
-                                            sx={{
-                                                cursor: "pointer",
-                                                "&:hover": {
-                                                    backgroundColor:
-                                                        "neutral.200",
-                                                },
-                                            }}
                                             onClick={() =>
                                                 dispatch(setMaxValue(undefined))
                                             }
@@ -230,13 +206,6 @@ const PriceSelect = ({ type }: { type: string }) => {
                                         </ListItem>
                                         {values.map((option) => (
                                             <ListItem
-                                                sx={{
-                                                    cursor: "pointer",
-                                                    "&:hover": {
-                                                        backgroundColor:
-                                                            "neutral.200",
-                                                    },
-                                                }}
                                                 key={option}
                                                 onClick={() =>
                                                     option < valueMin
