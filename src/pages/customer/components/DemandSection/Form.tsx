@@ -83,28 +83,34 @@ const getFIELDS = (
     getDemandFilterName: (k: keyof IDemandFiltersPOST) => any,
     getDemandName: (k: keyof IDemandPOST) => any
 ) => [
+    // eslint-disable-next-line react/jsx-key
     <DemandAutocomplete index={index} />,
 
+    // eslint-disable-next-line react/jsx-key
     <MultiSelect
         name={getDemandFilterName("parentCategories")}
         label={t("Parent Category")}
         options={parentCategoryEnum}
     />,
 
+    // eslint-disable-next-line react/jsx-key
     <MultiSelect
         name={getDemandFilterName("furnished")}
         label={t("Furnishing")}
         options={furnishingEnum}
     />,
 
+    // eslint-disable-next-line react/jsx-key
     <MultiSelect
         name={getDemandFilterName("states")}
         label={t("State")}
         options={stateEnum}
     />,
 
+    // eslint-disable-next-line react/jsx-key
     <LabelSelect onDemandFiltersName={getDemandFilterName} />,
 
+    // eslint-disable-next-line react/jsx-key
     <Select
         name={getDemandName("timeframe")}
         label={t("Time Frame")}
@@ -195,6 +201,7 @@ const getSLIDERS = (
     stepValue: number,
     onDemandFilterName: (k: keyof IDemandFiltersPOST) => any
 ) => [
+    // eslint-disable-next-line react/jsx-key
     <DemandFormSlider
         label={t("Price")}
         min="minPrice"
@@ -205,6 +212,7 @@ const getSLIDERS = (
         adornment="€"
         step={stepValue}
     />,
+    // eslint-disable-next-line react/jsx-key
     <DemandFormSlider
         label={t("Size")}
         min="minCovered"
@@ -215,6 +223,7 @@ const getSLIDERS = (
         adornment="m²"
         step={10}
     />,
+    // eslint-disable-next-line react/jsx-key
     <DemandFormSlider
         label={t("Size of Plot")}
         min="minPlot"
@@ -225,6 +234,7 @@ const getSLIDERS = (
         adornment="m²"
         step={10}
     />,
+    // eslint-disable-next-line react/jsx-key
     <DemandFormSlider
         label={t("Bedrooms")}
         min="minBedrooms"
@@ -233,6 +243,7 @@ const getSLIDERS = (
         defaultMax={10}
         demandIndex={index}
     />,
+    // eslint-disable-next-line react/jsx-key
     <DemandFormSlider
         label={t("Bathrooms")}
         min="minBathrooms"
@@ -241,6 +252,7 @@ const getSLIDERS = (
         defaultMax={10}
         demandIndex={index}
     />,
+    // eslint-disable-next-line react/jsx-key
     <DemandFormSlider
         label={t("Year of Construction")}
         min="minYearOfConstruction"
@@ -249,6 +261,7 @@ const getSLIDERS = (
         defaultMax={new Date().getFullYear()}
         demandIndex={index}
     />,
+    // eslint-disable-next-line react/jsx-key
     <FloorSlider onDemandFilterName={onDemandFilterName} />,
 ];
 
