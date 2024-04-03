@@ -3,6 +3,7 @@ import {
     Button,
     ButtonProps,
     ListItem as MuiListItem,
+    ListItemProps as MuiListItemProps,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
@@ -49,13 +50,28 @@ export const StyledBox = styled(Box)(({ theme }) => ({
     p: 1,
 }));
 
-export const ListItem = styled(MuiListItem)(({ theme }) => ({
-    cursor: "pointer",
-    borderRadius: "10px",
-    "&:hover": {
-        backgroundColor:
-            theme.palette.mode === "light"
-                ? theme.palette.neutral?.[200]
-                : theme.palette.neutral?.[800],
-    },
-}));
+interface ListItemProps extends MuiListItemProps {
+    selected?: boolean;
+}
+
+export const ListItem = styled(MuiListItem)<ListItemProps>(
+    ({ theme, selected }) => ({
+        cursor: "pointer",
+        borderRadius: "10px",
+        "&:hover": {
+            backgroundColor:
+                theme.palette.mode === "light"
+                    ? theme.palette.neutral?.[200]
+                    : theme.palette.neutral?.[800],
+        },
+
+        ...(selected
+            ? {
+                  backgroundColor:
+                      theme.palette.mode === "light"
+                          ? theme.palette.neutral?.[200]
+                          : theme.palette.neutral?.[800],
+              }
+            : {}),
+    })
+);

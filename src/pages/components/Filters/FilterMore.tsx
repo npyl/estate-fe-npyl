@@ -48,7 +48,7 @@ import {
     toggleHeatingType,
 } from "src/slices/filters";
 
-import ChosenFilters from "./ChosenFilters";
+import ChosenFilters from "../../property/FiltersBar/ChosenFilters";
 import SubCategorySelect from "./FilterCategory";
 import CodeSelect from "./FilterCode";
 import FilterLabels from "./FilterLabels";

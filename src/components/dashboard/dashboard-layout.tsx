@@ -96,7 +96,8 @@ export const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
                 >
                     <Paper
                         sx={{
-                            marginTop: 2,
+                            mt: 2,
+                            mb: 1,
                             padding: 1,
                         }}
                     >
