@@ -4,6 +4,7 @@ import Image from "src/components/image";
 import { KeyValue } from "src/types/KeyValue";
 import { TranslationType } from "@/types/translation";
 import RenderLabelsCell from "../shared/RenderLabels";
+import { useTranslation } from "react-i18next";
 
 const defaultImage = "/static/noImage.png";
 
@@ -186,7 +187,9 @@ export const getColumns = (
         flex: mobile ? 0 : 1,
 
         renderCell: (params) => {
+            const { i18n } = useTranslation();
             const date = new Date(params.value);
+
             return i18n.language === "el"
                 ? date.toLocaleDateString("el-GR", {
                       year: "numeric",
@@ -205,7 +208,9 @@ export const getColumns = (
         flex: mobile ? 0 : 1,
 
         renderCell: (params) => {
+            const { i18n } = useTranslation();
             const date = new Date(params.value);
+
             return i18n.language === "el"
                 ? date.toLocaleDateString("el-GR", {
                       year: "numeric",
