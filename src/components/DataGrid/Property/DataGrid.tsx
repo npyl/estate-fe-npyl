@@ -7,6 +7,7 @@ import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import GridProps from "../types";
 import { getColumns, getSmallColumns } from "./columns";
+import useResponsive from "@/hooks/useResponsive";
 
 interface PropertyDataGridProps extends Omit<GridProps, "rows" | "columns"> {
     rows?: GridValidRowModel[];
@@ -27,14 +28,16 @@ const DataGrid = ({
 }: PropertyDataGridProps) => {
     const { t } = useTranslation();
 
+    const belowLg = useResponsive("down", "lg");
+
     const columns = useMemo(
         () =>
             columnVariant === "default"
-                ? getColumns(t)
+                ? getColumns(t, belowLg)
                 : columnVariant === "small"
                 ? getSmallColumns(t)
                 : [],
-        [t]
+        [t, belowLg]
     );
 
     return (

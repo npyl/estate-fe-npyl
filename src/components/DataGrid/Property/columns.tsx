@@ -97,41 +97,47 @@ const formatNumberWithPeriod = (num: any) => {
 //
 //  View Properties
 //
-export const getColumns = (t: TranslationType): GridColDef[] => [
+export const getColumns = (
+    t: TranslationType,
+    mobile: boolean
+): GridColDef[] => [
     {
         field: "propertyImage",
         headerName: t("Thumbnail") as string,
-        flex: 1,
         align: "center",
         headerAlign: "center",
         renderCell: renderImage,
+
+        flex: mobile ? 0 : 1,
     },
     {
         field: "code",
         headerName: t("Code") as string,
-        flex: 1,
         headerAlign: "center",
         align: "center",
+
+        flex: mobile ? 0 : 1,
     },
     {
         field: "parentCategory",
-        flex: 1,
         align: "center",
         headerAlign: "center",
         headerName: t("Parent Category") as string,
         renderCell: (params) => (params.value as KeyValue)?.value,
+
+        flex: mobile ? 0 : 1,
     },
     {
         field: "category",
-        flex: 1,
         align: "center",
         headerAlign: "center",
         headerName: t("Category") as string,
         renderCell: (params) => (params.value as KeyValue)?.value,
+
+        flex: mobile ? 0 : 1,
     },
     {
         field: "price",
-        flex: 1,
         headerAlign: "center",
         align: "center",
         headerName: t("Price") as string,
@@ -139,48 +145,55 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
             const formattedPrice = formatNumberWithPeriod(params.value);
             return formattedPrice ? `${formattedPrice} €` : "";
         },
+
+        flex: mobile ? 0 : 1,
     },
     {
         field: "state",
         headerAlign: "center",
-        flex: 1,
         align: "center",
         headerName: t("State") as string,
         renderCell: statusColor,
+
+        flex: mobile ? 0 : 1,
     },
     {
         field: "area",
-        flex: 1,
         headerAlign: "center",
         align: "center",
         headerName: t("Area") as string,
         renderCell: (params: GridCellParams) => {
             return params.value ? `${params.value} m²` : "";
         },
+
+        flex: mobile ? 0 : 1,
     },
     {
         field: "labels",
         headerAlign: "center",
-        flex: 1,
         align: "center",
         headerName: t("Labels") as string,
         renderCell: RenderLabelsCell,
+
+        flex: mobile ? 0 : 1,
     },
     {
         field: "createdAt",
         headerAlign: "center",
-        flex: 1,
         align: "center",
         headerName: t("Creation Date") as string,
         renderCell: (params) => new Date(params.value).toDateString(),
+
+        flex: mobile ? 0 : 1,
     },
     {
         field: "updatedAt",
         headerAlign: "center",
-        flex: 1,
         align: "center",
         headerName: t("Updated At") as string,
         renderCell: (params) => new Date(params.value).toDateString(),
+
+        flex: mobile ? 0 : 1,
     },
 ];
 

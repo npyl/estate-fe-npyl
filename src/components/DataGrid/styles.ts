@@ -62,4 +62,6 @@ export const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
     "& .MuiDataGrid-row": {
         cursor: "pointer",
     },
+
+    overflowX: "auto",
 }));
