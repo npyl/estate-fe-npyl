@@ -2,11 +2,9 @@ import { Box, Paper, PaperProps, Stack } from "@mui/material";
 import { useSelector } from "src/store";
 
 import {
-    setManagerId,
     selectLabels,
     setLabels,
     sumOfChangedProperties,
-    selectManagerId,
 } from "src/slices/customer/filters";
 
 import FilterStatus from "./Filters/FilterStatus";
@@ -21,7 +19,6 @@ import FilterManager from "./Filters/FilterManagedBy";
 export const FilterSection: React.FC<PaperProps> = ({ ...props }) => {
     const changedCustomerFilters = useSelector(sumOfChangedProperties);
     const labels = useSelector(selectLabels) || [];
-    const managers = useSelector(selectManagerId) || 0;
 
     return (
         <Stack spacing={1} component={Paper} p={1} mt={1} {...props}>
