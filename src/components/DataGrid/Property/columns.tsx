@@ -4,6 +4,8 @@ import Image from "src/components/image";
 import { KeyValue } from "src/types/KeyValue";
 import { TranslationType } from "@/types/translation";
 import RenderLabelsCell from "../shared/RenderLabels";
+import { useTranslation } from "react-i18next";
+import i18n from "i18next";
 
 const defaultImage = "/static/noImage.png";
 
@@ -172,7 +174,16 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         flex: 1,
         align: "center",
         headerName: t("Creation Date") as string,
-        renderCell: (params) => new Date(params.value).toDateString(),
+        renderCell: (params) => {
+            const date = new Date(params.value);
+            return i18n.language === "el"
+                ? date.toLocaleDateString("el-GR", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                  })
+                : date.toDateString();
+        },
     },
     {
         field: "updatedAt",
@@ -180,7 +191,16 @@ export const getColumns = (t: TranslationType): GridColDef[] => [
         flex: 1,
         align: "center",
         headerName: t("Updated At") as string,
-        renderCell: (params) => new Date(params.value).toDateString(),
+        renderCell: (params) => {
+            const date = new Date(params.value);
+            return i18n.language === "el"
+                ? date.toLocaleDateString("el-GR", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                  })
+                : date.toDateString();
+        },
     },
 ];
 
