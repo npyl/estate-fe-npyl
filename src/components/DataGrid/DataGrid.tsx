@@ -108,11 +108,6 @@ const DataGridTable: FC<GridProps> = ({
                         labelRowsPerPage: t("Rows per page"),
                     },
                 }}
-                sx={{
-                    "& .MuiDataGrid-row": {
-                        cursor: "pointer",
-                    },
-                }}
                 // --- selection ---
                 onRowSelectionModelChange={handleRowSelectionChange}
                 // --- pagination ---

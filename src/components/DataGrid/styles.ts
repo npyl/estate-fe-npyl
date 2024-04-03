@@ -24,8 +24,10 @@ export const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
         '"Segoe UI Emoji"',
         '"Segoe UI Symbol"',
     ].join(","),
+
     WebkitFontSmoothing: "auto",
     letterSpacing: "normal",
+
     "& .MuiDataGrid-columnsContainer": {
         backgroundColor: theme.palette.mode === "light" ? "#fafafa" : "#1d1d1d",
     },
@@ -57,4 +59,7 @@ export const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
         {
             outline: "none !important",
         },
+    "& .MuiDataGrid-row": {
+        cursor: "pointer",
+    },
 }));
