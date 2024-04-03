@@ -4,7 +4,6 @@ import Image from "src/components/image";
 import { KeyValue } from "src/types/KeyValue";
 import { TranslationType } from "@/types/translation";
 import RenderLabelsCell from "../shared/RenderLabels";
-import { useTranslation } from "react-i18next";
 import i18n from "i18next";
 
 const defaultImage = "/static/noImage.png";
