@@ -91,7 +91,10 @@ const skeletonRows = Array.from({ length: 2 }, (_, index) => ({
 const DataGrid = ({ skeleton, ...props }: CustomerDataGridProps) => {
     const { t } = useTranslation();
 
-    const columns = useMemo(() => getColumns(t), [t]);
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+    const columns = useMemo(() => getColumns(t, isMobile), [t, isMobile]);
 
     return (
         <DataGridTable
