@@ -32,11 +32,6 @@ export const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
     "& .MuiDataGrid-iconSeparator": {
         display: "none",
     },
-    "& .MuiDataGrid-columnHeader": {
-        borderRight: `1px solid ${
-            theme.palette.mode === "light" ? "#f0f0f0" : "#303030"
-        }`,
-    },
     "& .MuiDataGrid-columnsContainer, .MuiDataGrid-cell": {
         borderBottom: `1px solid ${
             theme.palette.mode === "light" ? "#f0f0f0" : "#303030"
