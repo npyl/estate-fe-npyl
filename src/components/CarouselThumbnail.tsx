@@ -43,6 +43,9 @@ import { FullscreenRef } from "yet-another-react-lightbox";
 import { CloseIcon } from "yet-another-react-lightbox/core";
 import ICarouselImage from "./carousel/types";
 import PreviewImage from "./image/PreviewImage";
+import { display } from "@mui/system";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 // ----------------------------------------------------------------------
 
@@ -184,6 +187,7 @@ export default function CarouselThumbnail({ data }: Props) {
                             }}
                         />
                     ) : (
+                        // eslint-disable-next-line react/jsx-key
                         <PreviewImage />
                     )
                 )}
@@ -225,6 +229,7 @@ export default function CarouselThumbnail({ data }: Props) {
                                 }}
                             />
                         ) : (
+                            // eslint-disable-next-line react/jsx-key
                             <PreviewImage
                                 sx={{
                                     width: THUMB_SIZE,
@@ -409,12 +414,17 @@ export function OnlyPhotosCarousel({ data }: Props) {
     };
 
     const [selectedTab, setSelectedTab] = useState(0);
+    const theme = useTheme();
+
+    const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
     const renderAllImages = (
         <Box
             sx={{
                 display: "grid",
-                gridTemplateColumns: "repeat(5, 1fr)", // 5 images per row
+                gridTemplateColumns: isMobile
+                    ? "repeat(2, 1fr)"
+                    : "repeat(5, 1fr)",
                 gap: "16px",
                 mb: 1,
                 zIndex: 0,
@@ -440,6 +450,7 @@ export function OnlyPhotosCarousel({ data }: Props) {
                             }}
                         />
                     ) : (
+                        // eslint-disable-next-line react/jsx-key
                         <PreviewImage />
                     )
             )}
@@ -449,7 +460,9 @@ export function OnlyPhotosCarousel({ data }: Props) {
         <Box
             sx={{
                 display: "grid",
-                gridTemplateColumns: "repeat(5, 1fr)", // 5 images per row
+                gridTemplateColumns: isMobile
+                    ? "repeat(2, 1fr)"
+                    : "repeat(5, 1fr)",
                 gap: "16px",
                 mb: 1,
                 zIndex: 0,
@@ -476,6 +489,7 @@ export function OnlyPhotosCarousel({ data }: Props) {
                                 }}
                             />
                         ) : (
+                            // eslint-disable-next-line react/jsx-key
                             <PreviewImage />
                         )
                 )}
@@ -485,7 +499,9 @@ export function OnlyPhotosCarousel({ data }: Props) {
         <Box
             sx={{
                 display: "grid",
-                gridTemplateColumns: "repeat(5, 1fr)", // 5 images per row
+                gridTemplateColumns: isMobile
+                    ? "repeat(2, 1fr)"
+                    : "repeat(5, 1fr)",
                 gap: "16px",
                 mb: 1,
                 zIndex: 0,
@@ -512,6 +528,7 @@ export function OnlyPhotosCarousel({ data }: Props) {
                                 }}
                             />
                         ) : (
+                            // eslint-disable-next-line react/jsx-key
                             <PreviewImage />
                         )
                 )}
@@ -550,7 +567,11 @@ export function OnlyPhotosCarousel({ data }: Props) {
             </Grid>
             <Divider></Divider>
             <Button
-                sx={{ position: "flex", left: "90%" }}
+                sx={{
+                    position: isMobile ? "static" : "absolute",
+                    left: isMobile ? "0" : "90%",
+                    width: isMobile ? "100%" : "auto",
+                }}
                 onClick={handleDownload}
             >
                 Download images

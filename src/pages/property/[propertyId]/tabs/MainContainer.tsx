@@ -43,7 +43,7 @@ const MainContainer: React.FC = () => {
 
     return data ? (
         <Grid container spacing={1}>
-            <Grid item xs={8} order={"row"}>
+            <Grid item xs={12} sm={8} order={"row"}>
                 <Stack spacing={1}>
                     <Grid item xs={12}>
                         <ImageSection data={data} />
@@ -71,7 +71,7 @@ const MainContainer: React.FC = () => {
                     </Grid>
                 </Stack>
             </Grid>
-            <Grid item xs={4} order={"row"}>
+            <Grid item xs={12} sm={4} order={"row"}>
                 <Stack spacing={1}>
                     <Grid item xs={12}>
                         <BasicSection data={data} />

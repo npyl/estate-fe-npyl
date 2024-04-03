@@ -3,6 +3,7 @@ import {
     Button,
     FormControl,
     FormControlLabel,
+    Grid,
     Paper,
     Radio,
     RadioGroup,
@@ -28,6 +29,8 @@ import { PublicSvg } from "src/assets/PublicSvg";
 import { SpitogatosSvg } from "src/assets/SpitogatosSvg";
 import { LocationDisplay } from "src/types/enums";
 import GoogleEarth from "./GoogleEarth/GoogleEarth";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 interface ListingCardProps {
     label: ListingTypes;
@@ -215,17 +218,26 @@ const Right = () => {
     );
 };
 
-const Integrations = () => (
-    <Stack
-        direction="row"
-        justifyContent="center"
-        alignItems="center"
-        height={1}
-        spacing={1}
-    >
-        <Left />
-        <Right />
-    </Stack>
-);
+const Integrations = () => {
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+    return (
+        <Grid
+            container
+            spacing={1}
+            justifyContent="center"
+            alignItems="center"
+            style={{ height: "100%" }}
+        >
+            <Grid item xs={12} sm={6}>
+                <Left />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+                <Right />
+            </Grid>
+        </Grid>
+    );
+};
 
 export default Integrations;

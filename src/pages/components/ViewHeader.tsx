@@ -1,4 +1,12 @@
-import { Button, IconButton, Paper, Stack, Typography } from "@mui/material";
+import {
+    Box,
+    Button,
+    IconButton,
+    Paper,
+    Popover,
+    Stack,
+    Typography,
+} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { SoftButton } from "src/components/SoftButton";
 import { ReactNode, useCallback, useMemo } from "react";
@@ -12,6 +20,8 @@ import { DeleteDialog } from "src/components/Dialog/Delete";
 import useDialog from "src/hooks/useDialog";
 import { styled } from "@mui/material/styles";
 import { getBorderColor2 } from "@/theme/borderColor";
+import MenuIcon from "@mui/icons-material/Menu";
+import React from "react";
 
 const CustomStack = styled(Stack)(({ theme }) => ({
     border: "1px solid",
@@ -94,6 +104,17 @@ const ViewHeader = (props: IViewHeaderProps) => {
 
     const [isDeleteOpen, openDelete, closeDelete] = useDialog();
 
+    const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+        null
+    );
+    const open = Boolean(anchorEl);
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
     return (
         <Paper
             sx={{
@@ -104,47 +125,79 @@ const ViewHeader = (props: IViewHeaderProps) => {
             }}
         >
             <Stack flexDirection="row" alignItems="center">
-                <Stack flex={1} flexDirection="row">
-                    {children}
-                </Stack>
-                <Stack flexDirection="row" alignItems="center">
-                    {isProperty ? <OpenIn /> : null}
+                <Box
+                    sx={{
+                        width: "100%",
+                        overflowX: "auto",
+                        whiteSpace: "nowrap",
+                    }}
+                >
+                    <Stack
+                        flex={1}
+                        flexDirection="row"
+                        sx={{ minWidth: "max-content" }}
+                    >
+                        {children}
+                    </Stack>
+                </Box>
+                <IconButton
+                    size="small"
+                    aria-controls="menu"
+                    aria-haspopup="true"
+                    onClick={handleClick}
+                >
+                    <MenuIcon />
+                </IconButton>
+                <Popover
+                    open={open}
+                    anchorEl={anchorEl}
+                    onClose={handleClose}
+                    anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "right",
+                    }}
+                >
+                    <Stack alignItems="center" p={1} spacing={1}>
+                        {isProperty ? <OpenIn /> : null}
 
-                    {onClone ? (
+                        {onClone ? (
+                            <Button
+                                fullWidth
+                                variant="outlined"
+                                color="secondary"
+                                onClick={onClone}
+                            >
+                                {t("Clone")}
+                            </Button>
+                        ) : null}
+
                         <Button
+                            fullWidth
                             variant="outlined"
                             color="secondary"
-                            sx={{ mx: 1 }}
-                            onClick={onClone}
+                            onClick={onEdit}
                         >
-                            {t("Clone")}
+                            {t("Edit")}
                         </Button>
-                    ) : null}
-                    <Button
-                        variant="outlined"
-                        color="secondary"
-                        sx={{ mr: 1 }}
-                        onClick={onEdit}
-                    >
-                        {t("Edit")}
-                    </Button>
 
-                    <SoftButton
-                        color="error"
-                        onClick={openDelete}
-                        startIcon={<DeleteIcon />}
-                    >
-                        {t("Delete")}
-                    </SoftButton>
+                        <SoftButton
+                            fullWidth
+                            color="error"
+                            onClick={openDelete}
+                            startIcon={<DeleteIcon />}
+                        >
+                            {t("Delete")}
+                        </SoftButton>
 
-                    {isDeleteOpen ? (
-                        <DeleteDialog
-                            open={isDeleteOpen}
-                            onClose={closeDelete}
-                            onDelete={onDelete}
-                        />
-                    ) : null}
-                </Stack>
+                        {isDeleteOpen ? (
+                            <DeleteDialog
+                                open={isDeleteOpen}
+                                onClose={closeDelete}
+                                onDelete={onDelete}
+                            />
+                        ) : null}
+                    </Stack>
+                </Popover>
             </Stack>
         </Paper>
     );

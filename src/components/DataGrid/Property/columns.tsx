@@ -182,18 +182,38 @@ export const getColumns = (
         headerAlign: "center",
         align: "center",
         headerName: t("Creation Date") as string,
-        renderCell: (params) => new Date(params.value).toDateString(),
 
         flex: mobile ? 0 : 1,
+
+        renderCell: (params) => {
+            const date = new Date(params.value);
+            return i18n.language === "el"
+                ? date.toLocaleDateString("el-GR", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                  })
+                : date.toDateString();
+        },
     },
     {
         field: "updatedAt",
         headerAlign: "center",
         align: "center",
         headerName: t("Updated At") as string,
-        renderCell: (params) => new Date(params.value).toDateString(),
 
         flex: mobile ? 0 : 1,
+
+        renderCell: (params) => {
+            const date = new Date(params.value);
+            return i18n.language === "el"
+                ? date.toLocaleDateString("el-GR", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                  })
+                : date.toDateString();
+        },
     },
 ];
 
