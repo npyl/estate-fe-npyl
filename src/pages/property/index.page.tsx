@@ -16,7 +16,7 @@ const Home: NextPage = () => {
     const [optionView, setOptionView] = useState<optionType>("list");
 
     // sorting
-    const [sorting, setSorting] = useState(""); // general
+    const [sorting, setSorting] = useState("default"); // general
     const [sortingBy, setSortingBy] = useState("updatedAt");
     const [sortingOrder, setSortingOrder] = useState("desc");
 
