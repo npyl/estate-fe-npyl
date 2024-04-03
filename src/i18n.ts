@@ -745,8 +745,8 @@ const resources = {
             "Default Sorting": "Προεπιλεγμενη Ταξινόμηση",
             "Rising Price": "Αύξουσα Τιμή",
             "Falling Price": "Φθίνουσα Τιμή",
-            "Falling Area": "Φθίνουσα Εμβαδό",
-            "Rising Area": "Αύξουσα Εμβαδό",
+            "Falling Area": "Φθίνον Εμβαδόν",
+            "Rising Area": "Αύξον Εμβαδόν",
 
             // Tickets
             "Add section": "Προσθήκη Τμήματος",
