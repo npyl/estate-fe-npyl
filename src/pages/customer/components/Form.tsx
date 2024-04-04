@@ -145,21 +145,6 @@ const Form = ({
 
     const handleClear = useCallback(() => reset(), []);
 
-    const [drawerOpen, setDrawerOpen] = useState(false);
-
-    const toggleDrawer =
-        (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
-            if (
-                event.type === "keydown" &&
-                ((event as React.KeyboardEvent).key === "Tab" ||
-                    (event as React.KeyboardEvent).key === "Shift")
-            ) {
-                return;
-            }
-
-            setDrawerOpen(open);
-        };
-
     return (
         <FormProvider methods={methods} onSubmit={onSubmit}>
             <Grid container paddingTop={1} paddingRight={1} spacing={1}>
@@ -167,32 +152,16 @@ const Form = ({
                     <CustomerInformation />
                 </Grid>
                 <Grid item xs={12} lg={6}>
-                    <AddressDetails />
-                    <NotesSection />
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <AddressDetails />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <NotesSection />
+                        </Grid>
+                    </Grid>
                 </Grid>
             </Grid>
-
-            <Button onClick={toggleDrawer(true)}>OpenDrawer</Button>
-
-            <Drawer
-                anchor="right"
-                open={drawerOpen}
-                PaperProps={{
-                    sx: {
-                        width: "50%",
-                        mt: 10,
-                    },
-                }}
-                onClose={toggleDrawer(false)}
-            >
-                {/* <IconButton
-                    onClick={toggleDrawer(false)}
-                    style={{ alignSelf: "flex-end" }}
-                >
-                    <CloseOutlinedIcon />
-                </IconButton> */}
-                <DemandSection />
-            </Drawer>
 
             <Stack
                 my={2}

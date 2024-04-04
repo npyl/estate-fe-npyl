@@ -572,6 +572,7 @@ const resources = {
             "Total Rented Properties": "Total Rented Properties",
             "Properties Distribution": "Properties Distribution",
             "Total Properties per User": "Total Properties per User",
+            Demands: "Demands",
         },
     },
     el: {
@@ -1014,6 +1015,7 @@ const resources = {
             "Calculate (within": "Υπολογισμός (εντός",
             "Fill in property location first":
                 "Συμπληρώστε την τοποθεσία του ακινήτου πρώτα",
+            Demands: "Απαιτήσεις",
 
             //Description
 
