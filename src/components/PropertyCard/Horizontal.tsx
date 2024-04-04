@@ -14,8 +14,8 @@ type BookingItemProps = {
     selectedMarker: IMapMarker | null;
 };
 
-function truncate(str: string, n: number) {
-    return str.length > n ? str.substr(0, n - 1) + "..." : str;
+function truncate(str: string = "", n: number) {
+    return str?.length > n ? str.substr(0, n - 1) + "..." : str;
 }
 
 const defaultImage = "/static/noImage.png";
