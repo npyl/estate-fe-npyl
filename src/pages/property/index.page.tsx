@@ -3,17 +3,37 @@ import { AuthGuard } from "@/components/authentication/auth-guard";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import ViewAll from "./ViewAll";
 import { Box } from "@mui/material";
-import { useCallback, useState } from "react";
+import {
+    Dispatch,
+    SetStateAction,
+    useCallback,
+    useEffect,
+    useState,
+} from "react";
 import MediaCard from "./MediaCard";
 import useDialog from "src/hooks/useDialog";
 import MapView from "./MapView";
 import FilterBar from "./FiltersBar/FiltersBar";
 import { optionType } from "./FiltersBar/types";
 import { useSortingOptions } from "./FiltersBar/constants";
+import useResponsive from "@/hooks/useResponsive";
 
-const Home: NextPage = () => {
+const useResponsiveOptionView = () => {
+    const belowLg = useResponsive("down", "lg");
+
     // view
     const [optionView, setOptionView] = useState<optionType>("list");
+
+    // Start with grid view by default on small displays
+    useEffect(() => {
+        if (belowLg) setOptionView("grid");
+    }, [belowLg]);
+
+    return { optionView, setOptionView, belowLg };
+};
+
+const Home: NextPage = () => {
+    const optionViewProps = useResponsiveOptionView();
 
     // sorting
     const [sorting, setSorting] = useState("default"); // general
@@ -56,12 +76,11 @@ const Home: NextPage = () => {
                 sorting={sorting}
                 onSortingChange={handleSortingChange}
                 // ...
-                optionView={optionView}
-                setOptionView={setOptionView}
+                {...optionViewProps}
             />
 
             <>
-                {optionView === "list" && (
+                {optionViewProps.optionView === "list" && (
                     <ViewAll
                         sortingBy={sortingBy}
                         sortingOrder={sortingOrder}
@@ -71,8 +90,8 @@ const Home: NextPage = () => {
                         onBulkEditClose={closeBulkEdit}
                     />
                 )}
-                {optionView === "grid" && <MediaCard />}
-                {optionView === "map" && <MapView />}
+                {optionViewProps.optionView === "grid" && <MediaCard />}
+                {optionViewProps.optionView === "map" && <MapView />}
             </>
         </Box>
     );

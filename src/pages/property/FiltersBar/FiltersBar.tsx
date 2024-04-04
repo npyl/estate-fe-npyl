@@ -18,6 +18,7 @@ import { SpaceBetween } from "@/components/styled";
 import FilterSortBy from "./SortBy";
 import { FilterSection } from "../../components/Filters";
 import { optionType } from "./types";
+import { useMemo } from "react";
 
 type viewOptionsType = {
     id: optionType;
@@ -51,6 +52,8 @@ interface Props {
 
     optionView: optionType;
     setOptionView: (o: optionType) => void;
+
+    belowLg: boolean;
 }
 
 const FilterBar = ({
@@ -58,8 +61,26 @@ const FilterBar = ({
     onSortingChange,
     optionView,
     setOptionView,
+
+    belowLg,
 }: Props) => {
     const changedPropertyFilters = useSelector(sumOfChangedProperties);
+
+    const BUTTONS = useMemo(() => {
+        const filtered = belowLg
+            ? viewOptions.filter(({ id }) => id !== "list")
+            : viewOptions;
+
+        return filtered.map((option) => (
+            <ViewModeButton
+                key={option.id}
+                selected={optionView === option.id}
+                onClick={() => setOptionView(option.id)}
+            >
+                <option.icon />
+            </ViewModeButton>
+        ));
+    }, [optionView, belowLg]);
 
     return (
         <Paper
@@ -89,15 +110,7 @@ const FilterBar = ({
                             gap: 0.3,
                         }}
                     >
-                        {viewOptions.map((option) => (
-                            <ViewModeButton
-                                key={option.id}
-                                selected={optionView === option.id}
-                                onClick={() => setOptionView(option.id)}
-                            >
-                                <option.icon />
-                            </ViewModeButton>
-                        ))}
+                        {BUTTONS}
                     </ButtonGroup>
                 </Stack>
             </SpaceBetween>

@@ -37,7 +37,7 @@ export default function MediaCard({ sx, ...other }: Props) {
     return (
         <Grid container sx={{ pb: 2 }} {...other}>
             {content?.map((item, index) => (
-                <Grid item key={index} xs={12} sm={4}>
+                <Grid item key={index} xs={12} sm={6} md={4}>
                     <PropertyCard item={item} selectedMarker={null} />
                 </Grid>
             ))}
