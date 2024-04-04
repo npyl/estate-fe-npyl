@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Droppable } from "react-beautiful-dnd";
 // @mui
-import { Button, Paper, Stack } from "@mui/material";
+import { Button, Paper, Stack, Grid } from "@mui/material";
 // @types
 import { IKanbanCardPOST, IKanbanColumn } from "src/types/kanban";
 // components
