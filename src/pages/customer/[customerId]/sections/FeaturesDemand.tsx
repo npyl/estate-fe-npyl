@@ -93,7 +93,7 @@ const Features: React.FC<FeaturesProps> = ({ index }) => {
         from: number,
         to: number
     ) => (
-        <Grid item xs={4}>
+        <Grid item xs={6} sm={6}>
             <List>
                 {fields.slice(from, to).map((field, i) => (
                     <PropertyFeaturesItem field={field} key={i} />
