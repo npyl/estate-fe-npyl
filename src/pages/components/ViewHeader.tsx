@@ -140,6 +140,7 @@ const ViewHeader = (props: IViewHeaderProps) => {
                         {children}
                     </Stack>
                 </Box>
+
                 <IconButton
                     size="small"
                     aria-controls="menu"

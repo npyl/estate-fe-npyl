@@ -74,7 +74,6 @@ const SearchOnMap: FC<SearchOnMapProps> = ({ onSearchSelect }) => {
                     top: 11,
                     left: "50%",
                     transform: "translateX(-50%)",
-                    zIndex: 1000,
 
                     backgroundColor: "white",
                     borderRadius: 1,

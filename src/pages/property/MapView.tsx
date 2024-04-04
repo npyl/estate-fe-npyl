@@ -1,6 +1,6 @@
 import FlipIcon from "@mui/icons-material/Flip";
 import { Box, Button, Grid, Stack, Typography } from "@mui/material";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import Map, { IMapAddress, IMapMarker } from "src/components/Map/Map";
 import { DrawShape, StopDraw } from "src/components/Map/types";
 import {
@@ -14,6 +14,131 @@ import PropertyCard, { PropertyCardH } from "@/components/PropertyCard";
 import { useMapViewPropertiesMutation } from "src/services/properties";
 import { selectAll } from "src/slices/filters";
 import { useSelector } from "react-redux";
+import useResponsive from "@/hooks/useResponsive";
+import { IPropertyResultResponse } from "@/types/properties";
+
+interface Props {
+    toggleOrientation: VoidFunction;
+}
+
+const FlipOrientationButton = ({ toggleOrientation }: Props) => {
+    const belowLg = useResponsive("down", "lg");
+
+    return !belowLg ? (
+        <Stack direction="row" justifyContent="flex-end">
+            <Button
+                onClick={toggleOrientation}
+                sx={{ width: 30, justifyContent: "right" }}
+            >
+                <FlipIcon />
+            </Button>
+        </Stack>
+    ) : null;
+};
+
+// ---------------------------------------------------------------------
+
+const useResponsiveOrientation = (): [boolean, VoidFunction] => {
+    const belowLg = useResponsive("down", "lg");
+
+    const [orientation, setOrientation] = useState(false);
+    const toggleOrientation = useCallback(
+        () => setOrientation((old) => !old),
+        []
+    );
+
+    // Revert to vertical orientation on mobile
+    useEffect(() => {
+        if (belowLg) setOrientation(false);
+    }, []);
+
+    return [orientation, toggleOrientation];
+};
+
+const Placeholder = () => (
+    <Box
+        sx={{
+            display: "flex",
+            flexDirection: "column", // Changed to 'column' to stack icon and text
+            justifyContent: "center",
+            alignItems: "center",
+            padding: 3, // Increased padding for more space
+            backgroundColor: "background.default", // Use theme background color
+            textAlign: "center",
+            height: "100%", // Full height of the parent container
+            gap: 2, // space between icon and text
+        }}
+    >
+        <InfoIcon
+            sx={{
+                color: "primary.main",
+                fontSize: "3rem",
+            }}
+        />
+        <Typography
+            variant="subtitle1"
+            component="div"
+            sx={{
+                color: "text.primary",
+                fontWeight: "medium",
+            }}
+        >
+            Draw or drag to a location that has markers
+        </Typography>
+    </Box>
+);
+
+interface PropertiesListProps {
+    filtered: IPropertyResultResponse[];
+    activeMarker?: number;
+    selectedMarker: IMapMarker | null;
+}
+
+const PropertiesList = ({
+    filtered,
+    // ...
+    activeMarker,
+    selectedMarker,
+}: PropertiesListProps) => {
+    const [orientation, toggleOrientation] = useResponsiveOrientation();
+
+    return (
+        <>
+            <FlipOrientationButton toggleOrientation={toggleOrientation} />
+
+            <Grid container>
+                {filtered.map((item, index) => (
+                    <Grid
+                        mb={1}
+                        key={index}
+                        item
+                        xs={12}
+                        sm={orientation ? 12 : 6}
+                        sx={{
+                            backgroundColor: "background.default",
+                        }}
+                    >
+                        {orientation ? (
+                            <PropertyCardH
+                                activeMarker={activeMarker || -1}
+                                item={item}
+                                selectedMarker={selectedMarker}
+                            />
+                        ) : (
+                            <PropertyCard
+                                activeMarker={activeMarker || -1}
+                                item={item}
+                                selectedMarker={selectedMarker}
+                            />
+                        )}
+                    </Grid>
+                ))}
+            </Grid>
+
+            {filtered.length === 0 && <Placeholder />}
+        </>
+    );
+};
 
 const MapView = () => {
     const [filter, { data }] = useMapViewPropertiesMutation({
@@ -32,8 +157,6 @@ const MapView = () => {
     const [selectedMarker, setSelectedMarker] = useState<IMapMarker | null>(
         null
     );
-
-    const [orientation, setOrientation] = useState(false); // true -> vertical, false -> horizontal
 
     const allFilters = useSelector(selectAll);
 
@@ -73,8 +196,6 @@ const MapView = () => {
         [data]
     );
 
-    const toggleOrientation = () => setOrientation(!orientation);
-
     const handleDraw = (shape: DrawShape | StopDraw) =>
         setEncodedShape(shape ? encodeShape(shape) : "");
     const handleChange = useDebouncedCallback(
@@ -101,104 +222,29 @@ const MapView = () => {
     };
 
     return (
-        <>
-            <Box display={"flex"}>
-                <Box height={`calc(100vh - 266px)`} width={"50%"}>
-                    <Map
-                        search
-                        mainMarker={mainMarker}
-                        activeMarker={activeMarker}
-                        setActiveMarker={setActiveMarker}
-                        onMarkerClick={setSelectedMarker}
-                        markers={markers}
-                        onDraw={handleDraw}
-                        onShapeChange={handleChange}
-                        onSearchSelect={handleSearchSelect}
-                    />
-                </Box>
+        <Grid container mt={2}>
+            <Grid height={`calc(100vh - 266px)`} item xs={12} lg={6}>
+                <Map
+                    search
+                    mainMarker={mainMarker}
+                    activeMarker={activeMarker}
+                    setActiveMarker={setActiveMarker}
+                    onMarkerClick={setSelectedMarker}
+                    markers={markers}
+                    onDraw={handleDraw}
+                    onShapeChange={handleChange}
+                    onSearchSelect={handleSearchSelect}
+                />
+            </Grid>
 
-                <Stack
-                    height={`calc(100vh - 282px)`}
-                    sx={{ overflowY: "auto" }}
-                    marginY={1}
-                    spacing={1}
-                    width={"50%"}
-                >
-                    <Stack direction={"row"}>
-                        <Box flex={1}></Box>
-                        <Button
-                            onClick={toggleOrientation}
-                            sx={{ width: 30, justifyContent: "right" }}
-                        >
-                            <FlipIcon />
-                        </Button>
-                    </Stack>
-
-                    <Grid container>
-                        {filtered.map((item, index) => (
-                            <Grid
-                                mb={1}
-                                key={index}
-                                item
-                                xs={12}
-                                sm={orientation ? 12 : 6}
-                                sx={{
-                                    backgroundColor: "background.default", // Use theme background color
-                                }}
-                            >
-                                {orientation ? (
-                                    <PropertyCardH
-                                        activeMarker={activeMarker || -1}
-                                        item={item}
-                                        selectedMarker={selectedMarker}
-                                    />
-                                ) : (
-                                    <PropertyCard
-                                        activeMarker={activeMarker || -1}
-                                        item={item}
-                                        selectedMarker={selectedMarker}
-                                    />
-                                )}
-                            </Grid>
-                        ))}
-                    </Grid>
-
-                    {filtered.length === 0 && (
-                        <Box
-                            sx={{
-                                display: "flex",
-                                flexDirection: "column", // Changed to 'column' to stack icon and text
-                                justifyContent: "center",
-                                alignItems: "center",
-                                padding: 3, // Increased padding for more space
-                                backgroundColor: "background.default", // Use theme background color
-                                textAlign: "center",
-                                height: "100%", // Full height of the parent container
-                                gap: 2, // space between icon and text
-                            }}
-                        >
-                            <InfoIcon
-                                sx={{
-                                    color: "primary.main", // Use theme primary color
-                                    fontSize: "3rem", // makes the icon larger
-                                }}
-                            />
-                            <Typography
-                                variant="subtitle1" // Suitable for informative text
-                                component="div"
-                                sx={{
-                                    color: "text.primary", // Use theme primary text color
-                                    fontWeight: "medium", // Medium weight for the text
-                                    // other styles here as needed
-                                }}
-                            >
-                                Draw or drag to a location that has markers
-                            </Typography>
-                        </Box>
-                    )}
-                </Stack>
-            </Box>
-        </>
+            <Grid item xs={12} lg={6}>
+                <PropertiesList
+                    filtered={filtered}
+                    activeMarker={activeMarker}
+                    selectedMarker={selectedMarker}
+                />
+            </Grid>
+        </Grid>
     );
 };
 export default MapView;

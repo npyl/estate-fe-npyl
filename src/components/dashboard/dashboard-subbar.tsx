@@ -1,7 +1,7 @@
 import ClearIcon from "@mui/icons-material/Clear";
 import { Button, ButtonProps, IconButton, Typography } from "@mui/material";
 import { Stack } from "@mui/system";
-import { useMemo } from "react";
+import { useCallback, useMemo, MouseEvent } from "react";
 import { ScrollBox } from "../ScrollBox";
 import { useTabsContext } from "src/contexts/tabs";
 import useAutosaveRouter from "src/components/Router/Autosave";
@@ -43,6 +43,7 @@ const SubbarItem = styled(Button)<SubbarItemProps>(({ theme, current }) => ({
     paddingTop: theme.spacing(0.5),
     paddingBottom: theme.spacing(0.5),
     paddingLeft: theme.spacing(1.5),
+    paddingRight: theme.spacing(1),
 
     transition: "all 0.3s ease",
 
@@ -54,9 +55,36 @@ const SubbarItem = styled(Button)<SubbarItemProps>(({ theme, current }) => ({
 
 const Subbar = () => {
     const router = useAutosaveRouter();
-    const { appTabs, removeTab } = useTabsContext();
+    const { appTabs, removeTab, removeTabNoChange } = useTabsContext();
 
     const currentPath = useMemo(() => router.asPath, [router.asPath]);
+
+    const handleClick = useCallback((e: MouseEvent, p: string) => {
+        e.stopPropagation();
+        router.push(p);
+    }, []);
+
+    const handleRemove = useCallback(
+        (e: MouseEvent, id: string) => {
+            e.stopPropagation();
+
+            // get list of tabs if we removed one with specific id
+            const tabsAfterRemove = removeTabNoChange(id);
+
+            // get id of last tab or /property page
+            const newUrl =
+                tabsAfterRemove.length > 0
+                    ? tabsAfterRemove[tabsAfterRemove.length - 1].path
+                    : "/property";
+
+            // actually remove
+            removeTab(id);
+
+            // go to last page url
+            router.push(newUrl);
+        },
+        [appTabs]
+    );
 
     return (
         <ScrollBox sx={{ overflowX: "auto" }}>
@@ -66,7 +94,7 @@ const Subbar = () => {
                         key={id}
                         current={currentPath === path}
                         endIcon={
-                            <IconButton onClick={() => removeTab(id)}>
+                            <IconButton onClick={(e) => handleRemove(e, id)}>
                                 <ClearIcon
                                     sx={{
                                         fontSize: "15px",
@@ -74,6 +102,7 @@ const Subbar = () => {
                                 />
                             </IconButton>
                         }
+                        onClick={(e) => handleClick(e, path)}
                     >
                         <Typography variant="body2">{label}</Typography>
                     </SubbarItem>
