@@ -572,6 +572,14 @@ const resources = {
             "Total Rented Properties": "Total Rented Properties",
             "Properties Distribution": "Properties Distribution",
             "Total Properties per User": "Total Properties per User",
+
+            Calculate: "Calculate",
+            "Calculate (within": "Calculate (within",
+
+            Generate: "Generate",
+            "Generate Description": "Generate Description",
+            "Generating...": "Generating...",
+
             Demands: "Demands",
         },
     },
@@ -1012,14 +1020,17 @@ const resources = {
             "Agricultural Use": "Γεωργική Χρήση",
             "Public Features": "Χαρακτηριστικά για Public",
 
+            Calculate: "Υπολογισμός",
             "Calculate (within": "Υπολογισμός (εντός",
             "Fill in property location first":
                 "Συμπληρώστε την τοποθεσία του ακινήτου πρώτα",
             Demands: "Απαιτήσεις",
 
             //Description
-
             Description: "Περιγραφή",
+            Generate: "Δημιουργία",
+            "Generate Description": "Δημιουργία Περιγραφής",
+            "Generating...": "Δημιουργία...",
 
             //create customer
 
