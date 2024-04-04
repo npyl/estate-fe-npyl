@@ -1,3 +1,4 @@
+import { Grid } from "@mui/material";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import Panel from "src/components/Panel";
@@ -42,9 +43,13 @@ const Public = () => {
 
     return (
         <Panel label={t("Public Features")}>
-            {FEATURES.map(({ label, value }, i) => (
-                <RHFCheckbox name={value} label={label} key={i} />
-            ))}
+            <Grid container spacing={1}>
+                {FEATURES.map(({ label, value }, i) => (
+                    <Grid item key={i} xs={12} sm={6} md={4} lg={3}>
+                        <RHFCheckbox name={value} label={label} key={i} />
+                    </Grid>
+                ))}
+            </Grid>
         </Panel>
     );
 };

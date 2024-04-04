@@ -10,14 +10,14 @@ const SuitableForForLandSection: React.FC = () => {
     return (
         <Panel label={t("Suitable For")}>
             <Grid container spacing={2}>
-                <Grid item xs={3}>
+                <Grid item xs={6}>
                     <RHFCheckbox
                         name="suitableFor.agriculturalUse"
                         label={t("Agricultural Use")}
                     />
                 </Grid>
 
-                <Grid item xs={3}>
+                <Grid item xs={6}>
                     <RHFCheckbox
                         name="suitableFor.investment"
                         label={t("Investment")}

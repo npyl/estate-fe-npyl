@@ -666,7 +666,7 @@ const resources = {
             "Plot Area": "Εμβαδόν Οικοπέδου",
             Price: "Τιμή",
             "€/Month": "€/Μήνα",
-            "Available After": "Διαθέισμο από",
+            "Available After": "Διαθέσιμο από",
             "Rental Period Start": "Έναρξη περιόδου μίσθωσης",
             "Rental Period End": "Λήξη περιόδου μίσθωσης",
             "Average Utilities": "Μέσος Όρος Κοινόχρηστων",
