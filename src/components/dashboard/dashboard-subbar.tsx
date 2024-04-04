@@ -89,7 +89,7 @@ const Subbar = () => {
     return (
         <ScrollBox sx={{ overflowX: "auto" }}>
             <Stack direction={"row"} spacing={1}>
-                {appTabs.map(({ id, label, path }, i) => (
+                {appTabs.map(({ id, label, path }) => (
                     <SubbarItem
                         key={id}
                         current={currentPath === path}
