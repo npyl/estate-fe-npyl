@@ -1,4 +1,4 @@
-import { Box, Grid, Stack, Tab, Tabs } from "@mui/material";
+import { Box, Button, Grid, Stack, Tab, Tabs } from "@mui/material";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -8,6 +8,8 @@ import {
     useDeleteCustomerMutation,
     useGetCustomerByIdQuery,
 } from "src/services/customers";
+
+import Drawer from "@mui/material/Drawer";
 
 import {
     Address,
@@ -24,6 +26,7 @@ import ViewHeader from "src/pages/components/ViewHeader";
 
 import { useTranslation } from "react-i18next";
 import { useTabsContext } from "src/contexts/tabs";
+import React from "react";
 
 function a11yProps(index: number) {
     return {
@@ -78,22 +81,18 @@ const CustomerView: NextPage = () => {
             label: t("Customer Information"),
             content: (
                 <Grid container spacing={1}>
-                    <Grid item xs={12} sm={6} order={"row"}>
-                        <Stack spacing={1}>
-                            <Information />
-                            <Address />
-                            <Notes />
-                        </Stack>
+                    <Grid item xs={12} lg={6}>
+                        <Information />
                     </Grid>
-                    <Grid item xs={12} sm={6}>
-                        <Stack spacing={1}>
-                            {isBuyerOrLeaser && (
-                                <MatchingProperties variant="small" />
-                            )}
-                            {isSellerOrLessor && (
-                                <OwnedProperties variant="small" />
-                            )}
-                        </Stack>
+                    <Grid item xs={12} lg={6}>
+                        <Grid container direction="column" spacing={1}>
+                            <Grid item>
+                                <Address />
+                            </Grid>
+                            <Grid item>
+                                <Notes />
+                            </Grid>
+                        </Grid>
                     </Grid>
                 </Grid>
             ),
