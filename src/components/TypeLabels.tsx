@@ -1,17 +1,23 @@
-import { Box } from "@mui/material";
+import { Box, BoxProps } from "@mui/material";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { Label, LabelColor } from "src/components/label";
 import useResponsive from "src/hooks/useResponsive";
 
-interface TypeProps {
+interface TypeProps extends BoxProps {
     seller: boolean;
     lessor: boolean;
     leaser: boolean;
     buyer: boolean;
 }
 
-export const TypeLabels = ({ seller, lessor, leaser, buyer }: TypeProps) => {
+export const TypeLabels = ({
+    seller,
+    lessor,
+    leaser,
+    buyer,
+    ...props
+}: TypeProps) => {
     const { t } = useTranslation();
 
     const map = useMemo(
@@ -39,7 +45,13 @@ export const TypeLabels = ({ seller, lessor, leaser, buyer }: TypeProps) => {
     const belowSm = useResponsive("down", "sm");
 
     return (
-        <Box display="flex" flexDirection="row" flexWrap="wrap" gap={0.7}>
+        <Box
+            display="flex"
+            flexDirection="row"
+            flexWrap="wrap"
+            gap={0.7}
+            {...props}
+        >
             {Object.entries(map).map(([type, { value, color }]) =>
                 value ? (
                     <Label
