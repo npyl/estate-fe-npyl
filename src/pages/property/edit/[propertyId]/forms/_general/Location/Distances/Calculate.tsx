@@ -1,3 +1,4 @@
+import useResponsive from "@/hooks/useResponsive";
 import { LoadingButton } from "@mui/lab";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useFormContext } from "react-hook-form";
@@ -28,6 +29,8 @@ const CalculateDistances = ({ map }: Props) => {
     const lng = watch("location.lng");
 
     const serviceRef = useRef<google.maps.places.PlacesService>();
+
+    const belowMd = useResponsive("down", "md");
 
     const handleCalculate = useCallback(() => {
         if (!(lat > 0 && lng > 0)) {
@@ -138,7 +141,7 @@ const CalculateDistances = ({ map }: Props) => {
             variant="outlined"
             onClick={handleCalculate}
         >
-            {t("Calculate (within") + " 10km)"}
+            {belowMd ? t("Calculate") : `${t("Calculate (within")} 10km`}
         </LoadingButton>
     );
 };

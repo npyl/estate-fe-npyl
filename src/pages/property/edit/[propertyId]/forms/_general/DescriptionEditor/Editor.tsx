@@ -24,6 +24,7 @@ import ChatGPTIcon from "./GPTIcon";
 import TabbedBox from "./TabbedBox";
 import { useOpenAIDetails } from "./hooks";
 import fixDropdowns from "./stupid";
+import useResponsive from "@/hooks/useResponsive";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -86,6 +87,8 @@ const UpperRightOptions = ({
 }: UpperRightOptionsProps) => {
     const { t } = useTranslation();
 
+    const belowMd = useResponsive("down", "md");
+
     const { openAIDetails } = useOpenAIDetails(lang);
 
     const canTranslate = useMemo(() => lang === "en", [lang]);
@@ -108,10 +111,14 @@ const UpperRightOptions = ({
                 variant="outlined"
                 onClick={handleGenerate}
             >
-                {isLoading ? t("Generating...") : t("Generate Description")}
+                {isLoading
+                    ? t("Generating...")
+                    : belowMd
+                    ? t("Generate")
+                    : t("Generate Description")}
             </LoadingButton>
         ),
-        [isLoading, handleGenerate]
+        [isLoading, handleGenerate, belowMd]
     );
 
     const handleTranslate = useCallback(() => {}, []);
