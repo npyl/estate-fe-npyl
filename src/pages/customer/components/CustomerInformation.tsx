@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 import {
     Box,
     FormControl,
@@ -75,7 +76,9 @@ const getFIELDS = (
     customerId?: string
 ) => [
     <RHFTextField fullWidth name="firstName" label={t("First Name") + " *"} />,
+    // eslint-disable-next-line react/jsx-key
     <RHFTextField fullWidth name="lastName" label={t("Last Name") + " *"} />,
+    // eslint-disable-next-line react/jsx-key
     <RHFTextField fullWidth name="email" label={t("Email")} />,
     <FormControl fullWidth variant="outlined">
         <InputLabel>{t("Managed By")}</InputLabel>
