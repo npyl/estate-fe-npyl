@@ -7,6 +7,7 @@ import {
     Box,
     Drawer,
     Link,
+    Stack,
     Theme,
     Typography,
     useMediaQuery,
@@ -23,6 +24,9 @@ import HistoryIcon from "@mui/icons-material/History";
 import { useProfileQuery } from "src/services/user";
 import { ChartPie } from "src/icons/chart-pie";
 import { useRouter } from "next/router";
+
+import { LanguageButton } from "../Language/LanguageButton";
+import { SettingsButton } from "../settings-button";
 
 interface DashboardSidebarProps {
     onClose?: () => void;
@@ -238,6 +242,10 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
                             PropertyPro
                         </Typography>
                     </Link>
+                    <Stack direction={"row"}>
+                        <LanguageButton />
+                        <SettingsButton />
+                    </Stack>
                 </Box>
             )}
             {content}
