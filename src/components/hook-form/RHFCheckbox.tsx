@@ -23,7 +23,13 @@ export function RHFCheckbox({ name, ...other }: RHFCheckboxProps) {
             control={control}
             render={({ field }) => (
                 <FormControlLabel
-                    control={<Checkbox {...field} checked={field.value} />}
+                    control={
+                        <Checkbox
+                            {...field}
+                            checked={field.value}
+                            sx={{ alignSelf: "start" }}
+                        />
+                    }
                     {...other}
                 />
             )}

@@ -90,7 +90,7 @@ const BasicForLandSection: React.FC<any> = () => {
             endNode={<RHFSwitch name="exclusive" label={t("Exclusive")} />} // TODO: iOS switch
         >
             <Grid container spacing={2}>
-                <Grid item xs={6}>
+                <Grid item xs={12}>
                     <RHFTextField
                         fullWidth
                         name="code"
@@ -218,7 +218,7 @@ const BasicForLandSection: React.FC<any> = () => {
                 </Grid>
 
                 {CHECKBOXES.map((c, i) => (
-                    <Grid key={i} item xs={2}>
+                    <Grid key={i} item xs={12} sm={6} md={4} lg={3}>
                         <RHFCheckbox {...c} />
                     </Grid>
                 ))}
