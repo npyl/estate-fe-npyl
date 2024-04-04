@@ -124,20 +124,27 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
     }, [isSuccess]);
 
     const initialize = async (): Promise<void> => {
-        if (globalThis?.localStorage?.getItem("accessToken")) {
-            const user = await getProfile().unwrap();
-            if (!user) {
-                throw "Failed to get profile!";
-            }
+        try {
+            if (globalThis?.localStorage?.getItem("accessToken")) {
+                const user = await getProfile().unwrap();
+                if (!user) {
+                    throw "Failed to get profile!";
+                }
 
-            dispatch({
-                type: ActionType.INITIALIZE,
-                payload: {
-                    isAuthenticated: true,
-                    user,
-                },
-            });
-        } else {
+                dispatch({
+                    type: ActionType.INITIALIZE,
+                    payload: {
+                        isAuthenticated: true,
+                        user,
+                    },
+                });
+            } else {
+                throw "Token doesn't exist!";
+            }
+        } catch (error) {
+            // INFO: prevent infinite loop where user refreshes upon getProfile with unsuccessfully existing token
+            globalThis?.localStorage?.removeItem("accessToken");
+
             dispatch({
                 type: ActionType.INITIALIZE,
                 payload: {
