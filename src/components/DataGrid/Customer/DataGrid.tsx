@@ -13,6 +13,8 @@ import { useTranslation } from "react-i18next";
 import GridProps from "../types";
 import { TypeLabels } from "@/components/TypeLabels";
 import RenderLabelsCell from "../shared/RenderLabels";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { useTheme } from "@mui/material/styles";
 
 function statusColor(params: GridCellParams) {
     const labels = (
@@ -27,7 +29,7 @@ function statusColor(params: GridCellParams) {
     return <div>{labels}</div>;
 }
 
-const getColumns = (t: TranslationType): GridColDef[] => [
+const getColumns = (t: TranslationType, isMobile: boolean): GridColDef[] => [
     {
         flex: 1,
         field: "firstName",
@@ -89,7 +91,10 @@ const skeletonRows = Array.from({ length: 2 }, (_, index) => ({
 const DataGrid = ({ skeleton, ...props }: CustomerDataGridProps) => {
     const { t } = useTranslation();
 
-    const columns = useMemo(() => getColumns(t), [t]);
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+    const columns = useMemo(() => getColumns(t, isMobile), [t, isMobile]);
 
     return (
         <DataGridTable

@@ -1,7 +1,10 @@
 import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
-import { Button, Grid, Stack } from "@mui/material";
+import { Button, Drawer, Grid, Stack } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+
 import { useTranslation } from "react-i18next";
 import AddressDetails from "./AddressDetails";
 import CustomerInformation from "./CustomerInformation";
@@ -9,7 +12,7 @@ import DemandSection from "./Demand";
 import NotesSection from "./Notes";
 
 import { LoadingButton } from "@mui/lab";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { demandMapper } from "src/mappers/demand";
 import { ICustomer, ICustomerPOST } from "src/types/customer";
 
@@ -145,15 +148,21 @@ const Form = ({
     return (
         <FormProvider methods={methods} onSubmit={onSubmit}>
             <Grid container paddingTop={1} paddingRight={1} spacing={1}>
-                <Grid item xs={6} display="flex" flexDirection="column" gap={1}>
+                <Grid item xs={12} lg={6}>
                     <CustomerInformation />
-                    <AddressDetails />
-                    <NotesSection />
                 </Grid>
-                <Grid item xs={6}>
-                    <DemandSection />
+                <Grid item xs={12} lg={6}>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <AddressDetails />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <NotesSection />
+                        </Grid>
+                    </Grid>
                 </Grid>
             </Grid>
+
             <Stack
                 my={2}
                 display="flex"

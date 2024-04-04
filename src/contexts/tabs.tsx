@@ -5,6 +5,8 @@ type ITabState = {
     appTabs: ITab[];
     setAppTabs: React.Dispatch<React.SetStateAction<ITab[]>>;
     pushTab: (newTab: ITab) => void;
+
+    removeTabNoChange: (identifier: string) => ITab[];
     removeTab: (identifier: string) => void;
 };
 
@@ -24,29 +26,27 @@ const useTabsState = () => {
     const [appTabs, setAppTabs] = useState<ITab[]>([]);
 
     const pushTab = useCallback(
-        (value: ITab) => {
-            const exists = appTabs.some((item) => item.id === value.id);
+        (value: ITab) =>
+            setAppTabs((old) => {
+                const exists = old.some((item) => item.id === value.id);
 
-            if (!exists) {
-                // add
-                setAppTabs((prev) => [...prev, value]);
-            } else {
-                // update
-                setAppTabs((prev) =>
-                    prev.map((tab) => (tab.id === value.id ? value : tab))
-                );
-            }
-        },
-        [appTabs, setAppTabs]
+                return !exists
+                    ? [...old, value] // add
+                    : old.map((tab) => (tab.id === value.id ? value : tab)); // update
+            }),
+        []
     );
 
     const removeTab = useCallback(
-        (identifier: string) => {
-            const temp = appTabs.filter((item) => item.id !== identifier);
+        (identifier: string) =>
+            setAppTabs((old) => old.filter((item) => item.id !== identifier)),
+        []
+    );
 
-            setAppTabs(temp);
-        },
-        [appTabs, setAppTabs]
+    const removeTabNoChange = useCallback(
+        (identifier: string) =>
+            appTabs.filter((item) => item.id !== identifier),
+        [appTabs]
     );
 
     return {
@@ -54,6 +54,7 @@ const useTabsState = () => {
         pushTab,
         removeTab,
         setAppTabs,
+        removeTabNoChange,
     };
 };
 

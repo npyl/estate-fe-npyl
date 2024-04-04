@@ -1,5 +1,5 @@
 // @mui
-import { Box, Container } from "@mui/material";
+import { Box, Container, Grid } from "@mui/material";
 import { DropResult } from "react-beautiful-dnd";
 // layouts
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
@@ -25,6 +25,7 @@ import {
 } from "src/services/tickets";
 import { DroppableTypeTask } from "./components/column/KanbanColumn";
 import KanbanColumnAdd from "./components/column/KanbanColumnAdd";
+import { useMediaQuery, useTheme } from "@mui/material";
 
 KanbanPage.getLayout = (page: React.ReactElement) => (
     <DashboardLayout>{page}</DashboardLayout>
@@ -35,8 +36,6 @@ KanbanPage.getLayout = (page: React.ReactElement) => (
 // task = card
 // section = IKanbanColumn = item
 // ----------------------------------------------------------------------
-
-const COLUMNS = 3;
 
 const cardId = (str?: string) => {
     if (!str) return null;
@@ -55,6 +54,11 @@ export default function KanbanPage() {
     const [moveCard] = useMoveCardMutation();
     const [reorderCard] = useReorderCardMutation();
     const [reorderColumn] = useReorderColumnMutation();
+
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
+
+    const COLUMNS = isMobile ? 1 : 3;
 
     const items: TwoDimentionsDndItem[] = useMemo(
         () =>
@@ -141,15 +145,9 @@ export default function KanbanPage() {
         }
     };
 
-    // Make sure each column has a decent size
     const columns = useMemo(() => {
-        const count = board?.columns?.length;
-        if (!count) return 0;
-
-        if (count >= COLUMNS) return COLUMNS;
-        if (count === 2) return 2;
-        return 1;
-    }, [board?.columns?.length]);
+        return isMobile ? 1 : 3;
+    }, [isMobile]);
 
     return (
         <Box position="relative" mt={2}>

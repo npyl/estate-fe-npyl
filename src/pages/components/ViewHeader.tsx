@@ -20,7 +20,7 @@ import { DeleteDialog } from "src/components/Dialog/Delete";
 import useDialog from "src/hooks/useDialog";
 import { styled } from "@mui/material/styles";
 import { getBorderColor2 } from "@/theme/borderColor";
-import MenuIcon from "@mui/icons-material/Menu";
+import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import React from "react";
 
 const CustomStack = styled(Stack)(({ theme }) => ({
@@ -140,13 +140,14 @@ const ViewHeader = (props: IViewHeaderProps) => {
                         {children}
                     </Stack>
                 </Box>
+
                 <IconButton
                     size="small"
                     aria-controls="menu"
                     aria-haspopup="true"
                     onClick={handleClick}
                 >
-                    <MenuIcon />
+                    <MoreVertOutlinedIcon />
                 </IconButton>
                 <Popover
                     open={open}

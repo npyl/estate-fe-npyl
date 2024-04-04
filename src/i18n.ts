@@ -579,6 +579,8 @@ const resources = {
             Generate: "Generate",
             "Generate Description": "Generate Description",
             "Generating...": "Generating...",
+
+            Demands: "Demands",
         },
     },
     el: {
@@ -1022,6 +1024,7 @@ const resources = {
             "Calculate (within": "Υπολογισμός (εντός",
             "Fill in property location first":
                 "Συμπληρώστε την τοποθεσία του ακινήτου πρώτα",
+            Demands: "Απαιτήσεις",
 
             //Description
             Description: "Περιγραφή",
