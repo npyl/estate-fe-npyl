@@ -12,11 +12,11 @@ import { Menu } from "src/icons/menu";
 import GridViewIcon from "@mui/icons-material/GridView";
 import MapIcon from "@mui/icons-material/Map";
 import { ViewModeButton } from "./styles";
-import ChosenFilters from "./ChosenFilters";
+import ChosenFilters from "./Filters/ChosenFilters";
 import { SpaceBetween } from "@/components/styled";
 // components
 import FilterSortBy from "./SortBy";
-import { FilterSection } from "../../components/Filters";
+import { FilterSection } from "./Filters";
 import { optionType } from "./types";
 import { useMemo } from "react";
 

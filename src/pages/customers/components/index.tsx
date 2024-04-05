@@ -11,7 +11,7 @@ import FilterStatus from "./Filters/Status";
 import FilterBuyerLeaserAndMore from "./Filters/BuyerLeaserAndMore";
 import FilterCategory from "./Filters/Category";
 import FilterParentCategory from "./Filters/ParentCategory";
-import FilterLabels from "@/pages/components/Filters/Labels";
+import FilterLabels from "@/pages/property/FiltersBar/Filters/Labels";
 import ChosenFilters from "./Filters/ChosenFilters";
 import PriceSelect from "./Filters/Price";
 import FilterManager from "./Filters/ManagedBy";

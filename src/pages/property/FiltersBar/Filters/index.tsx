@@ -19,6 +19,7 @@ import {
 } from "src/slices/filters";
 
 import useDialog from "@/hooks/useDialog";
+import useResponsive from "@/hooks/useResponsive";
 
 export const FilterSection = () => {
     const dispatch = useDispatch();
@@ -32,30 +33,39 @@ export const FilterSection = () => {
 
     const [isDialogOpen, openDialog, closeDialog] = useDialog();
 
+    const belowSm = useResponsive("down", "sm");
+
     return (
         <>
             <Stack direction={"row"} minWidth={"350px"} flex={1} spacing={1}>
-                <SaleSelect />
-                <FilterParentCategory />
-                <FilterCategory />
+                {belowSm ? null : (
+                    <>
+                        <SaleSelect />
+                        <FilterParentCategory />
+                        <FilterCategory />
 
-                <PriceSelect type={"price"} />
-                <PriceSelect type={"area"} />
-                <FilterLabels
-                    variant="property"
-                    labels={labels}
-                    setLabels={setLabels}
-                />
-                <StyledPriceButton
-                    open={false}
-                    disableRipple
-                    color="inherit"
-                    onClick={openDialog}
-                >
-                    <Badge badgeContent={changedPropertyFilters} color="error">
-                        <TuneIcon />
-                    </Badge>
-                </StyledPriceButton>
+                        <PriceSelect type={"price"} />
+                        <PriceSelect type={"area"} />
+                        <FilterLabels
+                            variant="property"
+                            labels={labels}
+                            setLabels={setLabels}
+                        />
+                        <StyledPriceButton
+                            open={false}
+                            disableRipple
+                            color="inherit"
+                            onClick={openDialog}
+                        >
+                            <Badge
+                                badgeContent={changedPropertyFilters}
+                                color="error"
+                            >
+                                <TuneIcon />
+                            </Badge>
+                        </StyledPriceButton>
+                    </>
+                )}
 
                 {isDialogOpen ? (
                     <FilterMore
