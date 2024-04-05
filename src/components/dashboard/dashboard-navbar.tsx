@@ -21,6 +21,7 @@ import { DashboardNavbarSearch } from "./dashboard-navbar-search";
 import { LanguageButton } from "../Language/LanguageButton";
 import { SettingsButton } from "../settings-button";
 import { Logo } from "../logo";
+import useResponsive from "@/hooks/useResponsive";
 
 const StyledTypography = styled(Typography)`
     color: ${({ theme }) =>
@@ -87,6 +88,7 @@ const AccountButton = () => {
 
 export const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
     const { onOpenSidebar, ...other } = props;
+    const belowMd = useResponsive("down", "md");
 
     return (
         <>
@@ -149,8 +151,12 @@ export const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                     </IconButton>
                     <DashboardNavbarSearch />
                     <Stack direction={"row"}>
-                        <LanguageButton />
-                        <SettingsButton />
+                        {belowMd ? null : (
+                            <>
+                                <LanguageButton />
+                                <SettingsButton />
+                            </>
+                        )}
                         <AccountButton />
                     </Stack>
                 </Toolbar>

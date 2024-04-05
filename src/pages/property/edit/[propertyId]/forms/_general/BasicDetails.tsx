@@ -167,8 +167,17 @@ const BasicSection: React.FC<any> = () => {
             </Grid>
 
             <Rent />
-            <RHFCheckbox name="debatablePrice" label={t("Debatable Price")} />
-            <RHFCheckbox name="auction" label={t("Auction")} />
+            <Grid container spacing={2}>
+                <Grid item xs={6}>
+                    <RHFCheckbox
+                        name="debatablePrice"
+                        label={t("Debatable Price")}
+                    />
+                </Grid>
+                <Grid item xs={6}>
+                    <RHFCheckbox name="auction" label={t("Auction")} />
+                </Grid>
+            </Grid>
         </Panel>
     );
 };
