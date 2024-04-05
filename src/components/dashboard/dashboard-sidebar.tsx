@@ -24,6 +24,9 @@ import HistoryIcon from "@mui/icons-material/History";
 import { useProfileQuery } from "src/services/user";
 import { ChartPie } from "src/icons/chart-pie";
 import { useRouter } from "next/router";
+import { LanguageButton } from "../Language/LanguageButton";
+import { SettingsButton } from "../settings-button";
+import useResponsive from "@/hooks/useResponsive";
 
 import { LanguageButton } from "../Language/LanguageButton";
 import { SettingsButton } from "../settings-button";
@@ -150,6 +153,8 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
         setOpenOrganizationsPopover(false);
     };
 
+    const belowMd = useResponsive("down", "md");
+
     const content = (
         <>
             <Scrollbar
@@ -186,6 +191,12 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
                                 {...section}
                             />
                         ))}
+                        {belowMd ? (
+                            <Stack direction="row" justifyContent="center">
+                                <LanguageButton />
+                                <SettingsButton />
+                            </Stack>
+                        ) : null}
                     </Box>
                 </Box>
             </Scrollbar>

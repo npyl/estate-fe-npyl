@@ -69,14 +69,14 @@ const HeatingAndEnergy: React.FC = () => {
                     />
                 </Grid>
 
-                <Grid item xs={3}>
+                <Grid item xs={12} sm={6}>
                     <RHFCheckbox
                         name="heatingAndEnergy.floorHeating"
                         label={t("Floor Heating")}
                     />
                 </Grid>
 
-                <Grid item xs={3}>
+                <Grid item xs={12} sm={6}>
                     <RHFCheckbox
                         name="heatingAndEnergy.airConditioning"
                         label={t("Air-Coditioning")}

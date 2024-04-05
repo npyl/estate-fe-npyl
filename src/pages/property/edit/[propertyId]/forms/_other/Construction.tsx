@@ -26,25 +26,25 @@ const ConstructionForOtherSection: React.FC<any> = (props) => {
                     />
                 </Grid>
 
-                <Grid item xs={3}>
+                <Grid item xs={12} md={6}>
                     <RHFCheckbox
                         name={"construction.underConstruction"}
                         label={t("Under Construction")}
                     />
                 </Grid>
-                <Grid item xs={3}>
+                <Grid item xs={12} md={6}>
                     <RHFCheckbox
                         name={"construction.internalStairs"}
                         label={t("Internal Stairs")}
                     />
                 </Grid>
-                <Grid item xs={3}>
+                <Grid item xs={12} md={6}>
                     <RHFCheckbox
                         name={"construction.newlyBuilt"}
                         label={t("Newly Build")}
                     />
                 </Grid>
-                <Grid item xs={3}>
+                <Grid item xs={12} md={6}>
                     <RHFCheckbox
                         name={"construction.incomplete"}
                         label={t("Incomplete")}

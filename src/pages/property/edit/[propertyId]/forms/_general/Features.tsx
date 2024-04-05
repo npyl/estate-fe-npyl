@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Grid, GridProps } from "@mui/material";
 import * as React from "react";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -6,7 +6,7 @@ import Panel from "src/components/Panel";
 import { RHFCheckbox } from "src/components/hook-form";
 import { TranslationType } from "src/types/translation";
 
-interface ICheckboxItemProps {
+interface ICheckboxItemProps extends GridProps {
     label: string;
     value: string;
     variant?: "features" | "technicalFeatures";
@@ -16,11 +16,12 @@ const CheckboxItem = ({
     value,
     label,
     variant = "features",
+    ...props
 }: ICheckboxItemProps) => {
     const name = useMemo(() => `${variant}.${value}`, [variant, value]);
 
     return (
-        <Grid item xs={3}>
+        <Grid item xs={3} {...props}>
             <RHFCheckbox name={name} label={label} />
         </Grid>
     );
@@ -197,10 +198,22 @@ const FeaturesSection: React.FC<any> = (props) => {
         <Panel label={t("Features")}>
             <Grid container spacing={2}>
                 {FEATURES.map(({ label, value }, i) => (
-                    <CheckboxItem key={i} label={label} value={value} />
+                    <CheckboxItem
+                        xs={12}
+                        sm={6}
+                        md={4}
+                        lg={3}
+                        key={i}
+                        label={label}
+                        value={value}
+                    />
                 ))}
                 {TECHNICAL_FEATURES.map(({ label, value }, i) => (
                     <CheckboxItem
+                        xs={12}
+                        sm={6}
+                        md={4}
+                        lg={3}
                         key={i}
                         variant="technicalFeatures"
                         label={label}
