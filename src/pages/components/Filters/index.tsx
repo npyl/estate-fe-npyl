@@ -2,12 +2,12 @@ import TuneIcon from "@mui/icons-material/Tune";
 import { Badge, Stack } from "@mui/material";
 import { useDispatch, useSelector } from "src/store";
 // Filters
-import FilterParentCategory from "./FilterParentCategory";
-import FilterCategory from "./FilterCategory";
-import FilterLabels from "./FilterLabels";
+import FilterParentCategory from "./ParentCategory";
+import FilterCategory from "./Category";
+import FilterLabels from "./Labels";
 import FilterMore from "./FilterMore";
-import PriceSelect from "./FilterPrice";
-import SaleSelect from "./FilterSale";
+import PriceSelect from "./Price";
+import SaleSelect from "./Sale";
 
 import { StyledPriceButton } from "@/components/Filters";
 

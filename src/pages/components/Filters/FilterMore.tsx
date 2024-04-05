@@ -49,13 +49,13 @@ import {
 } from "src/slices/filters";
 
 import ChosenFilters from "../../property/FiltersBar/ChosenFilters";
-import SubCategorySelect from "./FilterCategory";
-import CodeSelect from "./FilterCode";
-import FilterLabels from "./FilterLabels";
-import ManagerSelect from "./FilterManager";
-import CategorySelect from "./FilterParentCategory";
-import PriceSelect from "./FilterPrice";
-import SaleSelect from "./FilterSale";
+import SubCategorySelect from "./Category";
+import CodeSelect from "./Code";
+import FilterLabels from "./Labels";
+import ManagerSelect from "./Manager";
+import CategorySelect from "./ParentCategory";
+import PriceSelect from "./Price";
+import SaleSelect from "./Sale";
 
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";

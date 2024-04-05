@@ -3,6 +3,7 @@ import {
     Chip,
     Dialog,
     DialogActions,
+    DialogProps,
     DialogTitle,
     Typography,
 } from "@mui/material";
@@ -12,20 +13,21 @@ import { SpaceBetween } from "../styled";
 
 // ----------------------------------------------------------------------
 
-type Props = {
-    open: boolean;
-    onOpen: VoidFunction;
-    onClose: VoidFunction;
+type Props = DialogProps & {
     onResetFilter: VoidFunction;
 };
 
 const changedPropsCount = 5;
 
-export default function FilterMore({ open, onClose, onResetFilter }: Props) {
+export default function FilterMore({
+    onResetFilter,
+    children,
+    ...props
+}: Props) {
     const { t } = useTranslation();
 
     return (
-        <Dialog maxWidth="md" open={open} onClose={onClose} scroll={"body"}>
+        <Dialog maxWidth="md" scroll="body" {...props}>
             <DialogTitle>
                 <SpaceBetween>
                     <Chip label={changedPropsCount} color={"error"} />
@@ -33,11 +35,7 @@ export default function FilterMore({ open, onClose, onResetFilter }: Props) {
                 </SpaceBetween>
             </DialogTitle>
 
-            {changedPropsCount > 0 && (
-                <StyledDialogContent>
-                    {/* <ChosenFilters /> */}
-                </StyledDialogContent>
-            )}
+            <StyledDialogContent>{children}</StyledDialogContent>
 
             <DialogActions sx={{ justifyContent: "space-between" }}>
                 <Button color={"secondary"} onClick={onResetFilter}>
