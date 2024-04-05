@@ -18,6 +18,7 @@ export const FilterLogSection: React.FC<PaperProps> = ({ ...props }) => {
                 flexWrap={"wrap"}
                 direction={isMobile ? "column" : "row"}
                 gap={1}
+                alignItems={"center"}
             >
                 <FilterActions />
                 <FilterResources />
@@ -26,8 +27,7 @@ export const FilterLogSection: React.FC<PaperProps> = ({ ...props }) => {
             </Stack>
             {changedCustomerFilters > 0 && (
                 <Box overflow={"auto"}>
-                    {" "}
-                    <ChosenFiltersLogs />{" "}
+                    <ChosenFiltersLogs />
                 </Box>
             )}
         </Stack>
