@@ -235,8 +235,6 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
             PaperProps={{
                 sx: {
                     paddingTop: !open ? "100px" : 0,
-
-                    color: "#FFFFFF",
                     width: 200,
                 },
             }}
@@ -244,13 +242,11 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
             variant="temporary"
         >
             {open && (
-                <Box p={2}>
+                <Stack p={2} alignItems="center">
                     <Link href="/">
-                        <Typography color="neutral.900" variant={"h5"}>
-                            PropertyPro
-                        </Typography>
+                        <Typography variant="h5">PropertyPro</Typography>
                     </Link>
-                </Box>
+                </Stack>
             )}
             {content}
         </Drawer>
