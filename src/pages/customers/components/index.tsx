@@ -7,14 +7,14 @@ import {
     sumOfChangedProperties,
 } from "src/slices/customer/filters";
 
-import FilterStatus from "./Filters/FilterStatus";
-import FilterBuyerLeaserAndMore from "./Filters/FilterBuyerLeaserAndMore";
-import FilterCategory from "./Filters/FilterCategory";
-import FilterParentCategory from "./Filters/FilterParentCategory";
+import FilterStatus from "./Filters/Status";
+import FilterBuyerLeaserAndMore from "./Filters/BuyerLeaserAndMore";
+import FilterCategory from "./Filters/Category";
+import FilterParentCategory from "./Filters/ParentCategory";
 import FilterLabels from "@/pages/components/Filters/Labels";
 import ChosenFilters from "./Filters/ChosenFilters";
-import PriceSelect from "./Filters/FilterPrice";
-import FilterManager from "./Filters/FilterManagedBy";
+import PriceSelect from "./Filters/Price";
+import FilterManager from "./Filters/ManagedBy";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import TuneOutlinedIcon from "@mui/icons-material/TuneOutlined";
