@@ -2,12 +2,13 @@ import { Divider, Grid, List, Paper, Rating, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
-import { ListItem, ListManagerItem } from "src/components/List";
+import { ListItem, ListManagerItem, ListRatingItem } from "src/components/List";
 import { LeadSource } from "src/types/global";
 import { useGlobals } from "src/hooks/useGlobals";
 import { TypeLabels } from "@/components/TypeLabels";
 import { LabelCreate } from "@/components/Label";
 import useGetCustomer from "src/hooks/customer/hook";
+import { SpaceBetween } from "@/components/styled";
 
 const InformationSection: React.FC = () => {
     const { t } = useTranslation();
@@ -47,13 +48,16 @@ const InformationSection: React.FC = () => {
                 padding: 0,
             }}
         >
-            <Box
+            <SpaceBetween
                 sx={{
                     px: 3,
                     py: 1.5,
-                    display: "flex",
-                    justifyContent: "left",
                 }}
+                direction={{
+                    xs: "column",
+                    md: "row",
+                }}
+                spacing={0.5}
             >
                 <Typography variant="h6" flex={1}>
                     {t("Customer Information")}
@@ -65,10 +69,10 @@ const InformationSection: React.FC = () => {
                     leaser={data?.leaser}
                     buyer={data?.buyer}
                 />
-            </Box>
-            <Divider></Divider>
+            </SpaceBetween>
+            <Divider />
             <Grid container>
-                <Grid item xs={6} padding={0}>
+                <Grid item xs={12} sm={6}>
                     <List>
                         <ListItem
                             label={t("First Name")}
@@ -96,18 +100,14 @@ const InformationSection: React.FC = () => {
                         />
                         <ListItem label={t("Fax")} value={data?.fax || "-"} />
 
-                        <div style={{ display: "flex", alignItems: "center" }}>
-                            <ListItem label={t("Status")} />
-                            <Rating
-                                name="simple-controlled"
-                                value={data?.status}
-                                readOnly
-                            />
-                        </div>
+                        <ListRatingItem
+                            label={t("Status")}
+                            status={data?.status}
+                        />
                     </List>
                 </Grid>
 
-                <Grid item xs={6} padding={0}>
+                <Grid item xs={12} sm={6}>
                     <List>
                         <ListItem
                             label={t("Nationality")}

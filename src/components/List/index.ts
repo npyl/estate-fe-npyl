@@ -6,3 +6,4 @@ export { ListManagerItem } from "./Items";
 export { ListOwnerItem } from "./Items";
 export { ListLabelsItem } from "./Items";
 export { ListDateItem } from "./Items";
+export { ListRatingItem } from "./Items";
