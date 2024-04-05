@@ -3,7 +3,7 @@ import Paper from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import ButtonGroup from "@mui/material/ButtonGroup";
-import { Badge, Box, SvgIconTypeMap } from "@mui/material";
+import { SvgIconTypeMap } from "@mui/material";
 // redux
 import { useDispatch, useSelector } from "react-redux";
 import { sumOfChangedProperties, resetState } from "src/slices/filters";
@@ -19,13 +19,11 @@ import FilterSortBy from "./SortBy";
 import FilterSection from "./FiltersSection";
 import { optionType } from "./types";
 import { useCallback, useMemo } from "react";
-import { StyledPriceButton } from "@/components/Filters";
-
-import TuneIcon from "@mui/icons-material/Tune";
 
 import useDialog from "@/hooks/useDialog";
 import FilterMore from "./Filters/FilterMore";
 import useResponsive from "@/hooks/useResponsive";
+import { FilterMoreButton } from "@/components/Filters/FilterMore";
 
 type viewOptionsType = {
     id: optionType;
@@ -115,19 +113,10 @@ const FilterBar = ({
                     >
                         {belowXl ? null : <FilterSection />}
 
-                        <StyledPriceButton
-                            open={false}
-                            disableRipple
-                            color="inherit"
+                        <FilterMoreButton
                             onClick={openDialog}
-                        >
-                            <Badge
-                                badgeContent={changedPropertyFilters}
-                                color="error"
-                            >
-                                <TuneIcon />
-                            </Badge>
-                        </StyledPriceButton>
+                            changedFiltersCount={changedPropertyFilters}
+                        />
                     </Stack>
 
                     <Stack direction="row" spacing={0.3}>

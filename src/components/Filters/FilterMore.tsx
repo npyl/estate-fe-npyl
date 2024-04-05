@@ -1,5 +1,7 @@
 import {
+    Badge,
     Button,
+    ButtonProps,
     Chip,
     Dialog,
     DialogActions,
@@ -8,8 +10,9 @@ import {
     Typography,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { StyledDialogContent } from "./styled";
+import { StyledDialogContent, StyledPriceButton } from "./styled";
 import { SpaceBetween } from "../styled";
+import TuneIcon from "@mui/icons-material/Tune";
 
 // ----------------------------------------------------------------------
 
@@ -45,3 +48,20 @@ export default function FilterMore({
         </Dialog>
     );
 }
+
+// -----------------------------------------------------------------------------
+
+interface FilterMoreButtonProps extends ButtonProps {
+    changedFiltersCount: number;
+}
+
+export const FilterMoreButton = ({
+    changedFiltersCount,
+    ...props
+}: FilterMoreButtonProps) => (
+    <StyledPriceButton open={false} disableRipple color="inherit" {...props}>
+        <Badge badgeContent={changedFiltersCount} color="error">
+            <TuneIcon />
+        </Badge>
+    </StyledPriceButton>
+);
