@@ -15,16 +15,15 @@ import { TypeLabels } from "@/components/TypeLabels";
 import RenderLabelsCell from "../shared/RenderLabels";
 
 function statusColor(params: GridCellParams) {
-    const labels = (
+    return (
         <TypeLabels
+            forceTruncate
             seller={params.row.seller}
             lessor={params.row.lessor}
             leaser={params.row.leaser}
             buyer={params.row.buyer}
         />
     );
-
-    return <div>{labels}</div>;
 }
 
 const getColumns = (t: TranslationType): GridColDef[] => [

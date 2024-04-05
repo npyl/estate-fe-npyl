@@ -5,6 +5,8 @@ import { Label, LabelColor } from "@/components/Label";
 import useResponsive from "src/hooks/useResponsive";
 
 interface TypeProps extends BoxProps {
+    forceTruncate?: boolean;
+
     seller: boolean;
     lessor: boolean;
     leaser: boolean;
@@ -16,6 +18,9 @@ export const TypeLabels = ({
     lessor,
     leaser,
     buyer,
+
+    forceTruncate = false,
+
     ...props
 }: TypeProps) => {
     const { t } = useTranslation();
@@ -60,7 +65,9 @@ export const TypeLabels = ({
                         opaque
                         color={color as LabelColor}
                     >
-                        {belowSm ? t(type).slice(0, 3) : t(type)}
+                        {belowSm || forceTruncate
+                            ? t(type).slice(0, 3)
+                            : t(type)}
                     </Label>
                 ) : null
             )}
