@@ -2,12 +2,12 @@ import TuneIcon from "@mui/icons-material/Tune";
 import { Badge, Stack } from "@mui/material";
 import { useDispatch, useSelector } from "src/store";
 // Filters
-import FilterParentCategory from "./ParentCategory";
-import FilterCategory from "./Category";
-import FilterLabels from "./Labels";
-import FilterMore from "./FilterMore";
-import PriceSelect from "./Price";
-import SaleSelect from "./Sale";
+import FilterParentCategory from "./Filters/ParentCategory";
+import FilterCategory from "./Filters/Category";
+import FilterLabels from "./Filters/Labels";
+import FilterMore from "./Filters/FilterMore";
+import PriceSelect from "./Filters/Price";
+import SaleSelect from "./Filters/Sale";
 
 import { StyledPriceButton } from "@/components/Filters";
 
@@ -21,7 +21,7 @@ import {
 import useDialog from "@/hooks/useDialog";
 import useResponsive from "@/hooks/useResponsive";
 
-export const FilterSection = () => {
+const FilterSection = () => {
     const dispatch = useDispatch();
 
     const changedPropertyFilters = useSelector(sumOfChangedProperties);
@@ -79,3 +79,5 @@ export const FilterSection = () => {
         </>
     );
 };
+
+export default FilterSection;

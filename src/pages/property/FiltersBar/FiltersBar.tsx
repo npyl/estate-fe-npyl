@@ -16,7 +16,7 @@ import ChosenFilters from "./Filters/ChosenFilters";
 import { SpaceBetween } from "@/components/styled";
 // components
 import FilterSortBy from "./SortBy";
-import { FilterSection } from "./Filters";
+import FilterSection from "./FiltersSection";
 import { optionType } from "./types";
 import { useMemo } from "react";
 
