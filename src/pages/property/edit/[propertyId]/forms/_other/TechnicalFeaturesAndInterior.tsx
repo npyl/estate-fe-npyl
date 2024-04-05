@@ -51,7 +51,7 @@ const TechnicalFeaturesAndInterior: React.FC = () => {
         <Panel label={t("Technical Features And Interior")}>
             <Grid container spacing={2}>
                 {FEATURES.map(({ name, label }, i) => (
-                    <Grid key={i} item xs={6}>
+                    <Grid key={i} item xs={12} md={6}>
                         <RHFCheckbox name={name} label={label} />
                     </Grid>
                 ))}
