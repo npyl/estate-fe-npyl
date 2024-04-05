@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import { SliderPicker } from "react-color";
-import { Label } from "src/components/label";
+import { Label } from "@/components/Label";
 import { IEditProps } from "./types";
 import { useTranslation } from "react-i18next";
 

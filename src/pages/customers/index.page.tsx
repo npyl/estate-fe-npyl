@@ -121,7 +121,7 @@ const Customers: NextPage = () => {
 
             <Paper sx={{ mt: 1, marginRight: bulkEditOpen ? 40 : 0 }}>
                 {belowMd ? (
-                    <Stack spacing={1}>
+                    <Stack spacing={2}>
                         {rows.map((c, i) => (
                             <CustomerCard key={i} c={c} />
                         ))}

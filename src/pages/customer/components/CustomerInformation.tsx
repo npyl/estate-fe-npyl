@@ -13,7 +13,7 @@ import { useAllUsersQuery } from "src/services/user";
 import {
     LabelCreate,
     Placeholder as LabelPlaceholder,
-} from "src/components/label";
+} from "@/components/Label";
 import { LeadSource } from "src/types/global";
 import CustomerTypeSelect from "./CustomerInfoSection/TypeSelect";
 import { useTranslation } from "react-i18next";

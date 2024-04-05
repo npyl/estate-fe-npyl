@@ -1,4 +1,4 @@
-import Label from "@/components/label/Label";
+import Label from "@/components/Label/Label";
 import { ILabel } from "@/types/label";
 import Stack from "@mui/material/Stack";
 import { GridCellParams } from "@mui/x-data-grid";

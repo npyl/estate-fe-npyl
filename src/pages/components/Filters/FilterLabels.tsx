@@ -9,7 +9,7 @@ import {
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import Label from "src/components/label/Label";
+import Label from "@/components/Label/Label";
 import { useGetLabelsQuery } from "src/services/labels";
 import { useDispatch } from "src/store";
 

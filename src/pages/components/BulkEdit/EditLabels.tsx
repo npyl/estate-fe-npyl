@@ -2,7 +2,7 @@ import { MenuItem } from "@mui/material";
 import { StyledOutlinedInput } from "src/pages/components/BulkEditDrawer/style";
 
 import { Checkbox, Select, SelectChangeEvent } from "@mui/material";
-import { Label } from "src/components/label";
+import { Label } from "@/components/Label";
 import { useGetLabelsQuery } from "src/services/labels";
 import { EditProps } from "./types";
 import { DefaultOrEdit } from "./DefaultOrEdit";

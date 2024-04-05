@@ -3,7 +3,7 @@ import { Avatar, Box, Divider, Grid, Paper, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { List, ListItem } from "src/components/List";
-import { Label } from "src/components/label";
+import { Label } from "@/components/Label";
 import { useSecurityContext } from "src/contexts/security";
 import { UserCircle } from "src/icons/user-circle";
 import { IUser } from "src/types/user";

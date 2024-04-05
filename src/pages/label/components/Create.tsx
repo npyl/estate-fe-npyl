@@ -16,7 +16,7 @@ import {
 import React, { useState } from "react";
 import { SliderPicker } from "react-color";
 import { useTranslation } from "react-i18next";
-import { Label } from "src/components/label";
+import { Label } from "@/components/Label";
 import { useAllCustomersQuery } from "src/services/customers";
 import { useAllPropertiesQuery } from "src/services/properties";
 import { LabelResourceType } from "src/types/label";

@@ -11,7 +11,7 @@ import {
 // utils
 // components
 import DirectionsWalkIcon from "@mui/icons-material/DirectionsWalk";
-import { Label } from "src/components/label";
+import { Label } from "@/components/Label";
 import { Place } from "src/types/googleMap";
 import { Scrollbar } from "src/components/scrollbar";
 import { relative } from "path";

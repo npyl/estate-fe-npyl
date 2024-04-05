@@ -6,7 +6,7 @@ import { ListItem, ListManagerItem } from "src/components/List";
 import { LeadSource } from "src/types/global";
 import { useGlobals } from "src/hooks/useGlobals";
 import { TypeLabels } from "@/components/TypeLabels";
-import { LabelCreate } from "src/components/label";
+import { LabelCreate } from "@/components/Label";
 import useGetCustomer from "src/hooks/customer/hook";
 
 const InformationSection: React.FC = () => {

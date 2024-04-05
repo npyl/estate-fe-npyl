@@ -3,7 +3,7 @@ import * as React from "react";
 import { useRouter } from "next/router";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { LabelCreate } from "src/components/label";
+import { LabelCreate } from "@/components/Label";
 import { useGlobals } from "src/hooks/useGlobals";
 import { useAllUsersQuery } from "src/services/user";
 import { IGlobalProperty } from "src/types/global";
