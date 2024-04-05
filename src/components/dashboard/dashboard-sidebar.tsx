@@ -23,6 +23,7 @@ import { OrganizationPopover } from "./organization-popover";
 import HistoryIcon from "@mui/icons-material/History";
 import { useProfileQuery } from "src/services/user";
 import { ChartPie } from "src/icons/chart-pie";
+import { ChartLine as ChartLineIcon } from "src/icons/chart-line";
 import { useRouter } from "next/router";
 import { LanguageButton } from "../Language/LanguageButton";
 import { SettingsButton } from "../settings-button";
@@ -56,6 +57,13 @@ const getSections = (t: TFunction): Section[] => [
                 path: "/",
                 icon: <ChartPie fontSize="small" />,
             },
+
+            {
+                title: "Statistics",
+                path: "/statistics",
+                icon: <ChartLineIcon fontSize="small" />,
+            },
+
             {
                 title: t("Properties"),
                 path: "/property",
