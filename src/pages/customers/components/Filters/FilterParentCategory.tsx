@@ -13,7 +13,7 @@ import {
     selectParentCategories,
     setParentCategories,
 } from "src/slices/customer/filters";
-import StyledInputLabel from "src/pages/components/Filters/components/StyledInputLabel";
+import { StyledInputLabel } from "@/components/Filters";
 
 export default function FilterParentCategory() {
     const dispatch = useDispatch();

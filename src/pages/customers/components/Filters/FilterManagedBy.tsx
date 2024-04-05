@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next";
 import { useAllUsersQuery } from "src/services/user";
 import { useSelector } from "react-redux";
 import { selectManagerId, setManagerId } from "src/slices/customer/filters";
-import StyledInputLabel from "src/pages/components/Filters/components/StyledInputLabel";
+import { StyledInputLabel } from "@/components/Filters";
 
 export default function FilterManager() {
     const { t } = useTranslation();

@@ -62,9 +62,10 @@ import { useTranslation } from "react-i18next";
 import { useGlobals } from "src/hooks/useGlobals";
 import { KeyValue } from "src/types/KeyValue";
 import { TranslationType } from "src/types/translation";
-import { ClearableDialogContent } from "./components/ClearableDialogContent";
-import FieldSelect from "./components/FieldSelect";
-import { StyledDialogContent } from "./styles";
+
+import FieldSelect from "@/components/Filters/FieldSelect";
+import { ClearableDialogContent } from "@/components/Filters/ClearableDialogContent";
+import { StyledDialogContent } from "@/components/Filters/styled";
 
 // ----------------------------------------------------------------------
 
@@ -188,6 +189,7 @@ export default function FilterMore({ open, onClose, onResetFilter }: Props) {
                     <Typography variant="subtitle1">{t("Filters")}</Typography>
                 </Stack>
             </DialogTitle>
+
             {changedPropsCount > 0 && (
                 <StyledDialogContent>
                     <ChosenFilters />

@@ -1,5 +1,5 @@
 import { DialogContentProps, IconButton, Stack } from "@mui/material";
-import { StyledDialogContent } from "../styles";
+import { StyledDialogContent } from "./styled";
 import { useDispatch } from "react-redux";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";

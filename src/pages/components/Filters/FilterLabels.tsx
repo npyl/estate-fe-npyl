@@ -12,8 +12,7 @@ import { useTranslation } from "react-i18next";
 import Label from "@/components/Label/Label";
 import { useGetLabelsQuery } from "src/services/labels";
 import { useDispatch } from "src/store";
-
-import StyledInputLabel from "./components/StyledInputLabel";
+import { StyledInputLabel } from "@/components/Filters";
 
 type FilterVariant = "property" | "customer";
 
@@ -72,12 +71,9 @@ export default function FilterLabels(props: FilterLabelsProps) {
                 },
             }}
         >
-            <StyledInputLabel sx={{}} id="demo-simple-select-label">
-                {t("Labels")}
-            </StyledInputLabel>
+            <StyledInputLabel>{t("Labels")}</StyledInputLabel>
             <Select
                 multiple
-                labelId="demo-simple-select-label"
                 value={labels}
                 onChange={handleChange}
                 renderValue={(selected) =>
