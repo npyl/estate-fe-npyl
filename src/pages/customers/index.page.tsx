@@ -16,8 +16,8 @@ import {
     useFilterCustomersMutation,
 } from "src/services/customers";
 import { selectAll } from "src/slices/customer/filters";
-import { FilterSection } from "./components";
-import { BulkEdit } from "./components/BulkEdit/BulkEdit";
+import FilterSection from "./FilterSection";
+import { BulkEdit } from "./BulkEdit/BulkEdit";
 import DataGrid from "@/components/DataGrid/Customer";
 import useResponsive from "@/hooks/useResponsive";
 import CustomerCard from "@/components/CustomerCard";
