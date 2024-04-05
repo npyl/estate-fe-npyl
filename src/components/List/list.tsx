@@ -1,14 +1,14 @@
-import { List as MuiList } from "@mui/material";
+import { List as MuiList, ListProps as MuiListProps } from "@mui/material";
 import type { FC, ReactNode } from "react";
 
-interface BaseListProps {
+interface ListProps extends MuiListProps {
     children: ReactNode;
 }
 
-const List: FC<BaseListProps> = (props) => {
-    const { children } = props;
-
-    return <MuiList disablePadding>{children}</MuiList>;
-};
+const List: FC<ListProps> = ({ children, ...props }) => (
+    <MuiList disablePadding {...props}>
+        {children}
+    </MuiList>
+);
 
 export default List;

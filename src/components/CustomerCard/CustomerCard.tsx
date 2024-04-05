@@ -1,17 +1,19 @@
 import { ICustomerResultResponse } from "@/types/customer";
-import { Avatar, Card, CardContent, Typography, Stack } from "@mui/material";
+import { Avatar, Card, CardContent, Stack, Grid } from "@mui/material";
 import { TypeLabels } from "../TypeLabels";
 import { useCallback } from "react";
 import { useRouter } from "next/navigation";
+import { List, ListItem } from "@/components/List";
+import { useTranslation } from "react-i18next";
 
 interface CustomerCardProps {
     c: ICustomerResultResponse;
 }
 
 const CustomerCard = ({ c }: CustomerCardProps) => {
+    const { t } = useTranslation();
     const router = useRouter();
 
-    const fullname = `${c.firstName} ${c.lastName}`;
     const avatarInitials = `${c.firstName?.[0] || ""} ${c.lastName?.[0] || ""}`;
 
     const handleClick = useCallback(() => router.push(`/customer/${c.id}`), []);
@@ -21,7 +23,6 @@ const CustomerCard = ({ c }: CustomerCardProps) => {
             sx={{
                 display: "flex",
                 flexDirection: "row",
-                height: "150px",
                 position: "relative",
             }}
             onClick={handleClick}
@@ -37,8 +38,41 @@ const CustomerCard = ({ c }: CustomerCardProps) => {
                 </Avatar>
             </Stack>
 
-            <CardContent>
-                <Typography component="div" variant="h5">
+            <CardContent
+                sx={{
+                    pb: 7, // INFO: leave pb so that TypeLabels fall a bit off from the List
+                    flex: 1,
+                }}
+            >
+                <Grid container>
+                    <Grid item sm={6} flex={1}>
+                        <List>
+                            <ListItem
+                                label={t("First Name")}
+                                value={c?.firstName || ""}
+                            />
+                            <ListItem
+                                label={t("Email")}
+                                value={c?.email || ""}
+                            />
+                        </List>
+                    </Grid>
+
+                    <Grid item sm={6} flex={1}>
+                        <List>
+                            <ListItem
+                                label={t("Last Name")}
+                                value={c?.lastName || ""}
+                            />
+                            <ListItem
+                                label={t("Mobile Phone")}
+                                value={c?.mobilePhone || ""}
+                            />
+                        </List>
+                    </Grid>
+                </Grid>
+
+                {/* <Typography component="div" variant="h5">
                     {fullname}
                 </Typography>
                 <Typography
@@ -54,7 +88,7 @@ const CustomerCard = ({ c }: CustomerCardProps) => {
                     component="div"
                 >
                     {c.mobilePhone}
-                </Typography>
+                </Typography> */}
             </CardContent>
 
             <TypeLabels
