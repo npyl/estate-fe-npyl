@@ -66,6 +66,7 @@ import { TranslationType } from "src/types/translation";
 import FieldSelect from "@/components/Filters/FieldSelect";
 import { ClearableDialogContent } from "@/components/Filters/ClearableDialogContent";
 import { StyledDialogContent } from "@/components/Filters/styled";
+import { FilterMoreDialog } from "@/components/Filters/FilterMore";
 
 // ----------------------------------------------------------------------
 
@@ -178,23 +179,17 @@ export default function FilterMore({ open, onClose, onResetFilter }: Props) {
     );
 
     return (
-        <Dialog maxWidth="md" open={open} onClose={onClose} scroll={"body"}>
-            <DialogTitle>
-                <Stack
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="space-between"
-                >
-                    <Chip label={changedPropsCount} color={"error"} />
-                    <Typography variant="subtitle1">{t("Filters")}</Typography>
-                </Stack>
-            </DialogTitle>
-
-            {changedPropsCount > 0 && (
+        <FilterMoreDialog
+            open={open}
+            onClose={onClose}
+            changedFiltersCount={changedPropsCount}
+            onResetFilter={{} as any}
+        >
+            {changedPropsCount > 0 ? (
                 <StyledDialogContent>
                     <ChosenFilters />
                 </StyledDialogContent>
-            )}
+            ) : null}
 
             <ClearableDialogContent dividers reset={resetBasic}>
                 <Typography>{t("Basic")}</Typography>
@@ -401,12 +396,7 @@ export default function FilterMore({ open, onClose, onResetFilter }: Props) {
                     aria-labelledby="year-slider"
                 />
             </ClearableDialogContent>
-            <DialogActions sx={{ justifyContent: "space-between" }}>
-                <Button color={"secondary"} onClick={onResetFilter}>
-                    {t("Clear all")}
-                </Button>
-            </DialogActions>
-        </Dialog>
+        </FilterMoreDialog>
     );
 }
 

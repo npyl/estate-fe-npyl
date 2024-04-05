@@ -1,3 +1,4 @@
+import { SpaceBetween } from "@/components/styled";
 import {
     Badge,
     Button,
@@ -7,22 +8,21 @@ import {
     DialogActions,
     DialogProps,
     DialogTitle,
+    Stack,
     Typography,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { StyledDialogContent, StyledPriceButton } from "./styled";
-import { SpaceBetween } from "../styled";
-import TuneIcon from "@mui/icons-material/Tune";
+import { StyledDialogContent } from "../styled";
 
 // ----------------------------------------------------------------------
 
 type Props = DialogProps & {
+    changedFiltersCount: number;
     onResetFilter: VoidFunction;
 };
 
-const changedPropsCount = 5;
-
 export default function FilterMore({
+    changedFiltersCount,
     onResetFilter,
     children,
     ...props
@@ -33,12 +33,14 @@ export default function FilterMore({
         <Dialog maxWidth="md" scroll="body" {...props}>
             <DialogTitle>
                 <SpaceBetween>
-                    <Chip label={changedPropsCount} color={"error"} />
+                    <Chip label={changedFiltersCount} color={"error"} />
                     <Typography variant="subtitle1">{t("Filters")}</Typography>
                 </SpaceBetween>
             </DialogTitle>
 
-            <StyledDialogContent>{children}</StyledDialogContent>
+            <StyledDialogContent>
+                <Stack spacing={2}>{children}</Stack>
+            </StyledDialogContent>
 
             <DialogActions sx={{ justifyContent: "space-between" }}>
                 <Button color={"secondary"} onClick={onResetFilter}>
@@ -48,20 +50,3 @@ export default function FilterMore({
         </Dialog>
     );
 }
-
-// -----------------------------------------------------------------------------
-
-interface FilterMoreButtonProps extends ButtonProps {
-    changedFiltersCount: number;
-}
-
-export const FilterMoreButton = ({
-    changedFiltersCount,
-    ...props
-}: FilterMoreButtonProps) => (
-    <StyledPriceButton open={false} disableRipple color="inherit" {...props}>
-        <Badge badgeContent={changedFiltersCount} color="error">
-            <TuneIcon />
-        </Badge>
-    </StyledPriceButton>
-);
