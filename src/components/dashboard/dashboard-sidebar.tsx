@@ -250,10 +250,6 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
                             PropertyPro
                         </Typography>
                     </Link>
-                    <Stack direction={"row"}>
-                        <LanguageButton />
-                        <SettingsButton />
-                    </Stack>
                 </Box>
             )}
             {content}
