@@ -7,6 +7,7 @@ import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOu
 import Panel from "src/components/Panel";
 import { useFormContext } from "react-hook-form";
 import { IDemandPOST } from "src/types/demand";
+import { useTranslation } from "react-i18next";
 
 const emptyDemand: IDemandPOST = {
     filters: {
@@ -64,6 +65,8 @@ const buyerName = "buyer";
 const demandsName = "demands";
 
 const DemandSection: FC = () => {
+    const { t } = useTranslation();
+
     const { watch, setValue } = useFormContext();
 
     const leaser = watch(leaserName);
@@ -91,7 +94,7 @@ const DemandSection: FC = () => {
 
     return (
         <Panel
-            label="Demand Forms"
+            label={t("Demand Forms")}
             endNode={
                 <IconButton onClick={handleTabCreate}>
                     <AddCircleOutlineOutlinedIcon />
@@ -106,7 +109,7 @@ const DemandSection: FC = () => {
                     {demands.map((d, i) => (
                         <Tab
                             key={i}
-                            label={`Demand ${i + 1}`}
+                            label={`${t("Demand")} ${i + 1}`}
                             sx={{
                                 display: "flex",
                                 flexDirection: "row-reverse",

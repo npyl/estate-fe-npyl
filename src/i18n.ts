@@ -742,6 +742,13 @@ const resources = {
             "Year of Renovation": "Έτος Ανακαίνισης",
             "Total Floor Number": "Συνολικός Αριθμός Ορόφων",
 
+            Demand: "Απαίτηση",
+            "Owned Properties": "Ιδιόκτητα Ακίνητα",
+            "Matching Properties": "Ταιριαστά Ακίνητα",
+            "Area of Preference": "Περιοχή Προτίμησης",
+            "There are no matching properties":
+                "Δεν υπάρχουν ταιριαστά ακίνητα",
+
             Renovated: "Ανακαινισμένο",
             "Needs Renovation": "Χρήζει ανακαίνισης",
             Elevator: "Ανελκυστήρας",
