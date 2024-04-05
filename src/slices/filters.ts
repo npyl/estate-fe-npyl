@@ -6,7 +6,6 @@ interface Filters extends IPropertyFilter {
     [key: string]: any;
 }
 interface IFilterProps {
-    changedCustomerFilters: any;
     filters: Filters;
     ids: string[];
 }
@@ -24,7 +23,6 @@ const initialState: IFilterProps = {
         heatingType: [],
     },
     ids: [],
-    changedCustomerFilters: undefined,
 };
 
 const slice = createSlice({

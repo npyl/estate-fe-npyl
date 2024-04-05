@@ -98,10 +98,7 @@ const formatNumberWithPeriod = (num: any) => {
 //
 //  View Properties
 //
-export const getColumns = (
-    t: TranslationType,
-    mobile: boolean
-): GridColDef[] => [
+export const getColumns = (t: TranslationType): GridColDef[] => [
     {
         field: "propertyImage",
         headerName: t("Thumbnail") as string,
@@ -109,7 +106,7 @@ export const getColumns = (
         headerAlign: "center",
         renderCell: renderImage,
 
-        flex: mobile ? 0 : 1,
+        flex: 1,
     },
     {
         field: "code",
@@ -117,7 +114,7 @@ export const getColumns = (
         headerAlign: "center",
         align: "center",
 
-        flex: mobile ? 0 : 1,
+        flex: 1,
     },
     {
         field: "parentCategory",
@@ -126,7 +123,7 @@ export const getColumns = (
         headerName: t("Parent Category") as string,
         renderCell: (params) => (params.value as KeyValue)?.value,
 
-        flex: mobile ? 0 : 1,
+        flex: 1,
     },
     {
         field: "category",
@@ -135,7 +132,7 @@ export const getColumns = (
         headerName: t("Category") as string,
         renderCell: (params) => (params.value as KeyValue)?.value,
 
-        flex: mobile ? 0 : 1,
+        flex: 1,
     },
     {
         field: "price",
@@ -147,7 +144,7 @@ export const getColumns = (
             return formattedPrice ? `${formattedPrice} €` : "";
         },
 
-        flex: mobile ? 0 : 1,
+        flex: 1,
     },
     {
         field: "state",
@@ -156,7 +153,7 @@ export const getColumns = (
         headerName: t("State") as string,
         renderCell: statusColor,
 
-        flex: mobile ? 0 : 1,
+        flex: 1,
     },
     {
         field: "area",
@@ -167,7 +164,7 @@ export const getColumns = (
             return params.value ? `${params.value} m²` : "";
         },
 
-        flex: mobile ? 0 : 1,
+        flex: 1,
     },
     {
         field: "labels",
@@ -176,7 +173,7 @@ export const getColumns = (
         headerName: t("Labels") as string,
         renderCell: RenderLabelsCell,
 
-        flex: mobile ? 0 : 1,
+        flex: 1,
     },
     {
         field: "createdAt",
@@ -184,7 +181,7 @@ export const getColumns = (
         align: "center",
         headerName: t("Creation Date") as string,
 
-        flex: mobile ? 0 : 1,
+        flex: 1,
 
         renderCell: (params) => {
             const { i18n } = useTranslation();
@@ -205,7 +202,7 @@ export const getColumns = (
         align: "center",
         headerName: t("Updated At") as string,
 
-        flex: mobile ? 0 : 1,
+        flex: 1,
 
         renderCell: (params) => {
             const { i18n } = useTranslation();
