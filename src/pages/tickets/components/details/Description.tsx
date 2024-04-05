@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 
 // @mui
-import { Stack } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { IKanbanCardPOST } from "src/types/kanban";
 // styled
@@ -47,8 +47,14 @@ const Description = ({ taskDescription, onUpdate }: DescriptionProps) => {
         [description]
     );
 
+    const handleClick = useCallback(() => {
+        onUpdate({
+            description,
+        });
+    }, [description]);
+
     return (
-        <Stack direction="row">
+        <Stack direction="column" spacing={2}>
             <StyledLabel>{t("Description")}</StyledLabel>
 
             <EnterOverlay show={description !== initialState}>
@@ -68,6 +74,18 @@ const Description = ({ taskDescription, onUpdate }: DescriptionProps) => {
                     }}
                 />
             </EnterOverlay>
+            <Button
+                variant="contained"
+                color="primary"
+                onClick={handleClick}
+                sx={{
+                    width: "fit-content",
+                    alignSelf: "center",
+                    textTransform: "none",
+                }}
+            >
+                Update Description
+            </Button>
         </Stack>
     );
 };

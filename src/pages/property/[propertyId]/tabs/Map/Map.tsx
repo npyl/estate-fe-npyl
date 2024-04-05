@@ -21,11 +21,8 @@ import { useLoadApi } from "src/components/Map";
 import { useGetPropertyByIdQuery } from "src/services/properties";
 import { useDebouncedCallback } from "use-debounce";
 import RelatedPlaces from "./RelatedPlaces";
-
-const containerStyle = {
-    width: "100%",
-    height: "65vh",
-};
+import useMediaQuery from "@mui/material/useMediaQuery";
+import Grid from "@mui/material/Grid";
 
 const initialState: any[] = [];
 
@@ -93,6 +90,9 @@ function MyComponent() {
 
     const mapRef = useRef<any>(null);
     const serviceRef = useRef<any>(null);
+
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const matches = useMediaQuery(theme.breakpoints.up("sm"));
 
     useEffect(() => {
         if (isLoaded) {
@@ -222,26 +222,47 @@ function MyComponent() {
     if (loadError) {
         return <div>Error loading maps</div>;
     }
-    // if (data?.location?.lat == null) return null;
-    if (data?.location?.lat != null && data?.location?.lng != null)
+
+    if (!data?.location?.lat || !data?.location?.lng) {
         return (
-            <Box display={"flex"} gap={2}>
-                <div
-                    style={{
-                        height: "65vh",
-                        width: "60vw",
-                        position: "relative",
-                    }}
-                >
-                    {isLoaded ? (
-                        <Box>
-                            <div id="map" style={containerStyle} />
-                        </Box>
-                    ) : (
-                        <div>Loading maps</div>
-                    )}
-                    {data?.location?.lat != null &&
-                    data?.location?.lng != null ? (
+            <Box
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                justifyContent="center"
+                height="100%" // or '65vh' or similar depending on your layout needs
+                textAlign="center"
+                color={theme.palette.grey[500]}
+            >
+                {/* Optional: icon from @mui/icons-material or similar library */}
+                <LocationOff style={{ fontSize: 70 }} color="action" />
+
+                <Typography variant="h5" gutterBottom>
+                    No location data available
+                </Typography>
+
+                <Typography variant="subtitle1" color="textSecondary">
+                    Please check the property details or try again later.
+                </Typography>
+
+                {/* Optional: Call to action button */}
+            </Box>
+        );
+    }
+
+    return (
+        <Grid container spacing={2} mt={2}>
+            <Grid
+                item
+                xs={12}
+                md={6}
+                position="relative"
+                height={matches ? "65vh" : "100vh"}
+            >
+                {isLoaded ? (
+                    <>
+                        <Box id="map" height={1} />
+
                         <Paper
                             sx={{
                                 width: 240,
@@ -270,79 +291,58 @@ function MyComponent() {
                                 max={5}
                             />
                         </Paper>
-                    ) : null}
-                    <ToggleButtonGroup
-                        sx={{
-                            position: "absolute",
-                            bottom: "30px",
-                            left: "10px",
-                            background: "white",
-                        }}
-                        orientation="vertical"
-                        color="primary"
-                        value={alignment}
-                        exclusive
-                        onChange={handleChange}
-                        aria-label="Platform"
-                    >
-                        <ToggleButton value="hospital">
-                            <LocalHospitalIcon />
-                        </ToggleButton>
-                        <ToggleButton value="supermarket">
-                            <LocalGroceryStoreIcon />
-                        </ToggleButton>
-                        <ToggleButton value="restaurant">
-                            <LocalDiningIcon />
-                        </ToggleButton>
-                        <ToggleButton value="bar">
-                            <LocalBarIcon />
-                        </ToggleButton>
-                        <ToggleButton value="school">
-                            <SchoolIcon />
-                        </ToggleButton>
-                        <ToggleButton value="airport">
-                            <LocalAirportIcon />
-                        </ToggleButton>
-                        <ToggleButton value="transit_station">
-                            <DirectionsBusIcon />
-                        </ToggleButton>
-                    </ToggleButtonGroup>
-                </div>
-                <Box width={"40vw"} height={"65vh"} overflow={"auto"}>
-                    <RelatedPlaces
-                        data={data}
-                        title="Closest points"
-                        list={places}
-                        duration={state}
-                    />
-                </Box>
-            </Box>
-        );
-    else
-        return (
-            <Box
-                display="flex"
-                flexDirection="column"
-                alignItems="center"
-                justifyContent="center"
-                height="100%" // or '65vh' or similar depending on your layout needs
-                textAlign="center"
-                color={theme.palette.grey[500]}
-            >
-                {/* Optional: icon from @mui/icons-material or similar library */}
-                <LocationOff style={{ fontSize: 70 }} color="action" />
 
-                <Typography variant="h5" gutterBottom>
-                    No location data available
-                </Typography>
-
-                <Typography variant="subtitle1" color="textSecondary">
-                    Please check the property details or try again later.
-                </Typography>
-
-                {/* Optional: Call to action button */}
-            </Box>
-        );
+                        <ToggleButtonGroup
+                            sx={{
+                                position: "absolute",
+                                bottom: "30px",
+                                left: "10px",
+                                background: "white",
+                            }}
+                            orientation="vertical"
+                            color="primary"
+                            value={alignment}
+                            exclusive
+                            onChange={handleChange}
+                            aria-label="Platform"
+                        >
+                            <ToggleButton value="hospital">
+                                <LocalHospitalIcon />
+                            </ToggleButton>
+                            <ToggleButton value="supermarket">
+                                <LocalGroceryStoreIcon />
+                            </ToggleButton>
+                            <ToggleButton value="restaurant">
+                                <LocalDiningIcon />
+                            </ToggleButton>
+                            <ToggleButton value="bar">
+                                <LocalBarIcon />
+                            </ToggleButton>
+                            <ToggleButton value="school">
+                                <SchoolIcon />
+                            </ToggleButton>
+                            <ToggleButton value="airport">
+                                <LocalAirportIcon />
+                            </ToggleButton>
+                            <ToggleButton value="transit_station">
+                                <DirectionsBusIcon />
+                            </ToggleButton>
+                        </ToggleButtonGroup>
+                    </>
+                ) : (
+                    <div>Loading maps</div>
+                )}
+            </Grid>
+            <Grid item xs={12} md={6}>
+                <RelatedPlaces
+                    data={data}
+                    title="Closest points"
+                    list={places}
+                    duration={state}
+                />
+            </Grid>
+        </Grid>
+    );
 }
 
 export default MyComponent;
