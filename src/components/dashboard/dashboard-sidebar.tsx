@@ -28,9 +28,6 @@ import { LanguageButton } from "../Language/LanguageButton";
 import { SettingsButton } from "../settings-button";
 import useResponsive from "@/hooks/useResponsive";
 
-import { LanguageButton } from "../Language/LanguageButton";
-import { SettingsButton } from "../settings-button";
-
 interface DashboardSidebarProps {
     onClose?: () => void;
     open?: boolean;
