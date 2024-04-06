@@ -19,7 +19,7 @@ import { useTranslation } from "react-i18next";
 import AnimatedTableRow from "src/components/Table/AnimatedTableRow";
 import { UserForm } from "src/components/User/Form";
 import { IOSSwitch } from "src/components/iOSSwitch";
-import { Label } from "src/components/label";
+import { Label } from "@/components/Label";
 import { useSecurityContext } from "src/contexts/security";
 import {
     useAllUsersQuery,

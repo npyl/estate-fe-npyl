@@ -5,7 +5,7 @@ import FileThumbnail from "../../file-thumbnail";
 import Iconify from "../../iconify";
 //
 import { IPropertyFile, UploadProps, UploadVariant } from "../types";
-import { LabelCreate } from "src/components/label";
+import { LabelCreate } from "@/components/Label";
 import { motion } from "framer-motion";
 import { DocumentIcon } from "./DocumentIcon";
 

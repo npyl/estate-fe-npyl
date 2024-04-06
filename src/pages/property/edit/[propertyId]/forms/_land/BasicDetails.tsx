@@ -1,6 +1,6 @@
 import { Grid, MenuItem } from "@mui/material";
 import * as React from "react";
-import { LabelCreate } from "src/components/label";
+import { LabelCreate } from "@/components/Label";
 import { useGlobals } from "src/hooks/useGlobals";
 import { useAllUsersQuery } from "src/services/user";
 import { IGlobalProperty } from "src/types/global";

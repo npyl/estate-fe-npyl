@@ -48,23 +48,25 @@ import {
     toggleHeatingType,
 } from "src/slices/filters";
 
-import ChosenFilters from "../../property/FiltersBar/ChosenFilters";
-import SubCategorySelect from "./FilterCategory";
-import CodeSelect from "./FilterCode";
-import FilterLabels from "./FilterLabels";
-import ManagerSelect from "./FilterManager";
-import CategorySelect from "./FilterParentCategory";
-import PriceSelect from "./FilterPrice";
-import SaleSelect from "./FilterSale";
+import ChosenFilters from "./ChosenFilters";
+import SubCategorySelect from "./Category";
+import CodeSelect from "./Code";
+import FilterLabels from "./Labels";
+import ManagerSelect from "./Manager";
+import CategorySelect from "./ParentCategory";
+import PriceSelect from "./Price";
+import SaleSelect from "./Sale";
 
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useGlobals } from "src/hooks/useGlobals";
 import { KeyValue } from "src/types/KeyValue";
 import { TranslationType } from "src/types/translation";
-import { ClearableDialogContent } from "./components/ClearableDialogContent";
-import FieldSelect from "./components/FieldSelect";
-import { StyledDialogContent } from "./styles";
+
+import FieldSelect from "@/components/Filters/FieldSelect";
+import { ClearableDialogContent } from "@/components/Filters/ClearableDialogContent";
+import { StyledDialogContent } from "@/components/Filters/styled";
+import { FilterMoreDialog } from "@/components/Filters/FilterMore";
 
 // ----------------------------------------------------------------------
 
@@ -177,22 +179,17 @@ export default function FilterMore({ open, onClose, onResetFilter }: Props) {
     );
 
     return (
-        <Dialog maxWidth="md" open={open} onClose={onClose} scroll={"body"}>
-            <DialogTitle>
-                <Stack
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="space-between"
-                >
-                    <Chip label={changedPropsCount} color={"error"} />
-                    <Typography variant="subtitle1">{t("Filters")}</Typography>
-                </Stack>
-            </DialogTitle>
-            {changedPropsCount > 0 && (
+        <FilterMoreDialog
+            open={open}
+            onClose={onClose}
+            changedFiltersCount={changedPropsCount}
+            onResetFilter={{} as any}
+        >
+            {changedPropsCount > 0 ? (
                 <StyledDialogContent>
                     <ChosenFilters />
                 </StyledDialogContent>
-            )}
+            ) : null}
 
             <ClearableDialogContent dividers reset={resetBasic}>
                 <Typography>{t("Basic")}</Typography>
@@ -399,12 +396,7 @@ export default function FilterMore({ open, onClose, onResetFilter }: Props) {
                     aria-labelledby="year-slider"
                 />
             </ClearableDialogContent>
-            <DialogActions sx={{ justifyContent: "space-between" }}>
-                <Button color={"secondary"} onClick={onResetFilter}>
-                    {t("Clear all")}
-                </Button>
-            </DialogActions>
-        </Dialog>
+        </FilterMoreDialog>
     );
 }
 

@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next";
 import { useGlobals } from "src/hooks/useGlobals";
 import { selectStates, setStates } from "src/slices/filters";
 import { useDispatch, useSelector } from "src/store";
-import StyledInputLabel from "./components/StyledInputLabel";
+import { StyledInputLabel } from "@/components/Filters";
 
 export default function SaleSelect() {
     const dispatch = useDispatch();
@@ -35,12 +35,9 @@ export default function SaleSelect() {
 
     return (
         <FormControl sx={{ minWidth: "130px" }}>
-            <StyledInputLabel id="demo-simple-select-label">
-                {t("State")}
-            </StyledInputLabel>
+            <StyledInputLabel>{t("State")}</StyledInputLabel>
             <Select
                 multiple
-                labelId="demo-simple-select-label"
                 value={states}
                 onChange={handleChange}
                 renderValue={(selected: string[]) => {

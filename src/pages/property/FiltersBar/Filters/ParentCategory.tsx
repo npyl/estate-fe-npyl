@@ -14,7 +14,7 @@ import {
 
 import { useTranslation } from "react-i18next";
 import { useGlobals } from "src/hooks/useGlobals";
-import StyledInputLabel from "./components/StyledInputLabel";
+import { StyledInputLabel } from "@/components/Filters";
 
 export default function FilterParentCategory() {
     const dispatch = useDispatch();

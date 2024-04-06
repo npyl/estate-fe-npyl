@@ -10,7 +10,7 @@ import {
 import { useCallback } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { Label } from "src/components/label";
+import { Label } from "@/components/Label";
 import { useGetLabelsQuery } from "src/services/labels";
 import { IDemandFiltersPOST } from "src/types/demand";
 

@@ -2,7 +2,7 @@ import { Grid, IconButton, Paper, Stack, Typography } from "@mui/material";
 import { Edit as EditIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Label, LabelProps } from "src/components/label";
+import { Label, LabelProps } from "@/components/Label";
 import { useGetLabelsQuery } from "src/services/labels";
 import { ILabel } from "src/types/label";
 import { IEditProps } from "./types";

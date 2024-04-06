@@ -18,7 +18,7 @@ import * as React from "react";
 import { useMemo, useState } from "react";
 import { SliderPicker } from "react-color";
 import { useTranslation } from "react-i18next";
-import Label from "src/components/label/Label";
+import Label from "@/components/Label/Label";
 import { ILabel, ILabelPOST, LabelResourceType } from "src/types/label";
 
 interface AddLabelDialog {

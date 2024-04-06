@@ -4,6 +4,9 @@ import {
     ButtonProps,
     ListItem as MuiListItem,
     ListItemProps as MuiListItemProps,
+    DialogContent,
+    DialogContentProps,
+    InputLabel,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
@@ -75,3 +78,14 @@ export const ListItem = styled(MuiListItem)<ListItemProps>(
             : {}),
     })
 );
+
+export const StyledDialogContent = styled(DialogContent, {
+    shouldForwardProp: (prop) => prop !== "open",
+})<DialogContentProps>({
+    maxHeight: "none",
+    overflow: "visible",
+});
+
+export const StyledInputLabel = styled(InputLabel)({
+    textAlign: "center",
+});

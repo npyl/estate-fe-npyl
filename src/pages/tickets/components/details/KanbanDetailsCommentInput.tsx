@@ -1,14 +1,49 @@
 // @mui
-import { Button, InputBase, Paper, Stack } from "@mui/material";
+import { Box, Button, InputBase, Paper, Stack } from "@mui/material";
 // components
 import { useAuth } from "src/hooks/use-auth";
 import { CustomAvatar } from "src/components/custom-avatar";
 import { useTranslation } from "react-i18next";
+import React, { useCallback, useState } from "react";
+import { IKanbanComment, IKanbanCommentPOST } from "@/types/kanban";
+
 // ----------------------------------------------------------------------
 
-export default function KanbanDetailsCommentInput() {
+type Props = {
+    comments: IKanbanComment[];
+    onChange: (comments: IKanbanCommentPOST[]) => void;
+};
+
+export default function KanbanDetailsCommentInput({
+    comments,
+    onChange,
+}: Props) {
     const { user } = useAuth();
     const { t } = useTranslation();
+
+    const [currentComment, setCurrentComment] = useState("");
+
+    const handleCommentChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        setCurrentComment(event.target.value);
+    };
+
+    const handleCommentSubmit = useCallback(() => {
+        const newComments: IKanbanCommentPOST[] = [
+            ...comments,
+            {
+                avatar: "",
+                name: "",
+                createdAt: "",
+                messageType: "text",
+                message: currentComment,
+            },
+        ];
+
+        onChange(newComments); // Call the onChange prop with the new comments
+        setCurrentComment(""); // Clear the comment input
+    }, [comments, currentComment]);
 
     return (
         <Stack direction="row" spacing={2} sx={{ py: 3, px: 2.5 }}>
@@ -18,23 +53,32 @@ export default function KanbanDetailsCommentInput() {
                 name={user?.username}
             />
 
-            <Paper variant="outlined" sx={{ p: 1, flexGrow: 1 }}>
-                <InputBase
-                    fullWidth
-                    multiline
-                    rows={2}
-                    placeholder={t("Type a message") as string}
-                    sx={{ px: 1 }}
-                />
+            <Box
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                flexGrow={1}
+            >
+                <Paper variant="outlined" sx={{ p: 1, width: "100%" }}>
+                    <InputBase
+                        fullWidth
+                        multiline
+                        rows={2}
+                        placeholder={t("Type a message") as string}
+                        sx={{ px: 1 }}
+                        value={currentComment}
+                        onChange={handleCommentChange}
+                    />
+                </Paper>
 
-                <Stack
-                    direction="row"
-                    alignItems="center"
-                    justifyContent="flex-end"
+                <Button
+                    variant="contained"
+                    onClick={handleCommentSubmit}
+                    sx={{ mt: 2 }}
                 >
-                    <Button variant="contained">{t("Comment")}</Button>
-                </Stack>
-            </Paper>
+                    {t("Comment")}
+                </Button>
+            </Box>
         </Stack>
     );
 }

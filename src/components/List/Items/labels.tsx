@@ -1,6 +1,6 @@
 import { Stack } from "@mui/material";
 import type { FC } from "react";
-import Label from "@/components/label/Label";
+import Label from "@/components/Label/Label";
 import { ILabel } from "src/types/label";
 import ListItem from "../item";
 import { useTranslation } from "react-i18next";

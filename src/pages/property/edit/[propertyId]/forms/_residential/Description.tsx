@@ -153,39 +153,39 @@ const Description: React.FC = () => {
                     />
                 </Grid>
 
-                <Grid item xs={2.4}>
+                <Grid item xs={12} sm={6} md={4} lg={3}>
                     <RHFCheckbox label={t("Attic")} name="details.attic" />
                 </Grid>
 
-                <Grid item xs={2.4}>
+                <Grid item xs={12} sm={6} md={4} lg={3}>
                     <RHFCheckbox
                         name="details.playroom"
                         label={t("Playroom")}
                     />
                 </Grid>
 
-                <Grid item xs={2.4}>
+                <Grid item xs={12} sm={6} md={4} lg={3}>
                     <RHFCheckbox
                         name="details.storeroom"
                         label={t("Storeroom")}
                     />
                 </Grid>
 
-                <Grid item xs={2.4}>
+                <Grid item xs={12} sm={6} md={4} lg={3}>
                     <RHFCheckbox
                         name="details.penthouse"
                         label={t("Penthouse")}
                     />
                 </Grid>
 
-                <Grid item xs={2.4}>
+                <Grid item xs={12} sm={6} md={4} lg={3}>
                     <RHFCheckbox
                         name="details.floorApartment"
                         label={t("Floor Apartment")}
                     />
                 </Grid>
 
-                <Grid item>
+                <Grid item xs={12} sm={6} md={4} lg={3}>
                     <RHFCheckbox
                         name="details.goldenVisa"
                         label={t("Golden Visa")}

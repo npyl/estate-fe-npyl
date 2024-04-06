@@ -16,8 +16,8 @@ import {
     useFilterCustomersMutation,
 } from "src/services/customers";
 import { selectAll } from "src/slices/customer/filters";
-import { FilterSection } from "./components";
-import { BulkEdit } from "./components/BulkEdit/BulkEdit";
+import FilterSection from "./FilterSection";
+import { BulkEdit } from "./BulkEdit/BulkEdit";
 import DataGrid from "@/components/DataGrid/Customer";
 import useResponsive from "@/hooks/useResponsive";
 import CustomerCard from "@/components/CustomerCard";
@@ -121,7 +121,7 @@ const Customers: NextPage = () => {
 
             <Paper sx={{ mt: 1, marginRight: bulkEditOpen ? 40 : 0 }}>
                 {belowMd ? (
-                    <Stack spacing={1}>
+                    <Stack spacing={2}>
                         {rows.map((c, i) => (
                             <CustomerCard key={i} c={c} />
                         ))}

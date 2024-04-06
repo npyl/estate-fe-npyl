@@ -2,7 +2,12 @@ import { useCallback, useRef, useState } from "react";
 // @mui
 import { Avatar, Divider, Drawer, Stack, Button } from "@mui/material";
 // @types
-import { IKanbanCard, IKanbanCardPOST } from "src/types/kanban";
+import {
+    IKanbanCard,
+    IKanbanCardPOST,
+    IKanbanComment,
+    IKanbanCommentPOST,
+} from "src/types/kanban";
 // components
 import { Scrollbar } from "src/components/scrollbar";
 // Kanban
@@ -145,6 +150,23 @@ export default function KanbanDetails({
         [id, user, comments, description, completed, due, name, priority]
     );
 
+    const handleCommentsChange = useCallback(
+        (_comments: IKanbanCommentPOST[]) => {
+            editCard({
+                id,
+                attachments,
+                comments: _comments as IKanbanComment[],
+                completed,
+                description,
+                due,
+                name,
+                priority,
+                userIds: user.map((u) => u.id),
+            });
+        },
+        [id, user, attachments, completed, description, due, name, priority]
+    );
+
     const { t } = useTranslation();
 
     return (
@@ -174,9 +196,7 @@ export default function KanbanDetails({
                 onCompleted={toggleCompleted}
                 onCloseDetails={onCloseDetails}
             />
-
             <Divider />
-
             <Scrollbar>
                 <Stack spacing={3} sx={{ px: 2.5, pt: 3, pb: 5 }}>
                     {/* Task name */}
@@ -294,10 +314,11 @@ export default function KanbanDetails({
                     <KanbanDetailsCommentList comments={task.comments} />
                 )}
             </Scrollbar>
-
             <Divider />
-
-            <KanbanDetailsCommentInput />
+            <KanbanDetailsCommentInput
+                comments={comments}
+                onChange={handleCommentsChange}
+            />
         </Drawer>
     );
 }

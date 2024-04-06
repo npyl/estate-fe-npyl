@@ -10,21 +10,21 @@ const SuitableFor: React.FC<any> = (props) => {
     return (
         <Panel label={t("Suitable For")}>
             <Grid container spacing={2}>
-                <Grid item xs={3}>
+                <Grid item xs={12} sm={6} md={4}>
                     <RHFCheckbox
                         name="suitableFor.renovation"
                         label={t("Renovation")}
                     />
                 </Grid>
 
-                <Grid item xs={3}>
+                <Grid item xs={12} sm={6} md={4}>
                     <RHFCheckbox
                         name="suitableFor.investment"
                         label={t("Investment")}
                     />
                 </Grid>
 
-                <Grid item xs={3}>
+                <Grid item xs={12} sm={6} md={4}>
                     <RHFCheckbox
                         name="suitableFor.doctorsOffice"
                         label={t("Doctor's Office")}

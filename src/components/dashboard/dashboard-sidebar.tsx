@@ -23,10 +23,11 @@ import { OrganizationPopover } from "./organization-popover";
 import HistoryIcon from "@mui/icons-material/History";
 import { useProfileQuery } from "src/services/user";
 import { ChartPie } from "src/icons/chart-pie";
+import { ChartLine as ChartLineIcon } from "src/icons/chart-line";
 import { useRouter } from "next/router";
-
 import { LanguageButton } from "../Language/LanguageButton";
 import { SettingsButton } from "../settings-button";
+import useResponsive from "@/hooks/useResponsive";
 
 interface DashboardSidebarProps {
     onClose?: () => void;
@@ -56,6 +57,13 @@ const getSections = (t: TFunction): Section[] => [
                 path: "/",
                 icon: <ChartPie fontSize="small" />,
             },
+
+            {
+                title: "Statistics",
+                path: "/statistics",
+                icon: <ChartLineIcon fontSize="small" />,
+            },
+
             {
                 title: t("Properties"),
                 path: "/property",
@@ -150,6 +158,8 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
         setOpenOrganizationsPopover(false);
     };
 
+    const belowMd = useResponsive("down", "md");
+
     const content = (
         <>
             <Scrollbar
@@ -186,6 +196,12 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
                                 {...section}
                             />
                         ))}
+                        {belowMd ? (
+                            <Stack direction="row" justifyContent="center">
+                                <LanguageButton />
+                                <SettingsButton />
+                            </Stack>
+                        ) : null}
                     </Box>
                 </Box>
             </Scrollbar>
@@ -227,8 +243,6 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
             PaperProps={{
                 sx: {
                     paddingTop: !open ? "100px" : 0,
-
-                    color: "#FFFFFF",
                     width: 200,
                 },
             }}
@@ -236,17 +250,11 @@ export const DashboardSidebar: FC<DashboardSidebarProps> = (props) => {
             variant="temporary"
         >
             {open && (
-                <Box p={2}>
+                <Stack p={2} alignItems="center">
                     <Link href="/">
-                        <Typography color="neutral.900" variant={"h5"}>
-                            PropertyPro
-                        </Typography>
+                        <Typography variant="h5">PropertyPro</Typography>
                     </Link>
-                    <Stack direction={"row"}>
-                        <LanguageButton />
-                        <SettingsButton />
-                    </Stack>
-                </Box>
+                </Stack>
             )}
             {content}
         </Drawer>

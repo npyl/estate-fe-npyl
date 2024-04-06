@@ -11,6 +11,10 @@ export type IKanbanComment = {
     message: string;
 };
 
+export type IKanbanCommentPOST = Omit<IKanbanComment, "id"> & {
+    id?: string;
+};
+
 export type IKanbanCard = {
     id: number;
     priority: number;

@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
-import { Label } from "src/components/label";
+import { Label } from "@/components/Label";
 import { DocumentIcon } from "src/components/upload/preview/DocumentIcon";
 import { useLazyDownloadDocumentsQuery } from "src/services/exports";
 import { useGetPropertyByIdQuery } from "src/services/properties";

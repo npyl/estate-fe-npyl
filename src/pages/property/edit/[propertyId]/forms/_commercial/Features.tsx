@@ -88,7 +88,15 @@ const Features: React.FC = () => {
         <Panel label={t("Features")}>
             <Grid container spacing={2}>
                 {FEATURES.map(({ label, value }, i) => (
-                    <CheckboxItem key={i} label={label} value={value} />
+                    <CheckboxItem
+                        xs={12}
+                        sm={6}
+                        md={4}
+                        lg={3}
+                        key={i}
+                        label={label}
+                        value={value}
+                    />
                 ))}
             </Grid>
         </Panel>

@@ -141,7 +141,7 @@ const CalculateDistances = ({ map }: Props) => {
             variant="outlined"
             onClick={handleCalculate}
         >
-            {belowMd ? t("Calculate") : `${t("Calculate (within")} 10km`}
+            {belowMd ? t("Calculate") : `${t("Calculate (within")} 10km)`}
         </LoadingButton>
     );
 };

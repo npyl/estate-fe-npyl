@@ -52,60 +52,60 @@ const ConstructionForResidentialSection: React.FC<any> = (props) => {
                         name={"construction.poolSize"}
                     />
                 </Grid>
-                <Grid item xs={3}>
+                <Grid item xs={12} sm={6} md={4}>
                     <RHFCheckbox
                         name={"construction.underConstruction"}
                         label={t("Under Construction")}
                     />
                 </Grid>
-                <Grid item xs={3}>
+                <Grid item xs={12} sm={6} md={4}>
                     <RHFCheckbox
                         name={"construction.renovated"}
                         label={t("Renovated")}
                     />
                 </Grid>
-                <Grid item xs={3}>
+                <Grid item xs={12} sm={6} md={4}>
                     <RHFCheckbox
                         name={"construction.needsRenovation"}
                         label={t("Needs Renovation")}
                     />
                 </Grid>
 
-                <Grid item xs={3}>
+                <Grid item xs={12} sm={6} md={4}>
                     <RHFCheckbox
                         name={"construction.elevator"}
                         label={t("Elevator")}
                     />
                 </Grid>
 
-                <Grid item xs={3}>
+                <Grid item xs={12} sm={6} md={4}>
                     <RHFCheckbox
                         name={"construction.internalStairs"}
                         label={t("Internal Stairs")}
                     />
                 </Grid>
 
-                <Grid item xs={3}>
+                <Grid item xs={12} sm={6} md={4}>
                     <RHFCheckbox
                         name={"construction.newlyBuilt"}
                         label={t("Newly Build")}
                     />
                 </Grid>
 
-                <Grid item xs={3}>
+                <Grid item xs={12} sm={6} md={4}>
                     <RHFCheckbox
                         name={"construction.incomplete"}
                         label={t("Incomplete")}
                     />
                 </Grid>
 
-                <Grid item xs={3}>
+                <Grid item xs={12} sm={6} md={4}>
                     <RHFCheckbox
                         name={"construction.neoclassical"}
                         label={t("Neoclassical")}
                     />
                 </Grid>
-                <Grid item xs={3}>
+                <Grid item xs={12} sm={6} md={4.1}>
                     <RHFCheckbox
                         name={"construction.preserved"}
                         label={t("Preserved")}

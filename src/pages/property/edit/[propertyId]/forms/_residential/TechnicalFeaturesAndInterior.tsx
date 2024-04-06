@@ -88,28 +88,28 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC = () => {
     return (
         <Panel label={t("Technical Features And Interior")}>
             <Grid container spacing={2}>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <Select
                         label={t("Furnished")}
                         name="technicalFeatures.furnished"
                         options={furnished}
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <Select
                         label={t("Frame Type")}
                         name="technicalFeatures.frameType"
                         options={frameType}
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <Select
                         label={t("Pane Glass Type")}
                         name="technicalFeatures.paneGlassType"
                         options={panelGlassType}
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <Select
                         label={t("Floor Type")}
                         name="technicalFeatures.floorType"
@@ -118,7 +118,7 @@ const TechnicalFeaturesAndInteriorForResidentialSection: React.FC = () => {
                 </Grid>
 
                 {FEATURES.map(({ name, label }, i) => (
-                    <Grid key={i} item xs={6}>
+                    <Grid key={i} item xs={12} sm={6}>
                         <RHFCheckbox name={name} label={label} />
                     </Grid>
                 ))}

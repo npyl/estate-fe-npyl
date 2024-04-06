@@ -3,7 +3,7 @@
 import { ChipProps, Grid, Popper, IconButton, Typography } from "@mui/material";
 import { useCallback, useState, MouseEvent } from "react";
 import { ILabel } from "src/types/label";
-import { Label } from "src/components/label";
+import { Label } from "@/components/Label";
 import { Close } from "@mui/icons-material";
 import StyledChip, { StyledPaper } from "./styles";
 import { useTranslation } from "react-i18next";
