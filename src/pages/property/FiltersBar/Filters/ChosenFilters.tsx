@@ -1,4 +1,4 @@
-import { Chip, Grid, Stack, Typography } from "@mui/material";
+import { Chip, Grid, GridProps, Stack, Typography } from "@mui/material";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,7 +6,9 @@ import { useGetLabelsQuery } from "src/services/labels";
 import { useAllUsersQuery } from "src/services/user";
 import { deleteFilter, getChangedFields, selectIds } from "src/slices/filters";
 
-const ChosenFilters = () => {
+interface Props extends GridProps {}
+
+const ChosenFilters = (props: Props) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
@@ -142,7 +144,7 @@ const ChosenFilters = () => {
     );
 
     return (
-        <Grid container direction="row">
+        <Grid container direction="row" gap={0.3} {...props}>
             {ids.map((key, index) => {
                 const values = changedProps[key];
                 let label = filterTags[key].label;
@@ -209,7 +211,6 @@ const ChosenFilters = () => {
                                 dispatch(deleteFilter(`min${suffix}`));
                                 dispatch(deleteFilter(`max${suffix}`));
                             }}
-                            sx={{ m: 0.5 }}
                         />
                     );
                 } else {
@@ -243,7 +244,6 @@ const ChosenFilters = () => {
                                 </Stack>
                             }
                             onDelete={() => dispatch(deleteFilter(key))}
-                            sx={{ m: 0.5 }}
                         />
                     );
                 }
