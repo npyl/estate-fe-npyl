@@ -258,7 +258,6 @@ const resources = {
             //Notes
             NOTE: "NOTE",
             Notes: "Notes",
-            "Write a comment...": "Write a comment...",
             "Upload Images": "Upload Images",
 
             //Location
@@ -550,7 +549,7 @@ const resources = {
             "Customer Labels": "Customer Labels",
             "Document Labels": "Document Labels",
             "Label assignment": "Label assignment",
-            Security: '"Security"',
+            Security: "Security",
             "Select user to transfer properties":
                 "Select user to transfer properties",
             Name: "Name",
@@ -581,6 +580,17 @@ const resources = {
             "Generating...": "Generating...",
 
             Demands: "Demands",
+
+            Logs: "Logs",
+            Overview: "Overview",
+            "Quick View": "Quick View",
+            "Matching Customers": "Matching Customers",
+            Photos: "Photos",
+            Integrations: "Integrations",
+            Documents: "Documents",
+
+            "Property Description": "Property Description",
+            "Write a note...": "Write a note...",
         },
     },
     el: {
@@ -866,7 +876,6 @@ const resources = {
             Amphitheater: "Αμφιθεατρικό",
             NOTE: "Σημείωση",
             Notes: "Σημειώσεις",
-            "Write a comment...": "Γράψτε ένα σχόλιο...",
             "Write a note...": "Γράψτε μια σημείωση...",
             "Upload Images": "Ανέβασμα Εικόνων",
             "Remove all": "Αφαίρεση όλων",
@@ -1189,6 +1198,13 @@ const resources = {
             "Total Rented Properties": "Συνολικά Ενοικιαζόμενα Ακίνητα",
             "Properties Distribution": "Διανομή Ακινήτων",
             "Total Properties per User": "Συνολικά Ακίνητα ανά Χρήστη",
+
+            Overview: "Συνολικά",
+            "Quick View": "Συνοπτικά",
+            "Matching Customers": "Ταιριαστοί πελάτες",
+            Photos: "Εικόνες",
+            Integrations: "Συνδεδεμένα",
+            Documents: "Έγγραφα",
         },
     },
 };
