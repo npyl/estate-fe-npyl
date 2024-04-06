@@ -126,7 +126,6 @@ const PropertiesList = ({
                             />
                         ) : (
                             <PropertyCard
-                                activeMarker={activeMarker || -1}
                                 item={item}
                                 selectedMarker={selectedMarker}
                             />

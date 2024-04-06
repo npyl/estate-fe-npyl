@@ -591,10 +591,22 @@ const resources = {
 
             "Property Description": "Property Description",
             "Write a note...": "Write a note...",
+
+            Customer_geniki: "Customer",
+            Property_geniki: "Property",
+            Profile: "Profile",
+            Settings: "Settings",
+            Logout: "Logout",
         },
     },
     el: {
         translation: {
+            Logout: "Αποσύνδεση",
+            Settings: "Ρυθμίσεις",
+            Profile: "Προφίλ",
+            Customer_geniki: "Πελάτη",
+            Property_geniki: "Ακινήτου",
+
             Add: "Προσθήκη",
             "Available only on View / Edit": "Μόνο στην Εμφάνιση / Επεξεργασία",
             "Pool Size": "Μέγεθος Πισίνας",

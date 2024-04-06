@@ -10,8 +10,10 @@ import {
 } from "src/services/customers";
 import Form from "../../components/Form";
 import { ICustomerPOST } from "src/types/customer";
+import { useTranslation } from "react-i18next";
 
 const useLoadCustomer = () => {
+    const { t } = useTranslation();
     const router = useRouter();
     const { pushTab } = useTabsContext();
 
@@ -26,7 +28,9 @@ const useLoadCustomer = () => {
             .unwrap()
             .then((c) => {
                 const isFirstEdit = c.createdAt === c.updatedAt;
-                const label = `${isFirstEdit ? "Create" : "Edit"} customer ${
+                const label = `${isFirstEdit ? t("Create") : t("Edit")} ${t(
+                    "Customer_geniki"
+                )} ${
                     (c?.firstName &&
                         c?.lastName &&
                         `${c.firstName} ${c.lastName}`) ||
@@ -39,7 +43,7 @@ const useLoadCustomer = () => {
                     label,
                 });
             });
-    }, [customerId]);
+    }, [customerId, t]);
 
     return { customer, customerId };
 };

@@ -3,13 +3,7 @@ import { AuthGuard } from "@/components/authentication/auth-guard";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import ViewAll from "./ViewAll";
 import { Box } from "@mui/material";
-import {
-    Dispatch,
-    SetStateAction,
-    useCallback,
-    useEffect,
-    useState,
-} from "react";
+import { useCallback, useEffect, useState } from "react";
 import MediaCard from "./MediaCard";
 import useDialog from "src/hooks/useDialog";
 import MapView from "./MapView";
