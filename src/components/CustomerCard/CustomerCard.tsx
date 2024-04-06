@@ -1,4 +1,4 @@
-import { ICustomerResultResponse } from "@/types/customer";
+import { ICustomerResultResponse, ICustomer } from "@/types/customer";
 import { Avatar, Card, CardContent, Stack, Grid } from "@mui/material";
 import { TypeLabels } from "../TypeLabels";
 import { useCallback } from "react";
@@ -7,7 +7,7 @@ import { List, ListItem } from "@/components/List";
 import { useTranslation } from "react-i18next";
 
 interface CustomerCardProps {
-    c: ICustomerResultResponse;
+    c: ICustomerResultResponse | ICustomer;
 }
 
 const CustomerCard = ({ c }: CustomerCardProps) => {

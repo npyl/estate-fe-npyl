@@ -6,6 +6,9 @@ import { useSuggestForPropertyQuery } from "src/services/properties";
 import DataGrid from "@/components/DataGrid/Customer";
 import Panel from "@/components/Panel";
 import { GridPaginationModel } from "@mui/x-data-grid";
+import Stack from "@mui/material/Stack";
+import CustomerCard from "@/components/CustomerCard";
+import useResponsive from "@/hooks/useResponsive";
 
 const pageSize = 5;
 
@@ -37,18 +40,28 @@ const MatchingCustomersSection: React.FC = () => {
         []
     );
 
+    const belowMd = useResponsive("down", "md");
+
     return (
         <Panel label={t("Matching Customers")}>
-            <DataGrid
-                rows={customers}
-                resource="customer"
-                sortingBy="firstName"
-                sortingOrder="asc"
-                page={page}
-                pageSize={pageSize}
-                totalRows={totalRows}
-                onPaginationModelChange={handlePaginationChange}
-            />
+            {belowMd ? (
+                <Stack spacing={2}>
+                    {customers.map((c, i) => (
+                        <CustomerCard key={i} c={c} />
+                    ))}
+                </Stack>
+            ) : (
+                <DataGrid
+                    rows={customers}
+                    resource="customer"
+                    sortingBy="firstName"
+                    sortingOrder="asc"
+                    page={page}
+                    pageSize={pageSize}
+                    totalRows={totalRows}
+                    onPaginationModelChange={handlePaginationChange}
+                />
+            )}
         </Panel>
     );
 };

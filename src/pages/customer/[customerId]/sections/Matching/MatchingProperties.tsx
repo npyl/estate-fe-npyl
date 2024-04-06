@@ -11,6 +11,9 @@ import { IProperties } from "src/types/properties";
 import Placeholder from "./Placeholder";
 import DataGrid from "@/components/DataGrid/Property";
 import Panel from "@/components/Panel";
+import useResponsive from "@/hooks/useResponsive";
+import { Stack } from "@mui/material";
+import PropertyCard from "@/components/PropertyCard";
 
 const filterPropertiesInShape = (
     properties: IProperties[],
@@ -90,6 +93,8 @@ const MatchingPropertiesSection = ({ variant = "default" }: Props) => {
         return [...new Set(res)];
     }, [isLoaded, propertiesPage, demands]);
 
+    const belowMd = useResponsive("down", "md");
+
     const handlePaginationChange = useCallback(
         (model: GridPaginationModel) => setPage(model.page),
         []
@@ -106,18 +111,26 @@ const MatchingPropertiesSection = ({ variant = "default" }: Props) => {
                 p: 0,
             }}
         >
-            <DataGrid
-                rows={properties || []}
-                totalRows={totalRows}
-                columnVariant={variant}
-                // ...
-                sortingBy="firstName"
-                sortingOrder="asc"
-                // ...
-                page={page}
-                pageSize={pageSize}
-                onPaginationModelChange={handlePaginationChange}
-            />
+            {belowMd ? (
+                <Stack spacing={1}>
+                    {properties.map((p) => (
+                        <PropertyCard item={p} selectedMarker={null} />
+                    ))}
+                </Stack>
+            ) : (
+                <DataGrid
+                    rows={properties || []}
+                    totalRows={totalRows}
+                    columnVariant={variant}
+                    // ...
+                    sortingBy="firstName"
+                    sortingOrder="asc"
+                    // ...
+                    page={page}
+                    pageSize={pageSize}
+                    onPaginationModelChange={handlePaginationChange}
+                />
+            )}
         </Panel>
     );
 };
