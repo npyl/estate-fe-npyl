@@ -163,26 +163,35 @@ const LabelsPage: NextPage = () => {
     };
 
     return (
-        <Grid container direction={"row"} gap={1} paddingY={1}>
-            {editMode && editedLabel ? (
-                <Edit
-                    editedLabel={editedLabel}
-                    editLabel={editLabel}
-                    cancelEdit={cancelEdit}
-                />
-            ) : (
-                <Create createLabel={createLabel} />
-            )}
+        <>
+            <Grid container spacing={1}>
+                <Grid item xs={12} md={6}>
+                    {editMode && editedLabel ? (
+                        <Edit
+                            editedLabel={editedLabel}
+                            editLabel={editLabel}
+                            cancelEdit={cancelEdit}
+                        />
+                    ) : (
+                        <Create createLabel={createLabel} />
+                    )}
+                </Grid>
 
-            <Preview onEdit={handleEdit} onDelete={handleDelete} />
-            <ConfirmationDialogBox
-                open={DeleteDialogOpen}
-                onClose={cancelDelete}
-                text={"Are you Sure You want to Delete This Label?"}
-                onConfirm={handleDeleteConfirmation}
-                action={"delete"}
-            />
-        </Grid>
+                <Grid item xs={12} md={6}>
+                    <Preview onEdit={handleEdit} onDelete={handleDelete} />
+                </Grid>
+            </Grid>
+
+            {DeleteDialogOpen ? (
+                <ConfirmationDialogBox
+                    open={DeleteDialogOpen}
+                    onClose={cancelDelete}
+                    text={"Are you Sure You want to Delete This Label?"}
+                    onConfirm={handleDeleteConfirmation}
+                    action={"delete"}
+                />
+            ) : null}
+        </>
     );
 };
 

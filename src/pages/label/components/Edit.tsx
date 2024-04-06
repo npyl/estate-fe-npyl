@@ -3,7 +3,6 @@ import {
     Button,
     FormControl,
     FormLabel,
-    Grid,
     Paper,
     Stack,
     TextField,
@@ -46,85 +45,81 @@ export const Edit = ({ editedLabel, cancelEdit, editLabel }: EditProps) => {
     };
 
     return (
-        <>
-            <Grid component={Paper} item xs={12} sm={6} p={3} elevation={3}>
-                <Typography variant="h5" gutterBottom>
-                    {t("Edit Label")}
-                </Typography>
+        <Paper
+            sx={{
+                p: 3,
+            }}
+            elevation={3}
+        >
+            <Typography variant="h5" gutterBottom>
+                {t("Edit Label")}
+            </Typography>
 
-                <FormControl fullWidth sx={{ marginTop: 3 }}>
-                    <TextField
-                        fullWidth
-                        label={t("Label's name")}
-                        variant="outlined"
-                        value={labelName}
-                        placeholder="Label's Name"
-                        error={!!error}
-                        helperText={error}
-                        onFocus={(event) => {
-                            event.target.placeholder = "";
-                            setError("");
-                        }}
-                        onBlur={(event) =>
-                            (event.target.placeholder = "Label's Name")
-                        }
-                        onChange={(event) => setLabelName(event.target.value)}
+            <FormControl fullWidth sx={{ marginTop: 3 }}>
+                <TextField
+                    fullWidth
+                    label={t("Label's name")}
+                    variant="outlined"
+                    value={labelName}
+                    placeholder="Label's Name"
+                    error={!!error}
+                    helperText={error}
+                    onFocus={(event) => {
+                        event.target.placeholder = "";
+                        setError("");
+                    }}
+                    onBlur={(event) =>
+                        (event.target.placeholder = "Label's Name")
+                    }
+                    onChange={(event) => setLabelName(event.target.value)}
+                />
+
+                <Box my={3}>
+                    <SliderPicker
+                        color={pickerColor}
+                        onChangeComplete={handleChangeComplete}
                     />
+                </Box>
 
-                    <Box my={3}>
-                        <SliderPicker
-                            color={pickerColor}
-                            onChangeComplete={handleChangeComplete}
-                        />
-                    </Box>
-
-                    <Box mb={2}>
-                        <FormLabel component="legend">
-                            <Typography
-                                variant="subtitle2"
-                                color="textSecondary"
-                            >
-                                {t("Preview")}
-                            </Typography>
-                        </FormLabel>
-                    </Box>
-                    <Box mb={3}>
-                        <Label
-                            variant="soft"
-                            sx={{
-                                display: "inline-block",
-                                bgcolor: pickerColor,
-                                borderRadius: 7,
-                                color: "white",
-                                padding: "4px 12px",
-                            }}
-                        >
-                            {labelName || t("New Label")}
-                        </Label>
-                    </Box>
-
-                    <Stack
-                        direction={"row"}
-                        spacing={2}
-                        justifyContent="center"
+                <Box mb={2}>
+                    <FormLabel component="legend">
+                        <Typography variant="subtitle2" color="textSecondary">
+                            {t("Preview")}
+                        </Typography>
+                    </FormLabel>
+                </Box>
+                <Box mb={3}>
+                    <Label
+                        variant="soft"
+                        sx={{
+                            display: "inline-block",
+                            bgcolor: pickerColor,
+                            borderRadius: 7,
+                            color: "white",
+                            padding: "4px 12px",
+                        }}
                     >
-                        <Button
-                            variant="outlined"
-                            onClick={cancelEdit}
-                            color="error"
-                        >
-                            {t("Cancel")}
-                        </Button>
-                        <Button
-                            variant="contained"
-                            onClick={handleCreateLabel}
-                            color="primary"
-                        >
-                            {t("Save")}
-                        </Button>
-                    </Stack>
-                </FormControl>
-            </Grid>
-        </>
+                        {labelName || t("New Label")}
+                    </Label>
+                </Box>
+
+                <Stack direction={"row"} spacing={2} justifyContent="center">
+                    <Button
+                        variant="outlined"
+                        onClick={cancelEdit}
+                        color="error"
+                    >
+                        {t("Cancel")}
+                    </Button>
+                    <Button
+                        variant="contained"
+                        onClick={handleCreateLabel}
+                        color="primary"
+                    >
+                        {t("Save")}
+                    </Button>
+                </Stack>
+            </FormControl>
+        </Paper>
     );
 };
