@@ -1,4 +1,4 @@
-import Fab from "@mui/material/Fab";
+import Fab, { FabProps } from "@mui/material/Fab";
 import AddIcon from "@mui/icons-material/Add";
 import Dialog from "@mui/material/Dialog";
 import useDialog from "@/hooks/useDialog";
@@ -19,7 +19,7 @@ interface Props {
     onClose: () => void;
 }
 
-const AddTaskDialog = ({ onClose }: Props) => {
+const AddColumnDialog = ({ onClose }: Props) => {
     const { t } = useTranslation();
 
     const [name, setName] = useState("");
@@ -70,26 +70,18 @@ const AddTaskDialog = ({ onClose }: Props) => {
     );
 };
 
-const KanbanColumnAdd2 = () => {
+const KanbanColumnAdd = (props: FabProps) => {
     const [isOpen, openDialog, closeDialog] = useDialog();
 
     return (
         <>
-            <Fab
-                color="primary"
-                sx={{
-                    position: "absolute",
-                    top: 2,
-                    right: 2,
-                }}
-                onClick={openDialog}
-            >
+            <Fab color="primary" onClick={openDialog} {...props}>
                 <AddIcon />
             </Fab>
 
-            {isOpen ? <AddTaskDialog onClose={closeDialog} /> : null}
+            {isOpen ? <AddColumnDialog onClose={closeDialog} /> : null}
         </>
     );
 };
 
-export default KanbanColumnAdd2;
+export default KanbanColumnAdd;
