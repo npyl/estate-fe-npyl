@@ -12,8 +12,10 @@ import { useTabsContext } from "src/contexts/tabs";
 import { ConfirmationDialogBox } from "src/pages/components/ConfirmationDialogBox";
 import { IPropertiesPOST } from "src/types/properties";
 import { UploadFileProvider } from "src/contexts/uploadFile";
+import { useTranslation } from "react-i18next";
 
 const useLoadProperty = () => {
+    const { t } = useTranslation();
     const router = useRouter();
     const { pushTab } = useTabsContext();
 
@@ -28,9 +30,9 @@ const useLoadProperty = () => {
             .unwrap()
             .then((p) => {
                 const isFirstEdit = p.createdAt === p.updatedAt;
-                const label = `${isFirstEdit ? "Create" : "Edit"} property ${
-                    p.code || ""
-                }`;
+                const label = `${isFirstEdit ? t("Create") : t("Edit")} ${t(
+                    "Property_geniki"
+                )} ${p.code || ""}`;
 
                 pushTab({
                     path: `/property/edit/${propertyId}`,
@@ -38,7 +40,7 @@ const useLoadProperty = () => {
                     label,
                 });
             });
-    }, [propertyId]);
+    }, [propertyId, t]);
 
     return { property, propertyId };
 };

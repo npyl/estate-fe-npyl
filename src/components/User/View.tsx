@@ -1,4 +1,12 @@
-import { Avatar, Box, Divider, Grid, Paper, Typography } from "@mui/material";
+import {
+    Avatar,
+    Box,
+    Divider,
+    Grid,
+    Paper,
+    Stack,
+    Typography,
+} from "@mui/material";
 
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -10,12 +18,13 @@ import { IUser } from "src/types/user";
 import ListLanguageItem from "../List/Items/language";
 import { SoftButton } from "../SoftButton";
 import { UserForm } from "./Form";
+import { SpaceBetween } from "../styled";
 
 interface ViewUserProps {
     user?: IUser;
 }
 
-const RenderUser = ({ user }: { user?: IUser }) => {
+const RenderUser = ({ user }: ViewUserProps) => {
     const firstName = user?.firstName;
     const lastName = user?.lastName;
 
@@ -42,9 +51,7 @@ const RenderUsername = ({ username }: { username?: string }) => {
         >
             <Typography variant="h6">{username}</Typography>
         </Box>
-    ) : (
-        <></>
-    );
+    ) : null;
 };
 const RenderIsAdmin = ({ isAdmin }: { isAdmin?: boolean }) => {
     const { t } = useTranslation();
@@ -52,9 +59,7 @@ const RenderIsAdmin = ({ isAdmin }: { isAdmin?: boolean }) => {
         <Label color="warning" opaque>
             {t("Admin")}
         </Label>
-    ) : (
-        <></>
-    );
+    ) : null;
 };
 
 const ViewUser = ({ user }: ViewUserProps) => {
@@ -70,19 +75,11 @@ const ViewUser = ({ user }: ViewUserProps) => {
     }, []);
 
     return (
-        <Paper
-            elevation={10}
-            sx={{
-                overflow: "auto",
-                padding: 0,
-            }}
-        >
-            <Box
+        <Paper elevation={10}>
+            <SpaceBetween
                 sx={{
                     px: 2,
                     py: 1.5,
-                    display: "flex",
-                    justifyContent: "left",
                 }}
             >
                 <Typography variant="h6" flex={1} mt={1}>
@@ -90,23 +87,16 @@ const ViewUser = ({ user }: ViewUserProps) => {
                 </Typography>
 
                 <SoftButton onClick={handleFormOpen}>{t("Edit")}</SoftButton>
-            </Box>
+            </SpaceBetween>
             <Divider />
-            <Box
-                p={3}
-                display={"flex"}
-                justifyContent={"center"}
-                alignItems={"center"}
-                flexDirection={"column"}
-                height={"100%"}
-            >
+            <Stack p={3} justifyContent="center" alignItems="center">
                 <RenderUser user={user} />
                 <RenderUsername username={user?.username} />
                 <RenderIsAdmin isAdmin={user?.isAdmin} />
-            </Box>
+            </Stack>
             <Divider />
             <Grid container>
-                <Grid item xs={6} padding={0}>
+                <Grid item xs={12} sm={6}>
                     <List>
                         <ListItem
                             label={t("First Name")}
@@ -118,7 +108,7 @@ const ViewUser = ({ user }: ViewUserProps) => {
                         />
                     </List>
                 </Grid>
-                <Grid item xs={6} padding={0}>
+                <Grid item xs={12} sm={6}>
                     <List>
                         <ListItem
                             label={t("Last Name")}
@@ -133,7 +123,7 @@ const ViewUser = ({ user }: ViewUserProps) => {
             </Grid>
             <Divider />
             <Grid container>
-                <Grid item xs={6} padding={0}>
+                <Grid item xs={12} sm={6}>
                     <List>
                         <ListItem
                             label={t("Mobile Phone")}
@@ -149,7 +139,7 @@ const ViewUser = ({ user }: ViewUserProps) => {
                         />
                     </List>
                 </Grid>
-                <Grid item xs={6} padding={0}>
+                <Grid item xs={12} sm={6}>
                     <List>
                         <ListItem
                             label={t("Office Phone")}
@@ -164,7 +154,7 @@ const ViewUser = ({ user }: ViewUserProps) => {
             </Grid>
             <Divider />
             <Grid container>
-                <Grid item xs={6} padding={0}>
+                <Grid item xs={12} sm={6}>
                     <List>
                         <ListItem
                             label={t("Region")}
@@ -177,7 +167,7 @@ const ViewUser = ({ user }: ViewUserProps) => {
                         />
                     </List>
                 </Grid>
-                <Grid item xs={6} padding={0}>
+                <Grid item xs={12} sm={6}>
                     <List>
                         <ListItem
                             label={t("Address")}
@@ -188,13 +178,13 @@ const ViewUser = ({ user }: ViewUserProps) => {
             </Grid>
             <Divider />
             <Grid container>
-                <Grid item xs={6} padding={0}>
+                <Grid item xs={12} sm={6}>
                     <List>
                         <ListItem label={t("ΑΦΜ")} value={user?.afm || ""} />
                         <ListItem label={t("ΔΟΥ")} value={user?.doy || ""} />
                     </List>
                 </Grid>
-                <Grid item xs={6} padding={0}>
+                <Grid item xs={12} sm={6}>
                     <List>
                         <ListItem label={t("ΓΕΜΥ")} value={user?.gemh || ""} />
                     </List>
@@ -202,7 +192,7 @@ const ViewUser = ({ user }: ViewUserProps) => {
             </Grid>
             <Divider />
             <Grid container>
-                <Grid item xs={6} padding={0}>
+                <Grid item xs={12} sm={6}>
                     <List>
                         <ListItem
                             label={t("Joined In")}
@@ -214,7 +204,7 @@ const ViewUser = ({ user }: ViewUserProps) => {
                         />
                     </List>
                 </Grid>
-                <Grid item xs={6} padding={0}>
+                <Grid item xs={12} sm={6}>
                     <List>
                         <ListItem
                             label={t("Registration Date")}

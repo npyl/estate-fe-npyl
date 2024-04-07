@@ -81,11 +81,7 @@ const SingleProperty: NextPage = () => {
                 onDelete={handleDelete}
                 onClone={handleClone}
             >
-                <Tabs
-                    value={value}
-                    onChange={handleChange}
-                    aria-label="View Property Tabs"
-                >
+                <Tabs value={value} onChange={handleChange}>
                     <Tab label={t("Overview")} {...a11yProps(0)} />
                     <Tab label={t("Quick View")} {...a11yProps(1)} />
                     <Tab label={t("Tickets")} {...a11yProps(2)} />

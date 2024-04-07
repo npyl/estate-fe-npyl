@@ -76,8 +76,6 @@ interface PropertyProps {
 const Property = ({ location }: PropertyProps) => {
     const { t } = useTranslation();
 
-    console.log("property!");
-
     const { data: regions } = useGetRegionsQuery();
     const { data: municips } = useGetMunicipalitiesQuery(+location?.region!, {
         skip: !isNumberString(location?.region),

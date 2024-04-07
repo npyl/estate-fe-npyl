@@ -1,6 +1,6 @@
 import { Delete as DeleteIcon, Send as SendIcon } from "@mui/icons-material";
 import CancelIcon from "@mui/icons-material/Cancel";
-import { Button, Grid } from "@mui/material";
+import { Button, Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { Residential, Commercial, Land, Other } from "./forms";
 import { useCallback, useMemo } from "react";
@@ -58,53 +58,45 @@ export default function Form({
 
     return (
         <FormProvider methods={methods} onSubmit={onSubmit}>
-            <Grid container spacing={1} paddingLeft={2} paddingTop={1}>
-                {!!property ? (
-                    <Grid container mt={0} spacing={1}>
-                        {parentCategory === "RESIDENTIAL" && <Residential />}
-                        {parentCategory === "COMMERCIAL" && <Commercial />}
-                        {parentCategory === "LAND" && <Land />}
-                        {parentCategory === "OTHER" && <Other />}
-                    </Grid>
-                ) : null}
-                <Grid
-                    padding={2}
-                    container
-                    alignItems="center"
-                    justifyContent="flex-end"
-                    spacing={1}
-                >
-                    <Grid item>
-                        <PreventButton
-                            variant="outlined"
-                            startIcon={<CancelIcon />}
-                            onClick={onCancel}
-                        >
-                            {t("Cancel")}
-                        </PreventButton>
-                    </Grid>
-                    <Grid item>
-                        <Button
-                            variant="outlined"
-                            startIcon={<DeleteIcon />}
-                            onClick={handleClear}
-                        >
-                            {t("Clear")}
-                        </Button>
-                    </Grid>
+            {!!property ? (
+                <>
+                    {parentCategory === "RESIDENTIAL" && <Residential />}
+                    {parentCategory === "COMMERCIAL" && <Commercial />}
+                    {parentCategory === "LAND" && <Land />}
+                    {parentCategory === "OTHER" && <Other />}
+                </>
+            ) : null}
 
-                    <Grid item>
-                        <LoadingButton
-                            loading={isLoading && !isError}
-                            variant="contained"
-                            startIcon={<SendIcon />}
-                            type="submit"
-                        >
-                            {t("Save")}
-                        </LoadingButton>
-                    </Grid>
-                </Grid>
-            </Grid>
+            <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="flex-end"
+                spacing={1}
+            >
+                <PreventButton
+                    variant="outlined"
+                    startIcon={<CancelIcon />}
+                    onClick={onCancel}
+                >
+                    {t("Cancel")}
+                </PreventButton>
+                <Button
+                    variant="outlined"
+                    startIcon={<DeleteIcon />}
+                    onClick={handleClear}
+                >
+                    {t("Clear")}
+                </Button>
+
+                <LoadingButton
+                    loading={isLoading && !isError}
+                    variant="contained"
+                    startIcon={<SendIcon />}
+                    type="submit"
+                >
+                    {t("Save")}
+                </LoadingButton>
+            </Stack>
         </FormProvider>
     );
 }

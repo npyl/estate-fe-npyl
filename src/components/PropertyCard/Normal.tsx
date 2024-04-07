@@ -19,13 +19,12 @@ import { useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import CarouselSimple from "src/components/CarouselSimple";
 import { IMapMarker } from "src/components/Map/Map";
-import { IPropertyResultResponse } from "src/types/properties";
+import { IProperties, IPropertyResultResponse } from "src/types/properties";
 import { formatNumberWithCommas } from "src/utils/formatNumber";
 // ----------------------------------------------------------------------
 
 type BookingItemProps = {
-    item: IPropertyResultResponse;
-    activeMarker?: number;
+    item: IPropertyResultResponse | IProperties;
     selectedMarker: IMapMarker | null; // add this line
 };
 
@@ -53,11 +52,7 @@ const ForSaleLabel = () => {
 
 const defaultImage = "/static/noImage.png";
 
-const BookingItem = ({
-    item,
-    activeMarker,
-    selectedMarker,
-}: BookingItemProps) => {
+const BookingItem = ({ item, selectedMarker }: BookingItemProps) => {
     const {
         details,
         price,
@@ -67,7 +62,9 @@ const BookingItem = ({
         area,
         parentCategory,
         state,
-    } = item;
+    } = item || {};
+
+    const { t } = useTranslation();
 
     const router = useRouter();
     const itemRef = useRef<HTMLDivElement | null>(null);
@@ -93,12 +90,12 @@ const BookingItem = ({
         () =>
             images.map((url, index) => ({
                 id: index,
-                url: url || defaultImage,
+                url: (typeof url === "string" ? url : url.url) || defaultImage,
                 title: "",
             })) || [],
         [images]
     );
-    const { t } = useTranslation();
+
     return (
         <Paper
             ref={itemRef}

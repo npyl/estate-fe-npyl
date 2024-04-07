@@ -22,8 +22,10 @@ import { useGetPropertyByIdQuery } from "src/services/properties";
 import { useEffect } from "react";
 import Features from "../sections/FeaturesSection";
 import DescriptionSection from "../sections/DescriptionSection";
+import { useTranslation } from "react-i18next";
 
 const MainContainer: React.FC = () => {
+    const { t } = useTranslation();
     const router = useRouter();
     const { propertyId } = router.query;
 
@@ -36,10 +38,10 @@ const MainContainer: React.FC = () => {
             pushTab({
                 path: `/property/${propertyId}`,
                 id: propertyId as string,
-                label: `Property ${data?.code || ""}`,
+                label: `${t("Property")} ${data?.code || ""}`,
             });
         }
-    }, [data, propertyId]);
+    }, [data, propertyId, t]);
 
     return data ? (
         <Grid container spacing={1}>

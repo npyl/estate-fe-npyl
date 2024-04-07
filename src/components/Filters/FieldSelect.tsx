@@ -27,7 +27,7 @@ const FieldSelect = ({
     return (
         <ClearableDialogContent dividers reset={onReset}>
             <Typography>{title}</Typography>
-            <Stack direction={"row"} spacing={1}>
+            <Stack direction="row" gap={1} flexWrap="wrap">
                 {options.map((e) => (
                     <Button
                         variant={

@@ -5,7 +5,6 @@ import {
     Checkbox,
     FormControl,
     FormControlLabel,
-    Grid,
     Paper,
     Radio,
     RadioGroup,
@@ -99,7 +98,12 @@ export const Create = ({ createLabel }: CreateProps) => {
     };
 
     return (
-        <Grid component={Paper} item xs={12} sm={6} p={3} elevation={3}>
+        <Paper
+            sx={{
+                p: 3,
+            }}
+            elevation={3}
+        >
             <Typography variant="h5" gutterBottom>
                 {t("Create Label")}
             </Typography>
@@ -214,6 +218,6 @@ export const Create = ({ createLabel }: CreateProps) => {
                     </>
                 )}
             </FormControl>
-        </Grid>
+        </Paper>
     );
 };

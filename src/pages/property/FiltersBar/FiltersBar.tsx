@@ -22,7 +22,6 @@ import { useCallback, useMemo } from "react";
 
 import useDialog from "@/hooks/useDialog";
 import FilterMore from "./Filters/FilterMore";
-import useResponsive from "@/hooks/useResponsive";
 import { FilterMoreButton } from "@/components/Filters/FilterMore";
 
 type viewOptionsType = {
@@ -93,25 +92,19 @@ const FilterBar = ({
 
     const [isDialogOpen, openDialog, closeDialog] = useDialog();
 
-    const belowXl = useResponsive("down", "xl");
-
     return (
         <>
-            <Paper
-                sx={{
-                    p: 1,
-                }}
-            >
-                <SpaceBetween>
+            <Paper>
+                <SpaceBetween pb={1} pl={1}>
                     <Stack
                         direction="row"
                         spacing={0.3}
-                        sx={{
-                            overflowX: "auto",
-                            overflowY: "hidden",
-                        }}
+                        overflow="auto hidden"
+                        // INFO: paddings added in this container to allow badge to show up without overflow hacks
+                        pt={1}
+                        pb={0}
                     >
-                        {belowXl ? null : <FilterSection />}
+                        {belowLg ? null : <FilterSection />}
 
                         <FilterMoreButton
                             onClick={openDialog}
@@ -119,7 +112,7 @@ const FilterBar = ({
                         />
                     </Stack>
 
-                    <Stack direction="row" spacing={0.3}>
+                    <Stack direction="row" spacing={0.3} p={1} pb={0} pl={0.3}>
                         <FilterSortBy
                             sorting={sorting}
                             onSortingChange={onSortingChange}
@@ -136,7 +129,9 @@ const FilterBar = ({
                     </Stack>
                 </SpaceBetween>
 
-                {changedPropertyFilters > 0 ? <ChosenFilters /> : null}
+                {changedPropertyFilters > 0 ? (
+                    <ChosenFilters px={1} pb={1} />
+                ) : null}
             </Paper>
 
             {isDialogOpen ? (

@@ -54,12 +54,12 @@ const CustomerView: NextPage = () => {
             pushTab({
                 path: `/customer/${customerId}`,
                 id: customerId as string,
-                label: `Customer ${data?.firstName || ""} ${
+                label: `${t("Customer")} ${data?.firstName || ""} ${
                     data?.lastName || ""
                 }`,
             });
         }
-    }, [data, customerId]);
+    }, [data, customerId, t]);
 
     const isSellerOrLessor = data?.seller || data?.lessor;
     const isBuyerOrLeaser = data?.buyer || data?.leaser;

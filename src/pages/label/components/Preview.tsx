@@ -86,31 +86,25 @@ export const Preview = ({ onEdit, onDelete }: PreviewProps) => {
         );
 
     return (
-        <Grid component={Paper} item xs={12} sm p={2}>
-            <Stack
-                direction={"column"}
-                spacing={3}
-                overflow={"auto"}
-                maxHeight={"calc(100vh - 110px)"}
-            >
-                <Typography variant="h5">{t("My labels")}</Typography>
-                {labelData
-                    ? Object.entries(labelData).map(([_, value], index) => (
-                          <Grid
-                              item
-                              key={index}
-                              gap={1}
-                              container
-                              flex={1}
-                              direction={"column"}
-                          >
-                              <Typography variant="h6" color={"text.secondary"}>
-                                  {value.label}
-                              </Typography>
-                              <Stack direction="row" flexWrap="wrap" gap={0.5}>
-                                  {value.data?.map((label: ILabel) => (
+        <Paper
+            sx={{
+                p: 2,
+                display: "flex",
+                flexDirection: "column",
+                gap: 2,
+            }}
+        >
+            <Typography variant="h5">{t("My labels")}</Typography>
+            {labelData
+                ? Object.entries(labelData).map(([_, value], index) => (
+                      <Stack key={index} width={1} spacing={1}>
+                          <Typography variant="h6" color="text.secondary">
+                              {value.label}
+                          </Typography>
+                          <Grid container spacing={0.7}>
+                              {value.data?.map((label, i) => (
+                                  <Grid item key={i} xs={6}>
                                       <HoverableLabel
-                                          key={label.id}
                                           variant="soft"
                                           sx={{
                                               borderRadius: 7,
@@ -130,12 +124,12 @@ export const Preview = ({ onEdit, onDelete }: PreviewProps) => {
                                       >
                                           {label.name}
                                       </HoverableLabel>
-                                  ))}
-                              </Stack>
+                                  </Grid>
+                              ))}
                           </Grid>
-                      ))
-                    : null}
-            </Stack>
-        </Grid>
+                      </Stack>
+                  ))
+                : null}
+        </Paper>
     );
 };
