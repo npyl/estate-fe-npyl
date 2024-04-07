@@ -1,8 +1,12 @@
 import ClearIcon from "@mui/icons-material/Clear";
-import { Button, ButtonProps, IconButton, Typography } from "@mui/material";
-import { Stack } from "@mui/system";
+import {
+    Stack,
+    Button,
+    ButtonProps,
+    IconButton,
+    StackProps,
+} from "@mui/material";
 import { useCallback, useMemo, MouseEvent } from "react";
-import { ScrollBox } from "../ScrollBox";
 import { useTabsContext } from "src/contexts/tabs";
 import useAutosaveRouter from "src/components/Router/Autosave";
 import { styled } from "@mui/material/styles";
@@ -53,6 +57,8 @@ const SubbarItem = styled(Button)<SubbarItemProps>(({ theme, current }) => ({
     flexDirection: "row",
     alignItems: "center",
 
+    minWidth: "70px",
+
     // Text Content
     overflowX: "hidden",
     overflowY: "hidden",
@@ -71,7 +77,7 @@ const getLabel = (belowSm: boolean, label: string) => {
     return res;
 };
 
-const Subbar = () => {
+const SubbarItems = (props: StackProps) => {
     const router = useAutosaveRouter();
     const { appTabs, removeTab, removeTabNoChange } = useTabsContext();
 
@@ -116,29 +122,27 @@ const Subbar = () => {
     const belowSm = useResponsive("down", "sm");
 
     return (
-        <ScrollBox sx={{ overflowX: "auto" }}>
-            <Stack direction={"row"} spacing={1}>
-                {appTabs.map(({ id, label, path }) => (
-                    <SubbarItem
-                        key={id}
-                        current={currentPath === path}
-                        endIcon={
-                            <IconButton onClick={(e) => handleRemove(e, id)}>
-                                <ClearIcon
-                                    sx={{
-                                        fontSize: "15px",
-                                    }}
-                                />
-                            </IconButton>
-                        }
-                        onClick={(e) => handleClick(e, path)}
-                    >
-                        {getLabel(belowSm, label)}
-                    </SubbarItem>
-                ))}
-            </Stack>
-        </ScrollBox>
+        <Stack direction="row" spacing={1} {...props}>
+            {appTabs.map(({ id, label, path }) => (
+                <SubbarItem
+                    key={id}
+                    current={currentPath === path}
+                    endIcon={
+                        <IconButton onClick={(e) => handleRemove(e, id)}>
+                            <ClearIcon
+                                sx={{
+                                    fontSize: "15px",
+                                }}
+                            />
+                        </IconButton>
+                    }
+                    onClick={(e) => handleClick(e, path)}
+                >
+                    {getLabel(belowSm, label)}
+                </SubbarItem>
+            ))}
+        </Stack>
     );
 };
 
-export default Subbar;
+export default SubbarItems;
