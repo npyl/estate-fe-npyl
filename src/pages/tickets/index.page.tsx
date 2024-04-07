@@ -1,5 +1,5 @@
 // @mui
-import { Box, Container, Grid } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import { DropResult } from "react-beautiful-dnd";
 // layouts
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
@@ -26,10 +26,6 @@ import {
 import { DroppableTypeTask } from "./components/column/KanbanColumn";
 import KanbanColumnAdd from "./components/column/KanbanColumnAdd";
 import { useMediaQuery, useTheme } from "@mui/material";
-
-KanbanPage.getLayout = (page: React.ReactElement) => (
-    <DashboardLayout>{page}</DashboardLayout>
-);
 
 // ----------------------------------------------------------------------
 // Λεξιλόγιο που χρησιμοποιείται (Αντιστοιχίες)
@@ -145,22 +141,19 @@ export default function KanbanPage() {
         }
     };
 
-    const columns = useMemo(() => {
-        return isMobile ? 1 : 3;
-    }, [isMobile]);
-
     return (
         <Box position="relative" mt={2}>
             <Container
                 maxWidth="xl"
                 sx={{
                     mt: 10,
+                    mb: 3,
                 }}
             >
                 {board && items ? (
                     <TwoDimentionsDnd
                         items={items}
-                        columns={columns}
+                        columns={COLUMNS}
                         onDragEnd={handleDragEnd}
                     />
                 ) : (
@@ -168,7 +161,19 @@ export default function KanbanPage() {
                 )}
             </Container>
 
-            <KanbanColumnAdd />
+            <KanbanColumnAdd
+                sx={{
+                    position: "absolute",
+                    top: 2,
+                    right: 2,
+                }}
+            />
         </Box>
     );
 }
+
+// ----------------------------------------------------
+
+KanbanPage.getLayout = (page: React.ReactElement) => (
+    <DashboardLayout>{page}</DashboardLayout>
+);
