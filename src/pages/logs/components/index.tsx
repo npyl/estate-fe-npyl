@@ -13,7 +13,7 @@ export const FilterLogSection: React.FC<PaperProps> = ({ ...props }) => {
     const changedCustomerFilters = useSelector(sumOfChangedProperties);
     const isMobile = useResponsive("down", 500);
     return (
-        <Stack spacing={1} component={Paper} p={1} mt={1} {...props}>
+        <Stack spacing={1} component={Paper} p={1} {...props}>
             <Stack
                 flexWrap={"wrap"}
                 direction={isMobile ? "column" : "row"}

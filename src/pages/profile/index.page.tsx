@@ -1,4 +1,4 @@
-import Box from "@mui/material/Box";
+import { Container } from "@mui/material";
 import type { NextPage } from "next";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
@@ -24,7 +24,11 @@ const Profile: NextPage = () => {
         }
     }, [profile, t]);
 
-    return <Box paddingY={4}>{profile && <ViewUser user={profile} />}</Box>;
+    return (
+        <Container maxWidth="md">
+            {profile ? <ViewUser user={profile} /> : null}
+        </Container>
+    );
 };
 
 Profile.getLayout = (page) => (

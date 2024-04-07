@@ -16,6 +16,7 @@ const DashboardLayoutRoot = styled("div")(({ theme }) => ({
     flex: "1 1 auto",
     maxWidth: "100%",
     marginTop: 60,
+    marginBottom: theme.spacing(2),
 
     [theme.breakpoints.up("md")]: {
         marginLeft: 200,

@@ -201,8 +201,8 @@ const Logs: NextPage = () => {
     ));
 
     return (
-        <Box sx={{ paddingY: 4 }}>
-            <Box pb={2}>
+        <>
+            <Box>
                 {isMobile ? (
                     <Box
                         sx={{
@@ -239,7 +239,6 @@ const Logs: NextPage = () => {
                     display="flex" // Establishes a flex container
                     justifyContent="center" // Centers items on the main axis
                     alignItems="center" // Centers items on the cross axis
-                    my={3} // Adds spacing around the Box, change as needed
                 >
                     <Pagination
                         count={data.totalPages}
@@ -264,14 +263,16 @@ const Logs: NextPage = () => {
                     </Box>
                 </Container>
             )}
+
             <SwipeableDrawer
                 content={<FilterLogSection />}
                 open={open}
                 setOpen={setOpen}
             />
-        </Box>
+        </>
     );
 };
+
 Logs.getLayout = (page) => (
     <AuthGuard>
         <DashboardLayout>{page}</DashboardLayout>

@@ -121,7 +121,6 @@ const ViewHeader = (props: IViewHeaderProps) => {
                 borderColor: "divider",
                 paddingLeft: 2,
                 paddingRight: 1,
-                marginTop: 1,
             }}
         >
             <Stack flexDirection="row" alignItems="center">

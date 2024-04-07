@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Container, Grid } from "@mui/material";
 import type { NextPage } from "next";
 import { useEffect, useMemo } from "react";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
@@ -32,13 +32,9 @@ const User: NextPage = () => {
     }, [user]);
 
     return (
-        <Grid container spacing={1} mt={1}>
-            <Grid item xs={3.5} />
-            <Grid item xs={5} order={"row"}>
-                {user && <ViewUser user={user} />}
-            </Grid>
-            <Grid item xs={3.5} />
-        </Grid>
+        <Container maxWidth="md">
+            {user ? <ViewUser user={user} /> : null}
+        </Container>
     );
 };
 

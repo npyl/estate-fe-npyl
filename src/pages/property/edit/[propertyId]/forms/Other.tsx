@@ -23,7 +23,7 @@ import {
     TechnicalFeaturesAndInterior,
 } from "./_other";
 
-import LocationSection from "src/pages/property/edit/[propertyId]/forms/_general/Location/Location";
+import LocationSection from "./_general/Location/Location";
 
 import { useFormContext } from "react-hook-form";
 import Public from "./_general/Public";
@@ -34,7 +34,7 @@ const OtherFormSection: React.FC = () => {
 
     return (
         <>
-            <Grid container paddingTop={1} spacing={1}>
+            <Grid container spacing={1}>
                 <Grid item xs={12} sm={6} order={"row"}>
                     <Stack spacing={1}>
                         <BasicDetails />
