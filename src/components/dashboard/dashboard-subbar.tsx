@@ -7,6 +7,7 @@ import { useTabsContext } from "src/contexts/tabs";
 import useAutosaveRouter from "src/components/Router/Autosave";
 import { styled } from "@mui/material/styles";
 import { getBorderColor2 } from "@/theme/borderColor";
+import useResponsive from "@/hooks/useResponsive";
 
 interface SubbarItemProps extends ButtonProps {
     current: boolean;
@@ -51,7 +52,24 @@ const SubbarItem = styled(Button)<SubbarItemProps>(({ theme, current }) => ({
 
     flexDirection: "row",
     alignItems: "center",
+
+    // Text Content
+    overflowX: "hidden",
+    overflowY: "hidden",
+    textWrap: "nowrap",
 }));
+
+// Truncate
+const getLabel = (belowSm: boolean, label: string) => {
+    let res = label;
+
+    if (belowSm) {
+        const parts = label.split(" ");
+        res = parts[parts.length - 1];
+    }
+
+    return res;
+};
 
 const Subbar = () => {
     const router = useAutosaveRouter();
@@ -71,11 +89,20 @@ const Subbar = () => {
             // get list of tabs if we removed one with specific id
             const tabsAfterRemove = removeTabNoChange(id);
 
-            // get id of last tab or /property page
-            const newUrl =
-                tabsAfterRemove.length > 0
-                    ? tabsAfterRemove[tabsAfterRemove.length - 1].path
-                    : "/property";
+            const currentTabIndex = appTabs.findIndex(
+                ({ id: _id }) => _id === id
+            );
+            const isCurrentLast = appTabs[appTabs.length - 1].id === id;
+            const hasMoreAfterRemove = tabsAfterRemove.length > 0;
+
+            // decide what tab to show after closing
+            const newUrl = hasMoreAfterRemove
+                ? isCurrentLast
+                    ? // open last tab
+                      tabsAfterRemove[tabsAfterRemove.length - 1].path
+                    : // keep tab on same index open
+                      tabsAfterRemove[currentTabIndex].path
+                : "/property"; // open general tab
 
             // actually remove
             removeTab(id);
@@ -85,6 +112,8 @@ const Subbar = () => {
         },
         [appTabs]
     );
+
+    const belowSm = useResponsive("down", "sm");
 
     return (
         <ScrollBox sx={{ overflowX: "auto" }}>
@@ -104,7 +133,7 @@ const Subbar = () => {
                         }
                         onClick={(e) => handleClick(e, path)}
                     >
-                        <Typography variant="body2">{label}</Typography>
+                        {getLabel(belowSm, label)}
                     </SubbarItem>
                 ))}
             </Stack>
