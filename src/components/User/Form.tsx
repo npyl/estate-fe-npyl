@@ -125,7 +125,7 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
 
     return (
         <>
-            <Dialog open={open} onClose={onClose} maxWidth={"lg"}>
+            <Dialog open={open} onClose={onClose} maxWidth="lg">
                 <DialogTitle>
                     {t(user ? "User Update" : "Create User")}
                 </DialogTitle>
@@ -135,11 +135,11 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
                             <Grid
                                 container
                                 flex={1}
-                                direction={"row"}
+                                direction="row"
                                 p={1}
                                 spacing={2}
                             >
-                                <Grid item xs={6}>
+                                <Grid item xs={12} sm={6}>
                                     <Grid
                                         container
                                         direction={"column"}
@@ -187,7 +187,7 @@ export const UserForm = ({ open, onClose }: UserFormProps) => {
                                         />
                                     </Grid>
                                 </Grid>
-                                <Grid item xs={6}>
+                                <Grid item xs={12} sm={6}>
                                     <Grid
                                         container
                                         direction={"column"}
