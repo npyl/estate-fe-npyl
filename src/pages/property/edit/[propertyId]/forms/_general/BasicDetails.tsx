@@ -71,14 +71,14 @@ const BasicSection: React.FC<any> = () => {
             endNode={<RHFSwitch name="exclusive" label={t("Exclusive")} />} // TODO: iOS switch
         >
             <Grid container spacing={2}>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <RHFTextField
                         fullWidth
                         name="code"
                         label={t("Code") + " *"}
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <Select
                         disabled={!parentCategory}
                         label={t("Category")}
@@ -86,7 +86,7 @@ const BasicSection: React.FC<any> = () => {
                         options={categories}
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <RHFTextField
                         fullWidth
                         select
@@ -103,10 +103,10 @@ const BasicSection: React.FC<any> = () => {
                         ))}
                     </RHFTextField>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <Autocomplete />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <RHFOnlyNumbers
                         fullWidth
                         name="area"
@@ -114,14 +114,14 @@ const BasicSection: React.FC<any> = () => {
                         adornment="m²"
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <Select
                         name="state"
                         label={t("State") + " *"}
                         options={stateEnum}
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <RHFOnlyNumbers
                         fullWidth
                         name="price"
@@ -129,7 +129,7 @@ const BasicSection: React.FC<any> = () => {
                         adornment="€"
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <RHFOnlyNumbers
                         fullWidth
                         name="plotArea"
@@ -137,10 +137,10 @@ const BasicSection: React.FC<any> = () => {
                         adornment="m²"
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <LabelCreate variant="property" resourceId={+propertyId!} />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <RHFOnlyNumbers
                         name="averageUtils"
                         label={t("Average Utils")}
@@ -148,7 +148,7 @@ const BasicSection: React.FC<any> = () => {
                     />
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <RHFOnlyNumbers
                         fullWidth
                         name="estimatedRentPrice"
@@ -157,7 +157,7 @@ const BasicSection: React.FC<any> = () => {
                     />
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <RHFTextField
                         fullWidth
                         name="keyCode"
@@ -168,13 +168,13 @@ const BasicSection: React.FC<any> = () => {
 
             <Rent />
             <Grid container spacing={2}>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <RHFCheckbox
                         name="debatablePrice"
                         label={t("Debatable Price")}
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <RHFCheckbox name="auction" label={t("Auction")} />
                 </Grid>
             </Grid>

@@ -164,7 +164,7 @@ const CustomerInformation: React.FC<any> = () => {
         <Panel label="Customer Information">
             <Grid container spacing={2} p={1.5}>
                 {FIELDS.map((f, i) => (
-                    <Grid key={i} item xs={12}>
+                    <Grid key={i} item xs={12} sm={6}>
                         {f}
                     </Grid>
                 ))}
