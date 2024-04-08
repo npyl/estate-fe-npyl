@@ -42,26 +42,24 @@ const DescriptionSection = () => {
                 <Typography variant="h6">{t("Description")}</Typography>
             </Box>
 
-            <Grid container spacing={0}>
-                <Grid item xs={12} order={"row"}>
-                    <Box>
-                        <Box
-                            padding={3}
-                            style={{
-                                display: "flex",
-                                justifyContent: "center",
-                                alignItems: "center",
-                                width: "100%",
-                                borderRadius: 10,
-                            }}
-                        >
-                            <DraftEditor
-                                editorState={editorState}
-                                readOnly
-                                toolbarHidden
-                                sx={{ border: "unset" }}
-                            />
-                        </Box>
+            <Grid container>
+                <Grid item xs={12}>
+                    <Box
+                        padding={3}
+                        style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            width: "100%",
+                            borderRadius: 10,
+                        }}
+                    >
+                        <DraftEditor
+                            editorState={editorState}
+                            readOnly
+                            toolbarHidden
+                            sx={{ border: "unset" }}
+                        />
                     </Box>
                 </Grid>
             </Grid>

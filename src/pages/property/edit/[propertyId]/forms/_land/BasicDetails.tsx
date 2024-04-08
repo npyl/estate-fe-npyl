@@ -90,14 +90,14 @@ const BasicForLandSection: React.FC<any> = () => {
             endNode={<RHFSwitch name="exclusive" label={t("Exclusive")} />} // TODO: iOS switch
         >
             <Grid container spacing={2}>
-                <Grid item xs={12}>
+                <Grid item xs={12} sm={6}>
                     <RHFTextField
                         fullWidth
                         name="code"
                         label={t("Code") + " *"}
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <Select
                         disabled={!parentCategory}
                         label={t("Category")}
@@ -105,10 +105,10 @@ const BasicForLandSection: React.FC<any> = () => {
                         options={categories}
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <Autocomplete />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <RHFTextField
                         fullWidth
                         select
@@ -124,7 +124,7 @@ const BasicForLandSection: React.FC<any> = () => {
                     </RHFTextField>
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <Select
                         name="state"
                         label={t("State") + " *"}
@@ -132,7 +132,7 @@ const BasicForLandSection: React.FC<any> = () => {
                     />
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <RHFOnlyNumbers
                         fullWidth
                         name="area"
@@ -141,7 +141,7 @@ const BasicForLandSection: React.FC<any> = () => {
                     />
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <RHFOnlyNumbers
                         fullWidth
                         name="plotArea"
@@ -150,7 +150,7 @@ const BasicForLandSection: React.FC<any> = () => {
                     />
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <RHFOnlyNumbers
                         fullWidth
                         name="price"
@@ -159,7 +159,7 @@ const BasicForLandSection: React.FC<any> = () => {
                     />
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <RHFTextField
                         fullWidth
                         name="keyCode"
@@ -167,7 +167,7 @@ const BasicForLandSection: React.FC<any> = () => {
                     />
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <RHFOnlyNumbers
                         fullWidth
                         name="estimatedRentPrice"
@@ -176,44 +176,44 @@ const BasicForLandSection: React.FC<any> = () => {
                     />
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <RHFOnlyNumbers
                         label={t("Plot Frontage")}
                         name={"details.plotFrontage"}
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <RHFOnlyNumbers
                         label={t("Building Balance")}
                         name={"details.buildingBalance"}
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <RHFOnlyNumbers
                         label={t("Total Construction")}
                         name={"details.totalConstruction"}
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <RHFOnlyNumbers
                         label={t("Permissible Building Height")}
                         name={"details.permissibleBuildingHeight"}
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <RHFOnlyNumbers
                         label={t("Permissible Floors")}
                         name={"details.permissibleFloors"}
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <RHFOnlyNumbers
                         label={t("Setback Coefficient")}
                         name={"details.setbackCoefficient"}
                     />
                 </Grid>
 
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <LabelCreate variant="property" resourceId={+propertyId!} />
                 </Grid>
 

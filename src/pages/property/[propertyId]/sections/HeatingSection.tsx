@@ -50,7 +50,7 @@ const HeatingSection: React.FC<HeatingSectionProps> = (props) => {
     if (data.parentCategory.key === "Land") return null;
 
     const renderHalfOfFields = (fields: string[], from: number, to: number) => (
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6} md={4}>
             <List>
                 {fields.slice(from, to).map((field, i) => (
                     <HeatingItem field={field} key={i} />
