@@ -1,5 +1,4 @@
-import { Divider, Grid, List, Paper, Rating, Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import { Divider, Grid, List, Paper, Typography } from "@mui/material";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { ListItem, ListManagerItem, ListRatingItem } from "src/components/List";
@@ -71,74 +70,53 @@ const InformationSection: React.FC = () => {
                 />
             </SpaceBetween>
             <Divider />
-            <Grid container spacing={2}>
+            <Grid container>
                 <Grid item xs={12} sm={6}>
-                    <Grid item xs={12}>
+                    <List>
                         <ListItem
                             label={t("First Name")}
                             value={data?.firstName || "-"}
                         />
-                    </Grid>
-                    <Grid item xs={12}>
                         <ListItem
                             label={t("Last Name")}
                             value={data?.lastName || "-"}
                         />
-                    </Grid>
-
-                    <Grid item xs={12}>
                         <ListItem
                             label={t("email")}
                             value={data?.email || "-"}
                         />
-                    </Grid>
-                    <Grid item xs={12}>
                         <ListManagerItem
                             label={t("Managed By").toString()}
                             manager={data.managedBy}
                         />
-                    </Grid>
-                    <Grid item xs={12}>
                         <ListItem
                             label={t("Mobile Phone")}
                             value={data?.mobilePhone || "-"}
                         />
-                    </Grid>
-                    <Grid item xs={12}>
                         <ListItem
                             label={t("Home Phone")}
                             value={data?.homePhone || "-"}
                         />
-                    </Grid>
-
-                    <Grid item xs={12}>
                         <ListItem label={t("Fax")} value={data?.fax || "-"} />
-                    </Grid>
 
-                    <Grid item xs={12}>
                         <ListRatingItem
                             label={t("Status")}
                             status={data?.status}
                         />
-                    </Grid>
+                    </List>
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
-                    <Grid item xs={12}>
+                    <List>
                         <ListItem
                             label={t("Nationality")}
                             value={displayNationality || "-"}
                         />
-                    </Grid>
 
-                    <Grid item xs={12}>
                         <ListItem
                             label={t("ID Number")}
                             value={data?.idNumber || "-"}
                         />
-                    </Grid>
-
-                    <Grid item xs={12}>
                         <ListItem
                             label={t("Date of Birth")}
                             value={
@@ -147,39 +125,25 @@ const InformationSection: React.FC = () => {
                                     : "-"
                             }
                         />
-                    </Grid>
-
-                    <Grid item xs={12}>
                         <ListItem
                             label={t("Passport Number")}
                             value={data?.passportNumber || "-"}
                         />
-                    </Grid>
-
-                    <Grid item xs={12}>
                         <ListItem
                             label={t("Preferred Language")}
                             value={data?.preferredLanguage.value || "-"}
                         />
-                    </Grid>
-
-                    <Grid item xs={12}>
                         <ListItem
                             label={t("Lead Source")}
                             value={displayLeadSource}
                         />
-                    </Grid>
-
-                    <Grid item xs={12}>
                         {displayLeadSource === "Customer" && (
                             <ListItem
                                 label={t("Suggested by")}
                                 value={data?.suggestedBy || "-"}
                             />
                         )}
-                    </Grid>
 
-                    <Grid item xs={12}>
                         <LabelCreate
                             mt={1}
                             ml={3}
@@ -188,7 +152,7 @@ const InformationSection: React.FC = () => {
                             variant="customer"
                             resourceId={customerId ? +customerId : -1}
                         />
-                    </Grid>
+                    </List>
                 </Grid>
             </Grid>
         </Paper>
