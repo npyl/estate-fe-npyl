@@ -597,10 +597,14 @@ const resources = {
             Profile: "Profile",
             Settings: "Settings",
             Logout: "Logout",
+
+            "Welcome back": "Welcome back",
         },
     },
     el: {
         translation: {
+            "Welcome back": "Καλωσήρθατε",
+
             Logout: "Αποσύνδεση",
             Settings: "Ρυθμίσεις",
             Profile: "Προφίλ",
