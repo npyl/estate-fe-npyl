@@ -37,7 +37,7 @@ const ResidentialFormSection: React.FC = () => {
     return (
         <>
             <Grid container spacing={1}>
-                <Grid item xs={12} sm={6} order={"row"}>
+                <Grid item xs={12} md={6}>
                     <Stack spacing={1}>
                         <BasicDetails />
                         {/* <ROISection /> */}
@@ -52,7 +52,7 @@ const ResidentialFormSection: React.FC = () => {
                         <Notes />
                     </Stack>
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} md={6}>
                     <Stack spacing={1}>
                         <Images />
                         <LocationSection />

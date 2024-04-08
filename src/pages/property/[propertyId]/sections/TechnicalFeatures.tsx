@@ -84,7 +84,7 @@ const TechnicalFeatures: React.FC<TechnicalFeaturesProps> = (props) => {
         from: number,
         to: number
     ) => (
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={6} md={4}>
             <List>
                 {fields.slice(from, to).map((field, i) => (
                     <TechnicalFeatureItem field={field} key={i} />

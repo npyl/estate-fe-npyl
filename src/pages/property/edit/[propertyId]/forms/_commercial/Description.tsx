@@ -80,7 +80,7 @@ const Description: React.FC = () => {
         <Panel label={t("Property Description")}>
             <Grid container spacing={2}>
                 {FEILDS.map((f, i) => (
-                    <Grid key={i} item xs={6}>
+                    <Grid key={i} item xs={12} sm={6}>
                         {f}
                     </Grid>
                 ))}

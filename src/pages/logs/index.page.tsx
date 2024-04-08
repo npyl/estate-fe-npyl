@@ -1,9 +1,7 @@
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import {
     Avatar,
-    Badge,
     Box,
-    Button,
     Chip,
     Container,
     Divider,
@@ -18,7 +16,6 @@ import { alpha } from "@mui/material/styles";
 import useTheme from "@mui/system/useTheme";
 import { format } from "date-fns"; // for date formatting
 import { NextPage } from "next";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import { FC, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -30,9 +27,9 @@ import { useFilterLogsMutation } from "src/services/logs";
 import { selectAll } from "src/slices/log";
 import { ILog } from "src/types/logs"; // import your log type
 import { FilterLogSection } from "./components";
-const SwipeableDrawer = dynamic(
-    () => import("../../components/SwipeableDrawer")
-);
+import FilterMore from "@/components/Filters/FilterMore/Dialog";
+import FloatingButton from "@/components/Filters/FilterMore/FloatingButton";
+
 export interface LogCardProps {
     log: ILog;
 }
@@ -202,47 +199,24 @@ const Logs: NextPage = () => {
 
     return (
         <>
-            <Box>
-                {isMobile ? (
-                    <Box
-                        sx={{
-                            borderRadius: "24px",
-                            position: "fixed",
-                            bottom: "2%",
-                            zIndex: 2,
-                            left: 0,
-                            right: 0,
-                            margin: "auto",
-                            width: "90px",
-                        }}
-                    >
-                        <Badge
-                            variant="dot"
-                            badgeContent={checkFields(allFilters) ? 1 : 0}
-                            color="error"
-                        >
-                            <Button
-                                onClick={() => setOpen(true)}
-                                variant={"contained"}
-                            >
-                                {t("Filters")}
-                            </Button>
-                        </Badge>
-                    </Box>
-                ) : (
+            {isMobile ? (
+                <FloatingButton
+                    badgeContent={checkFields(allFilters) ? 1 : 0}
+                    onClick={() => setOpen(true)}
+                />
+            ) : (
+                <Stack spacing={1} component={Paper} p={1}>
                     <FilterLogSection />
-                )}
-            </Box>
+                </Stack>
+            )}
+
             <Stack spacing={2}>{content}</Stack>
-            {data && data.totalPages > 0 ? ( // Only display pagination when data is loaded
-                <Box
-                    display="flex" // Establishes a flex container
-                    justifyContent="center" // Centers items on the main axis
-                    alignItems="center" // Centers items on the cross axis
-                >
+
+            {data && data.totalPages > 0 ? (
+                <Box display="flex" justifyContent="center" alignItems="center">
                     <Pagination
                         count={data.totalPages}
-                        page={page + 1} // Adjust for 1-based numbering of Material-UI Pagination
+                        page={page + 1}
                         onChange={handlePageChange}
                         color="primary"
                         showFirstButton
@@ -264,11 +238,16 @@ const Logs: NextPage = () => {
                 </Container>
             )}
 
-            <SwipeableDrawer
-                content={<FilterLogSection />}
-                open={open}
-                setOpen={setOpen}
-            />
+            {open ? (
+                <FilterMore
+                    open={open}
+                    onClose={() => setOpen(false)}
+                    changedFiltersCount={checkFields(allFilters) ? 1 : 0}
+                    onResetFilter={() => {}}
+                >
+                    <FilterLogSection />
+                </FilterMore>
+            ) : null}
         </>
     );
 };

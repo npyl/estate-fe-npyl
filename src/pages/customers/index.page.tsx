@@ -87,6 +87,7 @@ const Customers: NextPage = () => {
     };
     const closeBulkEdit = () => setBulkEditOpen(false);
     const handleBulkEditSave = () => revalidate();
+    const [open, setOpen] = useState(false);
 
     useLocalStorageScrollRestore();
 
@@ -143,14 +144,12 @@ const Customers: NextPage = () => {
                     />
                 )}
             </Paper>
-
             <BulkEdit
                 open={bulkEditOpen}
                 selectedIds={selectedRows.map((row) => +row)}
                 onSave={handleBulkEditSave}
                 onClose={closeBulkEdit}
             />
-
             <DeleteDialog
                 multiple
                 open={bulkDeleteDialogOpen}

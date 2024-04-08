@@ -32,7 +32,7 @@ const SuitableFor: React.FC<SuitableForProps> = (props) => {
     const suitableFor = data?.suitableFor;
     const renderHalfOfFields = (fields: string[], from: number, to: number) => {
         return (
-            <Grid item xs={6}>
+            <Grid item xs={12} sm={6} md={4}>
                 <List>
                     {fields.slice(from, to).map((field, i) => (
                         <SuitableForItem field={field} key={i} />

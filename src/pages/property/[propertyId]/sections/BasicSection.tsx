@@ -126,17 +126,11 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
     const { data } = props;
     const { t } = useTranslation();
 
-    const [showPopup, setShowPopup] = useState(false);
-
     const manager: IUser = data?.manager;
     const owner: ICustomer = data?.owner;
 
-    const handleOpenPopup = () => {
-        setShowPopup((prevShowPopup) => !prevShowPopup);
-    };
-
     const renderHalfOfFields = (fields: string[], from: number, to: number) => (
-        <Grid item xs={6}>
+        <Grid item xs={12} sm={6} md={4}>
             <List>
                 {fields.slice(from, to).map((field, i) => (
                     <BasicDetailItem field={field} key={i} />
@@ -255,7 +249,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                         <Button
                             sx={{ height: "22px" }}
                             variant="outlined"
-                            onClick={handleOpenPopup}
+                            // onClick={handleOpenPopup}
                         >
                             ROI
                         </Button>
@@ -378,28 +372,6 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                     </Grid>
                 </Paper>
             </Grid>
-            {/* {showPopup && (
-                <Grid item xs={12}>
-                    <Paper elevation={10} sx={{ overflow: "auto" }}>
-                        <Box
-                            sx={{
-                                px: 2.5,
-                                py: 1,
-                                display: "flex",
-                                justifyContent: "left",
-                            }}
-                        >
-                            <Typography variant="h6">ROI</Typography>
-                        </Box>
-                        <Divider></Divider>
-                        <Grid container>
-                            <Grid item xs={12}>
-                                <PopupWindow />
-                            </Grid>
-                        </Grid>
-                    </Paper>
-                </Grid>
-            )} */}
         </Grid>
     );
 };

@@ -1,5 +1,4 @@
-import { Divider, Grid, List, Paper, Rating, Typography } from "@mui/material";
-import { Box } from "@mui/system";
+import { Divider, Grid, List, Paper, Typography } from "@mui/material";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { ListItem, ListManagerItem, ListRatingItem } from "src/components/List";

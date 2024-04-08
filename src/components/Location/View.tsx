@@ -96,7 +96,7 @@ const Property = ({ location }: PropertyProps) => {
     return (
         <>
             <Grid container>
-                <Grid item xs={6} padding={0}>
+                <Grid item xs={12} sm={6}>
                     <List>
                         <ListItem
                             label={t("Street")}
@@ -112,7 +112,7 @@ const Property = ({ location }: PropertyProps) => {
                     </List>
                 </Grid>
 
-                <Grid item xs={6} padding={0}>
+                <Grid item xs={12} sm={6}>
                     <List>
                         <ListItem
                             label={t("Zip Code")}

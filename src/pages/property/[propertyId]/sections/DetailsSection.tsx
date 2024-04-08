@@ -71,7 +71,7 @@ const DetailsSection: React.FC<DetailsSectionProps> = (props) => {
         from: number,
         to: number
     ) => (
-        <Grid item xs={4}>
+        <Grid item xs={12} sm={6} md={4}>
             <List>
                 {fields.slice(from, to).map((field, index) => (
                     <PropertyDescriptionItem field={field} key={index} />

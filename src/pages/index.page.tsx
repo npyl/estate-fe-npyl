@@ -44,8 +44,7 @@ const Dashboard: NextPage = () => {
             <Grid container spacing={3} mt={1}>
                 <Grid item xs={12} md={7}>
                     <AppWelcome
-                        title={`Welcome back! \n ${name}`}
-                        description="If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything."
+                        title={`${t("Welcome back")} \n ${name}!`}
                         img={
                             <SeoIllustration
                                 sx={{
@@ -83,7 +82,7 @@ const Dashboard: NextPage = () => {
                 <Grid item xs={12} sm={6} md={3}>
                     <CardWithIcon
                         title={data?.totalRentedProperties.toString() ?? ""}
-                        subtitle={"Total Rented Properties"}
+                        subtitle={t("Total Rented Properties")}
                     />
                 </Grid>
                 <Grid item container spacing={3} xs={12}>
