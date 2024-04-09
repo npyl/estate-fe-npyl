@@ -13,7 +13,7 @@ const resources = {
             Thumbnail: "Thumbnail",
             "Reference ID": "Reference ID",
             "Rows per page": "Rows per page",
-            "Search with a keyword": "Search with a keyword",
+            Search: "Search",
             Categories: "Categories",
 
             Clear: "Clear",
@@ -645,7 +645,7 @@ const resources = {
             Thumbnail: "Μικρογραφία",
             "Reference ID": "ID",
             "Rows per page": "Γραμμές ανά σελίδα",
-            "Search with a keyword": "Αναζήτηση με λέξη-κλειδί",
+            Search: "Αναζήτηση",
             Categories: "Κατηγορίες",
 
             Clear: "Καθαρισμός",

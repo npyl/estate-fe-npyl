@@ -60,11 +60,15 @@ const MENU_ITEMS = [
     },
 ];
 
+// --------------------------------------------------------
+
 const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
     border: "1px solid",
     borderColor: getBorderColor(theme),
     boxShadow: theme.shadows[18],
 }));
+
+// --------------------------------------------------------
 
 interface FabMenuProps {
     onClick: (path: string) => void;
@@ -90,6 +94,7 @@ const FabMenu = ({ onClick }: FabMenuProps) => {
                     position: "fixed",
                     bottom: 30,
                     right: 30,
+                    boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.45)",
                 }}
                 onClick={openPopover}
             >

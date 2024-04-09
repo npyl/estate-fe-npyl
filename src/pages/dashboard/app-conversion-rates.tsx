@@ -58,7 +58,13 @@ export default function AppConversionRates({
 
     return (
         <Card sx={{ minHeight: 468 }} {...other}>
-            <CardHeader title={title} subheader={subheader} />
+            <CardHeader
+                title={title}
+                subheader={subheader}
+                sx={{
+                    textAlign: "center",
+                }}
+            />
             <Box sx={{ mx: 3 }}>
                 {/* Render the dynamic Chart component */}
                 <DynamicChart

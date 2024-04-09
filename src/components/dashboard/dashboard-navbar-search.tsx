@@ -55,7 +55,7 @@ export const DashboardNavbarSearch: FC = () => {
             <SearchInput
                 value={searchText}
                 onChange={handleInputChange}
-                placeholder={t("Search with a keyword") || ""}
+                placeholder={t("Search") || ""}
                 sx={{
                     input: {
                         paddingLeft: "30px", // adjust this as needed
