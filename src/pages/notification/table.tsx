@@ -14,6 +14,7 @@ import { useMemo } from "react";
 import ListingRow from "./row/listing";
 import TourRow from "./row/tour";
 import WorkApplicationRow from "./row/workApplication";
+import { useMediaQuery } from "@mui/material";
 
 interface TableProps {
     variant: NotificationType;
@@ -33,6 +34,9 @@ const Table = ({ variant, rows, onRemove, loading }: TableProps) => {
         ],
         [t]
     );
+
+    const isMobile = useMediaQuery("(max-width:600px)");
+
     return (
         <TableContainer
             component={Paper}
@@ -42,7 +46,12 @@ const Table = ({ variant, rows, onRemove, loading }: TableProps) => {
         >
             <MuiTable
                 aria-label="collapsible table"
-                sx={{ tableLayout: "fixed" }}
+                sx={{
+                    "& th, & td": {
+                        fontSize: isMobile ? "0.8rem" : "1rem",
+                        padding: isMobile ? "6px 24px" : "16px 48px", // Increase padding for larger column spaces
+                    },
+                }}
             >
                 <TableHead>
                     <TableRow>
