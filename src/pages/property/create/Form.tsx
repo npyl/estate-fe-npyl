@@ -108,11 +108,10 @@ export default function Form({
                         >
                             <img
                                 src={icons[key]}
-                                width={"50%"}
                                 style={{
                                     filter: isDark
                                         ? "brightness(0) saturate(100%) invert(41%) sepia(10%) saturate(1037%) hue-rotate(176deg) brightness(93%) contrast(88%)"
-                                        : "",
+                                        : "brightness(0) saturate(100%) invert(0)",
                                 }}
                             />
                         </Grid>
