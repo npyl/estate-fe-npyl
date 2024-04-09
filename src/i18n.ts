@@ -599,10 +599,16 @@ const resources = {
             Logout: "Logout",
 
             "Welcome back": "Welcome back",
+            "Create a new property": "Create a new property",
+            "Choose a parent category and category for your property":
+                "Choose a parent category and category for your property",
         },
     },
     el: {
         translation: {
+            "Choose a parent category and category for your property":
+                "Επιλέξτε κατηγορία και υποκατηγορία για το ακίνητό σας",
+            "Create a new property": "Δημιουργία νέου ακινήτου",
             "Welcome back": "Καλωσήρθατε",
 
             Logout: "Αποσύνδεση",
@@ -652,7 +658,7 @@ const resources = {
             Commercial: "Επαγγελματική Στέγη",
             Land: "Γη",
             Other: "Άλλο",
-            Category: "Υπόκατηγορία",
+            Category: "Υποκατηγορία",
             Apartment: "Διαμέρισμα",
             Studio: "Στούντιο",
             Maisonette: "Μεζονέτα",

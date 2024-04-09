@@ -1,4 +1,4 @@
-import { Box, Paper, Stack } from "@mui/material";
+import { Box, Paper, Grid } from "@mui/material";
 import {
     GridCallbackDetails,
     GridPaginationModel,
@@ -120,14 +120,16 @@ const Customers: NextPage = () => {
                 }}
             />
 
-            <Paper sx={{ mt: 1, marginRight: bulkEditOpen ? 40 : 0 }}>
-                {belowMd ? (
-                    <Stack spacing={2}>
-                        {rows.map((c, i) => (
-                            <CustomerCard key={i} c={c} />
-                        ))}
-                    </Stack>
-                ) : (
+            {belowMd ? (
+                <Grid container spacing={2}>
+                    {rows.map((c, i) => (
+                        <Grid item key={i} xs={12} sm={6}>
+                            <CustomerCard c={c} />
+                        </Grid>
+                    ))}
+                </Grid>
+            ) : (
+                <Paper sx={{ mt: 1, marginRight: bulkEditOpen ? 40 : 0 }}>
                     <DataGrid
                         skeleton={isLoading}
                         rows={rows}
@@ -142,8 +144,8 @@ const Customers: NextPage = () => {
                         onBulkEdit={openBulkEdit}
                         onBulkDelete={openBulkDeleteDialog}
                     />
-                )}
-            </Paper>
+                </Paper>
+            )}
             <BulkEdit
                 open={bulkEditOpen}
                 selectedIds={selectedRows.map((row) => +row)}

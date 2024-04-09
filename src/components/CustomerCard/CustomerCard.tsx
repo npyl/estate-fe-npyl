@@ -1,109 +1,131 @@
-import { ICustomerResultResponse, ICustomer } from "@/types/customer";
-import { Avatar, Card, CardContent, Stack, Grid } from "@mui/material";
+import Box from "@mui/material/Box";
+import Card, { CardProps } from "@mui/material/Card";
+import Stack from "@mui/material/Stack";
+import Avatar from "@mui/material/Avatar";
+import Divider from "@mui/material/Divider";
+import Typography from "@mui/material/Typography";
+import ListItemText from "@mui/material/ListItemText";
+
+import AvatarShape from "./AvatarShape";
+
+import { ICustomer, ICustomerResultResponse } from "@/types/customer";
+
 import { TypeLabels } from "../TypeLabels";
+
+import { styled } from "@mui/material/styles";
 import { useCallback } from "react";
-import { useRouter } from "next/navigation";
-import { List, ListItem } from "@/components/List";
+import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 
-interface CustomerCardProps {
-    c: ICustomerResultResponse | ICustomer;
-}
+// ----------------------------------------------------------------------
 
-const CustomerCard = ({ c }: CustomerCardProps) => {
+const StyledBackground = styled(Box)(({ theme }) => ({
+    backgroundColor:
+        theme.palette.mode === "light"
+            ? theme.palette.neutral?.[200]
+            : theme.palette.neutral?.[700],
+}));
+
+// ----------------------------------------------------------------------
+
+type Props = CardProps & {
+    c: ICustomer | ICustomerResultResponse;
+};
+
+export default function UserCard({ c, ...props }: Props) {
+    const { id, firstName, lastName, email, mobilePhone } = c || {};
+
     const { t } = useTranslation();
     const router = useRouter();
 
-    const avatarInitials = `${c.firstName?.[0] || ""} ${c.lastName?.[0] || ""}`;
+    const name = `${firstName} ${lastName}`;
+    const initials = `${firstName[0]} ${lastName[0]}`;
 
-    const handleClick = useCallback(() => router.push(`/customer/${c.id}`), []);
+    const onClick = useCallback(() => router.push(`/customer/${id}`), []);
 
     return (
         <Card
             sx={{
-                display: "flex",
-                flexDirection: "row",
-                position: "relative",
+                textAlign: "center",
             }}
-            onClick={handleClick}
+            onClick={onClick}
+            {...props}
         >
-            <Stack direction="row" justifyContent="center" p={2}>
+            <StyledBackground position="relative" height="100px">
+                <AvatarShape
+                    sx={{
+                        left: 0,
+                        right: 0,
+                        zIndex: 1,
+                        mx: "auto",
+                        bottom: -26,
+                        position: "absolute",
+                    }}
+                />
+
                 <Avatar
                     sx={{
-                        height: "80px",
-                        width: "80px",
+                        width: 64,
+                        height: 64,
+                        zIndex: 1,
+                        left: 0,
+                        right: 0,
+                        bottom: -32,
+                        mx: "auto",
+                        position: "absolute",
                     }}
                 >
-                    {avatarInitials}
+                    {initials}
                 </Avatar>
-            </Stack>
 
-            <CardContent
-                sx={{
-                    pb: 7, // INFO: leave pb so that TypeLabels fall a bit off from the List
-                    flex: 1,
-                }}
-            >
-                <Grid container>
-                    <Grid item sm={6} flex={1}>
-                        <List>
-                            <ListItem
-                                label={t("First Name")}
-                                value={c?.firstName || ""}
-                            />
-                            <ListItem
-                                label={t("Email")}
-                                value={c?.email || ""}
-                            />
-                        </List>
-                    </Grid>
+                <TypeLabels
+                    buyer={c.buyer}
+                    leaser={c.leaser}
+                    lessor={c.lessor}
+                    seller={c.seller}
+                    sx={{
+                        position: "absolute",
+                        top: 0,
+                        right: 0,
+                        zIndex: 1,
+                        p: 1,
+                    }}
+                />
+            </StyledBackground>
 
-                    <Grid item sm={6} flex={1}>
-                        <List>
-                            <ListItem
-                                label={t("Last Name")}
-                                value={c?.lastName || ""}
-                            />
-                            <ListItem
-                                label={t("Mobile Phone")}
-                                value={c?.mobilePhone || ""}
-                            />
-                        </List>
-                    </Grid>
-                </Grid>
-
-                {/* <Typography component="div" variant="h5">
-                    {fullname}
-                </Typography>
-                <Typography
-                    variant="subtitle1"
-                    color="text.secondary"
-                    component="div"
-                >
-                    {c.email}
-                </Typography>
-                <Typography
-                    variant="subtitle2"
-                    color="text.secondary"
-                    component="div"
-                >
-                    {c.mobilePhone}
-                </Typography> */}
-            </CardContent>
-
-            <TypeLabels
-                seller={c.seller}
-                lessor={c.lessor}
-                leaser={c.leaser}
-                buyer={c.buyer}
-                p={1}
-                position="absolute"
-                bottom={2}
-                right={2}
-                flexWrap="nowrap"
+            <ListItemText
+                sx={{ mt: 7 }}
+                primary={name}
+                primaryTypographyProps={{ typography: "subtitle1" }}
+                secondaryTypographyProps={{ component: "span", mt: 0.5 }}
             />
+
+            <Typography
+                variant="body2"
+                component="div"
+                sx={{ mb: 1, color: "text.secondary" }}
+            >
+                {email}
+            </Typography>
+
+            <Divider sx={{ borderStyle: "dashed" }} />
+
+            <Box
+                display="grid"
+                gridTemplateColumns="repeat(1, 1fr)"
+                sx={{ py: 3, typography: "subtitle1" }}
+            >
+                <div>
+                    <Typography
+                        variant="caption"
+                        component="div"
+                        sx={{ mb: 0.5, color: "text.secondary" }}
+                    >
+                        {t("Mobile Phone")}
+                    </Typography>
+                    {mobilePhone}
+                </div>
+            </Box>
         </Card>
     );
-};
-
-export default CustomerCard;
+}
