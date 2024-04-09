@@ -13,6 +13,7 @@ import {
     ResponsiveContainer,
     BarChart,
     Bar,
+    Rectangle,
 } from "recharts";
 
 const data = [
@@ -106,10 +107,30 @@ export default function thelwnapethanw() {
                         align="right"
                         layout="horizontal" //se periptwsh pou ta theloun katheta apla vazw vertical
                     />
-                    <Bar barSize={20} dataKey="residential" fill="#A25772" />
-                    <Bar barSize={20} dataKey="commercial" fill="#7C93C3" />
-                    <Bar barSize={20} dataKey="land" fill="#9EB8D9" />
-                    <Bar barSize={20} dataKey="other" fill="#EEF5FF" />
+                    <Bar
+                        barSize={25}
+                        dataKey="residential"
+                        fill="#A25772"
+                        shape={<Rectangle radius={[5, 5, 0, 0]} />}
+                    />
+                    <Bar
+                        barSize={25}
+                        dataKey="commercial"
+                        fill="#7C93C3"
+                        shape={<Rectangle radius={[5, 5, 0, 0]} />}
+                    />
+                    <Bar
+                        barSize={25}
+                        dataKey="land"
+                        fill="#9EB8D9"
+                        shape={<Rectangle radius={[5, 5, 0, 0]} />}
+                    />
+                    <Bar
+                        barSize={25}
+                        dataKey="other"
+                        fill="#EEF5FF"
+                        shape={<Rectangle radius={[5, 5, 0, 0]} />}
+                    />
                 </BarChart>
             </ResponsiveContainer>
         </>

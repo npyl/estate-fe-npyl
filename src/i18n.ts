@@ -4,6 +4,8 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            Monthly: "Monthly",
+
             ID: "ID",
             Properties: "Properties",
             Notifications: "Notifications",
@@ -610,7 +612,7 @@ const resources = {
                 "Επιλέξτε κατηγορία και υποκατηγορία για το ακίνητό σας",
             "Create a new property": "Δημιουργία νέου ακινήτου",
             "Welcome back": "Καλωσήρθατε",
-
+            Monthly: "Μηνιαία",
             Logout: "Αποσύνδεση",
             Settings: "Ρυθμίσεις",
             Profile: "Προφίλ",

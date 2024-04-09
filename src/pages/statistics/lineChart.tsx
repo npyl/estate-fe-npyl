@@ -1,7 +1,12 @@
-import { Box, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { useGlobals } from "@/hooks/useGlobals";
+import { IGlobalProperty } from "@/types/global";
+import { KeyValue } from "@/types/KeyValue";
+import { Box, Menu, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { Stack } from "@mui/system";
+import { t } from "i18next";
 import * as React from "react";
+import { useCallback, useMemo, useState } from "react";
 import {
     LineChart,
     Line,
@@ -59,7 +64,7 @@ const GermanyGDPperCapita = [
     43189, 43320, 43413, 43922, 44293, 44689, 45619.785, 46177.617,
 ];
 
-const data = years.map((year, index) => ({
+const dataset = years.map((year, index) => ({
     year: year.getFullYear(),
     UK: UKGDPperCapita[index],
     Germany: GermanyGDPperCapita[index],
@@ -68,11 +73,45 @@ const data = years.map((year, index) => ({
 const renderLegendText = (value: string) => value;
 
 export default function StackedAreas() {
-    const [age, setAge] = React.useState("");
+    const [category, setCategory] = useState("");
+    const [parentCategory, setParentCategory] = useState("");
+    const [timeframe, setTimeframe] = useState("monthly");
 
-    const handleChange = (event: SelectChangeEvent) => {
-        setAge(event.target.value);
+    // enums
+    const data = useGlobals();
+    const enums: IGlobalProperty = data?.property as IGlobalProperty;
+    const parentCategoryEnum = enums?.parentCategory;
+
+    const subCategoriesMap: {
+        [key: string]: KeyValue[];
+    } = useMemo(
+        () => ({
+            RESIDENTIAL: enums?.residentialCategory || [],
+            COMMERCIAL: enums?.commercialCategory || [],
+            LAND: enums?.landCategory || [],
+            OTHER: enums?.otherCategory || [],
+        }),
+        [enums]
+    );
+
+    const handleParentCategorySelect = (e: SelectChangeEvent<string>) =>
+        setParentCategory(e.target.value);
+
+    const handleCategorySelect = (event: SelectChangeEvent<string>) => {
+        const selectedKey = event.target.value;
+        const selectedItem = subCategoriesMap[parentCategory!]?.find(
+            (item) => item.key === selectedKey
+        );
+
+        if (selectedItem) {
+            setCategory(selectedItem.key);
+        }
     };
+
+    const handleTimeframeSelect = (e: SelectChangeEvent<string>) => {
+        setTimeframe(e.target.value);
+    };
+
     return (
         <>
             <Stack direction="row" spacing={2} p={1}>
@@ -80,36 +119,40 @@ export default function StackedAreas() {
                     Views of Properties
                 </Typography>
                 <Stack direction="row" padding={1} spacing={2}>
-                    <Select
-                        value={age}
-                        onChange={handleChange}
-                        displayEmpty
-                        inputProps={{ "aria-label": "Without label" }}
-                    >
-                        <MenuItem value="">Parent Category</MenuItem>
-                        <MenuItem value={10}>LAND</MenuItem>
-                        <MenuItem value={20}>COMMERCIAL</MenuItem>
-                        <MenuItem value={30}>RESIDENCE</MenuItem>
-                        <MenuItem value={30}>OTHER</MenuItem>
+                    <Select value={timeframe} onChange={handleTimeframeSelect}>
+                        <MenuItem value="monthly">{t("Monthly")}</MenuItem>
+                        <MenuItem value="yearly">Yearly</MenuItem>
+                        <MenuItem value="weekly">Weekly</MenuItem>
                     </Select>
                     <Select
-                        value={age}
-                        onChange={handleChange}
+                        value={parentCategory}
+                        onChange={handleParentCategorySelect}
                         displayEmpty
-                        inputProps={{ "aria-label": "Without label" }}
                     >
-                        <MenuItem value="">Category</MenuItem>
-                        <MenuItem value={10}>variemai</MenuItem>
-                        <MenuItem value={20}>na</MenuItem>
-                        <MenuItem value={30}>ta</MenuItem>
-                        <MenuItem value={30}>valw</MenuItem>
-                        <MenuItem value={40}>twra</MenuItem>
+                        <MenuItem value="">{t("Parent Category")}</MenuItem>
+                        {parentCategoryEnum?.map((item) => (
+                            <MenuItem key={item.key} value={item.key}>
+                                {item.value}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                    <Select
+                        value={category}
+                        onChange={handleCategorySelect}
+                        displayEmpty
+                    >
+                        <MenuItem value="">{t("Category")}</MenuItem>
+                        {subCategoriesMap[parentCategory!]?.map((item) => (
+                            <MenuItem key={item.key} value={item.key}>
+                                {item.value}
+                            </MenuItem>
+                        ))}
                     </Select>
                 </Stack>
             </Stack>
             <ResponsiveContainer width="100%" height={300}>
                 <LineChart
-                    data={data}
+                    data={dataset}
                     margin={{
                         top: 5,
                         right: 30,

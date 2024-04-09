@@ -1,10 +1,17 @@
 import * as React from "react";
-import { BarChart } from "@mui/x-charts/BarChart";
-import { axisClasses } from "@mui/x-charts/ChartsAxis";
+import {
+    BarChart,
+    Bar,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    ResponsiveContainer,
+    Rectangle,
+} from "recharts";
 import { useMemo } from "react";
 import { Typography } from "@mui/material";
-import { Box, padding, Stack } from "@mui/system";
-
+import { Box, Stack } from "@mui/system";
 import { Live as LiveIcon } from "@/icons/live";
 
 const dataset = Array.from({ length: 24 }, (_, i) => ({
@@ -27,23 +34,6 @@ const visibleHours = [
     "21:00",
 ];
 
-const chartSetting = {
-    yAxis: [
-        {
-            label: "Views",
-        },
-    ],
-
-    height: 300,
-    sx: {
-        [`& .${axisClasses.directionY} .${axisClasses.label}`]: {
-            transform: "translateX(-25px)",
-        },
-        padding: 1,
-        paddingTop: 0,
-    },
-};
-
 const today = new Date();
 const currentDate = today.toLocaleDateString("en-US", {
     weekday: "long",
@@ -52,11 +42,6 @@ const currentDate = today.toLocaleDateString("en-US", {
 });
 
 export default function ViewsChart() {
-    const cached = useMemo(
-        () => dataset.filter(({ hour }) => visibleHours.includes(hour)),
-        []
-    );
-
     return (
         <>
             <Stack
@@ -88,22 +73,34 @@ export default function ViewsChart() {
                 </Typography>
             </Stack>
             <Box p={1}>
-                <BarChart
-                    dataset={cached}
-                    xAxis={[
-                        {
-                            scaleType: "band",
-                            dataKey: "hour",
-                        },
-                    ]}
-                    series={[
-                        {
-                            dataKey: "london",
-                            color: "#3366FF",
-                        },
-                    ]}
-                    {...chartSetting}
-                />
+                <ResponsiveContainer width="100%" height={300}>
+                    <BarChart
+                        height={300}
+                        data={dataset}
+                        margin={{
+                            top: 5,
+                            right: 30,
+                            left: 20,
+                            bottom: 5,
+                        }}
+                    >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis
+                            dataKey="hour"
+                            tickFormatter={(tick) =>
+                                visibleHours.includes(tick) ? tick : ""
+                            }
+                        />
+                        <YAxis />
+                        <Tooltip />
+                        <Bar
+                            dataKey="london"
+                            fill="#3366FF"
+                            barSize={55}
+                            shape={<Rectangle radius={[5, 5, 0, 0]} />}
+                        />
+                    </BarChart>
+                </ResponsiveContainer>
             </Box>
         </>
     );
