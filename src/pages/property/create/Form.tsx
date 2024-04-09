@@ -1,15 +1,12 @@
 import {
     Stack,
-    Grid,
     Paper,
     TextField,
-    FormControl,
-    InputLabel,
     MenuItem,
-    Select,
-    Box,
-    SelectChangeEvent,
     Typography,
+    Container,
+    Grid,
+    useTheme,
 } from "@mui/material";
 
 import * as React from "react";
@@ -22,6 +19,14 @@ import { useTranslation } from "react-i18next";
 import { KeyValue } from "src/types/KeyValue";
 import { useCallback, useMemo, useState } from "react";
 import { LoadingButton } from "@mui/lab";
+import { PPButton } from "@/components/styled";
+
+const icons: Record<string, string> = {
+    RESIDENTIAL: "/static/categories/commercial.png",
+    COMMERCIAL: "/static/categories/land.png",
+    LAND: "/static/categories/other.png",
+    OTHER: "/static/categories/residential.png",
+};
 
 interface IFormProps {
     isLoading: boolean;
@@ -42,7 +47,7 @@ export default function Form({
     // enums
     const data = useGlobals();
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
-    const parentCategoryEnum = enums?.parentCategory;
+    const parentCategoryEnum = enums?.parentCategory || [];
 
     const subCategoriesMap: {
         [key: string]: KeyValue[];
@@ -61,9 +66,6 @@ export default function Form({
         [parentCategory, category]
     );
 
-    const handleParentCategorySelect = (e: SelectChangeEvent<string>) =>
-        setParentCategory(e.target.value);
-
     const handleCategorySelect = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
@@ -77,106 +79,73 @@ export default function Form({
         }
     };
 
+    const theme = useTheme();
+    const isDark = useMemo(() => theme.palette.mode === "dark", [theme]);
+
     return (
-        <Box
-            borderRadius={12}
-            sx={{
-                padding: "24px",
-                margin: "10px",
-                marginTop: "1%",
-                backgroundColor: "background.default",
-                spacing: "3",
-            }}
-        >
-            <Stack spacing={2} direction="column">
-                <Grid container justifyContent="center" alignItems="center">
-                    <Grid
-                        item
-                        xs={12}
-                        container
-                        direction="column"
-                        justifyContent="center"
-                        alignItems="center"
-                    >
-                        <Typography variant="h5" gutterBottom>
-                            Create a New Property
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary">
-                            Choose a parent category and category for your
-                            property.
-                        </Typography>
-                    </Grid>
+        <Container maxWidth="md">
+            <Paper component={Stack} p={2}>
+                <Typography variant="h5" gutterBottom>
+                    {t("Create a new property")}
+                </Typography>
+                <Typography variant="body2" color="textSecondary">
+                    {t(
+                        "Choose a parent category and category for your property"
+                    )}
+                </Typography>
 
-                    <Grid
-                        item
-                        xs={8}
-                        marginTop={5}
-                        component={Paper}
-                        elevation={18}
-                        sx={{
-                            padding: "24px",
-                            borderRadius: "8px",
-                            backgroundColor: "background.paper",
-                        }}
-                    >
-                        <Grid container spacing={2}>
-                            <Grid item xs={6}>
-                                <FormControl fullWidth>
-                                    <InputLabel>
-                                        {t("Parent Category")}
-                                    </InputLabel>
-                                    <Select
-                                        value={parentCategory}
-                                        label="Parent Category"
-                                        onChange={handleParentCategorySelect}
-                                    >
-                                        {parentCategoryEnum?.map(
-                                            ({ key, value }, index) => (
-                                                <MenuItem
-                                                    key={index}
-                                                    value={key}
-                                                >
-                                                    {value}
-                                                </MenuItem>
-                                            )
-                                        )}
-                                    </Select>
-                                </FormControl>
-                            </Grid>
-
-                            <Grid item xs={6}>
-                                <TextField
-                                    disabled={!parentCategory}
-                                    fullWidth
-                                    select
-                                    label={t("Category")}
-                                    value={category}
-                                    onChange={handleCategorySelect}
-                                >
-                                    {subCategoriesMap[parentCategory!]?.map(
-                                        ({ key, value }) => (
-                                            <MenuItem key={key} value={key}>
-                                                {value}
-                                            </MenuItem>
-                                        )
-                                    ) || []}
-                                </TextField>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-
-                    <Grid item container justifyContent="center" marginTop={3}>
-                        <LoadingButton
-                            loading={isLoading && !isError}
-                            variant="contained"
-                            startIcon={<SendIcon />}
-                            onClick={handleSave}
+                <Grid container m={1} my={3} gap={1} justifyContent="center">
+                    {parentCategoryEnum.map(({ key }) => (
+                        <Grid
+                            item
+                            component={PPButton}
+                            key={key}
+                            clicked={key === parentCategory}
+                            onClick={() => setParentCategory(key)}
+                            xs={5} // NOTE: 6 doesn't work.
+                            width={1}
+                            height={1}
                         >
-                            {t("Save")}
-                        </LoadingButton>
-                    </Grid>
+                            <img
+                                src={icons[key]}
+                                width={"50%"}
+                                style={{
+                                    filter: isDark
+                                        ? "brightness(0) saturate(100%) invert(41%) sepia(10%) saturate(1037%) hue-rotate(176deg) brightness(93%) contrast(88%)"
+                                        : "",
+                                }}
+                            />
+                        </Grid>
+                    ))}
                 </Grid>
+
+                <TextField
+                    disabled={!parentCategory}
+                    select
+                    label={t("Category")}
+                    value={category}
+                    onChange={handleCategorySelect}
+                >
+                    {subCategoriesMap[parentCategory!]?.map(
+                        ({ key, value }) => (
+                            <MenuItem key={key} value={key}>
+                                {value}
+                            </MenuItem>
+                        )
+                    ) || []}
+                </TextField>
+            </Paper>
+
+            <Stack direction="row" justifyContent="center" marginTop={3}>
+                <LoadingButton
+                    loading={isLoading && !isError}
+                    variant="contained"
+                    startIcon={<SendIcon />}
+                    onClick={handleSave}
+                >
+                    {t("Save")}
+                </LoadingButton>
             </Stack>
-        </Box>
+        </Container>
     );
 }
