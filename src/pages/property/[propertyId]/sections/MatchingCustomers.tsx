@@ -9,6 +9,7 @@ import { GridPaginationModel } from "@mui/x-data-grid";
 import Stack from "@mui/material/Stack";
 import CustomerCard from "@/components/CustomerCard";
 import useResponsive from "@/hooks/useResponsive";
+import { Grid } from "@mui/material";
 
 const pageSize = 5;
 
@@ -45,11 +46,13 @@ const MatchingCustomersSection: React.FC = () => {
     return (
         <Panel label={t("Matching Customers")}>
             {belowMd ? (
-                <Stack spacing={2}>
+                <Grid container spacing={2}>
                     {customers.map((c, i) => (
-                        <CustomerCard key={i} c={c} />
+                        <Grid item key={i} xs={12} sm={6}>
+                            <CustomerCard c={c} />
+                        </Grid>
                     ))}
-                </Stack>
+                </Grid>
             ) : (
                 <DataGrid
                     rows={customers}
