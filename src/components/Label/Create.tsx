@@ -166,11 +166,7 @@ const LabelCreate = ({ variant, resourceId, ...props }: ILabelCreateProps) => {
                     {assignedLabels?.map(({ id, color, name }, index) => (
                         <Label
                             key={index}
-                            variant="soft"
-                            sx={{
-                                bgcolor: color,
-                                color: "white",
-                            }}
+                            color={color}
                             disabled={isLoading}
                             onClose={() => handleRemoveLabel(id)}
                         >

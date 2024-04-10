@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 // @mui
 import { useTheme } from "@mui/material/styles";
-import { Box, IconButton } from "@mui/material";
+import { Box, IconButton, alpha } from "@mui/material";
 //
 import { StyledLabel } from "./styles";
 import { LabelProps } from "./types";
@@ -21,11 +21,10 @@ const Label = forwardRef<HTMLSpanElement, LabelProps>(
     (
         {
             children,
-            color = "default",
-            variant = "soft",
+            color,
             opaque = false,
+            opacity = 1,
             disabled,
-            opacity,
             onClose,
             sx,
             ...other
@@ -37,10 +36,10 @@ const Label = forwardRef<HTMLSpanElement, LabelProps>(
         return (
             <StyledLabel
                 ref={ref}
-                ownerState={{ color, variant, opacity }}
                 sx={{
                     px: 0.75,
                     borderRadius: radius,
+                    ...sx,
                 }}
                 theme={theme}
                 {...other}
@@ -50,6 +49,7 @@ const Label = forwardRef<HTMLSpanElement, LabelProps>(
                         sx={{
                             mr: 0.75,
                             ...sx,
+                            backgroundColor: alpha(color, opacity),
                             borderRadius: radius,
                             ...iconStyle,
                         }}

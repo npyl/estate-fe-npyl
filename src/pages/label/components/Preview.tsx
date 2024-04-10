@@ -103,14 +103,12 @@ export const Preview = ({ onEdit, onDelete }: PreviewProps) => {
                           </Typography>
                           <Grid container spacing={0.7}>
                               {value.data?.map((label, i) => (
-                                  <Grid item key={i} xs={6}>
+                                  <Grid item key={i} xs={12} sm={6}>
                                       <HoverableLabel
-                                          variant="soft"
                                           sx={{
-                                              borderRadius: 7,
-                                              color: "white",
-                                              bgcolor: label.color,
+                                              maxWidth: "100px",
                                           }}
+                                          color={label.color}
                                           onDelete={() =>
                                               label.id &&
                                               onDelete(value.label, label.id)

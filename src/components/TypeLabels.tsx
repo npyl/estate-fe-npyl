@@ -59,12 +59,7 @@ export const TypeLabels = ({
         >
             {Object.entries(map).map(([type, { value, color }]) =>
                 value ? (
-                    <Label
-                        key={type}
-                        variant="soft"
-                        opaque
-                        color={color as LabelColor}
-                    >
+                    <Label key={type} opaque color={color}>
                         {belowSm || forceTruncate
                             ? t(type).slice(0, 3)
                             : t(type)}

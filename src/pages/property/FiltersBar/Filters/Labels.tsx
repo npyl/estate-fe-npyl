@@ -93,16 +93,7 @@ export default function FilterLabels(props: FilterLabelsProps) {
                             <Checkbox
                                 checked={labels.indexOf(option.id!) > -1}
                             />
-                            <Label
-                                variant="soft"
-                                sx={{
-                                    bgcolor: option.color,
-                                    borderRadius: 7,
-                                    color: "white",
-                                }}
-                            >
-                                {option.name}
-                            </Label>
+                            <Label color={option.color}>{option.name}</Label>
                         </MenuItem>
                     );
                 })}

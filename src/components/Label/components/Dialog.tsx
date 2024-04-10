@@ -114,7 +114,7 @@ export const AddLabelDialog = ({
                         return (
                             <Label
                                 key={index}
-                                variant="soft"
+                                color={label.color}
                                 onClick={
                                     isAssigned
                                         ? undefined
@@ -122,9 +122,7 @@ export const AddLabelDialog = ({
                                 }
                                 opacity={isAssigned ? 0.4 : 1} // Pass opacity directly here
                                 sx={{
-                                    bgcolor: label.color,
                                     borderRadius: 7,
-                                    color: "white",
                                     "&:hover": isAssigned
                                         ? undefined
                                         : { cursor: "pointer" },
@@ -189,9 +187,8 @@ export const AddLabelDialog = ({
                                         </Typography>
                                     </FormLabel>
                                     <Label
-                                        variant="soft"
+                                        color={pickerColor}
                                         sx={{
-                                            bgcolor: pickerColor,
                                             borderRadius: 7,
                                             color: "white",
                                         }}

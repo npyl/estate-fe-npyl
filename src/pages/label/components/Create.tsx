@@ -159,15 +159,14 @@ export const Create = ({ createLabel }: CreateProps) => {
                                 {t("Preview")}
                             </Typography>
                             <Label
-                                variant="soft"
-                                sx={{
-                                    bgcolor: pickerColor,
-                                    borderRadius: "7px",
-                                    color: "white",
-                                    display: "block",
-                                    textAlign: "center",
-                                    padding: "4px 8px",
-                                }}
+                                color={pickerColor}
+                                // sx={{
+                                //     borderRadius: "7px",
+                                //     color: "white",
+                                //     display: "block",
+                                //     textAlign: "center",
+                                //     padding: "4px 8px",
+                                // }}
                             >
                                 {labelName || t("New Label")}
                             </Label>

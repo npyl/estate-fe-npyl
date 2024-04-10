@@ -90,12 +90,11 @@ export const Edit = ({ editedLabel, cancelEdit, editLabel }: EditProps) => {
                 </Box>
                 <Box mb={3}>
                     <Label
-                        variant="soft"
+                        color={pickerColor}
                         sx={{
                             display: "inline-block",
-                            bgcolor: pickerColor,
-                            borderRadius: 7,
-                            color: "white",
+                            // borderRadius: 7,
+                            // color: "white",
                             padding: "4px 12px",
                         }}
                     >

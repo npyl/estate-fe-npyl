@@ -90,10 +90,7 @@ const Documents: React.FC = () => {
                                     </Typography>
                                     <Box ml={2}>
                                         {labels.map(({ id, name, color }) => (
-                                            <Label
-                                                key={id}
-                                                sx={{ bgcolor: color }}
-                                            >
+                                            <Label key={id} color={color}>
                                                 {name}
                                             </Label>
                                         ))}

@@ -16,8 +16,8 @@ export type LabelVariant = "filled" | "outlined" | "soft";
 export interface LabelProps extends StackProps {
     opaque?: boolean; // makes the label an opaque colored box (just like it used to be)
     disabled?: boolean;
-    color?: LabelColor;
-    variant?: LabelVariant;
+    color: string;
     opacity?: number;
+    // variant?: LabelVariant;
     onClose?: () => void;
 }
