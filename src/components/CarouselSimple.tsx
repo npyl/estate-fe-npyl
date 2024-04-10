@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, MouseEvent } from "react";
 // @mui
 import { Box } from "@mui/material";
 // components
@@ -64,8 +64,14 @@ export default function CarouselSimple({
         carousel1.current?.slickGoTo(initialIndex, false);
     }, [initialIndex]);
 
-    const handlePrev = () => carousel1.current?.slickPrev();
-    const handleNext = () => carousel1.current?.slickNext();
+    const handlePrev = useCallback((e: MouseEvent) => {
+        e.stopPropagation();
+        carousel1.current?.slickPrev();
+    }, []);
+    const handleNext = useCallback((e: MouseEvent) => {
+        e.stopPropagation();
+        carousel1.current?.slickNext();
+    }, []);
 
     const renderLargeImg = (
         <Box

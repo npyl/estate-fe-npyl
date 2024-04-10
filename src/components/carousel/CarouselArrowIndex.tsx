@@ -7,6 +7,7 @@ import { bgBlur } from "../../utils/cssStyles";
 import { IconifyProps } from "../iconify";
 //
 import { LeftIcon, RightIcon } from "./Icon";
+import { MouseEvent } from "react";
 
 // ----------------------------------------------------------------------
 
@@ -41,8 +42,8 @@ type Props = {
     index: number;
     total: number;
     icon?: IconifyProps; // Right icon
-    onNext?: VoidFunction;
-    onPrevious?: VoidFunction;
+    onNext?: (e: MouseEvent) => void;
+    onPrevious?: (e: MouseEvent) => void;
     sx?: SxProps<Theme>;
 };
 

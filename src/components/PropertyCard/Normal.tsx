@@ -1,7 +1,7 @@
 import { IProperties, IPropertyResultResponse } from "@/types/properties";
 import { IMapMarker } from "../Map/Map";
 import { Divider, Stack, Typography } from "@mui/material";
-import { useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import CarouselSimple from "../CarouselSimple";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
@@ -79,6 +79,8 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
         }
     }, [isActive]);
 
+    const handleClick = useCallback(() => router.push(`property/${id}`), []);
+
     return (
         <StyledBox
             borderRadius="12px"
@@ -87,9 +89,9 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
             }}
             isActive={isActive as boolean}
             ref={ref}
+            onClick={handleClick}
         >
             <CarouselSimple
-                onImageClick={() => router.push(`property/${id}`)}
                 data={
                     convertedImages.length > 0
                         ? convertedImages
