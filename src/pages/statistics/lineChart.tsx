@@ -1,4 +1,5 @@
 import { useGlobals } from "@/hooks/useGlobals";
+import { useGetPublicDashboardParentCategoriesQuery } from "@/services/publicDashboard";
 import { IGlobalProperty } from "@/types/global";
 import { KeyValue } from "@/types/KeyValue";
 import { Box, Menu, MenuItem, Select, SelectChangeEvent } from "@mui/material";
@@ -81,6 +82,14 @@ export default function StackedAreas() {
     const data = useGlobals();
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
     const parentCategoryEnum = enums?.parentCategory;
+    const { data: parentCategoriesGet } =
+        useGetPublicDashboardParentCategoriesQuery({
+            endDate: new Date().toISOString(),
+            startDate: new Date().toISOString(),
+            timeFrame: "MONTH",
+        });
+
+    console.log("data: ", parentCategoriesGet);
 
     const subCategoriesMap: {
         [key: string]: KeyValue[];
