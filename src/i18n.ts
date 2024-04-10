@@ -4,6 +4,8 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            Monthly: "Monthly",
+
             ID: "ID",
             Properties: "Properties",
             Notifications: "Notifications",
@@ -13,7 +15,7 @@ const resources = {
             Thumbnail: "Thumbnail",
             "Reference ID": "Reference ID",
             "Rows per page": "Rows per page",
-            "Search with a keyword": "Search with a keyword",
+            Search: "Search",
             Categories: "Categories",
 
             Clear: "Clear",
@@ -610,7 +612,7 @@ const resources = {
                 "Επιλέξτε κατηγορία και υποκατηγορία για το ακίνητό σας",
             "Create a new property": "Δημιουργία νέου ακινήτου",
             "Welcome back": "Καλωσήρθατε",
-
+            Monthly: "Μηνιαία",
             Logout: "Αποσύνδεση",
             Settings: "Ρυθμίσεις",
             Profile: "Προφίλ",
@@ -645,7 +647,7 @@ const resources = {
             Thumbnail: "Μικρογραφία",
             "Reference ID": "ID",
             "Rows per page": "Γραμμές ανά σελίδα",
-            "Search with a keyword": "Αναζήτηση με λέξη-κλειδί",
+            Search: "Αναζήτηση",
             Categories: "Κατηγορίες",
 
             Clear: "Καθαρισμός",

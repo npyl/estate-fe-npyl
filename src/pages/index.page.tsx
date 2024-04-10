@@ -20,9 +20,12 @@ import TotalProperties from "./dashboard/total-properties";
 const Dashboard: NextPage = () => {
     const { t } = useTranslation();
     const { firstName, lastName } = useProfileQuery().data ?? {};
+
     const name = `${lastName} ${firstName}`;
+
     const allProperties = useAllPropertiesQuery().data || [];
     const { data } = useGetDashboardQuery();
+
     const slideImages = useMemo<{ url: string; code: string }[]>(() => {
         // Sort properties by id in descending order and take the first 10
         const topProperties = [...allProperties]

@@ -17,6 +17,8 @@ module.exports = {
         },
     },
 
+    transpilePackages: ["@mui/x-charts"],
+
     webpack(config) {
         config.module.rules.push({
             test: /\.svg$/,
