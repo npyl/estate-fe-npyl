@@ -33,7 +33,7 @@ const AreaSection: React.FC<AreaSectionProps> = (props) => {
             </Box>
             <Divider></Divider>
             <Grid container>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <List>
                         <ListItem
                             label={t("Ground Floor")}
@@ -70,7 +70,7 @@ const AreaSection: React.FC<AreaSectionProps> = (props) => {
                         />
                     </List>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12} sm={6}>
                     <List>
                         <ListItem
                             label={t("Covered")}

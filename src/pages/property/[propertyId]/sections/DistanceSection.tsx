@@ -51,7 +51,7 @@ const DistanceSection: React.FC<DistanceSectionProps> = (props) => {
 
     const renderHalfOfFields = (fields: string[], from: number, to: number) => {
         return (
-            <Grid item xs={12} sm={6} md={4}>
+            <Grid item xs={12} sm={6}>
                 <List>
                     {fields.slice(from, to).map((field, i) => (
                         <DistancesItem field={field} key={i} />

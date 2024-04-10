@@ -130,7 +130,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
     const owner: ICustomer = data?.owner;
 
     const renderHalfOfFields = (fields: string[], from: number, to: number) => (
-        <Grid item xs={12} sm={6} md={4}>
+        <Grid item xs={12} sm={6}>
             <List>
                 {fields.slice(from, to).map((field, i) => (
                     <BasicDetailItem field={field} key={i} />
@@ -365,11 +365,9 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                         </Typography>
                     </Box>
                     <Divider />
-                    <Grid container>
-                        {renderBasicDetails(
-                            data?.parentCategory.key as ParentCategory
-                        )}
-                    </Grid>
+                    {renderBasicDetails(
+                        data?.parentCategory.key as ParentCategory
+                    )}
                 </Paper>
             </Grid>
         </Grid>
