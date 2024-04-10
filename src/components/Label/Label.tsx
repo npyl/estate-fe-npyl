@@ -57,7 +57,9 @@ const Label = forwardRef<HTMLSpanElement, LabelProps>(
                     />
                 )}
 
-                <Typography variant="body2">{name}</Typography>
+                <Typography variant="body2" noWrap textOverflow="ellipsis">
+                    {name}
+                </Typography>
 
                 {children}
 
