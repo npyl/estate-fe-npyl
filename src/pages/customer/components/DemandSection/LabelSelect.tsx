@@ -56,7 +56,7 @@ export const LabelSelect: React.FC<LabelSelectProps> = ({
                 {labelOptions.map(({ id, color, name }) => (
                     <MenuItem key={id} value={id}>
                         <Checkbox checked={labels.indexOf(id!) > -1} />
-                        <Label color={color}>{name}</Label>
+                        <Label color={color} name={name} />
                     </MenuItem>
                 ))}
             </Select>

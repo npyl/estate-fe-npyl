@@ -105,10 +105,9 @@ export const Preview = ({ onEdit, onDelete }: PreviewProps) => {
                               {value.data?.map((label, i) => (
                                   <Grid item key={i} xs={12} sm={6}>
                                       <HoverableLabel
-                                          sx={{
-                                              maxWidth: "100px",
-                                          }}
+                                          maxWidth="70%"
                                           color={label.color}
+                                          name={label.name}
                                           onDelete={() =>
                                               label.id &&
                                               onDelete(value.label, label.id)
@@ -119,9 +118,7 @@ export const Preview = ({ onEdit, onDelete }: PreviewProps) => {
                                                   resource: value.label,
                                               })
                                           }
-                                      >
-                                          {label.name}
-                                      </HoverableLabel>
+                                      />
                                   </Grid>
                               ))}
                           </Grid>

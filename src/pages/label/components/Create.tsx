@@ -160,16 +160,8 @@ export const Create = ({ createLabel }: CreateProps) => {
                             </Typography>
                             <Label
                                 color={pickerColor}
-                                // sx={{
-                                //     borderRadius: "7px",
-                                //     color: "white",
-                                //     display: "block",
-                                //     textAlign: "center",
-                                //     padding: "4px 8px",
-                                // }}
-                            >
-                                {labelName || t("New Label")}
-                            </Label>
+                                name={labelName || t("New Label")}
+                            />
                         </Box>
 
                         {assigneeType !== "document" && (

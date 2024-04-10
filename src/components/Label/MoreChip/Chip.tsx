@@ -54,7 +54,7 @@ const MoreChip = ({ labels, ...props }: MoreChipProps) => {
                                     overflowX: "hidden",
                                 }}
                             >
-                                <Label color={color}>{name}</Label>
+                                <Label color={color} name={name} />
                             </Grid>
                         ))}
                     </Grid>

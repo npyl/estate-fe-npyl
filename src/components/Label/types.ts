@@ -18,6 +18,7 @@ export interface LabelProps extends StackProps {
     disabled?: boolean;
     color: string;
     opacity?: number;
+    name: string;
     // variant?: LabelVariant;
     onClose?: () => void;
 }

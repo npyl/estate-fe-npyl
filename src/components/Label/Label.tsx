@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 // @mui
 import { useTheme } from "@mui/material/styles";
-import { Box, IconButton, alpha } from "@mui/material";
+import { Box, IconButton, Typography, alpha } from "@mui/material";
 //
 import { StyledLabel } from "./styles";
 import { LabelProps } from "./types";
@@ -21,6 +21,7 @@ const Label = forwardRef<HTMLSpanElement, LabelProps>(
     (
         {
             children,
+            name,
             color,
             opaque = false,
             opacity = 1,
@@ -55,6 +56,8 @@ const Label = forwardRef<HTMLSpanElement, LabelProps>(
                         }}
                     />
                 )}
+
+                <Typography variant="body2">{name}</Typography>
 
                 {children}
 

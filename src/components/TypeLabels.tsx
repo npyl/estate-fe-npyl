@@ -59,11 +59,16 @@ export const TypeLabels = ({
         >
             {Object.entries(map).map(([type, { value, color }]) =>
                 value ? (
-                    <Label key={type} opaque color={color}>
-                        {belowSm || forceTruncate
-                            ? t(type).slice(0, 3)
-                            : t(type)}
-                    </Label>
+                    <Label
+                        key={type}
+                        opaque
+                        color={color}
+                        name={
+                            belowSm || forceTruncate
+                                ? t(type).slice(0, 3)
+                                : t(type)
+                        }
+                    />
                 ) : null
             )}
         </Box>

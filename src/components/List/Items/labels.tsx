@@ -23,9 +23,7 @@ const ListLabelsItem: FC<ListLabelsItemProps> = ({ labels, ...other }) => {
         >
             <Stack spacing={1}>
                 {labels.map(({ color, name }, i) => (
-                    <Label key={i} color={color} sx={{ mr: 1 }}>
-                        {name}
-                    </Label>
+                    <Label key={i} color={color} sx={{ mr: 1 }} name={name} />
                 ))}
             </Stack>
         </ListItem>

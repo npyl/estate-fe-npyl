@@ -127,9 +127,11 @@ const UserPage: FC<Props> = ({ changeTab }) => {
                                 <TableCell>{user.email}</TableCell>
                                 <TableCell>
                                     {user.isAdmin ? (
-                                        <Label opaque color="info">
-                                            {t("Admin")}
-                                        </Label>
+                                        <Label
+                                            opaque
+                                            color="info"
+                                            name={t("Admin")}
+                                        />
                                     ) : (
                                         <FormGroup>
                                             <FormControlLabel

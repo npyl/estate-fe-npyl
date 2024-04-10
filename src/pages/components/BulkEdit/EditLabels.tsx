@@ -49,7 +49,7 @@ export const EditLabels = ({ variant, data, setData }: EditLabelsProps) => {
                     return (
                         <MenuItem key={option.id} value={option.id}>
                             <Checkbox checked={data.indexOf(option.id!) > -1} />
-                            <Label color={option.color}>{option.name}</Label>
+                            <Label color={option.color} name={option.name} />
                         </MenuItem>
                     );
                 })}

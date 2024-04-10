@@ -167,11 +167,10 @@ const LabelCreate = ({ variant, resourceId, ...props }: ILabelCreateProps) => {
                         <Label
                             key={index}
                             color={color}
+                            name={name}
                             disabled={isLoading}
                             onClose={() => handleRemoveLabel(id)}
-                        >
-                            {name}
-                        </Label>
+                        />
                     ))}
                 </Stack>
             </Box>

@@ -93,13 +93,10 @@ export const Edit = ({ editedLabel, cancelEdit, editLabel }: EditProps) => {
                         color={pickerColor}
                         sx={{
                             display: "inline-block",
-                            // borderRadius: 7,
-                            // color: "white",
                             padding: "4px 12px",
                         }}
-                    >
-                        {labelName || t("New Label")}
-                    </Label>
+                        name={labelName || t("New Label")}
+                    />
                 </Box>
 
                 <Stack direction={"row"} spacing={2} justifyContent="center">
