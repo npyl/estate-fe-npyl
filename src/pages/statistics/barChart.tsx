@@ -9,19 +9,16 @@ import {
     ResponsiveContainer,
     Rectangle,
 } from "recharts";
-import { useMemo } from "react";
 import { Typography } from "@mui/material";
 import { Box, Stack } from "@mui/system";
 import { Live as LiveIcon } from "@/icons/live";
+import { useGetDailyViewsQuery } from "@/services/publicDashboard";
+import { useMemo, useState } from "react";
 
 const dataset = Array.from({ length: 24 }, (_, i) => ({
     london: Math.floor(Math.random() * 100000),
     hour: `${i}:00`,
 }));
-
-const totalViews = new Intl.NumberFormat().format(
-    dataset.reduce((acc, { london }) => acc + london, 0)
-);
 
 const visibleHours = [
     "0:00",
@@ -42,6 +39,15 @@ const currentDate = today.toLocaleDateString("en-US", {
 });
 
 export default function ViewsChart() {
+    const [views, setViews] = useState([]);
+    const [totalViews, setTotalViews] = useState(0);
+
+    const { data: totalViewsGet } = useGetDailyViewsQuery(undefined, {
+        pollingInterval: 3000,
+        // TODO: skip if unfocused
+    });
+
+    console.log(totalViewsGet);
     return (
         <>
             <Stack
@@ -76,7 +82,7 @@ export default function ViewsChart() {
                 <ResponsiveContainer width="100%" height={300}>
                     <BarChart
                         height={300}
-                        data={dataset}
+                        data={totalViewsGet}
                         margin={{
                             top: 5,
                             right: 30,
@@ -91,10 +97,10 @@ export default function ViewsChart() {
                                 visibleHours.includes(tick) ? tick : ""
                             }
                         />
-                        <YAxis />
+                        <YAxis dataKey="totalViews" />
                         <Tooltip />
                         <Bar
-                            dataKey="london"
+                            dataKey="views"
                             fill="#3366FF"
                             barSize={55}
                             shape={<Rectangle radius={[5, 5, 0, 0]} />}

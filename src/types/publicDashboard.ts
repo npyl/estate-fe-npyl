@@ -1,8 +1,16 @@
 import { IProperties } from "./properties";
 
-export interface IView {
+export type TTimeFrame =
+    | "ALL_TIME"
+    | "CUSTOM"
+    | "DAY"
+    | "MONTH"
+    | "WEEK"
+    | "YEAR";
+
+export interface IView<T extends string = string> {
     date: string;
-    parentCategories: Record<string, number>;
+    parentCategories: Record<T, number>;
 }
 
 export interface IPublicDashboard {

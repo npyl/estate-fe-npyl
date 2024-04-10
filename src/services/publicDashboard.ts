@@ -4,15 +4,25 @@ import { IPublicDashboard, IView } from "@/types/publicDashboard";
 type TTimeFrame = "ALL_TIME" | "CUSTOM" | "DAY" | "MONTH" | "WEEK" | "YEAR";
 
 interface ParentCategoriesParams {
-    startDate: string;
-    endDate: string;
-    timeFrame: TTimeFrame;
+    startDate?: string;
+    endDate?: string;
+    timeframe: TTimeFrame;
 }
 
 interface PopularPropertiesParams {
     parentCategory: string;
     category: string;
-    timeFrame: TTimeFrame;
+    timeframe: TTimeFrame;
+}
+
+interface PropertyViewsParams {
+    hour: number;
+    views: number;
+}
+
+interface TotalPropertyViewsParams {
+    totalViews: number;
+    views: PropertyViewsParams[];
 }
 
 export const publicDashboard = createApi({
@@ -33,6 +43,10 @@ export const publicDashboard = createApi({
     }),
 
     endpoints: (builder) => ({
+        getDailyViews: builder.query<TotalPropertyViewsParams, void>({
+            query: () => ({ url: "/daily-views" }),
+        }),
+
         getPublicDashboard: builder.query<IPublicDashboard, void>({
             query: () => "",
         }),
@@ -52,7 +66,7 @@ export const publicDashboard = createApi({
         }),
 
         getPublicDashboardPropertyViews: builder.query<
-            IView[],
+            IView<"All" | "parentCategory" | "category">[],
             PopularPropertiesParams
         >({
             query: (params) => ({ url: "/property-views", params }),
@@ -61,6 +75,7 @@ export const publicDashboard = createApi({
 });
 
 export const {
+    useGetDailyViewsQuery,
     useGetPublicDashboardQuery,
     useGetPublicDashboardParentCategoriesQuery,
     useGetPublicDashboardPopularPropertiesQuery,
