@@ -8,15 +8,13 @@ import {
     useGetNeighbourhoodsQuery,
     useGetRegionsQuery,
 } from "src/services/location";
-import { IGeoLocation } from "src/types/geolocation";
 import { ILocation } from "src/types/location";
+import useHumanReadable from "./hook";
+import isNumberString from "./util";
 
 interface ViewLocationProps {
     location: ILocation;
 }
-
-const isNumberString = (input: string | undefined): boolean =>
-    !isNaN(Number(input));
 
 interface CustomerProps {
     street: string;
@@ -46,27 +44,6 @@ const Customer = ({ street, number, city }: CustomerProps) => {
             </Grid>
         </>
     );
-};
-
-const useHumanReadable = (
-    code: string | undefined,
-    data: IGeoLocation[] | undefined
-) => {
-    const { i18n } = useTranslation();
-
-    const greekVersion = useMemo(() => i18n.language === "el", [i18n.language]);
-
-    const result = useMemo(() => {
-        if (!code) return "";
-
-        if (!isNumberString(code)) return code;
-
-        const found = data?.find((r) => r.areaID === +code);
-
-        return (greekVersion ? found?.nameGR : found?.nameEN) || "";
-    }, [code, data, greekVersion]);
-
-    return result;
 };
 
 interface PropertyProps {
