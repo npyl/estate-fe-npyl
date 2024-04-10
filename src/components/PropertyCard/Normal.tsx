@@ -1,90 +1,25 @@
-"use client";
-
-import AspectRatioIcon from "@mui/icons-material/AspectRatio";
-import BathtubOutlinedIcon from "@mui/icons-material/BathtubOutlined";
-import BedOutlinedIcon from "@mui/icons-material/BedOutlined";
-import RoomOutlinedIcon from "@mui/icons-material/RoomOutlined";
-import {
-    Box,
-    Chip,
-    Divider,
-    Grid,
-    Paper,
-    Stack,
-    Typography,
-} from "@mui/material";
-
+import { IProperties, IPropertyResultResponse } from "@/types/properties";
+import { IMapMarker } from "../Map/Map";
+import { Box, Divider, Stack } from "@mui/material";
+import { useMemo } from "react";
+import CarouselSimple from "../CarouselSimple";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import CarouselSimple from "src/components/CarouselSimple";
-import { IMapMarker } from "src/components/Map/Map";
-import { IProperties, IPropertyResultResponse } from "src/types/properties";
-import { formatNumberWithCommas } from "src/utils/formatNumber";
-// ----------------------------------------------------------------------
+import { SpaceBetween } from "../styled";
 
-type BookingItemProps = {
+type PropertyCardProps = {
     item: IPropertyResultResponse | IProperties;
-    selectedMarker: IMapMarker | null; // add this line
-};
-
-const ForSaleLabel = () => {
-    const { t } = useTranslation();
-
-    return (
-        <Box
-            borderRadius={1}
-            sx={{
-                position: "absolute",
-                top: 5,
-                left: 5,
-                backgroundColor: "rgb(235, 0, 0)",
-                color: "white",
-                zIndex: 1,
-                p: 0.5,
-            }}
-            textAlign={"center"}
-        >
-            <Typography fontSize={"14px"}>{t("For Sale")}</Typography>
-        </Box>
-    );
+    selectedMarker: IMapMarker | null;
 };
 
 const defaultImage = "/static/noImage.png";
 
-const BookingItem = ({ item, selectedMarker }: BookingItemProps) => {
-    const {
-        details,
-        price,
-        location,
-        images,
-        id,
-        area,
-        parentCategory,
-        state,
-    } = item || {};
+const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
+    const { id, images, details } = item || {};
+    const { bathrooms, bedrooms } = details || {};
 
     const { t } = useTranslation();
-
     const router = useRouter();
-    const itemRef = useRef<HTMLDivElement | null>(null);
-    const isActive =
-        item.location?.lat !== null &&
-        item.location?.lat !== undefined &&
-        item.location.lng !== null &&
-        item.location.lng !== undefined &&
-        selectedMarker?.lat !== null &&
-        selectedMarker?.lat !== undefined &&
-        selectedMarker?.lng !== null &&
-        selectedMarker?.lng !== undefined &&
-        item.location.lat === selectedMarker?.lat &&
-        item.location.lng === selectedMarker?.lng;
-
-    useEffect(() => {
-        if (isActive && itemRef.current) {
-            itemRef.current.scrollIntoView({ behavior: "smooth" });
-        }
-    }, [isActive]);
 
     const convertedImages = useMemo(
         () =>
@@ -97,126 +32,99 @@ const BookingItem = ({ item, selectedMarker }: BookingItemProps) => {
     );
 
     return (
-        <Paper
-            ref={itemRef}
-            sx={{
-                position: "relative",
-
-                mt: 2,
-                mx: 1.5,
-                pb: 2,
-                border: 0,
-                borderRadius: 1,
-
-                boxShadow: isActive
-                    ? `rgba(0, 0, 0, 0.65) 0px 5px 15px`
-                    : `rgba(0, 0, 0, 0.25) 0px 5px 15px`,
-                fontWeight: isActive ? "bold" : "normal",
-                "&:hover": {
-                    cursor: "pointer",
-                    boxShadow: `rgba(0, 0, 0, 0.65) 0px 5px 15px`,
-                },
-            }}
-        >
-            {state.key === "SALE" && <ForSaleLabel />}
-
-            <Box sx={{ position: "relative" }}>
-                <CarouselSimple
-                    onImageClick={() => router.push(`property/${id}`)}
-                    data={convertedImages}
-                    ratio="4/3"
-                />
-            </Box>
+        <Box borderRadius="12px">
+            <CarouselSimple
+                onImageClick={() => router.push(`property/${id}`)}
+                data={convertedImages}
+                ratio="4/3"
+            />
 
             <Box
+                px={2}
+                pb={2}
                 sx={{
-                    p: 2,
-                    display: "grid",
-                    gap: 0.5,
                     cursor: "pointer",
                 }}
             >
-                <Box
-                    sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        color: "text.secondary",
-                        gap: 1.5,
-                    }}
-                >
-                    <RoomOutlinedIcon sx={{ fontSize: 20 }} />
-                    <Typography variant="body1">
-                        {location?.street ?? ""} {location?.number ?? ""}
-                    </Typography>
-                </Box>
-
-                <Divider sx={{ my: 1, borderColor: "divider" }} />
-                <Grid container spacing={2}>
-                    <Grid item>
-                        <Box
-                            sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: 1,
-                            }}
-                        >
-                            <BedOutlinedIcon />
-                            <Typography variant="body2" color="text.secondary">
-                                {details?.bedrooms || "N/A"} {t("beds")}
-                            </Typography>
-                        </Box>
-                    </Grid>
-                    <Grid item>
-                        <Box
-                            sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: 1,
-                            }}
-                        >
-                            <BathtubOutlinedIcon />
-                            <Typography variant="body2" color="text.secondary">
-                                {details?.bathrooms || "N/A"} {t("baths")}
-                            </Typography>
-                        </Box>
-                    </Grid>
-                    <Grid item>
-                        <Box
-                            sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: 1,
-                            }}
-                        >
-                            <AspectRatioIcon />
-                            <Typography variant="body2" color="text.secondary">
+                <Stack spacing={2}>
+                    <Stack spacing={1}>
+                        {/* ---- */}
+                        <Stack direction="row" spacing={1} alignItems="center">
+                            <span className=" sm:inline-block mb-[3px]">
+                                <i className="las la-bed text-lg"></i>
+                            </span>
+                            <span className="text-xs text-neutral-500 dark:text-neutral-400">
+                                {bedrooms || "N/A"} {t("beds")}
+                            </span>
+                        </Stack>
+                        {/* ---- */}
+                        <div className="flex items-center space-x-1">
+                            <span className=" sm:inline-block mb-[3px]">
+                                <i className="las la-bath text-lg"></i>
+                            </span>
+                            <span className="text-xs text-neutral-500 dark:text-neutral-400">
+                                {bathrooms || "N/A"} {t("baths")}
+                            </span>
+                        </div>
+                        {/* ---- */}
+                        <div className="flex items-center space-x-1">
+                            <span className=" sm:inline-block mb-[3px]">
+                                <i className="las la-expand-arrows-alt text-lg"></i>
+                            </span>
+                            {/* <span className="text-xs text-neutral-500 dark:text-neutral-400">
                                 {area || "N/A"} m²
-                            </Typography>
-                        </Box>
-                    </Grid>
-                </Grid>
-                <Divider sx={{ my: 1, borderColor: "divider" }} />
-
-                {(parentCategory.value || price) && (
-                    <Stack
-                        direction={"row"}
-                        display={"flex"}
-                        justifyContent={"space-between"}
-                    >
-                        {parentCategory.value && (
-                            <Chip label={parentCategory.value} color="info" />
-                        )}
-                        {price && (
-                            <Chip
-                                label={`${formatNumberWithCommas(price)} €`}
-                                color="success"
-                            />
-                        )}
+                            </span> */}
+                        </div>
                     </Stack>
-                )}
+                    {/* <div className="flex items-center text-neutral-500 dark:text-neutral-400 text-sm space-x-1.5">
+                        <span className="">{address}</span>
+                    </div> */}
+                </Stack>
+                {/* <div className="w-14 border-b border-neutral-100 dark:border-neutral-800" /> */}
+                <Divider />
+                <Stack direction="row" spacing={2}>
+                    {/* {state?.value && (
+                        <Badge
+                            name={
+                                <div className="flex items-center">
+                                    <span>{t(state?.value)}</span>
+                                </div>
+                            }
+                            className="border-r-0"
+                            color="indigo"
+                        />
+                    )}
+                    {category?.value && (
+                        <Badge
+                            name={
+                                <div className="flex items-center">
+                                    <span>{t(category?.value)}</span>
+                                </div>
+                            }
+                            color="indigo"
+                        />
+                    )} */}
+                </Stack>
+                <SpaceBetween alignItems="center">
+                    <div className="inline-flex space-x-3 items-center">
+                        {/* <Badge
+                            name={
+                                <div className="flex items-center">
+                                    <span>
+                                        {t("Code")}: {code}
+                                    </span>
+                                </div>
+                            }
+                            color="yellow"
+                        /> */}
+                    </div>
+                    {/* <span className="flex items-center border-gray-500 text-gray-500 justify-center px-2.5 py-1.5 border-2  rounded-lg leading-none text-sm font-medium ">
+                        {`${price ? formatNumberWithCommas(price) : "N/A"} €`}
+                    </span> */}
+                </SpaceBetween>
             </Box>
-        </Paper>
+        </Box>
     );
 };
 
-export default BookingItem;
+export default PropertyCard;
