@@ -3,7 +3,6 @@ import { StackProps } from "@mui/material";
 // ----------------------------------------------------------------------
 
 export type LabelColor =
-    | "default"
     | "primary"
     | "secondary"
     | "info"
@@ -16,7 +15,7 @@ export type LabelVariant = "filled" | "outlined" | "soft";
 export interface LabelProps extends StackProps {
     opaque?: boolean; // makes the label an opaque colored box (just like it used to be)
     disabled?: boolean;
-    color: string;
+    color: string | LabelColor;
     opacity?: number;
     name: string;
     // variant?: LabelVariant;

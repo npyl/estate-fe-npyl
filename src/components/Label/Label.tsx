@@ -17,7 +17,7 @@ const iconStyle = {
 };
 const radius = 10;
 
-const Label = forwardRef<HTMLSpanElement, LabelProps>(
+const Label = forwardRef<HTMLDivElement, LabelProps>(
     (
         {
             children,
@@ -36,6 +36,8 @@ const Label = forwardRef<HTMLSpanElement, LabelProps>(
 
         return (
             <StyledLabel
+                color={color}
+                name={name}
                 ref={ref}
                 sx={{
                     px: 0.75,
