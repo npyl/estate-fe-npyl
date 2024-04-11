@@ -32,20 +32,6 @@ export default function Events() {
 
     const data = [];
 
-    // const theme = useTheme();
-
-    // const settings = useSettingsContext();
-
-    // const smUp = useResponsive("up", "sm");
-
-    // const openFilters = useBoolean();
-
-    // const [filters, setFilters] = useState(defaultFilters);
-
-    // const { events, eventsLoading } = useGetEvents();
-
-    // const dateError = isAfter(filters.startDate, filters.endDate);
-
     const handleClickDatePrev = () => {
         const calendarEl = calendarRef.current;
         if (calendarEl) {
@@ -64,12 +50,6 @@ export default function Events() {
         }
     };
 
-    // const dataFiltered = applyFilter({
-    //     inputData: events,
-    //     filters,
-    //     dateError,
-    // });
-
     return (
         <>
             <Container>
@@ -85,7 +65,6 @@ export default function Events() {
                     <Button
                         variant="contained"
                         startIcon={<Iconify icon="mingcute:add-line" />}
-                        // onClick={onOpenForm}
                     >
                         New Event
                     </Button>
@@ -96,6 +75,18 @@ export default function Events() {
                         <CalendarToolbar
                             onNextDate={handleClickDateNext}
                             onPrevDate={handleClickDatePrev}
+                            date={date}
+                            view={view}
+                            onChangeView={() => {}}
+                            onToday={() => {
+                                const calendarEl = calendarRef.current;
+                                if (calendarEl) {
+                                    const calendarApi = calendarEl.getApi();
+                                    calendarApi.today();
+                                    setDate(calendarApi.getDate());
+                                }
+                            }}
+                            onOpenFilters={() => {}}
                         />
 
                         <FullCalendar
