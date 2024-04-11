@@ -69,8 +69,6 @@ const DemandSection: FC = () => {
 
     const { watch, setValue } = useFormContext();
 
-    const leaser = watch(leaserName);
-    const buyer = watch(buyerName);
     const demands = watch(demandsName) as IDemandPOST[];
 
     const [index, setIndex] = useState(0);
@@ -88,9 +86,6 @@ const DemandSection: FC = () => {
             ),
         [demands]
     );
-
-    // show DemandSection only if leaser or buyer
-    if (!leaser && !buyer) return null;
 
     return (
         <Panel
