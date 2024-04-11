@@ -4,7 +4,7 @@ import { useCallback, useMemo, useState } from "react";
 import Label from "@/components/Label/Label";
 import { ILabelPOST, LabelResourceType } from "src/types/label";
 import { useTranslation } from "react-i18next";
-import { AddLabelDialog } from "./components/Dialog";
+import { AddLabelDialog } from "./Dialog";
 import {
     useAssignLabelToResourceMutation,
     useCreateLabelForResourceMutation,

@@ -46,15 +46,12 @@ const MoreChip = ({ labels, ...props }: MoreChipProps) => {
                     </SpaceBetween>
                     <Grid container mt={1} spacing={1}>
                         {labels.map(({ id, name, color }) => (
-                            <Grid
-                                item
-                                xs={6}
-                                key={id}
-                                sx={{
-                                    overflowX: "hidden",
-                                }}
-                            >
-                                <Label color={color} name={name} />
+                            <Grid item xs={6} key={id}>
+                                <Label
+                                    color={color}
+                                    name={name}
+                                    maxWidth="100%"
+                                />
                             </Grid>
                         ))}
                     </Grid>
