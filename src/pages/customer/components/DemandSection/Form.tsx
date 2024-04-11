@@ -1,8 +1,7 @@
 import { Box, Divider, Grid, Slider, Stack, Typography } from "@mui/material";
-import { FC, useCallback, useMemo } from "react";
+import { FC, Suspense, lazy, useCallback, useMemo } from "react";
 import { useGlobals } from "src/hooks/useGlobals";
 import { useTranslation } from "react-i18next";
-import { AreaOfPreference } from "./AreaOfPreference";
 import { LabelSelect } from "./LabelSelect";
 import PriorityFeatures from "./PriorityFeatures";
 import { KeyValue } from "src/types/KeyValue";
@@ -11,9 +10,13 @@ import { IDemandFiltersPOST, IDemandPOST } from "src/types/demand";
 import { useFormContext } from "react-hook-form";
 import { TranslationType } from "src/types/translation";
 
-import Select from "../../../../components/hook-form/Select";
+import Select from "@/components/hook-form/Select";
 import MultiSelect from "./components/MultiSelect";
 import DemandAutocomplete from "./Autocomplete";
+import MapSkeleton from "./MapSkeleton";
+
+// Dynamic
+const AreaOfPreference = lazy(() => import("./AreaOfPreference"));
 
 interface DemandFormProps {
     index: number;
@@ -397,11 +400,13 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                 </Grid>
             </Stack>
 
-            <AreaOfPreference
-                index={index}
-                onGetDemandName={getDemandName}
-                onGetDemandFilterName={getDemandFilterName}
-            />
+            <Suspense fallback={<MapSkeleton />}>
+                <AreaOfPreference
+                    index={index}
+                    onGetDemandName={getDemandName}
+                    onGetDemandFilterName={getDemandFilterName}
+                />
+            </Suspense>
 
             {parentCategories?.map((e, i) => (
                 <PriorityFeatures

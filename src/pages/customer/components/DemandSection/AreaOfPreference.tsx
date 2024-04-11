@@ -29,7 +29,7 @@ enum ZOOM_LEVELS {
     NEIGHB = 16,
 }
 
-export const AreaOfPreference: FC<ILocationSectionProps> = ({
+const AreaOfPreference: FC<ILocationSectionProps> = ({
     index,
     onGetDemandName,
     onGetDemandFilterName,
@@ -268,3 +268,5 @@ export const AreaOfPreference: FC<ILocationSectionProps> = ({
         </>
     );
 };
+
+export default AreaOfPreference;
