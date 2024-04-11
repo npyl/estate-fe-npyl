@@ -15,14 +15,12 @@ interface PopularPropertiesParams {
     timeframe: TTimeFrame;
 }
 
-interface PropertyViewsParams {
-    hour: number;
-    views: number;
-}
-
-interface TotalPropertyViewsParams {
+interface TotalPropertyViews {
     totalViews: number;
-    views: PropertyViewsParams[];
+    views: {
+        hour: number;
+        views: number;
+    }[];
 }
 
 export const publicDashboard = createApi({
@@ -43,7 +41,7 @@ export const publicDashboard = createApi({
     }),
 
     endpoints: (builder) => ({
-        getDailyViews: builder.query<TotalPropertyViewsParams, void>({
+        getDailyViews: builder.query<TotalPropertyViews, void>({
             query: () => ({ url: "/daily-views" }),
         }),
 

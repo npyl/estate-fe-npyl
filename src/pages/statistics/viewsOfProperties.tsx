@@ -1,17 +1,3 @@
-import { useGlobals } from "@/hooks/useGlobals";
-import {
-    useGetPublicDashboardParentCategoriesQuery,
-    useGetPublicDashboardPropertyViewsQuery,
-} from "@/services/publicDashboard";
-import { IGlobalProperty } from "@/types/global";
-import { KeyValue } from "@/types/KeyValue";
-import { TTimeFrame } from "@/types/publicDashboard";
-import { Box, Menu, MenuItem, Select, SelectChangeEvent } from "@mui/material";
-import Typography from "@mui/material/Typography";
-import { Stack } from "@mui/system";
-import { t } from "i18next";
-import * as React from "react";
-import { useCallback, useMemo, useState } from "react";
 import {
     LineChart,
     Line,
@@ -20,7 +6,18 @@ import {
     Tooltip,
     Legend,
     ResponsiveContainer,
+    CartesianGrid,
 } from "recharts";
+import { useGlobals } from "@/hooks/useGlobals";
+import { useGetPublicDashboardPropertyViewsQuery } from "@/services/publicDashboard";
+import { IGlobalProperty } from "@/types/global";
+import { KeyValue } from "@/types/KeyValue";
+import { TTimeFrame } from "@/types/publicDashboard";
+import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import { Stack } from "@mui/system";
+import { t } from "i18next";
+import { useMemo, useState } from "react";
 
 const renderLegendText = (value: string) => value;
 
@@ -151,6 +148,7 @@ export default function StackedAreas() {
                             </feMerge>
                         </filter>
                     </defs>
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
                     <XAxis dataKey="date" />
                     {category && parentCategory ? (
                         <>
@@ -206,6 +204,10 @@ export default function StackedAreas() {
                             dot={false}
                         />
                     ) : null}
+                    {
+                        (console.log("category", category),
+                        console.log("parentCategory", parentCategory))
+                    }
                 </LineChart>
             </ResponsiveContainer>
         </>
