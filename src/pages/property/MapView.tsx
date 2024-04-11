@@ -106,7 +106,7 @@ const PropertiesList = ({
         <>
             <FlipOrientationButton toggleOrientation={toggleOrientation} />
 
-            <Grid container>
+            <Grid container spacing={1}>
                 {filtered.map((item, index) => (
                     <Grid
                         mb={1}
@@ -221,7 +221,7 @@ const MapView = () => {
     };
 
     return (
-        <Grid container mt={2}>
+        <Grid container mt={1} spacing={1}>
             <Grid height={`calc(100vh - 266px)`} item xs={12} lg={6}>
                 <Map
                     search
