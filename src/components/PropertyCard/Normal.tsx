@@ -25,8 +25,17 @@ const defaultImage = "/static/noImage.png";
 // -------------------------------------------------------------
 
 const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
-    const { id, images, details, location, price, code, state, category } =
-        item || {};
+    const {
+        id,
+        images,
+        details,
+        location,
+        price,
+        code,
+        state,
+        category,
+        area,
+    } = item || {};
     const { bathrooms, bedrooms } = details || {};
     const { lat, lng } = location || {};
 
@@ -124,6 +133,15 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
                         </Typography>
                         <Typography variant="body2">
                             {bathrooms || "-"} {t("baths")}
+                        </Typography>
+                    </Stack>
+                    {/* ---- */}
+                    <Stack direction="row" spacing={1} alignItems="center">
+                        <Typography>
+                            <i className="las la-expand-arrows-alt " />
+                        </Typography>
+                        <Typography variant="body2">
+                            {area || "-"} m²
                         </Typography>
                     </Stack>
                 </Stack>

@@ -581,8 +581,12 @@ const resources = {
             "Generate Description": "Generate Description",
             "Generating...": "Generating...",
 
+            Demand: "Demand",
             Demands: "Demands",
 
+            "Owned Properties": "Owned Properties",
+            "Matching Properties": "Matching Properties",
+            "Area of Preference": "Area of Preference",
             Logs: "Logs",
             Overview: "Overview",
             "Quick View": "Quick View",
@@ -604,10 +608,14 @@ const resources = {
             "Create a new property": "Create a new property",
             "Choose a parent category and category for your property":
                 "Choose a parent category and category for your property",
+
+            "Add an existing label": "Add an existing label",
         },
     },
     el: {
         translation: {
+            "Add an existing label": "Προσθήκη υπάρχουσας ετικέτας",
+
             "Choose a parent category and category for your property":
                 "Επιλέξτε κατηγορία και υποκατηγορία για το ακίνητό σας",
             "Create a new property": "Δημιουργία νέου ακινήτου",

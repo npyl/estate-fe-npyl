@@ -89,7 +89,7 @@ export const AddLabelDialog = ({
             closeAfterTransition={true}
         >
             <DialogTitle variant="h5">
-                {t("Adding an existing label")}
+                {t("Add an existing label")}
                 <IconButton
                     aria-label="close"
                     onClick={onClose}
@@ -105,7 +105,7 @@ export const AddLabelDialog = ({
             </DialogTitle>
             <DialogContent>
                 <DialogContentText>{title}</DialogContentText>
-                <Stack direction={"row"} flexWrap={"wrap"} spacing={1}>
+                <Stack direction={"row"} flexWrap={"wrap"} gap={1} mt={1}>
                     {existingLabels.map((label, index) => {
                         const isAssigned = assignedLabels.some(
                             (assignedLabel) => assignedLabel.name === label.name
@@ -133,17 +133,20 @@ export const AddLabelDialog = ({
                     })}
                 </Stack>
 
-                <Typography variant="h5">{t("Create Label")}</Typography>
-                <Stack spacing={3} mt={2}>
+                <Typography variant="h5" mt={2}>
+                    {t("Create Label")}
+                </Typography>
+                <Stack spacing={3} mt={1}>
                     <Stack spacing={1}>
                         <FormControl>
-                            <Stack direction={"row"} spacing={1}>
+                            <Stack direction="row" spacing={1}>
                                 <TextField
                                     fullWidth
                                     label={t("Label's name")}
                                     variant="outlined"
                                     value={labelName}
-                                    placeholder="Label's Name"
+                                    placeholder={t("Label's Name").toString()}
+                                    // ...
                                     error={!!error}
                                     helperText={error}
                                     onFocus={(event) => {

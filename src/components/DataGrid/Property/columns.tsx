@@ -5,29 +5,28 @@ import { KeyValue } from "src/types/KeyValue";
 import { TranslationType } from "@/types/translation";
 import RenderLabelsCell from "../shared/RenderLabels";
 import { useTranslation } from "react-i18next";
+import { IProperties, IPropertyResultResponse } from "@/types/properties";
 
 const defaultImage = "/static/noImage.png";
 
-function renderImage(params: GridCellParams) {
-    if (params.formattedValue) {
-        return (
-            <>
-                <Image
-                    src={`${params.formattedValue}` || ""}
-                    alt=""
-                    ratio="16/9"
-                />
-            </>
-        );
-    } else {
-        return (
-            <Image
-                src={defaultImage} // Make sure 'defaultImage' is imported or defined in your file
-                alt="Default image description"
-                ratio="16/9"
-            />
-        );
-    }
+function renderImage(
+    params: GridCellParams<IPropertyResultResponse | IProperties>
+) {
+    const propertyImage = params.row?.propertyImage;
+
+    return (
+        <Image
+            src={
+                `${
+                    typeof propertyImage === "string"
+                        ? propertyImage
+                        : propertyImage?.url
+                }` || defaultImage
+            }
+            alt=""
+            ratio="16/9"
+        />
+    );
 }
 
 type PropertyStatus =

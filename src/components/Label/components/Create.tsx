@@ -4,7 +4,7 @@ import { useCallback, useMemo, useState } from "react";
 import Label from "@/components/Label/Label";
 import { ILabelPOST, LabelResourceType } from "src/types/label";
 import { useTranslation } from "react-i18next";
-import { AddLabelDialog } from "./components/Dialog";
+import { AddLabelDialog } from "./Dialog";
 import {
     useAssignLabelToResourceMutation,
     useCreateLabelForResourceMutation,
@@ -162,7 +162,7 @@ const LabelCreate = ({ variant, resourceId, ...props }: ILabelCreateProps) => {
             </Box>
 
             <Box flex={1} justifyContent={"center"} flexWrap={"wrap"} pt={2}>
-                <Stack direction={"row"} flexWrap={"wrap"} spacing={1}>
+                <Stack direction="row" flexWrap="wrap" gap={1}>
                     {assignedLabels?.map(({ id, color, name }, index) => (
                         <Label
                             key={index}

@@ -70,7 +70,7 @@ export const FilterSection: React.FC<PaperProps> = ({ ...props }) => {
             />
         </>
     ) : (
-        <Stack spacing={1} component={Paper} p={1} mt={1} {...props}>
+        <Stack spacing={1} component={Paper} p={1} my={1} {...props}>
             {filterContent}
         </Stack>
     );

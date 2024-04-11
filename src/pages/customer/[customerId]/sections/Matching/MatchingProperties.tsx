@@ -41,22 +41,17 @@ const MatchingPropertiesSection = ({ variant = "default" }: Props) => {
 
     const [page, setPage] = useState(0);
 
-    const { data: propertiesPage } = useSuggestForCustomerQuery({
+    const { data, isLoading } = useSuggestForCustomerQuery({
         customerId: +customerId!,
-        page,
-        pageSize,
     });
 
     const demands = useMemo(() => customer?.demands || [], [customer?.demands]);
 
-    const totalRows = useMemo(
-        () => propertiesPage?.totalElements || 1,
-        [propertiesPage?.totalElements]
-    );
+    const totalRows = useMemo(() => data?.length || 0, [data?.length]);
 
     const properties = useMemo(() => {
         if (!isLoaded) return [];
-        if (!propertiesPage?.content) return [];
+        if (!data) return [];
 
         const haveNoShapes = demands?.every((demand) => {
             const shapes = demand?.shapes;
@@ -65,7 +60,7 @@ const MatchingPropertiesSection = ({ variant = "default" }: Props) => {
         });
 
         // If we have no shapes in our demands; return just the content from the backend
-        if (haveNoShapes) return propertiesPage.content;
+        if (haveNoShapes) return data;
 
         // Otherwise, for every demand
         const res = demands
@@ -79,10 +74,7 @@ const MatchingPropertiesSection = ({ variant = "default" }: Props) => {
 
                         // Return filtered properties
                         return shapeData
-                            ? filterPropertiesInShape(
-                                  propertiesPage?.content,
-                                  shapeData
-                              )
+                            ? filterPropertiesInShape(data, shapeData)
                             : [];
                     })
                     .flat();
@@ -91,7 +83,7 @@ const MatchingPropertiesSection = ({ variant = "default" }: Props) => {
 
         // Keep only the unique entries
         return [...new Set(res)];
-    }, [isLoaded, propertiesPage, demands]);
+    }, [isLoaded, data, demands]);
 
     const belowMd = useResponsive("down", "md");
 
@@ -100,7 +92,7 @@ const MatchingPropertiesSection = ({ variant = "default" }: Props) => {
         []
     );
 
-    if (properties?.length === 0) {
+    if (!isLoading && properties?.length === 0) {
         return <Placeholder />;
     }
 
@@ -116,9 +108,13 @@ const MatchingPropertiesSection = ({ variant = "default" }: Props) => {
                     {properties.map((p) => (
                         <PropertyCard item={p} selectedMarker={null} />
                     ))}
+
+                    {/* {isLoading ? <PropertyCardSkeleton /> : null} */}
                 </Stack>
             ) : (
                 <DataGrid
+                    skeleton={isLoading}
+                    // ...
                     rows={properties || []}
                     totalRows={totalRows}
                     columnVariant={variant}
@@ -126,6 +122,7 @@ const MatchingPropertiesSection = ({ variant = "default" }: Props) => {
                     sortingBy="firstName"
                     sortingOrder="asc"
                     // ...
+                    paginationMode="client"
                     page={page}
                     pageSize={pageSize}
                     onPaginationModelChange={handlePaginationChange}

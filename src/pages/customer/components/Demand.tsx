@@ -1,13 +1,15 @@
 import { IconButton, Tab, Tabs, Stack } from "@mui/material";
-import { useCallback, useState } from "react";
+import { Suspense, useCallback, useState, lazy } from "react";
 import { FC } from "react";
-import DemandForm from "./DemandSection/Form";
 import { CloseIcon } from "yet-another-react-lightbox/core";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import Panel from "src/components/Panel";
 import { useFormContext } from "react-hook-form";
 import { IDemandPOST } from "src/types/demand";
 import { useTranslation } from "react-i18next";
+
+// Dynamic
+const DemandForm = lazy(() => import("./DemandSection/Form"));
 
 const emptyDemand: IDemandPOST = {
     filters: {
@@ -60,8 +62,6 @@ const emptyDemand: IDemandPOST = {
     shapes: [],
 };
 
-const leaserName = "leaser";
-const buyerName = "buyer";
 const demandsName = "demands";
 
 const DemandSection: FC = () => {
@@ -69,8 +69,6 @@ const DemandSection: FC = () => {
 
     const { watch, setValue } = useFormContext();
 
-    const leaser = watch(leaserName);
-    const buyer = watch(buyerName);
     const demands = watch(demandsName) as IDemandPOST[];
 
     const [index, setIndex] = useState(0);
@@ -88,9 +86,6 @@ const DemandSection: FC = () => {
             ),
         [demands]
     );
-
-    // show DemandSection only if leaser or buyer
-    if (!leaser && !buyer) return null;
 
     return (
         <Panel
@@ -125,7 +120,9 @@ const DemandSection: FC = () => {
             </Stack>
 
             {demands.length > index ? ( // prevent loading DemandForm too fast
-                <DemandForm index={index} />
+                <Suspense fallback={null}>
+                    <DemandForm index={index} />
+                </Suspense>
             ) : null}
         </Panel>
     );

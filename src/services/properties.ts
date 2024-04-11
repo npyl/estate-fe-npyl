@@ -95,8 +95,6 @@ interface IPropertySearchParams {
 }
 interface ISuggestForCustomerParams {
     customerId: number;
-    page: number;
-    pageSize: number;
 }
 interface ISuggestForPropertyParams {
     propertyId: number;
@@ -268,12 +266,12 @@ export const properties = createApi({
             }),
         }),
         suggestForCustomer: builder.query<
-            IPage<IProperties>,
+            IProperties[],
             ISuggestForCustomerParams
         >({
-            query: (params: ISuggestForCustomerParams) => ({
-                url: "/customerSuggest",
-                params: params,
+            query: (params) => ({
+                url: "/customerSuggest-list",
+                params,
             }),
             providesTags: ["SuggestedProperties"],
         }),

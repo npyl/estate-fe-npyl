@@ -62,7 +62,7 @@ const OwnedCustomerPropertiesSection = ({ variant }: Props) => {
         [data]
     );
 
-    if (isLoading || ownedProperties.length === 0) {
+    if (!isLoading && ownedProperties.length === 0) {
         return <Placeholder />;
     }
 
@@ -81,6 +81,8 @@ const OwnedCustomerPropertiesSection = ({ variant }: Props) => {
                 </Stack>
             ) : (
                 <DataGrid
+                    skeleton={isLoading}
+                    // ...
                     rows={ownedProperties}
                     resource="property"
                     columnVariant={variant}

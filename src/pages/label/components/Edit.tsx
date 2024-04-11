@@ -91,10 +91,6 @@ export const Edit = ({ editedLabel, cancelEdit, editLabel }: EditProps) => {
                 <Box mb={3}>
                     <Label
                         color={pickerColor}
-                        sx={{
-                            display: "inline-block",
-                            padding: "4px 12px",
-                        }}
                         name={labelName || t("New Label")}
                     />
                 </Box>
