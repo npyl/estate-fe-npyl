@@ -6,6 +6,7 @@ import * as React from "react";
 import ViewsChart from "./liveViewsChart";
 import PropertyViewLineChart from "./viewsOfProperties";
 import CategoryViewsBarChart from "./categoryViewsBarChart";
+import PopularProperties from "./popularProperties";
 
 const Statistics: NextPage = () => {
     return (
@@ -36,6 +37,15 @@ const Statistics: NextPage = () => {
                 }}
             >
                 <CategoryViewsBarChart />
+            </Paper>
+            <Paper
+                sx={{
+                    mt: 2,
+                    mb: 1,
+                    padding: 1,
+                }}
+            >
+                <PopularProperties />
             </Paper>
         </>
     );

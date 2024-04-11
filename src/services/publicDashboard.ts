@@ -1,5 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IPublicDashboard, IView } from "@/types/publicDashboard";
+import { IProperties } from "@/types/properties";
 
 type TTimeFrame = "ALL_TIME" | "CUSTOM" | "DAY" | "MONTH" | "WEEK" | "YEAR";
 
@@ -57,7 +58,7 @@ export const publicDashboard = createApi({
         }),
 
         getPublicDashboardPopularProperties: builder.query<
-            IView[],
+            IProperties[],
             PopularPropertiesParams
         >({
             query: (params) => ({ url: "/popular-properties", params }),
