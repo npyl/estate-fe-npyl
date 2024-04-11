@@ -1,9 +1,4 @@
 import {
-    Button,
-    Chip,
-    Dialog,
-    DialogActions,
-    DialogTitle,
     ListItemText,
     MenuItem,
     Select,
@@ -65,7 +60,6 @@ import { TranslationType } from "src/types/translation";
 
 import FieldSelect from "@/components/Filters/FieldSelect";
 import { ClearableDialogContent } from "@/components/Filters/ClearableDialogContent";
-import { StyledDialogContent } from "@/components/Filters/styled";
 import { FilterMoreDialog } from "@/components/Filters/FilterMore";
 
 // ----------------------------------------------------------------------
@@ -185,11 +179,7 @@ export default function FilterMore({ open, onClose, onResetFilter }: Props) {
             changedFiltersCount={changedPropsCount}
             onResetFilter={{} as any}
         >
-            {changedPropsCount > 0 ? (
-                <StyledDialogContent>
-                    <ChosenFilters />
-                </StyledDialogContent>
-            ) : null}
+            {changedPropsCount > 0 ? <ChosenFilters /> : null}
 
             <ClearableDialogContent dividers reset={resetBasic}>
                 <Typography>{t("Basic")}</Typography>
@@ -213,14 +203,16 @@ export default function FilterMore({ open, onClose, onResetFilter }: Props) {
                     />
                 </Stack>
             </ClearableDialogContent>
-            <ClearableDialogContent
-                sx={{ maxHeight: "none", overflow: "visible" }}
-                dividers
-                reset={resetBedrooms}
-            >
+            <ClearableDialogContent dividers reset={resetBedrooms}>
                 <Typography>{t("Bedrooms")}</Typography>
-                <Stack direction="row" spacing={1} alignItems={"center"}>
-                    <Typography>{t("from")}</Typography>
+                <Stack
+                    direction={{
+                        xs: "column",
+                        sm: "row",
+                    }}
+                    spacing={1}
+                    alignItems="center"
+                >
                     <Select
                         sx={{ width: 130 }}
                         value={minBedrooms}
@@ -233,14 +225,6 @@ export default function FilterMore({ open, onClose, onResetFilter }: Props) {
                                 )
                             )
                         }
-                        MenuProps={{
-                            PaperProps: {
-                                style: {
-                                    maxHeight: 210,
-                                    overflowY: "scroll",
-                                },
-                            },
-                        }}
                     >
                         <MenuItem value={0}>
                             <ListItemText primary={t("Indifferent")} />
@@ -259,7 +243,6 @@ export default function FilterMore({ open, onClose, onResetFilter }: Props) {
                             </MenuItem>
                         ))}
                     </Select>
-                    <Typography>- {t("to")}</Typography>
                     <Select
                         sx={{ width: 130 }}
                         value={maxBedrooms}
@@ -272,14 +255,6 @@ export default function FilterMore({ open, onClose, onResetFilter }: Props) {
                                 )
                             )
                         }
-                        MenuProps={{
-                            PaperProps: {
-                                style: {
-                                    maxHeight: 210,
-                                    overflowY: "scroll",
-                                },
-                            },
-                        }}
                     >
                         <MenuItem value={0}>
                             <ListItemText primary={t("Indifferent")} />
@@ -301,8 +276,14 @@ export default function FilterMore({ open, onClose, onResetFilter }: Props) {
             </ClearableDialogContent>
             <ClearableDialogContent dividers reset={resetFloor}>
                 <Typography>{t("Floors")}</Typography>
-                <Stack direction="row" spacing={1} alignItems={"center"}>
-                    <Typography>{t("from")}</Typography>
+                <Stack
+                    direction={{
+                        xs: "column",
+                        sm: "row",
+                    }}
+                    spacing={1}
+                    alignItems={"center"}
+                >
                     <Select
                         sx={{ width: 130 }}
                         value={minFloors}
@@ -315,14 +296,6 @@ export default function FilterMore({ open, onClose, onResetFilter }: Props) {
                                 )
                             )
                         }
-                        MenuProps={{
-                            PaperProps: {
-                                style: {
-                                    maxHeight: 210,
-                                    overflowY: "scroll",
-                                },
-                            },
-                        }}
                     >
                         {minFloorEnum.map(
                             ({ key, value }, minFloorsSelectIndex) => (
@@ -335,7 +308,6 @@ export default function FilterMore({ open, onClose, onResetFilter }: Props) {
                             )
                         )}
                     </Select>
-                    <Typography>- {t("to")}</Typography>
                     <Select
                         sx={{ width: 130 }}
                         value={maxFloors}
@@ -348,14 +320,6 @@ export default function FilterMore({ open, onClose, onResetFilter }: Props) {
                                 )
                             )
                         }
-                        MenuProps={{
-                            PaperProps: {
-                                style: {
-                                    maxHeight: 210,
-                                    overflowY: "scroll",
-                                },
-                            },
-                        }}
                     >
                         {maxFloorEnum.map(
                             ({ key, value }, minFloorsSelectIndex) => (
@@ -393,7 +357,6 @@ export default function FilterMore({ open, onClose, onResetFilter }: Props) {
                         },
                     ]}
                     valueLabelDisplay="auto"
-                    aria-labelledby="year-slider"
                 />
             </ClearableDialogContent>
         </FilterMoreDialog>
