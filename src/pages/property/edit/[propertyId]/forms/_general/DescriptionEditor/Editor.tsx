@@ -121,7 +121,22 @@ const UpperRightOptions = ({
         [isLoading, handleGenerate, belowMd]
     );
 
-    const handleTranslate = useCallback(() => {}, []);
+    const handleTranslate = useCallback(async () => {
+        const text = "Γεια σας τι κάνετε?";
+
+        const params = {
+            source_lang: "EL",
+            target_lang: "EN",
+            text: text.split(" "),
+        };
+
+        const t = await fetch("/api/translate", {
+            body: JSON.stringify(params),
+            method: "POST",
+        });
+
+        console.log("t: ", t);
+    }, []);
 
     return (
         <Box display="flex" flexDirection="row" gap={1}>

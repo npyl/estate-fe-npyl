@@ -1,7 +1,9 @@
 module.exports = {
     reactStrictMode: false,
     pageExtensions: ["page.tsx", "page.ts", "page.jsx", "page.js"],
-
+    experimental: {
+        runtime: "experimental-edge",
+    },
     eslint: {
         // Warning: This allows production builds to successfully complete even if
         // your project has ESLint errors.
