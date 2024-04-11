@@ -32,6 +32,8 @@ const DataGridTable: FC<GridProps> = ({
     onBulkEdit,
 
     resource = "property",
+
+    ...props
 }) => {
     const router = useRouter();
     const { t } = useTranslation();
@@ -138,6 +140,7 @@ const DataGridTable: FC<GridProps> = ({
                 rows={rows}
                 columns={columns}
                 pageSizeOptions={[25, 50, 100]}
+                {...props}
             />
         </>
     );

@@ -581,8 +581,12 @@ const resources = {
             "Generate Description": "Generate Description",
             "Generating...": "Generating...",
 
+            Demand: "Demand",
             Demands: "Demands",
 
+            "Owned Properties": "Owned Properties",
+            "Matching Properties": "Matching Properties",
+            "Area of Preference": "Area of Preference",
             Logs: "Logs",
             Overview: "Overview",
             "Quick View": "Quick View",
