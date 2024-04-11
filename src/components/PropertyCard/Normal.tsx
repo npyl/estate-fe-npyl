@@ -1,90 +1,57 @@
-"use client";
-
-import AspectRatioIcon from "@mui/icons-material/AspectRatio";
-import BathtubOutlinedIcon from "@mui/icons-material/BathtubOutlined";
-import BedOutlinedIcon from "@mui/icons-material/BedOutlined";
-import RoomOutlinedIcon from "@mui/icons-material/RoomOutlined";
-import {
-    Box,
-    Chip,
-    Divider,
-    Grid,
-    Paper,
-    Stack,
-    Typography,
-} from "@mui/material";
-
+import { IProperties, IPropertyResultResponse } from "@/types/properties";
+import { IMapMarker } from "../Map/Map";
+import { Divider, Stack, Typography } from "@mui/material";
+import { useCallback, useEffect, useMemo, useRef } from "react";
+import CarouselSimple from "../CarouselSimple";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import CarouselSimple from "src/components/CarouselSimple";
-import { IMapMarker } from "src/components/Map/Map";
-import { IProperties, IPropertyResultResponse } from "src/types/properties";
-import { formatNumberWithCommas } from "src/utils/formatNumber";
-// ----------------------------------------------------------------------
+import { SpaceBetween } from "../styled";
+import {
+    useGetMunicipalitiesQuery,
+    useGetNeighbourhoodsQuery,
+    useGetRegionsQuery,
+} from "@/services/location";
+import isNumberString from "../Location/util";
+import useHumanReadable from "../Location/hook";
+import { NormalBadge, PriceBadge, StyledBox } from "./styled";
 
-type BookingItemProps = {
+type PropertyCardProps = {
     item: IPropertyResultResponse | IProperties;
-    selectedMarker: IMapMarker | null; // add this line
-};
-
-const ForSaleLabel = () => {
-    const { t } = useTranslation();
-
-    return (
-        <Box
-            borderRadius={1}
-            sx={{
-                position: "absolute",
-                top: 5,
-                left: 5,
-                backgroundColor: "rgb(235, 0, 0)",
-                color: "white",
-                zIndex: 1,
-                p: 0.5,
-            }}
-            textAlign={"center"}
-        >
-            <Typography fontSize={"14px"}>{t("For Sale")}</Typography>
-        </Box>
-    );
+    selectedMarker: IMapMarker | null;
 };
 
 const defaultImage = "/static/noImage.png";
 
-const BookingItem = ({ item, selectedMarker }: BookingItemProps) => {
-    const {
-        details,
-        price,
-        location,
-        images,
-        id,
-        area,
-        parentCategory,
-        state,
-    } = item || {};
+// -------------------------------------------------------------
+
+const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
+    const { id, images, details, location, price, code, state, category } =
+        item || {};
+    const { bathrooms, bedrooms } = details || {};
+    const { lat, lng } = location || {};
 
     const { t } = useTranslation();
-
     const router = useRouter();
-    const itemRef = useRef<HTMLDivElement | null>(null);
-    const isActive =
-        item.location?.lat !== null &&
-        item.location?.lat !== undefined &&
-        item.location.lng !== null &&
-        item.location.lng !== undefined &&
-        selectedMarker?.lat !== null &&
-        selectedMarker?.lat !== undefined &&
-        selectedMarker?.lng !== null &&
-        selectedMarker?.lng !== undefined &&
-        item.location.lat === selectedMarker?.lat &&
-        item.location.lng === selectedMarker?.lng;
+    const ref = useRef<HTMLDivElement>();
 
-    useEffect(() => {
-        if (isActive && itemRef.current) {
-            itemRef.current.scrollIntoView({ behavior: "smooth" });
-        }
-    }, [isActive]);
+    const { data: regions } = useGetRegionsQuery();
+    const { data: municips } = useGetMunicipalitiesQuery(+location?.region!, {
+        skip: !isNumberString(location?.region),
+    });
+    const { data: neighbs } = useGetNeighbourhoodsQuery(+location?.city!, {
+        skip: !isNumberString(location?.city),
+    });
+
+    // region is most of the types a code; translate to human readable form; otherwise just return the string
+    const region = useHumanReadable(location?.region, regions);
+
+    // city is most of the types a code; translate to human readable form; otherwise just return the string
+    const city = useHumanReadable(location?.city, municips);
+
+    // neighb is most of the types a code; translate to human readable form; otherwise just return the string
+    const neighb = useHumanReadable(location?.complex, neighbs);
+
+    const address = `${region} ${city} ${neighb}`;
 
     const convertedImages = useMemo(
         () =>
@@ -96,127 +63,118 @@ const BookingItem = ({ item, selectedMarker }: BookingItemProps) => {
         [images]
     );
 
+    const isActive = useMemo(
+        () =>
+            lat &&
+            lat > 0 &&
+            lng &&
+            lng > 0 &&
+            lat === selectedMarker?.lat &&
+            lng === selectedMarker?.lng,
+        [lat, lng, selectedMarker]
+    );
+    useEffect(() => {
+        if (isActive) {
+            ref.current?.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [isActive]);
+
+    const handleClick = useCallback(() => router.push(`property/${id}`), []);
+
     return (
-        <Paper
-            ref={itemRef}
+        <StyledBox
+            borderRadius="12px"
             sx={{
-                position: "relative",
-
-                mt: 2,
-                mx: 1.5,
-                pb: 2,
-                border: 0,
-                borderRadius: 1,
-
-                boxShadow: isActive
-                    ? `rgba(0, 0, 0, 0.65) 0px 5px 15px`
-                    : `rgba(0, 0, 0, 0.25) 0px 5px 15px`,
-                fontWeight: isActive ? "bold" : "normal",
-                "&:hover": {
-                    cursor: "pointer",
-                    boxShadow: `rgba(0, 0, 0, 0.65) 0px 5px 15px`,
-                },
+                cursor: "pointer",
             }}
+            isActive={isActive as boolean}
+            ref={ref}
+            onClick={handleClick}
         >
-            {state.key === "SALE" && <ForSaleLabel />}
+            <CarouselSimple
+                data={
+                    convertedImages.length > 0
+                        ? convertedImages
+                        : [
+                              {
+                                  id: 1,
+                                  url: defaultImage,
+                                  title: "",
+                              },
+                          ]
+                }
+                ratio="4/3"
+            />
 
-            <Box sx={{ position: "relative" }}>
-                <CarouselSimple
-                    onImageClick={() => router.push(`property/${id}`)}
-                    data={convertedImages}
-                    ratio="4/3"
-                />
-            </Box>
-
-            <Box
-                sx={{
-                    p: 2,
-                    display: "grid",
-                    gap: 0.5,
-                    cursor: "pointer",
-                }}
-            >
-                <Box
-                    sx={{
-                        display: "flex",
-                        alignItems: "center",
-                        color: "text.secondary",
-                        gap: 1.5,
-                    }}
-                >
-                    <RoomOutlinedIcon sx={{ fontSize: 20 }} />
-                    <Typography variant="body1">
-                        {location?.street ?? ""} {location?.number ?? ""}
-                    </Typography>
-                </Box>
-
-                <Divider sx={{ my: 1, borderColor: "divider" }} />
-                <Grid container spacing={2}>
-                    <Grid item>
-                        <Box
-                            sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: 1,
-                            }}
-                        >
-                            <BedOutlinedIcon />
-                            <Typography variant="body2" color="text.secondary">
-                                {details?.bedrooms || "N/A"} {t("beds")}
-                            </Typography>
-                        </Box>
-                    </Grid>
-                    <Grid item>
-                        <Box
-                            sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: 1,
-                            }}
-                        >
-                            <BathtubOutlinedIcon />
-                            <Typography variant="body2" color="text.secondary">
-                                {details?.bathrooms || "N/A"} {t("baths")}
-                            </Typography>
-                        </Box>
-                    </Grid>
-                    <Grid item>
-                        <Box
-                            sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: 1,
-                            }}
-                        >
-                            <AspectRatioIcon />
-                            <Typography variant="body2" color="text.secondary">
-                                {area || "N/A"} m²
-                            </Typography>
-                        </Box>
-                    </Grid>
-                </Grid>
-                <Divider sx={{ my: 1, borderColor: "divider" }} />
-
-                {(parentCategory.value || price) && (
-                    <Stack
-                        direction={"row"}
-                        display={"flex"}
-                        justifyContent={"space-between"}
-                    >
-                        {parentCategory.value && (
-                            <Chip label={parentCategory.value} color="info" />
-                        )}
-                        {price && (
-                            <Chip
-                                label={`${formatNumberWithCommas(price)} €`}
-                                color="success"
-                            />
-                        )}
+            <Stack px={2} py={2} spacing={0.8}>
+                <Stack spacing={4} direction="row" mt={1}>
+                    {/* ---- */}
+                    <Stack direction="row" spacing={1} alignItems="center">
+                        <Typography>
+                            <i className="las la-bed" />
+                        </Typography>
+                        <Typography variant="body2">
+                            {bedrooms || "-"} {t("beds")}
+                        </Typography>
                     </Stack>
-                )}
-            </Box>
-        </Paper>
+                    {/* ---- */}
+                    <Stack direction="row" spacing={1} alignItems="center">
+                        <Typography>
+                            <i className="las la-bath" />
+                        </Typography>
+                        <Typography variant="body2">
+                            {bathrooms || "-"} {t("baths")}
+                        </Typography>
+                    </Stack>
+                </Stack>
+
+                <Stack direction="row" spacing={1} alignItems="center">
+                    <svg
+                        width="14px"
+                        height="14px"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={1.5}
+                            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                        />
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={1.5}
+                            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                        />
+                    </svg>
+                    <Typography variant="body2" color="text.secondary">
+                        {address}
+                    </Typography>
+                </Stack>
+
+                <Divider />
+
+                <Stack direction="row" spacing={0.3}>
+                    {state?.value ? (
+                        <NormalBadge name={t(state?.value)} color="indigo" />
+                    ) : null}
+                    {category?.value ? (
+                        <NormalBadge name={t(category?.value)} color="indigo" />
+                    ) : null}
+                </Stack>
+                <SpaceBetween alignItems="center">
+                    <NormalBadge
+                        name={`${t("Code")}: ${code || ""}`}
+                        color="yellow"
+                    />
+
+                    <PriceBadge price={price} />
+                </SpaceBetween>
+            </Stack>
+        </StyledBox>
     );
 };
 
-export default BookingItem;
+export default PropertyCard;

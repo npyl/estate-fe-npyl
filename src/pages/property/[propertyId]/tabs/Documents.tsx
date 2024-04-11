@@ -92,10 +92,9 @@ const Documents: React.FC = () => {
                                         {labels.map(({ id, name, color }) => (
                                             <Label
                                                 key={id}
-                                                sx={{ bgcolor: color }}
-                                            >
-                                                {name}
-                                            </Label>
+                                                color={color}
+                                                name={name}
+                                            />
                                         ))}
                                     </Box>
                                 </Box>

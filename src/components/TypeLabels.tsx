@@ -61,14 +61,14 @@ export const TypeLabels = ({
                 value ? (
                     <Label
                         key={type}
-                        variant="soft"
                         opaque
-                        color={color as LabelColor}
-                    >
-                        {belowSm || forceTruncate
-                            ? t(type).slice(0, 3)
-                            : t(type)}
-                    </Label>
+                        color={color}
+                        name={
+                            belowSm || forceTruncate
+                                ? t(type).slice(0, 3)
+                                : t(type)
+                        }
+                    />
                 ) : null
             )}
         </Box>

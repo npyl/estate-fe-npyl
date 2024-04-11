@@ -5,7 +5,7 @@ import { GridCellParams } from "@mui/x-data-grid";
 import MoreChip from "@/components/Label/MoreChip";
 
 const RenderLabelsCell = (params: GridCellParams) => {
-    if (!params.value || !Array.isArray(params.value)) return <></>;
+    if (!params.value || !Array.isArray(params.value)) return null;
 
     const labels: ILabel[] = params.value as ILabel[];
 
@@ -14,9 +14,7 @@ const RenderLabelsCell = (params: GridCellParams) => {
     return (
         <Stack spacing={0.5} alignItems="center">
             {labels.slice(0, 2).map(({ id, color, name }) => (
-                <Label key={id} sx={{ bgcolor: color }}>
-                    {name}
-                </Label>
+                <Label key={id} color={color} name={name} />
             ))}
 
             {more > 0 ? (

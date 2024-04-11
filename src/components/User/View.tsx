@@ -55,11 +55,7 @@ const RenderUsername = ({ username }: { username?: string }) => {
 };
 const RenderIsAdmin = ({ isAdmin }: { isAdmin?: boolean }) => {
     const { t } = useTranslation();
-    return isAdmin ? (
-        <Label color="warning" opaque>
-            {t("Admin")}
-        </Label>
-    ) : null;
+    return isAdmin ? <Label color="warning" opaque name={t("Admin")} /> : null;
 };
 
 const ViewUser = ({ user }: ViewUserProps) => {

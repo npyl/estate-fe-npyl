@@ -114,7 +114,8 @@ export const AddLabelDialog = ({
                         return (
                             <Label
                                 key={index}
-                                variant="soft"
+                                color={label.color}
+                                name={label.name}
                                 onClick={
                                     isAssigned
                                         ? undefined
@@ -122,16 +123,12 @@ export const AddLabelDialog = ({
                                 }
                                 opacity={isAssigned ? 0.4 : 1} // Pass opacity directly here
                                 sx={{
-                                    bgcolor: label.color,
                                     borderRadius: 7,
-                                    color: "white",
                                     "&:hover": isAssigned
                                         ? undefined
                                         : { cursor: "pointer" },
                                 }}
-                            >
-                                {label.name}
-                            </Label>
+                            />
                         );
                     })}
                 </Stack>
@@ -140,7 +137,6 @@ export const AddLabelDialog = ({
                 <Stack spacing={3} mt={2}>
                     <Stack spacing={1}>
                         <FormControl>
-                            <FormLabel id="demo-controlled-radio-buttons-group"></FormLabel>
                             <Stack direction={"row"} spacing={1}>
                                 <TextField
                                     fullWidth
@@ -178,7 +174,7 @@ export const AddLabelDialog = ({
                                     paddingBottom={2}
                                     spacing={3}
                                 >
-                                    <FormLabel id="demo-controlled-radio-buttons-group">
+                                    <FormLabel>
                                         <Typography
                                             variant="subtitle2"
                                             sx={{
@@ -189,15 +185,9 @@ export const AddLabelDialog = ({
                                         </Typography>
                                     </FormLabel>
                                     <Label
-                                        variant="soft"
-                                        sx={{
-                                            bgcolor: pickerColor,
-                                            borderRadius: 7,
-                                            color: "white",
-                                        }}
-                                    >
-                                        {labelName || t("New Label")}
-                                    </Label>
+                                        color={pickerColor}
+                                        name={labelName || t("New Label")}
+                                    />
                                 </Stack>
 
                                 <Button

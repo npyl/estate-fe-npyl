@@ -22,6 +22,10 @@ class CustomDocument extends Document {
                         href="https://fonts.googleapis.com/css?family=Roboto+Mono|Roboto+Slab|Roboto:300,400,500,700&display=optional"
                     />
                     <link
+                        rel="stylesheet"
+                        href="https://maxst.icons8.com/vue-static/landings/line-awesome/line-awesome/1.3.0/css/line-awesome.min.css"
+                    />
+                    <link
                         rel="apple-touch-icon"
                         sizes="180x180"
                         href="/apple-touch-icon.png"
@@ -57,13 +61,14 @@ CustomDocument.getInitialProps = async (ctx) => {
 
     ctx.renderPage = () =>
         originalRenderPage({
-            enhanceApp: (App) => (props) => (
-                <App
-                    // @ts-ignore
-                    emotionCache={cache}
-                    {...props}
-                />
-            ),
+            enhanceApp: (App) => (props) =>
+                (
+                    <App
+                        // @ts-ignore
+                        emotionCache={cache}
+                        {...props}
+                    />
+                ),
         });
 
     const initialProps = await Document.getInitialProps(ctx);
