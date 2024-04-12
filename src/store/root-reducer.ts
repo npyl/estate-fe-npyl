@@ -15,6 +15,7 @@ import { location } from "../services/location";
 import { properties } from "../services/properties";
 import { security } from "../services/security";
 import { user } from "../services/user";
+import { translation } from "@/services/translate";
 import { publicDashboard } from "../services/publicDashboard";
 
 import { reducer as customerFiltersReducer } from "../slices/customer/filters";
@@ -40,6 +41,7 @@ export const rootReducer = combineReducers({
     [listings.reducerPath]: listings.reducer,
     [dashboard.reducerPath]: dashboard.reducer,
     [publicDashboard.reducerPath]: publicDashboard.reducer,
+    [translation.reducerPath]: translation.reducer,
 
     // property
     filters: filtersReducer,

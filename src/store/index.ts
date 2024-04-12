@@ -23,6 +23,7 @@ import { properties } from "../services/properties";
 import { security } from "../services/security";
 import { user } from "../services/user";
 import { publicDashboard } from "@/services/publicDashboard";
+import { translation } from "@/services/translate";
 import { rootReducer } from "./root-reducer";
 
 export const createStore = (
@@ -54,6 +55,7 @@ export const createStore = (
                 listings.middleware,
                 dashboard.middleware,
                 publicDashboard.middleware,
+                translation.middleware,
                 rtkQueryErrorLogger
             ),
         ...options,

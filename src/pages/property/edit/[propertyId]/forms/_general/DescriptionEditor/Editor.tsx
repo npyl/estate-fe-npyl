@@ -25,6 +25,7 @@ import TabbedBox from "./TabbedBox";
 import { useOpenAIDetails } from "./hooks";
 import fixDropdowns from "./stupid";
 import useResponsive from "@/hooks/useResponsive";
+import { useTranslateMutation } from "@/services/translate";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -77,11 +78,13 @@ interface UpperRightOptionsProps {
     isLoading: boolean;
     onGenerate: (d: IOpenAIDetailsPOST) => Promise<string>;
     onChatTextChange: (s: string) => void;
+    onClickTranslate: () => void;
 }
 
 const UpperRightOptions = ({
     onGenerate,
     onChatTextChange,
+    onClickTranslate,
     isLoading,
     lang,
 }: UpperRightOptionsProps) => {
@@ -121,27 +124,10 @@ const UpperRightOptions = ({
         [isLoading, handleGenerate, belowMd]
     );
 
-    const handleTranslate = useCallback(async () => {
-        const text = "Γεια σας τι κάνετε?";
-
-        const params = {
-            source_lang: "EL",
-            target_lang: "EN",
-            text: text.split(" "),
-        };
-
-        const t = await fetch("/api/translate", {
-            body: JSON.stringify(params),
-            method: "POST",
-        });
-
-        console.log("t: ", t);
-    }, []);
-
     return (
         <Box display="flex" flexDirection="row" gap={1}>
             {canTranslate ? (
-                <Button onClick={handleTranslate}>
+                <Button onClick={onClickTranslate}>
                     {t("Translate from greek")}
                 </Button>
             ) : null}
@@ -275,6 +261,31 @@ const DescriptionSection: React.FC = () => {
         [lang]
     );
 
+    // ------------------------------------------------------------------------
+
+    const [translate] = useTranslateMutation();
+
+    const handleTranslate = useCallback(async () => {
+        const textToTranslate = watch("descriptions[0].title");
+
+        console.log("Text to Translate:", textToTranslate);
+
+        if (!textToTranslate) {
+            return;
+        }
+
+        const params = {
+            source_lang: "EL", // Assuming Greek to English translation
+            target_lang: "EN",
+            text: textToTranslate.split(" "),
+        };
+
+        const res = await translate(params).unwrap();
+
+        const translatedText =
+            res?.translations?.map(({ text }) => text).join(" ") || "";
+    }, []);
+
     return (
         <TabbedBox<Language>
             tabs={TABS}
@@ -285,6 +296,7 @@ const DescriptionSection: React.FC = () => {
                     onChatTextChange={onChatTextChange}
                     isLoading={isLoading}
                     lang={lang}
+                    onClickTranslate={handleTranslate}
                 />
             }
             onSelect={handleTabChange}

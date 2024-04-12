@@ -10,6 +10,7 @@ import React from "react";
 import { useResponsive } from "src/components/Calendar/use-responsive";
 import usePopover from "src/components/Calendar/use-popover";
 import LinearProgress from "@mui/material/LinearProgress";
+import { ICalendarView } from "src/types/calendar";
 
 const VIEW_OPTIONS = [
     {
@@ -32,11 +33,13 @@ const VIEW_OPTIONS = [
 
 type Props = {
     date: Date;
-    view: string;
+    // view: string;
+    view: ICalendarView;
     onNextDate: VoidFunction;
     onPrevDate: VoidFunction;
     onToday: VoidFunction;
-    onChangeView: (newView: string) => void;
+    // onChangeView: (newView: string) => void;
+    onChangeView: (newView: ICalendarView) => void;
     onOpenFilters: VoidFunction;
     loading: boolean;
 };
