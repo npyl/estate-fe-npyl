@@ -344,19 +344,7 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
 
     return (
         <>
-            <Box
-                sx={{
-                    p: 1.5,
-                    display: "flex",
-                    justifyContent: "left",
-                }}
-            >
-                <Typography variant="h6">
-                    {t("Demand Form")} No.{index + 1}
-                </Typography>
-            </Box>
-
-            <Stack px={1.5} gap={1.5}>
+            <Stack gap={1.5} mt={1}>
                 <Grid container spacing={1.5}>
                     {FIELDS.map((f, i) => (
                         <Grid key={i} item xs={6}>
