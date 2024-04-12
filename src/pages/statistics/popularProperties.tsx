@@ -1,13 +1,3 @@
-import {
-    LineChart,
-    Line,
-    XAxis,
-    YAxis,
-    Tooltip,
-    Legend,
-    ResponsiveContainer,
-    CartesianGrid,
-} from "recharts";
 import { useGlobals } from "@/hooks/useGlobals";
 import {
     useGetPublicDashboardPropertyViewsQuery,
@@ -22,6 +12,7 @@ import { Stack } from "@mui/system";
 import { t } from "i18next";
 import { useMemo, useState } from "react";
 import PropertyCard from "@/components/PropertyCard";
+import { ViewsIcon } from "@/icons/views";
 
 export default function StackedAreas() {
     const [category, setCategory] = useState("");
@@ -58,8 +49,14 @@ export default function StackedAreas() {
         [enums]
     );
 
-    const handleParentCategorySelect = (e: SelectChangeEvent<string>) =>
-        setParentCategory(e.target.value);
+    const handleParentCategorySelect = (event: SelectChangeEvent<string>) => {
+        const selectedParentCategory = event.target.value;
+        setParentCategory(selectedParentCategory);
+
+        if (selectedParentCategory === "") {
+            setCategory("");
+        }
+    };
 
     const handleCategorySelect = (event: SelectChangeEvent<string>) => {
         const selectedKey = event.target.value;
@@ -75,17 +72,6 @@ export default function StackedAreas() {
     const handleTimeframeSelect = (e: SelectChangeEvent<TTimeFrame>) =>
         setTimeframe(e.target.value as TTimeFrame);
 
-    const chartData = useMemo(
-        () =>
-            parentCategoriesGet?.map(({ date, parentCategories }) => ({
-                date,
-                All: parentCategories.All ?? 0,
-                parentCategory: parentCategories.parentCategory ?? 0,
-                category: parentCategories.category ?? 0,
-            })) || [],
-        [parentCategoriesGet]
-    );
-
     return (
         <>
             <Stack direction="row" spacing={2} p={1}>
@@ -98,7 +84,7 @@ export default function StackedAreas() {
                         <MenuItem value="MONTH">Monthly</MenuItem>
                         <MenuItem value="WEEK">Weekly</MenuItem>
                         <MenuItem value="YEAR">Yearly</MenuItem>
-                        <MenuItem value="DAY">Dayly</MenuItem>
+                        <MenuItem value="DAY">Daily</MenuItem>
                         <MenuItem value="CUSTOM">Custom</MenuItem>
                     </Select>
                     <Select
@@ -117,6 +103,7 @@ export default function StackedAreas() {
                         value={category}
                         onChange={handleCategorySelect}
                         displayEmpty
+                        disabled={!parentCategory}
                     >
                         <MenuItem value="">{t("Category")}</MenuItem>
                         {subCategoriesMap[parentCategory!]?.map((item) => (
@@ -131,15 +118,45 @@ export default function StackedAreas() {
                 {properties
                     ?.filter(
                         (property) =>
-                            property.parentCategory.key === parentCategory &&
-                            property.category.key === category
+                            (!parentCategory ||
+                                property?.parentCategory?.key ===
+                                    parentCategory) &&
+                            (!category || property?.category?.key === category)
                     )
-                    .map((property, index) => (
-                        <Grid item xs={12} md={6} lg={4} key={index}>
+                    ?.map((property, index) => (
+                        <Grid
+                            item
+                            xs={12}
+                            md={6}
+                            lg={4}
+                            key={`${property.id}-${timeframe}`}
+                            sx={{
+                                position: "relative",
+                            }}
+                        >
                             <PropertyCard
                                 item={property}
                                 selectedMarker={null}
                             />
+                            <Stack
+                                position="absolute"
+                                direction="row"
+                                top={20}
+                                right={2}
+                                sx={{
+                                    backgroundColor: "rgba(0, 0, 0, 0.5)",
+                                    paddingLeft: 1,
+                                    paddingRight: 1,
+                                    borderRadius: 15,
+                                }}
+                            >
+                                <ViewsIcon />
+                                <Typography
+                                    sx={{ paddingLeft: "5px", color: "white" }}
+                                >
+                                    {(property as any).visitors}
+                                </Typography>
+                            </Stack>
                         </Grid>
                     ))}
             </Grid>
