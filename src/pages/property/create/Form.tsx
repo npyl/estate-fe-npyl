@@ -95,7 +95,7 @@ export default function Form({
                 </Typography>
 
                 <Grid container m={1} my={3} gap={1} justifyContent="center">
-                    {parentCategoryEnum.map(({ key }) => (
+                    {parentCategoryEnum.map(({ key, value }) => (
                         <Grid
                             item
                             component={PPButton}
@@ -105,6 +105,7 @@ export default function Form({
                             xs={5} // NOTE: 6 doesn't work.
                             width={1}
                             height={1}
+                            direction="column"
                         >
                             <img
                                 src={icons[key]}
@@ -114,6 +115,8 @@ export default function Form({
                                         : "brightness(0) saturate(100%) invert(0)",
                                 }}
                             />
+
+                            <Typography mt={1}>{value}</Typography>
                         </Grid>
                     ))}
                 </Grid>
