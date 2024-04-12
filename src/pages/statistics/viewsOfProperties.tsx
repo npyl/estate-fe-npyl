@@ -1,95 +1,42 @@
-import { useGlobals } from "@/hooks/useGlobals";
-import { useGetPublicDashboardParentCategoriesQuery } from "@/services/publicDashboard";
-import { IGlobalProperty } from "@/types/global";
-import { KeyValue } from "@/types/KeyValue";
-import { Box, Menu, MenuItem, Select, SelectChangeEvent } from "@mui/material";
-import Typography from "@mui/material/Typography";
-import { Stack } from "@mui/system";
-import { t } from "i18next";
-import * as React from "react";
-import { useCallback, useMemo, useState } from "react";
 import {
     LineChart,
     Line,
     XAxis,
     YAxis,
-    CartesianGrid,
     Tooltip,
     Legend,
     ResponsiveContainer,
+    CartesianGrid,
 } from "recharts";
-
-const years = [
-    new Date(1990, 0, 1),
-    new Date(1991, 0, 1),
-    new Date(1992, 0, 1),
-    new Date(1993, 0, 1),
-    new Date(1994, 0, 1),
-    new Date(1995, 0, 1),
-    new Date(1996, 0, 1),
-    new Date(1997, 0, 1),
-    new Date(1998, 0, 1),
-    new Date(1999, 0, 1),
-    new Date(2000, 0, 1),
-    new Date(2001, 0, 1),
-    new Date(2002, 0, 1),
-    new Date(2003, 0, 1),
-    new Date(2004, 0, 1),
-    new Date(2005, 0, 1),
-    new Date(2006, 0, 1),
-    new Date(2007, 0, 1),
-    new Date(2008, 0, 1),
-    new Date(2009, 0, 1),
-    new Date(2010, 0, 1),
-    new Date(2011, 0, 1),
-    new Date(2012, 0, 1),
-    new Date(2013, 0, 1),
-    new Date(2014, 0, 1),
-    new Date(2015, 0, 1),
-    new Date(2016, 0, 1),
-    new Date(2017, 0, 1),
-    new Date(2018, 0, 1),
-];
-
-const UKGDPperCapita = [
-    26189, 25792.014, 25790.186, 26349.342, 27277.543, 27861.215, 28472.248,
-    29259.764, 30077.385, 30932.537, 31946.037, 32660.441, 33271.3, 34232.426,
-    34865.78, 35623.625, 36214.07, 36816.676, 36264.79, 34402.36, 34754.473,
-    34971, 35185, 35618, 36436, 36941, 37334, 37782.83, 38058.086,
-];
-
-const GermanyGDPperCapita = [
-    25391, 26769.96, 27385.055, 27250.701, 28140.057, 28868.945, 29349.982,
-    30186.945, 31129.584, 32087.604, 33367.285, 34260.29, 34590.93, 34716.44,
-    35528.715, 36205.574, 38014.137, 39752.207, 40715.434, 38962.938, 41109.582,
-    43189, 43320, 43413, 43922, 44293, 44689, 45619.785, 46177.617,
-];
-
-const dataset = years.map((year, index) => ({
-    year: year.getFullYear(),
-    UK: UKGDPperCapita[index],
-    Germany: GermanyGDPperCapita[index],
-}));
+import { useGlobals } from "@/hooks/useGlobals";
+import { useGetPublicDashboardPropertyViewsQuery } from "@/services/publicDashboard";
+import { IGlobalProperty } from "@/types/global";
+import { KeyValue } from "@/types/KeyValue";
+import { TTimeFrame } from "@/types/publicDashboard";
+import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import Typography from "@mui/material/Typography";
+import { Stack } from "@mui/system";
+import { t } from "i18next";
+import { useMemo, useState } from "react";
 
 const renderLegendText = (value: string) => value;
 
 export default function StackedAreas() {
     const [category, setCategory] = useState("");
     const [parentCategory, setParentCategory] = useState("");
-    const [timeframe, setTimeframe] = useState("monthly");
+    const [timeframe, setTimeframe] = useState<TTimeFrame>("ALL_TIME");
 
     // enums
     const data = useGlobals();
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
     const parentCategoryEnum = enums?.parentCategory;
-    const { data: parentCategoriesGet } =
-        useGetPublicDashboardParentCategoriesQuery({
-            endDate: new Date().toISOString(),
-            startDate: new Date().toISOString(),
-            timeFrame: "MONTH",
-        });
 
-    console.log("data: ", parentCategoriesGet);
+    const { data: parentCategoriesGet } =
+        useGetPublicDashboardPropertyViewsQuery({
+            parentCategory,
+            category,
+            timeframe,
+        });
 
     const subCategoriesMap: {
         [key: string]: KeyValue[];
@@ -117,9 +64,19 @@ export default function StackedAreas() {
         }
     };
 
-    const handleTimeframeSelect = (e: SelectChangeEvent<string>) => {
-        setTimeframe(e.target.value);
-    };
+    const handleTimeframeSelect = (e: SelectChangeEvent<TTimeFrame>) =>
+        setTimeframe(e.target.value as TTimeFrame);
+
+    const chartData = useMemo(
+        () =>
+            parentCategoriesGet?.map(({ date, parentCategories }) => ({
+                date,
+                All: parentCategories.All ?? 0,
+                parentCategory: parentCategories.parentCategory ?? 0,
+                category: parentCategories.category ?? 0,
+            })) || [],
+        [parentCategoriesGet]
+    );
 
     return (
         <>
@@ -129,9 +86,12 @@ export default function StackedAreas() {
                 </Typography>
                 <Stack direction="row" padding={1} spacing={2}>
                     <Select value={timeframe} onChange={handleTimeframeSelect}>
-                        <MenuItem value="monthly">{t("Monthly")}</MenuItem>
-                        <MenuItem value="yearly">Yearly</MenuItem>
-                        <MenuItem value="weekly">Weekly</MenuItem>
+                        <MenuItem value="ALL_TIME">{t("All Time")}</MenuItem>
+                        <MenuItem value="MONTH">Monthly</MenuItem>
+                        <MenuItem value="WEEK">Weekly</MenuItem>
+                        <MenuItem value="YEAR">Yearly</MenuItem>
+                        <MenuItem value="DAY">Dayly</MenuItem>
+                        <MenuItem value="CUSTOM">Custom</MenuItem>
                     </Select>
                     <Select
                         value={parentCategory}
@@ -161,7 +121,7 @@ export default function StackedAreas() {
             </Stack>
             <ResponsiveContainer width="100%" height={300}>
                 <LineChart
-                    data={dataset}
+                    data={chartData}
                     margin={{
                         top: 5,
                         right: 30,
@@ -188,8 +148,18 @@ export default function StackedAreas() {
                             </feMerge>
                         </filter>
                     </defs>
-                    <XAxis dataKey="year" />
-                    <YAxis />
+                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                    <XAxis dataKey="date" />
+                    {category && parentCategory ? (
+                        <>
+                            <YAxis dataKey="parentCategory" />
+                            <YAxis dataKey="category" />
+                        </>
+                    ) : !category && !parentCategory ? (
+                        <YAxis dataKey="All" />
+                    ) : !category && parentCategory ? (
+                        <YAxis dataKey="parentCategory" />
+                    ) : null}
                     <Tooltip />
                     <Legend
                         formatter={renderLegendText}
@@ -199,20 +169,45 @@ export default function StackedAreas() {
                         align="right"
                         layout="horizontal" //se periptwsh pou ta theloun katheta apla vazw vertical
                     />
-                    <Line
-                        type="monotone"
-                        dataKey="UK"
-                        stroke="#2E42A5"
-                        strokeWidth={2}
-                        dot={false}
-                    />
-                    <Line
-                        type="monotone"
-                        dataKey="Germany"
-                        stroke="#EB0F0F"
-                        strokeWidth={2}
-                        dot={false}
-                    />
+
+                    {category && parentCategory ? (
+                        <>
+                            <Line
+                                type="monotone"
+                                dataKey="parentCategory"
+                                stroke="#EB0F0F"
+                                strokeWidth={2}
+                                dot={false}
+                            />
+                            <Line
+                                type="monotone"
+                                dataKey="category"
+                                stroke="#2E42A5"
+                                strokeWidth={2}
+                                dot={false}
+                            />
+                        </>
+                    ) : !category && !parentCategory ? (
+                        <Line
+                            type="monotone"
+                            dataKey="All"
+                            stroke="#2E42A5"
+                            strokeWidth={2}
+                            dot={false}
+                        />
+                    ) : !category && parentCategory ? (
+                        <Line
+                            type="monotone"
+                            dataKey="parentCategory"
+                            stroke="#2E42A5"
+                            strokeWidth={2}
+                            dot={false}
+                        />
+                    ) : null}
+                    {
+                        (console.log("category", category),
+                        console.log("parentCategory", parentCategory))
+                    }
                 </LineChart>
             </ResponsiveContainer>
         </>

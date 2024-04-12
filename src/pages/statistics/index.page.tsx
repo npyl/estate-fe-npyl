@@ -3,9 +3,10 @@ import type { NextPage } from "next";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import * as React from "react";
-import ViewsChart from "./barChart";
-import PropertyViewLineChart from "./lineChart";
-import CategoryViewsLineChart from "./categoryViewsBarChart";
+import ViewsChart from "./liveViewsChart";
+import PropertyViewLineChart from "./viewsOfProperties";
+import CategoryViewsBarChart from "./categoryViewsBarChart";
+import PopularProperties from "./popularProperties";
 
 const Statistics: NextPage = () => {
     return (
@@ -35,7 +36,16 @@ const Statistics: NextPage = () => {
                     padding: 1,
                 }}
             >
-                <CategoryViewsLineChart />
+                <CategoryViewsBarChart />
+            </Paper>
+            <Paper
+                sx={{
+                    mt: 2,
+                    mb: 1,
+                    padding: 1,
+                }}
+            >
+                <PopularProperties />
             </Paper>
         </>
     );
