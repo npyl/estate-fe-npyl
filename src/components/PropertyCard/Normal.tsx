@@ -64,11 +64,18 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
 
     const convertedImages = useMemo(
         () =>
-            images.map((url, index) => ({
-                id: index,
-                url: (typeof url === "string" ? url : url.url) || defaultImage,
-                title: "",
-            })) || [],
+            images.map((url, index) => {
+                let urlString = typeof url === "string" ? url : url?.url;
+                urlString =
+                    urlString && urlString.startsWith("https://")
+                        ? urlString
+                        : "https://" + urlString;
+                return {
+                    id: index,
+                    url: urlString || defaultImage,
+                    title: "",
+                };
+            }) || [],
         [images]
     );
 

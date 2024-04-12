@@ -66,6 +66,9 @@ const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
     border: "1px solid",
     borderColor: getBorderColor(theme),
     boxShadow: theme.shadows[18],
+    "&:hover": {
+        backgroundColor: theme.palette.background.paper,
+    },
 }));
 
 // --------------------------------------------------------

@@ -1,4 +1,4 @@
-import { IconButton, Tab, Tabs, Stack } from "@mui/material";
+import { IconButton, Tab, Tabs, Stack, Typography } from "@mui/material";
 import { Suspense, useCallback, useState, lazy } from "react";
 import { FC } from "react";
 import { CloseIcon } from "yet-another-react-lightbox/core";
@@ -7,6 +7,7 @@ import Panel from "src/components/Panel";
 import { useFormContext } from "react-hook-form";
 import { IDemandPOST } from "src/types/demand";
 import { useTranslation } from "react-i18next";
+import { SpaceBetween } from "@/components/styled";
 
 // Dynamic
 const DemandForm = lazy(() => import("./DemandSection/Form"));
@@ -88,16 +89,16 @@ const DemandSection: FC = () => {
     );
 
     return (
-        <Panel
-            label={t("Demand Forms")}
-            endNode={
+        <>
+            <SpaceBetween>
+                <Typography variant="h5">{t("Demands")}</Typography>
                 <IconButton onClick={handleTabCreate}>
                     <AddCircleOutlineOutlinedIcon />
                 </IconButton>
-            }
-        >
+            </SpaceBetween>
+
             <Stack
-                sx={{ px: 2, borderBottom: 1, borderColor: "divider" }}
+                sx={{ borderBottom: 1, borderColor: "divider" }}
                 direction={"row"}
             >
                 <Tabs value={index} onChange={handleTabChange}>
@@ -124,7 +125,7 @@ const DemandSection: FC = () => {
                     <DemandForm index={index} />
                 </Suspense>
             ) : null}
-        </Panel>
+        </>
     );
 };
 export default DemandSection;
