@@ -610,10 +610,30 @@ const resources = {
                 "Choose a parent category and category for your property",
 
             "Add an existing label": "Add an existing label",
+            Furnishing: "Furnishing",
+            "Time Frame": "Time Frame",
+            "Size of Plot": "Size of Plot",
+
+            Max: "Max",
+            Min: "Min",
+
+            Size: "Size",
+
+            Municipality: "Municipality",
         },
     },
     el: {
         translation: {
+            Municipality: "Δήμος",
+
+            Size: "Μέγεθος",
+
+            Max: "Μεγ",
+            Min: "Ελαχ",
+
+            "Size of Plot": "Μέγεθος Οικοπέδου",
+            "Time Frame": "Χρονικό Περιθώριο",
+            Furnishing: "Επίπλωση",
             "Add an existing label": "Προσθήκη υπάρχουσας ετικέτας",
 
             "Choose a parent category and category for your property":

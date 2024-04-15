@@ -41,11 +41,8 @@ const MunicipSelect = (props: IMunicipSelectProps) => {
 
     return (
         <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">
-                {t("Municipality / District")}
-            </InputLabel>
+            <InputLabel>{t("Municipality")}</InputLabel>
             <Select
-                labelId="demo-simple-select-label"
                 value={municipCode}
                 onChange={handleChange}
                 renderValue={(selected) => {
@@ -54,7 +51,7 @@ const MunicipSelect = (props: IMunicipSelectProps) => {
                     );
                     return option ? option.nameGR : "";
                 }}
-                input={<OutlinedInput label={t("Municipality / District")} />}
+                input={<OutlinedInput label={t("Municipality")} />}
                 MenuProps={{
                     PaperProps: { sx: { maxHeight: "60vh" } },
                 }}
