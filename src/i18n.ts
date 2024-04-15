@@ -1,3 +1,4 @@
+import { Category } from "@mui/icons-material";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
@@ -8,6 +9,7 @@ const resources = {
 
             ID: "ID",
             Properties: "Properties",
+
             Notifications: "Notifications",
             Tickets: "Tickets",
             Mail: "Mail",
@@ -24,6 +26,11 @@ const resources = {
             Create: "Create",
             "Create Property": "Create Property",
             "Parent Category": "Parent Category",
+
+            All_Time: "All Time",
+            Weekly: "Weekly",
+            Yearly: "Yearly",
+            Daily: "Daily",
             Residential: "Residential",
             Commercial: "Commercial",
             "Other commercial": "Other commercial",
@@ -610,17 +617,33 @@ const resources = {
                 "Choose a parent category and category for your property",
 
             "Add an existing label": "Add an existing label",
+
+            Views: "Views",
+            "Property Views": "Property Views",
+            "Views of Properties": "Views of Properties",
+            "Category Views": "Category Views",
         },
     },
     el: {
         translation: {
+            Views: "Προβολές",
+            "Property Views": "Προβολές Ακινήτων",
+            "Views of Properties": "Προβολές Ακινήτων",
+
+            "Category Views": "Προβολές ανά Κατηγορία",
+
             "Add an existing label": "Προσθήκη υπάρχουσας ετικέτας",
 
             "Choose a parent category and category for your property":
                 "Επιλέξτε κατηγορία και υποκατηγορία για το ακίνητό σας",
             "Create a new property": "Δημιουργία νέου ακινήτου",
             "Welcome back": "Καλωσήρθατε",
+
+            All_Time: "Συνολικά",
             Monthly: "Μηνιαία",
+            Weekly: "Εβδομαδιαία",
+            Yearly: "Ετήσια",
+            Daily: "Ημερήσια",
             Logout: "Αποσύνδεση",
             Settings: "Ρυθμίσεις",
             Profile: "Προφίλ",
@@ -651,6 +674,7 @@ const resources = {
             "Edit Property": "Επεξεργασία Ακινήτου",
             "Newly Built": "Νεόδμητο",
             "Property Description": "Περιγραφή ακινήτου",
+
             Edit: "Επεξεργασία",
             Thumbnail: "Μικρογραφία",
             "Reference ID": "ID",

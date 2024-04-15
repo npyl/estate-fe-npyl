@@ -7,6 +7,7 @@ import {
     Legend,
     ResponsiveContainer,
     CartesianGrid,
+    TooltipProps,
 } from "recharts";
 import { useGlobals } from "@/hooks/useGlobals";
 import { useGetPublicDashboardPropertyViewsQuery } from "@/services/publicDashboard";
@@ -18,8 +19,6 @@ import Typography from "@mui/material/Typography";
 import { Stack } from "@mui/system";
 import { t } from "i18next";
 import { useMemo, useState } from "react";
-
-const renderLegendText = (value: string) => value;
 
 export default function StackedAreas() {
     const [category, setCategory] = useState("");
@@ -50,8 +49,10 @@ export default function StackedAreas() {
         [enums]
     );
 
-    const handleParentCategorySelect = (e: SelectChangeEvent<string>) =>
+    const handleParentCategorySelect = (e: SelectChangeEvent<string>) => {
         setParentCategory(e.target.value);
+        setCategory("");
+    };
 
     const handleCategorySelect = (event: SelectChangeEvent<string>) => {
         const selectedKey = event.target.value;
@@ -78,19 +79,73 @@ export default function StackedAreas() {
         [parentCategoriesGet]
     );
 
+    const renderLegendText = (value: string) => {
+        if (!parentCategory && !category) {
+            return "All";
+        }
+
+        if (value === "parentCategory" && parentCategory) {
+            const parentCategoryItem = parentCategoryEnum?.find(
+                (item) => item.key === parentCategory
+            );
+            return parentCategoryItem ? parentCategoryItem.value : value;
+        }
+
+        if (value === "category" && category) {
+            const categoryItem = subCategoriesMap[parentCategory!]?.find(
+                (item) => item.key === category
+            );
+            return categoryItem ? categoryItem.value : value;
+        }
+
+        return value;
+    };
+
+    const renderTooltipContent = (props: TooltipProps<number, string>) => {
+        if (props.active && props.payload && props.payload.length) {
+            const payload = props.payload[0];
+
+            return (
+                <div
+                    style={{
+                        backgroundColor: "#fff",
+                        padding: "10px",
+                        border: "1px solid #ccc",
+                    }}
+                >
+                    <p style={{ color: "#000" }}>{payload.name}</p>
+                    {payload.payload.parentCategory && (
+                        <p style={{ color: "#000" }}>
+                            {renderLegendText("parentCategory")}:{" "}
+                            {payload.payload.parentCategory}
+                        </p>
+                    )}
+                    {payload.payload.category && (
+                        <p style={{ color: "#000" }}>
+                            {renderLegendText("category")}:{" "}
+                            {payload.payload.category}
+                        </p>
+                    )}
+                </div>
+            );
+        }
+
+        return null;
+    };
+
     return (
         <>
             <Stack direction="row" spacing={2} p={1}>
                 <Typography variant={"h5"} p={1}>
-                    Views of Properties
+                    {t("Views of Properties")}
                 </Typography>
                 <Stack direction="row" padding={1} spacing={2}>
                     <Select value={timeframe} onChange={handleTimeframeSelect}>
-                        <MenuItem value="ALL_TIME">{t("All Time")}</MenuItem>
-                        <MenuItem value="MONTH">Monthly</MenuItem>
-                        <MenuItem value="WEEK">Weekly</MenuItem>
-                        <MenuItem value="YEAR">Yearly</MenuItem>
-                        <MenuItem value="DAY">Dayly</MenuItem>
+                        <MenuItem value="ALL_TIME">{t("All_Time")}</MenuItem>
+                        <MenuItem value="MONTH">{t("Monthly")}</MenuItem>
+                        <MenuItem value="WEEK">{t("Weekly")}</MenuItem>
+                        <MenuItem value="YEAR">{t("Yearly")}</MenuItem>
+                        <MenuItem value="DAY">{t("Daily")}</MenuItem>
                         <MenuItem value="CUSTOM">Custom</MenuItem>
                     </Select>
                     <Select
@@ -109,6 +164,7 @@ export default function StackedAreas() {
                         value={category}
                         onChange={handleCategorySelect}
                         displayEmpty
+                        disabled={!parentCategory} // Add this line
                     >
                         <MenuItem value="">{t("Category")}</MenuItem>
                         {subCategoriesMap[parentCategory!]?.map((item) => (
@@ -160,7 +216,7 @@ export default function StackedAreas() {
                     ) : !category && parentCategory ? (
                         <YAxis dataKey="parentCategory" />
                     ) : null}
-                    <Tooltip />
+                    <Tooltip content={renderTooltipContent} />
                     <Legend
                         formatter={renderLegendText}
                         iconType="circle"
