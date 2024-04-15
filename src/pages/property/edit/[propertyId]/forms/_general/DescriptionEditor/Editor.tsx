@@ -266,25 +266,47 @@ const DescriptionSection: React.FC = () => {
     const [translate] = useTranslateMutation();
 
     const handleTranslate = useCallback(async () => {
-        const textToTranslate = watch("descriptions[0].title");
+        // Fetching the texts to be translated
+        const titleToTranslate = watch("descriptions[0].title");
+        const descriptionToTranslate = watch("descriptions[0].description");
 
-        console.log("Text to Translate:", textToTranslate);
+        console.log("Title to Translate:", titleToTranslate);
+        console.log("Description to Translate:", descriptionToTranslate);
 
-        if (!textToTranslate) {
+        // Ensure both texts are available
+        if (!titleToTranslate && !descriptionToTranslate) {
+            console.log("No text provided for translation.");
             return;
         }
 
+        // Combine texts into an array, assuming the API can handle multiple texts
+        const textsToTranslate = [];
+        if (titleToTranslate) textsToTranslate.push(titleToTranslate);
+        if (descriptionToTranslate)
+            textsToTranslate.push(descriptionToTranslate);
+
+        // Setting up the parameters for the API call
         const params = {
             source_lang: "EL", // Assuming Greek to English translation
             target_lang: "EN",
-            text: textToTranslate.split(" "),
+            text: textsToTranslate,
         };
 
-        const res = await translate(params).unwrap();
+        try {
+            const res = await translate(params).unwrap();
+            const translatedTexts = res.translations.map(({ text }) => text);
 
-        const translatedText =
-            res?.translations?.map(({ text }) => text).join(" ") || "";
-    }, []);
+            console.log("Translated Texts:", translatedTexts);
+
+            setValue("descriptions[1].title", translatedTexts[0]);
+            const contentState = convertFromRaw(JSON.parse(translatedTexts[1]));
+            onEditorStateChange(EditorState.createWithContent(contentState));
+
+            // Optionally, navigate to another page or update UI to reflect changes
+        } catch (error) {
+            console.error("Translation error:", error);
+        }
+    }, [onEditorStateChange]);
 
     return (
         <TabbedBox<Language>
