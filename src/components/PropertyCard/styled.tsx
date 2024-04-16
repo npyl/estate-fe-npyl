@@ -18,6 +18,7 @@ export const StyledBox = styled(Box)<StyledBoxProps>(({ isActive, theme }) => ({
     "&:hover": {
         ...getCss(theme),
     },
+    backgroundColor: theme.palette.background.paper,
     ...(isActive ? getCss(theme) : {}),
 }));
 

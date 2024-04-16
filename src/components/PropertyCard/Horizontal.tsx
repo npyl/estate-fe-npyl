@@ -1,187 +1,240 @@
-"use client";
-import { Grid, Paper, Stack, Typography } from "@mui/material";
+import { IProperties, IPropertyResultResponse } from "@/types/properties";
+import { IMapMarker } from "../Map/Map";
+import { Divider, Grid, Stack, Typography } from "@mui/material";
+import { useCallback, useEffect, useMemo, useRef } from "react";
+import CarouselSimple from "../CarouselSimple";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useRef } from "react";
-import ICarouselImage from "src/components/carousel/types";
-import CarouselSimple from "src/components/CarouselSimple";
-import { IPropertyResultResponse } from "src/types/properties";
-import { IMapMarker } from "src/components/Map/Map";
-import Iconify from "src/components/iconify";
+import { useTranslation } from "react-i18next";
+import { SpaceBetween } from "../styled";
+import {
+    useGetMunicipalitiesQuery,
+    useGetNeighbourhoodsQuery,
+    useGetRegionsQuery,
+} from "@/services/location";
+import isNumberString from "../Location/util";
+import useHumanReadable from "../Location/hook";
+import { NormalBadge, PriceBadge, StyledBox } from "./styled";
 
-type BookingItemProps = {
-    item: IPropertyResultResponse;
-    activeMarker?: number;
+type PropertyCardProps = {
+    item: IPropertyResultResponse | IProperties;
     selectedMarker: IMapMarker | null;
 };
 
-function truncate(str: string = "", n: number) {
-    return str?.length > n ? str.substr(0, n - 1) + "..." : str;
-}
-
 const defaultImage = "/static/noImage.png";
 
-function HorizontalCard({
-    item,
-    activeMarker,
-    selectedMarker,
-}: BookingItemProps) {
+// -------------------------------------------------------------
+
+const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
     const {
-        plotArea,
-        parentCategory,
-        description,
-        details,
-        price,
-        location,
-        images,
         id,
+        images,
+        details,
+        location,
+        price,
+        code,
+        state,
+        category,
         area,
-    } = item;
+    } = item || {};
+    const { bathrooms, bedrooms } = details || {};
+    const { lat, lng } = location || {};
 
-    const pricePerSqm = price / area;
-
+    const { t } = useTranslation();
     const router = useRouter();
-    const itemRef = useRef<HTMLDivElement | null>(null);
-    const isActive =
-        item.location.lat === selectedMarker?.lat &&
-        item.location.lng === selectedMarker?.lng;
+    const ref = useRef<HTMLDivElement>();
 
-    useEffect(() => {
-        if (isActive && itemRef.current) {
-            itemRef.current.scrollIntoView({ behavior: "smooth" });
-        }
-    }, [isActive]);
+    const { data: regions } = useGetRegionsQuery();
+    const { data: municips } = useGetMunicipalitiesQuery(+location?.region!, {
+        skip: !isNumberString(location?.region),
+    });
+    const { data: neighbs } = useGetNeighbourhoodsQuery(+location?.city!, {
+        skip: !isNumberString(location?.city),
+    });
+
+    // region is most of the types a code; translate to human readable form; otherwise just return the string
+    const region = useHumanReadable(location?.region, regions);
+
+    // city is most of the types a code; translate to human readable form; otherwise just return the string
+    const city = useHumanReadable(location?.city, municips);
+
+    // neighb is most of the types a code; translate to human readable form; otherwise just return the string
+    const neighb = useHumanReadable(location?.complex, neighbs);
+
+    const address = `${region} ${city} ${neighb}`;
 
     const convertedImages = useMemo(
         () =>
-            images.map((url, index) => ({
-                id: index,
-                url: url || defaultImage,
-                title: "",
-            })) || [],
+            images.map((url, index) => {
+                let urlString = typeof url === "string" ? url : url?.url;
+                urlString =
+                    urlString && urlString.startsWith("https://")
+                        ? urlString
+                        : "https://" + urlString;
+                return {
+                    id: index,
+                    url: urlString || defaultImage,
+                    title: "",
+                };
+            }) || [],
         [images]
     );
 
+    const isActive = useMemo(
+        () =>
+            lat &&
+            lat > 0 &&
+            lng &&
+            lng > 0 &&
+            lat === selectedMarker?.lat &&
+            lng === selectedMarker?.lng,
+        [lat, lng, selectedMarker]
+    );
+    useEffect(() => {
+        if (isActive) {
+            ref.current?.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [isActive]);
+
+    const handleClick = useCallback(() => router.push(`property/${id}`), []);
+
     return (
-        <Grid
-            padding={2}
-            component={Paper}
-            ref={itemRef}
+        <StyledBox
+            borderRadius="12px"
             sx={{
-                mt: 2,
-                mx: 1.5,
-                border: 0,
-                borderRadius: 1,
-                boxShadow: isActive
-                    ? `rgba(0, 0, 0, 0.65) 0px 5px 15px`
-                    : `rgba(0, 0, 0, 0.25) 0px 5px 15px`,
-                fontWeight: isActive ? "bold" : "normal",
-                "&:hover": {
-                    cursor: "pointer",
-                    boxShadow: `rgba(0, 0, 0, 0.65) 0px 5px 15px`,
-                },
+                cursor: "pointer",
             }}
-            container
-            direction={"row"}
+            isActive={isActive as boolean}
+            ref={ref}
+            onClick={handleClick}
         >
-            <Grid xs={4} sx={{ position: "relative" }}>
-                <CarouselSimple
-                    ratio="1/1"
-                    onImageClick={() => router.push(`property/${id}`)}
-                    data={convertedImages}
-                />
-            </Grid>
-            <Grid
-                xs={8}
-                sx={{ p: 2, background: "white" }}
-                onClick={() => router.push(`property/${id}`)}
-            >
-                <Stack
-                    direction="row"
-                    justifyContent="flex-start"
-                    alignItems={"center"}
-                    spacing={1}
-                >
-                    <Typography
-                        variant="h5"
-                        width={"100%"}
-                        style={{
-                            fontWeight:
-                                item.id === activeMarker ? "bold" : "normal",
-                        }}
-                    >
-                        {parentCategory.value}
-                    </Typography>
-                    <Stack direction={"row"} spacing={1}>
-                        <Typography variant="body1">{area}m&sup2;</Typography>
-                    </Stack>
-                </Stack>
+            <Grid container>
+                <Grid item xs={4} p={1} borderRadius="12px">
+                    <CarouselSimple
+                        data={
+                            convertedImages.length > 0
+                                ? convertedImages
+                                : [
+                                      {
+                                          id: 1,
+                                          url: defaultImage,
+                                          title: "",
+                                      },
+                                  ]
+                        }
+                        ratio="4/3"
+                    />
+                </Grid>
+                <Grid item xs={8}>
+                    <Stack px={2} py={2} spacing={0.8}>
+                        <Stack
+                            spacing={4}
+                            direction="row"
+                            mt={1}
+                            flexWrap="wrap"
+                        >
+                            {/* ---- */}
+                            <Stack
+                                direction="row"
+                                spacing={1}
+                                alignItems="center"
+                            >
+                                <Typography>
+                                    <i className="las la-bed" />
+                                </Typography>
+                                <Typography variant="body2">
+                                    {bedrooms || "-"}
+                                </Typography>
+                                <Typography variant="body2">
+                                    {t("beds")}
+                                </Typography>
+                            </Stack>
+                            {/* ---- */}
+                            <Stack
+                                direction="row"
+                                spacing={1}
+                                alignItems="center"
+                            >
+                                <Typography>
+                                    <i className="las la-bath" />
+                                </Typography>
+                                <Typography variant="body2">
+                                    {bathrooms || "-"}
+                                </Typography>
+                                <Typography variant="body2">
+                                    {t("baths")}
+                                </Typography>
+                            </Stack>
+                            {/* ---- */}
+                            <Stack
+                                direction="row"
+                                spacing={1}
+                                alignItems="center"
+                            >
+                                <Typography>
+                                    <i className="las la-expand-arrows-alt " />
+                                </Typography>
+                                <Typography variant="body2">
+                                    {area || "-"}
+                                </Typography>
+                                <Typography variant="body2">m²</Typography>
+                            </Stack>
+                        </Stack>
 
-                <Typography color={"text.secondary"} variant="body1" mb={2}>
-                    {location?.street} {location?.number}, {location?.zipCode}
-                </Typography>
-
-                <Stack
-                    direction="row"
-                    justifyContent="flex-start"
-                    alignItems={"center"}
-                    spacing={1}
-                    mb={3}
-                >
-                    <Typography variant="body2" sx={{ fontSize: "0.8rem" }}>
-                        {truncate(description, 40)}
-                    </Typography>
-                </Stack>
-
-                <Stack
-                    direction="row"
-                    justifyContent="flex-start"
-                    alignItems={"center"}
-                    spacing={5}
-                    mb={2}
-                >
-                    <Stack direction={"row"} spacing={1}>
-                        <Iconify icon={"ph:bed"} />
-                        <Typography variant="body2">
-                            {details?.floor.value}
-                        </Typography>
-                    </Stack>
-
-                    <Stack direction={"row"} spacing={1}>
-                        <Iconify icon={"ph:bed"} />
-                        <Typography variant="body2">
-                            {details?.bedrooms}
-                        </Typography>
-                    </Stack>
-
-                    <Stack direction={"row"} spacing={1}>
-                        <Iconify icon={"mdi:bathroom"} />
-                        <Typography variant="body2">
-                            {details?.bathrooms}
-                        </Typography>
-                    </Stack>
-
-                    {parentCategory.key === "LAND" && (
-                        <Stack direction={"row"} spacing={1}>
-                            <Typography variant="body1">Οικόπεδο: </Typography>
-                            <Typography variant="body1">
-                                {plotArea} m&sup2;
+                        <Stack direction="row" spacing={1} alignItems="center">
+                            <svg
+                                width="14px"
+                                height="14px"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={1.5}
+                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                                />
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={1.5}
+                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                                />
+                            </svg>
+                            <Typography variant="body2" color="text.secondary">
+                                {address}
                             </Typography>
                         </Stack>
-                    )}
-                </Stack>
 
-                <Stack direction={"row"} spacing={5}>
-                    <Typography variant="h6">{price}€</Typography>
-                    <Typography variant="h6">
-                        {Number.isInteger(pricePerSqm)
-                            ? pricePerSqm
-                            : pricePerSqm.toFixed(1)}
-                        €/m&sup2;
-                    </Typography>
-                </Stack>
+                        <Divider />
+
+                        <Stack direction="row" spacing={0.3}>
+                            {state?.value ? (
+                                <NormalBadge
+                                    name={t(state?.value)}
+                                    color="indigo"
+                                />
+                            ) : null}
+                            {category?.value ? (
+                                <NormalBadge
+                                    name={t(category?.value)}
+                                    color="indigo"
+                                />
+                            ) : null}
+                        </Stack>
+                        <SpaceBetween alignItems="center">
+                            <NormalBadge
+                                name={`${t("Code")}: ${code || ""}`}
+                                color="yellow"
+                            />
+
+                            <PriceBadge price={price} />
+                        </SpaceBetween>
+                    </Stack>
+                </Grid>
             </Grid>
-        </Grid>
+        </StyledBox>
     );
-}
+};
 
-export default HorizontalCard;
+export default PropertyCard;
