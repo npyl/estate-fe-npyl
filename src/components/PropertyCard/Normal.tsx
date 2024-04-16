@@ -123,15 +123,16 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
             />
 
             <Stack px={2} py={2} spacing={0.8}>
-                <Stack spacing={4} direction="row" mt={1}>
+                <Stack spacing={4} direction="row" mt={1} flexWrap="wrap">
                     {/* ---- */}
                     <Stack direction="row" spacing={1} alignItems="center">
                         <Typography>
                             <i className="las la-bed" />
                         </Typography>
                         <Typography variant="body2">
-                            {bedrooms || "-"} {t("beds")}
+                            {bedrooms || "-"}
                         </Typography>
+                        <Typography variant="body2">{t("beds")}</Typography>
                     </Stack>
                     {/* ---- */}
                     <Stack direction="row" spacing={1} alignItems="center">
@@ -139,17 +140,17 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
                             <i className="las la-bath" />
                         </Typography>
                         <Typography variant="body2">
-                            {bathrooms || "-"} {t("baths")}
+                            {bathrooms || "-"}
                         </Typography>
+                        <Typography variant="body2">{t("baths")}</Typography>
                     </Stack>
                     {/* ---- */}
                     <Stack direction="row" spacing={1} alignItems="center">
                         <Typography>
                             <i className="las la-expand-arrows-alt " />
                         </Typography>
-                        <Typography variant="body2">
-                            {area || "-"} m²
-                        </Typography>
+                        <Typography variant="body2">{area || "-"}</Typography>
+                        <Typography variant="body2">m²</Typography>
                     </Stack>
                 </Stack>
 
