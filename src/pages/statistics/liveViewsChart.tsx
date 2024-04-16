@@ -8,7 +8,6 @@ import {
     ResponsiveContainer,
     Rectangle,
 } from "recharts";
-import { t } from "i18next";
 import { useMemo } from "react";
 import { Box, Stack } from "@mui/system";
 import { Typography } from "@mui/material";
@@ -18,16 +17,14 @@ import { SpaceBetween } from "@/components/styled";
 import { useGetDailyViewsQuery } from "@/services/publicDashboard";
 import { StyledCursor } from "./styled";
 
-const today = new Date();
-
 export default function ViewsChart() {
+    const { t, i18n } = useTranslation();
+
     const { data } = useGetDailyViewsQuery(undefined, {
         pollingInterval: 3000,
     });
 
     const chartData = useMemo(() => data?.views || [], [data]);
-
-    const { i18n } = useTranslation();
 
     const currentDate = useMemo(
         () =>

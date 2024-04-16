@@ -9,13 +9,14 @@ import { TTimeFrame } from "@/types/publicDashboard";
 import { Grid, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { Stack } from "@mui/system";
-import { t } from "i18next";
 import { useTranslation } from "react-i18next";
 import { useMemo, useState } from "react";
 import PropertyCard from "@/components/PropertyCard";
 import { ViewsIcon } from "@/icons/views";
 
 export default function StackedAreas() {
+    const { t } = useTranslation();
+
     const [category, setCategory] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [parentCategory, setParentCategory] = useState("");

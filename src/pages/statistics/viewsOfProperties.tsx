@@ -17,10 +17,12 @@ import { TTimeFrame } from "@/types/publicDashboard";
 import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { Stack } from "@mui/system";
-import { t } from "i18next";
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function StackedAreas() {
+    const { t } = useTranslation();
+
     const [category, setCategory] = useState("");
     const [parentCategory, setParentCategory] = useState("");
     const [timeframe, setTimeframe] = useState<TTimeFrame>("ALL_TIME");
