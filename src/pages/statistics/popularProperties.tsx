@@ -9,13 +9,16 @@ import { TTimeFrame } from "@/types/publicDashboard";
 import { Grid, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { Stack } from "@mui/system";
-import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 import { useMemo, useState } from "react";
 import PropertyCard from "@/components/PropertyCard";
 import { ViewsIcon } from "@/icons/views";
 
 export default function StackedAreas() {
+    const { t } = useTranslation();
+
     const [category, setCategory] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
     const [parentCategory, setParentCategory] = useState("");
     const [timeframe, setTimeframe] = useState<TTimeFrame>("ALL_TIME");
 
@@ -53,9 +56,7 @@ export default function StackedAreas() {
         const selectedParentCategory = event.target.value;
         setParentCategory(selectedParentCategory);
 
-        if (selectedParentCategory === "") {
-            setCategory("");
-        }
+        setCategory("");
     };
 
     const handleCategorySelect = (event: SelectChangeEvent<string>) => {
@@ -76,15 +77,15 @@ export default function StackedAreas() {
         <>
             <Stack direction="row" spacing={2} p={1}>
                 <Typography variant={"h5"} p={1}>
-                    Popular Properties
+                    {t("Popular Properties")}
                 </Typography>
                 <Stack direction="row" padding={1} spacing={2}>
                     <Select value={timeframe} onChange={handleTimeframeSelect}>
-                        <MenuItem value="ALL_TIME">{t("All Time")}</MenuItem>
-                        <MenuItem value="MONTH">Monthly</MenuItem>
-                        <MenuItem value="WEEK">Weekly</MenuItem>
-                        <MenuItem value="YEAR">Yearly</MenuItem>
-                        <MenuItem value="DAY">Daily</MenuItem>
+                        <MenuItem value="ALL_TIME">{t("All_Time")}</MenuItem>
+                        <MenuItem value="MONTH">{t("Monthly")}</MenuItem>
+                        <MenuItem value="WEEK">{"Weekly"}</MenuItem>
+                        <MenuItem value="YEAR">{t("Yearly")}</MenuItem>
+                        <MenuItem value="DAY">{t("Daily")}</MenuItem>
                         <MenuItem value="CUSTOM">Custom</MenuItem>
                     </Select>
                     <Select

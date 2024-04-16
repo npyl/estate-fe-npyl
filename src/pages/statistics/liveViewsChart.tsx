@@ -8,26 +8,36 @@ import {
     ResponsiveContainer,
     Rectangle,
 } from "recharts";
+import { useMemo } from "react";
 import { Box, Stack } from "@mui/system";
 import { Typography } from "@mui/material";
-import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Live as LiveIcon } from "@/icons/live";
 import { SpaceBetween } from "@/components/styled";
 import { useGetDailyViewsQuery } from "@/services/publicDashboard";
-
-const today = new Date();
-const currentDate = today.toLocaleDateString("en-US", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-});
+import { StyledCursor } from "./styled";
 
 export default function ViewsChart() {
+    const { t, i18n } = useTranslation();
+
     const { data } = useGetDailyViewsQuery(undefined, {
         pollingInterval: 3000,
     });
 
     const chartData = useMemo(() => data?.views || [], [data]);
+
+    const currentDate = useMemo(
+        () =>
+            new Date().toLocaleDateString(
+                i18n.language === "el" ? "el-GR" : "en-US",
+                {
+                    weekday: "long",
+                    day: "numeric",
+                    month: "long",
+                }
+            ),
+        [i18n.language]
+    );
 
     return (
         <>
@@ -37,7 +47,7 @@ export default function ViewsChart() {
                         {currentDate}
                     </Typography>
                     <Typography variant="body1" p={1} sx={{ top: 0, right: 0 }}>
-                        {data?.totalViews ?? 0} Views of Properties
+                        {t("Property Views")} : {data?.totalViews ?? 0}
                     </Typography>
                 </Stack>
                 <Typography
@@ -71,49 +81,51 @@ export default function ViewsChart() {
                         <XAxis
                             dataKey="hour"
                             tickFormatter={(tick) => {
-                                // Assuming `tick` is a number representing the hour
-                                const date = new Date();
-                                date.setHours(tick);
-                                return date.toLocaleString("en-US", {
-                                    hour: "numeric",
-                                    hour12: true,
-                                });
+                                return `${tick}:00`;
                             }}
                         />
                         <YAxis dataKey="views" />
                         <Tooltip
+                            cursor={<StyledCursor />}
                             content={({ payload }) => {
                                 if (payload?.length) {
+                                    const date = new Date();
+                                    date.setHours(payload[0].payload.hour);
+                                    const timeString = date.toLocaleTimeString(
+                                        [],
+                                        {
+                                            hour: "2-digit",
+                                            minute: "2-digit",
+                                        }
+                                    );
+
                                     return (
                                         <Box
                                             sx={{
-                                                padding: "10px",
+                                                background: "white",
+
+                                                borderRadius: "5px",
+                                                boxShadow:
+                                                    "0 0 10px rgba(0, 0, 0, 0.1)",
                                                 border: "1px solid #ccc",
-                                                borderRadius: "7px",
-                                                backgroundColor: "neutral.200",
+                                                color: "black",
                                                 justifyContent: "center",
+                                                alignItems: "center",
+                                                width: "100px",
+                                                height: "90px",
                                                 textAlign: "center",
                                             }}
                                         >
-                                            <p>
-                                                Time:
-                                                {new Date(
-                                                    payload[0].payload.hour *
-                                                        1000 *
-                                                        60 *
-                                                        60
-                                                ).toLocaleTimeString([], {
-                                                    hour: "2-digit",
-                                                    minute: "2-digit",
-                                                })}
-                                            </p>
-                                            <p>Views: {payload[0].value}</p>
+                                            <p>{timeString}</p>
+                                            <p>{`Views: ${payload[0].value}`}</p>
                                         </Box>
                                     );
                                 }
+
                                 return null;
                             }}
                         />
+                        ;
                         <Bar
                             dataKey="views"
                             fill="#3366FF"

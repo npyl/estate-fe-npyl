@@ -1,6 +1,4 @@
 import {
-    LineChart,
-    Line,
     XAxis,
     YAxis,
     CartesianGrid,
@@ -11,25 +9,28 @@ import {
     Bar,
     Rectangle,
 } from "recharts";
-import { t } from "i18next";
 import { Stack } from "@mui/system";
 import { useMemo, useState } from "react";
 import Typography from "@mui/material/Typography";
 import { TTimeFrame } from "@/types/publicDashboard";
-import { Box, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { useGetPublicDashboardParentCategoriesQuery } from "@/services/publicDashboard";
+import { useTranslation } from "react-i18next";
+import { TranslationType } from "@/types/translation";
+
+const renderLegendText = (value: string, t: TranslationType) => {
+    return <span>{t(value)}</span>;
+};
 
 export default function ViewsOfPropertiesChart() {
+    const { t } = useTranslation();
+
     const [timeframe, setTimeframe] = useState<TTimeFrame>("ALL_TIME");
 
     const { data: parentCategoriesGet } =
         useGetPublicDashboardParentCategoriesQuery({
             timeframe,
         });
-
-    const renderLegendText = (value: string) => (
-        <span style={{ color: "black" }}>{value}</span>
-    );
 
     const handleTimeframeSelect = (e: SelectChangeEvent<TTimeFrame>) =>
         setTimeframe(e.target.value as TTimeFrame);
@@ -51,14 +52,14 @@ export default function ViewsOfPropertiesChart() {
     return (
         <>
             <Stack direction="row" spacing={2} p={1}>
-                <Typography variant={"h5"}>Category Views</Typography>
+                <Typography variant={"h5"}>{t("Category Views")}</Typography>
 
                 <Select value={timeframe} onChange={handleTimeframeSelect}>
-                    <MenuItem value="ALL_TIME">{t("All Time")}</MenuItem>
-                    <MenuItem value="MONTH">Monthly</MenuItem>
-                    <MenuItem value="WEEK">Weekly</MenuItem>
-                    <MenuItem value="YEAR">Yearly</MenuItem>
-                    <MenuItem value="DAY">Dayly</MenuItem>
+                    <MenuItem value="ALL_TIME">{t("All_Time")}</MenuItem>
+                    <MenuItem value="MONTH">{t("Monthly")}</MenuItem>
+                    <MenuItem value="WEEK">{t("Weekly")}</MenuItem>
+                    <MenuItem value="YEAR">{t("Yearly")}</MenuItem>
+                    <MenuItem value="DAY">{t("Daily")}</MenuItem>
                     <MenuItem value="CUSTOM">Custom</MenuItem>
                 </Select>
             </Stack>
@@ -97,7 +98,7 @@ export default function ViewsOfPropertiesChart() {
                     />
 
                     <Legend
-                        formatter={renderLegendText}
+                        formatter={(f) => renderLegendText(f, t)}
                         iconType="circle"
                         iconSize={10}
                         verticalAlign="top"
@@ -126,7 +127,7 @@ export default function ViewsOfPropertiesChart() {
                     <Bar
                         barSize={25}
                         dataKey="Other"
-                        fill={"#EEF5FF"}
+                        fill={"#6ba8ff"}
                         shape={<Rectangle radius={[10, 10, 0, 0]} />}
                     />
                 </BarChart>
