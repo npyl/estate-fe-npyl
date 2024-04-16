@@ -49,6 +49,16 @@ export default function ViewsOfPropertiesChart() {
         [parentCategoriesGet]
     );
 
+    const formatDateTick = (tickItem: string) => {
+        const date = new Date(tickItem);
+        return timeframe === "WEEK"
+            ? date.toLocaleDateString("en-GB", {
+                  day: "2-digit",
+                  month: "2-digit",
+              })
+            : date.toLocaleDateString();
+    };
+
     return (
         <>
             <Stack direction="row" spacing={2} p={1}>
@@ -63,72 +73,112 @@ export default function ViewsOfPropertiesChart() {
                     <MenuItem value="CUSTOM">Custom</MenuItem>
                 </Select>
             </Stack>
-            <ResponsiveContainer width="100%" height={300}>
-                <BarChart width={730} height={250} data={chartData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
-                    <YAxis />
-                    <Tooltip
-                        content={({ payload }) => {
-                            if (payload?.length) {
-                                return (
-                                    <div
-                                        style={{
-                                            background: "#fff",
-                                            padding: "10px",
-                                            border: "1px solid #ccc",
-                                            borderRadius: "7px",
-                                            color: "black", // This will make the text color black
-                                        }}
-                                    >
-                                        {payload.map((entry) => (
-                                            <p
-                                                key={entry.name}
-                                                style={{ color: "black" }}
-                                            >
-                                                {entry.name}: {entry.value}
-                                            </p>
-                                        ))}
-                                    </div>
-                                );
-                            }
-
-                            return null;
-                        }}
-                    />
-
-                    <Legend
-                        formatter={(f) => renderLegendText(f, t)}
-                        iconType="circle"
-                        iconSize={10}
-                        verticalAlign="top"
-                        align="right"
-                        layout="horizontal"
-                    />
-
+            <ResponsiveContainer width="99%" height={300}>
+                <BarChart
+                    data={chartData}
+                    margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                >
+                    <defs>
+                        <linearGradient
+                            id="colorCommercial"
+                            x1="0"
+                            y1="0"
+                            x2="0"
+                            y2="1"
+                        >
+                            <stop
+                                offset="5%"
+                                stopColor="#A25772"
+                                stopOpacity={1}
+                            />
+                            <stop
+                                offset="95%"
+                                stopColor="#A25772"
+                                stopOpacity={0.5}
+                            />
+                        </linearGradient>
+                        <linearGradient
+                            id="colorResidential"
+                            x1="0"
+                            y1="0"
+                            x2="0"
+                            y2="1"
+                        >
+                            <stop
+                                offset="5%"
+                                stopColor="#7C93C3"
+                                stopOpacity={1}
+                            />
+                            <stop
+                                offset="95%"
+                                stopColor="#7C93C3"
+                                stopOpacity={0.5}
+                            />
+                        </linearGradient>
+                        <linearGradient
+                            id="colorLand"
+                            x1="0"
+                            y1="0"
+                            x2="0"
+                            y2="1"
+                        >
+                            <stop
+                                offset="5%"
+                                stopColor="#9EB8D9"
+                                stopOpacity={1}
+                            />
+                            <stop
+                                offset="95%"
+                                stopColor="#9EB8D9"
+                                stopOpacity={0.5}
+                            />
+                        </linearGradient>
+                        <linearGradient
+                            id="colorOther"
+                            x1="0"
+                            y1="0"
+                            x2="0"
+                            y2="1"
+                        >
+                            <stop
+                                offset="5%"
+                                stopColor="#6ba8ff"
+                                stopOpacity={1}
+                            />
+                            <stop
+                                offset="95%"
+                                stopColor="#6ba8ff"
+                                stopOpacity={0.5}
+                            />
+                        </linearGradient>
+                    </defs>
+                    <CartesianGrid vertical={false} />
+                    <XAxis dataKey="date" tickFormatter={formatDateTick} />
+                    <YAxis width={20} />
+                    {/* ... */}
                     <Bar
                         barSize={25}
                         dataKey="Commercial"
-                        fill={"#A25772"}
-                        shape={<Rectangle radius={[10, 10, 0, 0]} />}
+                        fill="url(#colorCommercial)"
+                        shape={<Rectangle radius={[5, 5, 0, 0]} />}
                     />
                     <Bar
                         barSize={25}
                         dataKey="Residential"
-                        fill={"#7C93C3"}
-                        shape={<Rectangle radius={[10, 10, 0, 0]} />}
+                        fill="url(#colorResidential)"
+                        shape={<Rectangle radius={[5, 5, 0, 0]} />}
                     />
                     <Bar
                         barSize={25}
                         dataKey="Land"
-                        fill={"#9EB8D9"}
-                        shape={<Rectangle radius={[10, 10, 0, 0]} />}
+                        fill="url(#colorLand)"
+                        shape={<Rectangle radius={[5, 5, 0, 0]} />}
                     />
                     <Bar
                         barSize={25}
                         dataKey="Other"
-                        fill={"#6ba8ff"}
-                        shape={<Rectangle radius={[10, 10, 0, 0]} />}
+                        fill="url(#colorOther)"
+                        shape={<Rectangle radius={[5, 5, 0, 0]} />}
                     />
                 </BarChart>
             </ResponsiveContainer>

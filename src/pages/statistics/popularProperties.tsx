@@ -6,7 +6,7 @@ import {
 import { IGlobalProperty } from "@/types/global";
 import { KeyValue } from "@/types/KeyValue";
 import { TTimeFrame } from "@/types/publicDashboard";
-import { Grid, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { Box, Grid, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { Stack } from "@mui/system";
 import { t } from "i18next";
@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import { useMemo, useState } from "react";
 import PropertyCard from "@/components/PropertyCard";
 import { ViewsIcon } from "@/icons/views";
+import { useResponsive } from "@/hooks/use-responsive";
 
 export default function StackedAreas() {
     const [category, setCategory] = useState("");
@@ -25,13 +26,6 @@ export default function StackedAreas() {
     const data = useGlobals();
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
     const parentCategoryEnum = enums?.parentCategory;
-
-    const { data: parentCategoriesGet } =
-        useGetPublicDashboardPropertyViewsQuery({
-            parentCategory,
-            category,
-            timeframe,
-        });
 
     const { data: properties } = useGetPublicDashboardPopularPropertiesQuery({
         parentCategory,
@@ -72,13 +66,40 @@ export default function StackedAreas() {
     const handleTimeframeSelect = (e: SelectChangeEvent<TTimeFrame>) =>
         setTimeframe(e.target.value as TTimeFrame);
 
+    const belowSm = useResponsive("down", "sm");
+
+    const filteredProperties = useMemo(
+        () =>
+            properties?.filter(
+                (property) =>
+                    (!parentCategory ||
+                        property?.parentCategory?.key === parentCategory) &&
+                    (!category || property?.category?.key === category)
+            ),
+        [parentCategory, category, properties]
+    );
+
     return (
         <>
-            <Stack direction="row" spacing={2} p={1}>
+            <Stack
+                direction={{
+                    xs: "column",
+                    sm: "row",
+                }}
+                spacing={2}
+                p={1}
+            >
                 <Typography variant={"h5"} p={1}>
                     {t("Popular Properties")}
                 </Typography>
-                <Stack direction="row" padding={1} spacing={2}>
+                <Stack
+                    direction={{
+                        xs: "column",
+                        sm: "row",
+                    }}
+                    padding={1}
+                    spacing={2}
+                >
                     <Select value={timeframe} onChange={handleTimeframeSelect}>
                         <MenuItem value="ALL_TIME">{t("All_Time")}</MenuItem>
                         <MenuItem value="MONTH">{t("Monthly")}</MenuItem>
@@ -114,51 +135,53 @@ export default function StackedAreas() {
                     </Select>
                 </Stack>
             </Stack>
-            <Grid container spacing={2}>
-                {properties
-                    ?.filter(
-                        (property) =>
-                            (!parentCategory ||
-                                property?.parentCategory?.key ===
-                                    parentCategory) &&
-                            (!category || property?.category?.key === category)
-                    )
-                    ?.map((property, index) => (
-                        <Grid
-                            item
-                            xs={12}
-                            md={6}
-                            lg={4}
-                            key={`${property.id}-${timeframe}`}
+
+            <Grid
+                container
+                spacing={2}
+                sx={{
+                    height: belowSm ? "500px" : "auto",
+                    overflowY: belowSm ? "auto" : "initial",
+                }}
+                my={belowSm ? 2 : 0}
+                px={2}
+            >
+                {filteredProperties?.map((property) => (
+                    <Grid
+                        item
+                        xs={12}
+                        md={6}
+                        lg={4}
+                        key={`${property.id}-${timeframe}`}
+                        sx={{
+                            position: "relative",
+                        }}
+                    >
+                        <PropertyCard item={property} selectedMarker={null} />
+                        <Stack
+                            position="absolute"
+                            direction="row"
+                            top={20}
+                            right={2}
                             sx={{
-                                position: "relative",
+                                backgroundColor: "rgba(0, 0, 0, 0.5)",
+                                paddingLeft: 1,
+                                paddingRight: 1,
+                                borderRadius: 15,
                             }}
                         >
-                            <PropertyCard
-                                item={property}
-                                selectedMarker={null}
-                            />
-                            <Stack
-                                position="absolute"
-                                direction="row"
-                                top={20}
-                                right={2}
+                            <ViewsIcon />
+                            <Typography
                                 sx={{
-                                    backgroundColor: "rgba(0, 0, 0, 0.5)",
-                                    paddingLeft: 1,
-                                    paddingRight: 1,
-                                    borderRadius: 15,
+                                    paddingLeft: "5px",
+                                    color: "white",
                                 }}
                             >
-                                <ViewsIcon />
-                                <Typography
-                                    sx={{ paddingLeft: "5px", color: "white" }}
-                                >
-                                    {(property as any).visitors}
-                                </Typography>
-                            </Stack>
-                        </Grid>
-                    ))}
+                                {(property as any).visitors}
+                            </Typography>
+                        </Stack>
+                    </Grid>
+                ))}
             </Grid>
         </>
     );
