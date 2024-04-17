@@ -134,6 +134,7 @@ export default function StackedAreas() {
                     <p style={{ color: "#000", margin: 0, fontWeight: "bold" }}>
                         Property Views
                     </p>
+                    <hr style={{ borderColor: "grey" }} />
                     {payload.map((entry) => (
                         <div
                             key={entry.name}
@@ -154,7 +155,9 @@ export default function StackedAreas() {
                                     marginRight: "5px",
                                 }}
                             ></span>
-                            <span>{`${renderLegendText(
+                            <span
+                                style={{ color: "#000" }}
+                            >{`${renderLegendText(
                                 (entry.name as string) || ""
                             )}: ${entry.value}`}</span>
                         </div>

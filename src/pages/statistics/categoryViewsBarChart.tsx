@@ -8,6 +8,7 @@ import {
     BarChart,
     Bar,
     Rectangle,
+    TooltipProps,
 } from "recharts";
 import { Stack } from "@mui/system";
 import { useMemo, useState } from "react";
@@ -17,10 +18,10 @@ import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { useGetPublicDashboardParentCategoriesQuery } from "@/services/publicDashboard";
 import { useTranslation } from "react-i18next";
 import { TranslationType } from "@/types/translation";
-
-const renderLegendText = (value: string, t: TranslationType) => {
-    return <span>{t(value)}</span>;
-};
+import {
+    NameType,
+    ValueType,
+} from "recharts/types/component/DefaultTooltipContent";
 
 export default function ViewsOfPropertiesChart() {
     const { t } = useTranslation();
@@ -59,6 +60,62 @@ export default function ViewsOfPropertiesChart() {
             : date.toLocaleDateString();
     };
 
+    const renderLegendText = (value: string) => {
+        return <span>{t(value)}</span>;
+    };
+
+    const renderTooltipContent = ({
+        active,
+        payload,
+    }: TooltipProps<ValueType, NameType>) => {
+        if (active && payload && payload.length) {
+            return (
+                <div
+                    style={{
+                        backgroundColor: "#fff",
+                        padding: "10px",
+                        border: "1px solid #ccc",
+                        borderRadius: "7px",
+                        boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
+                    }}
+                >
+                    <p style={{ color: "#000", margin: 0, fontWeight: "bold" }}>
+                        Property Views
+                    </p>
+                    <hr style={{ borderColor: "grey" }} />
+                    {payload.map((entry) => {
+                        return (
+                            <div
+                                key={entry.name}
+                                style={{
+                                    color: entry.color,
+                                    display: "flex",
+                                    alignItems: "center",
+                                    marginTop: "5px",
+                                }}
+                            >
+                                <span
+                                    style={{
+                                        display: "inline-block",
+                                        backgroundColor: entry.color,
+                                        width: "10px",
+                                        height: "10px",
+                                        borderRadius: "50%",
+                                        marginRight: "5px",
+                                    }}
+                                ></span>
+                                <span style={{ color: "#000" }}>{`${t(
+                                    (entry.name as string) || ""
+                                )}: ${entry.value}`}</span>
+                            </div>
+                        );
+                    })}
+                </div>
+            );
+        }
+        return null;
+    };
+
     return (
         <>
             <Stack direction="row" spacing={2} p={1}>
@@ -81,37 +138,9 @@ export default function ViewsOfPropertiesChart() {
                     <CartesianGrid vertical={false} />
                     <XAxis dataKey="date" tickFormatter={formatDateTick} />
                     <YAxis width={20} />
-                    <Tooltip
-                        content={({ payload }) => {
-                            if (payload?.length) {
-                                return (
-                                    <div
-                                        style={{
-                                            background: "#fff",
-                                            padding: "10px",
-                                            border: "1px solid #ccc",
-                                            borderRadius: "7px",
-                                            color: "black",
-                                        }}
-                                    >
-                                        {payload.map((entry) => (
-                                            <p
-                                                key={entry.name}
-                                                style={{ color: "black" }}
-                                            >
-                                                {entry.name}: {entry.value}
-                                            </p>
-                                        ))}
-                                    </div>
-                                );
-                            }
-
-                            return null;
-                        }}
-                    />
-
+                    <Tooltip content={renderTooltipContent} />
                     <Legend
-                        formatter={(f) => renderLegendText(f, t)}
+                        formatter={renderLegendText}
                         iconType="circle"
                         iconSize={10}
                         verticalAlign="top"
