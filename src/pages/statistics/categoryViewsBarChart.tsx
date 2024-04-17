@@ -78,106 +78,69 @@ export default function ViewsOfPropertiesChart() {
                     data={chartData}
                     margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
                 >
-                    <defs>
-                        <linearGradient
-                            id="colorCommercial"
-                            x1="0"
-                            y1="0"
-                            x2="0"
-                            y2="1"
-                        >
-                            <stop
-                                offset="5%"
-                                stopColor="#A25772"
-                                stopOpacity={1}
-                            />
-                            <stop
-                                offset="95%"
-                                stopColor="#A25772"
-                                stopOpacity={0.5}
-                            />
-                        </linearGradient>
-                        <linearGradient
-                            id="colorResidential"
-                            x1="0"
-                            y1="0"
-                            x2="0"
-                            y2="1"
-                        >
-                            <stop
-                                offset="5%"
-                                stopColor="#7C93C3"
-                                stopOpacity={1}
-                            />
-                            <stop
-                                offset="95%"
-                                stopColor="#7C93C3"
-                                stopOpacity={0.5}
-                            />
-                        </linearGradient>
-                        <linearGradient
-                            id="colorLand"
-                            x1="0"
-                            y1="0"
-                            x2="0"
-                            y2="1"
-                        >
-                            <stop
-                                offset="5%"
-                                stopColor="#9EB8D9"
-                                stopOpacity={1}
-                            />
-                            <stop
-                                offset="95%"
-                                stopColor="#9EB8D9"
-                                stopOpacity={0.5}
-                            />
-                        </linearGradient>
-                        <linearGradient
-                            id="colorOther"
-                            x1="0"
-                            y1="0"
-                            x2="0"
-                            y2="1"
-                        >
-                            <stop
-                                offset="5%"
-                                stopColor="#6ba8ff"
-                                stopOpacity={1}
-                            />
-                            <stop
-                                offset="95%"
-                                stopColor="#6ba8ff"
-                                stopOpacity={0.5}
-                            />
-                        </linearGradient>
-                    </defs>
                     <CartesianGrid vertical={false} />
                     <XAxis dataKey="date" tickFormatter={formatDateTick} />
                     <YAxis width={20} />
-                    {/* ... */}
+                    <Tooltip
+                        content={({ payload }) => {
+                            if (payload?.length) {
+                                return (
+                                    <div
+                                        style={{
+                                            background: "#fff",
+                                            padding: "10px",
+                                            border: "1px solid #ccc",
+                                            borderRadius: "7px",
+                                            color: "black",
+                                        }}
+                                    >
+                                        {payload.map((entry) => (
+                                            <p
+                                                key={entry.name}
+                                                style={{ color: "black" }}
+                                            >
+                                                {entry.name}: {entry.value}
+                                            </p>
+                                        ))}
+                                    </div>
+                                );
+                            }
+
+                            return null;
+                        }}
+                    />
+
+                    <Legend
+                        formatter={(f) => renderLegendText(f, t)}
+                        iconType="circle"
+                        iconSize={10}
+                        verticalAlign="top"
+                        align="right"
+                        layout="horizontal"
+                    />
+
                     <Bar
                         barSize={25}
                         dataKey="Commercial"
-                        fill="url(#colorCommercial)"
+                        fill="#A25772"
                         shape={<Rectangle radius={[5, 5, 0, 0]} />}
                     />
                     <Bar
                         barSize={25}
                         dataKey="Residential"
-                        fill="url(#colorResidential)"
+                        fill="#7C93C3"
                         shape={<Rectangle radius={[5, 5, 0, 0]} />}
                     />
                     <Bar
                         barSize={25}
                         dataKey="Land"
-                        fill="url(#colorLand)"
+                        fill="#9EB8D9"
                         shape={<Rectangle radius={[5, 5, 0, 0]} />}
                     />
                     <Bar
                         barSize={25}
                         dataKey="Other"
-                        fill="url(#colorOther)"
+                        fill="#6BA8FF"
                         shape={<Rectangle radius={[5, 5, 0, 0]} />}
                     />
                 </BarChart>

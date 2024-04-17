@@ -6,9 +6,15 @@ import {
 import { IGlobalProperty } from "@/types/global";
 import { KeyValue } from "@/types/KeyValue";
 import { TTimeFrame } from "@/types/publicDashboard";
-import { Box, Grid, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import {
+    Stack,
+    Box,
+    Grid,
+    MenuItem,
+    Select,
+    SelectChangeEvent,
+} from "@mui/material";
 import Typography from "@mui/material/Typography";
-import { Stack } from "@mui/system";
 import { t } from "i18next";
 import { useTranslation } from "react-i18next";
 import { useMemo, useState } from "react";
@@ -136,53 +142,93 @@ export default function StackedAreas() {
                 </Stack>
             </Stack>
 
-            <Grid
-                container
-                spacing={2}
-                sx={{
-                    height: belowSm ? "500px" : "auto",
-                    overflowY: belowSm ? "auto" : "initial",
-                }}
-                my={belowSm ? 2 : 0}
-                px={2}
-            >
-                {filteredProperties?.map((property) => (
-                    <Grid
-                        item
-                        xs={12}
-                        md={6}
-                        lg={4}
-                        key={`${property.id}-${timeframe}`}
-                        sx={{
-                            position: "relative",
-                        }}
-                    >
-                        <PropertyCard item={property} selectedMarker={null} />
-                        <Stack
-                            position="absolute"
-                            direction="row"
-                            top={20}
-                            right={2}
+            {belowSm ? (
+                <Stack px={2} direction="row" spacing={2} overflow="auto">
+                    {filteredProperties?.map((property) => (
+                        <Box
+                            flex={1}
+                            key={`${property.id}-${timeframe}`}
                             sx={{
-                                backgroundColor: "rgba(0, 0, 0, 0.5)",
-                                paddingLeft: 1,
-                                paddingRight: 1,
-                                borderRadius: 15,
+                                position: "relative",
                             }}
+                            width={1}
+                            height={1}
                         >
-                            <ViewsIcon />
-                            <Typography
+                            <PropertyCard
+                                item={property}
+                                selectedMarker={null}
+                            />
+                            <Stack
+                                position="absolute"
+                                direction="row"
+                                top={20}
+                                right={2}
                                 sx={{
-                                    paddingLeft: "5px",
-                                    color: "white",
+                                    backgroundColor: "rgba(0, 0, 0, 0.5)",
+                                    paddingLeft: 1,
+                                    paddingRight: 1,
+                                    borderRadius: 15,
                                 }}
                             >
-                                {(property as any).visitors}
-                            </Typography>
-                        </Stack>
-                    </Grid>
-                ))}
-            </Grid>
+                                <ViewsIcon />
+                                <Typography
+                                    sx={{
+                                        paddingLeft: "5px",
+                                        color: "white",
+                                    }}
+                                >
+                                    {(property as any).visitors}
+                                </Typography>
+                            </Stack>
+                        </Box>
+                    ))}
+                </Stack>
+            ) : (
+                <Grid container spacing={2} my={2}>
+                    {filteredProperties?.map((property) => (
+                        <Grid
+                            item
+                            xs={12}
+                            sm={12}
+                            md={4}
+                            lg={3}
+                            key={`${property.id}-${timeframe}`}
+                            sx={{
+                                position: "relative",
+                                flex: belowSm ? "0 0 auto" : "1 0 auto", // Flex basis changes when belowSm
+                                minWidth: belowSm ? "50%" : undefined, // 50% width for each item on small screens
+                            }}
+                        >
+                            <PropertyCard
+                                item={property}
+                                selectedMarker={null}
+                            />
+                            <Stack
+                                position="absolute"
+                                direction="row"
+                                top={20}
+                                right={2}
+                                sx={{
+                                    backgroundColor: "rgba(0, 0, 0, 0.5)",
+                                    paddingLeft: 1,
+                                    paddingRight: 1,
+                                    borderRadius: 15,
+                                }}
+                            >
+                                <ViewsIcon />
+                                <Typography
+                                    sx={{
+                                        paddingLeft: "5px",
+                                        color: "white",
+                                    }}
+                                >
+                                    {(property as any).visitors}
+                                </Typography>
+                            </Stack>
+                        </Grid>
+                    ))}
+                </Grid>
+            )}
         </>
     );
 }

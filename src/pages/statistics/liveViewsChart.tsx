@@ -68,26 +68,6 @@ export default function ViewsChart() {
             </SpaceBetween>
             <ResponsiveContainer height={300}>
                 <BarChart height={300} data={chartData}>
-                    <defs>
-                        <linearGradient
-                            id="colorViews"
-                            x1="0"
-                            y1="0"
-                            x2="0"
-                            y2="1"
-                        >
-                            <stop
-                                offset="5%"
-                                stopColor="#3366FF"
-                                stopOpacity={1}
-                            />
-                            <stop
-                                offset="95%"
-                                stopColor="#3366FF"
-                                stopOpacity={0.5}
-                            />
-                        </linearGradient>
-                    </defs>
                     <CartesianGrid vertical={false} />
                     <XAxis
                         dataKey="hour"
@@ -135,7 +115,7 @@ export default function ViewsChart() {
                     />
                     <Bar
                         dataKey="views"
-                        fill="url(#colorViews)"
+                        fill="#3366FF"
                         barSize={50}
                         shape={<Rectangle radius={[5, 5, 0, 0]} />}
                     />

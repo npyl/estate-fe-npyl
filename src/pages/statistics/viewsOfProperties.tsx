@@ -17,10 +17,16 @@ import { TTimeFrame } from "@/types/publicDashboard";
 import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { Stack } from "@mui/system";
-import { t } from "i18next";
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
+import {
+    NameType,
+    ValueType,
+} from "recharts/types/component/DefaultTooltipContent";
 
 export default function StackedAreas() {
+    const { t } = useTranslation();
+
     const [category, setCategory] = useState("");
     const [parentCategory, setParentCategory] = useState("");
     const [timeframe, setTimeframe] = useState<TTimeFrame>("ALL_TIME");
@@ -110,9 +116,11 @@ export default function StackedAreas() {
     };
 
     // Tooltip content formatting
-    const renderTooltipContent = (props: TooltipProps<number, string>) => {
-        if (props.active && props.payload && props.payload.length) {
-            const payload = props.payload[0];
+    const renderTooltipContent = ({
+        active,
+        payload,
+    }: TooltipProps<ValueType, NameType>) => {
+        if (active && payload && payload.length) {
             return (
                 <div
                     style={{
@@ -120,27 +128,37 @@ export default function StackedAreas() {
                         padding: "10px",
                         border: "1px solid #ccc",
                         borderRadius: "7px",
+                        boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
                     }}
                 >
-                    <p style={{ color: "#000" }}>Property Views</p>
-                    {payload.payload.parentCategory ? (
-                        <p style={{ color: "#000" }}>
-                            {renderLegendText("parentCategory")}:
-                            {payload.payload.parentCategory}
-                        </p>
-                    ) : null}
-                    {payload.payload.category ? (
-                        <p style={{ color: "#000" }}>
-                            {renderLegendText("category")}:
-                            {payload.payload.category}
-                        </p>
-                    ) : null}
-                    {!payload.payload.parentCategory &&
-                    !payload.payload.category ? (
-                        <p style={{ color: "#000" }}>
-                            {renderLegendText("All")}:{payload.payload.All}
-                        </p>
-                    ) : null}
+                    <p style={{ color: "#000", margin: 0, fontWeight: "bold" }}>
+                        Property Views
+                    </p>
+                    {payload.map((entry) => (
+                        <div
+                            key={entry.name}
+                            style={{
+                                color: entry.color,
+                                display: "flex",
+                                alignItems: "center",
+                                marginTop: "5px",
+                            }}
+                        >
+                            <span
+                                style={{
+                                    display: "inline-block",
+                                    backgroundColor: entry.color,
+                                    width: "10px",
+                                    height: "10px",
+                                    borderRadius: "50%",
+                                    marginRight: "5px",
+                                }}
+                            ></span>
+                            <span>{`${renderLegendText(
+                                (entry.name as string) || ""
+                            )}: ${entry.value}`}</span>
+                        </div>
+                    ))}
                 </div>
             );
         }
@@ -245,18 +263,20 @@ export default function StackedAreas() {
                             <Area
                                 type="monotone"
                                 dataKey="parentCategory"
-                                stroke="#EB0F0F"
-                                fill="#EB0F0F"
-                                strokeWidth={2}
-                                dot={false}
-                            />
-                            <Area
-                                type="monotone"
-                                dataKey="category"
                                 stroke="#2E42A5"
                                 fill="#2E42A5"
                                 strokeWidth={2}
                                 dot={false}
+                                fillOpacity={0.15}
+                            />
+                            <Area
+                                type="monotone"
+                                dataKey="category"
+                                stroke="#EB0F0F"
+                                fill="#EB0F0F"
+                                strokeWidth={2}
+                                dot={false}
+                                fillOpacity={0.15}
                             />
                         </>
                     ) : !category && !parentCategory ? (
@@ -267,6 +287,7 @@ export default function StackedAreas() {
                             fill="#2E42A5"
                             strokeWidth={2}
                             dot={false}
+                            fillOpacity={0.15}
                         />
                     ) : !category && parentCategory ? (
                         <Area
@@ -276,12 +297,9 @@ export default function StackedAreas() {
                             fill="#2E42A5"
                             strokeWidth={2}
                             dot={false}
+                            fillOpacity={0.15}
                         />
                     ) : null}
-                    {
-                        (console.log("category", category),
-                        console.log("parentCategory", parentCategory))
-                    }
                 </AreaChart>
             </ResponsiveContainer>
         </>

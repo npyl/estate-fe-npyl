@@ -42,7 +42,7 @@ const Statistics: NextPage = () => {
                 sx={{
                     mt: 2,
                     mb: 1,
-                    padding: 1,
+                    padding: 2,
                 }}
             >
                 <PopularProperties />
