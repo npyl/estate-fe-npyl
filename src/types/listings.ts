@@ -1,2 +1,9 @@
 export type Listings = Record<ListingTypes, boolean>;
-export type ListingTypes = "PUBLIC_SITE" | "SPITOGATOS";
+export type ListingTypes =
+    | "PUBLIC_SITE"
+    | "SPITOGATOS"
+    | "PLOTGR"
+    | "JAMES_EDITION"
+    | "XRYSH_EUKAIRIA"
+    | "RIGHTMOVE"
+    | "FERIMMO";
