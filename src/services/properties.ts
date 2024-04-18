@@ -794,6 +794,9 @@ export const properties = createApi({
             async queryFn({ url, file, onProgressUpdate }) {
                 const { type } = file;
 
+                console.log("Uploading file with type:", type);
+                console.log("Upload URL:", url);
+                console.log("File size:", file);
                 try {
                     const handleUploadProgress = ({
                         loaded,

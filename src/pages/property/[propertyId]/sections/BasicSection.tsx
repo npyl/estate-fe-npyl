@@ -162,14 +162,14 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("Parent Category")}
-                        value={data?.parentCategory.value || "-"}
+                        value={t(data?.parentCategory.value) || "-"}
                     />
                 );
             case "Category":
                 return (
                     <ListItem
                         label={t("Category")}
-                        value={data?.category.value || "-"}
+                        value={t(data?.category.value) || "-"}
                     />
                 );
             case "Area":
@@ -303,7 +303,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 return (
                     <ListItem
                         label={t("State")}
-                        value={data?.state.value || "-"}
+                        value={t(data?.state.value) || "-"}
                     />
                 );
             case "Rented":

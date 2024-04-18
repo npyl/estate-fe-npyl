@@ -1,8 +1,16 @@
 import React from "react";
+
+const rightmove = "/static/rightmove.jpg";
+
 const RightMoveIcon = () => {
     return (
         <div>
-            <img src={"./rightmove.jpg"} alt="My Image" />
+            <img
+                src={rightmove}
+                alt="James Edition"
+                width="100px"
+                height="100px"
+            />
         </div>
     );
 };

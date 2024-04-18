@@ -46,8 +46,6 @@ interface ListingCardProps {
 const ListingCard = ({ label, value, onClick }: ListingCardProps) => {
     const handleClick = () => onClick(label, value);
 
-    console.log("label", label, "value", value);
-
     const icon =
         label === "PUBLIC_SITE" ? (
             <PublicSvg />
@@ -66,32 +64,30 @@ const ListingCard = ({ label, value, onClick }: ListingCardProps) => {
         ) : (
             "here"
         );
+    const text = (() => {
+        switch (label) {
+            case "SPITOGATOS":
+                return "Spitogatos.gr";
+            case "PLOTGR":
+                return "plot.gr";
+            case "JAMES_EDITION":
+                return "jamesedition.com";
+            case "XRYSH_EUKAIRIA":
+                return "xe.gr";
+            case "RIGHTMOVE":
+                return "rightmove.co.uk";
+            case "FERIMMO":
+                return "ferimmo.de";
+            default:
+                return null;
+        }
+    })();
+
     return (
         <Stack p={5} direction="row" width="400px">
             <Box justifyItems="center" flex={1} flexDirection="column">
                 {icon}
-                <Typography>
-                    {(() => {
-                        switch (label) {
-                            case "PUBLIC_SITE":
-                                return "Public";
-                            case "SPITOGATOS":
-                                return "Spitogatos.gr";
-                            case "PLOTGR":
-                                return "plot.gr";
-                            case "JAMES_EDITION":
-                                return "jamesedition.com";
-                            case "XRYSH_EUKAIRIA":
-                                return "xe.gr";
-                            case "RIGHTMOVE":
-                                return "rightmove.co.uk";
-                            case "FERIMMO":
-                                return "ferimmo.de";
-                            default:
-                                return null;
-                        }
-                    })()}
-                </Typography>
+                <Typography>{text}</Typography>
             </Box>
 
             <LabeledSwitch

@@ -1,8 +1,16 @@
 import React from "react";
+
+const xe = "/static/xrysh_eukairia.jpg";
+
 const XEIcon = () => {
     return (
         <div>
-            <img src={"./rightmove.jpg"} alt="My Image" />
+            <img
+                src={xe}
+                alt="Golden Opportunity"
+                width="100px"
+                height="100px"
+            />
         </div>
     );
 };

@@ -1,8 +1,11 @@
 import React from "react";
+
+const plotImage = "/static/plotgr.jpg";
+
 const PlotGRIcon = () => {
     return (
         <div>
-            <img src={"./plotgr.jpg"} alt="My Image" />
+            <img src={plotImage} alt="Plot.gr" width="100px" height="100px" />
         </div>
     );
 };

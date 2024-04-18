@@ -1,13 +1,13 @@
 import React from "react";
 
-const defaultImage = "/static/james_edition.jpg";
+const jamesImage = "/static/james_edition.jpg";
 
 const JamesEditionIcon = () => {
     return (
         <div>
             <img
-                src={defaultImage}
-                alt="My Image"
+                src={jamesImage}
+                alt="James Edition"
                 width="100px"
                 height="100px"
             />
