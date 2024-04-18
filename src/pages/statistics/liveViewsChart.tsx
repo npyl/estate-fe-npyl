@@ -42,7 +42,11 @@ export default function ViewsChart() {
 
     return (
         <>
-            <SpaceBetween alignItems={"flex-start"}>
+            <Stack
+                direction="row"
+                alignItems={"flex-start"}
+                position="relative"
+            >
                 <Stack direction="column" spacing={-1.5}>
                     <Typography variant="body1" p={1}>
                         {currentDate}
@@ -51,28 +55,43 @@ export default function ViewsChart() {
                         {t("Property Views")} : {data?.totalViews ?? 0}
                     </Typography>
                 </Stack>
-                <Typography
-                    variant="body1"
-                    p={1}
+                <Stack
+                    direction="row"
                     sx={{
+                        position: "absolute",
                         top: 0,
                         right: 0,
                         display: "flex",
-                        alignItems: "justify-content",
+                        alignItems: "center",
+                        justifyContent: "center",
                         color: "primary.main",
                     }}
                 >
-                    <LiveIcon />
-                    <Box pl={1}>LIVE</Box>
-                </Typography>
-            </SpaceBetween>
+                    <img
+                        src="/static/liveicon.gif"
+                        style={{
+                            display: "block",
+                            paddingTop: "auto",
+                            width: "35px",
+                        }}
+                    />
+                    <Typography paddingRight={2} variant="body1">
+                        LIVE
+                    </Typography>
+                </Stack>
+            </Stack>
             <ResponsiveContainer height={300}>
                 <BarChart height={300} data={chartData}>
                     <CartesianGrid vertical={false} />
                     <XAxis
                         dataKey="hour"
                         tickFormatter={(tick) => {
-                            return `${tick}`;
+                            const date = new Date();
+                            date.setHours(tick);
+                            return date.toLocaleTimeString([], {
+                                hour: "2-digit",
+                                hour12: false,
+                            });
                         }}
                         interval={2}
                     />
@@ -85,7 +104,7 @@ export default function ViewsChart() {
                                 date.setHours(payload[0].payload.hour);
                                 const timeString = date.toLocaleTimeString([], {
                                     hour: "2-digit",
-                                    minute: "2-digit",
+                                    hour12: false,
                                 });
 
                                 return (
@@ -99,17 +118,56 @@ export default function ViewsChart() {
                                             color: "black",
                                             justifyContent: "center",
                                             alignItems: "center",
-                                            width: "100px",
-                                            height: "90px",
+                                            width: "auto",
+                                            height: "auto",
                                             textAlign: "center",
+                                            paddingLeft: "5px",
+                                            paddingRight: "5px",
+                                            display: "flex",
+                                            flexDirection: "column",
                                         }}
                                     >
-                                        <p>{timeString}</p>
-                                        <p>{`Views: ${payload[0].value}`}</p>
+                                        <p
+                                            style={{
+                                                margin: 0,
+                                                marginTop: "5px",
+                                            }}
+                                        >
+                                            <b>Time :</b> {timeString}:00
+                                        </p>
+                                        <hr
+                                            style={{
+                                                borderColor: "grey",
+                                                width: "100%",
+                                            }}
+                                        />
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                alignItems: "center",
+                                            }}
+                                        >
+                                            <div
+                                                style={{
+                                                    width: "10px",
+                                                    height: "10px",
+                                                    borderRadius: "50%",
+                                                    backgroundColor: "#3366FF",
+                                                    marginRight: "5px",
+                                                }}
+                                            ></div>
+                                            <p
+                                                style={{
+                                                    margin: 0,
+                                                    marginBottom: "5px",
+                                                }}
+                                            >
+                                                <b>Views:</b> {payload[0].value}
+                                            </p>
+                                        </div>
                                     </Box>
                                 );
                             }
-
                             return null;
                         }}
                     />

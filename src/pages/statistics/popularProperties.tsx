@@ -73,6 +73,7 @@ export default function StackedAreas() {
         setTimeframe(e.target.value as TTimeFrame);
 
     const belowSm = useResponsive("down", "sm");
+    const belowMd = useResponsive("down", "md");
 
     const filteredProperties = useMemo(
         () =>
@@ -87,60 +88,114 @@ export default function StackedAreas() {
 
     return (
         <>
-            <Stack
-                direction={{
-                    xs: "column",
-                    sm: "row",
-                }}
-                spacing={2}
-                p={1}
-            >
-                <Typography variant={"h5"} p={1}>
-                    {t("Popular Properties")}
-                </Typography>
+            {belowMd && !belowSm ? (
+                <Stack direction="column" spacing={1} p={1}>
+                    <Typography variant={"h5"} p={1}>
+                        {t("Popular Properties")}
+                    </Typography>
+                    <Stack direction="row" spacing={3} p={1}>
+                        <Select
+                            value={timeframe}
+                            onChange={handleTimeframeSelect}
+                        >
+                            <MenuItem value="ALL_TIME">
+                                {t("All_Time")}
+                            </MenuItem>
+                            <MenuItem value="MONTH">{t("Monthly")}</MenuItem>
+                            <MenuItem value="WEEK">{"Weekly"}</MenuItem>
+                            <MenuItem value="YEAR">{t("Yearly")}</MenuItem>
+                            <MenuItem value="DAY">{t("Daily")}</MenuItem>
+                            <MenuItem value="CUSTOM">Custom</MenuItem>
+                        </Select>
+                        <Select
+                            value={parentCategory}
+                            onChange={handleParentCategorySelect}
+                            displayEmpty
+                        >
+                            <MenuItem value="">{t("Parent Category")}</MenuItem>
+                            {parentCategoryEnum?.map((item) => (
+                                <MenuItem key={item.key} value={item.key}>
+                                    {item.value}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                        <Select
+                            value={category}
+                            onChange={handleCategorySelect}
+                            displayEmpty
+                            disabled={!parentCategory}
+                            sx={{ marginLeft: "10px" }}
+                        >
+                            <MenuItem value="">{t("Category")}</MenuItem>
+                            {subCategoriesMap[parentCategory!]?.map((item) => (
+                                <MenuItem key={item.key} value={item.key}>
+                                    {item.value}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </Stack>
+                </Stack>
+            ) : (
                 <Stack
                     direction={{
                         xs: "column",
                         sm: "row",
                     }}
-                    padding={1}
                     spacing={2}
+                    p={1}
                 >
-                    <Select value={timeframe} onChange={handleTimeframeSelect}>
-                        <MenuItem value="ALL_TIME">{t("All_Time")}</MenuItem>
-                        <MenuItem value="MONTH">{t("Monthly")}</MenuItem>
-                        <MenuItem value="WEEK">{"Weekly"}</MenuItem>
-                        <MenuItem value="YEAR">{t("Yearly")}</MenuItem>
-                        <MenuItem value="DAY">{t("Daily")}</MenuItem>
-                        <MenuItem value="CUSTOM">Custom</MenuItem>
-                    </Select>
-                    <Select
-                        value={parentCategory}
-                        onChange={handleParentCategorySelect}
-                        displayEmpty
+                    <Typography variant={"h5"} p={1}>
+                        {t("Popular Properties")}
+                    </Typography>
+                    <Stack
+                        direction={{
+                            xs: "column",
+                            sm: "row",
+                        }}
+                        padding={1}
+                        spacing={2}
                     >
-                        <MenuItem value="">{t("Parent Category")}</MenuItem>
-                        {parentCategoryEnum?.map((item) => (
-                            <MenuItem key={item.key} value={item.key}>
-                                {item.value}
+                        <Select
+                            value={timeframe}
+                            onChange={handleTimeframeSelect}
+                        >
+                            <MenuItem value="ALL_TIME">
+                                {t("All_Time")}
                             </MenuItem>
-                        ))}
-                    </Select>
-                    <Select
-                        value={category}
-                        onChange={handleCategorySelect}
-                        displayEmpty
-                        disabled={!parentCategory}
-                    >
-                        <MenuItem value="">{t("Category")}</MenuItem>
-                        {subCategoriesMap[parentCategory!]?.map((item) => (
-                            <MenuItem key={item.key} value={item.key}>
-                                {item.value}
-                            </MenuItem>
-                        ))}
-                    </Select>
+                            <MenuItem value="MONTH">{t("Monthly")}</MenuItem>
+                            <MenuItem value="WEEK">{"Weekly"}</MenuItem>
+                            <MenuItem value="YEAR">{t("Yearly")}</MenuItem>
+                            <MenuItem value="DAY">{t("Daily")}</MenuItem>
+                            <MenuItem value="CUSTOM">Custom</MenuItem>
+                        </Select>
+                        <Select
+                            value={parentCategory}
+                            onChange={handleParentCategorySelect}
+                            displayEmpty
+                        >
+                            <MenuItem value="">{t("Parent Category")}</MenuItem>
+                            {parentCategoryEnum?.map((item) => (
+                                <MenuItem key={item.key} value={item.key}>
+                                    {item.value}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                        <Select
+                            value={category}
+                            onChange={handleCategorySelect}
+                            displayEmpty
+                            disabled={!parentCategory}
+                        >
+                            <MenuItem value="">{t("Category")}</MenuItem>
+                            {subCategoriesMap[parentCategory!]?.map((item) => (
+                                <MenuItem key={item.key} value={item.key}>
+                                    {item.value}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </Stack>
                 </Stack>
-            </Stack>
+            )}
 
             {belowSm ? (
                 <Stack px={2} direction="row" spacing={2} overflow="auto">
@@ -161,7 +216,7 @@ export default function StackedAreas() {
                             <Stack
                                 position="absolute"
                                 direction="row"
-                                top={20}
+                                top={belowSm ? 5 : 20}
                                 right={2}
                                 sx={{
                                     backgroundColor: "rgba(0, 0, 0, 0.5)",

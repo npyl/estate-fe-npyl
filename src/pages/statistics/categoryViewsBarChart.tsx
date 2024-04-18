@@ -14,7 +14,7 @@ import { Stack } from "@mui/system";
 import { useMemo, useState } from "react";
 import Typography from "@mui/material/Typography";
 import { TTimeFrame } from "@/types/publicDashboard";
-import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { Box, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { useGetPublicDashboardParentCategoriesQuery } from "@/services/publicDashboard";
 import { useTranslation } from "react-i18next";
 import { TranslationType } from "@/types/translation";
@@ -139,6 +139,7 @@ export default function ViewsOfPropertiesChart() {
                     <XAxis dataKey="date" tickFormatter={formatDateTick} />
                     <YAxis width={20} />
                     <Tooltip content={renderTooltipContent} />
+
                     <Legend
                         formatter={renderLegendText}
                         iconType="circle"
@@ -146,6 +147,7 @@ export default function ViewsOfPropertiesChart() {
                         verticalAlign="top"
                         align="right"
                         layout="horizontal"
+                        wrapperStyle={{ paddingBottom: "20px" }}
                     />
 
                     <Bar
