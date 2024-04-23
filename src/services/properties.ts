@@ -176,11 +176,6 @@ export const properties = createApi({
         }),
 
         // Attributes
-        getPropertyAttribute: builder.query<any[], IGetPropertyAttributeProps>({
-            query: (props: IGetPropertyAttributeProps) =>
-                `${props.propertyId}/${props.attributeName}`,
-            providesTags: ["PropertyById"],
-        }),
         getPropertyImages: builder.query<IPropertyImage[], number>({
             query: (propertyId: number) => `${propertyId}/images`,
             providesTags: ["PropertyByIdImages"],
@@ -919,7 +914,6 @@ export const {
     useGenerateDescriptionMutation,
 
     // attributes
-    useGetPropertyAttributeQuery,
     useGetPropertyLabelsQuery,
     useGetPropertyDocumentsQuery,
 

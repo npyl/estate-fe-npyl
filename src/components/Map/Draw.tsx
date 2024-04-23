@@ -1,4 +1,4 @@
-import { MutableRefObject, ReactNode, useEffect, useRef } from "react";
+import { ReactNode, useEffect, useRef } from "react";
 import { Button, Stack, Typography } from "@mui/material";
 import { DrawShape, ShapeData, StopDraw } from "./types";
 import { drawShape, encodeShape, setShapeEvents } from "./util";

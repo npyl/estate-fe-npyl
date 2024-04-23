@@ -30,14 +30,6 @@ export const logs = createApi({
     tagTypes: ["Logs", "CustomerByIdLogs", "PropertyByIdLogs"],
 
     endpoints: (builder) => ({
-        adminLogsPaginated: builder.query<IPage<ILog>, ILogsParams>({
-            query: (params: ILogsParams) => ({
-                url: "",
-                params: params,
-            }),
-            providesTags: ["Logs"],
-        }),
-
         customerHistoryPaginated: builder.query<IPage<ILog>, ILogsParams>({
             query: (params: ILogsParams) => ({
                 url: `/customer/${params.id}`,
@@ -68,7 +60,6 @@ export const logs = createApi({
 });
 
 export const {
-    useAdminLogsPaginatedQuery,
     useCustomerHistoryPaginatedQuery,
     usePropertyHistoryPaginatedQuery,
     useFilterLogsMutation,

@@ -120,7 +120,6 @@ const PropertiesList = ({
                     >
                         {orientation ? (
                             <PropertyCardH
-                                activeMarker={activeMarker || -1}
                                 item={item}
                                 selectedMarker={selectedMarker}
                             />

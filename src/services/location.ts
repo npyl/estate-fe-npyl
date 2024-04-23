@@ -57,7 +57,6 @@ export const {
     useGetRegionsQuery,
     useGetMunicipalitiesQuery,
     useGetNeighbourhoodsQuery,
-    useGetClosestQuery,
 
     useLazyGetClosestQuery,
     useLazyGetHierarchyByAreaIdQuery,

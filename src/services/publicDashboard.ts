@@ -46,10 +46,6 @@ export const publicDashboard = createApi({
             query: () => ({ url: "/daily-views" }),
         }),
 
-        getPublicDashboard: builder.query<IPublicDashboard, void>({
-            query: () => "",
-        }),
-
         getPublicDashboardParentCategories: builder.query<
             IView[],
             ParentCategoriesParams
@@ -75,7 +71,6 @@ export const publicDashboard = createApi({
 
 export const {
     useGetDailyViewsQuery,
-    useGetPublicDashboardQuery,
     useGetPublicDashboardParentCategoriesQuery,
     useGetPublicDashboardPopularPropertiesQuery,
     useGetPublicDashboardPropertyViewsQuery,

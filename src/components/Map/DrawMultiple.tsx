@@ -1,6 +1,6 @@
 import { Button, Stack, SvgIconProps, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { MutableRefObject, useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { DrawShape, ShapeData, StopDraw } from "./types";
 import { drawShape, encodeShape, setShapeEvents } from "./util";
 
