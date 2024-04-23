@@ -140,6 +140,11 @@ export const properties = createApi({
                 `Bearer  ${localStorage.getItem("accessToken")}`
             );
 
+            headers.set(
+                "Accept-Language",
+                `${localStorage.getItem("language") ?? "el"}`
+            );
+
             return headers;
         },
     }),
