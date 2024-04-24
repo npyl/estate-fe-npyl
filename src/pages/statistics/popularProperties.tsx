@@ -1,8 +1,5 @@
 import { useGlobals } from "@/hooks/useGlobals";
-import {
-    useGetPublicDashboardPropertyViewsQuery,
-    useGetPublicDashboardPopularPropertiesQuery,
-} from "@/services/publicDashboard";
+import { useGetPublicDashboardPopularPropertiesQuery } from "@/services/publicDashboard";
 import { IGlobalProperty } from "@/types/global";
 import { KeyValue } from "@/types/KeyValue";
 import { TTimeFrame } from "@/types/publicDashboard";
@@ -15,7 +12,6 @@ import {
     SelectChangeEvent,
 } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import { Stack } from "@mui/system";
 import { useTranslation } from "react-i18next";
 import { useMemo, useState } from "react";
 import PropertyCard from "@/components/PropertyCard";
@@ -26,7 +22,6 @@ export default function StackedAreas() {
     const { t } = useTranslation();
 
     const [category, setCategory] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
     const [parentCategory, setParentCategory] = useState("");
     const [timeframe, setTimeframe] = useState<TTimeFrame>("ALL_TIME");
 
