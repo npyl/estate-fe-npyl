@@ -1,6 +1,7 @@
 import {
     Box,
     Button,
+    Divider,
     IconButton,
     Paper,
     Popover,
@@ -196,6 +197,26 @@ const ViewHeader = (props: IViewHeaderProps) => {
                                 onDelete={onDelete}
                             />
                         ) : null}
+                        <Typography variant="body1" sx={{ fontSize: "13px" }}>
+                            {t("Export options")}
+                        </Typography>
+                        <Button
+                            fullWidth
+                            variant="outlined"
+                            color="secondary"
+                            onClick={onEdit}
+                            sx={{ width: "99%" }}
+                        >
+                            {t("Detailed")}
+                        </Button>
+                        <Button
+                            variant="outlined"
+                            color="secondary"
+                            onClick={onEdit}
+                            sx={{ width: "99%" }}
+                        >
+                            {t("Brief")}
+                        </Button>
                     </Stack>
                 </Popover>
             </Stack>
