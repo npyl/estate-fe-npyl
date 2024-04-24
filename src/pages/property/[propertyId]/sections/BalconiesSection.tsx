@@ -44,7 +44,7 @@ const BalconiesSection: React.FC<BalconiesSectionProps> = (props) => {
                             <Grid item xs={12} order={"row"} padding={0}>
                                 <List>
                                     <ListItem
-                                        label={t("Area")}
+                                        label={t("Living Space")}
                                         value={balcony?.area}
                                     />
                                     <ListItem

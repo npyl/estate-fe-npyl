@@ -162,6 +162,7 @@ const resources = {
             Preserved: "Preserved",
             Areas: "Areas",
             Plot: "Plot",
+            "Plot Size": "Plot Size",
             Covered: "Covered",
 
             Garden: "Garden",
@@ -467,6 +468,7 @@ const resources = {
             Fields: "Fields",
             Export: "Export",
             "Export options": "Export options",
+            "Export property": "Export property",
             Detailed: "Detailed",
             Brief: "Brief",
             Label: "Label",
@@ -603,6 +605,7 @@ const resources = {
             "Quick View": "Quick View",
             "Matching Customers": "Matching Customers",
             Photos: "Photos",
+            "All Photos": "All Photos",
             Integrations: "Integrations",
             Documents: "Documents",
 
@@ -637,6 +640,11 @@ const resources = {
             Size: "Size",
 
             Municipality: "Municipality",
+            Share: "Share",
+            Download: "Download",
+            Options: "Options",
+            Living: "Living",
+            "Living Space": "Living Space",
         },
     },
     el: {
@@ -889,6 +897,7 @@ const resources = {
 
             Areas: "Εμβαδά",
             Plot: "Οικόπεδο",
+            "Plot Size": "Μέγεθος Οικοπέδου",
             Covered: "Καλυμμένο",
 
             Garden: "Κήπος",
@@ -1176,6 +1185,7 @@ const resources = {
             Fields: "Πεδία",
             Export: "Εξαγωγή",
             "Export options": "Επιλογές εξαγωγής",
+            "Export property": "Εξαγωγή ακινήτου",
             Detailed: "Λεπτομερής",
             Brief: "Συνοπτική",
             Label: "Ετικέτα",
@@ -1289,8 +1299,15 @@ const resources = {
             "Quick View": "Συνοπτικά",
             "Matching Customers": "Ταιριαστοί πελάτες",
             Photos: "Εικόνες",
+            "All Photos": "Όλες οι Εικόνες",
             Integrations: "Συνδεδεμένα",
             Documents: "Έγγραφα",
+            Share: "Κοινοποίηση",
+            Download: "Λήψη",
+            Options: "Επιλογές",
+
+            Living: "Κατοικήσιμος",
+            "Living Space": "Κατοικήσιμος Χώρος",
         },
     },
 };

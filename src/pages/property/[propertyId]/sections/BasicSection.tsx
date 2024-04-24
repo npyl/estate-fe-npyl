@@ -175,7 +175,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
             case "Area":
                 return (
                     <ListItem
-                        label={t("Area")}
+                        label={t("Living Space")}
                         value={data?.area ? `${data?.area}m²` : "-"}
                     />
                 );
@@ -189,7 +189,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
             case "Plot Area":
                 return (
                     <ListItem
-                        label={t("Plot Area")}
+                        label={t("Plot Size")}
                         value={data?.plotArea ? `${data?.plotArea}m²` : "-"}
                     />
                 );

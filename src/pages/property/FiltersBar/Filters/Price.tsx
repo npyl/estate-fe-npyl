@@ -30,7 +30,7 @@ import {
 } from "@/components/Filters/styled";
 
 interface Props {
-    type: string;
+    type: "price" | "area";
 }
 
 const PriceSelect = ({ type }: Props) => {

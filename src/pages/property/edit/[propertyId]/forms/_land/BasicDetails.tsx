@@ -136,7 +136,7 @@ const BasicForLandSection: React.FC<any> = () => {
                     <RHFOnlyNumbers
                         fullWidth
                         name="area"
-                        label={t("Area")}
+                        label={t("Living Space")}
                         adornment="m²"
                     />
                 </Grid>
@@ -145,7 +145,7 @@ const BasicForLandSection: React.FC<any> = () => {
                     <RHFOnlyNumbers
                         fullWidth
                         name="plotArea"
-                        label={t("Plot Area")}
+                        label={t("Plot Size")}
                         adornment="m²"
                     />
                 </Grid>

@@ -193,8 +193,8 @@ export default function FilterMore({ open, onClose, onResetFilter }: Props) {
                     <CategorySelect />
                     <SubCategorySelect />
 
-                    <PriceSelect type={t("price")} />
-                    <PriceSelect type={t("area")} />
+                    <PriceSelect type="price" />
+                    <PriceSelect type="area" />
 
                     <FilterLabels
                         variant="property"
