@@ -15,7 +15,7 @@ import {
     SelectChangeEvent,
 } from "@mui/material";
 import Typography from "@mui/material/Typography";
-import { t } from "i18next";
+import { Stack } from "@mui/system";
 import { useTranslation } from "react-i18next";
 import { useMemo, useState } from "react";
 import PropertyCard from "@/components/PropertyCard";
@@ -23,6 +23,8 @@ import { ViewsIcon } from "@/icons/views";
 import { useResponsive } from "@/hooks/use-responsive";
 
 export default function StackedAreas() {
+    const { t } = useTranslation();
+
     const [category, setCategory] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [parentCategory, setParentCategory] = useState("");

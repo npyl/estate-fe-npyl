@@ -1,4 +1,3 @@
-import { Category } from "@mui/icons-material";
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 
@@ -627,6 +626,17 @@ const resources = {
             "Property Views": "Property Views",
             "Views of Properties": "Views of Properties",
             "Category Views": "Category Views",
+
+            Furnishing: "Furnishing",
+            "Time Frame": "Time Frame",
+            "Size of Plot": "Size of Plot",
+
+            Max: "Max",
+            Min: "Min",
+
+            Size: "Size",
+
+            Municipality: "Municipality",
         },
     },
     el: {
@@ -637,6 +647,16 @@ const resources = {
 
             "Category Views": "Προβολές ανά Κατηγορία",
 
+            Municipality: "Δήμος",
+
+            Size: "Μέγεθος",
+
+            Max: "Μεγ",
+            Min: "Ελαχ",
+
+            "Size of Plot": "Μέγεθος Οικοπέδου",
+            "Time Frame": "Χρονικό Περιθώριο",
+            Furnishing: "Επίπλωση",
             "Add an existing label": "Προσθήκη υπάρχουσας ετικέτας",
 
             "Choose a parent category and category for your property":
