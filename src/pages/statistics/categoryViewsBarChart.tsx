@@ -128,7 +128,7 @@ export default function ViewsOfPropertiesChart() {
                         barSize={25}
                         dataKey="Other"
                         fill={"#6ba8ff"}
-                        shape={<Rectangle radius={[9, 10, 0, 0]} />}
+                        shape={<Rectangle radius={[10, 10, 0, 0]} />}
                     />
                 </BarChart>
             </ResponsiveContainer>
