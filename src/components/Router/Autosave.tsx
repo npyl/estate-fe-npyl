@@ -1,12 +1,9 @@
-import { useSelector } from "react-redux";
 import useConditionalRouter from "./Conditional";
-import { useCallback, useEffect, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { NextRouter, useRouter } from "next/router";
 import { usePathname } from "next/navigation";
 import { useTranslation } from "react-i18next";
 
-import { useEditPropertyMutation } from "src/services/properties";
-import { useCreateOrUpdateCustomerMutation } from "src/services/customers";
 import { Url } from "next/dist/shared/lib/router/router";
 import { toast } from "react-toastify";
 
@@ -22,8 +19,8 @@ const useSave = (isEditProperty: boolean, isEditCustomer: boolean) => {
     // const propertyBody = useSelector(propertySelectAll);
     // const customerBody = useSelector(customerSelectAll);
 
-    const [editProperty] = useEditPropertyMutation();
-    const [editCustomer] = useCreateOrUpdateCustomerMutation();
+    // const [editProperty] = useEditPropertyMutation();
+    // const [editCustomer] = useCreateOrUpdateCustomerMutation();
 
     const save = useCallback(() => {
         // if (isEditProperty && propertyBody)

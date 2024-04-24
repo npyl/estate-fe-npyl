@@ -120,7 +120,6 @@ const PropertiesList = ({
                     >
                         {orientation ? (
                             <PropertyCardH
-                                activeMarker={activeMarker || -1}
                                 item={item}
                                 selectedMarker={selectedMarker}
                             />
@@ -221,8 +220,33 @@ const MapView = () => {
     };
 
     return (
-        <Grid container mt={1} spacing={1}>
-            <Grid height={`calc(100vh - 266px)`} item xs={12} lg={6}>
+        <Grid container mt={1} spacing={1} order="revert">
+            <Grid
+                item
+                xs={12}
+                lg={6}
+                order={{
+                    xs: 2,
+                    lg: 1,
+                }}
+            >
+                <PropertiesList
+                    filtered={filtered}
+                    activeMarker={activeMarker}
+                    selectedMarker={selectedMarker}
+                />
+            </Grid>
+
+            <Grid
+                height={`calc(100vh - 266px)`}
+                item
+                xs={12}
+                lg={6}
+                order={{
+                    xs: 1,
+                    lg: 2,
+                }}
+            >
                 <Map
                     search
                     mainMarker={mainMarker}
@@ -233,14 +257,6 @@ const MapView = () => {
                     onDraw={handleDraw}
                     onShapeChange={handleChange}
                     onSearchSelect={handleSearchSelect}
-                />
-            </Grid>
-
-            <Grid item xs={12} lg={6}>
-                <PropertiesList
-                    filtered={filtered}
-                    activeMarker={activeMarker}
-                    selectedMarker={selectedMarker}
                 />
             </Grid>
         </Grid>

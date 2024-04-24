@@ -27,6 +27,11 @@ import { ListingTypes } from "src/types/listings";
 import { LabeledSwitch } from "../../components/Switch";
 import { PublicSvg } from "src/assets/PublicSvg";
 import { SpitogatosSvg } from "src/assets/SpitogatosSvg";
+import RightMoveIcon from "src/assets/RightMoveIcon";
+import FerimmoIcon from "@/assets/ferimmo";
+import PlotGRIcon from "src/assets/plotgr";
+import XEIcon from "src/assets/xrysh_eukairia";
+import JamesEditionIcon from "@/assets/james_edition";
 import { LocationDisplay } from "src/types/enums";
 import GoogleEarth from "./GoogleEarth/GoogleEarth";
 import { useTheme } from "@mui/material/styles";
@@ -41,13 +46,48 @@ interface ListingCardProps {
 const ListingCard = ({ label, value, onClick }: ListingCardProps) => {
     const handleClick = () => onClick(label, value);
 
+    const icon =
+        label === "PUBLIC_SITE" ? (
+            <PublicSvg />
+        ) : label === "SPITOGATOS" ? (
+            <SpitogatosSvg />
+        ) : label === "PLOTGR" ? (
+            <PlotGRIcon />
+        ) : label === "JAMES_EDITION" ? (
+            <JamesEditionIcon />
+        ) : label === "XRYSH_EUKAIRIA" ? (
+            <XEIcon />
+        ) : label === "RIGHTMOVE" ? (
+            <RightMoveIcon />
+        ) : label === "FERIMMO" ? (
+            <FerimmoIcon />
+        ) : (
+            "here"
+        );
+    const text = (() => {
+        switch (label) {
+            case "SPITOGATOS":
+                return "Spitogatos.gr";
+            case "PLOTGR":
+                return "plot.gr";
+            case "JAMES_EDITION":
+                return "jamesedition.com";
+            case "XRYSH_EUKAIRIA":
+                return "xe.gr";
+            case "RIGHTMOVE":
+                return "rightmove.co.uk";
+            case "FERIMMO":
+                return "ferimmo.de";
+            default:
+                return null;
+        }
+    })();
+
     return (
         <Stack p={5} direction="row" width="400px">
             <Box justifyItems="center" flex={1} flexDirection="column">
-                {label === "PUBLIC_SITE" ? <PublicSvg /> : <SpitogatosSvg />}
-                <Typography>
-                    {label === "PUBLIC_SITE" ? "Public" : "Spitogatos.gr"}
-                </Typography>
+                {icon}
+                <Typography>{text}</Typography>
             </Box>
 
             <LabeledSwitch

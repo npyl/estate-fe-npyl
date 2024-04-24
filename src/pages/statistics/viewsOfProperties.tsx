@@ -1,6 +1,6 @@
 import {
-    LineChart,
-    Line,
+    AreaChart,
+    Area,
     XAxis,
     YAxis,
     Tooltip,
@@ -19,6 +19,11 @@ import Typography from "@mui/material/Typography";
 import { Stack } from "@mui/system";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import {
+    NameType,
+    ValueType,
+} from "recharts/types/component/DefaultTooltipContent";
+import { useResponsive } from "@/hooks/use-responsive";
 
 export default function StackedAreas() {
     const { t } = useTranslation();
@@ -27,7 +32,7 @@ export default function StackedAreas() {
     const [parentCategory, setParentCategory] = useState("");
     const [timeframe, setTimeframe] = useState<TTimeFrame>("ALL_TIME");
 
-    // enums
+    // Fetch enums and data using hooks
     const data = useGlobals();
     const enums: IGlobalProperty = data?.property as IGlobalProperty;
     const parentCategoryEnum = enums?.parentCategory;
@@ -39,6 +44,7 @@ export default function StackedAreas() {
             timeframe,
         });
 
+    // Organize sub-categories by main category
     const subCategoriesMap: {
         [key: string]: KeyValue[];
     } = useMemo(
@@ -51,6 +57,7 @@ export default function StackedAreas() {
         [enums]
     );
 
+    // Handlers for select changes
     const handleParentCategorySelect = (e: SelectChangeEvent<string>) => {
         setParentCategory(e.target.value);
         setCategory("");
@@ -58,18 +65,23 @@ export default function StackedAreas() {
 
     const handleCategorySelect = (event: SelectChangeEvent<string>) => {
         const selectedKey = event.target.value;
-        const selectedItem = subCategoriesMap[parentCategory!]?.find(
-            (item) => item.key === selectedKey
-        );
+        if (selectedKey === "") {
+            setCategory("");
+        } else {
+            const selectedItem = subCategoriesMap[parentCategory!]?.find(
+                (item) => item.key === selectedKey
+            );
 
-        if (selectedItem) {
-            setCategory(selectedItem.key);
+            if (selectedItem) {
+                setCategory(selectedItem.key);
+            }
         }
     };
 
     const handleTimeframeSelect = (e: SelectChangeEvent<TTimeFrame>) =>
         setTimeframe(e.target.value as TTimeFrame);
 
+    // Prepare chart data
     const chartData = useMemo(
         () =>
             parentCategoriesGet?.map(({ date, parentCategories }) => ({
@@ -81,6 +93,7 @@ export default function StackedAreas() {
         [parentCategoriesGet]
     );
 
+    // Render text for legends based on selections
     const renderLegendText = (value: string) => {
         if (!parentCategory && !category) {
             return "All";
@@ -103,120 +116,199 @@ export default function StackedAreas() {
         return value;
     };
 
-    const renderTooltipContent = (props: TooltipProps<number, string>) => {
-        if (props.active && props.payload && props.payload.length) {
-            const payload = props.payload[0];
-
+    // Tooltip content formatting
+    const renderTooltipContent = ({
+        active,
+        payload,
+    }: TooltipProps<ValueType, NameType>) => {
+        if (active && payload && payload.length) {
             return (
                 <div
                     style={{
                         backgroundColor: "#fff",
                         padding: "10px",
                         border: "1px solid #ccc",
+                        borderRadius: "7px",
+                        boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
                     }}
                 >
-                    <p style={{ color: "#000" }}>{payload.name}</p>
-                    {payload.payload.parentCategory && (
-                        <p style={{ color: "#000" }}>
-                            {renderLegendText("parentCategory")}:{" "}
-                            {payload.payload.parentCategory}
-                        </p>
-                    )}
-                    {payload.payload.category && (
-                        <p style={{ color: "#000" }}>
-                            {renderLegendText("category")}:{" "}
-                            {payload.payload.category}
-                        </p>
-                    )}
+                    <p style={{ color: "#000", margin: 0, fontWeight: "bold" }}>
+                        Property Views
+                    </p>
+                    <hr style={{ borderColor: "grey" }} />
+                    {payload.map((entry) => (
+                        <div
+                            key={entry.name}
+                            style={{
+                                color: entry.color,
+                                display: "flex",
+                                alignItems: "center",
+                                marginTop: "5px",
+                            }}
+                        >
+                            <span
+                                style={{
+                                    display: "inline-block",
+                                    backgroundColor: entry.color,
+                                    width: "10px",
+                                    height: "10px",
+                                    borderRadius: "50%",
+                                    marginRight: "5px",
+                                }}
+                            ></span>
+                            <span
+                                style={{ color: "#000" }}
+                            >{`${renderLegendText(
+                                (entry.name as string) || ""
+                            )}: ${entry.value}`}</span>
+                        </div>
+                    ))}
                 </div>
             );
         }
-
         return null;
     };
 
+    // Date formatter for X-axis ticks
+    const formatDateTick = (tickItem: string) => {
+        const date = new Date(tickItem);
+        return timeframe === "WEEK"
+            ? date.toLocaleDateString("en-GB", {
+                  day: "2-digit",
+                  month: "2-digit",
+              })
+            : date.toLocaleDateString();
+    };
+
+    const belowSm = useResponsive("down", "sm");
+    const belowMd = useResponsive("down", "md");
+
     return (
         <>
-            <Stack direction="row" spacing={2} p={1}>
-                <Typography variant={"h5"} p={1}>
-                    {t("Views of Properties")}
-                </Typography>
-                <Stack direction="row" padding={1} spacing={2}>
-                    <Select value={timeframe} onChange={handleTimeframeSelect}>
-                        <MenuItem value="ALL_TIME">{t("All_Time")}</MenuItem>
-                        <MenuItem value="MONTH">{t("Monthly")}</MenuItem>
-                        <MenuItem value="WEEK">{t("Weekly")}</MenuItem>
-                        <MenuItem value="YEAR">{t("Yearly")}</MenuItem>
-                        <MenuItem value="DAY">{t("Daily")}</MenuItem>
-                        <MenuItem value="CUSTOM">Custom</MenuItem>
-                    </Select>
-                    <Select
-                        value={parentCategory}
-                        onChange={handleParentCategorySelect}
-                        displayEmpty
-                    >
-                        <MenuItem value="">{t("Parent Category")}</MenuItem>
-                        {parentCategoryEnum?.map((item) => (
-                            <MenuItem key={item.key} value={item.key}>
-                                {item.value}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                    <Select
-                        value={category}
-                        onChange={handleCategorySelect}
-                        displayEmpty
-                        disabled={!parentCategory} // Add this line
-                    >
-                        <MenuItem value="">{t("Category")}</MenuItem>
-                        {subCategoriesMap[parentCategory!]?.map((item) => (
-                            <MenuItem key={item.key} value={item.key}>
-                                {item.value}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </Stack>
-            </Stack>
-            <ResponsiveContainer width="100%" height={300}>
-                <LineChart
-                    data={chartData}
-                    margin={{
-                        top: 5,
-                        right: 30,
-                        left: 20,
-                        bottom: 5,
-                    }}
-                >
-                    <defs>
-                        <filter
-                            id="shadow"
-                            x="-30%"
-                            y="-30%"
-                            width="160%"
-                            height="160%"
+            {belowMd && !belowSm ? (
+                <Stack direction="column" spacing={2} p={1}>
+                    <Typography variant={"h5"} p={1}>
+                        {t("Views of Properties")}
+                    </Typography>
+                    <Stack direction="row" padding={1} spacing={2}>
+                        <Select
+                            value={timeframe}
+                            onChange={handleTimeframeSelect}
                         >
-                            <feGaussianBlur in="SourceAlpha" stdDeviation="5" />
-                            <feOffset dx="5" dy="5" result="offsetblur" />
-                            <feComponentTransfer>
-                                <feFuncA type="linear" slope="0.5" />
-                            </feComponentTransfer>
-                            <feMerge>
-                                <feMergeNode />
-                                <feMergeNode in="SourceGraphic" />
-                            </feMerge>
-                        </filter>
-                    </defs>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <XAxis dataKey="date" />
+                            <MenuItem value="ALL_TIME">
+                                {t("All_Time")}
+                            </MenuItem>
+                            <MenuItem value="MONTH">{t("Monthly")}</MenuItem>
+                            <MenuItem value="WEEK">{t("Weekly")}</MenuItem>
+                            <MenuItem value="YEAR">{t("Yearly")}</MenuItem>
+                            <MenuItem value="DAY">{t("Daily")}</MenuItem>
+                            <MenuItem value="CUSTOM">Custom</MenuItem>
+                        </Select>
+                        <Select
+                            value={parentCategory}
+                            onChange={handleParentCategorySelect}
+                            displayEmpty
+                        >
+                            <MenuItem value="">{t("Parent Category")}</MenuItem>
+                            {parentCategoryEnum?.map((item) => (
+                                <MenuItem key={item.key} value={item.key}>
+                                    {item.value}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                        <Select
+                            value={category}
+                            onChange={handleCategorySelect}
+                            displayEmpty
+                            disabled={!parentCategory}
+                        >
+                            <MenuItem value="">{t("Category")}</MenuItem>
+                            {subCategoriesMap[parentCategory!]?.map((item) => (
+                                <MenuItem key={item.key} value={item.key}>
+                                    {item.value}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </Stack>
+                </Stack>
+            ) : (
+                <Stack
+                    direction={{
+                        xs: "column",
+                        sm: "row",
+                    }}
+                    spacing={2}
+                    p={1}
+                >
+                    <Typography variant={"h5"} p={1}>
+                        {t("Views of Properties")}
+                    </Typography>
+                    <Stack
+                        direction={{
+                            xs: "column",
+                            sm: "row",
+                        }}
+                        padding={1}
+                        spacing={2}
+                    >
+                        <Select
+                            value={timeframe}
+                            onChange={handleTimeframeSelect}
+                        >
+                            <MenuItem value="ALL_TIME">
+                                {t("All_Time")}
+                            </MenuItem>
+                            <MenuItem value="MONTH">{t("Monthly")}</MenuItem>
+                            <MenuItem value="WEEK">{t("Weekly")}</MenuItem>
+                            <MenuItem value="YEAR">{t("Yearly")}</MenuItem>
+                            <MenuItem value="DAY">{t("Daily")}</MenuItem>
+                            <MenuItem value="CUSTOM">Custom</MenuItem>
+                        </Select>
+                        <Select
+                            value={parentCategory}
+                            onChange={handleParentCategorySelect}
+                            displayEmpty
+                        >
+                            <MenuItem value="">{t("Parent Category")}</MenuItem>
+                            {parentCategoryEnum?.map((item) => (
+                                <MenuItem key={item.key} value={item.key}>
+                                    {item.value}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                        <Select
+                            value={category}
+                            onChange={handleCategorySelect}
+                            displayEmpty
+                            disabled={!parentCategory}
+                        >
+                            <MenuItem value="">{t("Category")}</MenuItem>
+                            {subCategoriesMap[parentCategory!]?.map((item) => (
+                                <MenuItem key={item.key} value={item.key}>
+                                    {item.value}
+                                </MenuItem>
+                            ))}
+                        </Select>
+                    </Stack>
+                </Stack>
+            )}
+
+            <ResponsiveContainer width="99%" height={300}>
+                <AreaChart
+                    data={chartData}
+                    margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                >
+                    <CartesianGrid vertical={false} />
+                    <XAxis dataKey="date" tickFormatter={formatDateTick} />
                     {category && parentCategory ? (
                         <>
-                            <YAxis dataKey="parentCategory" />
-                            <YAxis dataKey="category" />
+                            <YAxis dataKey="parentCategory" width={20} />
+                            <YAxis dataKey="category" width={20} />
                         </>
                     ) : !category && !parentCategory ? (
-                        <YAxis dataKey="All" />
+                        <YAxis dataKey="All" width={20} />
                     ) : !category && parentCategory ? (
-                        <YAxis dataKey="parentCategory" />
+                        <YAxis dataKey="parentCategory" width={20} />
                     ) : null}
                     <Tooltip content={renderTooltipContent} />
                     <Legend
@@ -225,48 +317,52 @@ export default function StackedAreas() {
                         iconSize={10}
                         verticalAlign="top"
                         align="right"
-                        layout="horizontal" //se periptwsh pou ta theloun katheta apla vazw vertical
+                        layout="horizontal"
+                        wrapperStyle={{ paddingBottom: "20px" }}
                     />
-
                     {category && parentCategory ? (
                         <>
-                            <Line
+                            <Area
                                 type="monotone"
                                 dataKey="parentCategory"
-                                stroke="#EB0F0F"
+                                stroke="#2E42A5"
+                                fill="#2E42A5"
                                 strokeWidth={2}
                                 dot={false}
+                                fillOpacity={0.15}
                             />
-                            <Line
+                            <Area
                                 type="monotone"
                                 dataKey="category"
-                                stroke="#2E42A5"
+                                stroke="#EB0F0F"
+                                fill="#EB0F0F"
                                 strokeWidth={2}
                                 dot={false}
+                                fillOpacity={0.15}
                             />
                         </>
                     ) : !category && !parentCategory ? (
-                        <Line
+                        <Area
                             type="monotone"
                             dataKey="All"
                             stroke="#2E42A5"
+                            fill="#2E42A5"
                             strokeWidth={2}
                             dot={false}
+                            fillOpacity={0.15}
                         />
                     ) : !category && parentCategory ? (
-                        <Line
+                        <Area
                             type="monotone"
                             dataKey="parentCategory"
                             stroke="#2E42A5"
+                            fill="#2E42A5"
                             strokeWidth={2}
                             dot={false}
+                            fillOpacity={0.15}
                         />
                     ) : null}
-                    {
-                        (console.log("category", category),
-                        console.log("parentCategory", parentCategory))
-                    }
-                </LineChart>
+                </AreaChart>
             </ResponsiveContainer>
         </>
     );

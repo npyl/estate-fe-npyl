@@ -21,8 +21,7 @@ export default function MediaCard({ sx, ...other }: Props) {
 
     const allFilters = useSelector(selectAll);
 
-    const [filterProperties, { isLoading, data }] =
-        useFilterPropertiesMutation();
+    const [filterProperties, { data }] = useFilterPropertiesMutation();
 
     useEffect(() => {
         filterProperties({
@@ -37,7 +36,7 @@ export default function MediaCard({ sx, ...other }: Props) {
     return (
         <Grid container sx={{ py: 2 }} spacing={1} {...other}>
             {content?.map((item, index) => (
-                <Grid item key={index} xs={12} sm={6} md={4}>
+                <Grid item key={index} xs={12} sm={6} md={4} lg={3}>
                     <PropertyCard item={item} selectedMarker={null} />
                 </Grid>
             ))}
