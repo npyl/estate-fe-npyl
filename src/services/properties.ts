@@ -28,6 +28,39 @@ import { LocationDisplay } from "src/types/enums";
 import { IOpenAIDetailsPOST } from "src/types/openai";
 import { IGoogleEarthPOST } from "src/types/googleEarth";
 
+const removeMetadata = async (file: File): Promise<Blob> => {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+
+        img.onload = () => {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx?.drawImage(img, 0, 0);
+            canvas.toBlob((blob) => {
+                if (blob) {
+                    resolve(blob);
+                } else {
+                    reject(new Error("Failed to convert image to Blob."));
+                }
+            }, file.type);
+        };
+        img.onerror = () => {
+            reject(new Error("Failed to load image for processing."));
+        };
+
+        const reader = new FileReader();
+        reader.onload = (e: ProgressEvent<FileReader>) => {
+            img.src = e.target?.result as string;
+        };
+        reader.onerror = () => {
+            reject(new Error("Failed to read file."));
+        };
+        reader.readAsDataURL(file);
+    });
+};
+
 interface JustData<T> {
     data: T;
 }
@@ -138,6 +171,11 @@ export const properties = createApi({
             headers.set(
                 "Authorization",
                 `Bearer  ${localStorage.getItem("accessToken")}`
+            );
+
+            headers.set(
+                "Accept-Language",
+                `${localStorage.getItem("language") ?? "el"}`
             );
 
             return headers;
@@ -788,8 +826,10 @@ export const properties = createApi({
             // INFO: upload to amazon
             async queryFn({ url, file, onProgressUpdate }) {
                 const { type } = file;
-
+                console.log("File size:", file);
                 try {
+                    const cleanFile = await removeMetadata(file);
+
                     const handleUploadProgress = ({
                         loaded,
                     }: AxiosProgressEvent) => {
@@ -803,9 +843,9 @@ export const properties = createApi({
                         }
                     };
 
-                    const response = await axios.put(url, file, {
+                    const response = await axios.put(url, cleanFile, {
                         headers: {
-                            "Content-Type": type,
+                            "Content-Type": file.type,
                         },
                         onUploadProgress: handleUploadProgress,
                     });
