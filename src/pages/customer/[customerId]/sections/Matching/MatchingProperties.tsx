@@ -119,9 +119,6 @@ const MatchingPropertiesSection = ({ variant = "default" }: Props) => {
                     totalRows={totalRows}
                     columnVariant={variant}
                     // ...
-                    sortingBy="firstName"
-                    sortingOrder="asc"
-                    // ...
                     paginationMode="client"
                     page={page}
                     pageSize={pageSize}

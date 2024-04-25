@@ -38,12 +38,13 @@ const Home: NextPage = () => {
 
     const sortingOptions = useSortingOptions();
 
+    // TODO: check if this can be eliminated
     const handleSortingChange = useCallback((v: string) => {
         setSorting(v);
 
         if (v === sortingOptions[0].value) {
-            setSortingBy("");
-            setSortingOrder("");
+            setSortingBy("updatedAt");
+            setSortingOrder("desc");
         } else if (v === sortingOptions[1].value) {
             setSortingBy("price");
             setSortingOrder("asc");
@@ -84,7 +85,9 @@ const Home: NextPage = () => {
                         onBulkEditClose={closeBulkEdit}
                     />
                 )}
-                {optionViewProps.optionView === "grid" && <MediaCard />}
+                {optionViewProps.optionView === "grid" && (
+                    <MediaCard sortBy={sortingBy} />
+                )}
                 {optionViewProps.optionView === "map" && <MapView />}
             </>
         </Box>

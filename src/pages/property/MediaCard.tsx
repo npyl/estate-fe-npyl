@@ -12,9 +12,10 @@ import { selectAll } from "src/slices/filters";
 interface Props extends GridProps {
     title?: string;
     subheader?: string;
+    sortBy: string;
 }
 
-export default function MediaCard({ sx, ...other }: Props) {
+export default function MediaCard({ sx, sortBy, ...other }: Props) {
     // pagination
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(25);
@@ -26,10 +27,11 @@ export default function MediaCard({ sx, ...other }: Props) {
     useEffect(() => {
         filterProperties({
             filter: allFilters,
-            page: page,
-            pageSize: pageSize,
+            page,
+            pageSize,
+            sortBy,
         });
-    }, [allFilters]);
+    }, [allFilters, page, pageSize, sortBy]);
 
     const content = useMemo(() => data?.content || [], [data]);
 
