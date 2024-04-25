@@ -171,7 +171,7 @@ const resources = {
             "Default Sorting": "Default Sorting",
             "Rising Price": "Rising Price",
             "Falling Price": "Falling Price",
-            "Failing Area": "Falling Area",
+            "Falling Area": "Falling Area",
             "Rising Area": "Rising Area",
 
             //Distances
