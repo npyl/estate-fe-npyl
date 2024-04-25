@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 
 import ExportButton from "./Export";
 import MoreButton from "./More";
+import { usePathname } from "next/navigation";
 
 interface IViewHeaderProps {
     onEdit: VoidFunction;
@@ -17,6 +18,8 @@ const ViewHeader = ({
     onDelete,
     onClone,
 }: IViewHeaderProps) => {
+    const isProperty = usePathname().includes("property");
+
     return (
         <Paper
             sx={{
@@ -43,7 +46,7 @@ const ViewHeader = ({
                 </Box>
 
                 <Stack direction="row" spacing={1}>
-                    <ExportButton />
+                    {isProperty ? <ExportButton /> : null}
                     <MoreButton
                         onEdit={onEdit}
                         onDelete={onDelete}
