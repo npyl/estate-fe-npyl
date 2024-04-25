@@ -54,8 +54,11 @@ const Home: NextPage = () => {
         } else if (v === sortingOptions[3].value) {
             setSortingBy("area");
             setSortingOrder("asc");
-        } else if (v === sortingOptions[4].value) {
-            setSortingBy("price");
+        } else if (v === sortingOptions[5].value) {
+            setSortingBy("visitors");
+            setSortingOrder("asc");
+        } else if (v === sortingOptions[6].value) {
+            setSortingBy("visitors");
             setSortingOrder("desc");
         }
     }, []);
