@@ -15,15 +15,17 @@ export const listings = createApi({
     }),
 
     endpoints: (builder) => ({
+        // TODO: update this code to support more than Kop
+
         addPublicListing: builder.mutation<void, number>({
             query: (propertyId: number) => ({
-                url: `/public/addListing/${propertyId}`,
+                url: `/public/addListing/${propertyId}?publicSiteId=1`,
                 method: "POST",
             }),
         }),
         removePublicListing: builder.mutation<void, number>({
             query: (propertyId: number) => ({
-                url: `/public/removeListing/${propertyId}`,
+                url: `/public/removeListing/${propertyId}?publicSiteId=1`,
                 method: "DELETE",
             }),
         }),
