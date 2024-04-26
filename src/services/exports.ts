@@ -4,6 +4,12 @@ interface DownloadImagesZipProps {
     hidden: boolean;
     propertyId: number;
 }
+interface IExportPDF {
+    propertyId: number;
+    qrPath: string;
+    blueprints: boolean;
+    allImages: boolean;
+}
 
 // Define the return type and parameters for our custom base query
 interface CustomBaseQueryArgs {
@@ -61,8 +67,22 @@ export const exports = createApi({
                 };
             },
         }),
+
+        // Export a property's pdfs
+        downloadPDF: builder.query<Blob, IExportPDF>({
+            query: ({ propertyId, ...params }) => {
+                return {
+                    url: `/export/${propertyId}`,
+                    method: "GET",
+                    params,
+                };
+            },
+        }),
     }),
 });
 
-export const { useLazyDownloadImagesQuery, useLazyDownloadDocumentsQuery } =
-    exports;
+export const {
+    useLazyDownloadImagesQuery,
+    useLazyDownloadDocumentsQuery,
+    useLazyDownloadPDFQuery,
+} = exports;
