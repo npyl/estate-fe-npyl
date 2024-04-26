@@ -11,7 +11,7 @@ import {
     Typography,
 } from "@mui/material";
 import { useRouter } from "next/router";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
 import {
     useAddPublicListingMutation,
@@ -22,6 +22,7 @@ import {
     properties,
     useEditLocationDisplayMutation,
     useGetPropertyByIdQuery,
+    useGetPropertyListingsQuery,
 } from "src/services/properties";
 import { ListingTypes } from "src/types/listings";
 import { LabeledSwitch } from "../../components/Switch";
@@ -34,8 +35,7 @@ import XEIcon from "src/assets/xrysh_eukairia";
 import JamesEditionIcon from "@/assets/james_edition";
 import { LocationDisplay } from "src/types/enums";
 import GoogleEarth from "./GoogleEarth/GoogleEarth";
-import { useTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
+import PublicCard from "./PublicCard";
 
 interface ListingCardProps {
     label: ListingTypes;
@@ -64,6 +64,7 @@ const ListingCard = ({ label, value, onClick }: ListingCardProps) => {
         ) : (
             "here"
         );
+
     const text = (() => {
         switch (label) {
             case "SPITOGATOS":
@@ -193,6 +194,10 @@ const Right = () => {
     const { propertyId } = router.query;
 
     const { data: property } = useGetPropertyByIdQuery(+propertyId!);
+    const { data: listings_2 } = useGetPropertyListingsQuery(+propertyId!);
+
+    // INFO: property contains all listings (except publicSites)
+    //       This will change eventually and everything will be moved to separate endpoint
     const listings = useMemo(() => property?.listings, [property?.listings]);
 
     const dispatch = useDispatch();
@@ -203,19 +208,15 @@ const Right = () => {
     const [publishSpitogatos] = useAddSpitogatosListingMutation();
 
     const invalidateTags = () =>
-        dispatch(properties.util.invalidateTags(["PropertyById"]));
+        dispatch(properties.util.invalidateTags(["PropertyByIdListings"]));
 
-    const handleClick = (key: ListingTypes, published: boolean) => {
-        if (published) {
-            key === "PUBLIC_SITE" &&
-                unpublishPublicSite(+propertyId!).then(invalidateTags);
-        } else {
-            key === "PUBLIC_SITE" &&
-                publishPublicSite(+propertyId!).then(invalidateTags);
-            key === "SPITOGATOS" &&
-                publishSpitogatos(+propertyId!).then(invalidateTags);
-        }
-    };
+    const handlePublicClick = useCallback(async (p: boolean) => {
+        try {
+            if (p) await unpublishPublicSite(+propertyId!);
+            else await publishPublicSite(+propertyId!);
+            invalidateTags();
+        } catch (err) {}
+    }, []);
 
     return (
         <Paper
@@ -240,15 +241,27 @@ const Right = () => {
                 Websites to publish to:
             </Typography>
 
-            {listings &&
-                Object.keys(listings).map((key) => (
-                    <ListingCard
-                        key={key}
-                        label={key as ListingTypes}
-                        value={listings[key as ListingTypes]}
-                        onClick={handleClick}
+            {listings_2?.publicSites?.map(
+                ({ publicSite: { id, siteUrl }, published }) => (
+                    <PublicCard
+                        key={id}
+                        label={siteUrl}
+                        published={published}
+                        onClick={() => handlePublicClick(published)}
                     />
-                ))}
+                )
+            )}
+
+            {/* {listings
+                ? Object.keys(listings).map((key) => (
+                      <ListingCard
+                          key={key}
+                          label={key as ListingTypes}
+                          value={listings[key as ListingTypes]}
+                          onClick={() => {}}
+                      />
+                  ))
+                : null} */}
 
             <Box>
                 <Typography variant="h4">Upload Google Earth</Typography>
@@ -258,26 +271,21 @@ const Right = () => {
     );
 };
 
-const Integrations = () => {
-    const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
-    return (
-        <Grid
-            container
-            spacing={1}
-            justifyContent="center"
-            alignItems="center"
-            style={{ height: "100%" }}
-        >
-            <Grid item xs={12} sm={6}>
-                <Left />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-                <Right />
-            </Grid>
+const Integrations = () => (
+    <Grid
+        container
+        spacing={1}
+        justifyContent="center"
+        alignItems="center"
+        style={{ height: "100%" }}
+    >
+        <Grid item xs={12} sm={6}>
+            <Left />
         </Grid>
-    );
-};
+        <Grid item xs={12} sm={6}>
+            <Right />
+        </Grid>
+    </Grid>
+);
 
 export default Integrations;

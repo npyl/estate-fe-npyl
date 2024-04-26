@@ -114,7 +114,7 @@ export const EditArea = ({ data, setData }: EditProps<string>) => {
     const { t } = useTranslation();
 
     return (
-        <DefaultOrEdit label={t("Area")} onDisable={() => setData("")}>
+        <DefaultOrEdit label={t("Living Space")} onDisable={() => setData("")}>
             <StyledOnlyNumbersInput
                 label=""
                 value={+data}

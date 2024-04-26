@@ -87,9 +87,6 @@ const OwnedCustomerPropertiesSection = ({ variant }: Props) => {
                     resource="property"
                     columnVariant={variant}
                     // ...
-                    sortingBy="firstName"
-                    sortingOrder={"asc"}
-                    // ...
                     page={0}
                     pageSize={10}
                     totalRows={25}

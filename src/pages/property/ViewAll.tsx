@@ -52,14 +52,15 @@ const ViewAll = ({
     const revalidate = () => {
         filterProperties({
             filter: allFilters,
-            page: page,
-            pageSize: pageSize,
+            page,
+            pageSize,
+            sortBy: sortingBy,
         });
     };
 
     useEffect(() => {
         revalidate();
-    }, [allFilters, page, pageSize]);
+    }, [allFilters, page, pageSize, sortingBy]);
 
     const rows = useMemo(() => {
         return data?.content ? data?.content : [];
@@ -137,8 +138,6 @@ const ViewAll = ({
                     >
                         <DataGrid
                             rows={rows}
-                            sortingBy={sortingBy}
-                            sortingOrder={sortingOrder}
                             page={page}
                             pageSize={pageSize}
                             totalRows={totalRows}
@@ -154,8 +153,6 @@ const ViewAll = ({
                 <Paper sx={{ mt: 2 }}>
                     <DataGrid
                         skeleton
-                        sortingBy={sortingBy}
-                        sortingOrder={sortingOrder}
                         page={page}
                         pageSize={pageSize}
                         totalRows={totalRows}

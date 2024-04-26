@@ -246,6 +246,13 @@ const MapView = () => {
                     xs: 1,
                     lg: 2,
                 }}
+                position={{
+                    xs: "inherit",
+                    lg: "sticky",
+                }}
+                // For sticky:
+                top="65px"
+                right="0px"
             >
                 <Map
                     search

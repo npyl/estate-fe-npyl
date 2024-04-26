@@ -134,8 +134,6 @@ const Customers: NextPage = () => {
                         skeleton={isLoading}
                         rows={rows}
                         // ...
-                        sortingBy="firstName"
-                        sortingOrder={sortingOrder}
                         page={page}
                         pageSize={pageSize}
                         totalRows={totalRows}

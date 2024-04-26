@@ -57,8 +57,6 @@ const MatchingCustomersSection: React.FC = () => {
                 <DataGrid
                     rows={customers}
                     resource="customer"
-                    sortingBy="firstName"
-                    sortingOrder="asc"
                     page={page}
                     pageSize={pageSize}
                     totalRows={totalRows}

@@ -20,6 +20,14 @@ const getOptions = (t: TranslationType) => [
         value: "Descending_Area",
         label: t("Falling Area"),
     },
+    {
+        value: "Ascending_Popularity",
+        label: t("Rising Popularity"),
+    },
+    {
+        value: "Descending_Popularity",
+        label: t("Falling Popularity"),
+    },
 ];
 
 export const useSortingOptions = () => {

@@ -11,9 +11,6 @@ type GridProps = {
     rows: GridRowsProp;
     columns: GridColDef[];
 
-    sortingBy: string | null;
-    sortingOrder: string | null;
-
     page: number;
     pageSize: number;
     totalRows?: number;

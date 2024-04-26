@@ -27,6 +27,7 @@ import axios, { AxiosProgressEvent } from "axios";
 import { LocationDisplay } from "src/types/enums";
 import { IOpenAIDetailsPOST } from "src/types/openai";
 import { IGoogleEarthPOST } from "src/types/googleEarth";
+import { IListings } from "@/types/listings";
 
 const removeMetadata = async (file: File): Promise<Blob> => {
     return new Promise((resolve, reject) => {
@@ -120,6 +121,8 @@ interface IPropertyFilterParams {
     filter: IPropertyFilter;
     page: number;
     pageSize: number;
+    sortBy: string;
+    // sortDirection: string;
 }
 interface IPropertySearchParams {
     searchString: string;
@@ -184,6 +187,7 @@ export const properties = createApi({
     tagTypes: [
         "Properties",
         "PropertyById",
+        "PropertyByIdListings",
         "FilterProperties",
         "SuggestedProperties",
         "SuggestedCustomers",
@@ -205,12 +209,16 @@ export const properties = createApi({
 
         // Get
         getPropertyById: builder.query<IProperties, number>({
-            query: (id: number) => `${id}`,
+            query: (id) => `${id}`,
             providesTags: ["PropertyById"],
         }),
         getPropertyByCode: builder.query<IProperties, string>({
-            query: (code: string) => `code/${code}`,
+            query: (code) => `code/${code}`,
             providesTags: ["Properties"],
+        }),
+        getPropertyListings: builder.query<IListings, number>({
+            query: (id) => `${id}/listings`,
+            providesTags: ["PropertyByIdListings"],
         }),
 
         // Attributes
@@ -278,13 +286,14 @@ export const properties = createApi({
             IPage<IPropertyResultResponse>,
             IPropertyFilterParams
         >({
-            query: (filterParam: IPropertyFilterParams) => ({
+            query: ({ filter, page, pageSize, sortBy }) => ({
                 url: "/filter",
                 method: "POST",
-                body: filterParam.filter,
+                body: filter,
                 params: {
-                    page: filterParam.page,
-                    pageSize: filterParam.pageSize,
+                    page,
+                    pageSize,
+                    sortBy,
                 },
             }),
         }),
@@ -913,6 +922,7 @@ export const {
     useGetPropertyByCodeQuery,
     useLazyGetPropertyByCodeQuery,
     useLazyGetPropertyByIdQuery,
+    useGetPropertyListingsQuery,
 
     // mutations
     useEditPropertyMutation,

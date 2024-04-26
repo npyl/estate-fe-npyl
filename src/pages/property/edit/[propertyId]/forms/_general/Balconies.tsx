@@ -30,7 +30,7 @@ const Balcony = ({ options, index, onRemove }: BalconyProps) => {
             />
 
             <RHFOnlyNumbers
-                label={t("Area")}
+                label={t("Living Space")}
                 name={`details.balconies[${index}].area`}
             />
 
