@@ -1,15 +1,6 @@
-import {
-    FetchBaseQueryError,
-    createApi,
-    fetchBaseQuery,
-} from "@reduxjs/toolkit/query/react";
-import {
-    IProperties,
-    IPropertiesPOST,
-    IPropertyFilter,
-    IPropertyResultResponse,
-} from "src/types/properties";
-import IPage from "src/types/page";
+// Images, Blueprints, Documents
+
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query/react";
 import {
     IFileResponse,
     IPropertyImagePOST,
@@ -20,14 +11,9 @@ import {
     IPropertyDocumentPOST,
 } from "src/types/file";
 
-import { ILabel } from "src/types/label";
-import { ICustomer } from "src/types/customer";
-
 import axios, { AxiosProgressEvent } from "axios";
-import { LocationDisplay } from "src/types/enums";
-import { IOpenAIDetailsPOST } from "src/types/openai";
-import { IGoogleEarthPOST } from "src/types/googleEarth";
-import { IListings } from "@/types/listings";
+
+import { properties } from "./properties";
 
 const removeMetadata = async (file: File): Promise<Blob> => {
     return new Promise((resolve, reject) => {
@@ -62,32 +48,6 @@ const removeMetadata = async (file: File): Promise<Blob> => {
     });
 };
 
-interface JustData<T> {
-    data: T;
-}
-
-export interface BulkEditRequest {
-    propertyIds: number[];
-    managerId?: number;
-    ownerId?: number;
-    zipcode?: number;
-    area?: number;
-    labels?: number[];
-    bedrooms?: number;
-    state?: string;
-}
-interface IGetPropertyAttributeProps {
-    propertyId: number;
-    attributeName: string;
-}
-interface ICreatePropertyParams {
-    parentCategory: string;
-    category: string;
-}
-interface IEditPropertyProps {
-    id: number;
-    body: IPropertiesPOST;
-}
 interface IPropertyAddFileParams<T> {
     id: number;
     body: T;
@@ -117,27 +77,6 @@ interface IDeleteImageProps extends IDeleteFileProps {
     newThumbnailKey: string;
 }
 
-interface IPropertyFilterParams {
-    filter: IPropertyFilter;
-    page: number;
-    pageSize: number;
-    sortBy: string;
-    // sortDirection: string;
-}
-interface IPropertySearchParams {
-    searchString: string;
-    page: number;
-    pageSize: number;
-}
-interface ISuggestForCustomerParams {
-    customerId: number;
-}
-interface ISuggestForPropertyParams {
-    propertyId: number;
-    page: number;
-    pageSize: number;
-}
-
 interface ReorderImagesWithSetImageVisibilityProps {
     propertyId: number;
     imageKeys: string[];
@@ -146,8 +85,9 @@ interface ReorderImagesWithSetImageVisibilityProps {
 }
 
 interface UploadDocumentToAmazonProps {
+    variant: "image" | "blueprint" | "document" | "googleEarth"; // INFO: for image variant, we must also strip metadata
     url: string;
-    file: File /* image, blueprint, document, google earth */;
+    file: File;
     onProgressUpdate?: (p: number) => void;
 }
 
@@ -155,235 +95,18 @@ interface UploadResponse {
     success: boolean;
 }
 
-interface EditLocationDisplayProps {
-    propertyId: number;
-    display: LocationDisplay;
-}
-
-interface IContent<T> {
-    content: T[];
-}
-
-export const properties = createApi({
-    reducerPath: "properties",
-    baseQuery: fetchBaseQuery({
-        baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/property`,
-        prepareHeaders: (headers) => {
-            // By default, if we have a token in the store, let's use that for authenticated requests
-
-            headers.set(
-                "Authorization",
-                `Bearer  ${localStorage.getItem("accessToken")}`
-            );
-
-            headers.set(
-                "Accept-Language",
-                `${localStorage.getItem("language") ?? "el"}`
-            );
-
-            return headers;
-        },
-    }),
-    tagTypes: [
-        "Properties",
-        "PropertyById",
-        "PropertyByIdListings",
-        "FilterProperties",
-        "SuggestedProperties",
-        "SuggestedCustomers",
-
-        // attributes
-        "PropertyByIdImages",
-        "PropertyByIdLabels",
-        "PropertyByIdDocuments",
-        "PropertyByIdBlueprints",
-        "PropertyByIdZip",
-    ],
+export const filesApiSlice = properties.injectEndpoints({
     endpoints: (builder) => ({
-        allProperties: builder.query<IProperties[], void>({
-            query: () => ({
-                url: "all",
-            }),
-            providesTags: ["Properties"],
-        }),
-
-        // Get
-        getPropertyById: builder.query<IProperties, number>({
-            query: (id) => `${id}`,
-            providesTags: ["PropertyById"],
-        }),
-        getPropertyByCode: builder.query<IProperties, string>({
-            query: (code) => `code/${code}`,
-            providesTags: ["Properties"],
-        }),
-        getPropertyListings: builder.query<IListings, number>({
-            query: (id) => `${id}/listings`,
-            providesTags: ["PropertyByIdListings"],
-        }),
-
-        // Attributes
-        getPropertyImages: builder.query<IPropertyImage[], number>({
-            query: (propertyId: number) => `${propertyId}/images`,
-            providesTags: ["PropertyByIdImages"],
-        }),
-        getPropertyLabels: builder.query<ILabel[], number>({
-            query: (propertyId: number) => `${propertyId}/labels`,
-            providesTags: ["PropertyByIdLabels"],
-        }),
-        getPropertyBlueprints: builder.query<IPropertyBlueprint[], number>({
-            query: (propertyId: number) => `${propertyId}/blueprints`,
-            providesTags: ["PropertyByIdBlueprints"],
-        }),
-        getPropertyDocuments: builder.query<IPropertyDocument[], number>({
-            query: (propertyId: number) => `${propertyId}/documents`,
-            providesTags: ["PropertyByIdDocuments"],
-        }),
-
-        // mutations
-        editProperty: builder.mutation<number, IEditPropertyProps>({
-            query: ({ body, id }: IEditPropertyProps) => ({
-                url: `/edit/${id}`,
-                method: "POST",
-                body,
-            }),
-            invalidatesTags: ["Properties", "PropertyById"],
-        }),
-        createProperty: builder.mutation<
-            JustData<number>,
-            ICreatePropertyParams
-        >({
-            query: (dataToSend: ICreatePropertyParams) => ({
-                url: "/create",
-                method: "POST",
-                params: dataToSend,
-            }),
-            invalidatesTags: ["Properties"],
-        }),
-        cloneProperty: builder.mutation<number, number>({
-            query: (propertyId: number) => ({
-                url: `/clone/${propertyId}`,
-                method: "POST",
-            }),
-            invalidatesTags: ["Properties"],
-        }),
-        bulkEditProperties: builder.mutation<void, BulkEditRequest>({
-            query: (body: BulkEditRequest) => ({
-                url: `/edit/bulk`,
-                method: "POST",
-                body,
-            }),
-            invalidatesTags: ["Properties", "PropertyById"],
-        }),
-        bulkDeleteProperties: builder.mutation<void, number[]>({
-            query: (propertyIds: number[]) => ({
-                url: `/delete/bulk`,
-                method: "DELETE",
-                body: propertyIds,
-            }),
-            invalidatesTags: ["Properties", "PropertyById"],
-        }),
-        filterProperties: builder.mutation<
-            IPage<IPropertyResultResponse>,
-            IPropertyFilterParams
-        >({
-            query: ({ filter, page, pageSize, sortBy }) => ({
-                url: "/filter",
-                method: "POST",
-                body: filter,
-                params: {
-                    page,
-                    pageSize,
-                    sortBy,
-                },
-            }),
-        }),
-        mapViewProperties: builder.mutation<
-            IContent<IPropertyResultResponse>,
-            IPropertyFilter
-        >({
-            query: (filter: IPropertyFilter) => ({
-                url: "/map",
-                method: "POST",
-                body: filter,
-            }),
-        }),
-        suggestForCustomer: builder.query<
-            IProperties[],
-            ISuggestForCustomerParams
-        >({
-            query: (params) => ({
-                url: "/customerSuggest-list",
-                params,
-            }),
-            providesTags: ["SuggestedProperties"],
-        }),
-        suggestForProperty: builder.query<
-            IPage<ICustomer>,
-            ISuggestForPropertyParams
-        >({
-            query: (params: ISuggestForPropertyParams) => ({
-                url: "/matchingCustomers",
-                params: params,
-            }),
-            providesTags: ["SuggestedCustomers"],
-        }),
-        // INFO: This is permanent delete (requires login by admin); later I will introduce an archiveProperty mutation aswell
-        deleteProperty: builder.mutation<IProperties, number>({
-            query: (id: number) => ({
-                url: `/archive/${id}`,
-                method: "DELETE",
-            }),
-            invalidatesTags: ["Properties"],
-        }),
-        searchProperty: builder.query<
-            IPage<IPropertyResultResponse>,
-            IPropertySearchParams
-        >({
-            query: (searchParams: IPropertySearchParams) => {
-                return {
-                    url: "/search",
-                    params: searchParams,
-                };
-            },
-            providesTags: ["Properties"],
-        }),
-        editLocationDisplay: builder.mutation<void, EditLocationDisplayProps>({
-            query: ({ propertyId, display }: EditLocationDisplayProps) => ({
-                url: `/edit/${propertyId}/locationdisplay`,
-                method: "PUT",
-                params: { display },
-            }),
-            invalidatesTags: ["PropertyById"],
-        }),
-
-        // checks
-        checkCodeExists: builder.query<boolean, string>({
-            query: (code: string) => {
-                return {
-                    url: "/check/code",
-                    params: { code },
-                };
-            },
-        }),
-        checkKeyCodeExists: builder.query<boolean, string>({
-            query: (code: string) => {
-                return {
-                    url: "/check/keycode",
-                    params: { code },
-                };
-            },
-        }),
-
         // images & files
         addPropertyImage: builder.mutation<
             IFileResponse,
             IPropertyAddFileParams<IPropertyImagePOST>
         >({
             // INFO: asks for an amazon url from backend; to be used before uploadPropertyImage
-            query: (params: IPropertyAddFileParams<IPropertyImagePOST>) => ({
-                url: `/${params.id}/image`,
+            query: ({ id, body }) => ({
+                url: `/${id}/image`,
                 method: "POST",
-                body: params.body,
+                body,
             }),
             onQueryStarted: async (
                 { body, id },
@@ -415,17 +138,17 @@ export const properties = createApi({
             IPropertyAddFileParams<IPropertyImagePOST>
         >({
             // INFO: same with add but causes revalidate
-            query: (params: IPropertyAddFileParams<IPropertyImagePOST>) => ({
-                url: `/${params.id}/image`,
+            query: ({ id, body }) => ({
+                url: `/${id}/image`,
                 method: "POST",
-                body: params.body,
+                body,
             }),
             invalidatesTags: ["Properties", "PropertyById"],
         }),
         setPropertyThumbail: builder.mutation<void, IPropertySetThumbnailProps>(
             {
-                query: (props: IPropertySetThumbnailProps) => ({
-                    url: `/${props.propertyId}/thumbnail/${props.imageKey}`,
+                query: ({ propertyId, imageKey }) => ({
+                    url: `/${propertyId}/thumbnail/${imageKey}`,
                     method: "POST",
                 }),
             }
@@ -434,7 +157,7 @@ export const properties = createApi({
             void,
             BulkEditPropertyImagesParams
         >({
-            query: ({ propertyId, body }: BulkEditPropertyImagesParams) => ({
+            query: ({ propertyId, body }) => ({
                 url: `/${propertyId}/images/edit/bulk`,
                 method: "POST",
                 body,
@@ -739,12 +462,10 @@ export const properties = createApi({
             IFileResponse,
             IPropertyAddFileParams<IPropertyBlueprintPOST>
         >({
-            query: (
-                params: IPropertyAddFileParams<IPropertyBlueprintPOST>
-            ) => ({
-                url: `/${params.id}/blueprint`,
+            query: ({ id, body }) => ({
+                url: `/${id}/blueprint`,
                 method: "POST",
-                body: params.body,
+                body,
             }),
             onQueryStarted: async (
                 { body, id },
@@ -772,7 +493,7 @@ export const properties = createApi({
             // invalidatesTags: ["Properties", "PropertyById"],
         }),
         deletePropertyBlueprint: builder.mutation<void, IDeleteFileProps>({
-            query: ({ propertyId, imageKey }: IDeleteFileProps) => ({
+            query: ({ propertyId, imageKey }) => ({
                 url: `/${propertyId}/blueprint/${imageKey}`,
                 method: "DELETE",
             }),
@@ -783,10 +504,7 @@ export const properties = createApi({
             IFileResponse,
             IPropertyAddFileParams<IPropertyDocumentPOST>
         >({
-            query: ({
-                id,
-                body,
-            }: IPropertyAddFileParams<IPropertyDocumentPOST>) => ({
+            query: ({ id, body }) => ({
                 url: `/${id}/document`,
                 method: "POST",
                 body,
@@ -818,10 +536,7 @@ export const properties = createApi({
             // invalidatesTags: ["Properties", "PropertyById"],
         }),
         deletePropertyDocument: builder.mutation<void, IDeleteFileProps>({
-            query: ({
-                propertyId,
-                imageKey: documentKey,
-            }: IDeleteFileProps) => ({
+            query: ({ propertyId, imageKey: documentKey }) => ({
                 url: `/${propertyId}/document/${documentKey}`,
                 method: "DELETE",
             }),
@@ -833,11 +548,11 @@ export const properties = createApi({
             UploadDocumentToAmazonProps
         >({
             // INFO: upload to amazon
-            async queryFn({ url, file, onProgressUpdate }) {
-                const { type } = file;
-                console.log("File size:", file);
+            async queryFn({ variant, url, file, onProgressUpdate }) {
                 try {
-                    const cleanFile = await removeMetadata(file);
+                    // INFO: strip image metadata only if we have image
+                    const cleanFile =
+                        variant === "image" ? await removeMetadata(file) : file;
 
                     const handleUploadProgress = ({
                         loaded,
@@ -882,66 +597,10 @@ export const properties = createApi({
             //          This is because, every photo contains a non-null url, but it is not ready for fetching.
             // invalidatesTags: ["Properties", "PropertyById"],
         }),
-
-        generateDescription: builder.mutation<string, IOpenAIDetailsPOST>({
-            query: (body: IOpenAIDetailsPOST) => ({
-                url: `/description/generate`,
-                method: "POST",
-                body,
-                responseHandler: "text",
-            }),
-        }),
-
-        //
-        //  Google Earth
-        //
-        addGoogleEarth: builder.mutation<
-            IFileResponse,
-            IPropertyAddFileParams<IGoogleEarthPOST>
-        >({
-            query: ({ id, body }) => ({
-                url: `/${id}/google-earth`,
-                method: "POST",
-                body,
-            }),
-        }),
-        deleteGoogleEarth: builder.mutation<IFileResponse, number>({
-            query: (propertyId) => ({
-                url: `/${propertyId}/google-earth`,
-                method: "DELETE",
-            }),
-        }),
     }),
 });
 
 export const {
-    // get
-    useSearchPropertyQuery,
-    useAllPropertiesQuery,
-    useGetPropertyByIdQuery,
-    useGetPropertyByCodeQuery,
-    useLazyGetPropertyByCodeQuery,
-    useLazyGetPropertyByIdQuery,
-    useGetPropertyListingsQuery,
-
-    // mutations
-    useEditPropertyMutation,
-    useCreatePropertyMutation,
-    useClonePropertyMutation,
-    useDeletePropertyMutation,
-    useFilterPropertiesMutation,
-    useMapViewPropertiesMutation,
-    useSuggestForCustomerQuery,
-    useSuggestForPropertyQuery,
-    useBulkEditPropertiesMutation,
-    useBulkDeletePropertiesMutation,
-    useEditLocationDisplayMutation,
-
-    // check
-    useLazyCheckCodeExistsQuery,
-    useLazyCheckKeyCodeExistsQuery,
-
-    // images & files
     useAddPropertyImageMutation,
     useEditPropertyImageMutation,
     useSetPropertyThumbailMutation,
@@ -960,16 +619,4 @@ export const {
     useDeletePropertyDocumentMutation,
 
     useUploadPropertyFileMutation,
-
-    useGenerateDescriptionMutation,
-
-    // attributes
-    useGetPropertyLabelsQuery,
-    useGetPropertyDocumentsQuery,
-
-    //
-    //  Google Earth
-    //
-    useAddGoogleEarthMutation,
-    useDeleteGoogleEarthMutation,
-} = properties;
+} = filesApiSlice;

@@ -1,7 +1,7 @@
 import { IUser } from "./user";
 
 export interface INote {
-    id?: number;
+    id: number;
     content: string;
     creator: IUser;
     createdAt: Date;

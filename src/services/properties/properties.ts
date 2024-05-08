@@ -1,0 +1,354 @@
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {
+    IProperties,
+    IPropertiesPOST,
+    IPropertyFilter,
+    IPropertyResultResponse,
+} from "src/types/properties";
+import IPage from "src/types/page";
+import {
+    IFileResponse,
+    IPropertyBlueprint,
+    IPropertyImage,
+    IPropertyDocument,
+} from "src/types/file";
+
+import { ILabel } from "src/types/label";
+import { ICustomer } from "src/types/customer";
+
+import { LocationDisplay } from "src/types/enums";
+import { IOpenAIDetailsPOST } from "src/types/openai";
+import { IGoogleEarthPOST } from "src/types/googleEarth";
+import { IListings } from "@/types/listings";
+
+interface JustData<T> {
+    data: T;
+}
+
+export interface BulkEditRequest {
+    propertyIds: number[];
+    managerId?: number;
+    ownerId?: number;
+    zipcode?: number;
+    area?: number;
+    labels?: number[];
+    bedrooms?: number;
+    state?: string;
+}
+
+interface ICreatePropertyParams {
+    parentCategory: string;
+    category: string;
+}
+interface IEditPropertyProps {
+    id: number;
+    body: IPropertiesPOST;
+}
+interface IPropertyAddFileParams<T> {
+    id: number;
+    body: T;
+}
+
+interface IPropertyFilterParams {
+    filter: IPropertyFilter;
+    page: number;
+    pageSize: number;
+    sortBy: string;
+    // sortDirection: string;
+}
+interface IPropertySearchParams {
+    searchString: string;
+    page: number;
+    pageSize: number;
+}
+interface ISuggestForCustomerParams {
+    customerId: number;
+}
+interface ISuggestForPropertyParams {
+    propertyId: number;
+    page: number;
+    pageSize: number;
+}
+
+interface EditLocationDisplayProps {
+    propertyId: number;
+    display: LocationDisplay;
+}
+
+interface IContent<T> {
+    content: T[];
+}
+
+export const properties = createApi({
+    reducerPath: "properties",
+    baseQuery: fetchBaseQuery({
+        baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/property`,
+        prepareHeaders: (headers) => {
+            // By default, if we have a token in the store, let's use that for authenticated requests
+
+            headers.set(
+                "Authorization",
+                `Bearer  ${localStorage.getItem("accessToken")}`
+            );
+
+            headers.set(
+                "Accept-Language",
+                `${localStorage.getItem("language") ?? "el"}`
+            );
+
+            return headers;
+        },
+    }),
+    tagTypes: [
+        "Properties",
+        "PropertyById",
+        "PropertyByIdListings",
+        "FilterProperties",
+        "SuggestedProperties",
+        "SuggestedCustomers",
+
+        // attributes
+        "PropertyByIdImages",
+        "PropertyByIdLabels",
+        "PropertyByIdDocuments",
+        "PropertyByIdBlueprints",
+        "PropertyByIdZip",
+    ],
+    endpoints: (builder) => ({
+        allProperties: builder.query<IProperties[], void>({
+            query: () => ({
+                url: "all",
+            }),
+            providesTags: ["Properties"],
+        }),
+
+        getPropertyById: builder.query<IProperties, number>({
+            query: (id) => `${id}`,
+            providesTags: ["PropertyById"],
+        }),
+        getPropertyByCode: builder.query<IProperties, string>({
+            query: (code) => `code/${code}`,
+            providesTags: ["Properties"],
+        }),
+        getPropertyListings: builder.query<IListings, number>({
+            query: (id) => `${id}/listings`,
+            providesTags: ["PropertyByIdListings"],
+        }),
+
+        // Attributes
+        getPropertyImages: builder.query<IPropertyImage[], number>({
+            query: (propertyId) => `${propertyId}/images`,
+            providesTags: ["PropertyByIdImages"],
+        }),
+        getPropertyLabels: builder.query<ILabel[], number>({
+            query: (propertyId) => `${propertyId}/labels`,
+            providesTags: ["PropertyByIdLabels"],
+        }),
+        getPropertyBlueprints: builder.query<IPropertyBlueprint[], number>({
+            query: (propertyId) => `${propertyId}/blueprints`,
+            providesTags: ["PropertyByIdBlueprints"],
+        }),
+        getPropertyDocuments: builder.query<IPropertyDocument[], number>({
+            query: (propertyId) => `${propertyId}/documents`,
+            providesTags: ["PropertyByIdDocuments"],
+        }),
+
+        // mutations
+        editProperty: builder.mutation<number, IEditPropertyProps>({
+            query: ({ body, id }) => ({
+                url: `/edit/${id}`,
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["Properties", "PropertyById"],
+        }),
+        createProperty: builder.mutation<
+            JustData<number>,
+            ICreatePropertyParams
+        >({
+            query: (params) => ({
+                url: "/create",
+                method: "POST",
+                params,
+            }),
+            invalidatesTags: ["Properties"],
+        }),
+        cloneProperty: builder.mutation<number, number>({
+            query: (propertyId) => ({
+                url: `/clone/${propertyId}`,
+                method: "POST",
+            }),
+            invalidatesTags: ["Properties"],
+        }),
+        bulkEditProperties: builder.mutation<void, BulkEditRequest>({
+            query: (body) => ({
+                url: `/edit/bulk`,
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["Properties", "PropertyById"],
+        }),
+        bulkDeleteProperties: builder.mutation<void, number[]>({
+            query: (propertyIds) => ({
+                url: `/delete/bulk`,
+                method: "DELETE",
+                body: propertyIds,
+            }),
+            invalidatesTags: ["Properties", "PropertyById"],
+        }),
+        filterProperties: builder.mutation<
+            IPage<IPropertyResultResponse>,
+            IPropertyFilterParams
+        >({
+            query: ({ filter, page, pageSize, sortBy }) => ({
+                url: "/filter",
+                method: "POST",
+                body: filter,
+                params: {
+                    page,
+                    pageSize,
+                    sortBy,
+                },
+            }),
+        }),
+        mapViewProperties: builder.mutation<
+            IContent<IPropertyResultResponse>,
+            IPropertyFilter
+        >({
+            query: (body) => ({
+                url: "/map",
+                method: "POST",
+                body,
+            }),
+        }),
+        suggestForCustomer: builder.query<
+            IProperties[],
+            ISuggestForCustomerParams
+        >({
+            query: (params) => ({
+                url: "/customerSuggest-list",
+                params,
+            }),
+            providesTags: ["SuggestedProperties"],
+        }),
+        suggestForProperty: builder.query<
+            IPage<ICustomer>,
+            ISuggestForPropertyParams
+        >({
+            query: (params) => ({
+                url: "/matchingCustomers",
+                params: params,
+            }),
+            providesTags: ["SuggestedCustomers"],
+        }),
+        // INFO: This is permanent delete (requires login by admin); later I will introduce an archiveProperty mutation aswell
+        deleteProperty: builder.mutation<IProperties, number>({
+            query: (id) => ({
+                url: `/archive/${id}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Properties"],
+        }),
+        searchProperty: builder.query<
+            IPage<IPropertyResultResponse>,
+            IPropertySearchParams
+        >({
+            query: (params) => ({
+                url: "/search",
+                params,
+            }),
+            providesTags: ["Properties"],
+        }),
+        editLocationDisplay: builder.mutation<void, EditLocationDisplayProps>({
+            query: ({ propertyId, display }) => ({
+                url: `/edit/${propertyId}/locationdisplay`,
+                method: "PUT",
+                params: { display },
+            }),
+            invalidatesTags: ["PropertyById"],
+        }),
+
+        // checks
+        checkCodeExists: builder.query<boolean, string>({
+            query: (code) => ({
+                url: "/check/code",
+                params: { code },
+            }),
+        }),
+        checkKeyCodeExists: builder.query<boolean, string>({
+            query: (code) => ({
+                url: "/check/keycode",
+                params: { code },
+            }),
+        }),
+
+        generateDescription: builder.mutation<string, IOpenAIDetailsPOST>({
+            query: (body) => ({
+                url: `/description/generate`,
+                method: "POST",
+                body,
+                responseHandler: "text",
+            }),
+        }),
+
+        //
+        //  Google Earth
+        //
+        addGoogleEarth: builder.mutation<
+            IFileResponse,
+            IPropertyAddFileParams<IGoogleEarthPOST>
+        >({
+            query: ({ id, body }) => ({
+                url: `/${id}/google-earth`,
+                method: "POST",
+                body,
+            }),
+        }),
+        deleteGoogleEarth: builder.mutation<IFileResponse, number>({
+            query: (propertyId) => ({
+                url: `/${propertyId}/google-earth`,
+                method: "DELETE",
+            }),
+        }),
+    }),
+});
+
+export const {
+    // get
+    useSearchPropertyQuery,
+    useAllPropertiesQuery,
+    useGetPropertyByIdQuery,
+    useGetPropertyByCodeQuery,
+    useLazyGetPropertyByCodeQuery,
+    useLazyGetPropertyByIdQuery,
+    useGetPropertyListingsQuery,
+
+    // mutations
+    useEditPropertyMutation,
+    useCreatePropertyMutation,
+    useClonePropertyMutation,
+    useDeletePropertyMutation,
+    useFilterPropertiesMutation,
+    useMapViewPropertiesMutation,
+    useSuggestForCustomerQuery,
+    useSuggestForPropertyQuery,
+    useBulkEditPropertiesMutation,
+    useBulkDeletePropertiesMutation,
+    useEditLocationDisplayMutation,
+
+    // check
+    useLazyCheckCodeExistsQuery,
+    useLazyCheckKeyCodeExistsQuery,
+
+    useGenerateDescriptionMutation,
+
+    // attributes
+    useGetPropertyLabelsQuery,
+    useGetPropertyDocumentsQuery,
+
+    //
+    //  Google Earth
+    //
+    useAddGoogleEarthMutation,
+    useDeleteGoogleEarthMutation,
+} = properties;

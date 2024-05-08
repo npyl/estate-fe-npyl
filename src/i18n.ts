@@ -167,6 +167,7 @@ const resources = {
 
             Garden: "Garden",
             Balconies: "Balconies",
+            "Available only on View / Edit": "Available only on View / Edit",
 
             "Default Sorting": "Default Sorting",
             "Rising Price": "Rising Price",

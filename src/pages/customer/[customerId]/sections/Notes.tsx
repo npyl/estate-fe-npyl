@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import * as React from "react";
+import { useMemo } from "react";
 import { NoteCreate } from "src/components/Note";
 import {
     useAddNoteToCustomerWithIdMutation,
@@ -11,9 +11,11 @@ const NotesCustomerSection: React.FC = () => {
     const router = useRouter();
     const { customerId } = router.query;
 
-    const notes = useGetNotesByCustomerIdQuery(
-        parseInt(customerId as string)
-    ).data;
+    const { data } = useGetNotesByCustomerIdQuery(+customerId!, {
+        skip: !customerId,
+    });
+    const notes = useMemo(() => (Array.isArray(data) ? data : []), [data]);
+
     const [addNote] = useAddNoteToCustomerWithIdMutation();
     const [deleteNote] = useDeleteWithIdMutation();
 

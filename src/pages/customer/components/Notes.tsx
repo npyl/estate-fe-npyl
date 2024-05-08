@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import * as React from "react";
+import { useMemo } from "react";
 import { NoteCreate, Placeholder } from "src/components/Note";
 
 import {
@@ -12,9 +12,11 @@ const NotesSection: React.FC<any> = () => {
     const router = useRouter();
     const { customerId } = router.query;
 
-    const notes =
-        useGetNotesByCustomerIdQuery(+customerId!, { skip: !customerId })
-            .data || [];
+    const { data } = useGetNotesByCustomerIdQuery(+customerId!, {
+        skip: !customerId,
+    });
+    const notes = useMemo(() => (Array.isArray(data) ? data : []), [data]);
+
     const [addNote] = useAddNoteToCustomerWithIdMutation();
     const [deleteNote] = useDeleteWithIdMutation();
 
@@ -28,7 +30,7 @@ const NotesSection: React.FC<any> = () => {
 
     return (
         <NoteCreate
-            notes={notes}
+            notes={notes || []}
             onAdd={handleAddNote}
             onRemove={hadleRemove}
         />

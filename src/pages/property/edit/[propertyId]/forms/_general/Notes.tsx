@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import * as React from "react";
+import { useMemo } from "react";
 import { NoteCreate } from "src/components/Note";
 import {
     useAddNoteToPropertyWithIdMutation,
@@ -11,7 +11,11 @@ const NotesSection: React.FC<any> = () => {
     const router = useRouter();
     const { propertyId } = router.query;
 
-    const { data: notes } = useGetNotesByPropertyIdQuery(+propertyId!);
+    const { data } = useGetNotesByPropertyIdQuery(+propertyId!, {
+        skip: !propertyId,
+    });
+    const notes = useMemo(() => (Array.isArray(data) ? data : []), [data]);
+
     const [addNote] = useAddNoteToPropertyWithIdMutation();
     const [deleteNote] = useDeleteWithIdMutation();
 
