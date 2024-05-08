@@ -90,6 +90,7 @@ const BlueprintsSection: React.FC = () => {
 
         // PUT to amazon url
         const response = await uploadBlueprint({
+            variant: "blueprint",
             url,
             file,
         });

@@ -146,6 +146,7 @@ interface ReorderImagesWithSetImageVisibilityProps {
 }
 
 interface UploadDocumentToAmazonProps {
+    variant: "image" | "blueprint" | "document"; // INFO: for image variant, we must also strip metadata
     url: string;
     file: File /* image, blueprint, document, google earth */;
     onProgressUpdate?: (p: number) => void;
@@ -819,13 +820,11 @@ export const properties = createApi({
             UploadDocumentToAmazonProps
         >({
             // INFO: upload to amazon
-            async queryFn({ url, file, onProgressUpdate }) {
-                const { type } = file;
-
-                console.log("File size:", file);
-
+            async queryFn({ variant, url, file, onProgressUpdate }) {
                 try {
-                    const cleanFile = await removeMetadata(file);
+                    // INFO: strip image metadata only if we have image
+                    const cleanFile =
+                        variant === "image" ? await removeMetadata(file) : file;
 
                     const handleUploadProgress = ({
                         loaded,
