@@ -25,31 +25,31 @@ export const note = createApi({
     tagTypes: ["Notes"],
     endpoints: (builder) => ({
         getNotesByPropertyId: builder.query<INote[], number>({
-            query: (id: number) => ({
+            query: (id) => ({
                 url: `/property/${id}`,
             }),
             providesTags: ["Notes"],
         }),
         getNotesByCustomerId: builder.query<INote[], number>({
-            query: (id: number) => ({
+            query: (id) => ({
                 url: `/customer/${id}`,
             }),
             providesTags: ["Notes"],
         }),
 
         addNoteToPropertyWithId: builder.mutation<any, NoteForPropertyProps>({
-            query: (props: NoteForPropertyProps) => ({
-                url: `/property/${props.id}`,
+            query: ({ id, dataToSend }) => ({
+                url: `/property/${id}`,
                 method: "POST",
-                body: props.dataToSend,
+                body: dataToSend,
             }),
             invalidatesTags: ["Notes"],
         }),
         addNoteToCustomerWithId: builder.mutation<any, NoteForCustomerProps>({
-            query: (props: NoteForCustomerProps) => ({
-                url: `/customer/${props.id}`,
+            query: ({ id, dataToSend }) => ({
+                url: `/customer/${id}`,
                 method: "POST",
-                body: props.dataToSend,
+                body: dataToSend,
             }),
             invalidatesTags: ["Notes"],
         }),
