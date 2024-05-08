@@ -61,6 +61,7 @@ const useUploadFile = (addMethod: any) => {
 
             // PUT to amazon url
             const response = await uploadMethod({
+                variant: "googleEarth",
                 url,
                 file: customContentType
                     ? new File([file], file.name, { type: customContentType })

@@ -90,6 +90,7 @@ const BlueprintsSection: React.FC = () => {
 
         // PUT to amazon url
         const response = await uploadBlueprint({
+            variant: "blueprint",
             url,
             file,
         });
@@ -105,24 +106,19 @@ const BlueprintsSection: React.FC = () => {
             properties.util.invalidateTags(["Properties", "PropertyById"])
         );
 
-    const handleDropMultiFile = useCallback(
-        async (acceptedFiles: File[]) => {
-            const fileResponses = await Promise.all(acceptedFiles.map(addFile));
+    const handleDropMultiFile = useCallback(async (acceptedFiles: File[]) => {
+        const fileResponses = await Promise.all(acceptedFiles.map(addFile));
 
-            /* Upload Sequentially */
-            const uploadPromises = fileResponses.map(
-                (fileResponse, i) => () =>
-                    uploadFile(acceptedFiles.at(i), fileResponse)
-            );
+        /* Upload Sequentially */
+        const uploadPromises = fileResponses.map(
+            (fileResponse, i) => () =>
+                uploadFile(acceptedFiles.at(i), fileResponse)
+        );
 
-            executeSequentially(uploadPromises)
-                .then(invalidateTags)
-                .catch((error) =>
-                    console.error("SequentialUploadError:", error)
-                );
-        },
-        [blueprints]
-    );
+        executeSequentially(uploadPromises)
+            .then(invalidateTags)
+            .catch((error) => console.error("SequentialUploadError:", error));
+    }, []);
 
     const handleFileClick = ({ url }: IPropertyFile) =>
         url && setBlueprintUrl(url);

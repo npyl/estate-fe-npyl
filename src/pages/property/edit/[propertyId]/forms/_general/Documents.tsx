@@ -85,6 +85,7 @@ const DocumentsSection: React.FC = () => {
 
         // PUT to amazon url
         const response = await uploadDocument({
+            variant: "document",
             url,
             file,
         });
@@ -100,24 +101,19 @@ const DocumentsSection: React.FC = () => {
             properties.util.invalidateTags(["Properties", "PropertyById"])
         );
 
-    const handleDropMultiFile = useCallback(
-        async (acceptedFiles: File[]) => {
-            const fileResponses = await Promise.all(acceptedFiles.map(addFile));
+    const handleDropMultiFile = useCallback(async (acceptedFiles: File[]) => {
+        const fileResponses = await Promise.all(acceptedFiles.map(addFile));
 
-            /* Upload Sequentially */
-            const uploadPromises = fileResponses.map(
-                (fileResponse, i) => () =>
-                    uploadFile(acceptedFiles.at(i), fileResponse)
-            );
+        /* Upload Sequentially */
+        const uploadPromises = fileResponses.map(
+            (fileResponse, i) => () =>
+                uploadFile(acceptedFiles.at(i), fileResponse)
+        );
 
-            executeSequentially(uploadPromises)
-                .then(invalidateTags)
-                .catch((error) =>
-                    console.error("SequentialUploadError:", error)
-                );
-        },
-        [documents]
-    );
+        executeSequentially(uploadPromises)
+            .then(invalidateTags)
+            .catch(console.error);
+    }, []);
 
     const handleFileClick = ({ url }: IPropertyFile) => url && setPdfUrl(url);
 
