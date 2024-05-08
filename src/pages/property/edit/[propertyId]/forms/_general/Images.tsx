@@ -170,9 +170,7 @@ const ImagesSection: React.FC = () => {
 
                 executeSequentially(uploadPromises)
                     .then(invalidateTags)
-                    .catch((error) =>
-                        console.error("SequentialUploadError:", error)
-                    );
+                    .catch(console.error);
             } else {
                 const addPromises = acceptedFiles.map(addFile);
                 /* Add All */
@@ -188,9 +186,7 @@ const ImagesSection: React.FC = () => {
 
                 executeSequentially(uploadPromises)
                     .then(invalidateTags)
-                    .catch((error) =>
-                        console.error("SequentialUploadError:", error)
-                    );
+                    .catch(console.error);
             }
         },
         [files]
@@ -259,10 +255,6 @@ const ImagesSection: React.FC = () => {
         },
         [files]
     );
-
-    // const handleRemoveAllFiles = () => {
-    //     files.forEach((file) => handleRemoveFile(file));
-    // };
 
     if (!propertyId) return null;
 

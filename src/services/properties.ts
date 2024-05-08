@@ -223,25 +223,25 @@ export const properties = createApi({
 
         // Attributes
         getPropertyImages: builder.query<IPropertyImage[], number>({
-            query: (propertyId: number) => `${propertyId}/images`,
+            query: (propertyId) => `${propertyId}/images`,
             providesTags: ["PropertyByIdImages"],
         }),
         getPropertyLabels: builder.query<ILabel[], number>({
-            query: (propertyId: number) => `${propertyId}/labels`,
+            query: (propertyId) => `${propertyId}/labels`,
             providesTags: ["PropertyByIdLabels"],
         }),
         getPropertyBlueprints: builder.query<IPropertyBlueprint[], number>({
-            query: (propertyId: number) => `${propertyId}/blueprints`,
+            query: (propertyId) => `${propertyId}/blueprints`,
             providesTags: ["PropertyByIdBlueprints"],
         }),
         getPropertyDocuments: builder.query<IPropertyDocument[], number>({
-            query: (propertyId: number) => `${propertyId}/documents`,
+            query: (propertyId) => `${propertyId}/documents`,
             providesTags: ["PropertyByIdDocuments"],
         }),
 
         // mutations
         editProperty: builder.mutation<number, IEditPropertyProps>({
-            query: ({ body, id }: IEditPropertyProps) => ({
+            query: ({ body, id }) => ({
                 url: `/edit/${id}`,
                 method: "POST",
                 body,
@@ -252,22 +252,22 @@ export const properties = createApi({
             JustData<number>,
             ICreatePropertyParams
         >({
-            query: (dataToSend: ICreatePropertyParams) => ({
+            query: (params) => ({
                 url: "/create",
                 method: "POST",
-                params: dataToSend,
+                params,
             }),
             invalidatesTags: ["Properties"],
         }),
         cloneProperty: builder.mutation<number, number>({
-            query: (propertyId: number) => ({
+            query: (propertyId) => ({
                 url: `/clone/${propertyId}`,
                 method: "POST",
             }),
             invalidatesTags: ["Properties"],
         }),
         bulkEditProperties: builder.mutation<void, BulkEditRequest>({
-            query: (body: BulkEditRequest) => ({
+            query: (body) => ({
                 url: `/edit/bulk`,
                 method: "POST",
                 body,
@@ -275,7 +275,7 @@ export const properties = createApi({
             invalidatesTags: ["Properties", "PropertyById"],
         }),
         bulkDeleteProperties: builder.mutation<void, number[]>({
-            query: (propertyIds: number[]) => ({
+            query: (propertyIds) => ({
                 url: `/delete/bulk`,
                 method: "DELETE",
                 body: propertyIds,
@@ -301,7 +301,7 @@ export const properties = createApi({
             IContent<IPropertyResultResponse>,
             IPropertyFilter
         >({
-            query: (filter: IPropertyFilter) => ({
+            query: (filter) => ({
                 url: "/map",
                 method: "POST",
                 body: filter,
@@ -321,7 +321,7 @@ export const properties = createApi({
             IPage<ICustomer>,
             ISuggestForPropertyParams
         >({
-            query: (params: ISuggestForPropertyParams) => ({
+            query: (params) => ({
                 url: "/matchingCustomers",
                 params: params,
             }),
@@ -329,7 +329,7 @@ export const properties = createApi({
         }),
         // INFO: This is permanent delete (requires login by admin); later I will introduce an archiveProperty mutation aswell
         deleteProperty: builder.mutation<IProperties, number>({
-            query: (id: number) => ({
+            query: (id) => ({
                 url: `/archive/${id}`,
                 method: "DELETE",
             }),
@@ -339,16 +339,14 @@ export const properties = createApi({
             IPage<IPropertyResultResponse>,
             IPropertySearchParams
         >({
-            query: (searchParams: IPropertySearchParams) => {
-                return {
-                    url: "/search",
-                    params: searchParams,
-                };
-            },
+            query: (params) => ({
+                url: "/search",
+                params,
+            }),
             providesTags: ["Properties"],
         }),
         editLocationDisplay: builder.mutation<void, EditLocationDisplayProps>({
-            query: ({ propertyId, display }: EditLocationDisplayProps) => ({
+            query: ({ propertyId, display }) => ({
                 url: `/edit/${propertyId}/locationdisplay`,
                 method: "PUT",
                 params: { display },
@@ -358,20 +356,16 @@ export const properties = createApi({
 
         // checks
         checkCodeExists: builder.query<boolean, string>({
-            query: (code: string) => {
-                return {
-                    url: "/check/code",
-                    params: { code },
-                };
-            },
+            query: (code) => ({
+                url: "/check/code",
+                params: { code },
+            }),
         }),
         checkKeyCodeExists: builder.query<boolean, string>({
-            query: (code: string) => {
-                return {
-                    url: "/check/keycode",
-                    params: { code },
-                };
-            },
+            query: (code) => ({
+                url: "/check/keycode",
+                params: { code },
+            }),
         }),
 
         // images & files
@@ -380,10 +374,10 @@ export const properties = createApi({
             IPropertyAddFileParams<IPropertyImagePOST>
         >({
             // INFO: asks for an amazon url from backend; to be used before uploadPropertyImage
-            query: (params: IPropertyAddFileParams<IPropertyImagePOST>) => ({
-                url: `/${params.id}/image`,
+            query: ({ id, body }) => ({
+                url: `/${id}/image`,
                 method: "POST",
-                body: params.body,
+                body,
             }),
             onQueryStarted: async (
                 { body, id },
@@ -415,17 +409,17 @@ export const properties = createApi({
             IPropertyAddFileParams<IPropertyImagePOST>
         >({
             // INFO: same with add but causes revalidate
-            query: (params: IPropertyAddFileParams<IPropertyImagePOST>) => ({
-                url: `/${params.id}/image`,
+            query: ({ id, body }) => ({
+                url: `/${id}/image`,
                 method: "POST",
-                body: params.body,
+                body,
             }),
             invalidatesTags: ["Properties", "PropertyById"],
         }),
         setPropertyThumbail: builder.mutation<void, IPropertySetThumbnailProps>(
             {
-                query: (props: IPropertySetThumbnailProps) => ({
-                    url: `/${props.propertyId}/thumbnail/${props.imageKey}`,
+                query: ({ propertyId, imageKey }) => ({
+                    url: `/${propertyId}/thumbnail/${imageKey}`,
                     method: "POST",
                 }),
             }
@@ -434,7 +428,7 @@ export const properties = createApi({
             void,
             BulkEditPropertyImagesParams
         >({
-            query: ({ propertyId, body }: BulkEditPropertyImagesParams) => ({
+            query: ({ propertyId, body }) => ({
                 url: `/${propertyId}/images/edit/bulk`,
                 method: "POST",
                 body,
@@ -739,12 +733,10 @@ export const properties = createApi({
             IFileResponse,
             IPropertyAddFileParams<IPropertyBlueprintPOST>
         >({
-            query: (
-                params: IPropertyAddFileParams<IPropertyBlueprintPOST>
-            ) => ({
-                url: `/${params.id}/blueprint`,
+            query: ({ id, body }) => ({
+                url: `/${id}/blueprint`,
                 method: "POST",
-                body: params.body,
+                body,
             }),
             onQueryStarted: async (
                 { body, id },
@@ -772,7 +764,7 @@ export const properties = createApi({
             // invalidatesTags: ["Properties", "PropertyById"],
         }),
         deletePropertyBlueprint: builder.mutation<void, IDeleteFileProps>({
-            query: ({ propertyId, imageKey }: IDeleteFileProps) => ({
+            query: ({ propertyId, imageKey }) => ({
                 url: `/${propertyId}/blueprint/${imageKey}`,
                 method: "DELETE",
             }),
@@ -783,10 +775,7 @@ export const properties = createApi({
             IFileResponse,
             IPropertyAddFileParams<IPropertyDocumentPOST>
         >({
-            query: ({
-                id,
-                body,
-            }: IPropertyAddFileParams<IPropertyDocumentPOST>) => ({
+            query: ({ id, body }) => ({
                 url: `/${id}/document`,
                 method: "POST",
                 body,
@@ -818,10 +807,7 @@ export const properties = createApi({
             // invalidatesTags: ["Properties", "PropertyById"],
         }),
         deletePropertyDocument: builder.mutation<void, IDeleteFileProps>({
-            query: ({
-                propertyId,
-                imageKey: documentKey,
-            }: IDeleteFileProps) => ({
+            query: ({ propertyId, imageKey: documentKey }) => ({
                 url: `/${propertyId}/document/${documentKey}`,
                 method: "DELETE",
             }),
@@ -835,7 +821,9 @@ export const properties = createApi({
             // INFO: upload to amazon
             async queryFn({ url, file, onProgressUpdate }) {
                 const { type } = file;
+
                 console.log("File size:", file);
+
                 try {
                     const cleanFile = await removeMetadata(file);
 
@@ -884,7 +872,7 @@ export const properties = createApi({
         }),
 
         generateDescription: builder.mutation<string, IOpenAIDetailsPOST>({
-            query: (body: IOpenAIDetailsPOST) => ({
+            query: (body) => ({
                 url: `/description/generate`,
                 method: "POST",
                 body,
