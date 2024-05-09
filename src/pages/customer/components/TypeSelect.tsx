@@ -6,7 +6,7 @@ import { useFormContext } from "react-hook-form";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 import useDialog from "@/hooks/useDialog";
-import DemandSection from "../Demand";
+import DemandSection from "./Demand";
 import EditIcon from "@mui/icons-material/Edit";
 import { styled } from "@mui/material/styles";
 import { getBorderColor2 } from "@/theme/borderColor";
@@ -85,8 +85,9 @@ const CustomerTypeSelect = () => {
 
             {isDrawerOpen ? (
                 <Drawer
-                    anchor="right"
                     open={isDrawerOpen}
+                    anchor="right"
+                    keepMounted // INFO: this is important; It is a big component, therefore, once we load it, keep it loaded on the DOM
                     PaperProps={{
                         sx: {
                             position: "absolute",
