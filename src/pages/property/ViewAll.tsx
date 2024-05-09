@@ -18,8 +18,8 @@ import DataGrid from "@/components/DataGrid/Property";
 import { BulkEdit } from "../components/BulkEdit/BulkEdit";
 
 interface ViewAllProps {
-    sortingBy: string;
-    sortingOrder: string;
+    sortBy: string;
+    direction: string;
     // ...
     isBulkEditOpen: boolean;
     onBulkEditOpen: VoidFunction;
@@ -27,8 +27,8 @@ interface ViewAllProps {
 }
 
 const ViewAll = ({
-    sortingBy,
-    sortingOrder,
+    sortBy,
+    direction,
     // ...
     isBulkEditOpen,
     onBulkEditOpen,
@@ -54,13 +54,14 @@ const ViewAll = ({
             filter: allFilters,
             page,
             pageSize,
-            sortBy: sortingBy,
+            sortBy,
+            direction,
         });
     };
 
     useEffect(() => {
         revalidate();
-    }, [allFilters, page, pageSize, sortingBy]);
+    }, [allFilters, page, pageSize, sortBy, direction]);
 
     const rows = useMemo(() => {
         return data?.content ? data?.content : [];

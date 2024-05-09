@@ -31,8 +31,8 @@ const Home: NextPage = () => {
 
     // sorting
     const [sorting, setSorting] = useState("default"); // general
-    const [sortingBy, setSortingBy] = useState("updatedAt");
-    const [sortingOrder, setSortingOrder] = useState("desc");
+    const [sortBy, setSortBy] = useState("updatedAt");
+    const [direction, setDirection] = useState<"ASC" | "DESC">("DESC");
 
     const [isBulkEditOpen, openBulkEdit, closeBulkEdit] = useDialog();
 
@@ -43,23 +43,26 @@ const Home: NextPage = () => {
         setSorting(v);
 
         if (v === sortingOptions[0].value) {
-            setSortingBy("updatedAt");
-            setSortingOrder("desc");
+            setSortBy("updatedAt");
+            setDirection("DESC");
         } else if (v === sortingOptions[1].value) {
-            setSortingBy("price");
-            setSortingOrder("asc");
+            setSortBy("price");
+            setDirection("ASC");
         } else if (v === sortingOptions[2].value) {
-            setSortingBy("price");
-            setSortingOrder("desc");
+            setSortBy("price");
+            setDirection("DESC");
         } else if (v === sortingOptions[3].value) {
-            setSortingBy("area");
-            setSortingOrder("asc");
+            setSortBy("area");
+            setDirection("ASC");
+        } else if (v === sortingOptions[4].value) {
+            setSortBy("area");
+            setDirection("DESC");
         } else if (v === sortingOptions[5].value) {
-            setSortingBy("visitors");
-            setSortingOrder("asc");
+            setSortBy("visitors");
+            setDirection("ASC");
         } else if (v === sortingOptions[6].value) {
-            setSortingBy("visitors");
-            setSortingOrder("desc");
+            setSortBy("visitors");
+            setDirection("DESC");
         }
     }, []);
 
@@ -78,20 +81,20 @@ const Home: NextPage = () => {
             />
 
             <>
-                {optionViewProps.optionView === "list" && (
+                {optionViewProps.optionView === "list" ? (
                     <ViewAll
-                        sortingBy={sortingBy}
-                        sortingOrder={sortingOrder}
+                        sortBy={sortBy}
+                        direction={direction}
                         // ...
                         isBulkEditOpen={isBulkEditOpen}
                         onBulkEditOpen={openBulkEdit}
                         onBulkEditClose={closeBulkEdit}
                     />
-                )}
-                {optionViewProps.optionView === "grid" && (
-                    <MediaCard sortBy={sortingBy} />
-                )}
-                {optionViewProps.optionView === "map" && <MapView />}
+                ) : null}
+                {optionViewProps.optionView === "grid" ? (
+                    <MediaCard sortBy={sortBy} direction={direction} />
+                ) : null}
+                {optionViewProps.optionView === "map" ? <MapView /> : null}
             </>
         </Box>
     );

@@ -174,6 +174,8 @@ const resources = {
             "Falling Price": "Falling Price",
             "Falling Area": "Falling Area",
             "Rising Area": "Rising Area",
+            "Rising Popularity": "Rising Popularity",
+            "Falling Popularity": "Falling Popularity",
 
             //Distances
 
@@ -650,6 +652,9 @@ const resources = {
     },
     el: {
         translation: {
+            "Rising Popularity": "Αύξουσα Δημοτικότητα",
+            "Falling Popularity": "Φθίνουσα Δημοτικότητα",
+
             Views: "Προβολές",
             "Property Views": "Προβολές Ακινήτων",
             "Views of Properties": "Προβολές Ακινήτων",
