@@ -3,14 +3,15 @@ import { AuthGuard } from "@/components/authentication/auth-guard";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import ViewAll from "./ViewAll";
 import { Box } from "@mui/material";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import MediaCard from "./MediaCard";
 import useDialog from "src/hooks/useDialog";
 import MapView from "./MapView";
 import FilterBar from "./FiltersBar/FiltersBar";
 import { optionType } from "./FiltersBar/types";
-import { useSortingOptions } from "./FiltersBar/constants";
 import useResponsive from "@/hooks/useResponsive";
+import { getOptions } from "./FiltersBar/constants";
+import { useTranslation } from "react-i18next";
 
 const useResponsiveOptionView = () => {
     const belowLg = useResponsive("down", "lg");
@@ -27,44 +28,23 @@ const useResponsiveOptionView = () => {
 };
 
 const Home: NextPage = () => {
+    const { t } = useTranslation();
+
     const optionViewProps = useResponsiveOptionView();
 
     // sorting
+    const sortingOptions = useMemo(() => getOptions(t), [t]);
     const [sorting, setSorting] = useState("default"); // general
-    const [sortBy, setSortBy] = useState("updatedAt");
-    const [direction, setDirection] = useState<"ASC" | "DESC">("DESC");
+    const { sortBy, direction } = useMemo(
+        () =>
+            sortingOptions.find(({ value }) => value === sorting)?.sorting || {
+                sortBy: "updatedAt",
+                direction: "DESC",
+            },
+        [sortingOptions, sorting]
+    );
 
     const [isBulkEditOpen, openBulkEdit, closeBulkEdit] = useDialog();
-
-    const sortingOptions = useSortingOptions();
-
-    // TODO: check if this can be eliminated
-    const handleSortingChange = useCallback((v: string) => {
-        setSorting(v);
-
-        if (v === sortingOptions[0].value) {
-            setSortBy("updatedAt");
-            setDirection("DESC");
-        } else if (v === sortingOptions[1].value) {
-            setSortBy("price");
-            setDirection("ASC");
-        } else if (v === sortingOptions[2].value) {
-            setSortBy("price");
-            setDirection("DESC");
-        } else if (v === sortingOptions[3].value) {
-            setSortBy("area");
-            setDirection("ASC");
-        } else if (v === sortingOptions[4].value) {
-            setSortBy("area");
-            setDirection("DESC");
-        } else if (v === sortingOptions[5].value) {
-            setSortBy("visitors");
-            setDirection("ASC");
-        } else if (v === sortingOptions[6].value) {
-            setSortBy("visitors");
-            setDirection("DESC");
-        }
-    }, []);
 
     return (
         <Box
@@ -75,7 +55,7 @@ const Home: NextPage = () => {
         >
             <FilterBar
                 sorting={sorting}
-                onSortingChange={handleSortingChange}
+                onSortingChange={setSorting}
                 // ...
                 {...optionViewProps}
             />

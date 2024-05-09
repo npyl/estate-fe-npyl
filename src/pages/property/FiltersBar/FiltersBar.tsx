@@ -15,14 +15,16 @@ import { ViewModeButton } from "./styles";
 import ChosenFilters from "./Filters/ChosenFilters";
 import { SpaceBetween } from "@/components/styled";
 // components
-import FilterSortBy from "./SortBy";
 import FilterSection from "./FiltersSection";
 import { optionType } from "./types";
 import { useCallback, useMemo } from "react";
 
 import useDialog from "@/hooks/useDialog";
 import FilterMore from "./Filters/FilterMore";
-import { FilterMoreButton } from "@/components/Filters/FilterMore";
+import FilterMoreButton from "@/components/Filters/FilterMore/Button";
+import FilterSortBy from "@/components/Filters/SortBy";
+import { getOptions } from "./constants";
+import { useTranslation } from "react-i18next";
 
 type viewOptionsType = {
     id: optionType;
@@ -68,6 +70,7 @@ const FilterBar = ({
 
     belowLg,
 }: Props) => {
+    const { t } = useTranslation();
     const dispatch = useDispatch();
 
     const changedPropertyFilters = useSelector(sumOfChangedProperties);
@@ -92,6 +95,8 @@ const FilterBar = ({
 
     const [isDialogOpen, openDialog, closeDialog] = useDialog();
 
+    const options = useMemo(() => getOptions(t), [t]);
+
     return (
         <>
             <Paper>
@@ -114,6 +119,7 @@ const FilterBar = ({
 
                     <Stack direction="row" spacing={0.3} p={1} pb={0} pl={0.3}>
                         <FilterSortBy
+                            options={options}
                             sorting={sorting}
                             onSortingChange={onSortingChange}
                         />
