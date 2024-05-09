@@ -9,13 +9,14 @@ import { selectAll } from "src/slices/filters";
 
 // ----------------------------------------------------------------------
 
-interface Props extends GridProps {
+interface Props extends Omit<GridProps, "direction"> {
     title?: string;
     subheader?: string;
     sortBy: string;
+    direction: string;
 }
 
-export default function MediaCard({ sx, sortBy, ...other }: Props) {
+export default function MediaCard({ sx, sortBy, direction, ...other }: Props) {
     // pagination
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(25);
@@ -30,8 +31,9 @@ export default function MediaCard({ sx, sortBy, ...other }: Props) {
             page,
             pageSize,
             sortBy,
+            direction,
         });
-    }, [allFilters, page, pageSize, sortBy]);
+    }, [allFilters, page, pageSize, sortBy, direction]);
 
     const content = useMemo(() => data?.content || [], [data]);
 

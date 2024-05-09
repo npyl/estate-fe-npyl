@@ -1,4 +1,4 @@
-import { Chip, Grid, Stack, Typography } from "@mui/material";
+import { Chip, Grid, GridProps, Stack, Typography } from "@mui/material";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,7 +10,7 @@ import {
     selectIds,
 } from "src/slices/customer/filters";
 
-const ChosenFilters = () => {
+const ChosenFilters = (props: GridProps) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
 
@@ -105,7 +105,7 @@ const ChosenFilters = () => {
     );
 
     return (
-        <Grid container direction="row">
+        <Grid container direction="row" {...props}>
             {ids.map((key, index) => {
                 const values = changedProps[key];
                 let label = filterTags[key].label;

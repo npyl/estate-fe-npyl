@@ -15,7 +15,7 @@ import {
     Placeholder as LabelPlaceholder,
 } from "@/components/Label";
 import { LeadSource } from "src/types/global";
-import CustomerTypeSelect from "./CustomerInfoSection/TypeSelect";
+import CustomerTypeSelect from "./TypeSelect";
 import { useTranslation } from "react-i18next";
 import { useRouter } from "next/router";
 import Panel from "src/components/Panel";

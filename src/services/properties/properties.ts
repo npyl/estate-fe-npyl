@@ -53,8 +53,9 @@ interface IPropertyFilterParams {
     filter: IPropertyFilter;
     page: number;
     pageSize: number;
+    // ...
     sortBy: string;
-    // sortDirection: string;
+    direction: string; // asc - desc
 }
 interface IPropertySearchParams {
     searchString: string;
@@ -200,7 +201,7 @@ export const properties = createApi({
             IPage<IPropertyResultResponse>,
             IPropertyFilterParams
         >({
-            query: ({ filter, page, pageSize, sortBy }) => ({
+            query: ({ filter, page, pageSize, sortBy, direction }) => ({
                 url: "/filter",
                 method: "POST",
                 body: filter,
@@ -208,6 +209,7 @@ export const properties = createApi({
                     page,
                     pageSize,
                     sortBy,
+                    direction,
                 },
             }),
         }),

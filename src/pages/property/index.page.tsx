@@ -3,14 +3,15 @@ import { AuthGuard } from "@/components/authentication/auth-guard";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import ViewAll from "./ViewAll";
 import { Box } from "@mui/material";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import MediaCard from "./MediaCard";
 import useDialog from "src/hooks/useDialog";
 import MapView from "./MapView";
 import FilterBar from "./FiltersBar/FiltersBar";
 import { optionType } from "./FiltersBar/types";
-import { useSortingOptions } from "./FiltersBar/constants";
 import useResponsive from "@/hooks/useResponsive";
+import { getOptions } from "./FiltersBar/constants";
+import { useTranslation } from "react-i18next";
 
 const useResponsiveOptionView = () => {
     const belowLg = useResponsive("down", "lg");
@@ -27,41 +28,23 @@ const useResponsiveOptionView = () => {
 };
 
 const Home: NextPage = () => {
+    const { t } = useTranslation();
+
     const optionViewProps = useResponsiveOptionView();
 
     // sorting
+    const sortingOptions = useMemo(() => getOptions(t), [t]);
     const [sorting, setSorting] = useState("default"); // general
-    const [sortingBy, setSortingBy] = useState("updatedAt");
-    const [sortingOrder, setSortingOrder] = useState("desc");
+    const { sortBy, direction } = useMemo(
+        () =>
+            sortingOptions.find(({ value }) => value === sorting)?.sorting || {
+                sortBy: "updatedAt",
+                direction: "DESC",
+            },
+        [sortingOptions, sorting]
+    );
 
     const [isBulkEditOpen, openBulkEdit, closeBulkEdit] = useDialog();
-
-    const sortingOptions = useSortingOptions();
-
-    // TODO: check if this can be eliminated
-    const handleSortingChange = useCallback((v: string) => {
-        setSorting(v);
-
-        if (v === sortingOptions[0].value) {
-            setSortingBy("updatedAt");
-            setSortingOrder("desc");
-        } else if (v === sortingOptions[1].value) {
-            setSortingBy("price");
-            setSortingOrder("asc");
-        } else if (v === sortingOptions[2].value) {
-            setSortingBy("price");
-            setSortingOrder("desc");
-        } else if (v === sortingOptions[3].value) {
-            setSortingBy("area");
-            setSortingOrder("asc");
-        } else if (v === sortingOptions[5].value) {
-            setSortingBy("visitors");
-            setSortingOrder("asc");
-        } else if (v === sortingOptions[6].value) {
-            setSortingBy("visitors");
-            setSortingOrder("desc");
-        }
-    }, []);
 
     return (
         <Box
@@ -72,26 +55,26 @@ const Home: NextPage = () => {
         >
             <FilterBar
                 sorting={sorting}
-                onSortingChange={handleSortingChange}
+                onSortingChange={setSorting}
                 // ...
                 {...optionViewProps}
             />
 
             <>
-                {optionViewProps.optionView === "list" && (
+                {optionViewProps.optionView === "list" ? (
                     <ViewAll
-                        sortingBy={sortingBy}
-                        sortingOrder={sortingOrder}
+                        sortBy={sortBy}
+                        direction={direction}
                         // ...
                         isBulkEditOpen={isBulkEditOpen}
                         onBulkEditOpen={openBulkEdit}
                         onBulkEditClose={closeBulkEdit}
                     />
-                )}
-                {optionViewProps.optionView === "grid" && (
-                    <MediaCard sortBy={sortingBy} />
-                )}
-                {optionViewProps.optionView === "map" && <MapView />}
+                ) : null}
+                {optionViewProps.optionView === "grid" ? (
+                    <MediaCard sortBy={sortBy} direction={direction} />
+                ) : null}
+                {optionViewProps.optionView === "map" ? <MapView /> : null}
             </>
         </Box>
     );

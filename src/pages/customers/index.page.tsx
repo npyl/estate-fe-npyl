@@ -1,9 +1,5 @@
 import { Box, Paper, Grid } from "@mui/material";
-import {
-    GridCallbackDetails,
-    GridPaginationModel,
-    GridRowSelectionModel,
-} from "@mui/x-data-grid";
+import { GridPaginationModel, GridRowSelectionModel } from "@mui/x-data-grid";
 import type { NextPage } from "next";
 import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
@@ -21,14 +17,30 @@ import { BulkEdit } from "./BulkEdit/BulkEdit";
 import DataGrid from "@/components/DataGrid/Customer";
 import useResponsive from "@/hooks/useResponsive";
 import CustomerCard from "@/components/CustomerCard";
+import { getOptions } from "./FilterSection/constants";
+import { useTranslation } from "react-i18next";
 
 const Customers: NextPage = () => {
+    const { t } = useTranslation();
+
     const allFilters = useSelector(selectAll);
 
     const [bulkEditOpen, setBulkEditOpen] = useState(false);
     const [bulkDeleteDialogOpen, setBulkDeleteDialogOpen] = useState(false);
     const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
-    const [sortingOrder, setSortingOrder] = useState("asc");
+
+    // sorting
+    const sortingOptions = useMemo(() => getOptions(t), [t]);
+    const [sorting, setSorting] = useState("default"); // general
+    const { sortBy, direction } = useMemo(
+        () =>
+            sortingOptions.find(({ value }) => value === sorting)?.sorting || {
+                sortBy: "updatedAt",
+                direction: "DESC",
+            },
+        [sortingOptions, sorting]
+    );
+
     // page
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(25);
@@ -44,15 +56,14 @@ const Customers: NextPage = () => {
     const revalidate = () => {
         filterCustomers({
             filter: allFilters,
-            page: page,
-            pageSize: pageSize,
+            page,
+            pageSize,
+            sortBy,
+            direction,
         });
     };
 
-    const handlePaginationModelChange = (
-        model: GridPaginationModel,
-        details: GridCallbackDetails
-    ) => {
+    const handlePaginationModelChange = (model: GridPaginationModel) => {
         setPageSize(model.pageSize);
         setPage(model.page);
         const paginationState = { page: model.page };
@@ -64,7 +75,7 @@ const Customers: NextPage = () => {
 
     useEffect(() => {
         revalidate();
-    }, [allFilters, page, pageSize]);
+    }, [allFilters, page, pageSize, sortBy, direction]);
 
     const rows = useMemo(() => data?.content || [], [data?.content]);
 
@@ -87,7 +98,6 @@ const Customers: NextPage = () => {
     };
     const closeBulkEdit = () => setBulkEditOpen(false);
     const handleBulkEditSave = () => revalidate();
-    const [open, setOpen] = useState(false);
 
     useLocalStorageScrollRestore();
 
@@ -117,7 +127,10 @@ const Customers: NextPage = () => {
             <FilterSection
                 sx={{
                     marginRight: bulkEditOpen ? 40 : 0,
+                    mb: 1,
                 }}
+                sorting={sorting}
+                onSortingChange={setSorting}
             />
 
             {belowMd ? (
@@ -129,7 +142,7 @@ const Customers: NextPage = () => {
                     ))}
                 </Grid>
             ) : (
-                <Paper sx={{ mt: 1, marginRight: bulkEditOpen ? 40 : 0 }}>
+                <Paper sx={{ marginRight: bulkEditOpen ? 40 : 0 }}>
                     <DataGrid
                         skeleton={isLoading}
                         rows={rows}
@@ -144,12 +157,14 @@ const Customers: NextPage = () => {
                     />
                 </Paper>
             )}
+
             <BulkEdit
                 open={bulkEditOpen}
                 selectedIds={selectedRows.map((row) => +row)}
                 onSave={handleBulkEditSave}
                 onClose={closeBulkEdit}
             />
+
             <DeleteDialog
                 multiple
                 open={bulkDeleteDialogOpen}

@@ -17,6 +17,8 @@ export interface BulkEditRequest {
 interface ICustomerParams {
     page: number;
     pageSize: number;
+    sortBy: string;
+    direction: string;
 }
 
 interface ICustomerFilterProps extends ICustomerParams {
@@ -62,13 +64,15 @@ export const customers = createApi({
             IPage<ICustomerResultResponse>,
             ICustomerFilterProps
         >({
-            query: (props: ICustomerFilterProps) => ({
+            query: ({ filter, page, pageSize, sortBy, direction }) => ({
                 url: "/filter",
                 method: "POST",
-                body: props.filter,
+                body: filter,
                 params: {
-                    page: props.page,
-                    pageSize: props.pageSize,
+                    page,
+                    pageSize,
+                    sortBy,
+                    direction,
                 },
             }),
             invalidatesTags: ["Customers"],
