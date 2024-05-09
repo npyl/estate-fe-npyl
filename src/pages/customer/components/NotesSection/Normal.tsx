@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { useMemo } from "react";
-import { NoteCreate, Placeholder } from "src/components/Note";
+import { NoteCreate } from "src/components/Note";
 
 import {
     useAddNoteToCustomerWithIdMutation,
@@ -8,7 +8,7 @@ import {
     useGetNotesByCustomerIdQuery,
 } from "src/services/note";
 
-const NotesSection: React.FC<any> = () => {
+const NormalNoteSection: React.FC = () => {
     const router = useRouter();
     const { customerId } = router.query;
 
@@ -26,7 +26,7 @@ const NotesSection: React.FC<any> = () => {
     const hadleRemove = (index: number) =>
         notes && notes[index].id && deleteNote(notes[index].id!);
 
-    if (!customerId) return <Placeholder />;
+    if (!customerId) return null;
 
     return (
         <NoteCreate
@@ -37,4 +37,4 @@ const NotesSection: React.FC<any> = () => {
     );
 };
 
-export default NotesSection;
+export default NormalNoteSection;

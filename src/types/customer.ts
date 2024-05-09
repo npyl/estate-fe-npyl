@@ -94,6 +94,7 @@ export interface ICustomerPOST {
     ownedProperties: IProperties[];
     labelIDs: number[];
     demands: IDemandPOST[];
+    notes: string[];
 }
 
 export type { IDemand };

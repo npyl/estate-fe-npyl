@@ -1,20 +1,19 @@
 import CancelIcon from "@mui/icons-material/Cancel";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
-import { Button, Drawer, Grid, Stack } from "@mui/material";
-import IconButton from "@mui/material/IconButton";
-import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+import { Button, Grid, Stack } from "@mui/material";
 
 import { useTranslation } from "react-i18next";
-import AddressDetails from "./AddressDetails";
-import CustomerInformation from "./CustomerInformation";
-import DemandSection from "./Demand";
-import NotesSection from "./Notes";
 
 import { LoadingButton } from "@mui/lab";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { demandMapper } from "src/mappers/demand";
 import { ICustomer, ICustomerPOST } from "src/types/customer";
+
+// Sections
+import AddressDetails from "./AddressDetails";
+import CustomerInformation from "./CustomerInformation";
+import NotesSection from "./NotesSection";
 
 // Forms
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -90,6 +89,9 @@ const getDefaultValues = (customer?: ICustomer): ICustomerYup => ({
         customer?.demands && customer?.demands?.length > 0
             ? customer?.demands?.map(demandMapper)
             : [],
+
+    // INFO: this field will only contain data on customer creation
+    notes: [],
 });
 
 const useCustomerForm = (customer?: ICustomer) => {
@@ -157,7 +159,7 @@ const Form = ({
                             <AddressDetails />
                         </Grid>
                         <Grid item xs={12}>
-                            <NotesSection />
+                            <NotesSection isEditMode={!!customer} />
                         </Grid>
                     </Grid>
                 </Grid>
