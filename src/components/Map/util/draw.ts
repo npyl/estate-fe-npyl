@@ -1,4 +1,4 @@
-import { DrawShape, ShapeData } from "./types";
+import { DrawShape, ShapeData } from "../types";
 
 export const setShapeEvents = (shape: DrawShape, callback: () => void) => {
     if (shape instanceof google.maps.Circle) {

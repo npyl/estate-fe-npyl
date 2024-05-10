@@ -17,6 +17,7 @@ import {
 } from "src/services/location";
 import { IDemandFiltersPOST, IDemandPOST } from "src/types/demand";
 import { useDebouncedCallback } from "use-debounce";
+import AutoCenter from "./auto";
 
 const NextShapeCenter = lazy(() => import("./center"));
 
@@ -222,6 +223,10 @@ const AreaOfPreference: FC<Props> = ({
                     </Suspense>
                 ) : null}
             </SpaceBetween>
+
+            {shapeData.length > 0 ? (
+                <AutoCenter shape={shapeData[0]} onCenter={setMainMarker} />
+            ) : null}
 
             <Box>
                 <Box height={`calc(100vh - 266px)`} width={1}>
