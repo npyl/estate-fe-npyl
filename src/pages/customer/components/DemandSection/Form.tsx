@@ -1,4 +1,4 @@
-import { Box, Divider, Grid, Slider, Stack, Typography } from "@mui/material";
+import { Divider, Grid, Slider, Stack, Typography } from "@mui/material";
 import { FC, Suspense, lazy, useCallback, useMemo } from "react";
 import { useGlobals } from "src/hooks/useGlobals";
 import { useTranslation } from "react-i18next";
@@ -349,7 +349,7 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
             <Stack gap={1.5} mt={1}>
                 <Grid container spacing={1.5}>
                     {FIELDS.map((f, i) => (
-                        <Grid key={i} item xs={6}>
+                        <Grid key={i} item xs={12} sm={6}>
                             {f}
                         </Grid>
                     ))}
@@ -383,7 +383,7 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
 
                 <Grid container spacing={1.5}>
                     {SLIDERS.map((s, i) => (
-                        <Grid key={i} xs={6} item>
+                        <Grid key={i} xs={12} sm={6} item>
                             {s}
                         </Grid>
                     ))}

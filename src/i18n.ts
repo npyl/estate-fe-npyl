@@ -6,6 +6,8 @@ const resources = {
         translation: {
             Monthly: "Monthly",
 
+            "Next Shape": "Next Shape",
+
             ID: "ID",
             Properties: "Properties",
 
@@ -652,6 +654,8 @@ const resources = {
     },
     el: {
         translation: {
+            "Next Shape": "Επόμενο Σχήμα",
+
             "Rising Popularity": "Αύξουσα Δημοτικότητα",
             "Falling Popularity": "Φθίνουσα Δημοτικότητα",
 

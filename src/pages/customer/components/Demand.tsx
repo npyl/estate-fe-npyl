@@ -3,11 +3,12 @@ import { Suspense, useCallback, useState, lazy } from "react";
 import { FC } from "react";
 import { CloseIcon } from "yet-another-react-lightbox/core";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
-import Panel from "src/components/Panel";
 import { useFormContext } from "react-hook-form";
 import { IDemandPOST } from "src/types/demand";
 import { useTranslation } from "react-i18next";
 import { SpaceBetween } from "@/components/styled";
+import useResponsive from "@/hooks/useResponsive";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 
 // Dynamic
 const DemandForm = lazy(() => import("./DemandSection/Form"));
@@ -65,7 +66,11 @@ const emptyDemand: IDemandPOST = {
 
 const demandsName = "demands";
 
-const DemandSection: FC = () => {
+interface Props {
+    onClose: VoidFunction;
+}
+
+const DemandSection: FC<Props> = ({ onClose }) => {
     const { t } = useTranslation();
 
     const { watch, setValue } = useFormContext();
@@ -88,19 +93,27 @@ const DemandSection: FC = () => {
         [demands]
     );
 
+    const isMobile = useResponsive("down", "lg");
+
     return (
         <>
-            <SpaceBetween>
+            <SpaceBetween alignItems="center">
                 <Typography variant="h5">{t("Demands")}</Typography>
-                <IconButton onClick={handleTabCreate}>
-                    <AddCircleOutlineOutlinedIcon />
-                </IconButton>
+
+                <Stack direction="row" spacing={1} alignItems="center">
+                    <IconButton onClick={handleTabCreate}>
+                        <AddCircleOutlineOutlinedIcon />
+                    </IconButton>
+
+                    {isMobile ? (
+                        <IconButton onClick={onClose}>
+                            <CloseOutlinedIcon />
+                        </IconButton>
+                    ) : null}
+                </Stack>
             </SpaceBetween>
 
-            <Stack
-                sx={{ borderBottom: 1, borderColor: "divider" }}
-                direction={"row"}
-            >
+            <Stack borderBottom={1} borderColor="divider" direction="row">
                 <Tabs value={index} onChange={handleTabChange}>
                     {demands.map((d, i) => (
                         <Tab
