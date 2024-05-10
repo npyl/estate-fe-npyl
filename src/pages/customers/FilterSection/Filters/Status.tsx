@@ -37,12 +37,8 @@ export default function FilterStatus() {
     };
 
     return (
-        <FormControl sx={{ width: 135 }}>
+        <FormControl>
             <StyledRating
-                // sx={{
-                //     mt: 0.5,
-                //     ml: 0.5,
-                // }}
                 name="simple-controlled"
                 value={status}
                 onChange={onChange}
