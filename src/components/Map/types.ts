@@ -1,3 +1,8 @@
+export interface IMapCoordinates {
+    lat: number;
+    lng: number;
+}
+
 export type DrawShape =
     | google.maps.Rectangle
     | google.maps.Circle
