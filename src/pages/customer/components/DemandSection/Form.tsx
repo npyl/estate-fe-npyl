@@ -164,37 +164,39 @@ const FloorSlider = ({ onDemandFilterName }: FloorSliderProps) => {
     );
 
     return (
-        <Box>
+        <>
             <Typography variant="h6">{t("Floor")}</Typography>
-            <Slider
-                orientation="horizontal"
-                value={[
-                    minFloorsKeys.indexOf(minFloor),
-                    maxFloorsKeys.indexOf(maxFloor),
-                ]}
-                onChange={handleChange}
-                valueLabelDisplay="auto"
-                valueLabelFormat={valueLabelFormat}
-                min={0}
-                max={maxFloorsKeys.length - 41}
-            />
-            <Grid container direction="row" spacing={1.5}>
-                <Grid item xs={6}>
-                    <Select
-                        name={minName}
-                        label={t("Min Floor")}
-                        options={minFloors}
-                    />
+            <Stack mt={1} px={1}>
+                <Slider
+                    orientation="horizontal"
+                    value={[
+                        minFloorsKeys.indexOf(minFloor),
+                        maxFloorsKeys.indexOf(maxFloor),
+                    ]}
+                    onChange={handleChange}
+                    valueLabelDisplay="auto"
+                    valueLabelFormat={valueLabelFormat}
+                    min={0}
+                    max={maxFloorsKeys.length - 41}
+                />
+                <Grid container direction="row" spacing={1.5}>
+                    <Grid item xs={6}>
+                        <Select
+                            name={minName}
+                            label={t("Min Floor")}
+                            options={minFloors}
+                        />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Select
+                            name={maxName}
+                            label={t("Max Floor")}
+                            options={maxFloors}
+                        />
+                    </Grid>
                 </Grid>
-                <Grid item xs={6}>
-                    <Select
-                        name={maxName}
-                        label={t("Max Floor")}
-                        options={maxFloors}
-                    />
-                </Grid>
-            </Grid>
-        </Box>
+            </Stack>
+        </>
     );
 };
 
@@ -379,7 +381,7 @@ const DemandForm: FC<DemandFormProps> = ({ index }) => {
                     </>
                 ) : null}
 
-                <Grid container>
+                <Grid container spacing={1.5}>
                     {SLIDERS.map((s, i) => (
                         <Grid key={i} xs={6} item>
                             {s}
