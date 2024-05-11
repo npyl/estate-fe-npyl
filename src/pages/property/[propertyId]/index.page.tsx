@@ -1,7 +1,7 @@
 import { Box, Tab, Tabs } from "@mui/material";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
-import { Suspense, useState } from "react";
+import { Suspense, lazy, useState } from "react";
 import {
     useClonePropertyMutation,
     useDeletePropertyMutation,
@@ -14,29 +14,20 @@ import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import ViewHeader from "src/pages/components/ViewHeader";
 
 import "photoswipe/dist/photoswipe.css";
-import MatchingCustomersSection from "./sections/MatchingCustomers";
-import { PhotosOnly } from "./sections/PhotosOnly";
 
 import { useTranslation } from "react-i18next";
 import { useTabsContext } from "src/contexts/tabs";
-import PropertyLogs from "./sections/Logs";
 import { ConfirmationDialogBox } from "src/pages/components/ConfirmationDialogBox";
 
-import {
-    Documents,
-    Integrations,
-    StreetView,
-    Map,
-    MainContainer,
-} from "./tabs";
-import { UploadFileProvider } from "src/contexts/uploadFile";
-
-function a11yProps(index: number) {
-    return {
-        id: `simple-tab-${index}`,
-        "aria-controls": `simple-tabpanel-${index}`,
-    };
-}
+// Tabs
+const MainContainer = lazy(() => import("./tabs/MainContainer"));
+const Documents = lazy(() => import("./tabs/Documents"));
+const Integrations = lazy(() => import("./tabs/Integrations"));
+const StreetView = lazy(() => import("./tabs/StreetView"));
+const Map = lazy(() => import("./tabs/Map"));
+const MatchingCustomersSection = lazy(() => import("./tabs/MatchingCustomers"));
+const PhotosOnly = lazy(() => import("./tabs/PhotosOnly"));
+const PropertyLogs = lazy(() => import("./sections/Logs"));
 
 const SingleProperty: NextPage = () => {
     const router = useRouter();
@@ -82,33 +73,29 @@ const SingleProperty: NextPage = () => {
                 onClone={handleClone}
             >
                 <Tabs value={value} onChange={handleChange}>
-                    <Tab label={t("Overview")} {...a11yProps(0)} />
-                    <Tab label={t("Quick View")} {...a11yProps(1)} />
-                    <Tab label={t("Tickets")} {...a11yProps(2)} />
-                    <Tab label={t("Matching Customers")} {...a11yProps(3)} />
-                    <Tab label={t("Photos")} {...a11yProps(4)} />
-                    <Tab label={t("Integrations")} {...a11yProps(5)} />
-                    <Tab label={t("Logs")} {...a11yProps(6)} />
-                    <Tab label={t("Documents")} {...a11yProps(7)} />
-                    <Tab label={t("Map")} {...a11yProps(8)} />
-                    <Tab label={t("Street View")} {...a11yProps(9)} />
+                    <Tab label={t("Overview")} />
+                    <Tab label={t("Quick View")} />
+                    <Tab label={t("Tickets")} />
+                    <Tab label={t("Matching Customers")} />
+                    <Tab label={t("Photos")} />
+                    <Tab label={t("Integrations")} />
+                    <Tab label={t("Logs")} />
+                    <Tab label={t("Documents")} />
+                    <Tab label={t("Map")} />
+                    <Tab label={t("Street View")} />
                 </Tabs>
             </ViewHeader>
-            <Box height={"100%"}>
-                <TabPanel value={value} index={0}>
-                    <Suspense fallback={<span>Loading...</span>}>
-                        <MainContainer />
-                    </Suspense>
-                </TabPanel>
+            <TabPanel value={value} index={0}>
+                <MainContainer />
+            </TabPanel>
+            <Suspense>
                 <TabPanel value={value} index={1}></TabPanel>
                 <TabPanel value={value} index={2}></TabPanel>
                 <TabPanel value={value} index={3}>
                     <MatchingCustomersSection />
                 </TabPanel>
                 <TabPanel value={value} index={4}>
-                    <Suspense fallback={<span>Loading...</span>}>
-                        <PhotosOnly />
-                    </Suspense>
+                    <PhotosOnly />
                 </TabPanel>
                 <TabPanel value={value} index={5}>
                     <Integrations />
@@ -120,30 +107,33 @@ const SingleProperty: NextPage = () => {
                     <Documents />
                 </TabPanel>
                 <TabPanel value={value} index={8}>
-                    <Box height={"400px"} width={"100%"}>
+                    <Box height={"400px"} width="100%">
                         <Map />
                     </Box>
                 </TabPanel>
                 <TabPanel value={value} index={9}>
-                    <StreetView />
+                    <Box height="100vh" width="100%">
+                        <StreetView />
+                    </Box>
                 </TabPanel>
-            </Box>
-            <ConfirmationDialogBox
-                open={cloneConfirmDialogOpen}
-                onClose={closeCloneConfirmaionDialog}
-                text={"Are you Sure You want to Clone This Property?"}
-                onConfirm={handleCloneConfirmation}
-                action={"clone"}
-            />
+            </Suspense>
+
+            {cloneConfirmDialogOpen ? (
+                <ConfirmationDialogBox
+                    open={cloneConfirmDialogOpen}
+                    onClose={closeCloneConfirmaionDialog}
+                    text={"Are you Sure You want to Clone This Property?"}
+                    onConfirm={handleCloneConfirmation}
+                    action={"clone"}
+                />
+            ) : null}
         </>
     );
 };
 
 SingleProperty.getLayout = (page) => (
     <AuthGuard>
-        <DashboardLayout>
-            <UploadFileProvider>{page}</UploadFileProvider>
-        </DashboardLayout>
+        <DashboardLayout>{page}</DashboardLayout>
     </AuthGuard>
 );
 

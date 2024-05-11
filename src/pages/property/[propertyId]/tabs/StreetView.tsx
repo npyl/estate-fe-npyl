@@ -1,6 +1,7 @@
 import { useGetPropertyByIdQuery } from "src/services/properties";
 import { useRouter } from "next/router";
 import { StreetViewMap } from "src/components/Map";
+import MapUnavailable from "./MapUnavailable";
 
 export interface IMapCoord {
     lat: number;
@@ -13,7 +14,7 @@ export const StreetView = () => {
 
     const { data } = useGetPropertyByIdQuery(+propertyId!);
 
-    if (!data?.location) return null;
+    if (!data?.location) return <MapUnavailable />;
 
     return (
         <StreetViewMap
