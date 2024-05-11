@@ -8,7 +8,6 @@ const StyledStack = styled(Stack)(({ theme }) => ({
     alignItems: "center",
     justifyContent: "center",
     textAlign: "center",
-    height: 1,
     color: theme.palette.grey[500],
 }));
 
@@ -16,7 +15,7 @@ const MapUnavailable = () => {
     const { t } = useTranslation();
 
     return (
-        <StyledStack>
+        <StyledStack height={"500px!important"}>
             <LocationOff style={{ fontSize: 70 }} color="action" />
 
             <Typography variant="h5" gutterBottom>
@@ -24,7 +23,9 @@ const MapUnavailable = () => {
             </Typography>
 
             <Typography variant="subtitle1" color="textSecondary">
-                {t("Please check the property details or try again later.")}
+                {t(
+                    "Please make sure this property has a location or try again later."
+                )}
             </Typography>
         </StyledStack>
     );

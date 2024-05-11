@@ -1,4 +1,3 @@
-import { LocationOff } from "@mui/icons-material";
 import DirectionsBusIcon from "@mui/icons-material/DirectionsBus";
 import LocalAirportIcon from "@mui/icons-material/LocalAirport";
 import LocalBarIcon from "@mui/icons-material/LocalBar";
@@ -21,7 +20,6 @@ import { useLoadApi } from "src/components/Map";
 import { useGetPropertyByIdQuery } from "src/services/properties";
 import { useDebouncedCallback } from "use-debounce";
 import RelatedPlaces from "./RelatedPlaces";
-import useMediaQuery from "@mui/material/useMediaQuery";
 import Grid from "@mui/material/Grid";
 import MapUnavailable from "../MapUnavailable";
 
@@ -30,6 +28,27 @@ const initialState: any[] = [];
 const actionTypes = {
     ADD: "ADD",
     RESET: "RESET",
+};
+
+const getIconPathForType = (type: string) => {
+    switch (type) {
+        case "hospital":
+            return "https://img.icons8.com/external-bearicons-flat-bearicons/40/000000/external-Hospital-location-bearicons-flat-bearicons.png";
+        case "supermarket":
+            return "https://img.icons8.com/external-bearicons-flat-bearicons/40/external-Market-location-bearicons-flat-bearicons.png";
+        case "restaurant":
+            return "https://img.icons8.com/external-bearicons-flat-bearicons/40/external-Restaurant-location-bearicons-flat-bearicons.png";
+        case "bar":
+            return "https://img.icons8.com/external-bearicons-flat-bearicons/40/000000/external-Pub-location-bearicons-flat-bearicons.png";
+        case "school":
+            return "https://img.icons8.com/external-bearicons-flat-bearicons/40/000000/external-School-location-bearicons-flat-bearicons.png";
+        case "airport":
+            return "https://img.icons8.com/external-bearicons-flat-bearicons/40/000000/external-Airport-location-bearicons-flat-bearicons.png";
+        case "transit_station":
+            return "https://img.icons8.com/external-bearicons-flat-bearicons/40/000000/external-Bus-location-bearicons-flat-bearicons.png";
+        default:
+            return "/static/img/default.png";
+    }
 };
 
 const reducer = (state: any, action: any) => {
@@ -56,44 +75,17 @@ function MyComponent() {
     const [radius, setRadius] = useState<number | number[]>(1);
     const [places, setPlaces] = useState<any>([]);
     const [state, dispatch] = useReducer(reducer, initialState);
-    const handleChange = (
-        event: React.MouseEvent<HTMLElement>,
-        newAlignment: string
-    ) => {
-        setAlignment(newAlignment);
-    };
-    const getIconPathForType = (type: string) => {
-        switch (type) {
-            case "hospital":
-                return "https://img.icons8.com/external-bearicons-flat-bearicons/40/000000/external-Hospital-location-bearicons-flat-bearicons.png";
-            case "supermarket":
-                return "https://img.icons8.com/external-bearicons-flat-bearicons/40/external-Market-location-bearicons-flat-bearicons.png";
-            case "restaurant":
-                return "https://img.icons8.com/external-bearicons-flat-bearicons/40/external-Restaurant-location-bearicons-flat-bearicons.png";
-            case "bar":
-                return "https://img.icons8.com/external-bearicons-flat-bearicons/40/000000/external-Pub-location-bearicons-flat-bearicons.png";
-            case "school":
-                return "https://img.icons8.com/external-bearicons-flat-bearicons/40/000000/external-School-location-bearicons-flat-bearicons.png";
-            case "airport":
-                return "https://img.icons8.com/external-bearicons-flat-bearicons/40/000000/external-Airport-location-bearicons-flat-bearicons.png";
-            case "transit_station":
-                return "https://img.icons8.com/external-bearicons-flat-bearicons/40/000000/external-Bus-location-bearicons-flat-bearicons.png";
-            default:
-                return "/static/img/default.png";
-        }
-    };
-    const center = useMemo(() => {
-        return {
+
+    const center = useMemo(
+        () => ({
             lat: data?.location?.lat || 37.98381,
             lng: data?.location?.lng || 23.727539,
-        };
-    }, [data?.location?.lat, data?.location?.lng]);
+        }),
+        [data?.location]
+    );
 
     const mapRef = useRef<any>(null);
     const serviceRef = useRef<any>(null);
-
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const matches = useMediaQuery(theme.breakpoints.up("sm"));
 
     useEffect(() => {
         if (isLoaded) {
@@ -216,15 +208,23 @@ function MyComponent() {
         }
     };
 
-    const handleSliderRadius = useDebouncedCallback((e) => {
-        setRadius(e);
-    }, 300);
+    const handleChange = (_: any, newAlignment: string) =>
+        setAlignment(newAlignment);
+
+    const handleSliderRadius = useDebouncedCallback((e) => setRadius(e), 300);
 
     if (loadError) {
         return <div>Error loading maps</div>;
     }
 
-    if (!data?.location?.lat || !data?.location?.lng) {
+    if (
+        !(
+            data?.location?.lat &&
+            data?.location?.lat > 0 &&
+            data?.location?.lng &&
+            data?.location?.lng > 0
+        )
+    ) {
         return <MapUnavailable />;
     }
 
@@ -235,11 +235,11 @@ function MyComponent() {
                 xs={12}
                 md={6}
                 position="relative"
-                height={matches ? "65vh" : "100vh"}
+                height={{ xs: "65vh", sm: "100vh" }}
             >
                 {isLoaded ? (
                     <>
-                        <Box id="map" height={1} />
+                        <Box id="map" height={1} width={1} />
 
                         <Paper
                             sx={{

@@ -1,4 +1,4 @@
-import { Box, Tab, Tabs } from "@mui/material";
+import { Tab, Tabs } from "@mui/material";
 import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { Suspense, lazy, useState } from "react";
@@ -107,14 +107,10 @@ const SingleProperty: NextPage = () => {
                     <Documents />
                 </TabPanel>
                 <TabPanel value={value} index={8}>
-                    <Box height={"400px"} width="100%">
-                        <Map />
-                    </Box>
+                    <Map />
                 </TabPanel>
                 <TabPanel value={value} index={9}>
-                    <Box height="100vh" width="100%">
-                        <StreetView />
-                    </Box>
+                    <StreetView />
                 </TabPanel>
             </Suspense>
 
