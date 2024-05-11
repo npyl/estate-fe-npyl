@@ -1,21 +1,16 @@
 import { GoogleMap, MarkerF } from "@react-google-maps/api";
 import React, { useCallback, useMemo, useRef, useState } from "react";
-import { CustomDrawingComponent } from "./Draw";
-import { DrawMultiple } from "./DrawMultiple";
-import SearchOnMap from "./Search";
-import { DrawShape, ShapeData, StopDraw } from "./types";
+import { DrawShape, IMapCoordinates, ShapeData, StopDraw } from "./types";
 import uuidv4 from "src/utils/uuidv4";
 import useLoadApi from "./hook";
+
+// plugins
+import { DrawMultiple, Draw, Search } from "./plugins/";
 
 const containerStyle = {
     width: "100%",
     height: "100%",
 };
-
-export interface IMapCoordinates {
-    lat: number;
-    lng: number;
-}
 
 export type IMapMarker = IMapCoordinates;
 
@@ -125,10 +120,6 @@ const Map = ({
         setMap(map);
 
         onReady?.(map);
-    }, []);
-
-    const onUnmount = useCallback(() => {
-        // mapRef.current = undefined;
     }, []);
 
     const getAddressFromLatLng = useCallback(
@@ -265,13 +256,12 @@ const Map = ({
             zoom={zoom || 16}
             onClick={handleMapClick}
             onLoad={onLoad}
-            onUnmount={onUnmount}
         >
             {map ? (
                 <>
                     {/* Draw One */}
                     {!multipleShapes ? (
-                        <CustomDrawingComponent
+                        <Draw
                             map={map}
                             drawing={drawing}
                             shape={shape}
@@ -299,7 +289,7 @@ const Map = ({
 
                     {/* Search */}
                     {search ? (
-                        <SearchOnMap onSearchSelect={handleSearchSelect} />
+                        <Search onSearchSelect={handleSearchSelect} />
                     ) : null}
                 </>
             ) : null}

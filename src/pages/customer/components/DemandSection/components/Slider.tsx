@@ -1,4 +1,10 @@
-import { Grid, InputAdornment, SliderProps, Typography } from "@mui/material";
+import {
+    Grid,
+    InputAdornment,
+    SliderProps,
+    Stack,
+    Typography,
+} from "@mui/material";
 import { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { RHFDoubleSlider, RHFTextField } from "src/components/hook-form";
@@ -32,14 +38,7 @@ export const DemandFormSlider: FC<DemandFormSliderProps> = ({
     return (
         <>
             <Typography variant="h6">{label}</Typography>
-            <Grid
-                container
-                direction="row"
-                spacing={1}
-                paddingTop={2}
-                paddingLeft={3}
-                paddingRight={3}
-            >
+            <Stack mt={1} px={1}>
                 <RHFDoubleSlider
                     orientation="horizontal"
                     minName={minName}
@@ -84,7 +83,7 @@ export const DemandFormSlider: FC<DemandFormSliderProps> = ({
                         />
                     </Grid>
                 </Grid>
-            </Grid>
+            </Stack>
         </>
     );
 };

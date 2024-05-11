@@ -1,8 +1,13 @@
-import { Button, Stack, SvgIconProps, Typography } from "@mui/material";
+import { ReactNode, useEffect, useRef } from "react";
+import { Button, Stack, Typography } from "@mui/material";
+import { DrawShape, ShapeData, StopDraw } from "../types";
+import { drawShape, encodeShape, setShapeEvents } from "../util";
 import { styled } from "@mui/material/styles";
-import { useEffect, useRef } from "react";
-import { DrawShape, ShapeData, StopDraw } from "./types";
-import { drawShape, encodeShape, setShapeEvents } from "./util";
+
+interface SvgIconProps {
+    children: ReactNode;
+    [key: string]: any; // for other props you might want to pass
+}
 
 const StyledButton = styled(Button)({
     margin: "2px",
@@ -24,23 +29,17 @@ const SvgIcon = ({ children, ...props }: SvgIconProps) => (
     </svg>
 );
 
-interface DrawMultipleProps {
+interface DrawProps {
     map?: google.maps.Map;
     drawing: boolean;
-    shapes?: ShapeData[];
+    shape?: ShapeData;
     onDraw: (shape: DrawShape | StopDraw) => void;
-    onShapeChange: (oldEncodedShape: string, newEncodedShape: string) => void;
+    onShapeChange?: (newEncodedShape: string) => void;
 }
 
-export const DrawMultiple = ({
-    map,
-    drawing,
-    shapes,
-    onDraw,
-    onShapeChange,
-}: DrawMultipleProps) => {
+const Draw = ({ map, drawing, shape, onDraw, onShapeChange }: DrawProps) => {
     const drawingManagerRef = useRef<any>(null);
-    const shapeRefs = useRef<(DrawShape | StopDraw)[]>([]);
+    const shapeRef = useRef<DrawShape | StopDraw>(null);
 
     useEffect(() => {
         if (!map) {
@@ -54,7 +53,6 @@ export const DrawMultiple = ({
                 position: google.maps.ControlPosition.TOP_CENTER,
                 drawingModes: [google.maps.drawing.OverlayType.POLYGON], // Customize the allowed drawing modes
             },
-
             polygonOptions: {
                 // Customize polygon options
                 fillColor: "cyan",
@@ -92,23 +90,30 @@ export const DrawMultiple = ({
             drawingManager,
             "overlaycomplete",
             (event: google.maps.drawing.OverlayCompleteEvent) => {
+                console.log(event);
+
                 if (!event.overlay) return null;
                 if (typeof event.overlay === typeof google.maps.Marker)
                     return null;
 
+                if (shapeRef.current) {
+                    // Remove the previous shape
+
+                    shapeRef.current.setMap(null);
+                }
+
                 const shape = event.overlay;
-                shapeRefs.current?.push(shape as DrawShape);
+                shapeRef.current = shape as DrawShape;
+
                 drawingManagerRef.current.setDrawingMode(null);
 
-                /* catch drag/change events */
-                const oldEncodedShape = encodeShape(shape as DrawShape);
-                onShapeChange &&
-                    setShapeEvents(shape as DrawShape, () =>
-                        onShapeChange(
-                            oldEncodedShape,
-                            encodeShape(shape as DrawShape)
-                        )
-                    );
+                setShapeEvents(
+                    shape as DrawShape,
+                    () =>
+                        onShapeChange &&
+                        shape &&
+                        onShapeChange(encodeShape(shape as DrawShape))
+                );
 
                 onDraw(shape as DrawShape);
             }
@@ -126,38 +131,46 @@ export const DrawMultiple = ({
 
     useEffect(() => {
         if (!drawingManagerRef.current) return;
-        if (!shapes) return;
-
-        // clear map of any shape
-        shapeRefs.current?.forEach((shape) => shape?.setMap(null));
-        shapeRefs.current = [];
 
         // draw any imported shape
-        shapes
-            .filter((shape) => !!shape)
-            .map((shape) =>
-                shapeRefs.current?.push(
-                    drawShape(shape, map!, !!drawing ? onShapeChange : null)
-                )
-            );
-    }, [map, shapes]);
+        shapeRef.current?.setMap(null);
+        shapeRef.current = shape
+            ? drawShape(
+                  shape,
+                  map!,
+                  !!drawing && onShapeChange
+                      ? (old, newShape) => onShapeChange(newShape)
+                      : null
+              )
+            : null;
 
-    const startDrawing = () =>
+        // INFO: we need to support null/undefined shape, because it can mean user cleared the shape OR we loaded a new map on a new demand form
+    }, [shape]);
+
+    const startDrawing = () => {
+        shapeRef.current?.setMap(null);
+
         drawingManagerRef.current?.setDrawingMode(
             google.maps.drawing.OverlayType.POLYGON
         );
-    const startDrawingRect = () =>
+    };
+    const startDrawingRect = () => {
+        shapeRef.current?.setMap(null);
+
         drawingManagerRef.current?.setDrawingMode(
             google.maps.drawing.OverlayType.RECTANGLE
         );
-    const startDrawingCircle = () =>
+    };
+    const startDrawingCircle = () => {
+        shapeRef.current?.setMap(null);
+
         drawingManagerRef.current?.setDrawingMode(
             google.maps.drawing.OverlayType.CIRCLE
         );
+    };
 
     const stopDrawing = () => {
-        shapeRefs.current?.forEach((shape) => shape?.setMap(null));
-        shapeRefs.current = [];
+        shapeRef.current?.setMap(null);
         onDraw(null);
     };
 
@@ -167,7 +180,6 @@ export const DrawMultiple = ({
                 padding: 3,
                 position: "absolute",
                 left: 10,
-
                 top: "15vh",
                 backgroundColor: "rgba(255, 255, 255, 0.7)", // White background with opacity
                 backdropFilter: "blur(10px)",
@@ -211,3 +223,5 @@ export const DrawMultiple = ({
         </Stack>
     ) : null;
 };
+
+export default Draw;

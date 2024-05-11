@@ -1,6 +1,7 @@
-import { Box, Divider, Grid, Typography } from "@mui/material";
+import { SpaceBetween } from "@/components/styled";
+import { Box, Grid, Typography } from "@mui/material";
 
-import { FC, useCallback, useMemo, useState } from "react";
+import { FC, Suspense, lazy, useCallback, useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import MunicipSelect from "src/components/Location/MunicipSelect";
@@ -16,12 +17,9 @@ import {
 } from "src/services/location";
 import { IDemandFiltersPOST, IDemandPOST } from "src/types/demand";
 import { useDebouncedCallback } from "use-debounce";
+import AutoCenter from "./auto";
 
-interface ILocationSectionProps {
-    index: number;
-    onGetDemandName: (k: keyof IDemandPOST) => any;
-    onGetDemandFilterName: (k: keyof IDemandFiltersPOST) => any;
-}
+const NextShapeCenter = lazy(() => import("./center"));
 
 enum ZOOM_LEVELS {
     REGION = 10,
@@ -29,13 +27,20 @@ enum ZOOM_LEVELS {
     NEIGHB = 16,
 }
 
-const AreaOfPreference: FC<ILocationSectionProps> = ({
+interface Props {
+    index: number;
+    onGetDemandName: (k: keyof IDemandPOST) => any;
+    onGetDemandFilterName: (k: keyof IDemandFiltersPOST) => any;
+}
+
+const AreaOfPreference: FC<Props> = ({
     index,
     onGetDemandName,
     onGetDemandFilterName,
 }) => {
     const { watch, setValue } = useFormContext();
     const { t } = useTranslation();
+
     const { regionsName, citiesName, complexesName, shapesName } = useMemo(
         () => ({
             regionsName: onGetDemandFilterName("regions"),
@@ -51,18 +56,17 @@ const AreaOfPreference: FC<ILocationSectionProps> = ({
     const complexes = (watch(complexesName) as string[]) || [];
     const shapes = (watch(shapesName) as string[]) || [];
 
+    // current demand's decoded shapes
     const shapeData = useMemo(
         () =>
             shapes
-                .map((shape) => decodeShape(shape))
+                .map(decodeShape)
                 .filter((decoded) => !!decoded) as ShapeData[],
-        [shapes] // current demand's decoded shapes
+        [shapes]
     );
 
     const [getClosestQuery] = useLazyGetClosestQuery();
     const [getHierarchy] = useLazyGetHierarchyByAreaIdQuery();
-
-    // Fields
 
     const [zoom, setZoom] = useState<number>(ZOOM_LEVELS.REGION);
 
@@ -141,7 +145,7 @@ const AreaOfPreference: FC<ILocationSectionProps> = ({
     //
     // Map
     //
-    const handleMapClick = (lat: number, lng: number, address: IMapAddress) => {
+    const handleMapClick = (lat: number, lng: number) => {
         if (!lat || !lng) return;
 
         getClosest(lat, lng);
@@ -150,8 +154,7 @@ const AreaOfPreference: FC<ILocationSectionProps> = ({
     const handleMarkerDragEnd = (
         marker: IMapMarker,
         newLat: number,
-        newLng: number,
-        address: IMapAddress
+        newLng: number
     ) => {
         if (!marker || marker !== mainMarker) return; // we only care about mainMarker drag
 
@@ -207,23 +210,26 @@ const AreaOfPreference: FC<ILocationSectionProps> = ({
 
     return (
         <>
-            <Divider
-                style={{
-                    width: "100%",
-                }}
-            />
-            <Box
-                sx={{
-                    px: 3,
-                    py: 1.5,
-                    display: "flex",
-                    justifyContent: "left",
-                }}
-            >
+            <SpaceBetween py={1} alignItems="center">
                 <Typography variant="h6">{t("Area of Preference")}</Typography>
-            </Box>
-            <Grid item xs={12} padding={1} marginBottom={2}>
-                <Box height={`calc(100vh - 266px)`} width={"100%"}>
+
+                {/* For many shapes center */}
+                {shapeData.length > 1 ? (
+                    <Suspense>
+                        <NextShapeCenter
+                            shapes={shapeData}
+                            onChange={setMainMarker}
+                        />
+                    </Suspense>
+                ) : null}
+            </SpaceBetween>
+
+            {shapeData.length > 0 ? (
+                <AutoCenter shape={shapeData[0]} onCenter={setMainMarker} />
+            ) : null}
+
+            <Box>
+                <Box height={`calc(100vh - 266px)`} width={1}>
                     <Map
                         key={index}
                         zoom={zoom}
@@ -238,31 +244,28 @@ const AreaOfPreference: FC<ILocationSectionProps> = ({
                         onSearchSelect={handleSearchSelect}
                     />
                 </Box>
-                <Grid container spacing={2} padding={1} paddingTop={3}>
-                    <Grid item xs={12}>
-                        <Grid container direction={"row"} spacing={2}>
-                            <Grid item xs={4}>
-                                <RegionSelect
-                                    regionCode={regionCode || ""}
-                                    onChange={handleRegionChange}
-                                />
-                            </Grid>
-                            <Grid item xs={4}>
-                                <MunicipSelect
-                                    regionCode={regionCode || ""}
-                                    municipCode={cityCode || ""}
-                                    onChange={handleMunicipChange}
-                                />
-                            </Grid>
-                            <Grid item xs={4}>
-                                <NeighbourSelect
-                                    municipCode={cityCode || ""}
-                                    neighbourCode={complexCode || ""}
-                                    onChange={handleNeighbourChange}
-                                />
-                            </Grid>
-                        </Grid>
-                    </Grid>
+            </Box>
+
+            <Grid container spacing={2} p={1}>
+                <Grid item xs={4}>
+                    <RegionSelect
+                        regionCode={regionCode || ""}
+                        onChange={handleRegionChange}
+                    />
+                </Grid>
+                <Grid item xs={4}>
+                    <MunicipSelect
+                        regionCode={regionCode || ""}
+                        municipCode={cityCode || ""}
+                        onChange={handleMunicipChange}
+                    />
+                </Grid>
+                <Grid item xs={4}>
+                    <NeighbourSelect
+                        municipCode={cityCode || ""}
+                        neighbourCode={complexCode || ""}
+                        onChange={handleNeighbourChange}
+                    />
                 </Grid>
             </Grid>
         </>

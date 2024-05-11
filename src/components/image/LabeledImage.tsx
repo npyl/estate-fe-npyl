@@ -1,5 +1,5 @@
 import { styled } from "@mui/system";
-import { Stack, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import Image from "src/components/image/Image";
 import { LabeledImageProps } from "./types";
 import { Lock } from "@mui/icons-material";

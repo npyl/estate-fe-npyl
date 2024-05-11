@@ -36,22 +36,11 @@ const StreetView = ({ center }: MapProps) => {
     }, [isLoaded]);
 
     return (
-        <Box
-            sx={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "center",
-                alignContent: "center",
-                width: "100%",
-                height: "100%",
-            }}
-        >
-            <div
-                id="street-view"
-                ref={mapRef}
-                style={{ width: "95%", height: "95%" }}
-            />
-        </Box>
+        <div
+            id="street-view"
+            ref={mapRef}
+            style={{ width: "100%", height: "100%" }}
+        />
     );
 };
 

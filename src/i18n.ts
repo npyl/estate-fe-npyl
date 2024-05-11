@@ -6,6 +6,8 @@ const resources = {
         translation: {
             Monthly: "Monthly",
 
+            "Next Shape": "Next Shape",
+
             ID: "ID",
             Properties: "Properties",
 
@@ -609,6 +611,13 @@ const resources = {
             "Matching Customers": "Matching Customers",
             Photos: "Photos",
             "All Photos": "All Photos",
+            "Public Photos": "Public Photos",
+            "Private Photos": "Private Photos",
+
+            "Download Photos": "Download Photos",
+            "Please select between All or only Public photos":
+                "Please select between All or only Public photos",
+
             Integrations: "Integrations",
             Documents: "Documents",
 
@@ -648,10 +657,24 @@ const resources = {
             Options: "Options",
             Living: "Living",
             "Living Space": "Living Space",
+
+            "No location data available": "No location data available",
+            "Please make sure this property has a location or try again later.":
+                "Please make sure this property has a location or try again later.",
         },
     },
     el: {
         translation: {
+            "Download Photos": "Λήψη Εικόνων",
+            "Please select between All or only Public photos":
+                "Παρακαλώ επιλέξτε μεταξύ Όλων ή μόνο Δημόσιων εικόνων",
+
+            "No location data available": "Δεν βρέθηκε τοποθεσία",
+            "Please make sure this property has a location or try again later.":
+                "Παρακαλώ βεβαιωθείτε ότι το ακίνητο έχει τοποθεσία ή ξαναπροσπαθήστε αργότερα",
+
+            "Next Shape": "Επόμενο Σχήμα",
+
             "Rising Popularity": "Αύξουσα Δημοτικότητα",
             "Falling Popularity": "Φθίνουσα Δημοτικότητα",
 
@@ -1306,6 +1329,9 @@ const resources = {
             "Matching Customers": "Ταιριαστοί πελάτες",
             Photos: "Εικόνες",
             "All Photos": "Όλες οι Εικόνες",
+            "Public Photos": "Δημόσιες Εικόνες",
+            "Private Photos": "Ιδιωτικές Εικόνες",
+
             Integrations: "Συνδεδεμένα",
             Documents: "Έγγραφα",
             Share: "Κοινοποίηση",
