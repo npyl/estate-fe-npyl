@@ -174,6 +174,7 @@ const resources = {
             "Available only on View / Edit": "Available only on View / Edit",
 
             "Last update": "Last update",
+            "Last entry": "Last entry",
             "Price (cheap first)": "Price (cheap first)",
             "Price (expensive first)": "Price (expensive first)",
             Registration: "Registration",
@@ -183,6 +184,7 @@ const resources = {
             "Area (highest first)": "Area (highest first)",
             "Area (lowest first)": "Area (lowest first)",
             "Land area (highest first)": "Land area (highest first)",
+            "Rating (highest first)": "Rating (highest first)",
 
             //Distances
 
@@ -897,6 +899,7 @@ const resources = {
             "Floor Apartment": "Οροφοδιαμέρισμα",
 
             "Last update": "Τελευταία αλλαγή",
+            "Last entry": "Τελευταία καταχώρηση",
             "Price (cheap first)": "Τιμή (φθηνά πρώτα)",
             "Price (expensive first)": "Τιμή (ακριβά πρώτα)",
             Registration: "Καταχώρηση",
@@ -906,6 +909,7 @@ const resources = {
             "Area (highest first)": "Εμβαδόν (υψηλότερο πρώτα)",
             "Area (lowest first)": "Εμβαδόν (χαμηλότερο πρώτα)",
             "Land area (highest first)": "Εμβαδόν οικοπέδου (υψηλότερο πρώτα)",
+            "Rating (highest first)": "Αξιολόγηση (υψηλή πρώτα)",
 
             // Tickets
             "Add section": "Προσθήκη Τμήματος",
