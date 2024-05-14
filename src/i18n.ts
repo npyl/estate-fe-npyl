@@ -423,6 +423,8 @@ const resources = {
             Renovation: "Renovation",
             "Agricultural Use": "Agricultural Use",
 
+            "Date of Entry": "Date of Entry",
+
             //Description
 
             //Create customer
@@ -668,10 +670,14 @@ const resources = {
             "No location data available": "No location data available",
             "Please make sure this property has a location or try again later.":
                 "Please make sure this property has a location or try again later.",
+
+            _SubCategory: "Category",
         },
     },
     el: {
         translation: {
+            "Date of Entry": "Ημ/νία Καταχώρησης",
+
             "Drop or Select files": "Ρίξτε ή Επιλέξτε αρχεία",
 
             "Download Photos": "Λήψη Εικόνων",
@@ -897,6 +903,7 @@ const resources = {
             Neoclassical: "Νεοκλασικό",
             Preserved: "Διατηρητέο",
             "Floor Apartment": "Οροφοδιαμέρισμα",
+            _SubCategory: "Κατηγορία",
 
             "Last update": "Τελευταία αλλαγή",
             "Last entry": "Τελευταία καταχώρηση",
