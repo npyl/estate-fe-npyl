@@ -1,5 +1,5 @@
 import { Grid, Typography, Container, Stack } from "@mui/material";
-import * as React from "react";
+import { useCallback, useState } from "react";
 import { useGetCustomerByIdQuery } from "src/services/customers";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
@@ -8,6 +8,7 @@ import Panel from "@/components/Panel";
 import useResponsive from "@/hooks/useResponsive";
 import PropertyCard from "@/components/PropertyCard";
 import { useMemo } from "react";
+import { GridPaginationModel } from "@mui/x-data-grid";
 
 const Placeholder = () => {
     const { t } = useTranslation();
@@ -41,6 +42,8 @@ const Placeholder = () => {
     );
 };
 
+const PAGE_SIZE = 5;
+
 interface Props {
     variant?: "default" | "small";
 }
@@ -51,14 +54,17 @@ const OwnedCustomerPropertiesSection = ({ variant }: Props) => {
     const { customerId } = router.query;
     const { data, isLoading } = useGetCustomerByIdQuery(+customerId!);
 
-    const belowMd = useResponsive("down", "md");
+    const [page, setPage] = useState(0);
+    const handlePaginationChange = useCallback(
+        (m: GridPaginationModel) => setPage(m.page),
+        []
+    );
+
+    const belowLg = useResponsive("down", "lg");
 
     const ownedProperties = useMemo(
         () =>
-            Array.isArray(data?.ownedProperties) &&
-            data.ownedProperties.length > 0
-                ? data.ownedProperties
-                : [],
+            Array.isArray(data?.ownedProperties) ? data.ownedProperties : [],
         [data]
     );
 
@@ -66,32 +72,34 @@ const OwnedCustomerPropertiesSection = ({ variant }: Props) => {
         return <Placeholder />;
     }
 
-    return (
+    return belowLg ? (
+        <Grid container spacing={1}>
+            {ownedProperties.map((p) => (
+                <Grid item key={p.id} xs={12} sm={6}>
+                    <PropertyCard item={p} selectedMarker={null} />
+                </Grid>
+            ))}
+        </Grid>
+    ) : (
         <Panel
             label={t("Owned Properties")}
             childrenSx={{
                 p: 0,
             }}
         >
-            {belowMd ? (
-                <Stack spacing={1}>
-                    {ownedProperties.map((p) => (
-                        <PropertyCard item={p} selectedMarker={null} />
-                    ))}
-                </Stack>
-            ) : (
-                <DataGrid
-                    skeleton={isLoading}
-                    // ...
-                    rows={ownedProperties}
-                    resource="property"
-                    columnVariant={variant}
-                    // ...
-                    page={0}
-                    pageSize={10}
-                    totalRows={25}
-                />
-            )}
+            <DataGrid
+                skeleton={isLoading}
+                // ...
+                rows={ownedProperties}
+                resource="property"
+                columnVariant={variant}
+                // ...
+                paginationMode="client"
+                page={page}
+                pageSize={PAGE_SIZE}
+                totalRows={ownedProperties.length}
+                onPaginationModelChange={handlePaginationChange}
+            />
         </Panel>
     );
 };

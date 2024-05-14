@@ -4,6 +4,8 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            "Drop or Select files": "Drop or Select files",
+
             Monthly: "Monthly",
 
             "Next Shape": "Next Shape",
@@ -665,6 +667,8 @@ const resources = {
     },
     el: {
         translation: {
+            "Drop or Select files": "Ρίξτε ή Επιλέξτε αρχεία",
+
             "Download Photos": "Λήψη Εικόνων",
             "Please select between All or only Public photos":
                 "Παρακαλώ επιλέξτε μεταξύ Όλων ή μόνο Δημόσιων εικόνων",

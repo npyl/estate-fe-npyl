@@ -17,13 +17,7 @@ const Placeholder = () => {
                     <span style={{ fontSize: "50px" }}>🏠</span>
                 </Grid>
                 <Grid item>
-                    <Typography
-                        variant="h5"
-                        style={{
-                            textAlign: "center",
-                            color: "rgba(0, 0, 0, 0.7)",
-                        }}
-                    >
+                    <Typography variant="h5" textAlign="center">
                         {t("There are no matching properties")}
                     </Typography>
                 </Grid>

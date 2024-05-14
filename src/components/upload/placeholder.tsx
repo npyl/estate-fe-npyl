@@ -2,10 +2,13 @@
 import { Stack, StackProps, Typography } from "@mui/material";
 // assets
 import { UploadIllustration } from "../../assets/illustrations";
+import { useTranslation } from "react-i18next";
 
 // ----------------------------------------------------------------------
 
 function Placeholder({ sx, ...other }: StackProps) {
+    const { t } = useTranslation();
+
     return (
         <Stack
             alignItems="center"
@@ -27,7 +30,7 @@ function Placeholder({ sx, ...other }: StackProps) {
             <UploadIllustration sx={{ width: 100 }} />
 
             <Typography gutterBottom variant="h5">
-                Drop or Select files
+                {t("Drop or Select files")}
             </Typography>
         </Stack>
     );
