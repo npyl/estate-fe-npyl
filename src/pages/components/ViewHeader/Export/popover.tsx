@@ -44,13 +44,25 @@ const StyledControlledLabel = styled(FormControlLabel)<ControlledLabelProps>(
 interface ExportPopoverProps extends PopoverProps {
     onShare: VoidFunction;
     onDownload: VoidFunction;
+    // ...
+    blueprints: boolean;
+    setBlueprints: (b: boolean) => void;
+    version: string;
+    setVersion: (s: "LONG" | "SHORT") => void;
 }
 
-const Popover = ({ onShare, onDownload, ...props }: ExportPopoverProps) => {
+const Popover = ({
+    onShare,
+    onDownload,
+    // ...
+    blueprints,
+    setBlueprints,
+    version,
+    setVersion,
+    // ...
+    ...props
+}: ExportPopoverProps) => {
     const { t } = useTranslation();
-
-    const [blueprints, setBlueprints] = useState(false);
-    const [version, setVersion] = useState<"LONG" | "SHORT">("LONG");
 
     return (
         <MuiPopover

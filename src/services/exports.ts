@@ -8,7 +8,7 @@ interface IExportPDF {
     propertyId: number;
     qrPath: string;
     blueprints: boolean;
-    allImages: boolean;
+    publicImages: boolean;
 }
 
 // Define the return type and parameters for our custom base query
@@ -70,11 +70,16 @@ export const exports = createApi({
 
         // Export a property's pdfs
         downloadPDF: builder.query<Blob, IExportPDF>({
-            query: ({ propertyId, ...params }) => {
+            query: ({ propertyId, qrPath, blueprints, publicImages }) => {
+                const queryParams = new URLSearchParams({
+                    qrPath,
+                    blueprints: blueprints.toString(),
+                    publicImages: publicImages.toString(),
+                }).toString();
+
                 return {
-                    url: `/export/${propertyId}`,
+                    url: `export/${propertyId}?${queryParams}`,
                     method: "GET",
-                    params,
                 };
             },
         }),

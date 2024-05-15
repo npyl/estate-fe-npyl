@@ -33,21 +33,25 @@ const ExportButton = () => {
     const router = useRouter();
     const { propertyId } = router.query;
 
+    // Popper
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement>();
     const isOpen = Boolean(anchorEl);
     const handleOpen = (event: MouseEvent<HTMLButtonElement>) =>
         setAnchorEl(event.currentTarget);
     const handleClose = () => setAnchorEl(undefined);
 
+    // Download Options
+    const [blueprints, setBlueprints] = useState(false);
+    const [version, setVersion] = useState<"LONG" | "SHORT">("LONG");
+
     const [downloadPDF] = useLazyDownloadPDFQuery();
 
     const handleDownload = useCallback(() => {
         downloadPDF({
             propertyId: +propertyId!,
-            qrPath: "", // TODO: wtvr?
-            // TODO: take us from checkboxes
-            blueprints: false,
-            allImages: false,
+            qrPath: "",
+            blueprints,
+            publicImages: false,
         })
             .unwrap()
             .then(downloadBlob);
@@ -66,7 +70,12 @@ const ExportButton = () => {
                     onClose={handleClose}
                     // ...
                     onShare={() => {}}
-                    onDownload={() => {}}
+                    onDownload={handleDownload}
+                    // ...
+                    blueprints={blueprints}
+                    setBlueprints={setBlueprints}
+                    version={version}
+                    setVersion={setVersion}
                 />
             ) : null}
         </>
