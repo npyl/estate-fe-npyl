@@ -46,16 +46,17 @@ const ExportButton = () => {
 
     const [downloadPDF] = useLazyDownloadPDFQuery();
 
+    // INFO: blueprints can be both in long and short, publicImages is true only for long
     const handleDownload = useCallback(() => {
         downloadPDF({
             propertyId: +propertyId!,
             qrPath: "",
             blueprints,
-            publicImages: false,
+            publicImages: version === "LONG",
         })
             .unwrap()
             .then(downloadBlob);
-    }, []);
+    }, [blueprints, version]);
 
     return (
         <>
