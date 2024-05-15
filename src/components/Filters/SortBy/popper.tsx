@@ -1,6 +1,9 @@
 import { Paper, Popper } from "@mui/material";
 import { ListItem } from "@/components/Filters";
 import { TSortByOptions } from "./types";
+import Iconify from "@/components/iconify";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
 
 interface SelectPopperProps {
     anchorEl?: HTMLElement;
@@ -27,13 +30,16 @@ const SelectPopper = ({
                 p: 1,
             }}
         >
-            {options.map(({ label, value }, i) => (
+            {options.map(({ label, value, icon }) => (
                 <ListItem
-                    key={i}
+                    key={value}
                     selected={value === sorting}
                     onClick={() => onSortingChange(value)}
                 >
-                    {label}
+                    <ListItemIcon>
+                        {icon ? <Iconify icon={icon} /> : null}
+                    </ListItemIcon>
+                    <ListItemText>{label}</ListItemText>
                 </ListItem>
             ))}
         </Paper>

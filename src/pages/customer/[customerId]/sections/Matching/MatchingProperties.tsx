@@ -1,5 +1,4 @@
 import { GridPaginationModel } from "@mui/x-data-grid";
-import * as React from "react";
 import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLoadApi } from "src/components/Map";
@@ -12,7 +11,7 @@ import Placeholder from "./Placeholder";
 import DataGrid from "@/components/DataGrid/Property";
 import Panel from "@/components/Panel";
 import useResponsive from "@/hooks/useResponsive";
-import { Stack } from "@mui/material";
+import { Grid } from "@mui/material";
 import PropertyCard from "@/components/PropertyCard";
 
 const filterPropertiesInShape = (
@@ -40,14 +39,16 @@ const MatchingPropertiesSection = ({ variant = "default" }: Props) => {
     const { customer, customerId } = useGetCustomer();
 
     const [page, setPage] = useState(0);
+    const handlePaginationChange = useCallback(
+        (model: GridPaginationModel) => setPage(model.page),
+        []
+    );
 
     const { data, isLoading } = useSuggestForCustomerQuery({
         customerId: +customerId!,
     });
 
     const demands = useMemo(() => customer?.demands || [], [customer?.demands]);
-
-    const totalRows = useMemo(() => data?.length || 0, [data?.length]);
 
     const properties = useMemo(() => {
         if (!isLoaded) return [];
@@ -85,46 +86,39 @@ const MatchingPropertiesSection = ({ variant = "default" }: Props) => {
         return [...new Set(res)];
     }, [isLoaded, data, demands]);
 
-    const belowMd = useResponsive("down", "md");
-
-    const handlePaginationChange = useCallback(
-        (model: GridPaginationModel) => setPage(model.page),
-        []
-    );
+    const belowLg = useResponsive("down", "lg");
 
     if (!isLoading && properties?.length === 0) {
         return <Placeholder />;
     }
 
-    return (
+    return belowLg ? (
+        <Grid container spacing={1}>
+            {properties.map((p) => (
+                <Grid item key={p.id} xs={12} sm={6}>
+                    <PropertyCard item={p} selectedMarker={null} />
+                </Grid>
+            ))}
+        </Grid>
+    ) : (
         <Panel
             label={t("Matching Properties")}
             childrenSx={{
                 p: 0,
             }}
         >
-            {belowMd ? (
-                <Stack spacing={1}>
-                    {properties.map((p) => (
-                        <PropertyCard item={p} selectedMarker={null} />
-                    ))}
-
-                    {/* {isLoading ? <PropertyCardSkeleton /> : null} */}
-                </Stack>
-            ) : (
-                <DataGrid
-                    skeleton={isLoading}
-                    // ...
-                    rows={properties || []}
-                    totalRows={totalRows}
-                    columnVariant={variant}
-                    // ...
-                    paginationMode="client"
-                    page={page}
-                    pageSize={pageSize}
-                    onPaginationModelChange={handlePaginationChange}
-                />
-            )}
+            <DataGrid
+                skeleton={isLoading}
+                // ...
+                rows={properties}
+                totalRows={properties.length || 0}
+                columnVariant={variant}
+                // ...
+                paginationMode="client"
+                page={page}
+                pageSize={pageSize}
+                onPaginationModelChange={handlePaginationChange}
+            />
         </Panel>
     );
 };

@@ -7,4 +7,5 @@ export type TSortByOptions = {
     value: string;
     label: string;
     sorting: TSorting;
+    icon: string;
 }[];

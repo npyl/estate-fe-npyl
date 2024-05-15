@@ -20,6 +20,11 @@ export interface ICustomerResultResponse {
     lessor: boolean;
     seller: boolean;
     buyer: boolean;
+
+    // TODO: waiting for backend
+    priceRange: [number, number];
+    createdAt: string;
+    area: number;
 }
 
 export interface ICustomerFilter {

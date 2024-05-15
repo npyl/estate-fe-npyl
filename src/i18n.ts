@@ -4,6 +4,8 @@ import { initReactI18next } from "react-i18next";
 const resources = {
     en: {
         translation: {
+            "Drop or Select files": "Drop or Select files",
+
             Monthly: "Monthly",
 
             "Next Shape": "Next Shape",
@@ -171,13 +173,18 @@ const resources = {
             Balconies: "Balconies",
             "Available only on View / Edit": "Available only on View / Edit",
 
-            "Default Sorting": "Default Sorting",
-            "Rising Price": "Rising Price",
-            "Falling Price": "Falling Price",
-            "Falling Area": "Falling Area",
-            "Rising Area": "Rising Area",
-            "Rising Popularity": "Rising Popularity",
-            "Falling Popularity": "Falling Popularity",
+            "Last update": "Last update",
+            "Last entry": "Last entry",
+            "Price (cheap first)": "Price (cheap first)",
+            "Price (expensive first)": "Price (expensive first)",
+            Registration: "Registration",
+            "Popular (highest first)": "Popular (highest first)",
+            "Date (new first)": "Date (new first)",
+            "Date (old first)": "Date (old first)",
+            "Area (highest first)": "Area (highest first)",
+            "Area (lowest first)": "Area (lowest first)",
+            "Land area (highest first)": "Land area (highest first)",
+            "Rating (highest first)": "Rating (highest first)",
 
             //Distances
 
@@ -415,6 +422,8 @@ const resources = {
             "Professional Use": "Professional Use",
             Renovation: "Renovation",
             "Agricultural Use": "Agricultural Use",
+
+            "Date of Entry": "Date of Entry",
 
             //Description
 
@@ -661,10 +670,16 @@ const resources = {
             "No location data available": "No location data available",
             "Please make sure this property has a location or try again later.":
                 "Please make sure this property has a location or try again later.",
+
+            _SubCategory: "Category",
         },
     },
     el: {
         translation: {
+            "Date of Entry": "Ημ/νία Καταχώρησης",
+
+            "Drop or Select files": "Ρίξτε ή Επιλέξτε αρχεία",
+
             "Download Photos": "Λήψη Εικόνων",
             "Please select between All or only Public photos":
                 "Παρακαλώ επιλέξτε μεταξύ Όλων ή μόνο Δημόσιων εικόνων",
@@ -888,11 +903,20 @@ const resources = {
             Neoclassical: "Νεοκλασικό",
             Preserved: "Διατηρητέο",
             "Floor Apartment": "Οροφοδιαμέρισμα",
-            "Default Sorting": "Προεπιλεγμενη Ταξινόμηση",
-            "Rising Price": "Αύξουσα Τιμή",
-            "Falling Price": "Φθίνουσα Τιμή",
-            "Falling Area": "Φθίνον Εμβαδόν",
-            "Rising Area": "Αύξον Εμβαδόν",
+            _SubCategory: "Κατηγορία",
+
+            "Last update": "Τελευταία αλλαγή",
+            "Last entry": "Τελευταία καταχώρηση",
+            "Price (cheap first)": "Τιμή (φθηνά πρώτα)",
+            "Price (expensive first)": "Τιμή (ακριβά πρώτα)",
+            Registration: "Καταχώρηση",
+            "Popular (highest first)": "Δημοφιλή (υψηλότερα πρώτα)",
+            "Date (new first)": "Χρονολογία (καινούργια πρώτα)",
+            "Date (old first)": "Χρονολογία (παλιά πρώτα)",
+            "Area (highest first)": "Εμβαδόν (υψηλότερο πρώτα)",
+            "Area (lowest first)": "Εμβαδόν (χαμηλότερο πρώτα)",
+            "Land area (highest first)": "Εμβαδόν οικοπέδου (υψηλότερο πρώτα)",
+            "Rating (highest first)": "Αξιολόγηση (υψηλή πρώτα)",
 
             // Tickets
             "Add section": "Προσθήκη Τμήματος",
