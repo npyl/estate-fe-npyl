@@ -40,8 +40,6 @@ export const publicDashboard = createApi({
                 `${localStorage.getItem("language") ?? "el"}`
             );
             headers.set("Time-Zone", timeZone);
-            console.log("Time-Zone:", timeZone); // Log the time zone to the console
-            console.log("Request Headers:", headers); // Log the headers to the console
 
             return headers;
         },
