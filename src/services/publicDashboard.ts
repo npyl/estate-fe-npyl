@@ -29,14 +29,18 @@ export const publicDashboard = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/public-dashboard`,
         prepareHeaders: (headers) => {
+            const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
             headers.set(
                 "Authorization",
-                `Bearer  ${localStorage.getItem("accessToken")}`
+                `Bearer ${localStorage.getItem("accessToken")}`
             );
             headers.set(
                 "Accept-Language",
                 `${localStorage.getItem("language") ?? "el"}`
             );
+            headers.set("Time-Zone", timeZone);
+
             return headers;
         },
     }),
