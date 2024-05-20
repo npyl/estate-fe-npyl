@@ -14,7 +14,7 @@ import { useDispatch } from "react-redux";
 import Iconify from "@/components/iconify";
 import { LoadingButton } from "@mui/lab";
 import { styled } from "@mui/material/styles";
-import { useDebounce } from "use-debounce";
+import Item from "./styled";
 
 // -------------------------------------------------------
 
@@ -142,14 +142,17 @@ const ListingCard = ({ label, value, onClick }: ListingCardProps) => {
     };
 
     return (
-        <Stack direction="row" minWidth="400px" justifyContent="space-between">
+        <Item>
             <Stack direction="row" spacing={1} alignItems="center">
                 {STATIC_DATA[label].icon}
-
                 <Typography>{STATIC_DATA[label].text}</Typography>
             </Stack>
 
-            <Stack direction="row" spacing={1} alignItems="center">
+            <Stack
+                direction={{ xs: "column", md: "row" }}
+                gap={1}
+                alignItems="center"
+            >
                 <LabeledSwitch
                     checked={value}
                     labelOn="Published"
@@ -175,7 +178,7 @@ const ListingCard = ({ label, value, onClick }: ListingCardProps) => {
                     />
                 ) : null}
             </Stack>
-        </Stack>
+        </Item>
     );
 };
 
