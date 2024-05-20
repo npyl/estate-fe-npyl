@@ -12,7 +12,7 @@ import {
 
 import { Grid, List } from "@mui/material";
 import { ListItem } from "src/components/List";
-import useGetCustomer from "src/hooks/customer/hook";
+import useGetCustomer from "@/hooks/customer";
 
 interface AreaOfPreferenceProps {
     index: number; // index of demand

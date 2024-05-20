@@ -7,66 +7,101 @@ import FerimmoIcon from "@/assets/ferimmo";
 import PlotGRIcon from "src/assets/plotgr";
 import XEIcon from "src/assets/xrysh_eukairia";
 import JamesEditionIcon from "@/assets/james_edition";
-import { useAddSpitogatosListingMutation } from "@/services/listings";
+import { spitogatosListing } from "@/services/listings";
+import { useMemo } from "react";
+import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+
+type LISTING_STATIC_DATUM = {
+    text: string;
+    icon: JSX.Element;
+    publish: any;
+    unpublish: any;
+};
+
+const getSTATIC_DATA = (
+    propertyId: number
+): Record<ListingTypes, LISTING_STATIC_DATUM> => ({
+    SPITOGATOS: {
+        icon: <SpitogatosSvg width={36} height={36} />,
+        text: "Spitogatos.gr",
+        publish:
+            spitogatosListing.endpoints.addSpitogatosListing.initiate(
+                propertyId
+            ),
+        unpublish:
+            spitogatosListing.endpoints.removeSpitogatosListing.initiate(
+                propertyId
+            ),
+    },
+    PLOT_GR: {
+        icon: <PlotGRIcon width={30} height={30} />,
+        text: "plot.gr",
+        publish: () => {},
+        unpublish: () => {},
+    },
+    JAMES_EDITION: {
+        icon: <JamesEditionIcon width={30} height={30} />,
+        text: "jamesedition.com",
+        publish: () => {},
+        unpublish: () => {},
+    },
+    XE: {
+        icon: <XEIcon width={30} height={30} />,
+        text: "xe.gr",
+        publish: () => {},
+        unpublish: () => {},
+    },
+    RIGHT_MOVE: {
+        icon: <RightMoveIcon width={30} height={30} />,
+        text: "rightmove.co.uk",
+        publish: () => {},
+        unpublish: () => {},
+    },
+    FERIMMO: {
+        icon: <FerimmoIcon width={30} height={30} />,
+        text: "ferimmo.de",
+        publish: () => {},
+        unpublish: () => {},
+    },
+});
 
 interface ListingCardProps {
     label: ListingTypes;
     value: boolean;
-    onClick: (label: ListingTypes, value: boolean) => void;
+    onClick: () => void;
 }
 
 const ListingCard = ({ label, value, onClick }: ListingCardProps) => {
-    const [publishSpitogatos] = useAddSpitogatosListingMutation();
+    const dispatch = useDispatch();
 
-    const icon =
-        label === "SPITOGATOS" ? (
-            <SpitogatosSvg width={36} height={36} />
-        ) : label === "PLOT_GR" ? (
-            <PlotGRIcon width={30} height={30} />
-        ) : label === "JAMES_EDITION" ? (
-            <JamesEditionIcon width={30} height={30} />
-        ) : label === "XE" ? (
-            <XEIcon width={30} height={30} />
-        ) : label === "RIGHT_MOVE" ? (
-            <RightMoveIcon />
-        ) : label === "FERIMMO" ? (
-            <FerimmoIcon width={30} height={30} />
-        ) : (
-            label
-        );
+    const router = useRouter();
+    const { propertyId } = router.query;
 
-    const text = (() => {
-        switch (label) {
-            case "SPITOGATOS":
-                return "Spitogatos.gr";
-            case "PLOT_GR":
-                return "plot.gr";
-            case "JAMES_EDITION":
-                return "jamesedition.com";
-            case "XE":
-                return "xe.gr";
-            case "RIGHT_MOVE":
-                return "rightmove.co.uk";
-            case "FERIMMO":
-                return "ferimmo.de";
-            default:
-                return null;
-        }
-    })();
+    const STATIC_DATA = useMemo(() => getSTATIC_DATA(+propertyId!), []);
+
+    const handleChange = async (_: any, b: boolean) => {
+        const d = STATIC_DATA[label];
+
+        if (b) await dispatch(d.unpublish());
+        else await dispatch(d.publish());
+
+        onClick();
+    };
 
     return (
         <Stack direction="row" minWidth="400px" justifyContent="space-between">
             <Stack direction="row" spacing={1} alignItems="center">
-                {icon}
+                {STATIC_DATA[label].icon}
 
-                <Typography>{text}</Typography>
+                <Typography>{STATIC_DATA[label].text}</Typography>
             </Stack>
 
             <LabeledSwitch
                 checked={value}
                 labelOn="Published"
                 labelOff="Unpublished"
-                onChange={() => onClick(label, value)}
+                onChange={handleChange}
                 name="checkedA"
             />
         </Stack>

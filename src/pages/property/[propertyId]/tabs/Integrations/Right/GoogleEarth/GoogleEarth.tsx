@@ -2,7 +2,7 @@ import { useCallback, useMemo } from "react";
 import { useAddGoogleEarthMutation } from "src/services/properties";
 import useUploadFile from "./hook";
 import Upload from "./Upload";
-import { useGetProperty } from "src/hooks/property/hook";
+import { useGetProperty } from "@/hooks/property";
 
 const KML_CONTENT_TYPE = "application/vnd.google-earth.kml+xml";
 const KMZ_CONTENT_TYPE = "application/vnd.google-earth.kmz";

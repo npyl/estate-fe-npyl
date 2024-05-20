@@ -1,34 +1,20 @@
 import { Box, Paper, Stack, Typography } from "@mui/material";
-import { useRouter } from "next/router";
-import { useCallback, useMemo } from "react";
+import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import {
     useAddPublicListingMutation,
     useRemovePublicListingMutation,
 } from "src/services/listings";
-import {
-    properties,
-    useGetPropertyListingsQuery,
-} from "src/services/properties";
+import { properties } from "src/services/properties";
 import GoogleEarth from "./GoogleEarth";
 import PublicCard from "./PublicCard";
 import ListingCard from "./ListingCard";
+import usePropertyListings from "@/hooks/listings";
 
 const Right = () => {
     const dispatch = useDispatch();
 
-    const router = useRouter();
-    const { propertyId } = router.query;
-
-    const { data: listings } = useGetPropertyListingsQuery(+propertyId!);
-
-    const { publicListings, restListings } = useMemo(
-        () => ({
-            publicListings: listings?.publicSites || [],
-            restListings: listings?.integrations || [],
-        }),
-        [listings]
-    );
+    const { publicListings, restListings, propertyId } = usePropertyListings();
 
     const invalidateTags = useCallback(
         () =>
@@ -49,10 +35,14 @@ const Right = () => {
     }, []);
 
     return (
-        <Paper elevation={10} component={Stack} p={2} alignItems="center">
-            <Typography variant="h4" mt={10} mb={5}>
-                Websites to publish to:
-            </Typography>
+        <Paper
+            elevation={10}
+            component={Stack}
+            p={2}
+            alignItems="center"
+            mt={10}
+        >
+            <Typography variant="h4">Websites to publish to:</Typography>
 
             {publicListings?.map(
                 ({ publicSite: { id, siteUrl }, published }) => (

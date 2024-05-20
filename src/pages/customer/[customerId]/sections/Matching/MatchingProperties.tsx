@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useLoadApi } from "src/components/Map";
 import { ShapeData } from "src/components/Map/types";
 import { decodeShape, isPointInsideShapeData } from "src/components/Map/util";
-import useGetCustomer from "src/hooks/customer/hook";
+import useGetCustomer from "@/hooks/customer";
 import { useSuggestForCustomerQuery } from "src/services/properties";
 import { IProperties } from "src/types/properties";
 import Placeholder from "./Placeholder";

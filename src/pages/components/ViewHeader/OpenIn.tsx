@@ -4,10 +4,11 @@ import { useTranslation } from "react-i18next";
 import SpitogatosSvg from "src/assets/SpitogatosSvg";
 import { PublicSvg } from "src/assets/PublicSvg";
 import GoogleEarthSvg from "src/assets/GoogleEarth";
-import { useGetProperty } from "src/hooks/property/hook";
+import { useGetProperty } from "@/hooks/property";
 import { styled } from "@mui/material/styles";
 import { getBorderColor2 } from "@/theme/borderColor";
 import React from "react";
+import usePropertyListings from "@/hooks/listings";
 
 const CustomStack = styled(Stack)(({ theme }) => ({
     border: "1px solid",
@@ -21,20 +22,26 @@ const OpenIn = () => {
     const { t } = useTranslation();
 
     const { property } = useGetProperty();
-    const { hasPublic, hasSpitogato, hasGoogleEarth } = useMemo(
-        () => ({
-            hasPublic: property?.listings?.PUBLIC_SITE || false,
-            hasSpitogato: property?.listings?.SPITOGATOS || false,
+    const { publicListings, restListings } = usePropertyListings();
+
+    const { hasPublic, hasSpitogato, hasGoogleEarth } = useMemo(() => {
+        const hasPublic = publicListings.find(
+            ({ integrationSite }) => integrationSite === ("PUBLIC_SITE" as any)
+        )?.published;
+
+        const hasSpitogato = restListings.find(
+            ({ integrationSite }) => integrationSite === "SPITOGATOS"
+        )?.published;
+
+        return {
+            hasPublic,
+            hasSpitogato,
             hasGoogleEarth: !!property?.googleEarth,
-        }),
-        [property]
-    );
+        };
+    }, [publicListings, restListings, property?.googleEarth]);
 
     // Hide this component if we have nothing...
-    const hasNothing = useMemo(
-        () => !hasPublic && !hasSpitogato && !hasGoogleEarth,
-        [hasPublic, hasSpitogato, hasGoogleEarth]
-    );
+    const hasNothing = !hasPublic && !hasSpitogato && !hasGoogleEarth;
 
     const openPublic = useCallback(
         () =>
@@ -52,7 +59,9 @@ const OpenIn = () => {
         [property?.googleEarth?.url]
     );
 
-    return hasNothing ? null : (
+    if (hasNothing) return null;
+
+    return (
         <CustomStack flexDirection="row" gap={0.5} alignItems="center">
             <Typography>{t("Open in")}</Typography>
             {hasPublic ? (
