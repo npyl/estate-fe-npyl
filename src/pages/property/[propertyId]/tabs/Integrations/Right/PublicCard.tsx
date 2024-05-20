@@ -2,7 +2,7 @@ import { PublicSvg } from "@/assets/PublicSvg";
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import { LabeledSwitch } from "../../components/Switch";
+import { LabeledSwitch } from "./Switch";
 
 interface PublicCardProps {
     label: string;

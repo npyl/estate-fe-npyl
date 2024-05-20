@@ -1,11 +1,11 @@
-export const SpitogatosSvg: React.FC = () => (
+import { createSvgIcon } from "@mui/material/utils";
+
+const SpitogatosSvg = createSvgIcon(
     <svg
         version="1.1"
         id="_x32_"
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
-        width="36px"
-        height="36px"
         fill="orange"
         viewBox="0 0 512 512"
         xmlSpace="preserve"
@@ -21,5 +21,8 @@ export const SpitogatosSvg: React.FC = () => (
             C472.219,344.094,479.219,322.922,481.875,299.344z"
             />
         </g>
-    </svg>
+    </svg>,
+    "SpitogatosIcon"
 );
+
+export default SpitogatosSvg;

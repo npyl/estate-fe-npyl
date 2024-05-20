@@ -1,7 +1,7 @@
 import { IconButton, Stack, Typography } from "@mui/material";
 import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import { SpitogatosSvg } from "src/assets/SpitogatosSvg";
+import SpitogatosSvg from "src/assets/SpitogatosSvg";
 import { PublicSvg } from "src/assets/PublicSvg";
 import GoogleEarthSvg from "src/assets/GoogleEarth";
 import { useGetProperty } from "src/hooks/property/hook";

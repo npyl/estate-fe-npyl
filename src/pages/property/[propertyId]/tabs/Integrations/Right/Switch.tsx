@@ -1,4 +1,3 @@
-import getBorderColor from "@/theme/borderColor";
 import { Switch, SwitchProps } from "@mui/material";
 import { styled } from "@mui/material/styles";
 interface LabeledSwitchProps extends SwitchProps {
