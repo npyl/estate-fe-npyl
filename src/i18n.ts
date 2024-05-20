@@ -677,6 +677,13 @@ const resources = {
             "Upload Google Earth": "Upload Google Earth",
             _Public_FEMALE_PLURAL: "Public",
             "Rest Integrations": "Rest Integrations",
+
+            "Location Details": "Location Details",
+            "Select which information will be visible to the user on Search result pages:":
+                "Select which information will be visible to the user on Search result pages:",
+            "Location not visible": "Location not visible",
+            "General location (circle)": "General location (circle)",
+            "Exact location (pin)": "Exact location (pin)",
         },
     },
     el: {
@@ -685,6 +692,13 @@ const resources = {
             "Upload Google Earth": "Ανέβασμα Google Earth",
             _Public_FEMALE_PLURAL: "Δημόσιες",
             "Rest Integrations": "Λοιπές Συνδέσεις",
+
+            "Location Details": "Λεπτομέρεις Τοποθεσίας",
+            "Select which information will be visible to the user on Search result pages:":
+                "Επιλέξτε τι πληροφορία θα είναι φανερή στο χρήστη κατά την αναζήτηση",
+            "Location not visible": "Μη-εμφανής τοποθεσία",
+            "General location (circle)": "Γενική τοποθεσία (ακτίνα)",
+            "Exact location (pin)": "Ακριβής τοποθεσία (πινέζα)",
 
             "Date of Entry": "Ημ/νία Καταχώρησης",
 

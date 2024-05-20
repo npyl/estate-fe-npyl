@@ -5,10 +5,12 @@ import {
     Paper,
     Radio,
     RadioGroup,
+    Stack,
     Typography,
 } from "@mui/material";
 import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
     useEditLocationDisplayMutation,
     useGetPropertyByIdQuery,
@@ -16,6 +18,8 @@ import {
 import { LocationDisplay } from "src/types/enums";
 
 const Left = () => {
+    const { t } = useTranslation();
+
     const router = useRouter();
     const { propertyId } = router.query;
 
@@ -41,30 +45,21 @@ const Left = () => {
     return (
         <Paper
             elevation={10}
-            sx={{
-                padding: 2,
-                width: "100%",
-                height: "100%",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-            }}
+            component={Stack}
+            p={2}
+            px={4}
+            alignItems="center"
         >
-            <Typography
-                variant="h4"
-                mt={10}
-                mb={10}
-                sx={{ textAlign: "center" }}
-            >
-                Location Details
+            <Typography variant="h4" mt={10} mb={10} textAlign="center">
+                {t("Location Details")}
             </Typography>
             <Typography variant="body1" mb={5} sx={{ textAlign: "center" }}>
-                Select which information will be visible to the user on Search
-                result pages:
+                {t(
+                    "Select which information will be visible to the user on Search result pages:"
+                )}
             </Typography>
             <FormControl component="fieldset">
                 <RadioGroup
-                    aria-label="location"
                     defaultValue={defaultValue}
                     name="radio-buttons-group"
                     onChange={(_, v) =>
@@ -74,17 +69,17 @@ const Left = () => {
                     <FormControlLabel
                         value={LocationDisplay.NOT_VISIBLE}
                         control={<Radio />}
-                        label="Location not visible"
+                        label={t("Location not visible")}
                     />
                     <FormControlLabel
                         value={LocationDisplay.GENERAL}
                         control={<Radio />}
-                        label="General location (circle)"
+                        label={t("General location (circle)")}
                     />
                     <FormControlLabel
                         value={LocationDisplay.EXACT}
                         control={<Radio />}
-                        label="Exact location (pin)"
+                        label={t("Exact location (pin)")}
                     />
                 </RadioGroup>
             </FormControl>
@@ -94,7 +89,7 @@ const Left = () => {
                     sx={{ marginTop: 5 }}
                     onClick={handleUpdate}
                 >
-                    Update
+                    {t("Update")}
                 </Button>
             )}
         </Paper>
