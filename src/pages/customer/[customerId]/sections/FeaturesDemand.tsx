@@ -2,7 +2,7 @@ import { Box, Divider, Grid, Paper, Typography } from "@mui/material";
 import React, { FC } from "react";
 import { useTranslation } from "react-i18next";
 import { List, ListBooleanItem } from "src/components/List";
-import useGetCustomer from "src/hooks/customer/hook";
+import useGetCustomer from "@/hooks/customer";
 import { ParentCategory } from "src/types/demand";
 
 interface FeaturesProps {

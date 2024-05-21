@@ -1,18 +1,10 @@
 import React from "react";
+import Image, { ImageProps } from "next/image";
 
 const ferimmo = "/static/ferimmo.jpg";
 
-const FerimmoIcon = () => {
-    return (
-        <div>
-            <img
-                src={ferimmo}
-                alt="James Edition"
-                width="100px"
-                height="100px"
-            />
-        </div>
-    );
-};
+const FerimmoIcon: React.FC<Omit<ImageProps, "src" | "alt">> = (props) => (
+    <Image {...props} src={ferimmo} alt="James Edition" />
+);
 
 export default FerimmoIcon;

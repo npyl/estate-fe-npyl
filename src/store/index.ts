@@ -9,7 +9,7 @@ import type { ThunkAction } from "redux-thunk";
 import { exports } from "src/services/exports";
 import { global } from "src/services/global";
 import { labels } from "src/services/labels";
-import { listings } from "src/services/listings";
+import { publicListing, spitogatosListing } from "src/services/listings";
 import { logs } from "src/services/logs";
 import { note } from "src/services/note";
 import { notification } from "src/services/notification";
@@ -51,9 +51,12 @@ export const createStore = (
                 exports.middleware,
                 tickets.middleware,
                 logs.middleware,
-                listings.middleware,
                 dashboard.middleware,
                 publicDashboard.middleware,
+                // listings
+                publicListing.middleware,
+                spitogatosListing.middleware,
+                // ...
                 rtkQueryErrorLogger
             ),
         ...options,

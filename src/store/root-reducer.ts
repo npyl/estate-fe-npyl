@@ -2,7 +2,7 @@ import { combineReducers } from "@reduxjs/toolkit";
 
 import { dashboard } from "src/services/dashboard";
 import { labels } from "src/services/labels";
-import { listings } from "src/services/listings";
+import { publicListing, spitogatosListing } from "src/services/listings";
 import { logs } from "src/services/logs";
 import { note } from "src/services/note";
 import { notification } from "src/services/notification";
@@ -37,9 +37,11 @@ export const rootReducer = combineReducers({
     [exports.reducerPath]: exports.reducer,
     [tickets.reducerPath]: tickets.reducer,
     [logs.reducerPath]: logs.reducer,
-    [listings.reducerPath]: listings.reducer,
     [dashboard.reducerPath]: dashboard.reducer,
     [publicDashboard.reducerPath]: publicDashboard.reducer,
+    // Listings
+    [publicListing.reducerPath]: publicListing.reducer,
+    [spitogatosListing.reducerPath]: spitogatosListing.reducer,
 
     // property
     filters: filtersReducer,

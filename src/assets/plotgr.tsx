@@ -1,13 +1,10 @@
 import React from "react";
+import Image, { ImageProps } from "next/image";
 
 const plotImage = "/static/plotgr.jpg";
 
-const PlotGRIcon = () => {
-    return (
-        <div>
-            <img src={plotImage} alt="Plot.gr" width="100px" height="100px" />
-        </div>
-    );
-};
+const PlotGRIcon: React.FC<Omit<ImageProps, "src" | "alt">> = (props) => (
+    <Image {...props} src={plotImage} alt="Plot.gr" />
+);
 
 export default PlotGRIcon;

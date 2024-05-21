@@ -2,7 +2,7 @@ import { Box, Divider, Paper, Typography } from "@mui/material";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { ViewLocation } from "src/components/Location/View";
-import useGetCustomer from "src/hooks/customer/hook";
+import useGetCustomer from "@/hooks/customer";
 
 const AddressSection: React.FC = () => {
     const { t } = useTranslation();

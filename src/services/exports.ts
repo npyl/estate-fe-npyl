@@ -80,6 +80,13 @@ export const exports = createApi({
                 return {
                     url: `export/${propertyId}?${queryParams}`,
                     method: "GET",
+                    headers: {
+                        "Accept-Language": `${
+                            (localStorage.getItem("language") === "gr"
+                                ? "el"
+                                : "en") ?? "el"
+                        }`,
+                    },
                 };
             },
         }),
