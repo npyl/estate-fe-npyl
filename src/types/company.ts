@@ -7,6 +7,7 @@ export interface ICompany {
     email: string;
     facebook: string;
     fixedTelephones: string[];
+    faxNumber: string;
     googlePlus: string;
     includeWatermark: boolean;
     instagram: string;
