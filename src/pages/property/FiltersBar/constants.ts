@@ -52,7 +52,7 @@ export const getOptions = (t: TranslationType): TSortByOptions => [
         label: t("Date (new first)"),
         sorting: {
             sortBy: "yearOfConstruction",
-            direction: "ASC",
+            direction: "DESC",
         },
         icon: "mdi:clock-outline",
     },
@@ -61,7 +61,7 @@ export const getOptions = (t: TranslationType): TSortByOptions => [
         label: t("Date (old first)"),
         sorting: {
             sortBy: "yearOfConstruction",
-            direction: "DESC",
+            direction: "ASC",
         },
         icon: "mdi:clock-outline",
     },
