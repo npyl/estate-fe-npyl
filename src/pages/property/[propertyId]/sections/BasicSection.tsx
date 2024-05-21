@@ -1,6 +1,6 @@
 import { Button, Divider, Grid, List, Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
-import { FC, useState } from "react";
+import { FC } from "react";
 import {
     ListBooleanItem,
     ListItem,
@@ -23,6 +23,7 @@ interface BasicDetailItemProps {
 
 const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
     RESIDENTIAL: [
+        "Visitors",
         "ParentCategory",
         "Category",
         "Area",
@@ -48,6 +49,7 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Exclusive",
     ],
     COMMERCIAL: [
+        "Visitors",
         "ParentCategory",
         "Category",
         "Area",
@@ -73,6 +75,7 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Exclusive",
     ],
     LAND: [
+        "Visitors",
         "ParentCategory",
         "Category",
         "Area",
@@ -97,6 +100,7 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Exclusive",
     ],
     OTHER: [
+        "Visitors",
         "ParentCategory",
         "Category",
         "Area",
@@ -158,6 +162,13 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
     };
     const BasicDetailItem: FC<BasicDetailItemProps> = ({ field }) => {
         switch (field) {
+            case "Visitors":
+                return (
+                    <ListItem
+                        label={t("Visitors")}
+                        value={data?.visitors ?? "-"}
+                    />
+                );
             case "ParentCategory":
                 return (
                     <ListItem

@@ -5,7 +5,7 @@ const PUBLIC_SITE_ID = 1;
 export const publicListing = createApi({
     reducerPath: "publicListing",
     baseQuery: fetchBaseQuery({
-        baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/property`,
+        baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/listings/public`,
         prepareHeaders: (headers) => {
             // By default, if we have a token in the store, let's use that for authenticated requests
 
@@ -26,13 +26,13 @@ export const publicListing = createApi({
     endpoints: (builder) => ({
         addPublicListing: builder.mutation<void, number>({
             query: (propertyId: number) => ({
-                url: `/public/addListing/${propertyId}?publicSiteId=${PUBLIC_SITE_ID}`,
+                url: `addListing/${propertyId}?publicSiteId=${PUBLIC_SITE_ID}`,
                 method: "POST",
             }),
         }),
         removePublicListing: builder.mutation<void, number>({
             query: (propertyId: number) => ({
-                url: `/public/removeListing/${propertyId}?publicSiteId=${PUBLIC_SITE_ID}`,
+                url: `removeListing/${propertyId}?publicSiteId=${PUBLIC_SITE_ID}`,
                 method: "DELETE",
             }),
         }),

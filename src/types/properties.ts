@@ -355,6 +355,8 @@ export interface IProperties {
     labels: ILabel[];
 
     googleEarth: IGoogleEarth;
+
+    visitors: number;
 }
 
 export type ParentCategory = "RESIDENTIAL" | "COMMERCIAL" | "LAND" | "OTHER";
