@@ -180,6 +180,10 @@ export default function StackedAreas() {
             : date.toLocaleDateString();
     };
 
+    const formatYAxis = (tickItem: number) => {
+        return tickItem > 999 ? `${tickItem / 1000}k` : tickItem.toString();
+    };
+
     const belowSm = useResponsive("down", "sm");
     const belowMd = useResponsive("down", "md");
 
@@ -293,22 +297,35 @@ export default function StackedAreas() {
                 </Stack>
             )}
 
-            <ResponsiveContainer width="99%" height={300}>
-                <AreaChart
-                    data={chartData}
-                    margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                >
+            <ResponsiveContainer width="100%" height={300}>
+                <AreaChart data={chartData} margin={{ left: 30, right: 30 }}>
                     <CartesianGrid vertical={false} />
-                    <XAxis dataKey="date" tickFormatter={formatDateTick} />
+                    <XAxis
+                        dataKey="date"
+                        tickFormatter={formatDateTick}
+                        padding={{ left: 30, right: 30 }}
+                    />
                     {category && parentCategory ? (
                         <>
-                            <YAxis dataKey="parentCategory" width={20} />
+                            <YAxis
+                                dataKey="parentCategory"
+                                width={20}
+                                tickFormatter={formatYAxis}
+                            />
                             <YAxis dataKey="category" width={20} />
                         </>
                     ) : !category && !parentCategory ? (
-                        <YAxis dataKey="All" width={20} />
+                        <YAxis
+                            dataKey="All"
+                            width={20}
+                            tickFormatter={formatYAxis}
+                        />
                     ) : !category && parentCategory ? (
-                        <YAxis dataKey="parentCategory" width={20} />
+                        <YAxis
+                            dataKey="parentCategory"
+                            width={20}
+                            tickFormatter={formatYAxis}
+                        />
                     ) : null}
                     <Tooltip content={renderTooltipContent} />
                     <Legend

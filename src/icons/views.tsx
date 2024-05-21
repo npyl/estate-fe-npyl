@@ -10,7 +10,7 @@ export function ViewsIcon(props: SVGProps<SVGSVGElement>) {
             viewBox="0 -3 25 25"
             {...props}
         >
-            <g fill="none" stroke="currentColor" strokeWidth={2}>
+            <g fill="none" stroke="#ffffff" strokeWidth={1.5}>
                 <circle cx={12} cy={12} r={3}></circle>
                 <path d="M21 12s-1-8-9-8s-9 8-9 8"></path>
             </g>
