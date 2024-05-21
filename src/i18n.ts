@@ -684,10 +684,14 @@ const resources = {
             "Location not visible": "Location not visible",
             "General location (circle)": "General location (circle)",
             "Exact location (pin)": "Exact location (pin)",
+
+            Visitors: "Visitors",
         },
     },
     el: {
         translation: {
+            Visitors: "Επισκέπτες",
+
             "Websites to publish to:": "Ιστοσελίδες προς δημοσίευση:",
             "Upload Google Earth": "Ανέβασμα Google Earth",
             _Public_FEMALE_PLURAL: "Δημόσιες",

@@ -47,12 +47,11 @@ export const getOptions = (t: TranslationType): TSortByOptions => [
         },
         icon: "teenyicons:star-outline",
     },
-    // TODO: ...
     {
         value: "DATE_NEW_FIRST",
         label: t("Date (new first)"),
         sorting: {
-            sortBy: "area",
+            sortBy: "yearOfConstruction",
             direction: "ASC",
         },
         icon: "mdi:clock-outline",
@@ -61,7 +60,7 @@ export const getOptions = (t: TranslationType): TSortByOptions => [
         value: "DATE_OLD_FIRST",
         label: t("Date (old first)"),
         sorting: {
-            sortBy: "area",
+            sortBy: "yearOfConstruction",
             direction: "DESC",
         },
         icon: "mdi:clock-outline",
