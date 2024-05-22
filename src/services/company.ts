@@ -1,4 +1,4 @@
-import { IIntegration, IIntegrationsPOST } from "@/types/integrations";
+import { IIntegration, IIntegrationPOST } from "@/types/integrations";
 import { ListingTypes } from "@/types/listings";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { ICompany, ICompanyPOST } from "src/types/company";
@@ -31,13 +31,14 @@ export const company = createApi({
             }),
             invalidatesTags: ["Company"],
         }),
+
         getIntegrations: builder.query<IIntegration, ListingTypes>({
             query: (site) => ({
                 url: "/integration-credentials",
                 params: { site },
             }),
         }),
-        updateIntegrations: builder.mutation<void, IIntegrationsPOST>({
+        updateIntegrations: builder.mutation<void, IIntegrationPOST>({
             query: (body) => ({
                 url: "/integration-credentials",
                 method: "POST",

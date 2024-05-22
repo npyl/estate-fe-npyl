@@ -8,9 +8,10 @@ import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import { SecurityProvider } from "src/contexts/security";
 import { useTabsContext } from "src/contexts/tabs";
 import { useProfileQuery } from "src/services/user";
-import CompanyInformation from "./Company";
-import Integrations from "./Integrations";
 import TabPanel from "@/components/Tabs";
+// ...
+import CompanyInformation from "./(Company)";
+import Integrations from "./(Integrations)";
 
 const Profile: NextPage = () => {
     const { t } = useTranslation();

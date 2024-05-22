@@ -1,23 +1,22 @@
 export interface ICompany {
+    companyName: string;
     address: string;
     city: string;
-    website: string;
-    companyName: string;
-    description: string;
     email: string;
     fixedTelephones: string[];
-    faxNumber: string;
-    includeWatermark: boolean;
     phoneNumbers: string[];
+    description: string;
 
-    googlePlus: string;
     facebook: string;
+    googlePlus: string;
     instagram: string;
     linkedIn: string;
     skype: string;
     tiktok: string;
     twitter: string;
     youtube: string;
+
+    includeWatermark: boolean;
 
     watermarkPosition:
         | "CENTER"

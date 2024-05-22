@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { Box, Typography, Button, Grid, Paper, Divider } from "@mui/material";
+import { Typography, Grid, Paper, Divider } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import EditDialog from "./EditDialog";
 import { useGetIntegrationsQuery } from "src/services/company";
 import { IIntegration } from "src/types/integrations";
 import { List, ListItem } from "src/components/List";
+import { SoftButton } from "@/components/SoftButton";
+import { SpaceBetween } from "@/components/styled";
 
 const Integrations: React.FC = () => {
     const { t } = useTranslation();
@@ -24,20 +26,25 @@ const Integrations: React.FC = () => {
     }
 
     return (
-        <Box p={3}>
-            <Typography variant="h6">{t("Integrations")}</Typography>
-            <Paper key={integration?.site} elevation={10} sx={{ p: 3, mb: 3 }}>
-                <Box display="flex" justifyContent="space-between" mb={2}>
+        <>
+            <Paper elevation={10}>
+                <SpaceBetween
+                    sx={{
+                        px: 2,
+                        py: 1.5,
+                        alignItems: "center",
+                    }}
+                >
                     <Typography variant="h6">
                         {t(`${integration?.site} Integration`)}
                     </Typography>
-                    <Button
+                    <SoftButton
                         variant="contained"
                         onClick={() => setSelectedIntegration(integration)}
                     >
                         {t("Edit")}
-                    </Button>
-                </Box>
+                    </SoftButton>
+                </SpaceBetween>
                 <Divider />
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={6}>
@@ -70,7 +77,7 @@ const Integrations: React.FC = () => {
                     initialValues={selectedIntegration}
                 />
             ) : null}
-        </Box>
+        </>
     );
 };
 

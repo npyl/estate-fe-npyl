@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import {
     Button,
@@ -16,24 +16,28 @@ import { RHFTextField } from "@/components/hook-form";
 import { useUpdateIntegrationsMutation } from "@/services/company";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+import { TranslationType } from "@/types/translation";
 
-interface FormProps {
-    open: boolean;
-    onClose: () => void;
-    initialValues: IIntegration;
-}
-
-const EditDialog: React.FC<FormProps> = ({ open, onClose, initialValues }) => {
-    const { t } = useTranslation();
-
-    // Define Yup validation schema with type casting
-    const validationSchema = Yup.object().shape({
+const getSchema = (t: TranslationType) =>
+    Yup.object().shape({
         apiKey: Yup.string().required(t<string>("API Key is required")),
         appKey: Yup.string().required(t<string>("App Key is required")),
         username: Yup.string().required(t<string>("Username is required")),
         password: Yup.string().required(t<string>("Password is required")),
         site: Yup.string().required(t<string>("Site is required")),
     });
+
+interface FormProps {
+    open: boolean;
+    onClose: () => void;
+    initialValues?: IIntegration;
+}
+
+const EditDialog: React.FC<FormProps> = ({ open, onClose, initialValues }) => {
+    const { t } = useTranslation();
+
+    // Define Yup validation schema with type casting
+    const validationSchema = useMemo(() => getSchema(t), [t]);
 
     const methods = useForm<IIntegrationPOST>({
         defaultValues: initialValues,

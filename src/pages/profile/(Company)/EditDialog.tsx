@@ -1,4 +1,4 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useMemo } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
@@ -15,25 +15,23 @@ import {
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { ICompany, ICompanyPOST } from "src/types/company";
-import { RHFTextField, RHFTextFieldMultiline } from "@/components/hook-form";
+import {
+    RHFCheckbox,
+    RHFSelect,
+    RHFTextField,
+    RHFTextFieldMultiline,
+} from "@/components/hook-form";
 import { useUpdateCompanyDetailsMutation } from "@/services/company";
 import { LoadingButton } from "@mui/lab";
+import { TranslationType } from "@/types/translation";
+import Multiple from "./Multiple";
 
 const DialogForm = forwardRef<HTMLFormElement>((props, ref) => (
     <form ref={ref} {...props} method="POST" />
 ));
 
-interface FormProps {
-    open: boolean;
-    onClose: () => void;
-    initialValues: ICompany;
-}
-
-const EditDialog: React.FC<FormProps> = ({ open, onClose, initialValues }) => {
-    const { t } = useTranslation();
-
-    // Define Yup validation schema
-    const validationSchema = Yup.object().shape({
+const getSchema = (t: TranslationType) =>
+    Yup.object().shape({
         companyName: Yup.string().required(
             t<string>("Company Name is required")
         ),
@@ -43,15 +41,11 @@ const EditDialog: React.FC<FormProps> = ({ open, onClose, initialValues }) => {
             .email(t<string>("Email is invalid"))
             .required(t<string>("Email is required")),
         fixedTelephones: Yup.array()
-            .of(Yup.string().required(t<string>("Fixed Telephone is required")))
+            .of(Yup.string())
             .required(t<string>("Fixed Telephones are required")),
         phoneNumbers: Yup.array()
-            .of(Yup.string().required(t<string>("Phone Number is required")))
+            .of(Yup.string())
             .required(t<string>("Phone Numbers are required")),
-        faxNumber: Yup.string().required(t<string>("Fax Number is required")),
-        website: Yup.string()
-            .url(t<string>("Website is invalid"))
-            .required(t<string>("Website is required")),
         description: Yup.string().required(
             t<string>("Description is required")
         ),
@@ -76,6 +70,7 @@ const EditDialog: React.FC<FormProps> = ({ open, onClose, initialValues }) => {
         googlePlus: Yup.string()
             .url(t<string>("Google+ is invalid"))
             .notRequired(),
+        includeWatermark: Yup.boolean().notRequired(),
 
         watermarkPosition: Yup.string()
             .oneOf(
@@ -91,21 +86,30 @@ const EditDialog: React.FC<FormProps> = ({ open, onClose, initialValues }) => {
                 t<string>("Invalid watermark position")
             )
             .required(t<string>("Watermark Position is required")),
-
-        includeWatermark: Yup.boolean().notRequired(),
     });
+
+interface FormProps {
+    open: boolean;
+    onClose: () => void;
+    initialValues?: ICompany;
+}
+
+const EditDialog: React.FC<FormProps> = ({ open, onClose, initialValues }) => {
+    const { t } = useTranslation();
+
+    const validationSchema = useMemo(() => getSchema(t), [t]);
 
     const methods = useForm<ICompanyPOST>({
         defaultValues: initialValues,
-        resolver: yupResolver(validationSchema) as any, // TODO;: fixs
+        resolver: yupResolver(validationSchema) as any,
     });
+
+    console.log("errors: ", methods.formState.errors);
 
     const [updateCompanyDetails, { isLoading }] =
         useUpdateCompanyDetailsMutation();
 
     const onSubmit = async (data: ICompanyPOST) => {
-        console.log("data:", data);
-
         try {
             await updateCompanyDetails(data).unwrap();
             onClose();
@@ -151,29 +155,14 @@ const EditDialog: React.FC<FormProps> = ({ open, onClose, initialValues }) => {
                                 name="email"
                                 margin="normal"
                             />
-                            <RHFTextField
-                                fullWidth
-                                label={t("Fixed Telephone")}
-                                name="fixedTelephones[0]"
-                                margin="normal"
+
+                            <Multiple
+                                label={t("Fixed Telephone(s)")}
+                                name="fixedTelephones"
                             />
-                            <RHFTextField
-                                fullWidth
-                                label={t("Phone Number")}
-                                name="phoneNumbers[0]"
-                                margin="normal"
-                            />
-                            <RHFTextField
-                                fullWidth
-                                label={t("Fax Number")}
-                                name="faxNumber"
-                                margin="normal"
-                            />
-                            <RHFTextField
-                                fullWidth
-                                label={t("Website")}
-                                name="website"
-                                margin="normal"
+                            <Multiple
+                                label={t("Phone Number(s)")}
+                                name="phoneNumbers"
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -233,22 +222,16 @@ const EditDialog: React.FC<FormProps> = ({ open, onClose, initialValues }) => {
                                 name="googlePlus"
                                 margin="normal"
                             />
-                            <FormControlLabel
-                                control={
-                                    <Checkbox
-                                        {...methods.register(
-                                            "includeWatermark"
-                                        )}
-                                    />
-                                }
+
+                            <RHFCheckbox
+                                name="includeWatermark"
                                 label={t("Include Watermarks")}
                             />
-                            <RHFTextField
+
+                            <RHFSelect
                                 fullWidth
-                                select
                                 label={t("Position of Watermark")}
                                 name="watermarkPosition"
-                                margin="normal"
                             >
                                 <MenuItem value="CENTER">
                                     {t("Center")}
@@ -271,7 +254,7 @@ const EditDialog: React.FC<FormProps> = ({ open, onClose, initialValues }) => {
                                 <MenuItem value="UP_LEFT">
                                     {t("Up and left")}
                                 </MenuItem>
-                            </RHFTextField>
+                            </RHFSelect>
                         </Grid>
                     </Grid>
                 </DialogContent>

@@ -1,29 +1,17 @@
 import React from "react";
-import {
-    Avatar,
-    Box,
-    Divider,
-    Grid,
-    Paper,
-    Stack,
-    Typography,
-    Button,
-} from "@mui/material";
+import { Divider, Grid, Paper, Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useGetCompanyDetailsQuery } from "src/services/company";
 import useDialog from "@/hooks/useDialog";
 import EditDialog from "./EditDialog";
-import { List, ListItem } from "src/components/List";
-import { Label } from "@/components/Label";
+import { List, ListBooleanItem, ListItem } from "src/components/List";
+import { SpaceBetween } from "@/components/styled";
+import { SoftButton } from "@/components/SoftButton";
 
 const CompanyInformation: React.FC = () => {
     const { t } = useTranslation();
-    const {
-        data: companyDetails,
-        isLoading,
-        isError,
-        error,
-    } = useGetCompanyDetailsQuery();
+
+    const { data: companyDetails, isLoading } = useGetCompanyDetailsQuery();
 
     const [isDialogOpen, openDialog, closeDialog] = useDialog();
 
@@ -31,22 +19,22 @@ const CompanyInformation: React.FC = () => {
         return <Typography>{t("Loading...")}</Typography>;
     }
 
-    if (isError) {
-        return <Typography>{t("Failed to load company details")}</Typography>;
-    }
-
     return (
-        <Paper elevation={10} sx={{ p: 3 }}>
-            <Box display="flex" justifyContent="space-between" mb={2}>
+        <Paper elevation={10}>
+            <SpaceBetween
+                sx={{
+                    px: 2,
+                    py: 1.5,
+                    alignItems: "center",
+                }}
+            >
                 <Typography variant="h6">{t("Company Information")}</Typography>
-                <Button variant="contained" onClick={openDialog}>
+                <SoftButton variant="contained" onClick={openDialog}>
                     {t("Edit")}
-                </Button>
-            </Box>
+                </SoftButton>
+            </SpaceBetween>
             <Divider />
-
-            <Divider />
-            <Grid container spacing={2}>
+            <Grid container>
                 <Grid item xs={12} sm={6}>
                     <List>
                         <ListItem
@@ -70,26 +58,22 @@ const CompanyInformation: React.FC = () => {
                 <Grid item xs={12} sm={6}>
                     <List>
                         <ListItem
-                            label={t("Fixed Telephone")}
-                            value={companyDetails?.fixedTelephones[0] || ""}
+                            label={t("Fixed Telephone(s)")}
+                            value={
+                                companyDetails?.fixedTelephones.join(", ") || ""
+                            }
                         />
                         <ListItem
-                            label={t("Phone Number")}
-                            value={companyDetails?.phoneNumbers[0] || ""}
-                        />
-                        <ListItem
-                            label={t("Fax Number")}
-                            value={companyDetails?.faxNumber || ""}
-                        />
-                        <ListItem
-                            label={t("Website")}
-                            value={companyDetails?.website || ""}
+                            label={t("Phone Number(s)")}
+                            value={
+                                companyDetails?.phoneNumbers.join(", ") || ""
+                            }
                         />
                     </List>
                 </Grid>
             </Grid>
             <Divider />
-            <Grid container spacing={2}>
+            <Grid container>
                 <Grid item xs={12}>
                     <List>
                         <ListItem
@@ -100,7 +84,7 @@ const CompanyInformation: React.FC = () => {
                 </Grid>
             </Grid>
             <Divider />
-            <Grid container spacing={2}>
+            <Grid container>
                 <Grid item xs={12} sm={6}>
                     <List>
                         <ListItem
@@ -139,13 +123,9 @@ const CompanyInformation: React.FC = () => {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <List>
-                        <ListItem
+                        <ListBooleanItem
                             label={t("Include Watermark")}
-                            value={
-                                companyDetails?.includeWatermark
-                                    ? t("Yes")
-                                    : t("No")
-                            }
+                            status={!!companyDetails?.includeWatermark}
                         />
                         <ListItem
                             label={t("Position of Watermark")}
@@ -154,13 +134,13 @@ const CompanyInformation: React.FC = () => {
                     </List>
                 </Grid>
             </Grid>
-            {isDialogOpen && companyDetails && (
+            {isDialogOpen ? (
                 <EditDialog
                     open={isDialogOpen}
                     onClose={closeDialog}
                     initialValues={companyDetails}
                 />
-            )}
+            ) : null}
         </Paper>
     );
 };
