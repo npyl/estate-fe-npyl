@@ -1,8 +1,8 @@
 // Pagination component for server-side pagination
-// WARN: page index starts from 1 (not 0)
+// WARN: MUI pagination starts from index 1; datagrids start from 0 (=> Let's say that outside of this component we use 0)
 
 import { PaginationProps as MuiPaginationProps } from "@mui/material/Pagination";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { ReactNode } from "react";
 import StyledPagination from "./styled";
 import Box from "@mui/material/Box";
@@ -27,6 +27,8 @@ const Pagination = <C extends React.ElementType = "div">({
     totalItems,
     isLoading = false,
     ContainerProps,
+    page,
+    onChange,
     onPageExceedTotal,
     ...props
 }: PaginationProps<C>) => {
@@ -34,8 +36,13 @@ const Pagination = <C extends React.ElementType = "div">({
 
     useEffect(() => {
         if (isLoading) return;
-        if (props.page > totalPages && onPageExceedTotal) onPageExceedTotal();
-    }, [isLoading, props.page, totalPages]);
+        if (page + 1 > totalPages && onPageExceedTotal) onPageExceedTotal();
+    }, [isLoading, page, totalPages]);
+
+    const handlePageChange = useCallback(
+        (_: any, p: number) => onChange?.(_, p - 1), // INFO: normalise index
+        []
+    );
 
     return (
         <>
@@ -45,6 +52,8 @@ const Pagination = <C extends React.ElementType = "div">({
 
             <StyledPagination
                 {...props}
+                page={page + 1}
+                onChange={handlePageChange}
                 variant="outlined"
                 color="primary"
                 count={totalPages}

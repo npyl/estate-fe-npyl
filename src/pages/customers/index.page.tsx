@@ -19,6 +19,7 @@ import useResponsive from "@/hooks/useResponsive";
 import CustomerCard from "@/components/CustomerCard";
 import { getOptions } from "./FilterSection/constants";
 import { useTranslation } from "react-i18next";
+import Pagination from "@/components/Pagination";
 
 const Customers: NextPage = () => {
     const { t } = useTranslation();
@@ -63,7 +64,7 @@ const Customers: NextPage = () => {
         });
     };
 
-    const handlePaginationModelChange = (model: GridPaginationModel) => {
+    const handlePageChange = (model: GridPaginationModel) => {
         setPageSize(model.pageSize);
         setPage(model.page);
         const paginationState = { page: model.page };
@@ -134,13 +135,24 @@ const Customers: NextPage = () => {
             />
 
             {belowMd ? (
-                <Grid container spacing={2}>
+                <Pagination
+                    isLoading={isLoading}
+                    page={page}
+                    pageSize={pageSize}
+                    totalItems={data?.totalElements ?? pageSize}
+                    Container={Grid}
+                    ContainerProps={{
+                        container: true,
+                        spacing: 2,
+                    }}
+                    onChange={(_, page) => handlePageChange({ pageSize, page })}
+                >
                     {rows.map((c, i) => (
                         <Grid item key={i} xs={12} sm={6}>
                             <CustomerCard c={c} />
                         </Grid>
                     ))}
-                </Grid>
+                </Pagination>
             ) : (
                 <Paper sx={{ marginRight: bulkEditOpen ? 40 : 0 }}>
                     <DataGrid
@@ -151,7 +163,7 @@ const Customers: NextPage = () => {
                         pageSize={pageSize}
                         totalRows={totalRows}
                         // ...
-                        onPaginationModelChange={handlePaginationModelChange}
+                        onPaginationModelChange={handlePageChange}
                         onBulkEdit={openBulkEdit}
                         onBulkDelete={openBulkDeleteDialog}
                     />

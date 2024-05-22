@@ -20,9 +20,9 @@ interface Props extends Omit<GridProps, "direction"> {
 
 export default function MediaCard({ sx, sortBy, direction, ...other }: Props) {
     // pagination
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(0);
     const handlePageChange = useCallback((_: any, p: number) => setPage(p), []);
-    const handlePageExceed = useCallback(() => setPage(1), []);
+    const handlePageExceed = useCallback(() => setPage(0), []);
 
     const belowSm = useResponsive("down", "sm");
     const belowLg = useResponsive("down", "lg");
@@ -37,7 +37,7 @@ export default function MediaCard({ sx, sortBy, direction, ...other }: Props) {
     useEffect(() => {
         filterProperties({
             filter: allFilters,
-            page: page - 1,
+            page,
             pageSize,
             sortBy,
             direction,
