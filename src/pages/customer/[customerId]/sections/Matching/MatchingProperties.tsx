@@ -12,7 +12,8 @@ import Panel from "@/components/Panel";
 import useResponsive from "@/hooks/useResponsive";
 import { Grid } from "@mui/material";
 import PropertyCard from "@/components/PropertyCard";
-import Pagination, { usePagination } from "@/components/Pagination";
+import { usePagination } from "@/components/Pagination";
+import Pagination from "@/components/Pagination/client";
 
 const filterPropertiesInShape = (
     properties: IProperties[],
@@ -93,7 +94,6 @@ const MatchingPropertiesSection = ({ variant = "default" }: Props) => {
             <Pagination
                 {...pagination}
                 isLoading={isLoading}
-                totalItems={properties.length ?? pageSize}
                 pageSize={pageSize}
                 Container={Grid}
                 ContainerProps={{
