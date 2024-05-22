@@ -1,24 +1,10 @@
 // Pagination component for server-side pagination
 // WARN: MUI pagination starts from index 1; datagrids start from 0 (=> Let's say that outside of this component we use 0)
 
-import { PaginationProps as MuiPaginationProps } from "@mui/material/Pagination";
 import React, { useCallback, useEffect } from "react";
-import { ReactNode } from "react";
 import StyledPagination from "./styled";
 import Box from "@mui/material/Box";
-
-interface PaginationProps<C extends React.ElementType>
-    extends Omit<MuiPaginationProps, "page"> {
-    pageSize: number;
-    page: number;
-    totalItems: number;
-    isLoading: boolean; // external data is loading (use to prevent page exceed effect from firing)
-    children: ReactNode;
-    Container?: C;
-    ContainerProps?: React.ComponentProps<C>;
-
-    onPageExceedTotal?: VoidFunction;
-}
+import { PaginationProps } from "./types";
 
 const Pagination = <C extends React.ElementType = "div">({
     children,
