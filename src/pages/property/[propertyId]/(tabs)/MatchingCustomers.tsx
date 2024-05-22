@@ -35,43 +35,49 @@ const MatchingCustomersSection: React.FC = () => {
     );
 
     const handlePaginationChange = useCallback(
-        (model: GridPaginationModel) =>
-            pagination.onPageChange(null, model.page),
+        (model: GridPaginationModel) => pagination.onChange(null, model.page),
         []
     );
 
     const belowMd = useResponsive("down", "md");
 
+    if (belowMd) {
+        return (
+            <Pagination
+                {...pagination}
+                isLoading={isLoading}
+                totalItems={totalRows}
+                pageSize={pageSize}
+                Container={Grid}
+                ContainerProps={{
+                    container: true,
+                    spacing: 1,
+                }}
+            >
+                {customers.map((c, i) => (
+                    <Grid item key={i} xs={12} sm={6}>
+                        <CustomerCard c={c} />
+                    </Grid>
+                ))}
+            </Pagination>
+        );
+    }
+
     return (
-        <Panel label={t("Matching Customers")}>
-            {belowMd ? (
-                <Pagination
-                    {...pagination}
-                    isLoading={isLoading}
-                    totalItems={totalRows}
-                    pageSize={pageSize}
-                    Container={Grid}
-                    ContainerProps={{
-                        container: true,
-                        spacing: 2,
-                    }}
-                >
-                    {customers.map((c, i) => (
-                        <Grid item key={i} xs={12} sm={6}>
-                            <CustomerCard c={c} />
-                        </Grid>
-                    ))}
-                </Pagination>
-            ) : (
-                <DataGrid
-                    rows={customers}
-                    resource="customer"
-                    page={pagination.page}
-                    pageSize={pageSize}
-                    totalRows={totalRows}
-                    onPaginationModelChange={handlePaginationChange}
-                />
-            )}
+        <Panel
+            label={t("Matching Customers")}
+            childrenSx={{
+                p: 0,
+            }}
+        >
+            <DataGrid
+                rows={customers}
+                resource="customer"
+                page={pagination.page}
+                pageSize={pageSize}
+                totalRows={totalRows}
+                onPaginationModelChange={handlePaginationChange}
+            />
         </Panel>
     );
 };

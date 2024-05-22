@@ -727,6 +727,9 @@ const resources = {
 
             "Edit Company Information": "Edit Company Information",
             "Edit Integration Details": "Edit Integration Details",
+
+            "There are no matching properties":
+                "There are no matching properties",
         },
     },
     el: {

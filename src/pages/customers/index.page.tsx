@@ -42,17 +42,13 @@ const Customers: NextPage = () => {
         [sortingOptions, sorting]
     );
 
-    // page
-    const pagination = usePagination();
-    const [pageSize, setPageSize] = useState(25);
-
     const [bulkDeleteCustomers] = useBulkDeleteCustomersMutation();
     const [filterCustomers, { data, isLoading }] = useFilterCustomersMutation();
 
-    const totalRows = useMemo(
-        () => (data?.totalElements ? data?.totalElements : 100000),
-        [data?.totalElements]
-    );
+    // pagination
+    const pagination = usePagination();
+    const [pageSize, setPageSize] = useState(25);
+    const totalRows = data?.totalElements ? data?.totalElements : pageSize;
 
     const revalidate = () => {
         filterCustomers({
@@ -66,7 +62,7 @@ const Customers: NextPage = () => {
 
     const handlePageChange = (model: GridPaginationModel) => {
         setPageSize(model.pageSize);
-        pagination.onPageChange(null, model.page);
+        pagination.onChange(null, model.page);
         const paginationState = { page: model.page };
         localStorage.setItem(
             "customerPaginationState",
@@ -111,7 +107,7 @@ const Customers: NextPage = () => {
             const parsedPagination = JSON.parse(storedPagination);
             // Now you can work with the parsed data.
             if (pagination.page !== parsedPagination.page) {
-                pagination.onPageChange(null, parsedPagination.page);
+                pagination.onChange(null, parsedPagination.page);
             }
         }
     }, []);
