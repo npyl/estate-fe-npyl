@@ -20,14 +20,16 @@ import { useTabsContext } from "src/contexts/tabs";
 import { ConfirmationDialogBox } from "src/pages/components/ConfirmationDialogBox";
 
 // Tabs
-const MainContainer = lazy(() => import("./tabs/MainContainer"));
-const Documents = lazy(() => import("./tabs/Documents"));
-const Integrations = lazy(() => import("./tabs/Integrations"));
-const StreetView = lazy(() => import("./tabs/StreetView"));
-const Map = lazy(() => import("./tabs/Map"));
-const MatchingCustomersSection = lazy(() => import("./tabs/MatchingCustomers"));
-const PhotosOnly = lazy(() => import("./tabs/PhotosOnly"));
-const PropertyLogs = lazy(() => import("./sections/Logs"));
+const MainContainer = lazy(() => import("./(tabs)/MainContainer"));
+const Documents = lazy(() => import("./(tabs)/Documents"));
+const Integrations = lazy(() => import("./(tabs)/Integrations"));
+const StreetView = lazy(() => import("./(tabs)/StreetView"));
+const Map = lazy(() => import("./(tabs)/Map"));
+const MatchingCustomersSection = lazy(
+    () => import("./(tabs)/MatchingCustomers")
+);
+const PhotosOnly = lazy(() => import("./(tabs)/PhotosOnly"));
+const PropertyLogs = lazy(() => import("./(sections)/Logs"));
 
 const SingleProperty: NextPage = () => {
     const router = useRouter();

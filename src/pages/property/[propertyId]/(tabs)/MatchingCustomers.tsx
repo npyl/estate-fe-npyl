@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import * as React from "react";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useSuggestForPropertyQuery } from "src/services/properties";
 import DataGrid from "@/components/DataGrid/Customer";
@@ -9,26 +9,25 @@ import { GridPaginationModel } from "@mui/x-data-grid";
 import CustomerCard from "@/components/CustomerCard";
 import useResponsive from "@/hooks/useResponsive";
 import { Grid } from "@mui/material";
+import Pagination, { usePagination } from "@/components/Pagination";
 
 const pageSize = 5;
 
 const MatchingCustomersSection: React.FC = () => {
     const router = useRouter();
-    const { t } = useTranslation();
-
     const { propertyId } = router.query;
 
-    const [page, setPage] = useState(0);
+    const { t } = useTranslation();
 
-    const { data: customersPage } = useSuggestForPropertyQuery(
-        // εδώ πρέπει να φτιάξω καινούριο query useSuggestForPropertyQuery
-        { propertyId: +propertyId!, page, pageSize }
-    );
+    const pagination = usePagination();
 
-    const totalRows = useMemo(
-        () => customersPage?.totalElements || 1,
-        [customersPage?.totalElements]
-    );
+    const { data: customersPage, isLoading } = useSuggestForPropertyQuery({
+        propertyId: +propertyId!,
+        page: pagination.page,
+        pageSize,
+    });
+
+    const totalRows = customersPage?.totalElements ?? pageSize;
 
     const customers = useMemo(
         () => customersPage?.content || [],
@@ -36,7 +35,8 @@ const MatchingCustomersSection: React.FC = () => {
     );
 
     const handlePaginationChange = useCallback(
-        (model: GridPaginationModel) => setPage(model.page),
+        (model: GridPaginationModel) =>
+            pagination.onPageChange(null, model.page),
         []
     );
 
@@ -45,18 +45,28 @@ const MatchingCustomersSection: React.FC = () => {
     return (
         <Panel label={t("Matching Customers")}>
             {belowMd ? (
-                <Grid container spacing={2}>
+                <Pagination
+                    {...pagination}
+                    isLoading={isLoading}
+                    totalItems={totalRows}
+                    pageSize={pageSize}
+                    Container={Grid}
+                    ContainerProps={{
+                        container: true,
+                        spacing: 2,
+                    }}
+                >
                     {customers.map((c, i) => (
                         <Grid item key={i} xs={12} sm={6}>
                             <CustomerCard c={c} />
                         </Grid>
                     ))}
-                </Grid>
+                </Pagination>
             ) : (
                 <DataGrid
                     rows={customers}
                     resource="customer"
-                    page={page}
+                    page={pagination.page}
                     pageSize={pageSize}
                     totalRows={totalRows}
                     onPaginationModelChange={handlePaginationChange}
