@@ -15,7 +15,9 @@ export const company = createApi({
             return headers;
         },
     }),
-    tagTypes: ["Company"],
+
+    tagTypes: ["Company", "CompanyIntegrations"],
+
     endpoints: (builder) => ({
         getCompanyDetails: builder.query<ICompany, void>({
             query: () => ({
@@ -37,13 +39,16 @@ export const company = createApi({
                 url: "/integration-credentials",
                 params: { site },
             }),
+            providesTags: ["CompanyIntegrations"],
         }),
         updateIntegrations: builder.mutation<void, IIntegrationPOST>({
             query: (body) => ({
                 url: "/integration-credentials",
                 method: "POST",
                 body,
+                params: { site: body.site },
             }),
+            invalidatesTags: ["CompanyIntegrations"],
         }),
     }),
 });

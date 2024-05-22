@@ -726,10 +726,13 @@ const resources = {
                 "Draw on a location with markers",
 
             "Edit Company Information": "Edit Company Information",
+            "Edit Integration Details": "Edit Integration Details",
         },
     },
     el: {
         translation: {
+            "Edit Integration Details": "Επεξεργασία Λεπτομερειών Σύνδεσης",
+
             "Draw on a location with markers":
                 "Ζωγράφισε σε μία περιοχή με πινέζες",
 
@@ -1437,7 +1440,7 @@ const resources = {
 
             Living: "Κατοικήσιμος",
             "Living Space": "Κατοικήσιμος Χώρος",
-            "Edit Company Information": "Επεξεργασία Πληροφοριών Εταρείας",
+            "Edit Company Information": "Επεξεργασία Πληροφοριών Εταιρείας",
             "Company Information": "Πληροφορίες Εταιρείας",
             "Company Name": "Επωνυμία",
             "Email Address": "Διεύθυνση Email",

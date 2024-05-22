@@ -1,22 +1,15 @@
 import React, { useMemo } from "react";
 import { useForm, FormProvider } from "react-hook-form";
-import {
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    Grid,
-} from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { LoadingButton } from "@mui/lab";
 import { IIntegration, IIntegrationPOST } from "src/types/integrations";
-
 import { RHFTextField } from "@/components/hook-form";
 import { useUpdateIntegrationsMutation } from "@/services/company";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { TranslationType } from "@/types/translation";
+import Dialog from "@/components/Dialog";
 
 const getSchema = (t: TranslationType) =>
     Yup.object().shape({
@@ -53,47 +46,57 @@ const EditDialog: React.FC<FormProps> = ({ open, onClose, initialValues }) => {
 
     return (
         <FormProvider {...methods}>
-            <form onSubmit={methods.handleSubmit(onSubmit)}>
-                <Dialog open={open} onClose={onClose} maxWidth="lg" fullWidth>
-                    <DialogTitle>{t("Edit Integration Details")}</DialogTitle>
-                    <DialogContent>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12}>
-                                <RHFTextField
-                                    fullWidth
-                                    label={t("API Key")}
-                                    name="apiKey"
-                                    margin="normal"
-                                />
-                                <RHFTextField
-                                    fullWidth
-                                    label={t("App Key")}
-                                    name="appKey"
-                                    margin="normal"
-                                />
-                                <RHFTextField
-                                    fullWidth
-                                    label={t("Username")}
-                                    name="username"
-                                    margin="normal"
-                                />
-                                <RHFTextField
-                                    fullWidth
-                                    label={t("Password")}
-                                    name="password"
-                                    type="password"
-                                    margin="normal"
-                                />
-                                <RHFTextField
-                                    fullWidth
-                                    label={t("Site")}
-                                    name="site"
-                                    margin="normal"
-                                />
-                            </Grid>
+            <Dialog
+                open={open}
+                onClose={onClose}
+                maxWidth="lg"
+                fullWidth
+                // ...
+                submit
+                onSubmit={methods.handleSubmit(onSubmit)}
+                //  ...
+                title={`${t("Edit Integration Details")} (${
+                    initialValues?.site
+                })`}
+                content={
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <RHFTextField
+                                fullWidth
+                                label={t("API Key")}
+                                name="apiKey"
+                                margin="normal"
+                            />
+                            <RHFTextField
+                                fullWidth
+                                label={t("App Key")}
+                                name="appKey"
+                                margin="normal"
+                            />
+                            <RHFTextField
+                                fullWidth
+                                label={t("Username")}
+                                name="username"
+                                margin="normal"
+                            />
+                            <RHFTextField
+                                fullWidth
+                                label={t("Password")}
+                                name="password"
+                                type="password"
+                                margin="normal"
+                            />
+                            <RHFTextField
+                                fullWidth
+                                label={t("Site")}
+                                name="site"
+                                margin="normal"
+                            />
                         </Grid>
-                    </DialogContent>
-                    <DialogActions>
+                    </Grid>
+                }
+                actions={
+                    <>
                         <Button onClick={onClose} color="secondary">
                             {t("Cancel")}
                         </Button>
@@ -102,11 +105,11 @@ const EditDialog: React.FC<FormProps> = ({ open, onClose, initialValues }) => {
                             variant="contained"
                             color="primary"
                         >
-                            {t("Save Changes")}
+                            {t("Save")}
                         </LoadingButton>
-                    </DialogActions>
-                </Dialog>
-            </form>
+                    </>
+                }
+            />
         </FormProvider>
     );
 };

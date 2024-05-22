@@ -1,18 +1,8 @@
-import React, { forwardRef, useMemo } from "react";
+import React, { useMemo } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
-import {
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    Grid,
-    MenuItem,
-    FormControlLabel,
-    Checkbox,
-} from "@mui/material";
+import { Button, Grid, MenuItem } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { ICompany, ICompanyPOST } from "src/types/company";
 import {
@@ -25,10 +15,7 @@ import { useUpdateCompanyDetailsMutation } from "@/services/company";
 import { LoadingButton } from "@mui/lab";
 import { TranslationType } from "@/types/translation";
 import Multiple from "./Multiple";
-
-const DialogForm = forwardRef<HTMLFormElement>((props, ref) => (
-    <form ref={ref} {...props} method="POST" />
-));
+import Dialog from "@/components/Dialog";
 
 const getSchema = (t: TranslationType) =>
     Yup.object().shape({
@@ -115,15 +102,16 @@ const EditDialog: React.FC<FormProps> = ({ open, onClose, initialValues }) => {
     return (
         <FormProvider {...methods}>
             <Dialog
-                component={DialogForm}
-                onSubmit={methods.handleSubmit(onSubmit)}
                 open={open}
                 onClose={onClose}
                 maxWidth="lg"
                 fullWidth
-            >
-                <DialogTitle>{t("Edit Company Information")}</DialogTitle>
-                <DialogContent>
+                // ...
+                submit
+                onSubmit={methods.handleSubmit(onSubmit)}
+                // ...
+                title={t("Edit Company Information")}
+                content={
                     <Grid container spacing={3} py={1}>
                         <Grid item xs={12} sm={6}>
                             <RHFTextField
@@ -251,21 +239,24 @@ const EditDialog: React.FC<FormProps> = ({ open, onClose, initialValues }) => {
                             </RHFSelect>
                         </Grid>
                     </Grid>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={onClose} color="secondary">
-                        {t("Cancel")}
-                    </Button>
-                    <LoadingButton
-                        loading={isLoading}
-                        disabled={isLoading}
-                        type="submit"
-                        color="primary"
-                    >
-                        {t("Save Changes")}
-                    </LoadingButton>
-                </DialogActions>
-            </Dialog>
+                }
+                actions={
+                    <>
+                        <Button onClick={onClose} color="secondary">
+                            {t("Cancel")}
+                        </Button>
+                        <LoadingButton
+                            loading={isLoading}
+                            disabled={isLoading}
+                            type="submit"
+                            variant="contained"
+                            color="primary"
+                        >
+                            {t("Save")}
+                        </LoadingButton>
+                    </>
+                }
+            />
         </FormProvider>
     );
 };
