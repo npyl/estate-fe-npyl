@@ -1,10 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useCustomerHistoryPaginatedQuery } from "src/services/logs";
 import { Box, Pagination, Stack } from "@mui/material";
 import { NextPage } from "next";
-import { useSelector } from "react-redux";
-import { selectAll } from "src/slices/log";
-import { LogCard } from "src/pages/logs/index.page";
+import LogCard from "@/components/Cards/LogCard";
 import { useRouter } from "next/router";
 
 const CustomerLogs: NextPage = () => {
