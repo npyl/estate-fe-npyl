@@ -1,7 +1,7 @@
 import { Box, Paper, Grid } from "@mui/material";
 import { GridPaginationModel, GridRowSelectionModel } from "@mui/x-data-grid";
 import type { NextPage } from "next";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { DeleteDialog } from "src/components/Dialog/Delete";
 import { AuthGuard } from "src/components/authentication/auth-guard";
@@ -12,14 +12,14 @@ import {
     useFilterCustomersMutation,
 } from "src/services/customers";
 import { selectAll } from "src/slices/customer/filters";
-import FilterSection from "./FilterSection";
-import { BulkEdit } from "./BulkEdit/BulkEdit";
 import DataGrid from "@/components/DataGrid/Customer";
 import useResponsive from "@/hooks/useResponsive";
 import CustomerCard from "@/components/CustomerCard";
-import { getOptions } from "./FilterSection/constants";
 import { useTranslation } from "react-i18next";
 import Pagination from "@/components/Pagination";
+import FilterSection from "./(FilterSection)";
+import { getOptions } from "./(FilterSection)/constants";
+import BulkEdit from "./(BulkEdit)";
 
 const Customers: NextPage = () => {
     const { t } = useTranslation();
@@ -45,6 +45,7 @@ const Customers: NextPage = () => {
     // page
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(25);
+    const handlePageExceed = useCallback(() => setPage(0), []);
 
     const [bulkDeleteCustomers] = useBulkDeleteCustomersMutation();
     const [filterCustomers, { data, isLoading }] = useFilterCustomersMutation();
@@ -146,6 +147,7 @@ const Customers: NextPage = () => {
                         spacing: 2,
                     }}
                     onChange={(_, page) => handlePageChange({ pageSize, page })}
+                    onPageExceedTotal={handlePageExceed}
                 >
                     {rows.map((c, i) => (
                         <Grid item key={i} xs={12} sm={6}>

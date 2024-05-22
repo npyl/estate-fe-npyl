@@ -14,12 +14,7 @@ interface BulkEditProps {
     onClose: () => void;
 }
 
-export const BulkEdit = ({
-    open,
-    selectedIds,
-    onSave,
-    onClose,
-}: BulkEditProps) => {
+const BulkEdit = ({ open, selectedIds, onSave, onClose }: BulkEditProps) => {
     type StateType = {
         managerId: string;
         labels: number[];
@@ -109,3 +104,5 @@ export const BulkEdit = ({
         </BulkEditDrawer>
     );
 };
+
+export default BulkEdit;
