@@ -23,6 +23,7 @@ import { properties } from "../services/properties";
 import { security } from "../services/security";
 import { user } from "../services/user";
 import { publicDashboard } from "@/services/publicDashboard";
+import { company } from "../services/company";
 import { rootReducer } from "./root-reducer";
 
 export const createStore = (
@@ -53,6 +54,7 @@ export const createStore = (
                 logs.middleware,
                 dashboard.middleware,
                 publicDashboard.middleware,
+                company.middleware,
                 // listings
                 publicListing.middleware,
                 spitogatosListing.middleware,

@@ -14,6 +14,7 @@ export { default as RHFTextField } from "./RHFTextField";
 export { default as RHFRating } from "./RHFRating";
 export { default as RHFOnlyNumbers } from "./RHFOnlyNumbers";
 export { default as RHFDatePicker } from "./RHFDatePicker";
+export { default as RHFTextFieldMultiline } from "./RHFTextFieldMultiline";
 
 // More High Level Components based on the above RHF
 export { default as Select } from "./Select";
