@@ -100,22 +100,16 @@ const EditDialog: React.FC<FormProps> = ({ open, onClose, initialValues }) => {
     const validationSchema = useMemo(() => getSchema(t), [t]);
 
     const methods = useForm<ICompanyPOST>({
-        defaultValues: initialValues,
+        values: initialValues,
         resolver: yupResolver(validationSchema) as any,
     });
-
-    console.log("errors: ", methods.formState.errors);
 
     const [updateCompanyDetails, { isLoading }] =
         useUpdateCompanyDetailsMutation();
 
     const onSubmit = async (data: ICompanyPOST) => {
-        try {
-            await updateCompanyDetails(data).unwrap();
-            onClose();
-        } catch (updateError) {
-            console.error("Update failed", updateError);
-        }
+        await updateCompanyDetails(data);
+        onClose();
     };
 
     return (

@@ -40,19 +40,15 @@ const EditDialog: React.FC<FormProps> = ({ open, onClose, initialValues }) => {
     const validationSchema = useMemo(() => getSchema(t), [t]);
 
     const methods = useForm<IIntegrationPOST>({
-        defaultValues: initialValues,
+        values: initialValues,
         resolver: yupResolver(validationSchema),
     });
 
     const [updateIntegrations] = useUpdateIntegrationsMutation();
 
     const onSubmit = async (d: IIntegrationPOST) => {
-        try {
-            await updateIntegrations(d).unwrap();
-            onClose();
-        } catch (error) {
-            console.error("Failed to update integration details", error);
-        }
+        await updateIntegrations(d);
+        onClose();
     };
 
     return (

@@ -724,6 +724,8 @@ const resources = {
 
             "Draw on a location with markers":
                 "Draw on a location with markers",
+
+            "Edit Company Information": "Edit Company Information",
         },
     },
     el: {
@@ -1435,6 +1437,7 @@ const resources = {
 
             Living: "Κατοικήσιμος",
             "Living Space": "Κατοικήσιμος Χώρος",
+            "Edit Company Information": "Επεξεργασία Πληροφοριών Εταρείας",
             "Company Information": "Πληροφορίες Εταιρείας",
             "Company Name": "Επωνυμία",
             "Email Address": "Διεύθυνση Email",
