@@ -1,3 +1,6 @@
+// Pagination component for server-side pagination
+// WARN: page index starts from 1 (not 0)
+
 import { PaginationProps as MuiPaginationProps } from "@mui/material/Pagination";
 import React, { useEffect } from "react";
 import { ReactNode } from "react";

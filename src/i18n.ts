@@ -686,10 +686,16 @@ const resources = {
             "Exact location (pin)": "Exact location (pin)",
 
             Visitors: "Visitors",
+
+            "Draw on a location with markers":
+                "Draw on a location with markers",
         },
     },
     el: {
         translation: {
+            "Draw on a location with markers":
+                "Ζωγράφισε σε μία περιοχή με πινέζες",
+
             Visitors: "Επισκέπτες",
 
             "Websites to publish to:": "Ιστοσελίδες προς δημοσίευση:",
