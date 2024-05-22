@@ -14,14 +14,14 @@ import {
     SuitableFor,
     TechnicalFeatures,
     VideoSection,
-} from "../sections";
-import ConstructionSection from "../sections/ConstructionSection";
+} from "../(sections)";
+import ConstructionSection from "../(sections)/ConstructionSection";
 import { useRouter } from "next/router";
 import { useTabsContext } from "src/contexts/tabs";
 import { useGetPropertyByIdQuery } from "src/services/properties";
 import { useEffect } from "react";
-import Features from "../sections/FeaturesSection";
-import DescriptionSection from "../sections/DescriptionSection";
+import Features from "../(sections)/FeaturesSection";
+import DescriptionSection from "../(sections)/DescriptionSection";
 import { useTranslation } from "react-i18next";
 
 const MainContainer: React.FC = () => {
