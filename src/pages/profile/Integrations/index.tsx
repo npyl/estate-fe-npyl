@@ -1,12 +1,9 @@
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { Box, Typography, Button, Grid, Paper, Divider } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import EditDialog from "./EditDialog";
-import {
-    useGetIntegrationsQuery,
-    useUpdateIntegrationsMutation,
-} from "src/services/company";
-import { IIntegration, IIntegrationsPOST } from "src/types/integrations";
+import { useGetIntegrationsQuery } from "src/services/company";
+import { IIntegration } from "src/types/integrations";
 import { List, ListItem } from "src/components/List";
 
 const Integrations: React.FC = () => {
@@ -15,22 +12,11 @@ const Integrations: React.FC = () => {
     const { data: integration, isLoading } =
         useGetIntegrationsQuery("SPITOGATOS");
 
-    const [updateIntegrations] = useUpdateIntegrationsMutation();
-
     const [selectedIntegration, setSelectedIntegration] =
         useState<IIntegration>();
 
     const handleCloseDialog = () => {
         setSelectedIntegration(undefined);
-    };
-
-    const handleSaveChanges = async (updatedIntegration: IIntegrationsPOST) => {
-        try {
-            await updateIntegrations(updatedIntegration).unwrap();
-            handleCloseDialog();
-        } catch (error) {
-            console.error("Failed to update integration details", error);
-        }
     };
 
     if (isLoading) {
@@ -81,7 +67,6 @@ const Integrations: React.FC = () => {
                 <EditDialog
                     open={!!selectedIntegration}
                     onClose={handleCloseDialog}
-                    onSubmit={handleSaveChanges}
                     initialValues={selectedIntegration}
                 />
             ) : null}

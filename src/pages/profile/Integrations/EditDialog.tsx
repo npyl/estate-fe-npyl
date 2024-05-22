@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import {
     Button,
@@ -10,48 +10,50 @@ import {
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { LoadingButton } from "@mui/lab";
-import { IIntegration } from "src/types/integrations";
+import { IIntegration, IIntegrationPOST } from "src/types/integrations";
 
 import { RHFTextField } from "@/components/hook-form";
+import { useUpdateIntegrationsMutation } from "@/services/company";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
 
 interface FormProps {
     open: boolean;
     onClose: () => void;
-    onSubmit: (data: IIntegration) => void;
     initialValues: IIntegration;
 }
 
-const EditDialog: React.FC<FormProps> = ({
-    open,
-    onClose,
-    onSubmit,
-    initialValues,
-}) => {
+const EditDialog: React.FC<FormProps> = ({ open, onClose, initialValues }) => {
     const { t } = useTranslation();
 
-    const methods = useForm<IIntegration>({
-        defaultValues: initialValues,
+    // Define Yup validation schema with type casting
+    const validationSchema = Yup.object().shape({
+        apiKey: Yup.string().required(t<string>("API Key is required")),
+        appKey: Yup.string().required(t<string>("App Key is required")),
+        username: Yup.string().required(t<string>("Username is required")),
+        password: Yup.string().required(t<string>("Password is required")),
+        site: Yup.string().required(t<string>("Site is required")),
     });
 
-    const { setValue, register, handleSubmit, reset } = methods;
+    const methods = useForm<IIntegrationPOST>({
+        defaultValues: initialValues,
+        resolver: yupResolver(validationSchema),
+    });
 
-    useEffect(() => {
-        if (initialValues) {
-            reset(initialValues);
-        }
-    }, [initialValues, reset]);
+    const [updateIntegrations] = useUpdateIntegrationsMutation();
 
-    const validateAndSetValue = (name: keyof IIntegration) => (value: any) => {
-        if (value === null || value === "null") {
-            setValue(name, "0");
-            return true;
+    const onSubmit = async (d: IIntegrationPOST) => {
+        try {
+            await updateIntegrations(d).unwrap();
+            onClose();
+        } catch (error) {
+            console.error("Failed to update integration details", error);
         }
-        return true;
     };
 
     return (
         <FormProvider {...methods}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={methods.handleSubmit(onSubmit)}>
                 <Dialog open={open} onClose={onClose} maxWidth="lg" fullWidth>
                     <DialogTitle>{t("Edit Integration Details")}</DialogTitle>
                     <DialogContent>
@@ -79,6 +81,13 @@ const EditDialog: React.FC<FormProps> = ({
                                     fullWidth
                                     label={t("Password")}
                                     name="password"
+                                    type="password"
+                                    margin="normal"
+                                />
+                                <RHFTextField
+                                    fullWidth
+                                    label={t("Site")}
+                                    name="site"
                                     margin="normal"
                                 />
                             </Grid>

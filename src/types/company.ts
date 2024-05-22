@@ -5,17 +5,20 @@ export interface ICompany {
     companyName: string;
     description: string;
     email: string;
-    facebook: string;
     fixedTelephones: string[];
     faxNumber: string;
-    googlePlus: string;
     includeWatermark: boolean;
+    phoneNumbers: string[];
+
+    googlePlus: string;
+    facebook: string;
     instagram: string;
     linkedIn: string;
-    phoneNumbers: string[];
     skype: string;
     tiktok: string;
     twitter: string;
+    youtube: string;
+
     watermarkPosition:
         | "CENTER"
         | "DOWN_RIGHT"
@@ -24,7 +27,29 @@ export interface ICompany {
         | "UP_RIGHT"
         | "UP_CENTER"
         | "UP_LEFT";
-    youtube: string;
 }
 
-export interface ICompanyPOST extends ICompany {}
+export interface ICompanyPOST
+    extends Omit<
+        ICompany,
+        | "facebook"
+        | "googlePlus"
+        | "instagram"
+        | "linkedIn"
+        | "skype"
+        | "tiktok"
+        | "twitter"
+        | "youtube"
+        | "includeWatermark"
+    > {
+    facebook?: string;
+    googlePlus?: string;
+    instagram?: string;
+    linkedIn?: string;
+    skype?: string;
+    tiktok?: string;
+    youtube?: string;
+    twitter?: string;
+
+    includeWatermark?: boolean;
+}

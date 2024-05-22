@@ -1,5 +1,7 @@
 import React, { forwardRef } from "react";
 import { useForm, FormProvider } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as Yup from "yup";
 import {
     Button,
     Dialog,
@@ -12,7 +14,7 @@ import {
     Checkbox,
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
-import { ICompanyPOST } from "src/types/company";
+import { ICompany, ICompanyPOST } from "src/types/company";
 import { RHFTextField, RHFTextFieldMultiline } from "@/components/hook-form";
 import { useUpdateCompanyDetailsMutation } from "@/services/company";
 import { LoadingButton } from "@mui/lab";
@@ -24,18 +26,82 @@ const DialogForm = forwardRef<HTMLFormElement>((props, ref) => (
 interface FormProps {
     open: boolean;
     onClose: () => void;
-    initialValues: ICompanyPOST;
+    initialValues: ICompany;
 }
 
 const EditDialog: React.FC<FormProps> = ({ open, onClose, initialValues }) => {
     const { t } = useTranslation();
 
-    const [updateCompanyDetails, { isLoading, isError }] =
-        useUpdateCompanyDetailsMutation();
+    // Define Yup validation schema
+    const validationSchema = Yup.object().shape({
+        companyName: Yup.string().required(
+            t<string>("Company Name is required")
+        ),
+        city: Yup.string().required(t<string>("City is required")),
+        address: Yup.string().required(t<string>("Address is required")),
+        email: Yup.string()
+            .email(t<string>("Email is invalid"))
+            .required(t<string>("Email is required")),
+        fixedTelephones: Yup.array()
+            .of(Yup.string().required(t<string>("Fixed Telephone is required")))
+            .required(t<string>("Fixed Telephones are required")),
+        phoneNumbers: Yup.array()
+            .of(Yup.string().required(t<string>("Phone Number is required")))
+            .required(t<string>("Phone Numbers are required")),
+        faxNumber: Yup.string().required(t<string>("Fax Number is required")),
+        website: Yup.string()
+            .url(t<string>("Website is invalid"))
+            .required(t<string>("Website is required")),
+        description: Yup.string().required(
+            t<string>("Description is required")
+        ),
+
+        skype: Yup.string().notRequired(),
+        facebook: Yup.string()
+            .url(t<string>("Facebook is invalid"))
+            .notRequired(),
+        tiktok: Yup.string().url(t<string>("Tiktok is invalid")).notRequired(),
+        instagram: Yup.string()
+            .url(t<string>("Instagram is invalid"))
+            .notRequired(),
+        linkedIn: Yup.string()
+            .url(t<string>("LinkedIn is invalid"))
+            .notRequired(),
+        twitter: Yup.string()
+            .url(t<string>("Twitter is invalid"))
+            .notRequired(),
+        youtube: Yup.string()
+            .url(t<string>("Youtube is invalid"))
+            .notRequired(),
+        googlePlus: Yup.string()
+            .url(t<string>("Google+ is invalid"))
+            .notRequired(),
+
+        watermarkPosition: Yup.string()
+            .oneOf(
+                [
+                    "CENTER",
+                    "DOWN_RIGHT",
+                    "DOWN_CENTER",
+                    "DOWN_LEFT",
+                    "UP_RIGHT",
+                    "UP_CENTER",
+                    "UP_LEFT",
+                ],
+                t<string>("Invalid watermark position")
+            )
+            .required(t<string>("Watermark Position is required")),
+
+        includeWatermark: Yup.boolean().notRequired(),
+    });
 
     const methods = useForm<ICompanyPOST>({
-        values: initialValues,
+        defaultValues: initialValues,
+        resolver: yupResolver(validationSchema) as any, // TODO;: fixs
     });
+
+    const [updateCompanyDetails, { isLoading }] =
+        useUpdateCompanyDetailsMutation();
 
     const onSubmit = async (data: ICompanyPOST) => {
         console.log("data:", data);
