@@ -116,6 +116,10 @@ export default function ViewsOfPropertiesChart() {
         return null;
     };
 
+    const formatYAxis = (tickItem: number) => {
+        return tickItem > 999 ? `${tickItem / 1000}k` : tickItem.toString();
+    };
+
     return (
         <>
             <Stack direction="row" spacing={2} p={1}>
@@ -133,11 +137,11 @@ export default function ViewsOfPropertiesChart() {
             <ResponsiveContainer width="99%" height={300}>
                 <BarChart
                     data={chartData}
-                    margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                    margin={{ right: 30, left: 30, bottom: 5 }}
                 >
                     <CartesianGrid vertical={false} />
                     <XAxis dataKey="date" tickFormatter={formatDateTick} />
-                    <YAxis width={20} />
+                    <YAxis width={20} tickFormatter={formatYAxis} />
                     <Tooltip content={renderTooltipContent} />
 
                     <Legend

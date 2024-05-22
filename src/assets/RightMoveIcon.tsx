@@ -1,18 +1,10 @@
 import React from "react";
+import Image, { ImageProps } from "next/image";
 
 const rightmove = "/static/rightmove.jpg";
 
-const RightMoveIcon = () => {
-    return (
-        <div>
-            <img
-                src={rightmove}
-                alt="James Edition"
-                width="100px"
-                height="100px"
-            />
-        </div>
-    );
-};
+const RightMoveIcon: React.FC<Omit<ImageProps, "src" | "alt">> = (props) => (
+    <Image {...props} src={rightmove} alt="James Edition" />
+);
 
 export default RightMoveIcon;

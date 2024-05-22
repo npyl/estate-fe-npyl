@@ -1,16 +1,16 @@
 export type Listings = Record<ListingTypes, boolean>;
 export type ListingTypes =
-    | "PUBLIC_SITE"
     | "SPITOGATOS"
-    | "PLOTGR"
+    | "PLOT_GR"
     | "JAMES_EDITION"
-    | "XRYSH_EUKAIRIA"
-    | "RIGHTMOVE"
+    | "XE"
+    | "RIGHT_MOVE"
     | "FERIMMO";
 
 // INFO: for now, an IListing is only an IPublicSite (will change on rework)
 
 interface IListing {
+    integrationSite: ListingTypes;
     publicSite: {
         id: number;
         siteUrl: string;
@@ -20,4 +20,5 @@ interface IListing {
 
 export interface IListings {
     publicSites: IListing[];
+    integrations: IListing[];
 }

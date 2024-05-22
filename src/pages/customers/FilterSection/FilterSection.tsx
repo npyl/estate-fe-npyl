@@ -1,29 +1,29 @@
+import React, { useMemo } from "react";
 import { Paper, PaperProps, Stack } from "@mui/material";
-import { useSelector } from "src/store";
-
 import {
     selectLabels,
     setLabels,
     sumOfChangedProperties,
 } from "src/slices/customer/filters";
-
+// filters
 import FilterStatus from "./Filters/Status";
 import FilterBuyerLeaserAndMore from "./Filters/BuyerLeaserAndMore";
 import FilterCategory from "./Filters/Category";
 import FilterParentCategory from "./Filters/ParentCategory";
-import FilterLabels from "@/pages/property/FiltersBar/Filters/Labels";
 import ChosenFilters from "./Filters/ChosenFilters";
 import PriceSelect from "./Filters/Price";
 import FilterManager from "./Filters/ManagedBy";
-import React, { useMemo, useState } from "react";
 import FilterMore from "@/components/Filters/FilterMore/Dialog";
-import useResponsive from "@/hooks/useResponsive";
-import { SpaceBetween } from "@/components/styled";
 import FilterMoreButton from "@/components/Filters/FilterMore/Button";
-import useDialog from "@/hooks/useDialog";
 import FilterSortBy from "@/components/Filters/SortBy";
+import FilterLabels from "@/pages/property/(FiltersBar)/Filters/Labels";
+// ok
+import useDialog from "@/hooks/useDialog";
+import { SpaceBetween } from "@/components/styled";
 import { getOptions } from "./constants";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "src/store";
+import useResponsive from "@/hooks/useResponsive";
 
 interface FilterSectionProps extends PaperProps {
     sorting: string;

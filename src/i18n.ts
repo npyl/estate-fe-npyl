@@ -706,10 +706,44 @@ const resources = {
             "Agent ID": "Agent ID",
             "Auth Token": "Auth Token",
             "Certified Telephone Number": "Certified Telephone Number",
+
+            "Websites to publish to:": "Websites to publish to:",
+            "Upload Google Earth": "Upload Google Earth",
+            _Public_FEMALE_PLURAL: "Public",
+            "Rest Integrations": "Rest Integrations",
+
+            "Location Details": "Location Details",
+            "Select which information will be visible to the user on Search result pages:":
+                "Select which information will be visible to the user on Search result pages:",
+            "Location not visible": "Location not visible",
+            "General location (circle)": "General location (circle)",
+            "Exact location (pin)": "Exact location (pin)",
+
+            Visitors: "Visitors",
+
+            "Draw on a location with markers":
+                "Draw on a location with markers",
         },
     },
     el: {
         translation: {
+            "Draw on a location with markers":
+                "Ζωγράφισε σε μία περιοχή με πινέζες",
+
+            Visitors: "Επισκέπτες",
+
+            "Websites to publish to:": "Ιστοσελίδες προς δημοσίευση:",
+            "Upload Google Earth": "Ανέβασμα Google Earth",
+            _Public_FEMALE_PLURAL: "Δημόσιες",
+            "Rest Integrations": "Λοιπές Συνδέσεις",
+
+            "Location Details": "Λεπτομέρεις Τοποθεσίας",
+            "Select which information will be visible to the user on Search result pages:":
+                "Επιλέξτε τι πληροφορία θα είναι φανερή στο χρήστη κατά την αναζήτηση",
+            "Location not visible": "Μη-εμφανής τοποθεσία",
+            "General location (circle)": "Γενική τοποθεσία (ακτίνα)",
+            "Exact location (pin)": "Ακριβής τοποθεσία (πινέζα)",
+
             "Date of Entry": "Ημ/νία Καταχώρησης",
 
             "Drop or Select files": "Ρίξτε ή Επιλέξτε αρχεία",

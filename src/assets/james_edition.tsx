@@ -1,18 +1,10 @@
 import React from "react";
+import Image, { ImageProps } from "next/image";
 
 const jamesImage = "/static/james_edition.jpg";
 
-const JamesEditionIcon = () => {
-    return (
-        <div>
-            <img
-                src={jamesImage}
-                alt="James Edition"
-                width="100px"
-                height="100px"
-            />
-        </div>
-    );
-};
+const JamesEditionIcon: React.FC<Omit<ImageProps, "src" | "alt">> = (props) => (
+    <Image {...props} src={jamesImage} alt="James Edition" />
+);
 
 export default JamesEditionIcon;

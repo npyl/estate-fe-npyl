@@ -1,6 +1,6 @@
 import FlipIcon from "@mui/icons-material/Flip";
-import { Box, Button, Grid, Stack, Typography } from "@mui/material";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { Button, Grid, Stack } from "@mui/material";
+import { useEffect, useMemo, useState } from "react";
 import Map, { IMapAddress, IMapMarker } from "src/components/Map/Map";
 import { DrawShape, StopDraw } from "src/components/Map/types";
 import {
@@ -9,13 +9,14 @@ import {
     isPointInsideShapeData,
 } from "src/components/Map/util";
 import { useDebouncedCallback } from "use-debounce";
-import InfoIcon from "@mui/icons-material/Info";
 import PropertyCard, { PropertyCardH } from "@/components/PropertyCard";
 import { useMapViewPropertiesMutation } from "src/services/properties";
 import { selectAll } from "src/slices/filters";
 import { useSelector } from "react-redux";
 import useResponsive from "@/hooks/useResponsive";
 import { IPropertyResultResponse } from "@/types/properties";
+import Placeholder from "./Placeholder";
+import useResponsiveOrientation from "./hook";
 
 interface Props {
     toggleOrientation: VoidFunction;
@@ -38,66 +39,15 @@ const FlipOrientationButton = ({ toggleOrientation }: Props) => {
 
 // ---------------------------------------------------------------------
 
-const useResponsiveOrientation = (): [boolean, VoidFunction] => {
-    const belowLg = useResponsive("down", "lg");
-
-    const [orientation, setOrientation] = useState(false);
-    const toggleOrientation = useCallback(
-        () => setOrientation((old) => !old),
-        []
-    );
-
-    // Revert to vertical orientation on mobile
-    useEffect(() => {
-        if (belowLg) setOrientation(false);
-    }, []);
-
-    return [orientation, toggleOrientation];
-};
-
-const Placeholder = () => (
-    <Box
-        sx={{
-            display: "flex",
-            flexDirection: "column", // Changed to 'column' to stack icon and text
-            justifyContent: "center",
-            alignItems: "center",
-            padding: 3, // Increased padding for more space
-            backgroundColor: "background.default", // Use theme background color
-            textAlign: "center",
-            height: "100%", // Full height of the parent container
-            gap: 2, // space between icon and text
-        }}
-    >
-        <InfoIcon
-            sx={{
-                color: "primary.main",
-                fontSize: "3rem",
-            }}
-        />
-        <Typography
-            variant="subtitle1"
-            component="div"
-            sx={{
-                color: "text.primary",
-                fontWeight: "medium",
-            }}
-        >
-            Draw or drag to a location that has markers
-        </Typography>
-    </Box>
-);
-
 interface PropertiesListProps {
+    isLoading: boolean;
     filtered: IPropertyResultResponse[];
-    activeMarker?: number;
     selectedMarker: IMapMarker | null;
 }
 
 const PropertiesList = ({
+    isLoading,
     filtered,
-    // ...
-    activeMarker,
     selectedMarker,
 }: PropertiesListProps) => {
     const [orientation, toggleOrientation] = useResponsiveOrientation();
@@ -105,6 +55,8 @@ const PropertiesList = ({
     return (
         <>
             <FlipOrientationButton toggleOrientation={toggleOrientation} />
+
+            {!isLoading && filtered.length === 0 && <Placeholder />}
 
             <Grid container spacing={1}>
                 {filtered.map((item, index) => (
@@ -132,16 +84,15 @@ const PropertiesList = ({
                     </Grid>
                 ))}
             </Grid>
-
-            {filtered.length === 0 && <Placeholder />}
         </>
     );
 };
 
 const MapView = () => {
-    const [filter, { data }] = useMapViewPropertiesMutation({
-        selectFromResult: ({ data }) => ({
+    const [filter, { data, isLoading }] = useMapViewPropertiesMutation({
+        selectFromResult: ({ data, isLoading }) => ({
             data: data?.content || [],
+            isLoading,
         }),
     });
 
@@ -231,8 +182,8 @@ const MapView = () => {
                 }}
             >
                 <PropertiesList
+                    isLoading={isLoading}
                     filtered={filtered}
-                    activeMarker={activeMarker}
                     selectedMarker={selectedMarker}
                 />
             </Grid>

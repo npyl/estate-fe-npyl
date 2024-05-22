@@ -8,7 +8,7 @@ import ListLabelsItem from "@/components/List/Items/labels";
 import { useGetLabelsQuery } from "src/services/labels";
 import AreaOfPreference from "./AreaOfPreference";
 import FeaturesDemandSection from "./FeaturesDemand";
-import useGetCustomer from "src/hooks/customer/hook";
+import useGetCustomer from "@/hooks/customer";
 
 interface DemandSectionProps {
     index: number;

@@ -6,7 +6,6 @@ import { IPropertyFeatures } from "./features";
 import { IPropertyBlueprint, IPropertyDocument, IPropertyImage } from "./file";
 import IGoogleEarth from "./googleEarth";
 import { ILabel } from "./label";
-import { Listings } from "./listings";
 import { ILocation, ILocationPOST } from "./location";
 import { INote } from "./note";
 import { IUser } from "./user";
@@ -355,9 +354,9 @@ export interface IProperties {
     blueprints: IPropertyBlueprint[];
     labels: ILabel[];
 
-    listings: Listings;
-
     googleEarth: IGoogleEarth;
+
+    visitors: number;
 }
 
 export type ParentCategory = "RESIDENTIAL" | "COMMERCIAL" | "LAND" | "OTHER";
