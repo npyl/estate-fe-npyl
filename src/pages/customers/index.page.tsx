@@ -16,7 +16,7 @@ import DataGrid from "@/components/DataGrid/Customer";
 import useResponsive from "@/hooks/useResponsive";
 import CustomerCard from "@/components/CustomerCard";
 import { useTranslation } from "react-i18next";
-import Pagination from "@/components/Pagination";
+import Pagination, { usePagination } from "@/components/Pagination";
 import FilterSection from "./(FilterSection)";
 import { getOptions } from "./(FilterSection)/constants";
 import BulkEdit from "./(BulkEdit)";
@@ -43,9 +43,8 @@ const Customers: NextPage = () => {
     );
 
     // page
-    const [page, setPage] = useState(0);
+    const pagination = usePagination();
     const [pageSize, setPageSize] = useState(25);
-    const handlePageExceed = useCallback(() => setPage(0), []);
 
     const [bulkDeleteCustomers] = useBulkDeleteCustomersMutation();
     const [filterCustomers, { data, isLoading }] = useFilterCustomersMutation();
@@ -58,7 +57,7 @@ const Customers: NextPage = () => {
     const revalidate = () => {
         filterCustomers({
             filter: allFilters,
-            page,
+            page: pagination.page,
             pageSize,
             sortBy,
             direction,
@@ -67,7 +66,7 @@ const Customers: NextPage = () => {
 
     const handlePageChange = (model: GridPaginationModel) => {
         setPageSize(model.pageSize);
-        setPage(model.page);
+        pagination.onPageChange(null, model.page);
         const paginationState = { page: model.page };
         localStorage.setItem(
             "customerPaginationState",
@@ -77,7 +76,7 @@ const Customers: NextPage = () => {
 
     useEffect(() => {
         revalidate();
-    }, [allFilters, page, pageSize, sortBy, direction]);
+    }, [allFilters, pagination.page, pageSize, sortBy, direction]);
 
     const rows = useMemo(() => data?.content || [], [data?.content]);
 
@@ -111,8 +110,8 @@ const Customers: NextPage = () => {
         if (storedPagination !== null) {
             const parsedPagination = JSON.parse(storedPagination);
             // Now you can work with the parsed data.
-            if (page !== parsedPagination.page) {
-                setPage(parsedPagination.page);
+            if (pagination.page !== parsedPagination.page) {
+                pagination.onPageChange(null, parsedPagination.page);
             }
         }
     }, []);
@@ -137,8 +136,8 @@ const Customers: NextPage = () => {
 
             {belowMd ? (
                 <Pagination
+                    {...pagination}
                     isLoading={isLoading}
-                    page={page}
                     pageSize={pageSize}
                     totalItems={data?.totalElements ?? pageSize}
                     Container={Grid}
@@ -146,8 +145,6 @@ const Customers: NextPage = () => {
                         container: true,
                         spacing: 2,
                     }}
-                    onChange={(_, page) => handlePageChange({ pageSize, page })}
-                    onPageExceedTotal={handlePageExceed}
                 >
                     {rows.map((c, i) => (
                         <Grid item key={i} xs={12} sm={6}>
@@ -161,7 +158,7 @@ const Customers: NextPage = () => {
                         skeleton={isLoading}
                         rows={rows}
                         // ...
-                        page={page}
+                        page={pagination.page}
                         pageSize={pageSize}
                         totalRows={totalRows}
                         // ...
