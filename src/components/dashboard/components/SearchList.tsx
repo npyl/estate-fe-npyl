@@ -5,13 +5,17 @@ import { StyledPopper } from "../styles";
 import { useRef } from "react";
 import useClickOutside from "./useClickOutside";
 import { ICustomerResultResponse } from "src/types/customer";
+import { IGeoLocation } from "src/types/geolocation";
 import { CustomerSearchItem } from "./CustomerSearchItem";
 import { PropertySearchItem } from "./PropertySearchItem";
+import { LocationSearchItem } from "./LocationSearchItem";
 import { ScrollBox } from "src/components/ScrollBox";
+import { useTranslation } from "react-i18next";
 
 interface SearchListProps extends Omit<PopperProps, "direction" | "results"> {
     properties: IPropertyResultResponse[];
     customers: ICustomerResultResponse[];
+    locations: IGeoLocation[];
     searchText: string;
     onClickOutside: () => void;
 }
@@ -19,11 +23,14 @@ interface SearchListProps extends Omit<PopperProps, "direction" | "results"> {
 export const SearchList = ({
     properties,
     customers,
+    locations,
     searchText,
     open,
     onClickOutside,
     anchorEl,
 }: SearchListProps) => {
+    const { t } = useTranslation();
+
     const ref = useRef<HTMLDivElement>(null);
 
     useClickOutside(ref, () => onClickOutside && onClickOutside());
@@ -43,7 +50,8 @@ export const SearchList = ({
                 >
                     <ScrollBox scrollbarWidth="15px">
                         {properties?.length === 0 &&
-                            customers?.length === 0 && (
+                            customers?.length === 0 &&
+                            locations?.length === 0 && (
                                 <SearchNotFound query={searchText} />
                             )}
 
@@ -63,11 +71,8 @@ export const SearchList = ({
                                         marginY: "10px",
                                     }}
                                 >
-                                    <Typography
-                                        variant="h6"
-                                        textAlign={"center"}
-                                    >
-                                        Properties
+                                    <Typography variant="h6" textAlign="center">
+                                        {t("Properties")}
                                     </Typography>
                                     {properties.map((option, index: number) => (
                                         <PropertySearchItem
@@ -104,11 +109,45 @@ export const SearchList = ({
                                         variant="h6"
                                         textAlign={"center"}
                                     >
-                                        Customers
+                                        {t("Customers")}
                                     </Typography>
                                     {customers.map((option, index: number) => (
                                         <CustomerSearchItem
                                             key={index}
+                                            option={option}
+                                            searchText={searchText}
+                                        />
+                                    ))}
+                                </Grid>
+                            </Grid>
+                        )}
+
+                        {customers?.length > 0 && locations?.length > 0 && (
+                            <Divider />
+                        )}
+
+                        {locations?.length > 0 && (
+                            <Grid container>
+                                <Grid
+                                    item
+                                    xs={12}
+                                    sm={12}
+                                    md={12}
+                                    lg={12}
+                                    sx={{
+                                        borderRight: {
+                                            lg: "1px solid blue",
+                                            md: 0,
+                                        },
+                                        marginY: "10px",
+                                    }}
+                                >
+                                    <Typography variant="h6" textAlign="center">
+                                        {t("Locations")}
+                                    </Typography>
+                                    {locations.map((option) => (
+                                        <LocationSearchItem
+                                            key={option.areaID}
                                             option={option}
                                             searchText={searchText}
                                         />
