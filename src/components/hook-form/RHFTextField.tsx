@@ -6,11 +6,11 @@ import { useTranslation } from "react-i18next";
 
 // ----------------------------------------------------------------------
 
-type Props = TextFieldProps & {
+export type RHFTextFieldProps = TextFieldProps & {
     name: string;
 };
 
-export default function RHFTextField({ name, ...other }: Props) {
+export default function RHFTextField({ name, ...other }: RHFTextFieldProps) {
     const { control } = useFormContext();
     const { t } = useTranslation();
     return (

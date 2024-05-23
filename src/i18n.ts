@@ -673,6 +673,41 @@ const resources = {
 
             _SubCategory: "Category",
 
+            "Company Information": "Company Information",
+            "Company Name": "Company Name",
+            "Email Address": "Email Address",
+            "Fixed Telephone(s)": "Fixed Telephone(s)",
+            "Phone Number(s)": "Phone Number(s)",
+            "Fax Number": "Fax Number",
+            "Include Watermark": "Include Watermark",
+            Website: "Website",
+            Skype: "Skype",
+            Facebook: "Facebook",
+            Tiktok: "Tiktok",
+            Instagram: "Instagram",
+            Linkedin: "Linkedin",
+            Twitter: "Twitter",
+            Youtube: "Youtube",
+            "Google +": "Google +",
+            "Upload Logo": "Upload Logo",
+            "Upload Watermark": "Upload Watermark",
+            "Include Watermarks": "Include Watermarks",
+            "Position of Watermark": "Position of Watermark",
+            Center: "Center",
+            "Down and right": "Down and right",
+            "Down and center": "Down and center",
+            "Down and left": "Down and left",
+            "Up and right": "Up and right",
+            "Up and center": "Up and center",
+            "Up and left": "Up and left",
+            "Spitogatos Network": "Spitogatos Network",
+            "Broker ID": "Broker ID",
+            Username: "Username",
+            "Xrisi Efkeria Network": "Xrisi Efkeria Network",
+            "Agent ID": "Agent ID",
+            "Auth Token": "Auth Token",
+            "Certified Telephone Number": "Certified Telephone Number",
+
             "Websites to publish to:": "Websites to publish to:",
             "Upload Google Earth": "Upload Google Earth",
             _Public_FEMALE_PLURAL: "Public",
@@ -686,10 +721,24 @@ const resources = {
             "Exact location (pin)": "Exact location (pin)",
 
             Visitors: "Visitors",
+
+            "Draw on a location with markers":
+                "Draw on a location with markers",
+
+            "Edit Company Information": "Edit Company Information",
+            "Edit Integration Details": "Edit Integration Details",
+
+            "There are no matching properties":
+                "There are no matching properties",
         },
     },
     el: {
         translation: {
+            "Edit Integration Details": "Επεξεργασία Λεπτομερειών Σύνδεσης",
+
+            "Draw on a location with markers":
+                "Ζωγράφισε σε μία περιοχή με πινέζες",
+
             Visitors: "Επισκέπτες",
 
             "Websites to publish to:": "Ιστοσελίδες προς δημοσίευση:",
@@ -743,6 +792,8 @@ const resources = {
                 "Επιλέξτε κατηγορία και υποκατηγορία για το ακίνητό σας",
             "Create a new property": "Δημιουργία νέου ακινήτου",
             "Welcome back": "Καλωσήρθατε",
+
+            "Include Watermark": "Προσθήκη Watermark",
 
             All_Time: "Συνολικά",
             Monthly: "Μηνιαία",
@@ -1392,6 +1443,40 @@ const resources = {
 
             Living: "Κατοικήσιμος",
             "Living Space": "Κατοικήσιμος Χώρος",
+            "Edit Company Information": "Επεξεργασία Πληροφοριών Εταιρείας",
+            "Company Information": "Πληροφορίες Εταιρείας",
+            "Company Name": "Επωνυμία",
+            "Email Address": "Διεύθυνση Email",
+            "Fixed Telephone(s)": "Σταθερό Τηλέφωνο/α",
+            "Phone Number(s)": "Κινητό Τηλέφωνο/α",
+            "Fax Number": "Αριθμός Φαξ",
+            Website: "Ιστοσελίδα",
+            Skype: "Skype",
+            Facebook: "Facebook",
+            Tiktok: "Tiktok",
+            Instagram: "Instagram",
+            Linkedin: "Linkedin",
+            Twitter: "Twitter",
+            Youtube: "Youtube",
+            "Google +": "Google +",
+            "Upload Logo": "Ανέβασμα Λογότυπου",
+            "Upload Watermark": "Ανέβασμα Υδατογραφήματος",
+            "Include Watermarks": "Συμπερίληψη Υδατογραφημάτων",
+            "Position of Watermark": "Θέση Υδατογραφήματος",
+            Center: "Κέντρο",
+            "Down and right": "Κάτω δεξιά",
+            "Down and center": "Κάτω κέντρο",
+            "Down and left": "Κάτω αριστερά",
+            "Up and right": "Πάνω δεξιά",
+            "Up and center": "Πάνω κέντρο",
+            "Up and left": "Πάνω αριστερά",
+            "Spitogatos Network": "Δίκτυο Spitogatos",
+            "Broker ID": "ID Μεσίτη",
+            "Username ": "Όνομα Χρήστη",
+            "Xrisi Efkeria Network": "Δίκτυο Χρυσή Ευκαιρία",
+            "Agent ID": "ID Αντιπροσώπου",
+            "Auth Token": "Κωδικός Εξουσιοδότησης",
+            "Certified Telephone Number": "Πιστοποιημένος Αριθμός Τηλεφώνου",
         },
     },
 };

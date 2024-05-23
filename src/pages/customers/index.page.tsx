@@ -1,7 +1,7 @@
 import { Box, Paper, Grid } from "@mui/material";
 import { GridPaginationModel, GridRowSelectionModel } from "@mui/x-data-grid";
 import type { NextPage } from "next";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import { DeleteDialog } from "src/components/Dialog/Delete";
 import { AuthGuard } from "src/components/authentication/auth-guard";
@@ -12,13 +12,14 @@ import {
     useFilterCustomersMutation,
 } from "src/services/customers";
 import { selectAll } from "src/slices/customer/filters";
-import FilterSection from "./FilterSection";
-import { BulkEdit } from "./BulkEdit/BulkEdit";
 import DataGrid from "@/components/DataGrid/Customer";
 import useResponsive from "@/hooks/useResponsive";
 import CustomerCard from "@/components/CustomerCard";
-import { getOptions } from "./FilterSection/constants";
 import { useTranslation } from "react-i18next";
+import Pagination, { usePagination } from "@/components/Pagination";
+import FilterSection from "./(FilterSection)";
+import { getOptions } from "./(FilterSection)/constants";
+import BulkEdit from "./(BulkEdit)";
 
 const Customers: NextPage = () => {
     const { t } = useTranslation();
@@ -41,31 +42,27 @@ const Customers: NextPage = () => {
         [sortingOptions, sorting]
     );
 
-    // page
-    const [page, setPage] = useState(0);
-    const [pageSize, setPageSize] = useState(25);
-
     const [bulkDeleteCustomers] = useBulkDeleteCustomersMutation();
     const [filterCustomers, { data, isLoading }] = useFilterCustomersMutation();
 
-    const totalRows = useMemo(
-        () => (data?.totalElements ? data?.totalElements : 100000),
-        [data?.totalElements]
-    );
+    // pagination
+    const pagination = usePagination();
+    const [pageSize, setPageSize] = useState(25);
+    const totalRows = data?.totalElements ? data?.totalElements : pageSize;
 
     const revalidate = () => {
         filterCustomers({
             filter: allFilters,
-            page,
+            page: pagination.page,
             pageSize,
             sortBy,
             direction,
         });
     };
 
-    const handlePaginationModelChange = (model: GridPaginationModel) => {
+    const handlePageChange = (model: GridPaginationModel) => {
         setPageSize(model.pageSize);
-        setPage(model.page);
+        pagination.onChange(null, model.page);
         const paginationState = { page: model.page };
         localStorage.setItem(
             "customerPaginationState",
@@ -75,7 +72,7 @@ const Customers: NextPage = () => {
 
     useEffect(() => {
         revalidate();
-    }, [allFilters, page, pageSize, sortBy, direction]);
+    }, [allFilters, pagination.page, pageSize, sortBy, direction]);
 
     const rows = useMemo(() => data?.content || [], [data?.content]);
 
@@ -109,8 +106,8 @@ const Customers: NextPage = () => {
         if (storedPagination !== null) {
             const parsedPagination = JSON.parse(storedPagination);
             // Now you can work with the parsed data.
-            if (page !== parsedPagination.page) {
-                setPage(parsedPagination.page);
+            if (pagination.page !== parsedPagination.page) {
+                pagination.onChange(null, parsedPagination.page);
             }
         }
     }, []);
@@ -134,24 +131,34 @@ const Customers: NextPage = () => {
             />
 
             {belowMd ? (
-                <Grid container spacing={2}>
+                <Pagination
+                    {...pagination}
+                    isLoading={isLoading}
+                    pageSize={pageSize}
+                    totalItems={data?.totalElements ?? pageSize}
+                    Container={Grid}
+                    ContainerProps={{
+                        container: true,
+                        spacing: 2,
+                    }}
+                >
                     {rows.map((c, i) => (
                         <Grid item key={i} xs={12} sm={6}>
                             <CustomerCard c={c} />
                         </Grid>
                     ))}
-                </Grid>
+                </Pagination>
             ) : (
                 <Paper sx={{ marginRight: bulkEditOpen ? 40 : 0 }}>
                     <DataGrid
                         skeleton={isLoading}
                         rows={rows}
                         // ...
-                        page={page}
+                        page={pagination.page}
                         pageSize={pageSize}
                         totalRows={totalRows}
                         // ...
-                        onPaginationModelChange={handlePaginationModelChange}
+                        onPaginationModelChange={handlePageChange}
                         onBulkEdit={openBulkEdit}
                         onBulkDelete={openBulkDeleteDialog}
                     />

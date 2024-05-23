@@ -15,7 +15,7 @@ import {
 } from "src/services/properties";
 import { selectAll } from "src/slices/filters";
 import DataGrid from "@/components/DataGrid/Property";
-import { BulkEdit } from "../components/BulkEdit/BulkEdit";
+import { BulkEdit } from "../../components/BulkEdit/BulkEdit";
 
 interface ViewAllProps {
     sortBy: string;

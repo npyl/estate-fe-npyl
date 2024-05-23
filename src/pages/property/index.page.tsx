@@ -1,17 +1,19 @@
 import type { NextPage } from "next";
 import { AuthGuard } from "@/components/authentication/auth-guard";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
-import ViewAll from "./ViewAll";
 import { Box } from "@mui/material";
 import { useEffect, useMemo, useState } from "react";
-import MediaCard from "./MediaCard";
 import useDialog from "src/hooks/useDialog";
-import MapView from "./MapView";
-import FilterBar from "./FiltersBar/FiltersBar";
-import { optionType } from "./FiltersBar/types";
 import useResponsive from "@/hooks/useResponsive";
-import { getOptions } from "./FiltersBar/constants";
 import { useTranslation } from "react-i18next";
+// filters
+import FilterBar from "./(FiltersBar)";
+import { optionType } from "./(FiltersBar)/types";
+import { getOptions } from "./(FiltersBar)/constants";
+// modes
+import ViewAll from "./(ViewAll)";
+import MediaCard from "./(MediaCard)";
+import MapView from "./(MapView)";
 
 const useResponsiveOptionView = () => {
     const belowLg = useResponsive("down", "lg");

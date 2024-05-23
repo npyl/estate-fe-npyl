@@ -1,11 +1,10 @@
-import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import { useState } from "react";
 import { usePropertyHistoryPaginatedQuery } from "src/services/logs";
 import { Box, Pagination, Stack } from "@mui/material";
 import { NextPage } from "next";
 import { useSelector } from "react-redux";
 import { selectAll } from "src/slices/log";
-import { LogCard } from "src/pages/logs/index.page";
+import LogCard from "@/components/Cards/LogCard";
 import { useRouter } from "next/router";
 
 const PropertyLogs: NextPage = () => {

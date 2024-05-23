@@ -1,4 +1,4 @@
-import { Box, Paper, PaperProps, Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import { useSelector } from "src/store";
 
 import useResponsive from "src/hooks/useResponsive";
@@ -9,7 +9,7 @@ import DateSelect from "./Filters/FilterDate";
 import FilterLogManager from "./Filters/FilterManagers";
 import FilterResources from "./Filters/FilterResources";
 
-export const FilterLogSection: React.FC<PaperProps> = ({ ...props }) => {
+export const FilterLogSection = () => {
     const changedCustomerFilters = useSelector(sumOfChangedProperties);
     const isMobile = useResponsive("down", 500);
 

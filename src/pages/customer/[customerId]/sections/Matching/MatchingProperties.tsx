@@ -1,5 +1,4 @@
-import { GridPaginationModel } from "@mui/x-data-grid";
-import { useCallback, useMemo, useState } from "react";
+import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useLoadApi } from "src/components/Map";
 import { ShapeData } from "src/components/Map/types";
@@ -13,6 +12,8 @@ import Panel from "@/components/Panel";
 import useResponsive from "@/hooks/useResponsive";
 import { Grid } from "@mui/material";
 import PropertyCard from "@/components/PropertyCard";
+import { usePagination } from "@/components/Pagination";
+import Pagination from "@/components/Pagination/client";
 
 const filterPropertiesInShape = (
     properties: IProperties[],
@@ -38,11 +39,7 @@ const MatchingPropertiesSection = ({ variant = "default" }: Props) => {
 
     const { customer, customerId } = useGetCustomer();
 
-    const [page, setPage] = useState(0);
-    const handlePaginationChange = useCallback(
-        (model: GridPaginationModel) => setPage(model.page),
-        []
-    );
+    const pagination = usePagination();
 
     const { data, isLoading } = useSuggestForCustomerQuery({
         customerId: +customerId!,
@@ -92,15 +89,27 @@ const MatchingPropertiesSection = ({ variant = "default" }: Props) => {
         return <Placeholder />;
     }
 
-    return belowLg ? (
-        <Grid container spacing={1}>
-            {properties.map((p) => (
-                <Grid item key={p.id} xs={12} sm={6}>
-                    <PropertyCard item={p} selectedMarker={null} />
-                </Grid>
-            ))}
-        </Grid>
-    ) : (
+    if (belowLg)
+        return (
+            <Pagination
+                {...pagination}
+                isLoading={isLoading}
+                pageSize={pageSize}
+                Container={Grid}
+                ContainerProps={{
+                    container: true,
+                    spacing: 1,
+                }}
+            >
+                {properties.map((p) => (
+                    <Grid item key={p.id} xs={12} sm={6}>
+                        <PropertyCard item={p} selectedMarker={null} />
+                    </Grid>
+                ))}
+            </Pagination>
+        );
+
+    return (
         <Panel
             label={t("Matching Properties")}
             childrenSx={{
@@ -111,13 +120,15 @@ const MatchingPropertiesSection = ({ variant = "default" }: Props) => {
                 skeleton={isLoading}
                 // ...
                 rows={properties}
-                totalRows={properties.length || 0}
+                totalRows={properties.length ?? pageSize}
                 columnVariant={variant}
                 // ...
                 paginationMode="client"
-                page={page}
+                page={pagination.page}
                 pageSize={pageSize}
-                onPaginationModelChange={handlePaginationChange}
+                onPaginationModelChange={(m) =>
+                    pagination.onChange(null, m.page)
+                }
             />
         </Panel>
     );

@@ -16,6 +16,7 @@ import { properties } from "../services/properties";
 import { security } from "../services/security";
 import { user } from "../services/user";
 import { publicDashboard } from "../services/publicDashboard";
+import { company } from "../services/company";
 
 import { reducer as customerFiltersReducer } from "../slices/customer/filters";
 import { reducer as customerMiscReducer } from "../slices/customer/misc";
@@ -39,6 +40,7 @@ export const rootReducer = combineReducers({
     [logs.reducerPath]: logs.reducer,
     [dashboard.reducerPath]: dashboard.reducer,
     [publicDashboard.reducerPath]: publicDashboard.reducer,
+    [company.reducerPath]: company.reducer,
     // Listings
     [publicListing.reducerPath]: publicListing.reducer,
     [spitogatosListing.reducerPath]: spitogatosListing.reducer,
