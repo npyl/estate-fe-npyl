@@ -5,7 +5,6 @@ import * as Yup from "yup";
 import { Button, Grid, MenuItem } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { ICompany, ICompanyPOST } from "src/types/company";
-import Stack from "@mui/material/Stack";
 import {
     RHFCheckbox,
     RHFSelect,
@@ -17,7 +16,6 @@ import { LoadingButton } from "@mui/lab";
 import { TranslationType } from "@/types/translation";
 import Multiple from "./Multiple";
 import Dialog from "@/components/Dialog";
-import UploadImage from "./UploadImage";
 
 const getSchema = (t: TranslationType) =>
     Yup.object().shape({

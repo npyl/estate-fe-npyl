@@ -25,9 +25,6 @@ export interface ICompany {
         WATERMARK: string;
     };
 
-    watermark: string;
-    logo: string;
-
     watermarkPosition:
         | "CENTER"
         | "DOWN_RIGHT"
@@ -51,8 +48,7 @@ export interface ICompanyPOST
         | "youtube"
         | "includeWatermark"
         // ...
-        | "logo"
-        | "watermark"
+        | "companyImages"
     > {
     facebook?: string;
     googlePlus?: string;

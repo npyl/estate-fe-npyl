@@ -5,9 +5,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import timelinePlugin from "@fullcalendar/timeline";
 //
-import { useState, useRef, useMemo } from "react";
-// next
-import Head from "next/head";
+import { useState, useRef } from "react";
 // @mui
 import { Button, Card, Container, Stack, Typography } from "@mui/material";
 
@@ -24,8 +22,6 @@ import Iconify from "@/components/iconify";
 const view = "timeGridWeek";
 
 export default function Events() {
-    const { user } = useAuth();
-
     const calendarRef = useRef<FullCalendar>(null);
 
     const [date, setDate] = useState(new Date());
@@ -73,6 +69,7 @@ export default function Events() {
                 <Card>
                     <StyledCalendar>
                         <CalendarToolbar
+                            loading={false}
                             onNextDate={handleClickDateNext}
                             onPrevDate={handleClickDatePrev}
                             date={date}
