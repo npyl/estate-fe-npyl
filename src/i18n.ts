@@ -1,4 +1,5 @@
 import i18n from "i18next";
+import { Calendar } from "react-date-range";
 import { initReactI18next } from "react-i18next";
 
 const resources = {
@@ -73,7 +74,8 @@ const resources = {
             Prefabricated: "Prefabricated",
             Detached: "Detached",
             Air: "Air",
-
+            Statistics: "Statistics",
+            Calendar: "Calendar",
             "Basic Details": "Basic Details",
             Code: "Code",
             Owner: "Owner",
@@ -896,6 +898,8 @@ const resources = {
             Area: "Εμβαδόν",
             "Plot Area": "Εμβαδόν Οικοπέδου",
             Price: "Τιμή",
+            Statistics: "Στατιστικά",
+            Calendar: "Ημερολόγιο",
             "€/Month": "€/Μήνα",
             "Available After": "Διαθέσιμο από",
             "Rental Period Start": "Έναρξη περιόδου μίσθωσης",

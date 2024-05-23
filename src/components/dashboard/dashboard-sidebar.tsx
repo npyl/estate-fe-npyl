@@ -3,6 +3,7 @@ import {
     ConfirmationNumber,
     LabelImportant,
 } from "@mui/icons-material";
+import EditCalendarIcon from "@mui/icons-material/EditCalendar";
 import {
     Box,
     Drawer,
@@ -59,7 +60,7 @@ const getSections = (t: TFunction): Section[] => [
             },
 
             {
-                title: "Statistics",
+                title: t("Statistics"),
                 path: "/statistics",
                 icon: <ChartLineIcon fontSize="small" />,
             },
@@ -105,6 +106,11 @@ const getSections = (t: TFunction): Section[] => [
                 icon: <UsersIcon fontSize="small" />,
                 adminOnly: true,
             },
+            // {
+            //     title: t("Calendar"),
+            //     path: "/calendar",
+            //     icon: <EditCalendarIcon fontSize="small" />,
+            // },
         ],
     },
 ];

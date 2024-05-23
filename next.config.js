@@ -1,7 +1,9 @@
 module.exports = {
     reactStrictMode: false,
     pageExtensions: ["page.tsx", "page.ts", "page.jsx", "page.js"],
-
+    experimental: {
+        runtime: "experimental-edge",
+    },
     eslint: {
         // Warning: This allows production builds to successfully complete even if
         // your project has ESLint errors.
@@ -18,6 +20,17 @@ module.exports = {
     },
 
     transpilePackages: ["@mui/x-charts"],
+
+    images: {
+        remotePatterns: [
+            {
+                protocol: "https",
+                hostname: "**.cloudfront.net",
+                port: "",
+                pathname: "/**",
+            },
+        ],
+    },
 
     webpack(config) {
         config.module.rules.push({

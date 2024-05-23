@@ -1,3 +1,5 @@
+export type CompanyImageType = "LOGO" | "WATERMARK";
+
 export interface ICompany {
     companyName: string;
     address: string;
@@ -17,6 +19,14 @@ export interface ICompany {
     youtube: string;
 
     includeWatermark: boolean;
+
+    companyImages: {
+        LOGO: string;
+        WATERMARK: string;
+    };
+
+    watermark: string;
+    logo: string;
 
     watermarkPosition:
         | "CENTER"
@@ -40,6 +50,9 @@ export interface ICompanyPOST
         | "twitter"
         | "youtube"
         | "includeWatermark"
+        // ...
+        | "logo"
+        | "watermark"
     > {
     facebook?: string;
     googlePlus?: string;

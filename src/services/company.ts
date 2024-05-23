@@ -1,7 +1,15 @@
+import { IFileResponse } from "@/types/file";
 import { IIntegration, IIntegrationPOST } from "@/types/integrations";
 import { ListingTypes } from "@/types/listings";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { ICompany, ICompanyPOST } from "src/types/company";
+import { CompanyImageType, ICompany, ICompanyPOST } from "src/types/company";
+
+interface IUploadCompanyImage {
+    contentType: string;
+    filename: string;
+    size: number;
+    type: CompanyImageType;
+}
 
 export const company = createApi({
     reducerPath: "company",
@@ -50,6 +58,30 @@ export const company = createApi({
             }),
             invalidatesTags: ["CompanyIntegrations"],
         }),
+
+        // Logo or Watermark
+        uploadCompanyImage: builder.mutation<
+            IFileResponse,
+            IUploadCompanyImage
+        >({
+            query: (body) => ({
+                url: "/upload-company-image",
+                method: "POST",
+                body,
+            }),
+            // INFO: call invalidate after amazon push (just like we do with images)
+        }),
+
+        removeCompanyImage: builder.mutation<void, CompanyImageType>({
+            query: (type) => ({
+                url: "/remove-company-image",
+                method: "DELETE",
+                params: {
+                    type,
+                },
+            }),
+            invalidatesTags: ["Company"],
+        }),
     }),
 });
 
@@ -58,4 +90,6 @@ export const {
     useUpdateCompanyDetailsMutation,
     useGetIntegrationsQuery,
     useUpdateIntegrationsMutation,
+    useUploadCompanyImageMutation,
+    useRemoveCompanyImageMutation,
 } = company;
