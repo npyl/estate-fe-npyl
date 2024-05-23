@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import { useFormContext } from "react-hook-form";
-import { useTranslation } from "react-i18next";
 import { Language } from "src/components/Language/types";
 import { IOpenAIDetailsPOST } from "src/types/openai";
 
@@ -12,7 +11,6 @@ const joinWithComma = (...elements: (string | null | undefined)[]): string => {
 export const useOpenAIDetails = (
     lang: Language
 ): { openAIDetails: IOpenAIDetailsPOST } => {
-    const { i18n } = useTranslation();
     const { watch } = useFormContext();
 
     const region = watch("location.region");

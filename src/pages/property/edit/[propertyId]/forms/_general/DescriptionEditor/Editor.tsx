@@ -25,6 +25,7 @@ import TabbedBox from "./TabbedBox";
 import { useOpenAIDetails } from "./hooks";
 import fixDropdowns from "./stupid";
 import useResponsive from "@/hooks/useResponsive";
+import { useTranslateMutation } from "@/services/translate";
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
@@ -77,11 +78,13 @@ interface UpperRightOptionsProps {
     isLoading: boolean;
     onGenerate: (d: IOpenAIDetailsPOST) => Promise<string>;
     onChatTextChange: (s: string) => void;
+    onClickTranslate: () => void;
 }
 
 const UpperRightOptions = ({
     onGenerate,
     onChatTextChange,
+    onClickTranslate,
     isLoading,
     lang,
 }: UpperRightOptionsProps) => {
@@ -121,12 +124,10 @@ const UpperRightOptions = ({
         [isLoading, handleGenerate, belowMd]
     );
 
-    const handleTranslate = useCallback(() => {}, []);
-
     return (
         <Box display="flex" flexDirection="row" gap={1}>
             {canTranslate ? (
-                <Button onClick={handleTranslate}>
+                <Button onClick={onClickTranslate}>
                     {t("Translate from greek")}
                 </Button>
             ) : null}
@@ -260,6 +261,53 @@ const DescriptionSection: React.FC = () => {
         [lang]
     );
 
+    // ------------------------------------------------------------------------
+
+    const [translate] = useTranslateMutation();
+
+    const handleTranslate = useCallback(async () => {
+        // Fetching the texts to be translated
+        const titleToTranslate = watch("descriptions[0].title");
+        const descriptionToTranslate = watch("descriptions[0].description");
+
+        console.log("Title to Translate:", titleToTranslate);
+        console.log("Description to Translate:", descriptionToTranslate);
+
+        // Ensure both texts are available
+        if (!titleToTranslate && !descriptionToTranslate) {
+            console.log("No text provided for translation.");
+            return;
+        }
+
+        // Combine texts into an array, assuming the API can handle multiple texts
+        const textsToTranslate = [];
+        if (titleToTranslate) textsToTranslate.push(titleToTranslate);
+        if (descriptionToTranslate)
+            textsToTranslate.push(descriptionToTranslate);
+
+        // Setting up the parameters for the API call
+        const params = {
+            source_lang: "EL", // Assuming Greek to English translation
+            target_lang: "EN",
+            text: textsToTranslate,
+        };
+
+        try {
+            const res = await translate(params).unwrap();
+            const translatedTexts = res.translations.map(({ text }) => text);
+
+            console.log("Translated Texts:", translatedTexts);
+
+            setValue("descriptions[1].title", translatedTexts[0]);
+            const contentState = convertFromRaw(JSON.parse(translatedTexts[1]));
+            onEditorStateChange(EditorState.createWithContent(contentState));
+
+            // Optionally, navigate to another page or update UI to reflect changes
+        } catch (error) {
+            console.error("Translation error:", error);
+        }
+    }, [onEditorStateChange]);
+
     return (
         <TabbedBox<Language>
             tabs={TABS}
@@ -270,6 +318,7 @@ const DescriptionSection: React.FC = () => {
                     onChatTextChange={onChatTextChange}
                     isLoading={isLoading}
                     lang={lang}
+                    onClickTranslate={handleTranslate}
                 />
             }
             onSelect={handleTabChange}

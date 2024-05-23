@@ -23,6 +23,7 @@ import { properties } from "../services/properties";
 import { security } from "../services/security";
 import { user } from "../services/user";
 import { publicDashboard } from "@/services/publicDashboard";
+import { translation } from "@/services/translate";
 import { company } from "../services/company";
 import { rootReducer } from "./root-reducer";
 
@@ -59,6 +60,7 @@ export const createStore = (
                 publicListing.middleware,
                 spitogatosListing.middleware,
                 // ...
+                translation.middleware,
                 rtkQueryErrorLogger
             ),
         ...options,
