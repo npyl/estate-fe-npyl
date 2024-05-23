@@ -106,11 +106,11 @@ const getSections = (t: TFunction): Section[] => [
                 icon: <UsersIcon fontSize="small" />,
                 adminOnly: true,
             },
-            {
-                title: t("Calendar"),
-                path: "/calendar",
-                icon: <EditCalendarIcon fontSize="small" />,
-            },
+            // {
+            //     title: t("Calendar"),
+            //     path: "/calendar",
+            //     icon: <EditCalendarIcon fontSize="small" />,
+            // },
         ],
     },
 ];
