@@ -19,6 +19,17 @@ module.exports = {
 
     transpilePackages: ["@mui/x-charts"],
 
+    images: {
+        remotePatterns: [
+            {
+                protocol: "https",
+                hostname: "**.cloudfront.net",
+                port: "",
+                pathname: "/**",
+            },
+        ],
+    },
+
     webpack(config) {
         config.module.rules.push({
             test: /\.svg$/,

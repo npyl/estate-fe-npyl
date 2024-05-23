@@ -85,7 +85,7 @@ interface ReorderImagesWithSetImageVisibilityProps {
 }
 
 interface UploadDocumentToAmazonProps {
-    variant: "image" | "blueprint" | "document" | "googleEarth"; // INFO: for image variant, we must also strip metadata
+    variant: "image" | "blueprint" | "document" | "googleEarth" | "OTHER"; // INFO: for image variant, we must also strip metadata
     url: string;
     file: File;
     onProgressUpdate?: (p: number) => void;

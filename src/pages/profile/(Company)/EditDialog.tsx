@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import { Button, Grid, MenuItem } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { ICompany, ICompanyPOST } from "src/types/company";
+import Stack from "@mui/material/Stack";
 import {
     RHFCheckbox,
     RHFSelect,
@@ -16,6 +17,7 @@ import { LoadingButton } from "@mui/lab";
 import { TranslationType } from "@/types/translation";
 import Multiple from "./Multiple";
 import Dialog from "@/components/Dialog";
+import UploadImage from "./UploadImage";
 
 const getSchema = (t: TranslationType) =>
     Yup.object().shape({
@@ -87,8 +89,27 @@ const EditDialog: React.FC<FormProps> = ({ open, onClose, initialValues }) => {
     const validationSchema = useMemo(() => getSchema(t), [t]);
 
     const methods = useForm<ICompanyPOST>({
-        values: initialValues,
-        resolver: yupResolver(validationSchema) as any,
+        values: {
+            companyName: initialValues?.companyName || "",
+            address: initialValues?.address || "",
+            city: initialValues?.city || "",
+            email: initialValues?.email || "",
+            fixedTelephones: initialValues?.fixedTelephones || [],
+            phoneNumbers: initialValues?.phoneNumbers || [],
+            description: initialValues?.description || "",
+
+            watermarkPosition: initialValues?.watermarkPosition ?? "CENTER",
+
+            facebook: initialValues?.facebook || "",
+            googlePlus: initialValues?.googlePlus || "",
+            instagram: initialValues?.instagram || "",
+            linkedIn: initialValues?.linkedIn || "",
+            skype: initialValues?.skype || "",
+            tiktok: initialValues?.tiktok || "",
+            twitter: initialValues?.twitter || "",
+            youtube: initialValues?.youtube || "",
+        },
+        resolver: yupResolver(validationSchema) as any, // TODO: fix this
     });
 
     const [updateCompanyDetails, { isLoading }] =

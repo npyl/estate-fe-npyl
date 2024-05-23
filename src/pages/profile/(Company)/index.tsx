@@ -7,6 +7,8 @@ import EditDialog from "./EditDialog";
 import { List, ListBooleanItem, ListItem } from "src/components/List";
 import { SpaceBetween } from "@/components/styled";
 import { SoftButton } from "@/components/SoftButton";
+import Stack from "@mui/material/Stack";
+import UploadImage from "./UploadImage";
 
 const CompanyInformation: React.FC = () => {
     const { t } = useTranslation();
@@ -34,6 +36,28 @@ const CompanyInformation: React.FC = () => {
                 </SoftButton>
             </SpaceBetween>
             <Divider />
+            <Stack
+                direction={{
+                    xs: "column",
+                    sm: "row",
+                }}
+                spacing={1}
+                width={1}
+                p={1}
+                justifyContent="center"
+                alignItems="center"
+            >
+                <UploadImage
+                    label={t("Logo")}
+                    src={companyDetails?.companyImages?.LOGO || ""}
+                    variant="LOGO"
+                />
+                <UploadImage
+                    label={t("Watermark")}
+                    src={companyDetails?.companyImages?.WATERMARK || ""}
+                    variant="WATERMARK"
+                />
+            </Stack>
             <Grid container>
                 <Grid item xs={12} sm={6}>
                     <List>
@@ -134,6 +158,7 @@ const CompanyInformation: React.FC = () => {
                     </List>
                 </Grid>
             </Grid>
+
             {isDialogOpen ? (
                 <EditDialog
                     open={isDialogOpen}
