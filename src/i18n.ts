@@ -732,10 +732,14 @@ const resources = {
 
             "There are no matching properties":
                 "There are no matching properties",
+
+            "Green Map": "Green Map",
         },
     },
     el: {
         translation: {
+            "Green Map": "Πράσινος Χάρτης",
+
             "Edit Integration Details": "Επεξεργασία Λεπτομερειών Σύνδεσης",
 
             "Draw on a location with markers":

@@ -30,6 +30,7 @@ const MatchingCustomersSection = lazy(
 );
 const PhotosOnly = lazy(() => import("./(tabs)/PhotosOnly"));
 const PropertyLogs = lazy(() => import("./(sections)/Logs"));
+const GreenMap = lazy(() => import("./(tabs)/Green"));
 
 const SingleProperty: NextPage = () => {
     const router = useRouter();
@@ -85,6 +86,7 @@ const SingleProperty: NextPage = () => {
                     <Tab label={t("Documents")} />
                     <Tab label={t("Map")} />
                     <Tab label={t("Street View")} />
+                    <Tab label={t("Green Map")} />
                 </Tabs>
             </ViewHeader>
             <TabPanel value={value} index={0}>
@@ -113,6 +115,9 @@ const SingleProperty: NextPage = () => {
                 </TabPanel>
                 <TabPanel value={value} index={9}>
                     <StreetView />
+                </TabPanel>
+                <TabPanel value={value} index={10}>
+                    <GreenMap />
                 </TabPanel>
             </Suspense>
 
