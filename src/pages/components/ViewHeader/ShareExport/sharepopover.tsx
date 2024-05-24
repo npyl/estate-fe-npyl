@@ -27,8 +27,9 @@ import Button from "./button";
 import { useCallback } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 
-interface SharePopoverProps extends PopoverProps {
+interface SharePopoverProps extends Omit<PopoverProps, "onClose"> {
     shareUrl: string;
+    onClose: (event: {}, reason: "backdropClick" | "escapeKeyDown") => void;
 }
 
 const SharePopover = ({ shareUrl, onClose, ...props }: SharePopoverProps) => {
@@ -63,7 +64,7 @@ const SharePopover = ({ shareUrl, onClose, ...props }: SharePopoverProps) => {
                     display: "flex",
                     flexDirection: "column",
                     gap: 1.5,
-                    alignItems: "center",
+                    alignItems: "flex-start",
                     position: "relative",
                     borderRadius: 2,
                     boxShadow: 3,
@@ -73,21 +74,18 @@ const SharePopover = ({ shareUrl, onClose, ...props }: SharePopoverProps) => {
         >
             <IconButton
                 sx={{ position: "absolute", top: 8, right: 8 }}
-                onClick={() => onClose()}
+                onClick={(event) => onClose(event, "backdropClick")}
             >
                 <CloseIcon />
             </IconButton>
 
-            <Typography variant="h6" sx={{ mb: 1 }}>
+            <Typography variant="h6" sx={{ mb: 1, alignSelf: "center" }}>
                 {t("Share")}
             </Typography>
 
             <Divider sx={{ width: "100%" }} />
 
-            <Typography
-                variant="subtitle2"
-                sx={{ alignSelf: "flex-start", ml: 1, mt: 1, mb: 0.5 }}
-            >
+            <Typography variant="subtitle2" sx={{ ml: 1, mt: 1, mb: 0.5 }}>
                 {t("Chat")}
             </Typography>
             <Box
@@ -95,8 +93,9 @@ const SharePopover = ({ shareUrl, onClose, ...props }: SharePopoverProps) => {
                     display: "flex",
                     gap: 1,
                     flexWrap: "wrap",
-                    justifyContent: "center",
+                    justifyContent: "flex-start",
                     mb: 1,
+                    width: "100%",
                 }}
             >
                 <Button
@@ -115,10 +114,7 @@ const SharePopover = ({ shareUrl, onClose, ...props }: SharePopoverProps) => {
 
             <Divider sx={{ width: "100%" }} />
 
-            <Typography
-                variant="subtitle2"
-                sx={{ alignSelf: "flex-start", ml: 1, mt: 1, mb: 0.5 }}
-            >
+            <Typography variant="subtitle2" sx={{ ml: 1, mt: 1, mb: 0.5 }}>
                 {t("Email")}
             </Typography>
             <Box
@@ -126,8 +122,9 @@ const SharePopover = ({ shareUrl, onClose, ...props }: SharePopoverProps) => {
                     display: "flex",
                     gap: 1,
                     flexWrap: "wrap",
-                    justifyContent: "center",
+                    justifyContent: "flex-start",
                     mb: 1,
+                    width: "100%",
                 }}
             >
                 <Button
@@ -140,10 +137,7 @@ const SharePopover = ({ shareUrl, onClose, ...props }: SharePopoverProps) => {
 
             <Divider sx={{ width: "100%" }} />
 
-            <Typography
-                variant="subtitle2"
-                sx={{ alignSelf: "flex-start", ml: 1, mt: 1, mb: 0.5 }}
-            >
+            <Typography variant="subtitle2" sx={{ ml: 1, mt: 1, mb: 0.5 }}>
                 {t("Social Networks")}
             </Typography>
             <Box
@@ -151,8 +145,9 @@ const SharePopover = ({ shareUrl, onClose, ...props }: SharePopoverProps) => {
                     display: "flex",
                     gap: 1,
                     flexWrap: "wrap",
-                    justifyContent: "center",
+                    justifyContent: "flex-start",
                     mb: 1,
+                    width: "100%",
                 }}
             >
                 <Button
@@ -177,10 +172,7 @@ const SharePopover = ({ shareUrl, onClose, ...props }: SharePopoverProps) => {
 
             <Divider sx={{ width: "100%" }} />
 
-            <Typography
-                variant="subtitle2"
-                sx={{ alignSelf: "flex-start", ml: 1, mt: 1, mb: 0.5 }}
-            >
+            <Typography variant="subtitle2" sx={{ ml: 1, mt: 1, mb: 0.5 }}>
                 {t("Other")}
             </Typography>
             <Box
@@ -195,6 +187,8 @@ const SharePopover = ({ shareUrl, onClose, ...props }: SharePopoverProps) => {
                     "&:hover": {
                         backgroundColor: "grey.200",
                     },
+                    width: "100%",
+                    justifyContent: "space-between",
                 }}
                 onClick={handleCopyShareUrl}
             >

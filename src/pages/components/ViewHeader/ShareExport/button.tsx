@@ -18,13 +18,18 @@ const Button: React.FC<ButtonProps> = ({
     <Component
         style={{
             borderRadius: "17px",
-            paddingLeft: "10px",
+            padding: "8px 12px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "100%",
+            textAlign: "left",
         }}
-        className={`flex flex-row gap-x-2 !bg-neutral-100 dark:!bg-neutral-700 items-center ${className}`}
+        className={`flex flex-row !bg-neutral-100 dark:!bg-neutral-700 ${className}`}
         url={shareUrl}
     >
-        <p>{label}</p>
-        <Icon size={32} round />
+        <p style={{ margin: 0 }}>{label}</p>
+        <Icon size={24} round />
     </Component>
 );
 
