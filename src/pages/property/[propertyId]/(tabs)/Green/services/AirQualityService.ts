@@ -45,10 +45,6 @@ const AirQualityService = {
     ) {
         return ((value - inMin) * (outMax - outMin)) / (inMax - inMin) + outMin;
     },
-    valueToAngle(value: any) {
-        // Map the value from the range 0-100 to the range 0-180
-        return this.mapValue(value, 0, 100, 0, 180);
-    },
 };
 
 export default AirQualityService;

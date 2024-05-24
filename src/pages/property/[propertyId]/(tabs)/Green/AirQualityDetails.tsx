@@ -1,7 +1,16 @@
 import React from "react";
-import { Grid, Paper, Typography, Box, CircularProgress } from "@mui/material";
 import {
-    FiberManualRecord,
+    Grid,
+    Paper,
+    Typography,
+    Box,
+    CircularProgress,
+    Stack,
+    StackProps,
+    PaperProps,
+    Divider,
+} from "@mui/material";
+import {
     BeachAccess,
     SentimentVeryDissatisfied,
     Face,
@@ -9,7 +18,15 @@ import {
     ChildCare,
     SportsSoccer,
 } from "@mui/icons-material";
-import AirQualityService from "./services/AirQualityService";
+
+import { getBorderColor2 } from "@/theme/borderColor";
+
+import { styled } from "@mui/material/styles";
+
+import dynamic from "next/dynamic";
+const GaugeComponent = dynamic(() => import("react-gauge-component"), {
+    ssr: false,
+});
 
 interface AirQualityData {
     dateTime: string;
@@ -52,14 +69,48 @@ const healthRecommendationIcons: { [key: string]: JSX.Element } = {
     children: <ChildCare />,
 };
 
+const PanelPaper = styled(Paper)(({ theme }) => ({
+    border: "1px solid",
+    borderColor: getBorderColor2(theme),
+}));
+
+interface PanelProps extends PaperProps {
+    title: string;
+}
+
+const Panel: React.FC<PanelProps> = ({ title, children, ...props }) => (
+    <PanelPaper {...props} elevation={2}>
+        <Typography textAlign="center" py={2} variant="h6">
+            {title}
+        </Typography>
+        <Divider />
+        <Stack p={2} spacing={1}>
+            {children}
+        </Stack>
+    </PanelPaper>
+);
+
+interface AirQualityLabelProps extends StackProps {
+    percentage: number;
+    quality: string;
+}
+
+const AirQualityLabel: React.FC<AirQualityLabelProps> = ({
+    percentage,
+    quality,
+    ...props
+}) => (
+    <Stack {...props} alignItems="center">
+        <Typography variant="h5">Universal AQI: {percentage}</Typography>
+        <Typography fontWeight="600">{quality}</Typography>
+    </Stack>
+);
+
 interface Props {
     airQualityData: AirQualityData;
 }
 
 const AirQualityDetails: React.FC<Props> = ({ airQualityData }) => {
-    // Find the dominant pollutant
-    //   const dominantPollutant = airQualityData.indexes.find(index => index.displayName === airQualityData.indexes.find(ind => ind.dominantPollutant).displayName);
-    // console.log(dominantPollutant);
     const primaryIndex = airQualityData?.indexes[0]; // Assuming the first index is primary
     const progress = Math.min(primaryIndex.aqi / 500, 1);
 
@@ -68,111 +119,68 @@ const AirQualityDetails: React.FC<Props> = ({ airQualityData }) => {
 
     return (
         <Grid container spacing={2}>
-            <Grid item xs={12}>
-                <Typography variant="h5" gutterBottom>
-                    Air Quality Information
-                </Typography>
+            <Grid item xs={12} component={Typography} variant="body1">
+                {new Date(airQualityData.dateTime).toLocaleDateString()}
             </Grid>
 
-            <Grid item xs={12}>
-                <Typography variant="body1">
-                    {new Date(airQualityData.dateTime).toLocaleDateString()}
-                </Typography>
-            </Grid>
-
-            <Grid item xs={12}>
-                {findAqi ? (
-                    <Paper elevation={2} sx={{ p: 2 }}>
+            {findAqi ? (
+                <Grid item xs={12}>
+                    <Panel title="Air Pollution">
                         <Typography variant="h6" gutterBottom>
                             Dominant Pollutants: {findAqi.dominantPollutant}
                         </Typography>
-                        <Box
-                            sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                mb: 1,
-                            }}
-                        >
-                            <FiberManualRecord
-                                sx={{ color: findAqi.color, mr: 1 }}
-                            />
-                            <Typography variant="body2">
-                                {findAqi.displayName}: {findAqi.aqi} -{" "}
-                                {findAqi.category}
-                            </Typography>
-                        </Box>
-                        <Box>
-                            <Box width="200px" margin="auto">
-                                <Box width="200px" height="100px">
-                                    <Box
-                                        position="relative"
-                                        height="100px"
-                                        marginBottom="10px"
-                                        borderRadius="150px 150px 0 0"
-                                        overflow="hidden"
-                                        textAlign="center"
-                                    >
-                                        <Box
-                                            position="absolute"
-                                            top="100px"
-                                            left="-200%"
-                                            width="400%"
-                                            height="400%"
-                                            marginLeft="100px"
-                                            border="5px solid white"
-                                            sx={{
-                                                transform:
-                                                    "rotate( " +
-                                                    AirQualityService.valueToAngle(
-                                                        findAqi.aqi
-                                                    ) +
-                                                    "deg)",
-                                            }}
-                                        />
 
-                                        <Box
-                                            width="178px"
-                                            position="absolute"
-                                            top="10px"
-                                            right="10px"
-                                            left="10px"
-                                            height="140px"
-                                            bgcolor="#fff"
-                                            borderRadius="150px 150px 0 0"
-                                        />
-                                        <Typography
-                                            sx={{
-                                                position: "absolute",
-                                                top: "60%",
-                                                left: "0",
-                                                width: "100%",
-                                                fontSize: "28px",
-                                                fontWeight: "500",
-                                            }}
-                                        >
-                                            {findAqi.aqi}
-                                        </Typography>
-                                    </Box>
-                                    <Typography
-                                        sx={{
-                                            float: "left",
-                                        }}
-                                    >
-                                        0
-                                    </Typography>
-                                    <Typography
-                                        sx={{
-                                            float: "right",
-                                        }}
-                                    >
-                                        100
-                                    </Typography>
-                                </Box>
-                            </Box>
+                        <Box position="relative">
+                            <GaugeComponent
+                                type="semicircle"
+                                arc={{
+                                    width: 0.07,
+                                    colorArray: [
+                                        "#00FF00",
+                                        "#FFFF00",
+                                        "#FFA500",
+                                        "#FF0000",
+                                    ],
+                                    padding: 0.005,
+                                    subArcs: [
+                                        { limit: 20 },
+                                        { limit: 40 },
+                                        { limit: 60 },
+                                        { limit: 80 },
+                                        { limit: 100 },
+                                    ],
+                                }}
+                                labels={{
+                                    tickLabels: {
+                                        ticks: [
+                                            { value: 0 },
+                                            { value: 20 },
+                                            { value: 40 },
+                                            { value: 60 },
+                                            { value: 80 },
+                                            { value: 100 },
+                                        ],
+                                    },
+                                    valueLabel: {
+                                        hide: true,
+                                    },
+                                }}
+                                value={findAqi.aqi}
+                                pointer={{ type: "blob", animationDelay: 0 }}
+                            />
+
+                            <AirQualityLabel
+                                percentage={findAqi.aqi}
+                                quality={findAqi.category}
+                                position="absolute"
+                                bottom="100px"
+                                left="50%"
+                                style={{ transform: "translateX(-50%)" }}
+                            />
                         </Box>
-                    </Paper>
-                ) : null}
-            </Grid>
+                    </Panel>
+                </Grid>
+            ) : null}
 
             <Grid item xs={12}>
                 <Paper elevation={2} sx={{ p: 2 }}>
@@ -230,20 +238,20 @@ const AirQualityDetails: React.FC<Props> = ({ airQualityData }) => {
                 </Paper>
             </Grid>
 
-            <Grid item xs={12}>
-                <Box
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                    mt={2}
-                >
-                    <CircularProgress
-                        variant="determinate"
-                        value={progress}
-                        size={150}
-                        thickness={5}
-                    />
-                </Box>
+            <Grid
+                item
+                xs={12}
+                component={Stack}
+                alignItems="center"
+                justifyContent="center"
+                mt={2}
+            >
+                <CircularProgress
+                    variant="determinate"
+                    value={progress}
+                    size={150}
+                    thickness={5}
+                />
             </Grid>
         </Grid>
     );

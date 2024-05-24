@@ -13,7 +13,7 @@ import AirQualityService from "./services/AirQualityService";
 import AirQualityDetails from "./AirQualityDetails";
 import PanelCountSlider from "./PanelCountSlider";
 
-let mapOptions = {
+const mapOptions = {
     zoom: 18,
     mapTypeId: "satellite",
     tilt: 0,
