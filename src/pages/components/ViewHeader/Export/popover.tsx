@@ -5,9 +5,8 @@ import FormControlLabel, {
     FormControlLabelProps,
 } from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import { Button, Stack } from "@mui/material";
+import { Button, Stack, CircularProgress } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { useState } from "react";
 
 // ---------------------------------------------------
 
@@ -44,22 +43,21 @@ const StyledControlledLabel = styled(FormControlLabel)<ControlledLabelProps>(
 interface ExportPopoverProps extends PopoverProps {
     onShare: VoidFunction;
     onDownload: VoidFunction;
-    // ...
     blueprints: boolean;
     setBlueprints: (b: boolean) => void;
     version: string;
     setVersion: (s: "LONG" | "SHORT") => void;
+    loading: boolean; // Add loading prop
 }
 
 const Popover = ({
     onShare,
     onDownload,
-    // ...
     blueprints,
     setBlueprints,
     version,
     setVersion,
-    // ...
+    loading, // Destructure loading prop
     ...props
 }: ExportPopoverProps) => {
     const { t } = useTranslation();
@@ -92,7 +90,6 @@ const Popover = ({
                     control={<Checkbox />}
                     label={t("Short Version")}
                     labelPlacement="start"
-                    // ...
                     version="SHORT"
                     value={version}
                     checked={version === "SHORT"}
@@ -102,7 +99,6 @@ const Popover = ({
                     control={<Checkbox />}
                     label={t("Long Version")}
                     labelPlacement="start"
-                    // ...
                     version="LONG"
                     value={version}
                     checked={version === "LONG"}
@@ -113,7 +109,6 @@ const Popover = ({
                     control={<Checkbox />}
                     label={t("Blueprints")}
                     labelPlacement="start"
-                    // ...
                     value={blueprints}
                     checked={blueprints}
                     onChange={(_, b) => setBlueprints(b)}
@@ -123,9 +118,13 @@ const Popover = ({
                 <Button onClick={onShare} variant="outlined">
                     {t("Share PDF")}
                 </Button>
-                <Button onClick={onDownload} variant="contained">
-                    {t("Download PDF")}
-                </Button>
+                {loading ? (
+                    <CircularProgress />
+                ) : (
+                    <Button onClick={onDownload} variant="contained">
+                        {t("Download PDF")}
+                    </Button>
+                )}
             </Stack>
         </MuiPopover>
     );
