@@ -7,7 +7,7 @@ import { useDebouncedCallback } from "use-debounce";
 import Grid from "@mui/material/Grid";
 import Placeholder from "./Placeholder";
 import ModesButtons from "./ModesButtons";
-import SolarDetails from "./SolarDetails";
+import SolarDetails from "./Solar";
 import SolarPanelService from "./services/SolarPanelService";
 import AirQualityService from "./services/AirQualityService";
 import AirQualityDetails from "./AirQuality";

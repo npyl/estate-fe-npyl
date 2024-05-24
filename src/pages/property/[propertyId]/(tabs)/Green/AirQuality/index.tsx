@@ -9,30 +9,9 @@ import {
     SportsSoccer,
 } from "@mui/icons-material";
 import PollutionPanel from "./Polution";
-import { Index } from "./types";
+import { Index, Pollutant } from "./types";
 import Panel from "./Panel";
-
-interface AirQualityData {
-    dateTime: string;
-    regionCode: string;
-    indexes: Index[];
-    pollutants: Pollutant[];
-    healthRecommendations: { [key: string]: string };
-}
-
-interface Pollutant {
-    code: string;
-    displayName: string;
-    fullName: string;
-    concentration: {
-        value: number;
-        units: string;
-    };
-    additionalInfo: {
-        sources: string;
-        effects: string;
-    };
-}
+import PollutantItem from "./PollutantItem";
 
 const healthRecommendationIcons: { [key: string]: JSX.Element } = {
     generalPopulation: <BeachAccess />,
@@ -43,6 +22,14 @@ const healthRecommendationIcons: { [key: string]: JSX.Element } = {
     pregnantWomen: <PregnantWoman />,
     children: <ChildCare />,
 };
+
+interface AirQualityData {
+    dateTime: string;
+    regionCode: string;
+    indexes: Index[];
+    pollutants: Pollutant[];
+    healthRecommendations: { [key: string]: string };
+}
 
 interface Props {
     airQualityData: AirQualityData;
@@ -68,22 +55,8 @@ const AirQualityDetails: React.FC<Props> = ({ airQualityData }) => {
             ) : null}
 
             <Grid item xs={12} component={Panel} title="Other Pollutants">
-                {airQualityData.pollutants.map((pollutant, pollutantKey) => (
-                    <Box key={pollutantKey} sx={{ mb: 1 }}>
-                        <Typography variant="body2">
-                            {pollutant.displayName}:{" "}
-                            {pollutant.concentration.value}{" "}
-                            {pollutant.concentration.units}
-                        </Typography>
-                        <Typography variant="body2">
-                            <strong>Sources:</strong>{" "}
-                            {pollutant.additionalInfo.sources}
-                        </Typography>
-                        <Typography variant="body2">
-                            <strong>Effects:</strong>{" "}
-                            {pollutant.additionalInfo.effects}
-                        </Typography>
-                    </Box>
+                {airQualityData.pollutants.map((p, i) => (
+                    <PollutantItem key={i} p={p} />
                 ))}
             </Grid>
 

@@ -1,15 +1,6 @@
 import React from "react";
-import { Paper, Typography, Stack, PaperProps, Divider } from "@mui/material";
-
-import { getBorderColor2 } from "@/theme/borderColor";
-
-import { styled } from "@mui/material/styles";
-
-const PanelPaper = styled(Paper)(({ theme }) => ({
-    border: "1px solid",
-    borderColor: getBorderColor2(theme),
-    width: "100%",
-}));
+import { Typography, Stack, PaperProps, Divider } from "@mui/material";
+import { PanelPaper } from "./styled";
 
 interface PanelProps extends PaperProps {
     title: string;
