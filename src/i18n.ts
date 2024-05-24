@@ -732,10 +732,20 @@ const resources = {
 
             "There are no matching properties":
                 "There are no matching properties",
+
+            "Copy Link": "Copy Link",
+            "Social Networks": "Social Networks",
+            "Short Version": "Short Version",
+            "Long Version": "Long Version",
         },
     },
     el: {
         translation: {
+            "Copy Link": "Αντιγραφή Συνδέσμου",
+            "Social Networks": "Μέσα Κοινωνικής Δικτύωσης",
+            "Short Version": "Σύντομη Έκδοση",
+            "Long Version": "Εκτεταμένη Έκδοση",
+
             "Edit Integration Details": "Επεξεργασία Λεπτομερειών Σύνδεσης",
 
             "Draw on a location with markers":

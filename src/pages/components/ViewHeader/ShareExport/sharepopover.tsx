@@ -181,11 +181,20 @@ const SharePopover = ({ shareUrl, onClose, ...props }: SharePopoverProps) => {
                     alignItems: "center",
                     gap: 1,
                     p: 1,
-                    backgroundColor: "grey.100",
+
+                    backgroundColor: (theme) =>
+                        theme.palette.mode === "light"
+                            ? "grey.100"
+                            : "neutral.700",
+
                     borderRadius: 1,
                     cursor: "pointer",
+
                     "&:hover": {
-                        backgroundColor: "grey.200",
+                        backgroundColor: (theme) =>
+                            theme.palette.mode === "light"
+                                ? "grey.200"
+                                : "neutral.500",
                     },
                     width: "100%",
                     justifyContent: "space-between",

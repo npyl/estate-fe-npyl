@@ -1,4 +1,6 @@
-const LinkIcon = () => (
+import { createSvgIcon } from "@mui/material";
+
+const LinkIcon = createSvgIcon(
     <svg
         viewBox="0 0 24 24"
         fill="none"
@@ -27,7 +29,8 @@ const LinkIcon = () => (
                 strokeLinecap="round"
             ></path>
         </g>
-    </svg>
+    </svg>,
+    "LinkIcon"
 );
 
 export default LinkIcon;
