@@ -10,7 +10,7 @@ import ModesButtons from "./ModesButtons";
 import SolarDetails from "./SolarDetails";
 import SolarPanelService from "./services/SolarPanelService";
 import AirQualityService from "./services/AirQualityService";
-import AirQualityDetails from "./AirQualityDetails";
+import AirQualityDetails from "./AirQuality";
 import PanelCountSlider from "./PanelCountSlider";
 
 const mapOptions = {
