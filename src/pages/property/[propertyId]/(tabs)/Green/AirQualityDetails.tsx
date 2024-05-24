@@ -75,12 +75,9 @@ const AirQualityDetails: React.FC<Props> = ({ airQualityData }) => {
             </Grid>
 
             <Grid item xs={12}>
-                <Paper elevation={2} sx={{ p: 2 }}>
-                    <Typography variant="body1">
-                        DateTime:{" "}
-                        {new Date(airQualityData.dateTime).toLocaleDateString()}
-                    </Typography>
-                </Paper>
+                <Typography variant="body1">
+                    {new Date(airQualityData.dateTime).toLocaleDateString()}
+                </Typography>
             </Grid>
 
             <Grid item xs={12}>

@@ -65,7 +65,7 @@ const ModesButtons = ({ alignment, onClick }: ModeButtonsProps) => (
         </ToggleButton>
         <ToggleButton value="solar">
             <WbSunny />
-            <IconButton sx={{ ml: 1 }}>
+            <IconButton>
                 <ArrowDropDown />
             </IconButton>
         </ToggleButton>

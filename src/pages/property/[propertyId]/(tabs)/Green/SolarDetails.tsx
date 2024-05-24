@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Paper, Typography, Box, Divider, Grid } from "@mui/material";
+import React, { useMemo } from "react";
+import { Paper, Typography, Box, Divider, Grid, Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { List, ListItem } from "src/components/List";
 import HalfCircleProgressBar from "./HalfCircleProgressBar";
@@ -47,16 +47,11 @@ const SolarDetails: React.FC<SolarDetailsProps> = ({
     solarInsights,
     panel_data,
 }) => {
-    const [chartData, setChartData] = useState<any>(null);
-
-    const { t } = useTranslation();
-
     const solarPotential = solarInsights.solarPotential;
+    var yValues = solarPotential.wholeRoofStats.sunshineQuantiles;
 
-    useEffect(() => {
-        var yValues = solarPotential.wholeRoofStats.sunshineQuantiles;
-
-        setChartData({
+    const chartData = useMemo(
+        () => ({
             labels: xValues,
             datasets: [
                 {
@@ -67,41 +62,40 @@ const SolarDetails: React.FC<SolarDetailsProps> = ({
                     borderWidth: 1,
                 },
             ],
-        });
-    }, []);
+        }),
+        [yValues]
+    );
+
+    const { t } = useTranslation();
 
     return (
-        <Paper elevation={10} sx={{ overflow: "auto" }}>
+        <Paper elevation={10}>
             {panel_data ? (
-                <>
-                    <Grid container alignItems="center" spacing={2}>
-                        <Grid item>
-                            <Box>
-                                <Typography variant="body1">
-                                    Panels count
-                                </Typography>
-                                <HalfCircleProgressBar
-                                    value={panel_data.panel.percent}
-                                    color="primary"
-                                    label={panel_data.panel.text}
-                                />
-                            </Box>
-                        </Grid>
-                        <Grid item>
-                            <Box>
-                                <Typography variant="body1">
-                                    Annual energy
-                                </Typography>
-                                <HalfCircleProgressBar
-                                    value={panel_data.energy.percent}
-                                    color="success"
-                                    label={panel_data.energy.text}
-                                />
-                            </Box>
-                        </Grid>
-                    </Grid>
-                    <Divider />
-                </>
+                <Stack
+                    direction="row"
+                    spacing={1}
+                    justifyContent="center"
+                    alignItems="center"
+                    p={1}
+                >
+                    <Stack>
+                        <Typography variant="body1">Panels count</Typography>
+                        <HalfCircleProgressBar
+                            value={panel_data.panel.percent}
+                            color="primary"
+                            label={panel_data.panel.text}
+                        />
+                    </Stack>
+
+                    <Stack>
+                        <Typography variant="body1">Annual energy</Typography>
+                        <HalfCircleProgressBar
+                            value={panel_data.energy.percent}
+                            color="success"
+                            label={panel_data.energy.text}
+                        />
+                    </Stack>
+                </Stack>
             ) : null}
             <Box
                 sx={{
