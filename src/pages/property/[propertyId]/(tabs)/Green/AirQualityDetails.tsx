@@ -9,7 +9,7 @@ import {
     ChildCare,
     SportsSoccer,
 } from "@mui/icons-material";
-import AirQualityService from "./AirQualityService";
+import AirQualityService from "./services/AirQualityService";
 
 interface AirQualityData {
     dateTime: string;
@@ -79,9 +79,6 @@ const AirQualityDetails: React.FC<Props> = ({ airQualityData }) => {
                     <Typography variant="body1">
                         DateTime:{" "}
                         {new Date(airQualityData.dateTime).toLocaleDateString()}
-                    </Typography>
-                    <Typography variant="body1">
-                        Region Code: {airQualityData.regionCode}
                     </Typography>
                 </Paper>
             </Grid>

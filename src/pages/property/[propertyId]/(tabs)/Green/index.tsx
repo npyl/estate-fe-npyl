@@ -1,16 +1,17 @@
-import { Box, Paper, Slider, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
 import { useRouter } from "next/router";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useLoadApi } from "src/components/Map";
 import { useGetPropertyByIdQuery } from "src/services/properties";
 import { useDebouncedCallback } from "use-debounce";
 import Grid from "@mui/material/Grid";
-import SolarDetails from "./SolarDetails";
-import SolarPanelService from "./SolarPanelService";
-import AirQualityService from "./AirQualityService";
-import AirQualityDetails from "./AirQualityDetails";
 import Placeholder from "./Placeholder";
 import ModesButtons from "./ModesButtons";
+import SolarDetails from "./SolarDetails";
+import SolarPanelService from "./services/SolarPanelService";
+import AirQualityService from "./services/AirQualityService";
+import AirQualityDetails from "./AirQualityDetails";
+import PanelCountSlider from "./PanelCountSlider";
 
 let mapOptions = {
     zoom: 18,
@@ -36,6 +37,7 @@ function GreenMapComponent() {
     const [solar_info, setSolarInfo] = useState<any>(null);
     const [air_quality_info, seAirQualityInfo] = useState<any>(null);
     const [panel_data, setPanelData] = useState<any>(null);
+
     const [alignment, setAlignment] = useState("solar");
     const [slider_value, setSliderValue] = useState(4);
 
@@ -123,13 +125,7 @@ function GreenMapComponent() {
             .catch((error) => seAirQualityInfo(null));
     };
 
-    const handleSliderSolarCount = useDebouncedCallback((e) => {
-        // const polygons = SolarPanelService.plotSolar(
-        //     solar_info,
-        //     projection,
-        //     e,
-        //     mapRef.current
-        // );
+    const handleSliderChange = useDebouncedCallback((e) => {
         const info = SolarPanelService.updatePanelData(solar_info, e);
         setSliderValue(e);
         setPanelData(info);
@@ -153,35 +149,13 @@ function GreenMapComponent() {
                 <Box id="map" height={1} />
 
                 {solar_info ? (
-                    <Paper
-                        sx={{
-                            width: 240,
-                            position: "absolute",
-                            bottom: "10px",
-                            left: "50%",
-                            paddingX: 3,
-                            textAlign: "center",
-                            transform: "translateX(-50%)",
-                        }}
-                    >
-                        <Typography variant="caption">
-                            Solar panel count
-                        </Typography>
-                        <Slider
-                            onChange={(e, value) =>
-                                handleSliderSolarCount(value)
-                            }
-                            value={slider_value}
-                            getAriaValueText={valuetext}
-                            step={1}
-                            valueLabelDisplay="off"
-                            min={0}
-                            max={
-                                solar_info.solarPotential.solarPanelConfigs
-                                    .length
-                            }
-                        />
-                    </Paper>
+                    <PanelCountSlider
+                        value={slider_value}
+                        maxPanelsAllowed={
+                            solar_info.solarPotential.solarPanelConfigs.length
+                        }
+                        onChange={handleSliderChange}
+                    />
                 ) : null}
 
                 <ModesButtons alignment={alignment} onClick={handleChange} />
@@ -203,7 +177,3 @@ function GreenMapComponent() {
 }
 
 export default GreenMapComponent;
-
-function valuetext(value: number) {
-    return `${value} no(s)`;
-}
