@@ -62,8 +62,12 @@ function ReviewRow({ row, onRemove, loading }: ReviewRowProps) {
                             >
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell>{t("Name")}</TableCell>
-                                        <TableCell>{t("Email")}</TableCell>
+                                        <TableCell align="center">
+                                            {t("Name")}
+                                        </TableCell>
+                                        <TableCell align="center">
+                                            {t("Email")}
+                                        </TableCell>
                                         <TableCell>
                                             {t("Property Code")}
                                         </TableCell>
@@ -79,13 +83,13 @@ function ReviewRow({ row, onRemove, loading }: ReviewRowProps) {
                                     <TableRow>
                                         <TableCell>{review?.name}</TableCell>
                                         <TableCell>{review?.email}</TableCell>
-                                        <TableCell>
+                                        <TableCell align="center">
                                             {row?.propertyCode}
                                         </TableCell>
-                                        <TableCell>
+                                        <TableCell align="center">
                                             {review?.presentationRating}
                                         </TableCell>
-                                        <TableCell>
+                                        <TableCell align="center">
                                             {review?.propertyRating}
                                         </TableCell>
                                     </TableRow>
