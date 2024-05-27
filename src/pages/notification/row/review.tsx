@@ -12,6 +12,10 @@ import { useTranslation } from "react-i18next";
 import useToggle from "src/hooks/useToggle";
 import { ContactNotification } from "src/types/notification";
 import BasicRow, { getDate } from "./basic";
+import {
+    useGetNotificationByIdQuery,
+    useGetNotificationsQuery,
+} from "@/services/notification";
 
 interface ReviewRowProps {
     row: ContactNotification;
@@ -22,6 +26,13 @@ interface ReviewRowProps {
 function ReviewRow({ row, onRemove, loading }: ReviewRowProps) {
     const { t } = useTranslation();
     const [open, toggleOpen] = useToggle(false);
+    const { data: review, isLoading } = useGetNotificationByIdQuery(row.id!, {
+        skip: !row.id && !open,
+        selectFromResult: ({ data, isLoading }) => ({
+            data: data?.reviewDetails,
+            isLoading,
+        }),
+    });
 
     return (
         <Fragment>
@@ -51,14 +62,37 @@ function ReviewRow({ row, onRemove, loading }: ReviewRowProps) {
                             >
                                 <TableHead>
                                     <TableRow>
+                                        <TableCell align="center">
+                                            {t("Name")}
+                                        </TableCell>
+                                        <TableCell align="center">
+                                            {t("Email")}
+                                        </TableCell>
                                         <TableCell>
                                             {t("Property Code")}
                                         </TableCell>
-                                        <TableCell>{t("Message")}</TableCell>
+                                        <TableCell>
+                                            {t("Property presentation Rate")}
+                                        </TableCell>
+                                        <TableCell>
+                                            {t("Property Rating")}
+                                        </TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    <TableRow></TableRow>
+                                    <TableRow>
+                                        <TableCell>{review?.name}</TableCell>
+                                        <TableCell>{review?.email}</TableCell>
+                                        <TableCell align="center">
+                                            {row?.propertyCode}
+                                        </TableCell>
+                                        <TableCell align="center">
+                                            {review?.presentationRating}
+                                        </TableCell>
+                                        <TableCell align="center">
+                                            {review?.propertyRating}
+                                        </TableCell>
+                                    </TableRow>
                                 </TableBody>
                             </Table>
                         </Box>

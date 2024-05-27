@@ -27,19 +27,27 @@ export interface ContactNotification {
     customerEmail: string;
     customerMobile: string;
     message: string;
-
     propertyCode: string;
     tourDate: string;
     tourTime: string;
     tourType: string;
-
     notificationDate: string;
     viewed: boolean;
 
     notificationType: NotificationType;
 }
 
+interface ReviewDetails {
+    comment?: string;
+    email: string;
+    id?: number;
+    name: string;
+    presentationRating?: number;
+    propertyRating?: number;
+    source?: string;
+}
 export interface ContactNotificationExtended extends ContactNotification {
     listingDetails: ListingNotification;
     workForUsDetails: IWorkForUs;
+    reviewDetails: ReviewDetails;
 }
