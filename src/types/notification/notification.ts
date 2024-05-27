@@ -13,7 +13,12 @@ export interface ContactNotificationPOST {
     tourType?: string;
 }
 
-export type NotificationType = "listing" | "contact" | "tour" | "workForUs";
+export type NotificationType =
+    | "listing"
+    | "contact"
+    | "tour"
+    | "workForUs"
+    | "review";
 
 export interface ContactNotification {
     id?: number;

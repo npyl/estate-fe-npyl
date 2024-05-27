@@ -9,11 +9,13 @@ import {
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { ContactNotification, NotificationType } from "src/types/notification";
-// rows
 import { useMemo } from "react";
+// rows
 import ListingRow from "./row/listing";
 import TourRow from "./row/tour";
 import WorkApplicationRow from "./row/workApplication";
+import ReviewRow from "./row/review";
+
 import { useMediaQuery } from "@mui/material";
 
 interface TableProps {
@@ -25,6 +27,7 @@ interface TableProps {
 
 const Table = ({ variant, rows, onRemove, loading }: TableProps) => {
     const { t } = useTranslation();
+
     const COLUMNS: string[] = useMemo(
         () => [
             t("Name"),
@@ -89,6 +92,15 @@ const Table = ({ variant, rows, onRemove, loading }: TableProps) => {
                         : variant === "workForUs"
                         ? rows.map((row, i) => (
                               <WorkApplicationRow
+                                  key={i}
+                                  row={row}
+                                  onRemove={() => onRemove(row.id)}
+                                  loading={loading}
+                              />
+                          ))
+                        : variant === "review"
+                        ? rows.map((row, i) => (
+                              <ReviewRow
                                   key={i}
                                   row={row}
                                   onRemove={() => onRemove(row.id)}
