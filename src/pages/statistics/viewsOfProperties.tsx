@@ -1,3 +1,4 @@
+import React, { useMemo, useState } from "react";
 import {
     AreaChart,
     Area,
@@ -17,13 +18,17 @@ import { TTimeFrame } from "@/types/publicDashboard";
 import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { Stack } from "@mui/system";
-import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
     NameType,
     ValueType,
 } from "recharts/types/component/DefaultTooltipContent";
 import { useResponsive } from "@/hooks/use-responsive";
+import { DateRangePicker, RangeKeyDict } from "react-date-range";
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
+import { format, parseISO } from "date-fns";
+import toLocalDate from "@/utils/toLocalDate";
 
 export default function StackedAreas() {
     const { t } = useTranslation();
@@ -31,6 +36,9 @@ export default function StackedAreas() {
     const [category, setCategory] = useState("");
     const [parentCategory, setParentCategory] = useState("");
     const [timeframe, setTimeframe] = useState<TTimeFrame>("ALL_TIME");
+
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
 
     // Fetch enums and data using hooks
     const data = useGlobals();
@@ -42,6 +50,10 @@ export default function StackedAreas() {
             parentCategory,
             category,
             timeframe,
+            startDate: startDate
+                ? format(new Date(startDate), "yyyy-MM-dd")
+                : "",
+            endDate: endDate ? format(new Date(endDate), "yyyy-MM-dd") : "",
         });
 
     // Organize sub-categories by main category
@@ -78,8 +90,22 @@ export default function StackedAreas() {
         }
     };
 
-    const handleTimeframeSelect = (e: SelectChangeEvent<TTimeFrame>) =>
+    const handleTimeframeSelect = (e: SelectChangeEvent<TTimeFrame>) => {
         setTimeframe(e.target.value as TTimeFrame);
+        if (e.target.value !== "CUSTOM") {
+            setStartDate("");
+            setEndDate("");
+        }
+    };
+
+    // Handle date range selection
+    const handleDateRangeChange = (ranges: RangeKeyDict) => {
+        const { selection } = ranges;
+        if (selection.startDate && selection.endDate) {
+            setStartDate(selection.startDate.toISOString());
+            setEndDate(selection.endDate.toISOString());
+        }
+    };
 
     // Prepare chart data
     const chartData = useMemo(
@@ -206,7 +232,7 @@ export default function StackedAreas() {
                             <MenuItem value="WEEK">{t("Weekly")}</MenuItem>
                             <MenuItem value="YEAR">{t("Yearly")}</MenuItem>
                             <MenuItem value="DAY">{t("Daily")}</MenuItem>
-                            <MenuItem value="CUSTOM">Custom</MenuItem>
+                            <MenuItem value="CUSTOM">{t("Custom")}</MenuItem>
                         </Select>
                         <Select
                             value={parentCategory}
@@ -266,7 +292,7 @@ export default function StackedAreas() {
                             <MenuItem value="WEEK">{t("Weekly")}</MenuItem>
                             <MenuItem value="YEAR">{t("Yearly")}</MenuItem>
                             <MenuItem value="DAY">{t("Daily")}</MenuItem>
-                            <MenuItem value="CUSTOM">Custom</MenuItem>
+                            <MenuItem value="CUSTOM">{t("Custom")}</MenuItem>
                         </Select>
                         <Select
                             value={parentCategory}
@@ -294,6 +320,22 @@ export default function StackedAreas() {
                             ))}
                         </Select>
                     </Stack>
+                    {timeframe === "CUSTOM" && (
+                        <DateRangePicker
+                            ranges={[
+                                {
+                                    startDate: startDate
+                                        ? parseISO(startDate)
+                                        : new Date(),
+                                    endDate: endDate
+                                        ? parseISO(endDate)
+                                        : new Date(),
+                                    key: "selection",
+                                },
+                            ]}
+                            onChange={handleDateRangeChange}
+                        />
+                    )}
                 </Stack>
             )}
 
