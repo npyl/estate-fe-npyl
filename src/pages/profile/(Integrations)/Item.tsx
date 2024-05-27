@@ -12,15 +12,15 @@ import { SoftButton } from "@/components/SoftButton";
 import { SpaceBetween } from "@/components/styled";
 import { useGetIntegrationsQuery } from "@/services/company";
 import { useTranslation } from "react-i18next";
-import { ListingTypes } from "@/types/listings";
-import { IIntegration } from "@/types/integrations";
+import { IntegrationSite } from "@/types/listings";
 import useToggle from "@/hooks/useToggle";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { IIntegration } from "@/types/integrations";
 
 interface Props {
-    type: ListingTypes;
+    type: IntegrationSite;
     expandedInitialy: boolean;
-    onEdit: (s?: IIntegration) => void;
+    onEdit: (s: IIntegration) => void;
 }
 
 const IntegrationItem = ({ type, expandedInitialy, onEdit }: Props) => {
@@ -53,7 +53,8 @@ const IntegrationItem = ({ type, expandedInitialy, onEdit }: Props) => {
                 <Stack direction="row" spacing={1}>
                     <SoftButton
                         variant="contained"
-                        onClick={() => onEdit(integration)}
+                        disabled={!integration}
+                        onClick={() => onEdit(integration!)}
                     >
                         {t("Edit")}
                     </SoftButton>

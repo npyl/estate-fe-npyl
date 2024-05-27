@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import EditDialog from "./EditDialog";
 import { IIntegration } from "src/types/integrations";
 import IntegrationItem from "./Item";
-import { ListingTypes } from "@/types/listings";
+import { IntegrationSite } from "@/types/listings";
 import Stack from "@mui/material/Stack";
 
-const LISTING_TYPES: ListingTypes[] = [
+const INTEGRATION_SITES: IntegrationSite[] = [
     "SPITOGATOS",
     "PLOT_GR",
     "JAMES_EDITION",
@@ -18,14 +18,15 @@ const Integrations: React.FC = () => {
     const [selectedIntegration, setSelectedIntegration] =
         useState<IIntegration>();
 
-    const handleCloseDialog = () => {
-        setSelectedIntegration(undefined);
-    };
+    const handleCloseDialog = useCallback(
+        () => setSelectedIntegration(undefined),
+        []
+    );
 
     return (
         <>
             <Stack spacing={1}>
-                {LISTING_TYPES.map((t, i) => (
+                {INTEGRATION_SITES.map((t, i) => (
                     <IntegrationItem
                         key={t}
                         type={t}
