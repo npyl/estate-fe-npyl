@@ -71,10 +71,7 @@ function GreenMapComponent() {
             google.maps.event.addListenerOnce(
                 mapRef.current,
                 "projection_changed",
-                function () {
-                    console.log("Projection changed");
-                    setProjection(mapRef.current.getProjection());
-                }
+                () => setProjection(mapRef.current.getProjection())
             );
 
             new google.maps.Marker({
@@ -83,35 +80,33 @@ function GreenMapComponent() {
                 icon: "https://img.icons8.com/external-bearicons-flat-bearicons/64/external-Home-location-bearicons-flat-bearicons.png",
                 zIndex: 50,
             });
-
-            updateSolar(center);
         }
     }, [isLoaded, center]);
 
     useEffect(() => {
-        if (projection != null) {
-            updateSolar(center);
+        if (projection != null && solar_info) {
+            updateSolar();
         }
-    }, [projection]);
+    }, [projection, solar_info]);
 
-    const updateSolar = (center: any) => {
-        // SolarPanelService.getBuildingInsights(center)
-        //     .then((buildingInsights) => {
-        // setSolarInfo(buildingInsights as BuildingInsights);
+    useEffect(() => {
+        if (!solar_info) return;
+        updateSolar();
+    }, [solar_info]);
 
-        console.log("Got building insights..", solar_info);
+    const updateSolar = () => {
+        const LIMIT_COUNT = 200;
 
-        setSliderValue(4);
+        SolarPanelService.plotSolar(
+            solar_info,
+            projection,
+            LIMIT_COUNT,
+            mapRef.current
+        );
 
-        // SolarPanelService.plotSolar(
-        //     buildingInsights,
-        //     projection,
-        //     4,
-        //     mapRef.current
-        // );
+        const info = SolarPanelService.updatePanelData(solar_info, 0);
 
-        // const info = SolarPanelService.updatePanelData(buildingInsights, 0);
-        // setPanelData(info);
+        setPanelData(info);
     };
 
     const handleSliderChange = useDebouncedCallback((e) => {

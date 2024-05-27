@@ -1,6 +1,5 @@
 const SolarPanelService = {
     solar_panels: [],
-    buildingInsights: {},
 
     getBoundingBoxAroundCoordinate(
         center: any,
@@ -179,6 +178,7 @@ const SolarPanelService = {
         polygon.setMap(mapRef);
         return polygon;
     },
+
     updatePanelData(buildingInsights: any, segmentIndex: string | number) {
         if (
             segmentIndex >=

@@ -26,7 +26,7 @@ export const airQuality = createApi({
                         "LOCAL_AQI",
                         "POLLUTANT_ADDITIONAL_INFO",
                     ],
-                    languageCode: "en",
+                    languageCode: localStorage.getItem("language") ?? "el",
                 }),
                 params: {
                     key: process.env.NEXT_PUBLIC_MAP_API_KEY,
