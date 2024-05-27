@@ -30,9 +30,9 @@ const IntegrationItem = ({ type, expandedInitialy, onEdit }: Props) => {
 
     const [expanded, toggleExpanded] = useToggle(expandedInitialy);
 
-    if (isLoading) {
-        return <Typography>{t("Loading...")}</Typography>;
-    }
+    // if (isLoading) {
+    //     return <Typography>{t("Loading...")}</Typography>;
+    // }
 
     return (
         <Paper elevation={10}>
@@ -41,6 +41,11 @@ const IntegrationItem = ({ type, expandedInitialy, onEdit }: Props) => {
                     px: 2,
                     py: 1.5,
                     alignItems: "center",
+                }}
+                gap={1}
+                direction={{
+                    xs: "column",
+                    lg: "row",
                 }}
             >
                 <Typography variant="h6">{integration?.site}</Typography>
@@ -67,7 +72,19 @@ const IntegrationItem = ({ type, expandedInitialy, onEdit }: Props) => {
             </SpaceBetween>
             <Divider />
             <Collapse in={expanded} timeout="auto" unmountOnExit>
-                <Grid container spacing={2}>
+                <Grid container>
+                    <Grid item xs={12} sm={6}>
+                        <List>
+                            <ListItem
+                                label={t("Username")}
+                                value={integration?.username || ""}
+                            />
+                            <ListItem
+                                label={t("Password")}
+                                value={integration?.password || ""}
+                            />
+                        </List>
+                    </Grid>
                     <Grid item xs={12} sm={6}>
                         <List>
                             <ListItem
@@ -77,14 +94,6 @@ const IntegrationItem = ({ type, expandedInitialy, onEdit }: Props) => {
                             <ListItem
                                 label={t("App Key")}
                                 value={integration?.appKey || ""}
-                            />
-                            <ListItem
-                                label={t("Username")}
-                                value={integration?.username || ""}
-                            />
-                            <ListItem
-                                label={t("Password")}
-                                value={integration?.password || ""}
                             />
                         </List>
                     </Grid>
