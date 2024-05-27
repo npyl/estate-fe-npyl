@@ -31,7 +31,7 @@ const NotificationPage: NextPage = () => {
             <TabPanel value={tab} index={2}>
                 <WorkApplications />
             </TabPanel>
-            <TabPanel value={tab} index={2}>
+            <TabPanel value={tab} index={3}>
                 <Reviews />
             </TabPanel>
         </>

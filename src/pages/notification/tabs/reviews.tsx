@@ -4,14 +4,15 @@ import {
 } from "src/services/notification";
 import Table from "../table";
 
-const Listings = () => {
+const Reviews = () => {
     const [deleteNotification, { isLoading }] = useDeleteNotificationMutation();
 
-    const { data: reviews } = useGetNotificationsQuery(undefined, {
+    const { data: rows } = useGetNotificationsQuery(undefined, {
         selectFromResult: ({ data }) => ({
             data:
-                // extract ListingNotification from inside ContactNotification
-                data?.filter((d) => d.notificationType === "review"),
+                data?.filter(
+                    ({ notificationType }) => notificationType === "review"
+                ) || [],
         }),
     });
 
@@ -22,11 +23,11 @@ const Listings = () => {
     return (
         <Table
             variant="review"
-            rows={reviews || []}
+            rows={rows || []}
             onRemove={handleRemove}
             loading={isLoading}
         />
     );
 };
 
-export default Listings;
+export default Reviews;

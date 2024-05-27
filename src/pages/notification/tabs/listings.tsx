@@ -17,7 +17,7 @@ const Listings = () => {
     const handleRemove = (index = -1) => {
         deleteNotification(index);
     };
-
+    console.log(listings);
     return (
         <Table
             variant="listing"
