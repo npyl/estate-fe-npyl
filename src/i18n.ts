@@ -737,10 +737,18 @@ const resources = {
             "Social Networks": "Social Networks",
             "Short Version": "Short Version",
             "Long Version": "Long Version",
+
+            "Property presentation Rate": "Property presentation Rate",
+            "Property Rating": "Property Rating",
+            Reviews: "Reviews",
         },
     },
     el: {
         translation: {
+            Reviews: "Αξιολογήσεις",
+            "Property presentation Rate": "Αξιολόγηση παρουσίασης ακινήτου",
+            "Property Rating": "Αξιολόγηση ακινήτου",
+
             "Copy Link": "Αντιγραφή Συνδέσμου",
             "Social Networks": "Μέσα Κοινωνικής Δικτύωσης",
             "Short Version": "Σύντομη Έκδοση",

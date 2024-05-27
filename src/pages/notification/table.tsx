@@ -38,6 +38,15 @@ const Table = ({ variant, rows, onRemove, loading }: TableProps) => {
         [t]
     );
 
+    const RowComponent =
+        variant === "listing"
+            ? ListingRow
+            : variant === "workForUs"
+            ? WorkApplicationRow
+            : variant === "review"
+            ? ReviewRow
+            : TourRow;
+
     const isMobile = useMediaQuery("(max-width:600px)");
 
     return (
@@ -77,44 +86,18 @@ const Table = ({ variant, rows, onRemove, loading }: TableProps) => {
                             <TableCell align="right"> {t("Type")}</TableCell>
                         ) : null}
                         <TableCell />
+                        <TableCell />
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {variant === "listing"
-                        ? rows.map((row, i) => (
-                              <ListingRow
-                                  key={i}
-                                  row={row}
-                                  onRemove={() => onRemove(row.id)}
-                                  loading={loading}
-                              />
-                          ))
-                        : variant === "workForUs"
-                        ? rows.map((row, i) => (
-                              <WorkApplicationRow
-                                  key={i}
-                                  row={row}
-                                  onRemove={() => onRemove(row.id)}
-                                  loading={loading}
-                              />
-                          ))
-                        : variant === "review"
-                        ? rows.map((row, i) => (
-                              <ReviewRow
-                                  key={i}
-                                  row={row}
-                                  onRemove={() => onRemove(row.id)}
-                                  loading={loading}
-                              />
-                          ))
-                        : rows.map((row, i) => (
-                              <TourRow
-                                  key={i}
-                                  row={row}
-                                  onRemove={() => onRemove(row.id)}
-                                  loading={loading}
-                              />
-                          ))}
+                    {rows.map((row, i) => (
+                        <RowComponent
+                            key={i}
+                            row={row}
+                            onRemove={() => onRemove(row.id)}
+                            loading={loading}
+                        />
+                    ))}
                 </TableBody>
             </MuiTable>
         </TableContainer>
