@@ -1,5 +1,5 @@
-export type Listings = Record<ListingTypes, boolean>;
-export type ListingTypes =
+export type Listings = Record<IntegrationSite, boolean>;
+export type IntegrationSite =
     | "SPITOGATOS"
     | "PLOT_GR"
     | "JAMES_EDITION"
@@ -10,7 +10,7 @@ export type ListingTypes =
 // INFO: for now, an IListing is only an IPublicSite (will change on rework)
 
 interface IListing {
-    integrationSite: ListingTypes;
+    integrationSite: IntegrationSite;
     publicSite: {
         id: number;
         siteUrl: string;

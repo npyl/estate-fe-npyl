@@ -1,3 +1,5 @@
+// src/services/location.ts
+
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { IGeoLocation } from "src/types/geolocation";
 
@@ -12,16 +14,13 @@ export const location = createApi({
         baseUrl: `${process.env.NEXT_PUBLIC_API_URL}/geography/`,
         prepareHeaders: (headers) => {
             // By default, if we have a token in the store, let's use that for authenticated requests
-
             headers.set(
                 "Authorization",
-                `Bearer  ${localStorage.getItem("accessToken")}`
+                `Bearer ${localStorage.getItem("accessToken")}`
             );
-
             return headers;
         },
     }),
-
     endpoints: (builder) => ({
         getRegions: builder.query<IGeoLocation[], void>({
             query: () => ({
@@ -44,10 +43,18 @@ export const location = createApi({
                 params,
             }),
         }),
-
         getHierarchyByAreaId: builder.query<IGeoLocation, number>({
             query: (areaId: number) => ({
                 url: `/hierarchy/area/${areaId}`,
+            }),
+        }),
+        // Example of a query for the LocationSearchItem component
+        searchLocations: builder.query<IGeoLocation[], string>({
+            query: (search) => ({
+                url: `search`,
+                params: {
+                    search,
+                },
             }),
         }),
     }),
@@ -57,7 +64,7 @@ export const {
     useGetRegionsQuery,
     useGetMunicipalitiesQuery,
     useGetNeighbourhoodsQuery,
-
     useLazyGetClosestQuery,
     useLazyGetHierarchyByAreaIdQuery,
+    useSearchLocationsQuery,
 } = location;

@@ -8,7 +8,6 @@ import {
     Link,
     Stack,
     Toolbar,
-    Tooltip,
     Typography,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -136,7 +135,7 @@ export const DashboardNavbar: FC<DashboardNavbarProps> = (props) => {
                             {/* <Tooltip title="Alex Gamiesai file">
                             </Tooltip> */}
                             <StyledTypography variant="h5">
-                                PropertyPro v0.82
+                                PropertyPro v0.83
                             </StyledTypography>
                         </Link>
                     </Box>

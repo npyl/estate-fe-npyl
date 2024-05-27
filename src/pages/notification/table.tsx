@@ -9,11 +9,13 @@ import {
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { ContactNotification, NotificationType } from "src/types/notification";
-// rows
 import { useMemo } from "react";
+// rows
 import ListingRow from "./row/listing";
 import TourRow from "./row/tour";
 import WorkApplicationRow from "./row/workApplication";
+import ReviewRow from "./row/review";
+
 import { useMediaQuery } from "@mui/material";
 
 interface TableProps {
@@ -25,6 +27,7 @@ interface TableProps {
 
 const Table = ({ variant, rows, onRemove, loading }: TableProps) => {
     const { t } = useTranslation();
+
     const COLUMNS: string[] = useMemo(
         () => [
             t("Name"),
@@ -34,6 +37,15 @@ const Table = ({ variant, rows, onRemove, loading }: TableProps) => {
         ],
         [t]
     );
+
+    const RowComponent =
+        variant === "listing"
+            ? ListingRow
+            : variant === "workForUs"
+            ? WorkApplicationRow
+            : variant === "review"
+            ? ReviewRow
+            : TourRow;
 
     const isMobile = useMediaQuery("(max-width:600px)");
 
@@ -74,35 +86,18 @@ const Table = ({ variant, rows, onRemove, loading }: TableProps) => {
                             <TableCell align="right"> {t("Type")}</TableCell>
                         ) : null}
                         <TableCell />
+                        <TableCell />
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {variant === "listing"
-                        ? rows.map((row, i) => (
-                              <ListingRow
-                                  key={i}
-                                  row={row}
-                                  onRemove={() => onRemove(row.id)}
-                                  loading={loading}
-                              />
-                          ))
-                        : variant === "workForUs"
-                        ? rows.map((row, i) => (
-                              <WorkApplicationRow
-                                  key={i}
-                                  row={row}
-                                  onRemove={() => onRemove(row.id)}
-                                  loading={loading}
-                              />
-                          ))
-                        : rows.map((row, i) => (
-                              <TourRow
-                                  key={i}
-                                  row={row}
-                                  onRemove={() => onRemove(row.id)}
-                                  loading={loading}
-                              />
-                          ))}
+                    {rows.map((row, i) => (
+                        <RowComponent
+                            key={i}
+                            row={row}
+                            onRemove={() => onRemove(row.id)}
+                            loading={loading}
+                        />
+                    ))}
                 </TableBody>
             </MuiTable>
         </TableContainer>

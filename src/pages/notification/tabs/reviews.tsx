@@ -4,28 +4,30 @@ import {
 } from "src/services/notification";
 import Table from "../table";
 
-const Listings = () => {
+const Reviews = () => {
     const [deleteNotification, { isLoading }] = useDeleteNotificationMutation();
-    const { data: listings } = useGetNotificationsQuery(undefined, {
+
+    const { data: rows } = useGetNotificationsQuery(undefined, {
         selectFromResult: ({ data }) => ({
             data:
-                // extract ListingNotification from inside ContactNotification
-                data?.filter((d) => d.notificationType === "listing"),
+                data?.filter(
+                    ({ notificationType }) => notificationType === "review"
+                ) || [],
         }),
     });
 
     const handleRemove = (index = -1) => {
         deleteNotification(index);
     };
-    console.log(listings);
+
     return (
         <Table
-            variant="listing"
-            rows={listings || []}
+            variant="review"
+            rows={rows || []}
             onRemove={handleRemove}
             loading={isLoading}
         />
     );
 };
 
-export default Listings;
+export default Reviews;
