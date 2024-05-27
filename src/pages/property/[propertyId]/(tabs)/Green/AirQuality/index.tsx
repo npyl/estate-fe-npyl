@@ -9,9 +9,9 @@ import {
     SportsSoccer,
 } from "@mui/icons-material";
 import PollutionPanel from "./Polution";
-import { Index, Pollutant } from "./types";
 import Panel from "./Panel";
 import PollutantItem from "./PollutantItem";
+import { useGetAirQualityQuery } from "@/services/googleapi";
 
 const healthRecommendationIcons: { [key: string]: JSX.Element } = {
     generalPopulation: <BeachAccess />,
@@ -23,21 +23,15 @@ const healthRecommendationIcons: { [key: string]: JSX.Element } = {
     children: <ChildCare />,
 };
 
-interface AirQualityData {
-    dateTime: string;
-    regionCode: string;
-    indexes: Index[];
-    pollutants: Pollutant[];
-    healthRecommendations: { [key: string]: string };
-}
-
 interface Props {
-    airQualityData: AirQualityData;
+    center: { lat: number; lng: number };
 }
 
-const AirQualityDetails: React.FC<Props> = ({ airQualityData }) => {
+const AirQualityDetails: React.FC<Props> = ({ center }) => {
+    const { data: airQualityData } = useGetAirQualityQuery(center);
+
     const primaryIndex = airQualityData?.indexes[0]; // Assuming the first index is primary
-    const progress = Math.min(primaryIndex.aqi / 500, 1);
+    const progress = Math.min((primaryIndex?.aqi ?? 0) / 500, 1);
 
     // Define icons for each health recommendation
     const findAqi = airQualityData?.indexes.find((item) => item.code == "uaqi");
@@ -55,33 +49,33 @@ const AirQualityDetails: React.FC<Props> = ({ airQualityData }) => {
             ) : null}
 
             <Grid item xs={12} component={Panel} title="Other Pollutants">
-                {airQualityData.pollutants.map((p, i) => (
+                {airQualityData?.pollutants.map((p, i) => (
                     <PollutantItem key={i} p={p} />
                 ))}
             </Grid>
 
             <Grid item xs={12} component={Panel} title="Health Recommendations">
-                {Object.entries(airQualityData.healthRecommendations).map(
-                    ([key, value], recommendationKey) => (
-                        <Box
-                            key={recommendationKey}
-                            sx={{
-                                display: "flex",
-                                alignItems: "center",
-                                mb: 1,
-                            }}
-                        >
-                            {
-                                healthRecommendationIcons[
-                                    key as keyof typeof healthRecommendationIcons
-                                ]
-                            }
-                            <Typography variant="body2" sx={{ ml: 1 }}>
-                                {value}
-                            </Typography>
-                        </Box>
-                    )
-                )}
+                {Object.entries(
+                    airQualityData?.healthRecommendations || {}
+                ).map(([key, value], recommendationKey) => (
+                    <Box
+                        key={recommendationKey}
+                        sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            mb: 1,
+                        }}
+                    >
+                        {
+                            healthRecommendationIcons[
+                                key as keyof typeof healthRecommendationIcons
+                            ]
+                        }
+                        <Typography variant="body2" sx={{ ml: 1 }}>
+                            {value}
+                        </Typography>
+                    </Box>
+                ))}
             </Grid>
 
             <Grid

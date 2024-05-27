@@ -1,29 +1,6 @@
 const SolarPanelService = {
     solar_panels: [],
     buildingInsights: {},
-    getBuildingInsights(homeLocation: { lat: any; lng: any }) {
-        let endpoint = `https://solar.googleapis.com/v1/buildingInsights:findClosest?location.latitude=${homeLocation.lat}&location.longitude=${homeLocation.lng}&requiredQuality=MEDIUM&key=${process.env.NEXT_PUBLIC_MAP_API_KEY}`;
-        return new Promise((resolve, reject) => {
-            try {
-                // resolve(insights)
-                fetch(endpoint)
-                    .then((response) => response.json())
-                    .then((result) => {
-                        console.log(result);
-                        if (result.error) {
-                            reject(result.error);
-                        } else {
-                            resolve(result);
-                        }
-                    })
-                    .catch((error) => {
-                        reject(error);
-                    });
-            } catch (err) {
-                reject(err);
-            }
-        });
-    },
 
     getBoundingBoxAroundCoordinate(
         center: any,

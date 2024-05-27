@@ -9,9 +9,9 @@ import Placeholder from "./Placeholder";
 import ModesButtons from "./ModesButtons";
 import SolarDetails from "./Solar";
 import SolarPanelService from "./services/SolarPanelService";
-import AirQualityService from "./services/AirQualityService";
 import AirQualityDetails from "./AirQuality";
 import PanelCountSlider from "./PanelCountSlider";
+import { useGetBuildingInsightsQuery } from "@/services/googleapi";
 
 const mapOptions = {
     zoom: 18,
@@ -34,8 +34,7 @@ function GreenMapComponent() {
     const { data } = useGetPropertyByIdQuery(+propertyId!);
 
     const [projection, setProjection] = useState<any>(null);
-    const [solar_info, setSolarInfo] = useState<any>(null);
-    const [air_quality_info, seAirQualityInfo] = useState<any>(null);
+
     const [panel_data, setPanelData] = useState<any>(null);
 
     const [alignment, setAlignment] = useState("solar");
@@ -48,6 +47,8 @@ function GreenMapComponent() {
         }),
         [data?.location?.lat, data?.location?.lng]
     );
+
+    const { data: solar_info } = useGetBuildingInsightsQuery(center);
 
     const mapRef = useRef<any>(null);
 
@@ -94,35 +95,23 @@ function GreenMapComponent() {
     }, [projection]);
 
     const updateSolar = (center: any) => {
-        SolarPanelService.getBuildingInsights(center)
-            .then((buildingInsights) => {
-                setSolarInfo(buildingInsights);
+        // SolarPanelService.getBuildingInsights(center)
+        //     .then((buildingInsights) => {
+        // setSolarInfo(buildingInsights as BuildingInsights);
 
-                console.log("Got building insights..", buildingInsights);
+        console.log("Got building insights..", solar_info);
 
-                setSliderValue(4);
+        setSliderValue(4);
 
-                SolarPanelService.plotSolar(
-                    buildingInsights,
-                    projection,
-                    4,
-                    mapRef.current
-                );
+        // SolarPanelService.plotSolar(
+        //     buildingInsights,
+        //     projection,
+        //     4,
+        //     mapRef.current
+        // );
 
-                const info = SolarPanelService.updatePanelData(
-                    buildingInsights,
-                    0
-                );
-                setPanelData(info);
-            })
-            .catch(() => setSolarInfo(null));
-
-        AirQualityService.fetchAirQualityData({
-            latitude: center?.lat,
-            longitude: center?.lng,
-        })
-            .then(seAirQualityInfo)
-            .catch((error) => seAirQualityInfo(null));
+        // const info = SolarPanelService.updatePanelData(buildingInsights, 0);
+        // setPanelData(info);
     };
 
     const handleSliderChange = useDebouncedCallback((e) => {
@@ -134,8 +123,6 @@ function GreenMapComponent() {
     if (!data?.location?.lat || !data?.location?.lng) {
         return <Placeholder />;
     }
-
-    if (!isLoaded) return null;
 
     return (
         <Grid container spacing={2} mt={2}>
@@ -168,8 +155,8 @@ function GreenMapComponent() {
                         panel_data={panel_data}
                     />
                 ) : null}
-                {air_quality_info && alignment == "air_quality" ? (
-                    <AirQualityDetails airQualityData={air_quality_info} />
+                {alignment == "air_quality" ? (
+                    <AirQualityDetails center={center} />
                 ) : null}
             </Grid>
         </Grid>

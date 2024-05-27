@@ -1,8 +1,9 @@
 import { Typography, Box, Stack, StackProps } from "@mui/material";
 import Panel from "./Panel";
 import React from "react";
-import { Index } from "./types";
+import { Index } from "@/types/googleapi";
 import dynamic from "next/dynamic";
+
 const GaugeComponent = dynamic(() => import("react-gauge-component"), {
     ssr: false,
 });
