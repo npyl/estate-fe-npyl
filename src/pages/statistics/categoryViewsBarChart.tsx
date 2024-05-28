@@ -14,10 +14,9 @@ import { Stack } from "@mui/system";
 import { useMemo, useState } from "react";
 import Typography from "@mui/material/Typography";
 import { TTimeFrame } from "@/types/publicDashboard";
-import { Box, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { useGetPublicDashboardParentCategoriesQuery } from "@/services/publicDashboard";
 import { useTranslation } from "react-i18next";
-import { TranslationType } from "@/types/translation";
 import {
     NameType,
     ValueType,
@@ -69,6 +68,11 @@ export default function ViewsOfPropertiesChart() {
         payload,
     }: TooltipProps<ValueType, NameType>) => {
         if (active && payload && payload.length) {
+            const totalViews = payload.reduce(
+                (sum, entry) => sum + (entry.value as number),
+                0
+            );
+
             return (
                 <div
                     style={{
@@ -80,36 +84,34 @@ export default function ViewsOfPropertiesChart() {
                     }}
                 >
                     <p style={{ color: "#000", margin: 0, fontWeight: "bold" }}>
-                        Property Views
+                        {t("Property Views")}: {totalViews}
                     </p>
                     <hr style={{ borderColor: "grey" }} />
-                    {payload.map((entry) => {
-                        return (
-                            <div
-                                key={entry.name}
+                    {payload.map((entry) => (
+                        <div
+                            key={entry.name}
+                            style={{
+                                color: entry.color,
+                                display: "flex",
+                                alignItems: "center",
+                                marginTop: "5px",
+                            }}
+                        >
+                            <span
                                 style={{
-                                    color: entry.color,
-                                    display: "flex",
-                                    alignItems: "center",
-                                    marginTop: "5px",
+                                    display: "inline-block",
+                                    backgroundColor: entry.color,
+                                    width: "10px",
+                                    height: "10px",
+                                    borderRadius: "50%",
+                                    marginRight: "5px",
                                 }}
-                            >
-                                <span
-                                    style={{
-                                        display: "inline-block",
-                                        backgroundColor: entry.color,
-                                        width: "10px",
-                                        height: "10px",
-                                        borderRadius: "50%",
-                                        marginRight: "5px",
-                                    }}
-                                ></span>
-                                <span style={{ color: "#000" }}>{`${t(
-                                    (entry.name as string) || ""
-                                )}: ${entry.value}`}</span>
-                            </div>
-                        );
-                    })}
+                            ></span>
+                            <span style={{ color: "#000" }}>{`${t(
+                                (entry.name as string) || ""
+                            )}: ${entry.value}`}</span>
+                        </div>
+                    ))}
                 </div>
             );
         }

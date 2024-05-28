@@ -732,10 +732,12 @@ const resources = {
 
             "There are no matching properties":
                 "There are no matching properties",
+            Custom: "Custom",
         },
     },
     el: {
         translation: {
+            Custom: "Προσαρμοσμένο",
             "Edit Integration Details": "Επεξεργασία Λεπτομερειών Σύνδεσης",
 
             "Draw on a location with markers":

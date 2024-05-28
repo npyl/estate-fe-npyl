@@ -15,7 +15,6 @@ import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
 import { useMemo, useState } from "react";
 import PropertyCard from "@/components/PropertyCard";
-import { ViewsIcon } from "@/icons/views";
 import { useResponsive } from "@/hooks/use-responsive";
 
 export default function StackedAreas() {
@@ -51,7 +50,6 @@ export default function StackedAreas() {
     const handleParentCategorySelect = (event: SelectChangeEvent<string>) => {
         const selectedParentCategory = event.target.value;
         setParentCategory(selectedParentCategory);
-
         setCategory("");
     };
 
@@ -85,6 +83,25 @@ export default function StackedAreas() {
         [parentCategory, category, properties]
     );
 
+    const getViewLabel = () => {
+        switch (timeframe) {
+            case "ALL_TIME":
+                return t("All Time Views");
+            case "MONTH":
+                return t("Monthly Views");
+            case "WEEK":
+                return t("Weekly Views");
+            case "YEAR":
+                return t("Yearly Views");
+            case "DAY":
+                return t("Daily Views");
+            case "CUSTOM":
+                return t("Custom Views");
+            default:
+                return "";
+        }
+    };
+
     return (
         <>
             {belowMd && !belowSm ? (
@@ -101,7 +118,7 @@ export default function StackedAreas() {
                                 {t("All_Time")}
                             </MenuItem>
                             <MenuItem value="MONTH">{t("Monthly")}</MenuItem>
-                            <MenuItem value="WEEK">{"Weekly"}</MenuItem>
+                            <MenuItem value="WEEK">{t("Weekly")}</MenuItem>
                             <MenuItem value="YEAR">{t("Yearly")}</MenuItem>
                             <MenuItem value="DAY">{t("Daily")}</MenuItem>
                             <MenuItem value="CUSTOM">Custom</MenuItem>
@@ -162,7 +179,7 @@ export default function StackedAreas() {
                                 {t("All_Time")}
                             </MenuItem>
                             <MenuItem value="MONTH">{t("Monthly")}</MenuItem>
-                            <MenuItem value="WEEK">{"Weekly"}</MenuItem>
+                            <MenuItem value="WEEK">{t("Weekly")}</MenuItem>
                             <MenuItem value="YEAR">{t("Yearly")}</MenuItem>
                             <MenuItem value="DAY">{t("Daily")}</MenuItem>
                             <MenuItem value="CUSTOM">Custom</MenuItem>
@@ -214,8 +231,8 @@ export default function StackedAreas() {
                             />
                             <Stack
                                 position="absolute"
-                                direction="row"
-                                top={belowSm ? 5 : 20}
+                                direction="column"
+                                top={5}
                                 right={2}
                                 sx={{
                                     backgroundColor: "rgba(0, 0, 0, 0.5)",
@@ -224,14 +241,25 @@ export default function StackedAreas() {
                                     borderRadius: 15,
                                 }}
                             >
-                                <ViewsIcon />
                                 <Typography
                                     sx={{
                                         paddingLeft: "5px",
                                         color: "white",
                                     }}
                                 >
-                                    {(property as any).visitors}
+                                    {`${t("Total Views")}: ${
+                                        (property as any).visitors ?? 0
+                                    }`}
+                                </Typography>
+                                <Typography
+                                    sx={{
+                                        paddingLeft: "5px",
+                                        color: "white",
+                                    }}
+                                >
+                                    {`${getViewLabel()}: ${
+                                        (property as any).filterViews ?? 0
+                                    }`}
                                 </Typography>
                             </Stack>
                         </Box>
@@ -249,8 +277,8 @@ export default function StackedAreas() {
                             key={`${property.id}-${timeframe}`}
                             sx={{
                                 position: "relative",
-                                flex: belowSm ? "0 0 auto" : "1 0 auto", // Flex basis changes when belowSm
-                                minWidth: belowSm ? "50%" : undefined, // 50% width for each item on small screens
+                                flex: belowSm ? "0 0 auto" : "1 0 auto",
+                                minWidth: belowSm ? "50%" : undefined,
                             }}
                         >
                             <PropertyCard
@@ -259,7 +287,7 @@ export default function StackedAreas() {
                             />
                             <Stack
                                 position="absolute"
-                                direction="row"
+                                direction="column"
                                 top={20}
                                 right={2}
                                 sx={{
@@ -269,14 +297,25 @@ export default function StackedAreas() {
                                     borderRadius: 15,
                                 }}
                             >
-                                <ViewsIcon />
                                 <Typography
                                     sx={{
                                         paddingLeft: "5px",
                                         color: "white",
                                     }}
                                 >
-                                    {(property as any).visitors}
+                                    {`${t("Total Views")}: ${
+                                        (property as any).visitors ?? 0
+                                    }`}
+                                </Typography>
+                                <Typography
+                                    sx={{
+                                        paddingLeft: "5px",
+                                        color: "white",
+                                    }}
+                                >
+                                    {`${getViewLabel()}: ${
+                                        (property as any).filterViews ?? 0
+                                    }`}
                                 </Typography>
                             </Stack>
                         </Grid>
