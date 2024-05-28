@@ -14,6 +14,7 @@ import { Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useGetDailyViewsQuery } from "@/services/publicDashboard";
 import { StyledCursor } from "./styled";
+import { S } from "@fullcalendar/core/internal-common";
 
 export default function ViewsChart() {
     const { t, i18n } = useTranslation();
@@ -36,6 +37,15 @@ export default function ViewsChart() {
             ),
         [i18n.language]
     );
+
+    const formatHour = (hour: number) => {
+        const date = new Date();
+        date.setHours(hour);
+        return date.toLocaleTimeString([], {
+            hour: "2-digit",
+            hour12: true,
+        });
+    };
 
     return (
         <>
@@ -83,7 +93,7 @@ export default function ViewsChart() {
                         <CartesianGrid vertical={false} />
                         <XAxis
                             dataKey="hour"
-                            tickFormatter={(tick) => tick.toString()}
+                            tickFormatter={(tick) => formatHour(tick)}
                             interval={2}
                         />
                         <YAxis dataKey="views" width={20} />
