@@ -15,7 +15,16 @@ import { useGetPublicDashboardPropertyViewsQuery } from "@/services/publicDashbo
 import { IGlobalProperty } from "@/types/global";
 import { KeyValue } from "@/types/KeyValue";
 import { TTimeFrame } from "@/types/publicDashboard";
-import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import {
+    MenuItem,
+    Select,
+    SelectChangeEvent,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { Stack } from "@mui/system";
 import { useTranslation } from "react-i18next";
@@ -28,7 +37,6 @@ import { DateRangePicker, RangeKeyDict } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { format, parseISO } from "date-fns";
-import toLocalDate from "@/utils/toLocalDate";
 
 export default function StackedAreas() {
     const { t } = useTranslation();
@@ -39,6 +47,7 @@ export default function StackedAreas() {
 
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
+    const [openDateRangePicker, setOpenDateRangePicker] = useState(false);
 
     // Fetch enums and data using hooks
     const data = useGlobals();
@@ -259,6 +268,14 @@ export default function StackedAreas() {
                                 </MenuItem>
                             ))}
                         </Select>
+                        {timeframe === "CUSTOM" && (
+                            <Button
+                                variant="outlined"
+                                onClick={() => setOpenDateRangePicker(true)}
+                            >
+                                {t("Select Date Range")}
+                            </Button>
+                        )}
                     </Stack>
                 </Stack>
             ) : (
@@ -319,25 +336,48 @@ export default function StackedAreas() {
                                 </MenuItem>
                             ))}
                         </Select>
+                        {timeframe === "CUSTOM" && (
+                            <Button
+                                variant="outlined"
+                                onClick={() => setOpenDateRangePicker(true)}
+                            >
+                                {t("Select Date Range")}
+                            </Button>
+                        )}
                     </Stack>
-                    {timeframe === "CUSTOM" && (
-                        <DateRangePicker
-                            ranges={[
-                                {
-                                    startDate: startDate
-                                        ? parseISO(startDate)
-                                        : new Date(),
-                                    endDate: endDate
-                                        ? parseISO(endDate)
-                                        : new Date(),
-                                    key: "selection",
-                                },
-                            ]}
-                            onChange={handleDateRangeChange}
-                        />
-                    )}
                 </Stack>
             )}
+
+            <Dialog
+                open={openDateRangePicker}
+                onClose={() => setOpenDateRangePicker(false)}
+                aria-labelledby="date-range-picker-dialog-title"
+            >
+                <DialogTitle id="date-range-picker-dialog-title">
+                    {t("Select Date Range")}
+                </DialogTitle>
+                <DialogContent>
+                    <DateRangePicker
+                        ranges={[
+                            {
+                                startDate: startDate
+                                    ? parseISO(startDate)
+                                    : new Date(),
+                                endDate: endDate
+                                    ? parseISO(endDate)
+                                    : new Date(),
+                                key: "selection",
+                            },
+                        ]}
+                        onChange={handleDateRangeChange}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setOpenDateRangePicker(false)}>
+                        {t("Close")}
+                    </Button>
+                </DialogActions>
+            </Dialog>
 
             <ResponsiveContainer width="100%" height={300}>
                 <AreaChart data={chartData} margin={{ left: 30, right: 30 }}>

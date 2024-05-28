@@ -733,10 +733,14 @@ const resources = {
             "There are no matching properties":
                 "There are no matching properties",
             Custom: "Custom",
+            "Select Date Range": "Select Date Range",
+            "Total Views": "Total Views",
         },
     },
     el: {
         translation: {
+            "Total Views": "Συνολικές Προβολές",
+            "Select Date Range": "Επιλογή Χρονικού Διαστήματος",
             Custom: "Προσαρμοσμένο",
             "Edit Integration Details": "Επεξεργασία Λεπτομερειών Σύνδεσης",
 
