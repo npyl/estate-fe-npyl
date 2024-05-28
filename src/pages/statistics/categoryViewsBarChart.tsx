@@ -26,7 +26,7 @@ import {
 export default function ViewsOfPropertiesChart() {
     const { t } = useTranslation();
 
-    const [timeframe, setTimeframe] = useState<TTimeFrame>("ALL_TIME");
+    const [timeframe, setTimeframe] = useState<TTimeFrame>("WEEK");
 
     const { data: parentCategoriesGet } =
         useGetPublicDashboardParentCategoriesQuery({
