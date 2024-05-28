@@ -53,10 +53,13 @@ export default function ViewsOfPropertiesChart() {
     const formatDateTick = (tickItem: string) => {
         const date = new Date(tickItem);
         return timeframe === "WEEK"
-            ? date.toLocaleDateString("en-GB", {
-                  day: "2-digit",
-                  month: "2-digit",
-              })
+            ? date
+                  .toLocaleDateString("en-GB", {
+                      weekday: "short",
+                      day: "2-digit",
+                      month: "2-digit",
+                  })
+                  .replace(/,\s*/g, " ") // remove the comma and space
             : date.toLocaleDateString();
     };
 
