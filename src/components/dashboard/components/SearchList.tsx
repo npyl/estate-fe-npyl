@@ -17,7 +17,7 @@ const locations: IGeoLocation[] = [];
 interface SearchListProps extends Omit<PopperProps, "direction" | "results"> {
     properties: IPropertyResultResponse[];
     customers: ICustomerResultResponse[];
-    // locations: IGeoLocation[];
+    locations: IGeoLocation[];
     searchText: string;
     onClickOutside: () => void;
 }
@@ -25,7 +25,7 @@ interface SearchListProps extends Omit<PopperProps, "direction" | "results"> {
 export const SearchList = ({
     properties,
     customers,
-    // locations,
+    locations,
     searchText,
     open,
     onClickOutside,
