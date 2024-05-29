@@ -25,6 +25,7 @@ import { DateRangePicker, RangeKeyDict } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { format, parseISO } from "date-fns";
+import LabelComponent from "../dashboard/LabelComponent";
 
 export default function StackedAreas() {
     const { t } = useTranslation();
@@ -48,6 +49,13 @@ export default function StackedAreas() {
         startDate: startDate ? format(new Date(startDate), "yyyy-MM-dd") : "",
         endDate: endDate ? format(new Date(endDate), "yyyy-MM-dd") : "",
     });
+    console.log("Query Params:", {
+        parentCategory,
+        category,
+        timeframe,
+        startDate,
+        endDate,
+    });
 
     const handleTimeframeSelect = (e: SelectChangeEvent<TTimeFrame>) => {
         setTimeframe(e.target.value as TTimeFrame);
@@ -63,6 +71,11 @@ export default function StackedAreas() {
         if (selection.startDate && selection.endDate) {
             setStartDate(selection.startDate.toISOString());
             setEndDate(selection.endDate.toISOString());
+            console.log(
+                "Selection starting dateL",
+                selection.startDate,
+                selection.endDate
+            );
         }
     };
 
@@ -316,29 +329,17 @@ export default function StackedAreas() {
                                     borderRadius: 15,
                                 }}
                             >
-                                <Typography
-                                    sx={{
-                                        paddingLeft: "5px",
-                                        color: "white",
-                                        textAlign: "right",
-                                    }}
-                                >
-                                    {`${t("Total Views")}: ${
+                                <LabelComponent
+                                    text={`${t("Total Views")}: ${
                                         (property as any).visitors ?? 0
                                     }`}
-                                </Typography>
+                                />
                                 {timeframe !== "ALL_TIME" && (
-                                    <Typography
-                                        sx={{
-                                            paddingLeft: "5px",
-                                            color: "white",
-                                            textAlign: "right",
-                                        }}
-                                    >
-                                        {`${getViewLabel()}: ${
+                                    <LabelComponent
+                                        text={`${getViewLabel()}: ${
                                             (property as any).views ?? 0
                                         }`}
-                                    </Typography>
+                                    />
                                 )}
                             </Stack>
                         </Box>
@@ -370,35 +371,22 @@ export default function StackedAreas() {
                                 top={20}
                                 right={2}
                                 sx={{
-                                    backgroundColor: "rgba(0, 0, 0, 0.5)",
                                     paddingLeft: 1,
                                     paddingRight: 1,
                                     borderRadius: 15,
                                 }}
                             >
-                                <Typography
-                                    sx={{
-                                        paddingLeft: "5px",
-                                        color: "white",
-                                        textAlign: "right",
-                                    }}
-                                >
-                                    {`${t("Total Views")}: ${
+                                <LabelComponent
+                                    text={`${t("Total Views")}: ${
                                         (property as any).visitors ?? 0
                                     }`}
-                                </Typography>
+                                />
                                 {timeframe !== "ALL_TIME" && (
-                                    <Typography
-                                        sx={{
-                                            paddingLeft: "5px",
-                                            color: "white",
-                                            textAlign: "right",
-                                        }}
-                                    >
-                                        {`${getViewLabel()}: ${
+                                    <LabelComponent
+                                        text={`${getViewLabel()}: ${
                                             (property as any).views ?? 0
                                         }`}
-                                    </Typography>
+                                    />
                                 )}
                             </Stack>
                         </Grid>
