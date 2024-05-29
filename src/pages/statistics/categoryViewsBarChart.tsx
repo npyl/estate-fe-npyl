@@ -143,7 +143,11 @@ export default function ViewsOfPropertiesChart() {
                     margin={{ right: 30, left: 30, bottom: 5 }}
                 >
                     <CartesianGrid vertical={false} />
-                    <XAxis dataKey="date" tickFormatter={formatDateTick} />
+                    <XAxis
+                        dataKey="date"
+                        tickFormatter={formatDateTick}
+                        tickMargin={7}
+                    />
                     <YAxis width={20} tickFormatter={formatYAxis} />
                     <Tooltip content={renderTooltipContent} />
 

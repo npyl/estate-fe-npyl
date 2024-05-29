@@ -306,7 +306,7 @@ export default function StackedAreas() {
                     <XAxis
                         dataKey="date"
                         tickFormatter={formatDateTick}
-                        padding={{ left: 30, right: 30 }}
+                        tickMargin={7}
                     />
                     {category && parentCategory ? (
                         <>
