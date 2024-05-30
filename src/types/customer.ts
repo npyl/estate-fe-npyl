@@ -21,8 +21,7 @@ export interface ICustomerResultResponse {
     seller: boolean;
     buyer: boolean;
 
-    // TODO: waiting for backend
-    priceRange: [number, number];
+    budget: number;
     createdAt: string;
     area: number;
 }

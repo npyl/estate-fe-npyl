@@ -732,6 +732,9 @@ const resources = {
 
             "There are no matching properties":
                 "There are no matching properties",
+            Custom: "Custom",
+            "Select Date Range": "Select Date Range",
+            "Total Views": "Total Views",
 
             "Copy Link": "Copy Link",
             "Social Networks": "Social Networks",
@@ -741,10 +744,12 @@ const resources = {
             "Property presentation Rate": "Property presentation Rate",
             "Property Rating": "Property Rating",
             Reviews: "Reviews",
+            Locations: "Locations",
         },
     },
     el: {
         translation: {
+            Locations: "Τοποθεσίες",
             Reviews: "Αξιολογήσεις",
             "Property presentation Rate": "Αξιολόγηση παρουσίασης ακινήτου",
             "Property Rating": "Αξιολόγηση ακινήτου",
@@ -754,6 +759,9 @@ const resources = {
             "Short Version": "Σύντομη Έκδοση",
             "Long Version": "Εκτεταμένη Έκδοση",
 
+            "Total Views": "Συνολικές Προβολές",
+            "Select Date Range": "Επιλογή Χρονικού Διαστήματος",
+            Custom: "Προσαρμοσμένο",
             "Edit Integration Details": "Επεξεργασία Λεπτομερειών Σύνδεσης",
 
             "Draw on a location with markers":

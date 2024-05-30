@@ -1,8 +1,6 @@
 import { Box, Stack, Typography } from "@mui/material";
 import KeyIcon from "@mui/icons-material/Key";
 import Image from "src/components/image/Image";
-// import match from "autosuggest-highlight/match";
-// import parse from "autosuggest-highlight/parse";
 import { IPropertyResultResponse } from "src/types/properties";
 import { StyledSearchStack } from "../styles";
 import { useMemo } from "react";

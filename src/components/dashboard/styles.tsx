@@ -1,26 +1,7 @@
 import { Popper, PopperProps, Stack, StackProps } from "@mui/material";
-import InputBase from "@mui/material/InputBase";
 import { styled } from "@mui/material/styles";
 import { alpha } from "@mui/system";
 import { bgBlur } from "src/utils/cssStyles";
-
-export const SearchInput = styled(InputBase)(({ theme }) => ({
-    borderRadius: 24,
-    backgroundColor: theme.palette.background.paper,
-    paddingLeft: theme.spacing(2),
-    border: `1px solid ${theme.palette.divider}`,
-    "&:hover": {
-        borderColor: theme.palette.primary.main,
-    },
-    "&:focus": {
-        borderColor: theme.palette.primary.main,
-    },
-    width: "40vw",
-    height: "50px",
-    [theme.breakpoints.down("sm")]: {
-        width: "65vw",
-    },
-}));
 
 export const StyledPopper = styled((props: PopperProps) => (
     <Popper {...props} />

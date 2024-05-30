@@ -10,20 +10,32 @@ import {
     MenuItem,
     Select,
     SelectChangeEvent,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
 } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { useTranslation } from "react-i18next";
 import { useMemo, useState } from "react";
 import PropertyCard from "@/components/PropertyCard";
-import { ViewsIcon } from "@/icons/views";
 import { useResponsive } from "@/hooks/use-responsive";
+import { DateRangePicker, RangeKeyDict } from "react-date-range";
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
+import { format, parseISO } from "date-fns";
+import LabelComponent from "../dashboard/LabelComponent";
 
 export default function StackedAreas() {
     const { t } = useTranslation();
 
     const [category, setCategory] = useState("");
     const [parentCategory, setParentCategory] = useState("");
-    const [timeframe, setTimeframe] = useState<TTimeFrame>("ALL_TIME");
+    const [timeframe, setTimeframe] = useState<TTimeFrame>("WEEK");
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+    const [openDateRangePicker, setOpenDateRangePicker] = useState(false);
 
     // enums
     const data = useGlobals();
@@ -34,7 +46,31 @@ export default function StackedAreas() {
         parentCategory,
         category,
         timeframe,
+        startDate: startDate ? format(new Date(startDate), "yyyy-MM-dd") : "",
+        endDate: endDate ? format(new Date(endDate), "yyyy-MM-dd") : "",
     });
+
+    const handleTimeframeSelect = (e: SelectChangeEvent<TTimeFrame>) => {
+        setTimeframe(e.target.value as TTimeFrame);
+        if (e.target.value !== "CUSTOM") {
+            setStartDate("");
+            setEndDate("");
+        }
+    };
+
+    // Handle date range selection
+    const handleDateRangeChange = (ranges: RangeKeyDict) => {
+        const { selection } = ranges;
+        if (selection.startDate && selection.endDate) {
+            setStartDate(selection.startDate.toISOString());
+            setEndDate(selection.endDate.toISOString());
+            console.log(
+                "Selection starting dateL",
+                selection.startDate,
+                selection.endDate
+            );
+        }
+    };
 
     const subCategoriesMap: {
         [key: string]: KeyValue[];
@@ -51,7 +87,6 @@ export default function StackedAreas() {
     const handleParentCategorySelect = (event: SelectChangeEvent<string>) => {
         const selectedParentCategory = event.target.value;
         setParentCategory(selectedParentCategory);
-
         setCategory("");
     };
 
@@ -68,9 +103,6 @@ export default function StackedAreas() {
         }
     };
 
-    const handleTimeframeSelect = (e: SelectChangeEvent<TTimeFrame>) =>
-        setTimeframe(e.target.value as TTimeFrame);
-
     const belowSm = useResponsive("down", "sm");
     const belowMd = useResponsive("down", "md");
 
@@ -84,6 +116,25 @@ export default function StackedAreas() {
             ),
         [parentCategory, category, properties]
     );
+
+    const getViewLabel = () => {
+        switch (timeframe) {
+            case "ALL_TIME":
+                return t("All Time Views");
+            case "MONTH":
+                return t("Monthly Views");
+            case "WEEK":
+                return t("Weekly Views");
+            case "YEAR":
+                return t("Yearly Views");
+            case "DAY":
+                return t("Daily Views");
+            case "CUSTOM":
+                return t("Custom Views");
+            default:
+                return "";
+        }
+    };
 
     return (
         <>
@@ -101,10 +152,10 @@ export default function StackedAreas() {
                                 {t("All_Time")}
                             </MenuItem>
                             <MenuItem value="MONTH">{t("Monthly")}</MenuItem>
-                            <MenuItem value="WEEK">{"Weekly"}</MenuItem>
+                            <MenuItem value="WEEK">{t("Weekly")}</MenuItem>
                             <MenuItem value="YEAR">{t("Yearly")}</MenuItem>
                             <MenuItem value="DAY">{t("Daily")}</MenuItem>
-                            <MenuItem value="CUSTOM">Custom</MenuItem>
+                            <MenuItem value="CUSTOM">{t("Custom")}</MenuItem>
                         </Select>
                         <Select
                             value={parentCategory}
@@ -132,6 +183,14 @@ export default function StackedAreas() {
                                 </MenuItem>
                             ))}
                         </Select>
+                        {timeframe === "CUSTOM" && (
+                            <Button
+                                variant="outlined"
+                                onClick={() => setOpenDateRangePicker(true)}
+                            >
+                                {t("Select Date Range")}
+                            </Button>
+                        )}
                     </Stack>
                 </Stack>
             ) : (
@@ -162,10 +221,10 @@ export default function StackedAreas() {
                                 {t("All_Time")}
                             </MenuItem>
                             <MenuItem value="MONTH">{t("Monthly")}</MenuItem>
-                            <MenuItem value="WEEK">{"Weekly"}</MenuItem>
+                            <MenuItem value="WEEK">{t("Weekly")}</MenuItem>
                             <MenuItem value="YEAR">{t("Yearly")}</MenuItem>
                             <MenuItem value="DAY">{t("Daily")}</MenuItem>
-                            <MenuItem value="CUSTOM">Custom</MenuItem>
+                            <MenuItem value="CUSTOM">{t("Custom")}</MenuItem>
                         </Select>
                         <Select
                             value={parentCategory}
@@ -192,9 +251,45 @@ export default function StackedAreas() {
                                 </MenuItem>
                             ))}
                         </Select>
+                        {timeframe === "CUSTOM" && (
+                            <Button
+                                variant="outlined"
+                                onClick={() => setOpenDateRangePicker(true)}
+                            >
+                                {t("Select Date Range")}
+                            </Button>
+                        )}
                     </Stack>
                 </Stack>
             )}
+
+            <Dialog
+                open={openDateRangePicker}
+                onClose={() => setOpenDateRangePicker(false)}
+            >
+                <DialogTitle>{t("Select Date Range")}</DialogTitle>
+                <DialogContent>
+                    <DateRangePicker
+                        ranges={[
+                            {
+                                startDate: startDate
+                                    ? parseISO(startDate)
+                                    : new Date(),
+                                endDate: endDate
+                                    ? parseISO(endDate)
+                                    : new Date(),
+                                key: "selection",
+                            },
+                        ]}
+                        onChange={handleDateRangeChange}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setOpenDateRangePicker(false)}>
+                        {t("Close")}
+                    </Button>
+                </DialogActions>
+            </Dialog>
 
             {belowSm ? (
                 <Stack px={2} direction="row" spacing={2} overflow="auto">
@@ -214,25 +309,27 @@ export default function StackedAreas() {
                             />
                             <Stack
                                 position="absolute"
-                                direction="row"
-                                top={belowSm ? 5 : 20}
+                                direction="column"
+                                top={5}
                                 right={2}
                                 sx={{
-                                    backgroundColor: "rgba(0, 0, 0, 0.5)",
                                     paddingLeft: 1,
                                     paddingRight: 1,
                                     borderRadius: 15,
                                 }}
                             >
-                                <ViewsIcon />
-                                <Typography
-                                    sx={{
-                                        paddingLeft: "5px",
-                                        color: "white",
-                                    }}
-                                >
-                                    {(property as any).visitors}
-                                </Typography>
+                                <LabelComponent
+                                    text={`${t("Total Views")}: ${
+                                        (property as any).visitors ?? 0
+                                    }`}
+                                />
+                                {timeframe !== "ALL_TIME" && (
+                                    <LabelComponent
+                                        text={`${getViewLabel()}: ${
+                                            (property as any).views ?? 0
+                                        }`}
+                                    />
+                                )}
                             </Stack>
                         </Box>
                     ))}
@@ -249,8 +346,8 @@ export default function StackedAreas() {
                             key={`${property.id}-${timeframe}`}
                             sx={{
                                 position: "relative",
-                                flex: belowSm ? "0 0 auto" : "1 0 auto", // Flex basis changes when belowSm
-                                minWidth: belowSm ? "50%" : undefined, // 50% width for each item on small screens
+                                flex: belowSm ? "0 0 auto" : "1 0 auto",
+                                minWidth: belowSm ? "50%" : undefined,
                             }}
                         >
                             <PropertyCard
@@ -259,25 +356,27 @@ export default function StackedAreas() {
                             />
                             <Stack
                                 position="absolute"
-                                direction="row"
+                                direction="column"
                                 top={20}
                                 right={2}
                                 sx={{
-                                    backgroundColor: "rgba(0, 0, 0, 0.5)",
                                     paddingLeft: 1,
                                     paddingRight: 1,
                                     borderRadius: 15,
                                 }}
                             >
-                                <ViewsIcon />
-                                <Typography
-                                    sx={{
-                                        paddingLeft: "5px",
-                                        color: "white",
-                                    }}
-                                >
-                                    {(property as any).visitors}
-                                </Typography>
+                                <LabelComponent
+                                    text={`${t("Total Views")}: ${
+                                        (property as any).visitors ?? 0
+                                    }`}
+                                />
+                                {timeframe !== "ALL_TIME" && (
+                                    <LabelComponent
+                                        text={`${getViewLabel()}: ${
+                                            (property as any).views ?? 0
+                                        }`}
+                                    />
+                                )}
                             </Stack>
                         </Grid>
                     ))}
