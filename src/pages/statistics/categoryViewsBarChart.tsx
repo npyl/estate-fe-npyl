@@ -135,9 +135,6 @@ export default function ViewsOfPropertiesChart() {
                     (change / previousTotalViews) * 100
                 ).toString();
             }
-                (sum, entry) => sum + (entry.value as number),
-                0
-            );
 
             return (
                 <div
