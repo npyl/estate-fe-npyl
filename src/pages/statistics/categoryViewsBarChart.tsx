@@ -223,36 +223,6 @@ export default function ViewsOfPropertiesChart() {
                             </span>
                         </div>
                     )}
-
-                    <p style={{ color: "#000", margin: 0, fontWeight: "bold" }}>
-                        {t("Property Views")}: {totalViews}
-                    </p>
-                    <hr style={{ borderColor: "grey" }} />
-                    {payload.map((entry) => (
-                        <div
-                            key={entry.name}
-                            style={{
-                                color: entry.color,
-                                display: "flex",
-                                alignItems: "center",
-                                marginTop: "5px",
-                            }}
-                        >
-                            <span
-                                style={{
-                                    display: "inline-block",
-                                    backgroundColor: entry.color,
-                                    width: "10px",
-                                    height: "10px",
-                                    borderRadius: "50%",
-                                    marginRight: "5px",
-                                }}
-                            ></span>
-                            <span style={{ color: "#000" }}>{`${t(
-                                (entry.name as string) || ""
-                            )}: ${entry.value}`}</span>
-                        </div>
-                    ))}
                 </div>
             );
         }
