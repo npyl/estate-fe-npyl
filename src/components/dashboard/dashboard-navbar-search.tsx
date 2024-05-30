@@ -7,8 +7,9 @@ import { useSearchPropertyQuery } from "src/services/properties";
 import { useDebouncedCallback } from "use-debounce";
 import { SearchList } from "./components/SearchList";
 import { SearchInput } from "./styles";
+import { useSearchLocationsQuery } from "@/services/location";
 
-type SearchCategory = "all" | "properties" | "customers";
+type SearchCategory = "all" | "properties" | "customers" | "locations";
 
 export const DashboardNavbarSearch: FC = () => {
     const { t } = useTranslation();
@@ -24,6 +25,9 @@ export const DashboardNavbarSearch: FC = () => {
         }
     );
     const { data: customersResults } = useSearchCustomerQuery(debouncedText, {
+        skip: debouncedText === "",
+    });
+    const { data: locationsResults } = useSearchLocationsQuery(debouncedText, {
         skip: debouncedText === "",
     });
 
@@ -48,6 +52,13 @@ export const DashboardNavbarSearch: FC = () => {
     const customers = useMemo(
         () => (searchCategory !== "properties" ? customersResults || [] : []),
         [searchCategory, customersResults]
+    );
+    const locations = useMemo(
+        () =>
+            searchCategory !== "locations" && debouncedText.length >= 3
+                ? locationsResults || []
+                : [],
+        [searchCategory, locationsResults, debouncedText]
     );
 
     return (
@@ -127,6 +138,7 @@ export const DashboardNavbarSearch: FC = () => {
                 anchorEl={anchorEl}
                 properties={properties}
                 customers={customers}
+                locations={locations}
                 searchText={searchText}
                 onClickOutside={() => setAnchorEl(null)}
             />

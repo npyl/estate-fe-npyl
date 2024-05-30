@@ -51,7 +51,7 @@ export const location = createApi({
         // Example of a query for the LocationSearchItem component
         searchLocations: builder.query<IGeoLocation[], string>({
             query: (search) => ({
-                url: `search`,
+                url: `/hierarchy/suggestions`,
                 params: {
                     search,
                 },
