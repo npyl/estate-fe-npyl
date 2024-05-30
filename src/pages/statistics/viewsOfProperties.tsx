@@ -24,6 +24,8 @@ import {
     ValueType,
 } from "recharts/types/component/DefaultTooltipContent";
 import { useResponsive } from "@/hooks/use-responsive";
+import SouthRoundedIcon from "@mui/icons-material/SouthRounded";
+import NorthRoundedIcon from "@mui/icons-material/NorthRounded";
 
 export default function StackedAreas() {
     const { t } = useTranslation();
@@ -122,6 +124,26 @@ export default function StackedAreas() {
         payload,
     }: TooltipProps<ValueType, NameType>) => {
         if (active && payload && payload.length) {
+            const currentDate = payload[0].payload.date;
+            const currentTotalViews =
+                payload[0].payload.All +
+                payload[0].payload.parentCategory +
+                payload[0].payload.category;
+            const previousDataIndex = chartData.findIndex(
+                (data) => data.date === currentDate
+            );
+            const previousTotalViews =
+                previousDataIndex > 0
+                    ? chartData[previousDataIndex - 1].All +
+                      chartData[previousDataIndex - 1].parentCategory +
+                      chartData[previousDataIndex - 1].category
+                    : 0;
+            const viewDifference = currentTotalViews - previousTotalViews;
+            const viewPercentageChange = previousTotalViews
+                ? (viewDifference / previousTotalViews) * 100
+                : 0;
+            const isIncrease = viewDifference >= 0;
+
             return (
                 <div
                     style={{
@@ -132,10 +154,30 @@ export default function StackedAreas() {
                         boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
                     }}
                 >
-                    <p style={{ color: "#000", margin: 0, fontWeight: "bold" }}>
-                        Property Views
-                    </p>
-                    <hr style={{ borderColor: "grey" }} />
+                    <div style={{ borderBottom: "1px solid #eee" }}>
+                        <p
+                            style={{
+                                color: "#000",
+                                margin: 0,
+                                fontWeight: "bold",
+                            }}
+                        >
+                            {new Date(currentDate).toLocaleDateString()}
+                        </p>
+                        {parentCategory && (
+                            <p
+                                style={{
+                                    color: "#000",
+                                    margin: 0,
+                                    marginBottom: "10px",
+                                    fontWeight: "semibold",
+                                }}
+                            >
+                                Total Views: {currentTotalViews}
+                            </p>
+                        )}
+                    </div>
+
                     {payload.map((entry) => (
                         <div
                             key={entry.name}
@@ -163,12 +205,37 @@ export default function StackedAreas() {
                             )}: ${entry.value}`}</span>
                         </div>
                     ))}
+                    {previousDataIndex > 0 && (
+                        <div
+                            style={{
+                                display: "flex",
+                                alignItems: "center",
+                                marginTop: "5px",
+                                color: isIncrease ? "#388e3c" : "#d32f2f",
+                                borderTop: "1px solid #eee",
+                            }}
+                        >
+                            {isIncrease ? (
+                                <NorthRoundedIcon fontWeight="bold" />
+                            ) : (
+                                <SouthRoundedIcon fontWeight="bold" />
+                            )}
+                            <span
+                                style={{
+                                    marginLeft: "5px",
+                                    fontWeight: "bold",
+                                    marginTop: "5px",
+                                }}
+                            >
+                                {viewPercentageChange.toFixed(0)}%
+                            </span>
+                        </div>
+                    )}
                 </div>
             );
         }
         return null;
     };
-
     // Date formatter for X-axis ticks
     const formatDateTick = (tickItem: string) => {
         const date = new Date(tickItem);
