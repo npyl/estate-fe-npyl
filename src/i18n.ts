@@ -741,10 +741,12 @@ const resources = {
             "Property presentation Rate": "Property presentation Rate",
             "Property Rating": "Property Rating",
             Reviews: "Reviews",
+            Locations: "Locations",
         },
     },
     el: {
         translation: {
+            Locations: "Τοποθεσίες",
             Reviews: "Αξιολογήσεις",
             "Property presentation Rate": "Αξιολόγηση παρουσίασης ακινήτου",
             "Property Rating": "Αξιολόγηση ακινήτου",
