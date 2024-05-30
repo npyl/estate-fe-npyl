@@ -21,12 +21,11 @@ export const getOptions = (t: TranslationType): TSortByOptions => [
         },
         icon: "",
     },
-    // TODO: need backend
     {
         value: "PRICE_DESC",
         label: t("Price (expensive first)"),
         sorting: {
-            sortBy: "price",
+            sortBy: "budget",
             direction: "DESC",
         },
         icon: "",
@@ -35,7 +34,7 @@ export const getOptions = (t: TranslationType): TSortByOptions => [
         value: "PRICE_ASC",
         label: t("Price (cheap first)"),
         sorting: {
-            sortBy: "price",
+            sortBy: "budget",
             direction: "ASC",
         },
         icon: "",

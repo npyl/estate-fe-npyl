@@ -1,5 +1,5 @@
 import { Stack, Typography } from "@mui/material";
-import { ListingTypes } from "src/types/listings";
+import { IntegrationSite } from "src/types/listings";
 import { LabeledSwitch } from "./Switch";
 import SpitogatosSvg from "src/assets/SpitogatosSvg";
 import RightMoveIcon from "src/assets/RightMoveIcon";
@@ -53,7 +53,7 @@ type LISTING_STATIC_DATUM = {
 
 const getSTATIC_DATA = (
     propertyId: number
-): Record<ListingTypes, LISTING_STATIC_DATUM> => ({
+): Record<IntegrationSite, LISTING_STATIC_DATUM> => ({
     SPITOGATOS: {
         icon: <SpitogatosSvg width={36} height={36} />,
         text: "Spitogatos.gr",
@@ -109,7 +109,7 @@ const getSTATIC_DATA = (
 // -------------------------------------------------------
 
 interface ListingCardProps {
-    label: ListingTypes;
+    label: IntegrationSite;
     value: boolean;
     onClick: () => void;
 }

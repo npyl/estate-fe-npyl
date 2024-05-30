@@ -1,6 +1,6 @@
 import { IFileResponse } from "@/types/file";
 import { IIntegration, IIntegrationPOST } from "@/types/integrations";
-import { ListingTypes } from "@/types/listings";
+import { IntegrationSite } from "@/types/listings";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { CompanyImageType, ICompany, ICompanyPOST } from "src/types/company";
 
@@ -42,7 +42,7 @@ export const company = createApi({
             invalidatesTags: ["Company"],
         }),
 
-        getIntegrations: builder.query<IIntegration, ListingTypes>({
+        getIntegrations: builder.query<IIntegration, IntegrationSite>({
             query: (site) => ({
                 url: "/integration-credentials",
                 params: { site },

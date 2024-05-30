@@ -1,3 +1,4 @@
+import React, { useMemo, useState } from "react";
 import {
     AreaChart,
     Area,
@@ -14,10 +15,18 @@ import { useGetPublicDashboardPropertyViewsQuery } from "@/services/publicDashbo
 import { IGlobalProperty } from "@/types/global";
 import { KeyValue } from "@/types/KeyValue";
 import { TTimeFrame } from "@/types/publicDashboard";
-import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import {
+    MenuItem,
+    Select,
+    SelectChangeEvent,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { Stack } from "@mui/system";
-import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
     NameType,
@@ -26,13 +35,21 @@ import {
 import { useResponsive } from "@/hooks/use-responsive";
 import SouthRoundedIcon from "@mui/icons-material/SouthRounded";
 import NorthRoundedIcon from "@mui/icons-material/NorthRounded";
+import { DateRangePicker, RangeKeyDict } from "react-date-range";
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
+import { format, parseISO } from "date-fns";
 
 export default function StackedAreas() {
     const { t } = useTranslation();
 
     const [category, setCategory] = useState("");
     const [parentCategory, setParentCategory] = useState("");
-    const [timeframe, setTimeframe] = useState<TTimeFrame>("ALL_TIME");
+    const [timeframe, setTimeframe] = useState<TTimeFrame>("WEEK");
+
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+    const [openDateRangePicker, setOpenDateRangePicker] = useState(false);
 
     // Fetch enums and data using hooks
     const data = useGlobals();
@@ -44,6 +61,10 @@ export default function StackedAreas() {
             parentCategory,
             category,
             timeframe,
+            startDate: startDate
+                ? format(new Date(startDate), "yyyy-MM-dd")
+                : "",
+            endDate: endDate ? format(new Date(endDate), "yyyy-MM-dd") : "",
         });
 
     // Organize sub-categories by main category
@@ -80,8 +101,22 @@ export default function StackedAreas() {
         }
     };
 
-    const handleTimeframeSelect = (e: SelectChangeEvent<TTimeFrame>) =>
+    const handleTimeframeSelect = (e: SelectChangeEvent<TTimeFrame>) => {
         setTimeframe(e.target.value as TTimeFrame);
+        if (e.target.value !== "CUSTOM") {
+            setStartDate("");
+            setEndDate("");
+        }
+    };
+
+    // Handle date range selection
+    const handleDateRangeChange = (ranges: RangeKeyDict) => {
+        const { selection } = ranges;
+        if (selection.startDate && selection.endDate) {
+            setStartDate(selection.startDate.toISOString());
+            setEndDate(selection.endDate.toISOString());
+        }
+    };
 
     // Prepare chart data
     const chartData = useMemo(
@@ -240,10 +275,13 @@ export default function StackedAreas() {
     const formatDateTick = (tickItem: string) => {
         const date = new Date(tickItem);
         return timeframe === "WEEK"
-            ? date.toLocaleDateString("en-GB", {
-                  day: "2-digit",
-                  month: "2-digit",
-              })
+            ? date
+                  .toLocaleDateString("en-GB", {
+                      weekday: "short",
+                      day: "2-digit",
+                      month: "2-digit",
+                  })
+                  .replace(/,\s*/g, " ") // remove the comma and space
             : date.toLocaleDateString();
     };
 
@@ -273,7 +311,7 @@ export default function StackedAreas() {
                             <MenuItem value="WEEK">{t("Weekly")}</MenuItem>
                             <MenuItem value="YEAR">{t("Yearly")}</MenuItem>
                             <MenuItem value="DAY">{t("Daily")}</MenuItem>
-                            <MenuItem value="CUSTOM">Custom</MenuItem>
+                            <MenuItem value="CUSTOM">{t("Custom")}</MenuItem>
                         </Select>
                         <Select
                             value={parentCategory}
@@ -300,6 +338,14 @@ export default function StackedAreas() {
                                 </MenuItem>
                             ))}
                         </Select>
+                        {timeframe === "CUSTOM" && (
+                            <Button
+                                variant="outlined"
+                                onClick={() => setOpenDateRangePicker(true)}
+                            >
+                                {t("Select Date Range")}
+                            </Button>
+                        )}
                     </Stack>
                 </Stack>
             ) : (
@@ -333,7 +379,7 @@ export default function StackedAreas() {
                             <MenuItem value="WEEK">{t("Weekly")}</MenuItem>
                             <MenuItem value="YEAR">{t("Yearly")}</MenuItem>
                             <MenuItem value="DAY">{t("Daily")}</MenuItem>
-                            <MenuItem value="CUSTOM">Custom</MenuItem>
+                            <MenuItem value="CUSTOM">{t("Custom")}</MenuItem>
                         </Select>
                         <Select
                             value={parentCategory}
@@ -360,9 +406,48 @@ export default function StackedAreas() {
                                 </MenuItem>
                             ))}
                         </Select>
+                        {timeframe === "CUSTOM" && (
+                            <Button
+                                variant="outlined"
+                                onClick={() => setOpenDateRangePicker(true)}
+                            >
+                                {t("Select Date Range")}
+                            </Button>
+                        )}
                     </Stack>
                 </Stack>
             )}
+
+            <Dialog
+                open={openDateRangePicker}
+                onClose={() => setOpenDateRangePicker(false)}
+                aria-labelledby="date-range-picker-dialog-title"
+            >
+                <DialogTitle id="date-range-picker-dialog-title">
+                    {t("Select Date Range")}
+                </DialogTitle>
+                <DialogContent>
+                    <DateRangePicker
+                        ranges={[
+                            {
+                                startDate: startDate
+                                    ? parseISO(startDate)
+                                    : new Date(),
+                                endDate: endDate
+                                    ? parseISO(endDate)
+                                    : new Date(),
+                                key: "selection",
+                            },
+                        ]}
+                        onChange={handleDateRangeChange}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setOpenDateRangePicker(false)}>
+                        {t("Close")}
+                    </Button>
+                </DialogActions>
+            </Dialog>
 
             <ResponsiveContainer width="100%" height={300}>
                 <AreaChart data={chartData} margin={{ left: 30, right: 30 }}>
@@ -370,7 +455,7 @@ export default function StackedAreas() {
                     <XAxis
                         dataKey="date"
                         tickFormatter={formatDateTick}
-                        padding={{ left: 30, right: 30 }}
+                        tickMargin={7}
                     />
                     {category && parentCategory ? (
                         <>

@@ -98,7 +98,7 @@ export const LocationSearchItem = ({ option, searchText }: SearchItemProps) => {
             flex={1}
             direction={"row"}
             alignItems={"center"}
-            onClick={() => router.push(`/location/${option.areaID}`)}
+            // onClick={() => router.push(`/location/${option.areaID}`)}
         >
             <LocationOnIcon fontSize="large" />
 

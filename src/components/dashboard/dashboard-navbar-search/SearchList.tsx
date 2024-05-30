@@ -1,32 +1,89 @@
 import { Divider, Grid, Paper, PopperProps, Typography } from "@mui/material";
-import { IPropertyResultResponse } from "src/types/properties";
 import SearchNotFound from "src/components/search-not-found/SearchNotFound";
 import { StyledPopper } from "../styles";
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import useClickOutside from "./useClickOutside";
-import { ICustomerResultResponse } from "src/types/customer";
-import { IGeoLocation } from "src/types/geolocation";
 import { CustomerSearchItem } from "./CustomerSearchItem";
 import { PropertySearchItem } from "./PropertySearchItem";
 import { LocationSearchItem } from "./LocationSearchItem";
 import { ScrollBox } from "src/components/ScrollBox";
 import { useTranslation } from "react-i18next";
+import Pagination, { usePagination } from "@/components/Pagination";
+import { useSearchPropertyQuery } from "@/services/properties";
+import { useSearchCustomerQuery } from "@/services/customers";
+import { useSearchLocationsQuery } from "@/services/location";
+import { SearchCategory } from "./types";
 
-const locations: IGeoLocation[] = [];
+const PAGE_SIZE = 5;
+
+interface PropertiesSubListProps {
+    searchString: string;
+}
+
+const PropertiesSubList = ({ searchString }: PropertiesSubListProps) => {
+    const { t } = useTranslation();
+
+    const pagination = usePagination();
+
+    const { data, isLoading } = useSearchPropertyQuery(
+        {
+            searchString,
+            page: pagination.page,
+            pageSize: PAGE_SIZE,
+        },
+        {
+            skip: searchString === "",
+        }
+    );
+
+    const properties = useMemo(
+        () => (Array.isArray(data?.content) ? data.content : []),
+        [data?.content]
+    );
+
+    return (
+        <Grid
+            item
+            xs={12}
+            sx={{
+                borderRight: {
+                    lg: "1px solid blue",
+                    md: 0,
+                },
+                marginY: "10px",
+            }}
+        >
+            <Typography variant="h6" textAlign="center">
+                {t("Properties")}
+            </Typography>
+
+            <Pagination
+                {...pagination}
+                isLoading={isLoading}
+                pageSize={PAGE_SIZE}
+                totalItems={data?.totalElements ?? 5}
+            >
+                {properties.map((option) => (
+                    <PropertySearchItem
+                        key={option.id}
+                        option={option}
+                        searchText={searchString}
+                    />
+                ))}
+            </Pagination>
+        </Grid>
+    );
+};
 
 interface SearchListProps extends Omit<PopperProps, "direction" | "results"> {
-    properties: IPropertyResultResponse[];
-    customers: ICustomerResultResponse[];
-    locations: IGeoLocation[];
     searchText: string;
+    searchCategory: SearchCategory;
     onClickOutside: () => void;
 }
 
 export const SearchList = ({
-    properties,
-    customers,
-    locations,
     searchText,
+    searchCategory,
     open,
     onClickOutside,
     anchorEl,
@@ -36,6 +93,22 @@ export const SearchList = ({
     const ref = useRef<HTMLDivElement>(null);
 
     useClickOutside(ref, () => onClickOutside && onClickOutside());
+
+    const { data: customersResults } = useSearchCustomerQuery(searchText, {
+        skip: searchText === "",
+    });
+    const { data: locationsResults } = useSearchLocationsQuery(searchText, {
+        skip: searchText === "" && searchText.length < 4,
+    });
+
+    const customers = useMemo(
+        () => (searchCategory !== "properties" ? customersResults || [] : []),
+        [searchCategory, customersResults]
+    );
+    const locations = useMemo(
+        () => (searchCategory !== "locations" ? locationsResults || [] : []),
+        [searchCategory, locationsResults]
+    );
 
     return (
         <div ref={ref}>
@@ -51,54 +124,22 @@ export const SearchList = ({
                     }}
                 >
                     <ScrollBox scrollbarWidth="15px">
-                        {properties?.length === 0 &&
+                        {/* {properties?.length === 0 &&
                             customers?.length === 0 &&
                             locations?.length === 0 && (
                                 <SearchNotFound query={searchText} />
-                            )}
+                            )} */}
 
-                        {properties?.length > 0 && (
-                            <Grid container>
+                        <Grid container>
+                            <PropertiesSubList searchString={searchText} />
+
+                            {/* {properties?.length > 0 &&
+                                customers?.length > 0 && <Divider />}
+ */}
+                            {customers?.length > 0 && (
                                 <Grid
                                     item
                                     xs={12}
-                                    sm={12}
-                                    md={12}
-                                    lg={12}
-                                    sx={{
-                                        borderRight: {
-                                            lg: "1px solid blue",
-                                            md: 0,
-                                        },
-                                        marginY: "10px",
-                                    }}
-                                >
-                                    <Typography variant="h6" textAlign="center">
-                                        {t("Properties")}
-                                    </Typography>
-                                    {properties.map((option, index: number) => (
-                                        <PropertySearchItem
-                                            key={index}
-                                            option={option}
-                                            searchText={searchText}
-                                        />
-                                    ))}
-                                </Grid>
-                            </Grid>
-                        )}
-
-                        {properties?.length > 0 && customers?.length > 0 && (
-                            <Divider />
-                        )}
-
-                        {customers?.length > 0 && (
-                            <Grid container>
-                                <Grid
-                                    item
-                                    xs={12}
-                                    sm={12}
-                                    md={12}
-                                    lg={12}
                                     sx={{
                                         borderRight: {
                                             lg: "1px solid blue",
@@ -121,21 +162,16 @@ export const SearchList = ({
                                         />
                                     ))}
                                 </Grid>
-                            </Grid>
-                        )}
+                            )}
 
-                        {customers?.length > 0 && locations?.length > 0 && (
-                            <Divider />
-                        )}
+                            {customers?.length > 0 && locations?.length > 0 && (
+                                <Divider />
+                            )}
 
-                        {locations?.length > 0 && (
-                            <Grid container>
+                            {locations?.length > 0 && (
                                 <Grid
                                     item
                                     xs={12}
-                                    sm={12}
-                                    md={12}
-                                    lg={12}
                                     sx={{
                                         borderRight: {
                                             lg: "1px solid blue",
@@ -155,8 +191,8 @@ export const SearchList = ({
                                         />
                                     ))}
                                 </Grid>
-                            </Grid>
-                        )}
+                            )}
+                        </Grid>
                     </ScrollBox>
                 </Paper>
             </StyledPopper>
