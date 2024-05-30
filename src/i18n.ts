@@ -732,6 +732,9 @@ const resources = {
 
             "There are no matching properties":
                 "There are no matching properties",
+            Custom: "Custom",
+            "Select Date Range": "Select Date Range",
+            "Total Views": "Total Views",
 
             "Copy Link": "Copy Link",
             "Social Networks": "Social Networks",
@@ -756,6 +759,9 @@ const resources = {
             "Short Version": "Σύντομη Έκδοση",
             "Long Version": "Εκτεταμένη Έκδοση",
 
+            "Total Views": "Συνολικές Προβολές",
+            "Select Date Range": "Επιλογή Χρονικού Διαστήματος",
+            Custom: "Προσαρμοσμένο",
             "Edit Integration Details": "Επεξεργασία Λεπτομερειών Σύνδεσης",
 
             "Draw on a location with markers":

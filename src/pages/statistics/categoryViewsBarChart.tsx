@@ -14,27 +14,59 @@ import { Stack } from "@mui/system";
 import { useMemo, useState } from "react";
 import Typography from "@mui/material/Typography";
 import { TTimeFrame } from "@/types/publicDashboard";
-import { Box, MenuItem, Select, SelectChangeEvent } from "@mui/material";
+import {
+    MenuItem,
+    Select,
+    SelectChangeEvent,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+} from "@mui/material";
 import { useGetPublicDashboardParentCategoriesQuery } from "@/services/publicDashboard";
 import { useTranslation } from "react-i18next";
-import { TranslationType } from "@/types/translation";
 import {
     NameType,
     ValueType,
 } from "recharts/types/component/DefaultTooltipContent";
+import { DateRangePicker, RangeKeyDict } from "react-date-range";
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
+import { format, parseISO } from "date-fns";
 
 export default function ViewsOfPropertiesChart() {
     const { t } = useTranslation();
 
-    const [timeframe, setTimeframe] = useState<TTimeFrame>("WEEK");
+    const [timeframe, setTimeframe] = useState<TTimeFrame>("ALL_TIME");
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
+    const [openDateRangePicker, setOpenDateRangePicker] = useState(false);
 
     const { data: parentCategoriesGet } =
         useGetPublicDashboardParentCategoriesQuery({
             timeframe,
+            startDate: startDate
+                ? format(new Date(startDate), "yyyy-MM-dd")
+                : "",
+            endDate: endDate ? format(new Date(endDate), "yyyy-MM-dd") : "",
         });
 
-    const handleTimeframeSelect = (e: SelectChangeEvent<TTimeFrame>) =>
+    const handleTimeframeSelect = (e: SelectChangeEvent<TTimeFrame>) => {
         setTimeframe(e.target.value as TTimeFrame);
+        if (e.target.value !== "CUSTOM") {
+            setStartDate("");
+            setEndDate("");
+        }
+    };
+
+    const handleDateRangeChange = (ranges: RangeKeyDict) => {
+        const { selection } = ranges;
+        if (selection.startDate && selection.endDate) {
+            setStartDate(selection.startDate.toISOString());
+            setEndDate(selection.endDate.toISOString());
+        }
+    };
 
     const chartData = useMemo(
         () =>
@@ -72,6 +104,11 @@ export default function ViewsOfPropertiesChart() {
         payload,
     }: TooltipProps<ValueType, NameType>) => {
         if (active && payload && payload.length) {
+            const totalViews = payload.reduce(
+                (sum, entry) => sum + (entry.value as number),
+                0
+            );
+
             return (
                 <div
                     style={{
@@ -83,36 +120,34 @@ export default function ViewsOfPropertiesChart() {
                     }}
                 >
                     <p style={{ color: "#000", margin: 0, fontWeight: "bold" }}>
-                        Property Views
+                        {t("Property Views")}: {totalViews}
                     </p>
                     <hr style={{ borderColor: "grey" }} />
-                    {payload.map((entry) => {
-                        return (
-                            <div
-                                key={entry.name}
+                    {payload.map((entry) => (
+                        <div
+                            key={entry.name}
+                            style={{
+                                color: entry.color,
+                                display: "flex",
+                                alignItems: "center",
+                                marginTop: "5px",
+                            }}
+                        >
+                            <span
                                 style={{
-                                    color: entry.color,
-                                    display: "flex",
-                                    alignItems: "center",
-                                    marginTop: "5px",
+                                    display: "inline-block",
+                                    backgroundColor: entry.color,
+                                    width: "10px",
+                                    height: "10px",
+                                    borderRadius: "50%",
+                                    marginRight: "5px",
                                 }}
-                            >
-                                <span
-                                    style={{
-                                        display: "inline-block",
-                                        backgroundColor: entry.color,
-                                        width: "10px",
-                                        height: "10px",
-                                        borderRadius: "50%",
-                                        marginRight: "5px",
-                                    }}
-                                ></span>
-                                <span style={{ color: "#000" }}>{`${t(
-                                    (entry.name as string) || ""
-                                )}: ${entry.value}`}</span>
-                            </div>
-                        );
-                    })}
+                            ></span>
+                            <span style={{ color: "#000" }}>{`${t(
+                                (entry.name as string) || ""
+                            )}: ${entry.value}`}</span>
+                        </div>
+                    ))}
                 </div>
             );
         }
@@ -134,9 +169,50 @@ export default function ViewsOfPropertiesChart() {
                     <MenuItem value="WEEK">{t("Weekly")}</MenuItem>
                     <MenuItem value="YEAR">{t("Yearly")}</MenuItem>
                     <MenuItem value="DAY">{t("Daily")}</MenuItem>
-                    <MenuItem value="CUSTOM">Custom</MenuItem>
+                    <MenuItem value="CUSTOM">{t("Custom")}</MenuItem>
                 </Select>
+
+                {timeframe === "CUSTOM" && (
+                    <Button
+                        variant="outlined"
+                        onClick={() => setOpenDateRangePicker(true)}
+                    >
+                        {t("Select Date Range")}
+                    </Button>
+                )}
             </Stack>
+
+            <Dialog
+                open={openDateRangePicker}
+                onClose={() => setOpenDateRangePicker(false)}
+                aria-labelledby="date-range-picker-dialog-title"
+            >
+                <DialogTitle id="date-range-picker-dialog-title">
+                    {t("Select Date Range")}
+                </DialogTitle>
+                <DialogContent>
+                    <DateRangePicker
+                        ranges={[
+                            {
+                                startDate: startDate
+                                    ? parseISO(startDate)
+                                    : new Date(),
+                                endDate: endDate
+                                    ? parseISO(endDate)
+                                    : new Date(),
+                                key: "selection",
+                            },
+                        ]}
+                        onChange={handleDateRangeChange}
+                    />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => setOpenDateRangePicker(false)}>
+                        {t("Close")}
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
             <ResponsiveContainer width="99%" height={300}>
                 <BarChart
                     data={chartData}
