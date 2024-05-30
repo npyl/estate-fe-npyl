@@ -266,11 +266,8 @@ export default function StackedAreas() {
             <Dialog
                 open={openDateRangePicker}
                 onClose={() => setOpenDateRangePicker(false)}
-                aria-labelledby="date-range-picker-dialog-title"
             >
-                <DialogTitle id="date-range-picker-dialog-title">
-                    {t("Select Date Range")}
-                </DialogTitle>
+                <DialogTitle>{t("Select Date Range")}</DialogTitle>
                 <DialogContent>
                     <DateRangePicker
                         ranges={[
@@ -316,7 +313,6 @@ export default function StackedAreas() {
                                 top={5}
                                 right={2}
                                 sx={{
-                                    backgroundColor: "rgba(0, 0, 0, 0.5)",
                                     paddingLeft: 1,
                                     paddingRight: 1,
                                     borderRadius: 15,
@@ -364,7 +360,6 @@ export default function StackedAreas() {
                                 top={20}
                                 right={2}
                                 sx={{
-                                    backgroundColor: "rgba(0, 0, 0, 0.5)",
                                     paddingLeft: 1,
                                     paddingRight: 1,
                                     borderRadius: 15,

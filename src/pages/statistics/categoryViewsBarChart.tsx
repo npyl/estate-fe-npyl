@@ -260,11 +260,8 @@ export default function ViewsOfPropertiesChart() {
             <Dialog
                 open={openDateRangePicker}
                 onClose={() => setOpenDateRangePicker(false)}
-                aria-labelledby="date-range-picker-dialog-title"
             >
-                <DialogTitle id="date-range-picker-dialog-title">
-                    {t("Select Date Range")}
-                </DialogTitle>
+                <DialogTitle>{t("Select Date Range")}</DialogTitle>
                 <DialogContent>
                     <DateRangePicker
                         ranges={[
