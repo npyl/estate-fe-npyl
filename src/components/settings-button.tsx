@@ -51,10 +51,8 @@ export const SettingsButton = () => {
         });
 
     return (
-        <Tooltip title={settings.theme === "light" ? "dark" : "light"}>
-            <IconButton size="medium" onClick={toggleMode}>
-                {settings.theme === "light" ? <MoonIcon /> : <SunIcon />}
-            </IconButton>
-        </Tooltip>
+        <IconButton size="medium" onClick={toggleMode}>
+            {settings.theme === "light" ? <MoonIcon /> : <SunIcon />}
+        </IconButton>
     );
 };
