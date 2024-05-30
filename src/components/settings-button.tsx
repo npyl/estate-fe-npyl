@@ -1,4 +1,4 @@
-import { IconButton, Tooltip } from "@mui/material";
+import { IconButton } from "@mui/material";
 import { useSettings } from "src/hooks/use-settings";
 
 const MoonIcon = () => {
