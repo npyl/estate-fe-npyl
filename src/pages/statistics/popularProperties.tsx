@@ -23,7 +23,7 @@ export default function StackedAreas() {
 
     const [category, setCategory] = useState("");
     const [parentCategory, setParentCategory] = useState("");
-    const [timeframe, setTimeframe] = useState<TTimeFrame>("ALL_TIME");
+    const [timeframe, setTimeframe] = useState<TTimeFrame>("WEEK");
 
     // enums
     const data = useGlobals();

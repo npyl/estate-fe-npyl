@@ -30,7 +30,7 @@ export default function StackedAreas() {
 
     const [category, setCategory] = useState("");
     const [parentCategory, setParentCategory] = useState("");
-    const [timeframe, setTimeframe] = useState<TTimeFrame>("ALL_TIME");
+    const [timeframe, setTimeframe] = useState<TTimeFrame>("WEEK");
 
     // Fetch enums and data using hooks
     const data = useGlobals();
@@ -173,10 +173,13 @@ export default function StackedAreas() {
     const formatDateTick = (tickItem: string) => {
         const date = new Date(tickItem);
         return timeframe === "WEEK"
-            ? date.toLocaleDateString("en-GB", {
-                  day: "2-digit",
-                  month: "2-digit",
-              })
+            ? date
+                  .toLocaleDateString("en-GB", {
+                      weekday: "short",
+                      day: "2-digit",
+                      month: "2-digit",
+                  })
+                  .replace(/,\s*/g, " ") // remove the comma and space
             : date.toLocaleDateString();
     };
 
@@ -303,7 +306,7 @@ export default function StackedAreas() {
                     <XAxis
                         dataKey="date"
                         tickFormatter={formatDateTick}
-                        padding={{ left: 30, right: 30 }}
+                        tickMargin={7}
                     />
                     {category && parentCategory ? (
                         <>

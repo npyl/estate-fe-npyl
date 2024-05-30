@@ -26,7 +26,7 @@ import {
 export default function ViewsOfPropertiesChart() {
     const { t } = useTranslation();
 
-    const [timeframe, setTimeframe] = useState<TTimeFrame>("ALL_TIME");
+    const [timeframe, setTimeframe] = useState<TTimeFrame>("WEEK");
 
     const { data: parentCategoriesGet } =
         useGetPublicDashboardParentCategoriesQuery({
@@ -53,10 +53,13 @@ export default function ViewsOfPropertiesChart() {
     const formatDateTick = (tickItem: string) => {
         const date = new Date(tickItem);
         return timeframe === "WEEK"
-            ? date.toLocaleDateString("en-GB", {
-                  day: "2-digit",
-                  month: "2-digit",
-              })
+            ? date
+                  .toLocaleDateString("en-GB", {
+                      weekday: "short",
+                      day: "2-digit",
+                      month: "2-digit",
+                  })
+                  .replace(/,\s*/g, " ") // remove the comma and space
             : date.toLocaleDateString();
     };
 
@@ -140,7 +143,11 @@ export default function ViewsOfPropertiesChart() {
                     margin={{ right: 30, left: 30, bottom: 5 }}
                 >
                     <CartesianGrid vertical={false} />
-                    <XAxis dataKey="date" tickFormatter={formatDateTick} />
+                    <XAxis
+                        dataKey="date"
+                        tickFormatter={formatDateTick}
+                        tickMargin={7}
+                    />
                     <YAxis width={20} tickFormatter={formatYAxis} />
                     <Tooltip content={renderTooltipContent} />
 
