@@ -18,7 +18,7 @@ const ListLabelsItem: FC<ListLabelsItemProps> = ({ labels, ...other }) => {
             {...other}
             label={t("Labels").toString()}
             sx={{
-                height: "fit-content",
+                height: labels.length === 0 ? undefined : "max-content",
             }}
         >
             <Stack spacing={1}>
