@@ -33,8 +33,6 @@ const ListItem: FC<ListItemProps> = (props) => {
         ...other
     } = props;
 
-    console.log("other: ", other);
-
     return (
         <StyledListItem
             sx={{
