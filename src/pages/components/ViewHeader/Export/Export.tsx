@@ -1,4 +1,9 @@
-import { IconButton, CircularProgress, Button } from "@mui/material";
+import {
+    IconButton,
+    CircularProgress,
+    Button,
+    Typography,
+} from "@mui/material";
 import { useState, MouseEvent, useCallback } from "react";
 import DocumentSvg from "@/assets/Document";
 import { useLazyDownloadPDFQuery } from "@/services/exports";
@@ -80,6 +85,7 @@ const ExportButton = () => {
     return (
         <>
             <IconButton onClick={handleOpen}>
+                <Typography mr={1}>Export</Typography>
                 <DocumentSvg />
             </IconButton>
 
