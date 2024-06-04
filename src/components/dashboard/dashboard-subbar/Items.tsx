@@ -21,6 +21,7 @@ const SubbarItem = styled(Button)<SubbarItemProps>(({ theme, current }) => ({
     border: "1px solid",
     borderColor: getBorderColor2(theme),
     display: "flex",
+
     marginInline: 2,
 
     ...(current
@@ -50,11 +51,12 @@ const SubbarItem = styled(Button)<SubbarItemProps>(({ theme, current }) => ({
     flexDirection: "row",
     alignItems: "center",
     textAlign: "center",
-    minWidth: "200px",
+    minWidth: "275px",
 
     // Text Content
-    overflowX: "hidden",
-    overflowY: "hidden",
+    textOverflow: "ellipsis",
+    // overflowX: "ellipsis",
+    // overflowY: "hidden",
     textWrap: "nowrap",
 }));
 
@@ -115,7 +117,7 @@ const SubbarItems = (props: StackProps) => {
     const belowSm = useResponsive("down", "sm");
 
     return (
-        <Stack direction="row" spacing={1} {...props}>
+        <Stack direction="row" spacing={1.5} {...props}>
             {appTabs.map(({ id, label, path }) => (
                 <SubbarItem
                     key={id}

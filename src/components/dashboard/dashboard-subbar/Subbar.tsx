@@ -188,7 +188,6 @@ const Subbar = () => {
                     <Box
                         sx={{
                             width: "90.5%",
-                            ml: 1,
                         }}
                     >
                         <SubbarItems

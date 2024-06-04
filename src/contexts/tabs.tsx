@@ -81,7 +81,7 @@ const CustomTabs: React.FC = () => {
     };
 
     return (
-        <Box sx={{ width: "150px" }}>
+        <Box>
             <Tabs
                 value={0} // Initialize with the first tab
                 sx={tabsSx}
