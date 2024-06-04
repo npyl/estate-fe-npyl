@@ -20,6 +20,8 @@ interface SubbarItemProps extends ButtonProps {
 const SubbarItem = styled(Button)<SubbarItemProps>(({ theme, current }) => ({
     border: "1px solid",
     borderColor: getBorderColor2(theme),
+    display: "flex",
+    marginInline: 2,
 
     ...(current
         ? {
@@ -42,22 +44,13 @@ const SubbarItem = styled(Button)<SubbarItemProps>(({ theme, current }) => ({
                       ? theme.palette.background.paper
                       : theme.palette.neutral?.[800],
           }),
-
     boxShadow: theme.shadows[5],
-
-    paddingTop: theme.spacing(0.5),
-    paddingBottom: theme.spacing(0.5),
-    paddingLeft: theme.spacing(1.5),
-    paddingRight: theme.spacing(1),
-
     transition: "all 0.3s ease",
-
     cursor: "pointer",
-
     flexDirection: "row",
     alignItems: "center",
-
-    minWidth: "70px",
+    textAlign: "center",
+    minWidth: "200px",
 
     // Text Content
     overflowX: "hidden",

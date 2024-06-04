@@ -15,6 +15,7 @@ const ListLabelsItem: FC<ListLabelsItemProps> = ({ labels, ...other }) => {
     const { t } = useTranslation();
 
     const visibleLabels = labels.slice(0, 2);
+    // remainingLabels are used for the tooltip
     const remainingLabels = labels.slice(2);
     const remainingLabelCount = labels.length - 2;
 

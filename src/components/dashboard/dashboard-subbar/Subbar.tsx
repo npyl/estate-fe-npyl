@@ -185,7 +185,33 @@ const Subbar = () => {
                         p: 1,
                     }}
                 >
-                    <SubbarItems overflow="auto hidden" />
+                    <Box
+                        sx={{
+                            width: "90.5%",
+                            ml: 1,
+                        }}
+                    >
+                        <SubbarItems
+                            overflow="auto"
+                            sx={{
+                                "&::-webkit-scrollbar": {
+                                    backgroundColor: "#111827",
+                                },
+                                "&::-webkit-scrollbar-track": {
+                                    background: "#1F2937",
+                                    borderRadius: "10px",
+                                },
+                                "&::-webkit-scrollbar-thumb": {
+                                    backgroundColor: "#888",
+                                    borderRadius: "10px",
+                                    border: "3px solid #111827",
+                                },
+                                "&::-webkit-scrollbar-thumb:hover": {
+                                    backgroundColor: "#555",
+                                },
+                            }}
+                        />
+                    </Box>
 
                     <Button
                         variant="contained"
