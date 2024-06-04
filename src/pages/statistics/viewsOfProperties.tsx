@@ -43,7 +43,6 @@ export default function StackedAreas() {
             category,
             timeframe,
         });
-
     // Organize sub-categories by main category
     const subCategoriesMap: {
         [key: string]: KeyValue[];
@@ -172,15 +171,39 @@ export default function StackedAreas() {
     // Date formatter for X-axis ticks
     const formatDateTick = (tickItem: string) => {
         const date = new Date(tickItem);
-        return timeframe === "WEEK"
-            ? date
-                  .toLocaleDateString("en-GB", {
-                      weekday: "short",
-                      day: "2-digit",
-                      month: "2-digit",
-                  })
-                  .replace(/,\s*/g, " ") // remove the comma and space
-            : date.toLocaleDateString();
+        let formattedDate;
+
+        switch (timeframe) {
+            case "WEEK":
+                formattedDate = date
+                    .toLocaleDateString("en-GB", {
+                        weekday: "short",
+                        day: "2-digit",
+                        month: "2-digit",
+                    })
+                    .replace(/,\s*/g, " "); // remove the comma and space
+                break;
+            case "DAY":
+                formattedDate = date.toLocaleDateString("en-GB", {
+                    hour: "2-digit",
+                    hour12: true,
+                });
+                break;
+            case "MONTH":
+                formattedDate = date.toLocaleDateString("en-GB", {
+                    day: "2-digit",
+                    month: "short",
+                });
+                break;
+            default:
+                formattedDate = date.toLocaleDateString("en-GB", {
+                    year: "numeric",
+                    month: "short",
+                });
+                break;
+        }
+
+        return formattedDate;
     };
 
     const formatYAxis = (tickItem: number) => {
@@ -190,6 +213,7 @@ export default function StackedAreas() {
     const belowSm = useResponsive("down", "sm");
     const belowMd = useResponsive("down", "md");
 
+    console.log(timeframe);
     return (
         <>
             {belowMd && !belowSm ? (
@@ -209,7 +233,7 @@ export default function StackedAreas() {
                             <MenuItem value="WEEK">{t("Weekly")}</MenuItem>
                             <MenuItem value="YEAR">{t("Yearly")}</MenuItem>
                             <MenuItem value="DAY">{t("Daily")}</MenuItem>
-                            <MenuItem value="CUSTOM">Custom</MenuItem>
+                            <MenuItem value="CUSTOM">{t("Custom")}</MenuItem>
                         </Select>
                         <Select
                             value={parentCategory}
