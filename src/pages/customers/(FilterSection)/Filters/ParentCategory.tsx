@@ -42,7 +42,7 @@ export default function FilterParentCategory() {
     };
 
     return (
-        <FormControl sx={{ minWidth: "130px", maxWidth: "130px" }}>
+        <FormControl sx={{ minWidth: "200px", maxWidth: "200px" }}>
             <StyledInputLabel>{t("Parent Category")}</StyledInputLabel>
             <Select
                 multiple
