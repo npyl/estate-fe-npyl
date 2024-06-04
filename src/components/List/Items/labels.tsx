@@ -1,25 +1,22 @@
-import { Box, Stack } from "@mui/material";
+import { Box, Stack, Tooltip, Typography } from "@mui/material";
 import type { FC } from "react";
 import Label from "@/components/Label/Label";
 import { ILabel } from "src/types/label";
 import ListItem from "../item";
 import { useTranslation } from "react-i18next";
 import ListItemProps from "../types";
+import MoreChip from "@/components/Label/MoreChip";
 
 interface ListLabelsItemProps extends ListItemProps {
     labels: ILabel[];
 }
-// TODO: FIX THIS LOGIC
-const calculateMarginTop = (labelCount: number) => {
-    if (labelCount > 7) return 25;
-    if (labelCount > 6) return 20;
-    if (labelCount > 5) return 15;
-    if (labelCount > 4) return 11;
-    return 2;
-};
 
 const ListLabelsItem: FC<ListLabelsItemProps> = ({ labels, ...other }) => {
     const { t } = useTranslation();
+
+    const visibleLabels = labels.slice(0, 2);
+    const remainingLabels = labels.slice(2);
+    const remainingLabelCount = labels.length - 2;
 
     return (
         <ListItem
@@ -28,7 +25,6 @@ const ListLabelsItem: FC<ListLabelsItemProps> = ({ labels, ...other }) => {
                 height: labels.length === 0 ? "2.9rem" : "5.75rem",
                 maxHeight: labels.length === 0 ? "2.9rem" : "5.75rem",
                 overflow: labels.length <= 2 ? "hidden" : "auto",
-
                 "&::-webkit-scrollbar": {
                     width: "8px",
                     backgroundColor: "#111827",
@@ -36,7 +32,6 @@ const ListLabelsItem: FC<ListLabelsItemProps> = ({ labels, ...other }) => {
                 "&::-webkit-scrollbar-track": {
                     background: "#1F2937",
                 },
-
                 "&::-webkit-scrollbar-thumb": {
                     backgroundColor: "#888",
                     borderRadius: "10px",
@@ -47,41 +42,23 @@ const ListLabelsItem: FC<ListLabelsItemProps> = ({ labels, ...other }) => {
                 },
             }}
         >
-            <Box
-                sx={{
-                    height: "100%",
-                    maxHeight: "100%",
-                    overflowY: labels.length > 2 ? "auto" : "hidden",
-                    mt: calculateMarginTop(labels.length),
-                    "&::-webkit-scrollbar": {
-                        width: "8px",
-                        backgroundColor: "#111827",
-                    },
-                    "&::-webkit-scrollbar-track": {
-                        background: "#1F2937",
-                    },
-                    "&::-webkit-scrollbar-thumb": {
-                        backgroundColor: "#888",
-                        borderRadius: "10px",
-                        border: "2px solid #111827",
-                    },
-                    "&::-webkit-scrollbar-thumb:hover": {
-                        backgroundColor: "#555",
-                    },
-                }}
-            >
-                <Stack spacing={1}>
-                    {labels.map(({ color, name }, i) => (
-                        <Label
-                            key={i}
-                            color={color}
-                            width="min-content"
-                            maxWidth="100%"
-                            name={name}
-                        />
-                    ))}
-                </Stack>
-            </Box>
+            <Stack spacing={1} mt={1} ml={0.5}>
+                {visibleLabels.map(({ color, name }, i) => (
+                    <Label
+                        key={i}
+                        color={color}
+                        width="min-content"
+                        maxWidth="100%"
+                        name={name}
+                    />
+                ))}
+                {remainingLabelCount > 0 && (
+                    <MoreChip
+                        labels={remainingLabels}
+                        label={`+${remainingLabelCount} more`}
+                    />
+                )}
+            </Stack>
         </ListItem>
     );
 };
