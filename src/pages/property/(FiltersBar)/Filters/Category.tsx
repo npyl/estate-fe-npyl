@@ -61,12 +61,16 @@ export default function FilterCategory() {
             )
         );
     };
+    const handleDisabled = () => {
+        return parentCategories.length === 0;
+    };
 
     return (
         <FormControl sx={{ minWidth: "130px", maxWidth: "130px" }}>
             <InputLabel>{t("Category")}</InputLabel>
             <Select
                 multiple
+                disabled={handleDisabled()}
                 value={subCategories}
                 onChange={handleChange}
                 renderValue={(selected: string[]) => {

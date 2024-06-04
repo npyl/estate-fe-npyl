@@ -16,7 +16,7 @@ import { useGetDailyViewsQuery } from "@/services/publicDashboard";
 import { StyledCursor } from "./styled";
 import { S } from "@fullcalendar/core/internal-common";
 
-// Code for Skip Get endpoint if the chart is not visible
+// Code for Skip Get daily-views endpoint if the chart is not visible
 export const useVisibility = (): [
     MutableRefObject<HTMLDivElement | null>,
     boolean
