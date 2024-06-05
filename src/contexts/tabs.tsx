@@ -63,36 +63,3 @@ export const TabsProvider: React.FC<React.PropsWithChildren<unknown>> = (
     const value = useTabsState();
     return <TabsContext.Provider value={value} {...props} />;
 };
-
-const CustomTabs: React.FC = () => {
-    const { appTabs, pushTab, removeTab } = useTabsContext();
-    const isMobile = useMediaQuery("(max-width:600px)"); // Adjust the breakpoint as needed
-
-    const tabsSx: SxProps = {
-        "&.MuiTabs-flexContainer": {
-            overflowX: "auto",
-            overflowY: "hidden",
-            flexWrap: "nowrap",
-        },
-        "&.MuiTab-root": {
-            minWidth: 0,
-            flex: 1,
-        },
-    };
-
-    return (
-        <Box>
-            <Tabs
-                value={0} // Initialize with the first tab
-                sx={tabsSx}
-                variant={isMobile ? "scrollable" : "scrollable"}
-            >
-                {appTabs.map((tab, index) => (
-                    <Tab key={tab.id} label={tab.label} />
-                ))}
-            </Tabs>
-        </Box>
-    );
-};
-
-export default CustomTabs;
