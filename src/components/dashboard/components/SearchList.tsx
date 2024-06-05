@@ -47,7 +47,7 @@ export const SearchList = ({
                 <Paper
                     sx={{
                         maxHeight: "90vh",
-
+                        width: "100%",
                         overflowX: "hidden",
                     }}
                 >
@@ -67,11 +67,8 @@ export const SearchList = ({
                                     md={12}
                                     lg={12}
                                     sx={{
-                                        borderRight: {
-                                            lg: "1px solid blue",
-                                            md: 0,
-                                        },
                                         marginY: "10px",
+                                        overflowX: "hidden",
                                     }}
                                 >
                                     <Typography variant="h6" textAlign="center">
@@ -101,10 +98,6 @@ export const SearchList = ({
                                     md={12}
                                     lg={12}
                                     sx={{
-                                        borderRight: {
-                                            lg: "1px solid blue",
-                                            md: 0,
-                                        },
                                         marginY: "10px",
                                     }}
                                 >
