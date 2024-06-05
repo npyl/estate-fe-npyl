@@ -148,8 +148,10 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                     <Grid
                         item
                         xs={7}
-                        sm={3}
-                        sx={{ textAlign: { xs: "center", sm: "center" } }}
+                        sm={2}
+                        sx={{
+                            textAlign: { xs: "center", sm: "center" },
+                        }}
                     >
                         <Box
                             sx={{
@@ -158,6 +160,8 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                                 borderRadius: "15px",
                                 p: 0.5,
                                 px: 1,
+                                mt: 1,
+                                color: "#007cb9",
                             }}
                         >
                             {option.state.value}
@@ -174,8 +178,8 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                 >
                     <LocationOnOutlinedIcon />{" "}
                     <Typography variant="body2" ml={1} mt={isMobile ? 5 : 0}>
-                        {region}, {option.location.street}{" "}
-                        {option.location.number}, {city}
+                        {region}, {option?.location?.street}{" "}
+                        {option?.location?.number}, {city}
                     </Typography>
                 </Stack>
 
@@ -197,9 +201,9 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                                 <i className="las la-bed" />
                             </Typography>
                             <Typography>
-                                {option.details.bedrooms === null
+                                {option?.details?.bedrooms === null
                                     ? "N/A beds"
-                                    : `${option.details.bedrooms} beds`}
+                                    : `${option?.details?.bedrooms} beds`}
                             </Typography>
                         </Box>
                     </Grid>
@@ -214,9 +218,9 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                                 <i className="las la-bath" />
                             </Typography>
                             <Typography>
-                                {option.details.bathrooms === null
+                                {option?.details?.bathrooms === null
                                     ? "N/A baths"
-                                    : `${option.details.bathrooms} baths`}
+                                    : `${option?.details?.bathrooms} baths`}
                             </Typography>
                         </Box>
                     </Grid>
@@ -240,7 +244,7 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                             fontWeight: area.highlight ? "bold" : "normal",
                         }}
                     >
-                        {option.area} m²
+                        {option?.area === null ? "N/A" : `${option?.area}`} m²
                     </Box>
                 </Stack>
 
@@ -261,47 +265,48 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                                     fontSize: "large",
                                 }}
                             >
-                                {option.price}
+                                {option.price?.toLocaleString("de-DE")}
                             </Box>
                             <Typography fontWeight="bold">€</Typography>
                         </Box>
                     </Grid>
-                    <Grid
-                        item
-                        xs={9.5}
-                        sm={3.5}
-                        md={4.5}
-                        lg={3.5}
-                        sx={{
-                            textAlign: { xs: "center", sm: "center" },
-                        }}
-                    >
-                        <Stack
-                            direction="row"
+
+                    <Grid item xs={9} sm={3}>
+                        <Box
+                            textAlign={"center"}
                             sx={{
-                                border: "1px solid #ffc93c",
+                                display: "flex",
+                                flexDirection: "row",
+                                justifyContent: "center",
+                                border: "1px solid #fdb44b",
+                                backgroundColor: "#fdb44b",
                                 borderRadius: "15px",
-                                backgroundColor: "#ffc93c",
                                 p: 0.5,
-                                alignItems: "center",
+                                px: 1,
+                                mb: 1,
+                                color: "#a55233",
                             }}
                         >
-                            <Typography variant={"body2"} ml={0.5}>
+                            <Typography
+                                variant={"body2"}
+                                ml={0.5}
+                                textAlign={"center"}
+                            >
                                 Code:{" "}
                             </Typography>
-                            <Box
-                                component="span"
+                            <Typography
+                                textAlign={"center"}
                                 sx={{
                                     typography: "body2",
                                     fontWeight: code.highlight
                                         ? "bold"
                                         : "normal",
-                                    ml: 1,
+                                    ml: 0.5,
                                 }}
                             >
                                 {option.code}
-                            </Box>
-                        </Stack>
+                            </Typography>
+                        </Box>
                     </Grid>
                 </Grid>
 
