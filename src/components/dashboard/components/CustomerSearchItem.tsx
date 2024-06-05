@@ -5,7 +5,10 @@ import { StyledSearchStack } from "../styles";
 import { useMemo } from "react";
 import { useRouter } from "next/router";
 import { ICustomerResultResponse } from "src/types/customer";
-
+import { SxProps, fontWeight } from "@mui/system";
+import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
+import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
+import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
 interface SearchItemProps {
     searchText: string;
     option: ICustomerResultResponse;
@@ -15,9 +18,10 @@ interface ItemProps {
     highlight: boolean;
     label?: string;
     value: string;
+    sx?: SxProps;
 }
 
-const Item = ({ highlight, label, value }: ItemProps) => {
+const Item = ({ highlight, label, value, sx }: ItemProps) => {
     return (
         <Stack direction={"row"} gap={1}>
             {label && <Typography variant="body2">{`${label}: `} </Typography>}
@@ -36,12 +40,12 @@ const Item = ({ highlight, label, value }: ItemProps) => {
 
 export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
     const router = useRouter();
-
+    console.log(option);
     const firstName = useMemo(
         () =>
             // option.firstName ? match(option.firstName, searchText) //       option.firstName, //  ? parse( // TODO: highlight
             ({
-                highlight: false,
+                highlight: true,
                 text: "",
             }),
         [option.firstName, searchText]
@@ -50,7 +54,7 @@ export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
         () =>
             // option.lastName ? parse(option.lastName, match(option.lastName, searchText))[0]
             ({
-                highlight: false,
+                highlight: true,
                 text: "",
             }),
         [option.lastName, searchText]
@@ -91,6 +95,14 @@ export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
         [option.city, searchText]
     );
 
+    const area = useMemo(
+        () => ({
+            highlight: false,
+            text: "",
+        }),
+        [option.area, searchText]
+    );
+
     return (
         <StyledSearchStack
             justifyContent={"flex-start"}
@@ -113,25 +125,25 @@ export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
                         highlight={lastName.highlight}
                     />
                 </Stack>
-
-                <Stack gap={1} direction={"row"}>
-                    <Stack flex={1}>
+                <Stack alignItems={"center"} direction={"row"} gap={1}>
+                    <LocationOnOutlinedIcon />
+                    <Item value={option.city} highlight={city.highlight} />
+                    {/* <Item value={+option?.area!} highlight={area.highlight} /> */}
+                </Stack>
+                <Stack gap={2} direction={"column"}>
+                    <Stack flex={1} direction="row" gap={1}>
+                        <EmailOutlinedIcon />
                         <Item
-                            label="Email"
                             value={option.email}
                             highlight={email.highlight}
-                        />
-                        <Item
-                            label="Mobile"
-                            value={option.mobilePhone}
-                            highlight={mobilePhone.highlight}
+                            sx={{ fontWeight: "bold" }}
                         />
                     </Stack>
-                    <Stack alignItems={"center"} direction={"row"}>
+                    <Stack flex={1} direction="row" gap={1}>
+                        <PhoneOutlinedIcon />
                         <Item
-                            label="City"
-                            value={option.city}
-                            highlight={city.highlight}
+                            value={option.mobilePhone}
+                            highlight={mobilePhone.highlight}
                         />
                     </Stack>
                 </Stack>
