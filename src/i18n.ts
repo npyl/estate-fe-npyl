@@ -744,8 +744,11 @@ const resources = {
             "Copy Link": "Αντιγραφή Συνδέσμου",
             "Social Networks": "Μέσα Κοινωνικής Δικτύωσης",
             "Short Version": "Σύντομη Έκδοση",
+            "Short Version: Includes basic photos":
+                "Σύντομη Έκδοση: Περιέχει βασικές φωτογραφίες",
             "Long Version": "Εκτεταμένη Έκδοση",
-
+            "Long Version: Includes all photos":
+                "Εκτεταμένη Έκδοση: Περιέχει όλες τις φωτογραφίες",
             "Edit Integration Details": "Επεξεργασία Λεπτομερειών Σύνδεσης",
 
             "Draw on a location with markers":
@@ -1332,6 +1335,7 @@ const resources = {
             Export: "Εξαγωγή",
             "Export options": "Επιλογές εξαγωγής",
             "Export property": "Εξαγωγή ακινήτου",
+
             Detailed: "Λεπτομερής",
             Brief: "Συνοπτική",
             Label: "Ετικέτα",
@@ -1452,7 +1456,9 @@ const resources = {
             Integrations: "Συνδεδεμένα",
             Documents: "Έγγραφα",
             Share: "Κοινοποίηση",
+            "Share PDF": "Κοινοποίση PDF",
             Download: "Λήψη",
+            "Download PDF": "Λήψη PDF",
             Options: "Επιλογές",
 
             Living: "Κατοικήσιμος",

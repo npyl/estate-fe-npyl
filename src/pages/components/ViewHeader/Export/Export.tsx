@@ -85,7 +85,7 @@ const ExportButton = () => {
     return (
         <>
             <IconButton onClick={handleOpen}>
-                <Typography mr={1}>Export</Typography>
+                <Typography mr={1}>{t("Export")}</Typography>
                 <DocumentSvg />
             </IconButton>
 

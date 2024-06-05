@@ -61,7 +61,7 @@ export default function FilterCategory() {
             )
         );
     };
-    const handleDisabled = () => {
+    const isDisabled = () => {
         return parentCategories.length === 0;
     };
 
@@ -70,7 +70,7 @@ export default function FilterCategory() {
             <InputLabel>{t("Category")}</InputLabel>
             <Select
                 multiple
-                disabled={handleDisabled()}
+                disabled={isDisabled()}
                 value={subCategories}
                 onChange={handleChange}
                 renderValue={(selected: string[]) => {

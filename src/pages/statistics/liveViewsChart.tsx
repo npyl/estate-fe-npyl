@@ -58,24 +58,9 @@ export default function ViewsChart() {
     const [ref, isVisible] = useVisibility();
 
     const { data, refetch } = useGetDailyViewsQuery(undefined, {
-        pollingInterval: 0, // Disable automatic polling
+        pollingInterval: 3000, // Disable automatic polling
         skip: !isVisible, // Skip Get endpoint if the chart is not visible
     });
-
-    useEffect(() => {
-        let pollingInterval: NodeJS.Timeout;
-        if (isVisible) {
-            refetch(); // Fetch immediately when it becomes visible
-            pollingInterval = setInterval(() => {
-                refetch();
-            }, 3000);
-        }
-        return () => {
-            if (pollingInterval) {
-                clearInterval(pollingInterval);
-            }
-        };
-    }, [isVisible, refetch]);
 
     const chartData = useMemo(() => data?.views || [], [data]);
     const currentDate = useMemo(

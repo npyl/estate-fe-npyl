@@ -126,7 +126,7 @@ const Popover = ({
                         <div style={{ display: "flex", alignItems: "center" }}>
                             {t("Long Version")}
                             <Tooltip
-                                title={t("Long Version: Includes All photos")}
+                                title={t("Long Version: Includes all photos")}
                                 placement="top"
                                 enterDelay={500}
                             >
