@@ -50,7 +50,7 @@ export const SearchList = ({
                         overflowX: "hidden",
                     }}
                 >
-                    <ScrollBox scrollbarWidth="15px">
+                    <ScrollBox>
                         {properties?.length === 0 &&
                             customers?.length === 0 &&
                             locations?.length === 0 && (

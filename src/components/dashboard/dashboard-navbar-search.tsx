@@ -58,7 +58,7 @@ export const DashboardNavbarSearch: FC = () => {
                 placeholder={t("Search") || ""}
                 sx={{
                     input: {
-                        paddingLeft: "30px", // adjust this as needed
+                        paddingLeft: "15px", // adjust this as needed
                     },
                     "input::placeholder": {
                         textIndent: "0px", // adjust this as needed
