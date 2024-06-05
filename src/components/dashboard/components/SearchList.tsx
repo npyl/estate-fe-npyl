@@ -47,6 +47,7 @@ export const SearchList = ({
                 <Paper
                     sx={{
                         maxHeight: "90vh",
+
                         overflowX: "hidden",
                     }}
                 >

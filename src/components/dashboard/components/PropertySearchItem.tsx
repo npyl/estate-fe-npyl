@@ -13,6 +13,13 @@ import BedOutlinedIcon from "@mui/icons-material/BedOutlined";
 import BathtubOutlinedIcon from "@mui/icons-material/BathtubOutlined";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import useTheme from "@mui/system/useTheme";
+import useHumanReadable from "@/components/Location/hook";
+import {
+    useGetMunicipalitiesQuery,
+    useGetNeighbourhoodsQuery,
+    useGetRegionsQuery,
+} from "@/services/location";
+import isNumberString from "@/components/Location/util";
 
 interface SearchItemProps {
     searchText: string;
@@ -23,6 +30,8 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
     const router = useRouter();
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
+
+    console.log(option);
     const {
         code: _code,
         keyCode: _keyCode,
@@ -61,6 +70,23 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
         [option.area, searchText]
     );
 
+    const { data: regions } = useGetRegionsQuery();
+    const { data: municips } = useGetMunicipalitiesQuery(
+        +option?.location?.region!,
+        {
+            skip: !isNumberString(option?.location?.region),
+        }
+    );
+    const { data: neighbs } = useGetNeighbourhoodsQuery(
+        +option?.location?.city!,
+        {
+            skip: !isNumberString(option?.location?.city),
+        }
+    );
+
+    const region = useHumanReadable(option.location?.region, regions);
+
+    const city = useHumanReadable(option.location?.city, municips);
     const location = useMemo(
         () => ({
             highlight: false,
@@ -90,8 +116,8 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
         <StyledSearchStack
             justifyContent={"flex-start"}
             paddingY={1}
-            paddingX={2}
-            spacing={2}
+            paddingX={1}
+            spacing={0}
             flex={1}
             direction={"row"}
             alignItems={"center"}
@@ -102,7 +128,7 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                     padding={0}
                     sx={{ borderRadius: 1 }}
                     width={isMobile ? 150 : 300}
-                    height={isMobile ? 75 : 155}
+                    height={isMobile ? 75 : 175}
                     src={option.propertyImage}
                 />
             ) : (
@@ -110,18 +136,18 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                     padding={0}
                     sx={{ borderRadius: 1 }}
                     width={isMobile ? 150 : 300}
-                    height={isMobile ? 75 : 155}
+                    height={isMobile ? 75 : 175}
                 />
             )}
 
             <Stack direction={"column"} width="100%">
                 <Grid container spacing={1} alignItems="center" marginLeft={2}>
-                    <Grid item xs={6} sm={6}>
+                    <Grid item xs={12} sm={6}>
                         <Typography variant="h6">Name</Typography>
                     </Grid>
                     <Grid
                         item
-                        xs={6}
+                        xs={7}
                         sm={3}
                         sx={{ textAlign: { xs: "center", sm: "center" } }}
                     >
@@ -144,11 +170,12 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                     marginLeft={2}
                     mt={1}
                     alignItems="center"
+                    width="100%"
                 >
-                    <LocationOnOutlinedIcon />
-                    <Typography variant="body2" ml={1}>
-                        {option.location.region}, {option.location.street}{" "}
-                        {option.location.number}, {option.location.city}
+                    <LocationOnOutlinedIcon />{" "}
+                    <Typography variant="body2" ml={1} mt={isMobile ? 5 : 0}>
+                        {region}, {option.location.street}{" "}
+                        {option.location.number}, {city}
                     </Typography>
                 </Stack>
 
@@ -159,33 +186,37 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                     mt={1}
                     alignItems="center"
                 >
-                    <Grid item xs={6} sm={6}>
+                    <Grid item xs={12} sm={6}>
                         <Box
                             display="flex"
                             flexDirection="row"
                             gap={1}
                             alignItems="center"
                         >
-                            <BedOutlinedIcon />
+                            <Typography>
+                                <i className="las la-bed" />
+                            </Typography>
                             <Typography>
                                 {option.details.bedrooms === null
                                     ? "N/A beds"
-                                    : option.details.bedrooms}
+                                    : `${option.details.bedrooms} beds`}
                             </Typography>
                         </Box>
                     </Grid>
-                    <Grid item xs={6} sm={6}>
+                    <Grid item xs={12} sm={6}>
                         <Box
                             display="flex"
                             flexDirection="row"
                             gap={1}
                             alignItems="center"
                         >
-                            <BathtubOutlinedIcon />
+                            <Typography>
+                                <i className="las la-bath" />
+                            </Typography>
                             <Typography>
                                 {option.details.bathrooms === null
                                     ? "N/A baths"
-                                    : option.details.bathrooms}
+                                    : `${option.details.bathrooms} baths`}
                             </Typography>
                         </Box>
                     </Grid>
@@ -193,11 +224,15 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
 
                 <Stack
                     direction={"row"}
-                    justifyContent={"space-between"}
+                    justifyContent={"flex-start"}
                     alignItems={"center"}
+                    gap={1}
                     mt={1}
                     ml={3}
                 >
+                    <Typography>
+                        <i className="las la-expand-arrows-alt " />
+                    </Typography>
                     <Box
                         component="span"
                         sx={{
@@ -233,7 +268,7 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                     </Grid>
                     <Grid
                         item
-                        xs={12}
+                        xs={9.5}
                         sm={3.5}
                         md={4.5}
                         lg={3.5}

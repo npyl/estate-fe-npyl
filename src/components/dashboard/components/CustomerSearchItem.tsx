@@ -40,7 +40,6 @@ const Item = ({ highlight, label, value, sx }: ItemProps) => {
 
 export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
     const router = useRouter();
-    console.log(option);
     const firstName = useMemo(
         () =>
             // option.firstName ? match(option.firstName, searchText) //       option.firstName, //  ? parse( // TODO: highlight
