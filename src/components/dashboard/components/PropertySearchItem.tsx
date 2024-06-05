@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography, Grid, useMediaQuery } from "@mui/material";
 import KeyIcon from "@mui/icons-material/Key";
 import Image from "src/components/image/Image";
 // import match from "autosuggest-highlight/match";
@@ -12,6 +12,8 @@ import { MatchResult } from "./types";
 import BedOutlinedIcon from "@mui/icons-material/BedOutlined";
 import BathtubOutlinedIcon from "@mui/icons-material/BathtubOutlined";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
+import useTheme from "@mui/system/useTheme";
+
 interface SearchItemProps {
     searchText: string;
     option: IPropertyResultResponse;
@@ -19,7 +21,8 @@ interface SearchItemProps {
 
 export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
     const router = useRouter();
-
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
     const {
         code: _code,
         keyCode: _keyCode,
@@ -28,90 +31,55 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
         location: _location,
         ...rest
     } = option;
-    console.log(option);
+
     const code = useMemo(
-        () =>
-            // option.code
-            //     ? parse(option.code, match(option.code, searchText))[0]
-            //     :
-            ({
-                highlight: false,
-                text: "",
-            }),
+        () => ({
+            highlight: false,
+            text: "",
+        }),
         [option.code, searchText]
     );
     const keyCode = useMemo(
-        () =>
-            // option.keyCode
-            //     ? parse(option.keyCode, match(option.keyCode, searchText))[0]
-            //     :
-            ({
-                highlight: false,
-                text: "",
-            }),
+        () => ({
+            highlight: false,
+            text: "",
+        }),
         [option.keyCode, searchText]
     );
     const price = useMemo(
-        () =>
-            // option.price
-            //     ? parse(
-            //           option.price.toString(),
-            //           match(option.price.toString(), searchText)
-            //       )[0]
-            //     :
-            ({
-                highlight: false,
-                text: "",
-            }),
+        () => ({
+            highlight: false,
+            text: "",
+        }),
         [option.price, searchText]
     );
     const area = useMemo(
-        () =>
-            // option.area
-            //     ? parse(
-            //           option.area.toString(),
-            //           match(option.area.toString(), searchText)
-            //       )[0]
-            //     :
-            ({
-                highlight: false,
-                text: "",
-            }),
+        () => ({
+            highlight: false,
+            text: "",
+        }),
         [option.area, searchText]
     );
 
     const location = useMemo(
-        () =>
-            // option.area
-            //     ? parse(
-            //           option.area.toString(),
-            //           match(option.area.toString(), searchText)
-            //       )[0]
-            //     :
-            ({
-                highlight: false,
-                text: "",
-            }),
+        () => ({
+            highlight: false,
+            text: "",
+        }),
         [option.location, searchText]
     );
 
-    // other matchings
     const other: MatchResult = useMemo(() => {
         const result: MatchResult = {};
 
         for (const [key, value] of Object.entries(rest)) {
             if (!value) continue;
 
-            // const highlightResult = parse(
-            //     value.toString(),
-            //     match(value.toString(), searchText)
-            // )[0];
             const highlightResult = {
                 highlight: false,
                 value: value,
             };
 
-            // add only if highlighted
             if (highlightResult.highlight) result[key] = value.toString();
         }
 
@@ -133,92 +101,102 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                 <Image
                     padding={0}
                     sx={{ borderRadius: 1 }}
-                    width={300}
-                    height={155}
+                    width={isMobile ? 150 : 300}
+                    height={isMobile ? 75 : 155}
                     src={option.propertyImage}
                 />
             ) : (
                 <PreviewImage
                     padding={0}
                     sx={{ borderRadius: 1 }}
-                    width={300}
-                    height={155}
+                    width={isMobile ? 150 : 300}
+                    height={isMobile ? 75 : 155}
                 />
             )}
 
             <Stack direction={"column"} width="100%">
-                <Stack
-                    direction={"row"}
-                    justifyContent={"space-between"}
-                    alignItems="center"
-                    width="100%"
-                    marginLeft={2}
-                >
-                    <Typography variant="h6">Name</Typography>
-                    <Box
-                        sx={{
-                            border: "1px solid lightblue",
-                            backgroundColor: "lightblue",
-                            borderRadius: "15px",
-                            p: 0.5,
-                            px: 2,
-                            mr: 10,
-                        }}
+                <Grid container spacing={1} alignItems="center" marginLeft={2}>
+                    <Grid item xs={6} sm={6}>
+                        <Typography variant="h6">Name</Typography>
+                    </Grid>
+                    <Grid
+                        item
+                        xs={6}
+                        sm={3}
+                        sx={{ textAlign: { xs: "center", sm: "center" } }}
                     >
-                        {option.state.value}
-                    </Box>
-                </Stack>
-                <Stack direction="row" marginLeft={2} mt={1}>
+                        <Box
+                            sx={{
+                                border: "1px solid lightblue",
+                                backgroundColor: "lightblue",
+                                borderRadius: "15px",
+                                p: 0.5,
+                                px: 1,
+                            }}
+                        >
+                            {option.state.value}
+                        </Box>
+                    </Grid>
+                </Grid>
+
+                <Stack
+                    direction="row"
+                    marginLeft={2}
+                    mt={1}
+                    alignItems="center"
+                >
                     <LocationOnOutlinedIcon />
-                    <Typography variant="body2">
+                    <Typography variant="body2" ml={1}>
                         {option.location.region}, {option.location.street}{" "}
                         {option.location.number}, {option.location.city}
                     </Typography>
                 </Stack>
 
-                <Stack
-                    direction={"row"}
-                    justifyContent={"space-between"}
-                    width="100%"
-                    mt={1}
+                <Grid
+                    container
+                    spacing={1}
                     marginLeft={2}
+                    mt={1}
+                    alignItems="center"
                 >
-                    <Box
-                        display="flex"
-                        flexDirection="row"
-                        gap={1}
-                        alignItems="center"
-                    >
-                        <BedOutlinedIcon />
-                        <Typography>
-                            {option.details.bedrooms === null
-                                ? "N/A beds"
-                                : option.details.bedrooms}
-                        </Typography>
-                    </Box>
-
-                    <Box
-                        display="flex"
-                        flexDirection="row"
-                        gap={1}
-                        alignItems="center"
-                        mr={10}
-                    >
-                        <BathtubOutlinedIcon />
-                        <Typography>
-                            {option.details.bathrooms === null
-                                ? "N/A baths"
-                                : option.details.bathrooms}
-                        </Typography>
-                    </Box>
-                </Stack>
+                    <Grid item xs={6} sm={6}>
+                        <Box
+                            display="flex"
+                            flexDirection="row"
+                            gap={1}
+                            alignItems="center"
+                        >
+                            <BedOutlinedIcon />
+                            <Typography>
+                                {option.details.bedrooms === null
+                                    ? "N/A beds"
+                                    : option.details.bedrooms}
+                            </Typography>
+                        </Box>
+                    </Grid>
+                    <Grid item xs={6} sm={6}>
+                        <Box
+                            display="flex"
+                            flexDirection="row"
+                            gap={1}
+                            alignItems="center"
+                        >
+                            <BathtubOutlinedIcon />
+                            <Typography>
+                                {option.details.bathrooms === null
+                                    ? "N/A baths"
+                                    : option.details.bathrooms}
+                            </Typography>
+                        </Box>
+                    </Grid>
+                </Grid>
 
                 <Stack
                     direction={"row"}
                     justifyContent={"space-between"}
                     alignItems={"center"}
                     mt={1}
-                    ml={2}
+                    ml={3}
                 >
                     <Box
                         component="span"
@@ -231,51 +209,66 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                     </Box>
                 </Stack>
 
-                <Stack direction="row" justifyContent="space-between" mt={1}>
-                    <Box
-                        sx={{
-                            display: "flex",
-                            flexDirection: "row",
-                            alignItems: "center",
-                            gap: 1,
-                            ml: 2,
-                        }}
-                    >
+                <Grid container spacing={1} alignItems="center" mt={1} ml={2}>
+                    <Grid item xs={6} sm={6}>
                         <Box
-                            component="span"
                             sx={{
-                                fontWeight: "bold",
-                                fontSize: "large",
+                                display: "flex",
+                                flexDirection: "row",
+                                alignItems: "center",
+                                gap: 1,
                             }}
                         >
-                            {option.price}
+                            <Box
+                                component="span"
+                                sx={{
+                                    fontWeight: "bold",
+                                    fontSize: "large",
+                                }}
+                            >
+                                {option.price}
+                            </Box>
+                            <Typography fontWeight="bold">€</Typography>
                         </Box>
-                        <Typography fontWeight="bold">€</Typography>
-                    </Box>
-                    <Stack
-                        direction="row"
+                    </Grid>
+                    <Grid
+                        item
+                        xs={12}
+                        sm={3.5}
+                        md={4.5}
+                        lg={3.5}
                         sx={{
-                            border: "1px solid #ffc93c",
-                            borderRadius: "15px",
-                            backgroundColor: "#ffc93c",
-                            p: 0.5,
-                            px: 2,
-                            mr: 8,
+                            textAlign: { xs: "center", sm: "center" },
                         }}
                     >
-                        <Typography variant={"body2"}>Code: </Typography>
-                        <Box
-                            component="span"
+                        <Stack
+                            direction="row"
                             sx={{
-                                typography: "body2",
-                                fontWeight: code.highlight ? "bold" : "normal",
-                                ml: 1,
+                                border: "1px solid #ffc93c",
+                                borderRadius: "15px",
+                                backgroundColor: "#ffc93c",
+                                p: 0.5,
+                                alignItems: "center",
                             }}
                         >
-                            {option.code}
-                        </Box>
-                    </Stack>
-                </Stack>
+                            <Typography variant={"body2"} ml={0.5}>
+                                Code:{" "}
+                            </Typography>
+                            <Box
+                                component="span"
+                                sx={{
+                                    typography: "body2",
+                                    fontWeight: code.highlight
+                                        ? "bold"
+                                        : "normal",
+                                    ml: 1,
+                                }}
+                            >
+                                {option.code}
+                            </Box>
+                        </Stack>
+                    </Grid>
+                </Grid>
 
                 {Object.entries(other).length > 0 && (
                     <Stack direction={"row"} alignItems={"center"} mt={1}>
