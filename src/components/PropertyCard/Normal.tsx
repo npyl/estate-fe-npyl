@@ -123,7 +123,7 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
             />
 
             <Stack px={2} py={2} spacing={0.8}>
-                <Stack spacing={1} direction="row" mt={1} flexWrap="nowrap">
+                <Stack spacing={2} direction="row" mt={1} flexWrap="nowrap">
                     {/* ---- */}
                     <Stack direction="row" spacing={0.5} alignItems="center">
                         <Typography>

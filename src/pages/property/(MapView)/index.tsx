@@ -10,7 +10,10 @@ import {
 } from "src/components/Map/util";
 import { useDebouncedCallback } from "use-debounce";
 import PropertyCard, { PropertyCardH } from "@/components/PropertyCard";
-import { useMapViewPropertiesMutation } from "src/services/properties";
+import {
+    useGetPropertyLocationMarkersQuery,
+    useMapViewPropertiesMutation,
+} from "src/services/properties";
 import { selectAll } from "src/slices/filters";
 import { useSelector } from "react-redux";
 import useResponsive from "@/hooks/useResponsive";
@@ -100,8 +103,8 @@ const MapView = () => {
 
     const [activeMarker, setActiveMarker] = useState<number>();
     const [mainMarker, setMainMarker] = useState<IMapMarker>({
-        lat: 37.98381,
-        lng: 23.727539,
+        lat: 38.246639,
+        lng: 21.734573,
     });
     const [selectedMarker, setSelectedMarker] = useState<IMapMarker | null>(
         null
@@ -136,14 +139,9 @@ const MapView = () => {
     }, [selectedMarker, nonNullProperties, encodedShape]);
 
     // respective markers
-    const markers: IMapMarker[] = useMemo(
-        () =>
-            data.map(({ location }) => ({
-                lat: location.lat!,
-                lng: location.lng!,
-            })),
-        [data]
-    );
+
+    const { data: markers } = useGetPropertyLocationMarkersQuery();
+    console.log(markers);
 
     const handleDraw = (shape: DrawShape | StopDraw) =>
         setEncodedShape(shape ? encodeShape(shape) : "");
