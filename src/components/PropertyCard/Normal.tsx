@@ -102,6 +102,7 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
             borderRadius="12px"
             sx={{
                 cursor: "pointer",
+                mr: 0.8,
             }}
             isActive={isActive as boolean}
             ref={ref}
