@@ -23,7 +23,10 @@ export interface ICustomerResultResponse {
 
     budget: number;
     createdAt: string;
-    area: number;
+    areas: {
+        nameEN: string;
+        nameGR: string;
+    }[];
 }
 
 export interface ICustomerFilter {
