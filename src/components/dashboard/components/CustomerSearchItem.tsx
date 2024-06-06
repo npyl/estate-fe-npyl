@@ -124,22 +124,63 @@ export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
                         highlight={lastName.highlight}
                     />
                 </Stack>
-                <Stack alignItems={"center"} direction={"row"} gap={1}>
-                    <LocationOnOutlinedIcon />
+                <Stack
+                    alignItems={"center"}
+                    direction={"row"}
+                    gap={1}
+                    sx={{
+                        color: "text.secondary",
+                        alignItems: "center",
+                    }}
+                >
+                    <LocationOnOutlinedIcon
+                        sx={{
+                            color: "black",
+                            width: "18px",
+                            height: "18px",
+                        }}
+                    />
                     <Item value={option.city} highlight={city.highlight} />
                     {/* <Item value={+option?.area!} highlight={area.highlight} /> */}
                 </Stack>
                 <Stack gap={2} direction={"column"}>
-                    <Stack flex={1} direction="row" gap={1}>
-                        <EmailOutlinedIcon />
+                    <Stack
+                        flex={1}
+                        direction="row"
+                        gap={1}
+                        sx={{
+                            color: "text.secondary",
+                            alignItems: "center",
+                        }}
+                    >
+                        <EmailOutlinedIcon
+                            sx={{
+                                color: "black",
+                                width: "18px",
+                                height: "18px",
+                            }}
+                        />
                         <Item
                             value={option.email}
                             highlight={email.highlight}
-                            sx={{ fontWeight: "bold" }}
                         />
                     </Stack>
-                    <Stack flex={1} direction="row" gap={1}>
-                        <PhoneOutlinedIcon />
+                    <Stack
+                        flex={1}
+                        direction="row"
+                        gap={1}
+                        sx={{
+                            color: "text.secondary",
+                            alignItems: "center",
+                        }}
+                    >
+                        <PhoneOutlinedIcon
+                            sx={{
+                                color: "black",
+                                width: "18px",
+                                height: "18px",
+                            }}
+                        />
                         <Item
                             value={option.mobilePhone}
                             highlight={mobilePhone.highlight}

@@ -123,34 +123,36 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
             />
 
             <Stack px={2} py={2} spacing={0.8}>
-                <Stack spacing={4} direction="row" mt={1} flexWrap="wrap">
+                <Stack spacing={1} direction="row" mt={1} flexWrap="nowrap">
                     {/* ---- */}
-                    <Stack direction="row" spacing={1} alignItems="center">
+                    <Stack direction="row" spacing={0.5} alignItems="center">
                         <Typography>
                             <i className="las la-bed" />
                         </Typography>
-                        <Typography variant="body2">
+                        <Typography variant="body2" color="text.secondary">
                             {bedrooms || "-"}
+                            {" beds"}
                         </Typography>
-                        <Typography variant="body2">{t("beds")}</Typography>
                     </Stack>
                     {/* ---- */}
-                    <Stack direction="row" spacing={1} alignItems="center">
+                    <Stack direction="row" spacing={0.5} alignItems="center">
                         <Typography>
                             <i className="las la-bath" />
                         </Typography>
-                        <Typography variant="body2">
+                        <Typography variant="body2" color="text.secondary">
                             {bathrooms || "-"}
+                            {" baths"}
                         </Typography>
-                        <Typography variant="body2">{t("baths")}</Typography>
                     </Stack>
                     {/* ---- */}
-                    <Stack direction="row" spacing={1} alignItems="center">
+                    <Stack direction="row" spacing={0.5} alignItems="center">
                         <Typography>
                             <i className="las la-expand-arrows-alt " />
                         </Typography>
-                        <Typography variant="body2">{area || "-"}</Typography>
-                        <Typography variant="body2">m²</Typography>
+                        <Typography variant="body2" color="text.secondary">
+                            {area || "-"}
+                            {" m²"}
+                        </Typography>
                     </Stack>
                 </Stack>
 
@@ -182,7 +184,7 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
 
                 <Divider />
 
-                <Stack direction="row" spacing={0.3}>
+                <Stack direction="row" spacing={1}>
                     {state?.value ? (
                         <NormalBadge name={t(state?.value)} color="indigo" />
                     ) : null}
