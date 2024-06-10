@@ -233,6 +233,7 @@ export default function ViewsOfPropertiesChart() {
         return tickItem > 999 ? `${tickItem / 1000}k` : tickItem.toString();
     };
 
+    console.log(timeframe);
     return (
         <>
             <Stack direction="row" spacing={2} p={1}>

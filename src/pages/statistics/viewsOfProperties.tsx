@@ -66,7 +66,6 @@ export default function StackedAreas() {
                 : "",
             endDate: endDate ? format(new Date(endDate), "yyyy-MM-dd") : "",
         });
-
     // Organize sub-categories by main category
     const subCategoriesMap: {
         [key: string]: KeyValue[];
@@ -274,15 +273,39 @@ export default function StackedAreas() {
     // Date formatter for X-axis ticks
     const formatDateTick = (tickItem: string) => {
         const date = new Date(tickItem);
-        return timeframe === "WEEK"
-            ? date
-                  .toLocaleDateString("en-GB", {
-                      weekday: "short",
-                      day: "2-digit",
-                      month: "2-digit",
-                  })
-                  .replace(/,\s*/g, " ") // remove the comma and space
-            : date.toLocaleDateString();
+        let formattedDate;
+
+        switch (timeframe) {
+            case "WEEK":
+                formattedDate = date
+                    .toLocaleDateString("en-GB", {
+                        weekday: "short",
+                        day: "2-digit",
+                        month: "2-digit",
+                    })
+                    .replace(/,\s*/g, " "); // remove the comma and space
+                break;
+            case "DAY":
+                formattedDate = date.toLocaleDateString("en-GB", {
+                    hour: "2-digit",
+                    hour12: true,
+                });
+                break;
+            case "MONTH":
+                formattedDate = date.toLocaleDateString("en-GB", {
+                    day: "2-digit",
+                    month: "short",
+                });
+                break;
+            default:
+                formattedDate = date.toLocaleDateString("en-GB", {
+                    year: "numeric",
+                    month: "short",
+                });
+                break;
+        }
+
+        return formattedDate;
     };
 
     const formatYAxis = (tickItem: number) => {
@@ -292,6 +315,7 @@ export default function StackedAreas() {
     const belowSm = useResponsive("down", "sm");
     const belowMd = useResponsive("down", "md");
 
+    console.log(timeframe);
     return (
         <>
             {belowMd && !belowSm ? (

@@ -120,31 +120,20 @@ export const SearchList = ({
                 <Paper
                     sx={{
                         maxHeight: "90vh",
+                        width: "100%",
                         overflowX: "hidden",
                     }}
                 >
                     <ScrollBox scrollbarWidth="15px">
-                        {/* {properties?.length === 0 &&
-                            customers?.length === 0 &&
-                            locations?.length === 0 && (
-                                <SearchNotFound query={searchText} />
-                            )} */}
-
+                        {properties?.length > 0 && (
                         <Grid container>
                             <PropertiesSubList searchString={searchText} />
 
-                            {/* {properties?.length > 0 &&
-                                customers?.length > 0 && <Divider />}
- */}
-                            {customers?.length > 0 && (
+                            {customers?.length > 0 ? (
                                 <Grid
                                     item
                                     xs={12}
                                     sx={{
-                                        borderRight: {
-                                            lg: "1px solid blue",
-                                            md: 0,
-                                        },
                                         marginY: "10px",
                                     }}
                                 >
@@ -162,7 +151,7 @@ export const SearchList = ({
                                         />
                                     ))}
                                 </Grid>
-                            )}
+                            ) : null}
 
                             {customers?.length > 0 && locations?.length > 0 && (
                                 <Divider />

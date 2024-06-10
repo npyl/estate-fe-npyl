@@ -1,3 +1,5 @@
+import { Tabs, Tab, Box, useMediaQuery } from "@mui/material";
+import { SxProps } from "@mui/system";
 import { createContext, useCallback, useContext, useState } from "react";
 import { ITab } from "src/interfaces/tabs";
 
@@ -5,13 +7,11 @@ type ITabState = {
     appTabs: ITab[];
     setAppTabs: React.Dispatch<React.SetStateAction<ITab[]>>;
     pushTab: (newTab: ITab) => void;
-
     removeTabNoChange: (identifier: string) => ITab[];
     removeTab: (identifier: string) => void;
 };
 
 const TabsContext = createContext<ITabState | undefined>(undefined);
-
 export const useTabsContext = () => {
     const context = useContext(TabsContext);
     if (context === undefined) {
@@ -24,7 +24,6 @@ export const useTabsContext = () => {
 
 const useTabsState = () => {
     const [appTabs, setAppTabs] = useState<ITab[]>([]);
-
     const pushTab = useCallback(
         (value: ITab) =>
             setAppTabs((old) => {
@@ -62,6 +61,5 @@ export const TabsProvider: React.FC<React.PropsWithChildren<unknown>> = (
     props
 ) => {
     const value = useTabsState();
-
     return <TabsContext.Provider value={value} {...props} />;
 };

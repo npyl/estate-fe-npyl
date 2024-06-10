@@ -757,7 +757,11 @@ const resources = {
             "Copy Link": "Αντιγραφή Συνδέσμου",
             "Social Networks": "Μέσα Κοινωνικής Δικτύωσης",
             "Short Version": "Σύντομη Έκδοση",
+            "Short Version: Includes basic photos":
+                "Σύντομη Έκδοση: Περιέχει βασικές φωτογραφίες",
             "Long Version": "Εκτεταμένη Έκδοση",
+            "Long Version: Includes all photos":
+                "Εκτεταμένη Έκδοση: Περιέχει όλες τις φωτογραφίες",
 
             "Total Views": "Συνολικές Προβολές",
             "Select Date Range": "Επιλογή Χρονικού Διαστήματος",
@@ -1468,7 +1472,9 @@ const resources = {
             Integrations: "Συνδεδεμένα",
             Documents: "Έγγραφα",
             Share: "Κοινοποίηση",
+            "Share PDF": "Κοινοποίση PDF",
             Download: "Λήψη",
+            "Download PDF": "Λήψη PDF",
             Options: "Επιλογές",
 
             Living: "Κατοικήσιμος",

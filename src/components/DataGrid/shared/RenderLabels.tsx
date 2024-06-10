@@ -18,7 +18,11 @@ const RenderLabelsCell = (params: GridCellParams) => {
             ))}
 
             {more > 0 ? (
-                <MoreChip label={`+${more} labels`} labels={labels} />
+                <MoreChip
+                    label={`+${more} more`}
+                    labels={labels}
+                    sx={{ width: "min-content" }}
+                />
             ) : null}
         </Stack>
     );

@@ -135,7 +135,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
 
     const renderHalfOfFields = (fields: string[], from: number, to: number) => (
         <Grid item xs={12} sm={6}>
-            <List>
+            <List sx={{ p: 0 }}>
                 {fields.slice(from, to).map((field, i) => (
                     <BasicDetailItem field={field} key={i} />
                 ))}
@@ -258,7 +258,7 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
                 return (
                     <ListItem label={"ROI"}>
                         <Button
-                            sx={{ height: "22px" }}
+                            sx={{ height: "23px" }}
                             variant="outlined"
                             // onClick={handleOpenPopup}
                         >
@@ -360,7 +360,11 @@ const BasicSection: React.FC<BasicSectionProps> = (props) => {
     };
 
     return (
-        <Grid container spacing={1}>
+        <Grid
+            container
+            spacing={1}
+            sx={{ mt: data.images.length === 0 ? 0 : null }}
+        >
             <Grid item xs={12}>
                 <Paper elevation={10} sx={{ overflow: "auto" }}>
                     <Box

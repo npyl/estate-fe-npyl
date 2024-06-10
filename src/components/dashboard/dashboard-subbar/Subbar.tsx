@@ -24,6 +24,7 @@ import AddIcon from "@mui/icons-material/Add";
 
 import { styled } from "@mui/material/styles";
 import getBorderColor from "@/theme/borderColor";
+import useTheme from "@mui/system/useTheme";
 
 const propertyItemType = "property-menu-item";
 const managerItemType = "manager-menu-item";
@@ -153,7 +154,7 @@ const FabMenu = ({ onClick }: FabMenuProps) => {
 const Subbar = () => {
     const { t } = useTranslation();
     const router = useAutosaveRouter();
-
+    const theme = useTheme();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
 
@@ -170,6 +171,43 @@ const Subbar = () => {
 
     const belowLg = useResponsive("down", "lg");
 
+    const scrollbarStyles =
+        theme.palette.mode === "dark"
+            ? {
+                  "&::-webkit-scrollbar": {
+                      backgroundColor: "#111827",
+                  },
+                  "&::-webkit-scrollbar-track": {
+                      background: "#1F2937",
+                      borderRadius: "10px",
+                  },
+                  "&::-webkit-scrollbar-thumb": {
+                      backgroundColor: "#888",
+                      borderRadius: "10px",
+                      border: "3px solid #111827",
+                  },
+                  "&::-webkit-scrollbar-thumb:hover": {
+                      backgroundColor: "#555",
+                  },
+              }
+            : {
+                  "&::-webkit-scrollbar": {
+                      backgroundColor: "#f5f5f5",
+                  },
+                  "&::-webkit-scrollbar-track": {
+                      background: "#e0e0e0",
+                      borderRadius: "10px",
+                  },
+                  "&::-webkit-scrollbar-thumb": {
+                      backgroundColor: "#c0c0c0",
+                      borderRadius: "10px",
+                      border: "3px solid #f5f5f5",
+                  },
+                  "&::-webkit-scrollbar-thumb:hover": {
+                      backgroundColor: "#a0a0a0",
+                  },
+              };
+
     return (
         <>
             {belowLg ? (
@@ -185,7 +223,13 @@ const Subbar = () => {
                         p: 1,
                     }}
                 >
-                    <SubbarItems overflow="auto hidden" />
+                    <Box
+                        sx={{
+                            width: "90.5%",
+                        }}
+                    >
+                        <SubbarItems overflow="auto" sx={scrollbarStyles} />
+                    </Box>
 
                     <Button
                         variant="contained"
