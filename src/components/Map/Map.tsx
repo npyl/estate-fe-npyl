@@ -227,6 +227,7 @@ const Map = ({
                         key={uuidv4()}
                         position={{ lat, lng }}
                         onMouseUp={() => setActiveMarker?.(ind)}
+                        icon={"/static/icons/mapIcon.svg"}
                         animation={
                             marker !== mainMarker && activeMarker === ind
                                 ? google.maps.Animation.BOUNCE
@@ -253,7 +254,7 @@ const Map = ({
         <GoogleMap
             mapContainerStyle={containerStyle}
             center={center}
-            zoom={zoom || 16}
+            zoom={zoom || 8}
             onClick={handleMapClick}
             onLoad={onLoad}
         >

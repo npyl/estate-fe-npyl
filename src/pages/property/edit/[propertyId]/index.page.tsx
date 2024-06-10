@@ -47,6 +47,8 @@ const useLoadProperty = () => {
 
 const EditPropertyPage: NextPage = () => {
     const router = useRouter();
+    const { removeTab } = useTabsContext();
+
     const { property, propertyId } = useLoadProperty();
     const [edit, { isError, isLoading }] = useEditPropertyMutation();
 
@@ -55,13 +57,14 @@ const EditPropertyPage: NextPage = () => {
     const handleEdit = useCallback(
         (body: IPropertiesPOST) =>
             edit({ body, id: +propertyId! }).then(redirectToView),
+
         [propertyId]
     );
 
-    const redirectToView = useCallback(
-        () => router.push(`/property/${propertyId}`),
-        [propertyId]
-    );
+    const redirectToView = useCallback(() => {
+        router.push(`/property/${propertyId}`);
+        removeTab((propertyId + "edit") as string);
+    }, [propertyId]);
 
     const resetEverything = () => setclearConfirmDialogOpen(true);
     const closeClearConfirmDialog = () => setclearConfirmDialogOpen(false);

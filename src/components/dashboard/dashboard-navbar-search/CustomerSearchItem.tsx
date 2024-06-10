@@ -1,11 +1,13 @@
-import { Box, Grid, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 // import match from "autosuggest-highlight/match";
 // import parse from "autosuggest-highlight/parse";
 import { StyledSearchStack } from "../styles";
 import { useMemo } from "react";
 import { useRouter } from "next/router";
 import { ICustomerResultResponse } from "src/types/customer";
-
+import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
+import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
+import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
 interface SearchItemProps {
     searchText: string;
     option: ICustomerResultResponse;
@@ -36,58 +38,39 @@ const Item = ({ highlight, label, value }: ItemProps) => {
 
 export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
     const router = useRouter();
-
     const firstName = useMemo(
-        () =>
-            // option.firstName ? match(option.firstName, searchText) //       option.firstName, //  ? parse( // TODO: highlight
-            ({
-                highlight: false,
-                text: "",
-            }),
+        () => ({
+            highlight: true,
+            text: "",
+        }),
         [option.firstName, searchText]
     );
     const lastName = useMemo(
-        () =>
-            // option.lastName ? parse(option.lastName, match(option.lastName, searchText))[0]
-            ({
-                highlight: false,
-                text: "",
-            }),
+        () => ({
+            highlight: true,
+            text: "",
+        }),
         [option.lastName, searchText]
     );
     const email = useMemo(
-        () =>
-            // option.email
-            //  ? parse(option.email, match(option.email, searchText))[0]
-            ({
-                highlight: false,
-                text: "",
-            }),
+        () => ({
+            highlight: false,
+            text: "",
+        }),
         [option.email, searchText]
     );
     const mobilePhone = useMemo(
-        () =>
-            // option.mobilePhone
-            //     ? parse(
-            //           option.mobilePhone,
-            //           match(option.mobilePhone, searchText)
-            //       )[0]
-            //     :
-            ({
-                highlight: false,
-                text: "",
-            }),
+        () => ({
+            highlight: false,
+            text: "",
+        }),
         [option.mobilePhone, searchText]
     );
     const city = useMemo(
-        () =>
-            // option.city
-            //     ? parse(option.city, match(option.city, searchText))[0]
-            //     :
-            ({
-                highlight: false,
-                text: "",
-            }),
+        () => ({
+            highlight: false,
+            text: "",
+        }),
         [option.city, searchText]
     );
 
@@ -113,25 +96,66 @@ export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
                         highlight={lastName.highlight}
                     />
                 </Stack>
-
-                <Stack gap={1} direction={"row"}>
-                    <Stack flex={1}>
+                <Stack
+                    alignItems={"center"}
+                    direction={"row"}
+                    gap={1}
+                    sx={{
+                        color: "text.secondary",
+                        alignItems: "center",
+                    }}
+                >
+                    <LocationOnOutlinedIcon
+                        sx={{
+                            color: "black",
+                            width: "18px",
+                            height: "18px",
+                        }}
+                    />
+                    <Item value={option.city} highlight={city.highlight} />
+                    {/* <Item value={+option?.area!} highlight={area.highlight} /> */}
+                </Stack>
+                <Stack gap={2} direction={"column"}>
+                    <Stack
+                        flex={1}
+                        direction="row"
+                        gap={1}
+                        sx={{
+                            color: "text.secondary",
+                            alignItems: "center",
+                        }}
+                    >
+                        <EmailOutlinedIcon
+                            sx={{
+                                color: "black",
+                                width: "18px",
+                                height: "18px",
+                            }}
+                        />
                         <Item
-                            label="Email"
                             value={option.email}
                             highlight={email.highlight}
                         />
+                    </Stack>
+                    <Stack
+                        flex={1}
+                        direction="row"
+                        gap={1}
+                        sx={{
+                            color: "text.secondary",
+                            alignItems: "center",
+                        }}
+                    >
+                        <PhoneOutlinedIcon
+                            sx={{
+                                color: "black",
+                                width: "18px",
+                                height: "18px",
+                            }}
+                        />
                         <Item
-                            label="Mobile"
                             value={option.mobilePhone}
                             highlight={mobilePhone.highlight}
-                        />
-                    </Stack>
-                    <Stack alignItems={"center"} direction={"row"}>
-                        <Item
-                            label="City"
-                            value={option.city}
-                            highlight={city.highlight}
                         />
                     </Stack>
                 </Stack>

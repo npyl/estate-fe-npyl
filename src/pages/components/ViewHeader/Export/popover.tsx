@@ -5,7 +5,14 @@ import FormControlLabel, {
     FormControlLabelProps,
 } from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import { Button, Stack, CircularProgress } from "@mui/material";
+import {
+    Button,
+    Stack,
+    CircularProgress,
+    Tooltip,
+    IconButton,
+} from "@mui/material";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { styled } from "@mui/material/styles";
 
 // ---------------------------------------------------
@@ -88,7 +95,25 @@ const Popover = ({
             <FormGroup>
                 <StyledControlledLabel
                     control={<Checkbox />}
-                    label={t("Short Version")}
+                    label={
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                            {t("Short Version")}
+                            <Tooltip
+                                title={t(
+                                    "Short Version: Includes basic photos"
+                                )}
+                                placement="top"
+                                enterDelay={500}
+                            >
+                                <IconButton
+                                    size="small"
+                                    style={{ marginLeft: 4 }}
+                                >
+                                    <InfoOutlinedIcon fontSize="small" />
+                                </IconButton>
+                            </Tooltip>
+                        </div>
+                    }
                     labelPlacement="start"
                     version="SHORT"
                     value={version}
@@ -97,14 +122,29 @@ const Popover = ({
                 />
                 <StyledControlledLabel
                     control={<Checkbox />}
-                    label={t("Long Version")}
+                    label={
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                            {t("Long Version")}
+                            <Tooltip
+                                title={t("Long Version: Includes all photos")}
+                                placement="top"
+                                enterDelay={500}
+                            >
+                                <IconButton
+                                    size="small"
+                                    style={{ marginLeft: 4 }}
+                                >
+                                    <InfoOutlinedIcon fontSize="small" />
+                                </IconButton>
+                            </Tooltip>
+                        </div>
+                    }
                     labelPlacement="start"
                     version="LONG"
                     value={version}
                     checked={version === "LONG"}
                     onChange={() => setVersion("LONG")}
                 />
-
                 <StyledControlledLabel
                     control={<Checkbox />}
                     label={t("Blueprints")}

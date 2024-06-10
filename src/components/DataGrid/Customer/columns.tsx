@@ -3,6 +3,7 @@ import { TranslationType } from "@/types/translation";
 import { TypeLabels } from "@/components/TypeLabels";
 import RenderLabelsCell from "../shared/RenderLabels";
 import Typography from "@mui/material/Typography";
+import { useTranslation } from "react-i18next";
 
 const StatusColor = ({ row }: GridCellParams) => (
     <TypeLabels
@@ -30,6 +31,20 @@ const RenderPriceCell = ({ row }: GridCellParams) => {
 
     const formattedPrice = formatPrice(row.budget);
     return <Typography>{formattedPrice}</Typography>;
+};
+
+const RenderAreaCell = ({ row }: GridCellParams) => {
+    const { i18n } = useTranslation();
+
+    if (!row.areas) return null;
+
+    const areas = row.areas
+        .map(({ nameEN, nameGR }: any) =>
+            i18n.language === "en" ? nameEN : nameGR
+        )
+        .join(", ");
+
+    return <Typography>{areas}</Typography>;
 };
 
 const getColumns = (t: TranslationType): GridColDef[] => [
@@ -65,10 +80,11 @@ const getColumns = (t: TranslationType): GridColDef[] => [
     },
     {
         flex: 1,
-        field: "area",
+        field: "areas",
         headerName: t("Area").toString(),
         headerAlign: "center",
         align: "center",
+        renderCell: RenderAreaCell,
     },
     {
         flex: 1,

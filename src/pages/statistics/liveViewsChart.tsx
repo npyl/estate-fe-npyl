@@ -8,23 +8,60 @@ import {
     ResponsiveContainer,
     Rectangle,
 } from "recharts";
-import { useMemo } from "react";
+import { MutableRefObject, useEffect, useMemo, useRef, useState } from "react";
 import { Box, Stack } from "@mui/system";
 import { Typography } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { useGetDailyViewsQuery } from "@/services/publicDashboard";
 import { StyledCursor } from "./styled";
-import { S } from "@fullcalendar/core/internal-common";
+
+// Code for Skip Get daily-views endpoint if the chart is not visible
+export const useVisibility = (): [
+    MutableRefObject<HTMLDivElement | null>,
+    boolean
+] => {
+    const [isVisible, setIsVisible] = useState(false);
+    const ref = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting) {
+                    setIsVisible(true);
+                } else {
+                    setIsVisible(false);
+                }
+            },
+            {
+                threshold: 0.1,
+            }
+        );
+
+        if (ref.current) {
+            observer.observe(ref.current);
+        }
+
+        return () => {
+            if (ref.current) {
+                observer.unobserve(ref.current);
+            }
+        };
+    }, [ref]);
+
+    return [ref, isVisible];
+};
 
 export default function ViewsChart() {
     const { t, i18n } = useTranslation();
 
+    const [ref, isVisible] = useVisibility();
+
     const { data } = useGetDailyViewsQuery(undefined, {
-        // pollingInterval: 3000,
+        pollingInterval: 3000, // Disable automatic polling
+        skip: !isVisible, // Skip Get endpoint if the chart is not visible
     });
 
     const chartData = useMemo(() => data?.views || [], [data]);
-
     const currentDate = useMemo(
         () =>
             new Date().toLocaleDateString(
@@ -48,7 +85,7 @@ export default function ViewsChart() {
     };
 
     return (
-        <>
+        <div ref={ref}>
             <Stack
                 direction="row"
                 alignItems={"flex-start"}
@@ -187,6 +224,6 @@ export default function ViewsChart() {
                     </BarChart>
                 </ResponsiveContainer>
             </Box>
-        </>
+        </div>
     );
 }

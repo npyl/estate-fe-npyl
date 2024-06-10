@@ -3,6 +3,7 @@ import {
     IProperties,
     IPropertiesPOST,
     IPropertyFilter,
+    IPropertyMarker,
     IPropertyResultResponse,
 } from "src/types/properties";
 import IPage from "src/types/page";
@@ -119,6 +120,13 @@ export const properties = createApi({
         allProperties: builder.query<IProperties[], void>({
             query: () => ({
                 url: "all",
+            }),
+            providesTags: ["Properties"],
+        }),
+
+        getPropertyLocationMarkers: builder.query<IPropertyMarker[], void>({
+            query: () => ({
+                url: "location-markers",
             }),
             providesTags: ["Properties"],
         }),
@@ -324,6 +332,7 @@ export const {
     useLazyGetPropertyByCodeQuery,
     useLazyGetPropertyByIdQuery,
     useGetPropertyListingsQuery,
+    useGetPropertyLocationMarkersQuery,
 
     // mutations
     useEditPropertyMutation,
