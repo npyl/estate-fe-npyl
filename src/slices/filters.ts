@@ -174,6 +174,10 @@ const slice = createSlice({
             }
         },
 
+        setPoints: (state, { payload }) => {
+            state.filters.points = payload;
+        },
+
         deleteState(state, { payload }) {
             state.filters.states.length === 1 &&
                 state.ids.filter((id) => id !== payload);
@@ -256,6 +260,10 @@ const slice = createSlice({
             state.ids = state.ids.filter((id) => id !== "maxConstructionYear");
         },
 
+        resetPoints: (state) => {
+            state.filters.points = initialState.filters.points;
+        },
+
         resetState: () => {
             return initialState;
         },
@@ -286,6 +294,7 @@ export const {
     setStates,
     setSubCategories,
     setParentCategories,
+    setPoints,
 
     // delete
     deleteSubCategory,
@@ -300,6 +309,7 @@ export const {
     resetFurnished,
     resetHeatingType,
     resetConstructionYear,
+    resetPoints,
     resetState,
 } = slice.actions;
 
@@ -341,6 +351,7 @@ export const selectSubCategories = ({ filters }: RootState) =>
     filters.filters.categories;
 export const selectLabels = ({ filters }: RootState) => filters.filters.labels;
 export const selectIds = ({ filters }: RootState) => filters.ids;
+export const selectPoints = ({ filters }: RootState) => filters.filters.points;
 
 export const selectAll = ({ filters }: RootState) => filters.filters;
 
@@ -371,6 +382,7 @@ export const sumOfChangedProperties = createSelector(
             "heatingType",
             "frameType",
             "furnished",
+            "points",
         ];
 
         return propertiesToInclude.reduce(

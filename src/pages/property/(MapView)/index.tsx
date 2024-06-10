@@ -1,26 +1,23 @@
 import FlipIcon from "@mui/icons-material/Flip";
-import { Button, Grid, Skeleton, Stack } from "@mui/material";
-import { useEffect, useMemo, useState } from "react";
+import { Button, Grid, Stack } from "@mui/material";
+import { useEffect, useState } from "react";
 import Map, { IMapAddress, IMapMarker } from "src/components/Map/Map";
 import { DrawShape, StopDraw } from "src/components/Map/types";
-import {
-    decodeShape,
-    encodeShape,
-    isPointInsideShapeData,
-} from "src/components/Map/util";
+import { encodeShape, convertShapeToPoints } from "src/components/Map/util";
 import { useDebouncedCallback } from "use-debounce";
 import PropertyCard, { PropertyCardH } from "@/components/PropertyCard";
 import {
     useFilterPropertiesMutation,
     useGetPropertyLocationMarkersQuery,
 } from "src/services/properties";
-import { selectAll } from "src/slices/filters";
+import { selectAll, setPoints, resetPoints } from "src/slices/filters";
 import { useSelector } from "react-redux";
 import useResponsive from "@/hooks/useResponsive";
 import { IPropertyResultResponse } from "@/types/properties";
 import Placeholder from "./Placeholder";
 import useResponsiveOrientation from "./hook";
 import Pagination, { usePagination } from "@/components/Pagination";
+import { useDispatch } from "react-redux";
 
 interface Props {
     toggleOrientation: VoidFunction;
@@ -31,10 +28,7 @@ const FlipOrientationButton = ({ toggleOrientation }: Props) => {
 
     return !belowLg ? (
         <Stack direction="row" justifyContent="flex-end">
-            <Button
-                onClick={toggleOrientation}
-                sx={{ width: 30, justifyContent: "right" }}
-            >
+            <Button onClick={toggleOrientation} sx={{ width: 30 }}>
                 <FlipIcon />
             </Button>
         </Stack>
@@ -93,10 +87,10 @@ const PropertiesList = ({
 };
 
 const MapView = () => {
-    const [filterProperties, { data, isLoading }] =
-        useFilterPropertiesMutation();
+    const dispatch = useDispatch();
 
-    const [encodedShape, setEncodedShape] = useState<string>();
+    const [filterProperties, { data: properties, isLoading }] =
+        useFilterPropertiesMutation();
 
     const [activeMarker, setActiveMarker] = useState<number>();
     const [mainMarker, setMainMarker] = useState<IMapMarker>({
@@ -115,13 +109,6 @@ const MapView = () => {
 
     const allFilters = useSelector(selectAll);
 
-    const content = useMemo(() => data?.content || [], [data]);
-    // filter only properties with valid location.{lat,lng}
-    const nonNullProperties = useMemo(
-        () => data?.content?.filter((p) => p.location?.lat && p.location?.lng),
-        [data]
-    );
-
     useEffect(() => {
         filterProperties({
             filter: allFilters,
@@ -132,30 +119,19 @@ const MapView = () => {
         });
     }, [allFilters, page, pageSize]);
 
-    // properties we show
-    const filtered = useMemo(() => {
-        if (!!selectedMarker) return nonNullProperties;
-
-        if (encodedShape) {
-            const shape = decodeShape(encodedShape);
-            if (!shape) return [];
-
-            return nonNullProperties?.filter((p) =>
-                isPointInsideShapeData(p.location.lat!, p.location.lng!, shape)
-            );
-        }
-
-        return nonNullProperties;
-    }, [selectedMarker, nonNullProperties, encodedShape]);
-
     // respective markers
     const { data: markers } = useGetPropertyLocationMarkersQuery();
 
     const handleDraw = (shape: DrawShape | StopDraw) =>
-        setEncodedShape(shape ? encodeShape(shape) : "");
+        dispatch(
+            shape
+                ? setPoints(convertShapeToPoints(encodeShape(shape)))
+                : resetPoints()
+        );
+
     const handleChange = useDebouncedCallback(
-        (oldEncodedShape: string, newEncodedShape: string) =>
-            setEncodedShape(newEncodedShape),
+        (old: string, newEncodedShape: string) =>
+            dispatch(setPoints(convertShapeToPoints(newEncodedShape))),
         150
     );
 
@@ -191,7 +167,7 @@ const MapView = () => {
                     <Pagination
                         {...pagination}
                         pageSize={pageSize}
-                        totalItems={data?.totalElements ?? pageSize}
+                        totalItems={properties?.totalElements ?? pageSize}
                         isLoading={isLoading}
                         Container={Grid}
                         ContainerProps={{
@@ -202,7 +178,7 @@ const MapView = () => {
                     >
                         <PropertiesList
                             isLoading={isLoading}
-                            filtered={filtered || []}
+                            filtered={properties?.content || []}
                             selectedMarker={selectedMarker}
                         />
                     </Pagination>

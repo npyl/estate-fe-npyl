@@ -299,3 +299,16 @@ export const decodeShape = (input: string | null): ShapeData | null => {
 
     return null;
 };
+
+export function convertShapeToPoints(shapeString: string) {
+    const pointsArray = [];
+    const coordinates = shapeString.substr(1).split("_"); // Remove the "P" at the beginning
+
+    for (let i = 0; i < coordinates.length; i += 2) {
+        const x = parseFloat(coordinates[i]); // Remove the first character
+        const y = parseFloat(coordinates[i + 1]);
+        pointsArray.push({ x, y });
+    }
+
+    return pointsArray;
+}
