@@ -172,43 +172,6 @@ const Subbar = () => {
 
     const belowLg = useResponsive("down", "lg");
 
-    const scrollbarStyles =
-        theme.palette.mode === "dark"
-            ? {
-                  "&::-webkit-scrollbar": {
-                      backgroundColor: "#111827",
-                  },
-                  "&::-webkit-scrollbar-track": {
-                      background: "#1F2937",
-                      borderRadius: "10px",
-                  },
-                  "&::-webkit-scrollbar-thumb": {
-                      backgroundColor: "#888",
-                      borderRadius: "10px",
-                      border: "3px solid #111827",
-                  },
-                  "&::-webkit-scrollbar-thumb:hover": {
-                      backgroundColor: "#555",
-                  },
-              }
-            : {
-                  "&::-webkit-scrollbar": {
-                      backgroundColor: "#f5f5f5",
-                  },
-                  "&::-webkit-scrollbar-track": {
-                      background: "#e0e0e0",
-                      borderRadius: "10px",
-                  },
-                  "&::-webkit-scrollbar-thumb": {
-                      backgroundColor: "#c0c0c0",
-                      borderRadius: "10px",
-                      border: "3px solid #f5f5f5",
-                  },
-                  "&::-webkit-scrollbar-thumb:hover": {
-                      backgroundColor: "#a0a0a0",
-                  },
-              };
-
     return (
         <>
             {belowLg ? (
@@ -221,7 +184,7 @@ const Subbar = () => {
                     p={1}
                     gap={1}
                 >
-                    <SubbarItems overflow="auto" sx={scrollbarStyles} />
+                    <SubbarItems overflow="auto" />
 
                     <Button
                         variant="contained"
