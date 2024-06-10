@@ -32,6 +32,7 @@ import {
 } from "recharts/types/component/DefaultTooltipContent";
 import SouthRoundedIcon from "@mui/icons-material/SouthRounded";
 import NorthRoundedIcon from "@mui/icons-material/NorthRounded";
+
 import { DateRangePicker, RangeKeyDict } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
@@ -40,10 +41,11 @@ import { format, parseISO } from "date-fns";
 export default function ViewsOfPropertiesChart() {
     const { t } = useTranslation();
 
-    const [timeframe, setTimeframe] = useState<TTimeFrame>("ALL_TIME");
+    const [timeframe, setTimeframe] = useState<TTimeFrame>("WEEK");
+
+    const [openDateRangePicker, setOpenDateRangePicker] = useState(false);
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
-    const [openDateRangePicker, setOpenDateRangePicker] = useState(false);
 
     const { data: parentCategoriesGet } =
         useGetPublicDashboardParentCategoriesQuery({
@@ -233,7 +235,6 @@ export default function ViewsOfPropertiesChart() {
         return tickItem > 999 ? `${tickItem / 1000}k` : tickItem.toString();
     };
 
-    console.log(timeframe);
     return (
         <>
             <Stack direction="row" spacing={2} p={1}>
@@ -248,14 +249,14 @@ export default function ViewsOfPropertiesChart() {
                     <MenuItem value="CUSTOM">{t("Custom")}</MenuItem>
                 </Select>
 
-                {timeframe === "CUSTOM" && (
+                {timeframe === "CUSTOM" ? (
                     <Button
                         variant="outlined"
                         onClick={() => setOpenDateRangePicker(true)}
                     >
                         {t("Select Date Range")}
                     </Button>
-                )}
+                ) : null}
             </Stack>
 
             <Dialog

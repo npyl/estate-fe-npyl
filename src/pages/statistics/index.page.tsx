@@ -3,9 +3,9 @@ import type { NextPage } from "next";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import * as React from "react";
-import ViewsChart from "./liveViewsChart";
+import ViewsChart from "./LiveViews";
 import PropertyViewLineChart from "./viewsOfProperties";
-import CategoryViewsBarChart from "./categoryViewsBarChart";
+import CategoryViewsBarChart from "./CategoryViews";
 import PopularProperties from "./popularProperties";
 
 const Statistics: NextPage = () => {
