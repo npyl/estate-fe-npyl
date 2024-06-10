@@ -26,21 +26,6 @@ const ListLabelsItem: FC<ListLabelsItemProps> = ({ labels, ...other }) => {
                 height: labels.length === 0 ? "2.9rem" : "5.75rem",
                 maxHeight: labels.length === 0 ? "2.9rem" : "5.75rem",
                 overflow: labels.length <= 2 ? "hidden" : "auto",
-                "&::-webkit-scrollbar": {
-                    width: "8px",
-                    backgroundColor: "#111827",
-                },
-                "&::-webkit-scrollbar-track": {
-                    background: "#1F2937",
-                },
-                "&::-webkit-scrollbar-thumb": {
-                    backgroundColor: "#888",
-                    borderRadius: "10px",
-                    border: "2px solid #111827",
-                },
-                "&::-webkit-scrollbar-thumb:hover": {
-                    backgroundColor: "#555",
-                },
             }}
         >
             <Stack spacing={1} mt={1} ml={0.5}>

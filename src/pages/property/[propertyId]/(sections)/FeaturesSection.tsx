@@ -48,8 +48,6 @@ const BASIC_DETAIL_FIELDS: { [key in ParentCategory]: string[] } = {
         "Fire Detector",
         "Independent Heating Per Room",
         "Indoor Pool",
-        "Alarm System",
-        "Bright",
     ],
     COMMERCIAL: [
         "Organized Garden",
@@ -259,20 +257,6 @@ const Features: React.FC<FeaturesProps> = (props) => {
                     />
                 );
 
-            case "Bright":
-                return (
-                    <ListBooleanItem
-                        label={t("Bright")}
-                        status={features?.bright}
-                    />
-                );
-            case "Alarm System":
-                return (
-                    <ListBooleanItem
-                        label={t("Alarm System")}
-                        status={features?.alarmSystem}
-                    />
-                );
             case "Office":
                 return (
                     <ListBooleanItem
