@@ -6,13 +6,6 @@ import CarouselSimple from "../CarouselSimple";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import { SpaceBetween } from "../styled";
-import {
-    useGetMunicipalitiesQuery,
-    useGetNeighbourhoodsQuery,
-    useGetRegionsQuery,
-} from "@/services/location";
-import isNumberString from "../Location/util";
-import useHumanReadable from "../Location/hook";
 import { NormalBadge, PriceBadge, StyledBox } from "./styled";
 
 type PropertyCardProps = {
@@ -36,31 +29,21 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
         category,
         area,
     } = item || {};
+
+    const { regionEN, regionGR, cityEN, cityGR, complexEN, complexGR } =
+        (item as IPropertyResultResponse) || {};
+
     const { bathrooms, bedrooms } = details || {};
     const { lat, lng } = location || {};
 
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const router = useRouter();
     const ref = useRef<HTMLDivElement>();
 
-    const { data: regions } = useGetRegionsQuery();
-    const { data: municips } = useGetMunicipalitiesQuery(+location?.region!, {
-        skip: !isNumberString(location?.region),
-    });
-    const { data: neighbs } = useGetNeighbourhoodsQuery(+location?.city!, {
-        skip: !isNumberString(location?.city),
-    });
-
-    // region is most of the types a code; translate to human readable form; otherwise just return the string
-    const region = useHumanReadable(location?.region, regions);
-
-    // city is most of the types a code; translate to human readable form; otherwise just return the string
-    const city = useHumanReadable(location?.city, municips);
-
-    // neighb is most of the types a code; translate to human readable form; otherwise just return the string
-    const neighb = useHumanReadable(location?.complex, neighbs);
-
-    const address = `${region} ${city} ${neighb}`;
+    const address =
+        i18n.language === "en"
+            ? `${regionEN} ${cityEN} ${complexEN}`
+            : `${regionGR} ${cityGR} ${complexGR}`;
 
     const convertedImages = useMemo(
         () =>
