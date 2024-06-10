@@ -1,5 +1,5 @@
 import { Divider, Grid, Paper, PopperProps, Typography } from "@mui/material";
-import SearchNotFound from "src/components/search-not-found/SearchNotFound";
+// import SearchNotFound from "src/components/search-not-found/SearchNotFound";
 import { StyledPopper } from "../styles";
 import { useMemo, useRef } from "react";
 import useClickOutside from "./useClickOutside";
@@ -125,7 +125,6 @@ export const SearchList = ({
                     }}
                 >
                     <ScrollBox scrollbarWidth="15px">
-                        {properties?.length > 0 && (
                         <Grid container>
                             <PropertiesSubList searchString={searchText} />
 

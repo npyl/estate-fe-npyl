@@ -1,11 +1,10 @@
-import { Box, Grid, Stack, Typography } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 // import match from "autosuggest-highlight/match";
 // import parse from "autosuggest-highlight/parse";
 import { StyledSearchStack } from "../styles";
 import { useMemo } from "react";
 import { useRouter } from "next/router";
 import { ICustomerResultResponse } from "src/types/customer";
-import { SxProps, fontWeight } from "@mui/system";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
@@ -18,10 +17,9 @@ interface ItemProps {
     highlight: boolean;
     label?: string;
     value: string;
-    sx?: SxProps;
 }
 
-const Item = ({ highlight, label, value, sx }: ItemProps) => {
+const Item = ({ highlight, label, value }: ItemProps) => {
     return (
         <Stack direction={"row"} gap={1}>
             {label && <Typography variant="body2">{`${label}: `} </Typography>}
@@ -41,65 +39,39 @@ const Item = ({ highlight, label, value, sx }: ItemProps) => {
 export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
     const router = useRouter();
     const firstName = useMemo(
-        () =>
-            // option.firstName ? match(option.firstName, searchText) //       option.firstName, //  ? parse( // TODO: highlight
-            ({
-                highlight: true,
-                text: "",
-            }),
+        () => ({
+            highlight: true,
+            text: "",
+        }),
         [option.firstName, searchText]
     );
     const lastName = useMemo(
-        () =>
-            // option.lastName ? parse(option.lastName, match(option.lastName, searchText))[0]
-            ({
-                highlight: true,
-                text: "",
-            }),
+        () => ({
+            highlight: true,
+            text: "",
+        }),
         [option.lastName, searchText]
     );
     const email = useMemo(
-        () =>
-            // option.email
-            //  ? parse(option.email, match(option.email, searchText))[0]
-            ({
-                highlight: false,
-                text: "",
-            }),
-        [option.email, searchText]
-    );
-    const mobilePhone = useMemo(
-        () =>
-            // option.mobilePhone
-            //     ? parse(
-            //           option.mobilePhone,
-            //           match(option.mobilePhone, searchText)
-            //       )[0]
-            //     :
-            ({
-                highlight: false,
-                text: "",
-            }),
-        [option.mobilePhone, searchText]
-    );
-    const city = useMemo(
-        () =>
-            // option.city
-            //     ? parse(option.city, match(option.city, searchText))[0]
-            //     :
-            ({
-                highlight: false,
-                text: "",
-            }),
-        [option.city, searchText]
-    );
-
-    const area = useMemo(
         () => ({
             highlight: false,
             text: "",
         }),
-        [option.area, searchText]
+        [option.email, searchText]
+    );
+    const mobilePhone = useMemo(
+        () => ({
+            highlight: false,
+            text: "",
+        }),
+        [option.mobilePhone, searchText]
+    );
+    const city = useMemo(
+        () => ({
+            highlight: false,
+            text: "",
+        }),
+        [option.city, searchText]
     );
 
     return (
