@@ -25,6 +25,7 @@ import AddIcon from "@mui/icons-material/Add";
 import { styled } from "@mui/material/styles";
 import getBorderColor from "@/theme/borderColor";
 import useTheme from "@mui/system/useTheme";
+import { SpaceBetween } from "@/components/styled";
 
 const propertyItemType = "property-menu-item";
 const managerItemType = "manager-menu-item";
@@ -214,22 +215,13 @@ const Subbar = () => {
                 <FabMenu onClick={startCreate} />
             ) : (
                 <Paper
-                    sx={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        mb: 1,
-                        p: 1,
-                    }}
+                    component={SpaceBetween}
+                    alignItems="center"
+                    mb={1}
+                    p={1}
+                    gap={1}
                 >
-                    <Box
-                        sx={{
-                            width: "90.5%",
-                        }}
-                    >
-                        <SubbarItems overflow="auto" sx={scrollbarStyles} />
-                    </Box>
+                    <SubbarItems overflow="auto" sx={scrollbarStyles} />
 
                     <Button
                         variant="contained"
