@@ -10,20 +10,11 @@ import {
     Rectangle,
     TooltipProps,
 } from "recharts";
-import { Stack } from "@mui/system";
+import { Stack, Box } from "@mui/material";
 import { useMemo, useState } from "react";
 import Typography from "@mui/material/Typography";
 import { TTimeFrame } from "@/types/publicDashboard";
-import {
-    MenuItem,
-    Select,
-    SelectChangeEvent,
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-} from "@mui/material";
+import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { useGetPublicDashboardParentCategoriesQuery } from "@/services/publicDashboard";
 import { useTranslation } from "react-i18next";
 import {
@@ -32,18 +23,19 @@ import {
 } from "recharts/types/component/DefaultTooltipContent";
 import SouthRoundedIcon from "@mui/icons-material/SouthRounded";
 import NorthRoundedIcon from "@mui/icons-material/NorthRounded";
+import DateRangePicker from "./DateRangePicker";
+import { format } from "date-fns";
+import useResponsive from "@/hooks/useResponsive";
 
-import { DateRangePicker, RangeKeyDict } from "react-date-range";
-import "react-date-range/dist/styles.css";
-import "react-date-range/dist/theme/default.css";
-import { format, parseISO } from "date-fns";
+const formatYAxis = (tickItem: number) => {
+    return tickItem > 999 ? `${tickItem / 1000}k` : tickItem.toString();
+};
 
 export default function ViewsOfPropertiesChart() {
     const { t } = useTranslation();
 
     const [timeframe, setTimeframe] = useState<TTimeFrame>("WEEK");
 
-    const [openDateRangePicker, setOpenDateRangePicker] = useState(false);
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
 
@@ -64,14 +56,6 @@ export default function ViewsOfPropertiesChart() {
         }
     };
 
-    const handleDateRangeChange = (ranges: RangeKeyDict) => {
-        const { selection } = ranges;
-        if (selection.startDate && selection.endDate) {
-            setStartDate(selection.startDate.toISOString());
-            setEndDate(selection.endDate.toISOString());
-        }
-    };
-
     const chartData = useMemo(
         () =>
             parentCategoriesGet?.map(({ date, parentCategories }) => ({
@@ -86,6 +70,10 @@ export default function ViewsOfPropertiesChart() {
         [parentCategoriesGet]
     );
 
+    const renderLegendText = (value: string) => {
+        return <span>{t(value)}</span>;
+    };
+
     const formatDateTick = (tickItem: string) => {
         const date = new Date(tickItem);
         return timeframe === "WEEK"
@@ -97,10 +85,6 @@ export default function ViewsOfPropertiesChart() {
                   })
                   .replace(/,\s*/g, " ") // remove the comma and space
             : date.toLocaleDateString();
-    };
-
-    const renderLegendText = (value: string) => {
-        return <span>{t(value)}</span>;
     };
 
     const renderTooltipContent = ({
@@ -231,69 +215,44 @@ export default function ViewsOfPropertiesChart() {
         return null;
     };
 
-    const formatYAxis = (tickItem: number) => {
-        return tickItem > 999 ? `${tickItem / 1000}k` : tickItem.toString();
-    };
+    const belowMd = useResponsive("down", "md");
 
     return (
         <>
-            <Stack direction="row" spacing={2} p={1}>
+            <Stack direction={{ xs: "column", md: "row" }} spacing={2} p={1}>
                 <Typography variant={"h5"}>{t("Category Views")}</Typography>
 
-                <Select value={timeframe} onChange={handleTimeframeSelect}>
-                    <MenuItem value="ALL_TIME">{t("All_Time")}</MenuItem>
-                    <MenuItem value="MONTH">{t("Monthly")}</MenuItem>
-                    <MenuItem value="WEEK">{t("Weekly")}</MenuItem>
-                    <MenuItem value="YEAR">{t("Yearly")}</MenuItem>
-                    <MenuItem value="DAY">{t("Daily")}</MenuItem>
-                    <MenuItem value="CUSTOM">{t("Custom")}</MenuItem>
-                </Select>
+                <Stack direction="row" gap={1} flexWrap="wrap">
+                    <Select value={timeframe} onChange={handleTimeframeSelect}>
+                        <MenuItem value="ALL_TIME">{t("All_Time")}</MenuItem>
+                        <MenuItem value="MONTH">{t("Monthly")}</MenuItem>
+                        <MenuItem value="WEEK">{t("Weekly")}</MenuItem>
+                        <MenuItem value="YEAR">{t("Yearly")}</MenuItem>
+                        <MenuItem value="DAY">{t("Daily")}</MenuItem>
+                        <MenuItem value="CUSTOM">{t("Custom")}</MenuItem>
+                    </Select>
 
-                {timeframe === "CUSTOM" ? (
-                    <Button
-                        variant="outlined"
-                        onClick={() => setOpenDateRangePicker(true)}
-                    >
-                        {t("Select Date Range")}
-                    </Button>
-                ) : null}
+                    {timeframe === "CUSTOM" ? (
+                        <DateRangePicker
+                            startDate={startDate}
+                            endDate={endDate}
+                            onChange={(s, e) => {
+                                setStartDate(s);
+                                setEndDate(e);
+                            }}
+                        />
+                    ) : null}
+                </Stack>
             </Stack>
 
-            <Dialog
-                open={openDateRangePicker}
-                onClose={() => setOpenDateRangePicker(false)}
-            >
-                <DialogTitle>{t("Select Date Range")}</DialogTitle>
-                <DialogContent>
-                    <DateRangePicker
-                        ranges={[
-                            {
-                                startDate: startDate
-                                    ? parseISO(startDate)
-                                    : new Date(),
-                                endDate: endDate
-                                    ? parseISO(endDate)
-                                    : new Date(),
-                                key: "selection",
-                            },
-                        ]}
-                        onChange={handleDateRangeChange}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => setOpenDateRangePicker(false)}>
-                        {t("Close")}
-                    </Button>
-                </DialogActions>
-            </Dialog>
-
-            <ResponsiveContainer width="99%" height={300}>
+            <ResponsiveContainer height={300}>
                 <BarChart
                     data={chartData}
                     margin={{ right: 30, left: 30, bottom: 5 }}
                 >
                     <CartesianGrid vertical={false} />
                     <XAxis
+                        visibility={belowMd ? "hidden" : "visible"}
                         dataKey="date"
                         tickFormatter={formatDateTick}
                         tickMargin={7}

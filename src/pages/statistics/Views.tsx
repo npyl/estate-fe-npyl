@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import {
     AreaChart,
     Area,
@@ -15,16 +15,7 @@ import { useGetPublicDashboardPropertyViewsQuery } from "@/services/publicDashbo
 import { IGlobalProperty } from "@/types/global";
 import { KeyValue } from "@/types/KeyValue";
 import { TTimeFrame } from "@/types/publicDashboard";
-import {
-    MenuItem,
-    Select,
-    SelectChangeEvent,
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-} from "@mui/material";
+import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { Stack } from "@mui/system";
 import { useTranslation } from "react-i18next";
@@ -32,13 +23,11 @@ import {
     NameType,
     ValueType,
 } from "recharts/types/component/DefaultTooltipContent";
-import { useResponsive } from "@/hooks/use-responsive";
 import SouthRoundedIcon from "@mui/icons-material/SouthRounded";
 import NorthRoundedIcon from "@mui/icons-material/NorthRounded";
-import { DateRangePicker, RangeKeyDict } from "react-date-range";
-import "react-date-range/dist/styles.css";
-import "react-date-range/dist/theme/default.css";
-import { format, parseISO } from "date-fns";
+import DateRangePicker from "./DateRangePicker";
+import format from "date-fns/format";
+import useResponsive from "@/hooks/useResponsive";
 
 export default function StackedAreas() {
     const { t } = useTranslation();
@@ -49,7 +38,6 @@ export default function StackedAreas() {
 
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
-    const [openDateRangePicker, setOpenDateRangePicker] = useState(false);
 
     // Fetch enums and data using hooks
     const data = useGlobals();
@@ -105,15 +93,6 @@ export default function StackedAreas() {
         if (e.target.value !== "CUSTOM") {
             setStartDate("");
             setEndDate("");
-        }
-    };
-
-    // Handle date range selection
-    const handleDateRangeChange = (ranges: RangeKeyDict) => {
-        const { selection } = ranges;
-        if (selection.startDate && selection.endDate) {
-            setStartDate(selection.startDate.toISOString());
-            setEndDate(selection.endDate.toISOString());
         }
     };
 
@@ -270,6 +249,7 @@ export default function StackedAreas() {
         }
         return null;
     };
+
     // Date formatter for X-axis ticks
     const formatDateTick = (tickItem: string) => {
         const date = new Date(tickItem);
@@ -286,10 +266,13 @@ export default function StackedAreas() {
                     .replace(/,\s*/g, " "); // remove the comma and space
                 break;
             case "DAY":
-                formattedDate = date.toLocaleDateString("en-GB", {
-                    hour: "2-digit",
-                    hour12: true,
-                });
+                formattedDate = date
+                    .toLocaleDateString("en-GB", {
+                        weekday: "short",
+                        day: "2-digit",
+                        month: "2-digit",
+                    })
+                    .replace(/,\s*/g, " "); // remove the comma and space
                 break;
             case "MONTH":
                 formattedDate = date.toLocaleDateString("en-GB", {
@@ -312,171 +295,70 @@ export default function StackedAreas() {
         return tickItem > 999 ? `${tickItem / 1000}k` : tickItem.toString();
     };
 
-    const belowSm = useResponsive("down", "sm");
     const belowMd = useResponsive("down", "md");
 
-    console.log(timeframe);
     return (
         <>
-            {belowMd && !belowSm ? (
-                <Stack direction="column" spacing={2} p={1}>
-                    <Typography variant={"h5"} p={1}>
-                        {t("Views of Properties")}
-                    </Typography>
-                    <Stack direction="row" padding={1} spacing={2}>
-                        <Select
-                            value={timeframe}
-                            onChange={handleTimeframeSelect}
-                        >
-                            <MenuItem value="ALL_TIME">
-                                {t("All_Time")}
-                            </MenuItem>
-                            <MenuItem value="MONTH">{t("Monthly")}</MenuItem>
-                            <MenuItem value="WEEK">{t("Weekly")}</MenuItem>
-                            <MenuItem value="YEAR">{t("Yearly")}</MenuItem>
-                            <MenuItem value="DAY">{t("Daily")}</MenuItem>
-                            <MenuItem value="CUSTOM">{t("Custom")}</MenuItem>
-                        </Select>
-                        <Select
-                            value={parentCategory}
-                            onChange={handleParentCategorySelect}
-                            displayEmpty
-                        >
-                            <MenuItem value="">{t("Parent Category")}</MenuItem>
-                            {parentCategoryEnum?.map((item) => (
-                                <MenuItem key={item.key} value={item.key}>
-                                    {item.value}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                        <Select
-                            value={category}
-                            onChange={handleCategorySelect}
-                            displayEmpty
-                            disabled={!parentCategory}
-                        >
-                            <MenuItem value="">{t("Category")}</MenuItem>
-                            {subCategoriesMap[parentCategory!]?.map((item) => (
-                                <MenuItem key={item.key} value={item.key}>
-                                    {item.value}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                        {timeframe === "CUSTOM" && (
-                            <Button
-                                variant="outlined"
-                                onClick={() => setOpenDateRangePicker(true)}
-                            >
-                                {t("Select Date Range")}
-                            </Button>
-                        )}
-                    </Stack>
-                </Stack>
-            ) : (
-                <Stack
-                    direction={{
-                        xs: "column",
-                        sm: "row",
-                    }}
-                    spacing={2}
-                    p={1}
-                >
-                    <Typography variant={"h5"} p={1}>
-                        {t("Views of Properties")}
-                    </Typography>
-                    <Stack
-                        direction={{
-                            xs: "column",
-                            sm: "row",
-                        }}
-                        padding={1}
-                        spacing={2}
+            <Stack direction={{ xs: "column", md: "row" }} spacing={2} p={1}>
+                <Typography variant={"h5"} p={1}>
+                    {t("Views of Properties")}
+                </Typography>
+
+                <Stack direction="row" p={1} gap={1} flexWrap="wrap">
+                    <Select value={timeframe} onChange={handleTimeframeSelect}>
+                        <MenuItem value="ALL_TIME">{t("All_Time")}</MenuItem>
+                        <MenuItem value="MONTH">{t("Monthly")}</MenuItem>
+                        <MenuItem value="WEEK">{t("Weekly")}</MenuItem>
+                        <MenuItem value="YEAR">{t("Yearly")}</MenuItem>
+                        <MenuItem value="DAY">{t("Daily")}</MenuItem>
+                        <MenuItem value="CUSTOM">{t("Custom")}</MenuItem>
+                    </Select>
+
+                    <Select
+                        value={parentCategory}
+                        onChange={handleParentCategorySelect}
+                        displayEmpty
                     >
-                        <Select
-                            value={timeframe}
-                            onChange={handleTimeframeSelect}
-                        >
-                            <MenuItem value="ALL_TIME">
-                                {t("All_Time")}
+                        <MenuItem value="">{t("Parent Category")}</MenuItem>
+                        {parentCategoryEnum?.map((item) => (
+                            <MenuItem key={item.key} value={item.key}>
+                                {item.value}
                             </MenuItem>
-                            <MenuItem value="MONTH">{t("Monthly")}</MenuItem>
-                            <MenuItem value="WEEK">{t("Weekly")}</MenuItem>
-                            <MenuItem value="YEAR">{t("Yearly")}</MenuItem>
-                            <MenuItem value="DAY">{t("Daily")}</MenuItem>
-                            <MenuItem value="CUSTOM">{t("Custom")}</MenuItem>
-                        </Select>
-                        <Select
-                            value={parentCategory}
-                            onChange={handleParentCategorySelect}
-                            displayEmpty
-                        >
-                            <MenuItem value="">{t("Parent Category")}</MenuItem>
-                            {parentCategoryEnum?.map((item) => (
-                                <MenuItem key={item.key} value={item.key}>
-                                    {item.value}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                        <Select
-                            value={category}
-                            onChange={handleCategorySelect}
-                            displayEmpty
-                            disabled={!parentCategory}
-                        >
-                            <MenuItem value="">{t("Category")}</MenuItem>
-                            {subCategoriesMap[parentCategory!]?.map((item) => (
-                                <MenuItem key={item.key} value={item.key}>
-                                    {item.value}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                        {timeframe === "CUSTOM" && (
-                            <Button
-                                variant="outlined"
-                                onClick={() => setOpenDateRangePicker(true)}
-                            >
-                                {t("Select Date Range")}
-                            </Button>
-                        )}
-                    </Stack>
+                        ))}
+                    </Select>
+
+                    <Select
+                        value={category}
+                        onChange={handleCategorySelect}
+                        displayEmpty
+                        disabled={!parentCategory}
+                    >
+                        <MenuItem value="">{t("Category")}</MenuItem>
+                        {subCategoriesMap[parentCategory!]?.map((item) => (
+                            <MenuItem key={item.key} value={item.key}>
+                                {item.value}
+                            </MenuItem>
+                        ))}
+                    </Select>
+
+                    {timeframe === "CUSTOM" ? (
+                        <DateRangePicker
+                            startDate={startDate}
+                            endDate={endDate}
+                            onChange={(s, e) => {
+                                setStartDate(s);
+                                setEndDate(e);
+                            }}
+                        />
+                    ) : null}
                 </Stack>
-            )}
+            </Stack>
 
-            <Dialog
-                open={openDateRangePicker}
-                onClose={() => setOpenDateRangePicker(false)}
-                aria-labelledby="date-range-picker-dialog-title"
-            >
-                <DialogTitle id="date-range-picker-dialog-title">
-                    {t("Select Date Range")}
-                </DialogTitle>
-                <DialogContent>
-                    <DateRangePicker
-                        ranges={[
-                            {
-                                startDate: startDate
-                                    ? parseISO(startDate)
-                                    : new Date(),
-                                endDate: endDate
-                                    ? parseISO(endDate)
-                                    : new Date(),
-                                key: "selection",
-                            },
-                        ]}
-                        onChange={handleDateRangeChange}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => setOpenDateRangePicker(false)}>
-                        {t("Close")}
-                    </Button>
-                </DialogActions>
-            </Dialog>
-
-            <ResponsiveContainer width="100%" height={300}>
+            <ResponsiveContainer height={300}>
                 <AreaChart data={chartData} margin={{ left: 30, right: 30 }}>
                     <CartesianGrid vertical={false} />
                     <XAxis
+                        visibility={belowMd ? "hidden" : "visible"}
                         dataKey="date"
                         tickFormatter={formatDateTick}
                         tickMargin={7}
