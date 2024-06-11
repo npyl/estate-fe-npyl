@@ -745,6 +745,9 @@ const resources = {
             "Property Rating": "Property Rating",
             Reviews: "Reviews",
             Locations: "Locations",
+
+            "Share PDF": "Share PDF",
+            "Download PDF": "Download PDF",
         },
     },
     el: {

@@ -1,55 +1,29 @@
-import { Paper } from "@mui/material";
+import { Paper, Stack } from "@mui/material";
 import type { NextPage } from "next";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import * as React from "react";
-import ViewsChart from "./liveViewsChart";
-import PropertyViewLineChart from "./viewsOfProperties";
-import CategoryViewsBarChart from "./categoryViewsBarChart";
-import PopularProperties from "./popularProperties";
+import ViewsChart from "./LiveViews";
+import PropertyViewLineChart from "./Views";
+import CategoryViewsBarChart from "./CategoryViews";
+import PopularProperties from "./Popular";
 
-const Statistics: NextPage = () => {
-    return (
-        <>
-            <Paper
-                sx={{
-                    mt: 2,
-                    mb: 1,
-                    padding: 1,
-                }}
-            >
-                <ViewsChart />
+const CHARTS = [
+    <ViewsChart />,
+    <PropertyViewLineChart />,
+    <CategoryViewsBarChart />,
+    <PopularProperties />,
+];
+
+const Statistics: NextPage = () => (
+    <Stack spacing={2}>
+        {CHARTS.map((C, i) => (
+            <Paper sx={{ p: 1 }} key={i}>
+                {C}
             </Paper>
-            <Paper
-                sx={{
-                    mt: 2,
-                    mb: 1,
-                    padding: 1,
-                }}
-            >
-                <PropertyViewLineChart />
-            </Paper>
-            <Paper
-                sx={{
-                    mt: 2,
-                    mb: 1,
-                    padding: 1,
-                }}
-            >
-                <CategoryViewsBarChart />
-            </Paper>
-            <Paper
-                sx={{
-                    mt: 2,
-                    mb: 1,
-                    padding: 1,
-                }}
-            >
-                <PopularProperties />
-            </Paper>
-        </>
-    );
-};
+        ))}
+    </Stack>
+);
 
 Statistics.getLayout = (page) => (
     <AuthGuard>

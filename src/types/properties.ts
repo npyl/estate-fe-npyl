@@ -26,10 +26,16 @@ export interface IPropertyResultResponse {
     images: string[]; // urls only
     labels: ILabel[];
     location: ILocationPOST;
-    // lat: number;
-    // lng: number;
     createdAt: string;
     updatedAt: string;
+
+    // ...
+    regionEN: string;
+    regionGR: string;
+    cityEN: string;
+    cityGR: string;
+    complexEN: string;
+    complexGR: string;
 }
 
 export interface IPropertyFilter {

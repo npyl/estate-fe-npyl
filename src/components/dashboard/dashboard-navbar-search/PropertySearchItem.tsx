@@ -1,5 +1,4 @@
 import { Box, Stack, Typography, Grid, useMediaQuery } from "@mui/material";
-import KeyIcon from "@mui/icons-material/Key";
 import Image from "src/components/image/Image";
 import { IPropertyResultResponse } from "src/types/properties";
 import { StyledSearchStack } from "../styles";
@@ -7,19 +6,10 @@ import { useMemo } from "react";
 import PreviewImage from "src/components/image/PreviewImage";
 import { useRouter } from "next/router";
 import { MatchResult } from "./types";
-import BedOutlinedIcon from "@mui/icons-material/BedOutlined";
-import BathtubOutlinedIcon from "@mui/icons-material/BathtubOutlined";
-import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import useTheme from "@mui/system/useTheme";
-import useHumanReadable from "@/components/Location/hook";
-import {
-    useGetMunicipalitiesQuery,
-    useGetNeighbourhoodsQuery,
-    useGetRegionsQuery,
-} from "@/services/location";
-import isNumberString from "@/components/Location/util";
 import { NormalBadge } from "@/components/PropertyCard/styled";
 import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 
 interface SearchItemProps {
     searchText: string;
@@ -27,19 +17,29 @@ interface SearchItemProps {
 }
 
 export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
+    const { i18n } = useTranslation();
+
     const router = useRouter();
     const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-    console.log(option);
     const {
         code: _code,
         keyCode: _keyCode,
         price: _price,
         area: _area,
         location: _location,
+        // ...
+        regionEN,
+        regionGR,
+        cityEN,
+        cityGR,
+        // ...
         ...rest
     } = option;
+
+    const region = i18n.language === "en" ? regionEN : regionGR;
+    const city = i18n.language === "en" ? cityEN : cityGR;
 
     const code = useMemo(
         () => ({
@@ -70,23 +70,6 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
         [option.area, searchText]
     );
 
-    const { data: regions } = useGetRegionsQuery();
-    const { data: municips } = useGetMunicipalitiesQuery(
-        +option?.location?.region!,
-        {
-            skip: !isNumberString(option?.location?.region),
-        }
-    );
-    const { data: neighbs } = useGetNeighbourhoodsQuery(
-        +option?.location?.city!,
-        {
-            skip: !isNumberString(option?.location?.city),
-        }
-    );
-
-    const region = useHumanReadable(option.location?.region, regions);
-
-    const city = useHumanReadable(option.location?.city, municips);
     const location = useMemo(
         () => ({
             highlight: false,

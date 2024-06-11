@@ -1,12 +1,7 @@
-import {
-    IconButton,
-    CircularProgress,
-    Button,
-    Typography,
-} from "@mui/material";
+import { IconButton, Typography } from "@mui/material";
 import { useState, MouseEvent, useCallback } from "react";
 import DocumentSvg from "@/assets/Document";
-import { useLazyDownloadPDFQuery } from "@/services/exports";
+import { exportPDF } from "@/services/exports";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import Popover from "./popover";
@@ -34,7 +29,7 @@ const downloadBlob = (blob: Blob): void => {
 };
 
 const ExportButton = () => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const router = useRouter();
     const { propertyId } = router.query;
 
@@ -49,21 +44,18 @@ const ExportButton = () => {
     const [blueprints, setBlueprints] = useState(false);
     const [version, setVersion] = useState<"LONG" | "SHORT">("LONG");
 
-    const [downloadPDF] = useLazyDownloadPDFQuery();
     const [loading, setLoading] = useState(false);
 
     const handleDownload = useCallback(() => {
         setLoading(true);
-        downloadPDF({
+        exportPDF({
             propertyId: +propertyId!,
             qrPath: "",
             blueprints,
             publicImages: version === "LONG",
+            lang: i18n.language as "en" | "el",
         })
-            .unwrap()
-            .then((blob) => {
-                downloadBlob(blob);
-            })
+            .then(downloadBlob)
             .catch((error) => {
                 console.error("Download failed:", error);
             })
@@ -89,7 +81,7 @@ const ExportButton = () => {
                 <DocumentSvg />
             </IconButton>
 
-            {isOpen && (
+            {isOpen ? (
                 <Popover
                     open={isOpen}
                     anchorEl={anchorEl}
@@ -100,15 +92,15 @@ const ExportButton = () => {
                     setBlueprints={setBlueprints}
                     version={version}
                     setVersion={setVersion}
-                    loading={loading} // Pass loading state to Popper
+                    loading={loading}
                 />
-            )}
+            ) : null}
 
             <SharePopover
                 open={isShareOpen}
                 anchorEl={shareAnchorEl}
                 onClose={handleShareClose}
-                shareUrl={window.location.href} // Adjust the URL as needed
+                shareUrl={window.location.href}
             />
         </>
     );

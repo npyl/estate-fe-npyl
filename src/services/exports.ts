@@ -9,6 +9,7 @@ interface IExportPDF {
     qrPath: string;
     blueprints: boolean;
     publicImages: boolean;
+    lang: "en" | "el";
 }
 
 // Define the return type and parameters for our custom base query
@@ -67,34 +68,33 @@ export const exports = createApi({
                 };
             },
         }),
-
-        // Export a property's pdfs
-        downloadPDF: builder.query<Blob, IExportPDF>({
-            query: ({ propertyId, qrPath, blueprints, publicImages }) => {
-                const queryParams = new URLSearchParams({
-                    qrPath,
-                    blueprints: blueprints.toString(),
-                    publicImages: publicImages.toString(),
-                }).toString();
-
-                return {
-                    url: `export/${propertyId}?${queryParams}`,
-                    method: "GET",
-                    headers: {
-                        "Accept-Language": `${
-                            (localStorage.getItem("language") === "gr"
-                                ? "el"
-                                : "en") ?? "el"
-                        }`,
-                    },
-                };
-            },
-        }),
     }),
 });
 
-export const {
-    useLazyDownloadImagesQuery,
-    useLazyDownloadDocumentsQuery,
-    useLazyDownloadPDFQuery,
-} = exports;
+export const exportPDF = ({
+    propertyId,
+    qrPath,
+    blueprints,
+    publicImages,
+    lang,
+}: IExportPDF) => {
+    const queryParams = new URLSearchParams({
+        qrPath,
+        blueprints: blueprints.toString(),
+        publicImages: publicImages.toString(),
+    }).toString();
+
+    return fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/property/export/${propertyId}?${queryParams}`,
+        {
+            headers: {
+                Authorization: `Bearer  ${localStorage.getItem("accessToken")}`,
+                "Accept-Language": `${lang}`,
+                Accept: "application/pdf",
+            },
+        }
+    ).then((res) => res.blob());
+};
+
+export const { useLazyDownloadImagesQuery, useLazyDownloadDocumentsQuery } =
+    exports;
