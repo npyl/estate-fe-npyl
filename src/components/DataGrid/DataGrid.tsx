@@ -1,18 +1,84 @@
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import { Button } from "@mui/material";
+import MuiLink from "@mui/material/Link";
 import {
-    GridCallbackDetails,
     GridDeleteIcon,
     GridRowSelectionModel,
     GridToolbarColumnsButton,
     GridToolbarContainer,
     GridToolbarExport,
+    GridRow,
+    GridRowProps,
+    GridToolbarContainerProps,
 } from "@mui/x-data-grid";
-import { useRouter } from "next/router";
 import { FC, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyledDataGrid } from "./styles";
 import GridProps from "./types";
+import NextLink from "next/link";
+
+// ------------------------------------------------------------------------
+
+interface CustomRowProps extends GridRowProps {
+    resource: string;
+}
+
+const CustomRow = ({ resource, ...props }: CustomRowProps) => (
+    <MuiLink component={NextLink} href={`/${resource}/${props.row?.id}`}>
+        <GridRow {...props} />
+    </MuiLink>
+);
+
+interface CustomToolbarProps extends GridToolbarContainerProps {
+    haveSelectedRows: boolean;
+    onBulkDelete?: VoidFunction;
+    onBulkEdit?: VoidFunction;
+}
+
+const CustomToolbar = ({
+    haveSelectedRows,
+    onBulkDelete,
+    onBulkEdit,
+    ...props
+}: CustomToolbarProps) => {
+    const { t } = useTranslation();
+    return (
+        <GridToolbarContainer {...props}>
+            <GridToolbarColumnsButton>{t("Fields")}</GridToolbarColumnsButton>
+            <GridToolbarExport>{t("Export")}</GridToolbarExport>
+
+            {haveSelectedRows ? (
+                <>
+                    {onBulkDelete ? (
+                        <Button
+                            onClick={onBulkEdit}
+                            startIcon={<EditNoteIcon />}
+                            sx={{
+                                position: "absolute",
+                                right: 0,
+                                mr: 1,
+                                mt: 0.5,
+                            }}
+                        >
+                            {t("Edit")}
+                        </Button>
+                    ) : null}
+
+                    {onBulkEdit ? (
+                        <Button
+                            startIcon={<GridDeleteIcon />}
+                            onClick={onBulkDelete}
+                        >
+                            {t("Delete")}
+                        </Button>
+                    ) : null}
+                </>
+            ) : null}
+        </GridToolbarContainer>
+    );
+};
+
+// ------------------------------------------------------------------------
 
 const DataGridTable: FC<GridProps> = ({
     rows,
@@ -30,66 +96,41 @@ const DataGridTable: FC<GridProps> = ({
 
     ...props
 }) => {
-    const router = useRouter();
     const { t } = useTranslation();
+
     const [selectedRows, setSelectedRows] = useState<GridRowSelectionModel>([]);
 
-    const BulkEditButton = () => (
-        <Button
-            onClick={() => onBulkEdit?.(selectedRows)}
-            startIcon={<EditNoteIcon />}
-            sx={{ position: "absolute", right: 0, mr: 1, mt: 0.5 }}
-        >
-            {t("Edit")}
-        </Button>
-    );
-
-    const BulkDeleteButton = () => (
-        <Button
-            startIcon={<GridDeleteIcon />}
-            onClick={() => onBulkDelete?.(selectedRows)}
-        >
-            {t("Delete")}
-        </Button>
-    );
-
-    const CustomToolbar = () => {
-        const { t } = useTranslation();
-        return (
-            <GridToolbarContainer>
-                <GridToolbarColumnsButton>
-                    {t("Fields")}
-                </GridToolbarColumnsButton>
-                <GridToolbarExport>{t("Export")}</GridToolbarExport>
-
-                {selectedRows && selectedRows.length > 0 && (
-                    <>
-                        {onBulkDelete && <BulkDeleteButton />}
-                        {onBulkEdit && <BulkEditButton />}
-                    </>
-                )}
-            </GridToolbarContainer>
-        );
-    };
-
-    const handleRowSelectionChange = (
-        model: GridRowSelectionModel,
-        details: GridCallbackDetails<any>
-    ) => {
+    const handleRowSelectionChange = (model: GridRowSelectionModel, _: any) =>
         setSelectedRows(model);
-    };
 
     return (
         <>
             <StyledDataGrid
                 slots={{
-                    toolbar: CustomToolbar,
+                    toolbar: (props) => (
+                        <CustomToolbar
+                            {...props}
+                            haveSelectedRows={selectedRows.length > 0}
+                            onBulkEdit={
+                                onBulkEdit
+                                    ? () => onBulkEdit(selectedRows)
+                                    : undefined
+                            }
+                            onBulkDelete={
+                                onBulkDelete
+                                    ? () => onBulkDelete(selectedRows)
+                                    : undefined
+                            }
+                        />
+                    ),
+                    row: (props) => (
+                        <CustomRow {...props} resource={resource} />
+                    ),
                 }}
                 localeText={{
                     toolbarColumns: "Fields",
                     columnsPanelTextFieldLabel: "Search Field",
                     columnsPanelTextFieldPlaceholder: "Name of Fields",
-                    // rowsPerPage: {t("rows Per Page")}
                     MuiTablePagination: {
                         labelRowsPerPage: t("Rows per page"),
                     },
@@ -112,9 +153,6 @@ const DataGridTable: FC<GridProps> = ({
                         "scrollHeight",
                         window.scrollY.toString()
                     );
-
-                    // Navigate to the next page
-                    router.push(`/${resource}/${e.row.id}`);
                 }}
                 checkboxSelection
                 autoHeight
