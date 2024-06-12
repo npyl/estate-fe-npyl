@@ -4,8 +4,8 @@ import type { FC, ReactNode } from "react";
 import { useCallback, useState } from "react";
 import { ChevronDown as ChevronDownIcon } from "../../../icons/chevron-down";
 import { ChevronRight as ChevronRightIcon } from "../../../icons/chevron-right";
-import useAutosaveRouter from "../../Router/Autosave";
-import { Button as NavigationButton } from "./styled";
+import NextLink from "next/link";
+import NavigationButton from "./styled";
 
 interface DashboardSidebarItemProps extends ListItemProps {
     active?: boolean;
@@ -31,8 +31,6 @@ const DashboardSidebarItem: FC<DashboardSidebarItemProps> = ({
     title,
     ...other
 }) => {
-    const router = useAutosaveRouter();
-
     const [open, setOpen] = useState<boolean>(!!openProp);
     const handleToggle = (): void => {
         setOpen((prevOpen) => !prevOpen);
@@ -48,7 +46,6 @@ const DashboardSidebarItem: FC<DashboardSidebarItemProps> = ({
         localStorage.removeItem("propertyPaginationState");
         localStorage.removeItem("customerPaginationState");
         localStorage.removeItem("scrollHeight");
-        router.push(path as string);
     }, []);
 
     // Branch
@@ -65,6 +62,9 @@ const DashboardSidebarItem: FC<DashboardSidebarItemProps> = ({
                 {...other}
             >
                 <NavigationButton
+                    component={NextLink}
+                    href={path}
+                    // ...
                     endIcon={
                         !open ? (
                             <ChevronRightIcon fontSize="small" />
@@ -90,6 +90,8 @@ const DashboardSidebarItem: FC<DashboardSidebarItemProps> = ({
         );
     }
 
+    console.log("ACTIVE: ", active);
+
     // Leaf
     return (
         <ListItem
@@ -101,7 +103,10 @@ const DashboardSidebarItem: FC<DashboardSidebarItemProps> = ({
             }}
         >
             <NavigationButton
-                active={active}
+                component={NextLink}
+                href={path}
+                // ...
+                isActive={active}
                 onClick={handleNavigate}
                 startIcon={icon}
                 endIcon={chip}

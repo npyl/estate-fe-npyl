@@ -78,10 +78,9 @@ function OnlyPhotosCarousel({ data }: Props) {
                 : data.filter(({ hidden }) => !!hidden); // private
 
         return filtered.map(({ id, url, title, hidden }, index) => (
-            <Grid item xs={12} sm={6} md={4} lg={3}>
+            <Grid item xs={12} sm={6} md={4} lg={3} key={id}>
                 {url ? (
                     <LabeledImage
-                        key={id}
                         alt={title}
                         src={url}
                         hidden={hidden}
