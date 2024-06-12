@@ -310,7 +310,6 @@ export default function StackedAreas() {
                         <MenuItem value="MONTH">{t("Monthly")}</MenuItem>
                         <MenuItem value="WEEK">{t("Weekly")}</MenuItem>
                         <MenuItem value="YEAR">{t("Yearly")}</MenuItem>
-                        <MenuItem value="DAY">{t("Daily")}</MenuItem>
                         <MenuItem value="CUSTOM">{t("Custom")}</MenuItem>
                     </Select>
 
