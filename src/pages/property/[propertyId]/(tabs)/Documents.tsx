@@ -6,18 +6,20 @@ import {
 import {
     Paper,
     Grid,
-    Button,
     Box,
     Divider,
     Typography,
     IconButton,
+    Stack,
 } from "@mui/material";
 import { useRouter } from "next/router";
 import { useMemo, useState } from "react";
 import { Label } from "@/components/Label";
 import { DocumentIcon } from "src/components/upload/preview/DocumentIcon";
-import { useLazyDownloadDocumentsQuery } from "src/services/exports";
 import { useGetPropertyByIdQuery } from "src/services/properties";
+import { downloadDocuments } from "@/services/exports";
+import { LoadingButton } from "@mui/lab";
+import { useTranslation } from "react-i18next";
 
 const downloadBlob = (blob: Blob, propertyCode: string): void => {
     // Convert the blob to a URL
@@ -38,6 +40,8 @@ const downloadBlob = (blob: Blob, propertyCode: string): void => {
 };
 
 const Documents: React.FC = () => {
+    const { t } = useTranslation();
+
     const router = useRouter();
     const { propertyId } = router.query;
 
@@ -45,14 +49,17 @@ const Documents: React.FC = () => {
     const documents = useMemo(() => property?.documents || [], [property]);
     const propertyCode = useMemo(() => property?.code || "", [property]);
 
-    const [downloadDocuments] = useLazyDownloadDocumentsQuery();
+    const [isLoading, setLoading] = useState(false);
 
     const [openIframe, setOpenIframe] = useState("");
 
-    const handleDownload = () =>
-        downloadDocuments(+propertyId!)
-            .unwrap()
-            .then((b) => downloadBlob(b, propertyCode));
+    const handleDownload = () => {
+        setLoading(true);
+        downloadDocuments(+propertyId!).then((b) => {
+            setLoading(false);
+            downloadBlob(b, propertyCode);
+        });
+    };
 
     return (
         <Paper elevation={10} sx={{ overflow: "auto", padding: "10px" }}>
@@ -126,14 +133,16 @@ const Documents: React.FC = () => {
                 )}
             </Grid>
             <Divider />
-            <Box
-                flex={1}
-                flexDirection={"row"}
-                justifyContent={"flex-end"}
-                mt={1}
-            >
-                <Button onClick={handleDownload}>Download</Button>
-            </Box>
+            <Stack direction="row" justifyContent="flex-end" mt={1}>
+                <LoadingButton
+                    loading={isLoading}
+                    disabled={isLoading}
+                    loadingPosition="end"
+                    onClick={handleDownload}
+                >
+                    {t("Download")}
+                </LoadingButton>
+            </Stack>
         </Paper>
     );
 };

@@ -4,6 +4,7 @@ interface DownloadImagesZipProps {
     hidden: boolean;
     propertyId: number;
 }
+
 interface IExportPDF {
     propertyId: number;
     qrPath: string;
@@ -12,64 +13,31 @@ interface IExportPDF {
     lang: "en" | "el";
 }
 
-// Define the return type and parameters for our custom base query
-interface CustomBaseQueryArgs {
-    url: string;
-    method?: string;
-    headers?: Record<string, string>;
-    responseType?: string;
-}
+const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/property`;
 
-const customFetchBaseQuery =
-    (baseUrl: string): BaseQueryFn<CustomBaseQueryArgs, unknown, Error> =>
-    async (args, api, extraOptions) => {
-        const response = await fetch(`${baseUrl}/${args.url}`, {
-            method: args.method,
+export const downloadImages = ({
+    propertyId,
+    hidden,
+}: DownloadImagesZipProps) =>
+    fetch(
+        `${baseUrl}/${propertyId}/downloadImages?hidden=${!hidden ? "0" : "1"}`,
+        {
+            method: "GET",
             headers: {
-                ...args.headers,
                 Authorization: `Bearer  ${localStorage.getItem("accessToken")}`,
+                // Accept: "application/pdf",
             },
-            ...extraOptions,
-        });
-
-        if (!response.ok) {
-            throw new Error("Network response was not ok");
         }
+    ).then((res) => res.blob());
 
-        const data = await response.blob();
-
-        return { data };
-    };
-
-export const exports = createApi({
-    reducerPath: "exports",
-    baseQuery: customFetchBaseQuery(
-        `${process.env.NEXT_PUBLIC_API_URL}/property`
-    ),
-    tagTypes: ["PropertyByIdZip"],
-    endpoints: (builder) => ({
-        downloadImages: builder.query<Blob, DownloadImagesZipProps>({
-            query: ({ propertyId, hidden }) => {
-                return {
-                    url: `${propertyId}/downloadImages?hidden=${
-                        !hidden ? "0" : "1"
-                    }`,
-                    method: "GET", // adjust as necessary
-                    // add other required properties here if needed
-                };
-            },
-            providesTags: ["PropertyByIdZip"],
-        }),
-        downloadDocuments: builder.query<Blob, number>({
-            query: (propertyId: number) => {
-                return {
-                    url: `${propertyId}/downloadDocuments`,
-                    method: "GET",
-                };
-            },
-        }),
-    }),
-});
+export const downloadDocuments = (propertyId: number) =>
+    fetch(`${baseUrl}/${propertyId}/downloadDocuments`, {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer  ${localStorage.getItem("accessToken")}`,
+            // Accept: "application/pdf",
+        },
+    }).then((res) => res.blob());
 
 export const exportPDF = ({
     propertyId,
@@ -84,17 +52,11 @@ export const exportPDF = ({
         publicImages: publicImages.toString(),
     }).toString();
 
-    return fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/property/export/${propertyId}?${queryParams}`,
-        {
-            headers: {
-                Authorization: `Bearer  ${localStorage.getItem("accessToken")}`,
-                "Accept-Language": `${lang}`,
-                Accept: "application/pdf",
-            },
-        }
-    ).then((res) => res.blob());
+    return fetch(`${baseUrl}/export/${propertyId}?${queryParams}`, {
+        headers: {
+            Authorization: `Bearer  ${localStorage.getItem("accessToken")}`,
+            "Accept-Language": `${lang}`,
+            Accept: "application/pdf",
+        },
+    }).then((res) => res.blob());
 };
-
-export const { useLazyDownloadImagesQuery, useLazyDownloadDocumentsQuery } =
-    exports;

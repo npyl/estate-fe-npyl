@@ -9,7 +9,6 @@ import { notification } from "src/services/notification";
 import { tickets } from "src/services/tickets"; // a.k.a. kanban
 import { auth } from "../services/auth";
 import { customers } from "../services/customers";
-import { exports } from "../services/exports";
 import { global } from "../services/global";
 import { location } from "../services/location";
 import { properties } from "../services/properties";
@@ -36,7 +35,6 @@ export const rootReducer = combineReducers({
     [labels.reducerPath]: labels.reducer,
     [notification.reducerPath]: notification.reducer,
     [security.reducerPath]: security.reducer,
-    [exports.reducerPath]: exports.reducer,
     [tickets.reducerPath]: tickets.reducer,
     [logs.reducerPath]: logs.reducer,
     [dashboard.reducerPath]: dashboard.reducer,
