@@ -711,7 +711,6 @@ const resources = {
             "Certified Telephone Number": "Certified Telephone Number",
 
             "Websites to publish to:": "Websites to publish to:",
-            "Upload Google Earth": "Upload Google Earth",
             _Public_FEMALE_PLURAL: "Public",
             "Rest Integrations": "Rest Integrations",
 
@@ -777,7 +776,6 @@ const resources = {
             Visitors: "Επισκέπτες",
 
             "Websites to publish to:": "Ιστοσελίδες προς δημοσίευση:",
-            "Upload Google Earth": "Ανέβασμα Google Earth",
             _Public_FEMALE_PLURAL: "Δημόσιες",
             "Rest Integrations": "Λοιπές Συνδέσεις",
 

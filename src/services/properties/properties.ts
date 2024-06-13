@@ -300,26 +300,6 @@ export const properties = createApi({
                 responseHandler: "text",
             }),
         }),
-
-        //
-        //  Google Earth
-        //
-        addGoogleEarth: builder.mutation<
-            IFileResponse,
-            IPropertyAddFileParams<IGoogleEarthPOST>
-        >({
-            query: ({ id, body }) => ({
-                url: `/${id}/google-earth`,
-                method: "POST",
-                body,
-            }),
-        }),
-        deleteGoogleEarth: builder.mutation<IFileResponse, number>({
-            query: (propertyId) => ({
-                url: `/${propertyId}/google-earth`,
-                method: "DELETE",
-            }),
-        }),
     }),
 });
 
@@ -356,10 +336,4 @@ export const {
     // attributes
     useGetPropertyLabelsQuery,
     useGetPropertyDocumentsQuery,
-
-    //
-    //  Google Earth
-    //
-    useAddGoogleEarthMutation,
-    useDeleteGoogleEarthMutation,
 } = properties;

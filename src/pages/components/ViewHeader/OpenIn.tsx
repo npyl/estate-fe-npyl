@@ -3,11 +3,9 @@ import { useCallback, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import SpitogatosSvg from "src/assets/SpitogatosSvg";
 import { PublicSvg } from "src/assets/PublicSvg";
-import GoogleEarthSvg from "src/assets/GoogleEarth";
 import { useGetProperty } from "@/hooks/property";
 import { styled } from "@mui/material/styles";
 import { getBorderColor2 } from "@/theme/borderColor";
-import React from "react";
 import usePropertyListings from "@/hooks/listings";
 
 const CustomStack = styled(Stack)(({ theme }) => ({
@@ -54,11 +52,6 @@ const OpenIn = () => {
 
     const openSpitogato = useCallback(() => {}, [property?.id]);
 
-    const openGoogleEarth = useCallback(
-        () => window.open(property?.googleEarth?.url, "_blank"),
-        [property?.googleEarth?.url]
-    );
-
     if (hasNothing) return null;
 
     return (
@@ -72,11 +65,6 @@ const OpenIn = () => {
             {hasSpitogato ? (
                 <IconButton size="small" onClick={openSpitogato}>
                     <SpitogatosSvg />
-                </IconButton>
-            ) : null}
-            {hasGoogleEarth ? (
-                <IconButton size="small" onClick={openGoogleEarth}>
-                    <GoogleEarthSvg />
                 </IconButton>
             ) : null}
         </CustomStack>

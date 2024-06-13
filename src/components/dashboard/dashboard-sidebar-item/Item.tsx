@@ -90,8 +90,6 @@ const DashboardSidebarItem: FC<DashboardSidebarItemProps> = ({
         );
     }
 
-    console.log("ACTIVE: ", active);
-
     // Leaf
     return (
         <ListItem
