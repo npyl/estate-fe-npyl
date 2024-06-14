@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Typography, Box, CircularProgress, Stack } from "@mui/material";
+import { Grid, Typography, Box } from "@mui/material";
 import {
     BeachAccess,
     SentimentVeryDissatisfied,
@@ -8,10 +8,10 @@ import {
     ChildCare,
     SportsSoccer,
 } from "@mui/icons-material";
-import PollutionPanel from "./Polution";
+import PollutionPanel from "./Panels/Polution";
 import Panel from "./Panel";
-import PollutantItem from "./PollutantItem";
 import { useGetAirQualityQuery } from "@/services/googleapi";
+import OtherPollutants from "./Panels/Other";
 
 const healthRecommendationIcons: { [key: string]: JSX.Element } = {
     generalPopulation: <BeachAccess />,
@@ -28,7 +28,7 @@ interface Props {
 }
 
 const AirQualityDetails: React.FC<Props> = ({ center }) => {
-    const { data: airQualityData } = useGetAirQualityQuery(center);
+    const { data: airQualityData, isLoading } = useGetAirQualityQuery(center);
 
     const primaryIndex = airQualityData?.indexes[0]; // Assuming the first index is primary
     const progress = Math.min((primaryIndex?.aqi ?? 0) / 500, 1);
@@ -38,21 +38,23 @@ const AirQualityDetails: React.FC<Props> = ({ center }) => {
 
     return (
         <Grid container gap={1}>
-            {findAqi ? (
-                <Grid
-                    item
-                    xs={12}
-                    // ...
-                    component={PollutionPanel}
-                    findAqi={findAqi}
-                />
-            ) : null}
+            <Grid
+                item
+                xs={12}
+                // ...
+                component={PollutionPanel}
+                findAqi={findAqi}
+                isLoading={isLoading}
+            />
 
-            <Grid item xs={12} component={Panel} title="Other Pollutants">
-                {airQualityData?.pollutants.map((p, i) => (
-                    <PollutantItem key={i} p={p} />
-                ))}
-            </Grid>
+            <Grid
+                item
+                xs={12}
+                // ...
+                component={OtherPollutants}
+                pollutants={airQualityData?.pollutants || []}
+                isLoading={isLoading}
+            />
 
             <Grid item xs={12} component={Panel} title="Health Recommendations">
                 {Object.entries(
@@ -78,7 +80,7 @@ const AirQualityDetails: React.FC<Props> = ({ center }) => {
                 ))}
             </Grid>
 
-            <Grid
+            {/* <Grid
                 item
                 xs={12}
                 component={Stack}
@@ -92,7 +94,7 @@ const AirQualityDetails: React.FC<Props> = ({ center }) => {
                     size={150}
                     thickness={5}
                 />
-            </Grid>
+            </Grid> */}
         </Grid>
     );
 };

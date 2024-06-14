@@ -2,7 +2,7 @@ import React from "react";
 import { Typography, Stack, PaperProps, Divider } from "@mui/material";
 import { PanelPaper } from "./styled";
 
-interface PanelProps extends PaperProps {
+export interface PanelProps extends PaperProps {
     title: string;
 }
 

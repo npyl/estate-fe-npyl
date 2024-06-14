@@ -750,10 +750,14 @@ const resources = {
                 "Panel Dimension(m)(Height x Width)",
             "Sunshine Quantiles": "Sunshine Quantiles",
             "Sunniness Over Roof area": "Sunniness Over Roof area",
+            "Air Pollution": "Air Pollution",
+            "Dominant Pollutants": "Dominant Pollutants",
         },
     },
     el: {
         translation: {
+            "Dominant Pollutants": "Κύριοι Ρύποι",
+            "Air Pollution": "Ρύπανση Αέρα",
             "Sunniness Over Roof area": "Ηλιοφάνεια στην επιφάνεια οροφής",
             "Sunshine Quantiles": "Ηλιοφάνεια Ποσοστιαία",
             "Max Panel Required": "Μέγιστα Απαιτούμενα Πάνελ",
