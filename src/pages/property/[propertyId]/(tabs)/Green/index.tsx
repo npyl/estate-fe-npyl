@@ -1,17 +1,17 @@
 import Box from "@mui/material/Box";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useLoadApi } from "src/components/Map";
 import { useGetPropertyByIdQuery } from "src/services/properties";
-import { useDebouncedCallback } from "use-debounce";
 import Grid from "@mui/material/Grid";
 import Placeholder from "./Placeholder";
 import ModesButtons from "./ModesButtons";
 import SolarDetails from "./Solar";
-import SolarPanelService from "./services/SolarPanelService";
 import AirQualityDetails from "./AirQuality";
 import PanelCountSlider from "./PanelCountSlider";
 import { useGetBuildingInsightsQuery } from "@/services/googleapi";
+import useSolarPanelService from "./services/SolarPanelService";
+import { MinorPanelInfo } from "./types";
 
 const mapOptions = {
     zoom: 18,
@@ -35,7 +35,7 @@ function GreenMapComponent() {
 
     const [projection, setProjection] = useState<any>(null);
 
-    const [panel_data, setPanelData] = useState<any>(null);
+    const [minorPanelInfo, setMinorPanelInfo] = useState<MinorPanelInfo>();
 
     const [alignment, setAlignment] = useState("solar");
     const [slider_value, setSliderValue] = useState(4);
@@ -49,6 +49,7 @@ function GreenMapComponent() {
     );
 
     const { data: solar_info } = useGetBuildingInsightsQuery(center);
+    const { plotSolar, getMinorPanelInfo } = useSolarPanelService();
 
     const mapRef = useRef<any>(null);
 
@@ -74,46 +75,21 @@ function GreenMapComponent() {
                 () => setProjection(mapRef.current.getProjection())
             );
 
-            new google.maps.Marker({
-                position: center,
-                map: mapRef.current,
-                icon: "https://img.icons8.com/external-bearicons-flat-bearicons/64/external-Home-location-bearicons-flat-bearicons.png",
-                zIndex: 50,
-            });
+            // new google.maps.Marker({
+            //     position: center,
+            //     map: mapRef.current,
+            //     icon: "https://img.icons8.com/external-bearicons-flat-bearicons/64/external-Home-location-bearicons-flat-bearicons.png",
+            //     zIndex: 50,
+            // });
         }
     }, [isLoaded, center]);
 
     useEffect(() => {
-        if (projection != null && solar_info) {
-            updateSolar();
-        }
-    }, [projection, solar_info]);
+        if (!projection || !solar_info) return;
 
-    useEffect(() => {
-        if (!solar_info) return;
-        updateSolar();
-    }, [solar_info]);
-
-    const updateSolar = () => {
-        const LIMIT_COUNT = 200;
-
-        SolarPanelService.plotSolar(
-            solar_info,
-            projection,
-            LIMIT_COUNT,
-            mapRef.current
-        );
-
-        const info = SolarPanelService.updatePanelData(solar_info, 0);
-
-        setPanelData(info);
-    };
-
-    const handleSliderChange = useDebouncedCallback((e) => {
-        const info = SolarPanelService.updatePanelData(solar_info, e);
-        setSliderValue(e);
-        setPanelData(info);
-    }, 100);
+        plotSolar(solar_info, projection, slider_value, mapRef.current);
+        setMinorPanelInfo(getMinorPanelInfo(solar_info, 0));
+    }, [projection, solar_info, slider_value]);
 
     if (!data?.location?.lat || !data?.location?.lng) {
         return <Placeholder />;
@@ -136,7 +112,7 @@ function GreenMapComponent() {
                         maxPanelsAllowed={
                             solar_info.solarPotential.solarPanelConfigs.length
                         }
-                        onChange={handleSliderChange}
+                        onChange={setSliderValue}
                     />
                 ) : null}
 
@@ -147,7 +123,7 @@ function GreenMapComponent() {
                 {solar_info && alignment == "solar" ? (
                     <SolarDetails
                         solarInsights={solar_info}
-                        panel_data={panel_data}
+                        panel_data={minorPanelInfo}
                     />
                 ) : null}
                 {alignment == "air_quality" ? (

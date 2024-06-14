@@ -734,10 +734,12 @@ const resources = {
                 "There are no matching properties",
 
             "Green Map": "Green Map",
+            Panels: "Panels",
         },
     },
     el: {
         translation: {
+            Panels: "Πάνελ",
             "Green Map": "Πράσινος Χάρτης",
 
             "Edit Integration Details": "Επεξεργασία Λεπτομερειών Σύνδεσης",

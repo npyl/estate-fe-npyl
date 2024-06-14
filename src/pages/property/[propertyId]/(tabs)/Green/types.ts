@@ -59,10 +59,18 @@ interface FinancialAnalysis {
     panelConfigIndex: number;
 }
 
+interface RoofSegmentSummary {
+    panelsCount: number;
+    yearlyEnergyDcKwh: number;
+    pitchDegrees: number;
+    azimuthDegrees: number;
+    segmentIndex: number;
+}
+
 interface SolarPanelConfig {
     panelsCount: number;
     yearlyEnergyDcKwh: number;
-    roofSegmentSummaries: [];
+    roofSegmentSummaries: RoofSegmentSummary[];
 }
 
 interface RoofStats {
@@ -132,4 +140,12 @@ export interface BuildingInsights {
     regionCode: string;
     solarPotential: SolarPotential;
     imageryQuality: "IMAGERY_QUALITY_UNSPECIFIED" | "HIGH" | "MEDIUM" | "LOW";
+}
+
+export interface MinorPanelInfo {
+    panel: { percent: number; text: string };
+    energy: {
+        percent: number;
+        text: string;
+    };
 }
