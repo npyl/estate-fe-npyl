@@ -21,7 +21,7 @@ import { useGetPropertyByIdQuery } from "src/services/properties";
 import { useDebouncedCallback } from "use-debounce";
 import RelatedPlaces from "./RelatedPlaces";
 import Grid from "@mui/material/Grid";
-import MapUnavailable from "../MapUnavailable";
+import MapUnavailable from "@/components/Map/MapUnavailable";
 
 const initialState: any[] = [];
 

@@ -1,10 +1,9 @@
 import Box from "@mui/material/Box";
 import { useRouter } from "next/router";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useLoadApi } from "src/components/Map";
 import { useGetPropertyByIdQuery } from "src/services/properties";
 import Grid from "@mui/material/Grid";
-import Placeholder from "./Placeholder";
 import ModesButtons from "./ModesButtons";
 import SolarDetails from "./Solar";
 import AirQualityDetails from "./AirQuality";
@@ -12,6 +11,7 @@ import PanelCountSlider from "./PanelCountSlider";
 import { useGetBuildingInsightsQuery } from "@/services/googleapi";
 import useSolarPanelService from "./services/SolarPanelService";
 import { MinorPanelInfo } from "./types";
+import MapUnavailable from "@/components/Map/MapUnavailable";
 
 const mapOptions = {
     zoom: 18,
@@ -92,7 +92,7 @@ function GreenMapComponent() {
     }, [projection, solar_info, slider_value]);
 
     if (!data?.location?.lat || !data?.location?.lng) {
-        return <Placeholder />;
+        return <MapUnavailable />;
     }
 
     return (

@@ -735,10 +735,41 @@ const resources = {
 
             "Green Map": "Green Map",
             Panels: "Panels",
+            "Annual energy": "Annual energy",
+            "Panels count": "Panels count",
+            "Current Installation": "Current Installation",
+            "Maximum Gain Installation": "Maximum Gain Installation",
+            "Max Panel Required": "Max Panel Required",
+
+            "Panel Lifespan(Yrs)": "Panel Lifespan(Yrs)",
+            "Area(m²)": "Area(m²)",
+            "Max Sunshine Hours/Year": "Max Sunshine Hours/Year",
+            "Carbon Offset Factor (kg/MWh)": "Carbon Offset Factor (kg/MWh)",
+            "Watts Per Panel": "Watts Per Panel",
+            "Panel Dimension(m)(Height x Width)":
+                "Panel Dimension(m)(Height x Width)",
+            "Sunshine Quantiles": "Sunshine Quantiles",
+            "Sunniness Over Roof area": "Sunniness Over Roof area",
         },
     },
     el: {
         translation: {
+            "Sunniness Over Roof area": "Ηλιοφάνεια στην επιφάνεια οροφής",
+            "Sunshine Quantiles": "Ηλιοφάνεια Ποσοστιαία",
+            "Max Panel Required": "Μέγιστα Απαιτούμενα Πάνελ",
+            "Panel Lifespan(Yrs)": "Ζωή Πάνελ (Χρόνια)",
+            "Area(m²)": "Εμβαδό(m²)",
+            "Max Sunshine Hours/Year": "Μέγιστη Ηλιοφάνεια Ώρες/Χρόνο",
+            "Carbon Offset Factor (kg/MWh)":
+                "Συντελεστής Αντιστάθμισης Άνθρακα (kg/MWh)",
+            "Watts Per Panel": "Watts ανά Πάνελ",
+            "Panel Dimension(m)(Height x Width)":
+                "Διαστάσεις Πάνελ(m)(Height x Width)",
+
+            "Current Installation": "Τωρινή Εγκατάσταση",
+            "Maximum Gain Installation": "Εγκατάσταση για Μέγιστο Κέρδος",
+            "Panels count": "Πλήθος πάνελ",
+            "Annual energy": "Ετήσια ενέργεια",
             Panels: "Πάνελ",
             "Green Map": "Πράσινος Χάρτης",
 

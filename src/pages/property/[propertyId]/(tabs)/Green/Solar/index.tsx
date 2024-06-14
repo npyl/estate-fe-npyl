@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Paper, Typography, Box, Divider, Grid, Stack } from "@mui/material";
+import { Paper, Typography, Divider, Grid, Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { List, ListItem } from "src/components/List";
 import HalfCircleProgressBar from "./HalfCircleProgressBar";
@@ -14,6 +14,8 @@ import {
 } from "chart.js";
 
 import { Bar } from "react-chartjs-2";
+import { BuildingInsights } from "../types";
+import { TranslationType } from "@/types/translation";
 
 ChartJS.register(
     CategoryScale,
@@ -26,7 +28,7 @@ ChartJS.register(
 
 const xValues = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100];
 
-const chartOptions = {
+const getChartOptions = (t: TranslationType) => ({
     responsive: true,
     plugins: {
         legend: {
@@ -34,13 +36,13 @@ const chartOptions = {
         },
         title: {
             display: true,
-            text: "Sunniness Over Roof area",
+            text: t("Sunniness Over Roof area"),
         },
     },
-};
+});
 
 interface SolarDetailsProps {
-    solarInsights: any;
+    solarInsights: BuildingInsights;
     panel_data: any;
 }
 
@@ -48,6 +50,8 @@ const SolarDetails: React.FC<SolarDetailsProps> = ({
     solarInsights,
     panel_data,
 }) => {
+    const { t } = useTranslation();
+
     const solarPotential = solarInsights.solarPotential;
     var yValues = solarPotential.wholeRoofStats.sunshineQuantiles;
 
@@ -56,7 +60,7 @@ const SolarDetails: React.FC<SolarDetailsProps> = ({
             labels: xValues,
             datasets: [
                 {
-                    label: "Sunshine Quantiles",
+                    label: t("Sunshine Quantiles"),
                     data: yValues,
                     backgroundColor: "#03A9F4",
                     borderColor: "#03A9F4",
@@ -64,23 +68,29 @@ const SolarDetails: React.FC<SolarDetailsProps> = ({
                 },
             ],
         }),
-        [yValues]
+        [yValues, t]
     );
 
-    const { t } = useTranslation();
+    const chartOptions = useMemo(() => getChartOptions(t), [t]);
 
     return (
         <Paper elevation={10}>
+            <Typography px={3} py={1.5} variant="h6">
+                {t("Current Installation")}
+            </Typography>
+            <Divider />
+
             {panel_data ? (
                 <Stack
                     direction="row"
-                    spacing={1}
-                    justifyContent="center"
+                    justifyContent="space-around"
                     alignItems="center"
-                    p={1}
+                    p={5}
                 >
                     <Stack>
-                        <Typography variant="body1">Panels count</Typography>
+                        <Typography variant="body1">
+                            {t("Panels count")}
+                        </Typography>
                         <HalfCircleProgressBar
                             value={panel_data.panel.percent}
                             color="primary"
@@ -89,7 +99,9 @@ const SolarDetails: React.FC<SolarDetailsProps> = ({
                     </Stack>
 
                     <Stack>
-                        <Typography variant="body1">Annual energy</Typography>
+                        <Typography variant="body1">
+                            {t("Annual energy")}
+                        </Typography>
                         <HalfCircleProgressBar
                             value={panel_data.energy.percent}
                             color="success"
@@ -98,22 +110,15 @@ const SolarDetails: React.FC<SolarDetailsProps> = ({
                     </Stack>
                 </Stack>
             ) : null}
-            <Box
-                sx={{
-                    px: 3,
-                    py: 1.5,
-                    display: "flex",
-                    justifyContent: "left",
-                }}
-            >
-                <Typography variant="h6">
-                    {t("Typical Installations")}
-                </Typography>
-            </Box>
+
+            <Divider />
+            <Typography px={3} py={1.5} variant="h6">
+                {t("Maximum Gain Installation")}
+            </Typography>
             <Divider />
 
             <Grid container>
-                <Grid item xs={12} sm={12}>
+                <Grid item xs={12}>
                     <List>
                         <ListItem
                             label={t("Max Panel Required")}
@@ -154,7 +159,7 @@ const SolarDetails: React.FC<SolarDetailsProps> = ({
                         />
                     </List>
                 </Grid>
-                <Grid item xs={12} sm={12}>
+                <Grid item xs={12} p={2}>
                     {chartData ? (
                         <Bar data={chartData} options={chartOptions} />
                     ) : null}
