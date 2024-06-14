@@ -27,7 +27,10 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
         code,
         state,
         category,
+        parentCategory,
+
         area,
+        plotArea,
     } = item || {};
 
     const { regionEN, regionGR, cityEN, cityGR, complexEN, complexGR } =
@@ -108,36 +111,137 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
 
             <Stack px={2} py={2} spacing={0.8}>
                 <Stack spacing={2} direction="row" mt={1} flexWrap="nowrap">
+                    {parentCategory.key !== "LAND" ? (
+                        <Stack
+                            spacing={1}
+                            direction="row"
+                            mt={1}
+                            flexWrap="nowrap"
+                        >
+                            <Stack
+                                direction="row"
+                                spacing={0.5}
+                                alignItems="center"
+                            >
+                                <Typography>
+                                    <i className="las la-chart-area" />
+                                </Typography>
+                                <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                >
+                                    {plotArea || "-"}
+                                    {"m²"}
+                                </Typography>
+                            </Stack>
+                            <Stack
+                                direction="row"
+                                spacing={0.5}
+                                alignItems="center"
+                            >
+                                <Typography>
+                                    <i className="las la-expand-arrows-alt" />
+                                </Typography>
+                                <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                >
+                                    {area || "-"}
+                                    {"m²"}
+                                </Typography>
+                            </Stack>
+                            <Stack
+                                direction="row"
+                                spacing={0.5}
+                                alignItems="center"
+                            >
+                                <Typography>
+                                    <i className="las la-bed" />
+                                </Typography>
+                                <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                >
+                                    {bedrooms || "-"}
+                                    {"beds"}
+                                </Typography>
+                            </Stack>
+                            <Stack
+                                direction="row"
+                                spacing={0.5}
+                                alignItems="center"
+                            >
+                                <Typography>
+                                    <i className="las la-bath" />
+                                </Typography>
+                                <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                >
+                                    {bathrooms || "-"}
+                                    {"baths"}
+                                </Typography>
+                            </Stack>
+                        </Stack>
+                    ) : (
+                        <Stack
+                            spacing={2}
+                            direction="row"
+                            mt={1}
+                            flexWrap="nowrap"
+                        >
+                            <Stack
+                                direction="row"
+                                spacing={0.5}
+                                alignItems="center"
+                            >
+                                <Typography>
+                                    <i className="las la-chart-area" />
+                                </Typography>
+                                <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                >
+                                    {plotArea || "-"}
+                                    {"m²"}
+                                </Typography>
+                            </Stack>
+                            <Stack
+                                direction="row"
+                                spacing={0.5}
+                                alignItems="center"
+                            >
+                                <Typography>
+                                    <i className="la-divide " />
+                                </Typography>
+                                <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                >
+                                    {details.setbackCoefficient || "-"}
+                                    {""}
+                                </Typography>
+                            </Stack>
+                            <Stack
+                                direction="row"
+                                spacing={0.5}
+                                alignItems="center"
+                            >
+                                <Typography>
+                                    <i className="las la-expand-arrows-alt" />
+                                </Typography>
+                                <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                >
+                                    {details?.frontage || "-"}
+                                    {""}
+                                </Typography>
+                            </Stack>
+                        </Stack>
+                    )}
+
                     {/* ---- */}
-                    <Stack direction="row" spacing={0.5} alignItems="center">
-                        <Typography>
-                            <i className="las la-bed" />
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                            {bedrooms || "-"}
-                            {" beds"}
-                        </Typography>
-                    </Stack>
-                    {/* ---- */}
-                    <Stack direction="row" spacing={0.5} alignItems="center">
-                        <Typography>
-                            <i className="las la-bath" />
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                            {bathrooms || "-"}
-                            {" baths"}
-                        </Typography>
-                    </Stack>
-                    {/* ---- */}
-                    <Stack direction="row" spacing={0.5} alignItems="center">
-                        <Typography>
-                            <i className="las la-expand-arrows-alt " />
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary">
-                            {area || "-"}
-                            {" m²"}
-                        </Typography>
-                    </Stack>
                 </Stack>
 
                 <Stack direction="row" spacing={1} alignItems="center">

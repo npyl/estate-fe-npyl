@@ -26,6 +26,7 @@ export interface IPropertyResultResponse {
     images: string[]; // urls only
     labels: ILabel[];
     location: ILocationPOST;
+
     createdAt: string;
     updatedAt: string;
 
