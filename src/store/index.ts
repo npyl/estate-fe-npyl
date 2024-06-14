@@ -6,7 +6,6 @@ import {
     useSelector as useReduxSelector,
 } from "react-redux";
 import type { ThunkAction } from "redux-thunk";
-import { exports } from "src/services/exports";
 import { global } from "src/services/global";
 import { labels } from "src/services/labels";
 import { publicListing, spitogatosListing } from "src/services/listings";
@@ -50,7 +49,6 @@ export const createStore = (
                 location.middleware,
                 notification.middleware,
                 security.middleware,
-                exports.middleware,
                 tickets.middleware,
                 logs.middleware,
                 dashboard.middleware,
