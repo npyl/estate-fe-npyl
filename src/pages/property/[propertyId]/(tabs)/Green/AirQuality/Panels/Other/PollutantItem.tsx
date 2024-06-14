@@ -3,7 +3,7 @@ import Stack from "@mui/material/Stack";
 import { Pollutant } from "@/types/googleapi";
 import { PanelPaper } from "../styled";
 import { SpaceBetween } from "@/components/styled";
-import ColorBar from "../ColorBar";
+import ColorBar from "./ColorBar";
 
 interface PollutantItemProps {
     p: Pollutant;

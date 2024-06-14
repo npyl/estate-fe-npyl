@@ -2,6 +2,7 @@ import Panel, { PanelProps } from "../Panel";
 import { Pollutant } from "@/types/googleapi";
 import PollutantItem from "./PollutantItem";
 import { useTranslation } from "react-i18next";
+import PollutantItemSkeleton from "./PollutantItemSkeleton";
 
 interface OtherPollutantsProps extends Omit<PanelProps, "title"> {
     pollutants: Pollutant[];
@@ -14,8 +15,17 @@ const OtherPollutants: React.FC<OtherPollutantsProps> = ({
     ...props
 }) => {
     const { t } = useTranslation();
+
     return (
         <Panel {...props} title={t("Other Pollutants")}>
+            {isLoading ? (
+                <>
+                    <PollutantItemSkeleton />
+                    <PollutantItemSkeleton />
+                    <PollutantItemSkeleton />
+                </>
+            ) : null}
+
             {pollutants?.map((p, i) => (
                 <PollutantItem key={i} p={p} />
             ))}

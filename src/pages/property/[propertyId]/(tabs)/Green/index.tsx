@@ -1,17 +1,18 @@
 import Box from "@mui/material/Box";
 import { useRouter } from "next/router";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, lazy, useEffect, useMemo, useRef, useState } from "react";
 import { useLoadApi } from "src/components/Map";
 import { useGetPropertyByIdQuery } from "src/services/properties";
 import Grid from "@mui/material/Grid";
 import ModesButtons from "./ModesButtons";
-import SolarDetails from "./Solar";
-import AirQualityDetails from "./AirQuality";
 import PanelCountSlider from "./PanelCountSlider";
 import { useGetBuildingInsightsQuery } from "@/services/googleapi";
 import useSolarPanelService from "./services/SolarPanelService";
 import { MinorPanelInfo } from "./types";
 import MapUnavailable from "@/components/Map/MapUnavailable";
+import SolarDetailsSkeleton from "./Solar/Skeleton";
+const SolarDetails = lazy(() => import("./Solar"));
+const AirQualityDetails = lazy(() => import("./AirQuality"));
 
 const mapOptions = {
     zoom: 18,
@@ -42,23 +43,26 @@ function GreenMapComponent() {
 
     const center = useMemo(
         () => ({
-            lat: data?.location?.lat ?? 37.98381,
-            lng: data?.location?.lng ?? 23.727539,
+            lat: data?.location?.lat || -1,
+            lng: data?.location?.lng || -1,
         }),
-        [data?.location?.lat, data?.location?.lng]
+        [data?.location]
     );
 
-    const { data: solar_info } = useGetBuildingInsightsQuery(center);
+    const { data: solar_info } = useGetBuildingInsightsQuery(center, {
+        skip: center.lat === -1 || center.lng === -1,
+    });
+
     const { plotSolar, getMinorPanelInfo } = useSolarPanelService();
 
-    const mapRef = useRef<any>(null);
+    const mapRef = useRef<google.maps.Map>();
 
     const handleChange = (_: any, newAlignment: string) =>
         setAlignment(newAlignment);
 
     useEffect(() => {
         if (!isLoaded) return;
-        if (!data?.location?.lat || !data?.location?.lng) return;
+        if (center.lat === -1 || center.lng === -1) return;
 
         if (window.google && document.getElementById("map")) {
             mapRef.current = new window.google.maps.Map(
@@ -72,7 +76,7 @@ function GreenMapComponent() {
             google.maps.event.addListenerOnce(
                 mapRef.current,
                 "projection_changed",
-                () => setProjection(mapRef.current.getProjection())
+                () => setProjection(mapRef.current?.getProjection())
             );
 
             // new google.maps.Marker({
@@ -89,6 +93,7 @@ function GreenMapComponent() {
 
         plotSolar(solar_info, projection, slider_value, mapRef.current);
         setMinorPanelInfo(getMinorPanelInfo(solar_info, 0));
+        mapRef.current?.setZoom(20);
     }, [projection, solar_info, slider_value]);
 
     if (!data?.location?.lat || !data?.location?.lng) {
@@ -103,7 +108,7 @@ function GreenMapComponent() {
                 md={6}
                 position={{ xs: "relative", md: "sticky" }}
                 top={{ xs: "0", md: "60px" }}
-                height={{ xs: "65vh", sm: "100vh" }}
+                height="90vh"
             >
                 <Box id="map" height={1} />
 
@@ -126,14 +131,23 @@ function GreenMapComponent() {
             </Grid>
 
             <Grid item xs={12} md={6}>
-                {solar_info && alignment == "solar" ? (
-                    <SolarDetails
-                        solarInsights={solar_info}
-                        panel_data={minorPanelInfo}
-                    />
+                {alignment == "solar" ? (
+                    !solar_info ? (
+                        <SolarDetailsSkeleton />
+                    ) : (
+                        <Suspense>
+                            <SolarDetails
+                                solarInsights={solar_info}
+                                panel_data={minorPanelInfo}
+                            />
+                        </Suspense>
+                    )
                 ) : null}
+
                 {alignment == "air_quality" ? (
-                    <AirQualityDetails center={center} />
+                    <Suspense>
+                        <AirQualityDetails center={center} />
+                    </Suspense>
                 ) : null}
             </Grid>
         </Grid>

@@ -752,10 +752,14 @@ const resources = {
             "Sunniness Over Roof area": "Sunniness Over Roof area",
             "Air Pollution": "Air Pollution",
             "Dominant Pollutants": "Dominant Pollutants",
+            "Health Recommendations": "Health Recommendations",
+            "Other Pollutants": "Other Pollutants",
         },
     },
     el: {
         translation: {
+            "Other Pollutants": "Λοιποί Ρύποι",
+            "Health Recommendations": "Συστάσεις Υγείας",
             "Dominant Pollutants": "Κύριοι Ρύποι",
             "Air Pollution": "Ρύπανση Αέρα",
             "Sunniness Over Roof area": "Ηλιοφάνεια στην επιφάνεια οροφής",

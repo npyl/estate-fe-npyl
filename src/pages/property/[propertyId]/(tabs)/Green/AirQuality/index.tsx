@@ -1,27 +1,9 @@
 import React from "react";
-import { Grid, Typography, Box } from "@mui/material";
-import {
-    BeachAccess,
-    SentimentVeryDissatisfied,
-    Face,
-    PregnantWoman,
-    ChildCare,
-    SportsSoccer,
-} from "@mui/icons-material";
-import PollutionPanel from "./Panels/Polution";
-import Panel from "./Panel";
+import { Grid } from "@mui/material";
 import { useGetAirQualityQuery } from "@/services/googleapi";
+import PollutionPanel from "./Panels/Pollution";
 import OtherPollutants from "./Panels/Other";
-
-const healthRecommendationIcons: { [key: string]: JSX.Element } = {
-    generalPopulation: <BeachAccess />,
-    elderly: <SentimentVeryDissatisfied />,
-    lungDiseasePopulation: <Face />,
-    heartDiseasePopulation: <Face />,
-    athletes: <SportsSoccer />,
-    pregnantWomen: <PregnantWoman />,
-    children: <ChildCare />,
-};
+import HealthRecommendations from "./Panels/Health";
 
 interface Props {
     center: { lat: number; lng: number };
@@ -56,29 +38,14 @@ const AirQualityDetails: React.FC<Props> = ({ center }) => {
                 isLoading={isLoading}
             />
 
-            <Grid item xs={12} component={Panel} title="Health Recommendations">
-                {Object.entries(
-                    airQualityData?.healthRecommendations || {}
-                ).map(([key, value], recommendationKey) => (
-                    <Box
-                        key={recommendationKey}
-                        sx={{
-                            display: "flex",
-                            alignItems: "center",
-                            mb: 1,
-                        }}
-                    >
-                        {
-                            healthRecommendationIcons[
-                                key as keyof typeof healthRecommendationIcons
-                            ]
-                        }
-                        <Typography variant="body2" sx={{ ml: 1 }}>
-                            {value}
-                        </Typography>
-                    </Box>
-                ))}
-            </Grid>
+            <Grid
+                item
+                xs={12}
+                // ...
+                component={HealthRecommendations}
+                healthRecommendations={airQualityData?.healthRecommendations}
+                isLoading={isLoading}
+            />
 
             {/* <Grid
                 item
