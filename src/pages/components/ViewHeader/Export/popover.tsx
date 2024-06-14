@@ -5,9 +5,15 @@ import FormControlLabel, {
     FormControlLabelProps,
 } from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import { Button, Stack } from "@mui/material";
+import {
+    Button,
+    Stack,
+    CircularProgress,
+    Tooltip,
+    IconButton,
+} from "@mui/material";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { styled } from "@mui/material/styles";
-import { useState } from "react";
 
 // ---------------------------------------------------
 
@@ -44,22 +50,21 @@ const StyledControlledLabel = styled(FormControlLabel)<ControlledLabelProps>(
 interface ExportPopoverProps extends PopoverProps {
     onShare: VoidFunction;
     onDownload: VoidFunction;
-    // ...
     blueprints: boolean;
     setBlueprints: (b: boolean) => void;
     version: string;
     setVersion: (s: "LONG" | "SHORT") => void;
+    loading: boolean; // Add loading prop
 }
 
 const Popover = ({
     onShare,
     onDownload,
-    // ...
     blueprints,
     setBlueprints,
     version,
     setVersion,
-    // ...
+    loading, // Destructure loading prop
     ...props
 }: ExportPopoverProps) => {
     const { t } = useTranslation();
@@ -90,9 +95,26 @@ const Popover = ({
             <FormGroup>
                 <StyledControlledLabel
                     control={<Checkbox />}
-                    label={t("Short Version")}
+                    label={
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                            {t("Short Version")}
+                            <Tooltip
+                                title={t(
+                                    "Short Version: Includes basic photos"
+                                )}
+                                placement="top"
+                                enterDelay={500}
+                            >
+                                <IconButton
+                                    size="small"
+                                    style={{ marginLeft: 4 }}
+                                >
+                                    <InfoOutlinedIcon fontSize="small" />
+                                </IconButton>
+                            </Tooltip>
+                        </div>
+                    }
                     labelPlacement="start"
-                    // ...
                     version="SHORT"
                     value={version}
                     checked={version === "SHORT"}
@@ -100,20 +122,33 @@ const Popover = ({
                 />
                 <StyledControlledLabel
                     control={<Checkbox />}
-                    label={t("Long Version")}
+                    label={
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                            {t("Long Version")}
+                            <Tooltip
+                                title={t("Long Version: Includes all photos")}
+                                placement="top"
+                                enterDelay={500}
+                            >
+                                <IconButton
+                                    size="small"
+                                    style={{ marginLeft: 4 }}
+                                >
+                                    <InfoOutlinedIcon fontSize="small" />
+                                </IconButton>
+                            </Tooltip>
+                        </div>
+                    }
                     labelPlacement="start"
-                    // ...
                     version="LONG"
                     value={version}
                     checked={version === "LONG"}
                     onChange={() => setVersion("LONG")}
                 />
-
                 <StyledControlledLabel
                     control={<Checkbox />}
                     label={t("Blueprints")}
                     labelPlacement="start"
-                    // ...
                     value={blueprints}
                     checked={blueprints}
                     onChange={(_, b) => setBlueprints(b)}
@@ -123,9 +158,13 @@ const Popover = ({
                 <Button onClick={onShare} variant="outlined">
                     {t("Share PDF")}
                 </Button>
-                <Button onClick={onDownload} variant="contained">
-                    {t("Download PDF")}
-                </Button>
+                {loading ? (
+                    <CircularProgress />
+                ) : (
+                    <Button onClick={onDownload} variant="contained">
+                        {t("Download PDF")}
+                    </Button>
+                )}
             </Stack>
         </MuiPopover>
     );

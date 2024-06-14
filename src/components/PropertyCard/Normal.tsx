@@ -6,13 +6,6 @@ import CarouselSimple from "../CarouselSimple";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import { SpaceBetween } from "../styled";
-import {
-    useGetMunicipalitiesQuery,
-    useGetNeighbourhoodsQuery,
-    useGetRegionsQuery,
-} from "@/services/location";
-import isNumberString from "../Location/util";
-import useHumanReadable from "../Location/hook";
 import { NormalBadge, PriceBadge, StyledBox } from "./styled";
 
 type PropertyCardProps = {
@@ -36,31 +29,21 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
         category,
         area,
     } = item || {};
+
+    const { regionEN, regionGR, cityEN, cityGR, complexEN, complexGR } =
+        (item as IPropertyResultResponse) || {};
+
     const { bathrooms, bedrooms } = details || {};
     const { lat, lng } = location || {};
 
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const router = useRouter();
     const ref = useRef<HTMLDivElement>();
 
-    const { data: regions } = useGetRegionsQuery();
-    const { data: municips } = useGetMunicipalitiesQuery(+location?.region!, {
-        skip: !isNumberString(location?.region),
-    });
-    const { data: neighbs } = useGetNeighbourhoodsQuery(+location?.city!, {
-        skip: !isNumberString(location?.city),
-    });
-
-    // region is most of the types a code; translate to human readable form; otherwise just return the string
-    const region = useHumanReadable(location?.region, regions);
-
-    // city is most of the types a code; translate to human readable form; otherwise just return the string
-    const city = useHumanReadable(location?.city, municips);
-
-    // neighb is most of the types a code; translate to human readable form; otherwise just return the string
-    const neighb = useHumanReadable(location?.complex, neighbs);
-
-    const address = `${region} ${city} ${neighb}`;
+    const address =
+        i18n.language === "en"
+            ? `${regionEN} ${cityEN} ${complexEN}`
+            : `${regionGR} ${cityGR} ${complexGR}`;
 
     const convertedImages = useMemo(
         () =>
@@ -102,6 +85,7 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
             borderRadius="12px"
             sx={{
                 cursor: "pointer",
+                mr: 0.8,
             }}
             isActive={isActive as boolean}
             ref={ref}
@@ -123,34 +107,36 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
             />
 
             <Stack px={2} py={2} spacing={0.8}>
-                <Stack spacing={4} direction="row" mt={1} flexWrap="wrap">
+                <Stack spacing={2} direction="row" mt={1} flexWrap="nowrap">
                     {/* ---- */}
-                    <Stack direction="row" spacing={1} alignItems="center">
+                    <Stack direction="row" spacing={0.5} alignItems="center">
                         <Typography>
                             <i className="las la-bed" />
                         </Typography>
-                        <Typography variant="body2">
+                        <Typography variant="body2" color="text.secondary">
                             {bedrooms || "-"}
+                            {" beds"}
                         </Typography>
-                        <Typography variant="body2">{t("beds")}</Typography>
                     </Stack>
                     {/* ---- */}
-                    <Stack direction="row" spacing={1} alignItems="center">
+                    <Stack direction="row" spacing={0.5} alignItems="center">
                         <Typography>
                             <i className="las la-bath" />
                         </Typography>
-                        <Typography variant="body2">
+                        <Typography variant="body2" color="text.secondary">
                             {bathrooms || "-"}
+                            {" baths"}
                         </Typography>
-                        <Typography variant="body2">{t("baths")}</Typography>
                     </Stack>
                     {/* ---- */}
-                    <Stack direction="row" spacing={1} alignItems="center">
+                    <Stack direction="row" spacing={0.5} alignItems="center">
                         <Typography>
                             <i className="las la-expand-arrows-alt " />
                         </Typography>
-                        <Typography variant="body2">{area || "-"}</Typography>
-                        <Typography variant="body2">m²</Typography>
+                        <Typography variant="body2" color="text.secondary">
+                            {area || "-"}
+                            {" m²"}
+                        </Typography>
                     </Stack>
                 </Stack>
 
@@ -182,7 +168,7 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
 
                 <Divider />
 
-                <Stack direction="row" spacing={0.3}>
+                <Stack direction="row" spacing={1}>
                     {state?.value ? (
                         <NormalBadge name={t(state?.value)} color="indigo" />
                     ) : null}

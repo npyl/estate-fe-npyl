@@ -50,7 +50,7 @@ const MoreChip = ({ labels, ...props }: MoreChipProps) => {
                                 <Label
                                     color={color}
                                     name={name}
-                                    maxWidth="100%"
+                                    width="min-content"
                                 />
                             </Grid>
                         ))}

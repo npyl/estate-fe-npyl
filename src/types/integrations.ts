@@ -1,8 +1,10 @@
+import { IntegrationSite } from "./listings";
+
 export interface IIntegration {
     apiKey: string;
     appKey: string;
     password: string;
-    site: string;
+    site: IntegrationSite;
     username: string;
 }
 

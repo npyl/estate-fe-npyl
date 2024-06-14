@@ -20,6 +20,10 @@ interface SubbarItemProps extends ButtonProps {
 const SubbarItem = styled(Button)<SubbarItemProps>(({ theme, current }) => ({
     border: "1px solid",
     borderColor: getBorderColor2(theme),
+    display: "flex",
+    marginInline: 2,
+    justifyContent: "space-between",
+    alignItems: "center",
 
     ...(current
         ? {
@@ -42,36 +46,25 @@ const SubbarItem = styled(Button)<SubbarItemProps>(({ theme, current }) => ({
                       ? theme.palette.background.paper
                       : theme.palette.neutral?.[800],
           }),
-
     boxShadow: theme.shadows[5],
-
-    paddingTop: theme.spacing(0.5),
-    paddingBottom: theme.spacing(0.5),
-    paddingLeft: theme.spacing(1.5),
-    paddingRight: theme.spacing(1),
-
     transition: "all 0.3s ease",
-
     cursor: "pointer",
-
     flexDirection: "row",
-    alignItems: "center",
-
-    minWidth: "70px",
-
+    minWidth: "275px",
+    width: "max-content",
+    maxWidth: "350px",
     // Text Content
-    overflowX: "hidden",
-    overflowY: "hidden",
-    textWrap: "nowrap",
+    textOverflow: "ellipsis",
+    overflow: "hidden",
+    whiteSpace: "nowrap",
 }));
 
-// Truncate
 const getLabel = (belowSm: boolean, label: string) => {
     let res = label;
 
     if (belowSm) {
         const parts = label.split(" ");
-        res = parts[parts.length - 1];
+        res = parts[parts.length - 1]; // First two words only
     }
 
     return res;
@@ -92,7 +85,6 @@ const SubbarItems = (props: StackProps) => {
         (e: MouseEvent, id: string) => {
             e.stopPropagation();
 
-            // get list of tabs if we removed one with specific id
             const tabsAfterRemove = removeTabNoChange(id);
 
             const currentTabIndex = appTabs.findIndex(
@@ -101,19 +93,14 @@ const SubbarItems = (props: StackProps) => {
             const isCurrentLast = appTabs[appTabs.length - 1].id === id;
             const hasMoreAfterRemove = tabsAfterRemove.length > 0;
 
-            // decide what tab to show after closing
             const newUrl = hasMoreAfterRemove
                 ? isCurrentLast
-                    ? // open last tab
-                      tabsAfterRemove[tabsAfterRemove.length - 1].path
-                    : // keep tab on same index open
-                      tabsAfterRemove[currentTabIndex].path
-                : "/property"; // open general tab
+                    ? tabsAfterRemove[tabsAfterRemove.length - 1].path
+                    : tabsAfterRemove[currentTabIndex].path
+                : "/property";
 
-            // actually remove
             removeTab(id);
 
-            // go to last page url
             router.push(newUrl);
         },
         [appTabs]
@@ -122,13 +109,16 @@ const SubbarItems = (props: StackProps) => {
     const belowSm = useResponsive("down", "sm");
 
     return (
-        <Stack direction="row" spacing={1} {...props}>
+        <Stack direction="row" spacing={1.5} {...props}>
             {appTabs.map(({ id, label, path }) => (
                 <SubbarItem
                     key={id}
                     current={currentPath === path}
                     endIcon={
-                        <IconButton onClick={(e) => handleRemove(e, id)}>
+                        <IconButton
+                            onClick={(e) => handleRemove(e, id)}
+                            size="small"
+                        >
                             <ClearIcon
                                 sx={{
                                     fontSize: "15px",
@@ -138,7 +128,17 @@ const SubbarItems = (props: StackProps) => {
                     }
                     onClick={(e) => handleClick(e, path)}
                 >
-                    {getLabel(belowSm, label)}
+                    {/* Code to keep the Clear icon always inside the SubbarItem and cut the text with '...' */}
+                    <span
+                        style={{
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "nowrap",
+                            flex: 1,
+                        }}
+                    >
+                        {getLabel(belowSm, label)}
+                    </span>
                 </SubbarItem>
             ))}
         </Stack>

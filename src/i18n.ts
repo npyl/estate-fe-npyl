@@ -711,7 +711,6 @@ const resources = {
             "Certified Telephone Number": "Certified Telephone Number",
 
             "Websites to publish to:": "Websites to publish to:",
-            "Upload Google Earth": "Upload Google Earth",
             _Public_FEMALE_PLURAL: "Public",
             "Rest Integrations": "Rest Integrations",
 
@@ -732,6 +731,23 @@ const resources = {
 
             "There are no matching properties":
                 "There are no matching properties",
+
+            Custom: "Custom",
+            "Select Date Range": "Select Date Range",
+            "Total Views": "Total Views",
+
+            "Copy Link": "Copy Link",
+            "Social Networks": "Social Networks",
+            "Short Version": "Short Version",
+            "Long Version": "Long Version",
+
+            "Property presentation Rate": "Property presentation Rate",
+            "Property Rating": "Property Rating",
+            Reviews: "Reviews",
+            Locations: "Locations",
+
+            "Share PDF": "Share PDF",
+            "Download PDF": "Download PDF",
 
             "Green Map": "Green Map",
             Panels: "Panels",
@@ -781,6 +797,24 @@ const resources = {
             Panels: "Πάνελ",
             "Green Map": "Πράσινος Χάρτης",
 
+            Locations: "Τοποθεσίες",
+            Reviews: "Αξιολογήσεις",
+            "Property presentation Rate": "Αξιολόγηση παρουσίασης ακινήτου",
+            "Property Rating": "Αξιολόγηση ακινήτου",
+
+            "Copy Link": "Αντιγραφή Συνδέσμου",
+            "Social Networks": "Μέσα Κοινωνικής Δικτύωσης",
+            "Short Version": "Σύντομη Έκδοση",
+            "Short Version: Includes basic photos":
+                "Σύντομη Έκδοση: Περιέχει βασικές φωτογραφίες",
+            "Long Version": "Εκτεταμένη Έκδοση",
+            "Long Version: Includes all photos":
+                "Εκτεταμένη Έκδοση: Περιέχει όλες τις φωτογραφίες",
+
+            "Total Views": "Συνολικές Προβολές",
+            "Select Date Range": "Επιλογή Χρονικού Διαστήματος",
+            Custom: "Προσαρμοσμένο",
+
             "Edit Integration Details": "Επεξεργασία Λεπτομερειών Σύνδεσης",
 
             "Draw on a location with markers":
@@ -789,7 +823,6 @@ const resources = {
             Visitors: "Επισκέπτες",
 
             "Websites to publish to:": "Ιστοσελίδες προς δημοσίευση:",
-            "Upload Google Earth": "Ανέβασμα Google Earth",
             _Public_FEMALE_PLURAL: "Δημόσιες",
             "Rest Integrations": "Λοιπές Συνδέσεις",
 
@@ -1487,7 +1520,9 @@ const resources = {
             Integrations: "Συνδεδεμένα",
             Documents: "Έγγραφα",
             Share: "Κοινοποίηση",
+            "Share PDF": "Κοινοποίση PDF",
             Download: "Λήψη",
+            "Download PDF": "Λήψη PDF",
             Options: "Επιλογές",
 
             Living: "Κατοικήσιμος",

@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react";
 import {
     AreaChart,
     Area,
@@ -17,20 +18,26 @@ import { TTimeFrame } from "@/types/publicDashboard";
 import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { Stack } from "@mui/system";
-import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
     NameType,
     ValueType,
 } from "recharts/types/component/DefaultTooltipContent";
-import { useResponsive } from "@/hooks/use-responsive";
+import SouthRoundedIcon from "@mui/icons-material/SouthRounded";
+import NorthRoundedIcon from "@mui/icons-material/NorthRounded";
+import DateRangePicker from "./DateRangePicker";
+import format from "date-fns/format";
+import useResponsive from "@/hooks/useResponsive";
 
 export default function StackedAreas() {
     const { t } = useTranslation();
 
     const [category, setCategory] = useState("");
     const [parentCategory, setParentCategory] = useState("");
-    const [timeframe, setTimeframe] = useState<TTimeFrame>("ALL_TIME");
+    const [timeframe, setTimeframe] = useState<TTimeFrame>("WEEK");
+
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
 
     // Fetch enums and data using hooks
     const data = useGlobals();
@@ -42,8 +49,11 @@ export default function StackedAreas() {
             parentCategory,
             category,
             timeframe,
+            startDate: startDate
+                ? format(new Date(startDate), "yyyy-MM-dd")
+                : "",
+            endDate: endDate ? format(new Date(endDate), "yyyy-MM-dd") : "",
         });
-
     // Organize sub-categories by main category
     const subCategoriesMap: {
         [key: string]: KeyValue[];
@@ -78,8 +88,13 @@ export default function StackedAreas() {
         }
     };
 
-    const handleTimeframeSelect = (e: SelectChangeEvent<TTimeFrame>) =>
+    const handleTimeframeSelect = (e: SelectChangeEvent<TTimeFrame>) => {
         setTimeframe(e.target.value as TTimeFrame);
+        if (e.target.value !== "CUSTOM") {
+            setStartDate("");
+            setEndDate("");
+        }
+    };
 
     // Prepare chart data
     const chartData = useMemo(
@@ -122,6 +137,26 @@ export default function StackedAreas() {
         payload,
     }: TooltipProps<ValueType, NameType>) => {
         if (active && payload && payload.length) {
+            const currentDate = payload[0].payload.date;
+            const currentTotalViews =
+                payload[0].payload.All +
+                payload[0].payload.parentCategory +
+                payload[0].payload.category;
+            const previousDataIndex = chartData.findIndex(
+                (data) => data.date === currentDate
+            );
+            const previousTotalViews =
+                previousDataIndex > 0
+                    ? chartData[previousDataIndex - 1].All +
+                      chartData[previousDataIndex - 1].parentCategory +
+                      chartData[previousDataIndex - 1].category
+                    : 0;
+            const viewDifference = currentTotalViews - previousTotalViews;
+            const viewPercentageChange = previousTotalViews
+                ? (viewDifference / previousTotalViews) * 100
+                : 0;
+            const isIncrease = viewDifference >= 0;
+
             return (
                 <div
                     style={{
@@ -132,10 +167,30 @@ export default function StackedAreas() {
                         boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
                     }}
                 >
-                    <p style={{ color: "#000", margin: 0, fontWeight: "bold" }}>
-                        Property Views
-                    </p>
-                    <hr style={{ borderColor: "grey" }} />
+                    <div style={{ borderBottom: "1px solid #eee" }}>
+                        <p
+                            style={{
+                                color: "#000",
+                                margin: 0,
+                                fontWeight: "bold",
+                            }}
+                        >
+                            {new Date(currentDate).toLocaleDateString()}
+                        </p>
+                        {parentCategory && (
+                            <p
+                                style={{
+                                    color: "#000",
+                                    margin: 0,
+                                    marginBottom: "10px",
+                                    fontWeight: "semibold",
+                                }}
+                            >
+                                Total Views: {currentTotalViews}
+                            </p>
+                        )}
+                    </div>
+
                     {payload.map((entry) => (
                         <div
                             key={entry.name}
@@ -163,6 +218,32 @@ export default function StackedAreas() {
                             )}: ${entry.value}`}</span>
                         </div>
                     ))}
+                    {previousDataIndex > 0 && (
+                        <div
+                            style={{
+                                display: "flex",
+                                alignItems: "center",
+                                marginTop: "5px",
+                                color: isIncrease ? "#388e3c" : "#d32f2f",
+                                borderTop: "1px solid #eee",
+                            }}
+                        >
+                            {isIncrease ? (
+                                <NorthRoundedIcon fontWeight="bold" />
+                            ) : (
+                                <SouthRoundedIcon fontWeight="bold" />
+                            )}
+                            <span
+                                style={{
+                                    marginLeft: "5px",
+                                    fontWeight: "bold",
+                                    marginTop: "5px",
+                                }}
+                            >
+                                {viewPercentageChange.toFixed(0)}%
+                            </span>
+                        </div>
+                    )}
                 </div>
             );
         }
@@ -172,138 +253,114 @@ export default function StackedAreas() {
     // Date formatter for X-axis ticks
     const formatDateTick = (tickItem: string) => {
         const date = new Date(tickItem);
-        return timeframe === "WEEK"
-            ? date.toLocaleDateString("en-GB", {
-                  day: "2-digit",
-                  month: "2-digit",
-              })
-            : date.toLocaleDateString();
+        let formattedDate;
+
+        switch (timeframe) {
+            case "WEEK":
+                formattedDate = date
+                    .toLocaleDateString("en-GB", {
+                        weekday: "short",
+                        day: "2-digit",
+                        month: "2-digit",
+                    })
+                    .replace(/,\s*/g, " "); // remove the comma and space
+                break;
+            case "DAY":
+                formattedDate = date
+                    .toLocaleDateString("en-GB", {
+                        weekday: "short",
+                        day: "2-digit",
+                        month: "2-digit",
+                    })
+                    .replace(/,\s*/g, " "); // remove the comma and space
+                break;
+            case "MONTH":
+                formattedDate = date.toLocaleDateString("en-GB", {
+                    day: "2-digit",
+                    month: "short",
+                });
+                break;
+            default:
+                formattedDate = date.toLocaleDateString("en-GB", {
+                    year: "numeric",
+                    month: "short",
+                });
+                break;
+        }
+
+        return formattedDate;
     };
 
     const formatYAxis = (tickItem: number) => {
         return tickItem > 999 ? `${tickItem / 1000}k` : tickItem.toString();
     };
 
-    const belowSm = useResponsive("down", "sm");
     const belowMd = useResponsive("down", "md");
 
     return (
         <>
-            {belowMd && !belowSm ? (
-                <Stack direction="column" spacing={2} p={1}>
-                    <Typography variant={"h5"} p={1}>
-                        {t("Views of Properties")}
-                    </Typography>
-                    <Stack direction="row" padding={1} spacing={2}>
-                        <Select
-                            value={timeframe}
-                            onChange={handleTimeframeSelect}
-                        >
-                            <MenuItem value="ALL_TIME">
-                                {t("All_Time")}
-                            </MenuItem>
-                            <MenuItem value="MONTH">{t("Monthly")}</MenuItem>
-                            <MenuItem value="WEEK">{t("Weekly")}</MenuItem>
-                            <MenuItem value="YEAR">{t("Yearly")}</MenuItem>
-                            <MenuItem value="DAY">{t("Daily")}</MenuItem>
-                            <MenuItem value="CUSTOM">Custom</MenuItem>
-                        </Select>
-                        <Select
-                            value={parentCategory}
-                            onChange={handleParentCategorySelect}
-                            displayEmpty
-                        >
-                            <MenuItem value="">{t("Parent Category")}</MenuItem>
-                            {parentCategoryEnum?.map((item) => (
-                                <MenuItem key={item.key} value={item.key}>
-                                    {item.value}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                        <Select
-                            value={category}
-                            onChange={handleCategorySelect}
-                            displayEmpty
-                            disabled={!parentCategory}
-                        >
-                            <MenuItem value="">{t("Category")}</MenuItem>
-                            {subCategoriesMap[parentCategory!]?.map((item) => (
-                                <MenuItem key={item.key} value={item.key}>
-                                    {item.value}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </Stack>
-                </Stack>
-            ) : (
-                <Stack
-                    direction={{
-                        xs: "column",
-                        sm: "row",
-                    }}
-                    spacing={2}
-                    p={1}
-                >
-                    <Typography variant={"h5"} p={1}>
-                        {t("Views of Properties")}
-                    </Typography>
-                    <Stack
-                        direction={{
-                            xs: "column",
-                            sm: "row",
-                        }}
-                        padding={1}
-                        spacing={2}
-                    >
-                        <Select
-                            value={timeframe}
-                            onChange={handleTimeframeSelect}
-                        >
-                            <MenuItem value="ALL_TIME">
-                                {t("All_Time")}
-                            </MenuItem>
-                            <MenuItem value="MONTH">{t("Monthly")}</MenuItem>
-                            <MenuItem value="WEEK">{t("Weekly")}</MenuItem>
-                            <MenuItem value="YEAR">{t("Yearly")}</MenuItem>
-                            <MenuItem value="DAY">{t("Daily")}</MenuItem>
-                            <MenuItem value="CUSTOM">Custom</MenuItem>
-                        </Select>
-                        <Select
-                            value={parentCategory}
-                            onChange={handleParentCategorySelect}
-                            displayEmpty
-                        >
-                            <MenuItem value="">{t("Parent Category")}</MenuItem>
-                            {parentCategoryEnum?.map((item) => (
-                                <MenuItem key={item.key} value={item.key}>
-                                    {item.value}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                        <Select
-                            value={category}
-                            onChange={handleCategorySelect}
-                            displayEmpty
-                            disabled={!parentCategory}
-                        >
-                            <MenuItem value="">{t("Category")}</MenuItem>
-                            {subCategoriesMap[parentCategory!]?.map((item) => (
-                                <MenuItem key={item.key} value={item.key}>
-                                    {item.value}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </Stack>
-                </Stack>
-            )}
+            <Stack direction={{ xs: "column", md: "row" }} spacing={2} p={1}>
+                <Typography variant={"h5"} p={1}>
+                    {t("Views of Properties")}
+                </Typography>
 
-            <ResponsiveContainer width="100%" height={300}>
+                <Stack direction="row" p={1} gap={1} flexWrap="wrap">
+                    <Select value={timeframe} onChange={handleTimeframeSelect}>
+                        <MenuItem value="ALL_TIME">{t("All_Time")}</MenuItem>
+                        <MenuItem value="MONTH">{t("Monthly")}</MenuItem>
+                        <MenuItem value="WEEK">{t("Weekly")}</MenuItem>
+                        <MenuItem value="YEAR">{t("Yearly")}</MenuItem>
+                        <MenuItem value="CUSTOM">{t("Custom")}</MenuItem>
+                    </Select>
+
+                    <Select
+                        value={parentCategory}
+                        onChange={handleParentCategorySelect}
+                        displayEmpty
+                    >
+                        <MenuItem value="">{t("Parent Category")}</MenuItem>
+                        {parentCategoryEnum?.map((item) => (
+                            <MenuItem key={item.key} value={item.key}>
+                                {item.value}
+                            </MenuItem>
+                        ))}
+                    </Select>
+
+                    <Select
+                        value={category}
+                        onChange={handleCategorySelect}
+                        displayEmpty
+                        disabled={!parentCategory}
+                    >
+                        <MenuItem value="">{t("Category")}</MenuItem>
+                        {subCategoriesMap[parentCategory!]?.map((item) => (
+                            <MenuItem key={item.key} value={item.key}>
+                                {item.value}
+                            </MenuItem>
+                        ))}
+                    </Select>
+
+                    {timeframe === "CUSTOM" ? (
+                        <DateRangePicker
+                            startDate={startDate}
+                            endDate={endDate}
+                            onChange={(s, e) => {
+                                setStartDate(s);
+                                setEndDate(e);
+                            }}
+                        />
+                    ) : null}
+                </Stack>
+            </Stack>
+
+            <ResponsiveContainer height={300}>
                 <AreaChart data={chartData} margin={{ left: 30, right: 30 }}>
                     <CartesianGrid vertical={false} />
                     <XAxis
+                        visibility={belowMd ? "hidden" : "visible"}
                         dataKey="date"
                         tickFormatter={formatDateTick}
-                        padding={{ left: 30, right: 30 }}
+                        tickMargin={7}
                     />
                     {category && parentCategory ? (
                         <>

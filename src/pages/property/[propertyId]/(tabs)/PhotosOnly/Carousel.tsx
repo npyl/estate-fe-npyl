@@ -4,7 +4,7 @@ import { Box, Button, Divider, Grid, Stack, Tab, Tabs } from "@mui/material";
 import { LabeledImage } from "src/components/image";
 
 import { useRouter } from "next/router";
-import { useLazyDownloadImagesQuery } from "src/services/exports";
+import { downloadImages as downloadZip } from "src/services/exports";
 import PreviewImage from "@/components/image/PreviewImage";
 import useDialog from "@/hooks/useDialog";
 import { useTranslation } from "react-i18next";
@@ -51,8 +51,6 @@ function OnlyPhotosCarousel({ data }: Props) {
     const closeLightbox = () => setClickedImageIndex(-1);
     const [isDialogOpen, openDialog, closeDialog] = useDialog();
 
-    const [downloadZip] = useLazyDownloadImagesQuery();
-
     const lightboxImages = useMemo(
         () => data.map(({ url }) => ({ src: url || "" })),
         [data]
@@ -63,12 +61,10 @@ function OnlyPhotosCarousel({ data }: Props) {
         downloadZip({
             propertyId: +propertyId!,
             hidden,
-        })
-            .unwrap()
-            .then((e) => {
-                downloadBlob(e, hidden);
-                setLoading(false);
-            });
+        }).then((e) => {
+            downloadBlob(e, hidden);
+            setLoading(false);
+        });
     };
 
     const [selectedTab, setSelectedTab] = useState(0);
@@ -82,10 +78,9 @@ function OnlyPhotosCarousel({ data }: Props) {
                 : data.filter(({ hidden }) => !!hidden); // private
 
         return filtered.map(({ id, url, title, hidden }, index) => (
-            <Grid item xs={12} sm={6} md={4} lg={3}>
+            <Grid item xs={12} sm={6} md={4} lg={3} key={id}>
                 {url ? (
                     <LabeledImage
-                        key={id}
                         alt={title}
                         src={url}
                         hidden={hidden}

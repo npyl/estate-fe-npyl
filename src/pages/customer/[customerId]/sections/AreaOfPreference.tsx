@@ -13,6 +13,7 @@ import {
 import { Grid, List } from "@mui/material";
 import { ListItem } from "src/components/List";
 import useGetCustomer from "@/hooks/customer";
+import useHumanReadable from "@/components/Location/hook";
 
 interface AreaOfPreferenceProps {
     index: number; // index of demand
@@ -42,31 +43,13 @@ export const ViewLocationMini = ({
     });
 
     // region is most of the types a code; translate to human readable form; otherwise just return the string
-    const region: string = useMemo(() => {
-        if (!regionCode) return "";
-
-        return isNumberString(regionCode)
-            ? regions?.filter((r) => r.areaID === +regionCode)[0]?.nameGR || ""
-            : regionCode;
-    }, [regionCode, regions]);
+    const region = useHumanReadable(regionCode, regions);
 
     // city is most of the types a code; translate to human readable form; otherwise just return the string
-    const city = useMemo(() => {
-        if (!cityCode) return "";
-
-        return isNumberString(cityCode)
-            ? municips?.filter((m) => m.areaID === +cityCode)[0]?.nameGR || ""
-            : cityCode;
-    }, [cityCode]);
+    const city = useHumanReadable(cityCode, municips);
 
     // neighb is most of the types a code; translate to human readable form; otherwise just return the string
-    const neighb = useMemo(() => {
-        if (!complexCode) return "";
-
-        return isNumberString(complexCode)
-            ? neighbs?.filter((n) => n.areaID === +complexCode)[0]?.nameGR || ""
-            : complexCode;
-    }, [complexCode]);
+    const neighb = useHumanReadable(complexCode, neighbs);
 
     return (
         <Grid container>
@@ -178,11 +161,11 @@ const AreaOfPreference: React.FC<AreaOfPreferenceProps> = ({ index }) => {
             >
                 <Typography variant="h6">{t("Area of Preference")}</Typography>
             </Box>
-            {/* <ViewLocationMini
+            <ViewLocationMini
                 regionCode={regions[0]}
                 cityCode={cities[0]}
                 complexCode={complexes[0]}
-            /> */}
+            />
             <Box height={`calc(100vh - 266px)`} width={"100%"}>
                 <Map
                     key={index}

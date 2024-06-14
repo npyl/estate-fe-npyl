@@ -227,14 +227,6 @@ const FeaturesSection = ({
                     </Grid>
                     <Grid item xs={6} sm={3}>
                         <CheckboxItem
-                            label={t("Bright")}
-                            value={!!features?.bright}
-                            sliceKey={"bright"}
-                            onChange={handleChange}
-                        />
-                    </Grid>
-                    <Grid item xs={6} sm={3}>
-                        <CheckboxItem
                             label={t("Thermal Insulation")}
                             value={!!features?.thermalInsulation}
                             sliceKey={"thermalInsulation"}

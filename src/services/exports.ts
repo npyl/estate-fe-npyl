@@ -4,97 +4,59 @@ interface DownloadImagesZipProps {
     hidden: boolean;
     propertyId: number;
 }
+
 interface IExportPDF {
     propertyId: number;
     qrPath: string;
     blueprints: boolean;
     publicImages: boolean;
+    lang: "en" | "el";
 }
 
-// Define the return type and parameters for our custom base query
-interface CustomBaseQueryArgs {
-    url: string;
-    method?: string;
-    headers?: Record<string, string>;
-    responseType?: string;
-}
+const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/property`;
 
-const customFetchBaseQuery =
-    (baseUrl: string): BaseQueryFn<CustomBaseQueryArgs, unknown, Error> =>
-    async (args, api, extraOptions) => {
-        const response = await fetch(`${baseUrl}/${args.url}`, {
-            method: args.method,
+export const downloadImages = ({
+    propertyId,
+    hidden,
+}: DownloadImagesZipProps) =>
+    fetch(
+        `${baseUrl}/${propertyId}/downloadImages?hidden=${!hidden ? "0" : "1"}`,
+        {
+            method: "GET",
             headers: {
-                ...args.headers,
                 Authorization: `Bearer  ${localStorage.getItem("accessToken")}`,
+                // Accept: "application/pdf",
             },
-            ...extraOptions,
-        });
-
-        if (!response.ok) {
-            throw new Error("Network response was not ok");
         }
+    ).then((res) => res.blob());
 
-        const data = await response.blob();
+export const downloadDocuments = (propertyId: number) =>
+    fetch(`${baseUrl}/${propertyId}/downloadDocuments`, {
+        method: "GET",
+        headers: {
+            Authorization: `Bearer  ${localStorage.getItem("accessToken")}`,
+            // Accept: "application/pdf",
+        },
+    }).then((res) => res.blob());
 
-        return { data };
-    };
+export const exportPDF = ({
+    propertyId,
+    qrPath,
+    blueprints,
+    publicImages,
+    lang,
+}: IExportPDF) => {
+    const queryParams = new URLSearchParams({
+        qrPath,
+        blueprints: blueprints.toString(),
+        publicImages: publicImages.toString(),
+    }).toString();
 
-export const exports = createApi({
-    reducerPath: "exports",
-    baseQuery: customFetchBaseQuery(
-        `${process.env.NEXT_PUBLIC_API_URL}/property`
-    ),
-    tagTypes: ["PropertyByIdZip"],
-    endpoints: (builder) => ({
-        downloadImages: builder.query<Blob, DownloadImagesZipProps>({
-            query: ({ propertyId, hidden }) => {
-                return {
-                    url: `${propertyId}/downloadImages?hidden=${
-                        !hidden ? "0" : "1"
-                    }`,
-                    method: "GET", // adjust as necessary
-                    // add other required properties here if needed
-                };
-            },
-            providesTags: ["PropertyByIdZip"],
-        }),
-        downloadDocuments: builder.query<Blob, number>({
-            query: (propertyId: number) => {
-                return {
-                    url: `${propertyId}/downloadDocuments`,
-                    method: "GET",
-                };
-            },
-        }),
-
-        // Export a property's pdfs
-        downloadPDF: builder.query<Blob, IExportPDF>({
-            query: ({ propertyId, qrPath, blueprints, publicImages }) => {
-                const queryParams = new URLSearchParams({
-                    qrPath,
-                    blueprints: blueprints.toString(),
-                    publicImages: publicImages.toString(),
-                }).toString();
-
-                return {
-                    url: `export/${propertyId}?${queryParams}`,
-                    method: "GET",
-                    headers: {
-                        "Accept-Language": `${
-                            (localStorage.getItem("language") === "gr"
-                                ? "el"
-                                : "en") ?? "el"
-                        }`,
-                    },
-                };
-            },
-        }),
-    }),
-});
-
-export const {
-    useLazyDownloadImagesQuery,
-    useLazyDownloadDocumentsQuery,
-    useLazyDownloadPDFQuery,
-} = exports;
+    return fetch(`${baseUrl}/export/${propertyId}?${queryParams}`, {
+        headers: {
+            Authorization: `Bearer  ${localStorage.getItem("accessToken")}`,
+            "Accept-Language": `${lang}`,
+            Accept: "application/pdf",
+        },
+    }).then((res) => res.blob());
+};

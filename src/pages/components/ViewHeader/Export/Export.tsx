@@ -1,10 +1,11 @@
-import { IconButton } from "@mui/material";
+import { IconButton, Typography } from "@mui/material";
 import { useState, MouseEvent, useCallback } from "react";
 import DocumentSvg from "@/assets/Document";
-import { useLazyDownloadPDFQuery } from "@/services/exports";
+import { exportPDF } from "@/services/exports";
 import { useRouter } from "next/router";
 import { useTranslation } from "react-i18next";
 import Popover from "./popover";
+import { SharePopover } from "../ShareExport";
 
 // TODO: introduce helper
 const downloadBlob = (blob: Blob): void => {
@@ -28,39 +29,55 @@ const downloadBlob = (blob: Blob): void => {
 };
 
 const ExportButton = () => {
-    const { t } = useTranslation();
-
+    const { t, i18n } = useTranslation();
     const router = useRouter();
     const { propertyId } = router.query;
 
     // Popper
-    const [anchorEl, setAnchorEl] = useState<HTMLButtonElement>();
+    const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
     const isOpen = Boolean(anchorEl);
     const handleOpen = (event: MouseEvent<HTMLButtonElement>) =>
         setAnchorEl(event.currentTarget);
-    const handleClose = () => setAnchorEl(undefined);
+    const handleClose = () => setAnchorEl(null);
 
     // Download Options
     const [blueprints, setBlueprints] = useState(false);
     const [version, setVersion] = useState<"LONG" | "SHORT">("LONG");
 
-    const [downloadPDF] = useLazyDownloadPDFQuery();
+    const [loading, setLoading] = useState(false);
 
-    // INFO: blueprints can be both in long and short, publicImages is true only for long
     const handleDownload = useCallback(() => {
-        downloadPDF({
+        setLoading(true);
+        exportPDF({
             propertyId: +propertyId!,
             qrPath: "",
             blueprints,
             publicImages: version === "LONG",
+            lang: i18n.language as "en" | "el",
         })
-            .unwrap()
-            .then(downloadBlob);
+            .then(downloadBlob)
+            .catch((error) => {
+                console.error("Download failed:", error);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
     }, [blueprints, version]);
+
+    // Share Popover state
+    const [shareAnchorEl, setShareAnchorEl] =
+        useState<HTMLButtonElement | null>(null);
+    const isShareOpen = Boolean(shareAnchorEl);
+    const handleShareOpen = () => {
+        handleClose(); // Close the main Popover
+        setShareAnchorEl(anchorEl);
+    };
+    const handleShareClose = () => setShareAnchorEl(null);
 
     return (
         <>
             <IconButton onClick={handleOpen}>
+                <Typography mr={1}>{t("Export")}</Typography>
                 <DocumentSvg />
             </IconButton>
 
@@ -69,16 +86,22 @@ const ExportButton = () => {
                     open={isOpen}
                     anchorEl={anchorEl}
                     onClose={handleClose}
-                    // ...
-                    onShare={() => {}}
+                    onShare={handleShareOpen}
                     onDownload={handleDownload}
-                    // ...
                     blueprints={blueprints}
                     setBlueprints={setBlueprints}
                     version={version}
                     setVersion={setVersion}
+                    loading={loading}
                 />
             ) : null}
+
+            <SharePopover
+                open={isShareOpen}
+                anchorEl={shareAnchorEl}
+                onClose={handleShareClose}
+                shareUrl={window.location.href}
+            />
         </>
     );
 };

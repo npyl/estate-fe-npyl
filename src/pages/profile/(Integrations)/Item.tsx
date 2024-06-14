@@ -12,15 +12,15 @@ import { SoftButton } from "@/components/SoftButton";
 import { SpaceBetween } from "@/components/styled";
 import { useGetIntegrationsQuery } from "@/services/company";
 import { useTranslation } from "react-i18next";
-import { ListingTypes } from "@/types/listings";
-import { IIntegration } from "@/types/integrations";
+import { IntegrationSite } from "@/types/listings";
 import useToggle from "@/hooks/useToggle";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { IIntegration } from "@/types/integrations";
 
 interface Props {
-    type: ListingTypes;
+    type: IntegrationSite;
     expandedInitialy: boolean;
-    onEdit: (s?: IIntegration) => void;
+    onEdit: (s: IIntegration) => void;
 }
 
 const IntegrationItem = ({ type, expandedInitialy, onEdit }: Props) => {
@@ -30,9 +30,9 @@ const IntegrationItem = ({ type, expandedInitialy, onEdit }: Props) => {
 
     const [expanded, toggleExpanded] = useToggle(expandedInitialy);
 
-    if (isLoading) {
-        return <Typography>{t("Loading...")}</Typography>;
-    }
+    // if (isLoading) {
+    //     return <Typography>{t("Loading...")}</Typography>;
+    // }
 
     return (
         <Paper elevation={10}>
@@ -42,13 +42,19 @@ const IntegrationItem = ({ type, expandedInitialy, onEdit }: Props) => {
                     py: 1.5,
                     alignItems: "center",
                 }}
+                gap={1}
+                direction={{
+                    xs: "column",
+                    lg: "row",
+                }}
             >
                 <Typography variant="h6">{integration?.site}</Typography>
 
                 <Stack direction="row" spacing={1}>
                     <SoftButton
                         variant="contained"
-                        onClick={() => onEdit(integration)}
+                        disabled={!integration}
+                        onClick={() => onEdit(integration!)}
                     >
                         {t("Edit")}
                     </SoftButton>
@@ -67,7 +73,19 @@ const IntegrationItem = ({ type, expandedInitialy, onEdit }: Props) => {
             </SpaceBetween>
             <Divider />
             <Collapse in={expanded} timeout="auto" unmountOnExit>
-                <Grid container spacing={2}>
+                <Grid container>
+                    <Grid item xs={12} sm={6}>
+                        <List>
+                            <ListItem
+                                label={t("Username")}
+                                value={integration?.username || ""}
+                            />
+                            <ListItem
+                                label={t("Password")}
+                                value={integration?.password || ""}
+                            />
+                        </List>
+                    </Grid>
                     <Grid item xs={12} sm={6}>
                         <List>
                             <ListItem
@@ -77,14 +95,6 @@ const IntegrationItem = ({ type, expandedInitialy, onEdit }: Props) => {
                             <ListItem
                                 label={t("App Key")}
                                 value={integration?.appKey || ""}
-                            />
-                            <ListItem
-                                label={t("Username")}
-                                value={integration?.username || ""}
-                            />
-                            <ListItem
-                                label={t("Password")}
-                                value={integration?.password || ""}
                             />
                         </List>
                     </Grid>

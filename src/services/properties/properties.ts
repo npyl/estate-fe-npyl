@@ -3,6 +3,7 @@ import {
     IProperties,
     IPropertiesPOST,
     IPropertyFilter,
+    IPropertyMarker,
     IPropertyResultResponse,
 } from "src/types/properties";
 import IPage from "src/types/page";
@@ -119,6 +120,13 @@ export const properties = createApi({
         allProperties: builder.query<IProperties[], void>({
             query: () => ({
                 url: "all",
+            }),
+            providesTags: ["Properties"],
+        }),
+
+        getPropertyLocationMarkers: builder.query<IPropertyMarker[], void>({
+            query: () => ({
+                url: "location-markers",
             }),
             providesTags: ["Properties"],
         }),
@@ -292,26 +300,6 @@ export const properties = createApi({
                 responseHandler: "text",
             }),
         }),
-
-        //
-        //  Google Earth
-        //
-        addGoogleEarth: builder.mutation<
-            IFileResponse,
-            IPropertyAddFileParams<IGoogleEarthPOST>
-        >({
-            query: ({ id, body }) => ({
-                url: `/${id}/google-earth`,
-                method: "POST",
-                body,
-            }),
-        }),
-        deleteGoogleEarth: builder.mutation<IFileResponse, number>({
-            query: (propertyId) => ({
-                url: `/${propertyId}/google-earth`,
-                method: "DELETE",
-            }),
-        }),
     }),
 });
 
@@ -324,6 +312,7 @@ export const {
     useLazyGetPropertyByCodeQuery,
     useLazyGetPropertyByIdQuery,
     useGetPropertyListingsQuery,
+    useGetPropertyLocationMarkersQuery,
 
     // mutations
     useEditPropertyMutation,
@@ -347,10 +336,4 @@ export const {
     // attributes
     useGetPropertyLabelsQuery,
     useGetPropertyDocumentsQuery,
-
-    //
-    //  Google Earth
-    //
-    useAddGoogleEarthMutation,
-    useDeleteGoogleEarthMutation,
 } = properties;

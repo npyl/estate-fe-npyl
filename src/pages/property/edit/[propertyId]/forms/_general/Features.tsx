@@ -177,22 +177,10 @@ const getFEATURES = (t: TranslationType): Feature[] => [
     },
 ];
 
-const getTECHNICAL_FEATURES = (t: TranslationType): Feature[] => [
-    {
-        label: t("Alarm System"),
-        value: "alarmSystem",
-    },
-    {
-        label: t("Bright"),
-        value: "bright",
-    },
-];
-
 const FeaturesSection: React.FC<any> = (props) => {
     const { t } = useTranslation();
 
     const FEATURES = useMemo(() => getFEATURES(t), [t]);
-    const TECHNICAL_FEATURES = useMemo(() => getTECHNICAL_FEATURES(t), [t]);
 
     return (
         <Panel label={t("Features")}>
@@ -204,18 +192,6 @@ const FeaturesSection: React.FC<any> = (props) => {
                         md={4}
                         lg={3}
                         key={i}
-                        label={label}
-                        value={value}
-                    />
-                ))}
-                {TECHNICAL_FEATURES.map(({ label, value }, i) => (
-                    <CheckboxItem
-                        xs={12}
-                        sm={6}
-                        md={4}
-                        lg={3}
-                        key={i}
-                        variant="technicalFeatures"
                         label={label}
                         value={value}
                     />

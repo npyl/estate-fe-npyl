@@ -10,11 +10,6 @@ export const useGetDescription = () => {
     const { i18n } = useTranslation();
     const { propertyId } = router.query;
 
-    const language = useMemo(
-        () => (i18n.language === "gr" ? "el" : i18n.language),
-        [i18n.language]
-    );
-
     const { data: property } = useGetPropertyByIdQuery(+propertyId!);
 
     return useMemo(() => {
@@ -24,8 +19,8 @@ export const useGetDescription = () => {
         if (Object.entries(property?.descriptions).length === 0)
             return { description: "", title: "" };
 
-        const selected = property?.descriptions[language];
+        const selected = property?.descriptions[i18n.language];
 
         return { description: selected.description, title: selected.title };
-    }, [language, property?.descriptions]);
+    }, [i18n.language, property?.descriptions]);
 };

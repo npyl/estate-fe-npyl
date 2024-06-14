@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { IPublicDashboard, IView } from "@/types/publicDashboard";
+import { IView } from "@/types/publicDashboard";
 import { IProperties } from "@/types/properties";
 
 type TTimeFrame = "ALL_TIME" | "CUSTOM" | "DAY" | "MONTH" | "WEEK" | "YEAR";
@@ -14,6 +14,8 @@ interface PopularPropertiesParams {
     parentCategory: string;
     category: string;
     timeframe: TTimeFrame;
+    startDate?: string;
+    endDate?: string;
 }
 
 interface TotalPropertyViews {

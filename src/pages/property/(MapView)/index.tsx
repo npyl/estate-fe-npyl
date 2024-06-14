@@ -1,22 +1,23 @@
 import FlipIcon from "@mui/icons-material/Flip";
 import { Button, Grid, Stack } from "@mui/material";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Map, { IMapAddress, IMapMarker } from "src/components/Map/Map";
 import { DrawShape, StopDraw } from "src/components/Map/types";
-import {
-    decodeShape,
-    encodeShape,
-    isPointInsideShapeData,
-} from "src/components/Map/util";
+import { encodeShape, convertShapeToPoints } from "src/components/Map/util";
 import { useDebouncedCallback } from "use-debounce";
 import PropertyCard, { PropertyCardH } from "@/components/PropertyCard";
-import { useMapViewPropertiesMutation } from "src/services/properties";
-import { selectAll } from "src/slices/filters";
+import {
+    useFilterPropertiesMutation,
+    useGetPropertyLocationMarkersQuery,
+} from "src/services/properties";
+import { selectAll, setPoints, resetPoints } from "src/slices/filters";
 import { useSelector } from "react-redux";
 import useResponsive from "@/hooks/useResponsive";
 import { IPropertyResultResponse } from "@/types/properties";
 import Placeholder from "./Placeholder";
 import useResponsiveOrientation from "./hook";
+import Pagination, { usePagination } from "@/components/Pagination";
+import { useDispatch } from "react-redux";
 
 interface Props {
     toggleOrientation: VoidFunction;
@@ -27,10 +28,7 @@ const FlipOrientationButton = ({ toggleOrientation }: Props) => {
 
     return !belowLg ? (
         <Stack direction="row" justifyContent="flex-end">
-            <Button
-                onClick={toggleOrientation}
-                sx={{ width: 30, justifyContent: "right" }}
-            >
+            <Button onClick={toggleOrientation} sx={{ width: 30 }}>
                 <FlipIcon />
             </Button>
         </Stack>
@@ -89,67 +87,51 @@ const PropertiesList = ({
 };
 
 const MapView = () => {
-    const [filter, { data, isLoading }] = useMapViewPropertiesMutation({
-        selectFromResult: ({ data, isLoading }) => ({
-            data: data?.content || [],
-            isLoading,
-        }),
-    });
+    const dispatch = useDispatch();
 
-    const [encodedShape, setEncodedShape] = useState<string>();
+    const [filterProperties, { data: properties, isLoading }] =
+        useFilterPropertiesMutation();
 
     const [activeMarker, setActiveMarker] = useState<number>();
     const [mainMarker, setMainMarker] = useState<IMapMarker>({
-        lat: 37.98381,
-        lng: 23.727539,
+        lat: 38.246639,
+        lng: 21.734573,
     });
     const [selectedMarker, setSelectedMarker] = useState<IMapMarker | null>(
         null
     );
+    const pagination = usePagination();
+    const belowSm = useResponsive("down", "sm");
+    const belowLg = useResponsive("down", "lg");
+
+    const pageSize = belowSm ? 5 : belowLg ? 10 : 25;
+    const { page } = pagination;
 
     const allFilters = useSelector(selectAll);
 
-    // filter only properties with valid location.{lat,lng}
-    const nonNullProperties = useMemo(
-        () => data.filter((p) => p.location?.lat && p.location?.lng),
-        [data]
-    );
-
     useEffect(() => {
-        filter(allFilters);
-    }, [allFilters]);
-
-    // properties we show
-    const filtered = useMemo(() => {
-        if (!!selectedMarker) return nonNullProperties;
-
-        if (encodedShape) {
-            const shape = decodeShape(encodedShape);
-            if (!shape) return [];
-
-            return nonNullProperties.filter((p) =>
-                isPointInsideShapeData(p.location.lat!, p.location.lng!, shape)
-            );
-        }
-
-        return nonNullProperties;
-    }, [selectedMarker, nonNullProperties, encodedShape]);
+        filterProperties({
+            filter: allFilters,
+            page: page,
+            pageSize,
+            sortBy: "updatedAt",
+            direction: "DESC",
+        });
+    }, [allFilters, page, pageSize]);
 
     // respective markers
-    const markers: IMapMarker[] = useMemo(
-        () =>
-            data.map(({ location }) => ({
-                lat: location.lat!,
-                lng: location.lng!,
-            })),
-        [data]
-    );
+    const { data: markers } = useGetPropertyLocationMarkersQuery();
 
     const handleDraw = (shape: DrawShape | StopDraw) =>
-        setEncodedShape(shape ? encodeShape(shape) : "");
+        dispatch(
+            shape
+                ? setPoints(convertShapeToPoints(encodeShape(shape)))
+                : resetPoints()
+        );
+
     const handleChange = useDebouncedCallback(
-        (oldEncodedShape: string, newEncodedShape: string) =>
-            setEncodedShape(newEncodedShape),
+        (old: string, newEncodedShape: string) =>
+            dispatch(setPoints(convertShapeToPoints(newEncodedShape))),
         150
     );
 
@@ -181,11 +163,26 @@ const MapView = () => {
                     lg: 1,
                 }}
             >
-                <PropertiesList
-                    isLoading={isLoading}
-                    filtered={filtered}
-                    selectedMarker={selectedMarker}
-                />
+                {isLoading ? null : (
+                    <Pagination
+                        {...pagination}
+                        pageSize={pageSize}
+                        totalItems={properties?.totalElements ?? pageSize}
+                        isLoading={isLoading}
+                        Container={Grid}
+                        ContainerProps={{
+                            container: true,
+                            py: 2,
+                            spacing: 1,
+                        }}
+                    >
+                        <PropertiesList
+                            isLoading={isLoading}
+                            filtered={properties?.content || []}
+                            selectedMarker={selectedMarker}
+                        />
+                    </Pagination>
+                )}
             </Grid>
 
             <Grid
@@ -220,4 +217,5 @@ const MapView = () => {
         </Grid>
     );
 };
+
 export default MapView;

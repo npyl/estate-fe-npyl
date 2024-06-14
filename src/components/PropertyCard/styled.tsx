@@ -29,7 +29,7 @@ interface PriceBadgeProps extends BoxProps {
 export const PriceBadge = styled(({ price, ...props }: PriceBadgeProps) => (
     <Box {...props}>
         <Typography variant="body2">
-            {`${price ? formatNumberWithCommas(price) : "N/A"} €`}
+            {`${price ? price?.toLocaleString("de-DE") : "N/A"} €`}
         </Typography>
     </Box>
 ))<PriceBadgeProps>(({ theme }) => ({
@@ -65,10 +65,10 @@ export const NormalBadge = styled(
         </Box>
     )
 )<NormalBadgeProps>(({ theme, color }) => ({
-    paddingLeft: theme.spacing(2.5),
-    paddingRight: theme.spacing(2.5),
-    paddingTop: theme.spacing(0.5),
-    paddingBottom: theme.spacing(0.5),
+    paddingLeft: theme.spacing(1.8),
+    paddingRight: theme.spacing(1.8),
+    paddingTop: theme.spacing(0.4),
+    paddingBottom: theme.spacing(0.4),
 
     textAlign: "center",
 
