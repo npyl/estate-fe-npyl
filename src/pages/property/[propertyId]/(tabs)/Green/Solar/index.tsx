@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Paper, Typography, Divider, Grid, Stack } from "@mui/material";
+import { Paper, Typography, Divider, Stack, Box } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { List, ListItem } from "src/components/List";
 import HalfCircleProgressBar from "./HalfCircleProgressBar";
@@ -118,54 +118,51 @@ const SolarDetails: React.FC<SolarDetailsProps> = ({
             </Typography>
             <Divider />
 
-            <Grid container>
-                <Grid item xs={12}>
-                    <List>
-                        <ListItem
-                            label={t("Max Panel Required")}
-                            value={solarPotential.maxArrayPanelsCount}
-                        />
+            <List>
+                <ListItem
+                    label={t("Max Panel Required")}
+                    value={solarPotential.maxArrayPanelsCount}
+                />
 
-                        <ListItem
-                            label={t("Panel Lifespan(Yrs)")}
-                            value={solarPotential.panelLifetimeYears}
-                        />
-                        <ListItem
-                            label={t("Area(m²)")}
-                            value={solarPotential.maxArrayAreaMeters2}
-                        />
+                <ListItem
+                    label={t("Panel Lifespan(Yrs)")}
+                    value={solarPotential.panelLifetimeYears}
+                />
+                <ListItem
+                    label={t("Area(m²)")}
+                    value={solarPotential.maxArrayAreaMeters2}
+                />
 
-                        <ListItem
-                            label={t("Max Sunshine Hours/Year")}
-                            value={solarPotential.maxSunshineHoursPerYear}
-                        />
+                <ListItem
+                    label={t("Max Sunshine Hours/Year")}
+                    value={solarPotential.maxSunshineHoursPerYear}
+                />
 
-                        <ListItem
-                            label={t("Carbon Offset Factor (kg/MWh)")}
-                            value={solarPotential.carbonOffsetFactorKgPerMwh}
-                        />
+                <ListItem
+                    label={t("Carbon Offset Factor (kg/MWh)")}
+                    value={solarPotential.carbonOffsetFactorKgPerMwh}
+                />
 
-                        <ListItem
-                            label={t("Watts Per Panel")}
-                            value={solarPotential.panelCapacityWatts}
-                        />
+                <ListItem
+                    label={t("Watts Per Panel")}
+                    value={solarPotential.panelCapacityWatts}
+                />
 
-                        <ListItem
-                            label={t("Panel Dimension(m)(Height x Width)")}
-                            value={
-                                solarPotential.panelHeightMeters +
-                                " x " +
-                                solarPotential.panelWidthMeters
-                            }
-                        />
-                    </List>
-                </Grid>
-                <Grid item xs={12} p={2}>
-                    {chartData ? (
-                        <Bar data={chartData} options={chartOptions} />
-                    ) : null}
-                </Grid>
-            </Grid>
+                <ListItem
+                    label={t("Panel Dimension(m)(Height x Width)")}
+                    value={
+                        solarPotential.panelHeightMeters +
+                        " x " +
+                        solarPotential.panelWidthMeters
+                    }
+                />
+            </List>
+
+            {chartData ? (
+                <Box p={3}>
+                    <Bar data={chartData} options={chartOptions} />
+                </Box>
+            ) : null}
         </Paper>
     );
 };

@@ -101,12 +101,13 @@ function GreenMapComponent() {
                 item
                 xs={12}
                 md={6}
-                position="relative"
+                position={{ xs: "relative", md: "sticky" }}
+                top={{ xs: "0", md: "60px" }}
                 height={{ xs: "65vh", sm: "100vh" }}
             >
                 <Box id="map" height={1} />
 
-                {solar_info ? (
+                {isLoaded && solar_info ? (
                     <PanelCountSlider
                         value={slider_value}
                         maxPanelsAllowed={
@@ -116,7 +117,12 @@ function GreenMapComponent() {
                     />
                 ) : null}
 
-                <ModesButtons alignment={alignment} onClick={handleChange} />
+                {isLoaded ? (
+                    <ModesButtons
+                        alignment={alignment}
+                        onClick={handleChange}
+                    />
+                ) : null}
             </Grid>
 
             <Grid item xs={12} md={6}>
