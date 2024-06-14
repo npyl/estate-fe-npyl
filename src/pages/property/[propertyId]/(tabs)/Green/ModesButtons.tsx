@@ -1,5 +1,5 @@
 import {
-    ToggleButtonGroup,
+    ToggleButtonGroup as MuiToggleButtonGroup,
     ToggleButton as MuiToggleButton,
     IconButton,
 } from "@mui/material";
@@ -27,6 +27,25 @@ const ToggleButton = styled(MuiToggleButton)(({ theme }) => ({
     },
 }));
 
+const ToggleButtonGroup = styled(MuiToggleButtonGroup)(({ theme }) => ({
+    position: "absolute",
+    top: "70px",
+    left: "20px",
+    "& .MuiToggleButton-root": {
+        width: "100px",
+        height: "40px",
+        fontSize: "14px",
+        backgroundColor: "white",
+        display: "flex",
+        flexDirection: "row",
+    },
+    "& .MuiToggleButtonGroup-grouped": {
+        borderRadius: "20px",
+        marginTop: "10px",
+        borderColor: theme.palette.neutral?.[500],
+    },
+}));
+
 interface ModeButtonsProps {
     alignment: string;
     onClick: (_: any, newAlignment: string) => void;
@@ -34,23 +53,6 @@ interface ModeButtonsProps {
 
 const ModesButtons = ({ alignment, onClick }: ModeButtonsProps) => (
     <ToggleButtonGroup
-        sx={{
-            position: "absolute",
-            top: "70px",
-            left: "20px",
-            "& .MuiToggleButton-root": {
-                width: "100px", // Adjust button width as needed
-                height: "40px", // Adjust button height as needed
-                fontSize: "14px", // Adjust font size as needed
-                backgroundColor: "white", // White background color
-                display: "flex",
-                flexDirection: "row",
-            },
-            "& .MuiToggleButtonGroup-grouped": {
-                borderRadius: "20px", // Adjust the border radius as needed
-                marginTop: "10px", // Spacing between buttons
-            },
-        }}
         orientation="vertical"
         color="primary"
         value={alignment}

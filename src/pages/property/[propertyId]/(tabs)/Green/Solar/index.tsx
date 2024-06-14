@@ -82,9 +82,10 @@ const SolarDetails: React.FC<SolarDetailsProps> = ({
 
             {panel_data ? (
                 <Stack
-                    direction="row"
+                    direction={{ xs: "column", sm: "row" }}
                     justifyContent="space-around"
                     alignItems="center"
+                    gap={1}
                     p={5}
                 >
                     <Stack>
