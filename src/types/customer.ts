@@ -20,10 +20,10 @@ export interface ICustomerResultResponse {
     lessor: boolean;
     seller: boolean;
     buyer: boolean;
-
+    labels: ILabel[];
+    ownedProperties: IOwnedProperties[];
     createdAt: string;
     budget: number;
-    labels: ILabel[];
     areas: {
         nameEN: string;
         nameGR: string;
