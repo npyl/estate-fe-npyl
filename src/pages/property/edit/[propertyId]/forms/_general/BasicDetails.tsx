@@ -1,13 +1,14 @@
-import { Grid, MenuItem } from "@mui/material";
+import { Box, Grid, IconButton, MenuItem, Modal, Stack } from "@mui/material";
 import * as React from "react";
 import { useRouter } from "next/router";
-import { useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { LabelCreate } from "@/components/Label";
 import { useGlobals } from "src/hooks/useGlobals";
 import { useAllUsersQuery } from "src/services/user";
 import { IGlobalProperty } from "src/types/global";
 import { KeyValue } from "src/types/KeyValue";
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 
 import Panel from "src/components/Panel";
 
@@ -22,6 +23,10 @@ import {
 import { useFormContext } from "react-hook-form";
 import Autocomplete from "../components/Autocomplete";
 import Rent from "./Rent";
+import Form from "@/pages/customer/components/Form";
+import { ICustomerPOST } from "@/types/customer";
+import { useCreateOrUpdateCustomerMutation } from "@/services/customers";
+import { ClearIcon } from "@mui/x-date-pickers";
 
 const useEnums = () => {
     const data = useGlobals();
@@ -65,6 +70,18 @@ const BasicSection: React.FC<any> = () => {
         [subCategoriesMap, parentCategory]
     );
 
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
+    const [create, { isError, isLoading }] =
+        useCreateOrUpdateCustomerMutation();
+
+    const handleSave = useCallback(
+        (body: ICustomerPOST) => create(body).unwrap().then(handleClose),
+        []
+    );
+
     return (
         <Panel
             label={t("Basic Details").toString()}
@@ -103,8 +120,27 @@ const BasicSection: React.FC<any> = () => {
                         ))}
                     </RHFTextField>
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                {/* OWNER */}
+                <Grid
+                    item
+                    xs={12}
+                    sm={6}
+                    display="flex"
+                    width="100%"
+                    direction="row"
+                    alignItems="center"
+                    gap={1}
+                >
                     <Autocomplete />
+                    <AddOutlinedIcon
+                        sx={{
+                            color: "blue",
+                            "&:hover": {
+                                cursor: "pointer",
+                            },
+                        }}
+                        onClick={handleOpen}
+                    />
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <RHFOnlyNumbers
@@ -178,6 +214,46 @@ const BasicSection: React.FC<any> = () => {
                     <RHFCheckbox name="auction" label={t("Auction")} />
                 </Grid>
             </Grid>
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-title"
+                aria-describedby="modal-description"
+            >
+                <Box
+                    sx={{
+                        position: "absolute",
+                        overflow: "auto",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        width: 900,
+                        maxHeight: 650,
+                        bgcolor: "background.paper",
+                        borderRadius: "10px",
+                        boxShadow: 24,
+                        p: 4,
+                    }}
+                >
+                    <IconButton
+                        onClick={handleClose}
+                        sx={{
+                            position: "absolute",
+                            top: 8,
+                            right: 8,
+                            zIndex: 1,
+                        }}
+                    >
+                        <ClearIcon />
+                    </IconButton>
+                    <Form
+                        isLoading={false}
+                        isError={false}
+                        onSave={handleSave}
+                        onCancel={handleClose}
+                    />
+                </Box>
+            </Modal>
         </Panel>
     );
 };

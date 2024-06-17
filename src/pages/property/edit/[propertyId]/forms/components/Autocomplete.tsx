@@ -1,6 +1,12 @@
-import { TextField, Autocomplete as MuiAutocomplete } from "@mui/material";
+import {
+    TextField,
+    Autocomplete as MuiAutocomplete,
+    InputAdornment,
+} from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+
 import { useAllCustomersQuery } from "src/services/customers";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
 const Autocomplete = () => {
@@ -8,6 +14,8 @@ const Autocomplete = () => {
 
     const { data: owners } = useAllCustomersQuery();
     const owner = watch("ownerId");
+
+    const [openModal, setOpenModal] = useState(false);
 
     const ownerNames = useMemo(
         () =>
@@ -42,7 +50,10 @@ const Autocomplete = () => {
             value={value}
             getOptionLabel={(o) => `${o.firstName} ${o.lastName}`}
             onChange={handleChange}
-            renderInput={(params) => <TextField {...params} label="Owner" />}
+            sx={{ width: "100%" }}
+            renderInput={(params) => (
+                <TextField {...params} label="Owner" sx={{ width: "100%" }} />
+            )}
         />
     );
 };
