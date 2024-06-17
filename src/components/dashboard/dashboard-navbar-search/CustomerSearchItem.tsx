@@ -135,23 +135,6 @@ export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
                     >
                         <Item value={option.city} highlight={city.highlight} />
                         {/* <Item value={+option?.area!} highlight={area.highlight} /> */}
-                        {option?.labels.length !== 0 ? (
-                            <Stack direction="row" alignItems={"center"}>
-                                <SellOutlinedIcon
-                                    sx={{
-                                        color: "black",
-                                        width: "18px",
-                                        height: "18px",
-                                    }}
-                                />
-                                <Typography>
-                                    {" "}
-                                    {option?.labels
-                                        ?.map((n) => n.name)
-                                        .join(", ")}
-                                </Typography>
-                            </Stack>
-                        ) : null}
                     </Stack>
                 </Stack>
                 <Stack gap={2} direction={"column"}>
@@ -171,10 +154,37 @@ export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
                                 height: "18px",
                             }}
                         />
-                        <Item
-                            value={option.email}
-                            highlight={email.highlight}
-                        />
+                        <Stack
+                            width="100%"
+                            direction="row"
+                            justifyContent="space-between"
+                        >
+                            <Item
+                                value={option.email}
+                                highlight={email.highlight}
+                            />{" "}
+                            {option?.labels.length !== 0 ? (
+                                <Stack
+                                    direction="row"
+                                    gap={1}
+                                    alignItems={"center"}
+                                >
+                                    <SellOutlinedIcon
+                                        sx={{
+                                            color: "black",
+                                            width: "18px",
+                                            height: "18px",
+                                        }}
+                                    />
+                                    <Typography>
+                                        {" "}
+                                        {option?.labels
+                                            ?.map((n) => n.name)
+                                            .join(", ")}
+                                    </Typography>
+                                </Stack>
+                            ) : null}
+                        </Stack>
                     </Stack>
                     <Stack
                         flex={1}
