@@ -8,6 +8,9 @@ import { ICustomerResultResponse } from "src/types/customer";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
+import { NormalBadge } from "@/components/PropertyCard/styled";
+import SellOutlinedIcon from "@mui/icons-material/SellOutlined";
+
 interface SearchItemProps {
     searchText: string;
     option: ICustomerResultResponse;
@@ -95,10 +98,23 @@ export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
                         value={option.lastName}
                         highlight={lastName.highlight}
                     />
+                    {option?.seller === true ? (
+                        <NormalBadge name={"Seller"} color="indigo" />
+                    ) : null}
+                    {option?.buyer === true ? (
+                        <NormalBadge name={"Buyer"} color="indigo" />
+                    ) : null}
+                    {option?.lessor === true ? (
+                        <NormalBadge name={"Lessor"} color="indigo" />
+                    ) : null}
+                    {option?.leaser === true ? (
+                        <NormalBadge name={"Leaser"} color="indigo" />
+                    ) : null}
                 </Stack>
                 <Stack
                     alignItems={"center"}
                     direction={"row"}
+                    // justifyContent="space-between"
                     gap={1}
                     sx={{
                         color: "text.secondary",
@@ -112,8 +128,31 @@ export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
                             height: "18px",
                         }}
                     />
-                    <Item value={option.city} highlight={city.highlight} />
-                    {/* <Item value={+option?.area!} highlight={area.highlight} /> */}
+                    <Stack
+                        width="100%"
+                        direction="row"
+                        justifyContent="space-between"
+                    >
+                        <Item value={option.city} highlight={city.highlight} />
+                        {/* <Item value={+option?.area!} highlight={area.highlight} /> */}
+                        {option?.labels.length !== 0 ? (
+                            <Stack direction="row" alignItems={"center"}>
+                                <SellOutlinedIcon
+                                    sx={{
+                                        color: "black",
+                                        width: "18px",
+                                        height: "18px",
+                                    }}
+                                />
+                                <Typography>
+                                    {" "}
+                                    {option?.labels
+                                        ?.map((n) => n.name)
+                                        .join(", ")}
+                                </Typography>
+                            </Stack>
+                        ) : null}
+                    </Stack>
                 </Stack>
                 <Stack gap={2} direction={"column"}>
                     <Stack

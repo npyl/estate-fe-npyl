@@ -28,7 +28,6 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
         state,
         category,
         parentCategory,
-
         area,
         plotArea,
     } = item || {};
@@ -218,7 +217,7 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
                                     variant="body2"
                                     color="text.secondary"
                                 >
-                                    {details.setbackCoefficient || "-"}
+                                    {details?.setbackCoefficient || "-"}
                                     {""}
                                 </Typography>
                             </Stack>

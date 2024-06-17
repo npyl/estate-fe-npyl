@@ -21,8 +21,9 @@ export interface ICustomerResultResponse {
     seller: boolean;
     buyer: boolean;
 
-    budget: number;
     createdAt: string;
+    budget: number;
+    labels: ILabel[];
     areas: {
         nameEN: string;
         nameGR: string;
