@@ -18,7 +18,7 @@ export const LabeledSwitch = styled(
 
     return {
         width: `${totalWidth}px`,
-        height: "50px",
+        height: "34px",
         padding: "0px",
 
         "& .MuiSwitch-switchBase": {
@@ -47,7 +47,7 @@ export const LabeledSwitch = styled(
             backgroundColor: "white",
             borderRadius: 5,
             width: "35px",
-            height: "46px",
+            height: "30px",
             margin: "1px",
         },
 
@@ -60,7 +60,7 @@ export const LabeledSwitch = styled(
                 top: "50%",
                 transform: "translateY(-50%)",
                 color: "white",
-                fontSize: 15,
+                fontSize: 14.5,
             },
             "&:before": {
                 right: 8,
