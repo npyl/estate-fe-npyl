@@ -31,6 +31,11 @@ export const DashboardNavbarSearch: FC = () => {
         setSearchText("");
     };
 
+    const handleChangeCategory = (event: any) => {
+        setSearchCategory(event.target.value as SearchCategory);
+        setSearchText("");
+    };
+
     const open = useMemo(() => Boolean(anchorEl), [anchorEl]);
 
     return (
