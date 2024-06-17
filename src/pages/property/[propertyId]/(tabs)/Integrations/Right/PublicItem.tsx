@@ -12,7 +12,7 @@ interface PublicItemProps {
 
 const PublicItem = ({ label, published, onClick }: PublicItemProps) => (
     <Item>
-        <Stack direction="row" spacing={1} alignItems="center">
+        <Stack direction="row" spacing={0.8} alignItems="center">
             <PublicSvg />
             <Typography>{label}</Typography>
         </Stack>
