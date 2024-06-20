@@ -1,4 +1,4 @@
-import Panel, { PanelProps } from "../Panel";
+import Panel, { PanelProps } from "../../../Panel";
 import { Pollutant } from "@/types/googleapi";
 import PollutantItem from "./PollutantItem";
 import { useTranslation } from "react-i18next";

@@ -11,7 +11,7 @@ import {
 } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
 
-const ToggleButton = styled(MuiToggleButton)(({ theme }) => ({
+const ToggleButton = styled(MuiToggleButton)({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-around",
@@ -25,7 +25,7 @@ const ToggleButton = styled(MuiToggleButton)(({ theme }) => ({
     "&: hover": {
         backgroundColor: "white",
     },
-}));
+});
 
 const ToggleButtonGroup = styled(MuiToggleButtonGroup)(({ theme }) => ({
     position: "absolute",
@@ -57,7 +57,7 @@ const ModesButtons = ({ alignment, onClick }: ModeButtonsProps) => (
         color="primary"
         value={alignment}
         exclusive
-        onChange={onClick}
+        onChange={(_, a) => a !== null && onClick(_, a)} // Make sure we do not untoggle
     >
         <ToggleButton value="energy">
             <Brightness4 />

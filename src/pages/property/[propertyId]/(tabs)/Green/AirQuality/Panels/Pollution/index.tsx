@@ -1,5 +1,5 @@
 import { Typography, Box, Stack, StackProps, Skeleton } from "@mui/material";
-import Panel from "../Panel";
+import Panel from "../../../Panel";
 import React from "react";
 import { Index } from "@/types/googleapi";
 import Gauge from "./Gauge";
@@ -56,7 +56,8 @@ const PollutionPanel: React.FC<PollutionPanelProps> = ({
             title={`${t("Air Pollution")} - ${new Date().toLocaleDateString()}`}
         >
             <Typography variant="h6" gutterBottom>
-                {t("Dominant Pollutants")}: {findAqi?.dominantPollutant}
+                {t("Dominant Pollutants")}:{" "}
+                {findAqi?.dominantPollutant.toUpperCase()}
             </Typography>
 
             <Box position="relative" height="400px">

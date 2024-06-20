@@ -24,7 +24,6 @@ const ColorBar = ({ position, onChange }: any) => (
         }}
         sx={{
             width: "100%",
-            marginTop: "20px",
         }}
     />
 );

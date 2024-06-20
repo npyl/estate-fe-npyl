@@ -78,13 +78,6 @@ function GreenMapComponent() {
                 "projection_changed",
                 () => setProjection(mapRef.current?.getProjection())
             );
-
-            // new google.maps.Marker({
-            //     position: center,
-            //     map: mapRef.current,
-            //     icon: "https://img.icons8.com/external-bearicons-flat-bearicons/64/external-Home-location-bearicons-flat-bearicons.png",
-            //     zIndex: 50,
-            // });
         }
     }, [isLoaded, center]);
 
@@ -92,7 +85,7 @@ function GreenMapComponent() {
         if (!projection || !solar_info) return;
 
         plotSolar(solar_info, projection, slider_value, mapRef.current);
-        setMinorPanelInfo(getMinorPanelInfo(solar_info, 0));
+        setMinorPanelInfo(getMinorPanelInfo(solar_info, slider_value));
         mapRef.current?.setZoom(20);
     }, [projection, solar_info, slider_value]);
 

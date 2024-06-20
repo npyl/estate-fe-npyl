@@ -1,5 +1,5 @@
 import Stack from "@mui/material/Stack";
-import { PanelPaper } from "../styled";
+import { PanelPaper } from "../../../Panel/styled";
 import { SpaceBetween } from "@/components/styled";
 import ColorBar from "./ColorBar";
 import { Skeleton } from "@mui/material";

@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import Panel from "../Panel";
+import Panel from "../../../Panel";
 import HealthRecommendation from "./Item";
 import HealthRecommendationSkeleton from "./ItemSkeleton";
 

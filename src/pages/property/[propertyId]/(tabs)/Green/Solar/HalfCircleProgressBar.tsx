@@ -39,7 +39,7 @@ const HalfCircleProgressBar: React.FC<HalfCircleProgressBarProps> = ({
     label,
 }) => {
     return (
-        <Box position="relative" display="inline-flex" alignItems="center">
+        <Box width="max-content" position="relative" alignItems="center">
             <CircularProgress
                 variant="determinate"
                 value={value}
@@ -65,23 +65,25 @@ const HalfCircleProgressBar: React.FC<HalfCircleProgressBarProps> = ({
                 thickness={4}
                 sx={{ borderRadius: "50%" }}
             />
+
             <CircleCutter />
-            {label && (
+
+            {label ? (
                 <Typography
                     variant="body2"
-                    component="div"
                     sx={{
                         position: "absolute",
                         zIndex: 2,
                         textAlign: "center",
-                        width: "100%",
                         top: "50%",
-                        transform: "translateY(-50%)",
+                        left: "50%",
+                        transform: "translate(-50%, -50%)",
+                        textWrap: "wrap",
                     }}
                 >
                     {label}
                 </Typography>
-            )}
+            ) : null}
         </Box>
     );
 };

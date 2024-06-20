@@ -103,13 +103,9 @@ const useSolarPanelService = () => {
         let widthMeters = solarPotential.panelHeightMeters;
         let heightMeters = solarPotential.panelWidthMeters;
         let count = 0;
-        let yearlyEnergyDcKwh = 0;
         let panelsArray: any = [];
 
         solarPotential.solarPanelConfigs.forEach((config, i: any) => {
-            if (config.panelsCount === LIMIT_COUNT) {
-                yearlyEnergyDcKwh = config.yearlyEnergyDcKwh;
-            }
             config.roofSegmentSummaries.forEach((s: any) => {
                 const segmentIndex = s.segmentIndex;
                 const panelsCount = s.panelsCount;

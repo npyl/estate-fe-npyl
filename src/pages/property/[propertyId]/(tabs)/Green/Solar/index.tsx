@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Paper, Typography, Divider, Stack, Box } from "@mui/material";
+import { Typography, Stack } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { List, ListItem } from "src/components/List";
 import HalfCircleProgressBar from "./HalfCircleProgressBar";
@@ -16,6 +16,8 @@ import {
 import { Bar } from "react-chartjs-2";
 import { BuildingInsights } from "../types";
 import { TranslationType } from "@/types/translation";
+import { formatThousands } from "@/utils/formatNumber";
+import Panel from "../Panel";
 
 ChartJS.register(
     CategoryScale,
@@ -35,8 +37,7 @@ const getChartOptions = (t: TranslationType) => ({
             position: "top" as const,
         },
         title: {
-            display: true,
-            text: t("Sunniness Over Roof area"),
+            display: false,
         },
     },
 });
@@ -74,96 +75,98 @@ const SolarDetails: React.FC<SolarDetailsProps> = ({
     const chartOptions = useMemo(() => getChartOptions(t), [t]);
 
     return (
-        <Paper elevation={10}>
-            <Typography px={3} py={1.5} variant="h6">
-                {t("Current Installation")}
-            </Typography>
-            <Divider />
-
+        <Stack spacing={1}>
             {panel_data ? (
-                <Stack
-                    direction={{ xs: "column", sm: "row" }}
-                    justifyContent="space-around"
-                    alignItems="center"
-                    gap={1}
-                    p={5}
-                >
-                    <Stack>
-                        <Typography variant="body1">
-                            {t("Panels count")}
-                        </Typography>
-                        <HalfCircleProgressBar
-                            value={panel_data.panel.percent}
-                            color="primary"
-                            label={panel_data.panel.text}
-                        />
-                    </Stack>
+                <Panel title={t("Current Installation")}>
+                    <Stack
+                        direction={{ xs: "column", sm: "row" }}
+                        justifyContent="space-around"
+                        alignItems="center"
+                        gap={1}
+                        p={5}
+                    >
+                        <Stack alignItems="center">
+                            <Typography variant="body1">
+                                {t("Panels count")}
+                            </Typography>
+                            <HalfCircleProgressBar
+                                value={panel_data.panel.percent}
+                                color="primary"
+                                label={panel_data.panel.text}
+                            />
+                        </Stack>
 
-                    <Stack>
-                        <Typography variant="body1">
-                            {t("Annual energy")}
-                        </Typography>
-                        <HalfCircleProgressBar
-                            value={panel_data.energy.percent}
-                            color="success"
-                            label={panel_data.energy.text}
-                        />
+                        <Stack alignItems="center">
+                            <Typography variant="body1">
+                                {t("Annual energy")}
+                            </Typography>
+                            <HalfCircleProgressBar
+                                value={panel_data.energy.percent}
+                                color="success"
+                                label={formatThousands(panel_data.energy.text)}
+                            />
+                        </Stack>
                     </Stack>
-                </Stack>
+                </Panel>
             ) : null}
 
-            <Divider />
-            <Typography px={3} py={1.5} variant="h6">
-                {t("Maximum Gain Installation")}
-            </Typography>
-            <Divider />
+            <Panel
+                title={t("Maximum Gain Installation")}
+                contentProps={{
+                    p: 0,
+                }}
+            >
+                <List>
+                    <ListItem
+                        label={t("Max Panel Required")}
+                        value={solarPotential.maxArrayPanelsCount}
+                    />
 
-            <List>
-                <ListItem
-                    label={t("Max Panel Required")}
-                    value={solarPotential.maxArrayPanelsCount}
-                />
+                    <ListItem
+                        label={t("Panel Lifespan(Yrs)")}
+                        value={solarPotential.panelLifetimeYears}
+                    />
+                    <ListItem
+                        label={t("Area(m²)")}
+                        value={solarPotential.maxArrayAreaMeters2.toFixed(2)}
+                    />
 
-                <ListItem
-                    label={t("Panel Lifespan(Yrs)")}
-                    value={solarPotential.panelLifetimeYears}
-                />
-                <ListItem
-                    label={t("Area(m²)")}
-                    value={solarPotential.maxArrayAreaMeters2}
-                />
+                    <ListItem
+                        label={t("Max Sunshine Hours/Year")}
+                        value={solarPotential.maxSunshineHoursPerYear.toFixed(
+                            2
+                        )}
+                    />
 
-                <ListItem
-                    label={t("Max Sunshine Hours/Year")}
-                    value={solarPotential.maxSunshineHoursPerYear}
-                />
+                    <ListItem
+                        label={t("Carbon Offset Factor (kg/MWh)")}
+                        value={solarPotential.carbonOffsetFactorKgPerMwh.toFixed(
+                            2
+                        )}
+                    />
 
-                <ListItem
-                    label={t("Carbon Offset Factor (kg/MWh)")}
-                    value={solarPotential.carbonOffsetFactorKgPerMwh}
-                />
+                    <ListItem
+                        label={t("Watts Per Panel")}
+                        value={solarPotential.panelCapacityWatts.toFixed(2)}
+                    />
 
-                <ListItem
-                    label={t("Watts Per Panel")}
-                    value={solarPotential.panelCapacityWatts}
-                />
-
-                <ListItem
-                    label={t("Panel Dimension(m)(Height x Width)")}
-                    value={
-                        solarPotential.panelHeightMeters +
-                        " x " +
-                        solarPotential.panelWidthMeters
-                    }
-                />
-            </List>
+                    <ListItem
+                        label={t("Panel Dimension(m)(Height x Width)")}
+                        value={
+                            solarPotential.panelHeightMeters +
+                            " x " +
+                            solarPotential.panelWidthMeters
+                        }
+                    />
+                </List>
+            </Panel>
 
             {chartData ? (
-                <Box p={3}>
+                <Panel title={t("Sunniness Over Roof area")}>
                     <Bar data={chartData} options={chartOptions} />
-                </Box>
+                </Panel>
             ) : null}
-        </Paper>
+        </Stack>
     );
 };
 
