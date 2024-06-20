@@ -124,8 +124,14 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
             )}
 
             <Stack direction={"column"} width="100%">
-                <Grid container spacing={1} alignItems="center" marginLeft={2}>
-                    <Grid item xs={12} sm={6}>
+                <Grid
+                    container
+                    spacing={1}
+                    justifyContent="flex-start"
+                    alignItems="center"
+                    marginLeft={2}
+                >
+                    <Grid item xs={12} sm={2}>
                         <Typography variant="h6">Name</Typography>
                     </Grid>
                     <Grid
