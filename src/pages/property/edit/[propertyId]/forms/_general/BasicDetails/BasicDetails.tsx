@@ -29,12 +29,13 @@ import {
 } from "src/components/hook-form";
 
 import { useFormContext } from "react-hook-form";
-import Autocomplete from "../components/Autocomplete";
-import Rent from "./Rent";
+import Autocomplete from "../../components/Autocomplete";
+import Rent from "../Rent";
 import CustomerForm from "@/pages/customer/components/Form";
 import { ICustomer, ICustomerPOST } from "@/types/customer";
 import { useCreateOrUpdateCustomerMutation } from "@/services/customers";
 import { ClearIcon } from "@mui/x-date-pickers";
+import CustomerModal from "./CustomerModal";
 
 interface ICustomerLocationYup {
     street: string;
@@ -96,7 +97,7 @@ const BasicSection: React.FC<any> = () => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
-    const [create, { isError: isOnwerError, isLoading: isOwnerLoading }] =
+    const [create, { isError: isOwnerError, isLoading: isOwnerLoading }] =
         useCreateOrUpdateCustomerMutation();
 
     const handleSave = useCallback(async (body: ICustomerPOST) => {
@@ -247,43 +248,15 @@ const BasicSection: React.FC<any> = () => {
                     </Grid>
                 </Grid>
             </Panel>
-
             {open ? (
-                <Modal open={open} onClose={handleClose}>
-                    <Box
-                        sx={{
-                            position: "absolute",
-                            overflow: "auto",
-                            top: "50%",
-                            left: "50%",
-                            transform: "translate(-50%, -50%)",
-                            width: 900,
-                            maxHeight: 650,
-                            bgcolor: "background.paper",
-                            borderRadius: "10px",
-                            boxShadow: 24,
-                            p: 4,
-                        }}
-                    >
-                        <IconButton
-                            onClick={handleClose}
-                            sx={{
-                                position: "absolute",
-                                top: 8,
-                                right: 8,
-                                zIndex: 1,
-                            }}
-                        >
-                            <ClearIcon />
-                        </IconButton>
-                        <CustomerForm
-                            isLoading={isOwnerLoading}
-                            isError={isOnwerError}
-                            onSave={handleSave}
-                            onCancel={handleClose}
-                        />
-                    </Box>
-                </Modal>
+                <CustomerModal open={open} onClose={handleClose}>
+                    <CustomerForm
+                        isLoading={isOwnerLoading}
+                        isError={isOwnerError}
+                        onSave={handleSave}
+                        onCancel={handleClose}
+                    />
+                </CustomerModal>
             ) : null}
         </>
     );
