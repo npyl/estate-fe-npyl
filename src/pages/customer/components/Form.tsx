@@ -190,7 +190,7 @@ const Form = ({
                     loading={isLoading && !isError}
                     variant="contained"
                     startIcon={<SendIcon />}
-                    type="submit"
+                    onClick={onSubmit}
                 >
                     {t("Save")}
                 </LoadingButton>

@@ -1,4 +1,12 @@
-import { Box, Grid, IconButton, MenuItem, Modal, Stack } from "@mui/material";
+import {
+    Box,
+    Grid,
+    IconButton,
+    MenuItem,
+    Modal,
+    Stack,
+    Tooltip,
+} from "@mui/material";
 import * as React from "react";
 import { useRouter } from "next/router";
 import { useCallback, useMemo, useState } from "react";
@@ -132,15 +140,20 @@ const BasicSection: React.FC<any> = () => {
                     gap={1}
                 >
                     <Autocomplete />
-                    <AddOutlinedIcon
-                        sx={{
-                            color: "blue",
-                            "&:hover": {
-                                cursor: "pointer",
-                            },
-                        }}
-                        onClick={handleOpen}
-                    />
+                    <Tooltip
+                        title="Create a new Customer/Owner"
+                        placement="top"
+                    >
+                        <AddOutlinedIcon
+                            sx={{
+                                color: "blue",
+                                "&:hover": {
+                                    cursor: "pointer",
+                                },
+                            }}
+                            onClick={handleOpen}
+                        />
+                    </Tooltip>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                     <RHFOnlyNumbers

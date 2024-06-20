@@ -1,12 +1,7 @@
-import {
-    TextField,
-    Autocomplete as MuiAutocomplete,
-    InputAdornment,
-} from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+import { TextField, Autocomplete as MuiAutocomplete } from "@mui/material";
 
 import { useAllCustomersQuery } from "src/services/customers";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 import { useFormContext } from "react-hook-form";
 
 const Autocomplete = () => {
@@ -14,8 +9,6 @@ const Autocomplete = () => {
 
     const { data: owners } = useAllCustomersQuery();
     const owner = watch("ownerId");
-
-    const [openModal, setOpenModal] = useState(false);
 
     const ownerNames = useMemo(
         () =>
