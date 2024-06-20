@@ -12,6 +12,7 @@ import { NormalBadge } from "@/components/PropertyCard/styled";
 import SellOutlinedIcon from "@mui/icons-material/SellOutlined";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import Link from "next/link";
+import { TypeLabels } from "@/components/TypeLabels";
 interface SearchItemProps {
     searchText: string;
     option: ICustomerResultResponse;
@@ -90,7 +91,7 @@ export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
             onClick={() => router.push(`/customer/${option.id}`)}
         >
             <Stack direction={"column"} flex={1} gap={2}>
-                <Stack direction={"row"} flex={1} gap={1}>
+                <Stack direction={"row"} flex={1} gap={1} alignItems="center">
                     <Item
                         value={option.firstName}
                         highlight={firstName.highlight}
@@ -99,19 +100,13 @@ export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
                         value={option.lastName}
                         highlight={lastName.highlight}
                     />
-                    {/* HERE FIX THE COLORS OF EACH OPTION TO BE DIFFERENT  */}
-                    {option?.seller === true ? (
-                        <NormalBadge name={"Seller"} color="yellow" />
-                    ) : null}
-                    {option?.buyer === true ? (
-                        <NormalBadge name={"Buyer"} color="indigo" />
-                    ) : null}
-                    {option?.lessor === true ? (
-                        <NormalBadge name={"Lessor"} color="indigo" />
-                    ) : null}
-                    {option?.leaser === true ? (
-                        <NormalBadge name={"Leaser"} color="yellow" />
-                    ) : null}
+
+                    <TypeLabels
+                        seller={option.seller}
+                        lessor={option.lessor}
+                        leaser={option.leaser}
+                        buyer={option.buyer}
+                    />
                 </Stack>
                 <Stack
                     alignItems={"center"}

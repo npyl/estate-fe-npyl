@@ -55,7 +55,7 @@ export const PriceBadge = styled(({ price, ...props }: PriceBadgeProps) => (
 
 interface NormalBadgeProps extends BoxProps {
     name: string;
-    color: "yellow" | "indigo";
+    color: "yellow" | "indigo" | " " | " ";
 }
 
 export const NormalBadge = styled(
