@@ -186,7 +186,7 @@ const MapView = () => {
             </Grid>
 
             <Grid
-                height={`calc(100vh - 266px)`}
+                height={`calc(100vh - 86px)`}
                 item
                 xs={12}
                 lg={6}
