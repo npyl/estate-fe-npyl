@@ -28,6 +28,7 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
         state,
         category,
         area,
+        plotArea,
     } = item || {};
     const { bathrooms, bedrooms } = details || {};
     const { lat, lng } = location || {};
@@ -108,7 +109,7 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
                 <Grid item xs={8}>
                     <Stack px={2} py={2} spacing={0.8}>
                         <Stack
-                            spacing={4}
+                            spacing={2.5}
                             direction="row"
                             mt={1}
                             flexWrap="wrap"
@@ -122,10 +123,11 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
                                 <Typography>
                                     <i className="las la-bed" />
                                 </Typography>
-                                <Typography variant="body2">
+                                <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                >
                                     {bedrooms || "-"}
-                                </Typography>
-                                <Typography variant="body2">
                                     {t("beds")}
                                 </Typography>
                             </Stack>
@@ -138,10 +140,12 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
                                 <Typography>
                                     <i className="las la-bath" />
                                 </Typography>
-                                <Typography variant="body2">
+
+                                <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                >
                                     {bathrooms || "-"}
-                                </Typography>
-                                <Typography variant="body2">
                                     {t("baths")}
                                 </Typography>
                             </Stack>
@@ -154,10 +158,29 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
                                 <Typography>
                                     <i className="las la-expand-arrows-alt " />
                                 </Typography>
-                                <Typography variant="body2">
+                                <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                >
                                     {area || "-"}
+                                    {"m²"}
                                 </Typography>
-                                <Typography variant="body2">m²</Typography>
+                            </Stack>
+                            <Stack
+                                direction="row"
+                                spacing={1}
+                                alignItems="center"
+                            >
+                                <Typography>
+                                    <i className="las la-chart-area" />
+                                </Typography>
+                                <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                >
+                                    {plotArea || "-"}
+                                    {"m²"}
+                                </Typography>
                             </Stack>
                         </Stack>
 
@@ -189,7 +212,7 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
 
                         <Divider />
 
-                        <Stack direction="row" spacing={0.3}>
+                        <Stack direction="row" spacing={1}>
                             {state?.value ? (
                                 <NormalBadge
                                     name={t(state?.value)}
