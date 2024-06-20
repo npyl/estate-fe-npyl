@@ -129,7 +129,7 @@ const Form = ({
 
     const { methods, handleSubmit, reset } = useCustomerForm(customer);
 
-    const onSubmit = handleSubmit((data) => {
+    const onSubmit = handleSubmit((data: ICustomerYup) => {
         try {
             onSave({
                 ...(data as ICustomerPOST),
