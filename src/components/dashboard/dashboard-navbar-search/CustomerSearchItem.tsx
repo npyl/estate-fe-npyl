@@ -8,6 +8,11 @@ import { ICustomerResultResponse } from "src/types/customer";
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import PhoneOutlinedIcon from "@mui/icons-material/PhoneOutlined";
+import { NormalBadge } from "@/components/PropertyCard/styled";
+import SellOutlinedIcon from "@mui/icons-material/SellOutlined";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import Link from "next/link";
+import { TypeLabels } from "@/components/TypeLabels";
 interface SearchItemProps {
     searchText: string;
     option: ICustomerResultResponse;
@@ -86,7 +91,7 @@ export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
             onClick={() => router.push(`/customer/${option.id}`)}
         >
             <Stack direction={"column"} flex={1} gap={2}>
-                <Stack direction={"row"} flex={1} gap={1}>
+                <Stack direction={"row"} flex={1} gap={1} alignItems="center">
                     <Item
                         value={option.firstName}
                         highlight={firstName.highlight}
@@ -94,6 +99,13 @@ export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
                     <Item
                         value={option.lastName}
                         highlight={lastName.highlight}
+                    />
+
+                    <TypeLabels
+                        seller={option.seller}
+                        lessor={option.lessor}
+                        leaser={option.leaser}
+                        buyer={option.buyer}
                     />
                 </Stack>
                 <Stack
@@ -112,14 +124,62 @@ export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
                             height: "18px",
                         }}
                     />
-                    <Item value={option.city} highlight={city.highlight} />
-                    {/* <Item value={+option?.area!} highlight={area.highlight} /> */}
+                    <Stack
+                        width="100%"
+                        direction="row"
+                        justifyContent="space-between"
+                    >
+                        <Item value={option.city} highlight={city.highlight} />
+                        {/* <Item value={+option?.area!} highlight={area.highlight} /> */}
+                        {option?.ownedProperties.length > 0 ? (
+                            <Stack
+                                direction="row"
+                                gap={1}
+                                alignItems={"center"}
+                            >
+                                <HomeOutlinedIcon
+                                    sx={{
+                                        color: "black",
+                                        width: "18px",
+                                        height: "18px",
+                                    }}
+                                />
+                                <Stack direction="row" gap={1}>
+                                    {option?.ownedProperties.map((p) => (
+                                        <Link
+                                            key={p.id}
+                                            href={`/property/${p.id}`}
+                                            passHref
+                                            style={{ textDecoration: "none" }}
+                                        >
+                                            <Typography
+                                                component="a"
+                                                onClick={(e) =>
+                                                    e.stopPropagation()
+                                                }
+                                                sx={{
+                                                    textDecoration: "none",
+                                                    color: "text.secondary",
+                                                    "&:hover": {
+                                                        color: "black",
+                                                    },
+                                                }}
+                                            >
+                                                {p.code}
+                                            </Typography>
+                                        </Link>
+                                    ))}
+                                </Stack>
+                            </Stack>
+                        ) : null}
+                    </Stack>
                 </Stack>
                 <Stack gap={2} direction={"column"}>
                     <Stack
                         flex={1}
                         direction="row"
                         gap={1}
+                        width="100%"
                         sx={{
                             color: "text.secondary",
                             alignItems: "center",
@@ -132,10 +192,37 @@ export const CustomerSearchItem = ({ option, searchText }: SearchItemProps) => {
                                 height: "18px",
                             }}
                         />
-                        <Item
-                            value={option.email}
-                            highlight={email.highlight}
-                        />
+                        <Stack
+                            width="100%"
+                            direction="row"
+                            justifyContent="space-between"
+                        >
+                            <Item
+                                value={option.email}
+                                highlight={email.highlight}
+                            />{" "}
+                            {option?.labels.length !== 0 ? (
+                                <Stack
+                                    direction="row"
+                                    gap={1}
+                                    alignItems={"center"}
+                                >
+                                    <SellOutlinedIcon
+                                        sx={{
+                                            color: "black",
+                                            width: "18px",
+                                            height: "18px",
+                                        }}
+                                    />
+                                    <Typography>
+                                        {" "}
+                                        {option?.labels
+                                            ?.map((n) => n.name)
+                                            .join(", ")}
+                                    </Typography>
+                                </Stack>
+                            ) : null}
+                        </Stack>
                     </Stack>
                     <Stack
                         flex={1}

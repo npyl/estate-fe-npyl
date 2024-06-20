@@ -186,7 +186,7 @@ const MapView = () => {
             </Grid>
 
             <Grid
-                height={`calc(100vh - 266px)`}
+                height={`calc(100vh - 136px)`}
                 item
                 xs={12}
                 lg={6}
@@ -199,7 +199,7 @@ const MapView = () => {
                     lg: "sticky",
                 }}
                 // For sticky:
-                top="65px"
+                top="120px"
                 right="0px"
             >
                 <Map

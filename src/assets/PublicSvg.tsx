@@ -1,7 +1,7 @@
 export const PublicSvg: React.FC = () => (
     <svg
-        width="36px"
-        height="36px"
+        width="26px"
+        height="30px"
         viewBox="0 0 64 64"
         xmlns="http://www.w3.org/2000/svg"
         strokeWidth="3"

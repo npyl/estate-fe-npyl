@@ -3,6 +3,7 @@ import { IDemand, IDemandPOST } from "./demand";
 import { ILabel } from "./label";
 import { ILocation, ILocationPOST } from "./location";
 import { INote } from "./note";
+import { IOwnedProperties } from "./ownedProperties";
 import { IProperties } from "./properties";
 import { IUser } from "./user";
 
@@ -20,9 +21,10 @@ export interface ICustomerResultResponse {
     lessor: boolean;
     seller: boolean;
     buyer: boolean;
-
-    budget: number;
+    labels: ILabel[];
+    ownedProperties: IOwnedProperties[];
     createdAt: string;
+    budget: number;
     areas: {
         nameEN: string;
         nameGR: string;

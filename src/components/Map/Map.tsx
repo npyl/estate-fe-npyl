@@ -257,6 +257,10 @@ const Map = ({
             zoom={zoom || 8}
             onClick={handleMapClick}
             onLoad={onLoad}
+            options={{
+                gestureHandling: "auto",
+                scrollwheel: true,
+            }}
         >
             {map ? (
                 <>

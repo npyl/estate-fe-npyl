@@ -129,7 +129,7 @@ const Form = ({
 
     const { methods, handleSubmit, reset } = useCustomerForm(customer);
 
-    const onSubmit = handleSubmit((data) => {
+    const onSubmit = handleSubmit((data: ICustomerYup) => {
         try {
             onSave({
                 ...(data as ICustomerPOST),
@@ -190,7 +190,7 @@ const Form = ({
                     loading={isLoading && !isError}
                     variant="contained"
                     startIcon={<SendIcon />}
-                    type="submit"
+                    onClick={onSubmit}
                 >
                     {t("Save")}
                 </LoadingButton>

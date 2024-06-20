@@ -1,4 +1,5 @@
 import { TextField, Autocomplete as MuiAutocomplete } from "@mui/material";
+
 import { useAllCustomersQuery } from "src/services/customers";
 import { useCallback, useMemo } from "react";
 import { useFormContext } from "react-hook-form";
@@ -42,7 +43,10 @@ const Autocomplete = () => {
             value={value}
             getOptionLabel={(o) => `${o.firstName} ${o.lastName}`}
             onChange={handleChange}
-            renderInput={(params) => <TextField {...params} label="Owner" />}
+            sx={{ width: "100%" }}
+            renderInput={(params) => (
+                <TextField {...params} label="Owner" sx={{ width: "100%" }} />
+            )}
         />
     );
 };

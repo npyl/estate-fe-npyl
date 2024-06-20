@@ -168,6 +168,7 @@ const ListingCard = ({ label, value, onClick }: ListingCardProps) => {
                         loading={isSyncLoading}
                         disabled={isSyncLoading || cooldown}
                         onClick={handleSync}
+                        sx={{ width: "30px", height: "34px" }}
                         startIcon={
                             <Iconify
                                 icon="material-symbols-light:sync"

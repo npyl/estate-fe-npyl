@@ -12,6 +12,7 @@ import { IUser } from "./user";
 
 export interface IPropertyResultResponse {
     id: number;
+    title: string;
     code: string;
     keyCode: string;
     category: KeyValue;
@@ -26,6 +27,7 @@ export interface IPropertyResultResponse {
     images: string[]; // urls only
     labels: ILabel[];
     location: ILocationPOST;
+
     createdAt: string;
     updatedAt: string;
 

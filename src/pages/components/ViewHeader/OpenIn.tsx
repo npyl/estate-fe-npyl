@@ -22,10 +22,8 @@ const OpenIn = () => {
     const { property } = useGetProperty();
     const { publicListings, restListings } = usePropertyListings();
 
-    const { hasPublic, hasSpitogato, hasGoogleEarth } = useMemo(() => {
-        const hasPublic = publicListings.find(
-            ({ integrationSite }) => integrationSite === ("PUBLIC_SITE" as any)
-        )?.published;
+    const { hasPublic, hasSpitogato } = useMemo(() => {
+        const hasPublic = publicListings.some(({ published }) => published);
 
         const hasSpitogato = restListings.find(
             ({ integrationSite }) => integrationSite === "SPITOGATOS"
@@ -34,12 +32,11 @@ const OpenIn = () => {
         return {
             hasPublic,
             hasSpitogato,
-            hasGoogleEarth: !!property?.googleEarth,
         };
-    }, [publicListings, restListings, property?.googleEarth]);
+    }, [publicListings, restListings]);
 
     // Hide this component if we have nothing...
-    const hasNothing = !hasPublic && !hasSpitogato && !hasGoogleEarth;
+    const hasNothing = !hasPublic && !hasSpitogato;
 
     const openPublic = useCallback(
         () =>
