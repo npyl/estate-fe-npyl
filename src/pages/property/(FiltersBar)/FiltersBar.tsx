@@ -1,5 +1,5 @@
 // mui
-import Paper from "@mui/material/Paper";
+import Paper, { PaperProps } from "@mui/material/Paper";
 import Stack from "@mui/material/Stack";
 import { OverridableComponent } from "@mui/material/OverridableComponent";
 import ButtonGroup from "@mui/material/ButtonGroup";
@@ -52,7 +52,7 @@ const viewOptions: viewOptionsType[] = [
     },
 ];
 
-interface Props {
+interface Props extends PaperProps {
     sorting: string;
     onSortingChange: (s: string) => void;
 
@@ -69,6 +69,7 @@ const FilterBar = ({
     setOptionView,
 
     belowLg,
+    ...props
 }: Props) => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
@@ -99,7 +100,7 @@ const FilterBar = ({
 
     return (
         <>
-            <Paper>
+            <Paper {...props}>
                 <SpaceBetween pb={1} pl={1}>
                     <Stack
                         direction="row"

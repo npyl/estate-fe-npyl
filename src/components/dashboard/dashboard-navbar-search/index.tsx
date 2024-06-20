@@ -10,25 +10,14 @@ export const DashboardNavbarSearch: FC = () => {
     const { t } = useTranslation();
 
     const [searchText, setSearchText] = useState("");
-    // const [debouncedText, setDebouncedText] = useState("");
 
     const [searchCategory, setSearchCategory] = useState<SearchCategory>("all");
 
     const [anchorEl, setAnchorEl] = useState(null);
 
-    // const handleSearch = useDebouncedCallback((value) => {
-    //     if (searchText != "") setDebouncedText(value);
-    // }, 50);
-
     const handleInputChange = (event: any) => {
         setSearchText(event.target.value);
         setAnchorEl(event.currentTarget);
-        // handleSearch(event.target.value);
-    };
-
-    const handleChangeCategory = (event: any) => {
-        setSearchCategory(event.target.value as SearchCategory);
-        setSearchText("");
     };
 
     const handleChangeCategory = (event: any) => {
