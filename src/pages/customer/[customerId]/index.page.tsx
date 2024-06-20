@@ -123,7 +123,11 @@ const CustomerView: NextPage = () => {
 
     return (
         <Box sx={{ width: "100%", paddingTop: 1 }}>
-            <ViewHeader onEdit={handleEdit} onDelete={handleDelete}>
+            <ViewHeader
+                isProperty={false}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+            >
                 <Tabs
                     value={value}
                     onChange={handleChange}

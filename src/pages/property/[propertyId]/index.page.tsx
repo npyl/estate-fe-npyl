@@ -70,6 +70,7 @@ const SingleProperty: NextPage = () => {
     return (
         <>
             <ViewHeader
+                isProperty
                 onEdit={handleEdit}
                 onDelete={handleDelete}
                 onClone={handleClone}
