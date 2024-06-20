@@ -12,6 +12,7 @@ import { IUser } from "./user";
 
 export interface IPropertyResultResponse {
     id: number;
+    title: string;
     code: string;
     keyCode: string;
     category: KeyValue;

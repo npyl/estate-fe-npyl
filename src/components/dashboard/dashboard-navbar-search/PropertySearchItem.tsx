@@ -131,13 +131,19 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                     alignItems="center"
                     marginLeft={2}
                 >
-                    <Grid item xs={12} sm={2}>
-                        <Typography variant="h6">Name</Typography>
+                    <Grid item xs={12} sm={6}>
+                        {option?.title ? (
+                            <Typography variant="h6">
+                                {option?.title}
+                            </Typography>
+                        ) : (
+                            <Typography variant="h6">Name</Typography>
+                        )}
                     </Grid>
                     <Grid
                         item
                         xs={7}
-                        sm={3}
+                        sm={2}
                         sx={{
                             textAlign: { xs: "center", sm: "center" },
                         }}
@@ -254,28 +260,69 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                     </Grid>
                 </Grid>
 
-                <Stack
-                    direction={"row"}
-                    justifyContent={"flex-start"}
-                    alignItems={"center"}
-                    gap={1}
+                <Grid
+                    container
+                    spacing={1}
+                    marginLeft={2}
                     mt={1}
-                    ml={3}
+                    alignItems="center"
                 >
-                    <Typography>
-                        <i className="las la-expand-arrows-alt " />
-                    </Typography>
-                    <Box
-                        component="span"
-                        color="text.secondary"
-                        sx={{
-                            typography: "body2",
-                            fontWeight: area.highlight ? "bold" : "normal",
-                        }}
-                    >
-                        {option?.area === null ? "N/A" : `${option?.area}`} m²
-                    </Box>
-                </Stack>
+                    <Grid item xs={12} sm={6}>
+                        <Box
+                            display="flex"
+                            flexDirection="row"
+                            gap={1}
+                            alignItems="center"
+                        >
+                            <Typography>
+                                <i className="las la-chart-area" />
+                            </Typography>
+
+                            <Typography
+                                component="span"
+                                color="text.secondary"
+                                sx={{
+                                    typography: "body2",
+                                    fontWeight: area.highlight
+                                        ? "bold"
+                                        : "normal",
+                                }}
+                            >
+                                {option?.plotArea === null
+                                    ? "N/A"
+                                    : `${option?.plotArea}`}{" "}
+                                m²
+                            </Typography>
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <Box
+                            display="flex"
+                            flexDirection="row"
+                            gap={1}
+                            alignItems="center"
+                        >
+                            <Typography>
+                                <i className="las la-expand-arrows-alt " />
+                            </Typography>
+                            <Typography
+                                component="span"
+                                color="text.secondary"
+                                sx={{
+                                    typography: "body2",
+                                    fontWeight: area.highlight
+                                        ? "bold"
+                                        : "normal",
+                                }}
+                            >
+                                {option?.area === null
+                                    ? "N/A"
+                                    : `${option?.area}`}{" "}
+                                m²
+                            </Typography>
+                        </Box>
+                    </Grid>
+                </Grid>
 
                 <Grid container spacing={1} alignItems="center" mt={1} ml={2}>
                     <Grid item xs={6} sm={5}>
@@ -300,7 +347,7 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                         </Box>
                     </Grid>
 
-                    <Grid item xs={10} sm={4.5}>
+                    <Grid item xs={10} sm={4}>
                         <NormalBadge
                             name={`${t("Code")}: ${option.code || ""}`}
                             color="yellow"
