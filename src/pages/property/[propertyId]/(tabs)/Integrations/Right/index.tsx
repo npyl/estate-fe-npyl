@@ -1,5 +1,5 @@
-import { Box, Paper, Stack, Tab, Tabs, Typography } from "@mui/material";
-import React, { useCallback, useState } from "react";
+import { Paper, Stack, Typography } from "@mui/material";
+import React, { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import {
     useAddPublicListingMutation,
@@ -10,17 +10,6 @@ import PublicItem from "./PublicItem";
 import IntegrationItem from "./IntegrationItem";
 import usePropertyListings from "@/hooks/listings";
 import { useTranslation } from "react-i18next";
-import TabPanel from "@/components/Tabs";
-import { styled } from "@mui/material/styles";
-
-// ------------------------------------------------------------------------------------
-
-const StackedTabPanel = styled(TabPanel)(({ theme }) => ({
-    display: "flex",
-    flexDirection: "column",
-    gap: theme.spacing(1),
-    width: "100%",
-}));
 
 // ------------------------------------------------------------------------------------
 
@@ -76,8 +65,6 @@ const Right = () => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
 
-    const [tab, setTab] = useState(0);
-
     const invalidateTags = useCallback(
         () =>
             dispatch(properties.util.invalidateTags(["PropertyByIdListings"])),
@@ -97,17 +84,10 @@ const Right = () => {
                 {t("Websites to publish to:")}
             </Typography>
 
-            <Tabs value={tab} onChange={(_, t) => setTab(t)}>
-                <Tab label={t("_Public_FEMALE_PLURAL")} />
-                <Tab label={t("Rest Integrations")} />
-            </Tabs>
-
-            <StackedTabPanel index={0} value={tab}>
+            <Stack gap={1}>
                 <PublicSites onClick={invalidateTags} />
-            </StackedTabPanel>
-            <StackedTabPanel index={1} value={tab}>
                 <Integrations onClick={invalidateTags} />
-            </StackedTabPanel>
+            </Stack>
         </Paper>
     );
 };
