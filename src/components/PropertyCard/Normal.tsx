@@ -301,10 +301,7 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
 
                 <Stack direction="row" spacing={1}>
                     {state?.value ? (
-                        <NormalBadge
-                            name={t(state.value)}
-                            color={alpha(stateColor, 0.2)}
-                        />
+                        <NormalBadge name={t(state.value)} color={stateColor} />
                     ) : null}
                     {category?.value ? (
                         <NormalBadge
@@ -317,6 +314,7 @@ const PropertyCard = ({ item, selectedMarker }: PropertyCardProps) => {
                     <NormalBadge
                         name={`${t("Code")}: ${code || ""}`}
                         color={"#ffcc00"}
+                        sx={{ color: "#854D0E" }}
                     />
 
                     <PriceBadge price={price} />

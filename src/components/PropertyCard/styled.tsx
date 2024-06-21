@@ -102,7 +102,7 @@ export const NormalBadge = styled(
     borderRadius: "25px",
     color: alpha(color, 1),
 
-    backgroundColor: alpha(color, 0.2),
+    backgroundColor: alpha(color, 0.25),
 
     // color: lighten(0.3, color), // make text brighter
     // backgroundColor: color,

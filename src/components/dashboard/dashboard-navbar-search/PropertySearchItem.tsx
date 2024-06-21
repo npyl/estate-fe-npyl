@@ -381,7 +381,8 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                     <Grid item xs={10} sm={4}>
                         <NormalBadge
                             name={`${t("Code")}: ${option.code || ""}`}
-                            color="#ffcc00"
+                            color={"#ffcc00"}
+                            sx={{ color: "#854D0E" }}
                         />
                     </Grid>
                 </Grid>
