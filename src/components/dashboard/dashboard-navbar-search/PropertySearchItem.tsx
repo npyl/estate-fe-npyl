@@ -252,7 +252,7 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                     container
                     spacing={1}
                     marginLeft={2}
-                    mt={1}
+                    mt={0}
                     alignItems="center"
                 >
                     <Grid item xs={12} sm={6}>
@@ -295,7 +295,7 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                     container
                     spacing={1}
                     marginLeft={2}
-                    mt={1}
+                    mt={0}
                     alignItems="center"
                 >
                     <Grid item xs={12} sm={6}>
