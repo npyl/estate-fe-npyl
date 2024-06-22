@@ -1,12 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import type { Template } from "@pdfme/common";
 import type { Form } from "@pdfme/ui";
-import { text, image, barcodes } from "@pdfme/schemas";
-
-const useForceUpdate = () => {
-    const [, forceUpdate] = useState(0);
-    return () => forceUpdate((s) => s + 1);
-};
 
 export const useForm = (props: {
     formRef: React.MutableRefObject<HTMLDivElement | null>;
@@ -14,11 +8,12 @@ export const useForm = (props: {
 }) => {
     const { formRef, template } = props;
     const form = useRef<Form | null>(null);
-    const forceUpdate = useForceUpdate();
 
     useEffect(() => {
-        if (formRef.current && form.current === null && template) {
-            Promise.all([import("@pdfme/ui")]).then(([{ Form }]) => {
+        if (!template) return;
+
+        if (formRef.current && form.current === null) {
+            import("@pdfme/ui").then(({ Form }) => {
                 form.current = new Form({
                     domContainer: formRef.current!!,
                     template,
@@ -26,16 +21,12 @@ export const useForm = (props: {
                     inputs: [{}],
                     // options: { font },
                 });
-                form.current.onChangeInput(forceUpdate);
-                forceUpdate();
             });
-        } else if (form.current && template) {
+        } else if (form.current) {
             form.current?.updateTemplate(template);
             form.current.setInputs([{}]);
         }
-
-        forceUpdate();
-    }, [formRef.current, template]);
+    }, [template]);
 
     return form.current;
 };

@@ -29,8 +29,9 @@ export default async function handler(
 
         const arrayBuffer = await result.arrayBuffer();
         const base64String = Buffer.from(arrayBuffer).toString("base64");
+        const formatted = `data:application/pdf;base64,${base64String}`;
 
-        return new NextResponse(base64String, {
+        return new NextResponse(formatted, {
             status: 200,
             headers: { "Content-Type": "application/json" },
         });

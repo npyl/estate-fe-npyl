@@ -20,7 +20,7 @@ const DialogForm = forwardRef<HTMLFormElement>((props, ref) => (
     <form ref={ref} {...props} method="POST" />
 ));
 
-type Props = {
+export type DialogProps = {
     title?: ReactNode;
     content?: ReactNode;
     actions?: ReactNode;
@@ -36,7 +36,7 @@ const Dialog = ({
     content,
     onClose,
     ...props
-}: Props) =>
+}: DialogProps) =>
     !open ? null : (
         <MuiDialog
             open={open}
