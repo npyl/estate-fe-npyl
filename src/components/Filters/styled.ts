@@ -11,7 +11,7 @@ import {
 import { styled } from "@mui/material/styles";
 
 interface FilterButtonProps extends ButtonProps {
-    open: boolean;
+    open?: boolean;
 }
 
 export const FilterButton = styled(Button, {

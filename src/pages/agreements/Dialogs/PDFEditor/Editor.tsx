@@ -1,9 +1,6 @@
 import { useForm } from "./hook";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Template } from "@pdfme/common";
-import Dialog, { DialogProps } from "@mui/material/Dialog";
-import { Box, Fab } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
 
 export const getSampleTemplate = (basePdf: any): Template => ({
     schemas: [
@@ -55,29 +52,4 @@ const PDFEditor = () => {
     return <div ref={formRef} />;
 };
 
-interface Props extends Omit<DialogProps, "onClose"> {
-    onClose: VoidFunction;
-    variant: "basic" | "purchase";
-}
-
-const PDFEditorDialog: React.FC<Props> = (props) => (
-    <Box position="relative">
-        <Dialog {...props} fullScreen>
-            <PDFEditor />
-        </Dialog>
-
-        <Fab
-            sx={{
-                position: "fixed",
-                top: 30,
-                right: 30,
-                zIndex: 1500,
-            }}
-            onClick={props.onClose}
-        >
-            <CloseIcon />
-        </Fab>
-    </Box>
-);
-
-export default PDFEditorDialog;
+export default PDFEditor;
