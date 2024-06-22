@@ -5,6 +5,9 @@ import PreparationDialog from "./Dialogs/Preparation";
 import useDialog from "@/hooks/useDialog";
 import PDFEditorDialog from "./Dialogs/PDFEditor";
 import FiltersBar from "./FiltersBar";
+import { AgreementsFiltersProvider } from "./FiltersBar/FiltersContext";
+import Stack from "@mui/material/Stack";
+import CardsContent from "./Content";
 
 const AgreementsPage: NextPage = () => {
     const [isPreparationOpen, openPreparation, closePreparation] = useDialog();
@@ -17,7 +20,12 @@ const AgreementsPage: NextPage = () => {
 
     return (
         <>
-            <FiltersBar onClickNew={openPreparation} />
+            <AgreementsFiltersProvider>
+                <Stack spacing={1}>
+                    <FiltersBar onClickNew={openPreparation} />
+                    <CardsContent />
+                </Stack>
+            </AgreementsFiltersProvider>
 
             {isPreparationOpen ? (
                 <PreparationDialog

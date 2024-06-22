@@ -4,6 +4,7 @@ import { SpaceBetween } from "@/components/styled";
 import Typography from "@mui/material/Typography";
 import AddIcon from "@mui/icons-material/Add";
 import { useTranslation } from "react-i18next";
+import ChosenFilters from "./ChosenFilters";
 
 interface Props {
     onClickNew: VoidFunction;
@@ -21,6 +22,8 @@ const AgreementsFiltersBar: React.FC<Props> = ({ onClickNew }) => {
                     {t("New")}
                 </FilterButton>
             </SpaceBetween>
+
+            <ChosenFilters />
         </FiltersBar>
     );
 };

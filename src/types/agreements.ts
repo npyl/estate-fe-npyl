@@ -47,10 +47,22 @@ interface IPurchaseAgreement {
 
 interface IBasicAgreement {}
 
-type IAgreement = (IBasicAgreement | IPurchaseAgreement) & {
+export type IAgreement = (IBasicAgreement | IPurchaseAgreement) & {
+    id: number;
     additional: {
         date: string;
         commisionerSignature: string;
         agentSignature: string;
     };
 };
+
+export interface IAgreementsFilters {
+    type: "basic" | "purchase" | null;
+    active: boolean;
+    draft: boolean;
+    keys: boolean;
+    signed: boolean;
+    expirationDate: string;
+
+    [key: string]: any;
+}
