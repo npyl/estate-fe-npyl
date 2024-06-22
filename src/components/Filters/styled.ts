@@ -10,13 +10,13 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 
-interface PriceButtonProps extends ButtonProps {
+interface FilterButtonProps extends ButtonProps {
     open: boolean;
 }
 
-export const StyledPriceButton = styled(Button, {
+export const FilterButton = styled(Button, {
     shouldForwardProp: (prop) => prop !== "open",
-})<PriceButtonProps>(({ theme, open }) => ({
+})<FilterButtonProps>(({ theme, open }) => ({
     backgroundColor: theme.palette.background.paper,
     fontWeight: 400,
     color:

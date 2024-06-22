@@ -23,11 +23,7 @@ import {
 } from "src/slices/filters";
 import { useDispatch, useSelector } from "src/store";
 import { useTranslation } from "react-i18next";
-import {
-    ListItem,
-    StyledBox,
-    StyledPriceButton,
-} from "@/components/Filters/styled";
+import { ListItem, StyledBox, FilterButton } from "@/components/Filters/styled";
 
 interface Props {
     type: "price" | "area";
@@ -110,7 +106,7 @@ const PriceSelect = ({ type }: Props) => {
             onClickAway={() => setOpen(false)}
         >
             <Box>
-                <StyledPriceButton
+                <FilterButton
                     sx={{ minWidth: "135px" }}
                     open={open}
                     variant="outlined"
@@ -118,7 +114,8 @@ const PriceSelect = ({ type }: Props) => {
                     onClick={handleClick}
                 >
                     {renderLabel}
-                </StyledPriceButton>
+                </FilterButton>
+
                 {open && (
                     <Popper
                         open={open}
