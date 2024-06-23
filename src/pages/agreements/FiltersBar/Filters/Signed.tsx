@@ -11,7 +11,7 @@ export default function FilterSigned() {
         <FilterToggleButton sx={{ minWidth: "130px" }}>
             {t("Signed")}
             <IOSSwitch
-                value={filters.signed}
+                checked={!!filters.signed}
                 onChange={(_, b) => setFilter("signed", b)}
             />
         </FilterToggleButton>

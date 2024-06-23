@@ -11,7 +11,7 @@ export default function FilterKeys() {
         <FilterToggleButton sx={{ minWidth: "130px" }}>
             {t("Keys")}
             <IOSSwitch
-                value={filters.keys}
+                checked={!!filters.keys}
                 onChange={(_, b) => setFilter("keys", b)}
             />
         </FilterToggleButton>

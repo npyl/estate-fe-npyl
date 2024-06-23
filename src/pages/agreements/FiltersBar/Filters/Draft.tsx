@@ -11,7 +11,7 @@ export default function FilterDraft() {
         <FilterToggleButton sx={{ minWidth: "130px" }}>
             {t("Draft")}
             <IOSSwitch
-                value={filters.draft}
+                checked={!!filters.draft}
                 onChange={(_, c) => setFilter("draft", c)}
             />
         </FilterToggleButton>

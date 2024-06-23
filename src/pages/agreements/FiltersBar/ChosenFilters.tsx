@@ -1,2 +1,29 @@
-const ChosenFilters = () => null;
+import Chip from "@mui/material/Chip";
+import Typography from "@mui/material/Typography";
+import Stack, { StackProps } from "@mui/material/Stack";
+import { useAgreementsFiltersContext } from "./FiltersContext";
+import React from "react";
+
+const ChosenFilters: React.FC<StackProps> = (props) => {
+    const { changedFields, clearFilter } = useAgreementsFiltersContext();
+
+    return (
+        <Stack {...props} direction="row" mt={1} gap={0.5}>
+            {Object.entries(changedFields).map(([key, value]) => (
+                <Chip
+                    key={key}
+                    label={
+                        <Typography>
+                            {typeof value === "boolean"
+                                ? key
+                                : `${key}: ${value}`}
+                        </Typography>
+                    }
+                    onDelete={() => clearFilter(key)}
+                />
+            ))}
+        </Stack>
+    );
+};
+
 export default ChosenFilters;

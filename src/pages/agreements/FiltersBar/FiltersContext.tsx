@@ -1,9 +1,17 @@
 import { IAgreementsFilters } from "@/types/agreements";
-import { createContext, useCallback, useContext, useState } from "react";
+import {
+    createContext,
+    useCallback,
+    useContext,
+    useMemo,
+    useState,
+} from "react";
 
 type IAgreementsFiltersState = {
     filters: IAgreementsFilters;
+    changedFields: Record<keyof IAgreementsFilters, any>;
     setFilter: (key: keyof IAgreementsFilters, v: any) => void;
+    clearFilter: (key: keyof IAgreementsFilters) => void;
 };
 
 const AgreementsFiltersContext = createContext<
@@ -41,11 +49,30 @@ export const AgreementsFiltersProvider: React.FC<
         []
     );
 
+    const clearFilter = useCallback(
+        (key: keyof IAgreementsFilters) =>
+            setFilters((old) => ({ ...old, [key]: INITIAL_FILTER_STATE[key] })),
+        []
+    );
+
+    const changedFields = useMemo(
+        () =>
+            Object.entries(filters).reduce((acc: any, [key, value]) => {
+                if (value !== INITIAL_FILTER_STATE[key]) {
+                    acc[key] = value;
+                }
+                return acc;
+            }, {}),
+        [filters]
+    );
+
     return (
         <AgreementsFiltersContext.Provider
             value={{
                 filters,
+                changedFields,
                 setFilter: handleFilterChange,
+                clearFilter,
             }}
             {...props}
         />

@@ -11,7 +11,7 @@ export default function FilterActive() {
         <FilterToggleButton sx={{ minWidth: "130px" }}>
             {t("Active")}
             <IOSSwitch
-                value={filters.active}
+                checked={!!filters.active}
                 onChange={(_, c) => setFilter("active", c)}
             />
         </FilterToggleButton>
