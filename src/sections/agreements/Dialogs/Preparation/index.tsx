@@ -11,7 +11,7 @@ import { useTranslation } from "react-i18next";
 import PropertyDetails from "./PropertyDetails";
 import ButtonGroup from "./ButtonGroup";
 import useDialog from "@/hooks/useDialog";
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, useMemo } from "react";
 import Schema, { getValues } from "./schema";
 const PDFEditorDialog = lazy(() => import("../PDFEditor"));
 
@@ -36,9 +36,11 @@ const PreparationDialog: React.FC<Props> = ({
     //     { skip: !(editedAgreement >= 0) }
     // );
 
+    const values = useMemo(() => getValues(editedAgreement), [editedAgreement]);
+
     const methods = useForm<IAgreementReq>({
         resolver: yupResolver(Schema),
-        values: getValues(editedAgreement),
+        values,
     });
 
     const pdfVariant = methods.watch("variant");
@@ -71,6 +73,7 @@ const PreparationDialog: React.FC<Props> = ({
                     }
                     actions={
                         <>
+                            <RHFCheckbox name="draft" label="Save as draft" />
                             <Button type="submit">{t("Save")}</Button>
                         </>
                     }
