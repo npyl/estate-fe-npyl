@@ -14,6 +14,7 @@ const Card = styled(Paper)(({ theme }) => ({
     cursor: "pointer",
     border: "1px solid",
     borderColor: getBorderColor2(theme),
+    borderRadius: "15px",
     padding: theme.spacing(1),
     boxShadow: "none",
     "&:hover": {

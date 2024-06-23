@@ -1,10 +1,18 @@
 import { FilterButton } from "@/components/Filters";
 import FiltersBar from "@/components/Filters/FiltersBar";
 import { SpaceBetween } from "@/components/styled";
-import Typography from "@mui/material/Typography";
 import AddIcon from "@mui/icons-material/Add";
 import { useTranslation } from "react-i18next";
 import ChosenFilters from "./ChosenFilters";
+import {
+    FilterActive,
+    FilterExpirationDate,
+    FilterKeys,
+    FilterSigned,
+    FilterType,
+} from "./Filters";
+import Stack from "@mui/material/Stack";
+import FilterDraft from "./Filters/Draft";
 
 interface Props {
     onClickNew: VoidFunction;
@@ -16,7 +24,14 @@ const AgreementsFiltersBar: React.FC<Props> = ({ onClickNew }) => {
     return (
         <FiltersBar>
             <SpaceBetween>
-                <Typography>{t("Filters")}</Typography>
+                <Stack direction="row" spacing={0.3} overflow="auto hidden">
+                    <FilterType />
+                    <FilterExpirationDate />
+                    <FilterActive />
+                    <FilterKeys />
+                    <FilterSigned />
+                    <FilterDraft />
+                </Stack>
 
                 <FilterButton endIcon={<AddIcon />} onClick={onClickNew}>
                     {t("New")}
