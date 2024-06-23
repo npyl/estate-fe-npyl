@@ -3,7 +3,7 @@ import { IconButton, InputAdornment, MenuItem, Select } from "@mui/material";
 import { FC, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SearchList } from "./SearchList";
-import { SearchInput } from "./styles";
+import SearchInput from "@/components/SearchInput";
 import { SearchCategory } from "./types";
 
 export const DashboardNavbarSearch: FC = () => {
@@ -40,6 +40,8 @@ export const DashboardNavbarSearch: FC = () => {
                     "input::placeholder": {
                         textIndent: "0px", // adjust this as needed
                     },
+
+                    width: { xs: "65vw", sm: "40vw" },
                 }}
                 startAdornment={
                     <IconButton

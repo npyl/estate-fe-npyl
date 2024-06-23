@@ -1,7 +1,7 @@
 import InputBase from "@mui/material/InputBase";
 import { styled } from "@mui/material/styles";
 
-export const SearchInput = styled(InputBase)(({ theme }) => ({
+const SearchInput = styled(InputBase)(({ theme }) => ({
     borderRadius: 24,
     backgroundColor: theme.palette.background.paper,
     paddingLeft: theme.spacing(2),
@@ -12,9 +12,7 @@ export const SearchInput = styled(InputBase)(({ theme }) => ({
     "&:focus": {
         borderColor: theme.palette.primary.main,
     },
-    width: "40vw",
     height: "50px",
-    [theme.breakpoints.down("sm")]: {
-        width: "65vw",
-    },
 }));
+
+export default SearchInput;
