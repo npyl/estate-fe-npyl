@@ -3,10 +3,14 @@ import { styled } from "@mui/material/styles";
 import Paper from "@mui/material/Paper";
 import { getBorderColor2 } from "@/theme/borderColor";
 import Image from "next/image";
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import { Label } from "@/components/Label";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import { IconButton } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import useDialog from "@/hooks/useDialog";
 
 // ------------------------------------------------------------
 
@@ -17,14 +21,22 @@ const Card = styled(Paper)(({ theme }) => ({
     borderRadius: "15px",
     padding: theme.spacing(1),
     boxShadow: "none",
-    "&:hover": {
-        boxShadow: theme.shadows[20],
-    },
     // ...
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    // ...
+    "& .AgreementCardButtons": {
+        visibility: "hidden",
+    },
+    "&:hover": {
+        boxShadow: theme.shadows[20],
+
+        "& .AgreementCardButtons": {
+            visibility: "visible",
+        },
+    },
 }));
 
 interface CardImageProps {
@@ -59,18 +71,28 @@ const DraftLabel = () => (
 
 interface Props {
     a: IAgreement;
+    onEdit: (id: number) => void;
+    onDelete: (id: number) => void;
 }
 
-const AgreementCard: React.FC<Props> = ({ a }) => (
+const AgreementCard: React.FC<Props> = ({ a, onEdit, onDelete }) => (
     <Card>
         <Stack direction="row" spacing={1} alignItems="center">
             <CardImage variant={a.variant} />
             <Typography variant="body2">{a.title}</Typography>
+            <Stack direction="row" spacing={1}>
+                <CardLabel variant={a.variant} />
+                {a.draft ? <DraftLabel /> : null}
+            </Stack>
         </Stack>
 
-        <Stack spacing={1}>
-            <CardLabel variant={a.variant} />
-            {a.draft ? <DraftLabel /> : null}
+        <Stack spacing={1} direction="row" className="AgreementCardButtons">
+            <IconButton onClick={() => onEdit(a.id)}>
+                <EditIcon />
+            </IconButton>
+            <IconButton onClick={() => onDelete(a.id)}>
+                <DeleteIcon />
+            </IconButton>
         </Stack>
     </Card>
 );

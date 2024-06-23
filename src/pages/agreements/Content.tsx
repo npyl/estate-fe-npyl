@@ -3,6 +3,8 @@ import { useAgreementsFiltersContext } from "./FiltersBar/FiltersContext";
 import Stack from "@mui/material/Stack";
 import AgreementCard from "./AgreementCard";
 import AgreementCardSkeleton from "./AgreementCardSkeleton";
+import { Suspense, lazy, useState } from "react";
+const DeleteDialog = lazy(() => import("@/components/Dialog/Delete"));
 
 const useFilterAgreementsQuery = (
     filter?: IAgreementsFilters
@@ -34,20 +36,39 @@ const CardsContent = () => {
 
     const { data, isLoading } = useFilterAgreementsQuery(filters);
 
-    return (
-        <Stack spacing={1}>
-            {isLoading ? (
-                <>
-                    <AgreementCardSkeleton />
-                    <AgreementCardSkeleton />
-                    <AgreementCardSkeleton />
-                </>
-            ) : null}
+    const [deletableAgreement, setDeletableAgreement] = useState(-1);
 
-            {data?.map((a) => (
-                <AgreementCard key={a.id} a={a} />
-            ))}
-        </Stack>
+    return (
+        <>
+            <Stack spacing={1}>
+                {isLoading ? (
+                    <>
+                        <AgreementCardSkeleton />
+                        <AgreementCardSkeleton />
+                        <AgreementCardSkeleton />
+                    </>
+                ) : null}
+
+                {data?.map((a) => (
+                    <AgreementCard
+                        key={a.id}
+                        a={a}
+                        onEdit={() => {}}
+                        onDelete={setDeletableAgreement}
+                    />
+                ))}
+            </Stack>
+
+            {deletableAgreement !== -1 ? (
+                <Suspense>
+                    <DeleteDialog
+                        open
+                        onClose={() => setDeletableAgreement(-1)}
+                        onDelete={() => {}}
+                    />
+                </Suspense>
+            ) : null}
+        </>
     );
 };
 
