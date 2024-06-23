@@ -1,6 +1,6 @@
 import { IAgreement, IAgreementsFilters } from "@/types/agreements";
 import { useAgreementsFiltersContext } from "./FiltersBar/FiltersContext";
-import Grid from "@mui/material/Grid";
+import Stack from "@mui/material/Stack";
 import AgreementCard from "./AgreementCard";
 import AgreementCardSkeleton from "./AgreementCardSkeleton";
 
@@ -11,7 +11,20 @@ const useFilterAgreementsQuery = (
     isLoading: boolean;
 } => {
     return {
-        data: [],
+        data: [
+            {
+                variant: "basic",
+                id: 1,
+                draft: false,
+                title: "Property x100 Basic",
+            } as any,
+            {
+                variant: "purchase",
+                id: 2,
+                draft: true,
+                title: "Property x101 Purchase",
+            } as any,
+        ],
         isLoading: false,
     };
 };
@@ -22,7 +35,7 @@ const CardsContent = () => {
     const { data, isLoading } = useFilterAgreementsQuery(filters);
 
     return (
-        <Grid container>
+        <Stack spacing={1}>
             {isLoading ? (
                 <>
                     <AgreementCardSkeleton />
@@ -34,7 +47,7 @@ const CardsContent = () => {
             {data?.map((a) => (
                 <AgreementCard key={a.id} a={a} />
             ))}
-        </Grid>
+        </Stack>
     );
 };
 

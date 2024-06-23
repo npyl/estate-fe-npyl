@@ -1,4 +1,10 @@
-interface IPurchaseAgreement {
+export interface IAgreement {
+    id: number;
+    // ...
+    variant: "basic" | "purchase";
+    draft: boolean;
+    title: string;
+    // ...
     manager: {
         fullname: string;
         title: string;
@@ -43,18 +49,12 @@ interface IPurchaseAgreement {
         defects: string;
     };
     gdpr: boolean;
-}
-
-interface IBasicAgreement {}
-
-export type IAgreement = (IBasicAgreement | IPurchaseAgreement) & {
-    id: number;
     additional: {
         date: string;
         commisionerSignature: string;
         agentSignature: string;
     };
-};
+}
 
 export interface IAgreementsFilters {
     type: "basic" | "purchase" | null;
