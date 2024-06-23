@@ -1,18 +1,20 @@
 import { IAgreement, IAgreementsFilters } from "@/types/agreements";
 import { useAgreementsFiltersContext } from "./FiltersBar/FiltersContext";
 import Stack from "@mui/material/Stack";
-import AgreementCard from "./AgreementCard";
-import AgreementCardSkeleton from "./AgreementCardSkeleton";
-import { Suspense, lazy, useState } from "react";
+import AgreementCard from "./Card/AgreementCard";
+import AgreementCardSkeleton from "./Card/AgreementCardSkeleton";
+import { Suspense, lazy, useEffect, useState } from "react";
 const DeleteDialog = lazy(() => import("@/components/Dialog/Delete"));
 
-const useFilterAgreementsQuery = (
-    filter?: IAgreementsFilters
-): {
-    data: IAgreement[];
-    isLoading: boolean;
-} => {
-    return {
+const useFilterAgreementsMutation = (): [
+    filterAgreements: (filter?: IAgreementsFilters) => void,
+    {
+        data: IAgreement[];
+        isLoading: boolean;
+    }
+] => [
+    () => {},
+    {
         data: [
             {
                 variant: "basic",
@@ -28,13 +30,23 @@ const useFilterAgreementsQuery = (
             } as any,
         ],
         isLoading: false,
-    };
-};
+    },
+];
 
-const CardsContent = () => {
+interface Props {
+    propertyId?: number;
+}
+
+const CardsContent: React.FC<Props> = ({ propertyId }) => {
     const { filters } = useAgreementsFiltersContext();
 
-    const { data, isLoading } = useFilterAgreementsQuery(filters);
+    const [filterAgreements, { data, isLoading }] =
+        useFilterAgreementsMutation();
+
+    useEffect(() => {
+        // TODO: if propertyId get them from the respective propertyId filter
+        filterAgreements(filters);
+    }, [filters]);
 
     const [deletableAgreement, setDeletableAgreement] = useState(-1);
 
