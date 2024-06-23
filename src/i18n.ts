@@ -747,10 +747,12 @@ const resources = {
 
             "Share PDF": "Share PDF",
             "Download PDF": "Download PDF",
+            Agreements: "Agreements",
         },
     },
     el: {
         translation: {
+            Agreements: "Εντολές",
             Locations: "Τοποθεσίες",
             Reviews: "Αξιολογήσεις",
             "Property presentation Rate": "Αξιολόγηση παρουσίασης ακινήτου",

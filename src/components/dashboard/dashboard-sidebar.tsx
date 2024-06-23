@@ -3,7 +3,6 @@ import {
     ConfirmationNumber,
     LabelImportant,
 } from "@mui/icons-material";
-import EditCalendarIcon from "@mui/icons-material/EditCalendar";
 import {
     Box,
     Drawer,
@@ -29,6 +28,7 @@ import { useRouter } from "next/router";
 import { LanguageButton } from "../Language/LanguageButton";
 import { SettingsButton } from "../settings-button";
 import useResponsive from "@/hooks/useResponsive";
+import HandshakeIcon from "@mui/icons-material/Handshake";
 
 interface DashboardSidebarProps {
     onClose?: () => void;
@@ -99,6 +99,11 @@ const getSections = (t: TFunction): Section[] => [
                 path: "/logs",
                 icon: <HistoryIcon fontSize="small" />,
                 adminOnly: true,
+            },
+            {
+                title: t("Agreements"),
+                path: "/agreements",
+                icon: <HandshakeIcon fontSize="small" />,
             },
             {
                 title: t("Security"),
