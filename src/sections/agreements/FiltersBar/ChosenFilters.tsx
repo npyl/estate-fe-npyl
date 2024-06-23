@@ -7,6 +7,8 @@ import React from "react";
 const ChosenFilters: React.FC<StackProps> = (props) => {
     const { changedFields, clearFilter } = useAgreementsFiltersContext();
 
+    if (Object.keys(changedFields).length === 0) return null;
+
     return (
         <Stack {...props} direction="row" mt={1} gap={0.5}>
             {Object.entries(changedFields).map(([key, value]) => (
