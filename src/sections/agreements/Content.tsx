@@ -34,10 +34,12 @@ const useFilterAgreementsMutation = (): [
 ];
 
 interface Props {
+    // Are we on a property/[propertyId] page or the agreements page?
     propertyId?: number;
+    onEditAgreement: (id: number) => void;
 }
 
-const CardsContent: React.FC<Props> = ({ propertyId }) => {
+const CardsContent: React.FC<Props> = ({ propertyId, onEditAgreement }) => {
     const { filters } = useAgreementsFiltersContext();
 
     const [filterAgreements, { data, isLoading }] =
@@ -65,7 +67,7 @@ const CardsContent: React.FC<Props> = ({ propertyId }) => {
                     <AgreementCard
                         key={a.id}
                         a={a}
-                        onEdit={() => {}}
+                        onEdit={onEditAgreement}
                         onDelete={setDeletableAgreement}
                     />
                 ))}

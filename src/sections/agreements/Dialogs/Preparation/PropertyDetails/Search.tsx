@@ -1,5 +1,5 @@
 import SearchInput from "@/components/SearchInput";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useSearchPropertyQuery } from "@/services/properties";
 import { useDebounce } from "use-debounce";
 import { usePagination } from "@/components/Pagination";
@@ -47,11 +47,12 @@ const Search: React.FC<SearchProps> = ({ onSelectProperty }) => {
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
-    const handleCardClick = (propertyId: number) => {
+    const handleCardClick = useCallback((propertyId: number) => {
         setSearch("");
         onSelectProperty(propertyId);
         setAnchorEl(null);
-    };
+    }, []);
+    const handleClose = useCallback(() => setAnchorEl(null), []);
 
     return (
         <>
@@ -78,6 +79,7 @@ const Search: React.FC<SearchProps> = ({ onSelectProperty }) => {
                     pagination={pagination}
                     content={content}
                     onCardClick={handleCardClick}
+                    onClose={handleClose}
                 />
             ) : null}
         </>

@@ -2,12 +2,22 @@ import Pagination from "@/components/Pagination";
 import { PaginationHookProps } from "@/components/Pagination/types";
 import PropertyCard from "@/components/PropertyCard";
 import { IPropertyResultResponse } from "@/types/properties";
-import { Fab, IconButton } from "@mui/material";
+import { Fab, IconButton, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import Popper, { PopperProps } from "@mui/material/Popper";
 import { MouseEvent } from "react";
 import AddIcon from "@mui/icons-material/Add";
+import { getBorderColor2 } from "@/theme/borderColor";
+import { styled } from "@mui/material/styles";
+import CloseIcon from "@mui/icons-material/Close";
+import { SpaceBetween } from "@/components/styled";
+
+const StyledPaper = styled(Paper)(({ theme }) => ({
+    border: "1px solid",
+    borderColor: getBorderColor2(theme),
+    padding: theme.spacing(2),
+}));
 
 interface ResultsPopperProps extends Omit<PopperProps, "content"> {
     isLoading: boolean;
@@ -16,6 +26,7 @@ interface ResultsPopperProps extends Omit<PopperProps, "content"> {
     pagination: PaginationHookProps;
     pageSize: number;
     onCardClick: (id: number) => void;
+    onClose: VoidFunction;
 }
 
 const ResultsPopper: React.FC<ResultsPopperProps> = ({
@@ -25,6 +36,7 @@ const ResultsPopper: React.FC<ResultsPopperProps> = ({
     pagination,
     pageSize,
     onCardClick,
+    onClose,
     ...props
 }) => {
     const handleCardClick = (e: MouseEvent<HTMLButtonElement>, id: number) => {
@@ -33,15 +45,15 @@ const ResultsPopper: React.FC<ResultsPopperProps> = ({
     };
 
     return (
-        <Popper
-            {...props}
-            sx={{
-                zIndex: 3000,
-                maxWidth: "lg",
-                p: 2,
-            }}
-            component={Paper}
-        >
+        <Popper {...props} component={StyledPaper}>
+            <SpaceBetween mb={2}>
+                <Typography>{totalElements} items</Typography>
+
+                <IconButton onClick={onClose}>
+                    <CloseIcon />
+                </IconButton>
+            </SpaceBetween>
+
             <Pagination
                 {...pagination}
                 isLoading={isLoading}
