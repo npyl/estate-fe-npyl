@@ -3,7 +3,11 @@ export interface IAgreement {
     // ...
     variant: "basic" | "purchase";
     draft: boolean;
+    keys: boolean;
     title: string;
+    startingDate: string;
+    expirationDate: string;
+    availableAfter: string;
     // ...
     manager: {
         fullname: string;
@@ -54,6 +58,10 @@ export interface IAgreement {
         commisionerSignature: string;
         agentSignature: string;
     };
+}
+
+export interface IAgreementReq extends Omit<IAgreement, "id"> {
+    id?: number;
 }
 
 export interface IAgreementsFilters {
