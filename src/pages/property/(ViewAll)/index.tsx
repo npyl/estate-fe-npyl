@@ -7,7 +7,7 @@ import {
 import { useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { DeleteDialog } from "src/components/Dialog/Delete";
+import DeleteDialog from "src/components/Dialog/Delete";
 import useLocalStorageScrollRestore from "src/hooks/useLocalStorageScrollRestore";
 import {
     useBulkDeletePropertiesMutation,

@@ -1,9 +1,9 @@
 import { Box, Paper, Grid } from "@mui/material";
 import { GridPaginationModel, GridRowSelectionModel } from "@mui/x-data-grid";
 import type { NextPage } from "next";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import { DeleteDialog } from "src/components/Dialog/Delete";
+import DeleteDialog from "src/components/Dialog/Delete";
 import { AuthGuard } from "src/components/authentication/auth-guard";
 import { DashboardLayout } from "src/components/dashboard/dashboard-layout";
 import useLocalStorageScrollRestore from "src/hooks/useLocalStorageScrollRestore";
