@@ -6,6 +6,7 @@ build_image:
   tags:
     - estate-fe
   script:
+    - free -m
     - cd /var/www/estate-fe
     - git pull origin main
     - docker build --memory=4g --memory-swap=4g -t estate-fe .
