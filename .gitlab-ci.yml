@@ -8,7 +8,8 @@ build_image:
   script:
     - cd /var/www/estate-fe
     - git pull origin main
-    - docker build --build-arg NODE_OPTIONS="--max-old-space-size=4096" -t estate-fe .
+    - docker build --memory=4g --memory-swap=4g -t estate-fe .
+
   only:
     - main
 deploy_application:
