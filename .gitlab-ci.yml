@@ -9,7 +9,7 @@ build_image:
     - free -m
     - cd /var/www/estate-fe
     - git pull origin main
-    - docker build --memory=6g --memory-swap=8g -t estate-fe .
+    - docker build --build-arg NODE_OPTIONS="--max-old-space-size=4096" --memory=6g --memory-swap=8g -t estate-fe .
 
   only:
     - main
