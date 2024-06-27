@@ -1,7 +1,5 @@
 import { Box, BoxProps, Theme, Typography, alpha } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import { formatNumberWithCommas } from "@/utils/formatNumber";
-import { darken, lighten } from "polished";
 
 const getCss = (theme: Theme) => ({
     boxShadow:
@@ -103,38 +101,4 @@ export const NormalBadge = styled(
     color: alpha(color, 1),
 
     backgroundColor: alpha(color, 0.25),
-
-    // color: lighten(0.3, color), // make text brighter
-    // backgroundColor: color,
-    // ...(theme.palette.mode === "light"
-    //     ? {
-    //           color:
-    //               color === "yellow"
-    //                   ? "#854d0e"
-    //                   : color === "indigo"
-    //                   ? "#3730a3"
-    //                   : "",
-
-    //           backgroundColor:
-    //               color === "yellow"
-    //                   ? alpha("#ffcc00", 0.2)
-    //                   : color === "indigo"
-    //                   ? alpha("#3730a3", 0.25)
-    //                   : "",
-    //       }
-    //     : {
-    //           color:
-    //               color === "yellow"
-    //                   ? "#c49102"
-    //                   : color === "indigo"
-    //                   ? "#4c5fd7"
-    //                   : "",
-
-    //           backgroundColor:
-    //               color === "yellow"
-    //                   ? alpha("#c49102", 0.3) // Slightly brighter amber for dark mode, without alpha adjustment
-    //                   : color === "indigo"
-    //                   ? alpha("#4c5fd7", 0.3) // Lighter indigo suitable for dark backgrounds, without alpha adjustment
-    //                   : "",
-    //       }),
 }));
