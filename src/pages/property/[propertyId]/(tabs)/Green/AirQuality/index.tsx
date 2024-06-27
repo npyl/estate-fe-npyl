@@ -46,22 +46,6 @@ const AirQualityDetails: React.FC<Props> = ({ center }) => {
                 healthRecommendations={airQualityData?.healthRecommendations}
                 isLoading={isLoading}
             />
-
-            {/* <Grid
-                item
-                xs={12}
-                component={Stack}
-                alignItems="center"
-                justifyContent="center"
-                mt={2}
-            >
-                <CircularProgress
-                    variant="determinate"
-                    value={progress}
-                    size={150}
-                    thickness={5}
-                />
-            </Grid> */}
         </Grid>
     );
 };

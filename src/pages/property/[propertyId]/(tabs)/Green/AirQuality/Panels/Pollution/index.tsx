@@ -11,7 +11,6 @@ import React from "react";
 import { Index } from "@/types/googleapi";
 import Gauge from "./Gauge";
 import { useTranslation } from "react-i18next";
-import MuiLink from "@mui/material/Link";
 
 // ------------------------------------------------------------------------------
 
