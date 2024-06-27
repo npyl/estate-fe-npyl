@@ -24,6 +24,8 @@ import {
     ValueType,
 } from "recharts/types/component/DefaultTooltipContent";
 import { useResponsive } from "@/hooks/use-responsive";
+import DateRangePicker from "./DateRangePicker";
+import { format } from "date-fns";
 
 export default function StackedAreas() {
     const { t } = useTranslation();
@@ -31,6 +33,9 @@ export default function StackedAreas() {
     const [category, setCategory] = useState("");
     const [parentCategory, setParentCategory] = useState("");
     const [timeframe, setTimeframe] = useState<TTimeFrame>("WEEK");
+
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
 
     // Fetch enums and data using hooks
     const data = useGlobals();
@@ -42,6 +47,10 @@ export default function StackedAreas() {
             parentCategory,
             category,
             timeframe,
+            startDate: startDate
+                ? format(new Date(startDate), "yyyy-MM-dd")
+                : "",
+            endDate: endDate ? format(new Date(endDate), "yyyy-MM-dd") : "",
         });
     // Organize sub-categories by main category
     const subCategoriesMap: {
@@ -215,111 +224,56 @@ export default function StackedAreas() {
 
     return (
         <>
-            {belowMd && !belowSm ? (
-                <Stack direction="column" spacing={2} p={1}>
-                    <Typography variant={"h5"} p={1}>
-                        {t("Views of Properties")}
-                    </Typography>
-                    <Stack direction="row" padding={1} spacing={2}>
-                        <Select
-                            value={timeframe}
-                            onChange={handleTimeframeSelect}
-                        >
-                            <MenuItem value="ALL_TIME">
-                                {t("All_Time")}
-                            </MenuItem>
-                            <MenuItem value="MONTH">{t("Monthly")}</MenuItem>
-                            <MenuItem value="WEEK">{t("Weekly")}</MenuItem>
-                            <MenuItem value="YEAR">{t("Yearly")}</MenuItem>
-                            <MenuItem value="CUSTOM">{t("Custom")}</MenuItem>
-                        </Select>
-                        <Select
-                            value={parentCategory}
-                            onChange={handleParentCategorySelect}
-                            displayEmpty
-                        >
-                            <MenuItem value="">{t("Parent Category")}</MenuItem>
-                            {parentCategoryEnum?.map((item) => (
-                                <MenuItem key={item.key} value={item.key}>
-                                    {item.value}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                        <Select
-                            value={category}
-                            onChange={handleCategorySelect}
-                            displayEmpty
-                            disabled={!parentCategory}
-                        >
-                            <MenuItem value="">{t("Category")}</MenuItem>
-                            {subCategoriesMap[parentCategory!]?.map((item) => (
-                                <MenuItem key={item.key} value={item.key}>
-                                    {item.value}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </Stack>
-                </Stack>
-            ) : (
-                <Stack
-                    direction={{
-                        xs: "column",
-                        sm: "row",
-                    }}
-                    spacing={2}
-                    p={1}
-                >
-                    <Typography variant={"h5"} p={1}>
-                        {t("Views of Properties")}
-                    </Typography>
-                    <Stack
-                        direction={{
-                            xs: "column",
-                            sm: "row",
-                        }}
-                        padding={1}
-                        spacing={2}
+            <Stack direction={{ xs: "column", md: "row" }} spacing={2} p={1}>
+                <Typography variant={"h5"} p={1}>
+                    {t("Views of Properties")}
+                </Typography>
+                <Stack direction="row" padding={1} spacing={2}>
+                    <Select value={timeframe} onChange={handleTimeframeSelect}>
+                        <MenuItem value="ALL_TIME">{t("All_Time")}</MenuItem>
+                        <MenuItem value="MONTH">{t("Monthly")}</MenuItem>
+                        <MenuItem value="WEEK">{t("Weekly")}</MenuItem>
+                        <MenuItem value="YEAR">{t("Yearly")}</MenuItem>
+                        <MenuItem value="CUSTOM">{t("Custom")}</MenuItem>
+                    </Select>
+                    <Select
+                        value={parentCategory}
+                        onChange={handleParentCategorySelect}
+                        displayEmpty
                     >
-                        <Select
-                            value={timeframe}
-                            onChange={handleTimeframeSelect}
-                        >
-                            <MenuItem value="ALL_TIME">
-                                {t("All_Time")}
+                        <MenuItem value="">{t("Parent Category")}</MenuItem>
+                        {parentCategoryEnum?.map((item) => (
+                            <MenuItem key={item.key} value={item.key}>
+                                {item.value}
                             </MenuItem>
-                            <MenuItem value="MONTH">{t("Monthly")}</MenuItem>
-                            <MenuItem value="WEEK">{t("Weekly")}</MenuItem>
-                            <MenuItem value="YEAR">{t("Yearly")}</MenuItem>
-                            <MenuItem value="CUSTOM">Custom</MenuItem>
-                        </Select>
-                        <Select
-                            value={parentCategory}
-                            onChange={handleParentCategorySelect}
-                            displayEmpty
-                        >
-                            <MenuItem value="">{t("Parent Category")}</MenuItem>
-                            {parentCategoryEnum?.map((item) => (
-                                <MenuItem key={item.key} value={item.key}>
-                                    {item.value}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                        <Select
-                            value={category}
-                            onChange={handleCategorySelect}
-                            displayEmpty
-                            disabled={!parentCategory}
-                        >
-                            <MenuItem value="">{t("Category")}</MenuItem>
-                            {subCategoriesMap[parentCategory!]?.map((item) => (
-                                <MenuItem key={item.key} value={item.key}>
-                                    {item.value}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </Stack>
+                        ))}
+                    </Select>
+                    <Select
+                        value={category}
+                        onChange={handleCategorySelect}
+                        displayEmpty
+                        disabled={!parentCategory}
+                    >
+                        <MenuItem value="">{t("Category")}</MenuItem>
+                        {subCategoriesMap[parentCategory!]?.map((item) => (
+                            <MenuItem key={item.key} value={item.key}>
+                                {item.value}
+                            </MenuItem>
+                        ))}
+                    </Select>
+
+                    {timeframe === "CUSTOM" ? (
+                        <DateRangePicker
+                            startDate={startDate}
+                            endDate={endDate}
+                            onChange={(s, e) => {
+                                setStartDate(s);
+                                setEndDate(e);
+                            }}
+                        />
+                    ) : null}
                 </Stack>
-            )}
+            </Stack>
 
             <ResponsiveContainer width="100%" height={300}>
                 <AreaChart data={chartData} margin={{ left: 30, right: 30 }}>
