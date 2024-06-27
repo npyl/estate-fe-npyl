@@ -23,7 +23,6 @@ import {
     NameType,
     ValueType,
 } from "recharts/types/component/DefaultTooltipContent";
-import { useResponsive } from "@/hooks/use-responsive";
 import DateRangePicker from "./DateRangePicker";
 import { format } from "date-fns";
 
@@ -218,9 +217,6 @@ export default function StackedAreas() {
     const formatYAxis = (tickItem: number) => {
         return tickItem > 999 ? `${tickItem / 1000}k` : tickItem.toString();
     };
-
-    const belowSm = useResponsive("down", "sm");
-    const belowMd = useResponsive("down", "md");
 
     return (
         <>
