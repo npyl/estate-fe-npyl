@@ -1,9 +1,17 @@
-import { Typography, Box, Stack, StackProps, Skeleton } from "@mui/material";
+import {
+    Typography,
+    Box,
+    Stack,
+    StackProps,
+    Skeleton,
+    IconButton,
+} from "@mui/material";
 import Panel from "../../../Panel";
 import React from "react";
 import { Index } from "@/types/googleapi";
 import Gauge from "./Gauge";
 import { useTranslation } from "react-i18next";
+import MuiLink from "@mui/material/Link";
 
 // ------------------------------------------------------------------------------
 
@@ -51,13 +59,17 @@ const PollutionPanel: React.FC<PollutionPanelProps> = ({
 }) => {
     const { t } = useTranslation();
 
+    const dominantPollutant = findAqi?.dominantPollutant.toUpperCase();
+
     return (
         <Panel
             title={`${t("Air Pollution")} - ${new Date().toLocaleDateString()}`}
         >
             <Typography variant="h6" gutterBottom>
                 {t("Dominant Pollutants")}:{" "}
-                {findAqi?.dominantPollutant.toUpperCase()}
+                <IconButton size="small" href={`#${dominantPollutant}`}>
+                    {dominantPollutant}
+                </IconButton>
             </Typography>
 
             <Box position="relative" height="400px">

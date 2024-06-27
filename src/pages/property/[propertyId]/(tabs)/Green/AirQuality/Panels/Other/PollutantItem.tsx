@@ -12,7 +12,10 @@ interface PollutantItemProps {
 }
 
 const PollutantItem: React.FC<PollutantItemProps> = ({ p }) => (
-    <PanelPaper>
+    <PanelPaper
+        /* INFO: id makes sure the dominant pollutant's href will cause a scroll to this item */
+        id={p.displayName}
+    >
         <Stack p={2}>
             <SpaceBetween>
                 <Stack direction="row" spacing={0.5} alignItems="center">
