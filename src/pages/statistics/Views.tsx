@@ -213,7 +213,6 @@ export default function StackedAreas() {
     const belowSm = useResponsive("down", "sm");
     const belowMd = useResponsive("down", "md");
 
-    console.log(timeframe);
     return (
         <>
             {belowMd && !belowSm ? (
@@ -232,7 +231,6 @@ export default function StackedAreas() {
                             <MenuItem value="MONTH">{t("Monthly")}</MenuItem>
                             <MenuItem value="WEEK">{t("Weekly")}</MenuItem>
                             <MenuItem value="YEAR">{t("Yearly")}</MenuItem>
-                            <MenuItem value="DAY">{t("Daily")}</MenuItem>
                             <MenuItem value="CUSTOM">{t("Custom")}</MenuItem>
                         </Select>
                         <Select
@@ -292,7 +290,6 @@ export default function StackedAreas() {
                             <MenuItem value="MONTH">{t("Monthly")}</MenuItem>
                             <MenuItem value="WEEK">{t("Weekly")}</MenuItem>
                             <MenuItem value="YEAR">{t("Yearly")}</MenuItem>
-                            <MenuItem value="DAY">{t("Daily")}</MenuItem>
                             <MenuItem value="CUSTOM">Custom</MenuItem>
                         </Select>
                         <Select
