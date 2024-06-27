@@ -16,7 +16,7 @@ const useClickOutside = (
         return () => {
             document.removeEventListener("click", handleClick);
         };
-    }, []); // Added dependency array to adhere to rules of hooks
+    }, [ref, callback]); // Added dependency array to adhere to rules of hooks
 };
 
 export default useClickOutside;

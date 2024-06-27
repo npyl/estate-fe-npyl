@@ -173,9 +173,10 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                     </Grid>
                     <Grid
                         item
-                        xs={7}
-                        sm={2}
+                        xs={9}
+                        sm={3.5}
                         sx={{
+                            ml: 1.3,
                             textAlign: { xs: "center", sm: "center" },
                         }}
                     >
@@ -356,7 +357,7 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                 </Grid>
 
                 <Grid container spacing={1} alignItems="center" mt={1} ml={2}>
-                    <Grid item xs={6} sm={5}>
+                    <Grid item xs={6} sm={5.7}>
                         <Box
                             sx={{
                                 display: "flex",
@@ -378,7 +379,7 @@ export const PropertySearchItem = ({ option, searchText }: SearchItemProps) => {
                         </Box>
                     </Grid>
 
-                    <Grid item xs={10} sm={4}>
+                    <Grid item xs={12} sm={4.5}>
                         <NormalBadge
                             name={`${t("Code")}: ${option.code || ""}`}
                             color={"#ffcc00"}

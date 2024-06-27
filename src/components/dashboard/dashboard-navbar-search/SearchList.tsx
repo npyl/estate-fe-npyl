@@ -1,7 +1,7 @@
 import { Divider, Grid, Paper, PopperProps, Typography } from "@mui/material";
 // import SearchNotFound from "src/components/search-not-found/SearchNotFound";
 import { StyledPopper } from "../styles";
-import { useMemo, useRef } from "react";
+import { ChangeEvent, useMemo, useRef } from "react";
 import useClickOutside from "./useClickOutside";
 import { CustomerSearchItem } from "./CustomerSearchItem";
 import { PropertySearchItem } from "./PropertySearchItem";
@@ -41,6 +41,11 @@ const PropertiesSubList = ({ searchString }: PropertiesSubListProps) => {
         [data?.content]
     );
 
+    const handlePageChange = (event: any, page: number) => {
+        event.stopPropagation();
+        pagination.onChange(event, page);
+    };
+
     return (
         <Grid
             item
@@ -62,6 +67,7 @@ const PropertiesSubList = ({ searchString }: PropertiesSubListProps) => {
                 isLoading={isLoading}
                 pageSize={PAGE_SIZE}
                 totalItems={data?.totalElements ?? 5}
+                onChange={handlePageChange}
             >
                 {properties.map((option) => (
                     <PropertySearchItem
@@ -91,23 +97,19 @@ export const SearchList = ({
     const { t } = useTranslation();
 
     const ref = useRef<HTMLDivElement>(null);
+    const paginationRef = useRef<HTMLDivElement>(null);
 
-    useClickOutside(ref, () => onClickOutside && onClickOutside());
+    useClickOutside(ref, () => {
+        onClickOutside && onClickOutside(), [paginationRef];
+    });
 
     const { data: customersResults } = useSearchCustomerQuery(searchText, {
         skip: searchText === "",
-    });
-    const { data: locationsResults } = useSearchLocationsQuery(searchText, {
-        skip: searchText === "" && searchText.length < 4,
     });
 
     const customers = useMemo(
         () => (searchCategory !== "properties" ? customersResults || [] : []),
         [searchCategory, customersResults]
-    );
-    const locations = useMemo(
-        () => (searchCategory !== "locations" ? locationsResults || [] : []),
-        [searchCategory, locationsResults]
     );
 
     return (
@@ -151,35 +153,6 @@ export const SearchList = ({
                                     ))}
                                 </Grid>
                             ) : null}
-
-                            {customers?.length > 0 && locations?.length > 0 && (
-                                <Divider />
-                            )}
-
-                            {locations?.length > 0 && (
-                                <Grid
-                                    item
-                                    xs={12}
-                                    sx={{
-                                        borderRight: {
-                                            lg: "1px solid blue",
-                                            md: 0,
-                                        },
-                                        marginY: "10px",
-                                    }}
-                                >
-                                    <Typography variant="h6" textAlign="center">
-                                        {t("Locations")}
-                                    </Typography>
-                                    {locations.map((option) => (
-                                        <LocationSearchItem
-                                            key={option.areaID}
-                                            option={option}
-                                            searchText={searchText}
-                                        />
-                                    ))}
-                                </Grid>
-                            )}
                         </Grid>
                     </ScrollBox>
                 </Paper>
